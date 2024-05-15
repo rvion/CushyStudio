@@ -157,11 +157,33 @@ export type SharedWidgetSerial = {
     lastUpdatedAt?: number
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
+
+    /**
+     * DO NOT MANUALLY SET THIS VALUE;
+     * this value will be set by the init() function (BaseWidget class)
+     * use to know if the onCreate function should be re-run or not
+     * */
+    _creationKey?: string
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
 export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /**
+     * @since 2024-05-14
+     * @stability beta
+     * This function will be executed either on first creation, or when the
+     * evaluationKey changes. The evaluationKey is stored in the group serial.
+     */
+    onCreate?: CovariantFn<T['$Widget'], void> & { evaluationKey?: string }
+
+    /**
+     * @since 2024-05-14
+     * @stability beta
+     * This function will be executed either on every widget instanciation.
+     */
+    onInit?: CovariantFn<T['$Widget'], void>
+
     /** allow to specify custom headers */
     header?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 

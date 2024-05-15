@@ -1,3 +1,4 @@
+import type { CovariantFn } from '../../BivariantHack'
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -165,7 +166,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             value: false,
             __value: false,
             DefaultHeaderUI: false,

@@ -193,7 +193,7 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

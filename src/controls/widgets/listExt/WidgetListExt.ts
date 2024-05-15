@@ -146,7 +146,7 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        makeAutoObservableInheritance(this, { sizeHelper: false })
+        this.init({ sizeHelper: false })
     }
 
     get subWidgets() {

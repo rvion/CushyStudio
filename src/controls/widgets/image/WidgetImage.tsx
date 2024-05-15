@@ -70,7 +70,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
-        makeAutoObservableInheritance(this, {
+        this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

@@ -114,7 +114,7 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
             }
         }
 
-        makeAutoObservableInheritance(this, { sizeHelper: false })
+        this.init({ sizeHelper: false })
     }
 
     setValue(val: Widget_size_value) {

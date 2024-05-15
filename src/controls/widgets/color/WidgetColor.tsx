@@ -68,7 +68,7 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
             id: this.id,
             value: config.default ?? '#000000',
         }
-        makeAutoObservableInheritance(this, {
+        this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

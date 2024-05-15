@@ -117,7 +117,7 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        makeAutoObservableInheritance(this, { serial: observable, value: computed })
+        this.init({ serial: observable, value: computed })
     }
 
     setValue(val: Widget_optional_value<T>) {

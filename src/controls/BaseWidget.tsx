@@ -178,4 +178,29 @@ export abstract class BaseWidget {
     get addReaction() {
         return this.spec.addReaction
     }
+
+    /** this function MUST be called at the end of every widget constructor */
+    init(mobxOverrides: any) {
+        // make the object deeply observable including this base class
+        makeAutoObservableInheritance(this, mobxOverrides)
+
+        const self = this as any as IWidget
+        const config = self.config
+        const serial = self.serial
+
+        // run the config.onCreation if needed
+        if (config.onCreate) {
+            const oldKey = serial._creationKey
+            const newKey = config.onCreate.evaluationKey ?? 'default'
+            if (oldKey !== newKey) {
+                config.onCreate(this)
+                serial._creationKey = newKey
+            }
+        }
+
+        // run the config.onInit if needed
+        if (config.onInit) {
+            config.onInit(this)
+        }
+    }
 }

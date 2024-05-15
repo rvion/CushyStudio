@@ -74,7 +74,7 @@ export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custo
             value: this.config.defaultValue(),
         }
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             Component: false,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
