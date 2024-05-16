@@ -103,6 +103,7 @@ export class DraftL {
     }
 
     private autoStartTimer: NodeJS.Timeout | null = null
+    private autoStartMaxTimer: NodeJS.Timeout | null = null
 
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
@@ -113,22 +114,46 @@ export class DraftL {
 
     isDirty = false
 
-    // mailboxes as signal slot for other to mention stuff
     checkIfShouldRestart = (): void => {
-        if (!this.shouldAutoStart) return // console.log(`[⏰] no autostart`)
-        if (this.lastStarted?.finished.value == null) return // console.log(`[⏰] already running`)
-        if (!this.isDirty) return // console.log(`[⏰] not dirty`)
-        if (this.autoStartTimer != null) {
-            // console.log(`[⏰] already scheduled; clearing prev schedule`)
-            clearTimeout(this.autoStartTimer)
-            // return console.log(`[⏰] already scheduled`)
+        // console.log(`[⏰] checkIfShouldRestart called`)
+        if (!this.shouldAutoStart) return // If autostart is not enabled, exit
+        if (this.lastStarted?.finished.value == null) return // If the last step is still running, exit
+
+        // Set the max timer
+        if (this.autoStartMaxTimer != null) {
+            clearTimeout(this.autoStartMaxTimer)
         }
-        this.autoStartTimer = setTimeout(() => {
-            if (this.lastStarted?.finished.value == null) return console.log(`[⏰] ready to start, but step still running`)
-            this.autoStartTimer = null
+        this.autoStartMaxTimer = setTimeout(() => {
+            // console.log(`[⏰] autostartMaxTimer callback`)
+            if (this.lastStarted?.finished.value == null) {
+                // console.log(`[⏰] ready to start, but step still running`)
+                return
+            }
+            this.autoStartMaxTimer = null
             this.start({})
-        }, this.st.project.data.autostartDelay)
-        //
+        }, this.st.project.data.autostartMaxDelay)
+
+        // Set the regular timer if the form is dirty
+        if (this.isDirty) {
+            if (this.autoStartTimer != null) {
+                clearTimeout(this.autoStartTimer)
+            }
+            this.autoStartTimer = setTimeout(() => {
+                // console.log(`[⏰] autostartTimer callback`)
+                if (this.lastStarted?.finished.value == null) {
+                    // console.log(`[⏰] ready to start, but step still running`)
+                    return
+                }
+                this.autoStartTimer = null
+                this.start({})
+            }, this.st.project.data.autostartDelay)
+        } else {
+            // If the form is not dirty, clear the regular timer
+            if (this.autoStartTimer != null) {
+                clearTimeout(this.autoStartTimer)
+                this.autoStartTimer = null
+            }
+        }
     }
 
     /**
