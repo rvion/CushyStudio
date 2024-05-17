@@ -5,6 +5,7 @@ import './operators/commands/cmd_favorites'
 import './operators/commands/cmd_goTo'
 import './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
+import { cmd_maximizePanel } from './app/shortcuts/cmd_layout'
 import { allCommandsV1 } from './app/shortcuts/cmd_mix'
 import {
     cmd_copyImage,
@@ -41,5 +42,6 @@ export const allCommands = [
     cmd_nav_openGallery3,
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
+    cmd_maximizePanel,
     ...allCommandsV1,
 ]

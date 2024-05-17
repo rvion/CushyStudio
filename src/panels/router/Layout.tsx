@@ -42,6 +42,17 @@ export const uniqueIDByMemoryRef = (x: object): string => {
 }
 
 export class CushyLayoutManager {
+    /** true when a tab was maximized; false if not tab was */
+    maximizeCurrentPanel = (): Trigger => {
+        const tabset = this.model.getActiveTabset()
+        if (tabset == null) {
+            console.log(`[❌] tabset is null`)
+            return Trigger.UNMATCHED
+        }
+        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        return Trigger.Success
+    }
+
     model!: Model
     private modelKey = 0
     setModel = (model: Model) => {
