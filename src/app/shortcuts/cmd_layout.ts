@@ -16,7 +16,7 @@ export const cmd_maximize_hovered_panel: Command = command({
     id: 'cmd_maximize_hovered_panel',
     label: 'maximize hovered panel',
     ctx: ctx_global,
-    combos: 'ctrl+space',
+    combos: ['alt+space', 'ctrl+u'],
     action: () => cushy.layout.maximizHoveredTabset(),
     validInInput: true,
 })
