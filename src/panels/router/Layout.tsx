@@ -42,15 +42,51 @@ export const uniqueIDByMemoryRef = (x: object): string => {
 }
 
 export class CushyLayoutManager {
-    /** true when a tab was maximized; false if not tab was */
-    maximizeCurrentPanel = (): Trigger => {
+    /** maximize the active(=selected; with focus) tabset */
+    maximizeActiveTabset = (): Trigger => {
         const tabset = this.model.getActiveTabset()
         if (tabset == null) {
-            console.log(`[❌] tabset is null`)
+            console.log(`[❌] maximizeActiveTabset: tabset is null`)
             return Trigger.UNMATCHED
         }
         this.model.doAction(Actions.maximizeToggle(tabset.getId()))
         return Trigger.Success
+    }
+
+    /** maximize the tabset under the mouse */
+    maximizHoveredTabset = (): Trigger => {
+        const tabset = this.hoveredTabset
+        if (tabset == null) {
+            console.log(`[❌] maximizHoveredTabset: tabset is null`)
+            return Trigger.UNMATCHED
+        }
+        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        return Trigger.Success
+    }
+
+    get hoveredTabset(): Maybe<FL.TabSetNode> {
+        // get hovered tab
+        const hoveredTab = this.hoveredTab
+        if (hoveredTab == null) return null
+
+        // get it's parent tabset
+        const tabSet = hoveredTab.getParent()
+        if (tabSet == null) {
+            console.log(`[🔴] INVARIANT VIOLATION; tab parent is null (expected: tabset)`)
+            return null
+        }
+        if (tabSet.getType() !== 'tabset')
+            console.log(`[🔴] INVARIANT VIOLATION; panelID correspond to a '${tabSet.getType()}', not a 'tabset'`)
+        return tabSet as FL.TabSetNode
+    }
+
+    get hoveredTab(): Maybe<FL.TabNode> {
+        const tabNodeID = cushy.region.hoveredPanel
+        if (tabNodeID == null) return null
+        const tabNode = this.model.getNodeById(tabNodeID)
+        if (tabNode == null) return null
+        if (tabNode.getType() !== 'tab') console.log(`[🔴] INVARIANT VIOLATION; panelID correspond to a ${tabNode.getType()}`)
+        return tabNode as FL.TabNode
     }
 
     model!: Model
