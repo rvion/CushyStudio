@@ -33,9 +33,16 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
         )
 
     const Component = panelDef.widget
+    const panelID = p.node?.getId()
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <div tw='flex-1 h-full w-full outlined-on-hover' className={`Region-${panel}`} id={p.node?.getId()}>
+            <div
+                //
+                tw='flex-1 h-full w-full outlined-on-hover'
+                className={`Region-${panel}`}
+                data-panel-id={panelID}
+                id={panelID}
+            >
                 <Component {...panelProps} className='w-full h-full border-none' />
             </div>
         </ErrorBoundary>
