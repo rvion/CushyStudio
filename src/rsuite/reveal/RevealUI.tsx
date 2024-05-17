@@ -48,22 +48,22 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             ref={ref}
             style={p.style}
             // style={{ ...p.style, ...uistOrNull?.debugColor }}
+
+            // lock input on shift+right click
             onContextMenu={(ev) => {
-                uist2().toggleLock()
-                ev.preventDefault() //  = prevent window on non-electron apps
-                ev.stopPropagation() // = right click is consumed
+                if (ev.shiftKey) {
+                    uist2().toggleLock()
+                    ev.preventDefault() //  = prevent window on non-electron apps
+                    ev.stopPropagation() // = right click is consumed
+                }
+            }}
+            onClick={(ev) => uist2().onLeftClick(ev)}
+            onAuxClick={(ev) => {
+                if (ev.button === 1) return uist2().onMiddleClick(ev)
+                if (ev.button === 2) return uist2().onRightClick(ev)
             }}
             onMouseEnter={() => uist2().onMouseEnterAnchor()}
             onMouseLeave={() => uist2().onMouseLeaveAnchor()}
-            onClick={(ev) => {
-                const uist = uist2()
-                const toc = uist.triggerOnClick
-                if (!toc) return
-                ev.stopPropagation()
-                // ev.preventDefault()
-                if (uist.visible) uist.leaveAnchor()
-                else uist.enterAnchor()
-            }}
         >
             {content}
             {tooltip}
