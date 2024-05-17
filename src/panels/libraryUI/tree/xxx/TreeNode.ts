@@ -68,7 +68,15 @@ export class TreeNode {
 
     data: ITreeEntry
     id: string
-    entryL: TreeEntryL
+
+    /* TreeEntryL */
+    entryL: {
+        update: (data: { isExpanded: SQLITE_boolean }) => void
+        data: { isExpanded: SQLITE_boolean }
+    } = {
+        update: (data) => (this.entryL.data.isExpanded = data.isExpanded),
+        data: { isExpanded: SQLITE_false },
+    }
     constructor(
         //
         public tree: Tree,
@@ -79,7 +87,12 @@ export class TreeNode {
         // console.log(`[👙] 🔴REF= ${key}`)
         this.id = (parent?.id ?? '') + '/' + key
         // console.log(`[👙] `, this.id)
-        this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
+        // this.entryL = {
+        //     update: { isExpanded: SQLITE_boolean },
+        // }
+        /*  this.tree.st.db.tree_entry.upsert({
+            id: asTreeEntryID(this.id),
+        })! */
         // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor

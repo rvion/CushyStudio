@@ -32,7 +32,7 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 console.log(`[🤠] values`)
             },
             UI: () => {
-                const tree = new Tree(cushy, [widget.asTreeElement('root')])
+                const tree = new Tree([widget.asTreeElement('root')])
                 const treeView = new TreeView(tree, { selectable: true })
                 return <TreeUI title='Select values to include in preset' treeView={treeView}></TreeUI>
             },

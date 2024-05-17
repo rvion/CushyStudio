@@ -588,7 +588,7 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
-        this.tree1 = new Tree(this, [
+        this.tree1 = new Tree([
             //
             treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
             treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
@@ -605,7 +605,7 @@ export class STATE {
                 return
             },
         })
-        this.tree2 = new Tree(this, [
+        this.tree2 = new Tree([
             // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
             treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
             treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),

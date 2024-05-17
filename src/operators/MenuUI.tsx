@@ -66,21 +66,36 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         )
                     }
                     if (entry instanceof SimpleMenuModal) {
+                        const x = entry.p
                         return (
                             <MenuItem //
                                 tw='min-w-60'
                                 key={ix}
                                 shortcut={char}
-                                label={entry.p.label}
+                                label={x.label}
                                 onClick={() => {
                                     activityManger.startActivity({
                                         uid: 'createPreset',
                                         UI: (p) => (
-                                            <ModalShellUI close={() => p.stop()} title={entry.p.label}>
-                                                <entry.p.UI //
+                                            <ModalShellUI
+                                                tw='m-8'
+                                                //
+                                                close={() => p.stop()}
+                                                title={x.label}
+                                                footer={
+                                                    x.submit ? (
+                                                        <div>
+                                                            <div onClick={() => x.submit?.()} className='btn btn-primary'>
+                                                                {x.submitLabel ?? 'Submit'}
+                                                            </div>
+                                                        </div>
+                                                    ) : undefined
+                                                }
+                                            >
+                                                <x.UI //
                                                     close={() => p.stop()}
-                                                    submit={entry.p.submit}
-                                                    submitLabel={entry.p.submitLabel}
+                                                    submit={x.submit}
+                                                    submitLabel={x.submitLabel}
                                                 />
                                             </ModalShellUI>
                                         ),

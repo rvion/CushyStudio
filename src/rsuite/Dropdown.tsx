@@ -14,10 +14,9 @@ export const Dropdown = (p: {
     content?: () => ReactNode
 }) => (
     <RevealUI
-        className='dropdown'
         tw={[p.className]}
         content={() => (
-            <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+            <ul tabIndex={0} tw='shadow z-[1] bg-base-100 rounded-box'>
                 {p.content?.()}
             </ul>
         )}
@@ -31,6 +30,7 @@ export const Dropdown = (p: {
 
 export const MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
+    /** ⚠️ unused for now */
     size?: 'sm' | 'xs' | 'md' | 'lg'
     icon?: Maybe<ReactNode>
     disabled?: boolean
@@ -40,10 +40,10 @@ export const MenuItem = observer(function DropdownItem_(p: {
     label?: ReactNode
     shortcut?: CushyShortcut
 }) {
-    const { size, label, disabled, icon, children, active, onClick, ...rest } = p
+    const { label, disabled, icon, children, active } = p
 
     return (
-        <li
+        <div
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
@@ -51,11 +51,12 @@ export const MenuItem = observer(function DropdownItem_(p: {
             }}
             tw={[
                 //
-                '_MenuItem',
+                p.className,
+                'bg-base-100 hover:bg-base-300',
+                '_MenuItem cursor-pointer',
                 active && 'bg-primary text-primary-content',
                 disabled && 'text-neutral-content',
             ]}
-            {...rest}
         >
             <div className='flex items-center gap-2 whitespace-nowrap'>
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
@@ -63,6 +64,6 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 {children}
                 {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
             </div>
-        </li>
+        </div>
     )
 })
