@@ -64,7 +64,10 @@ export const useRegionMonitor = () => {
     useEffect(() => {
         function handleMouseEvent(event: MouseEvent) {
             const target = event.target
-            if (!(target instanceof HTMLElement)) return console.log(`[❌] mouse event target is not HTMLElement`)
+            if (!(target instanceof HTMLElement)) {
+                // console.log(`[❌] mouse event target is not HTMLElement`)
+                return
+            }
 
             // 1. find region ============================================================
             // walk upwards from the target until we find a region
