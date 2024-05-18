@@ -7,7 +7,7 @@ import { menu_imageActions } from './commands/cmd_copyImage'
 
 export const useDemoActivity = () =>
     useEffect(() => {
-        activityManger.push(DEMO_ACTIVITY)
+        activityManger.startActivity(DEMO_ACTIVITY)
     }, [])
 
 export const DEMO_ACTIVITY = {

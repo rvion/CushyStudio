@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../icons/iconHelpers'
 import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
@@ -27,6 +28,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                         onClick={() => st.layout.FOCUS_OR_CREATE('Output', {})}
                         icon={<span className='material-symbols-outlined text-red-400'>image</span>}
                         label='Output'
+                    />
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Icons', {})}
+                        icon={<Ikon.mdiPostageStamp className='text-red-400' />}
+                        label='Icons'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Models', {})}

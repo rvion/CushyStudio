@@ -21,6 +21,7 @@ export class RegionMonitor {
 
     knownRegions: Map<string, HoveredCtx> = new Map()
     hoveredRegion: Maybe<HoveredRegion> = null
+    hoveredPanel: Maybe<string> = null
 
     get hoveredCtx(): Maybe<HoveredCtx> {
         const id = this.hoveredRegion?.id
@@ -62,27 +63,46 @@ export const regionMonitor = new RegionMonitor()
 export const useRegionMonitor = () => {
     useEffect(() => {
         function handleMouseEvent(event: MouseEvent) {
-            const t = event.target
-            let e: HTMLElement | null = event.target as HTMLElement
-            let hoveredRegion = undefined
+            const target = event.target
+            if (!(target instanceof HTMLElement)) {
+                // console.log(`[❌] mouse event target is not HTMLElement`)
+                return
+            }
 
-            // console.log('[🧬] - classList: ', e.classList)
-            while (hoveredRegion == null && e && !Array.from(e.classList).some((className) => className.includes('Region-'))) {
-                e = e.parentElement
-                if (e) {
-                    let test = Array.from(e.classList).find((className) => className.includes('Region-'))
+            // 1. find region ============================================================
+            // walk upwards from the target until we find a region
+            // TODO @rvion: slightly rewrite later
+            let at: HTMLElement | null = target
+            let hoveredRegion = undefined
+            while (
+                //
+                hoveredRegion == null &&
+                at &&
+                !Array.from(at.classList).some((className) => className.includes('Region-'))
+            ) {
+                at = at.parentElement
+                if (at) {
+                    let test = Array.from(at.classList).find((className) => className.includes('Region-'))
                     if (test) hoveredRegion = test.split('-')
                 }
             }
-            if (hoveredRegion) {
-                regionMonitor.hoveredRegion = {
-                    id: hoveredRegion[2]!,
-                    type: hoveredRegion[1]!,
-                    props: {},
+            // update state.hoveredRegion
+            regionMonitor.hoveredRegion = hoveredRegion //
+                ? { id: hoveredRegion[2]!, type: hoveredRegion[1]!, props: {} }
+                : null
+
+            // 2. find hovered panel ============================================================
+            let currentPanel: string | null = null
+            at = target
+            while (at != null) {
+                const pid = at.getAttribute('data-panel-id')
+                if (pid != null) {
+                    currentPanel = pid
+                    break
                 }
-            } else {
-                regionMonitor.hoveredRegion = null
+                at = at.parentElement
             }
+            regionMonitor.hoveredPanel = currentPanel
         }
 
         /* Update our modifiers to make keymap stuff easier, also can use anywhere now instead of just events. */

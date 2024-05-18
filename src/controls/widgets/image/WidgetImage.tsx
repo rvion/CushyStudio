@@ -10,7 +10,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
@@ -19,7 +19,7 @@ export type Widget_image_config = WidgetConfigFields<
     {
         defaultActive?: boolean
         suggestionWhere?: SQLWhere<MediaImageT>
-        assetSuggested?: RelativePath
+        assetSuggested?: RelativePath | RelativePath[]
     },
     Widget_image_types
 >
@@ -70,7 +70,10 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!

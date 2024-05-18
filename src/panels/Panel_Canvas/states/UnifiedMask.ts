@@ -10,7 +10,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromDataURI } from '../../../models/createMediaImage_fromWebFile'
-import { randomColor } from './randomColor'
+import { randomColor } from '../utils/randomColor'
 
 export class UnifiedMask {
     hide = () => this.layer.hide()

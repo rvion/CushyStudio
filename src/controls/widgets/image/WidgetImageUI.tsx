@@ -2,6 +2,7 @@ import type { Widget_image } from './WidgetImage'
 
 import { observer } from 'mobx-react-lite'
 
+import { createMediaImage_fromPath } from '../../../models/createMediaImage_fromWebFile'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
@@ -13,6 +14,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         widget.value = imageL
     })
     const image = widget.value
+    const suggestionsRaw = p.widget.config.assetSuggested
+    const suggestions: RelativePath[] =
+        suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
     return (
         <div
             style={dropStyle}
@@ -24,9 +28,27 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                 <div tw='flex items-start gap-1'>
                     <ImageUI tw='virtualBorder' size={'5rem'} img={image} />
                     <div tw='text-sm italic text-gray-500'>
-                        <div>width: {image?.width}</div>
-                        <div>height: {image?.height}</div>
+                        <div tw='whitespace-nowrap'>
+                            {image?.width} x {image?.height}
+                        </div>
+                        <div onClick={() => (widget.value = cushy.defaultImage)} tw='btn btn-xs'>
+                            reset
+                        </div>
                     </div>
+                    {suggestions.length > 0 && (
+                        <div tw='bd1'>
+                            <div tw='text-xs text-gray-500'>suggested</div>
+                            {suggestions.map((relPath) => (
+                                <img
+                                    key={relPath}
+                                    tw='w-16 h-16 object-cover cursor-pointer'
+                                    onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
+                                    src={relPath}
+                                    alt='suggested asset'
+                                />
+                            ))}
+                        </div>
+                    )}
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X

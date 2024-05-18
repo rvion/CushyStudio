@@ -1,11 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 
+import { Ikon } from '../../../../icons/iconHelpers'
 import { RenderItemTitleUI } from '../RenderItemTitleUI'
 import { useTreeView } from './TreeCtx'
 import { TreeNode } from './TreeNode'
 
-export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: TreeNode }) {
+export const TreeEntryUI = observer(function TreeEntryUI_(p: {
+    //
+    depth?: number
+    node: TreeNode
+}) {
     const n = p.node
     const children = n.childKeys
     const hasChildren = children.length > 0
@@ -16,7 +21,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
             <div
                 id={n.id}
                 style={{ paddingLeft: `${p.depth ?? 0}rem` }}
-                onClick={() => tv.setAt(n)}
+                onClick={() => tv.setFocusAt(n)}
                 tw={[
                     // 'py-1',
                     // selected ? 'virtualBorder' : null,
@@ -29,21 +34,19 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                     },
                 ]}
             >
-                {/* {tv.id}
-                {tv.at?.id} */}
+                {/* Item Caret */}
                 {hasChildren ? (
                     <label onClick={() => n.toggle()} className='swap swap-rotate opacity-50'>
-                        {n.isOpen ? (
-                            <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_down</span>
-                        ) : (
-                            <>
-                                <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_right</span>
-                            </>
-                        )}
+                        {n.isOpen ? <Ikon.mdiChevronDown /> : <Ikon.mdiChevronRight />}
                     </label>
                 ) : (
                     <div tw='[width:1.3rem]'>&nbsp;</div>
                 )}
+
+                {/* Item Selection Checkbox */}
+                {tv.conf.selectable && <input checked type='checkbox' tw='checkbox' />}
+
+                {/* Tree title */}
                 <RenderItemTitleUI node={n} />
             </div>
 

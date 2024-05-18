@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 

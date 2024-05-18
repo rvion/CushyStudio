@@ -75,6 +75,7 @@
         "form:deps:npm": "    madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.png && code tmp/depedencies.png",
         "form:deps-svg": "    madge lib/controls/FormBuilder.loco.js -i tmp/depedencies.svg && open tmp/depedencies.svg",
         "form:deps-svg:npm": "madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.svg && code tmp/depedencies.svg",
+        "form:export": "rsync -r ~/dev/CushyStudio/@cushy/forms/ ~/dev/monoloco/src/cushy-forms/ --exclude=node_modules --exclude=pre --exclude=.vscode --exclude=global.d.ts --exclude=rollup.config.mjs --exclude=tsconfig.tsbuildinfo --exclude=main.js --exclude=SUMMARY.txt --delete",
         "form:build": "       bun src/bundle-form-lib.ts",
         "form:bundle-dts": "  '/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup' -c '/Users/loco/dev/CushyStudio/src/scripts/form.rollup.config.mjs'",
         "form:bundle-dts2": " yarn form:bundle-dts && cp stats.json "
@@ -92,6 +93,8 @@
         "@lezer/generator": "^1.7.0",
         "@lezer/highlight": "^1.2.0",
         "@lezer/lr": "^1.4.0",
+        "@mdi/js": "^7.4.47",
+        "@mdi/react": "^1.6.1",
         "@react-hook/resize-observer": "^1.2.6",
         "@react-three/drei": "^9.105.5",
         "@react-three/fiber": "^8.16.2",

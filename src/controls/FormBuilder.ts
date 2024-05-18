@@ -4,7 +4,7 @@ import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, reaction, runInAction } from 'mobx'
 
 import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
@@ -42,6 +42,7 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 export type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
 export type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
 export type XBool = Spec<Widget_bool>
+export type XShared<T extends ISpec> = Widget_shared<T>
 export type XString = Spec<Widget_string>
 export type XPrompt = Spec<Widget_prompt>
 export type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
@@ -203,15 +204,15 @@ export class FormBuilder implements IFormBuilder {
         return new Spec<Widget_selectMany<T>>('selectMany', config)
     }
     /** see also: `fields` for a more practical api */
-    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
     }
     /** simpler way to create `group` */
@@ -317,7 +318,7 @@ export class FormBuilder implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    _HYDRATE = <T extends ISpec>( //
+    private __HYDRATE = <T extends ISpec>( //
         parent: IWidget | null,
         spec: T,
         serial: any | null,
@@ -381,6 +382,24 @@ export class FormBuilder implements IFormBuilder {
             parent,
             new Spec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
+    }
+
+    _HYDRATE = <T extends ISpec>( //
+        parent: IWidget | null,
+        spec: T,
+        serial: any | null,
+    ): T['$Widget'] => {
+        const w = this.__HYDRATE(parent, spec, serial)
+        w.publishValue()
+        for (const { expr, effect } of spec.reactions) {
+            // 🔴 Need to dispose later
+            reaction(
+                () => expr(w),
+                (arg) => effect(arg, w),
+                { fireImmediately: true },
+            )
+        }
+        return w
     }
 }
 

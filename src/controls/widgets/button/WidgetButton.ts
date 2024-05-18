@@ -7,7 +7,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
 
@@ -81,7 +81,10 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
             val: false,
         }
 
-        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value(): Widget_button_value {

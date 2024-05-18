@@ -6,7 +6,7 @@ import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
@@ -86,7 +86,7 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
             val: config.default ?? 0,
         }
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             serial: observable,
             value: computed,
         })

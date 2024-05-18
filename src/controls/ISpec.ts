@@ -1,6 +1,6 @@
+import type { Channel, ChannelId, Producer } from './Channel'
 import type { CovariantFC } from './CovariantFC'
 import type { IWidget } from './IWidget'
-import type { BoundKontext, Kontext } from './Kontext'
 
 export type SchemaDict = { [key: string]: ISpec }
 
@@ -20,9 +20,10 @@ export interface ISpec<W extends IWidget = IWidget> {
     // Make<X extends IWidget>(type: X['type'], config: X['$Config']): ISpec<X>
 
     // -----------
-    _withKontext: Set<Kontext<any>>
-    withKontext(ck: Kontext<any>): this
+    producers: Producer<any, any>[]
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Widget']) => T): this
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Widget']) => void): this
 
-    _feedKontext: Maybe<BoundKontext<any, any>>
-    feedKontext(_feedKontext: BoundKontext<any, any>): this
+    reactions: { expr: (self: any) => any; effect: (arg: any, self: any) => void }[]
+    addReaction<T>(expr: (self: W['$Widget']) => T, effect: (arg: T, self: W['$Widget']) => void): this
 }

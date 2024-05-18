@@ -1,6 +1,7 @@
+import type { Channel, ChannelId, Producer } from './Channel'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { BoundKontext, Kontext } from './Kontext'
+import type { SList, SOptional } from './SimpleSpecAliases'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -18,15 +19,33 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 
     LabelExtraUI = (p: {}) => null
 
-    // Kontexts -----------------------------------------------------
-    _withKontext = new Set<Kontext<any>>()
-    withKontext = (ck: Kontext<any>): this => {
-        this._withKontext.add(ck)
+    // PubSub -----------------------------------------------------
+    producers: Producer<any, W['$Widget']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Widget']) => T): this {
+        this.producers.push({ chan, produce })
         return this
     }
-    _feedKontext: Maybe<BoundKontext<W['$Widget'], any>> = null
-    feedKontext = <T>(_feedKontext: BoundKontext<W['$Widget'], T>): this => {
-        this._feedKontext = _feedKontext
+
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Widget']) => void): this {
+        return this.addReaction(
+            (self) => self.consume(chan),
+            (arg, self) => {
+                if (arg == null) return
+                effect(arg, self)
+            },
+        )
+    }
+
+    reactions: {
+        expr: (self: W['$Widget']) => any
+        effect: (arg: any, self: W['$Widget']) => void
+    }[] = []
+    addReaction<T>(
+        //
+        expr: (self: W['$Widget']) => T,
+        effect: (arg: T, self: W['$Widget']) => void,
+    ): this {
+        this.reactions.push({ expr, effect })
         return this
     }
 
@@ -40,13 +59,13 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
+    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> =>
         new SimpleSpec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = <const T extends SimpleSpec>(startActive: boolean = false) =>
+    optional = (startActive: boolean = false): SOptional<this> =>
         new SimpleSpec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
@@ -60,5 +79,5 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new SimpleSpec(this.type, { ...this.config, hidden: true })
+    hidden = (): SimpleSpec<W> => new SimpleSpec<W>(this.type, { ...this.config, hidden: true })
 }
