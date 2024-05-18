@@ -9,7 +9,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
@@ -114,7 +114,7 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
             }
         }
 
-        makeAutoObservableInheritance(this, { sizeHelper: false })
+        this.init({ sizeHelper: false })
     }
 
     setValue(val: Widget_size_value) {

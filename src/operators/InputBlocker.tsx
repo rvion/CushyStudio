@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { type ReactNode } from 'react'
 
 export const InputBlockerUI = observer(function InputBlockerUI_(p: {
     uid?: string
@@ -12,11 +13,8 @@ export const InputBlockerUI = observer(function InputBlockerUI_(p: {
     return (
         <div
             tabIndex={-1}
+            className='_InputBlockerUI'
             tw='absolute inset-0 h-full w-full pointer-events-auto'
-            onClick={() => {
-                console.log('activity backref clicked')
-                p.stop?.()
-            }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
                     console.log('Escape key pressed')
@@ -24,21 +22,29 @@ export const InputBlockerUI = observer(function InputBlockerUI_(p: {
                 }
             }}
         >
+            {/*
             <div // debug
             >
                 {p.uid}
             </div>
+             */}
 
             <div tw='relative w-full h-full'>
                 <div // backdrop
-                    tw='absolute inset-0 pointer-events-none'
-                    style={{ background: '#000000db', zIndex: backdropzIndex }}
+                    className='_InputBlockerUI-backdrop'
+                    tw='absolute inset-0 pointer-events-none bg-[#000000db]'
+                    style={{ zIndex: backdropzIndex }}
                 >
                     <div style={{ zIndex: -1 }} tw='absolute inset-0 z'></div>
                 </div>
                 <div // activity
                     tw='absolute inset-0'
                     style={{ zIndex: activityZIndex }}
+                    className='_InputBlockerUI-activity-container'
+                    onClick={(ev) => {
+                        console.log('activity backref clicked')
+                        if (ev.target === ev.currentTarget) p.stop?.()
+                    }}
                 >
                     {p.children}
                 </div>

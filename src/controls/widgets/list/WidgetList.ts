@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
@@ -79,10 +79,8 @@ export type Widget_list_types<T extends ISpec> = {
 export interface Widget_list<T extends ISpec> extends Widget_list_types<T> {}
 export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<Widget_list_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
-    get DefaultBodyUI() {
-        // if (this.items.length === 0) return
-        return WidgetList_BodyUI
-    }
+    DefaultBodyUI = WidgetList_BodyUI
+
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'list' = 'list'
@@ -103,6 +101,14 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
             child = at
         }
         return null
+    }
+
+    get subWidgets() {
+        return this.items
+    }
+
+    get subWidgetsWithKeys() {
+        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 
     schemaAt = (ix: number): T => {
@@ -187,7 +193,10 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
         this.startAutoBehaviour()
     }
 

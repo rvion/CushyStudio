@@ -8,7 +8,7 @@ import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefab
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { ui_mask } from './_prefabs/prefab_mask'
+import { run_mask, ui_mask } from './_prefabs/prefab_mask'
 import { run_model, run_model_modifiers, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
@@ -20,6 +20,7 @@ import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_ups
 import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { CustomView3dCan } from './_views/View_3d_TinCan'
+import { CustomViewSpriteSheet } from './_views/View_Spritesheets'
 
 app({
     metadata: {
@@ -78,6 +79,7 @@ app({
                 gaussianSplat: form.group(),
                 promtPlus: ui_advancedPrompt(),
                 displayAsBeerCan: form.group({}),
+                displayAsSpriteSheet: form.group({}),
                 recursiveImgToImg: ui_recursive(),
                 watermark: ui_watermark_v1(),
                 fancyWatermark: form.group(),
@@ -133,12 +135,8 @@ app({
         //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
         //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         // } else
-        let mask: Maybe<_MASK>
-        if (ui.mask.mask) {
-            mask = await ui.mask.mask.image.loadInWorkflowAsMask(ui.mask.mask.mode)
-            if (ui.mask.mask.invert) mask = graph.InvertMask({ mask: mask })
-            latent = graph.SetLatentNoiseMask({ mask: mask, samples: latent })
-        }
+        let mask: Maybe<_MASK> = await run_mask(ui.mask)
+        if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
@@ -276,6 +274,8 @@ app({
         if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
         if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
+        if (ui.extra.displayAsSpriteSheet)
+            run.output_custom({ view: CustomViewSpriteSheet, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)

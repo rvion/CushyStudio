@@ -7,7 +7,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
@@ -68,7 +68,10 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
             id: this.id,
             value: config.default ?? '#000000',
         }
-        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value(): Widget_color_value {

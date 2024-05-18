@@ -8,16 +8,16 @@ export const ActivityUI = observer(function ActivityUI_(p: {}) {
     // useDemoActivity()
     return (
         <Fragment>
-            {activityManger.stack.map((activity, ix) => (
+            {activityManger._stack.map((activity, ix) => (
                 <InputBlockerUI
                     stop={() => {
                         activity.onStop?.()
-                        activityManger.pop()
+                        activityManger.stopCurrentActivity()
                     }}
                     key={activity.uid}
                     ix={ix}
                 >
-                    <activity.UI />
+                    <activity.UI activity={activity} stop={() => activityManger.stopActivity(activity)} />
                 </InputBlockerUI>
             ))}
         </Fragment>

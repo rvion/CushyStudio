@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { Ikon } from '../../icons/iconHelpers'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
@@ -193,7 +194,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <RevealUI //
                             content={() => <menu_widgetActions.UI props={widget} />}
                         >
-                            <span className='material-symbols-outlined'>more_vert</span>
+                            <Ikon.mdiBook />
                         </RevealUI>
                     )}
                 </div>

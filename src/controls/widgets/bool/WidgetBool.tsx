@@ -7,7 +7,7 @@ import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
@@ -112,7 +112,7 @@ export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types
             collapsed: this.spec.config.startCollapsed,
         }
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             serial: observable,
             value: computed,
             DefaultHeaderUI: false,

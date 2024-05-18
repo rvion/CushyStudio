@@ -149,6 +149,11 @@ export class MediaImageL {
     onMouseLeave = (ev: MouseEvent): void => {
         if (cushy.hovered === this) cushy.hovered = null
     }
+
+    onMiddleClick = () => {
+        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+    }
+    onRightClick = () => {}
     onClick = (ev: MouseEvent): void => {
         if (hasMod(ev)) {
             ev.stopPropagation()

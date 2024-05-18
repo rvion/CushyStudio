@@ -3,7 +3,7 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { runInAction } from 'mobx'
 
-import { snap } from './snap'
+import { snap } from '../utils/snap'
 
 export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEvent>): void => {
     runInAction(() => {

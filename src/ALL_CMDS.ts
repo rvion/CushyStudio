@@ -3,8 +3,9 @@
 import './operators/commands/cmd_copyImage'
 import './operators/commands/cmd_favorites'
 import './operators/commands/cmd_goTo'
-import './panels/Panel_Canvas/states/cmd_unifiedCanvas'
+import './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
+import { cmd_maximize_active_panel, cmd_maximize_hovered_panel } from './app/shortcuts/cmd_layout'
 import { allCommandsV1 } from './app/shortcuts/cmd_mix'
 import {
     cmd_copyImage,
@@ -23,7 +24,7 @@ import {
 import {
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
-} from './panels/Panel_Canvas/states/cmd_unifiedCanvas'
+} from './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
 export const allCommands = [
     //
@@ -41,5 +42,7 @@ export const allCommands = [
     cmd_nav_openGallery3,
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
+    cmd_maximize_active_panel,
+    cmd_maximize_hovered_panel,
     ...allCommandsV1,
 ]

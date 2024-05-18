@@ -1,8 +1,12 @@
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type * as X from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
-export const ui_latent_v1 = () => {
-    const form: FormBuilder = getCurrentForm()
+export function ui_latent_v1(): X.XGroup<{
+    image: X.XOptional<X.XImage>
+    batchSize: X.XNumber
+    size: X.XSize
+}> {
+    const form: X.FormBuilder = getCurrentForm()
     return form.group({
         label: 'Start from',
         items: {

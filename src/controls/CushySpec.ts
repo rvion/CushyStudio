@@ -1,6 +1,6 @@
+import type { XList, XOptional } from './FormBuilder'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { BoundKontext, Kontext } from './Kontext'
 import type { Requirements } from './Requirements'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
@@ -8,6 +8,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { createElement } from 'react'
 
+import { Channel, type ChannelId, Producer } from './Channel'
 import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
@@ -25,15 +26,32 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
             requirements: this.requirements,
         })
 
-    // Kontexts -----------------------------------------------------
-    _withKontext = new Set<Kontext<any>>()
-    withKontext = (ck: Kontext<any>): this => {
-        this._withKontext.add(ck)
+    producers: Producer<any, Widget['$Widget']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Widget['$Widget']) => T): this {
+        this.producers.push({ chan, produce })
         return this
     }
-    _feedKontext: Maybe<BoundKontext<Widget['$Widget'], any>> = null
-    feedKontext = <T>(_feedKontext: BoundKontext<Widget['$Widget'], T>): this => {
-        this._feedKontext = _feedKontext
+
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Widget['$Widget']) => void): this {
+        return this.addReaction(
+            (self) => self.consume(chan),
+            (arg, self) => {
+                if (arg == null) return
+                effect(arg, self)
+            },
+        )
+    }
+
+    reactions: {
+        expr: (self: Widget['$Widget']) => any
+        effect: (arg: any, self: Widget['$Widget']) => void
+    }[] = []
+    addReaction<T>(
+        //
+        expr: (self: Widget['$Widget']) => T,
+        effect: (arg: T, self: Widget['$Widget']) => void,
+    ): this {
+        this.reactions.push({ expr, effect })
         return this
     }
 
@@ -56,13 +74,13 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): Spec<Widget_list<this>> =>
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): XList<this> =>
         new Spec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = <const T extends Spec>(startActive: boolean = false) =>
+    optional = (startActive: boolean = false): XOptional<this> =>
         new Spec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,

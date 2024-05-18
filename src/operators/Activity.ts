@@ -10,19 +10,27 @@ import { type DomId, Trigger } from './RET'
 
 class ActivityManager {
     /** currently active activities */
-    stack: Activity[] = []
+    _stack: Activity[] = []
 
-    push = (activity: Activity) => {
-        this.stack.push(activity)
+    startActivity = (activity: Activity) => {
+        this._stack.push(activity)
         activity.onStart?.()
         return Trigger.Success
     }
-    pop = () => {
-        const activity = this.stack.pop()
+
+    stopActivity(activity: Activity): void {
+        const ix = this._stack.indexOf(activity)
+        if (ix === -1) return
+        this._stack.splice(ix, 1)
+        activity.onStop?.()
+    }
+
+    stopCurrentActivity = () => {
+        const activity = this._stack.pop()
         activity?.onStop?.()
     }
 
-    current = () => this.stack[this.stack.length - 1]
+    current = () => this._stack[this._stack.length - 1]
 
     constructor() {
         makeAutoObservable(this)
@@ -33,10 +41,26 @@ export const activityManger = new ActivityManager()
 export interface Activity {
     /** uniquer activity uid */
     uid: string
-    /** if given, the activity is bound the the given ID */
+
+    /** if specified, the activity is bound the the given ID */
     bound?: DomId | null
+
+    /** will be executed when activity start */
     onStart?: () => void
-    onEvent?: (event: Event) => Trigger | null
+
+    /** will be executed when activity end */
     onStop?: () => void
-    UI: FC<{}>
+
+    /**
+     * everytime an event bubbles upward to the activity root, it will
+     * pass through this function
+     */
+    onEvent?: (event: Event) => Trigger | null
+
+    /** activity UI */
+    UI: FC<{
+        activity: Activity
+        /** call that function to stop the activity */
+        stop: () => void
+    }>
 }
