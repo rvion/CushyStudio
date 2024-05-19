@@ -3,7 +3,7 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
-import { Box } from '../../../theme/colorEngine/Box'
+import { Box, BoxSubtle } from '../../../theme/colorEngine/Box'
 import { useColor } from '../../../theme/colorEngine/useColor'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
@@ -15,9 +15,9 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 }) {
     if (!p.widget.serial.collapsed) return null
     return (
-        <div className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic opacity-50'>
+        <BoxSubtle className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic'>
             {p.widget.summary}
-        </div>
+        </BoxSubtle>
     )
 })
 
