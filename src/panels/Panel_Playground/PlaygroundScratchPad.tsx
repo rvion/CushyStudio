@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { FormUI } from '../../controls/FormUI'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
+import { Box, BoxBase, BoxSubtle, BoxTitle } from '../../theme/colorEngine/Box'
 import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
-import { Box, BoxSubtle, BoxTitle } from '../../widgets/Box'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
@@ -37,31 +37,45 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
 
     return (
         <div tw='w-full h-full bg-base-300 p-1'>
-            {/* <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: -1 }}> */}
+            {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
             <Box
                 //
-                tw='p-1 m-1 bd'
-                background={{ type: 'absolute', lightness: 0.3, chroma: 0.05, hue: 0 }}
-                text={{ type: 'relative', contrast: 1, chromaBlend: 1, hueShift: 45 }}
+                tw='p-1 m-1'
+                base='oklch(.3 0.05 0)'
+                border={2}
+                text={{ contrast: 1, chromaBlend: 1, hueShift: 45 }}
             >
                 A 1
+                <BoxBase tw='p-1'>
+                    <BoxBase tw='p-1'>
+                        <BoxBase>yay</BoxBase>
+                    </BoxBase>
+                </BoxBase>
                 <BoxTitle children='test' />
                 <BoxSubtle children='test' />
-                <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05 }}>
+                <Box tw='p-1 m-1' base={{ contrast: 0.05 }}>
                     A 2
+                    <BoxSubtle>
+                        test 1
+                        <BoxSubtle children='test 2' />
+                    </BoxSubtle>
                 </Box>
-                <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05, hueShift: 80 }}>
+                <Box tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
-                    <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05 }}>
+                    <Box tw='p-1 m-1 _bd' border={2} base={20}>
                         A 4
-                        <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05 }}>
+                        <Box tw='p-1 m-1 _bd' border={2} base={20}>
                             A 5
-                            <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05 }}>
+                            <Box tw='p-1 m-1 _bd' border={2} base={20}>
                                 A 6
-                                <BoxTitle children='test' />
-                                <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05, hueShift: 80 }}>
+                                <BoxTitle tw='text-xl font-bold' children='Test' />
+                                <Box
+                                    tw='p-1 m-1 _bd'
+                                    border={{ contrast: 0.3, chromaBlend: 1 }}
+                                    base={{ contrast: 0.0, hueShift: 30 }}
+                                >
                                     A 7
-                                    <Box tw='p-1 m-1 bd' background={{ type: 'relative', contrast: 0.05 }}>
+                                    <Box tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
                                         A 8
                                     </Box>
                                 </Box>
