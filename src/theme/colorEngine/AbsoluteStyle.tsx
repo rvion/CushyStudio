@@ -28,8 +28,12 @@ export type RelativeStyle = {
      * how much colorfulness to retain from the background
      */
     chromaBlend?: number
-    /** 0 to 1 */
+    chroma?: number
+
+    /** 0 to 360 */
     hueShift?: number
+    hue?: number
+
     /** TBD */
     opacity?: number
 }

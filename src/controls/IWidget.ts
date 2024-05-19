@@ -1,3 +1,4 @@
+import type { BoxProps } from '../theme/colorEngine/Box'
 import type { BaseWidget } from './BaseWidget'
 import type { CovariantFn } from './BivariantHack'
 import type { CovariantFC } from './CovariantFC'
@@ -118,6 +119,13 @@ export type SharedWidgetSerial = {
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
 export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /**
+     * @since 2024-05-19
+     * @stability beta
+     * Appearance box props
+     */
+    box?: BoxProps
+
     /**
      * @since 2024-05-14
      * @stability beta

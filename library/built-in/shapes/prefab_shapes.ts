@@ -7,8 +7,8 @@
  *  3. the main helper funtion that print stuff on canvas
  */
 
-import type Konva from 'konva'
 import type * as X from '../../../src/controls/FormBuilder'
+import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------
 // what we're going to build a latent from

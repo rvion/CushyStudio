@@ -22,6 +22,7 @@ export const ui_sampler = (p?: {
             scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: p?.scheduler ?? 'karras' }),
         },
         {
+            box: { base: { hue: 120, contrast: 0, chroma: 0.05 } },
             summary: (ui) => {
                 return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
             },

@@ -4,6 +4,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
+import { Box } from '../../../theme/colorEngine/Box'
 import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
@@ -98,17 +99,19 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
     const uist = p.sizeHelper
     const ratioDisplaySize = 26
     return (
-        <div // Aspect ratio display background
+        <Box // Aspect ratio display background
+            border
             tw={[
                 //
-                'flex rounded-sm virtualBorder bg-base-300',
+                'flex rounded-sm',
                 'overflow-clip',
                 'items-center justify-center',
             ]}
             style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
         >
-            <div // Aspect ratio display foreground
-                tw='relative bg-primary'
+            <Box // Aspect ratio display foreground
+                base={{ contrast: 0.5 }}
+                tw='relative'
                 style={{
                     //
                     width: '100%',
@@ -118,8 +121,8 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
         scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
         scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
                 }}
-            ></div>
-        </div>
+            ></Box>
+        </Box>
     )
 })
 

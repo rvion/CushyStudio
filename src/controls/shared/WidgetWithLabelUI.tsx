@@ -104,7 +104,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
 
     return (
-        <div
+        <Box
             key={rootKey}
             tw={[
                 // widget.background && (isCollapsible || showBorder) && 'bg-base-100',
@@ -112,6 +112,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
+            base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
+            {...p.widget.config.box}
         >
             <AnimatedSizeUI>
                 {/*
@@ -224,6 +226,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     </div>
                 )}
             </AnimatedSizeUI>
-        </div>
+        </Box>
     )
 })

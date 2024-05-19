@@ -37,7 +37,8 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     // const color = useColor({ base: 10 })
     return (
         <Box
-            base={10}
+            // base={4}
+            // {...widget.config.box}
             className={p.className}
             tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}
             // style={color.styles}

@@ -6,6 +6,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
+import { Box } from '../../../theme/colorEngine/Box'
 import { useColor } from '../../../theme/colorEngine/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
@@ -272,14 +273,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 }
             }}
         >
-            <div /* Slider display */
+            <Box /* Slider display */
                 className='inui-foreground'
-                tw={[
-                    //
-                    'absolute left-0 WIDGET-FIELD',
-                    !p.hideSlider && !isEditing && 'bg-primary/40',
-                    'z-10',
-                ]}
+                base={{ contrast: !p.hideSlider && !isEditing ? 0.4 : 0 }}
+                tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
