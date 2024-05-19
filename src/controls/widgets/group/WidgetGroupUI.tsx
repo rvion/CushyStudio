@@ -3,6 +3,8 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
+import { Box } from '../../../theme/colorEngine/Box'
+import { useColor } from '../../../theme/colorEngine/useColor'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
@@ -31,10 +33,14 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
     const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
+
+    // const color = useColor({ base: 10 })
     return (
-        <div
+        <Box
+            base={10}
             className={p.className}
             tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}
+            // style={color.styles}
             // style={{ position: 'relative' }}
         >
             {widget.serial.collapsed ? null : (
@@ -58,6 +64,6 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     ))}
                 </div>
             )}
-        </div>
+        </Box>
     )
 })

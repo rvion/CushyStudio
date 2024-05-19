@@ -49,9 +49,9 @@ export const ThemeCtx = createContext<{
 }>({
     background: {
         type: 'absolute',
-        lightness: 0.5,
-        chroma: 0.2,
-        hue: 180,
+        lightness: 0.1,
+        chroma: 0.05,
+        hue: 0,
     },
     text: {
         type: 'relative',

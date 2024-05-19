@@ -1,22 +1,32 @@
 import type { BoxProps } from './Box'
 
 import Color from 'colorjs.io'
-import { useContext } from 'react'
+import { createHash } from 'crypto'
+import { type CSSProperties, useContext } from 'react'
 
 import { clamp } from '../../controls/widgets/list/clamp'
+import { hashJSONObject, hashString } from '../../panels/router/hash'
 import { type AbsoluteStyle, type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
 import { applyRelative } from './applyRelative'
+import { formatColor } from './formatColor'
 
-export const useColor = (
-    p: BoxProps,
-): {
+type BoxAppearance = {
     background: AbsoluteStyle
     text: AbsoluteStyle
     textForCtx: AbsoluteStyle | RelativeStyle
     border: AbsoluteStyle | null
+}
+
+export const useColor = (
+    p: BoxProps = {},
+): BoxAppearance & {
+    /** auto-generated from BoxAppearance */
+    className?: string
+    /** in case you prefer BoxAppearance as css object */
+    styles: Readonly<CSSProperties>
 } => {
     const ctx = useContext(ThemeCtx)
-    const background: AbsoluteStyle = (() => {
+    const backgroundStyle: AbsoluteStyle = (() => {
         // if the box have a new background
         if (p.base) {
             if (typeof p.base === 'number') {
@@ -35,41 +45,105 @@ export const useColor = (
     })()
 
     // const relativeText: RelativeStyle | AbsoluteStyle = p.text ?? ctx.text
-    const text: AbsoluteStyle = (() => {
+    const textStyle: AbsoluteStyle = (() => {
         if (p.text) {
             if (typeof p.text === 'string') {
                 const color = new Color(p.text)
                 const [l, c, h] = color.oklch
                 return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
             }
-            return applyRelative(background, p.text)
+            return applyRelative(backgroundStyle, p.text)
         } else {
             if (ctx.text.type === 'absolute') return ctx.text
-            return applyRelative(background, ctx.text) // realtive strategy applied here
+            return applyRelative(backgroundStyle, ctx.text) // realtive strategy applied here
         }
     })()
 
     // const relativeText: RelativeStyle | AbsoluteStyle = p.text ?? ctx.text
-    const border: AbsoluteStyle | null = (() => {
+    const borderStyle: AbsoluteStyle | null = (() => {
         if (p.border) {
+            if (typeof p.border === 'boolean') {
+                return applyRelative(backgroundStyle, { contrast: 0.2 })
+            }
             if (typeof p.border === 'number') {
-                return applyRelative(background, { contrast: clamp(p.border / 10, 0, 1) })
+                return applyRelative(backgroundStyle, { contrast: clamp(p.border / 10, 0, 1) })
             }
             if (typeof p.border === 'string') {
                 const color = new Color(p.border)
                 const [l, c, h] = color.oklch
                 return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
             }
-            return applyRelative(background, p.border)
+            return applyRelative(backgroundStyle, p.border)
         }
         return null
     })()
 
     const textForCtx = typeof p.text === 'object' ? p.text : ctx.text
+    const appearance: BoxAppearance = { background: backgroundStyle, text: textStyle, textForCtx, border: borderStyle }
+    const styles: CSSProperties = {
+        border: borderStyle ? `1px solid ${formatColor(borderStyle)}` : undefined,
+        background:
+            p.base != null // when base is null, let's just inherit the parent's background
+                ? formatColor(backgroundStyle)
+                : undefined,
+        color: formatColor(textStyle),
+    }
     return {
-        background,
-        text,
+        background: backgroundStyle,
+        text: textStyle,
         textForCtx,
-        border,
+        border: borderStyle,
+        get className() {
+            return compileOrRetrieveClassName(styles)
+        },
+        styles,
+    }
+}
+
+const cache: Record<string, string> = {}
+const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
+    const vals = JSON.stringify(appearance)
+    const hash = 'col-' + createHash('md5').update(vals).digest('hex')
+    if (hash in cache) return cache[hash]!
+    console.log(`[🌈] `, `.${hash}`, appearance)
+    const cssBlock = Object.entries(appearance)
+        .map(([key, val]) => {
+            // console.log(`[🌈] ---`, key, val)
+            if (val == null) return ''
+            return `${key}: ${val};`
+        })
+        .join('\n')
+    setRule(`.${hash}`, cssBlock)
+    cache[hash] = hash
+    return hash
+}
+
+let styleElement: HTMLStyleElement | null = null
+function getStyleElement(): HTMLStyleElement {
+    if (styleElement != null) return styleElement
+    // let styleElement = document.querySelector('[title="dynamic-theme-css"]') as HTMLStyleElement
+    if (styleElement) {
+        styleElement = styleElement
+    } else {
+        styleElement = styleElement ?? document.createElement('style')
+        styleElement.title = 'dynamic-theme-css'
+        document.head.appendChild(styleElement)
+    }
+    return styleElement!
+}
+
+function setRule(selector: string, block: string = ''): CSSStyleRule {
+    const styleSheet = getStyleElement().sheet as CSSStyleSheet
+    // ensure rules
+    const rules = styleSheet.cssRules //  || styleSheet.rules
+    if (rules == null) throw new Error('❌ no rules')
+    // find or create rule
+    const rule = Array.from(rules).find((r) => (r as CSSStyleRule).selectorText === selector) as CSSStyleRule | undefined
+    if (rule == null) {
+        const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
+        return styleSheet.cssRules[index] as CSSStyleRule
+    } else {
+        rule.style.cssText = block
+        return rule
     }
 }

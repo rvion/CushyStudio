@@ -1,5 +1,6 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { Box, BoxBase, BoxSubtle, BoxTitle } from '../../theme/colorEngine/Box'
@@ -35,20 +36,47 @@ export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {
 export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
     const theme = cushy.themeManager
 
+    const uist = useLocalObservable(() => ({
+        // base: 'oklch(.1,.2,200)',
+        base: 'oklch(.3 0.05 0)',
+    }))
     return (
         <div tw='w-full h-full bg-base-300 p-1'>
             {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
             <Box
                 //
                 tw='p-1 m-1'
-                base='oklch(.3 0.05 0)'
+                base={uist.base /* 'oklch(.3 0.05 0)' */}
                 border={2}
                 text={{ contrast: 1, chromaBlend: 1, hueShift: 45 }}
             >
+                <FormUI
+                    theme={{
+                        base: uist.base,
+                        text: { contrast: 1, chromaBlend: 10, hueShift: 145 },
+                    }}
+                    form={cushy.forms.use((ui) =>
+                        ui.fields({
+                            col: ui.colorV2({ onValueChange: (v) => (uist.base = v) }),
+                            foo: ui.string(),
+                            bar: ui.int().list({ min: 3 }),
+                            baz: ui.fields({
+                                xx: ui.fields({
+                                    a: ui.string(),
+                                    b: ui.string(),
+                                }),
+                                yy: ui.fields({
+                                    c: ui.string(),
+                                    d: ui.string(),
+                                }),
+                            }),
+                        }),
+                    )}
+                />
                 A 1
-                <BoxBase tw='p-1'>
-                    <BoxBase tw='p-1'>
-                        <BoxBase>yay</BoxBase>
+                <BoxBase border tw='p-1'>
+                    <BoxBase border tw='p-1'>
+                        <BoxBase border>yay</BoxBase>
                     </BoxBase>
                 </BoxBase>
                 <BoxTitle children='test' />

@@ -6,6 +6,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
+import { useColor } from '../../../theme/colorEngine/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
 
@@ -245,12 +246,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
+    const kolor = useColor({ base: 5, border: true })
     return (
         <div /* Root */
             className={p.className}
+            style={kolor.styles}
             tw={[
                 'WIDGET-FIELD relative',
-                'theme-number-field',
+                // 'theme-number-field',
                 // '!shadow-md !shadow-white',
                 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',

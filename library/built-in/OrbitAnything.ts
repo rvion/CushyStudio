@@ -25,6 +25,7 @@ app({
     }),
     run: async (run, ui) => {
         const graph = run.nodes
+        // @ts-ignore
         const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
         const startImage2 = await run.loadImageAnswer(ui.image)
         // const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
