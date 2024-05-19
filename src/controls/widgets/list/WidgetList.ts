@@ -315,6 +315,3 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
 
 // DI
 registerWidgetClass('list', Widget_list)
-
-// UTILS
-const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
