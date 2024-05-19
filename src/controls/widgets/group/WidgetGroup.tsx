@@ -1,5 +1,3 @@
-import type { BoxProps } from '../../../theme/colorEngine/Box'
-import type { CovariantFn } from '../../BivariantHack'
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'

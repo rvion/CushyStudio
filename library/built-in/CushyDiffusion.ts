@@ -29,24 +29,9 @@ app({
         description:
             'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.',
     },
-    // ⏸️ presets: {
-    // ⏸️     test: (f) => {
-    // ⏸️         f.root.fields.positive
-    // ⏸️     },
-    // ⏸️ },
     ui: (form: FormBuilder) => ({
-        // modelType: form.selectOne({
-        //     appearance: 'tab',
-        //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
-        // }),
         positive: form.prompt({
-            // check: (v) => [
-            //     //
-            //     v.text.length > 10 || 'too short',
-            //     v.text.length < 20 || 'too long',
-            // ],
             default: [
-                //
                 'masterpiece, tree',
                 '?color, ?3d_term, ?adj_beauty, ?adj_general',
                 '(nature)*0.9, (intricate_details)*1.1',
