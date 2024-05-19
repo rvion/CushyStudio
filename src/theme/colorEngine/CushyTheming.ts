@@ -1,6 +1,7 @@
-import { Form } from '../controls/Form'
-import { CushyFormManager, FormBuilder } from '../controls/FormBuilder'
-import { readJSON, writeJSON } from '../state/jsonUtils'
+import { Form } from '../../controls/Form'
+import { CushyFormManager, FormBuilder } from '../../controls/FormBuilder'
+import { readJSON, writeJSON } from '../../state/jsonUtils'
+import { autoContrast } from './autoContrast'
 
 function templateContrast(p: { id: string; label?: string; f: FormBuilder }) {
     const f = p.f
@@ -192,13 +193,6 @@ type Style = {
     id: string
     background: StyleBackgroundProps
     border?: oklchColor
-}
-
-function autoContrast(lightness: number, contrast: number) {
-    /* This slightly favors using the darker color by adding a small float to ensure we always have -1/1 from Math.sign */
-    const start = lightness
-    const end = Math.round(lightness) - Math.sign(lightness - 0.5 + 0.00001)
-    return start * (1 - contrast) + end * contrast
 }
 
 export class CushyThemeManager {
