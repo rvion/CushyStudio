@@ -158,7 +158,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                     {modelBtn('xl')}
                 </div>
                 <div tw='btn btn-xs' onClick={() => uist.flip()}>
-                    <span className='material-symbols-outlined'>rotate_right</span>
+                    <span className='material-symbols-outlined'>sync_alt</span>
                 </div>
                 <div tw='ml-auto flex items-center gap-1'>
                     <div tw='join virtualBorder'>{resoBtn('1:1')}</div>
