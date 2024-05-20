@@ -64,6 +64,8 @@ export type BoxUIProps = BoxProps & {
     style?: React.CSSProperties
     children?: any // React.ReactNode
     tabIndex?: number
+    id?: string
+    ref?: React.Ref<HTMLDivElement>
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
@@ -72,6 +74,9 @@ export type BoxUIProps = BoxProps & {
 export const Box = observer(function BoxUI_(p: BoxUIProps) {
     const { style, className, ...rest } = p
     const { background, textForCtx, styles } = useColor(p)
+// 🔴 2024-05-20 rvion:
+// || do we want to add observer here + forward ref ?
+// || or just go for speed ?
 
     return (
         <div {...rest} tw={[/* className, */ className]} style={{ ...styles, ...style }}>
@@ -91,4 +96,6 @@ export const Box = observer(function BoxUI_(p: BoxUIProps) {
             </ThemeCtx.Provider>
         </div>
     )
-})
+    },
+    { forwardRef: true },
+)
