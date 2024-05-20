@@ -119,9 +119,9 @@ export const useColor = (
         '--box-base': styles.background ?? 'initial',
         '--box-text': styles.color ?? 'initial',
         '--box-border': styles.border ?? 'initial',
-        '--box-hover-base': baseHover ?? styles.background ?? 'initial',
-        '--box-hover-text': textHover ?? styles.color ?? 'initial',
-        '--box-hover-border': borderHover ?? styles.border ?? 'initial',
+        '--box-hover-base': baseHover ?? background ?? 'initial',
+        '--box-hover-text': textHover ?? color ?? 'initial',
+        '--box-hover-border': borderHover ?? border ?? 'initial',
     }
 
     return {
