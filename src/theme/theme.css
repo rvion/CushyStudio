@@ -1,3 +1,13 @@
+.Box {
+    background: var(--box-base);
+    color:      var(--box-text);
+    border:     var(--box-border);
+}
+.Box:hover {
+    background: var(--box-hover-base);
+    color:      var(--box-hover-text);
+    border:     var(--box-hover-border);
+}
 /* ---------------------------------------------------------------------------------------------- */
 
 #CushyStudio:focus {

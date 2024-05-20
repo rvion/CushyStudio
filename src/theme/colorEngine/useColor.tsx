@@ -24,9 +24,11 @@ export const useColor = (
     className?: string
     /** in case you prefer BoxAppearance as css object */
     styles: Readonly<CSSProperties>
+    /** in case you prefer BoxAppearance as css variables */
+    variables: Record<string, any>
 } => {
     const ctx = useContext(ThemeCtx)
-    const backgroundStyle: AbsoluteStyle = (() => {
+    const baseStyle: AbsoluteStyle = (() => {
         // if the box have a new background
         if (p.base) {
             if (typeof p.base === 'number') {
@@ -52,10 +54,10 @@ export const useColor = (
                 const [l, c, h] = color.oklch
                 return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
             }
-            return applyRelative(backgroundStyle, p.text)
+            return applyRelative(baseStyle, p.text)
         } else {
             if (ctx.text.type === 'absolute') return ctx.text
-            return applyRelative(backgroundStyle, ctx.text) // realtive strategy applied here
+            return applyRelative(baseStyle, ctx.text) // realtive strategy applied here
         }
     })()
 
@@ -63,33 +65,67 @@ export const useColor = (
     const borderStyle: AbsoluteStyle | null = (() => {
         if (p.border) {
             if (typeof p.border === 'boolean') {
-                return applyRelative(backgroundStyle, { contrast: 0.2 })
+                return applyRelative(baseStyle, { contrast: 0.2 })
             }
             if (typeof p.border === 'number') {
-                return applyRelative(backgroundStyle, { contrast: clamp(p.border / 10, 0, 1) })
+                return applyRelative(baseStyle, { contrast: clamp(p.border / 10, 0, 1) })
             }
             if (typeof p.border === 'string') {
                 const color = new Color(p.border)
                 const [l, c, h] = color.oklch
                 return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
             }
-            return applyRelative(backgroundStyle, p.border)
+            return applyRelative(baseStyle, p.border)
         }
         return null
     })()
 
     const textForCtx = typeof p.text === 'object' ? p.text : ctx.text
-    const appearance: BoxAppearance = { background: backgroundStyle, text: textStyle, textForCtx, border: borderStyle }
-    const styles: CSSProperties = {
-        border: borderStyle ? `1px solid ${formatColor(borderStyle)}` : undefined,
-        background:
-            p.base != null // when base is null, let's just inherit the parent's background
-                ? formatColor(backgroundStyle)
-                : undefined,
-        color: formatColor(textStyle),
+
+    // css values
+    const border = borderStyle ? `1px solid ${formatColor(borderStyle)}` : undefined
+    const color = formatColor(textStyle)
+    const background =
+        p.base != null // when base is null, let's just inherit the parent's background
+            ? formatColor(baseStyle)
+            : undefined
+
+    // for hover
+    let baseHover: string | undefined // = 'initial'
+    let textHover: string | undefined // = 'initial'
+    let borderHover: string | undefined // = 'initial'
+    if (p.hover) {
+        const baseHoverStyle = applyRelative(baseStyle, { contrast: 0.2 })
+        baseHover = formatColor(baseHoverStyle)
+
+        if (borderStyle) {
+            const borderHoverStyle = applyRelative(borderStyle, { contrast: 0.2 })
+            borderHover = formatColor(borderHoverStyle)
+        }
+
+        const textHoverStyle = applyRelative(baseHoverStyle, { contrast: 0.9, chromaBlend: 2 })
+        textHover = formatColor(textHoverStyle)
     }
+
+    // styles object
+    const styles: CSSProperties = {
+        border: border,
+        background: background,
+        color: color,
+    }
+
+    // as css variables
+    const variables = {
+        '--box-base': styles.background ?? 'initial',
+        '--box-text': styles.color ?? 'initial',
+        '--box-border': styles.border ?? 'initial',
+        '--box-hover-base': baseHover ?? styles.background ?? 'initial',
+        '--box-hover-text': textHover ?? styles.color ?? 'initial',
+        '--box-hover-border': borderHover ?? styles.border ?? 'initial',
+    }
+
     return {
-        background: backgroundStyle,
+        background: baseStyle,
         text: textStyle,
         textForCtx,
         border: borderStyle,
@@ -97,6 +133,7 @@ export const useColor = (
             return compileOrRetrieveClassName(styles)
         },
         styles,
+        variables,
     }
 }
 

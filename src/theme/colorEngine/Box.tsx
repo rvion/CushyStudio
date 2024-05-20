@@ -3,12 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
 import { useColor } from './useColor'
 
-// type DivType_FULL = React.HTMLAttributes<HTMLDivElement>
-// type DivType_SHORT = {
-//     children?: React.ReactNode
-//     className?: string
-// }
-
 // --------- text styles
 export const BoxBase = observer(function BoxTitleUI_({ children, ...rest }: BoxUIProps) {
     return (
@@ -56,6 +50,8 @@ export type BoxProps = {
      * - null: inherit parent's background
      * */
     border?: RelativeStyle | string | number | boolean
+    /** if true; will add some contrast on hover */
+    hover?: boolean
 }
 
 export type BoxUIProps = BoxProps & {
@@ -71,31 +67,47 @@ export type BoxUIProps = BoxProps & {
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
 }
 
-export const Box = observer(function BoxUI_(p: BoxUIProps) {
-    const { style, className, ...rest } = p
-    const { background, textForCtx, styles } = useColor(p)
 // 🔴 2024-05-20 rvion:
 // || do we want to add observer here + forward ref ?
 // || or just go for speed ?
+export const Box = observer(
+    function BoxUI_(p: BoxUIProps) {
+        const {
+            // to merge:
+            style,
+            className,
+            // to ignore:
+            base,
+            hover,
+            text,
+            shadow,
+            border,
+            // others:
+            ...rest
+        } = p
+        const { background, textForCtx, /* styles, */ variables } = useColor(p)
 
-    return (
-        <div {...rest} tw={[/* className, */ className]} style={{ ...styles, ...style }}>
-            <ThemeCtx.Provider
-                value={{
-                    background,
-                    // ~~text must always remaian relative~~ => nope anymore ? ⁉️
-                    text: textForCtx,
-                }}
+        return (
+            <div //
+                {...rest}
+                tw={[/* className, */ className, 'Box']}
+                style={{ /* ...styles, */ ...style, ...variables }}
             >
-                {/*  */}
-                {/* <div>{JSON.stringify(background)}</div> */}
-                {/* <div>
-                    text: {JSON.stringify(text)} ({JSON.stringify(p.text)})
-                </div> */}
-                {p.children}
-            </ThemeCtx.Provider>
-        </div>
-    )
+                <ThemeCtx.Provider
+                    value={{
+                        background,
+                        // ~~text must always remaian relative~~ => nope anymore ? ⁉️
+                        text: textForCtx,
+                    }}
+                >
+                    {/* <div>{JSON.stringify(background)}</div> */}
+                    {/* <div>
+                        text: {JSON.stringify(text)} ({JSON.stringify(p.text)})
+                    </div> */}
+                    {p.children}
+                </ThemeCtx.Provider>
+            </div>
+        )
     },
     { forwardRef: true },
 )
