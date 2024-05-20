@@ -1,5 +1,4 @@
-import { clamp } from 'three/src/math/MathUtils'
-
+import { clamp } from '../../controls/widgets/list/clamp'
 import { AbsoluteStyle, RelativeStyle } from './AbsoluteStyle'
 import { autoContrast } from './autoContrast'
 
