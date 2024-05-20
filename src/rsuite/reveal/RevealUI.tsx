@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
+import { Ikon } from '../../icons/iconHelpers'
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'
@@ -189,11 +190,19 @@ const mkTooltip = (uist: RevealState | null) => {
             {uist._lock ? (
                 <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
                     <span className='material-symbols-outlined'>lock</span>
-                    locked; right-click to unlock
+                    shift+right-click to unlock
                 </span>
-            ) : null}
+            ) : (
+                <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                    shift+right-click to lock
+                </span>
+
+                //
+                // null
+            )}
         </div>
     )
+
     return createPortal(revealedContent, element)
 }
 
