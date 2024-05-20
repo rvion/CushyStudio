@@ -1,3 +1,5 @@
+import type { ForwardedRef } from 'react'
+
 import { observer } from 'mobx-react-lite'
 
 import { type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
@@ -71,7 +73,7 @@ export type BoxUIProps = BoxProps & {
 // || do we want to add observer here + forward ref ?
 // || or just go for speed ?
 export const Box = observer(
-    function BoxUI_(p: BoxUIProps) {
+    function BoxUI_(p: BoxUIProps, ref: ForwardedRef<HTMLDivElement>) {
         const {
             // to merge:
             style,
@@ -90,6 +92,7 @@ export const Box = observer(
         return (
             <div //
                 {...rest}
+                ref={ref}
                 tw={[/* className, */ className, 'Box']}
                 style={{ /* ...styles, */ ...style, ...variables }}
             >
