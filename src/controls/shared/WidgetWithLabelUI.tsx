@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Ikon } from '../../icons/iconHelpers'
+import { Ikon, IkonOf } from '../../icons/iconHelpers'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { Box } from '../../theme/colorEngine/Box'
 import { useColor } from '../../theme/colorEngine/useColor'
@@ -178,6 +178,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
                                     {isCollapsed ? 'chevron_right' : 'expand_more'}
                                 </span>
+                            )}
+                            {widget.config.icon && (
+                                <Box tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
+                                    <IkonOf name={widget.config.icon} />
+                                </Box>
                             )}
                             {/* TOGGLE BEFORE */}
                             {BodyUI && <Widget_ToggleUI widget={originalWidget} />}

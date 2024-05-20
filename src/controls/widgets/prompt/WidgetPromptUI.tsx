@@ -24,7 +24,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
             {widget.serial.collapsed ? (
                 <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
             ) : (
-                <div></div>
+                <div />
             )}
             <div
                 tw='flex self-end'

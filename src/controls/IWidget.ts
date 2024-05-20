@@ -1,3 +1,4 @@
+import type { IconName } from '../icons/icons'
 import type { BoxProps } from '../theme/colorEngine/Box'
 import type { BaseWidget } from './BaseWidget'
 import type { CovariantFn } from './BivariantHack'
@@ -119,6 +120,14 @@ export type SharedWidgetSerial = {
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
 export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /**
+     * @since 2024-05-20
+     * @stability beta
+     * Icon name from the icon library.
+     *   - "mdi..." for Material design icons - 7000+ icons https://pictogrammers.com/library/mdi/)
+     *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
+     */
+    icon?: IconName
     /**
      * @since 2024-05-19
      * @stability beta

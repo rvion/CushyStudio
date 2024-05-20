@@ -31,6 +31,7 @@ app({
     },
     ui: (form: FormBuilder) => ({
         positive: form.prompt({
+            icon: 'mdiPlusBoxOutline',
             default: [
                 'masterpiece, tree',
                 '?color, ?3d_term, ?adj_beauty, ?adj_general',
@@ -39,6 +40,7 @@ app({
             box: { base: { hue: 150, contrast: 0, chroma: 0.05 } },
         }),
         negative: form.prompt({
+            icon: 'mdiMinusBoxOutline',
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
             box: { base: { hue: 0, contrast: 0, chroma: 0.05 } },

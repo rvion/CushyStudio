@@ -7,6 +7,7 @@ export const ui_model = () => {
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
         box: { base: { hue: 240, contrast: 0, chroma: 0.05 } },
+        icon: 'mdiFlaskEmptyPlusOutline',
         presets: {
             test1: (w) => {
                 w.value = {
@@ -23,7 +24,7 @@ export const ui_model = () => {
                 })
             },
         },
-        label: 'AI Model',
+        label: 'Model',
         summary: (ui) => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
