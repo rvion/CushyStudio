@@ -111,11 +111,12 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 <div tw='pb-10'>
                     <FormUI
-                        theme={{
-                            // base: 'oklch(0, 0, 200)',
-                            base: '#1E212B',
-                            text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
-                        }}
+                        // theme={{
+                        //     // base: 'oklch(0, 0, 200)',
+                        //     // base: 'rgb(255, 250, 240)',
+                        //     // base: '#1E212B',
+                        //     text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
+                        // }}
                         key={draft.id}
                         form={draft.form}
                     />
