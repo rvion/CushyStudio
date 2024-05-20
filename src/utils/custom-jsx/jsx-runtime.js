@@ -23,7 +23,7 @@ export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
 export function jsx(type, props, key) {
     if (!hasOwnProperty.call(props, 'tw')) return jsx_(type, props, key)
     let className = props.className ?? ''
-    if (props.tw) className += ' ' + joinCls(props.tw)
+    if (props.tw) className += (className ? ' ' : '') + joinCls(props.tw)
 
     const newProps = { ...props, className, tw: undefined }
     return jsx_(type, newProps, key)
@@ -32,7 +32,7 @@ export function jsx(type, props, key) {
 export function jsxs(type, props, key) {
     if (!hasOwnProperty.call(props, 'tw')) return jsxs_(type, props, key)
     let className = props.className ?? ''
-    if (props.tw) className += ' ' + joinCls(props.tw)
+    if (props.tw) className += (className ? ' ' : '') + joinCls(props.tw)
 
     const newProps = { ...props, className, tw: undefined }
     return jsxs_(type, newProps, key)
