@@ -13,7 +13,7 @@ export const Ikon: {
 } = new Proxy({} as any, {
     get(target, key) {
         if (key in target) return target[key]
-        return (target[key] = (p: any) => <Icon path={(allIcons as any)[key]} size={1} {...p} />)
+        return (target[key] = (p: any) => <Icon path={(allIcons as any)[key]} size='1.1em' {...p} />)
     },
 }) as any
 
