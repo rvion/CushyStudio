@@ -114,7 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
         activeEditor.setDecorations(iconDecorationType, iconDecoration)
 
         // match ICONS
-        const regEx2 = /@(globi|rvion|taha|gui)/g
+        const regEx2 = /@(globi|rvion|taha|gui|birdddev)/g
         while ((match = regEx2.exec(text))) {
             const iconName = match[0]
 

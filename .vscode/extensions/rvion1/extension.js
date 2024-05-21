@@ -32,7 +32,7 @@ var vscode = __toModule(require("vscode"));
 // src/icons/icons.ts
 var icons = __toModule(require("@mdi/js"));
 var myCustomIcons = {
-  ldiTest: "M 2.40,7.20 A 20,20 0,0,1 12.00,7.20 A 20,20 0,0,1 21.60,7.20 Q 21.60,14.40 12.00,21.60 Q 2.40,14.40 2.40,7.20 z"
+  cdiTest: "M 2.40,7.20 A 20,20 0,0,1 12.00,7.20 A 20,20 0,0,1 21.60,7.20 Q 21.60,14.40 12.00,21.60 Q 2.40,14.40 2.40,7.20 z"
 };
 var allIcons = {
   ...icons,
@@ -111,7 +111,7 @@ function activate(context) {
     }
     const contrDecoration = [];
     activeEditor.setDecorations(iconDecorationType, iconDecoration);
-    const regEx2 = /@(globi|rvion|taha|gui)/g;
+    const regEx2 = /@(globi|rvion|taha|gui|birdddev)/g;
     while (match = regEx2.exec(text)) {
       const iconName = match[0];
       const iconPath = allIcons[iconName];
