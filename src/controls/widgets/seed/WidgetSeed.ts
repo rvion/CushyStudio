@@ -95,7 +95,10 @@ export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types
             val: config.default ?? 0,
             mode: config.defaultMode ?? 'randomize',
         }
-        makeAutoObservableInheritance(this)
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value(): Widget_seed_value {
