@@ -77,6 +77,15 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
-    /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new SimpleSpec(this.type, { ...this.config, hidden: true })
+    /** clone the spec, and patch the cloned config */
+    withConfig = (config: Partial<W['$Config']>): SimpleSpec<W> => {
+        const mergedConfig = { ...this.config, ...config }
+        const cloned = new SimpleSpec<W>(this.type, mergedConfig)
+        // 🔴 Keep producers and reactions -> could probably be part of the ctor
+        cloned.producers = this.producers
+        cloned.reactions = this.reactions
+        return cloned
+    }
+
+    hidden = (): SimpleSpec<W> => this.withConfig({ hidden: true })
 }
