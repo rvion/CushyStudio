@@ -129,7 +129,7 @@ export class MenuInstance<Props> implements Activity {
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
             if (entry instanceof SimpleMenuAction) {
-                const res = this.findSuitableKeys(entry.label, allocatedKeys)
+                const res = this.findSuitableKeys(entry.opts.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })
             } else if (entry instanceof Command) {
