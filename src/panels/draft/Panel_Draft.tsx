@@ -110,7 +110,16 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
                 <div tw='pb-10'>
-                    <FormUI key={draft.id} form={draft.form} />
+                    <FormUI
+                        // theme={{
+                        //     // base: 'oklch(0, 0, 200)',
+                        //     // base: 'rgb(255, 250, 240)',
+                        //     // base: '#1E212B',
+                        //     text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
+                        // }}
+                        key={draft.id}
+                        form={draft.form}
+                    />
                 </div>
                 <RevealUI
                     content={() => (

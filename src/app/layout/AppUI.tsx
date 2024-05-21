@@ -5,12 +5,13 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { CushyKitCtx } from '../../controls/shared/CushyKitCtx'
-import { ActivityUI } from '../../operators/ActivityUI'
+import { ActivityStackUI } from '../../operators/ActivityUI'
 import { useRegionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
 import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
 import { RevealState } from '../../rsuite/reveal/RevealState'
 import { useSt } from '../../state/stateContext'
+import { Box } from '../../theme/colorEngine/Box'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
 import { commandManager } from '../shortcuts/CommandManager'
@@ -57,7 +58,9 @@ export const CushyUI = observer(function CushyUI_() {
 
     return (
         <CushyKitCtx.Provider value={st}>
-            <div
+            <Box
+                base='#1E212B'
+                text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}
                 //
                 data-theme={st.themeMgr.theme}
                 id='CushyStudio'
@@ -77,7 +80,7 @@ export const CushyUI = observer(function CushyUI_() {
                     id='tooltip-root'
                     tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
                 >
-                    <ActivityUI />
+                    <ActivityStackUI />
                 </div>
 
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
@@ -87,7 +90,7 @@ export const CushyUI = observer(function CushyUI_() {
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
-            </div>
+            </Box>
         </CushyKitCtx.Provider>
     )
 })

@@ -57,6 +57,7 @@ import { CushyLayoutManager } from '../panels/router/Layout'
 // import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
+// import { CushyThemeManager } from '../theme/colorEngine/CushyTheming'
 import { ThemeManager } from '../theme/ThemeManager'
 import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
 import { CleanedEnumResult } from '../types/EnumUtils'
@@ -249,6 +250,7 @@ export class STATE {
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
+    // themeManager: CushyThemeManager
 
     // showPreviewInFullScreen
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
@@ -527,7 +529,7 @@ export class STATE {
                 text: 'Only Show Blurry Thumbnails',
                 expand: true,
                 display: 'button',
-                icon: 'lock',
+                icon: 'mdiLock',
                 label: false,
             }),
         }),
@@ -627,6 +629,8 @@ export class STATE {
         })
         this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
+
+        // this.themeManager = new CushyThemeManager()
     }
 
     get mainComfyHostID(): HostID {

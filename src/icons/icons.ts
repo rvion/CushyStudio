@@ -21,3 +21,5 @@ export const allIcons = {
     ...icons,
     ...myCustomIcons,
 }
+
+export type IconName = keyof typeof allIcons

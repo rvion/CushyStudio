@@ -1,18 +1,19 @@
 import type { CovariantFn } from './BivariantHack'
 import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
-import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { createElement, type CSSProperties, type ReactNode } from 'react'
 
 import { MessageErrorUI } from '../panels/MessageUI'
+import { Box, type BoxProps } from '../theme/colorEngine/Box'
 
 export const FormUI = observer(function FormUI_(p: {
     // form -----------------------------------
     form: Maybe<Form>
     // look and feel --------------------------
     /** from your daisy-ui config */
-    theme?: string
+    theme?: BoxProps
     className?: string
     style?: CSSProperties
     /** any react children passed to this widget will be displayed at the end of the form */
@@ -38,13 +39,7 @@ export const FormUI = observer(function FormUI_(p: {
     if (form.root == null) return <MessageErrorUI markdown='form.root is null' />
     const submitAction = p.submitAction
     return (
-        <div
-            //
-            tw='bg-base-100'
-            data-theme={p.theme}
-            className={p.className}
-            style={p.style}
-        >
+        <Box {...p.theme} className={p.className} style={p.style}>
             {form.root.ui() /* FORM */}
 
             {p.submitButton ??
@@ -68,6 +63,6 @@ export const FormUI = observer(function FormUI_(p: {
                         </div>
                     </div>
                 ))}
-        </div>
+        </Box>
     )
 })

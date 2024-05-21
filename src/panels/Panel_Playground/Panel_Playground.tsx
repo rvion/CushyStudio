@@ -77,7 +77,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.value.widgetShowcase && <PlaygroundWidgetDisplay />}
                 {mode.value.scratchPad && <PlaygroundScratchPad />}
                 {mode.value.graph && <PlaygroundGraphUI />}
-                {mode.value.comfyImport && <PlaygroundImportFromComfy />}
+                {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </div>
         </>
     )

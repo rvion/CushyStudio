@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
+import { Box } from '../theme/colorEngine/Box'
 import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: {
@@ -41,28 +42,28 @@ export const MenuItem = observer(function DropdownItem_(p: {
     shortcut?: CushyShortcut
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
-
+    // const active2 = Math.random() > 0.5
     return (
-        <li
+        <Box
+            text={{ contrast: disabled ? 0.5 : 1 }}
+            base={{
+                contrast: active ? 0.9 : 0.05,
+                chroma: active ? 0.5 : undefined,
+            }}
+            hover
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
                 p.onClick?.(ev)
             }}
-            tw={[
-                //
-                '_MenuItem',
-                active && 'bg-primary text-primary-content',
-                disabled && 'text-neutral-content',
-            ]}
+            style={{ lineHeight: '1.6rem' }}
+            tw={['_MenuItem', 'px-1 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
             {...rest}
         >
-            <div className='flex items-center gap-2 whitespace-nowrap'>
-                {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
-                {label}
-                {children}
-                {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
-            </div>
-        </li>
+            {icon}
+            {label}
+            {children}
+            {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+        </Box>
     )
 })

@@ -3,6 +3,8 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
+import { useColor } from '../../../theme/colorEngine/useColor'
+
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 // Textarea HEADER
@@ -18,9 +20,14 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const widget = p.widget
     if (!widget.config.textarea) return null
     const val = widget.value
+    const kolor = useColor({ base: 5 })
     return (
         <textarea
-            style={{ /* ...p.widget.config.style, */ lineHeight: '1.3rem', resize: p.widget.config.resize ?? 'both' }}
+            style={{
+                ...kolor.styles,
+                /* ...p.widget.config.style, */ lineHeight: '1.3rem',
+                resize: p.widget.config.resize ?? 'both',
+            }}
             tw='textarea textarea-bordered textarea-sm w-full '
             placeholder={widget.config.placeHolder}
             rows={3}
@@ -41,6 +48,12 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     let visualHelper: ReactElement<any, any> | undefined
     let highlight = true
 
+    const color = useColor({
+        base: 5,
+        text: { contrast: 1, /* hueShift: 150, chromaBlend: 899 */ chromaBlend: 1 },
+        border: true,
+    })
+
     switch (widget.config.inputType) {
         case 'color':
             inputTailwind = 'absolute w-full h-full opacity-0'
@@ -52,20 +65,20 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
             break
     }
 
-    // console.log('[WidgetString] - val: ', val)
-
     return (
         <>
             <div
+                style={color.styles}
                 tw={[
+                    // color.className,
                     'WIDGET-FIELD',
                     'h-full w-full',
                     'flex flex-1 items-center relative',
                     'rounded overflow-clip text-shadow',
-                    'border border-base-100 hover:border-base-300',
+                    // 'border border-base-100 hover:border-base-300',
+                    // 'bg-primary/5',
                     highlight && 'hover:brightness-110',
-                    'bg-primary/5',
-                    'border-b-2 border-b-base-200 hover:border-b-base-300',
+                    // 'border-b-2 border-b-base-200 hover:border-b-base-300',
                     'p-0 m-0',
                 ]}
                 onMouseDown={(ev) => {

@@ -15,9 +15,10 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
     uist: WidgetPromptUISt
 }) {
     const uist = p.uist
+    if (uist.loras.length === 0) return null
     return (
         <>
-            {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
+            {/* {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>} */}
             <div tw='flex flex-col p-1 gap-1'>
                 {uist.loras.map((loraASTNode, ix) => {
                     const weighted = loraASTNode.firstAncestor('WeightedExpression')

@@ -4,8 +4,10 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Ikon } from '../../icons/iconHelpers'
+import { Ikon, IkonOf } from '../../icons/iconHelpers'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Box } from '../../theme/colorEngine/Box'
+import { useColor } from '../../theme/colorEngine/useColor'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
@@ -102,14 +104,16 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
 
     return (
-        <div
+        <Box
             key={rootKey}
             tw={[
-                widget.background && (isCollapsible || showBorder) && 'bg-base-100',
+                // widget.background && (isCollapsible || showBorder) && 'bg-base-100',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
+            base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
+            {...p.widget.config.box}
         >
             <AnimatedSizeUI>
                 {/*
@@ -154,7 +158,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         tw={[
                             'flex justify-end gap-0.5 flex-none items-center shrink-0',
                             // p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
-                            isDisabled ? undefined : 'text-primary',
+                            // 🔴 label COLOR here
+                            // isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
                             alignLabel
@@ -167,19 +172,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        {/* COLLAPSE */}
-                        {(isCollapsed || isCollapsible) && (
-                            <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
-                                {isCollapsed ? 'chevron_right' : 'expand_more'}
-                            </span>
-                        )}
-                        {/* TOGGLE BEFORE */}
-                        {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                        {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
-                        {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                        {/* TOOLTIPS  */}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                        {LABEL}
+                        <Box tw='flex items-center' text={{ hueShift: 0, contrast: 0.9, chromaBlend: 1 }}>
+                            {/* COLLAPSE */}
+                            {(isCollapsed || isCollapsible) && (
+                                <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
+                                    {isCollapsed ? 'chevron_right' : 'expand_more'}
+                                </span>
+                            )}
+                            {widget.config.icon && (
+                                <Box tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
+                                    <IkonOf name={widget.config.icon} />
+                                </Box>
+                            )}
+                            {/* TOGGLE BEFORE */}
+                            {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
+                            {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
+                            {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
+                            {/* TOOLTIPS  */}
+                            {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                            {LABEL}
+                        </Box>
                         {/* TOOGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
@@ -219,6 +231,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     </div>
                 )}
             </AnimatedSizeUI>
-        </div>
+        </Box>
     )
 })

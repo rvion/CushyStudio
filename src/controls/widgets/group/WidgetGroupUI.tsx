@@ -3,6 +3,8 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
+import { Box, BoxSubtle } from '../../../theme/colorEngine/Box'
+import { useColor } from '../../../theme/colorEngine/useColor'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
@@ -13,9 +15,9 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 }) {
     if (!p.widget.serial.collapsed) return null
     return (
-        <div className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic opacity-50'>
+        <BoxSubtle className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic'>
             {p.widget.summary}
-        </div>
+        </BoxSubtle>
     )
 })
 
@@ -31,10 +33,15 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
     const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
+
+    // const color = useColor({ base: 10 })
     return (
-        <div
+        <Box
+            // base={4}
+            // {...widget.config.box}
             className={p.className}
             tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}
+            // style={color.styles}
             // style={{ position: 'relative' }}
         >
             {widget.serial.collapsed ? null : (
@@ -58,6 +65,6 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     ))}
                 </div>
             )}
-        </div>
+        </Box>
     )
 })

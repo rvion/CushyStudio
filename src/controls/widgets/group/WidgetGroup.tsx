@@ -1,4 +1,3 @@
-import type { CovariantFn } from '../../BivariantHack'
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -8,7 +7,6 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
