@@ -58,6 +58,13 @@ export interface Activity {
      */
     onEvent?: (event: Event) => Trigger | null
 
+    /**
+     * @since 2024-05-21
+     * @default null
+     * how shells are wrapped
+     */
+    shell?: Maybe<'popup-lg' | 'popup-sm' | 'popup-full'>
+
     /** activity UI */
     UI: FC<{
         activity: Activity

@@ -3,14 +3,14 @@ import type { CSSProperties, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
+import { ModalShellUI } from '../rsuite/reveal/ModalShell'
 import { computePlacement } from '../rsuite/reveal/RevealPlacement'
-import { type Activity, activityManger } from './Activity'
+import { type Activity, activityManager } from './Activity'
 
 export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
-    // useDemoActivity()
     return (
         <Fragment>
-            {activityManger._stack.map((activity, ix) => (
+            {activityManager._stack.map((activity, ix) => (
                 <ActivityContainerUI
                     stop={() => {
                         activity.onStop?.()
@@ -86,7 +86,21 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                         if (ev.target === ev.currentTarget) p.stop?.()
                     }}
                 >
+                    {p.activity.shell === 'popup-lg' ? (
+                        <ModalShellUI tw='max-w-lg w-fit h-fit m-8' close={() => p.stop()} title={p.activity.title}>
+                            {p.children}
+                        </ModalShellUI>
+                    ) : p.activity.shell === 'popup-sm' ? (
+                        <ModalShellUI tw='max-w-sm w-fit h-fit m-8' close={() => p.stop()} title={p.activity.title}>
+                            {p.children}
+                        </ModalShellUI>
+                    ) : p.activity.shell === 'popup-full' ? (
+                        <ModalShellUI tw='m-8' close={() => p.stop()} title={p.activity.title}>
                     {p.children}
+                        </ModalShellUI>
+                    ) : (
+                        p.children
+                    )}
                 </div>
             </div>
         </div>

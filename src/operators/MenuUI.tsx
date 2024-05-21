@@ -76,19 +76,13 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                     event,
                                     uid: 'createPreset',
                                     placement: 'auto',
+                                    shell: 'popup-lg',
                                     UI: (p) => (
-                                        <ModalShellUI
-                                            //
-                                            tw='max-w-lg'
-                                            close={() => p.stop()}
-                                            title={entry.p.label}
-                                        >
                                             <entry.p.UI //
                                                 close={() => p.stop()}
                                                 submit={entry.p.submit}
                                                 submitLabel={entry.p.submitLabel}
                                             />
-                                        </ModalShellUI>
                                     ),
                                 })
                             }}
