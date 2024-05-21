@@ -2,14 +2,21 @@ import type { ISpec } from '../../ISpec'
 import type { IWidget } from '../../IWidget'
 import type { Widget_list } from './WidgetList'
 
-import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
-import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
+
+import { observer } from 'mobx-react-lite'
+// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
+import { menu_widgetActions } from '../../shared/WidgetMenu'
+
 import { ListControlsUI } from './ListControlsUI'
+
+const {default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
+
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
     return (
@@ -61,6 +68,13 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                                 {/* <WidgetHeaderUI widget={subWidget} /> */}
                                                 {widgetHeader}
                                             </ErrorBoundary>
+                                        )}
+                                        {subWidget.config.presets && (
+                                            <RevealUI //
+                                                content={() => <menu_widgetActions.UI props={subWidget} />}
+                                            >
+                                                <span className='material-symbols-outlined'>more_vert</span>
+                                            </RevealUI>
                                         )}
                                         {/* delete btn */}
                                         {p.widget.isAuto ? null : (
