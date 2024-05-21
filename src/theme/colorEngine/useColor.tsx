@@ -5,7 +5,6 @@ import { createHash } from 'crypto'
 import { type CSSProperties, useContext } from 'react'
 
 import { clamp } from '../../controls/widgets/list/clamp'
-import { hashJSONObject, hashString } from '../../panels/router/hash'
 import { type AbsoluteStyle, type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
 import { applyRelative } from './applyRelative'
 import { formatColor } from './formatColor'

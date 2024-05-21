@@ -1,11 +1,11 @@
+import type { TreeEntryL } from '../../../../models/TreeEntry'
+import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
 import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
 import { asTreeEntryID } from '../../../../db/TYPES.gen'
-import { TreeEntryL } from '../../../../models/TreeEntry'
-import { ITreeElement, ITreeEntry } from '../TreeEntry'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 

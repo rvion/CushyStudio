@@ -1,9 +1,9 @@
 import type { STATE } from '../../../../state/state'
+import type { ITreeElement } from '../TreeEntry'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { ITreeElement } from '../TreeEntry'
 import { TreeNode } from './TreeNode'
 
 export class Tree {

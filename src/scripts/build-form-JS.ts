@@ -94,6 +94,11 @@ export async function buildJS(p: {
             'util',
             'zlib',
             'events',
+            //
+            '@sinclair/typebox',
+            '@mdi/js',
+            'colorjs.io',
+            'prop-types',
         ],
         // packages: 'external',
         // handle css and svg files

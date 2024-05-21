@@ -1,5 +1,6 @@
+import type { AbsoluteStyle, RelativeStyle } from './AbsoluteStyle'
+
 import { clamp } from '../../controls/widgets/list/clamp'
-import { AbsoluteStyle, RelativeStyle } from './AbsoluteStyle'
 import { autoContrast } from './autoContrast'
 
 export const applyRelative = (a: AbsoluteStyle, b: RelativeStyle): AbsoluteStyle => {

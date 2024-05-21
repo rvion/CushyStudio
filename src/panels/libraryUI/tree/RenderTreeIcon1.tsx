@@ -1,7 +1,7 @@
-import { observer } from 'mobx-react-lite'
+import type { TreeEntryAction } from './TreeEntry'
+import type { TreeNode } from './xxx/TreeNode'
 
-import { TreeEntryAction } from './TreeEntry'
-import { TreeNode } from './xxx/TreeNode'
+import { observer } from 'mobx-react-lite'
 
 export const TreeIcon1UI = observer(function TreeIcon1UI_(p: TreeEntryAction & { node: TreeNode }) {
     const action = p

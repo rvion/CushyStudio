@@ -1,9 +1,10 @@
+import type { Tree } from './Tree'
+import type { TreeNode, TreeScrollOptions } from './TreeNode'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-import { Tree } from './Tree'
-import { TreeNode, TreeScrollOptions } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {

@@ -1,6 +1,5 @@
 import type { IWidget } from '../IWidget'
 
-import { activityManger } from '../../operators/Activity'
 import { menu, type Menu } from '../../operators/Menu'
 import { SimpleMenuAction } from '../../operators/menuSystem/SimpleMenuAction'
 import { SimpleMenuModal } from '../../operators/menuSystem/SimpleMenuModal'

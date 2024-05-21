@@ -1,8 +1,9 @@
+import type { RelativeStyle } from './AbsoluteStyle'
 import type { ForwardedRef } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
+import { ThemeCtx } from './AbsoluteStyle'
 import { useColor } from './useColor'
 
 // --------- text styles
