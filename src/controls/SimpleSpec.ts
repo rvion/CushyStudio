@@ -5,6 +5,8 @@ import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
+import { makeAutoObservable, makeObservable } from 'mobx'
+
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
@@ -55,7 +57,9 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
         //
         public readonly type: W['type'],
         public readonly config: W['$Config'],
-    ) {}
+    ) {
+        makeObservable(this, { config: true })
+    }
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
