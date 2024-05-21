@@ -165,26 +165,36 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
-        makeAutoObservableInheritance(this, { value: false })
+        makeAutoObservableInheritance(this, {
+            value: false,
+            __value: false,
+            DefaultHeaderUI: false,
+        })
     }
 
     setValue(val: Widget_group_value<T>) {
         this.value = val
     }
 
+    setPartialValue(val: Partial<Widget_group_value<T>>) {
+        runInAction(() => {
+            for (const key in val) this.fields[key].setValue(val[key])
+            this.bumpValue()
+        })
+    }
+
     set value(val: Widget_group_value<T>) {
         runInAction(() => {
-            for (const key in val) {
-                // console.log(`[🤠] (key=A) B.setValue(C)`, key, this.fields[key], val[key])
-                this.fields[key].setValue(val[key])
-            }
+            for (const key in val) this.fields[key].setValue(val[key])
             this.bumpValue()
         })
     }
     get value() {
-        return this.valueLazy
+        return this.__value
     }
-    private valueLazy: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+
+    // @internal
+    __value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
