@@ -169,7 +169,18 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
             else this.enableBranch(activeBranch, { skipBump: true })
         }
 
-        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
+    }
+
+    get subWidgets() {
+        return Object.values(this.children)
+    }
+
+    get subWidgetsWithKeys() {
+        return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
     }
 
     toggleBranch(branch: keyof T & string) {

@@ -114,11 +114,11 @@ async function START() {
     ipcMain.on('copy-image-to-clipboard', (event, arg) => {
         try {
             // Always use 'image/png' for now as it seems like nothing supports anything but image/png
-            clipboard.writeBuffer('image/png', arg.buffer);
-            event.sender.send('image-copied', {result: true, data: arg.buffer})
+            clipboard.writeBuffer('image/png', arg.buffer)
+            event.sender.send('image-copied', { result: true, data: arg.buffer })
         } catch (err) {
             console.error(err)
-            event.sender.send('image-copied', {result: false, data: err})
+            event.sender.send('image-copied', { result: false, data: err })
         }
     })
 
@@ -141,6 +141,9 @@ async function START() {
 
     async function createWindow() {
         const mainWindow = new BrowserWindow({
+            // https://stackoverflow.com/questions/39091964/remove-menubar-from-electron-app
+            autoHideMenuBar: true,
+
             icon: image,
             title: '🛋️ CushySudio',
             //
@@ -158,6 +161,14 @@ async function START() {
                 allowRunningInsecureContent: true, // Disable CORS
             },
         })
+
+        // remove the menu bar on windows & linux
+        try {
+            console.log(`[🤠] process.platform =`, process.platform)
+            if (process.platform !== 'darwin') mainWindow.removeMenu()
+        } catch (error) {
+            console.error('❌ error removing menu bar', error)
+        }
 
         // START EXPRESS + MOUNT PUBLIC EXTERNAL API ================================================
         const promiseStore = new Map()

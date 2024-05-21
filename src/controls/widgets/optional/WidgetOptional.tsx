@@ -117,12 +117,21 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        makeAutoObservableInheritance(this, { serial: observable, value: computed })
+        this.init({ serial: observable, value: computed })
     }
 
     setValue(val: Widget_optional_value<T>) {
         this.value = val
     }
+
+    get subWidgets() {
+        return this.serial.active ? [this.child] : []
+    }
+
+    get subWidgetsWithKeys() {
+        return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    }
+
     set value(next: Widget_optional_value<T>) {
         if (next == null) {
             this.setActive(false)

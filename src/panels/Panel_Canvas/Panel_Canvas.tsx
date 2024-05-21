@@ -6,10 +6,11 @@ import { useMemo } from 'react'
 import { RegionUI } from '../../operators/RegionUI'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
+import { PanelHeaderUI } from '../PanelHeader'
+import { CanvasToolbarUI, UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
-import { useSize } from './useSize'
+import { useSize } from './utils/useSize'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {
@@ -61,6 +62,10 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             className='flex flex-1 w-full h-full overflow-hidden'
         >
             <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
+                <PanelHeaderUI>test</PanelHeaderUI>
+                <div tw='absolute z-50'>
+                    <CanvasToolbarUI />
+                </div>
                 <UnifiedCanvasMenuUI />
                 {/* <CanvasToolbarUI /> */}
                 <div

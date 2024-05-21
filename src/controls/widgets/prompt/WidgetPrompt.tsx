@@ -91,7 +91,7 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        makeAutoObservableInheritance(this, { DefaultBodyUI: false, DefaultHeaderUI: false })
+        this.init({ DefaultBodyUI: false, DefaultHeaderUI: false })
     }
     /* override */ background = true
 

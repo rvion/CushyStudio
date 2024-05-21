@@ -48,6 +48,10 @@ export const ImageUI = observer(function ImageUI_(p: {
             onMouseEnter={image.onMouseEnter}
             onMouseLeave={image.onMouseLeave}
             onClick={image.onClick}
+            onAuxClick={(ev) => {
+                if (ev.button === 1) return image.onMiddleClick()
+                if (ev.button === 2) return image.onRightClick()
+            }}
             ref={dragRef}
             loading='lazy'
             style={{ backgroundImage: `url(${image.thumbhashURL})`, width: ImageWidth, height: ImageWidth, opacity }}

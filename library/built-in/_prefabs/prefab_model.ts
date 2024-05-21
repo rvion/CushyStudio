@@ -102,6 +102,7 @@ const ui_pag = (form: FormBuilder) => {
             },
         },
     )
+    .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'PerturbedAttention' }])
 }
 
 const ui_sag = (form: FormBuilder) => {

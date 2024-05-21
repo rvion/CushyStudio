@@ -12,6 +12,7 @@ import type { IWidget } from '../IWidget'
 import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_optional } from './optional/WidgetOptional'
 import type { Widget_shared } from './shared/WidgetShared'
+import type { Widget_string } from './string/WidgetString'
 
 /**
  * DI (Dependency Injection)
@@ -34,3 +35,4 @@ export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'
 export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
 export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'
 export const isWidgetGroup = (widget: any): widget is Widget_group<any> => widget.type === 'group'
+export const isWidgetString = (widget: any): widget is Widget_string => widget.type === 'string'

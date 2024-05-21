@@ -86,6 +86,10 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             onKeyDownCapture={(ev) => {
                 // Prevent new-line when using the run shortcut
                 // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
+                // ⏸️ if (ev.ctrlKey && ev.key == ' ') {
+                // ⏸️     ev.preventDefault()
+                // ⏸️     ev.stopPropagation()
+                // ⏸️ }
                 if (ev.ctrlKey && ev.key == 'Enter') {
                     ev.preventDefault()
                     ev.stopPropagation()

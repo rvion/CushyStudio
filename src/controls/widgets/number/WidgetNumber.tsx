@@ -86,7 +86,7 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
             val: config.default ?? 0,
         }
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             serial: observable,
             value: computed,
         })

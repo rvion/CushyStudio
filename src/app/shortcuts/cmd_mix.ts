@@ -60,10 +60,10 @@ const focusTree = (st: STATE, tree: Tree) =>
             const currentFocous = window.document.activeElement
             const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
             if (treeAlreadySelected)
-                cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}) // close the panel
+                cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET') // close the panel
             else focusTreeRootIfMounted()
         } else {
-            const node = cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {})
+            const node = cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET')
             setImmediate((): void => {
                 const isVisible = node?.isVisible()
                 if (!isVisible) return

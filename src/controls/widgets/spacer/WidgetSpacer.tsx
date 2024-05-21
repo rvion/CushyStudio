@@ -65,7 +65,7 @@ export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_t
             collapsed: false,
         }
 
-        makeAutoObservableInheritance(this, { serial: observable })
+        this.init({ serial: observable })
     }
 
     get value() {

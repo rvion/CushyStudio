@@ -81,7 +81,10 @@ export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_ty
             active: true,
             val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
         }
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)

@@ -40,7 +40,6 @@ export type TreeScrollOptions = {
 }
 
 export interface TreeNode extends IArrayLike {}
-
 export class TreeNode {
     scrollIntoView(p?: TreeScrollOptions) {
         document.getElementById(this.id)?.scrollIntoView({
@@ -87,9 +86,9 @@ export class TreeNode {
         const isRealClass = Boolean(Object.getOwnPropertyDescriptors(ctor).prototype)
         this.data = isRealClass
             ? // @ts-ignore
-              new ctor(tree.st, elem.props)
+              new ctor(elem.props)
             : // @ts-ignore
-              ctor(tree.st, elem.props)
+              ctor(elem.props)
         makeAutoObservable(this, { _children_: false })
     }
 

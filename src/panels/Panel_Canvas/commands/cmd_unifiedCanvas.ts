@@ -1,4 +1,4 @@
-import type { UnifiedCanvas } from './UnifiedCanvas'
+import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 
 import { command } from '../../../operators/Command'
 import { ctx_unifiedCanvas } from '../../../operators/contexts/ctx_unifiedCanvas'

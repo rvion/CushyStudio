@@ -39,6 +39,21 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
+    onMiddleClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        // this.onLeftClick(ev)
+    }
+    onRightClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        this.onLeftClick(ev)
+    }
+    onLeftClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        const toc = this.triggerOnClick
+        if (!toc) return
+        ev.stopPropagation()
+        // ev.preventDefault()
+        if (this.visible) this.leaveAnchor()
+        else this.enterAnchor()
+    }
+
     /**
      * manuall assigned here on init so it can be made observable
      * on its own, without the need to make the entire props observable

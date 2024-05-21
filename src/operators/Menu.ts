@@ -1,4 +1,5 @@
 import type { IWidget } from '../controls/IWidget'
+import type { SimpleMenuModal } from './menuSystem/SimpleMenuModal'
 import type { NO_PROPS } from './NO_PROPS'
 import type { Trigger } from './RET'
 
@@ -8,7 +9,7 @@ import { createElement, type FC, useMemo } from 'react'
 import { Activity, activityManger } from './Activity'
 import { type BoundCommand, Command } from './Command'
 import { BoundMenuSym } from './introspect/_isBoundMenu'
-import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
+import { SimpleMenuAction } from './menuSystem/SimpleMenuAction'
 import { MenuRootUI, MenuUI } from './MenuUI'
 
 // ------------------------------------------------------------------------------------------
@@ -35,7 +36,8 @@ export type MenuEntry =
     | BoundCommand
     | BoundMenu
     /** simple MenuEntry */
-    | SimpleMenuEntry
+    | SimpleMenuAction
+    | SimpleMenuModal
 
 /** supplied menu definition */
 export type MenuDef<Props> = {
@@ -66,7 +68,7 @@ export class Menu<Props> {
     /** push the menu to current activity */
     open(props: Props): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, props)
-        return activityManger.push(instance)
+        return activityManger.startActivity(instance)
     }
 }
 
@@ -87,7 +89,7 @@ export class MenuWithoutProps {
     /** push the menu to current activity */
     open(): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, {})
-        return activityManger.push(instance)
+        return activityManger.startActivity(instance)
     }
 }
 
@@ -126,7 +128,7 @@ export class MenuInstance<Props> implements Activity {
         const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
-            if (entry instanceof SimpleMenuEntry) {
+            if (entry instanceof SimpleMenuAction) {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })

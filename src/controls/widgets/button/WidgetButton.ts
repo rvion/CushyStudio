@@ -81,7 +81,10 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
             val: false,
         }
 
-        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value(): Widget_button_value {

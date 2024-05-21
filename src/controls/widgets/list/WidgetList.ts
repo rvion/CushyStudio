@@ -103,6 +103,14 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
         return null
     }
 
+    get subWidgets() {
+        return this.items
+    }
+
+    get subWidgetsWithKeys() {
+        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
+    }
+
     schemaAt = (ix: number): T => {
         const _schema = this.config.element
         const schema: T =
@@ -185,7 +193,7 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        makeAutoObservableInheritance(this, {
+        this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
