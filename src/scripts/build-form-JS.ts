@@ -97,6 +97,7 @@ export async function buildJS(p: {
             //
             '@sinclair/typebox',
             '@mdi/js',
+            '@mdi/react',
             'colorjs.io',
             'prop-types',
         ],

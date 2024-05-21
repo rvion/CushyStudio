@@ -111,11 +111,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-export const SelectPicker = (p: any) => <select {...p}></select>
-export const TagPicker = (p: any) => <select multiple {...p}></select>
-export const MultiCascader = (p: any) => <select multiple {...p}></select>
-export const Tree = (p: any) => <div {...p}></div>
-
 // https://daisyui.com/components/rating/#mask-star-2-with-warning-color
 // TODO: remove that and just use a basic btn
 export const Rate = (p: {

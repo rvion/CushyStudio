@@ -4,7 +4,6 @@ import type { Widget_group } from './WidgetGroup'
 import { observer } from 'mobx-react-lite'
 
 import { Box, BoxSubtle } from '../../../theme/colorEngine/Box'
-import { useColor } from '../../../theme/colorEngine/useColor'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 

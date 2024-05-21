@@ -8,7 +8,6 @@ import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './Wi
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'

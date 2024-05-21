@@ -5,7 +5,6 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWid
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'

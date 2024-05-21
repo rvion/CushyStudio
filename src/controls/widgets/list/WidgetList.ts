@@ -6,7 +6,6 @@ import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
