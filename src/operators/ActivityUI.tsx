@@ -3,18 +3,18 @@ import type { CSSProperties, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
+import { ModalShellUI } from '../rsuite/reveal/ModalShell'
 import { computePlacement } from '../rsuite/reveal/RevealPlacement'
-import { type Activity, activityManger } from './Activity'
+import { type Activity, activityManager } from './Activity'
 
 export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
-    // useDemoActivity()
     return (
         <Fragment>
-            {activityManger._stack.map((activity, ix) => (
+            {activityManager._stack.map((activity, ix) => (
                 <ActivityContainerUI
                     stop={() => {
                         activity.onStop?.()
-                        activityManger.stopCurrentActivity()
+                        activityManager.stopCurrentActivity()
                     }}
                     key={activity.uid}
                     activity={activity}
@@ -22,7 +22,7 @@ export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
                 >
                     <activity.UI //
                         activity={activity}
-                        stop={() => activityManger.stopActivity(activity)}
+                        stop={() => activityManager.stopActivity(activity)}
                     />
                 </ActivityContainerUI>
             ))}
@@ -69,10 +69,6 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                     className='_InputBlockerUI-backdrop'
                     tw='absolute inset-0 bg-[#000000db]'
                     style={{ zIndex: backdropzIndex }}
-                    onMouseUp={(ev) => {
-                        console.log('backdrop clicked')
-                        p.stop?.()
-                    }}
                 >
                     <div style={{ zIndex: -1 }} tw='absolute inset-0 z'></div>
                 </div>
@@ -80,13 +76,27 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 <div // activity area
                     tw='absolute inset-0'
                     style={{ zIndex: activityZIndex, ...pos }}
-                    className='_InputBlockerUI-activity-container'
-                    onClick={(ev) => {
+                    className='_InputBlockerUI-activity-container flex justify-center'
+                    onMouseDown={(ev) => {
                         console.log('activity backref clicked')
                         if (ev.target === ev.currentTarget) p.stop?.()
                     }}
                 >
-                    {p.children}
+                    {p.activity.shell === 'popup-lg' ? (
+                        <ModalShellUI tw='max-w-lg w-fit h-fit m-8' close={() => p.stop()} title={p.activity.title}>
+                            {p.children}
+                        </ModalShellUI>
+                    ) : p.activity.shell === 'popup-sm' ? (
+                        <ModalShellUI tw='max-w-sm w-fit h-fit m-8' close={() => p.stop()} title={p.activity.title}>
+                            {p.children}
+                        </ModalShellUI>
+                    ) : p.activity.shell === 'popup-full' ? (
+                        <ModalShellUI tw='m-8' close={() => p.stop()} title={p.activity.title}>
+                            {p.children}
+                        </ModalShellUI>
+                    ) : (
+                        p.children
+                    )}
                 </div>
             </div>
         </div>

@@ -8,22 +8,54 @@ export const ui_model = () => {
     return form.group({
         box: { base: { hue: 240, contrast: 0, chroma: 0.05 } },
         icon: 'mdiFlaskEmptyPlusOutline',
-        presets: {
-            test1: (w) => {
-                w.value = {
-                    checkpointConfig: undefined,
-                    ckpt_name: 'albedobaseXL_v21.safetensors',
-                    extra: { clipSkip: 2 },
-                }
+        presets: [
+            {
+                label: 'withPopup',
+                icon: 'mdiTrain',
+                apply: (w) => {
+                    const form = cushy.forms.form((ui) =>
+                        ui.fields({
+                            a: ui.string({ label: 'A' }),
+                            b: ui.int({ label: 'B' }),
+                        }),
+                    )
+                    cushy.activityManager.startActivity({
+                        uid: 'test',
+                        title: 'Multi-Step preset Demo',
+                        shell: 'popup-lg',
+                        UI: (p) =>
+                            form.render({
+                                submitAction: () => {
+                                    console.log('submit')
+                                    cushy.activityManager.stopActivity(p.activity) // 🔴
+                                },
+                            }),
+                    })
+                },
             },
-            test2: (w) => {
-                w.setValue({
-                    checkpointConfig: undefined,
-                    ckpt_name: 'revAnimated_v122.safetensors',
-                    extra: {},
-                })
+            {
+                icon: 'mdiStairsBox',
+                label: 'test1',
+                apply: (w) => {
+                    w.value = {
+                        checkpointConfig: undefined,
+                        ckpt_name: 'albedobaseXL_v21.safetensors',
+                        extra: { clipSkip: 2 },
+                    }
+                },
             },
-        },
+            {
+                icon: 'mdiAccountMusic',
+                label: 'test2',
+                apply: (w) => {
+                    w.setValue({
+                        checkpointConfig: undefined,
+                        ckpt_name: 'revAnimated_v122.safetensors',
+                        extra: {},
+                    })
+                },
+            },
+        ],
         label: 'Model',
         summary: (ui) => {
             let out: string = ui.ckpt_name

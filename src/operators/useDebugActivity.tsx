@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../rsuite/reveal/RevealExamples'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { activityManger } from './Activity'
+import { activityManager } from './Activity'
 import { menu_imageActions } from './commands/cmd_copyImage'
 
 export const useDemoActivity = () =>
     useEffect(() => {
-        activityManger.startActivity(DEMO_ACTIVITY)
+        activityManager.startActivity(DEMO_ACTIVITY)
     }, [])
 
 export const DEMO_ACTIVITY = {

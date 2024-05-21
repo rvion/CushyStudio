@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite'
 export const ModalShellUI = observer(function ModalShellUI_(p: {
     //
     title?: React.ReactNode
-    children?: React.ReactNode
-    footer?: React.ReactNode
     className?: string
+    children?: React.ReactNode
+    footer?: React.ReactNode | undefined
     close: () => void
 }) {
     return (

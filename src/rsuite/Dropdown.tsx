@@ -15,12 +15,11 @@ export const Dropdown = (p: {
     content?: () => ReactNode
 }) => (
     <RevealUI
-        className='dropdown'
         tw={[p.className]}
         content={() => (
-            <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+            <Box base={-5} tabIndex={0} tw='shadow z-[1] bg-base-100 rounded-box'>
                 {p.content?.()}
-            </ul>
+            </Box>
         )}
     >
         <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm gap-1 py-0 px-1.5`]}>
@@ -32,6 +31,7 @@ export const Dropdown = (p: {
 
 export const MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
+    /** ⚠️ unused for now */
     size?: 'sm' | 'xs' | 'md' | 'lg'
     icon?: Maybe<ReactNode>
     disabled?: boolean

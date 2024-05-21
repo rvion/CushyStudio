@@ -1,4 +1,5 @@
 import type { IconName } from '../icons/icons'
+import type { RelativeStyle } from '../theme/colorEngine/AbsoluteStyle'
 import type { BoxProps } from '../theme/colorEngine/Box'
 import type { BaseWidget } from './BaseWidget'
 import type { CovariantFn } from './BivariantHack'
@@ -119,6 +120,14 @@ export type SharedWidgetSerial = {
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
+
+export type WidgetMenuAction<T extends $WidgetTypes> = {
+    /** https://pictogrammers.com/library/mdi/ */
+    label: string
+    icon?: IconName
+    apply: (form: T['$Widget']) => void
+}
+
 export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /**
      * @since 2024-05-20
@@ -159,7 +168,8 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** will be called when value changed */
     onValueChange?: (val: T['$Value'], self: T['$Widget']) => void
 
-    presets?: Record<string, (form: T['$Widget']) => void>
+    /** allow to set custom actions on your widgets */
+    presets?: WidgetMenuAction<T>[]
 
     /** custom type checking;
      * valid:

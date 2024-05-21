@@ -6,7 +6,7 @@ import type { Trigger } from './RET'
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
 
-import { Activity, activityManger } from './Activity'
+import { Activity, activityManager } from './Activity'
 import { type BoundCommand, Command } from './Command'
 import { BoundMenuSym } from './introspect/_isBoundMenu'
 import { SimpleMenuAction } from './menuSystem/SimpleMenuAction'
@@ -68,7 +68,7 @@ export class Menu<Props> {
     /** push the menu to current activity */
     open(props: Props): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, props)
-        return activityManger.startActivity(instance)
+        return activityManager.startActivity(instance)
     }
 }
 
@@ -89,7 +89,7 @@ export class MenuWithoutProps {
     /** push the menu to current activity */
     open(): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, {})
-        return activityManger.startActivity(instance)
+        return activityManager.startActivity(instance)
     }
 }
 
@@ -129,7 +129,7 @@ export class MenuInstance<Props> implements Activity {
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
             if (entry instanceof SimpleMenuAction) {
-                const res = this.findSuitableKeys(entry.label, allocatedKeys)
+                const res = this.findSuitableKeys(entry.opts.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })
             } else if (entry instanceof Command) {

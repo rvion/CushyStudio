@@ -5,10 +5,10 @@ import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
 import { isWidget } from '../controls/IWidget'
+import { IkonOf } from '../icons/iconHelpers'
 import { MenuItem } from '../rsuite/Dropdown'
-import { ModalShellUI } from '../rsuite/reveal/ModalShell'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { activityManger } from './Activity'
+import { activityManager } from './Activity'
 import { isBoundCommand } from './introspect/_isBoundCommand'
 import { isBoundMenu } from './introspect/_isBoundMenu'
 import { isCommand } from './introspect/_isCommand'
@@ -37,7 +37,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                 const key = ev.key
                 for (const entry of p.menu.entriesWithKb) {
                     if (entry.char === key) {
-                        if (entry.entry instanceof SimpleMenuAction) entry.entry.onPick()
+                        if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onPick()
                         // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
                         else if (isBoundCommand(entry.entry)) entry.entry.execute()
                         else if (isCommand(entry.entry)) entry.entry.execute()
@@ -56,9 +56,10 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             tw='_SimpleMenuAction min-w-60'
                             key={ix}
                             shortcut={char}
-                            label={entry.label}
+                            label={entry.opts.label}
+                            icon={entry.opts.icon ? <IkonOf name={entry.opts.icon} /> : undefined}
                             onClick={() => {
-                                entry.onPick()
+                                entry.opts.onPick()
                                 p.menu.onStop()
                             }}
                         />
@@ -72,23 +73,17 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             shortcut={char}
                             label={entry.p.label}
                             onClick={(event) => {
-                                activityManger.startActivity({
+                                activityManager.startActivity({
                                     event,
                                     uid: 'createPreset',
                                     placement: 'auto',
+                                    shell: 'popup-lg',
                                     UI: (p) => (
-                                        <ModalShellUI
-                                            //
-                                            tw='max-w-lg'
+                                        <entry.p.UI //
                                             close={() => p.stop()}
-                                            title={entry.p.label}
-                                        >
-                                            <entry.p.UI //
-                                                close={() => p.stop()}
-                                                submit={entry.p.submit}
-                                                submitLabel={entry.p.submitLabel}
-                                            />
-                                        </ModalShellUI>
+                                            submit={entry.p.submit}
+                                            submitLabel={entry.p.submitLabel}
+                                        />
                                     ),
                                 })
                             }}

@@ -20,26 +20,11 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     const st = useSt()
     const tv = p.treeView
 
-    const FoldBtn = (
-        <div className={p.className} tw='btn btn-square btn-ghost btn-xs'>
-            <span className='material-symbols-outlined'>
-                {tv.isFolded ? (
-                    <span className='material-symbols-outlined'>keyboard_arrow_right</span>
-                ) : (
-                    <span className='material-symbols-outlined'>keyboard_arrow_down</span>
-                )}
-            </span>
-        </div>
-    )
-
     return (
         <TreeViewCtx.Provider value={tv}>
             <div tw='_TreeUI flex flex-col' className={p.className}>
                 <div tw='flex items-center gap-1 bg-base-300'>
-                    <div className='flex flex-1 gap-1 items-center' onClick={() => (tv.isFolded = true)}>
-                        {FoldBtn}
-                        {p.title && <div tw='text-sm'>{p.title}</div>}
-                    </div>
+                    <div className='flex flex-1 gap-1 items-center'>{p.title && <div tw='text-sm'>{p.title}</div>}</div>
                     {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
                     <RevealUI
                         trigger={'hover'}
@@ -56,7 +41,6 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                             <span className='material-symbols-outlined'>unfold_less</span>
                         </div>
                     </RevealUI>
-                    {/* {FoldBtn} */}
                 </div>
 
                 <div

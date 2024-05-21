@@ -1,11 +1,9 @@
-import type { TreeEntryL } from '../../../../models/TreeEntry'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { Tree } from './Tree'
+import type { ITreeEntryL, Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
 import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
-import { asTreeEntryID } from '../../../../db/TYPES.gen'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 
@@ -68,7 +66,10 @@ export class TreeNode {
 
     data: ITreeEntry
     id: string
-    entryL: TreeEntryL
+
+    /* TreeEntryL */
+    entryL: ITreeEntryL
+
     constructor(
         //
         public tree: Tree,
@@ -76,10 +77,11 @@ export class TreeNode {
         public parent: TreeNode | undefined,
     ) {
         const key = elem.key
-        // console.log(`[👙] 🔴REF= ${key}`)
         this.id = (parent?.id ?? '') + '/' + key
-        // console.log(`[👙] `, this.id)
-        this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
+
+        // 🔴 TODO: check if next line should be moved below the `this.data = ...` line
+        this.entryL = tree.getNodeState(this)
+        // 🔴 this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
         // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor

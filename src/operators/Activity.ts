@@ -37,9 +37,12 @@ class ActivityManager {
         makeAutoObservable(this)
     }
 }
-export const activityManger = new ActivityManager()
+export const activityManager = new ActivityManager()
 
 export interface Activity {
+    /** human-readable activity title */
+    title?: string
+
     /** uniquer activity uid */
     uid: string
 
@@ -57,6 +60,13 @@ export interface Activity {
      * pass through this function
      */
     onEvent?: (event: Event) => Trigger | null
+
+    /**
+     * @since 2024-05-21
+     * @default null
+     * how shells are wrapped
+     */
+    shell?: Maybe<'popup-lg' | 'popup-sm' | 'popup-full'>
 
     /** activity UI */
     UI: FC<{

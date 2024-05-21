@@ -62,6 +62,16 @@ export abstract class BaseWidget {
         return errors.length > 0
     }
 
+    abstract value: unknown
+
+    /**
+     * return a short string summary
+     * expected to be overriden in child classes
+     */
+    get summary() {
+        return JSON.stringify(this.value)
+    }
+
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
         const SELF = this as any as IWidget

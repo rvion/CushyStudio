@@ -68,47 +68,56 @@ export function ui_LatentShapeGenerator(
         {
             collapsed: false,
             border: false,
-            presets: {
-                default: (widget) => {
-                    widget.setPartialValue({
-                        amountCircle: 0,
-                        amountRect: 0,
-                        amountStar: 0,
-                        amountPolygon: 0,
-                        amountRing: 0,
-                        amountRainbow: 0,
-                        color1: '#FFFFFF',
-                        color2: '#000000',
-                        colorVariationFactor: 0.5,
-                    })
+            presets: [
+                {
+                    label: 'default',
+                    apply: (widget) => {
+                        widget.setPartialValue({
+                            amountCircle: 0,
+                            amountRect: 0,
+                            amountStar: 0,
+                            amountPolygon: 0,
+                            amountRing: 0,
+                            amountRainbow: 0,
+                            color1: '#FFFFFF',
+                            color2: '#000000',
+                            colorVariationFactor: 0.5,
+                        })
+                    },
                 },
-                pinkPower: (widget) => {
-                    widget.setPartialValue({
-                        amountCircle: 1,
-                        amountRect: 1,
-                        amountStar: 1,
-                        amountPolygon: 1,
-                        amountRing: 1,
-                        amountRainbow: 1,
-                        color1: '#FFC0CB',
-                        color2: '#AA336A',
-                        colorVariationFactor: 0,
-                    })
+                {
+                    label: 'pinkPower',
+                    apply: (widget) => {
+                        widget.setPartialValue({
+                            amountCircle: 1,
+                            amountRect: 1,
+                            amountStar: 1,
+                            amountPolygon: 1,
+                            amountRing: 1,
+                            amountRainbow: 1,
+                            color1: '#FFC0CB',
+                            color2: '#AA336A',
+                            colorVariationFactor: 0,
+                        })
+                    },
                 },
-                itHurtsMyEyes: (widget) => {
-                    widget.setPartialValue({
-                        amountCircle: 10,
-                        amountRect: 10,
-                        amountStar: 10,
-                        amountPolygon: 2,
-                        amountRing: 2,
-                        amountRainbow: 1,
-                        color1: '#ffffff',
-                        color2: '#000000',
-                        colorVariationFactor: 1,
-                    })
+                {
+                    label: 'itHurtsMyEyes',
+                    apply: (widget) => {
+                        widget.setPartialValue({
+                            amountCircle: 10,
+                            amountRect: 10,
+                            amountStar: 10,
+                            amountPolygon: 2,
+                            amountRing: 2,
+                            amountRainbow: 1,
+                            color1: '#ffffff',
+                            color2: '#000000',
+                            colorVariationFactor: 1,
+                        })
+                    },
                 },
-            },
+            ],
         },
     )
 }
