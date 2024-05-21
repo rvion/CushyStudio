@@ -40,6 +40,9 @@ class ActivityManager {
 export const activityManager = new ActivityManager()
 
 export interface Activity {
+    /** human-readable activity title */
+    title?: string
+
     /** uniquer activity uid */
     uid: string
 
