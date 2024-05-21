@@ -1,9 +1,9 @@
+import type { Channel, ChannelId } from './Channel'
 import type { ISpec } from './ISpec'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Channel, ChannelId } from './Channel'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'

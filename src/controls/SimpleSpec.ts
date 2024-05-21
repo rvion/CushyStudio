@@ -1,10 +1,10 @@
+import type { Channel, ChannelId, Producer } from './Channel'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
-import { Channel, type ChannelId, type Producer } from './Channel'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------

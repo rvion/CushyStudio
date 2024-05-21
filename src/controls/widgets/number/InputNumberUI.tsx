@@ -1,4 +1,4 @@
-import './InputNumberUI.css'
+// import './InputNumberUI.css'
 
 import type { CushyKit } from '../../shared/CushyKit'
 
