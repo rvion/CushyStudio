@@ -12,7 +12,7 @@ import { createElement, type ReactNode } from 'react'
 
 import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownConfigUI'
 import { debounce } from '../utils/misc/debounce'
-import { FormUI } from './FormUI'
+import { FormUI, type FormUIProps } from './FormUI'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
 export type FormProperties<
@@ -62,7 +62,7 @@ export class Form<
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render = (): ReactNode => createElement(FormUI, { form: this })
+    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => createElement(FormUI, { form: this, ...p })
     renderAsConfigBtn = (): ReactNode =>
         createElement(FormAsDropdownConfigUI, {
             form: this,
