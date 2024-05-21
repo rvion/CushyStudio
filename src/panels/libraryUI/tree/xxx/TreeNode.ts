@@ -1,5 +1,5 @@
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { ITreeEntryL, Tree } from './Tree'
+import type { INodeStore, Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -68,7 +68,7 @@ export class TreeNode {
     id: string
 
     /* TreeEntryL */
-    entryL: ITreeEntryL
+    entryL: INodeStore
 
     constructor(
         //
@@ -80,7 +80,7 @@ export class TreeNode {
         this.id = (parent?.id ?? '') + '/' + key
 
         // 🔴 TODO: check if next line should be moved below the `this.data = ...` line
-        this.entryL = tree.getNodeState(this)
+        this.entryL = tree.config.getNodeState(this)
         // 🔴 this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
         // ⏸️ this.tree.indexNode(this)
 

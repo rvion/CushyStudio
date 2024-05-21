@@ -31,7 +31,7 @@ import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
-import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
@@ -50,7 +50,7 @@ import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
 import { treeElement } from '../panels/libraryUI/tree/TreeEntry'
-import { Tree } from '../panels/libraryUI/tree/xxx/Tree'
+import { Tree, type TreeStorageConfig } from '../panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../panels/router/Layout'
@@ -593,6 +593,13 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
+
+        const treeAdapter: TreeStorageConfig = {
+            getNodeState: (node: TreeNode) => this.db.tree_entry.upsert({ id: node.id })!,
+            updateAll: (data: { isExpanded: SQLITE_boolean_ | null }) =>
+                this.db.tree_entry.updateAll({ isExpanded: data.isExpanded }),
+        }
+
         this.tree1 = new Tree(
             [
                 //
@@ -602,7 +609,7 @@ export class STATE {
                 treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
                 // '#apps',
             ],
-            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+            treeAdapter,
         )
         this.tree1View = new TreeView(this.tree1, {
             onFocusChange: (node?: TreeNode) => {
@@ -626,7 +633,7 @@ export class STATE {
                 // 'path#library/local',
                 // 'path#library/sdk-examples',
             ],
-            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+            treeAdapter,
         )
         this.tree2View = new TreeView(this.tree2, {
             onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),

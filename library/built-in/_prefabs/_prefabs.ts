@@ -10,19 +10,24 @@
  * 🟢 import type {...} from '...'
  * ❌ import {...} from '...'`
  * */
+
+import type * as X from '../../../src/controls/FormBuilder'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
-import type { IFormBuilder } from '../../../src/controls/IFormBuilder'
 import type { GetWidgetResult } from '../../../src/controls/IWidget'
 
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => any> = GetWidgetResult<ReturnType<UIFn>>
 
-// const form = getGlobalFormBuilder()
-// const flow = getGlobalRuntime()
+type UI_HighResFix = X.XGroup<{
+    upscaleMethod: X.XSelectOne<{ readonly id: 'regular' } | { readonly id: 'Neural 1.5' } | { readonly id: 'Neural XL' }>
+    scaleFactor: X.XNumber
+    steps: X.XNumber
+    denoise: X.XNumber
+    saveIntermediaryImage: X.XBool
+    useMainSampler: X.XBool
+}>
 
-// HIGH_RES_FIX -----------------------------------------------------------
-
-export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
+export function ui_highresfix(p: { activeByDefault?: true } = {}): UI_HighResFix {
     const form = getCurrentForm()
     return form.group({
         label: 'Upscale Pass (High Res Fix)',
