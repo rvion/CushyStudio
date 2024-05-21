@@ -56,6 +56,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 ev.stopPropagation()
                 p.onClick?.(ev)
             }}
+            style={{ lineHeight: '1.6rem' }}
             tw={['_MenuItem', 'px-1 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
             {...rest}
         >
