@@ -39,12 +39,19 @@ export const menu_widgetActions: Menu<IWidget> = menu({
 
         const presets = widget.config.presets
         if (presets == null) return [createPreset]
-        const entries = Object.entries(presets)
+        const entries = presets
         if (entries.length === 0) return [createPreset]
         return [
             //
             createPreset,
-            ...entries.map(([key, value]) => new SimpleMenuAction(key, () => value(widget))),
+            ...entries.map(
+                (entry) =>
+                    new SimpleMenuAction({
+                        label: entry.label,
+                        icon: entry.icon,
+                        onPick: () => entry.apply(widget),
+                    }),
+            ),
         ]
         // return [
         //     new SimpleMenuEntry('foo', () => console.log('foo')),
