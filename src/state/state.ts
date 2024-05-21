@@ -44,6 +44,7 @@ import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
+import { activityManager } from '../operators/Activity'
 import { regionMonitor, RegionMonitor } from '../operators/RegionMonitor'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
@@ -441,6 +442,9 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
+    get activityManager() {
+        return activityManager
+    }
     civitaiConf = CushyFormManager.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
