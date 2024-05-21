@@ -18,12 +18,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
     const suggestions: RelativePath[] =
         suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
     return (
-        <div
-            style={dropStyle}
-            ref={dropRef}
-            className='DROP_IMAGE_HANDLER'
-            tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 self-center'
-        >
+        <div style={dropStyle} ref={dropRef} className='DROP_IMAGE_HANDLER' tw='_WidgetSelectImageUI flex gap-2 p-1  self-center'>
             {image != null ? ( //
                 <div tw='flex items-start gap-1'>
                     <ImageUI tw='virtualBorder' size={'5rem'} img={image} />

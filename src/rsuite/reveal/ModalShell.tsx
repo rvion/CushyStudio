@@ -14,7 +14,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
             tw={[
                 //
                 'animate-in fade-in',
-                'virtualBorder p-4 rounded-xl bg-base-100 shadow-xl',
+                'virtualBorder p-4 rounded-xl  shadow-xl',
             ]}
             onClick={(ev) => ev.stopPropagation()}
         >

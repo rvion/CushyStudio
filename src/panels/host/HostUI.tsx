@@ -27,7 +27,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             {/* {host.data.isReadonly ? (
                 <div tw='bg-secondary text-secondary-content p-0.5 opacity-50'>Readonly Host (Built-in)</div>
             ) : (
-                <div tw='bg-base-100 p-0.5'>Custom Host</div>
+                <Box base={5} tw='p-0.5'>Custom Host</Box base={5}>
             )} */}
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />

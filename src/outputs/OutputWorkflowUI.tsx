@@ -20,7 +20,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
         <OutputPreviewWrapperUI output={p.output}>
             <RevealUI
                 content={() => (
-                    <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                    <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
                         {/* <ImageDropdownMenuUI img={image} /> */}
                         <MenuItem
                             icon={<span className='material-symbols-outlined'>open_in_new</span>}

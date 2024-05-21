@@ -150,7 +150,7 @@ const mkTooltip = (uist: RevealState | null) => {
     ) : (
         <div
             className={p.tooltipWrapperClassName}
-            tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
+            tw={['_RevealUI card card-bordered  shadow-xl pointer-events-auto']}
             // 👇 ❌ [break the dropdown]
             // ⏸️   onMouseDown={(ev) => {
             // ⏸️       p.onClick?.(ev)

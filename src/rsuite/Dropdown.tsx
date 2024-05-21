@@ -17,7 +17,7 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Box base={-5} tabIndex={0} tw='shadow z-[1] bg-base-100 rounded-box'>
+            <Box base={-5} tabIndex={0} tw='shadow z-[1]  rounded-box'>
                 {p.content?.()}
             </Box>
         )}

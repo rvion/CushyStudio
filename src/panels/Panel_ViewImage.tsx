@@ -8,6 +8,7 @@ import { formatSize } from '../db/getDBStats'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
+import { Box } from '../theme/colorEngine/Box'
 import { assets } from '../utils/assets/assets'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
@@ -32,7 +33,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
             : null
 
     return (
-        <div className={p.className} style={{ background }} tw='flex flex-col flex-grow bg-base-100 relative'>
+        <div className={p.className} style={{ background }} tw='flex flex-col flex-grow  relative'>
             <ImageActionBarUI img={img} />
             {shouldFilter && <pre>{JSON.stringify(safety?.value)}</pre>}
             <TransformWrapper centerZoomedOut centerOnInit>
@@ -99,7 +100,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 />
             </div>
 
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
+            <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
             <div tw='join'>
                 <div // Canvas Button
@@ -121,7 +122,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </div>
             </div>
 
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
+            <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
             {img ? <ImageDropdownUI tw='WIDGET-FIELD' img={img} /> : null}
 
@@ -167,7 +168,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </div>
             </RevealUI>
 
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
+            <Box base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Box base={5}>
 
             <div // Delete button
                 tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'

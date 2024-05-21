@@ -108,7 +108,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <Box
             key={rootKey}
             tw={[
-                // widget.background && (isCollapsible || showBorder) && 'bg-base-100',
+                // widget.background && (isCollapsible || showBorder) && '',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,

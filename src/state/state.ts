@@ -959,6 +959,13 @@ export class STATE {
     }
     // ----------------------------
 
+    // get lch(): string {
+    //     const val = this.theme.root.value.base
+    //     const color = new Color(val)
+    //     const xx = color.oklch
+    //     return xx.map((x) => x.toFixed(2)).join(' ')
+    // }
+
     theme = CushyFormManager.fields(
         (ui) => ({
             base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),

@@ -12,7 +12,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: { uid?: num
 
     return (
         <div //
-            className='flex flex-col bg-base-100 h-full'
+            className='flex flex-col  h-full'
             style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>

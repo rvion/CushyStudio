@@ -72,7 +72,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                 </div>
                 <div tw={['absolute bottom-0 z-30']}>{out2 && <OutputUI output={out2} />}</div>
                 {/* {out3 && (
-                    <div tw={['flex flex-grow overflow-auto top-20 absolute z-20 bg-base-100 bg-opacity-80']}>
+                    <div tw={['flex flex-grow overflow-auto top-20 absolute z-20  bg-opacity-80']}>
                         <OutputUI output={out3} />
                     </div>
                 )} */}
@@ -88,7 +88,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const step = st.focusedStepL
     const size = st.historySizeStr
     return (
-        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-100 items-center max-h-[50%]'}>
+        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0  items-center max-h-[50%]'}>
             <RevealUI
                 tw='self-start'
                 content={() => (

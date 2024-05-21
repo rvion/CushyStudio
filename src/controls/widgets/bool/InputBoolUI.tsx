@@ -66,7 +66,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                     <div
                         tw={[
                             //
-                            'flex items-center rounded-sm bg-base-100',
+                            'flex items-center rounded-sm ',
                             'border border-base-200',
                             'border-b-2 border-b-base-300 box-content',
                         ]}

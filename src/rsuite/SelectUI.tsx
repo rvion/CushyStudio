@@ -390,7 +390,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
         <div /* Container/Root */
             tabIndex={-1}
             tw={[
-                'WIDGET-FIELD bg-base-100',
+                'WIDGET-FIELD ',
                 'flex flex-1 items-center relative',
                 'rounded overflow-clip text-shadow',
                 'border border-base-100 hover:brightness-110',
@@ -475,7 +475,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
         <div
             ref={s.popupRef}
             tw={[
-                'MENU-ROOT _SelectPopupUI bg-base-100 flex',
+                'MENU-ROOT _SelectPopupUI  flex',
                 'border-l border-r border-base-300 overflow-auto',
                 s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
@@ -505,7 +505,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 }
             }}
         >
-            <ul className='bg-base-100 max-h-96' tw='flex-col w-full'>
+            <ul className=' max-h-96' tw='flex-col w-full'>
                 {/* list of all values */}
                 <li>
                     <div tw='overflow-hidden'>{s.displayValue}</div>
@@ -541,7 +541,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                     /* index === s.selectedIndex && */
                                     // isSelected ? '!text-primary-content text-shadow' : 'bg-base-300',
-                                    // !isSelected && 'active:bg-base-100',
+                                    // !isSelected && 'active:',
                                     // isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary', // prettier-ignore
                                 ]}
                             >

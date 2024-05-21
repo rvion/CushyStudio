@@ -21,7 +21,7 @@ import { useSt } from '../../state/stateContext'
 const FavBarContainer = observer(function FavBarContainer_(p: { children?: ReactNode; icon?: string }) {
     return (
         <div // Favorite app container
-            tw={['w-full flex flex-col rounded', 'gap-1 bg-base-100 p-1 text-center justify-center items-center', 'text-shadow']}
+            tw={['w-full flex flex-col rounded', 'gap-1  p-1 text-center justify-center items-center', 'text-shadow']}
         >
             {p.icon && (
                 <span tw='select-none' className='material-symbols-outlined'>
