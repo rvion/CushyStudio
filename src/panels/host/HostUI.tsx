@@ -1,13 +1,13 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
+import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
+import { HostL } from '../../models/Host'
+import { Toggle } from '../../rsuite/shims'
+import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { HostL } from 'src/models/Host'
-import { HostSchemaIndicatorUI } from 'src/panels/host/HostSchemaIndicatorUI'
-import { HostWebsocketIndicatorUI } from 'src/panels/host/HostWebsocketIndicatorUI'
-import { Joined, Toggle } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
+import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
+import { HostWebsocketIndicatorUI } from './HostWebsocketIndicatorUI'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const st = useSt()
@@ -40,7 +40,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <Joined tw='flex '>
+                <div tw='flex join virtualBorder'>
                     <div
                         tw={[
                             //
@@ -72,7 +72,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     >
                         <span className='material-symbols-outlined'>delete_forever</span>
                     </div>
-                </Joined>
+                </div>
 
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}

@@ -1,11 +1,12 @@
+import type { IconName } from '../icons/icons'
+import type { RelativeStyle } from '../theme/colorEngine/AbsoluteStyle'
+import type { BoxProps } from '../theme/colorEngine/Box'
+import type { BaseWidget } from './BaseWidget'
+import type { CovariantFn } from './BivariantHack'
+import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
-import type { FC } from 'react'
-import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
-import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
-import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
-import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
-import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
+import type { ISpec } from './ISpec'
+import type { Problem_Ext } from './Validation'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -16,19 +17,32 @@ export type $WidgetTypes = {
     $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Value: any
-    $Widget: any
+    $Widget: IWidget<$WidgetTypes>
 }
 
-// prettier-ignore
-export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
-    $Type  : K['$Type']   /** type only properties; do not use directly; used to make typings good and fast */
+export const isWidget = (x: any): x is IWidget => {
+    return (
+        x != null && //
+        typeof x === 'object' &&
+        '$WidgetSym' in x &&
+        x.$WidgetSym === $WidgetSym
+    )
+}
+
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget {
+    // ---------------------------------------------------------------------------------------------------
+    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Value : K['$Value']  /** type only properties; do not use directly; used to make typings good and fast */
+    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
+    // ---------------------------------------------------------------------------------------------------
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
+
+    /** spec used to instanciate this widget */
+    readonly spec: ISpec<any>
 
     /** widget type; can be used instead of `instanceof` to known which wiget it is */
     readonly type: K['$Type']
@@ -48,57 +62,35 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** parent widget of this widget, if any */
     readonly parent: IWidget | null
 
-    /** if specified by the widget, override the default algorithm to decide if the widget shouldhave borders */
+    /** base validation errors specific to this widget; */
+    readonly baseErrors: Problem_Ext
+
+    /** unified api to allow setting serial from value */
+    setValue(val: K['$Value']): void
+
+    // ---------------------------------------------------------------------------------------------------
+    /** if specified, override the default algorithm to decide if the widget should have borders */
     border?: boolean
 
-    /** if specified, override the default algorithm to decide if we should have label aligned */
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    collapsible?: boolean
+
+    /** if specified, override the default algorithm to decide if the widget should have label aligned */
     alignLabel?: boolean
 
+    // 2024-03-27 rvion: not really a fan of those options
+    /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
+    background?: boolean
+
+    // ---------------------------------------------------------------------------------------------------
     /** default header UI */
-    readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 
     /** default body UI */
-    readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 }
 
-/**
- * those properties will be dynamically injected in every widget
- * by calling `applyWidgetMixinV2(this)` in the constructor,
- * Before the makeAutoObservable(this) call. If you're adding a new
- * base widget, you're expected to do that too.
- */
-export type IWidgetMixins = {
-    // UI ------------------------------------------------------
-    // value stuff
-    ui(): JSX.Element
-    body(): JSX.Element | undefined
-    header(): JSX.Element | undefined
-    defaultBody(): JSX.Element | undefined
-    defaultHeader(): JSX.Element | undefined
-
-    // FOLD ----------------------------------------------------
-    setCollapsed(
-        /** true: collapse; false: expanded */
-        val: boolean | undefined,
-    ): void
-
-    /** toggle widget fold <-> unfolded */
-    toggleCollapsed(): void
-
-    // BUMP ----------------------------------------------------
-    /**
-     * Notify form that the value has been udpated
-     * (and bump serial.lastUpdatedAt to Date.now())
-     * 👉 Every widget must call this when value has been updated
-     * */
-    bumpValue(): void
-
-    /**
-     * Notify form that a non-value serial has been udpated
-     * 👉 every widget must call this when non-value serial has been updated
-     * */
-    bumpSerial(): void
-}
+export const $WidgetSym = Symbol('Widget')
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
 export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never
@@ -108,22 +100,87 @@ export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? 
 
 /** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
-    id: string
+    id?: string
+    /** name of the widget, so we can later re-instanciate a widget from this */
     type: string
+    /** if true, widget should be displayed folded when it make sense in given context */
     collapsed?: boolean
+    /** timestap this widget was last updated */
     lastUpdatedAt?: number
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
+
+    /**
+     * DO NOT MANUALLY SET THIS VALUE;
+     * this value will be set by the init() function (BaseWidget class)
+     * use to know if the onCreate function should be re-run or not
+     * */
+    _creationKey?: string
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
+
+export type WidgetMenuAction<T extends $WidgetTypes> = {
+    /** https://pictogrammers.com/library/mdi/ */
+    label: string
+    icon?: IconName
+    apply: (form: T['$Widget']) => void
+}
+
 export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /**
+     * @since 2024-05-20
+     * @stability beta
+     * Icon name from the icon library.
+     *   - "mdi..." for Material design icons - 7000+ icons https://pictogrammers.com/library/mdi/)
+     *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
+     */
+    icon?: IconName | CovariantFn<T['$Widget'], IconName> // IconName
+    /**
+     * @since 2024-05-19
+     * @stability beta
+     * Appearance box props
+     */
+    box?: BoxProps
+
+    /**
+     * @since 2024-05-14
+     * @stability beta
+     * This function will be executed either on first creation, or when the
+     * evaluationKey changes. The evaluationKey is stored in the group serial.
+     */
+    onCreate?: CovariantFn<T['$Widget'], void> & { evaluationKey?: string }
+
+    /**
+     * @since 2024-05-14
+     * @stability beta
+     * This function will be executed either on every widget instanciation.
+     */
+    onInit?: CovariantFn<T['$Widget'], void>
+
     /** allow to specify custom headers */
     header?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 
     /** allow to specify custom body */
     body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+
+    /** will be called when value changed */
+    onValueChange?: (val: T['$Value'], self: T['$Widget']) => void
+
+    /** allow to set custom actions on your widgets */
+    presets?: WidgetMenuAction<T>[]
+
+    /** custom type checking;
+     * valid:
+     *  - true,
+     *  - [],
+     * invalid:
+     *  - false,
+     *  - ["errMsg", ...]
+     *  - "errMsg"
+     * */
+    check?: (val: T['$Widget']) => Problem_Ext
 
     /**
      * The label to display.
@@ -153,8 +210,8 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      */
     showID?: boolean
 
-    /** The widget requirements */
-    requirements?: Requirements[]
+    // ⏸️ /** The widget requirements */
+    // ⏸️ requirements?: Requirements[]
 
     /**
      * override the default `collapsed` status
@@ -177,19 +234,3 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
 }
-
-/**
- * cushy-specific types to allow
- * 2024-03-13 rvion: TODO: split outside of this file, add a new type-level config for
- * project-specific FormNode metadata
- */
-export type Requirements =
-    // models
-    | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: KnownModel_Base }
-    | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
-    | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
-
-    // custom nodes
-    | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
-    | { type: 'customNodesByURI'; uri: KnownCustomNode_File; optional?: true }
-    | { type: 'customNodesByNameInCushy'; nodeName: KnownCustomNode_CushyName; optional?: true }

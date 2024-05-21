@@ -1,9 +1,19 @@
-import type { Widget_listExt } from '../listExt/WidgetListExt'
-import type { Widget_list } from './WidgetList'
-
 import { observer } from 'mobx-react-lite'
 
-export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Widget_listExt<any> | Widget_list<any> }) {
+export type IWidgetListLike = {
+    addItem(): void
+    removeAllItems(): void
+    expandAllItems(): void
+    collapseAllItems(): void
+    items: unknown[]
+    readonly length: number
+    config: {
+        max?: number
+        min?: number
+    }
+} //Widget_listExt<any> | Widget_list<any>
+
+export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWidgetListLike }) {
     const widget = p.widget
     const max = widget.config.max
     const min = widget.config.min

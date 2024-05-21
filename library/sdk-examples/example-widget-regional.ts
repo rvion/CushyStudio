@@ -1,4 +1,4 @@
-import { run_prompt } from 'library/built-in/_prefabs/prefab_prompt'
+import { run_prompt } from '../built-in/_prefabs/prefab_prompt'
 
 app({
     ui: (form) => ({
@@ -16,12 +16,12 @@ app({
             }),
             element: ({ width: w, height: h }) =>
                 form.group({
-                    items: () => ({
+                    items: {
                         prompt: form.prompt({}),
                         mode: form.selectOne({
                             choices: [{ id: 'combine' }, { id: 'concat' }],
                         }),
-                    }),
+                    },
                 }),
         }),
         // mainPos: form.prompt({}),

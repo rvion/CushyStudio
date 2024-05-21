@@ -1,31 +1,37 @@
-import type { Widget_listExt } from '../listExt/WidgetListExt'
+import type { ISpec } from '../../ISpec'
+import type { IWidget } from '../../IWidget'
 import type { Widget_list } from './WidgetList'
-import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+
+import { forwardRef } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef } from 'react'
-import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
+// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
-import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
+import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
+import { menu_widgetActions } from '../../shared/WidgetMenu'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
-    widget: Widget_list<T> | Widget_listExt<T>
-}) {
+import { ListControlsUI } from './ListControlsUI'
+
+const {default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
+
+
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
     return (
         <div tw='flex flex-1 items-center'>
             <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
-            <div tw='ml-auto'>
-                <ListControlsUI widget={p.widget} />
-            </div>
+            {p.widget.isAuto ? null : (
+                <div tw='ml-auto'>
+                    <ListControlsUI widget={p.widget} />
+                </div>
+            )}
         </div>
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISpec>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
@@ -63,20 +69,29 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                                 {widgetHeader}
                                             </ErrorBoundary>
                                         )}
+                                        {subWidget.config.presets && (
+                                            <RevealUI //
+                                                content={() => <menu_widgetActions.UI props={subWidget} />}
+                                            >
+                                                <span className='material-symbols-outlined'>more_vert</span>
+                                            </RevealUI>
+                                        )}
                                         {/* delete btn */}
-                                        <div
-                                            tw={[
-                                                'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                                min && widget.items.length <= min ? 'btn-disabled' : null,
-                                            ]}
-                                            onClick={() => widget.removeItem(subWidget)}
-                                        >
-                                            <span className='material-symbols-outlined'>delete</span>
-                                        </div>
+                                        {p.widget.isAuto ? null : (
+                                            <div
+                                                tw={[
+                                                    'btn btn-sm btn-narrower btn-ghost opacity-50',
+                                                    min != null && widget.items.length <= min ? 'btn-disabled' : null,
+                                                ]}
+                                                onClick={() => widget.removeItem(subWidget)}
+                                            >
+                                                <span className='material-symbols-outlined'>delete</span>
+                                            </div>
+                                        )}
                                         {/* collapse indicator */}
-                                        <ListItemCollapseBtnUI widget={subWidget} />
+                                        {subWidget.collapsible && <ListItemCollapseBtnUI widget={subWidget} />}
                                     </div>
-                                    {widgetBody && !collapsed && subWidget && (
+                                    {widgetBody && !collapsed && subWidget != null && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
                                                 {/* <WidgetBodyUI widget={subWidget} /> */}

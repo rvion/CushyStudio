@@ -1,16 +1,16 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
+export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfigFields<
     {
         startActive?: boolean
         widget: T
@@ -19,32 +19,45 @@ export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerialFields<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
+// // SERIAL FROM VALUE
+// export const Widget_optional_fromValue = <T extends ISpec = ISpec>(
+//     config/* 🔴 */: Widget_optional_config<T>,
+//     value: Widget_optional_value<T>,
+// ): Widget_optional_serial<T> => ({
+//     type: 'optional',
+//     active: value != null,
+//     child: config.widget,
+// })
+
 // VALUE
-export type Widget_optional_value<T extends Spec = Spec> = Maybe<T['$Value']>
+export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends Spec = Spec> = {
+export type Widget_optional_types<T extends ISpec = ISpec> = {
     $Type: 'optional'
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
     $Value: Widget_optional_value<T>
-    $Widget: Widget_optional_value<T>
+    $Widget: Widget_optional<T>
 }
 
 // STATE
-export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T>, IWidgetMixins {}
-export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
+export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T> {}
+export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'optional' = 'optional'
-
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     serial: Widget_optional_serial<T>
     child!: T['$Widget']
 
@@ -83,9 +96,11 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_optional_config<T>,
+        public readonly spec: ISpec<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {
@@ -101,10 +116,30 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        applyWidgetMixinV2(this)
-        makeObservable(this, { serial: observable, value: computed })
+        this.init({ serial: observable, value: computed })
     }
 
+    setValue(val: Widget_optional_value<T>) {
+        this.value = val
+    }
+
+    get subWidgets() {
+        return this.serial.active ? [this.child] : []
+    }
+
+    get subWidgetsWithKeys() {
+        return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    }
+
+    set value(next: Widget_optional_value<T>) {
+        if (next == null) {
+            this.setActive(false)
+            return
+        } else {
+            this.setActive(true)
+            this.child.setValue(next)
+        }
+    }
     get value(): Widget_optional_value<T> {
         if (!this.serial.active) return null
         return this.childOrThrow.value
@@ -112,4 +147,4 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
 }
 
 // DI
-WidgetDI.Widget_optional = Widget_optional
+registerWidgetClass('optional', Widget_optional)

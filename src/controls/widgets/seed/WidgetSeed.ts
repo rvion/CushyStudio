@@ -1,12 +1,14 @@
-import type { Form } from 'src/controls/Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_seed_config = WidgetConfigFields<
@@ -26,6 +28,13 @@ export type Widget_seed_serial = WidgetSerialFields<{
     mode: 'randomize' | 'fixed' | 'last'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_seed_fromValue = (value: Widget_seed_value): Widget_seed_serial => ({
+    type: 'seed',
+    mode: 'fixed',
+    val: value,
+})
+
 // VALUE
 export type Widget_seed_value = number
 
@@ -39,11 +48,16 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export interface Widget_seed extends Widget_seed_types, IWidgetMixins {}
-export class Widget_seed implements IWidget<Widget_seed_types> {
+export interface Widget_seed extends Widget_seed_types {}
+export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
     readonly id: string
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
 
@@ -69,9 +83,11 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_seed_config,
+        public readonly spec: ISpec<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'seed',
@@ -79,8 +95,7 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
             val: config.default ?? 0,
             mode: config.defaultMode ?? 'randomize',
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     get value(): Widget_seed_value {
@@ -89,4 +104,4 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
     }
 }
 
-WidgetDI.Widget_seed = Widget_seed
+registerWidgetClass('seed', Widget_seed)

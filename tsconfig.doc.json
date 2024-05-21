@@ -6,21 +6,19 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
         "skipLibCheck": false,
+        "incremental": true,
+        "noImplicitAny": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
+        "strictFunctionTypes": true,
         "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "noUncheckedIndexedAccess": true,
         "module": "ESNext",
         "moduleResolution": "Node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        //
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "declarationMap": false,
-        "sourceMap": false,
-        "outDir": "lib",
-        //
         "jsx": "react-jsx",
         "baseUrl": ".",
         "typeRoots": ["src/typings"],
@@ -35,7 +33,14 @@
             "@tensorflow/tfjs": ["src/typings/empty-types.d.ts"],
             "@types/webgl": ["src/typings/empty-types.d.ts"],
             "@types/webgl-ext": ["src/typings/empty-types.d.ts"]
-        }
+        },
+        // -------------// -------------
+        /* specific to doc */ "tsBuildInfoFile": "lib/.tsbuildinfo",
+        /* specific to doc */ "declaration": true,
+        // /* specific to doc */ "emitDeclarationOnly": true,
+        /* specific to doc */ "declarationMap": false,
+        /* specific to doc */ "sourceMap": false,
+        /* specific to doc */ "outDir": "lib"
     },
     "include": ["src/**/*.ts", "schema/global.d.ts"]
 }

@@ -1,13 +1,11 @@
-import type { Tree } from './Tree'
+import type { ITreeElement, ITreeEntry } from '../TreeEntry'
+import type { ITreeEntryL, Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
-import { ITreeElement, ITreeEntry } from '../TreeEntry'
+import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asTreeEntryID } from 'src/db/TYPES.gen'
-import { TreeEntryL } from 'src/models/TreeEntry'
 
 export type NodeId = string
 export type NodeKey = string
@@ -40,7 +38,6 @@ export type TreeScrollOptions = {
 }
 
 export interface TreeNode extends IArrayLike {}
-
 export class TreeNode {
     scrollIntoView(p?: TreeScrollOptions) {
         document.getElementById(this.id)?.scrollIntoView({
@@ -69,7 +66,10 @@ export class TreeNode {
 
     data: ITreeEntry
     id: string
-    entryL: TreeEntryL
+
+    /* TreeEntryL */
+    entryL: ITreeEntryL
+
     constructor(
         //
         public tree: Tree,
@@ -77,19 +77,20 @@ export class TreeNode {
         public parent: TreeNode | undefined,
     ) {
         const key = elem.key
-        // console.log(`[👙] 🔴REF= ${key}`)
         this.id = (parent?.id ?? '') + '/' + key
-        // console.log(`[👙] `, this.id)
-        this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
+
+        // 🔴 TODO: check if next line should be moved below the `this.data = ...` line
+        this.entryL = tree.getNodeState(this)
+        // 🔴 this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
         // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor
         const isRealClass = Boolean(Object.getOwnPropertyDescriptors(ctor).prototype)
         this.data = isRealClass
             ? // @ts-ignore
-              new ctor(tree.st, elem.props)
+              new ctor(elem.props)
             : // @ts-ignore
-              ctor(tree.st, elem.props)
+              ctor(elem.props)
         makeAutoObservable(this, { _children_: false })
     }
 
@@ -163,11 +164,11 @@ export class TreeNode {
 
     get prevSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
-        let self = this
+        let SELF = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
-        if (siblings[0] === self) return // first of the fratry
+        if (siblings[0] === SELF) return // first of the fratry
         for (let i = siblings.length - 1; i > 0; i--) {
-            if (siblings[i] === self) return siblings[i - 1]
+            if (siblings[i] === SELF) return siblings[i - 1]
         }
         return
     }

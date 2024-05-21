@@ -1,13 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { computed, makeObservable, observable, runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<
@@ -45,11 +45,12 @@ export type Widget_number_types = {
 }
 
 // STATE
-export interface Widget_number extends Widget_number_types, IWidgetMixins {}
-export class Widget_number implements IWidget<Widget_number_types> {
+export interface Widget_number extends Widget_number_types {}
+export class Widget_number extends BaseWidget implements IWidget<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
@@ -61,13 +62,21 @@ export class Widget_number implements IWidget<Widget_number_types> {
         this.value = this.defaultValue
     }
 
+    get baseErrors() {
+        if (this.config.min !== undefined && this.value < this.config.min) return `Value is less than ${this.config.min}`
+        if (this.config.max !== undefined && this.value > this.config.max) return `Value is greater than ${this.config.max}`
+        return null
+    }
+
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_number_config,
+        public readonly spec: ISpec<Widget_number>,
         serial?: Widget_number_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',
@@ -76,13 +85,15 @@ export class Widget_number implements IWidget<Widget_number_types> {
             val: config.default ?? 0,
         }
 
-        applyWidgetMixinV2(this)
-        makeObservable(this, {
+        this.init({
             serial: observable,
             value: computed,
         })
     }
 
+    setValue(val: Widget_number_value) {
+        this.value = val
+    }
     set value(next: Widget_number_value) {
         if (this.serial.val === next) return
         runInAction(() => {
@@ -96,4 +107,4 @@ export class Widget_number implements IWidget<Widget_number_types> {
 }
 
 // DI
-WidgetDI.Widget_number = Widget_number
+registerWidgetClass('number', Widget_number)

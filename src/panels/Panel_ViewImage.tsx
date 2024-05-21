@@ -1,17 +1,17 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { formatSize } from '../db/getDBStats'
+import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { Rate } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
+import { assets } from '../utils/assets/assets'
+import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
 import { PanelHeaderUI } from './PanelHeader'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { formatSize } from 'src/db/getDBStats'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Rate } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { assets } from 'src/utils/assets/assets'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -23,7 +23,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_image.get(p.imageID)
         : st.db.media_image.last()
     const url = img?.url
-    const background = st.galleryConf.get('galleryBgColor')
+    const background = st.galleryConf.root.get('galleryBgColor')
 
     const shouldFilter = st.project.filterNSFW
     const safety =
@@ -46,10 +46,10 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
                                 filter: !st.project.filterNSFW
                                     ? undefined
                                     : safety?.value == null //
-                                    ? 'blur(50px)'
-                                    : safety.value.isSafe
-                                    ? undefined
-                                    : 'blur(50px)',
+                                      ? 'blur(50px)'
+                                      : safety.value.isSafe
+                                        ? undefined
+                                        : 'blur(50px)',
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'contain',

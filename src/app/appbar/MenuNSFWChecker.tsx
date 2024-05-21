@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { MessageInfoUI, MessageWarningUI } from 'src/panels/MessageUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
+import { MessageInfoUI, MessageWarningUI } from '../../panels/MessageUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
 
 export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
     const st = useSt()

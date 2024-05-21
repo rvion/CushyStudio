@@ -1,7 +1,8 @@
+import type { TreeNode } from './xxx/TreeNode'
+
 import { observer } from 'mobx-react-lite'
 
 import { TreeIcon1UI } from './RenderTreeIcon1'
-import { TreeNode } from './xxx/TreeNode'
 
 export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node: TreeNode }) {
     const node = p.node
@@ -11,7 +12,6 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node:
         : item.icon ?? item.iconExpanded
     if (typeof icon === 'string') {
         icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
-        // icon = <span className='material-icons-outlined'>{icon}</span>
     }
 
     return (

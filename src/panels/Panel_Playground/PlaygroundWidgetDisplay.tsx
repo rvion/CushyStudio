@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyFormManager } from 'src/controls/FormBuilder'
-import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-import { useSt } from 'src/state/stateContext'
+import { CushyFormManager } from '../../controls/FormBuilder'
+import { FormUI } from '../../controls/FormUI'
+import { readJSON, writeJSON } from '../../state/jsonUtils'
+import { useSt } from '../../state/stateContext'
 
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
     const st = useSt()
@@ -14,7 +14,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     )
 })
 
-export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
+export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
     (ui) => {
         const booleanForm = {
             check: ui.bool({}),
@@ -25,7 +25,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
             checkLabelIcon: ui.bool({
                 label: false,
                 text: 'Check Label',
-                icon: 'save',
+                icon: 'mdiContentSaveOutline',
             }),
             toggleButton: ui.bool({
                 label: '',
@@ -36,7 +36,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
                 label: false,
                 text: 'Toggle Button Icon',
                 display: 'button',
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
             toggleButtonExpand: ui.bool({
                 label: '',
@@ -49,7 +49,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
                 text: 'Toggle Button Expand',
                 display: 'button',
                 expand: true,
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
         }
 
@@ -118,7 +118,17 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
                     }),
                 },
             }),
-
+            string: ui.group({
+                items: {
+                    aligned: ui.group({
+                        border: false,
+                        items: {
+                            stringLive: ui.string({}),
+                            stringBuffered: ui.string({ buffered: true }),
+                        },
+                    }),
+                },
+            }),
             int: ui.group({
                 startCollapsed: true,
                 items: {
@@ -151,7 +161,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
 
             button: ui.group({
                 startCollapsed: true,
-                items: { button: ui.button() },
+                items: { button: ui.button({}) },
             }),
 
             color: ui.group({
@@ -199,6 +209,46 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
                     groupNoAlign: ui.group({ alignLabel: false, items: { inside: ui.float() } }),
                     groupNoBorder: ui.group({ border: false, items: { inside: ui.float() } }),
                     groupNoCollapse: ui.group({ collapsed: false, items: { inside: ui.float() } }),
+                    columnExamples: ui.group({
+                        items: {
+                            column: ui.column({
+                                items: {
+                                    top: ui.float(),
+                                    middle: ui.float(),
+                                    bottom: ui.float(),
+                                },
+                            }),
+                            column2: ui.column({
+                                border: true,
+                                alignLabel: false,
+                                items: {
+                                    top: ui.float({ label: false }),
+                                    middle: ui.float({ label: false }),
+                                    bottom: ui.float({ label: false }),
+                                },
+                            }),
+                        },
+                    }),
+                    rowExamples: ui.group({
+                        items: {
+                            row: ui.row({
+                                items: {
+                                    left: ui.float(),
+                                    center: ui.float(),
+                                    right: ui.float(),
+                                },
+                            }),
+                            row2: ui.row({
+                                border: true,
+                                // alignLabel: false, // False by default since layout is set to 'H'
+                                items: {
+                                    left: ui.float({ label: false }),
+                                    center: ui.float({ label: false }),
+                                    right: ui.float({ label: false }),
+                                },
+                            }),
+                        },
+                    }),
                 },
             }),
 
@@ -209,7 +259,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
     },
     {
         name: 'Playground Widget Showcase',
-        initialValue: () => readJSON('settings/playground_form_display.json'),
+        initialSerial: () => readJSON('settings/playground_form_display.json'),
         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
     },
 )

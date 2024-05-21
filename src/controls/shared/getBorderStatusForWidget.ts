@@ -1,6 +1,10 @@
 import type { IWidget } from '../IWidget'
 
+import { isWidgetGroup } from '../widgets/WidgetUI.DI'
+
 export const getBorderStatusForWidget = (widget: IWidget): boolean => {
+    // avoif borders for the top level form
+    if (isWidgetGroup(widget) && widget.config.topLevel) return false
     // if app author manually specify they want no border, then we respect that
     if (widget.config.border != null) return widget.config.border
     // if the widget override the default border => we respect that

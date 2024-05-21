@@ -1,14 +1,15 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type OrbitData = {
     azimuth: number
@@ -21,9 +22,17 @@ export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitDa
 // SERIAL
 export type Widget_orbit_serial = WidgetSerialFields<{
     type: 'orbit'
-    active: true
     value: OrbitData
 }>
+
+// SERIAL FROM VALUE
+export const Widget_orbit_fromValue = (value: Widget_orbit_value): Widget_orbit_serial => ({
+    type: 'orbit',
+    value: {
+        azimuth: value.azimuth,
+        elevation: value.elevation,
+    },
+})
 
 // VALUE
 export type Widget_orbit_value = {
@@ -42,13 +51,16 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
-export class Widget_orbit implements IWidget<Widget_orbit_types> {
+export interface Widget_orbit extends Widget_orbit_types {}
+export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
-    id: string
+    readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     type: 'orbit' = 'orbit'
-
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     /** reset azimuth and elevation */
     reset = () => {
         this.serial.value.azimuth = this.config.default?.azimuth ?? 0
@@ -81,14 +93,15 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_orbit_config,
+        public readonly spec: ISpec<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',
             collapsed: config.startCollapsed,
-            active: true,
             value: {
                 azimuth: config.default?.azimuth ?? 0,
                 elevation: config.default?.elevation ?? 0,
@@ -100,8 +113,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         /* 💊 */ const serialAny = this.serial as any
         /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     // x: Partial<number> = 0
@@ -110,6 +122,15 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
     }
 
+    setValue(val: Widget_orbit_value) {
+        this.value = val
+    }
+
+    set value(val: Widget_orbit_value) {
+        this.serial.value.azimuth = val.azimuth
+        this.serial.value.elevation = val.elevation
+        this.bumpValue()
+    }
     get value(): Widget_orbit_value {
         return {
             azimuth: this.serial.value.azimuth,
@@ -120,4 +141,4 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 }
 
 // DI
-WidgetDI.Widget_orbit = Widget_orbit
+registerWidgetClass<Widget_orbit>('orbit', Widget_orbit)

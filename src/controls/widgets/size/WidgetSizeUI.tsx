@@ -4,8 +4,8 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { Joined } from 'src/rsuite/shims'
+import { Box } from '../../../theme/colorEngine/Box'
+import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
     return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
@@ -99,17 +99,19 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
     const uist = p.sizeHelper
     const ratioDisplaySize = 26
     return (
-        <div // Aspect ratio display background
+        <Box // Aspect ratio display background
+            border
             tw={[
                 //
-                'flex rounded-sm virtualBorder bg-base-300',
+                'flex rounded-sm',
                 'overflow-clip',
                 'items-center justify-center',
             ]}
             style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
         >
-            <div // Aspect ratio display foreground
-                tw='relative bg-primary'
+            <Box // Aspect ratio display foreground
+                base={{ contrast: 0.5 }}
+                tw='relative'
                 style={{
                     //
                     width: '100%',
@@ -119,8 +121,8 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
         scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
         scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
                 }}
-            ></div>
-        </div>
+            ></Box>
+        </Box>
     )
 })
 
@@ -154,30 +156,30 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     return (
         <div className='flex flex-col gap-1 mt-0.5 rounded-b'>
             <div tw='flex items-start gap-2'>
-                <Joined>
+                <div tw='join virtualBorder'>
                     {modelBtn('1.5')}
                     {modelBtn('xl')}
-                </Joined>
+                </div>
                 <div tw='btn btn-xs' onClick={() => uist.flip()}>
                     <span className='material-symbols-outlined'>rotate_right</span>
                 </div>
                 <div tw='ml-auto flex items-center gap-1'>
-                    <Joined>{resoBtn('1:1')}</Joined>
+                    <div tw='join virtualBorder'>{resoBtn('1:1')}</div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
-                    </Joined>
+                    </div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
-                    </Joined>
+                    </div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
-                    </Joined>
+                    </div>
                 </div>
             </div>
         </div>

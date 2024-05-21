@@ -5,8 +5,8 @@ import konva from 'konva'
 import { makeAutoObservable } from 'mobx'
 import { isAbsolute, resolve } from 'pathe'
 
+import { MediaImageL } from '../models/MediaImage'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
-import { MediaImageL } from 'src/models/MediaImage'
 
 /**
  * provide both raw-access to the underling KonvaJS library

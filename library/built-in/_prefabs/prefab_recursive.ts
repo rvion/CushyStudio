@@ -1,14 +1,14 @@
 // UI -----------------------------------------------------------
 export const ui_recursive = () => {
     const form = getCurrentForm()
-    return form.groupOpt({
-        items: () => ({
+    return form
+        .fields({
             cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: 8 }),
             loops: form.int({ default: 5, min: 2, max: 20, step: 1 }),
             denoise: form.float({ min: 0, max: 1, step: 0.1, default: 0.8 }),
             steps: form.int({ default: 2, min: 2, max: 200, softMax: 20, step: 1 }),
-        }),
-    })
+        })
+        .optional()
 }
 
 // RUN -----------------------------------------------------------

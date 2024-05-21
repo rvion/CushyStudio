@@ -1,9 +1,9 @@
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
-import { Button } from 'src/rsuite/shims'
 
 export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: {
     //

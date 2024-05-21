@@ -1,13 +1,11 @@
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { STATE } from '../../../state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
+import type { Group } from 'konva/lib/Group'
 
 import Konva from 'konva'
-import { Layer } from 'konva/lib/Layer'
 import { Image } from 'konva/lib/shapes/Image'
-import { Stage } from 'konva/lib/Stage'
 import { makeAutoObservable } from 'mobx'
-import type { Group } from 'konva/lib/Group'
 
 export class UnifiedImage {
     hide = () => this.group.hide()
@@ -24,6 +22,7 @@ export class UnifiedImage {
         //
         public canvas: UnifiedCanvas,
         public img: MediaImageL,
+        public position?: { x: number; y: number },
     ) {
         this.st = canvas.st
 
@@ -35,6 +34,8 @@ export class UnifiedImage {
         this.image = new Konva.Image({
             draggable: true,
             image: img.asHTMLImageElement_noWait,
+            x: position?.x ?? 0,
+            y: position?.y ?? 0,
         })
         this.group.add(this.image)
         canvas.imageLayer.add(this.group)

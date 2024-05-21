@@ -1,18 +1,20 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
+import { CushyFormManager } from '../../controls/FormBuilder'
+import { FormUI } from '../../controls/FormUI'
+import { readJSON, writeJSON } from '../../state/jsonUtils'
+import { useSt } from '../../state/stateContext'
 import { MessageInfoUI } from '../MessageUI'
 import { PanelHeaderUI } from '../PanelHeader'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
+import { PlaygroundImportFromComfy } from './PlaygroundImporter'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
+import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
-import { CushyFormManager } from 'src/controls/FormBuilder'
-import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-import { useSt } from 'src/state/stateContext'
 
-const Header_Playground = CushyFormManager.form(
+const Header_Playground = CushyFormManager.fields(
     (ui) => ({
         mode: ui.choice({
             appearance: 'tab',
@@ -29,12 +31,13 @@ const Header_Playground = CushyFormManager.form(
                 widgetShowcase: ui.group(),
                 scratchPad: ui.group(),
                 graph: ui.group(),
+                comfyImport: ui.group(),
             },
         }),
     }),
     {
         name: 'Playground Conf',
-        initialValue: () => readJSON('settings/playground_config.json'),
+        initialSerial: () => readJSON('settings/playground_config.json'),
         onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
     },
 )
@@ -74,12 +77,8 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.value.widgetShowcase && <PlaygroundWidgetDisplay />}
                 {mode.value.scratchPad && <PlaygroundScratchPad />}
                 {mode.value.graph && <PlaygroundGraphUI />}
+                {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </div>
         </>
     )
-})
-
-/** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
-    return <div tw='bg-base-300 h-full'></div>
 })

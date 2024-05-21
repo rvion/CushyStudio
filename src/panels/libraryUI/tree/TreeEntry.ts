@@ -1,45 +1,23 @@
-import type { TreeApp } from './nodes/TreeApp'
-import type { TreeDraft } from './nodes/TreeDraft'
-import type { TreeError } from './nodes/TreeError'
-import type { TreeFavoriteApps } from './nodes/TreeFavorites'
-import type { TreeFile } from './nodes/TreeFile'
-import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeNode } from './xxx/TreeNode'
-// import type { TreeRoot } from './nodes/TreeRoot'
 import type { ReactNode } from 'react'
-import type { STATE } from 'src/state/state'
 
 export type TreeItemID = string
 
-// prettier-ignore
-export type TreeEntry =
-    | TreeFolder
-    | TreeFile
-    | TreeDraft
-    | TreeApp
-    // | TreeRoot
-    | TreeFavoriteApps
-    | TreeError
-
-export type TreeEntryAction = {
-    name: string
-    mode: 'small' | 'full'
-    icon: string
-    onClick: (node: TreeNode) => void
-    className?: string
-}
-
+// LEVEL 1
+// tree root are Tree Element (free structures; simple way to add laziness)
 export const treeElement = <P>(e: ITreeElement<P>): ITreeElement<P> => e
-
 export type ITreeElement<P = any> = {
     key: string
-    ctor: { new (st: STATE, p: P): ITreeEntry } | ((st: STATE, p: P) => ITreeEntry)
+    ctor: { new (p: P): ITreeEntry } | ((p: P) => ITreeEntry)
     props: P
 }
 
+// LEVEL 2
+// Tree Element => Tree Entry
+// entries are lazilly loaded when needed
 export interface ITreeEntry<P = any> {
     // id: string
-    children?: () => ITreeElement[]
+    children?: () => ITreeElement[] // children are element themselves
     //
     name: string
     icon?: Maybe<string | ReactNode>
@@ -61,4 +39,11 @@ export interface ITreeEntry<P = any> {
 
     actions?: TreeEntryAction[]
     extra?: () => ReactNode
+}
+export type TreeEntryAction = {
+    name: string
+    mode: 'small' | 'full'
+    icon: string
+    onClick: (node: TreeNode) => void
+    className?: string
 }

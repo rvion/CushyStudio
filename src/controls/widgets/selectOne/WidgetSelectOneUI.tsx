@@ -2,9 +2,9 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
+import { SelectUI } from '../../../rsuite/SelectUI'
+import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectOne<T>
@@ -38,10 +38,10 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                     )
                 })}
             </div>
-            {widget.errors && (
+            {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>
                     <span className='material-symbols-outlined'>error</span>
-                    {widget.errors}
+                    {widget.baseErrors}
                 </div>
             )}
         </div>
@@ -56,8 +56,12 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
         <div tw='flex-1'>
             <SelectUI<T>
                 key={widget.id}
-                tw={[widget.errors && 'rsx-field-error']}
+                tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
+                getLabelUI={widget.config.getLabelUI}
+                getSearchQuery={() => widget.serial.query ?? ''}
+                setSearchQuery={(query) => (widget.serial.query = query)}
+                disableLocalFiltering={widget.config.disableLocalFiltering}
                 options={() => widget.choices}
                 equalityCheck={(a, b) => a.id === b.id}
                 value={() => widget.serial.val}
@@ -76,12 +80,12 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                     widget.value = next
                 }}
             />
-            {widget.errors && (
+            {/* {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>
                     <span className='material-symbols-outlined'>error</span>
-                    {widget.errors}
+                    {widget.baseErrors}
                 </div>
-            )}
+            )} */}
         </div>
     )
 })

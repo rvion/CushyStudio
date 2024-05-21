@@ -1,8 +1,15 @@
+// import './InputNumberUI.css'
+
+import type { CushyKit } from '../../shared/CushyKit'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { Box } from '../../../theme/colorEngine/Box'
+import { useColor } from '../../../theme/colorEngine/useColor'
+import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
+import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -37,21 +44,51 @@ type InputNumberProps = {
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
-    constructor(public props: InputNumberProps) {
+    constructor(
+        //
+        public props: InputNumberProps,
+        public kit: Maybe<CushyKit>,
+    ) {
         // this `makeAutoObservable` will make all getters defined below be `computed` properties
         // they will update their value when props change so all functions always work with up-to-date values
         makeAutoObservable(this)
     }
 
-    get value() { return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity) } // prettier-ignore
-    get mode() { return this.props.mode } // prettier-ignore
-    get step() { return this.props.step ?? (this.mode === 'int' ? 1 : 0.1) } // prettier-ignore
-    get rounding() { return Math.ceil(-Math.log10(this.step * 0.01)) } // prettier-ignore
-    get forceSnap() { return this.props.forceSnap ?? false } // prettier-ignore
-    get rangeMin() { return this.props.softMin ?? this.props.min ?? -Infinity } // prettier-ignore
-    get rangeMax() { return this.props.softMax ?? this.props.max ?? Infinity } // prettier-ignore
-    get numberSliderSpeed() { return cushy.configFile.get('numberSliderSpeed') ?? 1 } // prettier-ignore
-    get isInteger() { return this.mode === 'int' } // prettier-ignore
+    get value() {
+        return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity)
+    }
+
+    get mode() {
+        return this.props.mode
+    }
+
+    get step() {
+        return this.props.step ?? (this.mode === 'int' ? 1 : 0.1)
+    }
+
+    get rounding() {
+        return Math.ceil(-Math.log10(this.step * 0.01))
+    }
+
+    get forceSnap() {
+        return this.props.forceSnap ?? false
+    }
+
+    get rangeMin() {
+        return this.props.softMin ?? this.props.min ?? -Infinity
+    }
+
+    get rangeMax() {
+        return this.props.softMax ?? this.props.max ?? Infinity
+    }
+
+    get numberSliderSpeed() {
+        return this.kit?.clickAndSlideMultiplicator ?? 1
+    }
+
+    get isInteger() {
+        return this.mode === 'int'
+    }
 
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     inputValue: string = this.value.toString()
@@ -126,7 +163,7 @@ class InputNumberStableState {
     mouseMoveListener = (e: MouseEvent) => {
         // reset origin if change shift or control key while drag (to let already applied changes remain)
         if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
-            startValue = lastValue
+            lastValue = this.value
             cumulativeOffset = 0
         }
 
@@ -136,7 +173,7 @@ class InputNumberStableState {
         let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
         let offset = this.numberSliderSpeed * cumulativeOffset * precision
 
-        const next = startValue + offset
+        const next = lastValue + offset
         // Parse value
         let num =
             typeof next === 'string' //
@@ -153,7 +190,7 @@ class InputNumberStableState {
 
         lastShiftState = e.shiftKey
         lastControlState = e.ctrlKey
-        lastValue = num
+
         this.syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
@@ -195,7 +232,8 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
-    const uist = useMemo(() => new InputNumberStableState(p), [])
+    const kit = useCushyKitOrNull()
+    const uist = useMemo(() => new InputNumberStableState(p, kit), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
     runInAction(() => Object.assign(uist.props, p))
@@ -209,14 +247,18 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
+    const kolor = useColor({ base: 5, border: true })
     return (
         <div /* Root */
             className={p.className}
+            style={kolor.styles}
             tw={[
                 'WIDGET-FIELD relative',
-                'input-number-ui custom-roundness',
+                // 'theme-number-field',
+                // '!shadow-md !shadow-white',
+                'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
-                'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
+                // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {
@@ -231,14 +273,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 }
             }}
         >
-            <div /* Slider display */
+            <Box /* Slider display */
                 className='inui-foreground'
-                tw={[
-                    //
-                    'absolute left-0 WIDGET-FIELD',
-                    !p.hideSlider && !isEditing && 'bg-primary/40',
-                    'z-10',
-                ]}
+                base={{ contrast: !p.hideSlider && !isEditing ? 0.4 : 0 }}
+                tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
@@ -257,14 +295,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <div /* Text Container */
                     tw={[
                         //
-                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20`,
+                        'th-text',
+                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20 h-full`,
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return
 
                         /* Begin slider drag */
                         activeSlider = ev.currentTarget
-                        startValue = val
+                        lastValue = startValue = val
                         cumulativeOffset = 0
                         dragged = false
 

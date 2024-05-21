@@ -1,5 +1,6 @@
-export { Fragment } from 'react/jsx-dev-runtime'
 import { jsxDEV as jsxDEV_ } from 'react/jsx-dev-runtime'
+
+export { Fragment } from 'react/jsx-dev-runtime'
 
 // type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
@@ -21,10 +22,14 @@ export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
 }
 
 export function jsxDEV(type, props, key, isStaticChildren, source, self_) {
-    if (!hasOwnProperty.call(props, 'tw')) return jsxDEV_(type, props, key, isStaticChildren, source, self_)
-    let className = props.className ?? ''
-    if (props.tw) className += ' ' + joinCls(props.tw)
-    // if (props.x) className += ' ' + joinCls(props.x)
-    const newProps = { ...props, className, tw: undefined, x: undefined }
-    return jsxDEV_(type, newProps, key, isStaticChildren, source, self_)
+    // case 1: no tw
+    if (props.tw == null) return jsxDEV_(type, props, key, isStaticChildren, source, self_)
+
+    const { tw, className, ...rest } = props
+    // case 2: tw + className
+    if (className)
+        return jsxDEV_(type, { ...rest, className: `${className} ${joinCls(tw)}` }, key, isStaticChildren, source, self_)
+
+    // case 3: just tw
+    return jsxDEV_(type, { ...rest, className: joinCls(tw) }, key, isStaticChildren, source, self_)
 }

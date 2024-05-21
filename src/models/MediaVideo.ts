@@ -1,9 +1,9 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { StepL } from './Step'
-import type { TABLES } from 'src/db/TYPES.gen'
 
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export interface MediaVideoL extends LiveInstance<TABLES['media_video']> {}
 export class MediaVideoL {

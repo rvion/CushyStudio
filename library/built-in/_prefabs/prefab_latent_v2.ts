@@ -1,18 +1,18 @@
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { ComfyNodeOutput } from '../../../src/core/Slot'
+import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ComfyNodeOutput } from 'src/core/Slot'
-import type { Runtime } from 'src/runtime/Runtime'
 
 export const ui_latent_v2 = (form: FormBuilder) => {
     return form.group({
         label: 'Start from',
-        items: () => ({
-            image: form.imageOpt({}),
+        items: {
+            image: form.image({}).optional(),
             size: form.size({}),
             // width: form.int({ default: 512,  step: 128, min: 128, max: 4096 }),
             // height: form.int({ default: 768,  step: 128, min: 128, max: 4096 }),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
-        }),
+        },
     })
 }
 

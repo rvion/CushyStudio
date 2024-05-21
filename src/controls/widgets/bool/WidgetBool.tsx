@@ -1,13 +1,14 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
@@ -47,11 +48,6 @@ export type Widget_bool_config = WidgetConfigFields<
          *          true will enable expansion
          */
         expand?: boolean
-
-        /** Set the icon of the button
-         *  - Uses "material-symbols-outlined" as the icon set
-         */
-        icon?: string | undefined
     },
     Widget_bool_types
 >
@@ -72,12 +68,17 @@ export type Widget_bool_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_bool_types, IWidgetMixins {}
-export class Widget_bool implements IWidget<Widget_bool_types> {
+export interface Widget_bool extends Widget_bool_types {}
+export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types> {
     DefaultHeaderUI = WidgetBoolUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'bool' = 'bool'
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     serial: Widget_bool_serial
 
@@ -93,26 +94,31 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_bool_config,
+        public readonly spec: ISpec<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
             type: 'bool',
-            active: config.default ?? false,
-            collapsed: config.startCollapsed,
+            active: this.spec.config.default ?? false,
+            collapsed: this.spec.config.startCollapsed,
         }
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, {
+        this.init({
             serial: observable,
             value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
         })
     }
 
     get value(): Widget_bool_value {
         return this.serial.active ?? false
+    }
+    setValue(val: Widget_bool_value) {
+        this.value = val
     }
     set value(next: Widget_bool_value) {
         if (this.serial.active === next) return
@@ -124,4 +130,4 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
 }
 
 // DI
-WidgetDI.Widget_bool = Widget_bool
+registerWidgetClass('bool', Widget_bool)

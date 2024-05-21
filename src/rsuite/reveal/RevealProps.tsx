@@ -1,8 +1,13 @@
 import type { RevealPlacement } from './RevealPlacement'
 
-import React, { type FC } from 'react'
+import React from 'react'
 
 export type RevealProps = {
+    /**
+     * @deprecated
+     * unused for now, backword compatibility with rsuite
+     */
+    enterable?: boolean
     // components
     content: () => React.ReactNode
     children: React.ReactNode //, React.ReactNode]

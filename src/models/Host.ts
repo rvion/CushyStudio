@@ -1,20 +1,20 @@
+import type { Requirements } from '../controls/Requirements'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
+import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
+import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
 import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
-import type { Requirements } from 'src/controls/IWidget'
-import type { LiveInstance } from 'src/db/LiveInstance'
-import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
-import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
-import { asComfySchemaID, type TABLES } from 'src/db/TYPES.gen'
-import { ComfyManager } from 'src/manager/ComfyManager'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { readableStringify } from 'src/utils/formatters/stringifyReadable'
-import { downloadFile } from 'src/utils/fs/downloadFile'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
+import { ComfyManager } from '../manager/ComfyManager'
+import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
+import { readableStringify } from '../utils/formatters/stringifyReadable'
+import { downloadFile } from '../utils/fs/downloadFile'
+import { asRelativePath } from '../utils/fs/pathUtils'
+import { toastError, toastSuccess } from '../utils/misc/toasts'
 
 export interface HostL extends LiveInstance<TABLES['host']> {}
 
@@ -274,8 +274,8 @@ export class HostL {
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
     private updateSchemaFromFileCache = () => {
-        const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
-        const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
+        const object_info_json = this.st.readJSON_<any>(this.comfyJSONPath)
+        const embeddings_json = this.st.readJSON_<any>(this.embeddingsPath)
 
         // update schema
         this.schema.update({ spec: object_info_json, embeddings: embeddings_json })

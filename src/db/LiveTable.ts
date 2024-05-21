@@ -1,19 +1,20 @@
+import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
-import type { STATE } from 'src/state/state'
 
 // 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { kysely } from '../DB'
+import { sqlbench } from '../utils/microbench'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
-import { kysely } from 'src/DB'
-import { type KyselyTables, type LiveDBSubKeys, schemas } from 'src/db/TYPES.gen'
-import { TableInfo } from 'src/db/TYPES_json'
+import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
+import { TableInfo } from './TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
     new (...args: any[]): TABLE['$L']
@@ -31,11 +32,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         if (stmt == null) return []
         cushy.db.subscribeToKeys([this.schema.sql_name])
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
-        const A = process.hrtime.bigint() // TIMER start
-        const x = stmt.all(query.parameters) // execute the statement
-        const B = process.hrtime.bigint() // TIMER end
-        const ms = Number(B - A) / 1_000_000
-        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
         const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
         const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
         return instances
@@ -49,11 +46,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
         if (stmt == null) return []
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
-        const A = process.hrtime.bigint() // TIMER start
-        const x = stmt.all(query.parameters) // execute the statement
-        const B = process.hrtime.bigint() // TIMER end
-        const ms = Number(B - A) / 1_000_000
-        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
         return x as any[] // return the result
     }
 
@@ -254,7 +247,8 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         stmt.get(updatePayload) as any as TABLE['$T']
                         const B = process.hrtime.bigint() // TIMER end
                         const ms = Number(B - A) / 1_000_000
-                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, { updatePayload }) // debug
+                        const emoji = ms > 4 ? '🔴' : ms > 1 ? '🔶' : ''
+                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, emoji, updateSQL, { updatePayload }) // debug
 
                         // assign the changes
                         // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
@@ -302,6 +296,16 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 this.st = table.db.st
                 this.table = table
                 this.data = data
+
+                // prettier-ignore
+                /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
+                /* 🔶 PERF HACK */     ;(data as any as { spec: { a: 1 } }).spec = observable(
+                /* 🔶 PERF HACK */         (data as any as { spec: { a: 1 } }).spec,
+                /* 🔶 PERF HACK */         {},
+                /* 🔶 PERF HACK */         { deep: false },
+                /* 🔶 PERF HACK */     )
+                /* 🔶 PERF HACK */ }
+
                 this.onHydrate?.(/* data */)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this, this.observabilityConfig as any)

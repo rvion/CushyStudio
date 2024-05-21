@@ -1,16 +1,16 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
-import type { IWidget } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<
+export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfigFields<
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
@@ -24,22 +24,28 @@ export type Widget_shared_serial = WidgetSerialFields<{
     type: 'shared'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared_serial => ({
+    type: 'shared',
+})
+
 // VALUE
-export type Widget_shared_value<T extends Spec = Spec> = T['$Value']
+export type Widget_shared_value<T extends ISpec = ISpec> = T['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends Spec = Spec> = {
+export type Widget_shared_types<T extends ISpec = ISpec> = {
     $Type: 'shared'
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Widget: Spec['$Widget']
+    $Widget: ISpec['$Widget']
 }
 
 // STATE
-export interface Widget_shared<T extends Spec = Spec> extends Widget_shared_types<T>, IWidgetMixins {}
-export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shared_types<T>> {
+export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T> {}
+export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_shared_types<T>> {
     readonly id: string
+    get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
@@ -52,26 +58,40 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
         return this.config.widget
     }
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     // 🔴
-    hidden = () => new Widget_shared<T>(this.form, null, { ...this.config, hidden: true }, this.serial)
+    hidden = () => {
+        const ctor = this.form.builder.SpecCtor
+        const config: Widget_shared_config<T> = { ...this.spec.config, hidden: true }
+        const spec2: ISpec<Widget_shared<T>> = new ctor('shared', config)
+        new Widget_shared<T>(this.form, null, spec2, this.serial)
+    }
 
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_shared_config<T>,
+        public readonly spec: ISpec<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
-
+    setValue(val: Widget_shared_value<T>) {
+        this.value = val
+    }
+    set value(val: Widget_shared_value<T>) {
+        this.config.widget.setValue(val)
+    }
     get value(): Widget_shared_value<T> {
         return this.config.widget.value
     }
 }
 
 // DI
-WidgetDI.Widget_shared = Widget_shared
+registerWidgetClass('shared', Widget_shared)

@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
+import { HostL } from '../../models/Host'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Message } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
-import { HostL } from 'src/models/Host'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Message } from 'src/rsuite/shims'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
     //

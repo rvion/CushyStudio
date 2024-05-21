@@ -1,23 +1,23 @@
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { SchemaDict } from '../controls/ISpec'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { SchemaDict } from 'src/controls/Spec'
 
 import { statSync } from 'fs'
 import { runInAction } from 'mobx'
 import { basename } from 'pathe'
 
-import { CUSHY_IMPORT } from '../compiler/CUSHY_IMPORT'
-import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
+import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
+import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { getCurrentForm_IMPL } from '../controls/shared/runWithGlobalForm'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { asCushyAppID, type TABLES } from '../db/TYPES.gen'
+import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
+import { asRelativePath } from '../utils/fs/pathUtils'
 import { CushyAppL } from './CushyApp'
-import { Executable } from './Executable'
-import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, AppRef } from 'src/cards/App'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asCushyAppID, type TABLES } from 'src/db/TYPES.gen'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { Executable, LoadedCustomView } from './Executable'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
-// import { LazyValue } from 'src/db/LazyValue'
+// import { LazyValue } from '../db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<TABLES['cushy_script']> {}
 export class CushyScriptL {
@@ -54,7 +54,7 @@ export class CushyScriptL {
     // ⏸️ }
 
     onHydrate = () => {
-        if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateApps()
+        if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
     }
 
     get file(): LibraryFile {
@@ -110,22 +110,33 @@ export class CushyScriptL {
     }
     // --------------------------------------------------------------------------------------
     /** cache of extracted apps */
-    private _EXECUTABLES: Maybe<Executable[]> = null
-    // private get EXECUTABLES(): Executable[] {
-    //     if (this._EXECUTABLES == null) return this.evaluateAndUpdateApps()
-    //     return this._EXECUTABLES
-    // }
+    private _VIEWS: Maybe<LoadedCustomView[]> = []
 
+    /** cache of extracted views */
+    private _EXECUTABLES: Maybe<Executable[]> = null
+
+    /** do not evaluate the script if script is not evaluated yet, nor re-evaluate it if script if missing */
     getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
-        //      '_'👇
         return this._EXECUTABLES?.find((executable) => appID === executable.appID)
     }
 
     /** more costly variation of getExecutable_orNull */
     getExecutable_orExtract(appID: CushyAppID): Maybe<Executable> {
         if (this._EXECUTABLES) return this._EXECUTABLES.find((executable) => appID === executable.appID)
-        this.evaluateAndUpdateApps()
+        this.evaluateAndUpdateAppsAndViews()
         return this._EXECUTABLES!.find((executable) => appID === executable.appID)
+    }
+
+    /** do not evaluate the script if script is not evaluated yet, nor re-evaluate it if script if missing */
+    getView_orNull(viewID: CushyViewID): Maybe<LoadedCustomView> {
+        return this._VIEWS?.find((view) => viewID === view.id)
+    }
+
+    /** more costly variation of getExecutable_orNull */
+    getView_orExtract(viewID: CushyViewID): Maybe<LoadedCustomView> {
+        if (this._VIEWS) return this._VIEWS.find((view) => viewID === view.id)
+        this.evaluateAndUpdateAppsAndViews()
+        return this._VIEWS!.find((view) => viewID === view.id)
     }
 
     // --------------------------------------------------------------------------------------
@@ -135,10 +146,12 @@ export class CushyScriptL {
      *  - 2. upsert apps in db
      *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
      */
-    evaluateAndUpdateApps = (): Executable[] => {
+    evaluateAndUpdateAppsAndViews = (): /* Executable[]  */ void => {
         console.log(`[👙] extracting apps...`)
         // debugger
-        this._EXECUTABLES = this._EVALUATE_SCRIPT()
+        const evalRes = this._EVALUATE_SCRIPT()
+        this._EXECUTABLES = evalRes.apps
+        this._VIEWS = evalRes.views
 
         runInAction(() => {
             this._apps_viaScript = this._EXECUTABLES!.map((executable): CushyAppL => {
@@ -159,7 +172,7 @@ export class CushyScriptL {
             if (this._apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
             else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
         })
-        return this._EXECUTABLES
+        return // this._EXECUTABLES
     }
 
     /**
@@ -167,45 +180,47 @@ export class CushyScriptL {
      * and returns the apps defined in it
      * returns [] on script execution failure
      * */
-    private _EVALUATE_SCRIPT = (): Executable[] => {
+    private _EVALUATE_SCRIPT = (): { apps: Executable[]; views: LoadedCustomView[] } => {
         // toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
-        const APPS: App<SchemaDict>[] = []
 
-        let appIndex = 0
         // 1. setup DI registering mechanism
-        const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
-            const app: App<SchemaDict> = typeof a1 !== 'string' ? a1 : a2
-            const name = app.metadata?.name ?? basename(this.relPath)
-            const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
-            console.info(`[💙] found app: "${name}"`, { path: this.relPath, appID })
+        // APPS ---------------------------------------------------------------------------
+        const APPS: Executable[] = []
+        let appIndex = 0
+        const registerAppFn = (appDef: App<any>): AppRef<any> => {
+            const app = new Executable(this, appIndex++, appDef)
+            console.info(`[💙] found app: "${app.name}"`, { path: this.relPath, appID: app.appID })
             APPS.push(app)
-            return {
-                id: appID,
-                /**
-                 * this is a virtual property; only here so app refs can carry the
-                 * type-level form information.
-                 */
-                $FIELDS: 0 as any,
-            }
+            return app.ref
+        }
+
+        // VIEWS ---------------------------------------------------------------------------
+        let viewIndex = 0
+        const VIEWS: LoadedCustomView[] = []
+        const registerViewFn = (viewDef: CustomView<any>): CustomViewRef<any> => {
+            const view = new LoadedCustomView(this, viewIndex++, viewDef)
+            console.info(`[💙] found view: "${view.id}"`, { path: this.relPath, viewID: view.id })
+            VIEWS.push(view)
+            return view.ref
         }
 
         // 2. eval file to extract actions
 
         let codJSWithoutWithImportsReplaced
         try {
+            // console.log(`🟡 BEFORE: rewriting module import (${mod})`)
             codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
         } catch {
-            console.error(`❌ impossible to replace imports`)
-            return []
+            console.error(`❌ script evealuation crashed when replacing imports`)
+            return { apps: [], views: [] }
         }
         try {
             // 2.1. replace imports
             const ProjectScriptFn = new Function(
                 //
-                'action',
-                'card',
                 'app',
+                'view',
                 'CUSHY_IMPORT',
                 'getCurrentForm',
                 'getCurrentRun',
@@ -218,8 +233,7 @@ export class CushyScriptL {
             ProjectScriptFn(
                 //
                 registerAppFn,
-                registerAppFn,
-                registerAppFn,
+                registerViewFn,
                 //
                 CUSHY_IMPORT,
                 getCurrentForm_IMPL,
@@ -229,14 +243,14 @@ export class CushyScriptL {
             )
 
             // 2.3. return all apps
-            return APPS.map((app, ix) => new Executable(this, ix, app))
+            return { apps: APPS, views: VIEWS }
         } catch (e) {
             console.error(`[📜] CushyScript execution failed:`, e)
             console.groupCollapsed(`[📜] <script that failed>`)
             console.log(codJSWithoutWithImportsReplaced)
             console.groupEnd()
             // this.addError('❌5. cannot convert prompt to code', e)
-            return []
+            return { apps: [], views: [] }
         }
     }
 }

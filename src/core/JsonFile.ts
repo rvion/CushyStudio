@@ -6,7 +6,7 @@ import { basename, dirname, join } from 'pathe'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { bang } from '../utils/misc/bang'
-import { debounce } from 'src/utils/misc/debounce'
+import { debounce } from '../utils/misc/debounce'
 
 // import { ZodSchema } from 'zod'
 

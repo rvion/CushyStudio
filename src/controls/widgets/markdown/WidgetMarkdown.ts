@@ -1,18 +1,19 @@
 import type { Form } from '../../Form'
-import type { Widget_group } from '../group/WidgetGroup'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { computed, makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<
     {
-        markdown: string | ((formRoot: Widget_group<any>) => string)
+        markdown: string | ((form: Form) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -37,46 +38,60 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends Widget_markdown_types, IWidgetMixins {}
-export class Widget_markdown implements IWidget<Widget_markdown_types> {
+export interface Widget_markdown extends Widget_markdown_types {}
+export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdown_types> {
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
     }
+
     get DefaultBodyUI() {
         if (this.config.inHeader) return undefined
         return WidgetMardownUI
     }
+
     get alignLabel() {
         if (this.config.inHeader) return false
     }
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.form._ROOT)
+        return md(this.form)
     }
 
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_markdown_config,
+        public readonly spec: ISpec<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
+    setValue(val: Widget_markdown_value) {
+        this.value = val
+    }
+    set value(val: Widget_markdown_value) {
+        // do nothing; markdown have no real value; only config
+    }
     get value(): Widget_markdown_value {
         return this.serial
     }
 }
 
 // DI
-WidgetDI.Widget_markdown = Widget_markdown
+registerWidgetClass('markdown', Widget_markdown)

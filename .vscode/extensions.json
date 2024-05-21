@@ -19,6 +19,9 @@
         // configured for tests and other more complex mapping
         "johnathanludwig.fileswitcher",
 
+        // allow to quickly copy the type of a variable under the cursor
+        "Young-Vform.copy-hover-type",
+
         // VeRy PoWeRfUl !!.!..!!
         "wmaurer.change-case",
 

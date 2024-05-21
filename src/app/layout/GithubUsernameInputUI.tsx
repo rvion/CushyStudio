@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { Tag, Whisper } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
-import { Addon, Input, Joined, Popover, Tag, Whisper } from 'src/rsuite/shims'
-import { assets } from 'src/utils/assets/assets'
+import { assets } from '../../utils/assets/assets'
 
 export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
 export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {
@@ -13,26 +13,26 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const st = useSt()
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
-        <Joined tw='w-auto join'>
-            <Addon>
+        <div tw='w-auto join virtualBorder'>
+            <div tw='flex items-center px-2 join-item'>
                 <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <Whisper
                     //
                     enterable
                     placement='bottomStart'
                     speaker={
-                        <Popover>
+                        <div>
                             <div>
                                 Only folders in
                                 <Tag>library/{githubUsername}/</Tag>
                                 will have type-checking in your vscode
                             </div>
-                        </Popover>
+                        </div>
                     }
                 >
                     <div>your github:</div>
                 </Whisper>
-            </Addon>
+            </div>
             <input
                 tw='input input-sm input-bordered join-item'
                 onChange={(ev) => {
@@ -44,6 +44,6 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                 // style={{ width: `${githubUsername.length + 4}ch` }}
                 placeholder='your github username'
             ></input>
-        </Joined>
+        </div>
     )
 })

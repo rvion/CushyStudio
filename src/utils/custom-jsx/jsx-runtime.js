@@ -1,5 +1,6 @@
-export { Fragment } from 'react/jsx-runtime'
 import { jsx as jsx_, jsxs as jsxs_ } from 'react/jsx-runtime'
+
+export { Fragment } from 'react/jsx-runtime'
 
 // type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
@@ -21,19 +22,25 @@ export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
 }
 
 export function jsx(type, props, key) {
-    if (!hasOwnProperty.call(props, 'tw')) return jsx_(type, props, key)
-    let className = props.className ?? ''
-    if (props.tw) className += ' ' + joinCls(props.tw)
+    // case 1: no tw
+    if (props.tw == null) return jsx_(type, props, key)
 
-    const newProps = { ...props, className, tw: undefined }
-    return jsx_(type, newProps, key)
+    const { tw, className, ...rest } = props
+    // case 2: tw + className
+    if (className) return jsx_(type, { ...rest, className: `${className} ${joinCls(tw)}` }, key)
+
+    // case 3: just tw
+    return jsx_(type, { ...rest, className: joinCls(tw) }, key)
 }
 
 export function jsxs(type, props, key) {
-    if (!hasOwnProperty.call(props, 'tw')) return jsxs_(type, props, key)
-    let className = props.className ?? ''
-    if (props.tw) className += ' ' + joinCls(props.tw)
+    // case 1: no tw
+    if (props.tw == null) return jsxs_(type, props, key)
 
-    const newProps = { ...props, className, tw: undefined }
-    return jsxs_(type, newProps, key)
+    const { tw, className, ...rest } = props
+    // case 2: tw + className
+    if (className) return jsxs_(type, { ...rest, className: `${className} ${joinCls(tw)}` }, key)
+
+    // case 3: just tw
+    return jsxs_(type, { ...rest, className: joinCls(tw) }, key)
 }

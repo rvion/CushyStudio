@@ -1,22 +1,24 @@
+import type { IconName } from '../../icons/icons'
 import type { IWidget } from '../IWidget'
 import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { Ikon, IkonOf } from '../../icons/iconHelpers'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Box } from '../../theme/colorEngine/Box'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
-import { isWidgetChoice, isWidgetGroup, isWidgetList, isWidgetOptional, isWidgetPrompt, WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
+import { menu_widgetActions } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
-
-export const KLS = WidgetDI
 
 let isDragging = false
 let wasEnabled = false
@@ -50,11 +52,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
     if (
-        k instanceof KLS.Widget_group && //
-        Object.keys(k.fields).length === 0 &&
-        k.config.requirements == null
-    )
-        return
+        isWidgetGroup(k) && //
+        Object.keys(k.fields).length === 0 /* &&
+        k.config.requirements == null */
+    ) {
+        return null
+    }
     // ------------------------------------------------------------
 
     // ⏸️ const onLabelClick = () => {
@@ -79,7 +82,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const LABEL = (
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
-        <span className='COLLAPSE-PASSTHROUGH' style={{ lineHeight: '1rem' }}>
+        <span
+            tw={[isCollapsed || isCollapsible ? 'cursor-pointer' : null]}
+            className='COLLAPSE-PASSTHROUGH'
+            style={{ lineHeight: '1rem' }}
+        >
             {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
@@ -96,23 +103,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
-    const needsBackground =
-        (isWidgetGroup(k) || //
-            isWidgetChoice(k) ||
-            isWidgetPrompt(k) ||
-            isWidgetList(k)) &&
-        (isCollapsible || showBorder)
-
+    const iconName = widget.icon
     return (
-        <div
+        <Box
             key={rootKey}
             tw={[
-                //
-                needsBackground && 'bg-base-100',
+                // widget.background && (isCollapsible || showBorder) && 'bg-base-100',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
+            base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
+            {...p.widget.config.box}
         >
             <AnimatedSizeUI>
                 {/*
@@ -156,8 +158,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <span
                         tw={[
                             'flex justify-end gap-0.5 flex-none items-center shrink-0',
-                            p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
-                            isDisabled ? undefined : 'text-primary',
+                            // p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
+                            // 🔴 label COLOR here
+                            // isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
                             alignLabel
@@ -170,25 +173,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        {/* COLLAPSE */}
-                        {(isCollapsed || isCollapsible) && (
-                            <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100'>
-                                {isCollapsed ? 'chevron_right' : 'expand_more'}
-                            </span>
-                        )}
-                        {/* TOGGLE BEFORE */}
-                        {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                        {/* REQUIREMENTS  */}
-                        {widget.config.requirements && (
-                            <InstallRequirementsBtnUI
-                                active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
-                                requirements={widget.config.requirements}
-                            />
-                        )}
-                        {/* TOOLTIPS  */}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                        {/* LABEL  */}
-                        {LABEL}
+                        <Box tw='flex items-center' text={{ hueShift: 0, contrast: 0.9, chromaBlend: 1 }}>
+                            {/* COLLAPSE */}
+                            {(isCollapsed || isCollapsible) && (
+                                <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
+                                    {isCollapsed ? 'chevron_right' : 'expand_more'}
+                                </span>
+                            )}
+                            {iconName && (
+                                <Box tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
+                                    <IkonOf name={iconName} />
+                                </Box>
+                            )}
+                            {/* TOGGLE BEFORE */}
+                            {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
+                            {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
+                            {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
+                            {/* TOOLTIPS  */}
+                            {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                            {LABEL}
+                        </Box>
                         {/* TOOGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
@@ -198,6 +202,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 {HeaderUI}
                             </ErrorBoundary>
                         </div>
+                    )}
+                    {widget.config.presets && (
+                        <RevealUI //
+                            content={() => <menu_widgetActions.UI props={widget} />}
+                        >
+                            <Ikon.mdiBook />
+                        </RevealUI>
                     )}
                 </div>
 
@@ -209,7 +220,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </div>
                     </ErrorBoundary>
                 )}
+                {/* ERRORS */}
+                {widget.hasErrors && (
+                    <div tw='widget-error-ui'>
+                        {widget.errors.map((e, i) => (
+                            <div key={i} tw='flex items-center gap-1'>
+                                <span className='material-symbols-outlined'>error</span>
+                                {e.message}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </AnimatedSizeUI>
-        </div>
+        </Box>
     )
 })

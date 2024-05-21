@@ -1,16 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { FormHelpTextUI } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
+import { assets } from '../../utils/assets/assets'
+import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 import { PanelHeaderUI } from '../PanelHeader'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { FormHelpText } from 'src/rsuite/shims'
-import { assets } from 'src/utils/assets/assets'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()
@@ -60,7 +60,7 @@ export const FieldUI = observer(function FieldUI_(p: {
         <div className={p.className} tw='flex gap-2 items-center'>
             <label tw='whitespace-nowrap'>{p.label}</label>
             {p.children}
-            {p.required && <FormHelpText tw='join-item'>Required</FormHelpText>}
+            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
         </div>
     )
 })

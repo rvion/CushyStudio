@@ -62,9 +62,9 @@ app({
                     aaa2: ui.int().optional(),
                     aaa3: ui.int().optional(),
                     aaa4: ui.int().optional(),
-                    aaa5: ui.intOpt(),
-                    aaa6: ui.intOpt(),
-                    aaa7: ui.intOpt(),
+                    aaa5: ui.int().optional(),
+                    aaa6: ui.int().optional(),
+                    aaa7: ui.int().optional(),
                 },
             }),
             audience: ui.group({

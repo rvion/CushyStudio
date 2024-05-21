@@ -3,12 +3,14 @@ import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { RegionUI } from '../../operators/RegionUI'
 import { useSt } from '../../state/stateContext'
-import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
+import { useImageDrop } from '../../widgets/galleries/dnd'
+import { PanelHeaderUI } from '../PanelHeader'
+import { CanvasToolbarUI, UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
-import { useSize } from './useSize'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useSize } from './utils/useSize'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {
@@ -59,7 +61,11 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >
-            <UnifiedCanvasCtx.Provider value={canvas}>
+            <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
+                <PanelHeaderUI>test</PanelHeaderUI>
+                <div tw='absolute z-50'>
+                    <CanvasToolbarUI />
+                </div>
                 <UnifiedCanvasMenuUI />
                 {/* <CanvasToolbarUI /> */}
                 <div
@@ -71,9 +77,34 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     tw='_Panel_Canvas flex-grow flex flex-row h-full relative'
                 >
                     {/* <GridTilingUI /> */}
-                    <div ref={canvas.rootRef} tw='flex-1'></div>
+                    {canvas.steps.map((s) => {
+                        const infos = canvas.infos
+                        const dx = infos.canvasX
+                        const dy = infos.canvasY
+                        const x = (s.image.x() + dx) / infos.scale
+                        const y = (s.image.y() + dy) / infos.scale
+                        return (
+                            <div tw='absolute z-50' style={{ left: `${x}px`, top: `${y}px` }}>
+                                <div className='joined'>
+                                    <div tw='btn' onClick={() => s.index++}>
+                                        {'<-'}
+                                    </div>
+                                    <div tw='btn' onClick={() => s.delete()}>
+                                        ❌
+                                    </div>
+                                    <div tw='btn' onClick={() => s.accept()}>
+                                        OK
+                                    </div>
+                                    <div tw='btn' onClick={() => s.index--}>
+                                        {'->'}
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })}
+                    <div id={canvas.uid} ref={canvas.rootRef} tw='flex-1'></div>
                 </div>
-            </UnifiedCanvasCtx.Provider>
+            </RegionUI>
         </div>
     )
 })

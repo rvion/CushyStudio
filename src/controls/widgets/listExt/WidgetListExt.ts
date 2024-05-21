@@ -1,21 +1,22 @@
 import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetList_LineUI } from '../list/WidgetListUI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { ResolutionState } from '../size/ResolutionState'
-import { WidgetDI } from '../WidgetUI.DI'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
-import { WidgetListExtUI } from './WidgetListExtUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { runWithGlobalForm } from 'src/models/_ctx2'
+import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
+export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -30,7 +31,7 @@ export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends ISpec> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -38,7 +39,7 @@ export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
 }>
 
 // VALUE
-export type Widget_listExt_output<T extends Spec> = {
+export type Widget_listExt_value<T extends ISpec> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -46,22 +47,26 @@ export type Widget_listExt_output<T extends Spec> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends Spec> = {
+export type Widget_listExt_types<T extends ISpec> = {
     $Type: 'listExt'
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
-    $Value: Widget_listExt_output<T>
+    $Value: Widget_listExt_value<T>
     $Widget: Widget_listExt<T>
 }
 
 // STATE
-export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>, IWidgetMixins {}
-export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
-    DefaultHeaderUI = WidgetList_LineUI
+export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T> {}
+export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidget<Widget_listExt_types<T>> {
+    DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'listExt' = 'listExt'
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
     get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
@@ -106,9 +111,11 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_listExt_config<T>,
+        public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -139,8 +146,15 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { sizeHelper: false })
+        this.init({ sizeHelper: false })
+    }
+
+    get subWidgets() {
+        return this.items
+    }
+
+    get subWidgetsWithKeys() {
+        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 
     schemaAt = (ix: number): T => {
@@ -198,7 +212,22 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         this.bumpValue()
     }
 
-    get value(): Widget_listExt_output<T> {
+    setValue(xx: Widget_listExt_value<T>) {
+        const val = xx.items
+        this.width = xx.width
+        this.height = xx.height
+        for (let i = 0; i < val.length; i++) {
+            if (i < this.items.length) {
+                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.shape = val[i]!.position
+            } else {
+                this.addItem({ skipBump: true })
+                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.shape = val[i]!.position
+            }
+        }
+    }
+    get value(): Widget_listExt_value<T> {
         const items = this.entries.map((i) => ({
             position: i.shape,
             value: i.widget.value,
@@ -213,4 +242,4 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
 }
 
 // DI
-WidgetDI.Widget_listExt = Widget_listExt
+registerWidgetClass('listExt', Widget_listExt)

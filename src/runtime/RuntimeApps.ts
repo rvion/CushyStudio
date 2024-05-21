@@ -1,10 +1,10 @@
-import type { SchemaDict } from 'src/controls/Spec'
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { SchemaDict } from '../controls/ISpec'
+import type { CushyAppL } from '../models/CushyApp'
+import type { Runtime, RuntimeExecutionResult } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Runtime, RuntimeExecutionResult } from './Runtime'
-import { $ExtractFormValueType, AppRef } from 'src/cards/App'
+import { $ExtractFormValueType, AppRef } from '../cards/App'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {

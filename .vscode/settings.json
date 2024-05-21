@@ -1,17 +1,12 @@
 {
     "fileswitcher.mappings": [
-        {
-            "from": "library/([^/]+)/([^/]+)/(.*).tsx?",
-            "to": "library/:1/:2/dist/:3.js"
-        },
-        {
-            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
-            "to": "library/:1/:2/:3.tsx"
-        },
-        {
-            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
-            "to": "library/:1/:2/:3.ts"
-        }
+        // { "from": "library/([^/]+)/([^/]+)/(.*).tsx?", "to": "library/:1/:2/dist/:3.js" },
+        // { "from": "library/([^/]+)/([^/]+)/dist/(.*).js", "to": "library/:1/:2/:3.tsx" },
+        // { "from": "library/([^/]+)/([^/]+)/dist/(.*).js", "to": "library/:1/:2/:3.ts" },
+        { "from": "src/(.+).ts", "to": "lib/:1.js" },
+        { "from": "lib/(.+).js", "to": "lib/:1.d.ts" },
+        { "from": "lib/(.+).d.ts", "to": "src/:1.ts" },
+        { "from": "lib/(.+).d.ts", "to": "src/:1.tsx" }
     ],
 
     // lint options
@@ -88,8 +83,8 @@
     // "editor.semanticHighlighting.enabled": false,
 
     // debug
-    // "typescript.tsserver.log": "off",
-    // "typescript.tsserver.enableTracing": false,
+    // "typescript.tsserver.log": "normal",
+    // "typescript.tsserver.enableTracing": true
 
     // misc
     // "typescript.tsdk": "node_modules/typescript/lib",

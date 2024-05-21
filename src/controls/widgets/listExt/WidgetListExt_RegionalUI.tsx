@@ -1,15 +1,15 @@
+import type { ISpec } from '../../ISpec'
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
-import type { Spec } from 'src/controls/Spec'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+import { InputNumberUI } from '../number/InputNumberUI'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Spec>(p: {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends ISpec>(p: {
     widget: Widget_listExt<T>
 }) {
     const widget = p.widget

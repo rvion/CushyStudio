@@ -1,28 +1,34 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeObservable, observable } from 'mobx'
+import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfigFields<{}, Widget_shared_types>
+export type Widget_spacer_config = WidgetConfigFields<{}, Widget_spacer_types>
 
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
+
+// SERIAL FROM VALUE
+export const Widget_spacer_fromValue = (val: Widget_spacer_value): Widget_spacer_serial => ({
+    type: 'spacer',
+})
 
 // VALUE
 export type Widget_spacer_value = boolean
 
 // TYPES
-export type Widget_shared_types = {
+export type Widget_spacer_types = {
     $Type: 'spacer'
     $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
@@ -31,11 +37,15 @@ export type Widget_shared_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_shared_types, IWidgetMixins {}
-export class Widget_spacer implements IWidget<Widget_shared_types> {
+export interface Widget_spacer extends Widget_spacer_types {}
+export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
 
@@ -43,9 +53,10 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_spacer_config,
+        public readonly spec: ISpec<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -53,15 +64,15 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
             collapsed: false,
         }
 
-        applyWidgetMixinV2(this)
-        makeObservable(this, { serial: observable })
+        this.init({ serial: observable })
     }
 
     get value() {
         return false
     }
+    setValue(val: boolean) {}
     set value(val) {}
 }
 
 // DI
-WidgetDI.Widget_spacer = Widget_spacer
+registerWidgetClass('spacer', Widget_spacer)

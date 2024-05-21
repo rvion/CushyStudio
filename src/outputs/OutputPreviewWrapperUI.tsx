@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { useSt } from 'src/state/stateContext'
-import { StepOutput } from 'src/types/StepOutput'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { useSt } from '../state/stateContext'
+import { StepOutput } from '../types/StepOutput'
+import { ErrorBoundaryFallback } from '../widgets/misc/ErrorBoundary'
 
 export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(p: {
     /** 3/4 letters max if possible */
@@ -23,8 +23,9 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div
                 // STYLE
-                tw='rounded cursor-pointer overflow-hidden'
-                className='virtualBorder shrink-0'
+                tw={[
+                    'rounded overflow-clip border border-base-300 hover:border-primary hover:brightness-110 box-content bg-base-200',
+                ]}
                 style={{ width: sizeStr, height: sizeStr }}
                 // LOGIC
                 onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}

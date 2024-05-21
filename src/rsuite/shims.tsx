@@ -1,21 +1,13 @@
+import type { RSAppearance, RSSize } from './RsuiteTypes'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
-import { RSAppearance, RSSize } from './RsuiteTypes'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 // form
-export const FormHelpText = (p: any) => <div {...p}></div>
-export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
-export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
-export const Joined = (p: { className?: string; children?: ReactNode }) => (
-    <div tw={[p.className, 'join virtualBorder']}>{p.children}</div>
-)
-
-export const Addon = observer(function Addon_(p: any) {
-    return <div tw='flex items-center px-2 join-item' {...p}></div>
-})
+export const FormHelpTextUI = (p: any) => <div {...p}></div>
 
 // inputs
 export const Button = (
@@ -119,11 +111,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-export const SelectPicker = (p: any) => <select {...p}></select>
-export const TagPicker = (p: any) => <select multiple {...p}></select>
-export const MultiCascader = (p: any) => <select multiple {...p}></select>
-export const Tree = (p: any) => <div {...p}></div>
-
 // https://daisyui.com/components/rating/#mask-star-2-with-warning-color
 // TODO: remove that and just use a basic btn
 export const Rate = (p: {
@@ -157,22 +144,6 @@ export const Whisper = (p: {
     speaker: ReactNode
     children: ReactNode
 }) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
-
-export const Speaker = (p: any) => <span {...p}></span>
-export const Popover = (p: any) => <span {...p}></span>
-export const Tooltip = (p: any) => <span {...p}></span>
-// modals
-export const Modal = (p: any) => <div {...p}></div>
-export const ModalHeader = (p: any) => <div {...p}></div>
-export const ModalTitle = (p: any) => <div {...p}></div>
-export const ModalBody = (p: any) => <div {...p}></div>
-export const ModalFooter = (p: any) => <div {...p}></div>
-// navs
-export const NavItem = (p: any) => <div {...p}></div>
-// menus
-export const Menu = (p: any) => <div {...p}></div>
-export const MenuBar = (p: any) => <div {...p} />
-export const DropdownMenu = (p: any) => <div {...p}></div>
 
 // misc
 export const Panel = (p: {
@@ -235,8 +206,8 @@ export const Message = observer(function Message_(p: {
                 p.type === 'error' //
                     ? 'bg-error text-error-content'
                     : p.type === 'warning'
-                    ? 'bg-warning text-warning-content'
-                    : 'bg-base text-base-content',
+                      ? 'bg-warning text-warning-content'
+                      : 'bg-base text-base-content',
             ]}
             {...rest}
         >
@@ -260,6 +231,3 @@ export const Loader = observer((p: { size?: RSSize; className?: string }) => (
         tw={[`loading loading-spinner loading-${p.size ?? 'sm'}`]}
     ></span>
 ))
-
-// misc 2
-export const RadioTile = (p: any) => <div {...p}></div>

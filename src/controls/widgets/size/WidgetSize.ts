@@ -1,15 +1,17 @@
 // 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
+import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_size_config = WidgetConfigFields<
@@ -25,6 +27,11 @@ export type Widget_size_config = WidgetConfigFields<
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
 
+// SERIAL FROM VALUE
+export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
+    ...val,
+})
+
 // VALUE
 export type Widget_size_value = CushySize // prettier-ignore
 
@@ -38,10 +45,13 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types, IWidgetMixins {} // prettier-ignore
-export class Widget_size implements IWidget<Widget_size_types> {
+export interface Widget_size extends Widget_size_types {}
+export class Widget_size extends BaseWidget implements IWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     get width() { return this.serial.width } // prettier-ignore
     get height() { return this.serial.height } // prettier-ignore
@@ -61,7 +71,6 @@ export class Widget_size implements IWidget<Widget_size_types> {
     }
     get sizeHelper(): ResolutionState {
         // should only be executed once
-        const self = this
         const state = new ResolutionState(this)
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
@@ -73,6 +82,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
     // ⏸️ }
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial
 
@@ -80,9 +90,11 @@ export class Widget_size implements IWidget<Widget_size_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_size_config,
+        public readonly spec: ISpec<Widget_size>,
         serial?: Widget_size_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial
@@ -100,8 +112,27 @@ export class Widget_size implements IWidget<Widget_size_types> {
                 width,
             }
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { sizeHelper: false })
+
+        this.init({ sizeHelper: false })
+    }
+
+    setValue(val: Widget_size_value) {
+        this.value = val
+    }
+
+    set value(val: Widget_size_value) {
+        // ugly code;
+        if (
+            val.width === this.serial.width && //
+            val.height === this.serial.height &&
+            val.aspectRatio === this.serial.aspectRatio
+        ) {
+            return
+        }
+        runInAction(() => {
+            Object.assign(this.serial, val)
+            this.bumpValue()
+        })
     }
     get value(): Widget_size_value {
         return this.serial
@@ -109,4 +140,4 @@ export class Widget_size implements IWidget<Widget_size_types> {
 }
 
 // DI
-WidgetDI.Widget_size = Widget_size
+registerWidgetClass('size', Widget_size)

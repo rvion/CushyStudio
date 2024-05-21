@@ -1,23 +1,24 @@
+import type { DraftL } from '../../../models/Draft'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { STATE } from '../../../state/state'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
-import type { DraftL } from 'src/models/Draft'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
 
 import Konva from 'konva'
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
+import { toastError } from '../../../utils/misc/toasts'
 import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
 import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
 import { setupStageForPainting } from '../behaviours/setupStageForPainting'
-import { KonvaGrid1 } from './KonvaGrid1'
+import { KonvaGrid } from './KonvaGrid1'
 import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedStep } from './UnifiedStep'
-import { toastError } from 'src/utils/misc/toasts'
 
 export class UnifiedCanvas {
     snapToGrid = true
@@ -44,13 +45,12 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
-    tool: UnifiedCanvasTool = 'generate'
+    tool: UnifiedCanvasTool = 'none'
     brushMode: UnifiedCanvasBrushMode = 'paint'
     maskToolSize: number = 32
     maskColor = 'red'
     maskOpacity = 0.5
 
-    // _isPaint = false
     _lastLine: Konva.Line | null = null
 
     get pointerPosition() {
@@ -83,18 +83,31 @@ export class UnifiedCanvas {
         opacity: this.maskOpacity,
     })
 
-    enable_generate = () => {
-        this.tool = 'generate'
+    enable_none = () => {
+        this.tool = 'none'
+        this.disable_generate()
         this.disable_mask()
         this.disable_paint()
         this.disable_move()
     }
-    disable_generate = () => {}
+    disable_none = () => {}
+    enable_generate = () => {
+        this.tool = 'generate'
+        this.activeSelection.show()
+        this.disable_mask()
+        this.disable_paint()
+        this.disable_move()
+        this.disable_none()
+    }
+    disable_generate = () => {
+        this.activeSelection.hide()
+    }
     enable_mask = () => {
         this.tool = 'mask'
         this.disable_generate()
         this.disable_paint()
         this.disable_move()
+        this.disable_none()
     }
     disable_mask = () => {}
     enable_paint = () => {
@@ -102,6 +115,7 @@ export class UnifiedCanvas {
         this.disable_generate()
         this.disable_mask()
         this.disable_move()
+        this.disable_none()
     }
     disable_paint = () => {}
     enable_move = () => {
@@ -109,29 +123,19 @@ export class UnifiedCanvas {
         this.disable_generate()
         this.disable_mask()
         this.disable_paint()
+        this.disable_none()
     }
     disable_move = () => {}
 
     onKeyDown = (e: any) => {
-        if (e.key === '1') { this.tool = 'generate' ; return } // prettier-ignore
-        if (e.key === '2') { this.tool = 'mask' ; return } // prettier-ignore
-        if (e.key === '3') { this.tool = 'paint' ; return } // prettier-ignore
-        if (e.key === '4') { this.tool = 'move' ; return } // prettier-ignore
-
+        if (e.key === '0') { this.enable_none(); return } // prettier-ignore
+        if (e.key === '1') { this.enable_generate(); return } // prettier-ignore
+        if (e.key === '2') { this.enable_mask(); return } // prettier-ignore
+        if (e.key === '3') { this.enable_paint(); return } // prettier-ignore
+        if (e.key === '4') { this.enable_move(); return } // prettier-ignore
         if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
             this.undo()
         }
-        // if (e.keyCode === 37) {
-        //     circle.x(circle.x() - DELTA)
-        // } else if (e.keyCode === 38) {
-        //     circle.y(circle.y() - DELTA)
-        // } else if (e.keyCode === 39) {
-        //     circle.x(circle.x() + DELTA)
-        // } else if (e.keyCode === 40) {
-        //     circle.y(circle.y() + DELTA)
-        // } else {
-        //     return
-        // }
         e.preventDefault()
     }
 
@@ -141,25 +145,44 @@ export class UnifiedCanvas {
     steps: UnifiedStep[] = []
     masks: UnifiedMask[] = []
     selections: UnifiedSelection[] = []
-    grid: KonvaGrid1
-    TEMP = document.createElement('div')
+    grid: KonvaGrid
+    containerDiv = document.createElement('div')
 
+    /*
+        layer order:
+        [
+            // background
+            gridLayer: base grid
+            // validated images
+            image[].layer commited images
+            // pending changes
+            unifiedSteps[]: proposed changes
+            // masking stuff
+            tempLayer: current line being drawn when in paint mode
+            mask[].layer manually drawn or imported masks, each a differnt color, slighly transparent
+        ]
+    */
     stage: Konva.Stage
     gridLayer: Konva.Layer
-    tempLayer: Konva.Layer
+    tempLayer: Konva.Layer // to hold the line currently being drawn
     imageLayer: Konva.Layer
 
-    constructor(public st: STATE, baseImage: MediaImageL) {
+    /** used as container id for potential Portals to display html overlays */
+    uid = nanoid()
+
+    constructor(
+        public st: STATE,
+        baseImage: MediaImageL,
+    ) {
         // core layers
-        this.stage = new Konva.Stage({ container: this.TEMP, width: 512, height: 512 })
+        this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
         this.imageLayer = new Konva.Layer()
         this.tempLayer = new Konva.Layer()
         this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer)
 
         // ------------------------------
-        // to hold the line currently being drawn
-        this.grid = new KonvaGrid1(this)
+        this.grid = new KonvaGrid(this)
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
 
@@ -179,8 +202,8 @@ export class UnifiedCanvas {
         setupStageForPainting(this)
     }
 
-    addImage = (img: MediaImageL) => {
-        this.images.push(new UnifiedImage(this, img))
+    addImage = (img: MediaImageL, position?: { x: number; y: number }) => {
+        this.images.push(new UnifiedImage(this, img, position))
     }
 
     addMask = (img?: MediaImageL): UnifiedMask => {

@@ -1,16 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
-import { Popover, Whisper } from 'src/rsuite/shims'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (
-        <Whisper
-            //
-            placement='auto'
-            enterable
-            speaker={<Popover>{p.children}</Popover>}
-        >
+        <RevealUI placement='auto' enterable content={() => <div>{p.children}</div>}>
             <div className='text-neutral-content'>{p.title}</div>
-        </Whisper>
+        </RevealUI>
     )
 })

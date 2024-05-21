@@ -1,6 +1,6 @@
 // import { observer } from 'mobx-react-lite'
 // import { useSt } from '../../state/stateContext'
-// import { PkgHeaderStyle } from 'src/panels/libraryUI/AppListStyles'
+// import { PkgHeaderStyle } from './AppListStyles'
 
 // export const FavoriteHeaderUI = observer(function FavoriteHeaderUI_(p: {}) {
 //     const library = useSt().library

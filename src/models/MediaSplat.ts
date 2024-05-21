@@ -1,8 +1,8 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { StepL } from './Step'
-import type { TABLES } from 'src/db/TYPES.gen'
 
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export interface MediaSplatL extends LiveInstance<TABLES['media_splat']> {}
 export class MediaSplatL {

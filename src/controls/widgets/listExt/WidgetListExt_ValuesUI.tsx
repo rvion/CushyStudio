@@ -1,12 +1,12 @@
+import type { ISpec } from '../../ISpec'
 import type { Widget_listExt } from './WidgetListExt'
-import type { Spec } from 'src/controls/Spec'
 
 import { observer } from 'mobx-react-lite'
 
-import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
-import { Button } from 'src/rsuite/shims'
+import { Button } from '../../../rsuite/shims'
+import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Spec>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISpec>(p: {
     //
     widget: Widget_listExt<T>
 }) {

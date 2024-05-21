@@ -1,20 +1,26 @@
-import { run_advancedPrompt, ui_advancedPrompt } from 'library/built-in/_prefabs/prefab_promptsWithButtons'
+import type { FormBuilder } from '../../src/CUSHY'
 
+import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
+import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
-import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { ui_mask } from './_prefabs/prefab_mask'
-import { run_model, ui_model } from './_prefabs/prefab_model'
+import { run_mask, ui_mask } from './_prefabs/prefab_mask'
+import { run_model, run_model_modifiers, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
+import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
+import { CustomView3dCan } from './_views/View_3d_TinCan'
+import { CustomViewSpriteSheet } from './_views/View_Spritesheets'
 
 app({
     metadata: {
@@ -23,54 +29,52 @@ app({
         description:
             'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.',
     },
-    ui: (form) => ({
-        // modelType: form.selectOne({
-        //     appearance: 'tab',
-        //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
-        // }),
+    ui: (form: FormBuilder) => ({
         positive: form.prompt({
+            icon: 'mdiPlusBoxOutline',
             default: [
-                //
                 'masterpiece, tree',
                 '?color, ?3d_term, ?adj_beauty, ?adj_general',
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
+            box: { base: { hue: 150, contrast: 0, chroma: 0.05 } },
         }),
         negative: form.prompt({
+            icon: 'mdiMinusBoxOutline',
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
+            box: { base: { hue: 0, contrast: 0, chroma: 0.05 } },
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
-        mask: ui_mask(),
         sampler: ui_sampler(),
-        refine: ui_refiners(),
-        highResFix: ui_highresfix({ activeByDefault: true }),
+        mask: ui_mask(),
+        highResFix: ui_highresfix().optional(true),
         upscale: ui_upscaleWithModel(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
-        recursiveImgToImg: ui_recursive(),
-        loop: form.groupOpt({
-            items: () => ({
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
-            }),
-        }),
-        testStuff: form.choices({
+        ipAdapter: ui_IPAdapterV2().optional(),
+        faceID: ui_IPAdapterFaceIDV2().optional(),
+        extra: form.choices({
             appearance: 'tab',
             items: {
                 regionalPrompt: ui_regionalPrompting_v1(),
+                refine: ui_refiners(),
                 reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
                 makeAVideo: form.group(),
                 summary: form.group(),
                 gaussianSplat: form.group(),
                 promtPlus: ui_advancedPrompt(),
+                displayAsBeerCan: form.group({}),
+                displayAsSpriteSheet: form.group({}),
+                recursiveImgToImg: ui_recursive(),
+                watermark: ui_watermark_v1(),
+                fancyWatermark: form.group(),
             },
         }),
     }),
-
     run: async (run, ui, imgCtx) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
@@ -78,7 +82,7 @@ app({
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         let positiveText = ui.positive.text
-        if (ui.testStuff.promtPlus) positiveText += run_advancedPrompt(ui.testStuff.promtPlus)
+        if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
 
         const posPrompt = run_prompt({
             prompt: ui.positive,
@@ -91,8 +95,8 @@ app({
         // let finalText = posPrompt.promptIncludingBreaks
         let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
 
-        if (ui.testStuff.regionalPrompt) {
-            positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
+        if (ui.extra.regionalPrompt) {
+            positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
         }
         // let negative = x.conditionningNeg
 
@@ -116,15 +120,12 @@ app({
             : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
-        let mask: Maybe<_MASK>
         // if (imgCtx) {
         //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
         //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         // } else
-        if (ui.mask.mask) {
-            mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
-            latent = graph.SetLatentNoiseMask({ mask, samples: latent })
-        }
+        let mask: Maybe<_MASK> = await run_mask(ui.mask)
+        if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
@@ -136,11 +137,24 @@ app({
             ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
         }
 
+        let ip_adapter: _IPADAPTER | undefined
+        if (ui.ipAdapter) {
+            const ipAdapter_out = await run_IPAdapterV2(ui.ipAdapter, ckptPos, ip_adapter)
+            ckptPos = ipAdapter_out.ip_adapted_model
+            ip_adapter = ipAdapter_out.ip_adapter
+        }
+        if (ui.faceID) {
+            const faceID_out = await run_FaceIDV2(ui.faceID, ckptPos, ip_adapter)
+            ckptPos = faceID_out.ip_adapted_model
+            ip_adapter = faceID_out.ip_adapter
+        }
+
         // FIRST PASS --------------------------------------------------------------------------------
         const ctx_sampler: Ctx_sampler = {
-            ckpt: ckptPos,
+            ckpt: run_model_modifiers(ui.model, ckptPos, false),
             clip: clipPos,
             vae,
+            // @ts-ignore 🔴 TODO: review this one
             latent,
             positive: positive,
             negative: negative,
@@ -149,15 +163,16 @@ app({
         latent = run_sampler(run, ui.sampler, ctx_sampler).latent
 
         // RECURSIVE PASS ----------------------------------------------------------------------------
-        if (ui.recursiveImgToImg) {
-            for (let i = 0; i < ui.recursiveImgToImg.loops; i++) {
+        const extra = ui.extra
+        if (extra.recursiveImgToImg) {
+            for (let i = 0; i < extra.recursiveImgToImg.loops; i++) {
                 latent = run_sampler(
                     run,
                     {
                         seed: ui.sampler.seed + i,
-                        cfg: ui.recursiveImgToImg.cfg,
-                        steps: ui.recursiveImgToImg.steps,
-                        denoise: ui.recursiveImgToImg.denoise,
+                        cfg: extra.recursiveImgToImg.cfg,
+                        steps: extra.recursiveImgToImg.steps,
+                        denoise: extra.recursiveImgToImg.denoise,
                         sampler_name: 'ddim',
                         scheduler: 'ddim_uniform',
                     },
@@ -176,7 +191,7 @@ app({
         const HRF = ui.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
-                ckpt: ckptPos,
+                ckpt: run_model_modifiers(ui.model, ckptPos, true, ui.highResFix.scaleFactor),
                 clip: clipPos,
                 vae,
                 latent,
@@ -193,8 +208,8 @@ app({
                           samples: latent,
                           crop: 'disabled',
                           upscale_method: 'nearest-exact',
-                          height: height * ui.highResFix.scaleFactor,
-                          width: width * ui.highResFix.scaleFactor,
+                          height: height * HRF.scaleFactor,
+                          width: width * HRF.scaleFactor,
                       })
                     : graph.NNLatentUpscale({
                           latent,
@@ -209,8 +224,8 @@ app({
                     cfg: ui.sampler.cfg,
                     steps: HRF.steps,
                     denoise: HRF.denoise,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
+                    sampler_name: ui.highResFix.useMainSampler ? ui.sampler.sampler_name : 'ddim',
+                    scheduler: ui.highResFix.useMainSampler ? ui.sampler.scheduler : 'ddim_uniform',
                 },
                 { ...ctx_sampler_fix, latent, preview: false },
             ).latent
@@ -223,8 +238,8 @@ app({
         let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
 
         // REFINE PASS AFTER ---------------------------------------------------------------------
-        if (ui.refine) {
-            finalImage = run_refiners_fromImage(ui.refine, finalImage)
+        if (extra.refine) {
+            finalImage = run_refiners_fromImage(extra.refine, finalImage)
             // latent = graph.VAEEncode({ pixels: image, vae })
         }
 
@@ -245,20 +260,16 @@ app({
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
 
-        if (ui.testStuff?.gaussianSplat) run.output_GaussianSplat({ url: '' })
-        if (ui.testStuff?.summary) output_demo_summary(run)
+        if (ui.extra?.gaussianSplat) run.output_GaussianSplat({ url: '' })
+        if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
+        if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
+        if (ui.extra.displayAsSpriteSheet)
+            run.output_custom({ view: CustomViewSpriteSheet, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
-        const loop = ui.loop
-        if (loop) {
-            const ixes = new Array(ui.loop.batchCount).fill(0).map((_, i) => i)
-            for (const i of ixes) {
-                await new Promise((r) => setTimeout(r, loop.delayBetween))
-                await run.PROMPT({ saveFormat })
-            }
-        }
-
-        if (ui.testStuff?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
+        if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)
+        if (ui.extra.fancyWatermark) run_addFancyWatermarkToAllImage()
+        if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })

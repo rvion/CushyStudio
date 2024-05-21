@@ -1,13 +1,12 @@
-import 'src/models/_ctx3'
-import 'src/models/asyncRuntimeStorage'
+// VERY IMPORTANT: Dependency Injection for runtime
+import '../models/asyncRuntimeStorage'
 
+import type { ActionTagMethodList } from '../cards/App'
+import type { FormSerial } from '../controls/FormSerial'
 import type { MediaImageL } from '../models/MediaImage'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
+import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
-import type { ActionTagMethodList } from 'src/cards/App'
-import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
-import type { RevealState } from 'src/rsuite/reveal/RevealState'
-import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
 import { SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
@@ -16,65 +15,67 @@ import { makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
+import { fromZodError } from 'zod-validation-error'
 
+import { commandManager, type CommandManager } from '../app/shortcuts/CommandManager'
+import { createRandomGenerator } from '../back/random'
+import { asAppPath } from '../cards/asAppPath'
+import { GithubRepoName } from '../cards/githubRepo'
+import { GithubUserName } from '../cards/GithubUser'
+import { Library } from '../cards/Library'
+import { recursivelyFindAppsInFolder } from '../cards/walkLib'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
+import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
+import { mkConfigFile } from '../config/mkConfigFile'
+import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
+import { quickBench } from '../db/quickBench'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
+import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
 import { ComfySchemaL, EnumValue } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFile'
+import { CushyAppL } from '../models/CushyApp'
+import { DraftL } from '../models/Draft'
+import { HostL } from '../models/Host'
+import { ProjectL } from '../models/Project'
+import { StepL } from '../models/Step'
+import { activityManager } from '../operators/Activity'
+import { regionMonitor, RegionMonitor } from '../operators/RegionMonitor'
+import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
+import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
+import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
+import { treeElement } from '../panels/libraryUI/tree/TreeEntry'
+import { Tree } from '../panels/libraryUI/tree/xxx/Tree'
+import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
+import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../panels/router/Layout'
+// import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
+import { SafetyChecker } from '../safety/Safety'
+import { Database } from '../supa/database.types'
+// import { CushyThemeManager } from '../theme/colorEngine/CushyTheming'
+import { ThemeManager } from '../theme/ThemeManager'
+import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
+import { CleanedEnumResult } from '../types/EnumUtils'
+import { StepOutput } from '../types/StepOutput'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { SearchManager } from '../utils/electron/findInPage'
+import { openInVSCode } from '../utils/electron/openInVsCode'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { exhaust } from '../utils/misc/exhaust'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
+import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
-import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { allCommands } from 'src/app/shortcuts/shortcuts'
-import { createRandomGenerator } from 'src/back/random'
-import { asAppPath } from 'src/cards/asAppPath'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { Library } from 'src/cards/Library'
-import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
-import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
-import { mkConfigFile } from 'src/config/mkConfigFile'
-import { Form } from 'src/controls/Form'
-import { CushyFormManager } from 'src/controls/FormBuilder'
-import { quickBench } from 'src/db/quickBench'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asHostID, type TABLES } from 'src/db/TYPES.gen'
-import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
-import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
-import { HostL } from 'src/models/Host'
-import { ProjectL } from 'src/models/Project'
-import { StepL } from 'src/models/Step'
-import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
-import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
-import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
-import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
-import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
-import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
-import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/PlaygroundWidgetDisplay'
-// import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
-import { SafetyChecker } from 'src/safety/Safety'
-import { Database } from 'src/supa/database.types'
-import { ThemeManager } from 'src/theme/ThemeManager'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import { StepOutput } from 'src/types/StepOutput'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -108,12 +109,14 @@ export class STATE {
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
-    shortcuts: ShortcutWatcher
     uploader: Uploader
     supabase: SupabaseClient<Database>
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
+    forms: CushyFormManager = CushyFormManager
+    commands: CommandManager = commandManager
+    region: RegionMonitor = regionMonitor
 
     _updateTime = () => {
         const now = Date.now()
@@ -134,8 +137,9 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
-    /** @internal */
-    _popups: RevealState[] = []
+    get clickAndSlideMultiplicator(): number {
+        return cushy.configFile.get('numberSliderSpeed') ?? 1
+    }
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
@@ -161,7 +165,7 @@ export class STATE {
     hasWildcard = (name: string): boolean => (this.wildcards as { [k: string]: any })[name] != null
     get wildcards(): Wildcards {
         const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
-        const wcds = this.readJSON<Wildcards>(wcdsPath)
+        const wcds = this.readJSON_<Wildcards>(wcdsPath)
         Object.defineProperty(this, 'wildcards', { value: wcds })
         return wcds
     }
@@ -246,6 +250,7 @@ export class STATE {
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
+    // themeManager: CushyThemeManager
 
     // showPreviewInFullScreen
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
@@ -257,7 +262,7 @@ export class STATE {
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
-    get gallerySize() { return this.galleryConf.get(`gallerySize`) ?? 48 } // prettier-ignore
+    get gallerySize() { return this.galleryConf.root.get(`gallerySize`) ?? 48 } // prettier-ignore
 
     get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
     set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
@@ -278,6 +283,16 @@ export class STATE {
     // ---------------------------------------------------
     get favoriteApps(): CushyAppL[] { return this.db.cushy_app.select((q) => q.where('isFavorite', '=', SQLITE_true), ['cushy_app.isFavorite']) } // prettier-ignore
     get favoriteDrafts(): DraftL[] { return this.db.draft.select((q) => q.where('isFavorite', '=', SQLITE_true), ['draft.isFavorite']) } // prettier-ignore
+    get canvasTools(): DraftL[] { return this.db.draft.select((q) => q.where('canvasToolCategory', '!=', 'null'), ['draft.canvasToolCategory']) } // prettier-ignore
+    getCanvasToolsInCategory = (category: string) =>
+        this.db.draft.select((q) => q.where('canvasToolCategory', '=', category), ['draft.canvasToolCategory'])
+    /** list of all unified canvas tool categories */
+    get canvasCategories(): string[] {
+        return this.db.draft
+            .selectRaw((q) => q.select('canvasToolCategory').distinct(), ['draft.canvasToolCategory'])
+            .map((x) => x.canvasToolCategory!)
+            .filter(Boolean)
+    }
     get allDrafts(): DraftL[] { return this.db.draft.select() } // prettier-ignore
     get allApps(): CushyAppL[] { return this.db.cushy_app.select() } // prettier-ignore
     get allImageApps(): CushyAppL[] { return this.db.cushy_app.select(q => q.where('canStartFromImage','=', SQLITE_true)) } // prettier-ignore
@@ -414,7 +429,7 @@ export class STATE {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
     }
-    graphConf = CushyFormManager.form(
+    graphConf = CushyFormManager.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -422,11 +437,14 @@ export class STATE {
         }),
         {
             name: 'Graph Visualisation',
-            initialValue: () => readJSON('settings/graph-visualization.json'),
+            initialSerial: () => readJSON('settings/graph-visualization.json'),
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
-    civitaiConf = CushyFormManager.form(
+    get activityManager() {
+        return activityManager
+    }
+    civitaiConf = CushyFormManager.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -436,13 +454,15 @@ export class STATE {
         }),
         {
             name: 'Civitai Conf',
-            initialValue: () => readJSON('settings/civitai.json'),
+            initialSerial: () => readJSON('settings/civitai.json'),
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = CushyFormManager.form(
+    favbar = CushyFormManager.fields(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            visible: f.bool(),
+            grayscale: f.boolean({ label: 'Grayscale' }),
             appIcons: f
                 .int({
                     label: false,
@@ -455,12 +475,10 @@ export class STATE {
                     suffix: '%',
                 })
                 .optional(true),
-            tree: f.bool({ label: false, alignLabel: false, text: 'File Tree', display: 'button', expand: true, icon: 'folder' }),
-            apps: f.bool({ label: false, alignLabel: false, text: 'App Tree', display: 'button', expand: true, icon: 'apps' }),
         }),
         {
             name: 'SideBar Conf',
-            initialValue: () => readJSON('settings/sidebar.json'),
+            initialSerial: () => readJSON('settings/sidebar.json'),
             onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
@@ -469,7 +487,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = CushyFormManager.form(
+    displacementConf = CushyFormManager.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -485,7 +503,7 @@ export class STATE {
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
-            takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+            // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
             metalness: form.float({ min: 0, max: 1 }),
             roughness: form.float({ min: 0, max: 1 }),
             skyBox: form.bool({}),
@@ -494,12 +512,12 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialValue: () => readJSON('settings/displacement.json'),
+            initialSerial: () => readJSON<FormSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
 
-    galleryConf = CushyFormManager.form(
+    galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },
@@ -514,14 +532,14 @@ export class STATE {
                 text: 'Only Show Blurry Thumbnails',
                 expand: true,
                 display: 'button',
-                icon: 'lock',
+                icon: 'mdiLock',
                 label: false,
             }),
         }),
         {
             name: 'Gallery Conf',
             onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            initialValue: () => readJSON('settings/gallery.json'),
+            initialSerial: () => readJSON('settings/gallery.json'),
         },
     )
 
@@ -550,8 +568,8 @@ export class STATE {
         this.supabase = mkSupa()
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
-        console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
+        // this.shortcuts = new CommandManager(allCommands, this, { name: nanoid() })
+        // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.themeMgr = new ThemeManager(this)
@@ -575,16 +593,19 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
-        this.tree1 = new Tree(this, [
-            //
-            treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
-            treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
-            treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
-            treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
-            // '#apps',
-        ])
+        this.tree1 = new Tree(
+            [
+                //
+                treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
+                treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
+                treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
+                treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
+                // '#apps',
+            ],
+            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+        )
         this.tree1View = new TreeView(this.tree1, {
-            onSelectionChange: (node?: TreeNode) => {
+            onFocusChange: (node?: TreeNode) => {
                 if (node == null) return
                 console.log(`[🌲] TreeView 1 selection changed to:`, node.path_v2)
                 if (node.data instanceof TreeApp) return node.data.app?.revealInFileExplorer()
@@ -592,20 +613,23 @@ export class STATE {
                 return
             },
         })
-        this.tree2 = new Tree(this, [
-            // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
-            treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
-            treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
-            treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
-            treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
-            //
-            // 'path#library',
-            // 'path#library/built-in',
-            // 'path#library/local',
-            // 'path#library/sdk-examples',
-        ])
+        this.tree2 = new Tree(
+            [
+                // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
+                treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
+                treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
+                treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
+                treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
+                //
+                // 'path#library',
+                // 'path#library/built-in',
+                // 'path#library/local',
+                // 'path#library/sdk-examples',
+            ],
+            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+        )
         this.tree2View = new TreeView(this.tree2, {
-            onSelectionChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
+            onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })
 
         makeAutoObservable(this, {
@@ -614,6 +638,8 @@ export class STATE {
         })
         this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
+
+        // this.themeManager = new CushyThemeManager()
     }
 
     get mainComfyHostID(): HostID {
@@ -722,10 +748,12 @@ export class STATE {
     }
 
     latentPreview: Maybe<{
+        promtID: Maybe<PromptID>
         receivedAt: Timestamp
         blob: Blob
         url: string
     }> = null
+
     onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
@@ -747,7 +775,12 @@ export class STATE {
                     }
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
-                    this.latentPreview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
+                    this.latentPreview = {
+                        blob: imageBlob,
+                        url: imagePreview,
+                        receivedAt: Date.now(),
+                        promtID: this.activePromptID,
+                    }
                     break
                 default:
                     throw new Error(`Unknown binary websocket message of type ${eventType}`)
@@ -756,6 +789,16 @@ export class STATE {
         }
         // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
+
+        const shouldCheckPAYLOADS = true
+        if (shouldCheckPAYLOADS) {
+            const match = WsMsg$Schema.safeParse(msg)
+            if (!match.success) {
+                console.log(`[🔴] /!\\ Websocket payload does not match schema.`)
+                console.log('🔴 payload', msg)
+                console.log('🔴error: ❌', fromZodError(match.error))
+            }
+        }
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
@@ -877,8 +920,10 @@ export class STATE {
         writeFileSync(absPath, content)
     }
 
+    readJSON = readJSON
+    writeJSON = writeJSON
     /** read text file, optionally provide a default */
-    readJSON = <T extends any>(absPath: AbsolutePath, def?: T): T => {
+    readJSON_ = <T extends any>(absPath: AbsolutePath, def?: T): T => {
         console.log(absPath)
         const exists = existsSync(absPath)
         if (!exists) {

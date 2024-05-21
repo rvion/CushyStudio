@@ -3,9 +3,9 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
+import { MessageErrorUI } from '../../../panels/MessageUI'
+import { SelectUI } from '../../../rsuite/SelectUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { MessageErrorUI } from 'src/panels/MessageUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectMany<T>
@@ -43,17 +43,17 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     .map((item) => (
                         <InputBoolUI
                             active={true}
-                            className='bderr'
+                            style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
                             text={item.label ?? 'no label'}
                             onValueChange={(value) => widget.toggleItem(item)}
                         />
                     ))}
             </div>
-            {widget.errors && (
+            {widget.baseErrors && (
                 <MessageErrorUI>
                     <ul>
-                        {widget.errors.map((e, ix) => (
+                        {widget.baseErrors.map((e, ix) => (
                             <li key={ix}>{e}</li>
                         ))}
                     </ul>
@@ -71,18 +71,21 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
         <div tw='flex-1'>
             <SelectUI<T>
                 multiple
-                tw={[widget.errors && 'rsx-field-error']}
+                tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
-                getLabelUI={(t) => t.label ?? t.id}
+                getLabelUI={widget.config.getLabelUI}
+                getSearchQuery={() => widget.serial.query ?? ''}
+                setSearchQuery={(query) => (widget.serial.query = query)}
+                disableLocalFiltering={widget.config.disableLocalFiltering}
                 options={() => widget.choices}
                 value={() => widget.serial.values}
                 equalityCheck={(a, b) => a.id === b.id}
                 onChange={(selectOption) => widget.toggleItem(selectOption)}
             />
-            {widget.errors && (
+            {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>
                     <span className='material-symbols-outlined'>error</span>
-                    {widget.errors}
+                    {widget.baseErrors}
                 </div>
             )}
         </div>

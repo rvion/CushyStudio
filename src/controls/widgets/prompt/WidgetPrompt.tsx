@@ -1,17 +1,18 @@
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Timestamp } from '../../../cards/Timestamp'
+import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { Tree } from '@lezer/common'
-import type { Timestamp } from 'src/cards/Timestamp'
-import type { Form } from 'src/controls/Form'
-import type { IWidget } from 'src/controls/IWidget'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -33,6 +34,12 @@ export type Widget_prompt_config = WidgetConfigFields<
     Widget_prompt_types
 >
 
+// SERIAL FROM VALUE
+export const Widget_prompt_fromValue = (val: Widget_prompt_value): Widget_prompt_serial => ({
+    type: 'prompt',
+    val: val.text,
+})
+
 // SERIAL
 export type Widget_prompt_serial = WidgetSerialFields<{
     type: 'prompt'
@@ -52,12 +59,19 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
-export class Widget_prompt implements IWidget<Widget_prompt_types> {
+export interface Widget_prompt extends Widget_prompt_types {}
+export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_types> {
+    // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
+    // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'prompt' = 'prompt'
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     serial: Widget_prompt_serial
 
@@ -65,9 +79,11 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_prompt_config,
+        public readonly spec: ISpec<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
+        super()
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'prompt',
@@ -75,9 +91,9 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        this.init({ DefaultBodyUI: false, DefaultHeaderUI: false })
     }
+    /* override */ background = true
 
     // sentinel value so we know when to trigger update effect in the UI to update
     // codemirror uncontrolled component
@@ -108,6 +124,13 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get ast(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
+    setValue(val: Widget_prompt_value) {
+        this.value = val
+    }
+    set value(next: Widget_prompt_value) {
+        if (next !== this) throw new Error('not implemented')
+        // do nothing, value it the instance itself
+    }
     get value(): Widget_prompt_value {
         return this
         // return {
@@ -134,4 +157,4 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
 }
 
 // DI
-WidgetDI.Widget_prompt = Widget_prompt
+registerWidgetClass('prompt', Widget_prompt)

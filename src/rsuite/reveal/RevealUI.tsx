@@ -1,64 +1,76 @@
-import { observable } from 'mobx'
+import type { RevealProps } from './RevealProps'
+
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
+import { Ikon } from '../../icons/iconHelpers'
 import { ModalShellUI } from './ModalShell'
-import { RevealProps } from './RevealProps'
-import { RevealState } from './RevealState'
-
-// RevealUI is a bit perf-sensitive,
-// so we use a lazy memo to avoid creating the state object
-// until it's absolutely needed
-export const useMemoLazy = <T extends any>(fn: () => T): { uist: T | null; uist2(): T } =>
-    useMemo(() => {
-        let x = observable({
-            uist: null as T | null,
-            uist2: () => {
-                if (x.uist) return x.uist
-                console.log(`[💙] init RevealUI`)
-                x.uist = fn()
-                return x.uist
-            },
-        })
-        return x
-    }, [])
+import { RevealCtx, useRevealOrNull } from './RevealCtx'
+import { global_RevealStack } from './RevealStack'
+import { RevealState, RevealStateLazy } from './RevealState'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
-    const { uist, uist2 } = useMemoLazy(() => new RevealState(p))
     const ref = useRef<HTMLDivElement>(null)
+    const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
 
+    // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
+    const self = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getUist())), []) // prettier-ignore
+    const { uistOrNull, getUist: uist2 } = self
+    const nextTower = useMemo(() => ({ tower: [...parents, self] }), [])
+
+    // once updated, make sure to keep props in sync so hot reload work well enough.
     useEffect(() => {
-        if (uist?.visible && ref.current) {
+        const x = uistOrNull
+        if (x == null) return
+        if (p.content !== x.p.content) x.contentFn = p.content
+        if (p.trigger !== x.p.trigger) x.p.trigger = p.trigger
+        if (p.placement !== x.p.placement) x.p.placement = p.placement
+        if (p.showDelay !== x.p.showDelay) x.p.showDelay = p.showDelay
+        if (p.hideDelay !== x.p.hideDelay) x.p.hideDelay = p.hideDelay
+    }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
+
+    // update position in case something moved or scrolled
+    useEffect(() => {
+        if (uistOrNull?.visible && ref.current) {
             const rect = ref.current.getBoundingClientRect()
-            uist.setPosition(rect)
+            uistOrNull.setPosition(rect)
         }
-    }, [uist?.visible])
+    }, [uistOrNull?.visible])
+
     const content = p.children
-    const tooltip = mkTooltip(uist)
-    return (
+    const tooltip = mkTooltip(uistOrNull)
+
+    // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
+    const anchor = (
         <span //
-            tw={uist?.defaultCursor}
+            tw={['inline-block ui-reveal-anchor', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
             className={p.className}
             ref={ref}
             style={p.style}
-            onContextMenu={() => uist2().toggleLock()}
+            // style={{ ...p.style, ...uistOrNull?.debugColor }}
+
+            // lock input on shift+right click
+            onContextMenu={(ev) => {
+                if (ev.shiftKey) {
+                    uist2().toggleLock()
+                    ev.preventDefault() //  = prevent window on non-electron apps
+                    ev.stopPropagation() // = right click is consumed
+                }
+            }}
+            onClick={(ev) => uist2().onLeftClick(ev)}
+            onAuxClick={(ev) => {
+                if (ev.button === 1) return uist2().onMiddleClick(ev)
+                if (ev.button === 2) return uist2().onRightClick(ev)
+            }}
             onMouseEnter={() => uist2().onMouseEnterAnchor()}
             onMouseLeave={() => uist2().onMouseLeaveAnchor()}
-            onClick={(ev) => {
-                const uist = uist2()
-                const toc = uist.triggerOnClick
-                if (!toc) return
-                ev.stopPropagation()
-                ev.preventDefault()
-                if (uist.visible) uist.leaveAnchor()
-                else uist.enterAnchor()
-            }}
         >
             {content}
             {tooltip}
         </span>
     )
+    return <RevealCtx.Provider value={nextTower}>{anchor}</RevealCtx.Provider>
 })
 
 const mkTooltip = (uist: RevealState | null) => {
@@ -78,13 +90,13 @@ const mkTooltip = (uist: RevealState | null) => {
     const pos = uist.tooltipPosition
     const p = uist.p
 
-    const hiddenContent = p.content()
+    const hiddenContent = uist.contentFn()
 
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
@@ -107,8 +119,8 @@ const mkTooltip = (uist: RevealState | null) => {
     ) : uist.placement.startsWith('popup') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
@@ -121,12 +133,19 @@ const mkTooltip = (uist: RevealState | null) => {
                 p.onClick?.(ev)
                 uist.close()
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
         >
-            <ModalShellUI title={p.title}>{hiddenContent}</ModalShellUI>
+            <ModalShellUI
+                close={() => {
+                    uist.close()
+                }}
+                title={p.title}
+            >
+                {hiddenContent}
+            </ModalShellUI>
         </div>
     ) : (
         <div
@@ -141,7 +160,7 @@ const mkTooltip = (uist: RevealState | null) => {
             // ⏸️   }}
             onClick={(ev) => {
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}
@@ -170,11 +189,28 @@ const mkTooltip = (uist: RevealState | null) => {
             {hiddenContent}
             {uist._lock ? (
                 <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                    <span className='material-symbols-outlined'>lock</span>
-                    locked; right-click to unlock
+                    <Ikon.mdiLock />
+                    shift+right-click to unlock
                 </span>
-            ) : null}
+            ) : (
+                <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                    <Ikon.mdiLockOff />
+                    shift+right-click to lock
+                </span>
+
+                //
+                // null
+            )}
         </div>
     )
+
     return createPortal(revealedContent, element)
 }
+
+// -----------------------------------------------------------------------------
+// 🔵 TODO: add some global way to force-open any reveal by UID
+// const knownReveals = new WeakMap<string>(...)
+// export const triggerReveal_UNSAFE = (p: RevealID) => {
+// ...
+// }
+// -----------------------------------------------------------------------------

@@ -1,24 +1,25 @@
+import type { SQLWhere } from '../../../db/SQLWhere'
+import type { MediaImageT } from '../../../db/TYPES.gen'
+import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SQLWhere } from 'src/db/SQLWhere'
-import type { MediaImageT } from 'src/db/TYPES.gen'
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { ISpec } from '../../ISpec'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../BaseWidget'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { Spec } from 'src/controls/Spec'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<
     {
         defaultActive?: boolean
         suggestionWhere?: SQLWhere<MediaImageT>
-        assetSuggested?: RelativePath
+        assetSuggested?: RelativePath | RelativePath[]
     },
     Widget_image_types
 >
@@ -43,33 +44,42 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends Widget_image_types, IWidgetMixins {} // prettier-ignore
-export class Widget_image implements IWidget<Widget_image_types> {
+export interface Widget_image extends Widget_image_types {} // prettier-ignore
+export class Widget_image extends BaseWidget implements IWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
-    static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_image_config,
+        public readonly spec: ISpec<Widget_image>,
         serial?: Widget_image_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
-    get value(): Widget_image_value {
+    get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
+    }
+    setValue(val: MediaImageL) {
+        this.value = val
     }
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
@@ -81,4 +91,4 @@ export class Widget_image implements IWidget<Widget_image_types> {
 }
 
 // DI
-WidgetDI.Widget_image = Widget_image
+registerWidgetClass('image', Widget_image)

@@ -20,15 +20,12 @@ app({
     },
     ui: (form) => ({
         image: form.image({}),
-        orbit: form.orbit({ requirements: [{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }] }),
-        sndPass: form.groupOpt({
-            items: () => ({
-                positive: form.prompt({}),
-            }),
-        }),
+        orbit: form.orbit({}).addRequirements([{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }]),
+        sndPass: form.fields({ positive: form.prompt({}) }).optional(),
     }),
     run: async (run, ui) => {
         const graph = run.nodes
+        // @ts-ignore
         const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
         const startImage2 = await run.loadImageAnswer(ui.image)
         // const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })

@@ -3,17 +3,18 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
+import { Ikon } from '../../../icons/iconHelpers'
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../state/stateContext'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
+import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
 import { Plugin_PreviewPromptUI } from './plugins/Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
-import { Plugin_LoraControlsUI } from 'src/controls/widgets/prompt/plugins/Plugin_LoraBoxUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
     const st = useSt()
@@ -23,7 +24,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
             {widget.serial.collapsed ? (
                 <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
             ) : (
-                <div></div>
+                <div />
             )}
             <div
                 tw='flex self-end'
@@ -34,6 +35,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
             >
                 {plugins.map((plugin) => {
                     const active = st.configFile.get(plugin.configKey) ?? false
+                    const Icon = Ikon[plugin.icon]
                     return (
                         <RevealUI
                             key={plugin.key}
@@ -53,7 +55,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                     'btn btn-icon btn-square opacity-50 hover:opacity-100 btn-xs text-sm',
                                 ]}
                             >
-                                <span className='material-symbols-outlined'>{plugin.icon}</span>
+                                <Icon />
                             </div>
                         </RevealUI>
                     )
@@ -86,6 +88,10 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             onKeyDownCapture={(ev) => {
                 // Prevent new-line when using the run shortcut
                 // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
+                // ⏸️ if (ev.ctrlKey && ev.key == ' ') {
+                // ⏸️     ev.preventDefault()
+                // ⏸️     ev.stopPropagation()
+                // ⏸️ }
                 if (ev.ctrlKey && ev.key == 'Enter') {
                     ev.preventDefault()
                     ev.stopPropagation()
@@ -113,7 +119,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 const pluginReorder: PromptPlugin = {
     key: 'plugin-reorder',
     configKey: 'showPromptPluginPreview',
-    icon: 'format_list_numbered',
+    icon: 'mdiCursorMove',
     title: 'Reorder',
     description: 'Reorder top level items (drag-and-drop friendly for those without RSI yet)',
     Widget: Plugin_ReorderTopLevelStuffUI,
@@ -121,7 +127,7 @@ const pluginReorder: PromptPlugin = {
 const pluginShortcuts: PromptPlugin = {
     key: 'plugin-shortcuts',
     configKey: 'showPromptPluginReorder',
-    icon: 'keyboard',
+    icon: 'mdiCodeJson',
     title: 'Keyboard Shortcuts',
     description: 'Increase/Decrease weights, and more',
     Widget: Plugin_ShortcutsUI,
@@ -129,7 +135,7 @@ const pluginShortcuts: PromptPlugin = {
 const pluginWeights: PromptPlugin = {
     key: 'plugin-weights',
     configKey: 'showPromptPluginWeights',
-    icon: 'line_weight',
+    icon: 'mdiWeightKilogram',
     title: 'Adjust weights',
     description: 'Adjust top-level weights',
     Widget: Plugin_AdjustWeightsUI,
@@ -137,7 +143,7 @@ const pluginWeights: PromptPlugin = {
 const pluginPreview: PromptPlugin = {
     key: 'plugin-preview',
     configKey: 'showPromptPluginLora',
-    icon: 'preview',
+    icon: 'mdiText',
     title: 'Preview Prompt',
     description: 'Preview the prompt that will be sent to ComfyUI',
     Widget: Plugin_PreviewPromptUI,
@@ -145,7 +151,7 @@ const pluginPreview: PromptPlugin = {
 const pluginLora: PromptPlugin = {
     key: 'plugin-lora',
     configKey: 'showPromptPluginAst',
-    icon: 'format_list_numbered',
+    icon: 'mdiAt',
     title: 'Lora plugin to adjust model_weight, clip_weights, and trigger words',
     description: 'Lora plugin',
     Widget: Plugin_LoraControlsUI,
@@ -153,7 +159,7 @@ const pluginLora: PromptPlugin = {
 const pluginAst: PromptPlugin = {
     key: 'plugin-ast',
     configKey: 'showPromptPluginShortcuts',
-    icon: 'account_tree',
+    icon: 'mdiKeyboard',
     title: 'Show Ast',
     description: 'Show the Prompt AST to review if everything is as expected',
     Widget: Plugin_DebugAST,

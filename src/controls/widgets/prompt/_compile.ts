@@ -1,5 +1,5 @@
+import type { STATE } from '../../../state/state'
 import type { CompiledPrompt } from './WidgetPrompt'
-import type { STATE } from 'src/state/state'
 
 import { Prompt_Node, PromptAST } from './grammar/grammar.practical'
 

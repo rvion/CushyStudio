@@ -1,6 +1,6 @@
+import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { SimpleColor, SimpleKind, SimpleRarity } from './_stsAssets'
 import type { TextConfig } from 'konva/lib/shapes/Text'
-import type { MediaImageL } from 'src/models/MediaImage'
 
 import { stsAssets } from './_stsAssets'
 
@@ -27,10 +27,7 @@ export const drawCard = async (p: {
 }) => {
     const run = getCurrentRun()
     const Konva = run.Konva
-    const layer = Konva.createStageWithLayer({
-        height: 1024,
-        width: 1024,
-    })
+    const layer = Konva.createStageWithLayer({ height: 1024, width: 1024 })
     const mkImage = memoized(async (key: string) => {
         const url = (stsAssets as Record<string, string>)[key]
         if (!url) throw new Error(`missing asset: ${key}`)
@@ -51,7 +48,14 @@ export const drawCard = async (p: {
         new Konva.Konva.Text({ text: p.cost.toString(), x: 128 + 96, y: 96, ...costStyle }),
     )
 
-    const final = run.Images.createFromDataURL(layer.toDataURL())
+    const final = run.Images.createFromDataURL(
+        layer.toDataURL({
+            x: 150,
+            y: 50,
+            width: 1024 - 2 * 150,
+            height: 1024 - 50,
+        }),
+    )
     return final
 }
 

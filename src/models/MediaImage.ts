@@ -1,4 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
+import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
+import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { CushyAppL } from './CushyApp'
@@ -6,45 +9,31 @@ import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
-import type { TABLES } from 'src/db/TYPES.gen'
-import type { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import type { ComfyNodeJSON } from 'src/types/ComfyPrompt'
 
 import { existsSync, mkdirSync, readFileSync } from 'fs'
+import Konva from 'konva'
 import { lookup } from 'mime-types'
-import { runInAction } from 'mobx'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
+import { hasMod } from '../app/shortcuts/META_NAME'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { Trigger } from '../operators/RET'
+import { SafetyResult } from '../safety/Safety'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { getCurrentRun_IMPL } from './_ctx2'
-import { hasMod } from 'src/app/shortcuts/META_NAME'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SafetyResult } from 'src/safety/Safety'
-import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { toastError, toastInfo } from 'src/utils/misc/toasts'
-import { transparentImgURL } from 'src/widgets/galleries/transparentImg'
+import { asSTRING_orCrash } from '../utils/misc/bang'
+import { ManualPromise } from '../utils/misc/ManualPromise'
+import { toastError, toastImage, toastInfo } from '../utils/misc/toasts'
+import { transparentImgURL } from '../widgets/galleries/transparentImg'
+import { createMediaImage_fromDataURI, type ImageCreationOpts } from './createMediaImage_fromWebFile'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
-    get imageID() {
-        return this.id
-    }
-
     /** return the image filename */
     get filename() {
         return basename(this.data.path)
-        // const infos = this.data.comfyUIInfos
-        // if (infos == null) return 'null'
-        // if (infos.type === 'image-local') return basename(infos.absPath)
-        // if (infos.type === 'image-base64') return this.id
-        // if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
-        // // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
-        // // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
-        // exhaust(infos)
-        // return 'unknown'
     }
 
     get step(): Maybe<StepL> { return this.prompt?.step } // prettier-ignore
@@ -52,14 +41,29 @@ export class MediaImageL {
     get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
     get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
 
+    /** flip image */
+    // 👀 👉 https://github.com/lovell/sharp/issues/28#issuecomment-679193628
+    // ⏸️ flip = async () => {
+    // ⏸️     await sharp(this.absPath)
+    // ⏸️         // .flip()
+    // ⏸️         .toFile(this.absPath + '2')
+    // ⏸️     renameSync(this.absPath + '2', this.absPath)
+    // ⏸️ }
+
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
-    copyToClipboard = () => {
-        createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob()))
-            .then((img) => {
+    copyToClipboard_viaCanvas = async (
+        /** NOT TAKEN INTO ACCOUNT FOR NOW */
+        p?: {
+            //
+            format?: any /* 🔴 */
+            quality?: any /* 🔴 */
+        },
+    ): Promise<Trigger> => {
+        try {
+            await createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob())).then((img) => {
                 const canvas = document.createElement('canvas')
                 const ctx = canvas.getContext('2d')
-
                 canvas.width = img.width
                 canvas.height = img.height
                 ctx?.drawImage(img, 0, 0)
@@ -84,10 +88,30 @@ export class MediaImageL {
                         })
                 })
             })
-            .catch((error) => {
-                toastError(`Could not copy image to clipboard: ${error}`)
-                console.error('Error loading image:', error)
+            return Trigger.Success
+        } catch (error) {
+            toastError(`Could not copy image to clipboard: ${error}`)
+            console.error('Error loading image:', error)
+            return Trigger.FAILED
+        }
+    }
+    /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
+    copyToClipboard = async () => {
+        try {
+            await this.st.electronUtils.copyImageToClipboard({
+                format: this.extension.split('.').pop(),
+                buffer: this.getArrayBuffer(),
             })
+            toastImage(this.getBase64Url(), `Image copied to clipboard!`)
+        } catch (err) {
+            toastError(`Could not copy to clipboard: ${err}`)
+        }
+    }
+
+    copyToClipboardAsBase64 = () => {
+        navigator.clipboard.writeText(this.getBase64Url()).then(() => {
+            toastInfo('Image copied to clipboard!')
+        })
     }
 
     useAsDraftIllustration = (draft_?: DraftL) => {
@@ -98,6 +122,10 @@ export class MediaImageL {
 
     get relPath() {
         return asRelativePath(this.data.path)
+    }
+
+    get relPathAsAbsPath(): string {
+        return `/` + this.data.path
     }
 
     get baseName() {
@@ -121,6 +149,11 @@ export class MediaImageL {
     onMouseLeave = (ev: MouseEvent): void => {
         if (cushy.hovered === this) cushy.hovered = null
     }
+
+    onMiddleClick = () => {
+        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+    }
+    onRightClick = () => {}
     onClick = (ev: MouseEvent): void => {
         if (hasMod(ev)) {
             ev.stopPropagation()
@@ -328,7 +361,7 @@ export class MediaImageL {
     /** allow to pick the best source to preserve CPU and MEMORY */
     urlForSize = (size: number): string => {
         // 32 x 32 mini-thumb
-        const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
+        const forceThumb = this.st.galleryConf.root.fields.onlyShowBlurryThumbnails.value
         if (forceThumb) return this.thumbhashURL
         if (size < 32) return this.thumbhashURL
 
@@ -360,6 +393,88 @@ export class MediaImageL {
         return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
     }
 
+    processImage = async (
+        p: (ctx: CanvasRenderingContext2D) => void,
+        conf?: { quality?: number; format?: 'image/jpeg' | 'image/webp' | 'image/png' },
+    ): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (ctx == null) throw new Error('could not get 2d context')
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0)
+        p(ctx)
+        const newDataURL = canvas.toDataURL(conf?.format, conf?.quality)
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
+    }
+
+    addWatermark_withCanvas = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (ctx == null) throw new Error('could not get 2d context')
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0)
+        ctx.font = `${p?.fontSize ?? 30}px ${p?.font ?? 'Arial'}`
+        ctx.fillStyle = p?.color ?? 'white'
+        ctx.fillText(text, p?.x ?? 0, p?.y ?? 0)
+        const newDataURL = canvas.toDataURL(p?.format, p?.quality)
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
+    }
+
+    addWatermark_withKonva = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
+        return await this.processWithKonva(
+            ({ stage, layer }) => {
+                const textNode = new Konva.Text({
+                    x: p?.x ?? 0,
+                    y: p?.y ?? 0,
+                    text,
+                    fontSize: p?.fontSize ?? 30,
+                    fontFamily: p?.font ?? 'Arial',
+                    fill: p?.color ?? 'white',
+                })
+                layer.add(textNode)
+                stage.draw()
+            },
+            { format: p?.format, quality: p?.quality },
+        )
+    }
+
+    processWithKonva = async (
+        fn: (p: { stage: Konva.Stage; layer: Konva.Layer; image: Konva.Image }) => void,
+        imageOpts?: {
+            /** if provieded, final converstion to image will use given format */
+            format?: 'image/jpeg' | 'image/webp' | 'image/png'
+            /** if provided, alongside a loosy format (e.g. webp or jpeg), this will change final image quality */
+            quality?: number
+        },
+    ): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const headlessKonvaContainer = document.createElement('div')
+        const stage = new Konva.Stage({ width: img.width, height: img.height, container: headlessKonvaContainer })
+        const layer = new Konva.Layer({ width: img.width, height: img.height })
+        const konvaImg = new Konva.Image({ image: img, x: 0, y: 0, width: img.width, height: img.height })
+        layer.add(konvaImg)
+        stage.add(layer)
+        fn({ stage, layer, image: konvaImg })
+        const newDataURL = stage.toCanvas().toDataURL(imageOpts?.format, imageOpts?.quality)
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
+    }
+
+    get _imageCreationOpts(): ImageCreationOpts {
+        return {
+            comfyUIInfos: this.data.comfyUIInfos,
+            promptID: this.data.promptID,
+            promptNodeID: this.data.promptNodeID,
+            stepID: this.data.stepID,
+        }
+    }
+
     _mkThumbnail = async (): Promise<void> => {
         // console.log(`[🤠] creating thumbnail for`)
         // resize image to 100px
@@ -388,4 +503,21 @@ export class MediaImageL {
         void this._mkThumbhash().then((url) => this.update({ thumbnail: url }))
         return ''
     }
+}
+
+export type WatermarkProps = {
+    /** if provieded, final converstion to image will use given format */
+    format?: 'image/jpeg' | 'image/webp' | 'image/png'
+    /** if provided, alongside a loosy format (e.g. webp or jpeg), this will change final image quality */
+    quality?: number
+    /** watermark x placement */
+    x?: number
+    /** watermark y placement */
+    y?: number
+    /** watermark font */
+    font?: string
+    /** watermark font size */
+    fontSize?: number
+    /** watermark text color */
+    color?: string
 }

@@ -1,22 +1,23 @@
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { DraftL } from 'src/models/Draft'
+import type { CushyAppL } from '../../models/CushyApp'
+import type { DraftL } from '../../models/Draft'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 
+import { FormUI } from '../../controls/FormUI'
+import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { MarkdownUI } from '../../rsuite/MarkdownUI'
+import { PhoneWrapperUI } from '../../rsuite/PhoneWrapperUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { SelectUI } from '../../rsuite/SelectUI'
+import { Message } from '../../rsuite/shims'
+import { useSt } from '../../state/stateContext'
+import { stringifyUnknown } from '../../utils/formatters/stringifyUnknown'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { RecompileUI } from './RecompileUI'
-import { FormUI } from 'src/controls/FormUI'
-import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
-import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { Message } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -29,7 +30,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const st = useSt()
     const draft = p.draft
 
-    useEffect(() => draft?.AWAKE(), [draft?.id])
+    // useEffect(() => draft?.AWAKE(), [draft?.id])
 
     // ensure
     useLayoutEffect(() => {
@@ -63,7 +64,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <>
                 <DraftHeaderUI draft={draft} />
                 <ErrorPanelUI>
-                    <RecompileUI app={draft.app} />
+                    <RecompileUI always app={draft.app} />
                     <b>App failed to load</b>
                     <div>❌ {guiR.error}</div>
                     <div>{stringifyUnknown(guiR.error)}</div>
@@ -109,8 +110,30 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
                 <div tw='pb-10'>
-                    <FormUI key={draft.id} form={draft.form} />
+                    <FormUI
+                        // theme={{
+                        //     // base: 'oklch(0, 0, 200)',
+                        //     // base: 'rgb(255, 250, 240)',
+                        //     // base: '#1E212B',
+                        //     text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
+                        // }}
+                        key={draft.id}
+                        form={draft.form}
+                    />
                 </div>
+                <RevealUI
+                    content={() => (
+                        <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
+                            <ul>
+                                {Object.keys(app.script.data.metafile?.inputs ?? {}).map((t, ix) => (
+                                    <li key={ix}>{t}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                >
+                    <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
+                </RevealUI>
             </div>
         </draftContext.Provider>
     )
@@ -151,8 +174,9 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
 export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { app: CushyAppL }) {
     return (
         <ErrorPanelUI>
-            <h3 tw='text-red-600'>invalid app</h3>
-            <RecompileUI app={p.app} />
+            <h3>invalid app</h3>
+            <RecompileUI always app={p.app} />
+            <pre tw='bg-black text-white text-xs'>{p.app.script.data.code}</pre>
         </ErrorPanelUI>
     )
 })

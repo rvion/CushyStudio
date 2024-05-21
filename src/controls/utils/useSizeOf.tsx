@@ -1,7 +1,7 @@
 import { runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
 
-import { bang } from 'src/utils/misc/bang'
+import { bang } from '../../utils/misc/bang'
 
 type RefFn = (e: HTMLDivElement | null) => void
 type DynamicSize = {
@@ -10,7 +10,7 @@ type DynamicSize = {
     observer: ResizeObserver
 }
 
-export const useSizeOf = (): { refFn: RefFn; size: DynamicSize } => {
+export const useSizeOf = (): { ref: RefFn; size: DynamicSize } => {
     const size = useLocalObservable(
         (): DynamicSize => ({
             observer: new ResizeObserver((e, obs) => {
@@ -31,5 +31,5 @@ export const useSizeOf = (): { refFn: RefFn; size: DynamicSize } => {
         if (e == null) return ro.disconnect()
         ro.observe(e)
     }
-    return { refFn, size }
+    return { ref: refFn, size }
 }

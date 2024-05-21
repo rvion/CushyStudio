@@ -1,3 +1,6 @@
+import type { PropsOf } from './Layout'
+
+import { assets } from '../../utils/assets/assets'
 import { Panel_Draft } from '../draft/Panel_Draft'
 import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 import { Panel_Civitai } from '../Panel_Civitai'
@@ -9,6 +12,7 @@ import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
 import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { Panel_Gallery } from '../Panel_Gallery/Panel_Gallery'
+import { Panel_Icons } from '../Panel_Icons/Panel_Icons'
 import { Panel_Iframe } from '../Panel_IFrame'
 import { Panel_Import } from '../Panel_Import'
 import { Panel_LastGraph } from '../Panel_LastGraph'
@@ -25,12 +29,11 @@ import { Panel_TreeExplorer } from '../Panel_TreeExplorer'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_Welcome } from '../Panel_Welcome'
-import { PropsOf } from './Layout'
-import { assets } from 'src/utils/assets/assets'
 
 // prettier-ignore
 export const panels = {
     // image related
+    Icons:               { name: 'Icons',               widget: Panel_Icons,             header: (p: PropsOf<typeof Panel_Gallery          >) => ({title: 'Icons',               icon: undefined                         }) },
     Gallery:             { name: 'Gallery',             widget: Panel_Gallery,           header: (p: PropsOf<typeof Panel_Gallery          >) => ({title: '🎑 Gallery',          icon: undefined                         }) },
     Paint:               { name: 'Paint',               widget: Panel_Minipaint,         header: (p: PropsOf<typeof Panel_Minipaint        >) => ({title: '🎨 Paint',            icon: assets.minipaint_images_logo_svg  }) },
     Canvas:              { name: 'Canvas',              widget: Panel_Canvas,            header: (p: PropsOf<typeof Panel_Canvas           >) => ({title: '🎨 Canvas',           icon: assets.minipaint_images_logo_svg  }) },

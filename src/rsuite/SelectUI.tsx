@@ -1,27 +1,31 @@
-import type { STATE } from 'src/state/state'
-
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-import { InputBoolUI } from 'src/controls/widgets/bool/InputBoolUI'
-import { useSt } from 'src/state/stateContext'
-import { searchMatches } from 'src/utils/misc/searchMatches'
+import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
+import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
-    top: number | undefined
-    bottom: number | undefined
-    left: number | undefined
-    right: number | undefined
+    top?: number | undefined
+    bottom?: number | undefined
+    left?: number | undefined
+    right?: number | undefined
 }
 
 type SelectProps<T> = {
     label?: string
     /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
-    /** list of all options */
-    options?: () => T[]
+    /**
+     * list of all choices
+     * 👉 If the list of options is generated from the query directly,
+     *    you should also set `disableLocalFiltering: true`, to avoid
+     *    filtering the options twice.
+     */
+    options?: (query: string) => T[]
+    /** set this to true if your choices */
+    disableLocalFiltering?: boolean
     /** if provided, is used to compare options with selected values */
     equalityCheck?: (a: T, b: T) => boolean
     /** used to search/filter & for UI if no getLabelUI provided */
@@ -47,10 +51,13 @@ type SelectProps<T> = {
      * (previous default before 2024-02-29: false if multi-select, true if single select)
      */
     resetQueryOnPick?: boolean
+    /** hooks required to plug search query from/into some other system */
+    getSearchQuery?: () => string
+    setSearchQuery?: (val: string) => void
 }
 
 class AutoCompleteSelectState<T> {
-    constructor(public st: STATE, public p: SelectProps<T>) {
+    constructor(public p: SelectProps<T>) {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
@@ -61,20 +68,76 @@ class AutoCompleteSelectState<T> {
     isMultiSelect = this.p.multiple ?? false
 
     get options(): T[] {
-        return this.p.options?.() ?? [] // replace with actual options logic
+        return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
     }
 
-    searchQuery = ''
+    private _searchQuery = ''
+    get searchQuery() {
+        return this.p.getSearchQuery?.() ?? this._searchQuery
+    }
+    set searchQuery(value: string) {
+        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
+        else this._searchQuery = value
+    }
 
-    get filteredOptions() {
+    get filteredOptions(): T[] {
         if (this.searchQuery === '') return this.options
+        if (this.p.disableLocalFiltering) return this.options
         return this.options.filter((p) => {
             const label = this.p.getLabelText(p)
             return searchMatches(label, this.searchQuery)
         })
     }
 
-    /** currently selected value */
+    /**
+     * function to compare value or options,
+     * using the provided equality check  if provided.
+     *
+     * '===' check if the object is exactly the same.
+     * It work in some cases like those:
+     * case 1: 🟢
+     *   | const myvar = {a:1}
+     *   | <SelectUI options={[myvar, {a:2}]}, value={myvar} />
+     * case 2: 🟢
+     *   | <SelectUI options={[1,2]}, value={1} />
+     *   (because primitve type are always compared by value)
+     *
+     * but not here
+     *
+     * case 3: ❌
+     *   | <SelectUI options={[{a:1}, {a:2}]}, value={{a:1}} />
+     *                          👆   is NOT '===' to  👆 (not the same instance object)
+     *                                but is "equal" according to human logic
+     *
+     */
+    isEqual = (a: T, b: T): boolean => {
+        if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
+        return a === b
+    }
+
+    /**
+     * return the index of the first selected Item amongst options;
+     * just in case the name wasn't clear enough.
+     * TODO: rename this funciton, and remove this comment about the function name.
+     */
+    get indexOfFirstSelectedItemAmongstOptions(): Maybe<number> {
+        const firstSelection = this.firstValue
+        if (firstSelection == null) return null
+        return this.options.findIndex((o) => this.isEqual(o, firstSelection))
+    }
+
+    /** return the first selected value */
+    get firstValue(): Maybe<T> {
+        const v = this.value
+        if (v == null) return null
+        if (Array.isArray(v)) {
+            if (v.length === 0) return null
+            return v[0]
+        }
+        return v
+    }
+
+    /** currently selected value or values */
     get value(): Maybe<T | T[]> {
         return this.p.value?.()
     }
@@ -98,6 +161,7 @@ class AutoCompleteSelectState<T> {
                 ? placeHolderStr
                 : value.map((i) => {
                       const label = this.p.getLabelText(i)
+                      if (!this.p.multiple) return label
                       return (
                           <div
                               tw='badge badge-primary text-shadow-inv cursor-not-allowed line-clamp-1'
@@ -155,6 +219,8 @@ class AutoCompleteSelectState<T> {
         /* Make sure pop-up always fits within screen, but isn't too large */
         this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
 
+        // 2024-03-28 @rvion: not so sure about that use of `window.getComputedStyle(document.body).getPropertyValue('--input-height'))`
+        // ping 🌶️
         const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
         /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
         const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)
@@ -223,7 +289,7 @@ class AutoCompleteSelectState<T> {
 
     selectOption(index: number) {
         const selectedOption = this.filteredOptions[index]
-        if (selectedOption) {
+        if (selectedOption != null) {
             this.p.onChange?.(selectedOption, this)
             const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
             const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
@@ -258,8 +324,8 @@ class AutoCompleteSelectState<T> {
     // | as soon as the moouse move just one pixel, popup close.
     // |  =>  commenting it out until we find a solution confortable in all cases
     MouseMoveTooFar = (event: MouseEvent) => {
-        let popup = this.popupRef?.current
-        let anchor = this.anchorRef?.current
+        const popup = this.popupRef?.current
+        const anchor = this.anchorRef?.current
 
         if (!popup || !anchor || !this.hasMouseEntered) {
             return
@@ -318,18 +384,18 @@ class AutoCompleteSelectState<T> {
 }
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
-    const st = useSt()
-    const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
+    // const st = useSt()
+    const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
         <div /* Container/Root */
             tabIndex={-1}
             tw={[
-                'WIDGET-FIELD',
-                'flex flex-1 items-center p-0.5 relative',
+                'WIDGET-FIELD bg-base-100',
+                'flex flex-1 items-center relative',
                 'rounded overflow-clip text-shadow',
                 'border border-base-100 hover:brightness-110',
                 'hover:border-base-200',
-                'bg-primary/20 border-1',
+                'border-1',
                 'border-b-2 border-b-base-200 hover:border-b-base-300',
             ]}
             className={p.className}
@@ -411,18 +477,19 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             tw={[
                 'MENU-ROOT _SelectPopupUI bg-base-100 flex',
                 'border-l border-r border-base-300 overflow-auto',
-                s.tooltipPosition.bottom ? 'rounded-t border-t' : 'rounded-b border-b',
+                s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
-                maxWidth: window.innerWidth - (s.tooltipPosition.left ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
+                maxWidth:
+                    window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
                 pointerEvents: 'initial',
                 position: 'absolute',
                 zIndex: 99999999,
-                top: s.tooltipPosition.top ? `${s.tooltipPosition.top}px` : 'unset',
-                bottom: s.tooltipPosition.bottom ? `${s.tooltipPosition.bottom}px` : 'unset',
-                left: s.tooltipPosition.left ? `${s.tooltipPosition.left}px` : 'unset',
-                right: s.tooltipPosition.right ? `${s.tooltipPosition.right}px` : 'unset',
+                top: s.tooltipPosition.top != null ? `${s.tooltipPosition.top}px` : 'unset',
+                bottom: s.tooltipPosition.bottom != null ? `${s.tooltipPosition.bottom}px` : 'unset',
+                left: s.tooltipPosition.left != null ? `${s.tooltipPosition.left}px` : 'unset',
+                right: s.tooltipPosition.right != null ? `${s.tooltipPosition.right}px` : 'unset',
                 maxHeight: `${s.tooltipMaxHeight}px`,
 
                 // Adjust positioning as needed
@@ -448,11 +515,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
 
                 {/* Entries */}
                 {s.filteredOptions.map((option, index) => {
-                    const isSelected =
-                        s.values.find((v) => {
-                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                            return v === option
-                        }) != null
+                    const isSelected = s.values.find((v) => s.isEqual(v, option)) != null
                     return (
                         <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
                             key={index}
@@ -484,7 +547,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             >
                                 {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
                                 <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
-                                <div tw='pl-0.5 flex h-full items-center truncate'>
+                                <div tw='pl-0.5 flex w-full h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)
                                         : s.p.getLabelText(option)}

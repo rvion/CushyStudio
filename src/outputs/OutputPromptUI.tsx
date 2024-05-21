@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
+import { ComfyPromptL } from '../models/ComfyPrompt'
+import { ProgressReport } from '../models/ComfyWorkflow'
+import { StepL } from '../models/Step'
+import { useSt } from '../state/stateContext'
+import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { ComfyPromptL } from 'src/models/ComfyPrompt'
-import { ProgressReport } from 'src/models/ComfyWorkflow'
-import { StepL } from 'src/models/Step'
-import { useSt } from 'src/state/stateContext'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
     const st = useSt()
@@ -25,13 +25,13 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={prompt}>
-            <div /*tw='bg-blue-500 '*/>
+            <div tw='flex items-center justify-center p-0 h-full w-full text-shadow text-sm'>
                 <div
                     className='radial-progress'
                     style={{
                         // @ts-ignore
                         '--value': pgr1.percent,
-                        '--size': size,
+                        '--size': `${parseInt(size) * 0.9}px`,
                     }}
                     role='progressbar'
                 >

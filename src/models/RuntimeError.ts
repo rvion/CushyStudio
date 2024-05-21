@@ -1,8 +1,8 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { StepL } from './Step'
-import type { TABLES } from 'src/db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
 

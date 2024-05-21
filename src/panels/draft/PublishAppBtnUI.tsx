@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyAppL } from 'src/models/CushyApp'
+import { CushyAppL } from '../../models/CushyApp'
 
 export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: CushyAppL }) {
     const app = p.app

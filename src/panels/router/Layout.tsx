@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
@@ -7,12 +7,13 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
+import { regionMonitor } from '../../operators/RegionMonitor'
+import { Trigger } from '../../operators/RET'
+import { Message } from '../../rsuite/shims'
+import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { hashJSONObject } from './hash'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
-import { Trigger } from 'src/app/shortcuts/Trigger'
-import { Panel_FullScreenLibrary } from 'src/panels/Panel_FullScreenLibrary'
-import { Message } from 'src/rsuite/shims'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -41,6 +42,53 @@ export const uniqueIDByMemoryRef = (x: object): string => {
 }
 
 export class CushyLayoutManager {
+    /** maximize the active(=selected; with focus) tabset */
+    maximizeActiveTabset = (): Trigger => {
+        const tabset = this.model.getActiveTabset()
+        if (tabset == null) {
+            console.log(`[❌] maximizeActiveTabset: tabset is null`)
+            return Trigger.UNMATCHED
+        }
+        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        return Trigger.Success
+    }
+
+    /** maximize the tabset under the mouse */
+    maximizHoveredTabset = (): Trigger => {
+        const tabset = this.hoveredTabset
+        if (tabset == null) {
+            console.log(`[❌] maximizHoveredTabset: tabset is null`)
+            return Trigger.UNMATCHED
+        }
+        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        return Trigger.Success
+    }
+
+    get hoveredTabset(): Maybe<FL.TabSetNode> {
+        // get hovered tab
+        const hoveredTab = this.hoveredTab
+        if (hoveredTab == null) return null
+
+        // get it's parent tabset
+        const tabSet = hoveredTab.getParent()
+        if (tabSet == null) {
+            console.log(`[🔴] INVARIANT VIOLATION; tab parent is null (expected: tabset)`)
+            return null
+        }
+        if (tabSet.getType() !== 'tabset')
+            console.log(`[🔴] INVARIANT VIOLATION; panelID correspond to a '${tabSet.getType()}', not a 'tabset'`)
+        return tabSet as FL.TabSetNode
+    }
+
+    get hoveredTab(): Maybe<FL.TabNode> {
+        const tabNodeID = cushy.region.hoveredPanel
+        if (tabNodeID == null) return null
+        const tabNode = this.model.getNodeById(tabNodeID)
+        if (tabNode == null) return null
+        if (tabNode.getType() !== 'tab') console.log(`[🔴] INVARIANT VIOLATION; panelID correspond to a ${tabNode.getType()}`)
+        return tabNode as FL.TabNode
+    }
+
     model!: Model
     private modelKey = 0
     setModel = (model: Model) => {
@@ -156,17 +204,17 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab = () => {
+    closeCurrentTab = (): Trigger => {
         if (this.fullPageComp != null) {
             this.fullPageComp = null
             return Trigger.Success
         }
         // 1. find tabset
         const tabset = this.model.getActiveTabset()
-        if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tabset == null) return Trigger.UNMATCHED
         // 2. find active tab
         const tab = tabset.getSelectedNode()
-        if (tab == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tab == null) return Trigger.UNMATCHED
         // 3. close tab
         const tabID = tab.getId()
         this.model.doAction(Actions.deleteTab(tabID))
@@ -192,6 +240,10 @@ export class CushyLayoutManager {
         } else {
             this.fullPageComp = null
         }
+    }
+
+    currentHoveredTabIs = <K extends PanelNames>(component: K) => {
+        return regionMonitor.hoveredRegion?.type === component
     }
 
     currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {
@@ -270,7 +322,7 @@ export class CushyLayoutManager {
         const tabID = `/${panelName}/${hashJSONObject(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-        console.log(`🦊 prevTab for ${tabID}:`, prevTab)
+        // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type
         const { icon, title } = panels[panelName].header(panelProps as any)

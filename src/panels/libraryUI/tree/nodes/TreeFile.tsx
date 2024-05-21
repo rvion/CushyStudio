@@ -1,14 +1,13 @@
 import type { TreeNode } from '../xxx/TreeNode'
-import type { STATE } from 'src/state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
 
+import { LibraryFile } from '../../../../cards/LibraryFile'
+import { assets } from '../../../../utils/assets/assets'
 import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeApp } from './TreeApp'
-import { LibraryFile } from 'src/cards/LibraryFile'
-import { assets } from 'src/utils/assets/assets'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
@@ -17,12 +16,8 @@ export class TreeFile implements ITreeEntry {
         await this.file.extractScriptFromFileAndUpdateApps()
     }
 
-    constructor(
-        //
-        public st: STATE,
-        public path: RelativePath,
-    ) {
-        this.file = st.library.getFile(path)
+    constructor(public path: RelativePath) {
+        this.file = cushy.library.getFile(path)
         makeAutoObservable(this)
     }
 
@@ -70,7 +65,7 @@ export class TreeFile implements ITreeEntry {
         this.file.extractScriptFromFile()
         if (!n.isOpen) {
             n.open()
-            this.script?.evaluateAndUpdateApps()
+            this.script?.evaluateAndUpdateAppsAndViews()
         } else {
             n.close()
         }

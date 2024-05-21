@@ -1,10 +1,10 @@
-import type { HostL } from 'src/models/Host'
+import type { HostL } from '../../models/Host'
 
 import { observer } from 'mobx-react-lite'
 
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
-import { openExternal, openFolderInOS, showItemInFolder } from '../layout/openExternal'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { openFolderInOS } from '../layout/openExternal'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()
@@ -12,32 +12,35 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     return (
         <Dropdown
             tw={[isConnected ? null : 'text-error-content bg-error']}
-            startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
+            // startIcon={<span /* tw='text-blue-400' */ className='material-symbols-outlined'>account_tree</span>}
             title='ComfyUI'
-        >
-            <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}
-                label='ComfyUI'
-                icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
-            />
-            <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
-                icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
-                label='Nodes Explorer'
-            />
-            {/* {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
-                <MenuItem
-                    onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
-                    icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
-                    label='ComfyUI Hosts'
-                />
-            )} */}
-            <HostMenuItemUI host={st.mainHost} showID />
-            <div className='divider'>All hosts</div>
-            {st.hosts.map((host) => {
-                return <HostMenuItemUI key={host.id} host={host} />
-            })}
-        </Dropdown>
+            content={() => (
+                <>
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}
+                        label='ComfyUI'
+                        icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
+                    />
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
+                        icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
+                        label='Nodes Explorer'
+                    />
+                    {/* {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
+                        <MenuItem
+                            onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
+                            icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
+                            label='ComfyUI Hosts'
+                        />
+                    )} */}
+                    <HostMenuItemUI host={st.mainHost} showID />
+                    <div className='divider'>All hosts</div>
+                    {st.hosts.map((host) => {
+                        return <HostMenuItemUI key={host.id} host={host} />
+                    })}
+                </>
+            )}
+        />
     )
 })
 

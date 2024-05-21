@@ -1,13 +1,13 @@
-// import type { CardPath } from 'src/cards/CardPath'
+// import type { CardPath } from '../cards/CardPath'
 
 // import { observer } from 'mobx-react-lite'
 // import { cwd } from 'process'
 // import { useEffect } from 'react'
-// import { Button, Message } from 'src/rsuite/shims'
-// import { useSt } from 'src/state/stateContext'
-// import { openInVSCode } from 'src/utils/electron/openInVsCode'
+// import { Button, Message } from '../rsuite/shims'
+// import { useSt } from '../state/stateContext'
+// import { openInVSCode } from '../utils/electron/openInVsCode'
 // import { ActionDraftListUI } from '../widgets/drafts/ActionDraftListUI'
-// import { Panel_Draft } from 'src/panels/Panel_Draft'
+// import { Panel_Draft } from './Panel_Draft'
 
 // export const Panel_Card = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
 //     const st = useSt()

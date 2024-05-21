@@ -1,26 +1,32 @@
+import '../../ALL_CMDS'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
+import { CushyKitCtx } from '../../controls/shared/CushyKitCtx'
+import { ActivityStackUI } from '../../operators/ActivityUI'
+import { useRegionMonitor } from '../../operators/RegionMonitor'
+import { Trigger } from '../../operators/RET'
+import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
+import { RevealState } from '../../rsuite/reveal/RevealState'
+import { useSt } from '../../state/stateContext'
+import { Box } from '../../theme/colorEngine/Box'
+import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
-import { Trigger } from '../shortcuts/Trigger'
+import { commandManager } from '../shortcuts/CommandManager'
 import { FavBarUI } from './FavBar'
 import { ProjectUI } from './ProjectUI'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
-import { RevealState } from 'src/rsuite/reveal/RevealState'
-import { useSt } from 'src/state/stateContext'
-import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const appRef = useRef<HTMLDivElement>(null)
+    useRegionMonitor()
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
         function handleKeyDown(event: KeyboardEvent) {
-            const x = st.shortcuts.processKeyDownEvent(event as any)
+            const x = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
                 event.preventDefault()
@@ -37,7 +43,7 @@ export const CushyUI = observer(function CushyUI_() {
 
             // prevent accidental tab closing when pressing ctrl+w one too-many times
             if (
-                x === Trigger.UNMATCHED_CONDITIONS && //
+                x === Trigger.UNMATCHED && //
                 event.key === 'w' &&
                 (event.ctrlKey || event.metaKey)
             ) {
@@ -51,31 +57,41 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <div
-            //
-            data-theme={st.themeMgr.theme}
-            id='CushyStudio'
-            tabIndex={-1}
-            onClick={(ev) => {
-                // if a click has bubbled outwards up to the body, then we want to close various things
-                // such as contet menus, tooltips, Revals, etc.
-                runInAction(() => {
-                    RevealState.shared.current?.close()
-                    RevealState.shared.current = null
-                })
-            }}
-            ref={appRef}
-            tw={['col grow h100 text-base-content']}
-        >
-            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
-            <GlobalSearchUI />
-            <AppBarUI />
-            <RenderFullPagePanelUI />
-            <div className='flex flex-grow relative'>
-                <FavBarUI direction='column' />
-                <ProjectUI />
-            </div>
-        </div>
+        <CushyKitCtx.Provider value={st}>
+            <Box
+                base='#1E212B'
+                text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}
+                //
+                data-theme={st.themeMgr.theme}
+                id='CushyStudio'
+                tabIndex={-1}
+                onClick={(ev) => {
+                    // if a click has bubbled outwards up to the body, then we want to close various things
+                    // such as contet menus, tooltips, Revals, etc.
+                    runInAction(() => {
+                        RevealState.shared.current?.close()
+                        RevealState.shared.current = null
+                    })
+                }}
+                ref={appRef}
+                tw='col grow h-full text-base-content overflow-clip'
+            >
+                <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
+                    id='tooltip-root'
+                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+                >
+                    <ActivityStackUI />
+                </div>
+
+                <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
+                <AppBarUI />
+                <RenderFullPagePanelUI />
+                <div className='flex flex-grow relative overflow-clip'>
+                    <FavBarUI direction='row' />
+                    <ProjectUI />
+                </div>
+            </Box>
+        </CushyKitCtx.Provider>
     )
 })
 

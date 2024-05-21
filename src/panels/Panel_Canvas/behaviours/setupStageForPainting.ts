@@ -5,9 +5,9 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 import Konva from 'konva'
 import { Stage } from 'konva/lib/Stage'
 
+import { bang } from '../../../utils/misc/bang'
+import { toastError } from '../../../utils/misc/toasts'
 import { UnifiedStep } from '../states/UnifiedStep'
-import { bang } from 'src/utils/misc/bang'
-import { toastError } from 'src/utils/misc/toasts'
 
 enum MouseBtn {
     NONE = -1,

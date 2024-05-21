@@ -1,4 +1,8 @@
+import type { CSSProperties } from 'react'
+
 import { observer } from 'mobx-react-lite'
+
+import { Box } from '../../../theme/colorEngine/Box'
 
 let isDragging = false
 let wasEnabled = false
@@ -7,9 +11,10 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     active?: Maybe<boolean>
     display?: 'check' | 'button'
     expand?: boolean
-    icon?: string
+    icon?: Maybe<string>
     text?: string
     className?: string
+    style?: CSSProperties
     onValueChange?: (next: boolean) => void
 }) {
     const isActive = p.active ?? false
@@ -26,10 +31,12 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     }
 
     return (
-        <div // Container
+        <Box // Container
+            base={{ contrast: 0.1 }}
             className={p.className}
+            style={p.style}
             tw={[
-                'WIDGET-FIELD select-none',
+                'WIDGET-FIELD select-none cursor-pointer',
                 'flex items-center',
                 '!outline-none',
                 'hover:brightness-110',
@@ -77,20 +84,23 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                             {icon}
                         </span>
                     )}
-                    {label && <div tw={[icon ? 'pl-1' : 'pl-1.5']}>{label}</div>}
+                    {label && <div tw={['line-clamp-1', icon ? 'pl-1' : 'pl-1.5']}>{label}</div>}
                 </>
             ) : (
                 <>
-                    <div
+                    <Box
+                        base={{ contrast: isActive ? 0.5 : 0 }}
                         tw={[
                             //
                             'flex items-center h-full p-1 px-2 rounded',
                             'bg-base-200 border border-base-100 text-shadow',
                             'border-b-2 border-b-base-300',
-                            isActive && 'bg-primary text-primary-content text-shadow-inv',
+                            isActive && 'text-shadow-inv',
                             icon && 'pl-1.5',
                             expand && 'w-full justify-center',
+                            'grid gap-0',
                         ]}
+                        style={icon ? { gridTemplateColumns: '24px 1fr' } : {}}
                     >
                         {icon && (
                             <span tw='flex-shrink-0 h-full pr-1.5 shadow-inherit' className='material-symbols-outlined'>
@@ -98,9 +108,9 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                             </span>
                         )}
                         <p tw='w-full text-center line-clamp-1'>{label ? label : <></>}</p>
-                    </div>
+                    </Box>
                 </>
             )}
-        </div>
+        </Box>
     )
 })

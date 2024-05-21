@@ -1,5 +1,5 @@
+import type { STATE } from '../../../../state/state'
 import type { Extension } from '@codemirror/state'
-import type { STATE } from 'src/state/state'
 
 import { autocompletion, Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'

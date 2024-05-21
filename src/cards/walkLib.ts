@@ -1,12 +1,12 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
 import path, { join } from 'pathe'
 
+import { hasValidActionExtension } from '../back/ActionExtensions'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { ActionTagMethodList } from './App'
 import { Library } from './Library'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip } from './shouldSkip'
-import { hasValidActionExtension } from 'src/back/ActionExtensions'
-import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 
 export const recursivelyFindAppsInFolder = (
     //

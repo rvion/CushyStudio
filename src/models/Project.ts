@@ -1,12 +1,12 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
-import type { TABLES } from 'src/db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { DraftL } from './Draft'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any

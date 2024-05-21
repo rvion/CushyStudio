@@ -1,19 +1,15 @@
+import type { CushyAppL } from '../../../../models/CushyApp'
 import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { STATE } from 'src/state/state'
 
 import { basename } from 'pathe'
 
 import { TreeApp } from './TreeApp'
 
 export class TreeAppFolder implements ITreeEntry<VirtualFolder<CushyAppL>> {
-    constructor(
-        //
-        public st: STATE,
-        public vf: VirtualFolder<CushyAppL>,
-    ) {}
+    get st() { return cushy } // prettier-ignore
+    constructor(public vf: VirtualFolder<CushyAppL>) {}
 
     get name() {
         return `${basename(this.vf.folderPath)}`

@@ -1,18 +1,32 @@
+import type { Tree } from './Tree'
+import type { TreeNode, TreeScrollOptions } from './TreeNode'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-import { Tree } from './Tree'
-import { TreeNode, TreeScrollOptions } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {
+    /** treeview id; only for debugging purpose */
     id = nanoid(4)
-    isFolded: boolean = false
+
     constructor(
         //
         public tree: Tree,
-        public conf: { onSelectionChange?: (node: TreeNode | undefined) => void } = {},
+        public conf: {
+            /** focus is when you use arrow to navigate, or mouse to click on entries.  */
+            onFocusChange?: (node: TreeNode | undefined) => void
+            onSelectionChange?: (
+                /** node that have just been selected  */
+                newlySelectedNode: TreeNode[],
+                /** node that have just been UN-selected  */
+                newlyUnselectedNode: TreeNode[],
+                /** all remaining selected node  */
+                allSelectedNodes: TreeNode[],
+            ) => void
+            selectable?: boolean
+        } = {},
     ) {
         this.resetCaretPos()
         makeAutoObservable(this, { filterRef: false, id: false })
@@ -53,7 +67,7 @@ export class TreeView {
             at.open()
         }
 
-        this.setAt(at, { block: 'nearest' })
+        this.setFocusAt(at, { block: 'nearest' })
         return at
     }
 
@@ -80,10 +94,10 @@ export class TreeView {
             firstChild: at.firstChild?.id,
         }
     }
-    setAt = (at: TreeNode | undefined, p?: TreeScrollOptions) => {
+    setFocusAt = (at: TreeNode | undefined, p?: TreeScrollOptions) => {
         this.at = at
         this.at?.scrollIntoView(p)
-        this.conf.onSelectionChange?.(at)
+        this.conf.onFocusChange?.(at)
     }
 
     onKeyDown = (ev: KeyEv) => {
@@ -103,7 +117,7 @@ export class TreeView {
         if (this.at == null) return this.resetCaretPos()
         const parent = this.at.nodeAboveInView
         this.at.delete()
-        this.setAt(parent)
+        this.setFocusAt(parent)
     }
 
     deleteNodeAndFocusNodeBelow = () => {
@@ -112,17 +126,17 @@ export class TreeView {
          * then after the deletion, retrieve the node below */
         let parent = this.at.nodeAboveInView
         this.at.delete()
-        this.setAt(parent?.nodeBelowInView ?? parent)
+        this.setFocusAt(parent?.nodeBelowInView ?? parent)
     }
 
     resetCaretPos = (): undefined => {
-        this.setAt(this.tree.topLevelNodes[0])
+        this.setFocusAt(this.tree.topLevelNodes[0])
     }
 
     moveUp = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeAboveInView
-        if (nextAt) this.setAt(nextAt)
+        if (nextAt) this.setFocusAt(nextAt)
     }
 
     movePageUp = () => {
@@ -137,20 +151,20 @@ export class TreeView {
         while ((ptr = ptr.nodeBelowInView) && max-- > 0) {
             final = ptr
         }
-        this.setAt(final)
+        this.setFocusAt(final)
     }
 
     moveDown = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeBelowInView
-        if (nextAt) this.setAt(nextAt)
+        if (nextAt) this.setFocusAt(nextAt)
     }
 
     moveRight = () => {
         if (this.at == null) return this.resetCaretPos()
         const children = this.at.children
         if (children.length > 0) {
-            if (this.at.isOpen) return this.setAt(children[0])
+            if (this.at.isOpen) return this.setFocusAt(children[0])
             else return this.at.open()
         }
         return this.moveDown()

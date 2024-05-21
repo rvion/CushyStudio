@@ -1,9 +1,8 @@
+import type { CushyAppL } from '../../../../models/CushyApp'
+import type { DraftL } from '../../../../models/Draft'
 import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -14,12 +13,11 @@ import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeApp implements ITreeEntry {
     app?: Maybe<CushyAppL>
+    get st() { return cushy } // prettier-ignore
     constructor(
-        //
-        public st: STATE,
         public appID: CushyAppID, // public app: CushyAppL,
     ) {
-        this.app = st.db.cushy_app.get(appID)
+        this.app = cushy.db.cushy_app.get(appID)
         makeAutoObservable(this)
     }
 

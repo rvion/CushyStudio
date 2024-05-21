@@ -1,18 +1,13 @@
+import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
-import type { MediaImageL } from 'src/models/MediaImage'
 
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { exhaust } from '../../../src/utils/misc/exhaust'
 
 export const ui_3dDisplacement = () => {
     const form = getCurrentForm()
-    return form.group({
-        requirements: [
-            //
-            { type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' },
-            { type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' },
-        ],
-        items: () => {
-            return {
+    return form
+        .group({
+            items: {
                 normal: form.selectOne({
                     tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
                     default: { id: 'None' },
@@ -28,9 +23,13 @@ export const ui_3dDisplacement = () => {
                         Marigold: form.auto.MarigoldDepthEstimation(),
                     },
                 }),
-            }
-        },
-    })
+            },
+        })
+        .addRequirements([
+            //
+            { type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' },
+            { type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' },
+        ])
 }
 
 /** to output a 3d displacement map, once images are all ready */

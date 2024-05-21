@@ -1,23 +1,35 @@
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Runtime } from 'src/runtime/Runtime'
 
 // UI -----------------------------------------------------------
-export const ui_sampler = () => {
+export const ui_sampler = (p?: {
+    denoise?: number
+    steps?: number
+    cfg?: number
+    sampler_name?: Enum_KSampler_sampler_name
+    scheduler?: Enum_KSampler_scheduler
+    startCollapsed?: boolean
+}) => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
-        summary: (ui) => {
-            return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg}`
-        },
-        items: () => ({
-            denoise: form.float({ step: 0.1, min: 0, max: 1, default: 1, label: 'Denoise' }),
-            steps: form.int({ step: 10, default: 20, label: 'Steps', min: 0, softMax: 100 }),
-            cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: 8 }),
+    return form.fields(
+        {
+            denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
+            steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
+            cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 7 }),
             seed: form.seed({}),
-            sampler_name: form.enum.Enum_KSampler_sampler_name({ label: 'Sampler', default: 'euler' }),
-            scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: 'karras' }),
-        }),
-    })
+            sampler_name: form.enum.Enum_KSampler_sampler_name({ label: 'Sampler', default: p?.sampler_name ?? 'euler' }),
+            scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: p?.scheduler ?? 'karras' }),
+        },
+        {
+            icon: 'mdiTimerSandComplete',
+            box: { base: { hue: 120, contrast: 0, chroma: 0.05 } },
+            summary: (ui) => {
+                return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
+            },
+            startCollapsed: p?.startCollapsed ?? false,
+        },
+    )
 }
 
 // CTX -----------------------------------------------------------

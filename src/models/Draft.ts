@@ -1,19 +1,20 @@
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { Form } from '../controls/Form'
+import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import type { TABLES } from 'src/db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
-import { Status } from 'src/back/Status'
-import { Form } from 'src/controls/Form'
-import { CushyFormManager, type FormBuilder } from 'src/controls/FormBuilder'
-import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { toastError } from 'src/utils/misc/toasts'
+// import { fileURLToPath } from 'url'
+import { Status } from '../back/Status'
+import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { LiveRef } from '../db/LiveRef'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { toastError } from '../utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 
@@ -28,6 +29,12 @@ export class DraftL {
 
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
+
+    // TODO: rename
+    // get illustrationFilePathAbs(): AbsolutePath | null {
+    //     if (this.data.illustration == null) return null
+    //     return fileURLToPath(this.data.illustration) as AbsolutePath
+    // }
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
@@ -134,6 +141,7 @@ export class DraftL {
         //
         formValueOverride?: Maybe<any>
         imageToStartFrom?: MediaImageL
+        httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
         if (this.form == null) {
@@ -208,7 +216,11 @@ export class DraftL {
         return step
     }
 
-    form: Maybe<Form<any, FormBuilder>> = null
+    get form() {
+        this.AWAKE()
+        return this._form
+    }
+    _form: Maybe<Form<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -229,11 +241,11 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this.form = CushyFormManager.form(action.ui, {
+                this._form = CushyFormManager.fields(action.ui, {
                     name: this.name,
-                    initialValue: () => this.data.formSerial,
-                    onSerialChange: (root) => {
-                        this.update({ formSerial: root.serial })
+                    initialSerial: () => this.data.formSerial,
+                    onSerialChange: (form) => {
+                        this.update({ formSerial: form.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
                         this.checkIfShouldRestart()
@@ -244,31 +256,13 @@ export class DraftL {
             { fireImmediately: true },
         )
 
-        // 🔴 dangerous
-        // const _2 = autorun(
-        //     () => {
-        //         const rootWidget = this.form.value
-        //         if (rootWidget == null) return null
-        //         // const count = formValue.form._cache.count // manual mobx invalidation
-        //         const _ = rootWidget.serialHash
-        //         runInAction(() => {
-        //             console.log(`[🦊] form: updating`)
-        //             this.update({ formSerial: rootWidget.serial })
-        //             this.isDirty = true
-        //             this.checkIfShouldRestart()
-        //         })
-        //     },
-        //     { delay: 100 },
-        // )
-
         this.isInitialized = true
-        // this.isInitializing = false
         return () => {
             _1()
             // _2()
             this.isInitialized = false
             // this.form?.cleanup?.() // 🔶
-            this.form = null //  __FAIL('not loaded yet')
+            this._form = null //  __FAIL('not loaded yet')
         }
     }
 }

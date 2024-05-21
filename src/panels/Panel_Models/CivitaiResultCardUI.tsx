@@ -2,7 +2,7 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './Ci
 
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
     //
@@ -46,8 +46,8 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                                 item.type === 'Checkpoint'
                                     ? 'bg-yellow-600'
                                     : item.type === 'LORA'
-                                    ? 'bg-blue-500'
-                                    : 'bg-green-400',
+                                      ? 'bg-blue-500'
+                                      : 'bg-green-400',
                             ]}
                         >
                             {item.type}
