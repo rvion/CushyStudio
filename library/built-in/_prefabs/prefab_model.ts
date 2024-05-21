@@ -21,6 +21,7 @@ export const ui_model = () => {
                     )
                     cushy.activityManager.startActivity({
                         uid: 'test',
+                        title: 'Multi-Step preset Demo',
                         shell: 'popup-lg',
                         UI: (p) =>
                             form.render({
