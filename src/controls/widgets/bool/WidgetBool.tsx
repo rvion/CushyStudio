@@ -49,11 +49,6 @@ export type Widget_bool_config = WidgetConfigFields<
          *          true will enable expansion
          */
         expand?: boolean
-
-        /** Set the icon of the button
-         *  - Uses "material-symbols-outlined" as the icon set
-         */
-        icon?: string | undefined
     },
     Widget_bool_types
 >

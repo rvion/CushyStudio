@@ -12,7 +12,7 @@ app({
         checkLabelIcon: form.bool({
             label: false,
             text: 'Check Label',
-            icon: 'save',
+            icon: 'mdiContentSaveOutline',
         }),
         toggleButton: form.bool({
             label: '',
@@ -23,7 +23,7 @@ app({
             label: false,
             text: 'Toggle Button Icon',
             display: 'button',
-            icon: 'check_box',
+            icon: 'mdiCheckboxOutline',
         }),
         toggleButtonExpand: form.bool({
             label: '',
@@ -36,7 +36,7 @@ app({
             text: 'Toggle Button Expand',
             display: 'button',
             expand: true,
-            icon: 'check_box',
+            icon: 'mdiCheckboxOutline',
         }),
     }),
     run: async (run, ui) => {},

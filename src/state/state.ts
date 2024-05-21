@@ -500,7 +500,7 @@ export class STATE {
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
-            takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+            // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
             metalness: form.float({ min: 0, max: 1 }),
             roughness: form.float({ min: 0, max: 1 }),
             skyBox: form.bool({}),

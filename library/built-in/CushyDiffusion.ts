@@ -154,6 +154,7 @@ app({
             ckpt: run_model_modifiers(ui.model, ckptPos, false),
             clip: clipPos,
             vae,
+            // @ts-ignore 🔴 TODO: review this one
             latent,
             positive: positive,
             negative: negative,

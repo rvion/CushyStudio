@@ -1,3 +1,4 @@
+import type { IconName } from '../../icons/icons'
 import type { IWidget } from '../IWidget'
 import type { CSSProperties } from 'react'
 
@@ -102,6 +103,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
+    const iconName = widget.icon
     return (
         <Box
             key={rootKey}
@@ -178,9 +180,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                     {isCollapsed ? 'chevron_right' : 'expand_more'}
                                 </span>
                             )}
-                            {widget.config.icon && (
+                            {iconName && (
                                 <Box tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
-                                    <IkonOf name={widget.config.icon} />
+                                    <IkonOf name={iconName} />
                                 </Box>
                             )}
                             {/* TOGGLE BEFORE */}

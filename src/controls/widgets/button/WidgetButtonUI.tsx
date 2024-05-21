@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_<K extends any>(p: { widget: Widget_button<K> }) {
     const extra = p.widget.config.useContext?.() as K
     const context: Widget_button_context<K> = { widget: p.widget, context: extra }
-    const icon = p.widget.config.icon?.(context)
+    // const icon = p.widget.config.icon?.(context)
     return (
         <div
             tw={[
@@ -20,7 +20,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_<K extends 
             className='self-start'
             onClick={() => runInAction(() => p.widget.config.onClick?.(context))}
         >
-            {icon && <span className='material-symbols-outlined'>{icon}</span>}
+            {/* {icon && <span className='material-symbols-outlined'>{icon}</span>} */}
             {p.widget.config.text ?? `Run`}
         </div>
     )

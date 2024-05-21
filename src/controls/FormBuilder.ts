@@ -1,14 +1,12 @@
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
-import type { DraftL } from '../models/Draft'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
 
-import { makeAutoObservable, reaction, runInAction } from 'mobx'
+import { makeAutoObservable, reaction } from 'mobx'
 
 import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import { useDraft } from '../widgets/misc/useDraft'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
@@ -247,26 +245,26 @@ export class FormBuilder implements IFormBuilder {
         return this.selectOne({ default: def, choices })
     }
 
-    /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
-    inlineRun = (config: Widget_button_config = {}) =>
-        new Spec<Widget_button<DraftL>>('button', {
-            useContext: useDraft,
-            onClick: (p) =>
-                runInAction(() => {
-                    if (p.widget.value === true) return
-                    const draft = p.context
-                    p.widget.value = true
-                    draft.setAutostart(false)
-                    draft.start({})
-                    setTimeout(() => (p.widget.value = false), 100) // Reset value back to false for future runs
-                    p.widget.bumpValue()
-                }),
-            icon: (p) => {
-                if (p.context.shouldAutoStart) return 'pause'
-                return 'play_arrow'
-            },
-            ...config,
-        })
+    // /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
+    // inlineRun = (config: Widget_button_config = {}) =>
+    //     new Spec<Widget_button<DraftL>>('button', {
+    //         useContext: useDraft,
+    //         onClick: (p) =>
+    //             runInAction(() => {
+    //                 if (p.widget.value === true) return
+    //                 const draft = p.context
+    //                 p.widget.value = true
+    //                 draft.setAutostart(false)
+    //                 draft.start({})
+    //                 setTimeout(() => (p.widget.value = false), 100) // Reset value back to false for future runs
+    //                 p.widget.bumpValue()
+    //             }),
+    //         icon: (p) => {
+    //             if (p.context.shouldAutoStart) return 'pause'
+    //             return 'play_arrow'
+    //         },
+    //         ...config,
+    //     })
 
     /**
      * Calling this function will mount and instanciate the subform right away

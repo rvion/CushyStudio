@@ -11,7 +11,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     active?: Maybe<boolean>
     display?: 'check' | 'button'
     expand?: boolean
-    icon?: string
+    icon?: Maybe<string>
     text?: string
     className?: string
     style?: CSSProperties

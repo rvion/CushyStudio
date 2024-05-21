@@ -18,7 +18,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
                 // config
                 display={widget.config.display}
                 expand={widget.config.expand}
-                icon={widget.config.icon}
+                icon={widget.icon}
                 text={widget.config.text ?? widget.config.label2}
                 // value
                 active={widget.value}

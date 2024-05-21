@@ -1,3 +1,4 @@
+import type { IconName } from '../icons/icons'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { ISpec } from './ISpec'
@@ -196,6 +197,13 @@ export abstract class BaseWidget {
     /** getter that resolve to `this.spec.addReaction` */
     get addReaction() {
         return this.spec.addReaction
+    }
+
+    get icon(): Maybe<IconName> {
+        const x = this.spec.config.icon as any // 🔴 TS BUG / PERF
+        if (x == null) return null
+        if (typeof x === 'string') return x as any // 🔴 TS BUG / PERF
+        return x(this)
     }
 
     /** this function MUST be called at the end of every widget constructor */

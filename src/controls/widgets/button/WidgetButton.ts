@@ -22,7 +22,7 @@ export type Widget_button_config<K = any> = WidgetConfigFields<
         text?: string
         kind?: `primary` | `special` | `warning`
         useContext?: () => K
-        icon?: (ctx: Widget_button_context<K>) => string
+        // icon?: (ctx: Widget_button_context<K>) => string
         onClick?: (ctx: Widget_button_context<K>) => void
     },
     Widget_button_types<K>

@@ -19,6 +19,7 @@ app({
             items: {
                 stage_a_vae: form.enum.Enum_VAELoader_vae_name({ default: 'Stable-Cascade\\stage_a.safetensors' }),
                 stage_b: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_b_bf16.safetensors' }),
+                // @ts-ignore
                 stage_c: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_c_bf16.safetensors' }),
             },
         }),

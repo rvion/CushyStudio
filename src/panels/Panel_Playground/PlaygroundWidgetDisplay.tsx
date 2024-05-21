@@ -25,7 +25,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             checkLabelIcon: ui.bool({
                 label: false,
                 text: 'Check Label',
-                icon: 'save',
+                icon: 'mdiContentSaveOutline',
             }),
             toggleButton: ui.bool({
                 label: '',
@@ -36,7 +36,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                 label: false,
                 text: 'Toggle Button Icon',
                 display: 'button',
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
             toggleButtonExpand: ui.bool({
                 label: '',
@@ -49,7 +49,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                 text: 'Toggle Button Expand',
                 display: 'button',
                 expand: true,
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
         }
 

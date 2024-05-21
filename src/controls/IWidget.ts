@@ -127,7 +127,7 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      *   - "mdi..." for Material design icons - 7000+ icons https://pictogrammers.com/library/mdi/)
      *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
      */
-    icon?: IconName
+    icon?: IconName | CovariantFn<T['$Widget'], IconName> // IconName
     /**
      * @since 2024-05-19
      * @stability beta
