@@ -5,7 +5,6 @@ import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
 import { isWidget } from '../controls/IWidget'
-import { TreeUI } from '../panels/libraryUI/tree/xxx/TreeUI'
 import { MenuItem } from '../rsuite/Dropdown'
 import { ModalShellUI } from '../rsuite/reveal/ModalShell'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
@@ -127,7 +126,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                     shortcut={char}
                                     // onClick={() => entry.open()}
                                     label={
-                                        <>
+                                        <Fragment>
                                             {charIx != null ? (
                                                 <div>
                                                     <span>{label.slice(0, charIx)}</span>
@@ -138,7 +137,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                                 label
                                             )}
                                             <span className='material-symbols-outlined'>keyboard_arrow_right</span>
-                                        </>
+                                        </Fragment>
                                     }
                                 />
                             </RevealUI>
