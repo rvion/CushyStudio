@@ -72,7 +72,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             shortcut={char}
                             label={entry.p.label}
                             onClick={(event) => {
-                                activityManger.startActivity({
+                                activityManager.startActivity({
                                     event,
                                     uid: 'createPreset',
                                     placement: 'auto',

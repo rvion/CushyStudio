@@ -37,7 +37,7 @@ class ActivityManager {
         makeAutoObservable(this)
     }
 }
-export const activityManger = new ActivityManager()
+export const activityManager = new ActivityManager()
 
 export interface Activity {
     /** uniquer activity uid */

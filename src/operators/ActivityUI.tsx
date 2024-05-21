@@ -14,7 +14,7 @@ export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
                 <ActivityContainerUI
                     stop={() => {
                         activity.onStop?.()
-                        activityManger.stopCurrentActivity()
+                        activityManager.stopCurrentActivity()
                     }}
                     key={activity.uid}
                     activity={activity}
@@ -22,7 +22,7 @@ export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
                 >
                     <activity.UI //
                         activity={activity}
-                        stop={() => activityManger.stopActivity(activity)}
+                        stop={() => activityManager.stopActivity(activity)}
                     />
                 </ActivityContainerUI>
             ))}
