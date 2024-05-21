@@ -1,10 +1,11 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { FormManager } from '../../controls/FormManager'
+// import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { Box, BoxBase, BoxSubtle, BoxTitle } from '../../theme/colorEngine/Box'
-import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
+
+// import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
@@ -34,7 +35,7 @@ export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {
 // 🟢 add chroma bonus (applied beofre contrast)
 
 export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
-    const theme = cushy.themeManager
+    // const theme = cushy.themeManager
 
     const uist = useLocalObservable(() => ({
         // base: 'oklch(.1,.2,200)',
@@ -112,7 +113,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                     </Box>
                 </Box>
             </Box>
-            <FormUI form={ThemeForm} />
+            {/* <FormUI form={ThemeForm} /> */}
         </div>
     )
 })
