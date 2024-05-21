@@ -5,7 +5,6 @@ import type { ActionTagMethodList } from '../cards/App'
 import type { FormSerial } from '../controls/FormSerial'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
-import type { RevealState } from '../rsuite/reveal/RevealState'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -594,14 +593,17 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
-        this.tree1 = new Tree(this, [
-            //
-            treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
-            treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
-            treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
-            treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
-            // '#apps',
-        ])
+        this.tree1 = new Tree(
+            [
+                //
+                treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
+                treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
+                treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
+                treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
+                // '#apps',
+            ],
+            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+        )
         this.tree1View = new TreeView(this.tree1, {
             onFocusChange: (node?: TreeNode) => {
                 if (node == null) return
@@ -611,18 +613,21 @@ export class STATE {
                 return
             },
         })
-        this.tree2 = new Tree(this, [
-            // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
-            treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
-            treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
-            treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
-            treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
-            //
-            // 'path#library',
-            // 'path#library/built-in',
-            // 'path#library/local',
-            // 'path#library/sdk-examples',
-        ])
+        this.tree2 = new Tree(
+            [
+                // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
+                treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
+                treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
+                treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
+                treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
+                //
+                // 'path#library',
+                // 'path#library/built-in',
+                // 'path#library/local',
+                // 'path#library/sdk-examples',
+            ],
+            { getNodeState: (node) => this.db.tree_entry.upsert({ id: node.id })! },
+        )
         this.tree2View = new TreeView(this.tree2, {
             onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })

@@ -11,9 +11,6 @@ export class TreeView {
     /** treeview id; only for debugging purpose */
     id = nanoid(4)
 
-    /** legacy stuff; should be mostly unused */
-    isFolded: boolean = false
-
     constructor(
         //
         public tree: Tree,
