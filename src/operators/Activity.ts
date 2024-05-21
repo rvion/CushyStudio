@@ -1,3 +1,4 @@
+import type { RevealPlacement } from '../rsuite/reveal/RevealPlacement'
 import type { FC } from 'react'
 
 import { makeAutoObservable } from 'mobx'
@@ -63,4 +64,17 @@ export interface Activity {
         /** call that function to stop the activity */
         stop: () => void
     }>
+
+    /**
+     * @since 2024-05-21
+     * mouse event this activity was started from
+     * if specified, allow the activity to position itself relative to the mouse if need be
+     */
+    event?: React.MouseEvent<HTMLElement, MouseEvent>
+
+    /**
+     * @since 2024-05-21
+     * use placement position the activity container origin
+     */
+    placement?: RevealPlacement
 }

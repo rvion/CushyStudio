@@ -529,7 +529,7 @@ export class STATE {
                 text: 'Only Show Blurry Thumbnails',
                 expand: true,
                 display: 'button',
-                icon: 'lock',
+                icon: 'mdiLock',
                 label: false,
             }),
         }),

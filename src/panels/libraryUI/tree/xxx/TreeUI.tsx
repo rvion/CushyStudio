@@ -21,7 +21,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     const tv = p.treeView
 
     const FoldBtn = (
-        <div className='btn btn-square btn-ghost btn-xs'>
+        <div className={p.className} tw='btn btn-square btn-ghost btn-xs'>
             <span className='material-symbols-outlined'>
                 {tv.isFolded ? (
                     <span className='material-symbols-outlined'>keyboard_arrow_right</span>

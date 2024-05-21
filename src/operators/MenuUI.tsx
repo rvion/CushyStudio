@@ -71,11 +71,18 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             key={ix}
                             shortcut={char}
                             label={entry.p.label}
-                            onClick={() => {
+                            onClick={(event) => {
                                 activityManger.startActivity({
+                                    event,
                                     uid: 'createPreset',
+                                    placement: 'auto',
                                     UI: (p) => (
-                                        <ModalShellUI close={() => p.stop()} title={entry.p.label}>
+                                        <ModalShellUI
+                                            //
+                                            tw='max-w-lg'
+                                            close={() => p.stop()}
+                                            title={entry.p.label}
+                                        >
                                             <entry.p.UI //
                                                 close={() => p.stop()}
                                                 submit={entry.p.submit}
