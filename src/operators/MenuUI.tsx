@@ -44,7 +44,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                 }
             }}
         >
-            <ul tw='dropdown menu bg-neutral'>
+            <ul tw='dropdown menu'>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
                     if (entry instanceof SimpleMenuEntry) {
                         return (
