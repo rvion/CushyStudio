@@ -69,10 +69,6 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                     className='_InputBlockerUI-backdrop'
                     tw='absolute inset-0 bg-[#000000db]'
                     style={{ zIndex: backdropzIndex }}
-                    onMouseUp={(ev) => {
-                        console.log('backdrop clicked')
-                        p.stop?.()
-                    }}
                 >
                     <div style={{ zIndex: -1 }} tw='absolute inset-0 z'></div>
                 </div>
@@ -80,8 +76,8 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 <div // activity area
                     tw='absolute inset-0'
                     style={{ zIndex: activityZIndex, ...pos }}
-                    className='_InputBlockerUI-activity-container'
-                    onClick={(ev) => {
+                    className='_InputBlockerUI-activity-container flex justify-center'
+                    onMouseDown={(ev) => {
                         console.log('activity backref clicked')
                         if (ev.target === ev.currentTarget) p.stop?.()
                     }}
@@ -96,7 +92,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                         </ModalShellUI>
                     ) : p.activity.shell === 'popup-full' ? (
                         <ModalShellUI tw='m-8' close={() => p.stop()} title={p.activity.title}>
-                    {p.children}
+                            {p.children}
                         </ModalShellUI>
                     ) : (
                         p.children
