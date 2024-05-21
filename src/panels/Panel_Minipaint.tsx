@@ -117,9 +117,9 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                     <Button
                         tw='join-item'
                         size='sm'
-                        icon={<span className='material-symbols-outlined'>save</span>}
+                        icon='mdiContentSave'
                         appearance='primary'
-                        color='green'
+                        hue='green'
                         onClick={() => {
                             runInAction(() => {
                                 uist.saveImage()

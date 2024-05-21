@@ -59,7 +59,8 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <CushyKitCtx.Provider value={st}>
             <Box
-                base='#1E212B'
+                // base='#1E212B'
+                base={cushy.theme.root.value.base}
                 text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}
                 //
                 data-theme={st.themeMgr.theme}

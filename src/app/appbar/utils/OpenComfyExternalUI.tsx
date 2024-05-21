@@ -11,7 +11,7 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
             size='sm'
             appearance='subtle'
             className='self-start'
-            icon={<span className='material-symbols-outlined'>open_in_new</span>}
+            icon='mdiOpenInNew'
             onClick={() => openExternal(st.getServerHostHTTP())}
         >
             {/* ComfyUI Web */}

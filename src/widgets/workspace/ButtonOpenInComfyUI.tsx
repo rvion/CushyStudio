@@ -16,20 +16,10 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
     return (
         <div tw='flex gap-2 items-center'>
             Open:
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInTab}
-            >
+            <Button icon='mdiOpenInNew' appearance='ghost' size='sm' onClick={graph.menuAction_openInTab}>
                 open in ComfyUI Tab
             </Button>
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_full</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInFullScreen}
-            >
+            <Button icon='mdiFullscreen' appearance='ghost' size='sm' onClick={graph.menuAction_openInFullScreen}>
                 open in ComfyUI FULL
             </Button>
         </div>

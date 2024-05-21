@@ -24,6 +24,7 @@ let activeSlider: HTMLDivElement | null = null
 let cancelled = false
 
 type InputNumberProps = {
+    disabled?: boolean
     value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
@@ -253,6 +254,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             className={p.className}
             style={kolor.styles}
             tw={[
+                p.disabled && 'pointer-events-none opacity-25',
                 'WIDGET-FIELD relative',
                 // 'theme-number-field',
                 // '!shadow-md !shadow-white',

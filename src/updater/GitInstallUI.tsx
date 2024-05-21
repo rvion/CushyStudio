@@ -10,7 +10,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitMan
             loading={updater.currentAction != null}
             appearance='primary'
             size='xs'
-            icon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+            icon='mdiCloudDownload'
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()

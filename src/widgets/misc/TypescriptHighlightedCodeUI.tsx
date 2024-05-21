@@ -27,7 +27,7 @@ export const TypescriptHighlightedCodeUI = (p: {
                 <Button
                     size='sm'
                     tabIndex={p.tabIndex}
-                    icon={<span className='material-symbols-outlined'>content_copy</span>}
+                    icon='mdiClipboard'
                     onClick={() => navigator.clipboard.writeText(p.code)}
                 />
             </div>

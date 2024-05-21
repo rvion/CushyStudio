@@ -1,43 +1,133 @@
+import type { IconName } from '../icons/icons'
 import type { RSAppearance, RSSize } from './RsuiteTypes'
 
+import Color from 'colorjs.io'
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
+import { type CSSProperties, ReactNode } from 'react'
 
+import { IkonOf } from '../icons/iconHelpers'
+import { Box } from '../theme/colorEngine/Box'
 import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
 
 // form
 export const FormHelpTextUI = (p: any) => <div {...p}></div>
 
+let isDragging = false
+
 // inputs
-export const Button = (
-    p: JSX.IntrinsicElements['button'] & {
-        icon?: Maybe<ReactNode>
-        active?: Maybe<boolean>
-        size?: Maybe<RSSize>
-        loading?: boolean
-        disabled?: boolean
-        appearance?: Maybe<RSAppearance>
-    },
-) => {
-    const { icon, active, size, loading, disabled, appearance, ...rest } = p
+export const Button = (p: {
+    // hack
+    tabIndex?: number
+    hue?: number | string
+    hueShift?: number | undefined
+    className?: string
+    icon?: Maybe<IconName>
+    active?: Maybe<boolean>
+    size?: Maybe<RSSize>
+    loading?: boolean
+    disabled?: boolean
+    appearance?: Maybe<RSAppearance>
+    style?: CSSProperties
+    /** 🔶 DO NOT USE; for */
+    onClick?: (ev: React.MouseEvent<HTMLElement>) => void
+    children?: ReactNode
+}) => {
+    const {
+        //
+        icon,
+        active,
+        hue,
+        hueShift,
+        size,
+        loading,
+        disabled,
+        appearance,
+        onClick,
+        className,
+        ...rest
+    } = p
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button == 0) {
+            isDragging = false
+            window.removeEventListener('mouseup', isDraggingListener, true)
+        }
+    }
+    const chroma: number = (() => {
+        if (active) return 0.1
+
+        if (appearance === 'primary') return 0.1
+        if (appearance === 'ghost') return 0
+        if (appearance === 'link') return 0
+        if (appearance === 'default') return 0.1
+        if (appearance === 'subtle') return 0
+        if (appearance == null) return 0.1
+        exhaust(appearance)
+        return 0.1
+    })()
+
+    const contrast: number = (() => {
+        if (active) return 0.8
+        if (appearance === 'primary') return 1
+        if (appearance === 'ghost') return 0
+        if (appearance === 'link') return 0
+        if (appearance === 'default') return 0.1
+        if (appearance === 'subtle') return 0
+        if (appearance == null) return 0.1
+        exhaust(appearance)
+        return 0.1
+    })()
+
+    const border: number = (() => {
+        if (appearance === 'primary') return 3
+        if (appearance === 'ghost') return 0
+        if (appearance === 'link') return 0
+        if (appearance === 'default') return 1
+        if (appearance === 'subtle') return 0.5
+        if (appearance == null) return 1
+        exhaust(appearance)
+        return 1
+    })()
+
+    const hueFinal = ((): number | undefined => {
+        if (p.hue == null) return
+        if (typeof p.hue === 'number') return p.hue
+        if (typeof p.hue === 'string') return new Color(p.hue).oklch[2]
+        return
+    })()
     return (
-        <button
+        <Box
+            base={{ contrast, chroma, hue: hueFinal, hueShift }}
+            hover
+            tabIndex={p.tabIndex ?? -1}
+            border={border}
+            className={className}
+            onMouseDown={(ev) => {
+                if (ev.button == 0) {
+                    onClick?.(ev)
+                    isDragging = true
+                    window.addEventListener('mouseup', isDraggingListener, true)
+                }
+            }}
+            onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                if (isDragging) onClick?.(ev)
+            }}
             {...rest}
             tw={[
                 'btn',
                 p.loading || p.disabled ? 'btn-disabled' : null,
                 p.active ? 'btn-active' : null,
-                appearance
-                    ? (() => {
-                          if (appearance === 'primary') return 'btn-primary'
-                          if (appearance === 'ghost') return 'btn-outline'
-                          if (appearance === 'link') return 'btn-link'
-                          if (appearance === 'default') return null
-                          if (appearance === 'subtle') return null
-                          return exhaust(appearance)
-                      })()
-                    : null,
+                // appearance
+                //     ? (() => {
+                //           if (appearance === 'primary') return 'btn-primary'
+                //           if (appearance === 'ghost') return 'btn-outline'
+                //           if (appearance === 'link') return 'btn-link'
+                //           if (appearance === 'default') return null
+                //           if (appearance === 'subtle') return null
+                //           return exhaust(appearance)
+                //       })()
+                //     : null,
                 p.size
                     ? (() => {
                           if (p.size === 'sm') return 'btn-sm'
@@ -47,12 +137,12 @@ export const Button = (
                           return exhaust(p.size)
                       })()
                     : null,
-                ...(p?.tw ?? []),
+                // ...(p?.tw ?? []),
             ]}
         >
-            {p.icon}
+            {p.icon && <IkonOf name={p.icon} />}
             {p.children}
-        </button>
+        </Box>
     )
 }
 

@@ -1,3 +1,4 @@
+import type { IconName } from '../../icons/icons'
 import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
@@ -8,7 +9,7 @@ import { Button } from '../../rsuite/shims'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
-    const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
+    const icon: IconName = draft.shouldAutoStart ? 'mdiPause' : 'mdiPlay'
     return (
         <div tw='flex gap-1' className={p.className}>
             <RevealUI
@@ -67,7 +68,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             <Button
                 tw='btn-sm btn-primary flex-1'
                 className='self-start'
-                icon={<span className='material-symbols-outlined'>{icon}</span>}
+                icon={icon}
                 onClick={() => {
                     draft.st.layout.FOCUS_OR_CREATE('Output', {}, 'RIGHT_PANE_TABSET')
                     draft.setAutostart(false)

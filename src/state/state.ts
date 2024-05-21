@@ -958,4 +958,15 @@ export class STATE {
         writeFileSync(absPath, content, 'utf-8')
     }
     // ----------------------------
+
+    theme = CushyFormManager.fields(
+        (ui) => ({
+            base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+        }),
+        {
+            name: 'theme config',
+            initialSerial: () => readJSON('settings/theme.json'),
+            onSerialChange: (form) => writeJSON('settings/theme.json', form.serial),
+        },
+    )
 }

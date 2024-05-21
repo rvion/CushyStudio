@@ -44,7 +44,13 @@ export type BoxProps = {
      * @default { contrast: 1, chromaBlend: 1, hueShift: 0}
      * relative to base; when relative, carry to children as default strategy */
     text?: RelativeStyle | string
+
+    // TBD ❌
     shadow?: RelativeStyle | string
+
+    // TBD ❌
+    // textShadow?: RelativeStyle | string
+
     /**
      * - string: absolute color
      * - relative: relative to parent
@@ -53,6 +59,7 @@ export type BoxProps = {
      * - null: inherit parent's background
      * */
     border?: RelativeStyle | string | number | boolean
+
     /** if true; will add some contrast on hover */
     hover?: boolean
 }

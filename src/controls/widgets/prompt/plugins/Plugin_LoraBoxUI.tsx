@@ -85,7 +85,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <div tw='flex-0 flex-grow'></div>
                 <Button //
                     size='xs'
-                    icon={<span className='material-symbols-outlined'>delete_forever</span>}
+                    icon='mdiDeleteForever'
                     onClick={p.onDelete}
                     tw='h-full'
                 />

@@ -18,20 +18,10 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
 
     return (
         <div tw='flex gap-2 items-center'>
-            <Button
-                appearance='primary'
-                icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                size='sm'
-                onClick={graph.menuAction_downloadWorkflow}
-            >
+            <Button appearance='primary' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadWorkflow}>
                 Download ComfyUI Workflow
             </Button>
-            <Button
-                appearance={'ghost'}
-                icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                size='sm'
-                onClick={graph.menuAction_downloadPrompt}
-            >
+            <Button appearance='ghost' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadPrompt}>
                 Download ComfyUI PROMPT
             </Button>
         </div>

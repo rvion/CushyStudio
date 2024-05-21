@@ -100,14 +100,10 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 )}
             </div>
             <div tw='flex gap-2'>
-                <Button
-                    tw='btn-info'
-                    size='sm'
-                    onClick={() => updater.checkForUpdatesNow()}
-                    icon={<span className='material-symbols-outlined'>refresh</span>}
-                >
+                <Button tw='btn-info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
                     REFRESH
                 </Button>
+
                 {/* {updater.config.canBeUninstalled ? ( //
                     <UninstallUI updater={updater} />
                 ) : null} */}
