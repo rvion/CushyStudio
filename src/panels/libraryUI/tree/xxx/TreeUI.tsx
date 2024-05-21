@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../../../../app/shortcuts/ComboUI'
 import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
+import { Ikon } from '../../../../icons/iconHelpers'
 import { RevealUI } from '../../../../rsuite/reveal/RevealUI'
-import { useSt } from '../../../../state/stateContext'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 
@@ -17,7 +17,6 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     treeView: TreeView
     autofocus?: boolean
 }) {
-    const st = useSt()
     const tv = p.treeView
 
     return (
@@ -34,12 +33,14 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                             </div>
                         )}
                     >
-                        <div
-                            tw='btn btn-square btn-ghost btn-xs shrink-0'
-                            onClick={() => st.db.tree_entry.updateAll({ isExpanded: null })}
-                        >
-                            <span className='material-symbols-outlined'>unfold_less</span>
-                        </div>
+                        {tv.tree.config.updateAll && (
+                            <div
+                                tw='btn btn-square btn-ghost btn-xs shrink-0'
+                                onClick={() => tv.tree.config.updateAll?.({ isExpanded: null })}
+                            >
+                                <Ikon.mdiUnfoldLessHorizontal />
+                            </div>
+                        )}
                     </RevealUI>
                 </div>
 

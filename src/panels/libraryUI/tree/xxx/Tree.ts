@@ -7,12 +7,25 @@ import { type SQLITE_boolean_, SQLITE_false } from '../../../../db/SQLITE_boolea
 import { TreeNode } from './TreeNode'
 
 // ------------------------------------------------------------------------
-export type ITreeEntryL = {
+export type INodeStore = {
     data: { isExpanded?: Maybe<SQLITE_boolean_> }
     update: (data: { isExpanded: SQLITE_boolean_ }) => void
 }
 
-export const defaultGetTreeEntryL = (node: TreeNode): ITreeEntryL => {
+export type TreeStorageConfig = {
+    /**
+     * @since 2024-05-21
+     * called once at construction time to get a
+     * hold on some persistent storage object, in case you want to persist the tree state
+     * easilly
+     * */
+    getNodeState: (node: TreeNode) => INodeStore
+    /**
+     */
+    updateAll?: (data: { isExpanded: SQLITE_boolean_ | null }) => void
+}
+
+export const defaultTreeStorage = (node: TreeNode): INodeStore => {
     const data: { isExpanded: SQLITE_boolean_ } = { isExpanded: SQLITE_false }
     return observable({
         data,
@@ -25,28 +38,18 @@ export class Tree {
     topLevelNodes: TreeNode[] = []
     KeyboardNavigableDomNodeID = nanoid()
 
-    getNodeState: (node: TreeNode) => ITreeEntryL
-
     constructor(
         //
         rootNodes: ITreeElement[],
-        opts: {
-            /**
-             * @since 2024-05-21
-             * called once at construction time to get a
-             * hold on some persistent storage object, in case you want to persist the tree state
-             * easilly
-             * */
-            getNodeState?: (node: TreeNode) => ITreeEntryL
-        } = {},
+        public config: TreeStorageConfig = { getNodeState: defaultTreeStorage },
     ) {
-        this.getNodeState = opts.getNodeState ?? defaultGetTreeEntryL
-
         for (let uid of rootNodes) {
             const node = new TreeNode(this, uid, undefined)
             this.topLevelNodes.push(node)
         }
-        makeAutoObservable(this /* ⏸️ { indexNode: action } */)
+        makeAutoObservable(this, {
+            // indexNode: action
+        })
     }
 }
 
