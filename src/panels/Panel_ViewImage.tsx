@@ -168,7 +168,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </div>
             </RevealUI>
 
-            <Box base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Box base={5}>
+            <Box base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Box>
 
             <div // Delete button
                 tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'
