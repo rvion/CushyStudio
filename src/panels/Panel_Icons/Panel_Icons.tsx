@@ -5,6 +5,7 @@ import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
 import { getAllIcons } from '../../icons/iconHelpers'
+import { Box } from '../../theme/colorEngine/Box'
 import { searchMatches } from '../../utils/misc/searchMatches'
 import { PanelHeaderUI } from '../PanelHeader'
 
@@ -43,7 +44,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                     onChange={(x) => (uist.query = x.target.value)}
                 />
             </PanelHeaderUI>
-            <div ref={refFn} tw='flex-1 overflow-clip'>
+            <Box base={0} text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
                 <FixedSizeGrid //
                     key={`${showNames}`}
                     // container
@@ -63,7 +64,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                             return (
                                 <div style={style} tw='overflow-clip'>
                                     <Icon
-                                        tw='hover:text-blue-200 text-white duration-100'
+                                        // tw='hover:text-blue-200 text-white duration-100'
                                         size={`${itemSize - 20}px`}
                                         path={(icons as any)[iconName]}
                                     />
@@ -74,7 +75,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                             return (
                                 <div style={style}>
                                     <Icon //
-                                        tw='hover:text-blue-200 text-white duration-100'
+                                        // tw='hover:text-blue-200 text-white duration-100'
                                         path={(icons as any)[iconName]}
                                     />
                                 </div>
@@ -82,7 +83,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                         }
                     }}
                 </FixedSizeGrid>
-            </div>
+            </Box>
         </div>
     )
 })

@@ -18,7 +18,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <>
-            <div tw='flex flex-col gap-1 bg-base-200 w-80 absolute right-2 top-2 z-50'>
+            <div tw='flex flex-col gap-1 w-80 absolute right-2 top-2 z-50'>
                 <div>
                     <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
                         Undo (stack.size={canvas.undoBuffer.length})

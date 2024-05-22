@@ -86,7 +86,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
         <PanelHeaderUI>
             {/* <FieldAndLabelUI label='Rating'> */}
             <div // Star Button
-                tw='WIDGET-FIELD flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
+                tw='WIDGET-FIELD flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
             >
                 <Rate
                     name={img?.id ?? 'latent'}
@@ -104,14 +104,14 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             <div tw='join'>
                 <div // Canvas Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
+                    tw='WIDGET-FIELD join-item flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
                     onClick={() => img?.openInCanvasEditor()}
                 >
                     <span className='material-symbols-outlined'>format_shapes</span>
                     <p tw='px-1'>Canvas</p>
                 </div>
                 <div // Paint Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
+                    tw='WIDGET-FIELD join-item flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
                     onClick={() => {
                         if (img == null) return
                         img.openInImageEditor()
@@ -130,7 +130,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             {/* Image Info Button */}
             <RevealUI
-                tw='bg-base-200 hover:brightness-125 rounded text-shadow'
+                tw='hover:brightness-125 rounded text-shadow'
                 content={() => (
                     <div>
                         <div>Data</div>

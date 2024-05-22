@@ -20,7 +20,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             tw={[
                 //
                 'virtualBorder',
-                'p-2 bg-base-200 w-96 shadow-xl',
+                'p-2 w-96 shadow-xl',
                 isMain && 'bg-primary bg-opacity-30',
             ]}
         >

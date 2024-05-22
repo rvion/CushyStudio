@@ -59,7 +59,10 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <CushyKitCtx.Provider value={st}>
             <Box
-                style={{ '--BASEOK': cushy.theme.root.value.base }}
+                style={{
+                    // @ts-expect-error 🔴
+                    '--BASEOK': cushy.theme.root.value.base,
+                }}
                 // base='#1E212B'
                 base={cushy.theme.root.value.base}
                 text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}

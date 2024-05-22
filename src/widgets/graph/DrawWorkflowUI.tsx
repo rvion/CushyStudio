@@ -119,7 +119,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                         })}
                         {/* ACTUAL NODE */}
                         <div
-                            className='node bg-base-200 rounded'
+                            className='node rounded'
                             key={node.uid}
                             style={{
                                 border: '1px solid #4c4c4c',

@@ -236,7 +236,7 @@ export const Whisper = (p: {
 }) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
 
 // misc
-export const Panel = (p: {
+export const Surface = (p: {
     //
     header?: ReactNode
     className?: string
@@ -247,7 +247,7 @@ export const Panel = (p: {
         <div
             //
             // style={{ border: '1px solid #404040' }}
-            tw='p-2 border border-opacity-25 bg-base-200 bg-opacity-50 border-base-content input-bordered rounded-btn'
+            tw='p-2 border border-opacity-25 bg-opacity-50 border-base-content input-bordered rounded-btn'
             {...rest}
         >
             {header}

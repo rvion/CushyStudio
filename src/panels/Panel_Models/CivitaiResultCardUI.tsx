@@ -22,7 +22,7 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                 //
                 'w-80',
                 active && 'bg-base-300',
-                'hover:bg-base-200 cursor-pointer',
+                'hover:cursor-pointer',
             ]}
         >
             <div tw={['flex gap-0.5']}>

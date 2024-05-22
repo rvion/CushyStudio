@@ -68,7 +68,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
             </div>
 
             <div // Description Container
-                tw={['rounded-b bg-base-300 py-0.5 px-1 cursor-default', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
+                tw={['rounded-b py-0.5 px-1 cursor-default', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
                 onClick={(ev) => {
                     setIsExpanded(!isExpanded)
                 }}

@@ -17,7 +17,7 @@ export const Panel_Config = observer(function Panel_Config_() {
             <SectionTitleUI label='CONFIG' className='block' />
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
-                    <pre tw='bg-base-200 rounded-btn px-2'>{config.path}</pre>
+                    <pre tw='rounded-btn px-2'>{config.path}</pre>
                     <div className='btn btn-sm btn-link' onClick={() => openInVSCode(st, config.path)}>
                         open <span className='material-symbols-outlined text-sm'>open_in_new</span>
                     </div>

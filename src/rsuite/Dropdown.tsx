@@ -42,7 +42,6 @@ export const MenuItem = observer(function DropdownItem_(p: {
     shortcut?: CushyShortcut
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
-    // const active2 = Math.random() > 0.5
     return (
         <Box
             text={{ contrast: disabled ? 0.5 : 1 }}

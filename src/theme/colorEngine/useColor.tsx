@@ -1,3 +1,4 @@
+import type { AbsoluteStyle, RelativeStyle } from './AbsoluteStyle'
 import type { BoxProps } from './Box'
 
 import Color from 'colorjs.io'
@@ -5,9 +6,8 @@ import { createHash } from 'crypto'
 import { type CSSProperties, useContext } from 'react'
 
 import { clamp } from '../../controls/widgets/list/clamp'
-import { type AbsoluteStyle, type RelativeStyle, ThemeCtx } from './AbsoluteStyle'
+import { ThemeCtx } from './AbsoluteStyle'
 import { applyRelative } from './applyRelative'
-import { formatColor } from './formatColor'
 
 type BoxAppearance = {
     background: AbsoluteStyle
@@ -37,7 +37,10 @@ export const useColor = (
             if (typeof p.base === 'string') {
                 const color = new Color(p.base)
                 const [l, c, h] = color.oklch
-                return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
+                console.log(`[🌈] lch`, p.base, l, c, h)
+                console.log(`[🌈] lch`, color)
+                console.log(`[🌈] lch`, color.oklch)
+                return { type: 'absolute', lightness: l!, chroma: c!, hue: isNaN(h!) ? 0 : h! }
             }
             // if it's relative (should be the most common case)
             return applyRelative(ctx.background, p.base)
@@ -99,7 +102,7 @@ export const useColor = (
 
         if (borderStyle) {
             const borderHoverStyle = applyRelative(borderStyle, { contrast: 0.2 })
-            borderHover = formatColor(borderHoverStyle)
+            borderHover = `1px solid ${formatColor(borderHoverStyle)}`
         }
 
         const textHoverStyle = applyRelative(baseHoverStyle, { contrast: 0.9, chromaBlend: 2 })
@@ -182,4 +185,11 @@ function setRule(selector: string, block: string = ''): CSSStyleRule {
         rule.style.cssText = block
         return rule
     }
+}
+
+export function formatColor(col: AbsoluteStyle) {
+    const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(2)
+    const c = col.chroma.toFixed(2)
+    const h = col.hue.toFixed(2)
+    return `oklch(${l} ${c} ${h})`
 }

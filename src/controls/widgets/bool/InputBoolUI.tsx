@@ -93,7 +93,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                         tw={[
                             //
                             'flex items-center h-full p-1 px-2 rounded',
-                            'bg-base-200 border border-base-100 text-shadow',
+                            'border border-base-100 text-shadow',
                             'border-b-2 border-b-base-300',
                             isActive && 'text-shadow-inv',
                             icon && 'pl-1.5',

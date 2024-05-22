@@ -13,6 +13,7 @@ import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../rsuite/SelectUI'
 import { Message } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
+import { Box } from '../../theme/colorEngine/Box'
 import { stringifyUnknown } from '../../utils/formatters/stringifyUnknown'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
@@ -83,9 +84,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <draftContext.Provider value={draft} key={draft.id}>
             {cushy.theme.render()}
             <RecompileUI app={draft.app} />
-            <div
+            <Box
+                // base={5}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={['flex-1 flex flex-col gap-1 px-2', containerClassName, 'bg-base-300']}
+                tw={['flex-1 flex flex-col gap-1 px-2', containerClassName]}
                 onKeyUp={(ev) => {
                     // submit on meta+enter
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
@@ -135,7 +137,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 >
                     <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
                 </RevealUI>
-            </div>
+            </Box>
         </draftContext.Provider>
     )
     if (!wrapMobile) return OUT

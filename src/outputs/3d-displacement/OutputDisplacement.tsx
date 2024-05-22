@@ -75,12 +75,12 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     return (
         <div tw='relative flex-1 flex flex-col'>
             {menuConf.right ? (
-                <div tw='absolute top-0 right-0 z-50 bg-base-200 p-2 !w-96'>
+                <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
                     <FormUI form={st.displacementConf} />
                 </div>
             ) : st.displacementConf.root.get('menu').left ? (
-                <div tw='absolute top-0 left-0 z-50 bg-base-200 p-2 !w-96'>
+                <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
                     <FormUI form={st.displacementConf} />
                 </div>
@@ -96,7 +96,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                             </div>
                         )}
                     >
-                        <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
+                        <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                             <span className='material-symbols-outlined'>settings</span>
                             <span className='material-symbols-outlined'>expand_more</span>
                         </div>

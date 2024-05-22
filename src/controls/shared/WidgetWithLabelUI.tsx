@@ -106,10 +106,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const iconName = widget.icon
     return (
         <Box
+            hover
             key={rootKey}
+            border={showBorder ? 2 : 0}
             tw={[
                 // widget.background && (isCollapsible || showBorder) && '',
-                showBorder && 'WIDGET-GROUP-BORDERED',
+                // showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}

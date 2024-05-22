@@ -5,7 +5,9 @@ import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { Button } from '../../../rsuite/shims'
 import { useSt } from '../../../state/stateContext'
+import { Box } from '../../../theme/colorEngine/Box'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -24,7 +26,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
             {widget.serial.collapsed ? (
                 <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
             ) : (
-                <div />
+                <div /* spacer */ />
             )}
             <div
                 tw='flex self-end'
@@ -48,15 +50,16 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 </div>
                             )}
                         >
-                            <div
+                            <Button
+                                active={Boolean(active)}
                                 onClick={() => st.configFile.set(plugin.configKey, !active)}
                                 tw={[
-                                    active ? 'btn-primary' : null,
+                                    // active ? 'btn-primary' : null,
                                     'btn btn-icon btn-square opacity-50 hover:opacity-100 btn-xs text-sm',
                                 ]}
                             >
                                 <Icon />
-                            </div>
+                            </Button>
                         </RevealUI>
                     )
                 })}
@@ -82,6 +85,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
         uist.replaceTextBy(widget.text)
     }, [widget._valueUpdatedViaAPIAt])
 
+    const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
         <div
             tw='flex flex-col'
@@ -101,17 +105,19 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
-            <div className='flex flex-col gap-1'>
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    if (!active) return null
-                    return (
-                        <PluginWrapperUI key={plugin.key} plugin={plugin}>
-                            <plugin.Widget uist={uist} />
-                        </PluginWrapperUI>
-                    )
-                })}
-            </div>
+            {haveAtLeastOnePluginActive && (
+                <Box className='flex flex-col gap-1 p-1 my-1'>
+                    {plugins.map((plugin) => {
+                        const active = st.configFile.get(plugin.configKey) ?? false
+                        if (!active) return null
+                        return (
+                            <PluginWrapperUI key={plugin.key} plugin={plugin}>
+                                <plugin.Widget uist={uist} />
+                            </PluginWrapperUI>
+                        )
+                    })}
+                </Box>
+            )}
         </div>
     )
 })

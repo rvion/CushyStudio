@@ -16,7 +16,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
 
     return (
         <div tw='relative h-full flex-grow flex flex-col'>
-            <div tw='bg-base-200 p-4'>
+            <div tw='p-4'>
                 <div tw='flex gap-2'>
                     <div tw='mr-2 text-2xl'>Library</div>
                     {/* <CreateDeckBtnUI /> */}
@@ -112,7 +112,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                                 />
                                 <RevealUI>
                                     <div tw='font-bold'>{app.description}</div>
-                                    <pre tw='bg-base-300 text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
+                                    <pre tw='text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
                                 </RevealUI>
                             </div>
                         ))}

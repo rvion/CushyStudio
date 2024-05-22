@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { Message } from '../../rsuite/shims'
+import { Box } from '../../theme/colorEngine/Box'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { PanelNames, panels } from './PANELS'
 
@@ -36,15 +37,16 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const panelID = p.node?.getId()
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <div
+            <Box
                 //
+                base={0}
                 tw='flex-1 h-full w-full outlined-on-hover'
                 className={`Region-${panel}`}
                 data-panel-id={panelID}
                 id={panelID}
             >
                 <Component {...panelProps} className='w-full h-full border-none' />
-            </div>
+            </Box>
         </ErrorBoundary>
     )
 })

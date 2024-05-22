@@ -286,7 +286,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <button /* Left Button */
                     tw={[
                         'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `border border-base-200 opacity-0 hover:brightness-125`,
                     ]}
                     tabIndex={-1}
                     onClick={uist.decrement}
@@ -416,7 +416,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <button /* Right Button */
                     tw={[
                         'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `border border-base-200 opacity-0 hover:brightness-125`,
                     ]}
                     tabIndex={-1}
                     onClick={uist.increment}

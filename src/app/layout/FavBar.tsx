@@ -15,6 +15,7 @@ import { PanelHeaderUI } from '../../panels/PanelHeader'
 import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
+import { Box } from '../../theme/colorEngine/Box'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -45,11 +46,12 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     const sizeStr = size + 'px'
     return (
         <>
-            <div
+            <Box
+                base={5}
                 tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
-                <div tw='flex flex-col inset-0 bg-base-300 flex-1 select-none overflow-hidden'>
+                <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
                     <PanelHeaderUI>
                         <SpacerUI />
                         <RevealUI
@@ -62,7 +64,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             title='Favorite Bar Options'
                             style={{ width: `${size + 8}px` }}
                         >
-                            <div tw='WIDGET-FIELD cursor-default rounded w-full hover:brightness-125 bg-base-200 border border-base-100 items-center justify-center flex text-shadow'>
+                            <div tw='WIDGET-FIELD cursor-default rounded w-full hover:brightness-125 border border-base-100 items-center justify-center flex text-shadow'>
                                 <span className='material-symbols-outlined'>settings</span>
                                 <span className='material-symbols-outlined'>expand_more</span>
                             </div>
@@ -153,7 +155,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         <div className='MENU-ROOT'>
                                                             <div className='MENU-HEADER'>
                                                                 <div //Container
-                                                                    tw='flex bg-base-200 p-1 rounded w-full'
+                                                                    tw='flex p-1 rounded w-full'
                                                                 >
                                                                     <AppIllustrationUI size='2rem' app={draft.app} />
                                                                     <div tw='flex-1 text-xs text-center self-center p-2'>
@@ -163,7 +165,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                             </div>
                                                             <div className='MENU-CONTENT'>
                                                                 <div //Container
-                                                                    tw='flex-column bg-base-300 p-1 rounded text-center items-center'
+                                                                    tw='flex-column p-1 rounded text-center items-center'
                                                                 >
                                                                     <div tw='text-xs'>{draft.data.title}</div>
                                                                     <div tw='flex self-center text-center justify-center p-1'>
@@ -196,7 +198,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                 <AppIllustrationUI
                                                                     size={`${size / 2.5}px`}
                                                                     app={draft.app}
-                                                                    className='rounded-full border border-base-300 bg-base-300'
+                                                                    className='rounded-full border border-base-300'
                                                                     tw={['absolute bottom-0.5 right-0.5']}
                                                                 />
                                                             </div>
@@ -211,7 +213,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Box>
             {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>
                     <div tw='absolute insert-0 w-96'>
@@ -241,7 +243,6 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
             : app.drafts.filter((draft) => {
                   return draft.name.toLowerCase().indexOf(filterText) != -1
               })
-
     return (
         <div className='MENU-ROOT'>
             <div className='MENU-HEADER'>
@@ -253,7 +254,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         star
                     </span>
                 </div>
-                <div tw='flex-1 flex-grow text-center bg-base-200 justify-center content-center border-l border-r border-base-100 pt-1'>
+                <div tw='flex-1 flex-grow text-center justify-center content-center border-l border-r border-base-100 pt-1'>
                     {app.name}
                 </div>
                 <div onClick={() => app.createDraft()} tw='btn btn-sm'>
@@ -271,19 +272,19 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                     </div>
                 ) : null}
                 <div //App Grid Container
-                    tw='flex-col bg-base-300 p-2 rounded'
+                    tw='flex-col p-2 rounded'
                 >
                     <div //Filter Input
                         tw='flex rounded pb-2'
                     >
                         <input
-                            tw='input-sm w-full bg-base-200 rounded rounded-r-none border border-base-200 border-r-base-300 outline-none focus:border-primary'
+                            tw='input-sm w-full rounded rounded-r-none border border-base-200 border-r-base-300 outline-none focus:border-primary'
                             value={filterText}
                             onChange={(ev) => setFilterText(ev.currentTarget.value)}
                             placeholder='Filter Drafts'
                         ></input>
                         <button
-                            tw='btn btn-sm text-center items-center self-center snap-center bg-base-200 p-1'
+                            tw='btn btn-sm text-center items-center self-center snap-center p-1'
                             onClick={(ev) => setFilterText('')}
                         >
                             <span className='material-symbols-outlined'>cancel</span>
@@ -295,7 +296,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         {filteredApps.map((draft) => (
                             <div
                                 key={draft.id}
-                                tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'
+                                tw='flex brightness-95 cursor-pointer hover:brightness-110 rounded-md border-base-100 border p-1 justify-center'
                             >
                                 <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
                                     <div tw='flex self-center text-center justify-center p-1'>

@@ -2,6 +2,7 @@ import type { Widget_bool } from './WidgetBool'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../../icons/iconHelpers'
 import { SpacerUI } from '../spacer/SpacerUI'
 import { InputBoolUI } from './InputBoolUI'
 
@@ -31,7 +32,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
                 onClick={() => widget.reset()}
                 className='btn btn-xs btn-narrower btn-ghost'
             >
-                <span className='material-symbols-outlined'>undo</span>
+                <Ikon.mdiUndoVariant />
             </div>
         </div>
     )

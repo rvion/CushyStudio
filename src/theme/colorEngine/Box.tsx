@@ -37,6 +37,7 @@ export type BoxProps = {
      * - string: absolute color
      * - relative: relative to parent
      * - number: = relative({ contrast: x / 100, chromaBlend: 1, hueShift: 0 })
+     * - boolean: = contrast=0
      * - null: inherit parent's background
      * */
     base?: RelativeStyle | string | number
@@ -61,7 +62,7 @@ export type BoxProps = {
     border?: RelativeStyle | string | number | boolean
 
     /** if true; will add some contrast on hover */
-    hover?: boolean
+    hover?: boolean | number
 }
 
 export type BoxUIProps = BoxProps & {
@@ -75,6 +76,10 @@ export type BoxUIProps = BoxProps & {
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onMouseLeave?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onContextMenu?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onAuxClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onKeyUp?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
 }
 
 // 🔴 2024-05-20 rvion:

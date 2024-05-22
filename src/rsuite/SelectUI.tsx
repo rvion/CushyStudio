@@ -537,7 +537,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             <div
                                 tw={[
                                     'WIDGET-FIELD pl-0.5 flex w-full items-center rounded overflow-auto',
-                                    'active:bg-base-300 cursor-default text-shadow',
+                                    'active:cursor-default text-shadow',
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                     /* index === s.selectedIndex && */
                                     // isSelected ? '!text-primary-content text-shadow' : 'bg-base-300',

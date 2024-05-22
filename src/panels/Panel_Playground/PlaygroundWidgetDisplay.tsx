@@ -8,7 +8,7 @@ import { useSt } from '../../state/stateContext'
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
     const st = useSt()
     return (
-        <div tw='h-full bg-base-300 p-1 overflow-auto'>
+        <div tw='h-full p-1 overflow-auto'>
             <FormUI form={FORM_PlaygroundWidgetDisplay} />
         </div>
     )

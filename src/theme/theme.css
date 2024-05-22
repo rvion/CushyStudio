@@ -83,7 +83,7 @@
 }
 /* semantic stuff ---------------------------------------------------------------------------- */
 .cushy-panel-header {
-    @apply flex overflow-auto gap-2 bg-base-300 w-full flex-shrink-0;
+    @apply flex overflow-auto gap-2 w-full flex-shrink-0;
 }
 
 /* ------------------------------------------------------------------------------------------- */

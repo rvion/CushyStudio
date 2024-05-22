@@ -57,7 +57,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 <FormUI form={Header_Playground} />
                 {mode.value.requirements && <PlaygroundRequirementsHeader />}
             </PanelHeaderUI>
-            <div tw='px-1 bg-base-300'>
+            <div tw='px-1'>
                 <MessageInfoUI>
                     <div tw='inline text-sm overflow-clip'>
                         <span>Use this panel as a scratchpad by modifying </span>

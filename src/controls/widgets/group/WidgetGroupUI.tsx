@@ -35,7 +35,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
 
     // const color = useColor({ base: 10 })
     return (
-        <Box
+        <div
             // base={4}
             // {...widget.config.box}
             className={p.className}
@@ -64,6 +64,6 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     ))}
                 </div>
             )}
-        </Box>
+        </div>
     )
 })

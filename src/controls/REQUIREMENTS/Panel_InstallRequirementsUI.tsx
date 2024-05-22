@@ -47,7 +47,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const manager = host.manager
     const repo = manager.repository
     return (
-        <div tw='flex flex-col gap-2 bg-base-300 '>
+        <div tw='flex flex-col gap-2 '>
             <div tw='flex gap-1'>
                 {/*
                 TODO: uncomment when implemented
