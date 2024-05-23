@@ -5,10 +5,11 @@ html, body, #root {
 
 
 .flexlayout__tab{
-    border: 1px solid transparent;
+    border: 1px solid var(--BASEOK);
 }
 .flexlayout__tab:hover {
-    border: 1px solid oklch(var(--p));
+    /* --BASEOK: blue; */
+    border: 1px solid oklch(from var(--BASEOK) calc(.5) 0.05 calc(h));
 }
 .scroll { overflow:auto; }
 .gap { gap: .7rem }

@@ -2,9 +2,8 @@ import type { ISpec } from '../../ISpec'
 import type { IWidget } from '../../IWidget'
 import type { Widget_list } from './WidgetList'
 
-import { forwardRef } from 'react'
-
 import { observer } from 'mobx-react-lite'
+import { forwardRef } from 'react'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -12,11 +11,9 @@ import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
-
 import { ListControlsUI } from './ListControlsUI'
 
-const {default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
-
+const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
     return (

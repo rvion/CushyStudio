@@ -3,7 +3,8 @@ import type { Requirements } from '../Requirements'
 
 import { observer } from 'mobx-react-lite'
 
-import { MessageErrorUI, MessageWarningUI } from '../../panels/MessageUI'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
+import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { exhaust } from '../../utils/misc/exhaust'

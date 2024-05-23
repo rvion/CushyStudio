@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
-import { Button } from '../rsuite/Button'
+import { Button } from '../rsuite/button/Button'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 

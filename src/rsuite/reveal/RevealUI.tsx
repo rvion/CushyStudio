@@ -185,12 +185,12 @@ const mkTooltip = (uist: RevealState | null) => {
                         <Ikon.mdiLock />
                         shift+right-click to unlock
                     </span>
-                ) : (
-                    <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                        <Ikon.mdiLockOff />
-                        shift+right-click to lock
-                    </span>
-                )}
+                ) : null
+                // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                //     <Ikon.mdiLockOffOutline />
+                //     shift+right-click to lock
+                // </span>
+                }
             </Box>
         )
 

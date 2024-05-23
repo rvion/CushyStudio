@@ -16,6 +16,7 @@ import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
 import { commandManager } from '../shortcuts/CommandManager'
 import { FavBarUI } from './FavBar'
+import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
@@ -65,7 +66,7 @@ export const CushyUI = observer(function CushyUI_() {
                 }}
                 // base='#1E212B'
                 base={cushy.theme.root.value.base}
-                text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}
+                text={{ contrast: 0.99 /* chromaBlend: 99, hueShift: 0 */ }}
                 //
                 data-theme={st.themeMgr.theme}
                 id='CushyStudio'
@@ -95,6 +96,7 @@ export const CushyUI = observer(function CushyUI_() {
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
+                <FooterBarUI />
             </Box>
         </CushyKitCtx.Provider>
     )

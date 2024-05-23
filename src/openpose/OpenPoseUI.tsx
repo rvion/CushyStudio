@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { Button } from '../rsuite/Button'
+import { Button } from '../rsuite/button/Button'
 import { useSt } from '../state/stateContext'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 

@@ -69,6 +69,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                     </RevealUI>
                                     <div tw='my-0.5 bg-neutral-content rounded-full' style={{ width: sizeStr, height: '3px' }} />
                                 </FavBarContainer>
+                                {/* ------------------------------------------------------------------------ */}
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer icon='apps'>
                                         {st.favoriteApps.map((app) => (
@@ -91,6 +92,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         ))}
                                     </FavBarContainer>
                                 )}
+                                {/* ------------------------------------------------------------------------ */}
                                 {st.favoriteDrafts.length > 0 && (
                                     <FavBarContainer icon='history_edu'>
                                         {st.favoriteDrafts.map((draft) => (
@@ -98,9 +100,10 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                 <RevealUI
                                                     className=''
                                                     trigger='hover'
+                                                    showDelay={0}
                                                     placement='right'
                                                     content={() => (
-                                                        <div className='MENU-ROOT'>
+                                                        <Box base={5}>
                                                             <div className='MENU-HEADER'>
                                                                 <div //Container
                                                                     tw='flex p-1 rounded w-full'
@@ -121,11 +124,13 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </Box>
                                                     )}
                                                 >
-                                                    <div
-                                                        tw='relative cursor-default hover:brightness-125'
+                                                    <Box
+                                                        hover
+                                                        border
+                                                        tw='relative hover:brightness-125'
                                                         onClick={() => draft.openOrFocusTab()}
                                                     >
                                                         {draft.data.illustration ? (
@@ -151,7 +156,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                 />
                                                             </div>
                                                         )}
-                                                    </div>
+                                                    </Box>
                                                 </RevealUI>
                                             </div>
                                         ))}

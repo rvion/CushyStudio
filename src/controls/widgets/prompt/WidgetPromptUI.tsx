@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/Button'
+import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { Box } from '../../../theme/colorEngine/Box'
@@ -45,8 +45,8 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                             )}
                         >
                             <Button
-                                size='sm'
-                                appearance='none'
+                                headless
+                                sm
                                 active={Boolean(active)}
                                 icon={plugin.icon}
                                 onClick={() => st.configFile.set(plugin.configKey, !active)}

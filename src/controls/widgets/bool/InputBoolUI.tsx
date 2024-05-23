@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/Button'
+import { Button } from '../../../rsuite/button/Button'
 
 let wasEnabled = false
 
@@ -26,7 +26,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
         return (
             <Button // Container
                 className={p.className}
-                appearance='none'
+                headless
                 // active={isActive}
                 icon={p.icon}
                 expand={p.expand}

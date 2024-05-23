@@ -1,31 +1,34 @@
 import type { CushyShortcut } from '../app/shortcuts/CommandManager'
+import type { IconName } from '../icons/icons'
+import type { RelativeStyle } from '../theme/colorEngine/AbsoluteStyle'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
 import { Box } from '../theme/colorEngine/Box'
+import { Button } from './button/Button'
 import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: {
     //
     className?: string
-    startIcon?: Maybe<ReactNode>
+    startIcon?: Maybe<IconName>
     title: ReactNode
+    theme?: RelativeStyle
     content?: () => ReactNode
 }) => (
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Box base={-5} tabIndex={0} tw='shadow z-[1] rounded-box'>
+            <Box base={-5} tabIndex={0} tw='shadow z-[1]'>
                 {p.content?.()}
             </Box>
         )}
     >
-        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm gap-1 py-0 px-1.5`]}>
-            {p.startIcon && <span tw='hidden lg:inline-block'>{p.startIcon}</span>}
+        <Button appearance='ghost' icon={p.startIcon} tabIndex={0} tw={[`flex-nowrap flex items-center gap-1 py-0 px-1.5`]}>
             {p.title}
-        </label>
+        </Button>
     </RevealUI>
 )
 

@@ -257,6 +257,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 'WIDGET-FIELD relative',
                 // 'theme-number-field',
                 // '!shadow-md !shadow-white',
+                'input-number-ui',
                 // 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
@@ -271,12 +272,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
                     num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                     uist.syncValues(num, undefined)
+                    // ev.preventDefault()
+                    // ev.stopPropagation()
                 }
             }}
         >
             <Box /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: !p.hideSlider && !isEditing ? 0.4 : 0 }}
+                base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />

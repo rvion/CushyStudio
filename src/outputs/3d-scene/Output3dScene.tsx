@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite'
 // import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { StepL } from '../../models/Step'
-import { MessageErrorUI } from '../../panels/MessageUI'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
 // @ts-ignore
 import { jsx, jsxs } from '../../utils/custom-jsx/jsx-runtime'
 import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'

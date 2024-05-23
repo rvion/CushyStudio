@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
-import { MessageInfoUI } from '../panels/MessageUI'
+import { MessageInfoUI } from '../rsuite/messages/MessageInfoUI'
 import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'

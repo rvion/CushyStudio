@@ -3,7 +3,7 @@ import type { Widget_number } from './WidgetNumber'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/Button'
+import { Button } from '../../../rsuite/button/Button'
 import { InputNumberUI } from './InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {

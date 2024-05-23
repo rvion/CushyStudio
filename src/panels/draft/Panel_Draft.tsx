@@ -8,6 +8,7 @@ import { useLayoutEffect } from 'react'
 import { FormUI } from '../../controls/FormUI'
 import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { MarkdownUI } from '../../rsuite/MarkdownUI'
+import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { PhoneWrapperUI } from '../../rsuite/PhoneWrapperUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../rsuite/SelectUI'
@@ -16,7 +17,6 @@ import { useSt } from '../../state/stateContext'
 import { Box, BoxSubtle } from '../../theme/colorEngine/Box'
 import { stringifyUnknown } from '../../utils/formatters/stringifyUnknown'
 import { draftContext } from '../../widgets/misc/useDraft'
-import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { RecompileUI } from './RecompileUI'
 
@@ -86,7 +86,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <Box
                 // base={5}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={['flex-1 flex flex-col gap-1', containerClassName]}
+                tw={['flex-1 flex flex-col p-2 gap-1', containerClassName]}
                 onKeyUp={(ev) => {
                     // submit on meta+enter
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {

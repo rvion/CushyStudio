@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/Button'
+import { Button } from '../../../rsuite/button/Button'
 import { useSt } from '../../../state/stateContext'
 import { openExternal } from '../../layout/openExternal'
 

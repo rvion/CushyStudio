@@ -111,7 +111,7 @@ export const useColor = (
     let textHover: string | undefined // = 'initial'
     let borderHover: string | undefined // = 'initial'
     if (p.hover) {
-        const amount = typeof p.hover === 'number' ? p.hover : 0.2
+        const amount = typeof p.hover === 'number' ? p.hover : 0.05
         const baseHoverStyle = applyRelative(baseStyle, { contrast: amount })
         baseHover = formatColor(baseHoverStyle)
 
@@ -208,8 +208,8 @@ function setRule(selector: string, block: string = ''): CSSStyleRule {
 }
 
 export function formatColor(col: AbsoluteStyle) {
-    const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(2)
-    const c = col.chroma.toFixed(2)
-    const h = col.hue.toFixed(2)
+    const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(4)
+    const c = col.chroma.toFixed(4)
+    const h = col.hue.toFixed(4)
     return `oklch(${l} ${c} ${h})`
 }

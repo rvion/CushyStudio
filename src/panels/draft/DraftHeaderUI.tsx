@@ -3,7 +3,7 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Button } from '../../rsuite/Button'
+import { Button } from '../../rsuite/button/Button'
 import { Box } from '../../theme/colorEngine/Box'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'

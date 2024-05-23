@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
-import { MessageErrorUI } from '../../../../panels/MessageUI'
-import { Button } from '../../../../rsuite/Button'
+import { Button } from '../../../../rsuite/button/Button'
+import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
 import { Input } from '../../../../rsuite/shims'
 import { useSt } from '../../../../state/stateContext'
 import { Box } from '../../../../theme/colorEngine/Box'
