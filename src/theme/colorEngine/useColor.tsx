@@ -97,11 +97,12 @@ export const useColor = (
     let textHover: string | undefined // = 'initial'
     let borderHover: string | undefined // = 'initial'
     if (p.hover) {
-        const baseHoverStyle = applyRelative(baseStyle, { contrast: 0.2 })
+        const amount = typeof p.hover === 'number' ? p.hover : 0.2
+        const baseHoverStyle = applyRelative(baseStyle, { contrast: amount })
         baseHover = formatColor(baseHoverStyle)
 
         if (borderStyle) {
-            const borderHoverStyle = applyRelative(borderStyle, { contrast: 0.2 })
+            const borderHoverStyle = applyRelative(borderStyle, { contrast: amount })
             borderHover = `1px solid ${formatColor(borderHoverStyle)}`
         }
 

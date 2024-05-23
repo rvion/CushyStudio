@@ -3,6 +3,7 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
+import { Ikon } from '../../../icons/iconHelpers'
 import { useColor } from '../../../theme/colorEngine/useColor'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -133,7 +134,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 onClick={() => widget.reset()}
                 className='btn btn-xs btn-narrower btn-ghost'
             >
-                <span className='material-symbols-outlined'>undo</span>
+                <Ikon.mdiUndoVariant />
             </div>
         </>
     )

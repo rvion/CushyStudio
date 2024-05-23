@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/shims'
+import { Button } from '../../rsuite/Button'
 import { assets } from '../../utils/assets/assets'
 
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {

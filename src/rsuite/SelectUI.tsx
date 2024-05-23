@@ -4,6 +4,7 @@ import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
+import { Box } from '../theme/colorEngine/Box'
 import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
@@ -387,14 +388,14 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
-        <div /* Container/Root */
+        <Box /* Container/Root */
             tabIndex={-1}
             tw={[
                 'WIDGET-FIELD ',
                 'flex flex-1 items-center relative',
                 'rounded overflow-clip text-shadow',
-                'border border-base-100 hover:brightness-110',
-                'hover:border-base-200',
+                // 'border border-base-100 hover:brightness-110',
+                // 'hover:border-base-200',
                 'border-1',
                 'border-b-2 border-b-base-200 hover:border-b-base-300',
             ]}
@@ -402,7 +403,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}
             onMouseDown={s.onRealWidgetMouseDown}
-            onChange={s.handleInputChange}
+            // onChange={s.handleInputChange}
             onKeyDown={s.handleTooltipKeyDown}
             onFocus={(ev) => {
                 s.isFocused = true
@@ -458,7 +459,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 {/* TOOLTIP */}
                 {s.isOpen && <SelectPopupUI s={s} />}
             </div>
-        </div>
+        </Box>
     )
 })
 

@@ -50,8 +50,6 @@ class InputNumberStableState {
         public props: InputNumberProps,
         public kit: Maybe<CushyKit>,
     ) {
-        // this `makeAutoObservable` will make all getters defined below be `computed` properties
-        // they will update their value when props change so all functions always work with up-to-date values
         makeAutoObservable(this)
     }
 
@@ -247,8 +245,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
-
     const kolor = useColor({ base: 5, border: true })
+
     return (
         <div /* Root */
             className={p.className}

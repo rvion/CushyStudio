@@ -2,6 +2,8 @@ import type { Widget_color } from './WidgetColor'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../../icons/iconHelpers'
+
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
     const widget = p.widget
     return (
@@ -16,7 +18,7 @@ export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widge
                 onClick={() => widget.reset()}
                 className='btn btn-xs btn-narrower btn-ghost'
             >
-                <span className='material-symbols-outlined'>undo</span>
+                <Ikon.mdiUndoVariant />
             </div>
         </div>
     )

@@ -40,7 +40,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
             <Box
                 //
                 base={0}
-                tw='flex-1 h-full w-full outlined-on-hover'
+                tw='flex-1 h-full w-full outlined-on-hover overflow-auto'
                 className={`Region-${panel}`}
                 data-panel-id={panelID}
                 id={panelID}

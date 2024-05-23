@@ -969,6 +969,9 @@ export class STATE {
     theme = CushyFormManager.fields(
         (ui) => ({
             base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+            accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+            accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+            accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
         }),
         {
             name: 'theme config',

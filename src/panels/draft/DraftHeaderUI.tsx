@@ -3,6 +3,7 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Button } from '../../rsuite/Button'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
@@ -49,13 +50,18 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <PublishAppBtnUI app={app} />
                         <DraftMenuLooksUI draft={draft} title={app.name} />
                         {/* --------------------------------- */}
-                        <div onClick={draft.expandTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
-                            <span className='material-symbols-outlined'>unfold_more</span>
-                        </div>
-                        {/* --------------------------------- */}
-                        <div onClick={draft.collapseTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
-                            <span className='material-symbols-outlined'>unfold_less</span>
-                        </div>
+                        <Button
+                            icon='mdiUnfoldMoreHorizontal'
+                            square
+                            appearance='primary'
+                            onClick={draft.expandTopLevelFormEntries}
+                        />
+                        <Button
+                            icon='mdiUnfoldLessHorizontal'
+                            square
+                            appearance='primary'
+                            onClick={draft.collapseTopLevelFormEntries}
+                        />
                     </div>
                 </div>
             </div>

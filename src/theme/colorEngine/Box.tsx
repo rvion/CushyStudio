@@ -73,13 +73,21 @@ export type BoxUIProps = BoxProps & {
     tabIndex?: number
     id?: string
     ref?: React.Ref<HTMLDivElement>
+    // mouse
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseLeave?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onContextMenu?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onAuxClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onWheel?: (ev: React.WheelEvent<HTMLDivElement>) => void
+    // focus
+    onFocus?: (ev: React.FocusEvent<HTMLDivElement>) => void
+    onBlur?: (ev: React.FocusEvent<HTMLDivElement>) => void
+    //
+    onChange?: (ev: React.ChangeEvent<HTMLDivElement>) => void
     onKeyUp?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
+    onKeyDown?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
 }
 
 // 🔴 2024-05-20 rvion:
@@ -109,13 +117,7 @@ export const Box = observer(
                 tw={[/* className, */ className, 'Box']}
                 style={{ /* ...styles, */ ...style, ...variables }}
             >
-                <ThemeCtx.Provider
-                    value={{
-                        background,
-                        // ~~text must always remaian relative~~ => nope anymore ? ⁉️
-                        text: textForCtx,
-                    }}
-                >
+                <ThemeCtx.Provider value={{ background, text: textForCtx }}>
                     {/* <div>{JSON.stringify(background)}</div> */}
                     {/* <div>
                         text: {JSON.stringify(text)} ({JSON.stringify(p.text)})

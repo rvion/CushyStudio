@@ -4,8 +4,8 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
+import { Button } from '../../rsuite/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Button } from '../../rsuite/shims'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft

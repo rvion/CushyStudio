@@ -1,4 +1,3 @@
-import type { IconName } from '../../icons/icons'
 import type { IWidget } from '../IWidget'
 import type { CSSProperties } from 'react'
 
@@ -48,16 +47,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
     const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
+
     // ------------------------------------------------------------
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
-    if (
-        isWidgetGroup(k) && //
-        Object.keys(k.fields).length === 0 /* &&
-        k.config.requirements == null */
-    ) {
-        return null
-    }
+    if (isWidgetGroup(k) && Object.keys(k.fields).length === 0) return null
     // ------------------------------------------------------------
 
     // ⏸️ const onLabelClick = () => {
@@ -84,7 +78,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
         <span
             tw={[isCollapsed || isCollapsible ? 'cursor-pointer' : null]}
-            className='COLLAPSE-PASSTHROUGH'
+            className='COLLAPSE-PASSTHROUGH whitespace-nowrap'
             style={{ lineHeight: '1rem' }}
         >
             {labelText}
@@ -106,15 +100,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const iconName = widget.icon
     return (
         <Box
-            hover
+            hover={widget.parent == null ? false : 0.01}
             key={rootKey}
             border={showBorder ? 2 : 0}
-            tw={[
-                // widget.background && (isCollapsible || showBorder) && '',
-                // showBorder && 'WIDGET-GROUP-BORDERED',
-                p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
-                widget.type,
-            ]}
             base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
             {...p.widget.config.box}
         >
@@ -127,16 +115,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 <div
                     className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
                     tw={['flex items-center gap-0.5 select-none']}
-                    /*
-                     * bird_d:
-                     *  | Have the whole header able to collapse the panel,
-                     *  | any actual buttons in the header should prevent this themselves.
-                     *  | Also will continue to expand/collapse any panel that is hovered over while dragging.
-                     * 2024-02-29 rvion: this broke 3/4 widgets who did not preventDefault in their header;
-                     *  | may cause more problems later; not sure how to make this sligtly safer / easy to test.
-                     * 2024-03-10 bird_d: I added a COLLAPSE-PASSTHROUGH className. So things have to opt-in now.
-                     *  | This should workaround widgets not preventing their own event.
-                     * */
                     onMouseDown={(ev) => {
                         if (ev.button != 0 || !isCollapsible) return
                         const target = ev.target as HTMLElement
@@ -158,12 +136,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }}
                 >
                     <span
-                        tw={[
-                            'flex justify-end gap-0.5 flex-none items-center shrink-0',
-                            // p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
-                            // 🔴 label COLOR here
-                            // isDisabled ? undefined : 'text-primary',
-                        ]}
+                        tw={'flex justify-end gap-0.5 flex-none items-center shrink-0 flex-1'}
                         style={
                             alignLabel
                                 ? {

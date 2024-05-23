@@ -17,7 +17,7 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Box base={-5} tabIndex={0} tw='shadow z-[1]  rounded-box'>
+            <Box base={-5} tabIndex={0} tw='shadow z-[1] rounded-box'>
                 {p.content?.()}
             </Box>
         )}
@@ -46,7 +46,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
         <Box
             text={{ contrast: disabled ? 0.5 : 1 }}
             base={{
-                contrast: active ? 0.9 : 0.05,
+                contrast: active ? 0.9 : 0,
                 chroma: active ? 0.5 : undefined,
             }}
             hover

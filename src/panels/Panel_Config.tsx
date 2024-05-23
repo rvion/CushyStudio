@@ -2,9 +2,11 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { FormUI } from '../controls/FormUI'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { FormHelpTextUI, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
+import { Box } from '../theme/colorEngine/Box'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
@@ -15,6 +17,11 @@ export const Panel_Config = observer(function Panel_Config_() {
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
             <SectionTitleUI label='CONFIG' className='block' />
+
+            <Box border base={5} tw='flex-1 w-full' /* temp hack */>
+                <FormUI form={cushy.theme} />
+            </Box>
+
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
                     <pre tw='rounded-btn px-2'>{config.path}</pre>

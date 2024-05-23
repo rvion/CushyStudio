@@ -2,6 +2,8 @@ import type { Widget_number } from './WidgetNumber'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../../icons/iconHelpers'
+import { Button } from '../../../rsuite/Button'
 import { InputNumberUI } from './InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {
@@ -27,13 +29,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
                 onValueChange={(next) => (widget.value = next)}
                 forceSnap={widget.config.forceSnap}
             />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <span className='material-symbols-outlined'>undo</span>
-            </div>
+            <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
         </>
     )
 })

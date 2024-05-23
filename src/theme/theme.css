@@ -1,4 +1,5 @@
 .Box {
+    border-radius: .2rem;
     background: var(--box-base);
     color:      var(--box-text);
     border:     var(--box-border);

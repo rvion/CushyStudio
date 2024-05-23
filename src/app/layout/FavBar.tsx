@@ -85,49 +85,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                             add
                                         </span>
                                     </RevealUI>
-                                    <div
-                                        tw='my-0.5 bg-neutral-content rounded-full'
-                                        style={{ width: sizeStr, height: '3px' }}
-                                    ></div>
-                                    {/* <div
-                                        tw={[
-                                            'flex rounded hover:brightness-125',
-                                            conf.fields.tree.value && 'bg-primary text-primary-content text-shadow-inv',
-                                        ]}
-                                        onClick={() =>
-                                            runInAction(() => {
-                                                conf.fields.tree.value = !conf.fields.tree.value
-                                                conf.fields.apps.value = false
-                                            })
-                                        }
-                                    >
-                                        <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
-                                            {conf.fields.tree.value ? 'folder_open' : 'folder'}
-                                        </span>
-                                    </div> */}
-                                    {/* <div
-                                        tw={[
-                                            'rounded hover:brightness-125',
-                                            conf.fields.apps.value && 'bg-primary text-primary-content text-shadow-inv',
-                                        ]}
-                                        style={{ width: sizeStr, height: sizeStr }}
-                                        onClick={() =>
-                                            runInAction(() => {
-                                                conf.fields.tree.value = false
-                                                conf.fields.apps.value = !conf.fields.apps.value
-                                            })
-                                        }
-                                    >
-                                        <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
-                                            apps
-                                        </span>
-                                    </div> */}
+                                    <div tw='my-0.5 bg-neutral-content rounded-full' style={{ width: sizeStr, height: '3px' }} />
                                 </FavBarContainer>
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer icon='apps'>
                                         {st.favoriteApps.map((app) => (
-                                            <div
-                                                tw='rounded border border-base-300 overflow-clip box-content'
+                                            <Box
+                                                border={2}
+                                                hover
+                                                // tw='rounded border border-base-300 overflow-clip box-content'
                                                 key={app.id}
                                                 style={{ width: sizeStr, height: sizeStr }}
                                             >
@@ -139,7 +105,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                 >
                                                     <AppIllustrationUI className={'!rounded-none'} size={sizeStr} app={app} />
                                                 </RevealUI>
-                                            </div>
+                                            </Box>
                                         ))}
                                     </FavBarContainer>
                                 )}

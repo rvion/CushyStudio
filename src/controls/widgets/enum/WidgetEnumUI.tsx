@@ -4,6 +4,7 @@ import type { Widget_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../../icons/iconHelpers'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useSt } from '../../../state/stateContext'
@@ -33,7 +34,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
                 onClick={() => widget.reset()}
                 className='btn btn-xs btn-narrower btn-ghost'
             >
-                <span className='material-symbols-outlined'>undo</span>
+                <Ikon.mdiUndoVariant />
             </div>
         </>
     )

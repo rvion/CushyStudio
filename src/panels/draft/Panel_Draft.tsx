@@ -82,7 +82,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     // {/* <ActionDraftListUI card={card} /> */}
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
-            {cushy.theme.render()}
             <RecompileUI app={draft.app} />
             <Box
                 // base={5}
