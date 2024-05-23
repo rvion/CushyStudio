@@ -12,8 +12,10 @@ import { applyRelative } from './applyRelative'
 type BoxAppearance = {
     background: AbsoluteStyle
     text: AbsoluteStyle
-    textForCtx: AbsoluteStyle | RelativeStyle
+    textShadow: AbsoluteStyle | null
     border: AbsoluteStyle | null
+    // for ctx
+    textForCtx: AbsoluteStyle | RelativeStyle
 }
 
 export const useColor = (
@@ -37,9 +39,9 @@ export const useColor = (
             if (typeof p.base === 'string') {
                 const color = new Color(p.base)
                 const [l, c, h] = color.oklch
-                console.log(`[🌈] lch`, p.base, l, c, h)
-                console.log(`[🌈] lch`, color)
-                console.log(`[🌈] lch`, color.oklch)
+                // console.log(`[🌈] lch`, p.base, l, c, h)
+                // console.log(`[🌈] lch`, color)
+                // console.log(`[🌈] lch`, color.oklch)
                 return { type: 'absolute', lightness: l!, chroma: c!, hue: isNaN(h!) ? 0 : h! }
             }
             // if it's relative (should be the most common case)
@@ -61,6 +63,18 @@ export const useColor = (
             if (ctx.text.type === 'absolute') return ctx.text
             return applyRelative(baseStyle, ctx.text) // realtive strategy applied here
         }
+    })()
+
+    const textShadow: AbsoluteStyle | null = (() => {
+        if (p.textShadow) {
+            if (typeof p.textShadow === 'string') {
+                const color = new Color(p.textShadow)
+                const [l, c, h] = color.oklch
+                return { type: 'absolute', lightness: l!, chroma: c!, hue: h! }
+            }
+            return applyRelative(textStyle, p.textShadow)
+        }
+        return null
     })()
 
     // const relativeText: RelativeStyle | AbsoluteStyle = p.text ?? ctx.text
@@ -119,17 +133,22 @@ export const useColor = (
 
     // as css variables
     const variables = {
-        '--box-base': styles.background ?? 'initial',
-        '--box-text': styles.color ?? 'initial',
+        // non hover
+        '--box-base': styles.background, // ?? 'initial',
+        '--box-text': styles.color, // ?? 'initial',
+        '--box-text-shadow': styles.textShadow, // ?? 'initial',
         '--box-border': styles.border ?? 'initial',
-        '--box-hover-base': baseHover ?? background ?? 'initial',
-        '--box-hover-text': textHover ?? color ?? 'initial',
+        // hover --------
+        '--box-hover-base': baseHover ?? background, // ?? 'initial',
+        '--box-hover-text': textHover ?? color, // ?? 'initial',
+        '--box-hover-text-shadow': styles.textShadow, // ?? 'initial',
         '--box-hover-border': borderHover ?? border ?? 'initial',
     }
 
     return {
         background: baseStyle,
         text: textStyle,
+        textShadow,
         textForCtx,
         border: borderStyle,
         get className() {
@@ -145,7 +164,7 @@ const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
     const vals = JSON.stringify(appearance)
     const hash = 'col-' + createHash('md5').update(vals).digest('hex')
     if (hash in cache) return cache[hash]!
-    console.log(`[🌈] `, `.${hash}`, appearance)
+    // console.log(`[🌈] `, `.${hash}`, appearance)
     const cssBlock = Object.entries(appearance)
         .map(([key, val]) => {
             // console.log(`[🌈] ---`, key, val)

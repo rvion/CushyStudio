@@ -52,25 +52,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
                 <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
-                    <PanelHeaderUI>
-                        <SpacerUI />
-                        <RevealUI
-                            content={() => (
-                                <div tw='p-2 w-72'>
-                                    <FormUI form={conf} />
-                                </div>
-                            )}
-                            tw='WIDGET-FIELD w-full'
-                            title='Favorite Bar Options'
-                            style={{ width: `${size + 8}px` }}
-                        >
-                            <div tw='WIDGET-FIELD cursor-default rounded w-full hover:brightness-125 border border-base-100 items-center justify-center flex text-shadow'>
-                                <span className='material-symbols-outlined'>settings</span>
-                                <span className='material-symbols-outlined'>expand_more</span>
-                            </div>
-                        </RevealUI>
-                        <SpacerUI />
-                    </PanelHeaderUI>
+                    <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
                     <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
                         <div tw='rounded items-center justify-center overflow-hidden'>

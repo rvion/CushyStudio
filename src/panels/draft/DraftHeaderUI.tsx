@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../rsuite/Button'
+import { Box } from '../../theme/colorEngine/Box'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
@@ -18,10 +19,11 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const { draft } = p
     const app = draft.appRef.item
     return (
-        <div
+        <Box
+            base={10}
+            // border
             style={{
                 // background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
-                background: 'bg-',
                 zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
             }}
             className={p.className}
@@ -65,6 +67,6 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     </div>
                 </div>
             </div>
-        </div>
+        </Box>
     )
 })

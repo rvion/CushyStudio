@@ -39,7 +39,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <Box
                 //
-                base={0}
+                // base={0}
                 tw='flex-1 h-full w-full outlined-on-hover overflow-auto'
                 className={`Region-${panel}`}
                 data-panel-id={panelID}

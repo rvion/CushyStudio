@@ -153,26 +153,15 @@ const mkTooltip = (uist: RevealState | null) => {
             // VIA POPOVER --------------------------------------------------------------------------------
             <Box
                 border
-                base={0}
+                // base={0}
                 className={p.tooltipWrapperClassName}
                 tw={['_RevealUI shadow-xl pointer-events-auto']}
-                // 👇 ❌ [break the dropdown]
-                // ⏸️   onMouseDown={(ev) => {
-                // ⏸️       p.onClick?.(ev)
-                // ⏸️       uist.close()
-                // ⏸️       ev.stopPropagation()
-                // ⏸️       ev.preventDefault()
-                // ⏸️   }}
-                onClick={(ev) => {
-                    ev.stopPropagation()
-                    // ev.preventDefault()
-                }}
+                onClick={(ev) => ev.stopPropagation()}
                 onMouseEnter={uist.onMouseEnterTooltip}
                 onMouseLeave={uist.onMouseLeaveTooltip}
                 onContextMenu={uist.enterAnchor}
                 // prettier-ignore
                 style={{
-                  //   borderTop: uist._lock ? '1px dashed yellow' : undefined,
                   position: 'absolute',
                   zIndex: 99999999,
                   top:    pos.top    ? `${pos.top}px`    : undefined,
@@ -180,7 +169,6 @@ const mkTooltip = (uist: RevealState | null) => {
                   left:   pos.left   ? `${pos.left}px`   : undefined,
                   right:  pos.right  ? `${pos.right}px`  : undefined,
                   transform: pos.transform,
-                  // Adjust positioning as needed
               }}
             >
                 {p.title && (
@@ -190,6 +178,8 @@ const mkTooltip = (uist: RevealState | null) => {
                     </div>
                 )}
                 {hiddenContent}
+
+                {/* LOCK */}
                 {uist._lock ? (
                     <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
                         <Ikon.mdiLock />
@@ -200,20 +190,9 @@ const mkTooltip = (uist: RevealState | null) => {
                         <Ikon.mdiLockOff />
                         shift+right-click to lock
                     </span>
-
-                    //
-                    // null
                 )}
             </Box>
         )
 
     return createPortal(revealedContent, element)
 }
-
-// -----------------------------------------------------------------------------
-// 🔵 TODO: add some global way to force-open any reveal by UID
-// const knownReveals = new WeakMap<string>(...)
-// export const triggerReveal_UNSAFE = (p: RevealID) => {
-// ...
-// }
-// -----------------------------------------------------------------------------

@@ -66,7 +66,10 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 {/* Auto */}
             </div>
             <Button
-                tw='btn-sm btn-primary flex-1'
+                xl
+                primary
+                expand
+                // tw='btn-sm btn-primary flex-1'
                 className='self-start'
                 icon={icon}
                 onClick={() => {

@@ -12,6 +12,19 @@ let isDragging = false
 // inputs
 
 export const Button = (p: {
+    // size
+    expand?: boolean
+    // color
+    primary?: boolean
+    secondary?: boolean
+    // size
+    xs?: boolean
+    sm?: boolean
+    md?: boolean
+    lg?: boolean
+    xl?: boolean
+    size?: Maybe<RSSize>
+    // -------------------------
     // hack
     tabIndex?: number
     square?: boolean
@@ -20,7 +33,6 @@ export const Button = (p: {
     className?: string
     icon?: Maybe<IconName>
     active?: Maybe<boolean>
-    size?: Maybe<RSSize>
     loading?: boolean
     disabled?: boolean
     appearance?: Maybe<RSAppearance | 'none'>
@@ -55,9 +67,9 @@ export const Button = (p: {
     const chroma: number | undefined = (() => {
         if (active) return 0.1
         if (isDisabled) return 0.001
+        if (p.primary || appearance === 'primary') return 0.1
         return
         // if (appearance === 'none') return undefined
-        // if (appearance === 'primary') return 0.1
         // if (appearance === 'ghost') return 0
         // if (appearance === 'link') return 0
         // if (appearance === 'default') return 0.1
@@ -72,7 +84,7 @@ export const Button = (p: {
         if (isDisabled) return 0.05
 
         if (appearance === 'none') return 0
-        if (appearance === 'primary') return 1
+        if (appearance === 'primary' || p.primary) return 0.3
         if (appearance === 'ghost') return 0
         if (appearance === 'link') return 0
         if (appearance === 'default') return 0.1
@@ -119,28 +131,29 @@ export const Button = (p: {
             }}
             {...rest}
             tw={[
+                p.expand && 'flex-1',
                 'Button_',
                 'cursor-pointer',
                 p.appearance === 'none' ? undefined : 'justify-center',
                 'rounded-sm flex gap-2 items-center',
-
-                p.size
-                    ? (() => {
-                          if (p.square) {
-                              if (p.size === 'sm' || p.size == null) return 'w-8 h-8'
-                              if (p.size === 'xs') return 'w-6 h-6'
-                              if (p.size === 'md') return 'w-10 h-10'
-                              if (p.size === 'lg') return 'w-12 h-12'
-                          } else {
-                              if (p.size === 'sm' || p.size == null) return 'text-sm px-1   py-1   line-height-[1rem]'
-                              if (p.size === 'xs') return 'text-xs px-0.5 py-0.5 line-height-[1rem]'
-                              if (p.size === 'md') return '        px-2   py-1   line-height-[1rem]'
-                              if (p.size === 'lg') return 'text-lg px-4   py-2   line-height-[1rem]'
-                              return
-                          }
-                          //   return exhaust(p.size)
-                      })()
-                    : 'px-1',
+                // size stuff
+                (() => {
+                    if (p.square) {
+                        if (p.xs || p.size === 'xs') return 'w-6 h-6'
+                        if (p.sm || p.size === 'sm' || p.size == null) return 'w-8 h-8'
+                        if (p.md || p.size === 'md') return 'w-10 h-10'
+                        if (p.lg || p.size === 'lg') return 'w-12 h-12'
+                        if (p.xl || p.size === 'xl') return 'w-14 h-14'
+                    } else {
+                        if (p.xs || p.size === 'xs') return 'text-xs px-0.5 py-0.5 line-height-[1.1em]'
+                        if (p.sm || p.size === 'sm' || p.size == null) return 'text-sm px-1   py-1   line-height-[1.1em]'
+                        if (p.md || p.size === 'md') return '        px-2   py-1   line-height-[1.1em]'
+                        if (p.lg || p.size === 'lg') return 'text-lg px-4   py-2   line-height-[1.1em]'
+                        if (p.xl || p.size === 'xl') return 'text-xl px-8   py-8   line-height-[1.1em]'
+                    }
+                    return 'px-1'
+                    //   return exhaust(p.size)
+                })(),
             ]}
         >
             {p.icon && <IkonOf name={p.icon} />}

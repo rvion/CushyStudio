@@ -45,12 +45,10 @@ export type BoxProps = {
      * @default { contrast: 1, chromaBlend: 1, hueShift: 0}
      * relative to base; when relative, carry to children as default strategy */
     text?: RelativeStyle | string
+    textShadow?: RelativeStyle | string
 
     // TBD ❌
     shadow?: RelativeStyle | string
-
-    // TBD ❌
-    // textShadow?: RelativeStyle | string
 
     /**
      * - string: absolute color

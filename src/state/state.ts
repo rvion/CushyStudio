@@ -460,21 +460,10 @@ export class STATE {
     )
     favbar = CushyFormManager.fields(
         (f) => ({
-            size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
             grayscale: f.boolean({ label: 'Grayscale' }),
-            appIcons: f
-                .int({
-                    label: false,
-                    alignLabel: false,
-                    text: 'App Icons',
-                    default: 100,
-                    step: 10,
-                    min: 1,
-                    max: 100,
-                    suffix: '%',
-                })
-                .optional(true),
+            appIcons: f.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
         }),
         {
             name: 'SideBar Conf',

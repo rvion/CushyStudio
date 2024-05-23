@@ -245,18 +245,19 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
-    const kolor = useColor({ base: 5, border: true })
 
     return (
-        <div /* Root */
+        <Box /* Root */
+            base={5}
+            border
             className={p.className}
-            style={kolor.styles}
+            // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
                 p.disabled && 'pointer-events-none opacity-25',
                 'WIDGET-FIELD relative',
                 // 'theme-number-field',
                 // '!shadow-md !shadow-white',
-                'input-number-ui input-number-roundness',
+                // 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
@@ -296,7 +297,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     tw={[
                         //
                         'th-text',
-                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20 h-full`,
+                        `flex px-1 items-center justify-center text-sm truncate z-20 h-full`,
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return
@@ -330,7 +331,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         ref={uist.inputRef}
                         onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                         tw={[
-                            'text-shadow outline-0',
+                            // 'text-shadow outline-0',
                             /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                              * Can't use `hidden` here because it messes up focusing. */
                             !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',
@@ -422,6 +423,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     <span className='material-symbols-outlined'>arrow_right</span>
                 </button>
             </div>
-        </div>
+        </Box>
     )
 })

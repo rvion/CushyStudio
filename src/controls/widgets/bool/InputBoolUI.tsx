@@ -29,12 +29,9 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                 appearance='none'
                 // active={isActive}
                 icon={p.icon}
+                expand={p.expand}
                 style={p.style}
-                tw={[
-                    'WIDGET-FIELD select-none cursor-pointer w-full flex',
-                    // Make the click-able area take up the entire width when as a checkmark and haven't explicitly set expand to false.
-                    expand && 'w-full',
-                ]}
+                tw={['WIDGET-FIELD select-none cursor-pointer']}
                 onClick={(ev) => {
                     wasEnabled = !isActive
                     ev.stopPropagation()
@@ -42,13 +39,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                     p.onValueChange(!isActive)
                 }}
             >
-                <input
-                    type='checkbox'
-                    checked={isActive}
-                    tw={['checkbox checkbox-primary h-5 w-5 rounded-sm !outline-none cursor-default']}
-                    tabIndex={-1}
-                    readOnly
-                />
+                <input type='checkbox' tw='checkbox checkbox-primary' checked={isActive} tabIndex={-1} readOnly />
                 {label ? label : null}
             </Button>
         )
@@ -60,11 +51,8 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
             active={isActive}
             style={p.style}
             icon={p.icon}
-            tw={[
-                'WIDGET-FIELD ',
-                // Make the click-able area take up the entire width when as a checkmark and haven't explicitly set expand to false.
-                expand && 'w-full',
-            ]}
+            expand={expand}
+            tw='WIDGET-FIELD'
             onClick={(ev) => {
                 wasEnabled = !isActive
                 ev.stopPropagation()
@@ -72,7 +60,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                 p.onValueChange(!isActive)
             }}
         >
-            <p tw='w-full text-center line-clamp-1'>{label ? label : <></>}</p>
+            <p tw='w-full text-center line-clamp-1'>{label}</p>
         </Button>
     )
 })

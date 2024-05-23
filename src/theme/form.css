@@ -43,9 +43,9 @@
     min-height: var(--input-height);
 }
 
-.WIDGET-FIELD *::selection {
+/* .WIDGET-FIELD *::selection {
     background-color: oklch(var(--pc));
-}
+} */
 
 .WIDGET-GROUP-BORDERED {
     border-radius: .3rem;

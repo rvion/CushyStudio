@@ -473,7 +473,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
     }
 
     return createPortal(
-        <div
+        <Box
             ref={s.popupRef}
             tw={[
                 'MENU-ROOT _SelectPopupUI  flex',
@@ -537,7 +537,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                         >
                             <div
                                 tw={[
-                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded overflow-auto',
+                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
                                     'active:cursor-default text-shadow',
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                     /* index === s.selectedIndex && */
@@ -558,7 +558,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     )
                 })}
             </ul>
-        </div>,
+        </Box>,
         document.getElementById('tooltip-root')!,
     )
 })

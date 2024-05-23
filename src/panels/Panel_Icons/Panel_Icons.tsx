@@ -44,7 +44,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                     onChange={(x) => (uist.query = x.target.value)}
                 />
             </PanelHeaderUI>
-            <Box base={0} text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
+            <Box /* base={0} */ text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
                 <FixedSizeGrid //
                     key={`${showNames}`}
                     // container
