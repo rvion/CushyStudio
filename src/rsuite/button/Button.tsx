@@ -24,7 +24,8 @@ class ButtonState {
 
 // -------------------------------------------------
 // TBD
-export const Button = observer(function Button_(p: ButtonState) {
+
+export const Button = observer(function Button_(p: ButtonProps) {
     const kit = useCushyKitOrNull()
     const uist = useMemo(() => new ButtonState(p, kit), [])
 
