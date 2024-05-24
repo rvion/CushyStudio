@@ -4,7 +4,9 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Ikon, IkonOf } from '../../icons/iconHelpers'
+import { IkonOf } from '../../icons/iconHelpers'
+import { Button } from '../../rsuite/button/Button'
+import { Frame } from '../../rsuite/button/Frame'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { Box } from '../../theme/colorEngine/Box'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -107,7 +109,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <AnimatedSizeUI>
                 {/*
-                    LINE part
+                    LINE ---------------------------------------------------------------------------------
                     (label, collapse button, toggle button, tooltip, etc.)
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
@@ -170,6 +172,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {/* TOOGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
+
                     {HeaderUI && (
                         <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -177,16 +180,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             </ErrorBoundary>
                         </div>
                     )}
-                    {widget.config.presets && (
-                        <RevealUI //
-                            content={() => <menu_widgetActions.UI props={widget} />}
-                        >
-                            <Ikon.mdiBook />
-                        </RevealUI>
-                    )}
+
+                    <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
+                        <Frame icon='mdiBook' square ghost />
+                    </RevealUI>
                 </div>
 
-                {/* BLOCK */}
+                {/* BLOCK  ------------------------------------------------------------------------------ */}
                 {BodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
@@ -194,18 +194,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </div>
                     </ErrorBoundary>
                 )}
-                {/* ERRORS */}
-                {widget.hasErrors && (
-                    <div tw='widget-error-ui'>
-                        {widget.errors.map((e, i) => (
-                            <div key={i} tw='flex items-center gap-1'>
-                                <span className='material-symbols-outlined'>error</span>
-                                {e.message}
-                            </div>
-                        ))}
-                    </div>
-                )}
+
+                {/* ERRORS ------------------------------------------------------------------------------ */}
+                <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
         </Box>
+    )
+})
+
+/** default error block */
+export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: IWidget }) {
+    const { widget } = p
+    if (widget.hasErrors === false) return null
+    return (
+        <div tw='widget-error-ui'>
+            {widget.errors.map((e, i) => (
+                <div key={i} tw='flex items-center gap-1'>
+                    <span className='material-symbols-outlined'>error</span>
+                    {e.message}
+                </div>
+            ))}
+        </div>
     )
 })
