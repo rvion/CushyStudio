@@ -6,7 +6,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-.input-number-ui:hover button {
+.input-number-ui:hover .Box {
     opacity: 100;
 }
 
