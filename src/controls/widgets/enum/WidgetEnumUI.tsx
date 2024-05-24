@@ -5,10 +5,10 @@ import type { Widget_enum } from './WidgetEnum'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../icons/iconHelpers'
+import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useSt } from '../../../state/stateContext'
-import { Button } from '../../../rsuite/button/Button'
 
 // UI
 

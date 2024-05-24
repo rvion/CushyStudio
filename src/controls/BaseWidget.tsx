@@ -33,6 +33,10 @@ export abstract class BaseWidget {
         }
     }
 
+    /** every component should be able to be restet and must implement the reset function */
+    // 🔴 TODO rvion
+    // abstract reset(): void
+
     $WidgetSym: typeof $WidgetSym = $WidgetSym
 
     /**
