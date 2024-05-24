@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Ikon } from '../../../icons/iconHelpers'
 import { Button } from '../../../rsuite/button/Button'
 import { InputNumberUI } from '../number/InputNumberUI'
+import { Box } from '../../../theme/colorEngine/Box'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
@@ -12,7 +13,8 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
 
     return (
         <>
-            <div
+            <Box
+                border
                 tw={[
                     'WIDGET-FIELD',
                     'flex-1 flex items-center join',
@@ -25,7 +27,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
             >
                 <Button
                     icon='mdiShuffle'
-                    appearance='ghost'
+                    // appearance='ghost'
                     active={widget.serial.mode === 'randomize'}
                     onClick={() => widget.setToRandomize()}
                 >
@@ -55,13 +57,12 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     onClick={() => widget.setToFixed(Math.floor(Math.random() * 1000000))}
                     icon='mdiAutorenew'
                 />
-            </div>
-            <div // Invisible undo button to make the widget line up with everything else neatly.
-                tw='cursor-default opacity-0' /* 🔴 */
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <Ikon.mdiUndoVariant />
-            </div>
+            </Box>
+
+            <Button // Invisible undo button to make the widget line up with everything else neatly.
+                tw='opacity-0'
+                icon='mdiUndoVariant'
+            />
         </>
     )
 })
