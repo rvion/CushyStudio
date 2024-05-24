@@ -62,7 +62,6 @@ export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types
     readonly serial: Widget_seed_serial
 
     setToFixed = (val?: number) => {
-        if (this.serial.mode === 'fixed') return
         this.serial.mode = 'fixed'
         if (val) this.serial.val = val
         this.bumpValue()
