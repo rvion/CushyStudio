@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../icons/iconHelpers'
 import { Button } from '../../../rsuite/button/Button'
-import { InputNumberUI } from '../number/InputNumberUI'
 import { Box } from '../../../theme/colorEngine/Box'
+import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
