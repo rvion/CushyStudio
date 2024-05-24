@@ -100,7 +100,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const iconName = widget.icon
     return (
         <Box
-            hover={widget.parent == null ? false : 0.01}
             key={rootKey}
             border={showBorder ? 2 : 0}
             base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}

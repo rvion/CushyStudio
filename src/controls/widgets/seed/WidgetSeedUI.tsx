@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Ikon } from '../../../icons/iconHelpers'
 import { Button } from '../../../rsuite/button/Button'
 import { InputNumberUI } from '../number/InputNumberUI'
+import { Box } from '../../../theme/colorEngine/Box'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
@@ -12,26 +13,31 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
 
     return (
         <>
-            <div
+            <Box
+                border
                 tw={[
                     'WIDGET-FIELD',
-                    'flex-1 flex items-center join',
+                    'flex-1 flex items-center',
                     'rounded overflow-clip text-shadow',
-                    'border border-base-200 hover:border-base-200',
-                    'bg-primary/5',
-                    'border-b-2 border-b-base-200 hover:border-b-base-300',
-                    '!outline-none',
+                    // 'border border-base-200 hover:border-base-200',
+                    // 'bg-primary/5',
+                    // 'border-b-2 border-b-base-200 hover:border-b-base-300',
+                    // '!outline-none',
                 ]}
             >
                 <Button
+                    tw='!border-l-0'
+                    // tw='!border-none'
                     icon='mdiShuffle'
-                    appearance='ghost'
+                    // appearance='ghost'
                     active={widget.serial.mode === 'randomize'}
                     onClick={() => widget.setToRandomize()}
                 >
                     Random
                 </Button>
                 <Button //
+                    tw='!border-l !border-r'
+                    // tw='!border-none'
                     icon='mdiAccessPoint'
                     active={widget.serial.mode === 'fixed'}
                     onClick={() => widget.setToFixed()}
@@ -49,19 +55,17 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     onValueChange={(value) => widget.setValue(value)}
                 />
                 <Button
-                    tw='flex !outline-none'
-                    size='sm'
-                    appearance='ghost'
-                    onClick={() => widget.setToFixed(Math.floor(Math.random() * 1000000))}
+                    tw='!border-l !border-r-0'
+                    onClick={() => widget.setToFixed(Math.floor(Math.random() * 100000000))}
                     icon='mdiAutorenew'
+                    square
                 />
-            </div>
-            <div // Invisible undo button to make the widget line up with everything else neatly.
-                tw='cursor-default opacity-0' /* 🔴 */
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <Ikon.mdiUndoVariant />
-            </div>
+            </Box>
+
+            <Button // Invisible undo button to make the widget line up with everything else neatly.
+                tw='opacity-0 pointer-events-none'
+                icon='mdiUndoVariant'
+            />
         </>
     )
 })

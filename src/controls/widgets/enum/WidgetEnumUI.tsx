@@ -8,6 +8,7 @@ import { Ikon } from '../../../icons/iconHelpers'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useSt } from '../../../state/stateContext'
+import { Button } from '../../../rsuite/button/Button'
 
 // UI
 
@@ -29,13 +30,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
                     widget.value = e
                 }}
             />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <Ikon.mdiUndoVariant />
-            </div>
+            <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
         </>
     )
 })

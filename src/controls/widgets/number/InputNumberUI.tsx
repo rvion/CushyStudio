@@ -10,6 +10,7 @@ import { Box } from '../../../theme/colorEngine/Box'
 import { useColor } from '../../../theme/colorEngine/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
+import { Ikon } from '../../../icons/iconHelpers'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -248,8 +249,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
 
     return (
         <Box /* Root */
-            base={5}
+            base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border
+            hover
             className={p.className}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
@@ -279,22 +281,24 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <Box /* Slider display */
                 className='inui-foreground'
+                // hover // This does not propogate correctly.
                 base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <button /* Left Button */
-                    tw={[
-                        'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 hover:brightness-125`,
-                    ]}
+                <Box /* Left Button */
+                    className='control'
+                    hover={-0.1}
+                    base={25}
+                    border
+                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}
                     onClick={uist.decrement}
                 >
-                    <span className='material-symbols-outlined'>arrow_left</span>
-                </button>
+                    <Ikon.mdiChevronLeft />
+                </Box>
 
                 <div /* Text Container */
                     tw={[
@@ -415,16 +419,17 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <button /* Right Button */
-                    tw={[
-                        'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 hover:brightness-125`,
-                    ]}
+                <Box /* Right Button */
+                    className='control'
+                    hover={-0.1}
+                    base={25}
+                    border
+                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}
                     onClick={uist.increment}
                 >
-                    <span className='material-symbols-outlined'>arrow_right</span>
-                </button>
+                    <Ikon.mdiChevronRight />
+                </Box>
             </div>
         </Box>
     )
