@@ -390,6 +390,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
         <Box /* Container/Root */
+            base={{ contrast: 0.05 }}
+            hover
             tabIndex={-1}
             tw={[
                 'WIDGET-FIELD ',
@@ -403,6 +405,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             ]}
             border
             className={p.className}
+            // hover
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}
             onMouseDown={s.onRealWidgetMouseDown}
@@ -415,7 +418,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 }
             }}
             onBlur={s.onBlur}
-            style={{ background: s.searchQuery === '' ? 'none' : undefined }}
+            // style={{ background: s.searchQuery === '' ? 'none' : undefined }}
         >
             <div className='flex-1 h-full '>
                 {/* ANCHOR */}
@@ -430,14 +433,11 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 >
                     {s.isOpen || s.isFocused ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
-                        <Box
-                            base={{ contrast: 0.1 }}
+                        <div
                             tw={[
                                 //
                                 ' h-full w-full items-center',
-                                // 'flex',
                                 'px-0.5',
-                                'text-base',
                                 'grid',
                             ]}
                             style={{ gridTemplateColumns: '24px 1fr 24px' }}
@@ -445,7 +445,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                             <Ikon.mdiTextBoxSearchOutline size={'18px'} />
                             <div tw='overflow-hidden line-clamp-1 text-ellipsis flex-grow'>{s.displayValue}</div>
                             <Ikon.mdiChevronDown size={'18px'} />
-                        </Box>
+                        </div>
                         // <div tw='grid w-full items-center' style={{ gridTemplateColumns: '24px 1fr 24px' }}>
                         //     <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
                         //         <span className='suffix material-symbols-outlined ml-auto'>arrow_drop_down</span>
