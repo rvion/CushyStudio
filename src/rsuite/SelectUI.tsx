@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
 import { Box } from '../theme/colorEngine/Box'
 import { searchMatches } from '../utils/misc/searchMatches'
+import { Ikon } from '../icons/iconHelpers'
 
 interface ToolTipPosition {
     top?: number | undefined
@@ -393,12 +394,14 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             tw={[
                 'WIDGET-FIELD ',
                 'flex flex-1 items-center relative',
-                'rounded overflow-clip text-shadow',
+                // 'rounded overflow-clip',
                 // 'border border-base-100 hover:brightness-110',
+                // '!bg-red-500',
                 // 'hover:border-base-200',
-                'border-1',
-                'border-b-2 border-b-base-200 hover:border-b-base-300',
+                // 'border-1',
+                // 'border-b-2 border-b-base-200 hover:border-b-base-300',
             ]}
+            border
             className={p.className}
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}
@@ -419,7 +422,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 <div //
                     tabIndex={-1}
                     tw={[
-                        'input input-xs text-sm',
+                        'text-sm',
                         'flex items-center gap-1',
                         'p-0 h-full bg-transparent',
                         'select-none pointer-events-none overflow-clip',
@@ -427,15 +430,27 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 >
                     {s.isOpen || s.isFocused ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
-                        <div tw='grid w-full items-center' style={{ gridTemplateColumns: '24px 1fr 24px' }}>
-                            <div tw='btn btn-square btn-xs bg-transparent border-0'>
-                                <span className='prefix material-symbols-outlined'>search</span>
-                            </div>
-                            <div tw='overflow-hidden'>{s.displayValue}</div>
-                            <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
-                                <span className='suffix material-symbols-outlined ml-auto'>arrow_drop_down</span>
-                            </div>
-                        </div>
+                        <Box
+                            base={{ contrast: 0.1 }}
+                            tw={[
+                                //
+                                ' h-full w-full items-center',
+                                // 'flex',
+                                'px-0.5',
+                                'text-base',
+                                'grid',
+                            ]}
+                            style={{ gridTemplateColumns: '24px 1fr 24px' }}
+                        >
+                            <Ikon.mdiTextBoxSearchOutline size={'18px'} />
+                            <div tw='overflow-hidden line-clamp-1 text-ellipsis flex-grow'>{s.displayValue}</div>
+                            <Ikon.mdiChevronDown size={'18px'} />
+                        </Box>
+                        // <div tw='grid w-full items-center' style={{ gridTemplateColumns: '24px 1fr 24px' }}>
+                        //     <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
+                        //         <span className='suffix material-symbols-outlined ml-auto'>arrow_drop_down</span>
+                        //     </div>
+                        // </div>
                     )}
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
@@ -447,7 +462,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         //
                         placeholder={s.isOpen ? p.placeholder : undefined}
                         ref={s.inputRef}
-                        tw='input input-sm w-full h-full !outline-none'
+                        tw='w-full h-full !outline-none bg-transparent'
                         type='text'
                         value={s.searchQuery}
                         onChange={() => {}}
@@ -477,7 +492,8 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             ref={s.popupRef}
             tw={[
                 'MENU-ROOT _SelectPopupUI  flex',
-                'border-l border-r border-base-300 overflow-auto',
+                // 'border-l border-r border-base-300',
+                'overflow-auto',
                 s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
             style={{
