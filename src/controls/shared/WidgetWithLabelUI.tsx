@@ -182,7 +182,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     )}
 
                     <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
-                        <Frame icon='mdiBook' square ghost />
+                        <Button icon='mdiBook' square ghost />
                     </RevealUI>
                 </div>
 
