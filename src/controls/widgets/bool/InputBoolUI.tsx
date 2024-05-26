@@ -60,10 +60,10 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
         return (
             <Box //Container (Makes it so we follow Fitt's law and neatly contains everything)
                 style={p.style}
-                // expand
                 tw={[
                     //
-                    'flex flex-row flex-grow',
+                    'flex flex-row',
+                    p.expand && 'flex-grow',
                 ]}
                 onMouseDown={(ev) => {
                     wasEnabled = !isActive
