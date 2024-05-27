@@ -124,6 +124,7 @@ export const Frame = (p: ButtonProps) => {
         <Box
             base={{ contrast, chroma, hue: hueFinal, hueShift }}
             hover={appearance !== 'headless'}
+            text={{ contrast: isDisabled ? 0.1 : 0.9 }}
             tabIndex={p.tabIndex ?? -1}
             border={border}
             className={className}
@@ -193,7 +194,7 @@ function getChroma(p: {
     appearance: Maybe<ButtonAppearance>
 }) {
     if (p.active) return 0.1
-    if (p.isDisabled) return 0.001
+    if (p.isDisabled) return // 0.001
     if (p.primary || p.appearance === 'primary') return 0.1
     return
     // if (appearance === 'none') return undefined
@@ -226,7 +227,7 @@ function getContrast(
     appearance: ButtonAppearance,
 ) {
     if (active) return 0.6
-    if (isDisabled) return 0.05
+    // if (isDisabled) return 0.05
 
     if (appearance === 'headless') return 0
     if (appearance === 'primary') return 0.9
