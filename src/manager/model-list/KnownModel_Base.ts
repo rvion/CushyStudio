@@ -1,14 +1,14 @@
 // prettier-ignore
 export type KnownModel_Base =
-    | "SDXL"               // x  41
+    | "SDXL"               // x  45
     | "SD1.x"              // x  25
-    | "upscale"            // x  10
+    | "upscale"            // x  11
     | "inswapper"          // x  12
     | "deepbump"           // x   1
     | "face_restore"       // x   3
     | "SVD"                // x   2
     | "zero123"            // x   1
-    | "SD1.5"              // x  62
+    | "SD1.5"              // x  68
     | "Stable Cascade"     // x  13
     | "SD2"                // x   2
     | "SD2.1"              // x   4
@@ -38,17 +38,18 @@ export type KnownModel_Base =
     | "SUPIR"              // x   4
     | "RAM"                // x   3
     | "Zero123"            // x   4
+    | "CustomNet"          // x   1
 
 export const knownModel_Base: KnownModel_Base[] = [
-    "SDXL"              ,  // x  41
+    "SDXL"              ,  // x  45
     "SD1.x"             ,  // x  25
-    "upscale"           ,  // x  10
+    "upscale"           ,  // x  11
     "inswapper"         ,  // x  12
     "deepbump"          ,  // x   1
     "face_restore"      ,  // x   3
     "SVD"               ,  // x   2
     "zero123"           ,  // x   1
-    "SD1.5"             ,  // x  62
+    "SD1.5"             ,  // x  68
     "Stable Cascade"    ,  // x  13
     "SD2"               ,  // x   2
     "SD2.1"             ,  // x   4
@@ -78,5 +79,6 @@ export const knownModel_Base: KnownModel_Base[] = [
     "SUPIR"             ,  // x   4
     "RAM"               ,  // x   3
     "Zero123"           ,  // x   4
+    "CustomNet"         ,  // x   1
 ]
 
