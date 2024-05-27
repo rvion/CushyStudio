@@ -62,7 +62,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 style={p.style}
                 tw={[
                     //
-                    'flex flex-row',
+                    'flex flex-row !select-none',
                     p.expand && 'flex-grow',
                 ]}
                 onMouseDown={(ev) => {
@@ -78,6 +78,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                     icon={isActive ? 'mdiCheckBold' : null}
                     square
                     size={'xs'}
+                    tw='!select-none'
                 />
                 {/* <Frame // Container
                     className={p.className}
@@ -101,7 +102,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
             style={p.style}
             icon={p.icon}
             expand={expand}
-            tw='WIDGET-FIELD'
+            tw='WIDGET-FIELD !select-none'
             onMouseDown={(ev) => {
                 wasEnabled = !isActive
                 ev.stopPropagation()
