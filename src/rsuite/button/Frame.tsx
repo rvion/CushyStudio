@@ -76,6 +76,8 @@ export type ButtonProps = {
 
     // BEHAVIOUR ---------------------------------------------
     onClick?: (ev: React.MouseEvent<HTMLElement>) => void
+    onMouseDown?: (ev: React.MouseEvent<HTMLElement>) => void
+    onMouseUp?: (ev: React.MouseEvent<HTMLElement>) => void
 
     // -------------------------------------------------------
     tabIndex?: number
@@ -130,10 +132,13 @@ export const Frame = (p: ButtonProps) => {
             className={className}
             onMouseDown={(ev) => {
                 if (ev.button == 0) {
-                    onClick?.(ev)
+                    p.onMouseDown?.(ev)
                     isDragging = true
                     window.addEventListener('mouseup', isDraggingListener, true)
                 }
+            }}
+            onClick={(ev) => {
+                onClick?.(ev)
             }}
             onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 if (isDragging) onClick?.(ev)

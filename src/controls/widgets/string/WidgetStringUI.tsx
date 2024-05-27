@@ -5,6 +5,7 @@ import { ReactElement } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
 import { Button } from '../../../rsuite/button/Button'
+import { Frame } from '../../../rsuite/button/Frame'
 import { useColor } from '../../../theme/colorEngine/useColor'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -58,14 +59,20 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     switch (widget.config.inputType) {
         case 'color':
-            inputTailwind = 'absolute w-full h-full opacity-0'
-            visualHelper = <div tw='w-full h-full' style={{ background: val }} />
+            inputTailwind = 'absolute w-full h-full !bg-transparent'
+            visualHelper = <Frame tw='w-full h-full' style={{ background: val }} />
             highlight = false
             break
         default:
-            inputTailwind = 'input input-sm w-full h-full !outline-none text-shadow'
+            inputTailwind = 'w-full h-full !outline-none bg-transparent'
             break
     }
+
+    /* I think we should handle some of these widgets by ourselves so we have better control over
+     *  the actual widget, instead of relying on the browser's <input>. */
+    // if (widget.config.inputType && widget.config.inputType === 'color') {
+    //     return <Frame active tw='WIDGET-FIELD w-full h-full' style={{ background: val }}></Frame>
+    // }
 
     return (
         <div
@@ -75,12 +82,12 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 'WIDGET-FIELD',
                 'h-full w-full',
                 'flex flex-1 items-center relative',
-                'rounded overflow-clip text-shadow',
+                'rounded overflow-clip text-sm',
                 // 'border border-base-100 hover:border-base-300',
                 // 'bg-primary/5',
-                highlight && 'hover:brightness-110',
+                // highlight && 'hover:brightness-110',
                 // 'border-b-2 border-b-base-200 hover:border-b-base-300',
-                'p-0 m-0',
+                'p-0 m-0 px-1',
             ]}
             onMouseDown={(ev) => {
                 if (ev.button == 1) {
