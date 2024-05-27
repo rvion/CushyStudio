@@ -51,11 +51,29 @@ export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_t
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get hasChanges() {
+        const def = this.config.default
+        if (def == null) return this.value.length != 0
+        else {
+            if (def.length != this.value.length) return true
+            for (const v of this.value) {
+                if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
+            }
+            return false
+        }
+    }
+    reset() {
+        this.setAll(false)
+        for (const i of this.config.default ?? []) {
+            this.setCell(i.row, i.col, true)
+        }
     }
 
     rows: string[]
@@ -71,8 +89,8 @@ export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_t
         serial?: Widget_matrix_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 
         const rows = config.rows

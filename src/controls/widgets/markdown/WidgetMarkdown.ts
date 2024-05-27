@@ -58,7 +58,7 @@ export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdo
         return null
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
@@ -76,11 +76,17 @@ export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdo
         serial?: Widget_markdown_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         makeAutoObservableInheritance(this)
     }
+
+    /** always return false */
+    hasChanges = false
+
+    /** do nothing */
+    reset = () => {}
 
     setValue(val: Widget_markdown_value) {
         this.value = val

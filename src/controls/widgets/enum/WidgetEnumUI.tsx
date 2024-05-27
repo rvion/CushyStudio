@@ -4,8 +4,6 @@ import type { Widget_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useSt } from '../../../state/stateContext'
@@ -17,22 +15,22 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
     const enumName = widget.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
-        <>
-            {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
-            <EnumSelectorUI
-                value={() => widget.status}
-                disabled={!widget.serial.active}
-                isOptional={isOptional}
-                enumName={enumName}
-                // substituteValue={req.status}
-                onChange={(e) => {
-                    if (e == null) return // ❓
-                    widget.value = e
-                }}
-            />
-            <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
-        </>
+        <EnumSelectorUI
+            value={() => widget.status}
+            disabled={!widget.serial.active}
+            isOptional={isOptional}
+            enumName={enumName}
+            // substituteValue={req.status}
+            onChange={(e) => {
+                if (e == null) return // ❓
+                widget.value = e
+            }}
+        />
     )
+    // <>
+    //     {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
+    //     <Button icon='mdiUndoVariant' disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
+    // </>
 })
 
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {

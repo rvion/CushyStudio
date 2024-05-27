@@ -68,71 +68,71 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     }
 
     return (
-        <>
-            <div
-                style={color.styles}
-                tw={[
-                    // color.className,
-                    'WIDGET-FIELD',
-                    'h-full w-full',
-                    'flex flex-1 items-center relative',
-                    'rounded overflow-clip text-shadow',
-                    // 'border border-base-100 hover:border-base-300',
-                    // 'bg-primary/5',
-                    highlight && 'hover:brightness-110',
-                    // 'border-b-2 border-b-base-200 hover:border-b-base-300',
-                    'p-0 m-0',
-                ]}
-                onMouseDown={(ev) => {
-                    if (ev.button == 1) {
-                        const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
-                        textInput.focus()
+        <div
+            style={color.styles}
+            tw={[
+                // color.className,
+                'WIDGET-FIELD',
+                'h-full w-full',
+                'flex flex-1 items-center relative',
+                'rounded overflow-clip text-shadow',
+                // 'border border-base-100 hover:border-base-300',
+                // 'bg-primary/5',
+                highlight && 'hover:brightness-110',
+                // 'border-b-2 border-b-base-200 hover:border-b-base-300',
+                'p-0 m-0',
+            ]}
+            onMouseDown={(ev) => {
+                if (ev.button == 1) {
+                    const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
+                    textInput.focus()
+                }
+            }}
+        >
+            {visualHelper}
+            <input
+                tw={inputTailwind}
+                type={widget.config.inputType}
+                pattern={widget.config.pattern}
+                placeholder={widget.config.placeHolder}
+                value={
+                    widget.config.buffered //
+                        ? widget.temporaryValue ?? val
+                        : val
+                }
+                onChange={(ev) => {
+                    if (widget.config.buffered) {
+                        widget.setTemporaryValue(ev.target.value)
+                    } else {
+                        widget.value = ev.currentTarget.value
                     }
                 }}
-            >
-                {visualHelper}
-                <input
-                    tw={inputTailwind}
-                    type={widget.config.inputType}
-                    pattern={widget.config.pattern}
-                    placeholder={widget.config.placeHolder}
-                    value={
-                        widget.config.buffered //
-                            ? widget.temporaryValue ?? val
-                            : val
+                /* Prevents drag n drop of selected text, so selecting is easier. */
+                onDragStart={(ev) => ev.preventDefault()}
+                onFocus={(ev) => {
+                    widget.setTemporaryValue(widget.value ?? '')
+                    ev.currentTarget.select()
+                }}
+                onBlur={() => {
+                    if (widget.config.buffered && widget.temporaryValue != null) {
+                        widget.value = widget.temporaryValue
                     }
-                    onChange={(ev) => {
-                        if (widget.config.buffered) {
-                            widget.setTemporaryValue(ev.target.value)
-                        } else {
-                            widget.value = ev.currentTarget.value
-                        }
-                    }}
-                    /* Prevents drag n drop of selected text, so selecting is easier. */
-                    onDragStart={(ev) => ev.preventDefault()}
-                    onFocus={(ev) => {
-                        widget.setTemporaryValue(widget.value ?? '')
-                        ev.currentTarget.select()
-                    }}
-                    onBlur={() => {
-                        if (widget.config.buffered && widget.temporaryValue != null) {
-                            widget.value = widget.temporaryValue
-                        }
-                    }}
-                    onKeyDown={(ev) => {
-                        if (ev.key === 'Enter') {
-                            ev.currentTarget.blur()
-                        } else if (ev.key === 'Escape') {
-                            if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
-                            widget.setTemporaryValue(null)
-                            ev.currentTarget.blur()
-                        }
-                    }}
-                />
-            </div>
-            <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
-        </>
+                }}
+                onKeyDown={(ev) => {
+                    if (ev.key === 'Enter') {
+                        ev.currentTarget.blur()
+                    } else if (ev.key === 'Escape') {
+                        if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
+                        widget.setTemporaryValue(null)
+                        ev.currentTarget.blur()
+                    }
+                }}
+            />
+        </div>
     )
+    // <>
+    //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
+    // </>
 })
 // 1-a 2-a
 // 1-b 2-a

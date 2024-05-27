@@ -45,9 +45,12 @@ export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_t
         return null
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
+
+    hasChanges = false
+    reset = () => {}
 
     constructor(
         //
@@ -64,7 +67,11 @@ export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_t
             collapsed: false,
         }
 
-        this.init({ serial: observable })
+        this.init({
+            serial: observable,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value() {

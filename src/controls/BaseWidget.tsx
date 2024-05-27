@@ -33,9 +33,32 @@ export abstract class BaseWidget {
         }
     }
 
-    /** every component should be able to be restet and must implement the reset function */
-    // 🔴 TODO rvion
-    // abstract reset(): void
+    /** shorthand access to config */
+    get config(): this['spec']['config'] {
+        return this.spec.config
+    }
+
+    // change management ------------------------------------------------
+    /**
+     * every component should be able to be restet and must implement
+     * the reset function
+     * 2024-05-24 rvion: we could have some generic reset function that
+     * | simply do a this.setValue(this.defaultValue)
+     * | but it feels like a wrong implementation 🤔
+     * | it's simpler  though
+     * 🔶 some widget like `WidgetPrompt` would not work with such logic
+     * */
+    abstract reset(): void
+    abstract readonly hasChanges: boolean
+
+    /**
+     * 2024-05-24 rvion: do we want some abstract defaultValue() too ?
+     * feels like it's going to be PITA to use for higher level objects 🤔
+     * but also... why not...
+     * 🔶 some widget like `WidgetPrompt` would not work with such logic
+     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
+     */
+    // abstract readonly defaultValue: this['spec']['$Value'] |
 
     $WidgetSym: typeof $WidgetSym = $WidgetSym
 

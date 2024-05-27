@@ -27,13 +27,6 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
             />
 
             <SpacerUI />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <Ikon.mdiUndoVariant />
-            </div>
         </div>
     )
 })

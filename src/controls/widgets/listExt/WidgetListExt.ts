@@ -10,6 +10,7 @@ import { nanoid } from 'nanoid'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { clampOpt } from '../list/clamp'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
@@ -62,10 +63,20 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
     DefaultBodyUI = WidgetListExtUI
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'listExt' = 'listExt'
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get hasChanges() {
+        const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+        if (this.items.length !== defaultLength) return true
+        // check if any remaining item has changes
+        return this.items.some((i) => i.hasChanges)
+    }
+    reset = () => {
+        throw new Error('Method not implemented yet.')
     }
 
     get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
@@ -115,8 +126,8 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
         serial?: Widget_listExt_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
 
         // serial
         this.serial = serial ?? {
@@ -146,7 +157,11 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        this.init({ sizeHelper: false })
+        this.init({
+            sizeHelper: false,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get subWidgets() {

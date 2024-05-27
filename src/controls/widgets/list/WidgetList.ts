@@ -9,6 +9,7 @@ import { bang } from '../../../utils/misc/bang'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
+import { clamp, clampOpt } from './clamp'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
@@ -81,13 +82,34 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
     DefaultBodyUI = WidgetList_BodyUI
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
     /* override */ background = true
+
+    get hasChanges() {
+        // in auto mode, length is managed, so we must not take it into account
+        if (!this.config.auto) {
+            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+            if (this.items.length !== defaultLength) return true
+        }
+        // check if any remaining item has changes
+        return this.items.some((i) => i.hasChanges)
+    }
+    reset = () => {
+        // fix size
+        if (!this.config.auto) {
+            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+            for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
+            for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
+        }
+
+        // reset all remaining values
+        for (const i of this.items) i.reset()
+    }
 
     findItemIndexContaining = (widget: IWidget): number | null => {
         let at = widget as IWidget | null

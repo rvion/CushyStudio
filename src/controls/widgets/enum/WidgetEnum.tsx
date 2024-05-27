@@ -8,7 +8,6 @@ import type { Problem_Ext } from '../../Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
@@ -50,10 +49,10 @@ export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_ty
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'enum' = 'enum'
 
-    get isChanged() { return this.serial.val !== this.config.default } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.config.default } // prettier-ignore
     reset = () => { this.value = this.defaultValue } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
@@ -73,8 +72,8 @@ export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_ty
         serial?: Widget_enum_serial<O>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'enum',
             id: this.id,

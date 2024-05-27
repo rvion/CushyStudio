@@ -38,7 +38,7 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'color' = 'color'
 
     get baseErrors(): Problem_Ext {
@@ -46,7 +46,7 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
     }
 
     readonly defaultValue: string = this.config.default ?? '#000000'
-    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     serial: Widget_color_serial
@@ -59,8 +59,8 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
         serial?: Widget_color_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'color',
             collapsed: config.startCollapsed,

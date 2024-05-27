@@ -45,7 +45,7 @@ export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custo
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'custom' = 'custom'
 
     get baseErrors(): Problem_Ext {
@@ -55,7 +55,11 @@ export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custo
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
     st = () => cushy
+
+    get defaultValue(): T { return this.config.defaultValue() } // prettier-ignore
+    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.config.defaultValue())
+
     constructor(
         //
         public readonly form: Form,
@@ -64,8 +68,8 @@ export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custo
         serial?: Widget_custom_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.Component = config.Component
         this.serial = serial ?? {
             type: 'custom',

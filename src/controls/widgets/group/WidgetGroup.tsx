@@ -70,12 +70,19 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         return null
     }
 
+    get hasChanges() {
+        return Object.values(this.fields).some((f) => f.hasChanges)
+    }
+    reset = () => {
+        for (const key in this.fields) this.fields[key].reset()
+    }
+
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'group' = 'group'
 
     collapseAllEntries = () => {
