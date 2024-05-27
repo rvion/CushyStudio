@@ -65,7 +65,7 @@
 
 .WIDGET-BLOCK {
     margin-left: .6rem;
-    margin-right: .4rem;
+    /* margin-right: .4rem; */
     margin-top: .1rem;
     /* padding: .4rem; */
 }

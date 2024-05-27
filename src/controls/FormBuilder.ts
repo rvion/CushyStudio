@@ -8,7 +8,7 @@ import { makeAutoObservable, reaction } from 'mobx'
 import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
+import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
 import { Form } from './Form'
 import { FormManager } from './FormManager'
@@ -73,6 +73,7 @@ export class FormBuilder implements IFormBuilder {
             auto: false,
             autoField: false,
             enum: false,
+            enums: false,
             enumOpt: false,
             SpecCtor: false,
         })
@@ -304,6 +305,11 @@ export class FormBuilder implements IFormBuilder {
     get enum() {
         const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enum', { value: _ })
+        return _
+    }
+    get enums() {
+        const _ = new EnumListBuilder(this.form) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'enums', { value: _ })
         return _
     }
     get enumOpt() {

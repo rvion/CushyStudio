@@ -155,3 +155,9 @@
     scrollbar-width: none;
 }
 /*#endregion*/ /* Hide Scrollbar */
+
+
+/* topic=WZ2sEOGiLy */
+.useDefaultCursorEverywhere .cursor-pointer {
+    cursor: default;
+}

@@ -1,5 +1,6 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Requirements } from '../../../src/controls/Requirements'
 import type { OutputFor } from './_prefabs'
 
 export const ui_upscaleWithModel = () => {
@@ -10,18 +11,20 @@ export const ui_upscaleWithModel = () => {
             items: { model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }) },
         })
         .addRequirements([
-            // 2x
-            { type: 'modelInManager', modelName: 'RealESRGAN x2' },
-            // 4x
-            { type: 'modelInManager', modelName: 'RealESRGAN x4' },
-            { type: 'modelInManager', modelName: '4x-UltraSharp' },
-            { type: 'modelInManager', modelName: '4x-AnimeSharp' },
-            { type: 'modelInManager', modelName: '4x_foolhardy_Remacri' },
-            { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
-            // 8x
-            { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
+            // // 2x
+            // { type: 'modelInManager', modelName: 'RealESRGAN x2' },
+            // // 4x
+            // { type: 'modelInManager', modelName: 'RealESRGAN x4' },
+            // { type: 'modelInManager', modelName: '4x-UltraSharp' },
+            // { type: 'modelInManager', modelName: '4x-AnimeSharp' },
+            // { type: 'modelInManager', modelName: '4x_foolhardy_Remacri' },
+            // { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
+            // // 8x
+            // { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
+            ...Array.from(cushy.managerRepository.knownModels.values())
+                .filter((t) => t.type === 'upscale')
+                .map((t): Requirements => ({ type: 'modelInManager', modelName: t.name, optional: true })),
         ])
-        .optional()
 }
 
 export const run_upscaleWithModel = (ui: NonNullable<OutputFor<typeof ui_upscaleWithModel>>, p?: { image?: _IMAGE }): _IMAGE => {

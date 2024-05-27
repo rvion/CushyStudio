@@ -73,9 +73,23 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
     DefaultBodyUI = undefined
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>
+
+    get defaultValue(): Widget_selectMany_value<T> {
+        return this.config.default ?? []
+    }
+    get hasChanges() {
+        if (this.serial.values.length !== this.defaultValue.length) return true
+        for (const item of this.serial.values) {
+            if (!this.defaultValue.find((i) => i.id === item.id)) return true
+        }
+        return false
+    }
+    reset = () => {
+        this.value = this.defaultValue
+    }
 
     get choices(): T[] {
         const _choices = this.config.choices
@@ -104,8 +118,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
         serial?: Widget_selectMany_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'selectMany',
             collapsed: config.startCollapsed,

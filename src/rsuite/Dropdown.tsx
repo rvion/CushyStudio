@@ -49,8 +49,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
         <Box
             text={{ contrast: disabled ? 0.5 : 1 }}
             base={{
-                contrast: active ? 0.9 : 0,
-                chroma: active ? 0.5 : undefined,
+                contrast: active ? 0.1 : 0,
+                chroma: active ? 0.1 : undefined,
             }}
             hover
             onClick={(ev) => {
@@ -59,7 +59,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 p.onClick?.(ev)
             }}
             style={{ lineHeight: '1.6rem' }}
-            tw={['_MenuItem', 'px-1 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
+            tw={['_MenuItem', 'px-2 py-0.5 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
             {...rest}
         >
             {icon}

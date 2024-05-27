@@ -12,6 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
+type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
 export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
@@ -19,7 +20,8 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
         expand?: boolean
         items: T
         multi: boolean
-        default?: { [k in keyof T]?: boolean } | keyof T
+        /** either a branch name if only one branch is active, or a Dict<boolean> if multiple */
+        default?: DefaultBranches<T> | keyof T
         placeholder?: string
         appearance?: 'select' | 'tab'
         tabPosition?: TabPositionConfig
@@ -31,7 +33,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
 export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
     type: 'choices'
     active: true
-    branches: { [k in keyof T]?: boolean }
+    branches: DefaultBranches<T>
     values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
@@ -56,7 +58,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
     DefaultBodyUI = WidgetChoices_BodyUI
     /* override */ background = true
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
@@ -108,6 +110,34 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         return this.children[this.firstActiveBranchName]
     }
 
+    get hasChanges() {
+        const def = this.config.default
+        for (const branchName in this.choices) {
+            const shouldBeActive =
+                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+            const child = this.children[branchName]
+            if (child && !shouldBeActive) return true
+            if (!child && shouldBeActive) return true
+            if (child && shouldBeActive && child.hasChanges) return true
+        }
+        return false
+    }
+
+    reset() {
+        const def = this.config.default
+        for (const branchName in this.choices) {
+            const shouldBeActive =
+                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+            const child = this.children[branchName]
+            if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
+            if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
+            // re-check if child is now enabled
+            const childAfter = this.children[branchName]
+            if (childAfter && childAfter.hasChanges) return true
+        }
+        this.bumpValue()
+    }
+
     constructor(
         //
         public readonly form: Form,
@@ -116,9 +146,9 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         serial?: Widget_choices_serial<T>,
     ) {
         super()
+        this.id = serial?.id ?? nanoid()
         const config = spec.config
         // ensure ID
-        this.id = serial?.id ?? nanoid()
         // TODO: investigate why this contructor is called so many times (5 times ???)
 
         // basic sanity check because of the recent breaking change

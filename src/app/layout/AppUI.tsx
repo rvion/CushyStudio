@@ -80,7 +80,11 @@ export const CushyUI = observer(function CushyUI_() {
                     })
                 }}
                 ref={appRef}
-                tw='col grow h-full text-base-content overflow-clip'
+                tw={[
+                    'col grow h-full text-base-content overflow-clip',
+                    // topic=WZ2sEOGiLy
+                    st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+                ]}
             >
                 <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                     id='tooltip-root'

@@ -9,7 +9,6 @@ import type { Problem_Ext } from '../../Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
@@ -17,7 +16,7 @@ import { WidgetSelectImageUI } from './WidgetImageUI'
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<
     {
-        defaultActive?: boolean
+        default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>
         assetSuggested?: RelativePath | RelativePath[]
     },
@@ -49,11 +48,21 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get defaultValue(): MediaImageL {
+        return this.config.default ?? cushy.defaultImage
+    }
+    get hasChanges() {
+        return this.value === this.defaultValue
+    }
+    reset = () => {
+        this.value = this.defaultValue
     }
 
     constructor(
@@ -68,7 +77,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
         this.serial = serial ?? {
             type: 'image',
             id: this.id,
-            imageID: cushy.defaultImage.id,
+            imageID: this.config.default?.id ?? cushy.defaultImage.id,
         }
         this.init({
             DefaultHeaderUI: false,

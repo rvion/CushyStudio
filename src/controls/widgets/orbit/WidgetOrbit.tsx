@@ -56,15 +56,27 @@ export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_typ
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     type: 'orbit' = 'orbit'
     get baseErrors(): Problem_Ext {
         return null
     }
+
+    get defaultAzimuth() {
+        return this.config.default?.azimuth ?? 0
+    }
+    get defaultElevation() {
+        return this.config.default?.elevation ?? 0
+    }
+    get hasChanges() {
+        if (this.serial.value.azimuth !== this.defaultAzimuth) return true
+        if (this.serial.value.elevation !== this.defaultElevation) return true
+        return false
+    }
     /** reset azimuth and elevation */
     reset = () => {
-        this.serial.value.azimuth = this.config.default?.azimuth ?? 0
-        this.serial.value.elevation = this.config.default?.elevation ?? 0
+        this.serial.value.azimuth = this.defaultAzimuth
+        this.serial.value.elevation = this.defaultElevation
     }
 
     /** practical to add to your textual prompt */
@@ -97,8 +109,8 @@ export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_typ
         serial?: Widget_orbit_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'orbit',
             collapsed: config.startCollapsed,
