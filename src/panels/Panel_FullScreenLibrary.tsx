@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { AppCardUI } from '../cards/fancycard/AppCardUI'
+import { Button } from '../rsuite/button/Button'
 import { Slider, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
@@ -9,10 +10,6 @@ import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
-
-    // useEffect(() => {
-    //     st.fetchAllPublishedApps()
-    // }, [])
 
     return (
         <div tw='relative h-full flex-grow flex flex-col'>
@@ -52,16 +49,9 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                             onFocus={(e) => e.target.select()}
                         />
                     </div>
-                    <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
+                    <Button primary sm onClick={st.startupFileIndexing}>
                         Index All Apps
-                    </div>
-                    {/* </div> */}
-                    {/* <div tw='flex gap-2'> */}
-                    {/* <InputGroup tw='self-start'>
-                        <InputGroup.Button>Foo</InputGroup.Button>
-                        <InputGroup.Button>Bar</InputGroup.Button>
-                        <InputGroup.Button>Baz</InputGroup.Button>
-                    </InputGroup> */}
+                    </Button>
                     <FieldAndLabelUI label='Descriptions'>
                         <Toggle
                             onChange={(t) => (st.library.showDescription = t.target.checked)}
@@ -76,7 +66,6 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                     </FieldAndLabelUI>
                     <FieldAndLabelUI label='Favorites'>
                         <Toggle
-                            //
                             onChange={(t) => (st.library.showFavorites = t.target.checked)}
                             checked={st.library.showFavorites}
                         />

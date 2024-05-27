@@ -49,8 +49,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
         <Box
             text={{ contrast: disabled ? 0.5 : 1 }}
             base={{
-                contrast: active ? 0.9 : 0,
-                chroma: active ? 0.5 : undefined,
+                contrast: active ? 0.1 : 0,
+                chroma: active ? 0.1 : undefined,
             }}
             hover
             onClick={(ev) => {
