@@ -80,7 +80,7 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
                                 widget.toggleBranch(c.key)
                             }
                         }}
-                    ></InputBoolUI>
+                    />
                 )
             })}
         </div>
