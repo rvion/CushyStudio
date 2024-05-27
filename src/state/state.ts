@@ -963,6 +963,8 @@ export class STATE {
             accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
             accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
             accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+            // use default cursor everywhere
+            useDefaultCursorEverywhere: ui.boolean({ default: false }),
         }),
         {
             name: 'theme config',
