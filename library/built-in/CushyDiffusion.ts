@@ -49,7 +49,7 @@ app({
         sampler: ui_sampler(),
         mask: ui_mask(),
         highResFix: ui_highresfix().optional(true),
-        upscale: ui_upscaleWithModel(),
+        upscale: ui_upscaleWithModel().optional(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),
