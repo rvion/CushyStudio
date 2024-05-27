@@ -59,6 +59,7 @@ export type BoxProps = {
      * */
     border?: RelativeStyle | string | number | boolean
 
+    // 🔴 BAD
     /** if true; will add some contrast on hover */
     hover?: boolean | number
 }
@@ -71,6 +72,7 @@ export type BoxUIProps = BoxProps & {
     tabIndex?: number
     id?: string
     ref?: React.Ref<HTMLDivElement>
+
     // mouse
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
@@ -79,11 +81,14 @@ export type BoxUIProps = BoxProps & {
     onContextMenu?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onAuxClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onWheel?: (ev: React.WheelEvent<HTMLDivElement>) => void
+
     // focus
     onFocus?: (ev: React.FocusEvent<HTMLDivElement>) => void
     onBlur?: (ev: React.FocusEvent<HTMLDivElement>) => void
+
     //
     onChange?: (ev: React.ChangeEvent<HTMLDivElement>) => void
+
     onKeyUp?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
     onKeyDown?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
 }

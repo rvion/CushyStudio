@@ -2,8 +2,8 @@ import { createContext } from 'react'
 
 /** oklch */
 
-export type AbsoluteStyle = {
-    type: 'absolute'
+// TODO: rename oklch
+export type CompiledStyle = {
     /** 0 to 1 */
     lightness: number
     /** 0 to 1 */
@@ -11,16 +11,16 @@ export type AbsoluteStyle = {
     /** 0 to 360 or -180 to 180 */
     hue: number
 }
-/** contrast+accent bleed + hue shift */
 
+/** contrast+accent bleed + hue shift */
 export type RelativeStyle = {
-    type?: 'relative'
     /**
      * -1 to 1
      * eg. 0 for background from parent bg
      * eg. 1 for text to it's background
      * */
-    contrast: number
+    contrast?: number
+    lightness?: number
 
     /**
      * 0 to 1
@@ -36,6 +36,7 @@ export type RelativeStyle = {
 
     /** TBD */
     opacity?: number
+    opacityBlend?: number
 }
 
 // export type Appearance = {
@@ -46,19 +47,18 @@ export type RelativeStyle = {
 // }
 
 export const ThemeCtx = createContext<{
-    background: AbsoluteStyle
-    text: RelativeStyle | AbsoluteStyle
+    background: CompiledStyle
+    text: RelativeStyle // | CompiledStyle
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
     shiftDirection?: 'pos' | 'neg'
 }>({
     background: {
-        type: 'absolute',
+        // type: 'absolute',
         lightness: 0.1,
         chroma: 0.05,
         hue: 0,
     },
     text: {
-        type: 'relative',
         contrast: 1,
         chromaBlend: 0,
         hueShift: 0,
