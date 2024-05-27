@@ -34,7 +34,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 triggerOnPress
                 tw={[
                     //
-                    'flex flex-row !select-none ',
+                    'flex flex-row !select-none',
                     p.expand && 'flex-grow',
                 ]}
                 onClick={(ev) => {
@@ -75,7 +75,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
             style={p.style}
             icon={p.icon}
             expand={expand}
-            tw='WIDGET-FIELD !select-none'
+            tw='WIDGET-FIELD !select-none cursor-pointer justify-center'
             onClick={(ev) => {
                 wasEnabled = !isActive
                 ev.stopPropagation()
