@@ -72,6 +72,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
+import { formConf } from './conf/formConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
@@ -506,6 +507,7 @@ export class STATE {
         },
     )
 
+    formConf = formConf
     galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
