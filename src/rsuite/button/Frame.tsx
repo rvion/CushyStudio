@@ -28,12 +28,6 @@ export type FrameProps = {
     /** TODO: */
     triggerOnPress?: boolean
 
-    // color ---------------------------------------------------
-    /** 🔶 usually not needed */
-    hue?: number | string
-    /** 🔶 usually not needed */
-    hueShift?: number | undefined
-
     // HIGH LEVEL THEME-DEFINED BOX STYLES -------------------------------------------
     appearance?: FrameAppearance
     /** no visual distinction; equivalent to appearance='headless' */
@@ -71,8 +65,6 @@ export const Frame = (p: FrameProps) => {
     const {
         icon,
         active,
-        hue,
-        hueShift,
         size,
         loading,
         disabled,
@@ -91,13 +83,6 @@ export const Frame = (p: FrameProps) => {
     const isDisabled = p.loading || p.disabled || false
     const chroma = getChroma({ active, appearance, isDisabled, primary })
 
-    const hueFinal = ((): number | undefined => {
-        if (p.hue == null) return
-        if (typeof p.hue === 'number') return p.hue
-        if (typeof p.hue === 'string') return new Color(p.hue).oklch[2]
-        return
-    })()
-
     const mouseEvents = p.triggerOnPress
         ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
         : { onMouseDown, onMouseEnter, onClick }
@@ -108,13 +93,12 @@ export const Frame = (p: FrameProps) => {
         if (b == null) return a
         return { ...a, ...b }
     }
+
     // BACKGROUND ------------------------------------------------------
     const normalizedBase = p.base ? normalizeBase(p.base) : null
     const themeBase: RelativeStyle = {
         contrast: getBackgroundContrast(active, isDisabled, appearance),
         chroma,
-        hue: hueFinal,
-        hueShift,
     }
     const base = mergeStyles(themeBase, normalizedBase)
 
@@ -123,6 +107,7 @@ export const Frame = (p: FrameProps) => {
     const themeBorderContrast = getBorderContrast(appearance)
     const themeBorder: RelativeStyle | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
     const border = mergeStyles(themeBorder, normalziedBorder)
+
     return (
         <Box
             base={base}
