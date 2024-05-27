@@ -59,7 +59,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 p.onClick?.(ev)
             }}
             style={{ lineHeight: '1.6rem' }}
-            tw={['_MenuItem', 'px-1 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
+            tw={['_MenuItem', 'px-2 py-0.5 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
             {...rest}
         >
             {icon}
