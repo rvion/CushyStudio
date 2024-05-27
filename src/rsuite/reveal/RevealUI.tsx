@@ -39,39 +39,38 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
         }
     }, [uistOrNull?.visible])
 
-    const content = p.children
+    const anchor = p.children
     const tooltip = mkTooltip(uistOrNull)
 
     // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
-    const anchor = (
-        <div //
-            tw={['inline-block', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
-            className={p.className}
-            ref={ref}
-            style={p.style}
-            // style={{ ...p.style, ...uistOrNull?.debugColor }}
-
-            // lock input on shift+right click
-            onContextMenu={(ev) => {
-                if (ev.shiftKey) {
-                    uist2().toggleLock()
-                    ev.preventDefault() //  = prevent window on non-electron apps
-                    ev.stopPropagation() // = right click is consumed
-                }
-            }}
-            onClick={(ev) => uist2().onLeftClick(ev)}
-            onAuxClick={(ev) => {
-                if (ev.button === 1) return uist2().onMiddleClick(ev)
-                if (ev.button === 2) return uist2().onRightClick(ev)
-            }}
-            onMouseEnter={() => uist2().onMouseEnterAnchor()}
-            onMouseLeave={() => uist2().onMouseLeaveAnchor()}
-        >
-            {content}
-            {tooltip}
-        </div>
+    return (
+        <RevealCtx.Provider value={nextTower}>
+            <div //
+                tw={['inline-block', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
+                className={p.className}
+                ref={ref}
+                style={p.style}
+                // lock input on shift+right click
+                onContextMenu={(ev) => {
+                    if (ev.shiftKey) {
+                        uist2().toggleLock()
+                        ev.preventDefault() //  = prevent window on non-electron apps
+                        ev.stopPropagation() // = right click is consumed
+                    }
+                }}
+                onClick={(ev) => uist2().onLeftClick(ev)}
+                onAuxClick={(ev) => {
+                    if (ev.button === 1) return uist2().onMiddleClick(ev)
+                    if (ev.button === 2) return uist2().onRightClick(ev)
+                }}
+                onMouseEnter={() => uist2().onMouseEnterAnchor()}
+                onMouseLeave={() => uist2().onMouseLeaveAnchor()}
+            >
+                {anchor}
+                {tooltip}
+            </div>
+        </RevealCtx.Provider>
     )
-    return <RevealCtx.Provider value={nextTower}>{anchor}</RevealCtx.Provider>
 })
 
 const mkTooltip = (uist: RevealState | null) => {
@@ -180,16 +179,17 @@ const mkTooltip = (uist: RevealState | null) => {
                 {hiddenContent}
 
                 {/* LOCK */}
-                {uist._lock ? (
-                    <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                        <Ikon.mdiLock />
-                        shift+right-click to unlock
-                    </span>
-                ) : null
-                // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                //     <Ikon.mdiLockOffOutline />
-                //     shift+right-click to lock
-                // </span>
+                {
+                    uist._lock ? (
+                        <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                            <Ikon.mdiLock />
+                            shift+right-click to unlock
+                        </span>
+                    ) : null
+                    // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                    //     <Ikon.mdiLockOffOutline />
+                    //     shift+right-click to lock
+                    // </span>
                 }
             </Box>
         )
