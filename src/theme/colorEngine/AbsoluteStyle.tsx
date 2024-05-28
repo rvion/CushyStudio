@@ -32,7 +32,8 @@ export type RelativeStyle = {
 
     /** 0 to 360 */
     hueShift?: number
-    hue?: number
+    // when hue is string => extract its hue via new Color(str).olkch.hue
+    hue?: number | string
 
     /** TBD */
     opacity?: number

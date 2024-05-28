@@ -1,13 +1,18 @@
 import type { CompiledStyle, RelativeStyle } from './AbsoluteStyle'
 
 import { clamp } from '../../controls/widgets/list/clamp'
+import { getLCHFromString } from './getLCHFromString'
 
 // oklch(lightness chroma hue);
 
 export const applyRelative = (a: CompiledStyle, b: RelativeStyle): CompiledStyle => {
     const lightness = b.lightness ?? autoContrast(a.lightness, b.contrast ?? 0)
     const chroma = clamp(b.chroma ?? a.chroma * (b.chromaBlend ?? 1), 0, 0.4)
-    const hue = b.hue ?? a.hue + (b.hueShift ?? 0)
+    const hue = b.hue //
+        ? typeof b.hue === 'string'
+            ? getLCHFromString(b.hue).hue
+            : b.hue
+        : a.hue + (b.hueShift ?? 0)
     return { /* type: 'absolute', */ lightness, chroma, hue }
 }
 
