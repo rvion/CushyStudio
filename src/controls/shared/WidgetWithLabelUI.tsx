@@ -6,7 +6,6 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { Button } from '../../rsuite/button/Button'
-import { Frame } from '../../rsuite/button/Frame'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { Box } from '../../theme/colorEngine/Box'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -168,7 +167,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
                         </Box>
-                        {/* TOOGLE (after)  */}
+                        {/* TOGGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
 
