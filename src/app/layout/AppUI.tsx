@@ -65,8 +65,8 @@ export const CushyUI = observer(function CushyUI_() {
                     '--BASEOK': cushy.theme.root.value.base,
                 }}
                 // base='#1E212B'
-                base={cushy.theme.root.value.base}
-                text={{ contrast: 0.99 /* chromaBlend: 99, hueShift: 0 */ }}
+                base={cushy.theme.value.base}
+                text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
                 //
                 data-theme={st.themeMgr.theme}
                 id='CushyStudio'

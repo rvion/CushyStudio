@@ -16,6 +16,7 @@ export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p:
 
 export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
     widget: Widget_choices<T>
+    alignLabel?: boolean
 }) {
     const widget = p.widget
     const activeSubwidgets = Object.entries(widget.children) //
@@ -33,6 +34,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                         if (subWidget == null) return <>❌ error</>
                         return (
                             <WidgetWithLabelUI //
+                                alignLabel={p.alignLabel}
                                 key={val.branch}
                                 rootKey={val.branch}
                                 widget={subWidget}
@@ -48,7 +50,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
 
 // ============================================================================================================
 
-const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
+export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
     widget: Widget_choices<T>
 }) {
     const widget = p.widget

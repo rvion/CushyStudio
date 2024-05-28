@@ -6,9 +6,11 @@ export type FrameAppearanceFlags = {
 }
 
 export type FrameAppearance =
+    // default ------------------------------
     /** no visual distinction */
     | 'headless'
 
+    // increasinly frame-y ------------------------------
     /** no border, very low contrast */
     | 'subtle'
 
@@ -18,6 +20,7 @@ export type FrameAppearance =
     /** a.k.a. outline: border but no contrast */
     | 'ghost'
 
+    // primary & secondary -----------------------------
     /** panel or modal primary action; usually more chroma, more contrast */
     | 'primary'
 

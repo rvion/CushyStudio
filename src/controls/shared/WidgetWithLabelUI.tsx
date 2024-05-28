@@ -145,7 +145,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        <Box tw='flex items-center' text={{ hueShift: 0, contrast: 0.9, chromaBlend: 1 }}>
+                        <Box tw='flex items-center' text={cushy.themeLablelText}>
                             {/* COLLAPSE */}
                             {(isCollapsed || isCollapsible) && (
                                 <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>

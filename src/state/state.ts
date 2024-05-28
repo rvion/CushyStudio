@@ -73,6 +73,7 @@ import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { formConf } from './conf/formConf'
+import { compileToRelativeStyle, themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
@@ -949,23 +950,14 @@ export class STATE {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    theme = CushyFormManager.form(
-        (ui) =>
-            ui.fields(
-                {
-                    base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    // use default cursor everywhere
-                    useDefaultCursorEverywhere: ui.boolean({ default: false }),
-                },
-                { label: 'Theme' },
-            ),
-        {
-            name: 'theme config',
-            initialSerial: () => readJSON('settings/theme.json'),
-            onSerialChange: (form) => writeJSON('settings/theme.json', form.serial),
-        },
-    )
+    theme = themeConf
+
+    // themeBG = compileToXXX(this.theme.value.base)
+    get themeText() {
+        return compileToRelativeStyle(this.theme.value.text)
+    }
+
+    get themeLablelText() {
+        return compileToRelativeStyle(this.theme.value.textLabel ?? this.theme.value.text)
+    }
 }

@@ -223,7 +223,7 @@ export class FormBuilder implements IFormBuilder {
     }
     choiceV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'>,
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ) => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
     }

@@ -86,19 +86,20 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     return (
         <PanelHeaderUI>
             <Button // rating button
+                square
                 icon='mdiStar'
                 active={isStarred}
                 onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
-            />
+            ></Button>
             <Button // Canvas Button
                 onClick={() => img?.openInCanvasEditor()}
                 disabled={img == null}
-                icon='mdiShapeSquareRoundedPlus'
+                icon='mdiVectorSquareEdit'
             >
                 Canvas
             </Button>
             <Button // Paint Button
-                icon='mdiFormatPaint'
+                icon='mdiBrush'
                 disabled={img == null}
                 onClick={() => img?.openInImageEditor()}
             >
