@@ -38,10 +38,11 @@ export const Button = observer(function Button_(p: FrameProps) {
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
 
-    const { size, ...rest } = p
+    const { size, border, ...rest } = p
     return (
         <Frame //
-            size={size ?? 'md'}
+            size={size ?? 'sm'}
+            border={border ?? 2}
             {...rest}
             tw={['Button_ cursor-pointer justify-center']}
             onMouseDown={uist.press}

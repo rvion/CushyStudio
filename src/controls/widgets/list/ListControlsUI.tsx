@@ -23,13 +23,14 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
     const canClear = min ? widget.items.length > min : true
     return (
         <div
-            tw='sticky top-0 flex z-[50] w-full'
+            tw='sticky flex gap-0.5 top-0 flex z-[50] w-full'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
             }}
         >
             <Button
+                xs
                 ghost
                 disabled={!canAdd}
                 square
@@ -41,6 +42,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
+                xs
                 ghost
                 disabled={!canClear}
                 square
@@ -52,6 +54,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
+                xs
                 ghost
                 square
                 icon='mdiUnfoldMoreHorizontal'
@@ -62,6 +65,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
+                xs
                 ghost
                 square
                 icon='mdiUnfoldLessHorizontal'

@@ -49,5 +49,5 @@ export function getAppearance(p: FrameProps): FrameAppearance {
     if (p.appearance) return p.appearance
 
     // default
-    return 'default'
+    return 'headless'
 }

@@ -5,7 +5,7 @@ import { Box } from '../../theme/colorEngine/Box'
 
 export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
     return (
-        <Box base={0} style={{ height: '24px' }}>
+        <Box tw='flex items-center px-1' base={10} style={{ height: '24px' }}>
             <DebugControlsUI />
         </Box>
     )

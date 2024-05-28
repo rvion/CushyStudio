@@ -45,24 +45,14 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 }}
             >
                 <Frame // Checkbox
-                    // appearance='default'
+                    appearance='default'
                     active={isActive}
                     icon={isActive ? 'mdiCheckBold' : null}
                     square
                     size={'xs'}
                     tw='!select-none justify-center'
                 />
-                {/* <Frame // Container
-                    className={p.className}
-                    // active={isActive}
-                    icon={p.icon}
-                    expand={p.expand}
-                    // style={p.style}
-                    tw={['WIDGET-FIELD select-none cursor-pointer']}
-                > */}
-                {/* <input type='checkbox' tw='checkbox checkbox-primary' checked={isActive} tabIndex={-1} readOnly /> */}
                 {label ? label : null}
-                {/* </Frame> */}
             </Frame>
         )
     }
@@ -70,6 +60,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
     return (
         <Frame // Container
             sm
+            default
             className={p.className}
             triggerOnPress
             active={isActive}

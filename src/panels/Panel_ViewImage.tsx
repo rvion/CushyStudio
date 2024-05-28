@@ -6,6 +6,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
 import { Button } from '../rsuite/button/Button'
+import { Frame } from '../rsuite/button/Frame'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
@@ -83,43 +84,43 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
+    const isStarred = Boolean(img?.data.star)
     return (
         <PanelHeaderUI>
             {/* <FieldAndLabelUI label='Rating'> */}
-            <div // Star Button
-                tw='WIDGET-FIELD flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
+            <Button
+                // subtle
+                icon='mdiStar'
+                active={isStarred}
+                onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
+                // default // Star Button
+                // border={3}
+                // tw='WIDGET-FIELD flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
             >
-                <Rate
+                {/* <Rate
                     name={img?.id ?? 'latent'}
                     value={img?.data.star ?? 0}
                     disabled={img == null}
-                    onChange={(next) => {
-                        if (img == null) return
-                        // const next = ev.target.value
-                        img.update({ star: next })
-                    }}
-                />
-            </div>
+                /> */}
+            </Button>
 
             <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
             <div tw='join'>
                 <Button // Canvas Button
                     onClick={() => img?.openInCanvasEditor()}
+                    disabled={img == null}
                     icon='mdiShapeSquareRoundedPlus'
                 >
                     Canvas
                 </Button>
-                <div // Paint Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
-                    onClick={() => {
-                        if (img == null) return
-                        img.openInImageEditor()
-                    }}
+                <Button // Paint Button
+                    icon='mdiFormatPaint'
+                    disabled={img == null}
+                    onClick={() => img?.openInImageEditor()}
                 >
-                    <span className='material-symbols-outlined'>brush</span>
-                    <p tw='px-1'>Paint</p>
-                </div>
+                    Paint
+                </Button>
             </div>
 
             <div tw='h-5  mx-1' style={{ width: '1px' }}></div>

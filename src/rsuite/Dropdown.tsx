@@ -26,7 +26,7 @@ export const Dropdown = (p: {
             </Box>
         )}
     >
-        <Button appearance='ghost' icon={p.startIcon} tabIndex={0} tw={[`flex-nowrap flex items-center gap-1 py-0 px-1.5`]}>
+        <Button appearance='ghost' icon={p.startIcon} tabIndex={0}>
             {p.title}
         </Button>
     </RevealUI>
