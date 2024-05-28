@@ -164,7 +164,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {/* TOGGLE BEFORE */}
                             {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                             {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
-                            {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                             {/* TOOLTIPS  */}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
@@ -180,6 +179,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             </ErrorBoundary>
                         </div>
                     )}
+                    {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
 
                     <Button
                         onClick={() => widget?.reset()}

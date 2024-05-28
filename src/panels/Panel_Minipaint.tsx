@@ -119,7 +119,8 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         size='sm'
                         icon='mdiContentSave'
                         appearance='primary'
-                        hue='green'
+                        primary
+                        base={{ hue: 'green', chroma: 0.2 }}
                         onClick={() => {
                             runInAction(() => {
                                 uist.saveImage()

@@ -55,6 +55,8 @@ export const Frame = (p: FrameProps) => {
         disabled,
         primary,
         appearance: appearance_,
+        // BOX stuff that need to be merged here -------
+        base: _base_,
         //
         onMouseDown,
         onMouseEnter,
@@ -66,7 +68,7 @@ export const Frame = (p: FrameProps) => {
 
     const appearance = getAppearance(p)
     const isDisabled = p.loading || p.disabled || false
-    const chroma = getChroma({ active, appearance, isDisabled, primary })
+    const chroma = getChroma({ active, appearance, isDisabled })
 
     const mouseEvents = p.triggerOnPress
         ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
@@ -92,6 +94,12 @@ export const Frame = (p: FrameProps) => {
     const themeBorderContrast = getBorderContrast(appearance)
     const themeBorder: RelativeStyle | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
     const border = mergeStyles(themeBorder, normalziedBorder)
+
+    // TEXT -----------------------------------------------------------
+    // 📋 const normalziedBorder: RelativeStyle | null = p.border ? normalizeBorder(p.border) : null
+    // 📋 const themeBorderContrast = getBorderContrast(appearance)
+    // 📋 const themeBorder: RelativeStyle | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
+    // 📋 const border = mergeStyles(themeBorder, normalziedBorder)
 
     return (
         <Box

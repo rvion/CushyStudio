@@ -948,24 +948,20 @@ export class STATE {
         mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content, 'utf-8')
     }
-    // ----------------------------
 
-    // get lch(): string {
-    //     const val = this.theme.root.value.base
-    //     const color = new Color(val)
-    //     const xx = color.oklch
-    //     return xx.map((x) => x.toFixed(2)).join(' ')
-    // }
-
-    theme = CushyFormManager.fields(
-        (ui) => ({
-            base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-            accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-            accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-            accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-            // use default cursor everywhere
-            useDefaultCursorEverywhere: ui.boolean({ default: false }),
-        }),
+    theme = CushyFormManager.form(
+        (ui) =>
+            ui.fields(
+                {
+                    base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    // use default cursor everywhere
+                    useDefaultCursorEverywhere: ui.boolean({ default: false }),
+                },
+                { label: 'Theme' },
+            ),
         {
             name: 'theme config',
             initialSerial: () => readJSON('settings/theme.json'),

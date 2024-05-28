@@ -186,7 +186,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <Button
                     size='sm'
                     onClick={() => openExternal(associatedUrl)}
-                    appearance='link'
+                    icon='mdiOpenInNew'
                     // icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 >
                     Associated URL
