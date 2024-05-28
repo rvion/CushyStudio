@@ -123,23 +123,3 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
         </div>
     )
 })
-
-export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    const isCollapsible = widget.DefaultBodyUI
-    if (!isCollapsible) return null
-    return (
-        <div
-            tw='btn btn-ghost btn-square btn-sm'
-            // style={{ width: `${indexWidth}rem` }}
-            onClick={() => widget.toggleCollapsed()}
-        >
-            {widget.serial.collapsed ? ( //
-                <span className='material-symbols-outlined'>keyboard_arrow_right</span>
-            ) : (
-                <span className='material-symbols-outlined'>keyboard_arrow_down</span>
-            )}
-            {/* {ix} */}
-        </div>
-    )
-})
