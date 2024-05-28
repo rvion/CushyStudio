@@ -9,7 +9,7 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
     return (
         <Button
             size='sm'
-            appearance='subtle'
+            look='subtle'
             className='self-start'
             icon='mdiOpenInNew'
             onClick={() => openExternal(st.getServerHostHTTP())}

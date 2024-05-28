@@ -45,7 +45,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                             )}
                         >
                             <Button
-                                appearance='headless'
+                                look='headless'
                                 sm
                                 active={Boolean(active)}
                                 icon={plugin.icon}

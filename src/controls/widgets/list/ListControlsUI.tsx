@@ -31,7 +31,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
         >
             <Button
                 xs
-                appearance='ghost'
+                look='ghost'
                 disabled={!canAdd}
                 square
                 icon='mdiPlus'
@@ -43,7 +43,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 xs
-                appearance='ghost'
+                look='ghost'
                 disabled={!canClear}
                 square
                 icon='mdiDeleteForever'
@@ -55,7 +55,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 xs
-                appearance='ghost'
+                look='ghost'
                 square
                 icon='mdiUnfoldMoreHorizontal'
                 // tw={['btn btn-xs btn-narrow btn-ghost']}
@@ -66,7 +66,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 xs
-                appearance='ghost'
+                look='ghost'
                 square
                 icon='mdiUnfoldLessHorizontal'
                 onClick={(ev) => {

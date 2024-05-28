@@ -29,7 +29,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
         return (
             <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
                 style={p.style}
-                appearance='headless'
+                look='headless'
                 className={p.className}
                 hover
                 triggerOnPress
@@ -46,7 +46,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 }}
             >
                 <Frame // Checkbox
-                    appearance='default'
+                    look='default'
                     active={isActive}
                     icon={isActive ? 'mdiCheckBold' : null}
                     square
@@ -61,7 +61,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
     return (
         <Frame // Container
             sm
-            appearance='default'
+            look='default'
             className={p.className}
             triggerOnPress
             active={isActive}

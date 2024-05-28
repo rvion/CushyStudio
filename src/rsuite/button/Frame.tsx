@@ -53,7 +53,7 @@ export const Frame = (p: FrameProps) => {
         size,
         loading,
         disabled,
-        appearance: appearance_,
+        look: appearance_,
         // BOX stuff that need to be merged here -------
         base: _base_,
         //
@@ -115,7 +115,7 @@ export const Frame = (p: FrameProps) => {
                 '_Frame',
                 getClassNameForSize(p),
                 p.expand && 'flex-1',
-                p.appearance === 'headless' ? undefined : 'rounded-sm flex gap-2 items-center',
+                p.look === 'headless' ? undefined : 'rounded-sm flex gap-2 items-center',
             ]}
         >
             {p.icon && <IkonOf name={p.icon} />}

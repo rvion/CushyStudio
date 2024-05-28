@@ -52,16 +52,10 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <PublishAppBtnUI app={app} />
                         <DraftMenuLooksUI draft={draft} title={app.name} />
                         {/* --------------------------------- */}
+                        <Button sm look='ghost' icon='mdiUnfoldMoreHorizontal' square onClick={draft.expandTopLevelFormEntries} />
                         <Button
                             sm
-                            appearance='ghost'
-                            icon='mdiUnfoldMoreHorizontal'
-                            square
-                            onClick={draft.expandTopLevelFormEntries}
-                        />
-                        <Button
-                            sm
-                            appearance='ghost'
+                            look='ghost'
                             icon='mdiUnfoldLessHorizontal'
                             // square
                             onClick={draft.collapseTopLevelFormEntries}

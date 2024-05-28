@@ -17,7 +17,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
                 <div tw='text-xl'>{p.title}</div>
                 <div tw='flex-1'></div>
                 <Button
-                    appearance='subtle'
+                    look='subtle'
                     square
                     icon='mdiClose'
                     onClick={(ev) => {

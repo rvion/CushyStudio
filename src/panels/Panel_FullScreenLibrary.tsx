@@ -49,7 +49,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                             onFocus={(e) => e.target.select()}
                         />
                     </div>
-                    <Button appearance='primary' sm onClick={st.startupFileIndexing}>
+                    <Button look='primary' sm onClick={st.startupFileIndexing}>
                         Index All Apps
                     </Button>
                     <FieldAndLabelUI label='Descriptions'>

@@ -181,13 +181,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         onClick={() => widget?.reset()}
                         disabled={!(widget?.hasChanges ?? false)}
                         icon='mdiUndoVariant'
-                        appearance='ghost'
+                        look='ghost'
                         square
                         xs
                     />
 
                     <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
-                        <Button icon='mdiDotsVertical' appearance='ghost' square xs />
+                        <Button icon='mdiDotsVertical' look='ghost' square xs />
                     </RevealUI>
                 </div>
 

@@ -118,7 +118,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         tw='join-item'
                         size='sm'
                         icon='mdiContentSave'
-                        appearance='primary'
+                        look='primary'
                         base={{ hue: 'green', chroma: 0.2 }}
                         onClick={() => {
                             runInAction(() => {

@@ -2,7 +2,7 @@ import { FrameProps } from './Frame'
 
 // HIGH LEVEL THEME-DEFINED BOX STYLES
 export type FrameAppearanceFlags = {
-    appearance?: FrameAppearance
+    look?: FrameAppearance
 }
 
 export type FrameAppearance =
@@ -25,5 +25,5 @@ export type FrameAppearance =
     | 'secondary'
 
 export function getAppearance(p: FrameProps): FrameAppearance {
-    return p.appearance ?? 'headless'
+    return p.look ?? 'headless'
 }

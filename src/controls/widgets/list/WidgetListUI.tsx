@@ -57,7 +57,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                 <Box border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
                                         <Button
-                                            appearance='ghost'
+                                            look='ghost'
                                             square
                                             icon='mdiChevronRight'
                                             onClick={() => subWidget.toggleCollapsed()}
@@ -84,7 +84,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <Button
                                                 disabled={min != null && widget.items.length <= min}
                                                 square
-                                                appearance='ghost'
+                                                look='ghost'
                                                 icon='mdiDelete'
                                                 onClick={() => widget.removeItem(subWidget)}
                                             />
@@ -94,7 +94,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
                                         <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
-                                            <Button icon='mdiDotsVertical' appearance='ghost' square xs />
+                                            <Button icon='mdiDotsVertical' look='ghost' square xs />
                                         </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
@@ -119,7 +119,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
-            <Button xs appearance='ghost' square icon='mdiDragHorizontalVariant' />
+            <Button xs look='ghost' square icon='mdiDragHorizontalVariant' />
         </div>
     )
 })

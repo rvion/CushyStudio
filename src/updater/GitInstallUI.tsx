@@ -8,7 +8,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitMan
     return (
         <Button
             loading={updater.currentAction != null}
-            appearance='primary'
+            look='primary'
             size='xs'
             icon='mdiCloudDownload'
             onClick={(ev) => {

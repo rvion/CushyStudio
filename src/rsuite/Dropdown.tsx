@@ -26,7 +26,7 @@ export const Dropdown = (p: {
             </Box>
         )}
     >
-        <Button appearance='ghost' icon={p.startIcon} tabIndex={0}>
+        <Button look='ghost' icon={p.startIcon} tabIndex={0}>
             {p.title}
         </Button>
     </RevealUI>
