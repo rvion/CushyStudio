@@ -99,13 +99,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
 
     const iconName = widget.icon
+    const boxBorder = showBorder ? 2 : 0
+    const boxBase = widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
     return (
-        <Box
-            key={rootKey}
-            border={showBorder ? 2 : 0}
-            base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
-            {...p.widget.config.box}
-        >
+        <Box key={rootKey} border={boxBorder} base={boxBase} {...p.widget.config.box}>
             <AnimatedSizeUI>
                 {/*
                     LINE ---------------------------------------------------------------------------------
@@ -190,10 +187,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     />
 
                     <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
-                        {/* mdiDotsVertical */}
-                        {/* mdiCog */}
-                        {/* mdiRhombus */}
-                        {/* mdiHexagon */}
                         <Button icon='mdiDotsVertical' ghost square xs />
                     </RevealUI>
                 </div>

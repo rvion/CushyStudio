@@ -7,14 +7,16 @@ import { forwardRef } from 'react'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { Ikon } from '../../../icons/iconHelpers'
+import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { Box } from '../../../theme/colorEngine/Box'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
+import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
-import { ListControlsUI } from './ListControlsUI'
-import { Button } from '../../../rsuite/button/Button'
-import { Ikon } from '../../../icons/iconHelpers'
 import { SpacerUI } from '../spacer/SpacerUI'
+import { ListControlsUI } from './ListControlsUI'
 
 const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
 
@@ -46,30 +48,24 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const widgetBody = subWidget.body()
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
+                        const showBorder = getBorderStatusForWidget(subWidget)
+                        const isCollapsible: boolean = getIfWidgetIsCollapsible(subWidget)
+                        const boxBorder = showBorder ? 2 : 0
+                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
-                                <div tw={['flex flex-col', getBorderStatusForWidget(subWidget) && 'WIDGET-GROUP-BORDERED']}>
-                                    {/* collapse indicator */}
-                                    {/* <InputBoolUI onValueChange={subWidget.setCollapsed()}>Test</InputBoolUI> */}
+                                <Box border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
-                                        <Button
-                                            ghost
-                                            icon='mdiChevronRight'
-                                            onClick={() => {
-                                                subWidget.toggleCollapsed()
-                                            }}
-                                            square
-                                        ></Button>
-                                        {/* drag and fold knob */}
-                                        {/* debug id */}
+                                        <Button ghost square icon='mdiChevronRight' onClick={() => subWidget.toggleCollapsed()} />
                                         <SpacerUI />
-                                        {p.widget.config.showID ? (
+                                        {subWidget.config.showID ? (
                                             <div className='divider flex-1 border-top'>
                                                 <div id={subWidget.id} tw='opacity-20 italic'>
                                                     #{ix}:{subWidget.id}
                                                 </div>
                                             </div>
                                         ) : null}
+
                                         {/* inline header part */}
                                         {widgetHeader && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -77,24 +73,22 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                                 {widgetHeader}
                                             </ErrorBoundary>
                                         )}
-                                        {subWidget.config.presets && (
-                                            <RevealUI //
-                                                content={() => <menu_widgetActions.UI props={subWidget} />}
-                                            >
-                                                <span className='material-symbols-outlined'>more_vert</span>
-                                            </RevealUI>
-                                        )}
+
+                                        <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
+                                            <Button icon='mdiDotsVertical' ghost square xs />
+                                        </RevealUI>
+
                                         {/* delete btn */}
                                         {p.widget.isAuto ? null : (
                                             <Button
                                                 disabled={min != null && widget.items.length <= min}
+                                                square
                                                 ghost
                                                 icon='mdiDelete'
                                                 onClick={() => widget.removeItem(subWidget)}
-                                                square
                                             />
                                         )}
-                                        <div tw='w-2' />
+                                        {/* <div tw='w-2' /> */}
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
@@ -107,7 +101,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             </div>
                                         </ErrorBoundary>
                                     )}
-                                </div>
+                                </Box>
                             </SortableItem>
                         )
                     })}
