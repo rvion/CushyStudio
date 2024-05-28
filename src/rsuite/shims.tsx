@@ -64,30 +64,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-// https://daisyui.com/components/rating/#mask-star-2-with-warning-color
-// TODO: remove that and just use a basic btn
-export const Rate = (p: {
-    //
-    value?: number
-    name: string
-    disabled?: boolean
-    max?: number
-    onChange?: (value: number) => void
-}) => (
-    <div tw='rating rating-md rating-sm'>
-        {new Array(p.max ?? 1).fill(0).map((_, ix) => (
-            <input
-                key={ix}
-                name={p.name}
-                checked={p.value === ix}
-                onChange={() => p.onChange?.(ix)}
-                type='radio'
-                tw={['mask mask-star fade-in-40', p.disabled ? 'bg-base-300' : 'bg-orange-400']}
-            />
-        ))}
-    </div>
-)
-
 // tooltips
 export const Whisper = (p: {
     /** @deprecated */

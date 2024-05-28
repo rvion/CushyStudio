@@ -6,9 +6,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
 import { Button } from '../rsuite/button/Button'
-import { Frame } from '../rsuite/button/Frame'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { Box } from '../theme/colorEngine/Box'
 import { assets } from '../utils/assets/assets'
@@ -87,41 +85,25 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     const isStarred = Boolean(img?.data.star)
     return (
         <PanelHeaderUI>
-            {/* <FieldAndLabelUI label='Rating'> */}
-            <Button
-                // subtle
+            <Button // rating button
                 icon='mdiStar'
                 active={isStarred}
                 onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
-                // default // Star Button
-                // border={3}
-                // tw='WIDGET-FIELD flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
+            />
+            <Button // Canvas Button
+                onClick={() => img?.openInCanvasEditor()}
+                disabled={img == null}
+                icon='mdiShapeSquareRoundedPlus'
             >
-                {/* <Rate
-                    name={img?.id ?? 'latent'}
-                    value={img?.data.star ?? 0}
-                    disabled={img == null}
-                /> */}
+                Canvas
             </Button>
-
-            <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
-
-            <div tw='join'>
-                <Button // Canvas Button
-                    onClick={() => img?.openInCanvasEditor()}
-                    disabled={img == null}
-                    icon='mdiShapeSquareRoundedPlus'
-                >
-                    Canvas
-                </Button>
-                <Button // Paint Button
-                    icon='mdiFormatPaint'
-                    disabled={img == null}
-                    onClick={() => img?.openInImageEditor()}
-                >
-                    Paint
-                </Button>
-            </div>
+            <Button // Paint Button
+                icon='mdiFormatPaint'
+                disabled={img == null}
+                onClick={() => img?.openInImageEditor()}
+            >
+                Paint
+            </Button>
 
             <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
