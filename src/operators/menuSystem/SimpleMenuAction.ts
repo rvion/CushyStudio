@@ -9,6 +9,7 @@ export class SimpleMenuAction {
         public opts: {
             label: string
             icon?: IconName
+            disabled?: boolean | (() => boolean)
             onPick: () => void
             // preffered shortcut
         },

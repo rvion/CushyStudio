@@ -20,7 +20,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
     const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
     return (
-        <div tw={[isInstalled ? 'bg-success-1' : null, 'flex-col virtualBorder p-2 bg-base-100 rounded']}>
+        <div tw={[isInstalled ? 'bg-success-1' : null, 'flex-col virtualBorder p-2  rounded']}>
             <div tw='flex pb-2' /* Contains everything but description */>
                 <div tw='flex-1 flex-col' /* Node info container */>
                     <div tw='flex items-center gap-1 p-0.5' /* Title container */>
@@ -68,7 +68,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
             </div>
 
             <div // Description Container
-                tw={['rounded-b bg-base-300 py-0.5 px-1 cursor-default', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
+                tw={['rounded-b py-0.5 px-1 cursor-default', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
                 onClick={(ev) => {
                     setIsExpanded(!isExpanded)
                 }}

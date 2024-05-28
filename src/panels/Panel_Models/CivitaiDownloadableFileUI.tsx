@@ -7,10 +7,10 @@ import { formatSize } from '../../db/getDBStats'
 import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
 import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
 import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
+import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../rsuite/SelectUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
-import { MessageWarningUI } from '../MessageUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 
 const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel_Base> => {

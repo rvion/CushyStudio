@@ -43,9 +43,9 @@
     min-height: var(--input-height);
 }
 
-.WIDGET-FIELD *::selection {
+/* .WIDGET-FIELD *::selection {
     background-color: oklch(var(--pc));
-}
+} */
 
 .WIDGET-GROUP-BORDERED {
     border-radius: .3rem;
@@ -65,7 +65,7 @@
 
 .WIDGET-BLOCK {
     margin-left: .6rem;
-    margin-right: .4rem;
+    /* margin-right: .4rem; */
     margin-top: .1rem;
     /* padding: .4rem; */
 }

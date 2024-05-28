@@ -1,11 +1,11 @@
-import type { IconName } from '../../icons/icons'
 import type { IWidget } from '../IWidget'
 import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Ikon, IkonOf } from '../../icons/iconHelpers'
+import { IkonOf } from '../../icons/iconHelpers'
+import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { Box } from '../../theme/colorEngine/Box'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -48,16 +48,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
     const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
+
     // ------------------------------------------------------------
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
-    if (
-        isWidgetGroup(k) && //
-        Object.keys(k.fields).length === 0 /* &&
-        k.config.requirements == null */
-    ) {
-        return null
-    }
+    if (isWidgetGroup(k) && Object.keys(k.fields).length === 0) return null
     // ------------------------------------------------------------
 
     // ⏸️ const onLabelClick = () => {
@@ -84,7 +79,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
         <span
             tw={[isCollapsed || isCollapsible ? 'cursor-pointer' : null]}
-            className='COLLAPSE-PASSTHROUGH'
+            className='COLLAPSE-PASSTHROUGH whitespace-nowrap'
             style={{ lineHeight: '1rem' }}
         >
             {labelText}
@@ -104,37 +99,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
 
     const iconName = widget.icon
+    const boxBorder = showBorder ? 2 : 0
+    const boxBase = widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
     return (
-        <Box
-            key={rootKey}
-            tw={[
-                // widget.background && (isCollapsible || showBorder) && 'bg-base-100',
-                showBorder && 'WIDGET-GROUP-BORDERED',
-                p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
-                widget.type,
-            ]}
-            base={widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined}
-            {...p.widget.config.box}
-        >
+        <Box key={rootKey} border={boxBorder} base={boxBase} {...p.widget.config.box}>
             <AnimatedSizeUI>
                 {/*
-                    LINE part
+                    LINE ---------------------------------------------------------------------------------
                     (label, collapse button, toggle button, tooltip, etc.)
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
                 <div
                     className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
                     tw={['flex items-center gap-0.5 select-none']}
-                    /*
-                     * bird_d:
-                     *  | Have the whole header able to collapse the panel,
-                     *  | any actual buttons in the header should prevent this themselves.
-                     *  | Also will continue to expand/collapse any panel that is hovered over while dragging.
-                     * 2024-02-29 rvion: this broke 3/4 widgets who did not preventDefault in their header;
-                     *  | may cause more problems later; not sure how to make this sligtly safer / easy to test.
-                     * 2024-03-10 bird_d: I added a COLLAPSE-PASSTHROUGH className. So things have to opt-in now.
-                     *  | This should workaround widgets not preventing their own event.
-                     * */
                     onMouseDown={(ev) => {
                         if (ev.button != 0 || !isCollapsible) return
                         const target = ev.target as HTMLElement
@@ -156,12 +133,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }}
                 >
                     <span
-                        tw={[
-                            'flex justify-end gap-0.5 flex-none items-center shrink-0',
-                            // p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
-                            // 🔴 label COLOR here
-                            // isDisabled ? undefined : 'text-primary',
-                        ]}
+                        tw={'flex justify-end gap-0.5 flex-none items-center shrink-0 flex-1'}
                         style={
                             alignLabel
                                 ? {
@@ -188,14 +160,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {/* TOGGLE BEFORE */}
                             {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                             {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
-                            {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                             {/* TOOLTIPS  */}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
                         </Box>
-                        {/* TOOGLE (after)  */}
+                        {/* TOGGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
+
                     {HeaderUI && (
                         <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -203,16 +175,23 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             </ErrorBoundary>
                         </div>
                     )}
-                    {widget.config.presets && (
-                        <RevealUI //
-                            content={() => <menu_widgetActions.UI props={widget} />}
-                        >
-                            <Ikon.mdiBook />
-                        </RevealUI>
-                    )}
+                    {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
+
+                    <Button
+                        onClick={() => widget?.reset()}
+                        disabled={!(widget?.hasChanges ?? false)}
+                        icon='mdiUndoVariant'
+                        look='ghost'
+                        square
+                        xs
+                    />
+
+                    <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
+                        <Button icon='mdiDotsVertical' look='ghost' square xs />
+                    </RevealUI>
                 </div>
 
-                {/* BLOCK */}
+                {/* BLOCK  ------------------------------------------------------------------------------ */}
                 {BodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
@@ -220,18 +199,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </div>
                     </ErrorBoundary>
                 )}
-                {/* ERRORS */}
-                {widget.hasErrors && (
-                    <div tw='widget-error-ui'>
-                        {widget.errors.map((e, i) => (
-                            <div key={i} tw='flex items-center gap-1'>
-                                <span className='material-symbols-outlined'>error</span>
-                                {e.message}
-                            </div>
-                        ))}
-                    </div>
-                )}
+
+                {/* ERRORS ------------------------------------------------------------------------------ */}
+                <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
         </Box>
+    )
+})
+
+/** default error block */
+export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: IWidget }) {
+    const { widget } = p
+    if (widget.hasErrors === false) return null
+    return (
+        <div tw='widget-error-ui'>
+            {widget.errors.map((e, i) => (
+                <div key={i} tw='flex items-center gap-1'>
+                    <span className='material-symbols-outlined'>error</span>
+                    {e.message}
+                </div>
+            ))}
+        </div>
     )
 })

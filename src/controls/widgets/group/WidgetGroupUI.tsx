@@ -33,9 +33,8 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
 
-    // const color = useColor({ base: 10 })
     return (
-        <Box
+        <div
             // base={4}
             // {...widget.config.box}
             className={p.className}
@@ -64,6 +63,6 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     ))}
                 </div>
             )}
-        </Box>
+        </div>
     )
 })

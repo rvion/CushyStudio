@@ -27,7 +27,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         <div
             tw={[
                 //
-                'bg-base-100',
+                '',
                 'flex items-center px-1',
                 'cursor-pointer text-xs text-opacity-50 hover:brightness-125 text-shadow',
                 p.className,
@@ -52,7 +52,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
 export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: StepL }) {
     const step = p.step
     return (
-        <div className='flex flex-wrap bg-base-300'>
+        <div className='flex flex-wrap'>
             {step && <StepOutputsHeaderV2UI step={step} />}
             {step.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>

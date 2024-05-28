@@ -1,51 +1,54 @@
+/*
+check @birddev locomotive branch to check the sign calculation magic
+*/
 .flexlayout__layout {
-  --color-background: oklch(var(--b1)); /* White background equivalent */
-  --color-base: oklch(var(--b1)); /* Base color */
-  --color-1: oklch(var(--b1)); /* Slightly off-white */
-  --color-2: oklch(var(--b2)); /* Whitesmoke equivalent */
-  --color-3: oklch(var(--b3)); /* Light gray equivalent */
-  --color-4: oklch(var(--b3)); /* Placeholder for non-existing base-400 */
-  --color-5: oklch(var(--b3)); /* Slightly darker than --color-3 */
-  --color-6: oklch(var(--b3)); /* Placeholder for a color a bit darker than --color-5 */
-  --color-drag1: oklch(var(--p)); /* Primary color for dragging */
-  --color-drag2: oklch(var(--s)); /* Secondary color for dragging */
-  --color-drag1-background: oklch(var(--p)); /* Primary color background with lowered opacity */
-  --color-drag2-background: oklch(var(--s)); /* Secondary color background with lowered opacity */
-  --color-overflow: oklch(var(--n)); /* Neutral color for overflow */
-  --color-icon: oklch(var(--bc)); /* Neutral color for icons, assuming this is meant to be neutral */
-  --color-tabset-background: oklch(var(--b3));
-  --color-tabset-background-selected: oklch(var(--b3));
-  --color-tabset-background-maximized: oklch(var(--b3));
-  --color-tabset-divider-line: oklch(var(--p)/.2);
-  --color-tabset-header-background: oklch(var(--b3));
-  --color-tabset-header: oklch(var(--b1));
-  --color-border-background: oklch(var(--b3));
-  --color-border-divider-line: oklch(var(--p)/.2);
+  --color-background:                       oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h); /* White background equivalent */
+  --color-base:                             oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h); /* Base color */
+  --color-1:                                oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h); /* Slightly off-white */
+  --color-2:                                oklch(var(--t/* b2 */)); /* Whitesmoke equivalent */
+  --color-3:                                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h); /* Light gray equivalent */
+  --color-4:                                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h); /* Placeholder for non-existing base-400 */
+  --color-5:                                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h); /* Slightly darker than --color-3 */
+  --color-6:                                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h); /* Placeholder for a color a bit darker than --color-5 */
+  --color-drag1:                            oklch(var(--p));  /* Primary color for dragging */
+  --color-drag2:                            oklch(var(--s));  /* Secondary color for dragging */
+  --color-drag1-background:                 oklch(var(--p));  /* Primary color background with lowered opacity */
+  --color-drag2-background:                 oklch(var(--s));  /* Secondary color background with lowered opacity */
+  --color-overflow:                         oklch(var(--n));  /* Neutral color for overflow */
+  --color-icon:                             oklch(var(--bc)); /* Neutral color for icons, assuming this is meant to be neutral */
+  --color-tabset-background:                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-tabset-background-selected:       oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-tabset-background-maximized:      oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-tabset-divider-line:              oklch(var(--p)/.2);
+  --color-tabset-header-background:         oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-tabset-header:                    oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
+  --color-border-background:                oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-border-divider-line:              oklch(var(--p)/.2);
 
-  --color-tab-selected: oklch(var(--bc)); /* Assuming --sc is a valid variable for selected content */
-  --color-tab-selected-background: oklch(var(--p)/.3);
-  --color-tab-unselected-background: oklch(var(--b1));
-  --color-tab-textbox-background: oklch(var(--b3));
+  --color-tab-selected:                     oklch(var(--bc)); /* Assuming --sc is a valid variable for selected content */
+  --color-tab-selected-background:          oklch(var(--p)/.3);
+  --color-tab-unselected-background:        oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
+  --color-tab-textbox-background:           oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
 
   /* borders tabs */
-  --color-border-tab-selected: oklch(var(--bc));
-  --color-border-tab-selected-background: oklch(var(--b1));
+  --color-border-tab-selected:              oklch(var(--bc));
+  --color-border-tab-selected-background:   oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
   --color-border-tab-unselected-background: transparent;
 
-  --color-splitter: oklch(var(--b2));
-  --color-splitter-hover: oklch(var(--p)/.4);
-  --color-splitter-drag: oklch(var(--p));
-  --color-drag-rect-border: oklch(var(--b3));
-  --color-drag-rect-background: oklch(var(--b3));
-  --color-drag-rect: oklch(var(--b1));
-  --color-popup-border: oklch(var(--b3));
-  --color-popup-unselected: oklch(var(--b1));
-  --color-popup-unselected-background: oklch(var(--b3));
-  --color-popup-selected: oklch(var(--b1));
-  --color-popup-selected-background: oklch(var(--b3));
-  --color-edge-marker: oklch(var(--n));
-  --color-underline: oklch(var(--i)); /* Info color for underline */
-  --color-underline-hover: oklch(var(--n)); /* Neutral color for hover state */
+  --color-splitter:                         oklch(var(--b2));
+  --color-splitter-hover:                   oklch(var(--p)/.4);
+  --color-splitter-drag:                    oklch(var(--p));
+  --color-drag-rect-border:                 oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-drag-rect-background:             oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-drag-rect:                        oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
+  --color-popup-border:                     oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-popup-unselected:                 oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
+  --color-popup-unselected-background:      oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-popup-selected:                   oklch(from var(--BASEOK) calc(l / 2 + 0.0001) calc(c / 2) h);
+  --color-popup-selected-background:        oklch(from var(--BASEOK) calc(l / 2 + 0.0003) calc(c / 2) h);
+  --color-edge-marker:                      oklch(var(--n));
+  --color-underline:                        oklch(var(--i)); /* Info color for underline */
+  --color-underline-hover:                  oklch(var(--n)); /* Neutral color for hover state */
   --underline_height: 3px;
 }
 

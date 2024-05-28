@@ -10,21 +10,15 @@ import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'
 export const menu_widgetActions: Menu<IWidget> = menu({
     title: 'widget actions',
     entries: (widget: IWidget) => {
-        // const createPreset = new SimpleMenuEntry('Create Preset', () => {
-        //     console.log('Create Preset')
-        //     activityManger.push({
-        //         uid: 'createPreset',
-        //         onStart: () => console.log('createPreset start'),
-        //         onStop: () => console.log('createPreset stop'),
-        //         UI: () => (
-        //             <div>
-        //                 <TreeUI
-        //                     treeView={new TreeView(new Tree(cushy, [widget.asTreeElement('root')]), { selectable: true })}
-        //                 ></TreeUI>
-        //             </div>
-        //         ),
-        //     })
-        // })
+        // UNDO ACTION
+        const undo = new SimpleMenuAction({
+            label: 'Undo',
+            icon: 'mdiUndoVariant',
+            disabled: () => !widget.hasChanges,
+            onPick: () => widget.reset(),
+        })
+
+        // CREATE PRESET ACTION
         const createPreset = new SimpleMenuModal({
             label: 'Create Preset',
             submit: () => {
@@ -38,12 +32,13 @@ export const menu_widgetActions: Menu<IWidget> = menu({
         })
 
         const presets = widget.config.presets
-        if (presets == null) return [createPreset]
+        if (presets == null) return [undo, createPreset]
         const entries = presets
-        if (entries.length === 0) return [createPreset]
+        if (entries.length === 0) return [undo, createPreset]
         return [
-            //
+            undo,
             createPreset,
+            // CUSTOM ACTIONS
             ...entries.map(
                 (entry) =>
                     new SimpleMenuAction({

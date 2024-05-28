@@ -21,7 +21,7 @@ export const PlaygroundImportFromComfy = observer(function PlaygroundImportFromC
                 2024-03-26 rvion: trying to import stuff from https://github.com/MrForExample/ComfyUI-3D-Pack, got problems, so I
                 crated this playground panel to improve / fix import (below: library/built-in/3d/3d-app-1/3d1.workflow.json)
             </div>
-            <div tw='bg-base-300 h-full overflow-auto'>
+            <div tw='h-full overflow-auto'>
                 <TypescriptHighlightedCodeUI code={code} />
                 <JsonViewUI value={promptJSON} />
             </div>

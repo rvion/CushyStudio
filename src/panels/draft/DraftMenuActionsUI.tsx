@@ -22,8 +22,8 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
     return (
         <Dropdown
             className={p.className}
-            startIcon={<span className='material-symbols-outlined'>menu</span>}
-            title={'Actions'} //`${layout}`}
+            startIcon='mdiMenu'
+            title='Actions' //`${layout}`}
             content={() => (
                 <>
                     {/* <div tw='divider my-0'></div> */}

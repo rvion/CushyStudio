@@ -72,6 +72,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
+import { formConf } from './conf/formConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
@@ -460,21 +461,10 @@ export class STATE {
     )
     favbar = CushyFormManager.fields(
         (f) => ({
-            size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
             grayscale: f.boolean({ label: 'Grayscale' }),
-            appIcons: f
-                .int({
-                    label: false,
-                    alignLabel: false,
-                    text: 'App Icons',
-                    default: 100,
-                    step: 10,
-                    min: 1,
-                    max: 100,
-                    suffix: '%',
-                })
-                .optional(true),
+            appIcons: f.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
         }),
         {
             name: 'SideBar Conf',
@@ -517,6 +507,7 @@ export class STATE {
         },
     )
 
+    formConf = formConf
     galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
@@ -957,12 +948,20 @@ export class STATE {
         mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content, 'utf-8')
     }
-    // ----------------------------
 
-    theme = CushyFormManager.fields(
-        (ui) => ({
-            base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-        }),
+    theme = CushyFormManager.form(
+        (ui) =>
+            ui.fields(
+                {
+                    base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
+                    // use default cursor everywhere
+                    useDefaultCursorEverywhere: ui.boolean({ default: false }),
+                },
+                { label: 'Theme' },
+            ),
         {
             name: 'theme config',
             initialSerial: () => readJSON('settings/theme.json'),

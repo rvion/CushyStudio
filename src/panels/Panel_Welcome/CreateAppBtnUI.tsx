@@ -2,11 +2,12 @@ import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
+import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { toastError } from '../../utils/misc/toasts'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
-import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {

@@ -3,9 +3,9 @@ import { useLayoutEffect } from 'react'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
+import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
-import { MessageInfoUI } from '../MessageUI'
 import { PanelHeaderUI } from '../PanelHeader'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundImportFromComfy } from './PlaygroundImporter'
@@ -57,7 +57,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 <FormUI form={Header_Playground} />
                 {mode.value.requirements && <PlaygroundRequirementsHeader />}
             </PanelHeaderUI>
-            <div tw='px-1 bg-base-300'>
+            <div tw='px-1'>
                 <MessageInfoUI>
                     <div tw='inline text-sm overflow-clip'>
                         <span>Use this panel as a scratchpad by modifying </span>

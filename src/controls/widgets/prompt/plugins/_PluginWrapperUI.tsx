@@ -3,6 +3,7 @@ import type { PromptPlugin } from './PromptPlugin'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../../icons/iconHelpers'
+import { Box } from '../../../../theme/colorEngine/Box'
 
 export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
     //
@@ -12,7 +13,7 @@ export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
     const plugin = p.plugin
     const Icon = Ikon[plugin.icon]
     return (
-        <div tw='bg-base-300 p-1 flex gap-1'>
+        <Box base={3} tw='flex gap-1'>
             {/* <div tw='btn btn-icon btn-square btn-sm btn-outline text-lg'> */}
             {/* <span className='material-symbols-outlined'>{plugin.icon}</span> */}
             <Icon />
@@ -20,6 +21,6 @@ export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
                 <div tw='italic text-gray-500 text-sm'>Plugin: {plugin.title}</div>
                 {p.children}
             </div>
-        </div>
+        </Box>
     )
 })

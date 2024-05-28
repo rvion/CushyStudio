@@ -74,7 +74,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
     DefaultBodyUI = undefined
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>
 
@@ -83,6 +83,16 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
         if (selected == null) return 'selected value not in choices'
         return
+    }
+
+    get defaultValue(): T {
+        return this.config.default ?? this.choices[0]!
+    }
+    get hasChanges() {
+        return this.serial.val.id !== this.defaultValue.id
+    }
+    reset = () => {
+        this.value = this.defaultValue
     }
 
     get choices(): T[] {
@@ -103,8 +113,8 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
         serial?: Widget_selectOne_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         const choices = this.choices
         this.serial = serial ?? {
             type: 'selectOne',
@@ -122,9 +132,11 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
     }
     set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
+        const nextHasSameID = this.serial.val.id === next.id
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            if (!nextHasSameID) this.bumpValue()
+            else this.bumpSerial()
         })
     }
     get value(): Widget_selectOne_value<T> {

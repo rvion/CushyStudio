@@ -15,28 +15,22 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
     const enumName = widget.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
-        <>
-            {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
-            <EnumSelectorUI
-                value={() => widget.status}
-                disabled={!widget.serial.active}
-                isOptional={isOptional}
-                enumName={enumName}
-                // substituteValue={req.status}
-                onChange={(e) => {
-                    if (e == null) return // ❓
-                    widget.value = e
-                }}
-            />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <span className='material-symbols-outlined'>undo</span>
-            </div>
-        </>
+        <EnumSelectorUI
+            value={() => widget.status}
+            disabled={!widget.serial.active}
+            isOptional={isOptional}
+            enumName={enumName}
+            // substituteValue={req.status}
+            onChange={(e) => {
+                if (e == null) return // ❓
+                widget.value = e
+            }}
+        />
     )
+    // <>
+    //     {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
+    //     <Button icon='mdiUndoVariant' disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
+    // </>
 })
 
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {

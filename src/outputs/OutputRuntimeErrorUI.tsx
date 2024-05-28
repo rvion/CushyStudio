@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
-import { Panel } from '../rsuite/shims'
+import { Surface } from '../rsuite/shims'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
@@ -22,7 +22,7 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
     const output = p.output
     const msg = output.data
     return (
-        <Panel tw='w-full h-full'>
+        <Surface tw='w-full h-full'>
             <div className='bg-error text-error-content'>
                 <div tw='text-xl font-bold'>Runtime Error</div>
                 <div tw='italic'>{msg.message}</div>
@@ -31,6 +31,6 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
                 <div tw='font-bold'>error infos:</div>
                 <JsonViewUI value={JSON.parse(JSON.stringify(msg.infos))} />
             </div>
-        </Panel>
+        </Surface>
     )
 })

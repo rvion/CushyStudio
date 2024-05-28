@@ -12,7 +12,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.step.getLastN(st.__TEMPT__maxStepsToShow)
     return (
-        <div className='flex flex-col overflow-hidden bg-base-300 h-full'>
+        <div className='flex flex-col overflow-hidden h-full'>
             <PanelHeaderUI>
                 {steps.length === 1 && (
                     <div tw='flex text-sm text-shadow flex-grow px-1'>
@@ -39,13 +39,13 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                         </div>
                     )}
                 >
-                    <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
+                    <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                         <span className='material-symbols-outlined'>settings</span>
                         <span className='material-symbols-outlined'>expand_more</span>
                     </div>
                 </RevealUI>
             </PanelHeaderUI>
-            <div className='flex flex-col flex-grow bg-base-300 select-none' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow select-none' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     <StepOutputsV1UI key={step.id} step={step} />
                 ))}

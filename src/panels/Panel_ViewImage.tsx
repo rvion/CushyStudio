@@ -5,9 +5,10 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
+import { Button } from '../rsuite/button/Button'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
+import { Box } from '../theme/colorEngine/Box'
 import { assets } from '../utils/assets/assets'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
@@ -32,7 +33,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
             : null
 
     return (
-        <div className={p.className} style={{ background }} tw='flex flex-col flex-grow bg-base-100 relative'>
+        <div className={p.className} style={{ background }} tw='flex flex-col flex-grow  relative'>
             <ImageActionBarUI img={img} />
             {shouldFilter && <pre>{JSON.stringify(safety?.value)}</pre>}
             <TransformWrapper centerZoomedOut centerOnInit>
@@ -81,47 +82,30 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
+    const isStarred = Boolean(img?.data.star)
     return (
         <PanelHeaderUI>
-            {/* <FieldAndLabelUI label='Rating'> */}
-            <div // Star Button
-                tw='WIDGET-FIELD flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100'
+            <Button // rating button
+                icon='mdiStar'
+                active={isStarred}
+                onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
+            />
+            <Button // Canvas Button
+                onClick={() => img?.openInCanvasEditor()}
+                disabled={img == null}
+                icon='mdiShapeSquareRoundedPlus'
             >
-                <Rate
-                    name={img?.id ?? 'latent'}
-                    value={img?.data.star ?? 0}
-                    disabled={img == null}
-                    onChange={(next) => {
-                        if (img == null) return
-                        // const next = ev.target.value
-                        img.update({ star: next })
-                    }}
-                />
-            </div>
+                Canvas
+            </Button>
+            <Button // Paint Button
+                icon='mdiFormatPaint'
+                disabled={img == null}
+                onClick={() => img?.openInImageEditor()}
+            >
+                Paint
+            </Button>
 
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
-
-            <div tw='join'>
-                <div // Canvas Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
-                    onClick={() => img?.openInCanvasEditor()}
-                >
-                    <span className='material-symbols-outlined'>format_shapes</span>
-                    <p tw='px-1'>Canvas</p>
-                </div>
-                <div // Paint Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default bg-base-200 rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
-                    onClick={() => {
-                        if (img == null) return
-                        img.openInImageEditor()
-                    }}
-                >
-                    <span className='material-symbols-outlined'>brush</span>
-                    <p tw='px-1'>Paint</p>
-                </div>
-            </div>
-
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
+            <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
             {img ? <ImageDropdownUI tw='WIDGET-FIELD' img={img} /> : null}
 
@@ -129,7 +113,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             {/* Image Info Button */}
             <RevealUI
-                tw='bg-base-200 hover:brightness-125 rounded text-shadow'
+                tw='hover:brightness-125 rounded text-shadow'
                 content={() => (
                     <div>
                         <div>Data</div>
@@ -167,7 +151,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </div>
             </RevealUI>
 
-            <div tw='h-5 bg-base-100 mx-1' style={{ width: '1px' }}></div>
+            <Box base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Box>
 
             <div // Delete button
                 tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'

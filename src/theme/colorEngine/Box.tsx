@@ -37,6 +37,7 @@ export type BoxProps = {
      * - string: absolute color
      * - relative: relative to parent
      * - number: = relative({ contrast: x / 100, chromaBlend: 1, hueShift: 0 })
+     * - boolean: = contrast=0
      * - null: inherit parent's background
      * */
     base?: RelativeStyle | string | number
@@ -44,12 +45,10 @@ export type BoxProps = {
      * @default { contrast: 1, chromaBlend: 1, hueShift: 0}
      * relative to base; when relative, carry to children as default strategy */
     text?: RelativeStyle | string
+    textShadow?: RelativeStyle | string
 
     // TBD ❌
     shadow?: RelativeStyle | string
-
-    // TBD ❌
-    // textShadow?: RelativeStyle | string
 
     /**
      * - string: absolute color
@@ -60,8 +59,9 @@ export type BoxProps = {
      * */
     border?: RelativeStyle | string | number | boolean
 
+    // 🔴 BAD
     /** if true; will add some contrast on hover */
-    hover?: boolean
+    hover?: boolean | number
 }
 
 export type BoxUIProps = BoxProps & {
@@ -72,9 +72,25 @@ export type BoxUIProps = BoxProps & {
     tabIndex?: number
     id?: string
     ref?: React.Ref<HTMLDivElement>
+
+    // mouse
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onMouseLeave?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onContextMenu?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onAuxClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onWheel?: (ev: React.WheelEvent<HTMLDivElement>) => void
+
+    // focus
+    onFocus?: (ev: React.FocusEvent<HTMLDivElement>) => void
+    onBlur?: (ev: React.FocusEvent<HTMLDivElement>) => void
+
+    //
+    onChange?: (ev: React.ChangeEvent<HTMLDivElement>) => void
+
+    onKeyUp?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
+    onKeyDown?: (ev: React.KeyboardEvent<HTMLDivElement>) => void
 }
 
 // 🔴 2024-05-20 rvion:
@@ -95,22 +111,16 @@ export const Box = observer(
             // others:
             ...rest
         } = p
-        const { background, textForCtx, /* styles, */ variables } = useColor(p)
+        const { background, textForCtx, variables } = useColor(p)
 
         return (
             <div //
                 {...rest}
                 ref={ref}
-                tw={[/* className, */ className, 'Box']}
+                tw={[className, 'Box']}
                 style={{ /* ...styles, */ ...style, ...variables }}
             >
-                <ThemeCtx.Provider
-                    value={{
-                        background,
-                        // ~~text must always remaian relative~~ => nope anymore ? ⁉️
-                        text: textForCtx,
-                    }}
-                >
+                <ThemeCtx.Provider value={{ background, text: textForCtx }}>
                     {/* <div>{JSON.stringify(background)}</div> */}
                     {/* <div>
                         text: {JSON.stringify(text)} ({JSON.stringify(p.text)})

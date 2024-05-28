@@ -3,7 +3,7 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Panel, ProgressLine } from '../../rsuite/shims'
+import { ProgressLine, Surface } from '../../rsuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
@@ -12,7 +12,7 @@ import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     return (
-        <Panel tw='relative [min-width:2rem]'>
+        <Surface tw='relative [min-width:2rem]'>
             <GraphProgressUI graph={p.graph} />
             {p.graph.done ? null : <NodeProgressUI graph={p.graph} />}
             {/* </div> */}
@@ -36,7 +36,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                     </div>
                 ))}
             </div>
-        </Panel>
+        </Surface>
     )
 })
 

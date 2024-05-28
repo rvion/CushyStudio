@@ -15,7 +15,7 @@ export const DEMO_ACTIVITY = {
     UI: () => {
         const img = cushy.db.media_image.lastOrCrash()
         return (
-            <div tw='flex items-center justify-center h-full bg-base-300' onClick={(ev) => ev.stopPropagation()}>
+            <div tw='flex items-center justify-center h-full' onClick={(ev) => ev.stopPropagation()}>
                 <div tw='grid grid-cols-4 grid-visible'>
                     {/* A */}
                     <div>

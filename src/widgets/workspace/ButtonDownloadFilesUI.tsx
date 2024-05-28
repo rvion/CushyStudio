@@ -2,7 +2,7 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/shims'
+import { Button } from '../../rsuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: {
@@ -18,10 +18,10 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
 
     return (
         <div tw='flex gap-2 items-center'>
-            <Button appearance='primary' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadWorkflow}>
+            <Button look='primary' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadWorkflow}>
                 Download ComfyUI Workflow
             </Button>
-            <Button appearance='ghost' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadPrompt}>
+            <Button look='ghost' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadPrompt}>
                 Download ComfyUI PROMPT
             </Button>
         </div>

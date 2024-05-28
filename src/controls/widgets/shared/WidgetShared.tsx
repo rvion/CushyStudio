@@ -54,6 +54,13 @@ export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implement
 
     serial: Widget_shared_serial
 
+    get hasChanges() {
+        return this.config.widget.hasChanges
+    }
+    reset() {
+        return this.config.widget.reset()
+    }
+
     get shared(): T['$Widget'] {
         return this.config.widget
     }
@@ -77,8 +84,8 @@ export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implement
         serial?: Widget_shared_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         makeAutoObservableInheritance(this)
     }

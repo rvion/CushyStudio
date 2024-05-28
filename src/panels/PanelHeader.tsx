@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { Box } from '../theme/colorEngine/Box'
+
 /** Re-usable Dock-Panel Header, gives a `bg-base-300` bar with a horizontal flex to put widgets in.
  *
  * `NOTE`: It will automatically set the height of any child widgets.
@@ -13,18 +15,20 @@ import { ReactNode } from 'react'
  * </PanelHeaderUI>
  * ```
  */
-export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children?: ReactNode }) {
+export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
+    //
+    children?: ReactNode
+}) {
     return (
-        <div // Container
-            // This may be good to pass in the future? I don't think this really needs to/should be modifiable though.
-            // className={p.className}
-            tw={['CSHY-panel-header', 'flex select-none', 'items-center p-1', 'bg-base-300']}
+        <Box // Container
+            base={8}
+            tw={['CSHY-panel-header', 'flex gap-1 select-none', 'items-center p-1']}
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY
                 event.stopPropagation()
             }}
         >
             {p.children}
-        </div>
+        </Box>
     )
 })

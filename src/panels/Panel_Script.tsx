@@ -29,9 +29,9 @@ export const Panel_Script = observer(function Panel_Script_(p: { scriptID: Cushy
             <div>extracted from: {script.relPath}</div>
             <TabUI>
                 <div>text (before import rewrite)</div>
-                <pre tw='bg-base-200 text-xs font-mono'>{script.data.code}</pre>
+                <pre tw='text-xs font-mono'>{script.data.code}</pre>
                 <div>text (after import rewrite)</div>
-                <pre tw='bg-base-200 text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
+                <pre tw='text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
                 <div>code</div>
                 <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
             </TabUI>

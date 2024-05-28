@@ -69,7 +69,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
                     // }}
                     className={p.className}
                     loading='lazy'
-                    tw={['bg-base-300', 'rounded', p.onClick ? 'cursor-pointer' : null]}
+                    tw={['rounded', p.onClick ? 'cursor-pointer' : null]}
                     style={{ width: p.size, height: p.size, objectFit: 'contain' }}
                     src={draft.data.illustration}
                     alt='draft illustration'

@@ -22,7 +22,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     return (
         <TreeViewCtx.Provider value={tv}>
             <div tw='_TreeUI flex flex-col' className={p.className}>
-                <div tw='flex items-center gap-1 bg-base-300'>
+                <div tw='flex items-center gap-1'>
                     <div className='flex flex-1 gap-1 items-center'>{p.title && <div tw='text-sm'>{p.title}</div>}</div>
                     {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
                     <RevealUI

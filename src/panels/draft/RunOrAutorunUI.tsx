@@ -4,8 +4,8 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
+import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Button } from '../../rsuite/shims'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
@@ -52,21 +52,18 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                     <span className='material-symbols-outlined'>timer</span>
                 </div>
             </RevealUI>
-            <div
-                tw={['btn btn-sm virtualBorder self-start', draft.shouldAutoStart ? 'btn-active' : null]}
-                // color={draft.shouldAutoStart ? 'green' : undefined}
-                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-            >
+            <Button active={draft.shouldAutoStart} onClick={() => draft.setAutostart(!draft.shouldAutoStart)}>
                 Autorun
                 {draft.shouldAutoStart ? (
                     <div className='loading loading-spinner loading-sm' />
                 ) : (
                     <span className='material-symbols-outlined'>repeat</span>
                 )}
-                {/* Auto */}
-            </div>
+            </Button>
             <Button
-                tw='btn-sm btn-primary flex-1'
+                base={{ hue: 'green', chroma: 0.2 }}
+                look='primary'
+                expand
                 className='self-start'
                 icon={icon}
                 onClick={() => {

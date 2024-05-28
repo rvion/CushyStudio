@@ -10,6 +10,7 @@ import { Box } from '../../../theme/colorEngine/Box'
 import { useColor } from '../../../theme/colorEngine/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
+import { Ikon } from '../../../icons/iconHelpers'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -50,8 +51,6 @@ class InputNumberStableState {
         public props: InputNumberProps,
         public kit: Maybe<CushyKit>,
     ) {
-        // this `makeAutoObservable` will make all getters defined below be `computed` properties
-        // they will update their value when props change so all functions always work with up-to-date values
         makeAutoObservable(this)
     }
 
@@ -248,17 +247,20 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
-    const kolor = useColor({ base: 5, border: true })
     return (
-        <div /* Root */
+        <Box /* Root */
+            base={{ contrast: isEditing ? -0.1 : 0.05 }}
+            border
+            hover
             className={p.className}
-            style={kolor.styles}
+            // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
                 p.disabled && 'pointer-events-none opacity-25',
                 'WIDGET-FIELD relative',
                 // 'theme-number-field',
                 // '!shadow-md !shadow-white',
-                'input-number-ui input-number-roundness',
+                'input-number-ui',
+                // 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
@@ -272,33 +274,37 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
                     num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                     uist.syncValues(num, undefined)
+                    // ev.preventDefault()
+                    // ev.stopPropagation()
                 }
             }}
         >
             <Box /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: !p.hideSlider && !isEditing ? 0.4 : 0 }}
+                // hover // This does not propogate correctly.
+                base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <button /* Left Button */
-                    tw={[
-                        'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
-                    ]}
+                <Box /* Left Button */
+                    className='control'
+                    hover={-0.1}
+                    base={25}
+                    border
+                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}
                     onClick={uist.decrement}
                 >
-                    <span className='material-symbols-outlined'>arrow_left</span>
-                </button>
+                    <Ikon.mdiChevronLeft />
+                </Box>
 
                 <div /* Text Container */
                     tw={[
                         //
                         'th-text',
-                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20 h-full`,
+                        `flex px-1 items-center justify-center text-sm truncate z-20 h-full`,
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return
@@ -332,7 +338,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         ref={uist.inputRef}
                         onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                         tw={[
-                            'text-shadow outline-0',
+                            // 'text-shadow outline-0',
                             /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                              * Can't use `hidden` here because it messes up focusing. */
                             !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',
@@ -413,17 +419,18 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <button /* Right Button */
-                    tw={[
-                        'h-full flex rounded-none text-center justify-center items-center z-20',
-                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
-                    ]}
+                <Box /* Right Button */
+                    className='control'
+                    hover={-0.1}
+                    base={25}
+                    border
+                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}
                     onClick={uist.increment}
                 >
-                    <span className='material-symbols-outlined'>arrow_right</span>
-                </button>
+                    <Ikon.mdiChevronRight />
+                </Box>
             </div>
-        </div>
+        </Box>
     )
 })

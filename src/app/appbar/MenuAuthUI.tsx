@@ -16,7 +16,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     console.log(`[🔑 AUTH] ui updating: isConnected =`, st.auth.isConnected)
     return (
         <Dropdown
-            startIcon={avatar}
+            startIcon={avatar == null ? 'mdiLoginVariant' : undefined}
             title={username}
             content={() => (
                 <div tw='flex flex-col'>

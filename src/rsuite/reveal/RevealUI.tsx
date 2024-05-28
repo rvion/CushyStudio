@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Ikon } from '../../icons/iconHelpers'
+import { Box } from '../../theme/colorEngine/Box'
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'
@@ -38,39 +39,38 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
         }
     }, [uistOrNull?.visible])
 
-    const content = p.children
+    const anchor = p.children
     const tooltip = mkTooltip(uistOrNull)
 
     // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
-    const anchor = (
-        <span //
-            tw={['inline-block ui-reveal-anchor', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
-            className={p.className}
-            ref={ref}
-            style={p.style}
-            // style={{ ...p.style, ...uistOrNull?.debugColor }}
-
-            // lock input on shift+right click
-            onContextMenu={(ev) => {
-                if (ev.shiftKey) {
-                    uist2().toggleLock()
-                    ev.preventDefault() //  = prevent window on non-electron apps
-                    ev.stopPropagation() // = right click is consumed
-                }
-            }}
-            onClick={(ev) => uist2().onLeftClick(ev)}
-            onAuxClick={(ev) => {
-                if (ev.button === 1) return uist2().onMiddleClick(ev)
-                if (ev.button === 2) return uist2().onRightClick(ev)
-            }}
-            onMouseEnter={() => uist2().onMouseEnterAnchor()}
-            onMouseLeave={() => uist2().onMouseLeaveAnchor()}
-        >
-            {content}
-            {tooltip}
-        </span>
+    return (
+        <RevealCtx.Provider value={nextTower}>
+            <div //
+                tw={['inline-block', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
+                className={p.className}
+                ref={ref}
+                style={p.style}
+                // lock input on shift+right click
+                onContextMenu={(ev) => {
+                    if (ev.shiftKey) {
+                        uist2().toggleLock()
+                        ev.preventDefault() //  = prevent window on non-electron apps
+                        ev.stopPropagation() // = right click is consumed
+                    }
+                }}
+                onClick={(ev) => uist2().onLeftClick(ev)}
+                onAuxClick={(ev) => {
+                    if (ev.button === 1) return uist2().onMiddleClick(ev)
+                    if (ev.button === 2) return uist2().onRightClick(ev)
+                }}
+                onMouseEnter={() => uist2().onMouseEnterAnchor()}
+                onMouseLeave={() => uist2().onMouseLeaveAnchor()}
+            >
+                {anchor}
+                {tooltip}
+            </div>
+        </RevealCtx.Provider>
     )
-    return <RevealCtx.Provider value={nextTower}>{anchor}</RevealCtx.Provider>
 })
 
 const mkTooltip = (uist: RevealState | null) => {
@@ -89,85 +89,78 @@ const mkTooltip = (uist: RevealState | null) => {
 
     const pos = uist.tooltipPosition
     const p = uist.p
-
     const hiddenContent = uist.contentFn()
-
-    const revealedContent = uist.placement.startsWith('#') ? (
-        <div
-            ref={(e) => {
-                if (e == null) return global_RevealStack.filter((p) => p !== uist)
-                global_RevealStack.push(uist)
-            }}
-            onKeyUp={(ev) => {
-                if (ev.key === 'Escape') {
-                    uist.close()
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                }
-            }}
-            onClick={(ev) => {
-                p.onClick?.(ev)
-                uist.close()
-                ev.stopPropagation()
-                ev.preventDefault()
-            }}
-            style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
-            tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
-        >
-            {hiddenContent}
-        </div>
-    ) : uist.placement.startsWith('popup') ? (
-        <div
-            ref={(e) => {
-                if (e == null) return global_RevealStack.filter((p) => p !== uist)
-                global_RevealStack.push(uist)
-            }}
-            onKeyUp={(ev) => {
-                if (ev.key === 'Escape') {
-                    uist.close()
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                }
-            }}
-            onClick={(ev) => {
-                p.onClick?.(ev)
-                uist.close()
-                ev.stopPropagation()
-                // ev.preventDefault()
-            }}
-            style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
-            tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
-        >
-            <ModalShellUI
-                close={() => {
-                    uist.close()
+    const revealedContent =
+        // VIA PORTAL --------------------------------------------------------------------------------
+        uist.placement.startsWith('#') ? (
+            <div
+                ref={(e) => {
+                    if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                    global_RevealStack.push(uist)
                 }}
-                title={p.title}
+                onKeyUp={(ev) => {
+                    if (ev.key === 'Escape') {
+                        uist.close()
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                    }
+                }}
+                onClick={(ev) => {
+                    p.onClick?.(ev)
+                    uist.close()
+                    ev.stopPropagation()
+                    ev.preventDefault()
+                }}
+                style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
+                tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
             >
                 {hiddenContent}
-            </ModalShellUI>
-        </div>
-    ) : (
-        <div
-            className={p.tooltipWrapperClassName}
-            tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
-            // 👇 ❌ [break the dropdown]
-            // ⏸️   onMouseDown={(ev) => {
-            // ⏸️       p.onClick?.(ev)
-            // ⏸️       uist.close()
-            // ⏸️       ev.stopPropagation()
-            // ⏸️       ev.preventDefault()
-            // ⏸️   }}
-            onClick={(ev) => {
-                ev.stopPropagation()
-                // ev.preventDefault()
-            }}
-            onMouseEnter={uist.onMouseEnterTooltip}
-            onMouseLeave={uist.onMouseLeaveTooltip}
-            onContextMenu={uist.enterAnchor}
-            // prettier-ignore
-            style={{
-                  //   borderTop: uist._lock ? '1px dashed yellow' : undefined,
+            </div>
+        ) : // VIA POPUP --------------------------------------------------------------------------------
+        uist.placement.startsWith('popup') ? (
+            <div
+                ref={(e) => {
+                    if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                    global_RevealStack.push(uist)
+                }}
+                onKeyUp={(ev) => {
+                    if (ev.key === 'Escape') {
+                        uist.close()
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                    }
+                }}
+                onClick={(ev) => {
+                    p.onClick?.(ev)
+                    uist.close()
+                    ev.stopPropagation()
+                    // ev.preventDefault()
+                }}
+                style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
+                tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
+            >
+                <ModalShellUI
+                    close={() => {
+                        uist.close()
+                    }}
+                    title={p.title}
+                >
+                    {hiddenContent}
+                </ModalShellUI>
+            </div>
+        ) : (
+            // VIA POPOVER --------------------------------------------------------------------------------
+            <Box
+                border
+                // base={0}
+                className={p.tooltipWrapperClassName}
+                tw={['_RevealUI shadow-xl pointer-events-auto']}
+                onClick={(ev) => ev.stopPropagation()}
+                onMouseEnter={uist.onMouseEnterTooltip}
+                onMouseLeave={uist.onMouseLeaveTooltip}
+                onContextMenu={uist.enterAnchor}
+                // prettier-ignore
+                style={{
                   position: 'absolute',
                   zIndex: 99999999,
                   top:    pos.top    ? `${pos.top}px`    : undefined,
@@ -175,42 +168,31 @@ const mkTooltip = (uist: RevealState | null) => {
                   left:   pos.left   ? `${pos.left}px`   : undefined,
                   right:  pos.right  ? `${pos.right}px`  : undefined,
                   transform: pos.transform,
-                  // Adjust positioning as needed
               }}
-        >
-            {p.title ? (
-                <div tw='px-2'>
-                    <div tw='py-0.5'>{p.title}</div>
-                    <div tw='w-full rounded bg-neutral-content' style={{ height: '1px' }}></div>
-                </div>
-            ) : (
-                <></>
-            )}
-            {hiddenContent}
-            {uist._lock ? (
-                <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                    <Ikon.mdiLock />
-                    shift+right-click to unlock
-                </span>
-            ) : (
-                <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                    <Ikon.mdiLockOff />
-                    shift+right-click to lock
-                </span>
+            >
+                {p.title && (
+                    <div tw='px-2'>
+                        <div tw='py-0.5'>{p.title}</div>
+                        <div tw='w-full rounded bg-neutral-content' style={{ height: '1px' }}></div>
+                    </div>
+                )}
+                {hiddenContent}
 
-                //
-                // null
-            )}
-        </div>
-    )
+                {/* LOCK */}
+                {
+                    uist._lock ? (
+                        <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                            <Ikon.mdiLock />
+                            shift+right-click to unlock
+                        </span>
+                    ) : null
+                    // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                    //     <Ikon.mdiLockOffOutline />
+                    //     shift+right-click to lock
+                    // </span>
+                }
+            </Box>
+        )
 
     return createPortal(revealedContent, element)
 }
-
-// -----------------------------------------------------------------------------
-// 🔵 TODO: add some global way to force-open any reveal by UID
-// const knownReveals = new WeakMap<string>(...)
-// export const triggerReveal_UNSAFE = (p: RevealID) => {
-// ...
-// }
-// -----------------------------------------------------------------------------

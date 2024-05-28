@@ -16,6 +16,7 @@ import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
 import { commandManager } from '../shortcuts/CommandManager'
 import { FavBarUI } from './FavBar'
+import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
@@ -59,9 +60,13 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <CushyKitCtx.Provider value={st}>
             <Box
+                style={{
+                    // @ts-expect-error 🔴
+                    '--BASEOK': cushy.theme.root.value.base,
+                }}
                 // base='#1E212B'
                 base={cushy.theme.root.value.base}
-                text={{ contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ }}
+                text={{ contrast: 0.99 /* chromaBlend: 99, hueShift: 0 */ }}
                 //
                 data-theme={st.themeMgr.theme}
                 id='CushyStudio'
@@ -75,7 +80,11 @@ export const CushyUI = observer(function CushyUI_() {
                     })
                 }}
                 ref={appRef}
-                tw='col grow h-full text-base-content overflow-clip'
+                tw={[
+                    'col grow h-full text-base-content overflow-clip',
+                    // topic=WZ2sEOGiLy
+                    st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+                ]}
             >
                 <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                     id='tooltip-root'
@@ -91,6 +100,7 @@ export const CushyUI = observer(function CushyUI_() {
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
+                <FooterBarUI />
             </Box>
         </CushyKitCtx.Provider>
     )

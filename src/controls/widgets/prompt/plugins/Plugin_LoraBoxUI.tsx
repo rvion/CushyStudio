@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
-import { MessageErrorUI } from '../../../../panels/MessageUI'
-import { Button, Input } from '../../../../rsuite/shims'
+import { Button } from '../../../../rsuite/button/Button'
+import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
+import { Input } from '../../../../rsuite/shims'
 import { useSt } from '../../../../state/stateContext'
+import { Box } from '../../../../theme/colorEngine/Box'
 import { InputNumberUI } from '../../number/InputNumberUI'
 import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
@@ -77,7 +79,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
 
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <div tw='bg-base-100 rounded p-2'>
+        <Box base={5} tw='rounded p-2'>
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
@@ -184,7 +186,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <Button
                     size='sm'
                     onClick={() => openExternal(associatedUrl)}
-                    appearance='link'
+                    icon='mdiOpenInNew'
                     // icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 >
                     Associated URL
@@ -207,6 +209,6 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     }}
                 />
             </div>
-        </div>
+        </Box>
     )
 })

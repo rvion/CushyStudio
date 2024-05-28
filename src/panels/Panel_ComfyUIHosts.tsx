@@ -3,7 +3,7 @@ import { resolve } from 'pathe'
 
 import { SQLITE_false } from '../db/SQLITE_boolean'
 import { SelectUI } from '../rsuite/SelectUI'
-import { Panel } from '../rsuite/shims'
+import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { HostUI } from './host/HostUI'
@@ -14,7 +14,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
     const mainHost = st.mainHost
 
     return (
-        <Panel tw='w-full h-full flex flex-col gap-2 p-2'>
+        <Surface tw='w-full h-full flex flex-col gap-2 p-2'>
             {/* <div tw='flex flex-wrap gap-2'>
                 <SelectUI<HostL>
                     label='Current Host'
@@ -59,7 +59,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                         return <HostUI key={host.id} host={host} />
                     })}
             </div>
-        </Panel>
+        </Surface>
     )
 })
 

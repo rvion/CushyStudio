@@ -9,13 +9,7 @@ import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img
-    return (
-        <Dropdown
-            title='Actions'
-            startIcon={<span className='material-symbols-outlined'>menu</span>}
-            content={() => <ImageDropdownMenuUI img={img} />}
-        />
-    )
+    return <Dropdown title='Actions' startIcon='mdiMenu' content={() => <ImageDropdownMenuUI img={img} />} />
 })
 
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
@@ -23,7 +17,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     const img = p.img
     return (
         <>
-            <div className='divider divider-start my-1'>Send to</div>
+            <div className='divider my-1'>Send to</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>content_copy</span>}
                 onClick={(e) => img.copyToClipboard()}
@@ -61,7 +55,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 MiniPaint
             </MenuItem>
 
-            <div className='divider divider-start my-1'>FileSystem</div>
+            <div className='divider my-1'>FileSystem</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
                 // appearance='subtle'
@@ -87,14 +81,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             >
                 Open
             </MenuItem>
-            <div className='divider divider-start my-1'>Draft</div>
+            <div className='divider my-1'>Draft</div>
             <MenuItem className='_MenuItem' onClick={() => img.useAsDraftIllustration()}>
                 <div className='flex items-center gap-2'>
                     <span className='material-symbols-outlined'>image</span>
                     Use as Draft Illustration
                 </div>
             </MenuItem>
-            <div className='divider divider-start my-0'></div>
+            <div className='divider my-0'></div>
             <MenuItem
                 icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
                 disabled={!img?.absPath}

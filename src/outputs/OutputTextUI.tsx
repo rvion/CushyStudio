@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { TabUI } from '../app/layout/TabUI'
 import { StepL } from '../models/Step'
 import { MarkdownUI } from '../rsuite/MarkdownUI'
-import { Panel } from '../rsuite/shims'
+import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
@@ -42,9 +42,7 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
                 {'<HTML/>'}
             </div>
         ) : (
-            <div tw='bg-base-200 text-base-content text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>
-                {output.data.content}
-            </div>
+            <div tw='text-base-content text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
         )
 
     return <OutputPreviewWrapperUI output={p.output}>{message}</OutputPreviewWrapperUI>
@@ -54,33 +52,33 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
     // 🔴 handle markdown / html / text
     if (p.output.data.kind === 'markdown')
         return (
-            <Panel className='w-full m-2'>
+            <Surface className='w-full m-2'>
                 <TabUI tw='w-full'>
                     <div>rendered version</div>
                     <MarkdownUI tw='w-full' markdown={p.output.data.content} />
                     <div>raw version</div>
                     <pre className='w-full'>{p.output.data.content}</pre>
                 </TabUI>
-            </Panel>
+            </Surface>
         )
 
     if (p.output.data.kind === 'html')
         return (
-            <Panel className='w-full m-2'>
+            <Surface className='w-full m-2'>
                 <div //
                     className='_HTML _MD w-full'
                     dangerouslySetInnerHTML={{ __html: p.output.data.content }}
                 ></div>
-            </Panel>
+            </Surface>
         )
 
     if (p.output.data.kind === 'text')
         return (
-            <Panel className='w-full m-2'>
+            <Surface className='w-full m-2'>
                 {/*  */}
                 <div tw='font-bold text-xl'>Text:</div>
                 {p.output.data.content}
-            </Panel>
+            </Surface>
         )
 
     return <div>unknown content</div>

@@ -3,6 +3,9 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
+import { Frame } from '../../../rsuite/button/Frame'
+import { getLCHFromString } from '../../../theme/colorEngine/getLCHFromString'
+import { getLCHFromStringAsString } from '../../../theme/colorEngine/getLCHFromStringAsString'
 import { useColor } from '../../../theme/colorEngine/useColor'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -46,7 +49,6 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
-    let highlight = true
 
     const color = useColor({
         base: 5,
@@ -56,87 +58,80 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     switch (widget.config.inputType) {
         case 'color':
-            inputTailwind = 'absolute w-full h-full opacity-0'
-            visualHelper = <div tw='w-full h-full' style={{ background: val }} />
-            highlight = false
+            inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
+            visualHelper = (
+                <Frame tw='w-full h-full text-xs justify-between' base={val} text={{ contrast: 0.4 }}>
+                    {/* <div>{val}</div> */}
+                    <div>{getLCHFromStringAsString(val)}</div>
+                </Frame>
+            )
+            // highlight = false
             break
         default:
-            inputTailwind = 'input input-sm w-full h-full !outline-none text-shadow'
+            inputTailwind = 'w-full h-full !outline-none bg-transparent'
             break
     }
 
+    /* I think we should handle some of these widgets by ourselves so we have better control over
+     *  the actual widget, instead of relying on the browser's <input>. */
+    // if (widget.config.inputType && widget.config.inputType === 'color') {
+    //     return <Frame active tw='WIDGET-FIELD w-full h-full' style={{ background: val }}></Frame>
+    // }
+
     return (
-        <>
-            <div
-                style={color.styles}
-                tw={[
-                    // color.className,
-                    'WIDGET-FIELD',
-                    'h-full w-full',
-                    'flex flex-1 items-center relative',
-                    'rounded overflow-clip text-shadow',
-                    // 'border border-base-100 hover:border-base-300',
-                    // 'bg-primary/5',
-                    highlight && 'hover:brightness-110',
-                    // 'border-b-2 border-b-base-200 hover:border-b-base-300',
-                    'p-0 m-0',
-                ]}
-                onMouseDown={(ev) => {
-                    if (ev.button == 1) {
-                        const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
-                        textInput.focus()
+        <Frame
+            style={color.styles}
+            tw={[
+                //
+                'WIDGET-FIELD',
+                'h-full w-full',
+                'flex flex-1 items-center relative',
+                'overflow-clip text-sm',
+            ]}
+            onMouseDown={(ev) => {
+                if (ev.button == 1) {
+                    const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
+                    textInput.focus()
+                }
+            }}
+        >
+            {visualHelper}
+            <input
+                tw={inputTailwind}
+                type={widget.config.inputType}
+                pattern={widget.config.pattern}
+                placeholder={widget.config.placeHolder}
+                value={widget.config.buffered ? widget.temporaryValue ?? val : val}
+                onChange={(ev) => {
+                    if (widget.config.buffered) widget.setTemporaryValue(ev.target.value)
+                    else widget.value = ev.currentTarget.value
+                }}
+                /* Prevents drag n drop of selected text, so selecting is easier. */
+                onDragStart={(ev) => ev.preventDefault()}
+                onFocus={(ev) => {
+                    widget.setTemporaryValue(widget.value ?? '')
+                    ev.currentTarget.select()
+                }}
+                onBlur={() => {
+                    if (widget.config.buffered && widget.temporaryValue != null) {
+                        widget.value = widget.temporaryValue
                     }
                 }}
-            >
-                {visualHelper}
-                <input
-                    tw={inputTailwind}
-                    type={widget.config.inputType}
-                    pattern={widget.config.pattern}
-                    placeholder={widget.config.placeHolder}
-                    value={
-                        widget.config.buffered //
-                            ? widget.temporaryValue ?? val
-                            : val
+                onKeyDown={(ev) => {
+                    if (ev.key === 'Enter') {
+                        ev.currentTarget.blur()
+                    } else if (ev.key === 'Escape') {
+                        if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
+                        widget.setTemporaryValue(null)
+                        ev.currentTarget.blur()
                     }
-                    onChange={(ev) => {
-                        if (widget.config.buffered) {
-                            widget.setTemporaryValue(ev.target.value)
-                        } else {
-                            widget.value = ev.currentTarget.value
-                        }
-                    }}
-                    /* Prevents drag n drop of selected text, so selecting is easier. */
-                    onDragStart={(ev) => ev.preventDefault()}
-                    onFocus={(ev) => {
-                        widget.setTemporaryValue(widget.value ?? '')
-                        ev.currentTarget.select()
-                    }}
-                    onBlur={() => {
-                        if (widget.config.buffered && widget.temporaryValue != null) {
-                            widget.value = widget.temporaryValue
-                        }
-                    }}
-                    onKeyDown={(ev) => {
-                        if (ev.key === 'Enter') {
-                            ev.currentTarget.blur()
-                        } else if (ev.key === 'Escape') {
-                            if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
-                            widget.setTemporaryValue(null)
-                            ev.currentTarget.blur()
-                        }
-                    }}
-                />
-            </div>
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <span className='material-symbols-outlined'>undo</span>
-            </div>
-        </>
+                }}
+            />
+        </Frame>
     )
+    // <>
+    //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
+    // </>
 })
 // 1-a 2-a
 // 1-b 2-a

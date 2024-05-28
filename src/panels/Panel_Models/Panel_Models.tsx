@@ -37,7 +37,7 @@ export const Panel_Models = observer(function Panel_Models_() {
                             </div>
                         )}
                     >
-                        <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
+                        <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                             <span className='material-symbols-outlined'>settings</span>
                             <span className='material-symbols-outlined'>expand_more</span>
                         </div>

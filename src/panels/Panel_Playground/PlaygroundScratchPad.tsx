@@ -42,7 +42,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
         base: 'oklch(.3 0.05 0)',
     }))
     return (
-        <div tw='w-full h-full bg-base-300 p-1'>
+        <div tw='w-full h-full p-1'>
             {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
             <Box
                 //

@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { AppCardUI } from '../cards/fancycard/AppCardUI'
+import { Button } from '../rsuite/button/Button'
 import { useSt } from '../state/stateContext'
 import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
@@ -24,10 +25,9 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                 </div>
                 <div>
                     1. First thing first, make sure you have some ComfyUI server you can connect to in the
-                    <div onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})} className='btn btn-sm btn-primary'>
+                    <Button icon='mdiOpenInNew' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
                         Hosts
-                        <span className='material-symbols-outlined'>open_in_new</span>
-                    </div>{' '}
+                    </Button>
                     panel.
                     {/* <span tw='italic text-xs'>(🤫 Cushy Cloud is coming soon)</span> */}
                 </div>

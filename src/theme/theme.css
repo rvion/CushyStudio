@@ -1,12 +1,16 @@
 .Box {
-    background: var(--box-base);
-    color:      var(--box-text);
-    border:     var(--box-border);
+    background:  var(--box-base);
+    color:       var(--box-text);
+    text-shadow: var(--box-text-shadow);
+    border:      var(--box-border);
+    /* misc */
+    border-radius: .2rem;
 }
 .Box:hover {
-    background: var(--box-hover-base);
-    color:      var(--box-hover-text);
-    border:     var(--box-hover-border);
+    background:  var(--box-hover-base);
+    color:       var(--box-hover-text);
+    text-shadow: var(--box-hover-text-shadow);
+    border:      var(--box-hover-border);
 }
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -83,7 +87,7 @@
 }
 /* semantic stuff ---------------------------------------------------------------------------- */
 .cushy-panel-header {
-    @apply flex overflow-auto gap-2 bg-base-300 w-full flex-shrink-0;
+    @apply flex overflow-auto gap-2 w-full flex-shrink-0;
 }
 
 /* ------------------------------------------------------------------------------------------- */
@@ -151,3 +155,9 @@
     scrollbar-width: none;
 }
 /*#endregion*/ /* Hide Scrollbar */
+
+
+/* topic=WZ2sEOGiLy */
+.useDefaultCursorEverywhere .cursor-pointer {
+    cursor: default;
+}

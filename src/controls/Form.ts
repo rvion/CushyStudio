@@ -63,18 +63,18 @@ export class Form<
      * | <div>{x.render()}</div>
      */
     render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => createElement(FormUI, { form: this, ...p })
-    renderAsConfigBtn = (): ReactNode =>
-        createElement(FormAsDropdownConfigUI, {
-            form: this,
-        })
+
+    /**
+     * allow to quickly render the form in a dropdown button
+     * without having to import any component; usage:
+     * | <div>{x.renderAsConfigBtn()}</div>
+     */
+    renderAsConfigBtn = (): ReactNode => createElement(FormAsDropdownConfigUI, { form: this })
 
     get value(): ROOT['$Value'] {
         return this.root.value
     }
 
-    // get rootSerial(): ROOT['$Serial'] {
-    //     return this.root.serial
-    // }
     get serial(): FormSerial {
         return {
             type: 'FormSerial',

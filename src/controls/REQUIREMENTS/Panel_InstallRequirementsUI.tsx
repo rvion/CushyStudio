@@ -3,7 +3,8 @@ import type { Requirements } from '../Requirements'
 
 import { observer } from 'mobx-react-lite'
 
-import { MessageErrorUI, MessageWarningUI } from '../../panels/MessageUI'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
+import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { exhaust } from '../../utils/misc/exhaust'
@@ -47,7 +48,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const manager = host.manager
     const repo = manager.repository
     return (
-        <div tw='flex flex-col gap-2 bg-base-300 '>
+        <div tw='flex flex-col gap-2 '>
             <div tw='flex gap-1'>
                 {/*
                 TODO: uncomment when implemented

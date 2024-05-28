@@ -10,9 +10,9 @@ export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: I
     // only do something if widget is Optional
     if (!isWidgetOptional(p.widget)) return null
     const widget = p.widget as Widget_optional
-
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget
+            tw='mr-1'
             active={widget.serial.active}
             expand={false}
             onValueChange={(value) => widget.setActive(value)}

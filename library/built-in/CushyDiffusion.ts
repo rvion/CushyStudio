@@ -26,8 +26,7 @@ app({
     metadata: {
         name: 'Cushy Diffusion',
         illustration: 'library/built-in/_illustrations/mc.jpg',
-        description:
-            'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.',
+        description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
     ui: (form: FormBuilder) => ({
         positive: form.prompt({
@@ -50,7 +49,7 @@ app({
         sampler: ui_sampler(),
         mask: ui_mask(),
         highResFix: ui_highresfix().optional(true),
-        upscale: ui_upscaleWithModel(),
+        upscale: ui_upscaleWithModel().optional(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),

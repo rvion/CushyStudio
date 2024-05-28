@@ -69,7 +69,7 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
     }
     readonly border = false
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'str' = 'str'
 
     // --------------
@@ -79,7 +79,7 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
 
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''
-    get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.value = this.defaultValue } // prettier-ignore
 
     constructor(
@@ -90,8 +90,8 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
         serial?: Widget_string_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'str',
             val: this.config.default,

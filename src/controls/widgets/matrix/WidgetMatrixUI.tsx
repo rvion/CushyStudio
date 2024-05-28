@@ -33,7 +33,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         {cols.map((col, ix) => (
                             <th
                                 //
-                                className='bg-base-200 virtualBorder'
+                                className='virtualBorder'
                                 key={ix}
                                 onClick={() => widget.setCol(col, !widget.getCell(rows[0]!, col).value)}
                             >

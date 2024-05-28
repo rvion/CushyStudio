@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
-import { Button } from '../rsuite/shims'
+import { Button } from '../rsuite/button/Button'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 
@@ -118,8 +118,8 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         tw='join-item'
                         size='sm'
                         icon='mdiContentSave'
-                        appearance='primary'
-                        hue='green'
+                        look='primary'
+                        base={{ hue: 'green', chroma: 0.2 }}
                         onClick={() => {
                             runInAction(() => {
                                 uist.saveImage()

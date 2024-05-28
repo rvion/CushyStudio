@@ -1,150 +1,13 @@
-import type { IconName } from '../icons/icons'
-import type { RSAppearance, RSSize } from './RsuiteTypes'
+import type { RSSize } from './RsuiteTypes'
 
-import Color from 'colorjs.io'
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-import { IkonOf } from '../icons/iconHelpers'
-import { Box } from '../theme/colorEngine/Box'
 import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
 
 // form
 export const FormHelpTextUI = (p: any) => <div {...p}></div>
-
-let isDragging = false
-
-// inputs
-export const Button = (p: {
-    // hack
-    tabIndex?: number
-    hue?: number | string
-    hueShift?: number | undefined
-    className?: string
-    icon?: Maybe<IconName>
-    active?: Maybe<boolean>
-    size?: Maybe<RSSize>
-    loading?: boolean
-    disabled?: boolean
-    appearance?: Maybe<RSAppearance>
-    style?: CSSProperties
-    /** 🔶 DO NOT USE; for */
-    onClick?: (ev: React.MouseEvent<HTMLElement>) => void
-    children?: ReactNode
-}) => {
-    const {
-        //
-        icon,
-        active,
-        hue,
-        hueShift,
-        size,
-        loading,
-        disabled,
-        appearance,
-        onClick,
-        className,
-        ...rest
-    } = p
-
-    const isDraggingListener = (ev: MouseEvent) => {
-        if (ev.button == 0) {
-            isDragging = false
-            window.removeEventListener('mouseup', isDraggingListener, true)
-        }
-    }
-    const chroma: number = (() => {
-        if (active) return 0.1
-
-        if (appearance === 'primary') return 0.1
-        if (appearance === 'ghost') return 0
-        if (appearance === 'link') return 0
-        if (appearance === 'default') return 0.1
-        if (appearance === 'subtle') return 0
-        if (appearance == null) return 0.1
-        exhaust(appearance)
-        return 0.1
-    })()
-
-    const contrast: number = (() => {
-        if (active) return 0.8
-        if (appearance === 'primary') return 1
-        if (appearance === 'ghost') return 0
-        if (appearance === 'link') return 0
-        if (appearance === 'default') return 0.1
-        if (appearance === 'subtle') return 0
-        if (appearance == null) return 0.1
-        exhaust(appearance)
-        return 0.1
-    })()
-
-    const border: number = (() => {
-        if (appearance === 'primary') return 3
-        if (appearance === 'ghost') return 0
-        if (appearance === 'link') return 0
-        if (appearance === 'default') return 1
-        if (appearance === 'subtle') return 0.5
-        if (appearance == null) return 1
-        exhaust(appearance)
-        return 1
-    })()
-
-    const hueFinal = ((): number | undefined => {
-        if (p.hue == null) return
-        if (typeof p.hue === 'number') return p.hue
-        if (typeof p.hue === 'string') return new Color(p.hue).oklch[2]
-        return
-    })()
-    return (
-        <Box
-            base={{ contrast, chroma, hue: hueFinal, hueShift }}
-            hover
-            tabIndex={p.tabIndex ?? -1}
-            border={border}
-            className={className}
-            onMouseDown={(ev) => {
-                if (ev.button == 0) {
-                    onClick?.(ev)
-                    isDragging = true
-                    window.addEventListener('mouseup', isDraggingListener, true)
-                }
-            }}
-            onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                if (isDragging) onClick?.(ev)
-            }}
-            {...rest}
-            tw={[
-                'btn',
-                p.loading || p.disabled ? 'btn-disabled' : null,
-                p.active ? 'btn-active' : null,
-                // appearance
-                //     ? (() => {
-                //           if (appearance === 'primary') return 'btn-primary'
-                //           if (appearance === 'ghost') return 'btn-outline'
-                //           if (appearance === 'link') return 'btn-link'
-                //           if (appearance === 'default') return null
-                //           if (appearance === 'subtle') return null
-                //           return exhaust(appearance)
-                //       })()
-                //     : null,
-                p.size
-                    ? (() => {
-                          if (p.size === 'sm') return 'btn-sm'
-                          if (p.size === 'xs') return 'btn-xs'
-                          if (p.size === 'lg') return 'btn-lg'
-                          if (p.size === 'md') return null
-                          return exhaust(p.size)
-                      })()
-                    : null,
-                // ...(p?.tw ?? []),
-            ]}
-        >
-            {p.icon && <IkonOf name={p.icon} />}
-            {p.children}
-        </Box>
-    )
-}
 
 export const Input = (p: JSX.IntrinsicElements['input']) => {
     const { tw, className, children, ...rest } = p
@@ -201,30 +64,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-// https://daisyui.com/components/rating/#mask-star-2-with-warning-color
-// TODO: remove that and just use a basic btn
-export const Rate = (p: {
-    //
-    value?: number
-    name: string
-    disabled?: boolean
-    max?: number
-    onChange?: (value: number) => void
-}) => (
-    <div tw='rating rating-md rating-sm'>
-        {new Array(p.max ?? 1).fill(0).map((_, ix) => (
-            <input
-                key={ix}
-                name={p.name}
-                checked={p.value === ix}
-                onChange={() => p.onChange?.(ix)}
-                type='radio'
-                tw={['mask mask-star fade-in-40', p.disabled ? 'bg-base-300' : 'bg-orange-400']}
-            />
-        ))}
-    </div>
-)
-
 // tooltips
 export const Whisper = (p: {
     /** @deprecated */
@@ -236,7 +75,7 @@ export const Whisper = (p: {
 }) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
 
 // misc
-export const Panel = (p: {
+export const Surface = (p: {
     //
     header?: ReactNode
     className?: string
@@ -247,7 +86,7 @@ export const Panel = (p: {
         <div
             //
             // style={{ border: '1px solid #404040' }}
-            tw='p-2 border border-opacity-25 bg-base-200 bg-opacity-50 border-base-content input-bordered rounded-btn'
+            tw='p-2 border border-opacity-25 bg-opacity-50 border-base-content input-bordered rounded-btn'
             {...rest}
         >
             {header}

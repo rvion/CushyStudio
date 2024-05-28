@@ -3,7 +3,7 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
-import { MessageErrorUI } from '../../../panels/MessageUI'
+import { MessageErrorUI } from '../../../rsuite/messages/MessageErrorUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
 

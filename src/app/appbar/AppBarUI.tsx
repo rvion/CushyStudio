@@ -5,6 +5,7 @@ import { menu_utils } from '../../operators/commands/cmd_goTo'
 import { DebugControlsUI } from '../../operators/DebugControlsUI'
 import { HostSchemaIndicatorUI } from '../../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicatorUI'
+import { Box } from '../../theme/colorEngine/Box'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { assets } from '../../utils/assets/assets'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
@@ -22,7 +23,7 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
     return (
-        <div tw='overflow-auto shrink-0 bg-neutral' id='CushyAppBar'>
+        <Box base={{ contrast: 0 }} tw='overflow-auto shrink-0' id='CushyAppBar'>
             <div tw='flex items-center px-2 overflow-auto'>
                 <img style={{ width: '1.6rem' }} src={assets.CushyLogo_512_png} alt='' />
                 <div tw='px-1'>
@@ -39,7 +40,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuHelpUI />
                 <MenuDebugUI />
                 <MenuAuthUI />
-                <DebugControlsUI />
                 <div className='flex flex-grow'></div>
                 <HostWebsocketIndicatorUI host={mainHost} />
                 <HostSchemaIndicatorUI host={mainHost} />
@@ -47,6 +47,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <CushyStudioLinkUI />
             </div>
             {/* <MainNavBarUI /> */}
-        </div>
+        </Box>
     )
 })

@@ -2,6 +2,7 @@ import type { Widget_bool } from './WidgetBool'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../../icons/iconHelpers'
 import { SpacerUI } from '../spacer/SpacerUI'
 import { InputBoolUI } from './InputBoolUI'
 
@@ -17,7 +18,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
             <InputBoolUI
                 // config
                 display={widget.config.display}
-                expand={widget.config.expand}
+                expand={widget.config.display === 'button' ? widget.config.expand : true}
                 icon={widget.icon}
                 text={widget.config.text ?? widget.config.label2}
                 // value
@@ -26,13 +27,6 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
             />
 
             <SpacerUI />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <span className='material-symbols-outlined'>undo</span>
-            </div>
         </div>
     )
 })
