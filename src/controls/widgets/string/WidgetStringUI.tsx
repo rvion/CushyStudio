@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
 import { Frame } from '../../../rsuite/button/Frame'
+import { getLCHFromString } from '../../../theme/colorEngine/getLCHFromString'
+import { getLCHFromStringAsString } from '../../../theme/colorEngine/getLCHFromStringAsString'
 import { useColor } from '../../../theme/colorEngine/useColor'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -58,8 +60,9 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
         case 'color':
             inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
             visualHelper = (
-                <Frame tw='w-full h-full' base={val} text={{ contrast: 0.4 }}>
-                    {val}
+                <Frame tw='w-full h-full text-xs justify-between' base={val} text={{ contrast: 0.4 }}>
+                    {/* <div>{val}</div> */}
+                    <div>{getLCHFromStringAsString(val)}</div>
                 </Frame>
             )
             // highlight = false
