@@ -18,7 +18,7 @@ export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
 export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <Button icon='mdiMagnifyScan' sm primary onClick={st.startupFileIndexing}>
+        <Button icon='mdiMagnifyScan' sm appearance='primary' onClick={st.startupFileIndexing}>
             Index Apps
         </Button>
     )

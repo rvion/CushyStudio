@@ -29,7 +29,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
         return (
             <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
                 style={p.style}
-                headless
+                appearance='headless'
                 className={p.className}
                 hover
                 triggerOnPress
@@ -61,7 +61,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
     return (
         <Frame // Container
             sm
-            default
+            appearance='default'
             className={p.className}
             triggerOnPress
             active={isActive}

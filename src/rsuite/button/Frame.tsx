@@ -53,7 +53,6 @@ export const Frame = (p: FrameProps) => {
         size,
         loading,
         disabled,
-        primary,
         appearance: appearance_,
         // BOX stuff that need to be merged here -------
         base: _base_,

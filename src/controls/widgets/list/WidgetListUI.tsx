@@ -56,7 +56,12 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                             <SortableItem key={subWidget.id}>
                                 <Box border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
-                                        <Button ghost square icon='mdiChevronRight' onClick={() => subWidget.toggleCollapsed()} />
+                                        <Button
+                                            appearance='ghost'
+                                            square
+                                            icon='mdiChevronRight'
+                                            onClick={() => subWidget.toggleCollapsed()}
+                                        />
                                         <SpacerUI />
                                         {subWidget.config.showID ? (
                                             <div className='divider flex-1 border-top'>
@@ -74,16 +79,12 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             </ErrorBoundary>
                                         )}
 
-                                        <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
-                                            <Button icon='mdiDotsVertical' ghost square xs />
-                                        </RevealUI>
-
                                         {/* delete btn */}
                                         {p.widget.isAuto ? null : (
                                             <Button
                                                 disabled={min != null && widget.items.length <= min}
                                                 square
-                                                ghost
+                                                appearance='ghost'
                                                 icon='mdiDelete'
                                                 onClick={() => widget.removeItem(subWidget)}
                                             />
@@ -92,6 +93,9 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
+                                        <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
+                                            <Button icon='mdiDotsVertical' appearance='ghost' square xs />
+                                        </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -115,7 +119,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
-            <Button ghost square icon='mdiDragHorizontalVariant' />
+            <Button xs appearance='ghost' square icon='mdiDragHorizontalVariant' />
         </div>
     )
 })

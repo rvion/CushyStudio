@@ -111,13 +111,13 @@ export const Box = observer(
             // others:
             ...rest
         } = p
-        const { background, textForCtx, /* styles, */ variables } = useColor(p)
+        const { background, textForCtx, variables } = useColor(p)
 
         return (
             <div //
                 {...rest}
                 ref={ref}
-                tw={[/* className, */ className, 'Box']}
+                tw={[className, 'Box']}
                 style={{ /* ...styles, */ ...style, ...variables }}
             >
                 <ThemeCtx.Provider value={{ background, text: textForCtx }}>

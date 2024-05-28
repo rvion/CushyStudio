@@ -73,11 +73,7 @@ body {
 /* scrollbar -------------------------------------------------------------------------------------------------------------------------------- */
 *::-webkit-scrollbar-thumb {
     background-color:
-        color-mix(
-            in oklch,
-            oklch(var(--p)),
-            transparent 30%
-        )
+    oklch(from var(--BASEOK) calc(l + 0.3) calc(0) h);
 }
 
 /*  */
