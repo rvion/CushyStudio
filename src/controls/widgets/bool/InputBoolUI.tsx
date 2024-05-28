@@ -69,6 +69,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
 
     return (
         <Frame // Container
+            sm
             className={p.className}
             triggerOnPress
             active={isActive}

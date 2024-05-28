@@ -38,14 +38,13 @@ export const Button = observer(function Button_(p: FrameProps) {
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
 
+    const { size, ...rest } = p
     return (
         <Frame //
-            {...p}
+            size={size ?? 'md'}
+            {...rest}
             tw={['Button_ cursor-pointer justify-center']}
-            // triggerOnPress
             onMouseDown={uist.press}
-            // active={uist.pressed}
-            // active={p.active}
             active={uist.visuallyActive}
         />
     )

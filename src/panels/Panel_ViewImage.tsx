@@ -5,6 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
+import { Button } from '../rsuite/button/Button'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
@@ -103,13 +104,12 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
             <div tw='join'>
-                <div // Canvas Button
-                    tw='WIDGET-FIELD join-item flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
+                <Button // Canvas Button
                     onClick={() => img?.openInCanvasEditor()}
+                    icon='mdiShapeSquareRoundedPlus'
                 >
-                    <span className='material-symbols-outlined'>format_shapes</span>
-                    <p tw='px-1'>Canvas</p>
-                </div>
+                    Canvas
+                </Button>
                 <div // Paint Button
                     tw='WIDGET-FIELD join-item flex px-1 cursor-default rounded h-full items-center justify-center hover:brightness-125 border border-base-100 text-shadow text-sm'
                     onClick={() => {

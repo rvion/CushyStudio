@@ -12,14 +12,13 @@
 import type { IconName } from '../../icons/icons'
 import type { RelativeStyle } from '../../theme/colorEngine/AbsoluteStyle'
 
-import Color from 'colorjs.io'
-import { type CSSProperties, ReactNode } from 'react'
-
 import { IkonOf } from '../../icons/iconHelpers'
-import { Box, type BoxProps, type BoxUIProps } from '../../theme/colorEngine/Box'
+import { Box, type BoxUIProps } from '../../theme/colorEngine/Box'
 import { normalizeBase, normalizeBorder } from '../../theme/colorEngine/useColor'
 import { exhaust } from '../../utils/misc/exhaust'
-import { FrameAppearance, getAppearance } from './FrameAppearance'
+import { FrameAppearance, type FrameAppearanceFlags, getAppearance } from './FrameAppearance'
+import { getBorderContrast } from './FrameBorderContrast'
+import { getChroma } from './FrameChroma'
 import { type FrameSize, getClassNameForSize } from './FrameSize'
 import { usePressLogic } from './usePressLogic'
 
@@ -27,23 +26,6 @@ export type FrameProps = {
     // logic --------------------------------------------------
     /** TODO: */
     triggerOnPress?: boolean
-
-    // HIGH LEVEL THEME-DEFINED BOX STYLES -------------------------------------------
-    appearance?: FrameAppearance
-    /** no visual distinction; equivalent to appearance='headless' */
-    headless?: boolean
-    /** no border, very low contrast; equivalent to appearance='subtle' */
-    subtle?: boolean
-    /** small border, low contrast; equivalent to appearance='default' */
-    default?: boolean
-    /** a.k.a. outline: border but no contrast; equivalent to appearance='ghost' */
-    ghost?: boolean
-    /** for readonly stuff; equivalent to appearance='link' */
-    link?: boolean
-    /** panel or modal primary action; usually more chroma, more contrast; equivalent to appearance='primary' */
-    primary?: boolean
-    /** panel or modal secondary action; equivalent to appearance='secondary' */
-    secondary?: boolean
 
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
@@ -58,6 +40,9 @@ export type FrameProps = {
     icon?: Maybe<IconName>
     suffixIcon?: Maybe<IconName>
 } & BoxUIProps &
+    /** HIGH LEVEL THEME-DEFINED BOX STYLES */
+    FrameAppearanceFlags &
+    /** Sizing and aspect ratio vocabulary */
     FrameSize
 
 // -------------------------------------------------
@@ -120,50 +105,17 @@ export const Frame = (p: FrameProps) => {
             {...rest}
             {...mouseEvents}
             tw={[
+                '_Frame',
                 getClassNameForSize(p),
                 p.expand && 'flex-1',
                 p.appearance === 'headless' ? undefined : 'rounded-sm flex gap-2 items-center',
             ]}
         >
             {p.icon && <IkonOf name={p.icon} />}
-            {p.children && <div tw='line-clamp-1'>{p.children}</div>}
+            {p.children}
             {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
         </Box>
     )
-}
-
-function getChroma(p: {
-    //
-    active: Maybe<boolean>
-    isDisabled: Maybe<boolean>
-    primary: Maybe<boolean>
-    appearance: Maybe<FrameAppearance>
-}) {
-    if (p.active) return 0.1
-    if (p.isDisabled) return // 0.001
-    if (p.primary || p.appearance === 'primary') return 0.1
-    return
-    // if (appearance === 'none') return undefined
-    // if (appearance === 'ghost') return 0
-    // if (appearance === 'link') return 0
-    // if (appearance === 'default') return 0.1
-    // if (appearance === 'subtle') return 0
-    // if (appearance == null) return 0.05
-    // exhaust(appearance)
-    // return 0.1
-}
-
-function getBorderContrast(appearance: Maybe<FrameAppearance>) {
-    if (appearance === 'headless') return undefined
-    if (appearance === 'primary') return 0.3
-    if (appearance === 'secondary') return 0.3
-    if (appearance === 'ghost') return 0
-    if (appearance === 'link') return 0
-    if (appearance === 'default') return 0.1
-    if (appearance === 'subtle') return 0.05
-    if (appearance == null) return 0.1
-    exhaust(appearance)
-    return 1
 }
 
 function getBackgroundContrast(
@@ -172,17 +124,18 @@ function getBackgroundContrast(
     isDisabled: boolean,
     appearance: FrameAppearance,
 ) {
-    if (active) return 0.6
-    // if (isDisabled) return 0.05
+    const disabledMult = isDisabled ? 0.2 : 1
 
-    if (appearance === 'headless') return 0
-    if (appearance === 'primary') return 0.9
-    if (appearance === 'secondary') return 0.9
-    if (appearance === 'ghost') return 0
-    if (appearance === 'link') return 0
-    if (appearance === 'default') return 0.1
-    if (appearance === 'subtle') return 0
-    if (appearance == null) return 0.1
+    if (active) return 0.5 * disabledMult
+    // if (isDisabled) return 0.05 * disabledMult
+
+    if (appearance === 'headless') return 0 * disabledMult
+    if (appearance === 'primary') return 0.9 * disabledMult
+    if (appearance === 'secondary') return 0.9 * disabledMult
+    if (appearance === 'ghost') return 0 * disabledMult
+    if (appearance === 'default') return 0.1 * disabledMult
+    if (appearance === 'subtle') return 0 * disabledMult
+    if (appearance == null) return 0.1 * disabledMult
     exhaust(appearance)
-    return 0.1
+    return 0.1 * disabledMult
 }

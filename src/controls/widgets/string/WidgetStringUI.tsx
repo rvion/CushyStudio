@@ -3,8 +3,6 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
-import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/button/Button'
 import { Frame } from '../../../rsuite/button/Frame'
 import { useColor } from '../../../theme/colorEngine/useColor'
 
@@ -49,7 +47,6 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
-    let highlight = true
 
     const color = useColor({
         base: 5,
@@ -59,9 +56,13 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     switch (widget.config.inputType) {
         case 'color':
-            inputTailwind = 'absolute w-full h-full !bg-transparent'
-            visualHelper = <Frame tw='w-full h-full' style={{ background: val }} />
-            highlight = false
+            inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
+            visualHelper = (
+                <Frame tw='w-full h-full' base={val} text={{ contrast: 0.4 }}>
+                    {val}
+                </Frame>
+            )
+            // highlight = false
             break
         default:
             inputTailwind = 'w-full h-full !outline-none bg-transparent'
@@ -75,19 +76,14 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     // }
 
     return (
-        <div
+        <Frame
             style={color.styles}
             tw={[
-                // color.className,
+                //
                 'WIDGET-FIELD',
                 'h-full w-full',
                 'flex flex-1 items-center relative',
-                'rounded overflow-clip text-sm',
-                // 'border border-base-100 hover:border-base-300',
-                // 'bg-primary/5',
-                // highlight && 'hover:brightness-110',
-                // 'border-b-2 border-b-base-200 hover:border-b-base-300',
-                'p-0 m-0 px-1',
+                'overflow-clip text-sm',
             ]}
             onMouseDown={(ev) => {
                 if (ev.button == 1) {
@@ -102,17 +98,10 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 type={widget.config.inputType}
                 pattern={widget.config.pattern}
                 placeholder={widget.config.placeHolder}
-                value={
-                    widget.config.buffered //
-                        ? widget.temporaryValue ?? val
-                        : val
-                }
+                value={widget.config.buffered ? widget.temporaryValue ?? val : val}
                 onChange={(ev) => {
-                    if (widget.config.buffered) {
-                        widget.setTemporaryValue(ev.target.value)
-                    } else {
-                        widget.value = ev.currentTarget.value
-                    }
+                    if (widget.config.buffered) widget.setTemporaryValue(ev.target.value)
+                    else widget.value = ev.currentTarget.value
                 }}
                 /* Prevents drag n drop of selected text, so selecting is easier. */
                 onDragStart={(ev) => ev.preventDefault()}
@@ -135,7 +124,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             />
-        </div>
+        </Frame>
     )
     // <>
     //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
