@@ -28,6 +28,8 @@ export type Widget_image_serial = WidgetSerialFields<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
     imageHash?: string /** for form expiration */
+    /** Height of the resizable frame's content, the width is aspect ratio locked. */
+    size: number
 }>
 
 // VALUE
@@ -51,6 +53,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
 
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
+    // size: number = 192
     get baseErrors(): Problem_Ext {
         return null
     }
@@ -78,6 +81,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             type: 'image',
             id: this.id,
             imageID: this.config.default?.id ?? cushy.defaultImage.id,
+            size: 128,
         }
         this.init({
             DefaultHeaderUI: false,
@@ -96,6 +100,14 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             this.serial.imageID = next.id
             this.bumpValue()
         })
+    }
+
+    set size(val: number) {
+        this.serial.size = val
+        this.bumpSerial()
+    }
+    get size() {
+        return this.serial.size
     }
 }
 

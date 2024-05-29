@@ -24,7 +24,7 @@ export const ui_latent_v3 = () => {
                 border: false,
                 items: {
                     batchSize,
-                    image: form.image(),
+                    image: form.image({ label: false, alignLabel: false }),
                     resize: form.auto.Image_Resize().optional(),
                 },
             }),

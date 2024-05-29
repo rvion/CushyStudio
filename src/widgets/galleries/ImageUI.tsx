@@ -71,7 +71,7 @@ export const ImageUI = observer(function ImageUI_(p: {
             ) : image.existsLocally && !existsSync(image?.absPath as PathLike) ? (
                 <ImageErrorDisplayUI className='hover:border-transparent' icon={'folder'} />
             ) : (
-                <div>{IMG}</div>
+                <div tw='flex w-full justify-center items-center'>{IMG}</div>
             )}
         </RevealUI>
     )
