@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { Box } from '../box/Box'
+import { BoxUI } from '../box/Box'
 import { MarkdownUI } from '../MarkdownUI'
 
 export const MessageInfoUI = observer(function MessageInfoUI_(p: {
@@ -11,7 +11,7 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
     className?: string
 }) {
     return (
-        <Box
+        <BoxUI
             base={{ contrast: 0.05, hue: 220, chroma: 0.04 }}
             className={p.className}
             tw='virtualBorder p-1 rounded flex items-center gap-2'
@@ -29,6 +29,6 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
                     <MarkdownUI markdown={p.markdown} />
                 </>
             )}
-        </Box>
+        </BoxUI>
     )
 })

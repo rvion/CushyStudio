@@ -9,7 +9,7 @@ import { ActivityStackUI } from '../../operators/ActivityUI'
 import { useRegionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
 import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { RevealState } from '../../rsuite/reveal/RevealState'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
@@ -59,7 +59,7 @@ export const CushyUI = observer(function CushyUI_() {
 
     return (
         <CushyKitCtx.Provider value={st}>
-            <Box
+            <BoxUI
                 // @ts-expect-error 🔴
                 style={{ '--BASEOK': cushy.theme.root.value.base }}
                 base={cushy.theme.value.base}
@@ -97,7 +97,7 @@ export const CushyUI = observer(function CushyUI_() {
                     <ProjectUI />
                 </div>
                 <FooterBarUI />
-            </Box>
+            </BoxUI>
         </CushyKitCtx.Provider>
     )
 })

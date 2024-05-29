@@ -3,7 +3,7 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { Button } from '../../rsuite/button/Button'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'
@@ -19,7 +19,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const { draft } = p
     const app = draft.appRef.item
     return (
-        <Box
+        <BoxUI
             base={10}
             // border
             style={{
@@ -63,6 +63,6 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     </div>
                 </div>
             </div>
-        </Box>
+        </BoxUI>
     )
 })

@@ -4,7 +4,7 @@ import type { OKLCH } from './OKLCH'
 import { clamp } from '../../controls/widgets/list/clamp'
 import { getLCHFromString } from './getLCHFromString'
 
-export const applyRelative = (a: OKLCH, b: Kolor): OKLCH => {
+export const applyKolorToOKLCH = (a: OKLCH, b: Kolor): OKLCH => {
     const lightness = b.lightness ?? _autoContrast(a.lightness, b.contrast ?? 0)
     const chroma = clamp(b.chroma ?? a.chroma * (b.chromaBlend ?? 1), 0, 0.4)
     const hue = b.hue //

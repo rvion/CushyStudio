@@ -10,14 +10,17 @@
 // the high level api
 
 import type { IconName } from '../../icons/icons'
+import type { BoxProps } from '../box/BoxProps'
 import type { Kolor } from '../kolor/Kolor'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { exhaust } from '../../utils/misc/exhaust'
-import { Box } from '../box/Box'
+import { BoxUI } from '../box/Box'
 import { type BoxUIProps } from '../box/BoxUIProps'
-import { normalizeBase, normalizeBorder } from '../box/useColor'
+import { normalizeBoxBase } from '../box/normalizeBoxBase'
+import { normalizeBoxBorder } from '../box/normalizeBoxBorder'
 import { usePressLogic } from '../button/usePressLogic'
+import { overrideKolor } from '../kolor/overrideKolor'
 import { FrameAppearance, type FrameAppearanceFlags, getAppearance } from './FrameAppearance'
 import { getBorderContrast } from './FrameBorderContrast'
 import { getChroma } from './FrameChroma'
@@ -46,7 +49,7 @@ export type FrameProps = {
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
-// -------------------------------------------------
+// -----------------------------------------------------
 export const Frame = (p: FrameProps) => {
     const {
         icon,
@@ -54,9 +57,17 @@ export const Frame = (p: FrameProps) => {
         size,
         loading,
         disabled,
+        // ---------------------------------------------
         look: appearance_,
+
         // BOX stuff that need to be merged here -------
         base: _base_,
+        border: _border_,
+        text: _text_,
+        hover: _hover_,
+        shadow: _shadow_,
+        textShadow: _textShadow_,
+
         //
         onMouseDown,
         onMouseEnter,
@@ -68,45 +79,47 @@ export const Frame = (p: FrameProps) => {
 
     const appearance = getAppearance(p)
     const isDisabled = p.loading || p.disabled || false
-    const chroma = getChroma({ active, appearance, isDisabled })
-
     const mouseEvents = p.triggerOnPress
         ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
         : { onMouseDown, onMouseEnter, onClick }
-    // -----------------------------------------------------------------
-    const mergeStyles = (a: Kolor | null, b: Kolor | null): Kolor | undefined => {
-        if (a == null && b == null) return
-        if (a == null) return b!
-        if (b == null) return a
-        return { ...a, ...b }
-    }
 
     // BACKGROUND ------------------------------------------------------
-    const normalizedBase = p.base ? normalizeBase(p.base) : null
-    const themeBase: Kolor = {
+    const custBase: Kolor | null = p.base ? normalizeBoxBase(p.base) : null
+    const lookBase: Kolor = {
         contrast: getBackgroundContrast(active, isDisabled, appearance),
-        chroma,
+        chroma: getChroma({ active, appearance, isDisabled }),
     }
-    const base = mergeStyles(themeBase, normalizedBase)
+    const base: Kolor | undefined = overrideKolor(lookBase, custBase)
 
     // BORDER -----------------------------------------------------------
-    const normalziedBorder: Kolor | null = p.border ? normalizeBorder(p.border) : null
-    const themeBorderContrast = getBorderContrast(appearance)
-    const themeBorder: Kolor | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
-    const border = mergeStyles(themeBorder, normalziedBorder)
+    const custBorder: Kolor | null = p.border ? normalizeBoxBorder(p.border) : null
+    const lookBorderContrast = getBorderContrast(appearance)
+    const lookBorder: Kolor | null = lookBorderContrast ? { contrast: lookBorderContrast } : null
+    const border: Kolor | undefined = overrideKolor(lookBorder, custBorder)
 
     // TEXT -----------------------------------------------------------
-    // 📋 const normalziedBorder: RelativeStyle | null = p.border ? normalizeBorder(p.border) : null
-    // 📋 const themeBorderContrast = getBorderContrast(appearance)
-    // 📋 const themeBorder: RelativeStyle | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
-    // 📋 const border = mergeStyles(themeBorder, normalziedBorder)
+    const custText: Kolor | null = p.text ? normalizeBoxBorder(p.text) : null
+    const lookTextContrast = isDisabled ? 0.1 : 0.9
+    const lookText: Kolor | null = lookTextContrast ? { contrast: lookTextContrast } : null
+    const text: Kolor | undefined = overrideKolor(lookText, custText)
+
+    // const boxProps: BoxProps = {
+    //     base,
+    //     border,
+    //     hover: appearance !== 'headless',
+    //     text,
+    //     shadow: undefined,
+    //     textShadow: undefined,
+    // }
 
     return (
-        <Box
+        <BoxUI
+            // Box Props ----------------------------------------------------
             base={base}
             border={border}
             hover={appearance !== 'headless'} // TODO
-            text={{ contrast: isDisabled ? 0.1 : 0.9 }}
+            text={text}
+            // --------------------------------------------------------------
             tabIndex={p.tabIndex ?? -1}
             className={className}
             /* do not contain the 3 mouse events handled above */
@@ -122,7 +135,7 @@ export const Frame = (p: FrameProps) => {
             {p.icon && <IkonOf name={p.icon} />}
             {p.children}
             {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
-        </Box>
+        </BoxUI>
     )
 }
 

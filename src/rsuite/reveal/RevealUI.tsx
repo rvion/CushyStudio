@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { Box } from '../box/Box'
+import { BoxUI } from '../box/Box'
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'
@@ -150,7 +150,7 @@ const mkTooltip = (uist: RevealState | null) => {
             </div>
         ) : (
             // VIA POPOVER --------------------------------------------------------------------------------
-            <Box
+            <BoxUI
                 border
                 // base={0}
                 className={p.tooltipWrapperClassName}
@@ -191,7 +191,7 @@ const mkTooltip = (uist: RevealState | null) => {
                     //     shift+right-click to lock
                     // </span>
                 }
-            </Box>
+            </BoxUI>
         )
 
     return createPortal(revealedContent, element)

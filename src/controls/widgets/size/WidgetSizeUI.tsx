@@ -4,7 +4,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { Box } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/Box'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { InputBoolUI } from '../bool/InputBoolUI'
 import { InputNumberUI } from '../number/InputNumberUI'
@@ -28,7 +28,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 
     return (
         <div className='flex flex-1 flex-col gap-1'>
-            <Box //Joined container
+            <BoxUI //Joined container
                 hover
                 border={{ contrast: 0.25 }}
                 tw={[
@@ -72,7 +72,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                 <AspectRatioSquareUI sizeHelper={uist} />
                 <div tw='h-full' style={{ width: '1px' }} />
                 <AspectLockButtonUI sizeHelper={uist} />
-            </Box>
+            </BoxUI>
             {/* <div tw='flex items-center gap-1'>
                 <div // Extra div because gap-1 will eat in to the child's width for SOME reason
                 ></div>
@@ -169,7 +169,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const portrait = uist.height / uist.width > 1.0
 
     return (
-        <Box
+        <BoxUI
             border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
             base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
         >
@@ -201,6 +201,6 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                     </div>
                 </div>
             </div>
-        </Box>
+        </BoxUI>
     )
 })

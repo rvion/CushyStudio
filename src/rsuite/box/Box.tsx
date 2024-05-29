@@ -9,7 +9,7 @@ import { useColor } from './useColor'
 // 🔴 2024-05-20 rvion:
 // || do we want to add observer here + forward ref ?
 // || or just go for speed ?
-export const Box = observer(
+export const BoxUI = observer(
     function BoxUI_(p: BoxUIProps, ref: ForwardedRef<HTMLDivElement>) {
         const {
             // to merge:

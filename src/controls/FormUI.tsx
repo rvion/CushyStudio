@@ -5,7 +5,7 @@ import type { Form } from './Form'
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
-import { Box } from '../rsuite/box/Box'
+import { BoxUI } from '../rsuite/box/Box'
 import { type BoxProps } from '../rsuite/box/BoxProps'
 import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
 
@@ -42,7 +42,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form.root == null) return <MessageErrorUI markdown='form.root is null' />
     const submitAction = p.submitAction
     return (
-        <Box {...p.theme} className={p.className} style={p.style}>
+        <BoxUI {...p.theme} className={p.className} style={p.style}>
             {form.root.ui() /* FORM */}
 
             {p.submitButton ??
@@ -66,6 +66,6 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
                         </div>
                     </div>
                 ))}
-        </Box>
+        </BoxUI>
     )
 })

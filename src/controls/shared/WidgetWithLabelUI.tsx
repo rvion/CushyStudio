@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { IkonOf } from '../../icons/iconHelpers'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -102,7 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const boxBorder = showBorder ? 2 : 0
     const boxBase = widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
     return (
-        <Box key={rootKey} border={boxBorder} base={boxBase} {...p.widget.config.box}>
+        <BoxUI key={rootKey} border={boxBorder} base={boxBase} {...p.widget.config.box}>
             <AnimatedSizeUI>
                 {/*
                     LINE ---------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        <Box tw='flex items-center' text={cushy.themeLablelText}>
+                        <BoxUI tw='flex items-center' text={cushy.themeLablelText}>
                             {/* COLLAPSE */}
                             {(isCollapsed || isCollapsible) && (
                                 <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
@@ -153,9 +153,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 </span>
                             )}
                             {iconName && (
-                                <Box tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
+                                <BoxUI tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
                                     <IkonOf name={iconName} />
-                                </Box>
+                                </BoxUI>
                             )}
                             {/* TOGGLE BEFORE */}
                             {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
@@ -163,7 +163,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {/* TOOLTIPS  */}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
-                        </Box>
+                        </BoxUI>
                         {/* TOGGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
@@ -203,7 +203,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* ERRORS ------------------------------------------------------------------------------ */}
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
-        </Box>
+        </BoxUI>
     )
 })
 

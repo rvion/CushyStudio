@@ -8,7 +8,7 @@ import { forwardRef } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { Box } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/Box'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
@@ -54,7 +54,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
-                                <Box border={boxBorder} tw={'flex flex-col'} base={boxBase}>
+                                <BoxUI border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
                                         <Button
                                             look='ghost'
@@ -105,7 +105,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             </div>
                                         </ErrorBoundary>
                                     )}
-                                </Box>
+                                </BoxUI>
                             </SortableItem>
                         )
                     })}

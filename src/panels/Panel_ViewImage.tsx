@@ -5,7 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
-import { Box } from '../rsuite/box/Box'
+import { BoxUI } from '../rsuite/box/Box'
 import { Button } from '../rsuite/button/Button'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
@@ -152,7 +152,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </div>
             </RevealUI>
 
-            <Box base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Box>
+            <BoxUI base={5} tw='h-5 mx-1' style={{ width: '1px' }}></BoxUI>
 
             <div // Delete button
                 tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'

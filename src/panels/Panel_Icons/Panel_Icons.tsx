@@ -5,7 +5,7 @@ import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
 import { getAllIcons } from '../../icons/iconHelpers'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { searchMatches } from '../../utils/misc/searchMatches'
 import { PanelHeaderUI } from '../PanelHeader'
 
@@ -44,7 +44,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                     onChange={(x) => (uist.query = x.target.value)}
                 />
             </PanelHeaderUI>
-            <Box text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
+            <BoxUI text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
                 <FixedSizeGrid //
                     key={`${showNames}`}
                     // container
@@ -83,7 +83,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                         }
                     }}
                 </FixedSizeGrid>
-            </Box>
+            </BoxUI>
         </div>
     )
 })

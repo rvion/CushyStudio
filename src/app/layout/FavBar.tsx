@@ -12,7 +12,7 @@ import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
@@ -46,7 +46,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     const sizeStr = size + 'px'
     return (
         <>
-            <Box
+            <BoxUI
                 base={5}
                 tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
@@ -73,7 +73,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer icon='apps'>
                                         {st.favoriteApps.map((app) => (
-                                            <Box
+                                            <BoxUI
                                                 border={2}
                                                 hover
                                                 // tw='rounded border border-base-300 overflow-clip box-content'
@@ -88,7 +88,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                 >
                                                     <AppIllustrationUI className={'!rounded-none'} size={sizeStr} app={app} />
                                                 </RevealUI>
-                                            </Box>
+                                            </BoxUI>
                                         ))}
                                     </FavBarContainer>
                                 )}
@@ -103,7 +103,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                     showDelay={0}
                                                     placement='right'
                                                     content={() => (
-                                                        <Box base={5}>
+                                                        <BoxUI base={5}>
                                                             <div className='MENU-HEADER'>
                                                                 <div //Container
                                                                     tw='flex p-1 rounded w-full'
@@ -124,10 +124,10 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </Box>
+                                                        </BoxUI>
                                                     )}
                                                 >
-                                                    <Box
+                                                    <BoxUI
                                                         hover
                                                         border
                                                         tw='relative hover:brightness-125'
@@ -156,7 +156,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                 />
                                                             </div>
                                                         )}
-                                                    </Box>
+                                                    </BoxUI>
                                                 </RevealUI>
                                             </div>
                                         ))}
@@ -166,7 +166,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         </div>
                     </div>
                 </div>
-            </Box>
+            </BoxUI>
             {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>
                     <div tw='absolute insert-0 w-96'>

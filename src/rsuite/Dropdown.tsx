@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { Box } from './box/Box'
+import { BoxUI } from './box/Box'
 import { Button } from './button/Button'
 import { RevealUI } from './reveal/RevealUI'
 
@@ -21,9 +21,9 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Box base={-5} tabIndex={0} tw='shadow z-[1]'>
+            <BoxUI base={-5} tabIndex={0} tw='shadow z-[1]'>
                 {p.content?.()}
-            </Box>
+            </BoxUI>
         )}
     >
         <Button look='ghost' icon={p.startIcon} tabIndex={0}>
@@ -46,7 +46,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
     return (
-        <Box
+        <BoxUI
             text={{ contrast: disabled ? 0.5 : 1 }}
             base={{
                 contrast: active ? 0.1 : 0,
@@ -66,6 +66,6 @@ export const MenuItem = observer(function DropdownItem_(p: {
             {label}
             {children}
             {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
-        </Box>
+        </BoxUI>
     )
 })

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { Message } from '../../rsuite/shims'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { PanelNames, panels } from './PANELS'
@@ -37,7 +37,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const panelID = p.node?.getId()
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <Box
+            <BoxUI
                 //
                 tw='flex-1 h-full w-full overflow-auto'
                 className={`Region-${panel}`}
@@ -45,7 +45,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
                 id={panelID}
             >
                 <Component {...panelProps} className='w-full h-full border-none' />
-            </Box>
+            </BoxUI>
         </ErrorBoundary>
     )
 })

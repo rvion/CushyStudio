@@ -32,7 +32,6 @@ export const ui_Kolor = (ui: FormBuilder) => {
                     {p.widget.fields.h.UIChildren()}
                 </div>
             ),
-            // body: null,
         },
     )
 }

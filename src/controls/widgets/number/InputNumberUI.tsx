@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { Box } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/Box'
 import { useColor } from '../../../rsuite/box/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
@@ -248,7 +248,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const isEditing = uist.isEditing
 
     return (
-        <Box /* Root */
+        <BoxUI /* Root */
             base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border
             hover
@@ -279,7 +279,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 }
             }}
         >
-            <Box /* Slider display */
+            <BoxUI /* Slider display */
                 className='inui-foreground'
                 // hover // This does not propogate correctly.
                 base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0 }}
@@ -288,7 +288,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <Box /* Left Button */
+                <BoxUI /* Left Button */
                     className='control'
                     hover={-0.1}
                     base={25}
@@ -298,7 +298,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     onClick={uist.decrement}
                 >
                     <Ikon.mdiChevronLeft />
-                </Box>
+                </BoxUI>
 
                 <div /* Text Container */
                     tw={[
@@ -419,7 +419,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <Box /* Right Button */
+                <BoxUI /* Right Button */
                     className='control'
                     hover={-0.1}
                     base={25}
@@ -429,8 +429,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     onClick={uist.increment}
                 >
                     <Ikon.mdiChevronRight />
-                </Box>
+                </BoxUI>
             </div>
-        </Box>
+        </BoxUI>
     )
 })

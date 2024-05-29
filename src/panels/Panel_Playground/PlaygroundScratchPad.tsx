@@ -3,7 +3,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
-import { Box } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/Box'
 import { BoxBase, BoxSubtle, BoxTitle } from '../../rsuite/box/BoxMisc'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
@@ -45,7 +45,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
     return (
         <div tw='w-full h-full p-1'>
             {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
-            <Box
+            <BoxUI
                 //
                 tw='p-1 m-1'
                 base={uist.base /* 'oklch(.3 0.05 0)' */}
@@ -83,37 +83,37 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                 </BoxBase>
                 <BoxTitle children='test' />
                 <BoxSubtle children='test' />
-                <Box tw='p-1 m-1' base={{ contrast: 0.05 }}>
+                <BoxUI tw='p-1 m-1' base={{ contrast: 0.05 }}>
                     A 2
                     <BoxSubtle>
                         test 1
                         <BoxSubtle children='test 2' />
                     </BoxSubtle>
-                </Box>
-                <Box tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
+                </BoxUI>
+                <BoxUI tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
-                    <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                    <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
                         A 4
-                        <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                        <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
                             A 5
-                            <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                            <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
                                 A 6
                                 <BoxTitle tw='text-xl font-bold' children='Test' />
-                                <Box
+                                <BoxUI
                                     tw='p-1 m-1 _bd'
                                     border={{ contrast: 0.3, chromaBlend: 1 }}
                                     base={{ contrast: 0.0, hueShift: 30 }}
                                 >
                                     A 7
-                                    <Box tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
+                                    <BoxUI tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
                                         A 8
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
+                                    </BoxUI>
+                                </BoxUI>
+                            </BoxUI>
+                        </BoxUI>
+                    </BoxUI>
+                </BoxUI>
+            </BoxUI>
             {/* <FormUI form={ThemeForm} /> */}
         </div>
     )
