@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 import { Box } from '../theme/colorEngine/Box'
 
-/** Re-usable Dock-Panel Header, gives a `bg-base-300` bar with a horizontal flex to put widgets in.
+/** Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
  *
  * `NOTE`: It will automatically set the height of any child widgets.
  *
@@ -11,7 +11,7 @@ import { Box } from '../theme/colorEngine/Box'
  *
  * ```
  * <PanelHeaderUI>
- *      <div tw='btn btn-sm'>Hello World!<div>
+ *      <Button>Hello World!<Button>
  * </PanelHeaderUI>
  * ```
  */
@@ -22,7 +22,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     return (
         <Box // Container
             base={8}
-            tw={['CSHY-panel-header', 'flex gap-1 select-none', 'items-center p-1']}
+            tw={['CSHY-panel-header w-full', 'flex gap-1 select-none', 'items-center p-1']}
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY
                 event.stopPropagation()
