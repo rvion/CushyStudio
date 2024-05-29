@@ -1,3 +1,13 @@
+☐ compile classes so it's instant
+☐ rename frame hight-level apperance names ('headless' 'subtle' 'default' 'ghost' 'primary' 'secondary')
+☐ make controls for all of those high-level apperance names
+    ☐ text + shadow + base + ... for each
+☐ add a few cushy-specific options like labels (text +...)
+☐ simpler APIs to override forms
+
+----------------
+
+
 ☐ hovering color should propagate
 ☐ background should probably not be inherited; I thought transparent by default stuff was bad, b
 
