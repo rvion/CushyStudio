@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { Box } from '../../rsuite/box/Box'
 import { Message } from '../../rsuite/shims'
-import { Box } from '../../theme/colorEngine/Box'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { PanelNames, panels } from './PANELS'
 

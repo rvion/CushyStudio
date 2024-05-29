@@ -1,22 +1,22 @@
-import type { CompiledStyle, RelativeStyle } from './AbsoluteStyle'
-import type { BoxProps } from './Box'
+import type { Kolor } from '../kolor/Kolor'
+import type { OKLCH } from '../kolor/OKLCH'
+import type { BoxProps } from './BoxProps'
 
-import Color from 'colorjs.io'
 import { createHash } from 'crypto'
 import { type CSSProperties, useContext } from 'react'
 
 import { clamp } from '../../controls/widgets/list/clamp'
-import { ThemeCtx } from './AbsoluteStyle'
-import { applyRelative } from './applyRelative'
-import { getLCHFromString } from './getLCHFromString'
+import { applyRelative } from '../kolor/applyRelative'
+import { getLCHFromString } from '../kolor/getLCHFromString'
+import { CurrentStyleCtx } from './CurrentStyleCtx'
 
 type BoxAppearance = {
-    background: CompiledStyle
-    text: CompiledStyle
-    textShadow: CompiledStyle | null
-    border: CompiledStyle | null
+    background: OKLCH
+    text: OKLCH
+    textShadow: OKLCH | null
+    border: OKLCH | null
     // for ctx
-    textForCtx: CompiledStyle | RelativeStyle
+    textForCtx: OKLCH | Kolor
 }
 
 export const useColor = (
@@ -29,23 +29,23 @@ export const useColor = (
     /** in case you prefer BoxAppearance as css variables */
     variables: Record<string, any>
 } => {
-    const ctx = useContext(ThemeCtx)
+    const ctx = useContext(CurrentStyleCtx)
 
     // ---------------------------------------------------------------------------------------------------
     // background
-    const baseInstr: RelativeStyle | null = normalizeBase(p.base)
-    const baseStyle: CompiledStyle = baseInstr ? applyRelative(ctx.background, baseInstr) : ctx.background
+    const baseInstr: Kolor | null = normalizeBase(p.base)
+    const baseStyle: OKLCH = baseInstr ? applyRelative(ctx.background, baseInstr) : ctx.background
 
     // text
-    const textInstr: RelativeStyle | null = normalizeText(p.text) ?? ctx.text
-    const textStyle: CompiledStyle = applyRelative(baseStyle, textInstr)
+    const textInstr: Kolor | null = normalizeText(p.text) ?? ctx.text
+    const textStyle: OKLCH = applyRelative(baseStyle, textInstr)
 
-    const textShadowInstr: RelativeStyle | null = normalizeText(p.textShadow)
-    const textShadowStyle: CompiledStyle | null = textShadowInstr ? applyRelative(baseStyle, textShadowInstr) : null
+    const textShadowInstr: Kolor | null = normalizeText(p.textShadow)
+    const textShadowStyle: OKLCH | null = textShadowInstr ? applyRelative(baseStyle, textShadowInstr) : null
 
     // const relativeText: RelativeStyle | AbsoluteStyle = p.text ?? ctx.text
     const borderInstr = normalizeBorder(p.border)
-    const borderStyle: CompiledStyle | null = borderInstr ? applyRelative(ctx.background, borderInstr) : null
+    const borderStyle: OKLCH | null = borderInstr ? applyRelative(ctx.background, borderInstr) : null
 
     const textForCtx = typeof p.text === 'object' ? p.text : ctx.text
 
@@ -158,21 +158,21 @@ function setRule(selector: string, block: string = ''): CSSStyleRule {
     }
 }
 
-export function formatColor(col: CompiledStyle) {
+export function formatColor(col: OKLCH) {
     const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(4)
     const c = col.chroma.toFixed(4)
     const h = col.hue.toFixed(4)
     return `oklch(${l} ${c} ${h})`
 }
 
-export function normalizeBase(base: RelativeStyle | string | number | undefined | null): RelativeStyle | null {
+export function normalizeBase(base: Kolor | string | number | undefined | null): Kolor | null {
     if (base == null) return null
     if (typeof base === 'number') return { contrast: clamp(base / 100, 0, 1) }
     if (typeof base === 'string') return getLCHFromString(base)
     return base
 }
 
-export function normalizeBorder(border: RelativeStyle | string | number | boolean | undefined | null): RelativeStyle | null {
+export function normalizeBorder(border: Kolor | string | number | boolean | undefined | null): Kolor | null {
     if (border == null) return null
     if (typeof border === 'boolean') return { contrast: 0.2 }
     if (typeof border === 'number') return { contrast: clamp(border / 10, 0, 1) }
@@ -180,7 +180,7 @@ export function normalizeBorder(border: RelativeStyle | string | number | boolea
     return border
 }
 
-export function normalizeText(text: RelativeStyle | string | undefined | null): RelativeStyle | null {
+export function normalizeText(text: Kolor | string | undefined | null): Kolor | null {
     if (text == null) return null
     if (typeof text === 'string') return getLCHFromString(text)
     return text

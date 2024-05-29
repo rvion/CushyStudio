@@ -10,17 +10,18 @@
 // the high level api
 
 import type { IconName } from '../../icons/icons'
-import type { RelativeStyle } from '../../theme/colorEngine/AbsoluteStyle'
+import type { Kolor } from '../kolor/Kolor'
 
 import { IkonOf } from '../../icons/iconHelpers'
-import { Box, type BoxUIProps } from '../../theme/colorEngine/Box'
-import { normalizeBase, normalizeBorder } from '../../theme/colorEngine/useColor'
 import { exhaust } from '../../utils/misc/exhaust'
+import { Box } from '../box/Box'
+import { type BoxUIProps } from '../box/BoxUIProps'
+import { normalizeBase, normalizeBorder } from '../box/useColor'
+import { usePressLogic } from '../button/usePressLogic'
 import { FrameAppearance, type FrameAppearanceFlags, getAppearance } from './FrameAppearance'
 import { getBorderContrast } from './FrameBorderContrast'
 import { getChroma } from './FrameChroma'
 import { type FrameSize, getClassNameForSize } from './FrameSize'
-import { usePressLogic } from './usePressLogic'
 
 export type FrameProps = {
     // logic --------------------------------------------------
@@ -73,7 +74,7 @@ export const Frame = (p: FrameProps) => {
         ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
         : { onMouseDown, onMouseEnter, onClick }
     // -----------------------------------------------------------------
-    const mergeStyles = (a: RelativeStyle | null, b: RelativeStyle | null): RelativeStyle | undefined => {
+    const mergeStyles = (a: Kolor | null, b: Kolor | null): Kolor | undefined => {
         if (a == null && b == null) return
         if (a == null) return b!
         if (b == null) return a
@@ -82,16 +83,16 @@ export const Frame = (p: FrameProps) => {
 
     // BACKGROUND ------------------------------------------------------
     const normalizedBase = p.base ? normalizeBase(p.base) : null
-    const themeBase: RelativeStyle = {
+    const themeBase: Kolor = {
         contrast: getBackgroundContrast(active, isDisabled, appearance),
         chroma,
     }
     const base = mergeStyles(themeBase, normalizedBase)
 
     // BORDER -----------------------------------------------------------
-    const normalziedBorder: RelativeStyle | null = p.border ? normalizeBorder(p.border) : null
+    const normalziedBorder: Kolor | null = p.border ? normalizeBorder(p.border) : null
     const themeBorderContrast = getBorderContrast(appearance)
-    const themeBorder: RelativeStyle | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
+    const themeBorder: Kolor | null = themeBorderContrast ? { contrast: themeBorderContrast } : null
     const border = mergeStyles(themeBorder, normalziedBorder)
 
     // TEXT -----------------------------------------------------------

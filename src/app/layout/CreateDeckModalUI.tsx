@@ -73,11 +73,11 @@ export class CreateDeckModalState {
 //                         uist.isCreating = false
 //                         uist.handleClose()
 //                     }}
-//                     appearance='primary'
+//                     look='primary'
 //                 >
 //                     Ok
 //                 </Button>
-//                 <Button onClick={uist.handleClose} appearance='subtle'>
+//                 <Button onClick={uist.handleClose} look='subtle'>
 //                     Cancel
 //                 </Button>
 //             </ModalFooter>

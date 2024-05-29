@@ -4,9 +4,9 @@ import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
-import { Box } from '../theme/colorEngine/Box'
-import { searchMatches } from '../utils/misc/searchMatches'
 import { Ikon } from '../icons/iconHelpers'
+import { searchMatches } from '../utils/misc/searchMatches'
+import { Box } from './box/Box'
 
 interface ToolTipPosition {
     top?: number | undefined

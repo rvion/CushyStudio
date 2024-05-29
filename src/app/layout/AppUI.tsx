@@ -9,9 +9,9 @@ import { ActivityStackUI } from '../../operators/ActivityUI'
 import { useRegionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
 import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
+import { Box } from '../../rsuite/box/Box'
 import { RevealState } from '../../rsuite/reveal/RevealState'
 import { useSt } from '../../state/stateContext'
-import { Box } from '../../theme/colorEngine/Box'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
 import { commandManager } from '../shortcuts/CommandManager'
@@ -60,14 +60,10 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <CushyKitCtx.Provider value={st}>
             <Box
-                style={{
-                    // @ts-expect-error 🔴
-                    '--BASEOK': cushy.theme.root.value.base,
-                }}
-                // base='#1E212B'
-                base={cushy.theme.root.value.base}
-                text={{ contrast: 0.99 /* chromaBlend: 99, hueShift: 0 */ }}
-                //
+                // @ts-expect-error 🔴
+                style={{ '--BASEOK': cushy.theme.root.value.base }}
+                base={cushy.theme.value.base}
+                text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
                 data-theme={st.themeMgr.theme}
                 id='CushyStudio'
                 tabIndex={-1}

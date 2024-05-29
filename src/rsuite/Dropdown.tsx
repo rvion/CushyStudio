@@ -1,12 +1,12 @@
 import type { CushyShortcut } from '../app/shortcuts/CommandManager'
 import type { IconName } from '../icons/icons'
-import type { RelativeStyle } from '../theme/colorEngine/AbsoluteStyle'
+import type { Kolor } from './kolor/Kolor'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { Box } from '../theme/colorEngine/Box'
+import { Box } from './box/Box'
 import { Button } from './button/Button'
 import { RevealUI } from './reveal/RevealUI'
 
@@ -15,7 +15,7 @@ export const Dropdown = (p: {
     className?: string
     startIcon?: Maybe<IconName>
     title: ReactNode
-    theme?: RelativeStyle
+    theme?: Kolor
     content?: () => ReactNode
 }) => (
     <RevealUI

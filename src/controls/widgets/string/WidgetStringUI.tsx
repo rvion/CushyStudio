@@ -3,10 +3,10 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
-import { Frame } from '../../../rsuite/button/Frame'
-import { getLCHFromString } from '../../../theme/colorEngine/getLCHFromString'
-import { getLCHFromStringAsString } from '../../../theme/colorEngine/getLCHFromStringAsString'
-import { useColor } from '../../../theme/colorEngine/useColor'
+import { useColor } from '../../../rsuite/box/useColor'
+import { Frame } from '../../../rsuite/frame/Frame'
+import { getLCHFromString } from '../../../rsuite/kolor/getLCHFromString'
+import { getLCHFromStringAsString } from '../../../rsuite/kolor/getLCHFromStringAsString'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 

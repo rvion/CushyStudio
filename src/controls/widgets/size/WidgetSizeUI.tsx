@@ -4,11 +4,10 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { Box } from '../../../theme/colorEngine/Box'
-import { InputNumberUI } from '../number/InputNumberUI'
-import { Button } from '../../../rsuite/button/Button'
-import { Frame } from '../../../rsuite/button/Frame'
+import { Box } from '../../../rsuite/box/Box'
+import { Frame } from '../../../rsuite/frame/Frame'
 import { InputBoolUI } from '../bool/InputBoolUI'
+import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
     return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
@@ -24,13 +23,12 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.sizeHelper
 
-    const ratio = uist.width / uist.height
+    // const ratio = uist.width / uist.height
     // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
 
     return (
         <div className='flex flex-1 flex-col gap-1'>
             <Box //Joined container
-                // appearance='headless'
                 hover
                 border={{ contrast: 0.25 }}
                 tw={[

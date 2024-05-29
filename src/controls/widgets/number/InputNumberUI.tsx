@@ -6,11 +6,11 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
-import { Box } from '../../../theme/colorEngine/Box'
-import { useColor } from '../../../theme/colorEngine/useColor'
+import { Ikon } from '../../../icons/iconHelpers'
+import { Box } from '../../../rsuite/box/Box'
+import { useColor } from '../../../rsuite/box/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
-import { Ikon } from '../../../icons/iconHelpers'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 

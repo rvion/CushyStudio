@@ -9,7 +9,7 @@ import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldNa
 import { toastError } from '../../../utils/misc/toasts'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
@@ -54,6 +54,9 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
+    UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
+    UISelect = () => <WidgetChoices_HeaderUI widget={this} />
+    UIChildren = () => <WidgetChoices_BodyUI widget={this} alignLabel={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
     /* override */ background = true

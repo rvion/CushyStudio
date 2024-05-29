@@ -12,10 +12,10 @@ import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
+import { Box } from '../../rsuite/box/Box'
 import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
-import { Box } from '../../theme/colorEngine/Box'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */

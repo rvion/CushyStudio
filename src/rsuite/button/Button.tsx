@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
-import { Frame, FrameProps } from './Frame'
+import { Frame, FrameProps } from '../frame/Frame'
 
 class ButtonState {
     constructor(public props: FrameProps) {

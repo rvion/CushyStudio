@@ -3,7 +3,8 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
 import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
-import { Box, BoxBase, BoxSubtle, BoxTitle } from '../../theme/colorEngine/Box'
+import { Box } from '../../rsuite/box/Box'
+import { BoxBase, BoxSubtle, BoxTitle } from '../../rsuite/box/BoxMisc'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 

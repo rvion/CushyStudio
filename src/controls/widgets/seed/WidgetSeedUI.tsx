@@ -2,8 +2,8 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
+import { Box } from '../../../rsuite/box/Box'
 import { Button } from '../../../rsuite/button/Button'
-import { Box } from '../../../theme/colorEngine/Box'
 import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
@@ -28,8 +28,6 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                 icon='mdiShuffle'
                 active={widget.serial.mode === 'randomize'}
                 onClick={() => widget.setToRandomize()}
-                // tw='!border-none'
-                // appearance='ghost'
             >
                 Random
             </Button>

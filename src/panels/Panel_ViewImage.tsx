@@ -5,10 +5,10 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
+import { Box } from '../rsuite/box/Box'
 import { Button } from '../rsuite/button/Button'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
-import { Box } from '../theme/colorEngine/Box'
 import { assets } from '../utils/assets/assets'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
@@ -86,19 +86,20 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     return (
         <PanelHeaderUI>
             <Button // rating button
+                square
                 icon='mdiStar'
                 active={isStarred}
                 onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
-            />
+            ></Button>
             <Button // Canvas Button
                 onClick={() => img?.openInCanvasEditor()}
                 disabled={img == null}
-                icon='mdiShapeSquareRoundedPlus'
+                icon='mdiVectorSquareEdit'
             >
                 Canvas
             </Button>
             <Button // Paint Button
-                icon='mdiFormatPaint'
+                icon='mdiBrush'
                 disabled={img == null}
                 onClick={() => img?.openInImageEditor()}
             >

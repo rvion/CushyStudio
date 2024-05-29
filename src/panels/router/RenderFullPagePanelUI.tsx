@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { Box } from '../../rsuite/box/Box'
 import { useSt } from '../../state/stateContext'
-import { Box } from '../../theme/colorEngine/Box'
 import { RenderPanelUI } from './RenderPanelUI'
 
 export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p: {}) {

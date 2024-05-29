@@ -5,6 +5,7 @@ import type { ActionTagMethodList } from '../cards/App'
 import type { FormSerial } from '../controls/FormSerial'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
+import type { Kolor } from '../rsuite/kolor/Kolor'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -54,6 +55,7 @@ import { Tree, type TreeStorageConfig } from '../panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../panels/router/Layout'
+import { run_Kolor } from '../rsuite/kolor/prefab_Kolor'
 // import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
@@ -73,6 +75,7 @@ import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { formConf } from './conf/formConf'
+import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
@@ -949,23 +952,14 @@ export class STATE {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    theme = CushyFormManager.form(
-        (ui) =>
-            ui.fields(
-                {
-                    base: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    accent3: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                    // use default cursor everywhere
-                    useDefaultCursorEverywhere: ui.boolean({ default: false }),
-                },
-                { label: 'Theme' },
-            ),
-        {
-            name: 'theme config',
-            initialSerial: () => readJSON('settings/theme.json'),
-            onSerialChange: (form) => writeJSON('settings/theme.json', form.serial),
-        },
-    )
+    theme = themeConf
+
+    // themeBG = compileToXXX(this.theme.value.base)
+    get themeText(): Kolor {
+        return run_Kolor(this.theme.value.text)
+    }
+
+    get themeLablelText(): Kolor {
+        return run_Kolor(this.theme.value.textLabel ?? this.theme.value.text)
+    }
 }

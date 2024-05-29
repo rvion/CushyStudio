@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
+import { Box } from '../../../../rsuite/box/Box'
 import { Button } from '../../../../rsuite/button/Button'
 import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
 import { Input } from '../../../../rsuite/shims'
 import { useSt } from '../../../../state/stateContext'
-import { Box } from '../../../../theme/colorEngine/Box'
 import { InputNumberUI } from '../../number/InputNumberUI'
 import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'

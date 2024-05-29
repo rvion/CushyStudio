@@ -68,7 +68,7 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
     return (
         <>
             {/* <div className='absolute top-0 right-0'>
-                <Button appearance='ghost' size='sm' disabled={p.litegraphJson == null} onClick={loadFn}>
+                <Button look='ghost' size='sm' disabled={p.litegraphJson == null} onClick={loadFn}>
                     Manual load in case it hasn't loaded
                 </Button>
             </div> */}

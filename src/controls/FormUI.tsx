@@ -5,8 +5,9 @@ import type { Form } from './Form'
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
+import { Box } from '../rsuite/box/Box'
+import { type BoxProps } from '../rsuite/box/BoxProps'
 import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
-import { Box, type BoxProps } from '../theme/colorEngine/Box'
 
 export type FormUIProps = {
     // form -----------------------------------

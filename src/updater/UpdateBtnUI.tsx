@@ -69,7 +69,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                         className='animate-pulse'
                         color='red'
                         size='sm'
-                        appearance='primary'
+                        look='primary'
                         icon={<span className='material-symbols-outlined'>update</span>}
                         onClick={async (ev) => {
                             ev.stopPropagation()

@@ -58,7 +58,6 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <div className='divider my-1'>FileSystem</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
-                // appearance='subtle'
                 disabled={!img?.absPath}
                 onClick={() => {
                     if (!img?.absPath) return
@@ -71,7 +70,6 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
                 size='xs'
-                // appearance='subtle'
                 disabled={!img?.absPath}
                 onClick={() => {
                     const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null

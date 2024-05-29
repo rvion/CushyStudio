@@ -8,9 +8,9 @@ import { forwardRef } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { Ikon } from '../../../icons/iconHelpers'
+import { Box } from '../../../rsuite/box/Box'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { Box } from '../../../theme/colorEngine/Box'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
@@ -85,7 +85,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                                 disabled={min != null && widget.items.length <= min}
                                                 square
                                                 look='ghost'
-                                                icon='mdiDelete'
+                                                icon='mdiDeleteOutline'
                                                 onClick={() => widget.removeItem(subWidget)}
                                             />
                                         )}

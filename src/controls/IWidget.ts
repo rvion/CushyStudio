@@ -1,6 +1,6 @@
 import type { IconName } from '../icons/icons'
-import type { RelativeStyle } from '../theme/colorEngine/AbsoluteStyle'
-import type { BoxProps } from '../theme/colorEngine/Box'
+import type { BoxProps } from '../rsuite/box/BoxProps'
+import type { Kolor } from '../rsuite/kolor/Kolor'
 import type { BaseWidget } from './BaseWidget'
 import type { CovariantFn } from './BivariantHack'
 import type { CovariantFC } from './CovariantFC'
