@@ -16,7 +16,7 @@ export type THEME = {
     text: Kolor
     // ----------
     // misc:
-    labelText: Kolor
+    labelText?: Kolor
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
     shiftDirection?: 'pos' | 'neg'
     // -------------

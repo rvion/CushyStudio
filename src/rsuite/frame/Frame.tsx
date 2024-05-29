@@ -21,6 +21,7 @@ import { normalizeBoxBase } from '../box/normalizeBoxBase'
 import { normalizeBoxBorder } from '../box/normalizeBoxBorder'
 import { usePressLogic } from '../button/usePressLogic'
 import { overrideKolor } from '../kolor/overrideKolor'
+import { useTheme } from '../theme/useTheme'
 import { FrameAppearance, type FrameAppearanceFlags, getAppearance } from './FrameAppearance'
 import { getBorderContrast } from './FrameBorderContrast'
 import { getChroma } from './FrameChroma'
@@ -76,6 +77,8 @@ export const Frame = (p: FrameProps) => {
         className,
         ...rest
     } = p
+
+    const theme = useTheme()
 
     const appearance = getAppearance(p)
     const isDisabled = p.loading || p.disabled || false

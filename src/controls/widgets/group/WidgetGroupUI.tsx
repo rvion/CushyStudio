@@ -27,21 +27,11 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
 }) {
     const widget = p.widget
     const isTopLevel = widget.config.topLevel
-    // Alt
-    // | const groupKeys = widget.childKeys
-    // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
     const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
 
     return (
-        <div
-            // base={4}
-            // {...widget.config.box}
-            className={p.className}
-            tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}
-            // style={color.styles}
-            // style={{ position: 'relative' }}
-        >
+        <div className={p.className} tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}>
             {widget.serial.collapsed ? null : (
                 <div
                     className={widget.config.className}

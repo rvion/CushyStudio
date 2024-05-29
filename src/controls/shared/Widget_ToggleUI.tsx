@@ -1,4 +1,4 @@
-import type { IWidget } from '../IWidget'
+import type { BaseWidget } from '../BaseWidget'
 import type { Widget_optional } from '../widgets/optional/WidgetOptional'
 
 import { observer } from 'mobx-react-lite'
@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../widgets/bool/InputBoolUI'
 import { isWidgetOptional } from '../widgets/WidgetUI.DI'
 
-export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
+export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: BaseWidget }) {
     // only do something if widget is Optional
     if (!isWidgetOptional(p.widget)) return null
     const widget = p.widget as Widget_optional

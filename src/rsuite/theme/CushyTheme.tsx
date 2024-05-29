@@ -1,4 +1,5 @@
 import type { THEME } from './THEME'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,19 +8,15 @@ import { getLCHFromString } from '../kolor/getLCHFromString'
 import { run_Kolor } from '../kolor/prefab_Kolor'
 import { defaultDarkTheme, ThemeCtx } from './ThemeCtx'
 
-export const CushyTheme = observer(() => {
+export const CushyTheme = observer((p: { children: ReactNode }) => {
     const T = cushy.theme.value
     const theme: THEME = {
         ...defaultDarkTheme,
+        base: getLCHFromString(T.base),
         text: run_Kolor(T.text),
         labelText: T.textLabel ? run_Kolor(T.textLabel) : run_Kolor(T.text),
-        base: getLCHFromString(T.base),
         primary: run_Box(T.primary),
     }
 
-    return (
-        <ThemeCtx.Provider value={theme}>
-            <h1>CushyTheme</h1>
-        </ThemeCtx.Provider>
-    )
+    return <ThemeCtx.Provider value={theme}>{p.children}</ThemeCtx.Provider>
 })

@@ -9,6 +9,8 @@ import { observer } from 'mobx-react-lite'
 import { TreeWidget } from '../panels/libraryUI/tree/xxx/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
+import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
+import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
 
@@ -23,6 +25,9 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
 // v3 (experimental) ---------------------------------------
 export abstract class BaseWidget {
     abstract spec: ISpec
+
+    UIToggle = () => <Widget_ToggleUI widget={this} />
+    UIErrors = () => <WidgetErrorsUI widget={this} />
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {

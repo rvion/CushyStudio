@@ -8,6 +8,7 @@ import { IkonOf } from '../../icons/iconHelpers'
 import { BoxUI } from '../../rsuite/box/BoxUI'
 import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useTheme } from '../../rsuite/theme/useTheme'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
@@ -17,6 +18,7 @@ import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
+import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { menu_widgetActions } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 
@@ -98,6 +100,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
+    const theme = useTheme()
     const iconName = widget.icon
     const boxBorder = showBorder ? 2 : 0
     const boxBase =
@@ -154,7 +157,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        <BoxUI tw='flex items-center' text={cushy.themeLablelText}>
+                        <BoxUI tw='flex items-center' text={theme.labelText}>
                             {/* COLLAPSE */}
                             {(isCollapsed || isCollapsible) && (
                                 <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
@@ -213,21 +216,5 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
         </BoxUI>
-    )
-})
-
-/** default error block */
-export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: IWidget }) {
-    const { widget } = p
-    if (widget.hasErrors === false) return null
-    return (
-        <div tw='widget-error-ui'>
-            {widget.errors.map((e, i) => (
-                <div key={i} tw='flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
-                    {e.message}
-                </div>
-            ))}
-        </div>
     )
 })
