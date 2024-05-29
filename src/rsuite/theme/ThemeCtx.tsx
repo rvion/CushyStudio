@@ -17,4 +17,7 @@ export const defaultDarkTheme: THEME = {
     // primary,
 }
 
-export const ThemeCtx = createContext<THEME>(defaultDarkTheme)
+// 🔶 the reason to wrap things in value is to make sure we can provide a stable "Box" (pointer)
+// mobx will allow us to update the THEME without the context to change forcing all widgets to
+// re-render
+export const ThemeCtx = createContext<{ value: THEME }>({ value: defaultDarkTheme })

@@ -74,7 +74,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
     reset = () => {
-        for (const key in this.fields) this.fields[key].reset()
+        for (const sub of this.subWidgets) sub.reset()
     }
 
     get summary(): string {

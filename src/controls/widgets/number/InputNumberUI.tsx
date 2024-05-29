@@ -1,5 +1,3 @@
-// import './InputNumberUI.css'
-
 import type { CushyKit } from '../../shared/CushyKit'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -8,7 +6,6 @@ import React, { useEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
-import { useColor } from '../../../rsuite/box/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
 
@@ -249,6 +246,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
 
     return (
         <BoxUI /* Root */
+            style={p.style}
             base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border
             hover
@@ -257,12 +255,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             tw={[
                 p.disabled && 'pointer-events-none opacity-25',
                 'WIDGET-FIELD relative',
-                // 'theme-number-field',
-                // '!shadow-md !shadow-white',
                 'input-number-ui',
-                // 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
-                // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {
@@ -281,7 +275,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <BoxUI /* Slider display */
                 className='inui-foreground'
-                // hover // This does not propogate correctly.
                 base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}

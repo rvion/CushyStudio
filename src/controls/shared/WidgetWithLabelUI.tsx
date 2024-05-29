@@ -100,7 +100,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
-    const theme = useTheme()
     const iconName = widget.icon
     const boxBorder = showBorder ? 2 : 0
     const boxBase =
@@ -157,13 +156,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 : undefined
                         }
                     >
-                        <BoxUI tw='flex items-center' text={theme.labelText}>
+                        <WidgetLabelContainerUI>
                             {/* COLLAPSE */}
-                            {(isCollapsed || isCollapsible) && (
-                                <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
-                                    {isCollapsed ? 'chevron_right' : 'expand_more'}
-                                </span>
-                            )}
+                            {(isCollapsed || isCollapsible) && <WidgetLabelCaretUI isCollapsed />}
                             {iconName && (
                                 <BoxUI tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
                                     <IkonOf name={iconName} />
@@ -175,7 +170,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {/* TOOLTIPS  */}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
-                        </BoxUI>
+                        </WidgetLabelContainerUI>
                         {/* TOGGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
@@ -188,16 +183,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </div>
                     )}
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-
-                    {/* <Button
-                        onClick={() => widget?.reset()}
-                        disabled={!(widget?.hasChanges ?? false)}
-                        icon='mdiUndoVariant'
-                        look='ghost'
-                        square
-                        xs
-                    /> */}
-
+                    <WidgetUndoChangesButtonUI widget={widget} />
                     <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
                         <Button icon='mdiDotsVertical' look='ghost' square xs />
                     </RevealUI>
@@ -215,6 +201,37 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* ERRORS ------------------------------------------------------------------------------ */}
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
+        </BoxUI>
+    )
+})
+
+export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: { widget: IWidget }) {
+    const widget = p.widget
+    return (
+        <Button
+            onClick={() => widget?.reset()}
+            disabled={!(widget?.hasChanges ?? false)}
+            icon='mdiUndoVariant'
+            look='ghost'
+            square
+            xs
+        />
+    )
+})
+
+export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_({ isCollapsed }: { isCollapsed: boolean }) {
+    return (
+        <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
+            {isCollapsed ? 'chevron_right' : 'expand_more'}
+        </span>
+    )
+})
+
+export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(p: { children: React.ReactNode }) {
+    const theme = useTheme()
+    return (
+        <BoxUI tw='flex items-center' text={theme.value.labelText}>
+            {p.children}
         </BoxUI>
     )
 })

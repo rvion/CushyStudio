@@ -954,12 +954,7 @@ export class STATE {
 
     theme = themeConf
 
-    // themeBG = compileToXXX(this.theme.value.base)
     get themeText(): Kolor {
         return run_Kolor(this.theme.value.text)
-    }
-
-    get themeLablelText(): Kolor {
-        return run_Kolor(this.theme.value.textLabel ?? this.theme.value.text)
     }
 }
