@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { BoxUI } from '../rsuite/box/Box'
+import { BoxUI } from '../rsuite/box/BoxUI'
 
 /** Re-usable Dock-Panel Header, gives a `bg-base-300` bar with a horizontal flex to put widgets in.
  *

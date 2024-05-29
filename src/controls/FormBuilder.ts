@@ -230,13 +230,19 @@ export class FormBuilder implements IFormBuilder {
     choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
         return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
     }
+    choicesV2 = <T extends { [key: string]: ISpec }>(
+        items: Widget_choices_config<T>['items'],
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+    ) => {
+        return new Spec<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
+    }
     ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** simple choice alternative api */
-    tabs = <T extends { [key: string]: Spec }>(
+    tabs = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+        config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
     optional = <T extends ISpec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)

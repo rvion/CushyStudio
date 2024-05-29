@@ -5,8 +5,8 @@ import type { Form } from './Form'
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
-import { BoxUI } from '../rsuite/box/Box'
-import { type BoxProps } from '../rsuite/box/BoxProps'
+import { type Box } from '../rsuite/box/Box'
+import { BoxUI } from '../rsuite/box/BoxUI'
 import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
@@ -14,7 +14,7 @@ export type FormUIProps = {
     form: Maybe<Form>
     // look and feel --------------------------
     /** from your daisy-ui config */
-    theme?: BoxProps
+    theme?: Box
     className?: string
     style?: CSSProperties
     /** any react children passed to this widget will be displayed at the end of the form */

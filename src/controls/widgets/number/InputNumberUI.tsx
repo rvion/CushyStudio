@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { useColor } from '../../../rsuite/box/useColor'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../shared/CushyKitCtx'

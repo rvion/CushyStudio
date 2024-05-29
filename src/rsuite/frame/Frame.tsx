@@ -10,12 +10,12 @@
 // the high level api
 
 import type { IconName } from '../../icons/icons'
-import type { BoxProps } from '../box/BoxProps'
+import type { Box } from '../box/Box'
 import type { Kolor } from '../kolor/Kolor'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { exhaust } from '../../utils/misc/exhaust'
-import { BoxUI } from '../box/Box'
+import { BoxUI } from '../box/BoxUI'
 import { type BoxUIProps } from '../box/BoxUIProps'
 import { normalizeBoxBase } from '../box/normalizeBoxBase'
 import { normalizeBoxBorder } from '../box/normalizeBoxBorder'

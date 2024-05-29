@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { BoxUI } from './box/Box'
+import { BoxUI } from './box/BoxUI'
 import { Button } from './button/Button'
 import { RevealUI } from './reveal/RevealUI'
 

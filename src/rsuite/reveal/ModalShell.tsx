@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../box/Box'
+import { BoxUI } from '../box/BoxUI'
 import { Button } from '../button/Button'
 
 export const ModalShellUI = observer(function ModalShellUI_(p: {

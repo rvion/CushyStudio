@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { BoxUI } from '../box/Box'
+import { BoxUI } from '../box/BoxUI'
 import { MarkdownUI } from '../MarkdownUI'
 
 export const MessageErrorUI = observer(function MessageErrorUI_(p: {

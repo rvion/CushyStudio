@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom'
 import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
 import { Ikon } from '../icons/iconHelpers'
 import { searchMatches } from '../utils/misc/searchMatches'
-import { BoxUI } from './box/Box'
+import { BoxUI } from './box/BoxUI'
 
 interface ToolTipPosition {
     top?: number | undefined

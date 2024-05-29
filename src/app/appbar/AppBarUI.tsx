@@ -1,11 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
 import { cmd_fav_toggleFavBar } from '../../operators/commands/cmd_favorites'
-import { menu_utils } from '../../operators/commands/cmd_goTo'
-import { DebugControlsUI } from '../../operators/DebugControlsUI'
 import { HostSchemaIndicatorUI } from '../../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicatorUI'
-import { BoxUI } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/BoxUI'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { assets } from '../../utils/assets/assets'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'

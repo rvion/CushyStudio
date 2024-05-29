@@ -1,6 +1,6 @@
-import { BoxProps } from './BoxProps'
+import { Box } from './Box'
 
-export type BoxUIProps = BoxProps & {
+export type BoxUIProps = Box & {
     //
     className?: string
     style?: React.CSSProperties

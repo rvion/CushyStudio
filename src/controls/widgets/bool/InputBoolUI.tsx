@@ -3,7 +3,7 @@ import type { IconName } from '../../../icons/icons'
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties } from 'react'
 
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Frame } from '../../../rsuite/frame/Frame'
 
 let wasEnabled = false

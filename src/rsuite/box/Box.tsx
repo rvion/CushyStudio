@@ -1,52 +1,33 @@
-import type { ForwardedRef } from 'react'
+import type { Kolor } from '../kolor/Kolor'
 
-import { observer } from 'mobx-react-lite'
+export type Box = {
+    /**
+     * - Kolor  : as-is
+     * - string : absolute color
+     * - number : contrast: x / 100, chromaBlend: 1, hueShift: 0
+     * - boolean: contrast=0
+     * - null: inherit parent's background
+     * */
+    base?: Kolor | string | number
+    /**
+     * @default { contrast: 1, chromaBlend: 1, hueShift: 0}
+     * relative to base; when relative, carry to children as default strategy */
+    text?: Kolor | string
+    textShadow?: Kolor | string
 
-import { BoxUIProps } from './BoxUIProps'
-import { CurrentStyleCtx } from './CurrentStyleCtx'
-import { useColor } from './useColor'
+    // TBD ❌
+    shadow?: Kolor | string
 
-// 🔴 2024-05-20 rvion:
-// || do we want to add observer here + forward ref ?
-// || or just go for speed ?
-export const BoxUI = observer(
-    function BoxUI_(p: BoxUIProps, ref: ForwardedRef<HTMLDivElement>) {
-        const {
-            // to merge:
-            style,
-            className,
-            // to ignore:
-            base,
-            hover,
-            text,
-            shadow,
-            border,
-            // others:
-            ...rest
-        } = p
-        const { background, textForCtx, variables } = useColor(p)
+    /**
+     * - string: absolute color
+     * - relative: relative to parent
+     * - number: = relative({ contrast: x / 10 })
+     * - boolean: = relative({ contrast: 0.2 })
+     * - null: inherit parent's background
+     * */
+    border?: Kolor | string | number | boolean
 
-        return (
-            <div //
-                {...rest}
-                ref={ref}
-                tw={[className, 'Box']}
-                style={{ /* ...styles, */ ...style, ...variables }}
-            >
-                <CurrentStyleCtx.Provider
-                    value={{
-                        background,
-                        text: textForCtx,
-                    }}
-                >
-                    {/* <div>{JSON.stringify(background)}</div> */}
-                    {/* <div>
-                        text: {JSON.stringify(text)} ({JSON.stringify(p.text)})
-                    </div> */}
-                    {p.children}
-                </CurrentStyleCtx.Provider>
-            </div>
-        )
-    },
-    { forwardRef: true },
-)
+    // 🔴 BAD
+    /** if true; will add some contrast on hover */
+    hover?: boolean | number
+}

@@ -1,4 +1,4 @@
-import type { BoxProps } from '../box/BoxProps'
+import type { Box } from '../box/Box'
 
 import { Kolor } from '../kolor/Kolor'
 import { OKLCH } from '../kolor/OKLCH'
@@ -21,11 +21,11 @@ export type THEME = {
     shiftDirection?: 'pos' | 'neg'
     // -------------
     // high-level theme concepts
-    subtle: BoxProps
-    default: BoxProps
-    strong: BoxProps
+    subtle: Box
+    default: Box
+    strong: Box
     // -------------------
-    ghost: BoxProps
-    primary: BoxProps
-    secondary: BoxProps
+    ghost: Box
+    primary: Box
+    secondary: Box
 }

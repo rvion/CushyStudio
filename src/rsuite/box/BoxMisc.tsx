@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from './Box'
+import { BoxUI } from './BoxUI'
 import { BoxUIProps } from './BoxUIProps'
 
 export const BoxBase = observer(function BoxTitleUI_({ children, ...rest }: BoxUIProps) {

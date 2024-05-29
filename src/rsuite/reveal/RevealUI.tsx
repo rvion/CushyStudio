@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { BoxUI } from '../box/Box'
+import { BoxUI } from '../box/BoxUI'
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'

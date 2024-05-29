@@ -4,7 +4,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { InputBoolUI } from '../bool/InputBoolUI'
 import { InputNumberUI } from '../number/InputNumberUI'

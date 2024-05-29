@@ -1,5 +1,5 @@
 import type { IconName } from '../icons/icons'
-import type { BoxProps } from '../rsuite/box/BoxProps'
+import type { Box } from '../rsuite/box/Box'
 import type { Kolor } from '../rsuite/kolor/Kolor'
 import type { BaseWidget } from './BaseWidget'
 import type { CovariantFn } from './BivariantHack'
@@ -142,7 +142,7 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      * @stability beta
      * Appearance box props
      */
-    box?: BoxProps
+    box?: Box
 
     /**
      * @since 2024-05-14

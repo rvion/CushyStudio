@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
-import { BoxUI } from '../../../../rsuite/box/Box'
+import { BoxUI } from '../../../../rsuite/box/BoxUI'
 import { Button } from '../../../../rsuite/button/Button'
 import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
 import { Input } from '../../../../rsuite/shims'

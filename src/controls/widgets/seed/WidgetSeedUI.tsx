@@ -2,7 +2,7 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { InputNumberUI } from '../number/InputNumberUI'
 

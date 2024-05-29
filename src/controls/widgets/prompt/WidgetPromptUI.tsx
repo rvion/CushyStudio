@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'

@@ -5,7 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
-import { BoxUI } from '../rsuite/box/Box'
+import { BoxUI } from '../rsuite/box/BoxUI'
 import { Button } from '../rsuite/button/Button'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'

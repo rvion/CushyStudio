@@ -3,7 +3,7 @@ import type { PromptPlugin } from './PromptPlugin'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../../icons/iconHelpers'
-import { BoxUI } from '../../../../rsuite/box/Box'
+import { BoxUI } from '../../../../rsuite/box/BoxUI'
 
 export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
     //

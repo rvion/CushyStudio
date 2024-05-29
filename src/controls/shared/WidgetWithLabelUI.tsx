@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { IkonOf } from '../../icons/iconHelpers'
-import { BoxUI } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/BoxUI'
 import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -100,9 +100,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const iconName = widget.icon
     const boxBorder = showBorder ? 2 : 0
-    const boxBase = widget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
+    const boxBase =
+        widget.background && (isCollapsible || showBorder) //
+            ? { contrast: 0.025 }
+            : undefined
     return (
-        <BoxUI key={rootKey} border={boxBorder} base={boxBase} {...p.widget.config.box}>
+        <BoxUI
+            //
+            key={rootKey}
+            border={boxBorder}
+            base={boxBase}
+            {...p.widget.config.box}
+        >
             <AnimatedSizeUI>
                 {/*
                     LINE ---------------------------------------------------------------------------------
@@ -177,14 +186,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     )}
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
 
-                    <Button
+                    {/* <Button
                         onClick={() => widget?.reset()}
                         disabled={!(widget?.hasChanges ?? false)}
                         icon='mdiUndoVariant'
                         look='ghost'
                         square
                         xs
-                    />
+                    /> */}
 
                     <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
                         <Button icon='mdiDotsVertical' look='ghost' square xs />

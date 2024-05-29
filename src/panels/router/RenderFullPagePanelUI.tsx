@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/BoxUI'
 import { useSt } from '../../state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
 

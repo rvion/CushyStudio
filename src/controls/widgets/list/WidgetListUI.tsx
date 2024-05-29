@@ -8,7 +8,7 @@ import { forwardRef } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { BoxUI } from '../../../rsuite/box/Box'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
@@ -59,6 +59,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         <Button
                                             look='ghost'
                                             square
+                                            xs
                                             icon='mdiChevronRight'
                                             onClick={() => subWidget.toggleCollapsed()}
                                         />

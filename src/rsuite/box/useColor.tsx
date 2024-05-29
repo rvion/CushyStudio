@@ -1,6 +1,6 @@
 import type { Kolor } from '../kolor/Kolor'
 import type { OKLCH } from '../kolor/OKLCH'
-import type { BoxProps } from './BoxProps'
+import type { Box } from './Box'
 
 import { type CSSProperties, useContext } from 'react'
 
@@ -22,7 +22,7 @@ type BoxAppearance = {
 }
 
 export const useColor = (
-    p: BoxProps = {},
+    p: Box = {},
 ): BoxAppearance & {
     /** auto-generated from BoxAppearance */
     className?: string

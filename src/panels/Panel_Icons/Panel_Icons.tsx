@@ -5,7 +5,7 @@ import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
 import { getAllIcons } from '../../icons/iconHelpers'
-import { BoxUI } from '../../rsuite/box/Box'
+import { BoxUI } from '../../rsuite/box/BoxUI'
 import { searchMatches } from '../../utils/misc/searchMatches'
 import { PanelHeaderUI } from '../PanelHeader'
 
