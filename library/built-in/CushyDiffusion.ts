@@ -84,7 +84,7 @@ app({
         if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
 
         const posPrompt = run_prompt({
-            prompt: ui.positive,
+            prompt: { text: positiveText },
             clip,
             ckpt,
             printWildcards: true,
