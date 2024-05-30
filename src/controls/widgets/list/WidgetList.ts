@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { BaseWidget } from '../../BaseWidget'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clamp, clampOpt } from './clamp'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'

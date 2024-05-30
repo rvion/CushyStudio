@@ -9,8 +9,8 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 import { createElement } from 'react'
 
 import { Channel, type ChannelId, Producer } from './Channel'
+import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
-import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
 export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
