@@ -67,7 +67,7 @@ export class RevealState {
         public parents: RevealState[],
     ) {
         // see comment above
-        this.contentFn = p.content
+        this.contentFn = () => p.content(this)
 
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing

@@ -1,7 +1,7 @@
 import type { RevealProps } from './RevealProps'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo, useRef } from 'react'
+import { createElement, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Ikon } from '../../icons/iconHelpers'
@@ -16,15 +16,15 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
 
     // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
-    const self = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getUist())), []) // prettier-ignore
-    const { uistOrNull, getUist: uist2 } = self
-    const nextTower = useMemo(() => ({ tower: [...parents, self] }), [])
+    const SELF = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getUist())), []) // prettier-ignore
+    const { uistOrNull, getUist: uist2 } = SELF
+    const nextTower = useMemo(() => ({ tower: [...parents, SELF] }), [])
 
     // once updated, make sure to keep props in sync so hot reload work well enough.
     useEffect(() => {
         const x = uistOrNull
         if (x == null) return
-        if (p.content !== x.p.content) x.contentFn = p.content
+        if (p.content !== x.p.content) x.contentFn = () => p.content(x)
         if (p.trigger !== x.p.trigger) x.p.trigger = p.trigger
         if (p.placement !== x.p.placement) x.p.placement = p.placement
         if (p.showDelay !== x.p.showDelay) x.p.showDelay = p.showDelay
@@ -89,7 +89,7 @@ const mkTooltip = (uist: RevealState | null) => {
 
     const pos = uist.tooltipPosition
     const p = uist.p
-    const hiddenContent = uist.contentFn()
+    const hiddenContent = createElement(uist.contentFn)
     const revealedContent =
         // VIA PORTAL --------------------------------------------------------------------------------
         uist.placement.startsWith('#') ? (
@@ -170,7 +170,7 @@ const mkTooltip = (uist: RevealState | null) => {
                   transform: pos.transform,
               }}
             >
-                {p.title && (
+                {p.title != null && (
                     <div tw='px-2'>
                         <div tw='py-0.5'>{p.title}</div>
                         <div tw='w-full rounded bg-neutral-content' style={{ height: '1px' }}></div>

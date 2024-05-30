@@ -1,4 +1,5 @@
 import type { RevealPlacement } from './RevealPlacement'
+import type { RevealState } from './RevealState'
 
 import React from 'react'
 
@@ -9,7 +10,7 @@ export type RevealProps = {
      */
     enterable?: boolean
     // components
-    content: () => React.ReactNode
+    content: (p: RevealState) => React.ReactNode
     children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
 
