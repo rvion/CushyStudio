@@ -2,14 +2,10 @@ import type { IWidget } from '../IWidget'
 import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { ErrorBoundary } from 'react-error-boundary'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { BoxUI } from '../../rsuite/box/BoxUI'
-import { Button } from '../../rsuite/button/Button'
-import { ErrorBoundaryFallback } from '../../rsuite/errors/ErrorBoundaryFallback'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
@@ -20,7 +16,7 @@ import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
-import { menu_widgetActions, WidgetMenuUI } from './WidgetMenu'
+import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
@@ -177,8 +173,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     )}
                     {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                    <WidgetUndoChangesButtonUI widget={widget} />
-                    <WidgetMenuUI widget={widget} />
+                    <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />
+                    <WidgetMenuUI tw='self-start' widget={widget} />
                 </div>
 
                 {/* BLOCK  ------------------------------------------------------------------------------ */}

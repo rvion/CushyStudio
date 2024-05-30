@@ -25,10 +25,10 @@ export class DraftL {
     shouldAutoStart = false
 
     /** collapse all top-level form entryes */
-    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllEntries()
+    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllChildren()
 
     /** expand all top-level form entries */
-    expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
+    expandTopLevelFormEntries = () => this.form?.root?.expandAllChildren()
 
     // TODO: rename
     // get illustrationFilePathAbs(): AbsolutePath | null {

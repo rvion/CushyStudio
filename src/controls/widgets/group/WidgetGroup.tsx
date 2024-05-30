@@ -85,21 +85,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
 
     readonly type: 'group' = 'group'
 
-    collapseAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            if (item.serial.collapsed) continue
-            const isCollapsible = getIfWidgetIsCollapsible(item)
-            if (isCollapsible) item.setCollapsed(true)
-        }
-    }
-    expandAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            item.setCollapsed(undefined)
-        }
-    }
-
     /** all [key,value] pairs */
     get entries() {
         return Object.entries(this.fields) as [string, IWidget][]

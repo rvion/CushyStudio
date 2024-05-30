@@ -10,6 +10,8 @@ import { observer } from 'mobx-react-lite'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
+import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
+import { getIfWidgetIsCollapsible } from './shared/getIfWidgetIsCollapsible'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
@@ -42,6 +44,31 @@ export abstract class BaseWidget {
     /** shorthand access to config */
     get config(): this['spec']['config'] {
         return this.spec.config
+    }
+
+    /**
+     * return true when widget has no child
+     * return flase when widget has one or more child
+     * */
+    get hasNoChild(): boolean {
+        return this.subWidgets.length === 0
+    }
+
+    collapseAllChildren = () => {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            if (item.serial.collapsed) continue
+            const isCollapsible = getIfWidgetIsCollapsible(item)
+            if (isCollapsible) item.setCollapsed(true)
+        }
+    }
+    expandAllChildren = () => {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            item.setCollapsed(undefined)
+        }
     }
 
     // change management ------------------------------------------------
