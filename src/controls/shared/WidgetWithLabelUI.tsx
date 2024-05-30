@@ -14,7 +14,6 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
-import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
@@ -66,7 +65,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     // ⏸️     if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     // ⏸️ }
 
-    const showBorder = getBorderStatusForWidget(widget)
+    const showBorder = widget.border
 
     const labelText: string | false = (() => {
         // if parent widget wants to override the label (or disable it with false), we accept

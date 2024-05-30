@@ -67,7 +67,7 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly border = false
+    // readonly border = false
     readonly id: string
 
     readonly type: 'str' = 'str'

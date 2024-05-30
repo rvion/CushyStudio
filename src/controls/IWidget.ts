@@ -59,9 +59,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidg
     /** root form this widget has benn registered to */
     readonly form: Form
 
-    /** parent widget of this widget, if any */
-    readonly parent: IWidget | null
-
     /** base validation errors specific to this widget; */
     readonly baseErrors: Problem_Ext
 
@@ -69,8 +66,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidg
     setValue(val: K['$Value']): void
 
     // ---------------------------------------------------------------------------------------------------
-    /** if specified, override the default algorithm to decide if the widget should have borders */
-    border?: boolean
 
     /** if specified, override the default algorithm to decide if the widget should have borders */
     collapsible?: boolean

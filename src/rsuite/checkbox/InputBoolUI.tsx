@@ -1,10 +1,10 @@
-import type { IconName } from '../../../icons/icons'
+import type { IconName } from '../../icons/icons'
 
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties } from 'react'
 
-import { BoxUI } from '../../../rsuite/box/BoxUI'
-import { Frame } from '../../../rsuite/frame/Frame'
+import { BoxUI } from '../box/BoxUI'
+import { Frame } from '../frame/Frame'
 
 let wasEnabled = false
 

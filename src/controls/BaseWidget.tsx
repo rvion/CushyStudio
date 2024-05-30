@@ -2,6 +2,7 @@ import type { IconName } from '../icons/icons'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { ISpec } from './ISpec'
+import type { CovariantFC } from './utils/CovariantFC'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -160,6 +161,24 @@ export abstract class BaseWidget {
             Object.assign(at._advertisedValues, producedValues)
             at = at.parent
         }
+    }
+
+    /** parent widget of this widget, if any */
+    abstract readonly parent: IWidget | null
+
+    /** default body UI */
+    abstract readonly DefaultBodyUI: CovariantFC<any> | undefined
+
+    get border(): boolean {
+        // avoif borders for the top level form
+        if (this.parent == null) return false
+        // if (this.parent.subWidgets.length === 0) return false
+        // if app author manually specify they want no border, then we respect that
+        if (this.config.border != null) return this.config.border
+        // if the widget do NOT have a body => we do not show the border
+        if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
+        // default case when we have a body => we show the border
+        return true
     }
 
     // FOLD ----------------------------------------------------

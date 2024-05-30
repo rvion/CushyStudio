@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite'
 import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
 import { Ikon } from '../icons/iconHelpers'
 import { searchMatches } from '../utils/misc/searchMatches'
 import { BoxUI } from './box/BoxUI'
+import { InputBoolUI } from './checkbox/InputBoolUI'
 
 interface ToolTipPosition {
     top?: number | undefined

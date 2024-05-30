@@ -3,10 +3,10 @@ import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
-import { InputBoolUI } from '../bool/InputBoolUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {

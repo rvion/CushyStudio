@@ -3,8 +3,8 @@ import type { Widget_bool } from './WidgetBool'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../icons/iconHelpers'
+import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SpacerUI } from '../spacer/SpacerUI'
-import { InputBoolUI } from './InputBoolUI'
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {
     const widget = p.widget

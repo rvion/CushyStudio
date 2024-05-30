@@ -7,12 +7,10 @@ import { forwardRef } from 'react'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Ikon } from '../../../icons/iconHelpers'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
-import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
@@ -48,7 +46,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const widgetBody = subWidget.body()
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
-                        const showBorder = getBorderStatusForWidget(subWidget)
+                        const showBorder = subWidget.border
                         const isCollapsible: boolean = getIfWidgetIsCollapsible(subWidget)
                         const boxBorder = showBorder ? 2 : 0
                         const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
