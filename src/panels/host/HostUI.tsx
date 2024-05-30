@@ -3,7 +3,8 @@ import { observer } from 'mobx-react-lite'
 
 import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
 import { HostL } from '../../models/Host'
-import { Toggle } from '../../rsuite/shims'
+import { Button } from '../../rsuite/button/Button'
+import { InputBoolUI } from '../../rsuite/checkbox/InputBoolUI'
 import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
@@ -112,27 +113,19 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     ></input>
                 </div>
 
-                {/* HTTPS */}
-                <div tw='flex gap-2'>
-                    <Toggle //
-                        disabled={disabled}
-                        checked={host.data.useHttps ? true : false}
-                        onChange={(ev) => host.update({ useHttps: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        name='useHttps'
-                    />
-                    <LabelUI>use HTTPS</LabelUI>
-                </div>
+                <InputBoolUI // HTTPS
+                    disabled={disabled}
+                    value={host.data.useHttps ? true : false}
+                    onValueChange={(next) => host.update({ useHttps: next ? SQLITE_true : SQLITE_false })}
+                    text='use HTTPS'
+                />
+                <InputBoolUI // LOCAL PATH
+                    disabled={disabled}
+                    onValueChange={(next) => host.update({ isLocal: next ? SQLITE_true : SQLITE_false })}
+                    value={host.data.isLocal ? true : false}
+                    text='Is local'
+                />
 
-                {/* LOCAL PATH */}
-                <div tw='flex items-center gap-1'>
-                    <Toggle
-                        //
-                        disabled={disabled}
-                        onChange={(ev) => host.update({ isLocal: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        checked={host.data.isLocal ? true : false}
-                    />
-                    <LabelUI>is local</LabelUI>
-                </div>
                 <div tw='flex flex-col'>
                     <LabelUI>absolute path to ComfyUI install folder</LabelUI>
                     <input
@@ -157,15 +150,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div tw='flex'>
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
                 </div>
-                <div
-                    className='btn'
+                <Button
                     onClick={async () => {
                         const res = await host.manager.configureLogging(true)
                         console.log(`[🤠] res=`, res)
                     }}
                 >
-                    test
-                </div>
+                    Forward logs via manager
+                </Button>
             </div>
             {/* <div tw='divider m-1'></div> */}
             {/* <div tw='font-bold under'>Status</div> */}

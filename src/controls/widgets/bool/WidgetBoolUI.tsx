@@ -22,7 +22,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
                 icon={widget.icon}
                 text={widget.config.text ?? widget.config.label2}
                 // value
-                active={widget.value}
+                value={widget.value}
                 onValueChange={(value) => (widget.value = value)}
             />
 

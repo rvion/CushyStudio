@@ -73,7 +73,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
 
     const boxBase =
-        widget.background && (widget.isCollapsible || showBorder) //
+        widget.background && widget.isCollapsible || showBorder 
             ? { contrast: 0.025 }
             : undefined
     return (

@@ -17,13 +17,6 @@ export const Panel_Config = observer(function Panel_Config_() {
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
             <SectionTitleUI label='CONFIG' className='block' />
-
-            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
-                <FormUI form={cushy.theme} />
-            </BoxUI>
-            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
-                <FormUI form={cushy.formConf} />
-            </BoxUI>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
@@ -140,7 +133,14 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </div>
                 </FieldUI>
             </div>
-
+            <div className='divider'>Misc</div>
+            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
+                <FormUI form={cushy.formConf} />
+            </BoxUI>
+            <div className='divider'>Theming</div>
+            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
+                <FormUI form={cushy.theme} />
+            </BoxUI>
             {/* <Panel_ComfyUIHosts /> */}
         </div>
     )

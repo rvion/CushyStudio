@@ -3,8 +3,10 @@ import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
+import { useTheme } from '../../../rsuite/theme/useTheme'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 
@@ -55,6 +57,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
 }) {
     const widget = p.widget
     const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
+    const theme = useTheme()
     return (
         <div
             style={{
@@ -73,10 +76,10 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                 const isSelected = widget.serial.branches[c.key]
                 return (
                     <InputBoolUI
-                        key={c.key}
-                        active={isSelected}
+                        value={isSelected}
                         display='button'
                         text={c.label}
+                        box={isSelected ? undefined : { text: theme.value.labelText }}
                         onValueChange={(value) => {
                             if (value != isSelected) {
                                 widget.toggleBranch(c.key)

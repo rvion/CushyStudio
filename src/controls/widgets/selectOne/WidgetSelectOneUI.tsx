@@ -27,7 +27,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                     return (
                         <InputBoolUI
                             key={c.id}
-                            active={isSelected}
+                            value={isSelected}
                             display='button'
                             text={c.label ?? c.id}
                             onValueChange={(value) => {

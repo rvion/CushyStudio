@@ -150,7 +150,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const resoBtn = (ar: AspectRatio) => (
         <InputBoolUI //
             display='button'
-            active={uist.desiredAspectRatio == ar}
+            value={uist.desiredAspectRatio == ar}
             onValueChange={() => uist.setAspectRatio(ar)}
             text={ar}
         />
@@ -160,7 +160,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         <InputBoolUI
             //
             display='button'
-            active={uist.desiredModelType == model}
+            value={uist.desiredModelType == model}
             onValueChange={() => uist.setModelType(model)}
             text={model}
         />

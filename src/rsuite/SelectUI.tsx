@@ -563,7 +563,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                                 ]}
                             >
                                 {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
-                                <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
+                                <InputBoolUI value={isSelected} expand={false}></InputBoolUI>
                                 <div tw='pl-0.5 flex w-full h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)

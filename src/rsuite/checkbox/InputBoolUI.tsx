@@ -1,4 +1,6 @@
 import type { IconName } from '../../icons/icons'
+import type { Box } from '../box/Box'
+import type { FrameAppearance } from '../frame/FrameAppearance'
 
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties } from 'react'
@@ -9,18 +11,20 @@ import { Frame } from '../frame/Frame'
 let wasEnabled = false
 
 class BoolButtonProps {
-    active?: Maybe<boolean>
+    value?: Maybe<boolean>
     display?: 'check' | 'button'
     expand?: boolean
     icon?: Maybe<IconName>
     text?: string
     className?: string
     style?: CSSProperties
+    box?: Box
+    disabled?: boolean
     onValueChange?: (next: boolean) => void
 }
 
 export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
-    const isActive = p.active ?? false
+    const isActive = p.value ?? false
     const display = p.display ?? 'check'
     const expand = p.expand
     const label = p.text
@@ -31,6 +35,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 style={p.style}
                 look='headless'
                 className={p.className}
+                disabled={p.disabled}
                 hover
                 triggerOnPress
                 tw={[
@@ -51,6 +56,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                     icon={isActive ? 'mdiCheckBold' : null}
                     square
                     size={'xs'}
+                    {...p.box}
                     tw='!select-none justify-center'
                 />
                 {label ? label : null}
@@ -64,10 +70,12 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
             look='default'
             className={p.className}
             triggerOnPress
+            disabled={p.disabled}
             active={isActive}
             style={p.style}
             icon={p.icon}
             expand={expand}
+            {...p.box}
             tw='WIDGET-FIELD !select-none cursor-pointer justify-center'
             onClick={(ev) => {
                 wasEnabled = !isActive

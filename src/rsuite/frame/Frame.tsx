@@ -93,7 +93,7 @@ export const Frame = observer(function Frame_(p: FrameProps) {
         contrast: getBackgroundContrast(active, isDisabled, look),
         chroma: getChroma({ theme, active, appearance: look, isDisabled }),
     }
-    /* 🔴 WIP TODO rvion 2024-05-30 */ const base: Kolor | undefined = lookBase // overrideKolor(lookBase, custBase)
+    const base: Kolor | undefined = overrideKolor(lookBase, custBase)
 
     // BORDER -----------------------------------------------------------
     const custBorder: Kolor | null = p.border ? normalizeBoxBorder(p.border) : null
@@ -157,11 +157,11 @@ function getBackgroundContrast(
 ) {
     const disabledMult = isDisabled ? 0.2 : 1
 
-    if (active) return 0.5 * disabledMult
+    if (active) return 0.3 * disabledMult
     // if (isDisabled) return 0.05 * disabledMult
 
     if (appearance === 'headless') return 0 * disabledMult
-    if (appearance === 'primary') return 0.9 * disabledMult
+    if (appearance === 'primary') return 0.3 * disabledMult
     if (appearance === 'secondary') return 0.9 * disabledMult
     if (appearance === 'ghost') return 0 * disabledMult
     if (appearance === 'default') return 0.1 * disabledMult
