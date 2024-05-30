@@ -1,51 +1,84 @@
 import type { Kolor } from './Kolor'
 
+import { Fragment } from 'react/jsx-runtime'
+
 import { type FormBuilder } from '../../controls/FormBuilder'
 
 export const ui_Kolor = (ui: FormBuilder) => {
-    return ui.fields(
+    // prettier-ignore
+    return ui.choicesV2(
         {
-            l: ui
-                .choiceV2({
-                    auto: ui.number({ label: 'relative', text: 'contrast', min: -1, softMin: 0, max: 1, default: 0, step: 0.1 }),
-                    manual: ui.number({ min: 0, max: 1, default: 0.1, step: 0.1 }),
-                })
-                .optional(),
-            c: ui
-                .choiceV2({
-                    multiply: ui.number({ label: 'relative', text: 'multiply', min: 0, softMax: 2, default: 1, step: 0.1 }),
-                    manual: ui.number({ min: 0, max: 0.47, default: 0.1, step: 0.1 }),
-                })
-                .optional(),
-            h: ui
-                .choiceV2({
-                    shift: ui.number({ label: 'relative', text: 'shift', min: -360, softMin: 0, max: 360, default: 0, step: 10 }),
-                    manual: ui.number({ min: -360, softMin: 0, max: 360, default: 0, step: 1 }),
-                })
-                .optional(),
+            l: ui.choiceV2(
+                {
+                    lightness: ui.number({ label: 'Manual', text: 'lightness', min: 0, max: 1, default: 0.1, step: 0.1, icon:'mdiGradientHorizontal' }),
+                    contrast: ui.number({ label: 'Relative', text: 'contrast', min: -1, softMin: 0, max: 1, default: 0, step: 0.1, icon:'mdiInvertColors' }),
+                },
+                { label: 'Light' },
+            ),
+            c: ui.choiceV2(
+                {
+                    chroma: ui.number({ label:'Manual', min: 0, max: 0.47, default: 0.1, step: 0.1, icon:'mdiPalette' }),
+                    chromaBlend: ui.number({ label: 'Relative', text: 'multiply', min: 0, softMax: 2, default: 1, step: 0.1, icon:'mdiEyedropper' }),
+                },
+                { label: 'Chroma' },
+            ),
+            h: ui.choiceV2(
+                {
+                    hue: ui.number({ label: 'Manual', min: -360, softMin: 0, max: 360, default: 0, step: 1, icon:'mdiPalette' }),
+                    hueShift: ui.number({ label: 'Relative', text: 'shift', min: -360, softMin: 0, max: 360, default: 0, step: 10, icon:'mdiEyedropper' }),
+                },
+                { label: 'Hue' },
+            ),
         },
         {
+            presets: [
+                {
+                    icon: 'mdiText',
+                    label: 'Text (v1)',
+                    apply: (w) => {
+                        w.setValue({
+                            l: { contrast: 0.9 },
+                            c: { chromaBlend: 1 },
+                            h: { hue: 0 },
+                        })
+                    },
+                },
+            ],
+            tabPosition: 'start',
             body: (p) => {
+                const { l, c, h } = p.widget.children
                 return (
-                    <div tw='grid flex-1 grid-cols-[auto_minmax(130px,_.5fr)_3fr]'>
+                    <div tw='grid flex-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
                         {/* ------------------ */}
-                        <div tw='flex'>
-                            <p.widget.fields.l.UIToggle /> L
-                        </div>
-                        <p.widget.fields.l.child.UITab />
-                        {p.widget.fields.l.child.UIChildren()}
+                        {l && (
+                            <Fragment>
+                                <div tw='flex'>
+                                    <l.UIToggle /> L
+                                </div>
+                                <l.UITab />
+                                {l.UIChildren()}
+                            </Fragment>
+                        )}
                         {/* ------------------ */}
-                        <div tw='flex'>
-                            <p.widget.fields.c.UIToggle /> C
-                        </div>
-                        {p.widget.fields.c.child.UITab()}
-                        {p.widget.fields.c.child.UIChildren()}
+                        {c && (
+                            <Fragment>
+                                <div tw='flex'>
+                                    <c.UIToggle /> C
+                                </div>
+                                {c.UITab()}
+                                {c.UIChildren()}
+                            </Fragment>
+                        )}
                         {/* ------------------ */}
-                        <div tw='flex'>
-                            <p.widget.fields.h.UIToggle /> H
-                        </div>
-                        {p.widget.fields.h.child.UITab()}
-                        {p.widget.fields.h.child.UIChildren()}
+                        {h && (
+                            <Fragment>
+                                <div tw='flex'>
+                                    <h.UIToggle /> H
+                                </div>
+                                {h.UITab()}
+                                {h.UIChildren()}
+                            </Fragment>
+                        )}{' '}
                     </div>
                 )
             },
@@ -56,13 +89,13 @@ export const ui_Kolor = (ui: FormBuilder) => {
 export const run_Kolor = (ui: ReturnType<typeof ui_Kolor>['$Value']): Kolor => {
     return {
         // l
-        lightness: ui.l?.manual,
-        contrast: ui.l?.auto,
+        lightness: ui.l?.lightness,
+        contrast: ui.l?.contrast,
         // c
-        chroma: ui.c?.manual,
-        chromaBlend: ui.c?.multiply,
+        chroma: ui.c?.chroma,
+        chromaBlend: ui.c?.chromaBlend,
         // h
-        hue: ui.h?.manual,
-        hueShift: ui.h?.shift,
+        hue: ui.h?.hue,
+        hueShift: ui.h?.hueShift,
     }
 }
