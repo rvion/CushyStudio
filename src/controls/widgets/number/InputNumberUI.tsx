@@ -1,4 +1,4 @@
-import type { CushyKit } from '../../shared/CushyKit'
+import type { CushyKit } from '../../context/CushyKit'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -7,7 +7,7 @@ import React, { useEffect, useMemo } from 'react'
 import { Ikon } from '../../../icons/iconHelpers'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
-import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
+import { useCushyKitOrNull } from '../../context/CushyKitCtx'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 

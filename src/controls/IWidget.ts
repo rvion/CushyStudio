@@ -2,10 +2,10 @@ import type { IconName } from '../icons/icons'
 import type { Box } from '../rsuite/box/Box'
 import type { Kolor } from '../rsuite/kolor/Kolor'
 import type { BaseWidget } from './BaseWidget'
-import type { CovariantFn } from './BivariantHack'
-import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
+import type { CovariantFn } from './utils/BivariantHack'
+import type { CovariantFC } from './utils/CovariantFC'
 import type { Problem_Ext } from './Validation'
 
 /**

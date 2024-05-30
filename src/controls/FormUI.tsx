@@ -1,6 +1,6 @@
-import type { CovariantFn } from './BivariantHack'
-import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
+import type { CovariantFn } from './utils/BivariantHack'
+import type { CovariantFC } from './utils/CovariantFC'
 
 import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'

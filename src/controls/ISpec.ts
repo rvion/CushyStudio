@@ -1,6 +1,6 @@
 import type { Channel, ChannelId, Producer } from './Channel'
-import type { CovariantFC } from './CovariantFC'
 import type { IWidget } from './IWidget'
+import type { CovariantFC } from './utils/CovariantFC'
 
 export type SchemaDict = { [key: string]: ISpec }
 

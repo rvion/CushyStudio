@@ -4,7 +4,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { CushyKitCtx } from '../../controls/shared/CushyKitCtx'
+import { CushyKitCtx } from '../../controls/context/CushyKitCtx'
 import { ActivityStackUI } from '../../operators/ActivityUI'
 import { useRegionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
