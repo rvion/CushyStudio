@@ -1,10 +1,11 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useMemo } from 'react'
-import { Frame, FrameProps } from '../../../rsuite/button/Frame'
-import { Box } from '../../../theme/colorEngine/Box'
+
 import { IkonOf } from '../../../icons/iconHelpers'
 import { PanelHeaderUI } from '../../../panels/PanelHeader'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
+import { Frame, type FrameProps } from '../../../rsuite/frame/Frame'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -13,40 +14,41 @@ let offset = 0
 type ResizableFrameProps = {
     /** The size of the container content */
     currentSize: number
-    /** Default height for the frame contents */
-    default?: number
-    header?: ReactNode
-    footer?: ReactNode
-    /** When true, return relative mouse movement (e.movementY), else return the starting value + offset */
-    relative?: boolean
-    /** Pixel interval to snap to. Ignored for relative movement */
-    snap?: number // TODO(bird_d): This should snap by WIDGET-FIELD's height when undefined
+
     /** Returns an absolute value by default, use `relative` to make it return the mouse's movement */
     onResize: (val: number) => void
+
+    header?: ReactNode
+    footer?: ReactNode
+
+    /** When true, return relative mouse movement (e.movementY), else return the starting value + offset */
+    relative?: boolean
+
+    /**
+     * Pixel interval to snap to.
+     * Ignored for relative movement
+     * */
+    snap?: number // TODO(bird_d): This should snap by WIDGET-FIELD's height when undefined
 } & FrameProps
 
 class ResizableFrameStableState {
-    constructor(
-        //
-        public props: ResizableFrameProps,
-    ) {
-        // this.size = this.props.default ?? 128
+    constructor(public props: ResizableFrameProps) {
         makeAutoObservable(this)
     }
 
     start = (val: number) => {
         startValue = val
         offset = 0
-        window.addEventListener('mousemove', this.resizeListener, true)
+        window.addEventListener('mousemove', this.resize, true)
         window.addEventListener('pointerup', this.stop, true)
     }
 
     stop = () => {
-        window.removeEventListener('mousemove', this.resizeListener, true)
+        window.removeEventListener('mousemove', this.resize, true)
         window.removeEventListener('pointerup', this.stop, true)
     }
 
-    resizeListener = (e: MouseEvent) => {
+    resize = (e: MouseEvent) => {
         if (this.props.relative) {
             return this.props.onResize(e.movementY)
         }
@@ -79,7 +81,12 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
             >
                 {p.children}
             </Frame>
-            <Box tw='w-full' base={{ contrast: 0.2 }} style={{ borderRadius: '0px', height: '1px' }}></Box>
+            <BoxUI
+                //
+                tw='w-full'
+                base={{ contrast: 0.2 }}
+                style={{ borderRadius: '0px', height: '1px' }}
+            ></BoxUI>
             <Frame // Footer
                 className='WIDGET-FIELD w-full relative'
                 // hover
