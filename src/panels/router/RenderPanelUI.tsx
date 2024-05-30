@@ -2,11 +2,10 @@ import type * as FL from 'flexlayout-react'
 
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 
+import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { BoxUI } from '../../rsuite/box/BoxUI'
 import { Message } from '../../rsuite/shims'
-import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { PanelNames, panels } from './PANELS'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: {
@@ -36,7 +35,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const Component = panelDef.widget
     const panelID = p.node?.getId()
     return (
-        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+        <CushyErrorBoundarySimpleUI>
             <BoxUI
                 //
                 tw='flex-1 h-full w-full overflow-auto'
@@ -46,6 +45,6 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
             >
                 <Component {...panelProps} className='w-full h-full border-none' />
             </BoxUI>
-        </ErrorBoundary>
+        </CushyErrorBoundarySimpleUI>
     )
 })

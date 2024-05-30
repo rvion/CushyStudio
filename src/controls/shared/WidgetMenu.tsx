@@ -1,11 +1,23 @@
 import type { IWidget } from '../IWidget'
 
+import { observer } from 'mobx-react-lite'
+
 import { menu, type Menu } from '../../operators/Menu'
 import { SimpleMenuAction } from '../../operators/menuSystem/SimpleMenuAction'
 import { SimpleMenuModal } from '../../operators/menuSystem/SimpleMenuModal'
 import { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'
+import { Button } from '../../rsuite/button/Button'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+
+export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { widget: IWidget }) {
+    return (
+        <RevealUI content={() => <menu_widgetActions.UI props={p.widget} />}>
+            <Button icon='mdiDotsVertical' look='ghost' square xs />
+        </RevealUI>
+    )
+})
 
 export const menu_widgetActions: Menu<IWidget> = menu({
     title: 'widget actions',

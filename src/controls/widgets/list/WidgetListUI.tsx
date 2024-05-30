@@ -4,13 +4,12 @@ import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
-// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import { ErrorBoundary } from 'react-error-boundary'
 
+// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
+import { CushyErrorBoundarySimpleUI } from '../../shared/CushyErrorBoundarySimple'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
@@ -72,10 +71,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
 
                                         {/* inline header part */}
                                         {widgetHeader && (
-                                            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                                            <CushyErrorBoundarySimpleUI>
                                                 {/* <WidgetHeaderUI widget={subWidget} /> */}
                                                 {widgetHeader}
-                                            </ErrorBoundary>
+                                            </CushyErrorBoundarySimpleUI>
                                         )}
 
                                         {/* delete btn */}
@@ -97,12 +96,9 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
-                                        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                            <div tw='ml-2 pl-2'>
-                                                {/* <WidgetBodyUI widget={subWidget} /> */}
-                                                {widgetBody}
-                                            </div>
-                                        </ErrorBoundary>
+                                        <CushyErrorBoundarySimpleUI>
+                                            <div tw='ml-2 pl-2'>{widgetBody}</div>
+                                        </CushyErrorBoundarySimpleUI>
                                     )}
                                 </BoxUI>
                             </SortableItem>

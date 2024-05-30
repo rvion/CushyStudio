@@ -8,18 +8,21 @@ import { IkonOf } from '../../icons/iconHelpers'
 import { BoxUI } from '../../rsuite/box/BoxUI'
 import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { useTheme } from '../../rsuite/theme/useTheme'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
+import { CushyErrorBoundarySimpleUI } from './CushyErrorBoundarySimple'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
-import { menu_widgetActions } from './WidgetMenu'
+import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
+import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
+import { menu_widgetActions, WidgetMenuUI } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
+import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
 let isDragging = false
 let wasEnabled = false
@@ -131,12 +134,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         wasEnabled = !widget.serial.collapsed
                         widget.setCollapsed(wasEnabled)
                     }}
-                    /* 2024-02-29 rvion: not quite sure this is the right logic now
-                     * | do we want to call the now usused `onLabelClick()` function instead (defined above)
-                     * 2024-03-10 bird_d: The switch to onMouseMove should make this feel a lot better.
-                     * | It shouldn't continue to close panels while holding the click as the ui moves out from under the user.
-                     * */
-
                     onMouseMove={(ev) => {
                         if (!isDragging || !isCollapsible) return
                         widget.setCollapsed(wasEnabled)
@@ -165,7 +162,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             )}
                             {/* TOGGLE BEFORE */}
                             {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                            {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
                             {/* TOOLTIPS  */}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
@@ -176,61 +172,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
                     {HeaderUI && (
                         <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
-                            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                {HeaderUI}
-                            </ErrorBoundary>
+                            <CushyErrorBoundarySimpleUI>{HeaderUI}</CushyErrorBoundarySimpleUI>
                         </div>
                     )}
+                    {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                     <WidgetUndoChangesButtonUI widget={widget} />
-                    <RevealUI content={() => <menu_widgetActions.UI props={widget} />}>
-                        <Button icon='mdiDotsVertical' look='ghost' square xs />
-                    </RevealUI>
+                    <WidgetMenuUI widget={widget} />
                 </div>
 
                 {/* BLOCK  ------------------------------------------------------------------------------ */}
                 {BodyUI && !isCollapsed && (
-                    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                    <CushyErrorBoundarySimpleUI>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
                             {BodyUI}
                         </div>
-                    </ErrorBoundary>
+                    </CushyErrorBoundarySimpleUI>
                 )}
 
-                {/* ERRORS ------------------------------------------------------------------------------ */}
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
-        </BoxUI>
-    )
-})
-
-export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    return (
-        <Button
-            onClick={() => widget?.reset()}
-            disabled={!(widget?.hasChanges ?? false)}
-            icon='mdiUndoVariant'
-            look='ghost'
-            square
-            xs
-        />
-    )
-})
-
-export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_({ isCollapsed }: { isCollapsed: boolean }) {
-    return (
-        <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
-            {isCollapsed ? 'chevron_right' : 'expand_more'}
-        </span>
-    )
-})
-
-export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(p: { children: React.ReactNode }) {
-    const theme = useTheme()
-    return (
-        <BoxUI tw='flex items-center' text={theme.value.labelText}>
-            {p.children}
         </BoxUI>
     )
 })
