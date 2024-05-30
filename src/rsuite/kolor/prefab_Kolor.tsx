@@ -99,12 +99,30 @@ export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
                 },
                 {
                     icon: 'mdiText',
-                    label: 'Text (v1)',
+                    label: 'Text (colored)',
                     apply: (w) => {
                         w.setValue({
-                            l: { contrast: 0.9 },
-                            c: { chromaBlend: 1 },
-                            h: { hue: 0 },
+                            l: { contrast: 0.7 },
+                            c: { chroma: 0.3 },
+                            h: { hueShift: 180 },
+                        })
+                    },
+                },
+                {
+                    icon: 'mdiText',
+                    label: 'Text (subtle)',
+                    apply: (w) => {
+                        w.setValue({
+                            l: { contrast: 0.3 },
+                        })
+                    },
+                },
+                {
+                    icon: 'mdiSquareCircle',
+                    label: 'base 100',
+                    apply: (w) => {
+                        w.setValue({
+                            l: { contrast: 0.05 },
                         })
                     },
                 },
