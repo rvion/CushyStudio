@@ -14,14 +14,19 @@ export class CushyThemeProvider {
         makeAutoObservable(this)
     }
 
+    get F() { return cushy.theme.value } // prettier-ignore
+    get base(){ return getLCHFromString(this.F.base) } // prettier-ignore
+    get text() { return run_Kolor(this.F.text) } // prettier-ignore
+    get labelText() { return this.F.textLabel ? run_Kolor(this.F.textLabel) : run_Kolor(this.F.text) } // prettier-ignore
+    get primary() { return run_Box(this.F.primary) } // prettier-ignore
+
     get value(): THEME {
-        const T = cushy.theme.value
         return {
             ...defaultDarkTheme,
-            base: getLCHFromString(T.base),
-            text: run_Kolor(T.text),
-            labelText: T.textLabel ? run_Kolor(T.textLabel) : run_Kolor(T.text),
-            primary: run_Box(T.primary),
+            base: this.base,
+            text: this.text,
+            labelText: this.labelText,
+            primary: this.primary,
         }
     }
 }

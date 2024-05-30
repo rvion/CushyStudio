@@ -10,8 +10,9 @@
 // the high level api
 
 import type { IconName } from '../../icons/icons'
-import type { Box } from '../box/Box'
 import type { Kolor } from '../kolor/Kolor'
+
+import { observer } from 'mobx-react-lite'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { exhaust } from '../../utils/misc/exhaust'
@@ -22,7 +23,7 @@ import { normalizeBoxBorder } from '../box/normalizeBoxBorder'
 import { usePressLogic } from '../button/usePressLogic'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { useTheme } from '../theme/useTheme'
-import { FrameAppearance, type FrameAppearanceFlags, getAppearance } from './FrameAppearance'
+import { FrameAppearance, type FrameAppearanceFlags } from './FrameAppearance'
 import { getBorderContrast } from './FrameBorderContrast'
 import { getChroma } from './FrameChroma'
 import { type FrameSize, getClassNameForSize } from './FrameSize'
@@ -51,7 +52,7 @@ export type FrameProps = {
     FrameSize
 
 // -----------------------------------------------------
-export const Frame = (p: FrameProps) => {
+export const Frame = observer(function Frame_(p: FrameProps) {
     const {
         icon,
         active,
@@ -59,7 +60,7 @@ export const Frame = (p: FrameProps) => {
         loading,
         disabled,
         // ---------------------------------------------
-        look: appearance_,
+        look: _look_,
 
         // BOX stuff that need to be merged here -------
         base: _base_,
@@ -78,9 +79,9 @@ export const Frame = (p: FrameProps) => {
         ...rest
     } = p
 
-    const theme = useTheme()
+    const theme = useTheme().value
 
-    const appearance = getAppearance(p)
+    const look = p.look ?? 'headless'
     const isDisabled = p.loading || p.disabled || false
     const mouseEvents = p.triggerOnPress
         ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
@@ -89,14 +90,14 @@ export const Frame = (p: FrameProps) => {
     // BACKGROUND ------------------------------------------------------
     const custBase: Kolor | null = p.base ? normalizeBoxBase(p.base) : null
     const lookBase: Kolor = {
-        contrast: getBackgroundContrast(active, isDisabled, appearance),
-        chroma: getChroma({ active, appearance, isDisabled }),
+        contrast: getBackgroundContrast(active, isDisabled, look),
+        chroma: getChroma({ theme, active, appearance: look, isDisabled }),
     }
-    const base: Kolor | undefined = overrideKolor(lookBase, custBase)
+    /* 🔴 WIP TODO rvion 2024-05-30 */ const base: Kolor | undefined = lookBase // overrideKolor(lookBase, custBase)
 
     // BORDER -----------------------------------------------------------
     const custBorder: Kolor | null = p.border ? normalizeBoxBorder(p.border) : null
-    const lookBorderContrast = getBorderContrast(appearance)
+    const lookBorderContrast = getBorderContrast(look)
     const lookBorder: Kolor | null = lookBorderContrast ? { contrast: lookBorderContrast } : null
     const border: Kolor | undefined = overrideKolor(lookBorder, custBorder)
 
@@ -120,7 +121,7 @@ export const Frame = (p: FrameProps) => {
             // Box Props ----------------------------------------------------
             base={base}
             border={border}
-            hover={appearance !== 'headless'} // TODO
+            hover={look !== 'headless'} // TODO
             text={text}
             // --------------------------------------------------------------
             tabIndex={p.tabIndex ?? -1}
@@ -130,6 +131,7 @@ export const Frame = (p: FrameProps) => {
             {...mouseEvents}
             tw={[
                 '_Frame',
+                'look-' + look,
                 getClassNameForSize(p),
                 p.expand && 'flex-1',
                 p.look === 'headless' ? undefined : 'rounded-sm flex gap-2 items-center',
@@ -140,7 +142,7 @@ export const Frame = (p: FrameProps) => {
             {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
         </BoxUI>
     )
-}
+})
 
 function getBackgroundContrast(
     //

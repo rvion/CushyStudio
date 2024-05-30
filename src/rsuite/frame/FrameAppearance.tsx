@@ -26,7 +26,3 @@ export type FrameAppearance =
 
     /** panel or modal secondary action */
     | 'secondary'
-
-export function getAppearance(p: FrameProps): FrameAppearance {
-    return p.look ?? 'headless'
-}
