@@ -1,4 +1,3 @@
-// TODO: rename oklch
 export type OKLCH = {
     /** 0 to 1 */
     lightness: number
