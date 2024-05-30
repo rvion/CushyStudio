@@ -107,6 +107,11 @@ export const Frame = observer(function Frame_(p: FrameProps) {
     const lookText: Kolor | null = lookTextContrast ? { contrast: lookTextContrast } : null
     const text: Kolor | undefined = overrideKolor(lookText, custText)
 
+    // HOVER ---------------------------------------------------------
+    const custHover = p.hover
+    const lookHover = look !== 'headless'
+    const hover = custHover ?? lookHover
+
     // const boxProps: BoxProps = {
     //     base,
     //     border,
@@ -121,7 +126,7 @@ export const Frame = observer(function Frame_(p: FrameProps) {
             // Box Props ----------------------------------------------------
             base={base}
             border={border}
-            hover={look !== 'headless'} // TODO
+            hover={hover}
             text={text}
             // --------------------------------------------------------------
             tabIndex={p.tabIndex ?? -1}
