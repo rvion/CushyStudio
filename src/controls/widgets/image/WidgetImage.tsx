@@ -62,7 +62,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
         return this.config.default ?? cushy.defaultImage
     }
     get hasChanges() {
-        return this.value === this.defaultValue
+        return this.value !== this.defaultValue
     }
     reset = () => {
         this.value = this.defaultValue
