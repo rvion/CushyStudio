@@ -43,7 +43,12 @@ export class EnumBuilder {
                 const enumName = prop
                 const schema = cushy.schema
                 const enumSchema = schema.knownEnumsByName.get(enumName)
-                if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`) } // prettier-ignore
+                if (enumSchema == null) {
+                    console.error(`❌ unknown enum: ${enumName}`)
+                    return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                    // 🔴 can't throw here, will break for everyone !!
+                    // 🔴 throw new Error(`unknown enum: ${enumName}`)
+                }
 
                 // return the builder
                 return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName })
@@ -72,7 +77,17 @@ export class EnumBuilderOpt {
                 const enumName = prop
                 const schema = cushy.schema
                 const enumSchema = schema.knownEnumsByName.get(enumName)
-                if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`) } // prettier-ignore
+                if (enumSchema == null) {
+                    console.error(`❌ unknown enum: ${enumName}`)
+                    return (config: any = {}) =>
+                        form.builder.optional({
+                            label: config.label,
+                            startActive: config.startActive,
+                            widget: new Spec('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
+                        })
+                    // 🔴 can't throw here, will break for everyone !!
+                    // throw new Error(`unknown enum: ${enumName}`)
+                }
 
                 // return the builder
                 return (config: any = {}) =>
