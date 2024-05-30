@@ -115,9 +115,13 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
 
     get hasChanges() {
         const def = this.config.default
-        for (const branchName in this.choices) {
+        for (const branchName of this.choices) {
             const shouldBeActive =
-                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
             const child = this.children[branchName]
             if (child && !shouldBeActive) return true
             if (!child && shouldBeActive) return true
@@ -128,7 +132,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
 
     reset() {
         const def = this.config.default
-        for (const branchName in this.choices) {
+        for (const branchName of this.choices) {
             const shouldBeActive =
                 def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
             const child = this.children[branchName]
