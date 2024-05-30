@@ -268,8 +268,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
                     num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                     uist.syncValues(num, undefined)
-                    // ev.preventDefault()
-                    // ev.stopPropagation()
+                    ev.preventDefault()
+                    ev.stopPropagation()
                 }
             }}
         >
