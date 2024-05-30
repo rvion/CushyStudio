@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: BaseWidget }) {
-    const { widget } = p
+    const widget = p.widget
     if (widget.hasErrors === false) return null
     return (
         <div tw='widget-error-ui'>

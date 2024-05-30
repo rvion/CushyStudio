@@ -3,7 +3,7 @@ import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { ISpec } from './ISpec'
 import type { CovariantFC } from './utils/CovariantFC'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -13,6 +13,9 @@ import { $WidgetSym, type IWidget } from './IWidget'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
+import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
+import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
+import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
 import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
@@ -31,6 +34,9 @@ export abstract class BaseWidget {
 
     UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
+    UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
+    UILabelIcon = () => <WidgetLabelIconUI widget={this} />
+    UILabelContainer = (p: { children: ReactNode }) => <WidgetLabelContainerUI {...p} />
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {

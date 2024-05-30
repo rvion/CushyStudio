@@ -3,7 +3,6 @@ import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { IkonOf } from '../../icons/iconHelpers'
 import { BoxUI } from '../../rsuite/box/BoxUI'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
@@ -12,8 +11,10 @@ import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
+import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
+import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
@@ -39,8 +40,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
-    const isCollapsible: boolean = widget.isCollapsible
-    const isCollapsed: boolean = widget.isCollapsed
     const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
 
     // ------------------------------------------------------------
@@ -62,7 +61,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const LABEL = (
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
         <span
-            tw={[isCollapsed || isCollapsible ? 'cursor-pointer' : null]}
+            tw={[widget.isCollapsed || widget.isCollapsible ? 'cursor-pointer' : null]}
             className='COLLAPSE-PASSTHROUGH whitespace-nowrap'
             style={{ lineHeight: '1rem' }}
         >
@@ -71,14 +70,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </span>
     )
 
-    const styleDISABLED: CSSProperties | undefined = originalWidget.isDisabled
-        ? {
-              pointerEvents: 'none',
-              opacity: 0.3,
-              backgroundColor: 'rgba(0,0,0,0.05)',
-          }
-        : undefined
-
+    const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
     const isDraggingListener = (ev: MouseEvent) => {
         if (ev.button == 0) {
             isDragging = false
@@ -89,7 +81,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const iconName = widget.icon
     const boxBorder = showBorder ? 2 : 0
     const boxBase =
-        widget.background && (isCollapsible || showBorder) //
+        widget.background && (widget.isCollapsible || showBorder) //
             ? { contrast: 0.025 }
             : undefined
     return (
@@ -110,7 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
                     tw={['flex items-center gap-0.5 select-none']}
                     onMouseDown={(ev) => {
-                        if (ev.button != 0 || !isCollapsible) return
+                        if (ev.button != 0 || !widget.isCollapsible) return
                         const target = ev.target as HTMLElement
                         if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
                         isDragging = true
@@ -119,7 +111,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         widget.setCollapsed(wasEnabled)
                     }}
                     onMouseMove={(ev) => {
-                        if (!isDragging || !isCollapsible) return
+                        if (!isDragging || !widget.isCollapsible) return
                         widget.setCollapsed(wasEnabled)
                     }}
                 >
@@ -137,13 +129,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         }
                     >
                         <WidgetLabelContainerUI>
-                            {/* COLLAPSE */}
-                            {(isCollapsed || isCollapsible) && <WidgetLabelCaretUI isCollapsed />}
-                            {iconName && (
-                                <BoxUI tw='mr-1' text={{ chroma: 0.2, contrast: 0.9 }}>
-                                    <IkonOf name={iconName} />
-                                </BoxUI>
-                            )}
+                            <WidgetLabelCaretUI widget={widget} />
+                            <WidgetLabelIconUI widget={widget} />
                             {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
@@ -152,36 +139,28 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     </span>
 
                     {HeaderUI && (
-                        <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
+                        <WidgetHeaderContainerUI className={extraClass}>
                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
-                        </div>
+                        </WidgetHeaderContainerUI>
                     )}
-                    {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
+                    <div tw='ml-auto'></div>
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                     <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />
                     <WidgetMenuUI tw='self-start' widget={widget} />
                 </div>
 
-                {/* BLOCK  ------------------------------------------------------------------------------ */}
-                {BodyUI && !isCollapsed && (
+                {/* BODY  ------------------------------------------------------------------------------ */}
+                {BodyUI && !widget.isCollapsed && (
                     <ErrorBoundaryUI>
-                        <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
+                        <div className={extraClass} tw={[widget.isCollapsible && 'WIDGET-BLOCK']}>
                             {BodyUI}
                         </div>
                     </ErrorBoundaryUI>
                 )}
 
+                {/* ERRORS  ------------------------------------------------------------------------------ */}
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
         </BoxUI>
     )
 })
-
-// ⏸️ const onLabelClick = () => {
-// ⏸️     // if the widget is collapsed, clicking on the label should expand it
-// ⏸️     if (widget.serial.collapsed) return widget.setCollapsed(false)
-// ⏸️     // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
-// ⏸️     if (isCollapsible && !widget.serial.collapsed) return widget.setCollapsed(true)
-// ⏸️     // if the widget is not collapsible, and is optional, clicking on the label should toggle it
-// ⏸️     if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
-// ⏸️ }
