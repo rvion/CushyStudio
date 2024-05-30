@@ -14,7 +14,7 @@ import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
 import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
-import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
+import { type WidgetLabelContainerProps, WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
@@ -36,7 +36,7 @@ export abstract class BaseWidget {
     UIErrors = () => <WidgetErrorsUI widget={this} />
     UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
-    UILabelContainer = (p: { children: ReactNode }) => <WidgetLabelContainerUI {...p} />
+    UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {

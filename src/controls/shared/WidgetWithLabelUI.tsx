@@ -40,7 +40,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
-    const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
+    const justify = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
 
     // ------------------------------------------------------------
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
@@ -78,8 +78,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
-    const iconName = widget.icon
-    const boxBorder = showBorder ? 2 : 0
     const boxBase =
         widget.background && (widget.isCollapsible || showBorder) //
             ? { contrast: 0.025 }
@@ -88,7 +86,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <BoxUI
             //
             key={rootKey}
-            border={boxBorder}
+            border={showBorder ? 2 : 0}
             base={boxBase}
             {...p.widget.config.box}
         >
@@ -115,34 +113,24 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         widget.setCollapsed(wasEnabled)
                     }}
                 >
-                    <span
-                        tw={'flex justify-end gap-0.5 flex-none items-center shrink-0 flex-1'}
-                        style={
-                            alignLabel
-                                ? {
-                                      textAlign: 'right',
-                                      minWidth: '8rem',
-                                      width: alignLabel && HeaderUI ? '35%' : undefined,
-                                      marginRight: alignLabel && HeaderUI ? '0.25rem' : undefined,
-                                  }
-                                : undefined
-                        }
-                    >
-                        <WidgetLabelContainerUI>
-                            <WidgetLabelCaretUI widget={widget} />
-                            <WidgetLabelIconUI widget={widget} />
-                            {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
-                            {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                            {LABEL}
-                            {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
-                        </WidgetLabelContainerUI>
-                    </span>
+                    {/* HEADER LABEL */}
+                    <WidgetLabelContainerUI justify={justify}>
+                        <WidgetLabelCaretUI widget={widget} />
+                        <WidgetLabelIconUI widget={widget} />
+                        {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
+                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                        {LABEL}
+                        {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
+                    </WidgetLabelContainerUI>
 
+                    {/* HEADER MAIN */}
                     {HeaderUI && (
                         <WidgetHeaderContainerUI className={extraClass}>
                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                         </WidgetHeaderContainerUI>
                     )}
+
+                    {/* HEADER RIGHT (undo, menu, ...) */}
                     <div tw='ml-auto'></div>
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                     <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />
