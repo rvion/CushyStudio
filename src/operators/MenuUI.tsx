@@ -6,7 +6,7 @@ import { Fragment } from 'react/jsx-runtime'
 
 import { isWidget } from '../controls/IWidget'
 import { IkonOf } from '../icons/iconHelpers'
-import { MenuItem } from '../rsuite/Dropdown'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { activityManager } from './Activity'
 import { isBoundCommand } from './introspect/_isBoundCommand'

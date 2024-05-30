@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../rsuite/dropdown/Dropdown'
+import { MenuItem } from '../../rsuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
 

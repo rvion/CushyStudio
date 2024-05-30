@@ -3,7 +3,8 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../rsuite/dropdown/Dropdown'
+import { MenuItem } from '../../rsuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {

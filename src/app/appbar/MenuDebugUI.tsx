@@ -5,7 +5,9 @@ import { quickBench } from '../../db/quickBench'
 import { Ikon } from '../../icons/iconHelpers'
 import { activityManager } from '../../operators/Activity'
 import { DEMO_ACTIVITY } from '../../operators/useDebugActivity'
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../rsuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../../rsuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
 
@@ -51,7 +53,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         shortcut='mod+R'
                         label='Reload'
                     />
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
                         icon={<span className='material-symbols-outlined text-yellow-500'>play_for_work</span>}
@@ -76,7 +78,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     >
                         Test Auth CB page
                     </MenuItem>
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem
                         onClick={() => st.wipeOuputTopLevelImages()}
                         icon={<span className='material-symbols-outlined text-red-500'>image_not_supported</span>}
@@ -89,7 +91,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     >
                         remove top-level images
                     </MenuItem>
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem
                         //
                         // tw={[st.db.healthColor]}
@@ -106,7 +108,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         onClick={st.fullReset_eraseConfigAndSchemaFilesAndDB}
                         label='Full Reset'
                     />
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem //
                         icon={<span className='material-symbols-outlined text-purple-500'>storage</span>}
                         onClick={st.db.migrate}

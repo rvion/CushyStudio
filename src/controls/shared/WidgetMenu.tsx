@@ -10,6 +10,7 @@ import { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'
 import { Button } from '../../rsuite/button/Button'
+import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: IWidget }) {
@@ -33,6 +34,7 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 onPick: () => widget.reset(),
             }),
         )
+        out.push(MenuDividerUI_)
         // FOLD ALL CHILDREN
         out.push(
             new SimpleMenuAction({
@@ -51,6 +53,7 @@ export const menu_widgetActions: Menu<IWidget> = menu({
             }),
         )
 
+        out.push(MenuDividerUI_)
         // CREATE PRESET ACTION
         out.push(
             new SimpleMenuModal({
@@ -70,6 +73,7 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 },
             }),
         )
+        out.push(MenuDividerUI_)
         const presets = widget.config.presets ?? []
         for (const entry of presets) {
             out.push(

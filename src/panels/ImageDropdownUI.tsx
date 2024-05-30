@@ -4,7 +4,8 @@ import { observer } from 'mobx-react-lite'
 
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from '../rsuite/Dropdown'
+import { Dropdown } from '../rsuite/dropdown/Dropdown'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {

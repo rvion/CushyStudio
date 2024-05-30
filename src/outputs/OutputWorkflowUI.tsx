@@ -3,7 +3,7 @@ import type { StepL } from '../models/Step'
 import { observer } from 'mobx-react-lite'
 
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { MenuItem } from '../rsuite/Dropdown'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'

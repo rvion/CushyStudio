@@ -4,7 +4,9 @@ import { observer } from 'mobx-react-lite'
 
 import { showItemInFolder } from '../../app/layout/openExternal'
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../rsuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../../rsuite/dropdown/MenuItem'
 import { Loader } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
@@ -111,7 +113,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         reset Form
                     </MenuItem>
 
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     {/* <button disabled={app.isPublishing} tw='btn btn-ghost btn-square btn-sm' onClick={async () => {}}></button> */}
                     <MenuItem
                         icon={app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
