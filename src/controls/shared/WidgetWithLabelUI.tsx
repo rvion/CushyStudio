@@ -8,9 +8,7 @@ import { BoxUI } from '../../rsuite/box/BoxUI'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
-import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
@@ -35,34 +33,20 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
      * */
     label?: string | false
 }) {
-    if (p.widget.config.hidden) return null
+    if (p.widget.isHidden) return null
     const rootKey = p.rootKey
     const originalWidget = p.widget
     const widget = getActualWidgetToDisplay(originalWidget)
-    const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
-
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
-
-    const isCollapsible: boolean = getIfWidgetIsCollapsible(widget)
-    const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
-
+    const isCollapsible: boolean = widget.isCollapsible
+    const isCollapsed: boolean = widget.isCollapsed
     const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
 
     // ------------------------------------------------------------
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
-    const k = widget
-    if (isWidgetGroup(k) && Object.keys(k.fields).length === 0) return null
+    // if (isWidgetGroup(widget) && Object.keys(widget.fields).length === 0) return null
     // ------------------------------------------------------------
-
-    // ⏸️ const onLabelClick = () => {
-    // ⏸️     // if the widget is collapsed, clicking on the label should expand it
-    // ⏸️     if (widget.serial.collapsed) return widget.setCollapsed(false)
-    // ⏸️     // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
-    // ⏸️     if (isCollapsible && !widget.serial.collapsed) return widget.setCollapsed(true)
-    // ⏸️     // if the widget is not collapsible, and is optional, clicking on the label should toggle it
-    // ⏸️     if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
-    // ⏸️ }
 
     const showBorder = widget.border
 
@@ -87,8 +71,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </span>
     )
 
-    const styleDISABLED: CSSProperties | undefined = isDisabled
-        ? { pointerEvents: 'none', opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.05)' }
+    const styleDISABLED: CSSProperties | undefined = originalWidget.isDisabled
+        ? {
+              pointerEvents: 'none',
+              opacity: 0.3,
+              backgroundColor: 'rgba(0,0,0,0.05)',
+          }
         : undefined
 
     const isDraggingListener = (ev: MouseEvent) => {
@@ -156,14 +144,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                     <IkonOf name={iconName} />
                                 </BoxUI>
                             )}
-                            {/* TOGGLE BEFORE */}
-                            {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                            {/* TOOLTIPS  */}
+                            {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
                             {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                             {LABEL}
+                            {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
                         </WidgetLabelContainerUI>
-                        {/* TOGGLE (after)  */}
-                        {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
 
                     {HeaderUI && (
@@ -191,3 +176,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </BoxUI>
     )
 })
+
+// ⏸️ const onLabelClick = () => {
+// ⏸️     // if the widget is collapsed, clicking on the label should expand it
+// ⏸️     if (widget.serial.collapsed) return widget.setCollapsed(false)
+// ⏸️     // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
+// ⏸️     if (isCollapsible && !widget.serial.collapsed) return widget.setCollapsed(true)
+// ⏸️     // if the widget is not collapsible, and is optional, clicking on the label should toggle it
+// ⏸️     if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
+// ⏸️ }

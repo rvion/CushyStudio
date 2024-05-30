@@ -6,13 +6,12 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../../rsuite/checkbox/InputBoolUI'
 import { isWidgetOptional } from '../widgets/WidgetUI.DI'
 
-export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: BaseWidget }) {
-    // only do something if widget is Optional
+export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { className?: string; widget: BaseWidget }) {
     if (!isWidgetOptional(p.widget)) return null
     const widget = p.widget as Widget_optional
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget
-            tw='mr-1'
+            className={p.className}
             active={widget.serial.active}
             expand={false}
             onValueChange={(value) => widget.setActive(value)}

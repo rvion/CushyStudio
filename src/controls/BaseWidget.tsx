@@ -11,11 +11,11 @@ import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from './shared/getIfWidgetIsCollapsible'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
+import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -29,7 +29,7 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
 export abstract class BaseWidget {
     abstract spec: ISpec
 
-    UIToggle = () => <Widget_ToggleUI widget={this} />
+    UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
 
     // abstract readonly id: string
@@ -59,7 +59,7 @@ export abstract class BaseWidget {
             // this allow to make sure we fold though optionals and similar constructs
             const item = getActualWidgetToDisplay(_item)
             if (item.serial.collapsed) continue
-            const isCollapsible = getIfWidgetIsCollapsible(item)
+            const isCollapsible = item.isCollapsible
             if (isCollapsible) item.setCollapsed(true)
         }
     }
@@ -196,6 +196,38 @@ export abstract class BaseWidget {
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<any> | undefined
 
+    /** the widget state that will be persisted UI */
+    abstract serial: { collapsed?: boolean }
+
+    get isHidden(): boolean {
+        if (this.config.hidden != null) return this.config.hidden
+        if (isWidgetGroup(this) && Object.keys(this.fields).length === 0) return true
+        return false
+    }
+
+    /** whether the widget should be considered inactive */
+    get isDisabled(): boolean {
+        return isWidgetOptional(this) && !this.serial.active
+    }
+
+    get isCollapsed(): boolean {
+        if (!this.isCollapsible) return false
+        if (this.serial.collapsed != null) return this.serial.collapsed
+        if (this.parent?.isDisabled) return true
+        return false
+    }
+
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    get isCollapsible(): boolean {
+        // top level widget is not collapsible; we may want to revisit this decision
+        // if (widget.parent == null) return false
+        if (this.config.collapsed != null) return this.config.collapsed //
+        if (!this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
+        if (this.config.label === false) return false
+        return true
+    }
+
+    /** if provided, override the default logic to decide if the widget need to be bordered */
     get border(): boolean {
         // avoif borders for the top level form
         if (this.parent == null) return false

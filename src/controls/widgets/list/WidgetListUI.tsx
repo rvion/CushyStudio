@@ -10,7 +10,6 @@ import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { ErrorBoundaryUI } from '../../../rsuite/errors/ErrorBoundaryUI'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
 import { ListControlsUI } from './ListControlsUI'
@@ -46,7 +45,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         const showBorder = subWidget.border
-                        const isCollapsible: boolean = getIfWidgetIsCollapsible(subWidget)
+                        const isCollapsible: boolean = subWidget.isCollapsible
                         const boxBorder = showBorder ? 2 : 0
                         const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
                         return (
