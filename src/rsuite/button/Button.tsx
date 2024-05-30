@@ -22,6 +22,7 @@ class ButtonState {
     }
 
     get visuallyActive() {
+        if (this.props.disabled) return false
         return this.pressed ? !this.props.active : this.props.active
     }
 }
