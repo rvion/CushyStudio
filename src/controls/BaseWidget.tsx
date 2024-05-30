@@ -7,7 +7,7 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeWidget } from '../panels/libraryUI/tree/xxx/TreeWidget'
+import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
