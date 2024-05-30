@@ -43,6 +43,7 @@ export const Button = observer(function Button_(p: FrameProps) {
         <Frame //
             size={size ?? 'sm'}
             look={p.look ?? 'default'}
+            hover={p.disabled ? false : undefined}
             {...rest}
             tw={[p.disabled ? null : 'cursor-pointer', 'Button_  justify-center']}
             onMouseDown={uist.press}
