@@ -44,7 +44,7 @@ export const Button = observer(function Button_(p: FrameProps) {
             size={size ?? 'sm'}
             look={p.look ?? 'default'}
             {...rest}
-            tw={['Button_ cursor-pointer justify-center']}
+            tw={[p.disabled ? null : 'cursor-pointer', 'Button_  justify-center']}
             onMouseDown={uist.press}
             active={uist.visuallyActive}
         />
