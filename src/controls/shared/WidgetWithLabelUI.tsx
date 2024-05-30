@@ -7,12 +7,12 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { IkonOf } from '../../icons/iconHelpers'
 import { BoxUI } from '../../rsuite/box/BoxUI'
 import { Button } from '../../rsuite/button/Button'
+import { ErrorBoundaryFallback } from '../../rsuite/errors/ErrorBoundaryFallback'
+import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
-import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
-import { CushyErrorBoundarySimpleUI } from './CushyErrorBoundarySimple'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
@@ -172,7 +172,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
                     {HeaderUI && (
                         <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
-                            <CushyErrorBoundarySimpleUI>{HeaderUI}</CushyErrorBoundarySimpleUI>
+                            <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                         </div>
                     )}
                     {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
@@ -183,11 +183,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
                 {/* BLOCK  ------------------------------------------------------------------------------ */}
                 {BodyUI && !isCollapsed && (
-                    <CushyErrorBoundarySimpleUI>
+                    <ErrorBoundaryUI>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
                             {BodyUI}
                         </div>
-                    </CushyErrorBoundarySimpleUI>
+                    </ErrorBoundaryUI>
                 )}
 
                 <WidgetErrorsUI widget={widget} />

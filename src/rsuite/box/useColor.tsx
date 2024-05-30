@@ -4,7 +4,7 @@ import type { Box } from './Box'
 
 import { type CSSProperties, useContext } from 'react'
 
-import { clamp } from '../../controls/widgets/list/clamp'
+import { clamp } from '../../controls/utils/clamp'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { compileOrRetrieveClassName } from '../tinyCSS/compileOrRetrieveClassName'
 import { CurrentStyleCtx } from './CurrentStyleCtx'

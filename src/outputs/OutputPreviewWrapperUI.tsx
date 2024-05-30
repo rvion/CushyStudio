@@ -2,7 +2,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { CushyErrorBoundarySimpleUI } from '../controls/shared/CushyErrorBoundarySimple'
+import { ErrorBoundaryUI } from '../rsuite/errors/ErrorBoundaryUI'
 import { useSt } from '../state/stateContext'
 import { StepOutput } from '../types/StepOutput'
 
@@ -19,7 +19,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     const st = useSt()
     const sizeStr = p.size ? `${p.size}px` : st.historySizeStr
     return (
-        <CushyErrorBoundarySimpleUI>
+        <ErrorBoundaryUI>
             <div
                 // STYLE
                 tw={['rounded overflow-clip border border-base-300 hover:border-primary hover:brightness-110 box-content']}
@@ -33,6 +33,6 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
             >
                 {p.children}
             </div>
-        </CushyErrorBoundarySimpleUI>
+        </ErrorBoundaryUI>
     )
 })

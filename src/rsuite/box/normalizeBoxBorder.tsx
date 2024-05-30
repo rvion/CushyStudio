@@ -1,6 +1,6 @@
 import type { Kolor } from '../kolor/Kolor'
 
-import { clamp } from '../../controls/widgets/list/clamp'
+import { clamp } from '../../controls/utils/clamp'
 import { getLCHFromString } from '../kolor/getLCHFromString'
 
 export function normalizeBoxBorder(border: Kolor | string | number | boolean | undefined): Kolor | null {

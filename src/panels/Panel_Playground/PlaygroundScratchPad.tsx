@@ -2,18 +2,18 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
-import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { BoxBase, BoxSubtle, BoxTitle } from '../../rsuite/box/BoxMisc'
 import { BoxUI } from '../../rsuite/box/BoxUI'
+import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
     return (
-        <CushyErrorBoundarySimpleUI>
+        <ErrorBoundaryUI>
             <ThemeConfigUI />
-        </CushyErrorBoundarySimpleUI>
+        </ErrorBoundaryUI>
     )
 })
 

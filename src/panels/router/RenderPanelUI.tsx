@@ -3,8 +3,8 @@ import type * as FL from 'flexlayout-react'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { BoxUI } from '../../rsuite/box/BoxUI'
+import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { Message } from '../../rsuite/shims'
 import { PanelNames, panels } from './PANELS'
 
@@ -35,7 +35,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const Component = panelDef.widget
     const panelID = p.node?.getId()
     return (
-        <CushyErrorBoundarySimpleUI>
+        <ErrorBoundaryUI>
             <BoxUI
                 //
                 tw='flex-1 h-full w-full overflow-auto'
@@ -45,6 +45,6 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
             >
                 <Component {...panelProps} className='w-full h-full border-none' />
             </BoxUI>
-        </CushyErrorBoundarySimpleUI>
+        </ErrorBoundaryUI>
     )
 })

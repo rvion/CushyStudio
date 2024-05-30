@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyErrorBoundarySimpleUI } from '../controls/shared/CushyErrorBoundarySimple'
+import { ErrorBoundaryUI } from '../rsuite/errors/ErrorBoundaryUI'
 import { useSt } from '../state/stateContext'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 
@@ -10,9 +10,9 @@ export const Panel_LastGraph = observer(function Panel_LastGraph_(p: {}) {
     return (
         <div>
             {lastGraph && (
-                <CushyErrorBoundarySimpleUI>
+                <ErrorBoundaryUI>
                     <GraphPreviewUI graph={lastGraph} />
-                </CushyErrorBoundarySimpleUI>
+                </ErrorBoundaryUI>
             )}
         </div>
     )

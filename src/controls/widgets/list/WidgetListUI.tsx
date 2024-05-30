@@ -8,8 +8,8 @@ import { forwardRef } from 'react'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
+import { ErrorBoundaryUI } from '../../../rsuite/errors/ErrorBoundaryUI'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { CushyErrorBoundarySimpleUI } from '../../shared/CushyErrorBoundarySimple'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
@@ -71,10 +71,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
 
                                         {/* inline header part */}
                                         {widgetHeader && (
-                                            <CushyErrorBoundarySimpleUI>
+                                            <ErrorBoundaryUI>
                                                 {/* <WidgetHeaderUI widget={subWidget} /> */}
                                                 {widgetHeader}
-                                            </CushyErrorBoundarySimpleUI>
+                                            </ErrorBoundaryUI>
                                         )}
 
                                         {/* delete btn */}
@@ -96,9 +96,9 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
-                                        <CushyErrorBoundarySimpleUI>
+                                        <ErrorBoundaryUI>
                                             <div tw='ml-2 pl-2'>{widgetBody}</div>
-                                        </CushyErrorBoundarySimpleUI>
+                                        </ErrorBoundaryUI>
                                     )}
                                 </BoxUI>
                             </SortableItem>

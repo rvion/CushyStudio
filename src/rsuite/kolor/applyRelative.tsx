@@ -1,7 +1,7 @@
 import type { Kolor } from './Kolor'
 import type { OKLCH } from './OKLCH'
 
-import { clamp } from '../../controls/widgets/list/clamp'
+import { clamp } from '../../controls/utils/clamp'
 import { getLCHFromString } from './getLCHFromString'
 
 export const applyKolorToOKLCH = (a: OKLCH, b: Kolor): OKLCH => {
