@@ -41,12 +41,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
     const justify = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
-
-    // ------------------------------------------------------------
-    // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
-    // if (isWidgetGroup(widget) && Object.keys(widget.fields).length === 0) return null
-    // ------------------------------------------------------------
-
     const showBorder = widget.border
 
     const labelText: string | false = (() => {
