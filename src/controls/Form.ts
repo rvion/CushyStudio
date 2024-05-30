@@ -124,7 +124,6 @@ export class Form<
     valueChanged = (widget: IWidget) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
-        console.log(`[🦊] value changed`)
         this._onValueChange?.(this)
     }
 
