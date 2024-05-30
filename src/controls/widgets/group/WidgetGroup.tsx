@@ -9,8 +9,6 @@ import { nanoid } from 'nanoid'
 import { bang } from '../../../utils/misc/bang'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
-import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 

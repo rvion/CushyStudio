@@ -1,31 +1,85 @@
+import type { FormBuilder, XChoice, XChoices, XNumber } from '../../controls/FormBuilder'
 import type { Kolor } from './Kolor'
 
 import { Fragment } from 'react/jsx-runtime'
 
-import { type FormBuilder } from '../../controls/FormBuilder'
+export type UI_Kolor = XChoices<{
+    l: XChoice<{
+        lightness: XNumber
+        contrast: XNumber
+    }>
+    c: XChoice<{
+        chroma: XNumber
+        chromaBlend: XNumber
+    }>
+    h: XChoice<{
+        hue: XNumber
+        hueShift: XNumber
+    }>
+}>
 
-export const ui_Kolor = (ui: FormBuilder) => {
-    // prettier-ignore
+export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
     return ui.choicesV2(
         {
             l: ui.choiceV2(
                 {
-                    lightness: ui.number({ label: 'Manual', text: 'lightness', min: 0, max: 1, default: 0.1, step: 0.1, icon:'mdiGradientHorizontal' }),
-                    contrast: ui.number({ label: 'Relative', text: 'contrast', min: -1, softMin: 0, max: 1, default: 0, step: 0.1, icon:'mdiInvertColors' }),
+                    lightness: ui.number({
+                        label: 'Manual',
+                        text: 'lightness',
+                        min: 0,
+                        max: 1,
+                        default: 0.1,
+                        step: 0.1,
+                        icon: 'mdiGradientHorizontal',
+                    }),
+                    contrast: ui.number({
+                        label: 'Relative',
+                        text: 'contrast',
+                        min: -1,
+                        softMin: 0,
+                        max: 1,
+                        default: 0,
+                        step: 0.1,
+                        icon: 'mdiInvertColors',
+                    }),
                 },
                 { label: 'Light' },
             ),
             c: ui.choiceV2(
                 {
-                    chroma: ui.number({ label:'Manual', min: 0, max: 0.47, default: 0.1, step: 0.1, icon:'mdiPalette' }),
-                    chromaBlend: ui.number({ label: 'Relative', text: 'multiply', min: 0, softMax: 2, default: 1, step: 0.1, icon:'mdiEyedropper' }),
+                    chroma: ui.number({
+                        label: 'Manual',
+                        min: 0,
+                        max: 0.47,
+                        default: 0.1,
+                        step: 0.1,
+                        icon: 'mdiPalette',
+                    }),
+                    chromaBlend: ui.number({
+                        label: 'Relative',
+                        text: 'multiply',
+                        min: 0,
+                        softMax: 2,
+                        default: 1,
+                        step: 0.1,
+                        icon: 'mdiEyedropper',
+                    }),
                 },
                 { label: 'Chroma' },
             ),
             h: ui.choiceV2(
                 {
-                    hue: ui.number({ label: 'Manual', min: -360, softMin: 0, max: 360, default: 0, step: 1, icon:'mdiPalette' }),
-                    hueShift: ui.number({ label: 'Relative', text: 'shift', min: -360, softMin: 0, max: 360, default: 0, step: 10, icon:'mdiEyedropper' }),
+                    hue: ui.number({ label: 'Manual', min: -360, softMin: 0, max: 360, default: 0, step: 1, icon: 'mdiPalette' }),
+                    hueShift: ui.number({
+                        label: 'Relative',
+                        text: 'shift',
+                        min: -360,
+                        softMin: 0,
+                        max: 360,
+                        default: 0,
+                        step: 10,
+                        icon: 'mdiEyedropper',
+                    }),
                 },
                 { label: 'Hue' },
             ),
@@ -43,8 +97,19 @@ export const ui_Kolor = (ui: FormBuilder) => {
                         })
                     },
                 },
+                {
+                    icon: 'mdiText',
+                    label: 'Text (v1)',
+                    apply: (w) => {
+                        w.setValue({
+                            l: { contrast: 0.9 },
+                            c: { chromaBlend: 1 },
+                            h: { hue: 0 },
+                        })
+                    },
+                },
             ],
-            tabPosition: 'start',
+            // tabPosition: 'start',
             body: (p) => {
                 const { l, c, h } = p.widget.children
                 return (

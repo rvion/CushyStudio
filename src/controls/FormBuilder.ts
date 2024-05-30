@@ -44,6 +44,7 @@ export type XShared<T extends ISpec> = Widget_shared<T>
 export type XString = Spec<Widget_string>
 export type XPrompt = Spec<Widget_prompt>
 export type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
+export type XChoice<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
 export type XNumber = Spec<Widget_number>
 export type XColor = Spec<Widget_color>
 export type XEnum<T> = Spec<Widget_enum<T>>
@@ -218,22 +219,22 @@ export class FormBuilder implements IFormBuilder {
     fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
     }
     choiceV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
-    ) => {
+    ): XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
     }
-    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): XChoices<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
     }
     choicesV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
-    ) => {
+    ): XChoices<T> => {
         return new Spec<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
     }
     ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
