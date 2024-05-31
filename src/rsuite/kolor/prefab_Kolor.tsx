@@ -18,7 +18,11 @@ export type UI_Kolor = XChoices<{
     }>
 }>
 
-export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
+export const ui_Kolor = (
+    //
+    ui: FormBuilder,
+    def?: Kolor,
+): UI_Kolor => {
     return ui.choicesV2(
         {
             l: ui.choiceV2(
@@ -28,7 +32,7 @@ export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
                         text: 'lightness',
                         min: 0,
                         max: 1,
-                        default: 0.1,
+                        default: def?.lightness ?? 0.1,
                         step: 0.1,
                         icon: 'mdiGradientHorizontal',
                     }),
@@ -38,12 +42,15 @@ export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
                         min: -1,
                         softMin: 0,
                         max: 1,
-                        default: 0,
+                        default: def?.contrast ?? 0.1,
                         step: 0.1,
                         icon: 'mdiInvertColors',
                     }),
                 },
-                { label: 'Light' },
+                {
+                    label: 'Light',
+                    default: def?.lightness ? 'lightness' : 'contrast',
+                },
             ),
             c: ui.choiceV2(
                 {
@@ -51,7 +58,7 @@ export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
                         label: 'Manual',
                         min: 0,
                         max: 0.47,
-                        default: 0.1,
+                        default: def?.chroma ?? 0.1,
                         step: 0.1,
                         icon: 'mdiPalette',
                     }),
@@ -60,28 +67,42 @@ export const ui_Kolor = (ui: FormBuilder): UI_Kolor => {
                         text: 'multiply',
                         min: 0,
                         softMax: 2,
-                        default: 1,
+                        default: def?.chromaBlend ?? 1,
                         step: 0.1,
                         icon: 'mdiEyedropper',
                     }),
                 },
-                { label: 'Chroma' },
+                {
+                    label: 'Chroma',
+                    default: def?.chroma ? 'chroma' : 'chromaBlend',
+                },
             ),
             h: ui.choiceV2(
                 {
-                    hue: ui.number({ label: 'Manual', min: -360, softMin: 0, max: 360, default: 0, step: 1, icon: 'mdiPalette' }),
+                    hue: ui.number({
+                        label: 'Manual',
+                        min: -360,
+                        softMin: 0,
+                        max: 360,
+                        default: def?.hue ?? 220,
+                        step: 1,
+                        icon: 'mdiPalette',
+                    }),
                     hueShift: ui.number({
                         label: 'Relative',
                         text: 'shift',
                         min: -360,
                         softMin: 0,
                         max: 360,
-                        default: 0,
+                        default: def?.hueShift ?? 0,
                         step: 10,
                         icon: 'mdiEyedropper',
                     }),
                 },
-                { label: 'Hue' },
+                {
+                    label: 'Hue',
+                    default: def?.hue ? 'hue' : 'hueShift',
+                },
             ),
         },
         {
