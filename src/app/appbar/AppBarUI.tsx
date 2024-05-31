@@ -21,7 +21,7 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
     return (
-        <BoxUI base={{ contrast: 0 }} tw='overflow-auto shrink-0' id='CushyAppBar'>
+        <BoxUI base={cushy.theme.value.appbar ?? { contrast: 0.3 }} tw='overflow-auto shrink-0' id='CushyAppBar'>
             <div tw='flex items-center px-2 overflow-auto'>
                 <img style={{ width: '1.6rem' }} src={assets.CushyLogo_512_png} alt='' />
                 <div tw='px-1'>

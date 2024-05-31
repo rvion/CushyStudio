@@ -8,7 +8,8 @@ export const themeConf = CushyFormManager.form(
         ui.fields(
             {
                 // CORE -----------
-                appbar: ui.colorV2(),
+                appbar: ui.colorV2().optional(),
+                favbar: ui.colorV2().optional(),
                 base: ui.colorV2({
                     default: '#1E212B' /* `oklch(0.01 0.1 220)` */,
                     presets: [
