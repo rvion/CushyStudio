@@ -8,7 +8,6 @@ import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useTheme } from '../../../rsuite/theme/useTheme'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
-import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
@@ -25,8 +24,6 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
-        <div>
-            <AnimatedSizeUI>
                 <div //
                     tw={[widget.config.layout === 'H' ? 'flex' : null]}
                     className={widget.config.className}
@@ -45,8 +42,6 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                         )
                     })}
                 </div>
-            </AnimatedSizeUI>
-        </div>
     )
 })
 
