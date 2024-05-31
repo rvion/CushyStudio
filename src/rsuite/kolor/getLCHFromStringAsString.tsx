@@ -3,10 +3,15 @@ import Color from 'colorjs.io'
 /** return any color in oklch notation */
 
 export function getLCHFromStringAsString(str: string): string {
-    const color = new Color(str)
-    const [l, c, h_] = color.oklch
-    const h = isNaN(h_!) ? 0 : h_
-    return `lch(${fmtNum1(l! * 100)}%, ${fmtNum2(c!)}, ${fmtNum1(h!)})`
+    try {
+        const color = new Color(str)
+        const [l, c, h_] = color.oklch
+        const h = isNaN(h_!) ? 0 : h_
+        return `lch(${fmtNum1(l! * 100)}%, ${fmtNum2(c!)}, ${fmtNum1(h!)})`
+    } catch (e) {
+        console.log(`[🔴] getLCHFromStringAsString FAILURE`)
+        return `lch(.5 1 0)`
+    }
 }
 
 /** toFixed(2), but without the uncesseray leading 0 */
