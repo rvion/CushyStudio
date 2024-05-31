@@ -5,11 +5,11 @@ html, body, #root {
 
 
 .flexlayout__tab{
-    border: 1px solid var(--BASEOK);
+    border: 1px solid var(--KLR);
 }
 .flexlayout__tab:hover {
-    /* --BASEOK: blue; */
-    border: 1px solid oklch(from var(--BASEOK) calc(.5) 0.05 calc(h));
+    /* --KLR: blue; */
+    border: 1px solid oklch(from var(--KLR) calc(.5) 0.05 calc(h));
 }
 .scroll { overflow:auto; }
 .gap { gap: .7rem }
@@ -73,7 +73,7 @@ body {
 /* scrollbar -------------------------------------------------------------------------------------------------------------------------------- */
 *::-webkit-scrollbar-thumb {
     background-color:
-    oklch(from var(--BASEOK) calc(l + 0.3) calc(0) h);
+    oklch(from var(--KLR) calc(l + 0.3) calc(0) h);
 }
 
 /*  */

@@ -64,9 +64,9 @@ export const compileBoxClassName = (
             // --------------------------------------------------------
             const lines: string[] = []
             const p = (key: string, value: string) => lines.push(`    ${key}: ${value};\n`)
-            if (box.base) p(`background`, `var(--BASEOK)`)
-            if (box.text) p(`color`, compileKolorToCSSExpression('BASEOK', box.text))
-            if (box.border) p(`border`, `1px solid ${compileKolorToCSSExpression('BASEOK', box.border)}`)
+            if (box.base) p(`background`, `var(--KLR)`)
+            if (box.text) p(`color`, compileKolorToCSSExpression('KLR', box.text))
+            if (box.border) p(`border`, `1px solid ${compileKolorToCSSExpression('KLR', box.border)}`)
             setRule(`.${CSS.escape(className)}`, lines.join(''))
             console.log(`[🤠] rvion .${className}      `, hashBoxNormalized(box))
 
@@ -74,8 +74,8 @@ export const compileBoxClassName = (
             // if (box.hover) {
             //     const linesH: string[] = []
             //     const ph = (key: string, value: string) => lines.push(`${key}: ${value};`)
-            //     if (box.text) p(`color`, compileKolorToCSSExpression('BASEOK', box.text))
-            //     if (box.border) p(`border`, `1px solid ${compileKolorToCSSExpression('BASEOK', box.border)}`)
+            //     if (box.text) p(`color`, compileKolorToCSSExpression('KLR', box.text))
+            //     if (box.border) p(`border`, `1px solid ${compileKolorToCSSExpression('KLR', box.border)}`)
             //     rule(`.${className}:hover`, linesH)
             //     console.log(`[🤠] rvion .${className}:hover`, hashBoxNormalized(box))
             // }

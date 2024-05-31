@@ -17,8 +17,8 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
             disabled={!(widget?.hasChanges ?? false)}
             icon='mdiUndoVariant'
             look='ghost'
+            size='xs'
             square
-            xs
         />
     )
 })

@@ -94,7 +94,7 @@ export const Frame = observer(
         // STYLE ---------------------------------------------
         const variables: { [key: string]: string | number } = {
             '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
-            '--BASEOK': formatOKLCH(nextCtx.base),
+            '--KLR': formatOKLCH(nextCtx.base),
             // '--PREV_BASE_L': prevCtx.base.lightness, // === -1 ? -1 : 1,
             // '--NEXT_BASE_L': nextCtx.base.lightness, // === -1 ? -1 : 1,
         }
@@ -104,32 +104,28 @@ export const Frame = observer(
 
         // ⏸️ if (box.base) {
         // ⏸️     const clsName = hashKolor(box.base)
-        // ⏸️     if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `background: var(--BASEOK);`)
+        // ⏸️     if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `background: var(--KLR);`)
         // ⏸️     classes.push(clsName)
         // ⏸️ }
 
         const boxText = box.text ?? prevCtx.text
         if (boxText) {
             const clsName = 'text' + hashKolor(boxText)
-            if (!seen.has(clsName))
-                setRule(`.${CSS.escape(clsName)}`, `color: ${compileKolorToCSSExpression('BASEOK', boxText)};`)
+            if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
             classes.push(clsName)
         }
 
         if (box.textShadow) {
             const clsName = 'textShadow' + hashKolor(box.textShadow)
             if (!seen.has(clsName))
-                setRule(
-                    `.${CSS.escape(clsName)}`,
-                    `box-shadow: 4px 4px ${compileKolorToCSSExpression('BASEOK', box.textShadow)};`,
-                )
+                setRule(`.${CSS.escape(clsName)}`, `box-shadow: 4px 4px ${compileKolorToCSSExpression('KLR', box.textShadow)};`)
             classes.push(clsName)
         }
 
         if (box.border) {
             const clsName = 'border' + hashKolor(box.border)
             if (!seen.has(clsName))
-                setRule(`.${CSS.escape(clsName)}`, `border: 1px solid ${compileKolorToCSSExpression('BASEOK', box.border)};`)
+                setRule(`.${CSS.escape(clsName)}`, `border: 1px solid ${compileKolorToCSSExpression('KLR', box.border)};`)
             classes.push(clsName)
         }
 

@@ -4,6 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { memo, type ReactNode } from 'react'
 
+import { BoxUI } from '../box/BoxUI'
 import { run_Box } from '../box/prefab_Box'
 import { getLCHFromString } from '../kolor/getLCHFromString'
 import { run_Kolor } from '../kolor/prefab_Kolor'
@@ -23,22 +24,31 @@ export class CushyThemeProvider {
     get value(): THEME {
         return {
             ...defaultDarkTheme,
-            base: this.base,
-            text: this.text,
-            labelText: this.labelText,
-            primary: this.primary,
+            // base: this.base,
+            // text: this.text,
+            // labelText: this.labelText,
+            // primary: this.primary,
         }
     }
 }
 
 const cushyThemeProvider = new CushyThemeProvider()
 
-export const CushyTheme = memo((p: { children: ReactNode }) => {
+export const CushyTheme = observer((p: { children: ReactNode }) => {
     return (
         <ThemeCtx.Provider //
             value={cushyThemeProvider}
         >
-            {p.children}
+            <BoxUI //
+                // @ts-expect-error 🔴
+                style={{ '--KLR': cushy.theme.root.value.base }}
+                base={cushy.theme.value.base}
+                text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
+                tw='h-full'
+                expand
+            >
+                {p.children}
+            </BoxUI>
         </ThemeCtx.Provider>
     )
 })

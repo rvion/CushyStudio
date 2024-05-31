@@ -35,10 +35,10 @@ export const BoxUI = Frame
 //             nextCtx.base.chroma !== prevCtx.base.chroma ||
 //             nextCtx.base.lightness !== prevCtx.base.lightness ||
 //             nextCtx.base.hue !== prevCtx.base.hue
-//         if (hasNewBG) variables['--BASEOK'] = formatOKLCH(nextCtx.base)
+//         if (hasNewBG) variables['--KLR'] = formatOKLCH(nextCtx.base)
 
 //         // const hasNewDir = prevCtx
-//         // if (hasNewBG) variables['--BASEOK'] = formatOKLCH(nextCtx.background)
+//         // if (hasNewBG) variables['--KLR'] = formatOKLCH(nextCtx.background)
 
 //         return (
 //             <div //

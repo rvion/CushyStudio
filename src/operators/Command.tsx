@@ -1,4 +1,5 @@
 import { commandManager, type CushyShortcut } from '../app/shortcuts/CommandManager'
+import { Button } from '../rsuite/button/Button'
 import { BoundCommandSym } from './introspect/_isBoundCommand'
 import { CommandSym } from './introspect/_isCommand'
 import { Trigger } from './RET'
@@ -51,7 +52,11 @@ export class Command<Ctx = any> {
     }
 
     NavBarBtnUI = (p: { label?: string }) => {
-        return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
+        return (
+            <Button border={false} onClick={() => this.execute()}>
+                {p.label ?? this.label}
+            </Button>
+        )
     }
 }
 

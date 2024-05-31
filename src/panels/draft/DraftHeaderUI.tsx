@@ -20,6 +20,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const app = draft.appRef.item
     return (
         <BoxUI
+            // base={{ chroma: 0.1, lightness: 0.1 }}
             // base={10}
             // border
             style={{
@@ -33,7 +34,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                 <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
                     <div tw='flex text-sm gap-1'>
-                        App <span tw='text-primary font-bold'>{app.name}</span>
+                        App <span tw='font-bold'>{app.name}</span>
                     </div>
                     <div className='flex items-center gap-2 justify-between text-sm'>
                         <input

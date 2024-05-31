@@ -63,10 +63,10 @@ export const CushyUI = observer(function CushyUI_() {
             <CushyTheme>
                 <BoxUI
                     // @ts-expect-error 🔴
-                    style={{ '--BASEOK': cushy.theme.root.value.base }}
-                    base={cushy.theme.value.base}
-                    text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
-                    data-theme={st.themeMgr.theme}
+                    // style={{ '--KLR': cushy.theme.root.value.base }}
+                    // base={cushy.theme.value.base}
+                    // text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
+                    // data-theme={st.themeMgr.theme}
                     id='CushyStudio'
                     tabIndex={-1}
                     onClick={(ev) => {

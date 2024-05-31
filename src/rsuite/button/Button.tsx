@@ -15,18 +15,13 @@ export const Button = observer(function Button_(p: FrameProps) {
         <Frame //
             size={size ?? 'sm'}
             base={5}
-            border={18}
+            border={10}
             hover={p.disabled ? false : undefined}
             active={uist.visuallyActive}
             loading={p.loading}
             tabIndex={p.tabIndex ?? -1}
             {...rest}
-            tw={[
-                'ui-button',
-                'rounded-md flex gap-2 items-center',
-                p.disabled ? null : 'cursor-pointer',
-                'justify-center rounded',
-            ]}
+            tw={['ui-button', 'rounded-sm flex gap-2 items-center', p.disabled ? null : 'cursor-pointer', 'justify-center']}
             onMouseDown={uist.press}
         />
     )

@@ -7,7 +7,7 @@ export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
     const st = useSt()
     return (
         <div tw='flex w-full gap-2'>
-            <Button icon='mdiMagnify' sm expand onClick={() => st.toggleFullLibrary()}>
+            <Button icon='mdiMagnify' size='sm' expand onClick={() => st.toggleFullLibrary()}>
                 Browse
             </Button>
             <IndexAllAppsBtnUI />
@@ -18,7 +18,7 @@ export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
 export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <Button icon='mdiMagnifyScan' sm look='primary' onClick={st.startupFileIndexing}>
+        <Button icon='mdiMagnifyScan' size='sm' look='primary' onClick={st.startupFileIndexing}>
             Index Apps
         </Button>
     )
