@@ -48,7 +48,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                     icon={p.icon ?? (isActive ? 'mdiCheckBold' : null)}
                     tw='!select-none rounded-sm'
                     border={20}
-                    base={{ contrast: isActive ? 0.09 : 0.0, chroma: isActive ? 0.08 : 0.02 }}
+                    base={{ contrast: isActive ? 0.09 : 0.0, chroma: isActive ? 0.08 : 0.01 }}
                     size='sm'
                     {...p.box}
                 />
