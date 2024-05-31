@@ -76,7 +76,7 @@ export const Frame = observer(
         }
 
         // MODIFIERS ---------------------------------------------
-        const isDisabled = loading || disabled || false
+        const isDisabled = disabled || false
         if (isDisabled) {
             box.text = { contrast: 0.1 }
             box.border = null
@@ -162,6 +162,7 @@ export const Frame = observer(
                     {p.icon && <IkonOf name={p.icon} />}
                     {p.children}
                     {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
+                    {p.loading && <div tw='loading loading-spinner loading-sm' />}
                 </CurrentStyleCtx.Provider>
             </div>
         )

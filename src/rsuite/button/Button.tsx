@@ -18,6 +18,7 @@ export const Button = observer(function Button_(p: FrameProps) {
             border={18}
             hover={p.disabled ? false : undefined}
             active={uist.visuallyActive}
+            loading={p.loading}
             tabIndex={p.tabIndex ?? -1}
             {...rest}
             tw={[

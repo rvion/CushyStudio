@@ -129,19 +129,14 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                     >
                         Save
                     </Button>
-                    <div
+                    <Button
                         tw={['btn btn-sm virtualBorder self-start', uist.autoSave ? 'btn-active' : null]}
-                        // color={uist.autoSave ? 'green' : undefined}
+                        icon='mdiRepeat'
+                        loading={Boolean(uist.autoSave)}
                         onClick={() => uist.toggleAutoSave()}
                     >
                         AutoSave
-                        {uist.autoSave ? (
-                            <div className='loading loading-spinner loading-sm' />
-                        ) : (
-                            <span className='material-symbols-outlined'>repeat</span>
-                        )}
-                        {/* Auto */}
-                    </div>
+                    </Button>
                     <div>
                         outputs/minipaint/
                         <input
