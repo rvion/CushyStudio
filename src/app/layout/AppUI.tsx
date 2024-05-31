@@ -61,12 +61,7 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <CushyKitCtx.Provider value={st}>
             <CushyTheme>
-                <BoxUI
-                    // @ts-expect-error 🔴
-                    // style={{ '--KLR': cushy.theme.root.value.base }}
-                    // base={cushy.theme.value.base}
-                    // text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
-                    // data-theme={st.themeMgr.theme}
+                <div
                     id='CushyStudio'
                     tabIndex={-1}
                     onClick={(ev) => {
@@ -98,7 +93,7 @@ export const CushyUI = observer(function CushyUI_() {
                         <ProjectUI />
                     </div>
                     <FooterBarUI />
-                </BoxUI>
+                </div>
             </CushyTheme>
         </CushyKitCtx.Provider>
     )
