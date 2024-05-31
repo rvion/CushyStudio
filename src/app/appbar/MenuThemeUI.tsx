@@ -14,7 +14,7 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
                 <>
                     {st.themeMgr.themes.map((theme) => (
                         <div
-                            tw='cursor-pointer hover:p-0.5'
+                            tw='cursor-pointer'
                             key={theme}
                             onClick={(ev) => {
                                 ev.preventDefault()
