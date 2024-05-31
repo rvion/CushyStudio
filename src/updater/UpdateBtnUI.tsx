@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { Button } from '../rsuite/button/Button'
+import { Frame } from '../rsuite/frame/Frame'
 import { MessageInfoUI } from '../rsuite/messages/MessageInfoUI'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { Loader, Message } from '../rsuite/shims'
@@ -21,16 +22,16 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
 }) {
     const updater = p.updater
     let ANCHOR = (
-        <div
+        <Frame
             //
             className={p.className}
-            tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}
+            tw={['flex items-center', updater.hasUpdateAvailable && 'btn-warning']}
         >
             {p.children}
             <div tw='text-xs italic opacity-50'>
                 <UpdaterAnchorUI updater={updater} />
             </div>
-        </div>
+        </Frame>
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
