@@ -18,6 +18,7 @@ export const compileOrRetrieveClassName = (appearance: CSSProperties): string =>
     cache[hash] = hash
     return hash
 }
+
 let styleElement: HTMLStyleElement | null = null
 function getStyleElement(): HTMLStyleElement {
     if (styleElement != null) return styleElement
@@ -31,7 +32,8 @@ function getStyleElement(): HTMLStyleElement {
     }
     return styleElement!
 }
-function setRule(selector: string, block: string = ''): CSSStyleRule {
+
+export function setRule(selector: string, block: string = ''): CSSStyleRule {
     const styleSheet = getStyleElement().sheet as CSSStyleSheet
     // ensure rules
     const rules = styleSheet.cssRules //  || styleSheet.rules

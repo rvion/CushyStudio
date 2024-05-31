@@ -85,7 +85,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <draftContext.Provider value={draft} key={draft.id}>
             <RecompileUI app={draft.app} />
             <BoxUI
-                // base={5}
+                base={0}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw={['flex-1 flex flex-col p-2 gap-1', containerClassName]}
                 onKeyUp={(ev) => {

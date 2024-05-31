@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
 import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
@@ -20,9 +21,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             //
                             mode='int'
                             value={draft.st.project.data.autostartDelay}
-                            onValueChange={(value) => {
-                                draft.st.project.update({ autostartDelay: value })
-                            }}
+                            onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
                             tw='input input-bordered input-sm'
                             placeholder='ms'
                             min={0}
@@ -61,7 +60,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 )}
             </Button>
             <Button
-                base={{ hue: 'green', chroma: 0.2 }}
+                base={{ hue: knownOKLCHHues.green, chroma: 0.2 }}
                 look='primary'
                 expand
                 className='self-start'

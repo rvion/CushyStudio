@@ -12,15 +12,13 @@ import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
+import { WidgetHeaderControlsContainerUI } from './WidgetHeaderControlsContainerUI'
 import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
-
-let isDragging = false
-let wasEnabled = false
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: IWidget
@@ -65,48 +63,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     )
 
     const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
-    const isDraggingListener = (ev: MouseEvent) => {
-        if (ev.button == 0) {
-            isDragging = false
-            window.removeEventListener('mouseup', isDraggingListener, true)
-        }
-    }
 
-    const boxBase =
-        widget.background && widget.isCollapsible || showBorder 
-            ? { contrast: 0.025 }
-            : undefined
+    const boxBase = (widget.background && widget.isCollapsible) || showBorder ? { contrast: 0.05 } : undefined
     return (
         <BoxUI
-            //
             key={rootKey}
-            border={showBorder ? 2 : 0}
             base={boxBase}
             {...p.widget.config.box}
+            // border={showBorder ? 10 : 0}
         >
             <AnimatedSizeUI>
-                {/*
-                    LINE ---------------------------------------------------------------------------------
-                    (label, collapse button, toggle button, tooltip, etc.)
-                    Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
-                */}
-                <div
-                    className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
-                    tw={['flex items-center gap-0.5 select-none']}
-                    onMouseDown={(ev) => {
-                        if (ev.button != 0 || !widget.isCollapsible) return
-                        const target = ev.target as HTMLElement
-                        if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
-                        isDragging = true
-                        window.addEventListener('mouseup', isDraggingListener, true)
-                        wasEnabled = !widget.serial.collapsed
-                        widget.setCollapsed(wasEnabled)
-                    }}
-                    onMouseMove={(ev) => {
-                        if (!isDragging || !widget.isCollapsible) return
-                        widget.setCollapsed(wasEnabled)
-                    }}
-                >
+                {/* HEADER --------------------------------------------------------------------------------- */}
+                <WidgetHeaderContainerUI widget={p.widget}>
                     {/* HEADER LABEL */}
                     <WidgetLabelContainerUI justify={justify}>
                         <WidgetLabelCaretUI widget={widget} />
@@ -117,19 +85,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
                     </WidgetLabelContainerUI>
 
-                    {/* HEADER MAIN */}
+                    {/* HEADER CONTROLS */}
                     {HeaderUI && (
-                        <WidgetHeaderContainerUI className={extraClass}>
+                        <WidgetHeaderControlsContainerUI className={extraClass}>
                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
-                        </WidgetHeaderContainerUI>
+                        </WidgetHeaderControlsContainerUI>
                     )}
 
-                    {/* HEADER RIGHT (undo, menu, ...) */}
+                    {/* HEADER OPTIONS (undo, menu, ...) */}
                     <div tw='ml-auto'></div>
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                     <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />
                     <WidgetMenuUI tw='self-start' widget={widget} />
-                </div>
+                </WidgetHeaderContainerUI>
 
                 {/* BODY  ------------------------------------------------------------------------------ */}
                 {BodyUI && !widget.isCollapsed && (

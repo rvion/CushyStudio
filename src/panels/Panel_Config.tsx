@@ -5,6 +5,7 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { BoxUI } from '../rsuite/box/BoxUI'
+import { Button } from '../rsuite/button/Button'
 import { FormHelpTextUI, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
@@ -126,19 +127,18 @@ export const Panel_Config = observer(function Panel_Config_() {
                     />
                 </FieldUI>
                 <FieldUI label='Configure hosts:'>
-                    <div className='btn btn-sm' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
+                    <Button icon={'mdiOpenInNew'} onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
                         Open Hosts page
-                        <span className='material-symbols-outlined'>desktop_windows</span>
                         <ComboUI combo={KEYS.openPage_Hosts} />
-                    </div>
+                    </Button>
                 </FieldUI>
             </div>
             <div className='divider'>Misc</div>
-            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
+            <BoxUI border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.formConf} />
             </BoxUI>
             <div className='divider'>Theming</div>
-            <BoxUI border base={5} tw='flex-1 w-full' /* temp hack */>
+            <BoxUI border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.theme} />
             </BoxUI>
             {/* <Panel_ComfyUIHosts /> */}

@@ -3,9 +3,8 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
-import { useColor } from '../../../rsuite/box/useColor'
+import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Frame } from '../../../rsuite/frame/Frame'
-import { getLCHFromString } from '../../../rsuite/kolor/getLCHFromString'
 import { getLCHFromStringAsString } from '../../../rsuite/kolor/getLCHFromStringAsString'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -23,22 +22,23 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const widget = p.widget
     if (!widget.config.textarea) return null
     const val = widget.value
-    const kolor = useColor({ base: 5 })
     return (
-        <textarea
-            style={{
-                ...kolor.styles,
-                /* ...p.widget.config.style, */ lineHeight: '1.3rem',
-                resize: p.widget.config.resize ?? 'both',
-            }}
-            tw='textarea textarea-bordered textarea-sm w-full '
-            placeholder={widget.config.placeHolder}
-            rows={3}
-            value={val}
-            onChange={(ev) => {
-                widget.value = ev.target.value
-            }}
-        />
+        <BoxUI base={5}>
+            <textarea
+                style={{
+                    /* ...p.widget.config.style, */
+                    lineHeight: '1.3rem',
+                    resize: p.widget.config.resize ?? 'both',
+                }}
+                tw='textarea textarea-bordered textarea-sm w-full '
+                placeholder={widget.config.placeHolder}
+                rows={3}
+                value={val}
+                onChange={(ev) => {
+                    widget.value = ev.target.value
+                }}
+            />
+        </BoxUI>
     )
 })
 
@@ -49,12 +49,6 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
 
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
-
-    const color = useColor({
-        base: 5,
-        text: { contrast: 1, /* hueShift: 150, chromaBlend: 899 */ chromaBlend: 1 },
-        border: true,
-    })
 
     switch (widget.config.inputType) {
         case 'color':
@@ -79,8 +73,11 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     // }
 
     return (
-        <Frame
-            style={color.styles}
+        <BoxUI
+            // style={color.styles}
+            base={5}
+            text={{ contrast: 1, chromaBlend: 1 }}
+            border
             tw={[
                 //
                 'WIDGET-FIELD',
@@ -127,7 +124,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             />
-        </Frame>
+        </BoxUI>
     )
     // <>
     //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>

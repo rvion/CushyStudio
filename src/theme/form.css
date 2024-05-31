@@ -47,14 +47,6 @@
     background-color: oklch(var(--pc));
 } */
 
-.WIDGET-GROUP-BORDERED {
-    border-radius: .3rem;
-    border-top: 1px solid oklch(var(--p)/.4);
-    border-left: 1px solid oklch(var(--p)/.4);
-    border-right: 1px solid oklch(var(--p)/.2);
-    border-bottom: 1px solid oklch(var(--p)/.2);
-}
-
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
 }

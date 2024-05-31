@@ -19,8 +19,7 @@ export type Kolor = {
 
     /** 0 to 360 */
     hueShift?: number
-    // when hue is string => extract its hue via new Color(str).olkch.hue
-    hue?: number | string
+    hue?: number
 
     /** TBD */
     opacity?: number

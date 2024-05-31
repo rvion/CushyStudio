@@ -1,17 +1,39 @@
+import type { BaseWidget } from '../BaseWidget'
+import type { IWidget } from '../IWidget'
+
 import { observer } from 'mobx-react-lite'
 
+let isDragging = false
+let wasEnabled = false
+const isDraggingListener = (ev: MouseEvent) => {
+    if (ev.button == 0) {
+        isDragging = false
+        window.removeEventListener('mouseup', isDraggingListener, true)
+    }
+}
+
 export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_(p: {
-    // disabled: boolean
-    className?: string
-    children: React.ReactNode
+    widget: BaseWidget
+    children?: React.ReactNode
 }) {
+    const widget = p.widget
     return (
-        <div //
-            className={p.className}
-            tw={[
-                'widget-header-container-ui COLLAPSE-PASSTHROUGH flex items-center gap-0.5 flex-1',
-                // p.disabled && styleDISABLEDTW,
-            ]}
+        <div
+            className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
+            tw={['flex items-center gap-0.5 select-none']}
+            onMouseDown={(ev) => {
+                if (ev.button != 0 || !widget.isCollapsible) return
+                const target = ev.target as HTMLElement
+                if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
+                isDragging = true
+                window.addEventListener('mouseup', isDraggingListener, true)
+                wasEnabled = !widget.serial.collapsed
+                widget.setCollapsed(wasEnabled)
+            }}
+            onMouseMove={(ev) => {
+                if (!isDragging || !widget.isCollapsible) return
+                widget.setCollapsed(wasEnabled)
+            }}
         >
             {p.children}
         </div>

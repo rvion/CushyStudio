@@ -1,4 +1,5 @@
 import type { SchemaDict } from '../../ISpec'
+import type { IWidget } from '../../IWidget'
 import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
@@ -31,28 +32,27 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     const isHorizontal = widget.config.layout === 'H'
 
     return (
-        <div className={p.className} tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}>
-            {widget.serial.collapsed ? null : (
-                <div
-                    className={widget.config.className}
-                    tw={[
-                        '_WidgetGroupUI w-full',
-                        isHorizontal //
-                            ? `GROUP-HORIZONTAL flex gap-1 flex-wrap`
-                            : `GROUP-VERTICAL   flex gap-1 flex-col`,
-                    ]}
-                >
-                    {groupFields.map(([rootKey, sub], ix) => (
-                        <WidgetWithLabelUI //
-                            isTopLevel={isTopLevel}
-                            key={rootKey}
-                            rootKey={rootKey}
-                            alignLabel={isHorizontal ? false : widget.config.alignLabel}
-                            widget={bang(sub)}
-                        />
-                    ))}
-                </div>
-            )}
+        <div
+            className={p.className}
+            tw={[
+                'w-full text-base-content',
+                widget.config.className,
+                isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
+            ]}
+        >
+            {groupFields.map(([rootKey, sub], ix) => (
+                <WidgetWithLabelUI //
+                    isTopLevel={isTopLevel}
+                    key={rootKey}
+                    rootKey={rootKey}
+                    alignLabel={isHorizontal ? false : widget.config.alignLabel}
+                    widget={bang(sub)}
+                />
+            ))}
         </div>
     )
+})
+
+export const WidgetFieldsContainerUI = observer(function WidgetFieldsContainerUI_(p: { widget: IWidget }) {
+    return <div></div>
 })

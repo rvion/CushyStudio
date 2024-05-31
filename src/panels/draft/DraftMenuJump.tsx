@@ -16,8 +16,8 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
     return (
         <Dropdown
             className={p.className}
-            startIcon='mdiMenu'
-            title='Drafts' //`${layout}`}
+            startIcon='mdiHistory'
+            title='Drafts'
             content={() => <DraftListUI app={p.draft.app} />}
         />
     )

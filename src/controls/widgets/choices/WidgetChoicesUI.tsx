@@ -3,7 +3,6 @@ import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
 import { useTheme } from '../../../rsuite/theme/useTheme'
@@ -24,24 +23,24 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
-                <div //
-                    tw={[widget.config.layout === 'H' ? 'flex' : null]}
-                    className={widget.config.className}
-                >
-                    {activeSubwidgets.map((val) => {
-                        const subWidget = val.subWidget
-                        if (subWidget == null) return <>❌ error</>
-                        return (
-                            <WidgetWithLabelUI //
-                                alignLabel={p.alignLabel}
-                                key={val.branch}
-                                rootKey={val.branch}
-                                widget={subWidget}
-                                label={widget.isSingle ? false : undefined}
-                            />
-                        )
-                    })}
-                </div>
+        <div //
+            tw={[widget.config.layout === 'H' ? 'flex' : null]}
+            className={widget.config.className}
+        >
+            {activeSubwidgets.map((val) => {
+                const subWidget = val.subWidget
+                if (subWidget == null) return <>❌ error</>
+                return (
+                    <WidgetWithLabelUI //
+                        alignLabel={p.alignLabel}
+                        key={val.branch}
+                        rootKey={val.branch}
+                        widget={subWidget}
+                        label={widget.isSingle ? false : undefined}
+                    />
+                )
+            })}
+        </div>
     )
 })
 
@@ -55,6 +54,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
     const theme = useTheme()
     return (
         <div
+            tw='rounded select-none flex flex-1 flex-wrap gap-x-1 gap-y-0'
             style={{
                 justifyContent:
                     widget.config.tabPosition === 'start' //
@@ -65,7 +65,6 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                             ? 'flex-end'
                             : 'flex-end',
             }}
-            tw='rounded select-none flex flex-1 flex-wrap gap-x-1 gap-y-0'
         >
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]

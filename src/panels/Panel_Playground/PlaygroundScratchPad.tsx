@@ -49,7 +49,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                 //
                 tw='p-1 m-1'
                 base={uist.base /* 'oklch(.3 0.05 0)' */}
-                border={2}
+                border={20}
                 text={{ contrast: 1, chromaBlend: 1, hueShift: 45 }}
             >
                 <FormUI
@@ -92,11 +92,11 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                 </BoxUI>
                 <BoxUI tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
-                    <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
+                    <BoxUI tw='p-1 m-1 _bd' border={20} base={20}>
                         A 4
-                        <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
+                        <BoxUI tw='p-1 m-1 _bd' border={20} base={20}>
                             A 5
-                            <BoxUI tw='p-1 m-1 _bd' border={2} base={20}>
+                            <BoxUI tw='p-1 m-1 _bd' border={20} base={20}>
                                 A 6
                                 <BoxTitle tw='text-xl font-bold' children='Test' />
                                 <BoxUI

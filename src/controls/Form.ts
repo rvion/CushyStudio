@@ -1,3 +1,4 @@
+import type { BaseWidget } from './BaseWidget'
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
@@ -130,7 +131,7 @@ export class Form<
     knownShared: Map<string, IWidget> = new Map()
 
     /** every widget node must call this function once it's serial changed */
-    serialChanged = (_widget: IWidget) => {
+    serialChanged = (_widget: BaseWidget) => {
         this.serialLastUpdatedAt = Date.now()
         this._onSerialChange?.(this)
     }

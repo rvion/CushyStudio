@@ -41,21 +41,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <div tw='flex join virtualBorder'>
-                    <div
-                        tw={[
-                            //
-                            isMain ? 'btn-success' : 'btn-info btn-outline',
-                            `btn btn-sm flex-grow font-bold`,
-                        ]}
-                        onClick={() => host.electAsPrimary()}
-                    >
+                <div tw='flex join gap-1'>
+                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()}>
                         Set Primary
                         {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
-                    </div>
-                    <div onClick={() => host.CONNECT()} tw='btn btn-sm btn-outline'>
+                    </Button>
+                    <Button look='ghost' onClick={() => host.CONNECT()}>
                         {host.isConnected ? 'Re-Connect' : 'Connect'}
-                    </div>
+                    </Button>
                     <div
                         tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
                         onClick={() => {

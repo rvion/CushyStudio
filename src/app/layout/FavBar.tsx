@@ -74,7 +74,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                     <FavBarContainer icon='apps'>
                                         {st.favoriteApps.map((app) => (
                                             <BoxUI
-                                                border={2}
+                                                border={20}
                                                 hover
                                                 // tw='rounded border border-base-300 overflow-clip box-content'
                                                 key={app.id}

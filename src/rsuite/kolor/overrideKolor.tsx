@@ -12,8 +12,8 @@ export const overrideKolor = (
     //
     a: Kolor | null,
     b: Kolor | null,
-): Kolor | undefined => {
-    if (a == null && b == null) return
+): Kolor | null => {
+    if (a == null && b == null) return null
     if (a == null) return b!
     if (b == null) return a
 

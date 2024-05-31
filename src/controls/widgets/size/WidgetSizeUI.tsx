@@ -110,7 +110,7 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
     return (
         <Frame // Aspect ratio display background
             square
-            xs
+            size='xs'
             tw={[
                 //
                 'flex',

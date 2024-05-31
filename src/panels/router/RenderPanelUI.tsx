@@ -38,7 +38,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
         <ErrorBoundaryUI>
             <BoxUI
                 //
-                tw='flex-1 h-full w-full overflow-auto'
+                tw='flex-1 h-full w-full overflow-scroll' // overflow-auto to only show scrollbar when needed
                 className={`Region-${panel}`}
                 data-panel-id={panelID}
                 id={panelID}

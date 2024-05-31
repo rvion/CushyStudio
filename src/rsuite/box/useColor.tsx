@@ -7,10 +7,8 @@ import { type CSSProperties, useContext } from 'react'
 import { clamp } from '../../controls/utils/clamp'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { compileOrRetrieveClassName } from '../tinyCSS/compileOrRetrieveClassName'
+import { normalizeBoxKolor } from './BoxNormalized'
 import { CurrentStyleCtx } from './CurrentStyleCtx'
-import { normalizeBoxBase } from './normalizeBoxBase'
-import { normalizeBoxBorder } from './normalizeBoxBorder'
-import { normalizeBoxText } from './normalizeBoxText'
 
 type BoxAppearance = {
     background: OKLCH
@@ -35,19 +33,20 @@ export const useColor = (
 
     // ---------------------------------------------------------------------------------------------------
     // background
-    const baseInstr: Kolor | null = normalizeBoxBase(p.base)
-    const baseStyle: OKLCH = baseInstr ? applyKolorToOKLCH(ctx.background, baseInstr) : ctx.background
+    const baseInstr: Kolor | null = normalizeBoxKolor(p.base)
+
+    const baseStyle: OKLCH = baseInstr ? applyKolorToOKLCH(ctx.base, baseInstr) : ctx.base
 
     // text
-    const textInstr: Kolor | null = normalizeBoxText(p.text) ?? ctx.text
+    const textInstr: Kolor | null = normalizeBoxKolor(p.text) ?? ctx.text
     const textStyle: OKLCH = applyKolorToOKLCH(baseStyle, textInstr)
 
-    const textShadowInstr: Kolor | null = normalizeBoxText(p.textShadow)
+    const textShadowInstr: Kolor | null = normalizeBoxKolor(p.textShadow)
     const textShadowStyle: OKLCH | null = textShadowInstr ? applyKolorToOKLCH(baseStyle, textShadowInstr) : null
 
     // const relativeText: RelativeStyle | AbsoluteStyle = p.text ?? ctx.text
-    const borderInstr = normalizeBoxBorder(p.border)
-    const borderStyle: OKLCH | null = borderInstr ? applyKolorToOKLCH(ctx.background, borderInstr) : null
+    const borderInstr = normalizeBoxKolor(p.border)
+    const borderStyle: OKLCH | null = borderInstr ? applyKolorToOKLCH(ctx.base, borderInstr) : null
 
     const textForCtx = typeof p.text === 'object' ? p.text : ctx.text
 
@@ -113,8 +112,8 @@ export const useColor = (
 }
 
 export function formatOKLCH(col: OKLCH) {
-    const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(4)
-    const c = col.chroma.toFixed(4)
-    const h = col.hue.toFixed(4)
+    const l = clamp(col.lightness, 0.0001, 0.9999).toFixed(3)
+    const c = col.chroma.toFixed(3)
+    const h = col.hue.toFixed(3)
     return `oklch(${l} ${c} ${h})`
 }

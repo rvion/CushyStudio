@@ -56,9 +56,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidg
     /** wiget serial is the full serialized representation of that widget  */
     readonly serial: K['$Serial']
 
-    /** root form this widget has benn registered to */
-    readonly form: Form
-
     /** base validation errors specific to this widget; */
     readonly baseErrors: Problem_Ext
 

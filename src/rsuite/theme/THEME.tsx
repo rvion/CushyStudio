@@ -18,14 +18,14 @@ export type THEME = {
     // misc:
     labelText?: Kolor
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
-    shiftDirection?: 'pos' | 'neg'
+    shiftDirection?: 1 | -1
+    primary: Box
     // -------------
     // high-level theme concepts
-    subtle: Box
-    default: Box
-    strong: Box
+    // subtle: Box
+    // default: Box
+    // strong: Box
     // -------------------
-    ghost: Box
-    primary: Box
-    secondary: Box
+    // ghost: Box
+    // secondary: Box
 }

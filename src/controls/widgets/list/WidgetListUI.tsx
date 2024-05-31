@@ -46,7 +46,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const collapsed = subWidget.serial.collapsed ?? false
                         const showBorder = subWidget.border
                         const isCollapsible: boolean = subWidget.isCollapsible
-                        const boxBorder = showBorder ? 2 : 0
+                        const boxBorder = showBorder ? 20 : 0
                         const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
@@ -55,7 +55,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         <Button
                                             look='ghost'
                                             square
-                                            xs
+                                            size='xs'
                                             icon='mdiChevronRight'
                                             onClick={() => subWidget.toggleCollapsed()}
                                         />
@@ -91,7 +91,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
                                         <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
-                                            <Button icon='mdiDotsVertical' look='ghost' square xs />
+                                            <Button icon='mdiDotsVertical' look='ghost' square size='xs' />
                                         </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
@@ -113,7 +113,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
-            <Button xs look='ghost' square icon='mdiDragHorizontalVariant' />
+            <Button size='xs' look='ghost' square icon='mdiDragHorizontalVariant' />
         </div>
     )
 })

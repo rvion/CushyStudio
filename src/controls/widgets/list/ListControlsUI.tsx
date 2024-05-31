@@ -30,7 +30,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             }}
         >
             <Button
-                xs
+                size='xs'
                 look='ghost'
                 disabled={!canAdd}
                 square
@@ -42,7 +42,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
-                xs
+                size='xs'
                 look='ghost'
                 disabled={!canClear}
                 square
@@ -54,7 +54,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
-                xs
+                size='xs'
                 look='ghost'
                 square
                 icon='mdiUnfoldMoreHorizontal'
@@ -65,7 +65,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 }}
             />
             <Button
-                xs
+                size='xs'
                 look='ghost'
                 square
                 icon='mdiUnfoldLessHorizontal'

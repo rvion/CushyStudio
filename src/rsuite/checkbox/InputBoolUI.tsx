@@ -1,11 +1,9 @@
 import type { IconName } from '../../icons/icons'
 import type { Box } from '../box/Box'
-import type { FrameAppearance } from '../frame/FrameAppearance'
+import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties } from 'react'
 
-import { BoxUI } from '../box/BoxUI'
 import { Frame } from '../frame/Frame'
 
 let wasEnabled = false
@@ -33,16 +31,12 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
         return (
             <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
                 style={p.style}
-                look='headless'
                 className={p.className}
                 disabled={p.disabled}
                 hover
                 triggerOnPress
-                tw={[
-                    //
-                    'flex flex-row !select-none',
-                    p.expand && 'flex-grow',
-                ]}
+                expand={p.expand}
+                tw={['flex flex-row !select-none cursor-pointer']}
                 onClick={(ev) => {
                     wasEnabled = !isActive
                     ev.stopPropagation()
@@ -51,13 +45,12 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 }}
             >
                 <Frame // Checkbox
-                    look='default'
-                    active={isActive}
-                    icon={isActive ? 'mdiCheckBold' : null}
-                    square
-                    size={'xs'}
+                    icon={p.icon ?? (isActive ? 'mdiCheckBold' : null)}
+                    tw='!select-none rounded-sm'
+                    border={20}
+                    base={{ contrast: isActive ? 0.09 : 0.0, chroma: isActive ? 0.08 : 0.02 }}
+                    size='sm'
                     {...p.box}
-                    tw='!select-none justify-center'
                 />
                 {label ? label : null}
             </Frame>
@@ -65,18 +58,17 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
     }
 
     return (
-        <Frame // Container
-            sm
-            look='default'
+        <Frame
+            tw='WIDGET-FIELD !select-none cursor-pointer justify-center px-1 py-1 text-sm'
             className={p.className}
             triggerOnPress
-            disabled={p.disabled}
-            active={isActive}
+            look='default'
+            base={{ contrast: isActive ? 0.09 : 0.05, chroma: isActive ? 0.08 : 0.02 }}
+            border={isActive ? 20 : 0}
+            expand={expand}
             style={p.style}
             icon={p.icon}
-            expand={expand}
             {...p.box}
-            tw='WIDGET-FIELD !select-none cursor-pointer justify-center'
             onClick={(ev) => {
                 wasEnabled = !isActive
                 ev.stopPropagation()

@@ -10,23 +10,22 @@
 // the high level api
 
 import type { IconName } from '../../icons/icons'
-import type { Kolor } from '../kolor/Kolor'
+import type { BoxUIProps } from '../box/BoxUIProps'
+import type { FrameSize } from './FrameSize'
 
 import { observer } from 'mobx-react-lite'
+import { forwardRef, useContext } from 'react'
 
 import { IkonOf } from '../../icons/iconHelpers'
-import { exhaust } from '../../utils/misc/exhaust'
-import { BoxUI } from '../box/BoxUI'
-import { type BoxUIProps } from '../box/BoxUIProps'
-import { normalizeBoxBase } from '../box/normalizeBoxBase'
-import { normalizeBoxBorder } from '../box/normalizeBoxBorder'
+import { extractNormalizeBox } from '../box/BoxNormalized'
+import { applyBoxToCtx, compileKolorToCSSExpression, hashKolor } from '../box/compileBoxClassName'
+import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
+import { formatOKLCH } from '../box/useColor'
 import { usePressLogic } from '../button/usePressLogic'
 import { overrideKolor } from '../kolor/overrideKolor'
-import { useTheme } from '../theme/useTheme'
-import { FrameAppearance, type FrameAppearanceFlags } from './FrameAppearance'
-import { getBorderContrast } from './FrameBorderContrast'
-import { getChroma } from './FrameChroma'
-import { type FrameSize, getClassNameForSize } from './FrameSize'
+import { setRule } from '../tinyCSS/compileOrRetrieveClassName'
+import { getClassNameForSize } from './FrameSize'
+import { type FrameAppearance, frames } from './FrameTemplates'
 
 export type FrameProps = {
     // logic --------------------------------------------------
@@ -42,131 +41,129 @@ export type FrameProps = {
     // /** when true flex=1 */
     expand?: boolean
 
+    /** HIGH LEVEL THEME-DEFINED BOX STYLES */
+    look?: FrameAppearance
     // ICON --------------------------------------------------
     icon?: Maybe<IconName>
     suffixIcon?: Maybe<IconName>
 } & BoxUIProps &
-    /** HIGH LEVEL THEME-DEFINED BOX STYLES */
-    FrameAppearanceFlags &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
-// -----------------------------------------------------
-export const Frame = observer(function Frame_(p: FrameProps) {
-    const {
-        icon,
-        active,
-        size,
-        loading,
-        disabled,
-        // ---------------------------------------------
-        look: _look_,
+const seen = new Set<string>()
+export const Frame = observer(
+    forwardRef(function Frame_(p: FrameProps, ref: any) {
+        // PROPS --------------------------------------------
+        // prettier-ignore
+        const {
+            active, loading, disabled,
+            icon, suffixIcon,
+            size, look,
+            base, hover, border, text, textShadow, shadow, // box stuff
+            onMouseDown, onMouseEnter, onClick, triggerOnPress,
+            style, className,
+            ...rest
+        } = p
 
-        // BOX stuff that need to be merged here -------
-        base: _base_,
-        border: _border_,
-        text: _text_,
-        hover: _hover_,
-        shadow: _shadow_,
-        textShadow: _textShadow_,
+        // TEMPLATE -------------------------------------------
+        // const theme = useTheme().value
+        const box = extractNormalizeBox(p)
+        if (look != null) {
+            const template = frames[look]
+            if (template.base) box.base = overrideKolor(template.base, box.base)
+            if (template.border) box.border = overrideKolor(template.border, box.border)
+            if (template.text) box.border = overrideKolor(template.text, box.text)
+        }
 
-        //
-        onMouseDown,
-        onMouseEnter,
-        onClick,
-        //
-        className,
-        ...rest
-    } = p
+        // MODIFIERS ---------------------------------------------
+        const isDisabled = loading || disabled || false
+        if (isDisabled) {
+            box.text = { contrast: 0.1 }
+            box.border = null
+        }
+        if (active) {
+            box.border = { contrast: 0.5 }
+            box.text = { contrast: 0.9 }
+        }
 
-    const theme = useTheme().value
+        // CONTEXT ---------------------------------------------
+        const prevCtx = useContext(CurrentStyleCtx)
+        const nextCtx = applyBoxToCtx(prevCtx, box)
 
-    const look = p.look ?? 'headless'
-    const isDisabled = p.loading || p.disabled || false
-    const mouseEvents = p.triggerOnPress
-        ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
-        : { onMouseDown, onMouseEnter, onClick }
+        // STYLE ---------------------------------------------
+        const variables: { [key: string]: string | number } = {
+            '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
+            '--BASEOK': formatOKLCH(nextCtx.base),
+            // '--PREV_BASE_L': prevCtx.base.lightness, // === -1 ? -1 : 1,
+            // '--NEXT_BASE_L': nextCtx.base.lightness, // === -1 ? -1 : 1,
+        }
 
-    // BACKGROUND ------------------------------------------------------
-    const custBase: Kolor | null = p.base ? normalizeBoxBase(p.base) : null
-    const lookBase: Kolor = {
-        contrast: getBackgroundContrast(active, isDisabled, look),
-        chroma: getChroma({ theme, active, appearance: look, isDisabled }),
-    }
-    const base: Kolor | undefined = overrideKolor(lookBase, custBase)
+        // CLASSES ---------------------------------------------
+        const classes: string[] = []
 
-    // BORDER -----------------------------------------------------------
-    const custBorder: Kolor | null = p.border ? normalizeBoxBorder(p.border) : null
-    const lookBorderContrast = getBorderContrast(look)
-    const lookBorder: Kolor | null = lookBorderContrast ? { contrast: lookBorderContrast } : null
-    const border: Kolor | undefined = overrideKolor(lookBorder, custBorder)
+        // ⏸️ if (box.base) {
+        // ⏸️     const clsName = hashKolor(box.base)
+        // ⏸️     if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `background: var(--BASEOK);`)
+        // ⏸️     classes.push(clsName)
+        // ⏸️ }
 
-    // TEXT -----------------------------------------------------------
-    const custText: Kolor | null = p.text ? normalizeBoxBorder(p.text) : null
-    const lookTextContrast = isDisabled ? 0.1 : 0.9
-    const lookText: Kolor | null = lookTextContrast ? { contrast: lookTextContrast } : null
-    const text: Kolor | undefined = overrideKolor(lookText, custText)
+        const boxText = box.text ?? prevCtx.text
+        if (boxText) {
+            const clsName = 'text' + hashKolor(boxText)
+            if (!seen.has(clsName))
+                setRule(`.${CSS.escape(clsName)}`, `color: ${compileKolorToCSSExpression('BASEOK', boxText)};`)
+            classes.push(clsName)
+        }
 
-    // HOVER ---------------------------------------------------------
-    const custHover = p.hover
-    const lookHover = look !== 'headless'
-    const hover = custHover ?? lookHover
+        if (box.textShadow) {
+            const clsName = 'textShadow' + hashKolor(box.textShadow)
+            if (!seen.has(clsName))
+                setRule(
+                    `.${CSS.escape(clsName)}`,
+                    `box-shadow: 4px 4px ${compileKolorToCSSExpression('BASEOK', box.textShadow)};`,
+                )
+            classes.push(clsName)
+        }
 
-    // const boxProps: BoxProps = {
-    //     base,
-    //     border,
-    //     hover: appearance !== 'headless',
-    //     text,
-    //     shadow: undefined,
-    //     textShadow: undefined,
-    // }
+        if (box.border) {
+            const clsName = 'border' + hashKolor(box.border)
+            if (!seen.has(clsName))
+                setRule(`.${CSS.escape(clsName)}`, `border: 1px solid ${compileKolorToCSSExpression('BASEOK', box.border)};`)
+            classes.push(clsName)
+        }
 
-    return (
-        <BoxUI
-            // Box Props ----------------------------------------------------
-            base={base}
-            border={border}
-            hover={hover}
-            text={text}
-            // --------------------------------------------------------------
-            tabIndex={p.tabIndex ?? -1}
-            className={className}
-            /* do not contain the 3 mouse events handled above */
-            {...rest}
-            {...mouseEvents}
-            tw={[
-                '_Frame',
-                'look-' + look,
-                getClassNameForSize(p),
-                p.expand && 'flex-1',
-                p.look === 'headless' ? undefined : 'rounded-sm flex gap-2 items-center',
-            ]}
-        >
-            {p.icon && <IkonOf name={p.icon} />}
-            {p.children}
-            {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
-        </BoxUI>
-    )
-})
+        if (box.hover) {
+            const clsName = 'h' + hashKolor(box.hover)
+            if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}:hover`, `background: red`)
+            classes.push(clsName)
+        }
 
-function getBackgroundContrast(
-    //
-    active: Maybe<boolean>,
-    isDisabled: boolean,
-    appearance: FrameAppearance,
-) {
-    const disabledMult = isDisabled ? 0.2 : 1
-
-    if (active) return 0.3 * disabledMult
-    // if (isDisabled) return 0.05 * disabledMult
-
-    if (appearance === 'headless') return 0 * disabledMult
-    if (appearance === 'primary') return 0.3 * disabledMult
-    if (appearance === 'secondary') return 0.9 * disabledMult
-    if (appearance === 'ghost') return 0 * disabledMult
-    if (appearance === 'default') return 0.1 * disabledMult
-    if (appearance === 'subtle') return 0 * disabledMult
-    if (appearance == null) return 0.1 * disabledMult
-    exhaust(appearance)
-    return 0.1 * disabledMult
-}
+        return (
+            <div //
+                {...rest}
+                ref={ref}
+                tw={[
+                    //
+                    'BOX',
+                    look && `BOX-${look}`,
+                    getClassNameForSize(p),
+                    look && 'rounded-sm flex gap-2 items-center',
+                    p.expand && 'flex-1',
+                    ...classes,
+                    className,
+                ]}
+                style={{ ...style, ...variables }}
+                {...rest}
+                {...(triggerOnPress
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
+                    : { onMouseDown, onMouseEnter, onClick })}
+            >
+                <CurrentStyleCtx.Provider value={nextCtx}>
+                    {p.icon && <IkonOf name={p.icon} />}
+                    {p.children}
+                    {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
+                </CurrentStyleCtx.Provider>
+            </div>
+        )
+    }),
+)

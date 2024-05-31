@@ -1,6 +1,7 @@
 import type { IconName } from '../icons/icons'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
+import type { Form } from './Form'
 import type { ISpec } from './ISpec'
 import type { CovariantFC } from './utils/CovariantFC'
 import type { FC, ReactNode } from 'react'
@@ -13,6 +14,7 @@ import { $WidgetSym, type IWidget } from './IWidget'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
+import { WidgetHeaderContainerUI } from './shared/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
 import { type WidgetLabelContainerProps, WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
@@ -37,6 +39,9 @@ export abstract class BaseWidget {
     UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
     UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
+    UIHeaderContainer = (p: { children: ReactNode }) => (
+        <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
+    )
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {
@@ -246,8 +251,11 @@ export abstract class BaseWidget {
         return true
     }
 
+    /** root form this widget has benn registered to */
+    abstract readonly form: Form
+
     // FOLD ----------------------------------------------------
-    setCollapsed(this: IWidget, val?: boolean) {
+    setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
         this.form.serialChanged(this)

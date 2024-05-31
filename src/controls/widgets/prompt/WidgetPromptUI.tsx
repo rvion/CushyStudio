@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { Ikon } from '../../../icons/iconHelpers'
 import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
+import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
@@ -44,12 +45,10 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 </div>
                             )}
                         >
-                            <Button
-                                look='headless'
-                                sm
-                                active={Boolean(active)}
+                            <InputBoolUI
+                                value={Boolean(active)}
                                 icon={plugin.icon}
-                                onClick={() => st.configFile.set(plugin.configKey, !active)}
+                                onValueChange={() => st.configFile.set(plugin.configKey, !active)}
                             />
                         </RevealUI>
                     )
