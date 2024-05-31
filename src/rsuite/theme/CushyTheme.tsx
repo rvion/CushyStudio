@@ -1,8 +1,8 @@
 import type { THEME } from './THEME'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { memo, type ReactNode } from 'react'
 
 import { BoxUI } from '../box/BoxUI'
 import { run_Box } from '../box/prefab_Box'
@@ -10,6 +10,7 @@ import { getLCHFromString } from '../kolor/getLCHFromString'
 import { run_Kolor } from '../kolor/prefab_Kolor'
 import { defaultDarkTheme, ThemeCtx } from './ThemeCtx'
 
+/* 🔴 WIP; mostly unused; since I went with a different approach */
 export class CushyThemeProvider {
     constructor() {
         makeAutoObservable(this)
@@ -36,9 +37,7 @@ const cushyThemeProvider = new CushyThemeProvider()
 
 export const CushyTheme = observer((p: { children: ReactNode }) => {
     return (
-        <ThemeCtx.Provider //
-            value={cushyThemeProvider}
-        >
+        <ThemeCtx.Provider value={cushyThemeProvider}>
             <BoxUI //
                 // @ts-expect-error 🔴
                 style={{ '--KLR': cushy.theme.root.value.base }}
