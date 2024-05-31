@@ -47,17 +47,15 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                     </div>
                 )}
             >
-                <div tw='btn btn-sm virtualBorder btn-square'>
-                    <span className='material-symbols-outlined'>timer</span>
-                </div>
+                <Button icon='mdiTimer'>timer</Button>
             </RevealUI>
-            <Button active={draft.shouldAutoStart} onClick={() => draft.setAutostart(!draft.shouldAutoStart)}>
+            <Button
+                icon='mdiRepeat'
+                loading={draft.shouldAutoStart}
+                active={draft.shouldAutoStart}
+                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+            >
                 Autorun
-                {draft.shouldAutoStart ? (
-                    <div className='loading loading-spinner loading-sm' />
-                ) : (
-                    <span className='material-symbols-outlined'>repeat</span>
-                )}
             </Button>
             <Button
                 base={{ hue: knownOKLCHHues.green, chroma: 0.2 }}
