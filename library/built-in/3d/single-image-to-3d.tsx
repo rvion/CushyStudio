@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CustomView_Model } from '../_views/View_3d_MTL_OBJ'
 
 app({
