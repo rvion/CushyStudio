@@ -275,7 +275,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <BoxUI /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: !p.hideSlider && !isEditing ? 0.2 : 0, chroma: 0.08 }}
+                base={{ contrast: !p.hideSlider && !isEditing ? 0.08 : 0, chroma: 0.06 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
