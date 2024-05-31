@@ -56,9 +56,10 @@ export const Frame = observer(
         // PROPS --------------------------------------------
         // prettier-ignore
         const {
-            active, loading, disabled,
-            icon, suffixIcon,
-            size, look,
+            active, disabled, // built-in state & style modifiers
+            icon, suffixIcon, loading, // addons
+            expand, size, // size
+            look, // templates
             base, hover, border, text, textShadow, shadow, // box stuff
             onMouseDown, onMouseEnter, onClick, triggerOnPress,
             style, className,
@@ -148,7 +149,7 @@ export const Frame = observer(
                     look && `BOX-${look}`,
                     getClassNameForSize(p),
                     look && 'rounded-sm flex gap-2 items-center',
-                    p.expand && 'flex-1',
+                    expand && 'flex-1',
                     ...classes,
                     className,
                 ]}
@@ -159,10 +160,10 @@ export const Frame = observer(
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider value={nextCtx}>
-                    {p.icon && <IkonOf name={p.icon} />}
+                    {icon && <IkonOf name={icon} />}
                     {p.children}
-                    {p.suffixIcon && <IkonOf name={p.suffixIcon} />}
-                    {p.loading && <div tw='loading loading-spinner loading-sm' />}
+                    {suffixIcon && <IkonOf name={suffixIcon} />}
+                    {loading && <div tw='loading loading-spinner loading-sm' />}
                 </CurrentStyleCtx.Provider>
             </div>
         )
