@@ -12,6 +12,8 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
             title='Theme'
             content={() => (
                 <>
+                    {cushy.theme.render()}
+                    <div className='divider'>legacy</div>
                     {st.themeMgr.themes.map((theme) => (
                         <div
                             tw='cursor-pointer'
