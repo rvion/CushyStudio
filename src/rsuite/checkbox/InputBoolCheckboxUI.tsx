@@ -18,8 +18,8 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             expand={p.expand}
             tw={['flex flex-row !select-none cursor-pointer']}
             onClick={(ev) => {
-                ev.stopPropagation()
                 if (!p.onValueChange) return
+                ev.stopPropagation()
                 p.onValueChange(!isActive)
             }}
         >
