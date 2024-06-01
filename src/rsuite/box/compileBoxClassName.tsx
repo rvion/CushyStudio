@@ -6,15 +6,16 @@ import { overrideKolor } from '../kolor/overrideKolor'
 import { type BoxNormalized } from './BoxNormalized'
 
 export const applyBoxToCtx = (ctx: CurrentStyle, box: BoxNormalized): CurrentStyle => {
-    const lightness = ctx.base.lightness
+    const nextBase = applyKolorToOKLCH(ctx.base, box.base)
+    const lightness = nextBase.lightness
     return {
         dir:
             ctx.dir === 1 && lightness > 0.7 //
                 ? -1
-                : ctx.dir === -1 && lightness < 0.3
+                : ctx.dir === -1 && lightness < 0.45
                   ? 1
                   : ctx.dir,
-        base: applyKolorToOKLCH(ctx.base, box.base),
+        base: nextBase,
         text: overrideKolor(box.text, ctx.text)!,
     }
 }
