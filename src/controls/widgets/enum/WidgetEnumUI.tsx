@@ -5,7 +5,7 @@ import type { Widget_enum } from './WidgetEnum'
 import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../../rsuite/SelectUI'
+import { SelectUI } from '../../../rsuite/select/SelectUI'
 import { useSt } from '../../../state/stateContext'
 
 // UI

@@ -9,7 +9,7 @@ import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/mod
 import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
 import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../rsuite/SelectUI'
+import { SelectUI } from '../../rsuite/select/SelectUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 

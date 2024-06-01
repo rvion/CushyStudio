@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { resolve } from 'pathe'
 
 import { SQLITE_false } from '../db/SQLITE_boolean'
-import { SelectUI } from '../rsuite/SelectUI'
+import { SelectUI } from '../rsuite/select/SelectUI'
 import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { asAbsolutePath } from '../utils/fs/pathUtils'

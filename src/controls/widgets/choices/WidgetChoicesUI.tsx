@@ -4,7 +4,7 @@ import type { Widget_choices } from './WidgetChoices'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
-import { SelectUI } from '../../../rsuite/SelectUI'
+import { SelectUI } from '../../../rsuite/select/SelectUI'
 import { useTheme } from '../../../rsuite/theme/useTheme'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 

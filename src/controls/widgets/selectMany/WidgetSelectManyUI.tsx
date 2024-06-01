@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { MessageErrorUI } from '../../../rsuite/messages/MessageErrorUI'
-import { SelectUI } from '../../../rsuite/SelectUI'
+import { SelectUI } from '../../../rsuite/select/SelectUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectMany<T>
