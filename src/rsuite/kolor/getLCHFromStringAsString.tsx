@@ -9,7 +9,7 @@ export function getLCHFromStringAsString(str: string): string {
         const h = isNaN(h_!) ? 0 : h_
         return `lch(${fmtNum1(l! * 100)}%, ${fmtNum2(c!)}, ${fmtNum1(h!)})`
     } catch (e) {
-        console.log(`[🔴] getLCHFromStringAsString FAILURE (string is: "${str}")`)
+        console.error(`[🔴] getLCHFromStringAsString FAILURE (string is: "${str}")`)
         return `lch(.5 1 0)`
     }
 }
