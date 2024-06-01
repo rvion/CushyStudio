@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../icons/iconHelpers'
-import { BoxUI } from '../box/BoxUI'
+import { Frame } from '../frame/Frame'
 import { MarkdownUI } from '../MarkdownUI'
 
 export const MessageErrorUI = observer(function MessageErrorUI_(p: {
@@ -11,7 +11,7 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
     className?: string
 }) {
     return (
-        <BoxUI
+        <Frame
             //
             base={{ contrast: 0.05, hue: 220, chroma: 0.04 }}
             tw='virtualBorder p-1 rounded flex items-center gap-2'
@@ -30,6 +30,6 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
                     <MarkdownUI markdown={p.markdown} />
                 </>
             )}
-        </BoxUI>
+        </Frame>
     )
 })

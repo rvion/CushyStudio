@@ -5,10 +5,10 @@ import type { Widget_list } from './WidgetList'
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 
-// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { ErrorBoundaryUI } from '../../../rsuite/errors/ErrorBoundaryUI'
+// import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
+import { Frame } from '../../../rsuite/frame/Frame'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { menu_widgetActions } from '../../shared/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
@@ -50,7 +50,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
-                                <BoxUI border={boxBorder} tw={'flex flex-col'} base={boxBase}>
+                                <Frame border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
                                         <Button
                                             look='ghost'
@@ -99,7 +99,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <div tw='ml-2 pl-2'>{widgetBody}</div>
                                         </ErrorBoundaryUI>
                                     )}
-                                </BoxUI>
+                                </Frame>
                             </SortableItem>
                         )
                     })}

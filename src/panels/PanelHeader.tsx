@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { BoxUI } from '../rsuite/box/BoxUI'
+import { Frame } from '../rsuite/frame/Frame'
 
 /** Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
  *
@@ -20,7 +20,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     children?: ReactNode
 }) {
     return (
-        <BoxUI // Container
+        <Frame // Container
             base={8}
             tw={['CSHY-panel-header w-full', 'flex gap-1 select-none', 'items-center p-1']}
             onWheel={(event) => {
@@ -29,6 +29,6 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
             }}
         >
             {p.children}
-        </BoxUI>
+        </Frame>
     )
 })

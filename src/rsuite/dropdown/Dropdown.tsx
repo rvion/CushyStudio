@@ -3,8 +3,8 @@ import type { Kolor } from '../kolor/Kolor'
 
 import { ReactNode } from 'react'
 
-import { BoxUI } from '../box/BoxUI'
 import { Button } from '../button/Button'
+import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 
 export const Dropdown = (p: {
@@ -18,9 +18,9 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <BoxUI base={-5} tabIndex={0} tw='shadow z-[1]'>
+            <Frame base={-5} tabIndex={0} tw='shadow z-[1]'>
                 {p.content?.()}
-            </BoxUI>
+            </Frame>
         )}
     >
         <Button border={false} icon={p.startIcon} tabIndex={0}>

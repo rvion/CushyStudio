@@ -4,7 +4,6 @@ import { ReactNode, useMemo } from 'react'
 
 import { IkonOf } from '../../../icons/iconHelpers'
 import { PanelHeaderUI } from '../../../panels/PanelHeader'
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Frame, type FrameProps } from '../../../rsuite/frame/Frame'
 
 /* Used once per widget since they should not conflict. */
@@ -81,12 +80,12 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
             >
                 {p.children}
             </Frame>
-            <BoxUI
+            <Frame
                 //
                 tw='w-full'
                 base={{ contrast: 0.2 }}
                 style={{ borderRadius: '0px', height: '1px' }}
-            ></BoxUI>
+            ></Frame>
             <Frame // Footer
                 className='WIDGET-FIELD w-full relative'
                 // hover

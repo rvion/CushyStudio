@@ -2,8 +2,8 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
+import { Frame } from '../../../rsuite/frame/Frame'
 import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
@@ -11,7 +11,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
     const val = widget.serial.val
 
     return (
-        <BoxUI
+        <Frame
             border
             tw={[
                 'WIDGET-FIELD',
@@ -56,6 +56,6 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                 icon='mdiAutorenew'
                 square
             />
-        </BoxUI>
+        </Frame>
     )
 })

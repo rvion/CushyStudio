@@ -3,8 +3,8 @@ import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../rsuite/box/BoxUI'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
@@ -66,7 +66,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const boxBase = (widget.background && widget.isCollapsible) || showBorder ? { contrast: 0.05 } : undefined
     return (
-        <BoxUI
+        <Frame
             key={rootKey}
             base={boxBase}
             {...p.widget.config.box}
@@ -111,6 +111,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* ERRORS  ------------------------------------------------------------------------------ */}
                 <WidgetErrorsUI widget={widget} />
             </AnimatedSizeUI>
-        </BoxUI>
+        </Frame>
     )
 })

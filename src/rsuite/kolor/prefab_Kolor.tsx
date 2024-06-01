@@ -3,6 +3,8 @@ import type { Kolor } from './Kolor'
 
 import { Fragment } from 'react/jsx-runtime'
 
+import { getNum } from '../theme/CSSVar'
+
 export type UI_Kolor = XChoices<{
     l: XChoice<{
         lightness: XNumber
@@ -32,7 +34,7 @@ export const ui_Kolor = (
                         text: 'lightness',
                         min: 0,
                         max: 1,
-                        default: def?.lightness ?? 0.1,
+                        default: getNum(def?.lightness, 0.1),
                         step: 0.1,
                         icon: 'mdiGradientHorizontal',
                     }),
@@ -42,7 +44,7 @@ export const ui_Kolor = (
                         min: -1,
                         softMin: 0,
                         max: 1,
-                        default: def?.contrast ?? 0.1,
+                        default: getNum(def?.contrast, 0.1),
                         step: 0.1,
                         icon: 'mdiInvertColors',
                     }),
@@ -58,7 +60,7 @@ export const ui_Kolor = (
                         label: 'Manual',
                         min: 0,
                         max: 0.47,
-                        default: def?.chroma ?? 0.1,
+                        default: getNum(def?.chroma, 0.1),
                         step: 0.1,
                         icon: 'mdiPalette',
                     }),
@@ -67,7 +69,7 @@ export const ui_Kolor = (
                         text: 'multiply',
                         min: 0,
                         softMax: 2,
-                        default: def?.chromaBlend ?? 1,
+                        default: getNum(def?.chromaBlend, 1),
                         step: 0.1,
                         icon: 'mdiEyedropper',
                     }),
@@ -84,7 +86,7 @@ export const ui_Kolor = (
                         min: -360,
                         softMin: 0,
                         max: 360,
-                        default: def?.hue ?? 220,
+                        default: getNum(def?.hue, 220),
                         step: 1,
                         icon: 'mdiPalette',
                     }),
@@ -94,7 +96,7 @@ export const ui_Kolor = (
                         min: -360,
                         softMin: 0,
                         max: 360,
-                        default: def?.hueShift ?? 0,
+                        default: getNum(def?.hueShift, 0),
                         step: 10,
                         icon: 'mdiEyedropper',
                     }),

@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { BoxUI } from '../../../rsuite/box/BoxUI'
+import { Frame } from '../../../rsuite/frame/Frame'
+import { useTheme } from '../../../rsuite/theme/useTheme'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKitOrNull } from '../../context/CushyKitCtx'
 
@@ -244,11 +245,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
+    const theme = useTheme()
+    const border = theme.value.inputBorder
+
     return (
-        <BoxUI /* Root */
+        <Frame /* Root */
             style={p.style}
             base={{ contrast: isEditing ? -0.1 : 0.05 }}
-            border
+            border={{ contrast: border }}
             hover
             className={p.className}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
@@ -273,7 +277,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 }
             }}
         >
-            <BoxUI /* Slider display */
+            <Frame /* Slider display */
                 className='inui-foreground'
                 base={{ contrast: !p.hideSlider && !isEditing ? 0.08 : 0, chroma: 0.06 }}
                 tw={['z-10 absolute left-0 WIDGET-FIELD']}
@@ -281,7 +285,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <BoxUI /* Left Button */
+                <Frame /* Left Button */
                     className='control'
                     hover={-0.1}
                     base={25}
@@ -291,7 +295,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     onClick={uist.decrement}
                 >
                     <Ikon.mdiChevronLeft />
-                </BoxUI>
+                </Frame>
 
                 <div /* Text Container */
                     tw={[
@@ -412,7 +416,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <BoxUI /* Right Button */
+                <Frame /* Right Button */
                     className='control'
                     hover={-0.1}
                     base={25}
@@ -422,8 +426,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     onClick={uist.increment}
                 >
                     <Ikon.mdiChevronRight />
-                </BoxUI>
+                </Frame>
             </div>
-        </BoxUI>
+        </Frame>
     )
 })

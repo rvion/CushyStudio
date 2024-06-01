@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../../app/shortcuts/ComboUI'
-import { BoxUI } from '../box/BoxUI'
+import { Frame } from '../frame/Frame'
 
 export const MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
@@ -20,7 +20,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
     return (
-        <BoxUI
+        <Frame
             text={{ contrast: disabled ? 0.5 : 1 }}
             base={{
                 contrast: active ? 0.1 : 0,
@@ -40,6 +40,6 @@ export const MenuItem = observer(function DropdownItem_(p: {
             {label}
             {children}
             {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
-        </BoxUI>
+        </Frame>
     )
 })

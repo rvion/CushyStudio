@@ -3,8 +3,8 @@ import type * as FL from 'flexlayout-react'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import { BoxUI } from '../../rsuite/box/BoxUI'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { Message } from '../../rsuite/shims'
 import { PanelNames, panels } from './PANELS'
 
@@ -36,7 +36,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const panelID = p.node?.getId()
     return (
         <ErrorBoundaryUI>
-            <BoxUI
+            <Frame
                 //
                 tw='flex-1 h-full w-full overflow-scroll' // overflow-auto to only show scrollbar when needed
                 className={`Region-${panel}`}
@@ -44,7 +44,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
                 id={panelID}
             >
                 <Component {...panelProps} className='w-full h-full border-none' />
-            </BoxUI>
+            </Frame>
         </ErrorBoundaryUI>
     )
 })

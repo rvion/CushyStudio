@@ -4,8 +4,8 @@ import { ComboUI } from '../app/shortcuts/ComboUI'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
-import { BoxUI } from '../rsuite/box/BoxUI'
 import { Button } from '../rsuite/button/Button'
+import { Frame } from '../rsuite/frame/Frame'
 import { FormHelpTextUI, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
@@ -18,12 +18,12 @@ export const Panel_Config = observer(function Panel_Config_() {
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
             <SectionTitleUI label='CONFIG' className='block' />
-            <BoxUI border tw='flex-1 w-full' /* temp hack */>
+            <Frame border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.theme} />
-            </BoxUI>
-            <BoxUI border tw='flex-1 w-full' /* temp hack */>
+            </Frame>
+            <Frame border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.formConf} />
-            </BoxUI>
+            </Frame>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>

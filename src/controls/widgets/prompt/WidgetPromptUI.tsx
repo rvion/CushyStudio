@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Ikon } from '../../../icons/iconHelpers'
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Button } from '../../../rsuite/button/Button'
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
+import { Frame } from '../../../rsuite/frame/Frame'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
@@ -96,7 +96,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 
             {/* ACTIVE PLUGINS */}
             {haveAtLeastOnePluginActive && (
-                <BoxUI className='flex flex-col gap-1 p-1 my-1'>
+                <Frame className='flex flex-col gap-1 p-1 my-1'>
                     {plugins.map((plugin) => {
                         const active = st.configFile.get(plugin.configKey) ?? false
                         if (!active) return null
@@ -106,7 +106,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                             </PluginWrapperUI>
                         )
                     })}
-                </BoxUI>
+                </Frame>
             )}
         </div>
     )

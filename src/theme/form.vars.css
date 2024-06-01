@@ -1,4 +1,5 @@
 :root {
     --roundness: 5px;
     --input-height: 1.6rem;
+    --input-border: none;
 }

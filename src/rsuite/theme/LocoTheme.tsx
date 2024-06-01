@@ -1,44 +1,38 @@
-import type { THEME } from './THEME'
+import type { THEME } from './Theme2'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { memo, type ReactNode } from 'react'
 
-import { run_Box } from '../box/prefab_Box'
-import { getLCHFromString } from '../kolor/getLCHFromString'
-import { run_Kolor } from '../kolor/prefab_Kolor'
+import { Frame } from '../frame/Frame'
 import { defaultDarkTheme, ThemeCtx } from './ThemeCtx'
 
-export class CushyThemeProvider {
+/* 🔴 WIP; mostly unused; since I went with a different approach */
+export class LocoThemeProvider {
     constructor() {
         makeAutoObservable(this)
     }
 
-    get F() { return cushy.theme.value } // prettier-ignore
-    get base(){ return getLCHFromString(this.F.base) } // prettier-ignore
-    get text() { return run_Kolor(this.F.text) } // prettier-ignore
-    get labelText() { return this.F.textLabel ? run_Kolor(this.F.textLabel) : run_Kolor(this.F.text) } // prettier-ignore
-    get primary() { return run_Box(this.F.primary) } // prettier-ignore
-
     get value(): THEME {
-        return {
-            ...defaultDarkTheme,
-            base: this.base,
-            text: this.text,
-            labelText: this.labelText,
-            primary: this.primary,
-        }
+        return { ...defaultDarkTheme }
     }
 }
 
-const cushyThemeProvider = new CushyThemeProvider()
+const locoThemeProvider = new LocoThemeProvider()
 
-export const CushyTheme = memo((p: { children: ReactNode }) => {
+export const CushyTheme = observer((p: { children: ReactNode }) => {
     return (
-        <ThemeCtx.Provider //
-            value={cushyThemeProvider}
-        >
-            {p.children}
+        <ThemeCtx.Provider value={locoThemeProvider}>
+            <Frame //
+                // @ts-expect-error 🔴
+                style={{ '--KLR': cushy.theme.root.value.base }}
+                base={cushy.theme.value.base}
+                text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
+                tw='h-full'
+                expand
+            >
+                {p.children}
+            </Frame>
         </ThemeCtx.Provider>
     )
 })

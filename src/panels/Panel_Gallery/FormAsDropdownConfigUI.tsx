@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { FormUI } from '../../controls/FormUI'
 import { Ikon } from '../../icons/iconHelpers'
-import { BoxUI } from '../../rsuite/box/BoxUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: { title?: string; form: Form<any> }) {
@@ -18,14 +18,14 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                 </div>
             )}
         >
-            <BoxUI
+            <Frame
                 border
                 hover
                 tw='flex px-1 w-full h-full items-center justify-center hover:brightness-125 border border-base-100'
             >
                 <Ikon.mdiCog />
                 <Ikon.mdiChevronDown />
-            </BoxUI>
+            </Frame>
         </RevealUI>
     )
 })

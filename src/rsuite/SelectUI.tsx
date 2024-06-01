@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom'
 
 import { Ikon } from '../icons/iconHelpers'
 import { searchMatches } from '../utils/misc/searchMatches'
-import { BoxUI } from './box/BoxUI'
 import { InputBoolUI } from './checkbox/InputBoolUI'
+import { Frame } from './frame/Frame'
 
 interface ToolTipPosition {
     top?: number | undefined
@@ -389,7 +389,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
-        <BoxUI /* Container/Root */
+        <Frame /* Container/Root */
             base={{ contrast: 0.05 }}
             hover
             tabIndex={-1}
@@ -474,7 +474,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 {/* TOOLTIP */}
                 {s.isOpen && <SelectPopupUI s={s} />}
             </div>
-        </BoxUI>
+        </Frame>
     )
 })
 
@@ -488,7 +488,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
     }
 
     return createPortal(
-        <BoxUI
+        <Frame
             ref={s.popupRef}
             tw={[
                 'MENU-ROOT _SelectPopupUI  flex',
@@ -574,7 +574,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     )
                 })}
             </ul>
-        </BoxUI>,
+        </Frame>,
         document.getElementById('tooltip-root')!,
     )
 })

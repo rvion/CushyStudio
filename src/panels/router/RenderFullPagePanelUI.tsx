@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../../rsuite/box/BoxUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { useSt } from '../../state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
 
@@ -39,10 +39,10 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
                     zIndex: 100,
                 }}
             >
-                <BoxUI base={5} tw='h-full'>
+                <Frame base={5} tw='h-full'>
                     {/* full screen panel content */}
                     <RenderPanelUI panel={fpc.panel} panelProps={fpc.props} />
-                </BoxUI>
+                </Frame>
             </div>
         </>
     )

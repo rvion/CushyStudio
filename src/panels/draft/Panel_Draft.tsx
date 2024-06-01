@@ -8,7 +8,7 @@ import { useLayoutEffect } from 'react'
 import { FormUI } from '../../controls/FormUI'
 import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { BoxSubtle } from '../../rsuite/box/BoxMisc'
-import { BoxUI } from '../../rsuite/box/BoxUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { MarkdownUI } from '../../rsuite/MarkdownUI'
 import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { PhoneWrapperUI } from '../../rsuite/PhoneWrapperUI'
@@ -84,7 +84,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
             <RecompileUI app={draft.app} />
-            <BoxUI
+            <Frame
                 base={0}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw={['flex-1 flex flex-col p-2 gap-1', containerClassName]}
@@ -140,7 +140,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 >
                     <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
                 </RevealUI>
-            </BoxUI>
+            </Frame>
         </draftContext.Provider>
     )
     if (!wrapMobile) return OUT

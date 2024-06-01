@@ -2,29 +2,22 @@ import type { Kolor } from './Kolor'
 import type { OKLCH } from './OKLCH'
 
 import { clamp } from '../../controls/utils/clamp'
-import { getLCHFromString } from './getLCHFromString'
+import { getNum, type NumberVar } from '../theme/CSSVar'
 
+// prettier-ignore
 export const applyKolorToOKLCH = (a: OKLCH, b?: Maybe<Kolor>): OKLCH => {
     if (b == null) return a
-    const lightness = b.lightness ?? _autoContrast(a.lightness, b.contrast ?? 0)
-    const chroma = clamp(b.chroma ?? a.chroma * (b.chromaBlend ?? 1), 0, 0.4)
-    const hue = b.hue //
-        ? typeof b.hue === 'string'
-            ? getLCHFromString(b.hue).hue
-            : b.hue
-        : a.hue + (b.hueShift ?? 0)
-    return { /* type: 'absolute', */ lightness: lightness, chroma: chroma, hue: hue }
+    const lightness = getNum(b.lightness) ?? _autoContrast(a.lightness, getNum(b.contrast, 0))
+    const chroma    = getNum(b.chroma)    ?? a.chroma * getNum(b.chromaBlend, 1)
+    const hue       = getNum(b.hue)       ?? a.hue    + getNum(b.hueShift, 0)
+    return { lightness: lightness, chroma: clamp(chroma, 0, 0.4), hue: hue }
 }
 
-function _autoContrast(
-    //
-    lightness: number,
-    contrast: number,
-) {
-    /*
-     * This slightly favors using the darker color by adding a small
-     * float to ensure we always have -1/1 from Math.sign
-     */
+/*
+ * This slightly favors using the darker color by adding a small
+ * float to ensure we always have -1/1 from Math.sign
+ */
+function _autoContrast(lightness: number, contrast: number): number {
     const start = lightness
     const dir = Math.sign(0.5 - lightness - 0.00001)
     const final = start + dir * contrast

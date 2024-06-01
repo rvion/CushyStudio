@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
-import { BoxUI } from '../../../../rsuite/box/BoxUI'
 import { Button } from '../../../../rsuite/button/Button'
+import { Frame } from '../../../../rsuite/frame/Frame'
 import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
 import { Input } from '../../../../rsuite/shims'
 import { useSt } from '../../../../state/stateContext'
@@ -79,7 +79,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
 
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <BoxUI base={5} tw='rounded p-2'>
+        <Frame base={5} tw='rounded p-2'>
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
@@ -209,6 +209,6 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     }}
                 />
             </div>
-        </BoxUI>
+        </Frame>
     )
 })

@@ -18,10 +18,11 @@ import { forwardRef, useContext } from 'react'
 
 import { IkonOf } from '../../icons/iconHelpers'
 import { extractNormalizeBox } from '../box/BoxNormalized'
-import { applyBoxToCtx, compileKolorToCSSExpression, hashKolor } from '../box/compileBoxClassName'
+import { applyBoxToCtx, hashKolor } from '../box/compileBoxClassName'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
-import { formatOKLCH } from '../box/useColor'
 import { usePressLogic } from '../button/usePressLogic'
+import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
+import { formatOKLCH } from '../kolor/formatOKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { setRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { getClassNameForSize } from './FrameSize'
@@ -166,3 +167,7 @@ export const Frame = observer(
         )
     }),
 )
+
+// 🔴 2024-05-20 rvion:
+// || do we want to add observer here + forward ref ?
+// || or just go for speed ?

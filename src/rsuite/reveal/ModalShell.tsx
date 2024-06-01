@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { BoxUI } from '../box/BoxUI'
 import { Button } from '../button/Button'
+import { Frame } from '../frame/Frame'
 
 export const ModalShellUI = observer(function ModalShellUI_(p: {
     title?: React.ReactNode
@@ -11,7 +11,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
     close: () => void
 }) {
     return (
-        <BoxUI border className={p.className} tw={['animate-in fade-in', 'p-4 shadow-xl']} onClick={(ev) => ev.stopPropagation()}>
+        <Frame border className={p.className} tw={['animate-in fade-in', 'p-4 shadow-xl']} onClick={(ev) => ev.stopPropagation()}>
             {/* HEADER */}
             <div tw='flex'>
                 <div tw='text-xl'>{p.title}</div>
@@ -32,6 +32,6 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
             <div tw='_ModalBody'>{p.children}</div>
             {/* DOOTER */}
             <div tw='_ModalFooter'>{p.footer}</div>
-        </BoxUI>
+        </Frame>
     )
 })

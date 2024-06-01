@@ -3,7 +3,6 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
-import { BoxUI } from '../../../rsuite/box/BoxUI'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { getLCHFromStringAsString } from '../../../rsuite/kolor/getLCHFromStringAsString'
 
@@ -23,7 +22,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     if (!widget.config.textarea) return null
     const val = widget.value
     return (
-        <BoxUI base={5}>
+        <Frame base={5}>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */
@@ -38,7 +37,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
                     widget.value = ev.target.value
                 }}
             />
-        </BoxUI>
+        </Frame>
     )
 })
 
@@ -73,7 +72,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     // }
 
     return (
-        <BoxUI
+        <Frame
             // style={color.styles}
             base={5}
             text={{ contrast: 1, chromaBlend: 1 }}
@@ -124,7 +123,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             />
-        </BoxUI>
+        </Frame>
     )
     // <>
     //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
