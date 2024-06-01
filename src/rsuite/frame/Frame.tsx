@@ -158,9 +158,9 @@ export const Frame = observer(
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider value={nextCtx}>
-                    {icon && <IkonOf name={icon} />}
+                    {icon && <IkonOf tw='pointer-events-none' name={icon} />}
                     {p.children}
-                    {suffixIcon && <IkonOf name={suffixIcon} />}
+                    {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} />}
                     {loading && <div tw='loading loading-spinner loading-sm' />}
                 </CurrentStyleCtx.Provider>
             </div>

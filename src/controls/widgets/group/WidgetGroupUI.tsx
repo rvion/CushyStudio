@@ -1,5 +1,4 @@
 import type { SchemaDict } from '../../ISpec'
-import type { IWidget } from '../../IWidget'
 import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
@@ -32,14 +31,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     const isHorizontal = widget.config.layout === 'H'
 
     return (
-        <div
-            className={p.className}
-            tw={[
-                'w-full text-base-content',
-                widget.config.className,
-                isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
-            ]}
-        >
+        <WidgetFieldsContainerUI layout={p.widget.config.layout} tw={[widget.config.className, p.className]}>
             {groupFields.map(([rootKey, sub], ix) => (
                 <WidgetWithLabelUI //
                     isTopLevel={isTopLevel}
@@ -49,10 +41,28 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     widget={bang(sub)}
                 />
             ))}
-        </div>
+        </WidgetFieldsContainerUI>
     )
 })
 
-export const WidgetFieldsContainerUI = observer(function WidgetFieldsContainerUI_(p: { widget: IWidget }) {
-    return <div></div>
+export const WidgetFieldsContainerUI = observer(function WidgetFieldsContainerUI_(p: {
+    layout?: 'H' | 'V'
+    className?: string
+    children?: React.ReactNode
+}) {
+    const isHorizontal = p.layout === 'H'
+
+    return (
+        <div
+            className={p.className}
+            tw={[
+                //
+                isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
+                'w-full text-base-content',
+                p.className,
+            ]}
+        >
+            {p.children}
+        </div>
+    )
 })

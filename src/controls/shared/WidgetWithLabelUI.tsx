@@ -76,7 +76,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <AnimatedSizeUI>
                 {/* HEADER --------------------------------------------------------------------------------- */}
-                <WidgetHeaderContainerUI widget={p.widget}>
+                <WidgetHeaderContainerUI widget={widget}>
                     {/* HEADER LABEL */}
                     <WidgetLabelContainerUI justify={justify}>
                         <WidgetLabelCaretUI widget={widget} />

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 let isDragging = false
 let wasEnabled = false
+
 const isDraggingListener = (ev: MouseEvent) => {
     if (ev.button == 0) {
         isDragging = false

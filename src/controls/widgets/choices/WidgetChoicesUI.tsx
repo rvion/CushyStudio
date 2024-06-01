@@ -7,6 +7,7 @@ import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../rsuite/select/SelectUI'
 import { useTheme } from '../../../rsuite/theme/useTheme'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { WidgetFieldsContainerUI } from '../group/WidgetGroupUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
@@ -17,15 +18,16 @@ export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p:
 export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
     widget: Widget_choices<T>
     alignLabel?: boolean
+    className?: string
 }) {
     const widget = p.widget
     const activeSubwidgets = Object.entries(widget.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
-        <div //
-            tw={[widget.config.layout === 'H' ? 'flex' : null]}
-            className={widget.config.className}
+        <WidgetFieldsContainerUI //
+            layout={widget.config.layout}
+            tw={[widget.config.className, p.className]}
         >
             {activeSubwidgets.map((val) => {
                 const subWidget = val.subWidget
@@ -40,7 +42,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                     />
                 )
             })}
-        </div>
+        </WidgetFieldsContainerUI>
     )
 })
 

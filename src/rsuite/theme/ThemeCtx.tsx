@@ -10,7 +10,7 @@ export const defaultDarkTheme: THEME = {
     // LEGACY
     /* 🔴 */ base: { lightness: 0.1, chroma: 0.05, hue: 0 },
     /* 🔴 */ text: { contrast: 1, chroma: 0.1 },
-    /* 🔴 */ labelText: { contrast: 0.9, hueShift: 0, chromaBlend: 1 },
+    /* 🔴 */ labelText: { contrast: 0.6, hueShift: 0, chroma: 0.1 },
     /* 🔴 */ primary: { base: { chroma: 0.2 }, border: { contrast: 0.1 } },
     /* 🔴 */ shiftDirection: 1,
 }
