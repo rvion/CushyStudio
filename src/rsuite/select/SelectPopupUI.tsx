@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { createPortal } from 'react-dom'
 
+import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
 import { InputBoolUI } from '../checkbox/InputBoolUI'
 import { Frame } from '../frame/Frame'
 import { AutoCompleteSelectState } from './SelectState'
@@ -78,7 +79,15 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             }}
                         >
                             <Frame
-                                base={{ contrast: s.selectedIndex === index ? 0.05 : 0 }}
+                                base={{
+                                    contrast: isSelected
+                                        ? s.selectedIndex === index
+                                            ? 0.75
+                                            : 0.7
+                                        : s.selectedIndex === index
+                                          ? 0.05
+                                          : 0,
+                                }}
                                 tw={[
                                     'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
                                     'active:cursor-default cursor-pointer',
