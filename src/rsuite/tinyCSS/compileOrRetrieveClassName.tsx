@@ -5,37 +5,38 @@ type Selector = string // ".foo", or "div.bar:hover"
 const knownRules: Set<Selector> = new Set()
 
 /** return true when rule has already been defined for given selector */
-export const hasRule = (selector: string): boolean => knownRules.has(selector)
+export const hasRule = (selector: Selector): boolean => knownRules.has(selector)
 
 export function addRule(selector: string, block: string = ''): CSSStyleRule {
     const styleSheet = getStyleElement().sheet as CSSStyleSheet
     const rules = styleSheet.cssRules
     if (rules == null) throw new Error('❌ no rules')
+
+    console.log(`[🏛️] add rule (no check)`, selector, knownRules.has(selector))
     knownRules.add(selector)
-    console.log(`[🏛️] add rule (no check)`, selector)
 
     // create rule
     const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
     return styleSheet.cssRules[index] as CSSStyleRule
 }
 
-export function upsertRule(selector: string, block: string = ''): CSSStyleRule {
-    const styleSheet = getStyleElement().sheet as CSSStyleSheet
-    const rules = styleSheet.cssRules
-    if (rules == null) throw new Error('❌ no rules')
-    console.log(`[🏛️] upsert rule`, selector)
-
-    // upsert rule
-    const rule = Array.from(rules).find((r) => (r as CSSStyleRule).selectorText === selector) as CSSStyleRule | undefined
-    if (rule == null) {
-        knownRules.add(selector)
-        const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
-        return styleSheet.cssRules[index] as CSSStyleRule
-    } else {
-        rule.style.cssText = block
-        return rule
-    }
-}
+// ⏸️ export function upsertRule(selector: string, block: string = ''): CSSStyleRule {
+// ⏸️     const styleSheet = getStyleElement().sheet as CSSStyleSheet
+// ⏸️     const rules = styleSheet.cssRules
+// ⏸️     if (rules == null) throw new Error('❌ no rules')
+// ⏸️     console.log(`[🏛️] upsert rule`, selector)
+// ⏸️
+// ⏸️     // upsert rule
+// ⏸️     const rule = Array.from(rules).find((r) => (r as CSSStyleRule).selectorText === selector) as CSSStyleRule | undefined
+// ⏸️     if (rule == null) {
+// ⏸️         knownRules.add(selector)
+// ⏸️         const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
+// ⏸️         return styleSheet.cssRules[index] as CSSStyleRule
+// ⏸️     } else {
+// ⏸️         rule.style.cssText = block
+// ⏸️         return rule
+// ⏸️     }
+// ⏸️ }
 
 let _styleElement: HTMLStyleElement | null = null
 function getStyleElement(): HTMLStyleElement {

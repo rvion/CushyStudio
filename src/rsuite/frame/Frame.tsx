@@ -51,7 +51,6 @@ export type FrameProps = {
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
-const seen = new Set<string>()
 export const Frame = observer(
     forwardRef(function Frame_(p: FrameProps, ref: any) {
         // PROPS --------------------------------------------
@@ -114,7 +113,7 @@ export const Frame = observer(
         if (boxText) {
             const clsName = 'text' + hashKolor(boxText)
             const selector = `.${CSS.escape(clsName)}`
-            if (!seen.has(selector)) addRule(selector, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
+            if (!hasRule(selector)) addRule(selector, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
             classes.push(clsName)
         }
 
