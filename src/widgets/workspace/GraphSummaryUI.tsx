@@ -28,8 +28,6 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                         {/* {n.status ?? '❓'} */}
                         <RevealUI content={() => <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />}>
                             <span>{n.statusEmoji}</span>
-
-                            {/* <span className='material-symbols-outlined'>info</span> */}
                         </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />
                         <span tw='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{n.$schema.nameInComfy}</span>

@@ -5,6 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
+import { Ikon } from '../icons/iconHelpers'
 import { Button } from '../rsuite/button/Button'
 import { Frame } from '../rsuite/frame/Frame'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
@@ -127,7 +128,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 )}
             >
                 <div tw='WIDGET-FIELD flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
-                    <span className='material-symbols-outlined'>info</span>
+                    <Ikon.mdiInformation />
 
                     {img ? (
                         <>

@@ -2,8 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { resolve } from 'pathe'
 
 import { SQLITE_false } from '../db/SQLITE_boolean'
+import { Frame } from '../rsuite/frame/Frame'
 import { SelectUI } from '../rsuite/select/SelectUI'
 import { Surface } from '../rsuite/shims'
+import { knownOKLCHHues } from '../rsuite/tinyCSS/knownHues'
 import { useSt } from '../state/stateContext'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { HostUI } from './host/HostUI'
@@ -25,10 +27,13 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                 />
             </div> */}
             <div tw='flex gap-1'>
-                <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-info-2'>
-                    <span className='material-symbols-outlined'>info</span>
+                <Frame
+                    base={{ hue: knownOKLCHHues.blueInfo, chroma: 0.08, contrast: 0.1 }}
+                    icon='mdiInformation'
+                    tw='virtualBorder p-1 rounded flex items-center gap-2'
+                >
                     The Primary host is the one used for typigns, and to send prompts to by default.
-                </div>
+                </Frame>
             </div>
             <div className='line'>
                 <div>Primary Host:</div>

@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { showItemInFolder } from '../../app/layout/openExternal'
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
+import { Ikon } from '../../icons/iconHelpers'
 import { Dropdown } from '../../rsuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../../rsuite/dropdown/MenuItem'
@@ -123,7 +124,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     </MenuItem>
                     <div tw='divider my-0'>Debug</div>
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>info</span>}
+                        icon={<Ikon.mdiInformation />}
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
                     >

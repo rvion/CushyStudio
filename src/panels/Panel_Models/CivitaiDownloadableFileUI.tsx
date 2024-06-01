@@ -4,6 +4,7 @@ import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultI
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { formatSize } from '../../db/getDBStats'
+import { Ikon } from '../../icons/iconHelpers'
 import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
 import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
 import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
@@ -77,7 +78,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={file} />}>
                     <div tw='btn btn-xs btn-outline'>
-                        <span className='material-symbols-outlined'>info</span>
+                        <Ikon.mdiInformation />
                         infos
                     </div>
                 </RevealUI>
