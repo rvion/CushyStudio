@@ -2,7 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { Dropdown } from '../../rsuite/dropdown/Dropdown'
 import { useSt } from '../../state/stateContext'
-import { ThemePreviewUI } from './utils/ThemePreviewUI'
+
+// import { ThemePreviewUI } from './utils/ThemePreviewUI'
 
 export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
     const st = useSt()
@@ -14,7 +15,7 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
                 <>
                     {cushy.theme.render()}
                     <div className='divider'>legacy</div>
-                    {st.themeMgr.themes.map((theme) => (
+                    {/* {st.themeMgr.themes.map((theme) => (
                         <div
                             tw='cursor-pointer'
                             key={theme}
@@ -26,7 +27,7 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
                         >
                             <ThemePreviewUI theme={theme} />
                         </div>
-                    ))}
+                    ))} */}
                 </>
             )}
         />
