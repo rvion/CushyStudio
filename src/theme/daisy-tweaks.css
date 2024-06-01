@@ -1,21 +1,13 @@
-/* KBD------------------------------------------------------------------------------------------------------ */
+/* KBD ---------------------------------------------------------------------------------------- */
 /* tweak so it's presence in dropdown entry doesn't impact height */
 .kbd-sm { min-height: 1.2rem; }
 
-
-/* DaisyUI Color Utils ------------------------------------------------------------------------------------- */
-
-.bg-primary-1 { background-color: oklch(var(--p)/.1); }
-.bg-primary-2 { background-color: oklch(var(--p)/.2); }
-
-.bg-info-1 { background-color: oklch(var(--in)/.1); }
-.bg-info-2 { background-color: oklch(var(--in)/.2); }
-
-.bg-error-1 { background-color: oklch(var(--er)/.1); }
+/* LEGACY ------------------------------------------------------------------------------------- */
+/* 🔶 FIXME: still in use */
 .bg-error-2 { background-color: oklch(var(--er)/.2); }
 
-.bg-warning-1 { background-color: oklch(var(--wa)/.1); }
+/* 🔶 FIXME: .still in use */
 .bg-warning-2 { background-color: oklch(var(--wa)/.2); }
 
+/* 🔶 FIXME: still in use */
 .bg-success-1 { background-color: oklch(var(--su)/.1); }
-.bg-success-2 { background-color: oklch(var(--su)/.2); }
