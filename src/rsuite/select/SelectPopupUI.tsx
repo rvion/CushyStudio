@@ -77,25 +77,21 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                                 window.addEventListener('mouseup', isDraggingListener, true)
                             }}
                         >
-                            <div
+                            <Frame
+                                base={{ contrast: s.selectedIndex === index ? 0.05 : 0 }}
                                 tw={[
                                     'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
-                                    'active:cursor-default text-shadow',
+                                    'active:cursor-default cursor-pointer',
                                     index === s.selectedIndex ? 'bg-base-300' : null,
-                                    /* index === s.selectedIndex && */
-                                    // isSelected ? '!text-primary-content text-shadow' : 'bg-base-300',
-                                    // !isSelected && 'active:',
-                                    // isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary', // prettier-ignore
                                 ]}
                             >
-                                {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
                                 <InputBoolUI value={isSelected} expand={false}></InputBoolUI>
                                 <div tw='pl-0.5 flex w-full h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)
                                         : s.p.getLabelText(option)}
                                 </div>
-                            </div>
+                            </Frame>
                         </li>
                     )
                 })}
