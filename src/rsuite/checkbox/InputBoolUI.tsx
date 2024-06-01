@@ -28,6 +28,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
     const label = p.text
 
     if (display === 'check') {
+        const chroma = isActive ? 0.08 : 0.01
         return (
             <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
                 style={p.style}
@@ -47,9 +48,9 @@ export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
                 <Frame // Checkbox
                     icon={p.icon ?? (isActive ? 'mdiCheckBold' : null)}
                     tw='!select-none rounded-sm object-contain WIDGET-FIELD'
-                    border={20}
+                    border={{ contrast: 0.2, chroma }}
                     style={{ width: 'var(--input-height)' /* hacky */ }}
-                    base={{ contrast: isActive ? 0.09 : 0.0, chroma: isActive ? 0.08 : 0.01 }}
+                    base={{ contrast: isActive ? 0.09 : 0.0, chroma }}
                     size='sm'
                     {...p.box}
                 />
