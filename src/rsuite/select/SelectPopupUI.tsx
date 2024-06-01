@@ -85,7 +85,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                 ]}
                             >
-                                <InputBoolUI value={isSelected} expand={false}></InputBoolUI>
+                                {s.isMultiSelect && <InputBoolCheckboxUI mode={'checkbox'} value={isSelected} expand={false} />}
                                 <div tw='pl-0.5 flex w-full h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)
