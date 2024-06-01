@@ -81,6 +81,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <Button
                                                 disabled={min != null && widget.items.length <= min}
                                                 square
+                                                size='xs'
                                                 look='ghost'
                                                 icon='mdiDeleteOutline'
                                                 onClick={() => widget.removeItem(subWidget)}
