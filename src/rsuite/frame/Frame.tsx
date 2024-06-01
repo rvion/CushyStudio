@@ -94,8 +94,8 @@ export const Frame = observer(
 
         // STYLE ---------------------------------------------
         const variables: { [key: string]: string | number } = {
-            '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
             '--KLR': formatOKLCH(nextCtx.base),
+            '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
             // '--PREV_BASE_L': prevCtx.base.lightness, // === -1 ? -1 : 1,
             // '--NEXT_BASE_L': nextCtx.base.lightness, // === -1 ? -1 : 1,
         }
@@ -120,7 +120,7 @@ export const Frame = observer(
         if (box.textShadow) {
             const clsName = 'textShadow' + hashKolor(box.textShadow)
             const selector = `.${CSS.escape(clsName)}`
-            if (!hasRule(selector)) addRule(selector, `box-shadow: 4px 4px ${compileKolorToCSSExpression('KLR', box.textShadow)};`) // prettier-ignore
+            if (!hasRule(selector)) addRule(selector, `text-shadow: 0px 0px 2px ${compileKolorToCSSExpression('KLR', box.textShadow)};`) // prettier-ignore
             classes.push(clsName)
         }
 
@@ -145,9 +145,8 @@ export const Frame = observer(
                 tw={[
                     //
                     'BOX',
-                    look && `BOX-${look}`,
+                    look && `box-${look}`,
                     getClassNameForSize(p),
-                    look && 'rounded-sm flex gap-2 items-center',
                     expand && 'flex-1',
                     ...classes,
                     className,

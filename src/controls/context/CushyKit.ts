@@ -4,7 +4,11 @@
  * can be configured by project
  */
 export interface CushyKit {
-    clickAndSlideMultiplicator?: number
+    clickAndSlideMultiplicator: number
+    showWidgetUndo: boolean
+    showWidgetMenu: boolean
+    showWidgetDiff: boolean
+    showToggleButtonBox: boolean
 }
 
 /** default simple example configuration for external project
@@ -12,4 +16,8 @@ export interface CushyKit {
  */
 export const defaultCushyKitOptions: CushyKit = {
     clickAndSlideMultiplicator: 1,
+    showWidgetUndo: true,
+    showWidgetMenu: true,
+    showWidgetDiff: true,
+    showToggleButtonBox: true,
 }

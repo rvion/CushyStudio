@@ -3,6 +3,7 @@ import { type BoxNormalized, extractNormalizeBox } from '../box/BoxNormalized'
 const frame_ghost: BoxNormalized = extractNormalizeBox({
     textShadow: 100,
     border: 10,
+    base: 0,
 })
 
 const frame_subtle: BoxNormalized = extractNormalizeBox({

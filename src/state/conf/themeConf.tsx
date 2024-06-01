@@ -8,9 +8,6 @@ export const themeConf = CushyFormManager.form(
         ui.fields(
             {
                 // CORE -----------
-                appbar: ui.colorV2().optional(),
-                favbar: ui.colorV2().optional(),
-                border: ui.percent({ default: 20 }).optional(),
                 base: ui.colorV2({
                     default: '#1E212B' /* `oklch(0.01 0.1 220)` */,
                     presets: [
@@ -26,17 +23,20 @@ export const themeConf = CushyFormManager.form(
                         },
                     ],
                 }),
+                appbar: ui.colorV2().optional(),
+                favbar: ui.colorV2().optional(),
+                // ---------------------------------------------------------------------------
+                border: ui.percent({ default: 20 }).optional(),
                 text: ui_Kolor(ui, { contrast: 0.9 }), // ui.number({ min: 0.1, max: 1, default: 0.6 }),
                 textLabel: ui_Kolor(ui, { contrast: 0.5, hue: 0.8 }).optional(true),
                 primary: ui_Box(ui, { icon: 'mdiPodiumGold' }),
-                // subtle: ui_Box(ui, { icon: 'mdiCursorDefaultClick' }),
-                // default: ui_Box(ui, { icon: 'mdiCursorDefaultOutline' }),
-                // ghost: ui_Box(ui, { icon: 'mdiGhost' }),
-                // secondary: ui_Box(ui, { icon: 'mdiPodiumSilver' }),
-                // accent1: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                // accent2: ui.colorV2({ default: '#1E212B' /* `oklch(0.01 0.1 220)` */ }),
-                // use default cursor everywhere
+
+                // ---------------------------------------------------------------------------
                 useDefaultCursorEverywhere: ui.boolean({ default: false }),
+                showWidgetUndo: ui.boolean({ tooltip: 'show undo button near every field', default: true }),
+                showWidgetMenu: ui.boolean({ tooltip: 'show action buttons at the bottom of the form', default: true }),
+                showWidgetDiff: ui.boolean({ tooltip: 'show diff button near every field', default: true }),
+                showToggleButtonBox: ui.boolean({ default: true }),
             },
             { label: 'Theme' },
         ),

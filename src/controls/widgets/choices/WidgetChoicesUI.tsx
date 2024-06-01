@@ -72,6 +72,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                     <InputBoolUI
                         value={isSelected}
                         display='button'
+                        mode={p.widget.isMulti ? 'checkbox' : 'radio'}
                         text={c.label}
                         box={isSelected ? undefined : { text: theme.value.labelText }}
                         onValueChange={(value) => {

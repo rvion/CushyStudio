@@ -18,12 +18,19 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Frame base={-5} tabIndex={0} tw='shadow z-[1]'>
+            <Frame base={5} tabIndex={0} tw='z-[1]'>
                 {p.content?.()}
             </Frame>
         )}
     >
-        <Button border={false} icon={p.startIcon} tabIndex={0}>
+        <Button
+            //
+            look='ghost'
+            border={false}
+            icon={p.startIcon}
+            tabIndex={0}
+            base={0}
+        >
             {p.title}
         </Button>
     </RevealUI>

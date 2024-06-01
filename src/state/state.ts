@@ -56,11 +56,8 @@ import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { run_Kolor } from '../rsuite/kolor/prefab_Kolor'
-import { formConf } from '../rsuite/theme/ThemeForm'
-// import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
-// import { CushyThemeManager } from '../theme/colorEngine/CushyTheming'
 import { ThemeManager } from '../theme/ThemeManager'
 import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
 import { CleanedEnumResult } from '../types/EnumUtils'
@@ -122,6 +119,10 @@ export class STATE {
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
 
+    get showWidgetUndo() { return this.theme.value.showWidgetUndo } // prettier-ignore
+    get showWidgetMenu() { return this.theme.value.showWidgetMenu } // prettier-ignore
+    get showWidgetDiff() { return this.theme.value.showWidgetDiff } // prettier-ignore
+    get showToggleButtonBox() { return this.theme.value.showToggleButtonBox } // prettier-ignore
     _updateTime = () => {
         const now = Date.now()
         // console.log(`time is now ${now}`)
@@ -510,7 +511,6 @@ export class STATE {
         },
     )
 
-    formConf = formConf
     galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {

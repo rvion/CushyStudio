@@ -10,10 +10,11 @@ export const Button = observer(function Button_(p: FrameProps) {
     runInAction(() => (uist.props = p))
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
-    const { size, look: appearance, ...rest } = p
+    const { size, look, ...rest } = p
     return (
         <Frame //
             size={size ?? 'sm'}
+            look={look}
             base={5}
             border={10}
             hover={p.disabled ? false : undefined}

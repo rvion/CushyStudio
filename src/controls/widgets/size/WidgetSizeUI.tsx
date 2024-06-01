@@ -8,12 +8,12 @@ import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { InputNumberUI } from '../number/InputNumberUI'
 
-export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
-    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
-})
-
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
     return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
+})
+
+export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
+    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
@@ -30,11 +30,9 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
             <Frame //Joined container
                 hover
                 border={{ contrast: 0.25 }}
-                tw={[
-                    'WIDGET-FIELD w-full h-full flex items-center overflow-clip',
-                    // 'border border-base-100 border-b-base-200',
-                    // 'border-b-2 hover:border-base-200 hover:border-b-base-300',
-                ]}
+                // 'border border-base-100 border-b-base-200',
+                // 'border-b-2 hover:border-base-200 hover:border-b-base-300',
+                tw={['WIDGET-FIELD w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
                 <InputNumberUI
@@ -72,10 +70,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                 <div tw='h-full' style={{ width: '1px' }} />
                 <AspectLockButtonUI sizeHelper={uist} />
             </Frame>
-            {/* <div tw='flex items-center gap-1'>
-                <div // Extra div because gap-1 will eat in to the child's width for SOME reason
-                ></div>
-            </div> */}
         </div>
     )
 })
@@ -110,6 +104,8 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
         <Frame // Aspect ratio display background
             square
             size='xs'
+            // base={10}
+            border={10}
             tw={[
                 //
                 'flex',
@@ -121,6 +117,7 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
             onClick={uist.flip}
         >
             <Frame
+                base={10}
                 tw='!relative w-full h-full'
                 style={{
                     //
@@ -156,8 +153,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     )
 
     const modelBtn = (model: ModelType) => (
-        <InputBoolUI
-            //
+        <InputBoolUI //
             display='button'
             value={uist.desiredModelType == model}
             onValueChange={() => uist.setModelType(model)}
@@ -169,8 +165,8 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
 
     return (
         <Frame
-            border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-            base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        // border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
         >
             <div tw='flex'>
                 <div tw='join'>

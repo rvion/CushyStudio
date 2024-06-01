@@ -53,7 +53,12 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
         case 'color':
             inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
             visualHelper = (
-                <Frame tw='w-full h-full text-xs justify-between' base={val ? val : undefined} text={{ contrast: 0.4 }}>
+                <Frame //
+                    tw='w-full h-full text-xs justify-between'
+                    base={val ? val : undefined}
+                    text={{ contrast: 1 }}
+                    textShadow={{ contrast: 0.5 }}
+                >
                     {/* <div>{val}</div> */}
                     <div>{getLCHFromStringAsString(val)}</div>
                 </Frame>

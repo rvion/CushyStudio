@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../rsuite/frame/Frame'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
+import { useCushyKit } from '../context/CushyKitCtx'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
@@ -64,6 +65,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
 
+    const kit = useCushyKit()
     const boxBase = (widget.background && widget.isCollapsible) || showBorder ? { contrast: 0.05 } : undefined
     return (
         <Frame
@@ -95,8 +97,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     {/* HEADER OPTIONS (undo, menu, ...) */}
                     <div tw='ml-auto'></div>
                     {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                    <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />
-                    <WidgetMenuUI tw='self-start' widget={widget} />
+                    {kit.showWidgetUndo && <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />}
+                    {kit.showWidgetMenu && <WidgetMenuUI tw='self-start' widget={widget} />}
                 </WidgetHeaderContainerUI>
 
                 {/* BODY  ------------------------------------------------------------------------------ */}

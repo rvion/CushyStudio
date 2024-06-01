@@ -21,9 +21,6 @@ export const Panel_Config = observer(function Panel_Config_() {
             <Frame border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.theme} />
             </Frame>
-            <Frame border tw='flex-1 w-full' /* temp hack */>
-                <FormUI form={cushy.formConf} />
-            </Frame>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>

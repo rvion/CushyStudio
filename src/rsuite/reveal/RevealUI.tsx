@@ -151,7 +151,7 @@ const mkTooltip = (uist: RevealState | null) => {
         ) : (
             // VIA POPOVER --------------------------------------------------------------------------------
             <Frame
-                border
+                // border
                 // base={0}
                 className={p.tooltipWrapperClassName}
                 tw={['_RevealUI shadow-xl pointer-events-auto']}
