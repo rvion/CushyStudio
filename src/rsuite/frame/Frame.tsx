@@ -31,7 +31,7 @@ import { type FrameAppearance, frames } from './FrameTemplates'
 export type FrameProps = {
     // logic --------------------------------------------------
     /** TODO: */
-    triggerOnPress?: boolean
+    triggerOnPress?: { startingState: boolean }
 
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
@@ -153,8 +153,8 @@ export const Frame = observer(
                 ]}
                 style={{ ...style, ...variables }}
                 {...rest}
-                {...(triggerOnPress
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick })
+                {...(triggerOnPress != null
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider value={nextCtx}>

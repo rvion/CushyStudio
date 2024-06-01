@@ -1,19 +1,23 @@
-let isDragging = false
-let isDraggingElement: HTMLElement | null = null
+let draggedElement: HTMLElement | null = null
+let startingState: boolean = false
+// let isDragging = false
 
 const isDraggingListener = (ev: MouseEvent) => {
     if (ev.button == 0) {
-        isDragging = false
-        isDraggingElement = null
+        // isDragging = false
+        draggedElement = null
         window.removeEventListener('mouseup', isDraggingListener, true)
     }
 }
 
-export const usePressLogic = (p: {
-    onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
-    onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
-    onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
-}) => {
+export const usePressLogic = (
+    p: {
+        onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
+        onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
+        onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    },
+    value: boolean,
+) => {
     // case 1. regular stuff
     if (p.onClick == null)
         return {
@@ -24,18 +28,18 @@ export const usePressLogic = (p: {
     // case 2.
     return {
         onMouseDown: (ev: React.MouseEvent<HTMLDivElement>) => {
-            // console.log(`[🤠] YOLO`)
             if (ev.button == 0) {
                 p.onMouseDown?.(ev)
                 p.onClick?.(ev)
-                isDraggingElement = ev.currentTarget
-                isDragging = true
+                draggedElement = ev.currentTarget
+                startingState = !value
+                // isDragging = true
                 window.addEventListener('mouseup', isDraggingListener, true)
             }
         },
         onMouseEnter: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            if (isDraggingElement === ev.currentTarget) return
-            if (isDragging) p.onClick?.(ev)
+            if (startingState === value) return
+            if (draggedElement != null) p.onClick?.(ev)
         },
     }
 }
