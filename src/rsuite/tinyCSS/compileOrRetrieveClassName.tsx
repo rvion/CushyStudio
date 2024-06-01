@@ -1,13 +1,34 @@
-export function setRule(selector: string, block: string = ''): CSSStyleRule {
-    const styleSheet = getStyleElement().sheet as CSSStyleSheet
-    // ensure rules
-    const rules = styleSheet.cssRules //  || styleSheet.rules
-    if (rules == null) throw new Error('❌ no rules')
-    console.log(`[🤠] adding rule`, selector)
+/** quick alias */
+type Selector = string // ".foo", or "div.bar:hover"
 
-    // find or create rule
+/** set of all selector already defined */
+const knownRules: Set<Selector> = new Set()
+
+/** return true when rule has already been defined for given selector */
+export const hasRule = (selector: string): boolean => knownRules.has(selector)
+
+export function addRule(selector: string, block: string = ''): CSSStyleRule {
+    const styleSheet = getStyleElement().sheet as CSSStyleSheet
+    const rules = styleSheet.cssRules
+    if (rules == null) throw new Error('❌ no rules')
+    knownRules.add(selector)
+    console.log(`[🏛️] add rule (no check)`, selector)
+
+    // create rule
+    const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
+    return styleSheet.cssRules[index] as CSSStyleRule
+}
+
+export function upsertRule(selector: string, block: string = ''): CSSStyleRule {
+    const styleSheet = getStyleElement().sheet as CSSStyleSheet
+    const rules = styleSheet.cssRules
+    if (rules == null) throw new Error('❌ no rules')
+    console.log(`[🏛️] upsert rule`, selector)
+
+    // upsert rule
     const rule = Array.from(rules).find((r) => (r as CSSStyleRule).selectorText === selector) as CSSStyleRule | undefined
     if (rule == null) {
+        knownRules.add(selector)
         const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
         return styleSheet.cssRules[index] as CSSStyleRule
     } else {
@@ -16,18 +37,18 @@ export function setRule(selector: string, block: string = ''): CSSStyleRule {
     }
 }
 
-let styleElement: HTMLStyleElement | null = null
+let _styleElement: HTMLStyleElement | null = null
 function getStyleElement(): HTMLStyleElement {
-    if (styleElement != null) return styleElement
+    if (_styleElement != null) return _styleElement
     // let styleElement = document.querySelector('[title="dynamic-theme-css"]') as HTMLStyleElement
-    if (styleElement) {
-        styleElement = styleElement
+    if (_styleElement) {
+        _styleElement = _styleElement
     } else {
-        styleElement = styleElement ?? document.createElement('style')
-        styleElement.title = 'dynamic-theme-css'
-        document.head.appendChild(styleElement)
+        _styleElement = _styleElement ?? document.createElement('style')
+        _styleElement.title = 'dynamic-theme-css'
+        document.head.appendChild(_styleElement)
     }
-    return styleElement!
+    return _styleElement!
 }
 
 // ⏸️ import { createHash } from 'crypto'

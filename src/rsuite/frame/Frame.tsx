@@ -24,7 +24,7 @@ import { usePressLogic } from '../button/usePressLogic'
 import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
 import { formatOKLCH } from '../kolor/formatOKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
-import { setRule } from '../tinyCSS/compileOrRetrieveClassName'
+import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { getClassNameForSize } from './FrameSize'
 import { type FrameAppearance, frames } from './FrameTemplates'
 
@@ -113,27 +113,29 @@ export const Frame = observer(
         const boxText = box.text ?? prevCtx.text
         if (boxText) {
             const clsName = 'text' + hashKolor(boxText)
-            if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
+            const selector = `.${CSS.escape(clsName)}`
+            if (!seen.has(selector)) addRule(selector, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
             classes.push(clsName)
         }
 
         if (box.textShadow) {
             const clsName = 'textShadow' + hashKolor(box.textShadow)
-            if (!seen.has(clsName))
-                setRule(`.${CSS.escape(clsName)}`, `box-shadow: 4px 4px ${compileKolorToCSSExpression('KLR', box.textShadow)};`)
+            const selector = `.${CSS.escape(clsName)}`
+            if (!hasRule(selector)) addRule(selector, `box-shadow: 4px 4px ${compileKolorToCSSExpression('KLR', box.textShadow)};`) // prettier-ignore
             classes.push(clsName)
         }
 
         if (box.border) {
             const clsName = 'border' + hashKolor(box.border)
-            if (!seen.has(clsName))
-                setRule(`.${CSS.escape(clsName)}`, `border: 1px solid ${compileKolorToCSSExpression('KLR', box.border)};`)
+            const selector = `.${CSS.escape(clsName)}`
+            if (!hasRule(selector)) addRule(selector, `border: 1px solid ${compileKolorToCSSExpression('KLR', box.border)};`) // prettier-ignore
             classes.push(clsName)
         }
 
         if (box.hover) {
             const clsName = 'h' + hashKolor(box.hover)
-            if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}:hover`, `background: red`)
+            const selector = `.${CSS.escape(clsName)}:hover`
+            if (!hasRule(selector)) addRule(selector, `background: red`)
             classes.push(clsName)
         }
 
