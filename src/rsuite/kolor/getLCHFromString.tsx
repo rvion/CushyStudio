@@ -12,7 +12,7 @@ export function getLCHFromString(str: string): OKLCH {
             hue: isNaN(h!) ? 0 : h!,
         }
     } catch (e) {
-        console.log(`[🔴] getLCHFromString FAILURE`)
+        console.log(`[🔴] getLCHFromString FAILURE (string is: "${str}")`)
         return { lightness: 0.5, chroma: 0.1, hue: 0 }
     }
 }
