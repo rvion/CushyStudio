@@ -14,7 +14,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             className={p.className}
             disabled={p.disabled}
             hover
-            triggerOnPress
+            triggerOnPress={{ startingState: isActive }}
             expand={p.expand}
             tw={['flex flex-row !select-none cursor-pointer']}
             onClick={(ev) => {

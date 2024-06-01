@@ -17,7 +17,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
         <Frame
             tw='WIDGET-FIELD !select-none cursor-pointer justify-center px-1 py-1 text-sm flex items-center'
             className={p.className}
-            triggerOnPress
+            triggerOnPress={{ startingState: isActive }}
             look='default'
             base={{ contrast: isActive ? 0.09 : 0.05, chroma: chroma }}
             border={isActive ? 20 : 0}
