@@ -25,9 +25,5 @@ export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
 })
 export const ForceUpdateAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     const st = useSt()
-    return (
-        <Button tw='btn-sm btn btn-warning' onClick={st.forceRefreshAllApps}>
-            Force-Recompile All Apps
-        </Button>
-    )
+    return <Button onClick={st.forceRefreshAllApps}>Force-Recompile All Apps</Button>
 })

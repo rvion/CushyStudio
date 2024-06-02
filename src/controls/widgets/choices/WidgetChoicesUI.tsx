@@ -72,6 +72,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                 const isSelected = widget.serial.branches[c.key]
                 return (
                     <InputBoolUI
+                        key={c.key}
                         value={isSelected}
                         display='button'
                         mode={p.widget.isMulti ? 'checkbox' : 'radio'}

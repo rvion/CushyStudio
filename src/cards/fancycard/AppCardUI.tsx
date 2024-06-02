@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
 import { CushyAppL } from '../../models/CushyApp'
-import { AppFavoriteBtnUI } from '../../panels/libraryUI/CardPicker2UI'
-import { Tag } from '../../rsuite/shims'
-// import { Package } from '../Pkg'
+import { Button } from '../../rsuite/button/Button'
+import { InputBoolCheckboxUI } from '../../rsuite/checkbox/InputBoolCheckboxUI'
+import { InputBoolToggleButtonUI } from '../../rsuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../rsuite/frame/Frame'
+import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
 import { useSt } from '../../state/stateContext'
-import { LibraryFile } from '../LibraryFile'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
 export const AppCardUI = observer(function FancyCardUI_(p: {
@@ -22,20 +23,22 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
     const color = (() => {
         const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap self-stretch'
         const maxWidth = st.library.imageSize
-        if (file.absPath.endsWith('.ts'))   return <span tw={[tw, 'bg-primary text-primary-content']} style={{maxWidth}}>Cushy App</span>
-        if (file.absPath.endsWith('.json')) return <span tw={[tw, 'bg-secondary text-secondary-content']} style={{maxWidth}}>ComfyUI Workflow JSON</span>
-        if (file.absPath.endsWith('.png'))  return <span tw={[tw, 'bg-accent text-accent-content']} style={{maxWidth}}>ComfyUI Workflow Image</span>
+        if (file.absPath.endsWith('.ts'))   return <Frame base={{hueShift:  60, chroma: .1 }} tw={[tw]} style={{maxWidth}}>Cushy App</Frame>
+        if (file.absPath.endsWith('.json')) return <Frame base={{hueShift: 120, chroma: .1 }} tw={[tw]} style={{maxWidth}}>ComfyUI Workflow JSON</Frame>
+        if (file.absPath.endsWith('.png'))  return <Frame base={{hueShift: 180, chroma: .1 }} tw={[tw]} style={{maxWidth}}>ComfyUI Workflow Image</Frame>
     })()
 
     return (
-        <div
+        <Frame
+            base={8}
+            hover
             style={{ width: st.library.imageSize }}
             onClick={p.app.openLastOrCreateDraft}
             tw={[
                 //
                 'flex flex-col',
-                'p-0.5 text-base-content shadow-xl border border-neutral border-opacity-25',
-                `card STYLE_A`,
+                'text-base-content shadow-xl border border-neutral border-opacity-25',
+                `STYLE_A`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',
             ]}
@@ -43,7 +46,25 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             {/* ROW 1 */}
             <div tw='flex items-start flex-grow' style={{ fontSize: '1rem' }}>
                 {/* FAVORITE */}
-                {st.library.showFavorites ? <AppFavoriteBtnUI app={app} size={'1.5rem'} /> : null}
+                {st.library.showFavorites ? (
+                    <InputBoolCheckboxUI
+                        box={{ border: 0 }}
+                        value={app.isFavorite}
+                        onValueChange={(v) => app.setFavorite(v)}
+                        icon='mdiStar'
+                        // box={{ base: { hue: knownOKLCHHues.yellowTaxi } }}
+                        // border={0}
+                        // base={0}
+                        // size='sm'
+                        // square
+                        // onClick={}
+                        // text={
+                        //     p.app.isFavorite //
+                        //         ? { hue: knownOKLCHHues.yellowTaxi, chroma: 0.2, contrast: 0.2 }
+                        //         : undefined
+                        // }
+                    />
+                ) : null}
 
                 {/* NAME */}
                 <div
@@ -82,6 +103,6 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             {/* ROW 4 */}
             {/* KIND */}
             {color}
-        </div>
+        </Frame>
     )
 })

@@ -2,6 +2,7 @@ import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
+import { Button } from '../../rsuite/button/Button'
 import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
@@ -13,10 +14,9 @@ import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatfo
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
         <RevealUI placement='popup-lg' title='Create an app' content={() => <CreateAppPopupUI />}>
-            <div tw='btn btn-sm btn-accent'>
+            <Button look='primary' icon='mdiOpenInNew'>
                 Create My App
-                <span className='material-symbols-outlined'>open_in_new</span>
-            </div>
+            </Button>
         </RevealUI>
     )
 })

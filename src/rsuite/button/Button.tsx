@@ -10,7 +10,7 @@ export const Button = observer(function Button_(p: FrameProps) {
     runInAction(() => (uist.props = p))
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
-    const { size, look, ...rest } = p
+    const { size, square, look, ...rest } = p
     return (
         <Frame //
             size={size ?? 'sm'}
@@ -22,7 +22,15 @@ export const Button = observer(function Button_(p: FrameProps) {
             loading={p.loading}
             tabIndex={p.tabIndex ?? -1}
             {...rest}
-            tw={['ui-button', 'rounded-sm flex gap-2 items-center', p.disabled ? null : 'cursor-pointer', 'justify-center']}
+            tw={[
+                'inline-flex',
+                'font-semibold',
+                'ui-button',
+                'rounded-sm gap-2 items-center',
+                p.disabled ? null : 'cursor-pointer',
+                'whitespace-nowrap',
+                'justify-center',
+            ]}
             onMouseDown={uist.press}
         />
     )

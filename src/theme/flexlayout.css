@@ -19,9 +19,11 @@ check @birddev locomotive branch to check the sign calculation magic
   --color-overflow:                         oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
   --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
 
-  --color-tabset-background:                var(--KLR);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
-  --color-tabset-background-selected:       var(--KLR);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
-  --color-tabset-background-maximized:      var(--KLR);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
+  /* tabset background */
+  --color-tabset-background:                oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
+  --color-tabset-background-selected:       oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
+  --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
+
   --color-tabset-divider-line:              oklch(var(--p)/.2);
   --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
   --color-tabset-header:                    oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
@@ -30,17 +32,19 @@ check @birddev locomotive branch to check the sign calculation magic
 
   /* # tab color */
   --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
-  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
   --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
+  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+
+  /* borders tabs */
+  --color-border-tab-selected:              oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-selected-background:   oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-unselected:            oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-unselected-background: oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
 
   /* # ??? */
   --color-tab-textbox-background:           oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
 
-  /* borders tabs */
-  --color-border-tab-selected:              oklch(var(--bc));
-  --color-border-tab-selected-background:   oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
-  --color-border-tab-unselected-background: transparent;
 
   --color-splitter:                         oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
   --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
@@ -109,7 +113,7 @@ check @birddev locomotive branch to check the sign calculation magic
 .flexlayout__edge_rect {
   position: absolute;
   z-index: 1000;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); */
   background-color: var(--color-edge-marker);
   pointer-events: none;
 }
@@ -159,7 +163,7 @@ check @birddev locomotive branch to check the sign calculation magic
   border-bottom: 1px solid var(--color-tabset-divider-line);
   color: var(--color-tabset-header);
   background-color: var(--color-tabset-header-background);
-  box-shadow: inset 0 0 3px 0 rgba(136, 136, 136, 0.54);
+  /* box-shadow: inset 0 0 3px 0 rgba(136, 136, 136, 0.54); */
 }
 .flexlayout__tabset_header_content {
   flex-grow: 1;
@@ -261,12 +265,12 @@ check @birddev locomotive branch to check the sign calculation magic
   color: var(--color-tab-unselected);
 }
 .flexlayout__tab_button_top {
-  box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
 .flexlayout__tab_button_bottom {
-  box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -430,7 +434,7 @@ check @birddev locomotive branch to check the sign calculation magic
   margin: 2px 0px;
   box-sizing: border-box;
   white-space: nowrap;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15); */
   border-radius: 3px;
 }
 .flexlayout__border_button--selected {
@@ -521,7 +525,7 @@ check @birddev locomotive branch to check the sign calculation magic
   }
 }
 .flexlayout__popup_menu_container {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15); */
   border: 1px solid var(--color-popup-border);
   color: var(--color-popup-unselected);
   background: var(--color-popup-unselected-background);

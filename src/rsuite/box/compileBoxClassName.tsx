@@ -16,7 +16,7 @@ export const applyBoxToCtx = (ctx: CurrentStyle, box: BoxNormalized): CurrentSty
                   ? 1
                   : ctx.dir,
         base: nextBase,
-        text: overrideKolor(box.text, ctx.text)!,
+        text: overrideKolor(ctx.text, box.text)!,
     }
 }
 

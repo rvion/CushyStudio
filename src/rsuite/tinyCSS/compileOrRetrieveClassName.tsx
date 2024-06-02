@@ -12,7 +12,7 @@ export function addRule(selector: string, block: string = ''): CSSStyleRule {
     const rules = styleSheet.cssRules
     if (rules == null) throw new Error('❌ no rules')
 
-    console.log(`[🏛️] add rule (no check)`, selector, knownRules.has(selector))
+    console.log(`[🏛️] add ${knownRules.size}th rule (no check)`, selector, knownRules.has(selector))
     knownRules.add(selector)
 
     // create rule

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { type ReactNode, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { run_Kolor } from '../kolor/prefab_Kolor'
 import { NumberVar } from './CSSVar'
 import { defaultDarkTheme, ThemeCtx } from './ThemeCtx'
 
@@ -18,6 +19,14 @@ export class CushyThemeProvider {
         return {
             ...defaultDarkTheme,
             inputBorder: new NumberVar('input-border', () => cushy.theme.value.border ?? 20),
+            get text() {
+                return run_Kolor(cushy.theme.value.text)
+            },
+            get labelText() {
+                const raw = cushy.theme.value.textLabel
+                if (raw == null) return undefined
+                return run_Kolor(raw)
+            },
             // inputBorder: new NumberVar(
             //     'input-border',
             //     (() => {

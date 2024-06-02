@@ -19,7 +19,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
             )}
         >
             <Frame
-                border
+                // border
                 hover
                 tw='flex px-1 w-full h-full items-center justify-center hover:brightness-125 border border-base-100'
             >

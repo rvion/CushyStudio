@@ -81,20 +81,36 @@
 }
 
 /* ------------------------------------------------------------------------------------------- */
-.flexlayout__tab {
-    display: flex;
-    flex-direction: column;
+
+/* mod 1. makes tabs slightly close to each other */
+.flexlayout__tabset_tab_divider { width: 2px; }
+
+/* mod 2. attempt to remove the separation between tab name and content on selected tabs  */
+.flexlayout__tabset_tabbar_outer_top { border-bottom: none; }
+.flexlayout__tabset_tabbar_inner_tab_container  { padding-left: 0px; padding-right: 0px; }
+.flexlayout__tab_button--unselected  { border-bottom: 1px solid var(--color-tabset-background); }
+/* mod 2 bis. make it so active box is not too different */
+.flexlayout__tabset-selected { background-image: none; }
+
+/* mod 3. attempt to make a simple hover effect to indicate which tab is currently hovered */
+.flexlayout__tab{
+    border: 1px solid var(--color-tabset-background);
+    border-top: none;
 }
-.flexlayout__tabset_tabbar_inner_tab_container  {
-    padding-left: 0px;
-    padding-right: 0px;
+.flexlayout__tabset_tabbar_inner_tab_container {
+    border-left: 1px solid var(--color-tabset-background);
 }
-.flexlayout__tab_button {
-    gap: .1rem
+.flexlayout__tab:hover {
+    border: 1px solid oklch(from var(--KLR) 0.5 calc(c * 3) h);
+    border-top: none;
 }
-.flexlayout__tabset-selected {
-    background-image: none;
-}
+
+/* mod 4. make tabs be flex container by default (prob legacy ; 🔴 not needed anymore) */
+.flexlayout__tab { display: flex; flex-direction: column; }
+
+/* mod 5. make close button slightly close to the text to save a few PX */
+.flexlayout__tab_button { gap: .1rem }
+
 
 
 

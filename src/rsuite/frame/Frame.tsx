@@ -32,7 +32,6 @@ export type FrameProps = {
     // logic --------------------------------------------------
     /** TODO: */
     triggerOnPress?: { startingState: boolean }
-
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
     loading?: boolean
@@ -41,6 +40,7 @@ export type FrameProps = {
     // FITT size ----------------------------------------------------
     // /** when true flex=1 */
     expand?: boolean
+    // inline?: boolean
 
     /** HIGH LEVEL THEME-DEFINED BOX STYLES */
     look?: FrameAppearance
@@ -58,7 +58,7 @@ export const Frame = observer(
         const {
             active, disabled, // built-in state & style modifiers
             icon, suffixIcon, loading, // addons
-            expand, size, // size
+            expand, square, /* inline, */ size, // size
             look, // templates
             base, hover, border, text, textShadow, shadow, // box stuff
             onMouseDown, onMouseEnter, onClick, triggerOnPress,
@@ -148,6 +148,7 @@ export const Frame = observer(
                     look && `box-${look}`,
                     getClassNameForSize(p),
                     expand && 'flex-1',
+                    // inline && 'inline-flex',
                     ...classes,
                     className,
                 ]}
@@ -167,7 +168,3 @@ export const Frame = observer(
         )
     }),
 )
-
-// 🔴 2024-05-20 rvion:
-// || do we want to add observer here + forward ref ?
-// || or just go for speed ?

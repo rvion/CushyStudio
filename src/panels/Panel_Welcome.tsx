@@ -35,25 +35,25 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                 {/* <IndexAllAppsBtnUI /> */}
                 <div tw='divider mx-8'></div>
                 2. To get started, try those apps ?
-                {['library/built-in/CushyDiffusion.ts'].map((path) => (
-                    <StandaloneAppBtnUI key={path} path={path as RelativePath} />
-                ))}
+                <div tw='flex flex-wrap gap-2'>
+                    {[
+                        //
+                        'library/built-in/CushyDiffusion.ts',
+                        'library/built-in/quick-actions/quick-add-gradient-background.ts',
+                    ].map((path) => (
+                        <StandaloneAppBtnUI key={path} path={path as RelativePath} />
+                    ))}
+                </div>
                 <div tw='divider mx-8'></div>
                 <div>
                     <div>
-                        3. Time to create your own app ? It's super-easy. Let's GOO !
-                        <CreateAppBtnUI />
+                        <div>3. Time to create your own app ? </div>
+                        <div>
+                            It's super-easy: <CreateAppBtnUI />
+                        </div>
                     </div>
                     <div>and if you're feeling lost, check the </div>
-                    <div tw='btn btn-sm'>
-                        SDK examples
-                        <span className='material-symbols-outlined'>open_in_new</span>
-                    </div>{' '}
-                    or the{' '}
-                    <div tw='btn btn-sm'>
-                        Documentation
-                        <span className='material-symbols-outlined'>open_in_new</span>
-                    </div>{' '}
+                    <Button icon='mdiOpenInNew'>SDK examples</Button> or the <Button icon='mdiOpenInNew'>Documentation</Button>{' '}
                     website
                 </div>
             </section>
@@ -89,12 +89,12 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
         )
     }
     return (
-        <div key={path}>
-            <AppCardUI //
-                // active={st.library.selectionCursor === ix}
-                // deck={card.pkg}
-                app={app}
-            />
-        </div>
+        // <div key={path}>
+        <AppCardUI //
+            // active={st.library.selectionCursor === ix}
+            // deck={card.pkg}
+            app={app}
+        />
+        // </div>
     )
 })
