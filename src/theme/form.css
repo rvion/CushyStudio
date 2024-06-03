@@ -43,8 +43,8 @@
     min-height: var(--input-height);
 }
 
-.w-input { width: var(--input-width); }
-.h-input { height: var(--input-height); }
+.w-input { width: var(--input-height);  min-width: var(--input-height); }
+.h-input { height: var(--input-height);  min-height: var(--input-height); }
 
 /* .WIDGET-FIELD *::selection {
     background-color: oklch(var(--pc));
