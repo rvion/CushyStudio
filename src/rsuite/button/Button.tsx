@@ -21,9 +21,11 @@ export const Button = observer(function Button_(
         <Frame //
             size={size ?? 'sm'}
             look={look}
-            base={5}
+            // base={5}
+            base={p.subtle ? 0 : 5}
             border={10}
-            hover={p.disabled ? false : undefined}
+            // border={p.subtle ? 0 : 10}
+            hover={p.disabled ? false : 3}
             active={uist.visuallyActive}
             loading={p.loading}
             tabIndex={p.tabIndex ?? -1}
