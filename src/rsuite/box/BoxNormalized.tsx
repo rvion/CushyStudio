@@ -31,7 +31,7 @@ export function normalizeBoxKolor(
     kolor: Kolor | string | number | boolean | undefined,
 ): Kolor | null {
     if (kolor == null) return null
-    if (typeof kolor === 'boolean') return { contrast: kolor ? 0.2 : 0 }
+    if (typeof kolor === 'boolean') return { contrast: kolor ? /* 0.2 */ 0.03 : 0 }
     if (typeof kolor === 'number') return { contrast: clamp(kolor / 100, 0, 1) }
     if (typeof kolor === 'string') return getLCHFromString(kolor)
     return kolor
