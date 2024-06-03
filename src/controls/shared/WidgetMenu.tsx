@@ -16,7 +16,7 @@ import { RevealUI } from '../../rsuite/reveal/RevealUI'
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: IWidget }) {
     return (
         <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
-            <Button icon='mdiDotsVertical' look='ghost' square size='xs' />
+            <Button icon='mdiDotsVertical' look='ghost' square size='input' />
         </RevealUI>
     )
 })
