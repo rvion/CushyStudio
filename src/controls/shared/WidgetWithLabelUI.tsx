@@ -68,10 +68,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const boxBase = (widget.background && widget.isCollapsible) || showBorder ? { contrast: 0.05 } : undefined
     const WUI = (
         <Frame
+            //
+            tw='flex flex-col gap-1'
             key={rootKey}
             base={boxBase}
             {...p.widget.config.box}
-            // border={showBorder ? 10 : 0}
+            border={showBorder ? 5 : 0}
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
             <WidgetHeaderContainerUI widget={widget}>
@@ -95,7 +97,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* HEADER OPTIONS (undo, menu, ...) */}
                 <div tw='ml-auto'></div>
                 {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI widget={widget} />}
+                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI widget={originalWidget} />}
                 {kit.showWidgetMenu && <WidgetMenuUI widget={widget} />}
             </WidgetHeaderContainerUI>
 
