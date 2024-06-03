@@ -3,6 +3,7 @@ import type { Requirements } from '../Requirements'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/button/Button'
 import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
 import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
@@ -27,17 +28,14 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
                 </div>
             )}
         >
-            <div
-                tw={[
-                    p.active && !st.mainHost.matchRequirements(rr) //
-                        ? 'btn-ghost text-red-500'
-                        : 'btn-ghost opacity-50',
-                    p.label ? 'btn btn-sm btn-outline' : 'btn btn-square btn-xs',
-                ]}
+            <Button
+                icon='mdiDownload'
+                subtle
+                text={p.active && !st.mainHost.matchRequirements(rr) ? { hue: 0, chroma: 0.5 } : { contrast: 0.1 }}
+                tw={[p.label ? 'btn btn-sm btn-outline' : 'btn btn-square btn-xs']}
             >
-                <span className='material-symbols-outlined'>scatter_plot</span>
                 {p.label}
-            </div>
+            </Button>
         </RevealUI>
     )
 })
