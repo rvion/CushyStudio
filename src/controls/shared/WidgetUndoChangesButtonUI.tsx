@@ -12,6 +12,7 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
     const widget = p.widget
     return (
         <Button
+            subtle
             className={p.className}
             onClick={() => widget?.reset()}
             disabled={!(widget?.hasChanges ?? false)}

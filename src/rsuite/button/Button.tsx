@@ -4,10 +4,16 @@ import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
 
-export const Button = observer(function Button_(p: FrameProps) {
+export const Button = observer(function Button_(
+    p: FrameProps & {
+        subtle?: boolean
+    },
+) {
     const uist = useMemo(() => new ButtonState(p), [])
+
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
     runInAction(() => (uist.props = p))
+
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
     const { size, square, look, ...rest } = p
