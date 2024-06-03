@@ -54,10 +54,10 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
             inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
             visualHelper = (
                 <Frame //
-                    tw='w-full h-full text-xs justify-between'
+                    tw='w-full h-full text-xs flex items-center font-mono'
                     base={val ? val : undefined}
                     text={{ contrast: 1 }}
-                    textShadow={{ contrast: 0.5 }}
+                    // textShadow={{ contrast: 1 }}
                 >
                     {/* <div>{val}</div> */}
                     <div>{getLCHFromStringAsString(val)}</div>
