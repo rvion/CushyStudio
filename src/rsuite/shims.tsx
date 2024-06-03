@@ -56,7 +56,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
             type='checkbox'
             {...p}
             tw={[
-                //
                 'toggle toggle-primary',
                 // p.checked && 'toggle-success',
             ]}

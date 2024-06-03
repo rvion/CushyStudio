@@ -95,6 +95,7 @@ export const Frame = observer(
         // STYLE ---------------------------------------------
         const variables: { [key: string]: string | number } = {
             '--KLR': formatOKLCH(nextCtx.base),
+            '--KLRH': formatOKLCH(nextCtx.baseH),
             '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
             // '--PREV_BASE_L': prevCtx.base.lightness, // === -1 ? -1 : 1,
             // '--NEXT_BASE_L': nextCtx.base.lightness, // === -1 ? -1 : 1,
@@ -131,12 +132,13 @@ export const Frame = observer(
             classes.push(clsName)
         }
 
-        if (box.hover) {
-            const clsName = 'h' + hashKolor(box.hover)
-            const selector = `.${CSS.escape(clsName)}:hover`
-            if (!hasRule(selector)) addRule(selector, `background: red`)
-            classes.push(clsName)
-        }
+        // if (box.hover) {
+        //     // COMPLETELY WRONG
+        //     /* 🔴  */ const clsName = 'h' + hashKolor(box.hover)
+        //     /* 🔴  */ const selector = `.${CSS.escape(clsName)}:hover`
+        //     /* 🔴  */ if (!hasRule(selector)) addRule(selector, `background: red`)
+        //     /* 🔴  */ classes.push(clsName)
+        // }
 
         return (
             <div //

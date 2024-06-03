@@ -52,6 +52,7 @@ export const CushyTheme = observer((p: { children: ReactNode }) => {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': cushy.theme.root.value.base,
+                    '--KLRH': cushy.theme.root.value.base,
                     '--input-border': theme.value.inputBorder.value / 100,
                 }}
                 base={cushy.theme.value.base}

@@ -24,8 +24,11 @@ export const CushyTheme = observer((p: { children: ReactNode }) => {
     return (
         <ThemeCtx.Provider value={locoThemeProvider}>
             <Frame //
-                // @ts-expect-error 🔴
-                style={{ '--KLR': cushy.theme.root.value.base }}
+                style={{
+                    // @ts-expect-error
+                    '--KLR': cushy.theme.root.value.base,
+                    '--KLRH': cushy.theme.root.value.base,
+                }}
                 base={cushy.theme.value.base}
                 text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}
                 tw='h-full'

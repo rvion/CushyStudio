@@ -7,6 +7,7 @@ import { overrideKolor } from '../kolor/overrideKolor'
 
 export const applyBoxToCtx = (ctx: CurrentStyle, box: BoxNormalized): CurrentStyle => {
     const nextBase = applyKolorToOKLCH(ctx.base, box.base)
+    const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
     const lightness = nextBase.lightness
     return {
         dir:
@@ -16,6 +17,7 @@ export const applyBoxToCtx = (ctx: CurrentStyle, box: BoxNormalized): CurrentSty
                   ? 1
                   : ctx.dir,
         base: nextBase,
+        baseH: nextBaseH,
         text: overrideKolor(ctx.text, box.text)!,
     }
 }

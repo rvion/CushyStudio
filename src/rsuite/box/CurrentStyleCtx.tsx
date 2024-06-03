@@ -3,8 +3,14 @@ import type { OKLCH } from '../kolor/OKLCH'
 
 import { createContext } from 'react'
 
+/** the react-side theming context that travels with every widget,
+ * so we always know the surrounding lightness / chroma / hue.
+ * 2024-06-03 rvion: I wish it could be done at the CSS level, but haven't
+ * found a way to do it yet.
+ */
 export type CurrentStyle = {
     base: OKLCH
+    baseH: OKLCH
     text: Kolor
     dir: 1 | -1
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
@@ -12,16 +18,25 @@ export type CurrentStyle = {
 
 export const CurrentStyleCtx = createContext<CurrentStyle>({
     base: { lightness: 0.1, chroma: 0.05, hue: 0 },
+    baseH: { lightness: 0.1, chroma: 0.05, hue: 0 },
     text: { contrast: 1, chromaBlend: 0, hueShift: 0 },
     dir: 1,
-    // text: { type: 'absolute', lightness: 0, chroma: 0.5, hue: 180, },
-    // shadow: null,
-    // border: null,
+    /**
+     * if we want to handle that though CSS, it HAS to always be present
+     * so we can seamlessly switch to it, when any part of the tree becomes hovered;
+     *
+     * potential problems
+     * 🔶 it may not handle properly Reveals:
+     *       => 2024-06-03 rvion: I think we should be good to go to force override
+     *          the revealed content context to the base non-hovered color in every
+     *          situation; should be the safest option to assumem hover must be
+     *          computed from the last DOM root only
+     */
 })
 
-// export type Appearance = {
-//     background: RelativeStyle | AbsoluteStyle
-//     text: RelativeStyle | AbsoluteStyle
-//     shadow: Maybe<RelativeStyle | AbsoluteStyle>
-//     border: Maybe<RelativeStyle | AbsoluteStyle>
-// }
+// 2024-06-03 rvion:
+// those are not required to travel in the context, as they're not inherited
+// only the base is since all computation are not derived from it.
+// | text: { type: 'absolute', lightness: 0, chroma: 0.5, hue: 180, },
+// | shadow: null,
+// | border: null,

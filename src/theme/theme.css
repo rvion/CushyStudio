@@ -1,3 +1,6 @@
+.BOX:hover {
+    background: var(--KLRH);
+}
 .BOX {
     background: var(--KLR);
 }
