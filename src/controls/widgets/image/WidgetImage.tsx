@@ -88,6 +88,9 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             DefaultBodyUI: false,
         })
     }
+    get animateResize() {
+        return false
+    }
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
     }

@@ -100,6 +100,10 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
         }
         makeAutoObservableInheritance(this)
     }
+    get animateResize() {
+        if (this.config.textarea) return false
+        return true
+    }
     setValue(val: Widget_string_value) {
         this.value = val
     }

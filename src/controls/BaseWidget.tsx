@@ -57,6 +57,10 @@ export abstract class BaseWidget {
         return this.spec.config
     }
 
+    get animateResize() {
+        return true
+    }
+
     /**
      * return true when widget has no child
      * return flase when widget has one or more child

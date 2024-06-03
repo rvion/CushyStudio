@@ -67,52 +67,52 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const kit = useCushyKit()
     const boxBase = (widget.background && widget.isCollapsible) || showBorder ? { contrast: 0.05 } : undefined
-    return (
+    const WUI = (
         <Frame
             key={rootKey}
             base={boxBase}
             {...p.widget.config.box}
             // border={showBorder ? 10 : 0}
         >
-            <AnimatedSizeUI>
-                {/* HEADER --------------------------------------------------------------------------------- */}
-                <WidgetHeaderContainerUI widget={widget}>
-                    {/* HEADER LABEL */}
-                    <WidgetLabelContainerUI justify={justify}>
-                        <WidgetLabelCaretUI widget={widget} />
-                        <WidgetLabelIconUI widget={widget} />
-                        {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                        {LABEL}
-                        {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
-                    </WidgetLabelContainerUI>
+            {/* HEADER --------------------------------------------------------------------------------- */}
+            <WidgetHeaderContainerUI widget={widget}>
+                {/* HEADER LABEL */}
+                <WidgetLabelContainerUI justify={justify}>
+                    <WidgetLabelCaretUI widget={widget} />
+                    <WidgetLabelIconUI widget={widget} />
+                    {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
+                    {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                    {LABEL}
+                    {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
+                </WidgetLabelContainerUI>
 
-                    {/* HEADER CONTROLS */}
-                    {HeaderUI && (
-                        <WidgetHeaderControlsContainerUI className={extraClass}>
-                            <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
-                        </WidgetHeaderControlsContainerUI>
-                    )}
-
-                    {/* HEADER OPTIONS (undo, menu, ...) */}
-                    <div tw='ml-auto'></div>
-                    {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                    {kit.showWidgetUndo && <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />}
-                    {kit.showWidgetMenu && <WidgetMenuUI tw='self-start' widget={widget} />}
-                </WidgetHeaderContainerUI>
-
-                {/* BODY  ------------------------------------------------------------------------------ */}
-                {BodyUI && !widget.isCollapsed && (
-                    <ErrorBoundaryUI>
-                        <div className={extraClass} tw={[widget.isCollapsible && 'WIDGET-BLOCK']}>
-                            {BodyUI}
-                        </div>
-                    </ErrorBoundaryUI>
+                {/* HEADER CONTROLS */}
+                {HeaderUI && (
+                    <WidgetHeaderControlsContainerUI className={extraClass}>
+                        <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
+                    </WidgetHeaderControlsContainerUI>
                 )}
 
-                {/* ERRORS  ------------------------------------------------------------------------------ */}
-                <WidgetErrorsUI widget={widget} />
-            </AnimatedSizeUI>
+                {/* HEADER OPTIONS (undo, menu, ...) */}
+                <div tw='ml-auto'></div>
+                {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
+                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />}
+                {kit.showWidgetMenu && <WidgetMenuUI tw='self-start' widget={widget} />}
+            </WidgetHeaderContainerUI>
+
+            {/* BODY  ------------------------------------------------------------------------------ */}
+            {BodyUI && !widget.isCollapsed && (
+                <ErrorBoundaryUI>
+                    <div className={extraClass} tw={[widget.isCollapsible && 'WIDGET-BLOCK']}>
+                        {BodyUI}
+                    </div>
+                </ErrorBoundaryUI>
+            )}
+
+            {/* ERRORS  ------------------------------------------------------------------------------ */}
+            <WidgetErrorsUI widget={widget} />
         </Frame>
     )
+    if (widget.animateResize) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+    return WUI
 })

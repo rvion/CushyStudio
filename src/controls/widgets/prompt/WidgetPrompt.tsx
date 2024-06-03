@@ -151,6 +151,12 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
         // }
     }
 
+    get animateResize() {
+        // codemirror resize automatically every time a line is added
+        // the animation is just annoying there.
+        return false
+    }
+
     compile = (p: {
         /** for wildcard */
         seed?: number

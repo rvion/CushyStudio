@@ -3,8 +3,6 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/button/Button'
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
