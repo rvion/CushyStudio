@@ -58,7 +58,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 Autorun
             </Button>
             <Button
-                base={{ hue: knownOKLCHHues.greenRun, chroma: 0.2 }}
+                base={{ hue: knownOKLCHHues.greenRun }}
                 look='primary'
                 expand
                 className='self-start'
