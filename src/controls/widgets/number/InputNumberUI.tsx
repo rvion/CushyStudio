@@ -8,7 +8,7 @@ import { Ikon } from '../../../icons/iconHelpers'
 import { Frame } from '../../../rsuite/frame/Frame'
 import { useTheme } from '../../../rsuite/theme/useTheme'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
-import { useCushyKitOrNull } from '../../context/CushyKitCtx'
+import { useCushyKit } from '../../context/CushyKitCtx'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -230,7 +230,7 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
-    const kit = useCushyKitOrNull()
+    const kit = useCushyKit()
     const uist = useMemo(() => new InputNumberStableState(p, kit), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
