@@ -85,23 +85,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                     <FormUI form={st.displacementConf} />
                 </div>
             ) : (
-                <PanelHeaderUI>
-                    <SpacerUI />
-                    <RevealUI
-                        tw='WIDGET-FIELD'
-                        title='Displacement Options'
-                        content={() => (
-                            <div tw='p-2'>
-                                <FormUI form={st.displacementConf} />
-                            </div>
-                        )}
-                    >
-                        <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
-                            <span className='material-symbols-outlined'>settings</span>
-                            <span className='material-symbols-outlined'>expand_more</span>
-                        </div>
-                    </RevealUI>
-                </PanelHeaderUI>
+                <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
             )}
 
             <DisplacementUI uist={uist} />
