@@ -7,18 +7,16 @@ import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { Button } from '../rsuite/button/Button'
 import { InputBoolCheckboxUI } from '../rsuite/checkbox/InputBoolCheckboxUI'
 import { Frame } from '../rsuite/frame/Frame'
-import { FormHelpTextUI, Toggle } from '../rsuite/shims'
+import { FormHelpTextUI } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
-import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
     const config = st.configFile
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
-            <SectionTitleUI label='CONFIG' className='block' />
             <Frame border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.theme} />
             </Frame>
