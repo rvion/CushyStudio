@@ -28,10 +28,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     return (
         <div className='flex flex-1 flex-col gap-1'>
             <Frame //Joined container
-                hover
-                border={{ contrast: 0.25 }}
-                // 'border border-base-100 border-b-base-200',
-                // 'border-b-2 hover:border-base-200 hover:border-b-base-300',
+                border={{ contrast: 0.05 }}
                 tw={['WIDGET-FIELD w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
@@ -41,7 +38,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     max={p.bounds?.max ?? 4096}
                     step={p.bounds?.step ?? 32}
                     mode='int'
-                    tw='!border-none'
                     value={uist.width}
                     hideSlider
                     onValueChange={(next) => uist.setWidth(next)}
@@ -57,7 +53,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     step={p.bounds?.step ?? 32}
                     hideSlider
                     mode='int'
-                    tw='!border-none'
                     value={uist.height}
                     onValueChange={(next) => uist.setHeight(next)}
                     forceSnap={true}
@@ -104,16 +99,9 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
         <Frame // Aspect ratio display background
             square
             size='xs'
-            // base={10}
             border={10}
-            tw={[
-                //
-                'flex',
-                'overflow-clip',
-                'items-center justify-center',
-            ]}
-            // style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
-            style={{ border: 'unset', borderRadius: '0px' }}
+            tw={['flex', 'overflow-clip', 'items-center justify-center']}
+            style={{ borderRadius: '0px' }}
             onClick={uist.flip}
         >
             <Frame
