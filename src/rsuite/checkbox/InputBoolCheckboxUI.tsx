@@ -31,6 +31,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
                 style={{ width: 'var(--input-height)' /* hacky */ }}
                 base={{ contrast: isActive ? 0.09 : 0, chroma }}
                 size='sm'
+                hover
                 {...p.box}
             />
             {label ? label : null}
