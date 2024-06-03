@@ -59,7 +59,7 @@ body {
 
 /* scrollbar -------------------------------------------------------------------------------------------------------------------------------- */
 *::-webkit-scrollbar-thumb {
-    background-color: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) .08 calc(h + 60));
+    background-color: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) .08 calc(h));
 }
 
 /*  */
