@@ -20,6 +20,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             look='default'
             base={{ contrast: isActive ? 0.09 : 0.05, chroma: chroma }}
             border={isActive ? 20 : 0}
+            hover={!p.disabled}
             expand={expand}
             style={p.style}
             icon={p.icon}
