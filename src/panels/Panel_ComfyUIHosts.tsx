@@ -93,22 +93,3 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
         </div>
     )
 })
-
-// <div
-//     tw='btn-sm btn btn-primary'
-//     onClick={() => {
-//         st.db.hosts.create({
-//             name: `cloud_${nanoid()}`,
-//             hostname: `...`,
-//             port: 443,
-//             isLocal: SQLITE_false,
-//             useHttps: SQLITE_true,
-//             absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
-//             isVirtual: SQLITE_false,
-//             isReadonly: SQLITE_false,
-//         })
-//     }}
-// >
-//     <span className='material-symbols-outlined'>add</span>
-//     Add (cloud)
-// </div>
