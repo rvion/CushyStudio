@@ -5,6 +5,7 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { Button } from '../rsuite/button/Button'
+import { InputBoolCheckboxUI } from '../rsuite/checkbox/InputBoolCheckboxUI'
 import { Frame } from '../rsuite/frame/Frame'
 import { FormHelpTextUI, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
@@ -31,7 +32,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Set tags file'>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         name='tagFile'
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                         onChange={(ev) => {
@@ -42,7 +43,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Preferred Text Editor'>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         name='preferredTextEditor'
                         value={config.get('preferredTextEditor') ?? ''}
                         onChange={(ev) => {
@@ -53,7 +54,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Your github username'>
                     <input //
-                        tw='input input-bordered input-sm w-full'
+                        tw='w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => {
                             config.update({ githubUsername: ev.target.value })
@@ -64,7 +65,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Your Cushy CloudGPU api Key'>
                     <input //
-                        tw='input input-bordered input-sm w-full'
+                        tw='w-full'
                         value={config.value.cushyCloudGPUApiKey}
                         onChange={(ev) => {
                             config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -95,14 +96,14 @@ export const Panel_Config = observer(function Panel_Config_() {
                     />
                 </FieldUI>
                 <FieldUI label='Enable TypeChecking Default Apps'>
-                    <Toggle
-                        onChange={(t) => config.update({ enableTypeCheckingBuiltInApps: t.target.checked })}
-                        checked={config.value.enableTypeCheckingBuiltInApps ?? false}
-                    ></Toggle>
+                    <InputBoolCheckboxUI
+                        onValueChange={(next) => config.update({ enableTypeCheckingBuiltInApps: next })}
+                        value={config.value.enableTypeCheckingBuiltInApps ?? false}
+                    />
                 </FieldUI>
                 <FieldUI label='Check update every X minutes'>
                     <input //
-                        tw='input input-bordered input-sm'
+                        tw=''
                         type='number'
                         placeholder='48'
                         name='galleryImageSize'
@@ -123,7 +124,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='OpenRouter API KEY'>
                     <input
-                        tw='input input-bordered input-sm'
+                        tw=''
                         type='password' //
                         value={config.value.OPENROUTER_API_KEY ?? ''}
                         onChange={(ev) => config.update({ OPENROUTER_API_KEY: ev.target.value })}

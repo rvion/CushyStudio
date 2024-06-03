@@ -29,7 +29,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
                     lineHeight: '1.3rem',
                     resize: p.widget.config.resize ?? 'both',
                 }}
-                tw='textarea textarea-bordered textarea-sm w-full '
+                tw='cushy-basic-input w-full p-2'
                 placeholder={widget.config.placeHolder}
                 rows={3}
                 value={val}

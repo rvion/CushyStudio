@@ -20,13 +20,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const app = draft.appRef.item
     return (
         <Frame
-            // base={{ chroma: 0.1, lightness: 0.1 }}
-            // base={10}
-            // border
-            style={{
-                // background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
-                zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
-            }}
+            style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
             className={p.className}
             tw='_DraftHeaderUI flex sticky top-0 z-50'
         >
@@ -34,15 +28,14 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                 <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
                     <div tw='flex text-sm gap-1'>
-                        App <span tw='font-bold'>{app.name}</span>
+                        <span tw='font-bold'>{app.name}</span>
                     </div>
-                    <div className='flex items-center gap-2 justify-between text-sm'>
+                    <div className='flex items-center gap-2 justify-between'>
                         <input
-                            tw='input input-bordered input-xs flex-grow'
+                            tw='cushy-basic-input flex-grow'
                             onChange={(ev) => draft.update({ title: ev.target.value })}
-                            // tw='w-full'
                             value={draft.data.title ?? 'no title'}
-                        ></input>
+                        />
                     </div>
                     <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     <div tw='flex'>
