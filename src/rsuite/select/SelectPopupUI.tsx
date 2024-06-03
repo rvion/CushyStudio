@@ -1,10 +1,10 @@
+import type { AutoCompleteSelectState } from './SelectState'
+
 import { observer } from 'mobx-react-lite'
 import { createPortal } from 'react-dom'
 
 import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
-import { InputBoolUI } from '../checkbox/InputBoolUI'
 import { Frame } from '../frame/Frame'
-import { AutoCompleteSelectState } from './SelectState'
 
 export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCompleteSelectState<T> }) {
     const s = p.s

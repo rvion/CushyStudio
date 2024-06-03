@@ -58,7 +58,7 @@ export const WidgetFieldsContainerUI = observer(function WidgetFieldsContainerUI
             tw={[
                 //
                 isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
-                'w-full text-base-content',
+                'w-full',
                 p.className,
             ]}
         >

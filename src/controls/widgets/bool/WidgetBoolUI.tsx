@@ -2,7 +2,6 @@ import type { Widget_bool } from './WidgetBool'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../../icons/iconHelpers'
 import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
 import { SpacerUI } from '../spacer/SpacerUI'
 

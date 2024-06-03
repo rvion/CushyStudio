@@ -1,7 +1,7 @@
-import { createContext } from 'react'
+import type { Kolor } from '../kolor/Kolor'
+import type { OKLCH } from '../kolor/OKLCH'
 
-import { Kolor } from '../kolor/Kolor'
-import { OKLCH } from '../kolor/OKLCH'
+import { createContext } from 'react'
 
 export type CurrentStyle = {
     base: OKLCH

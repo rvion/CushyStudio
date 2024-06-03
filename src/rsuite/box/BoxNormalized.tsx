@@ -1,8 +1,8 @@
 import type { Kolor } from '../kolor/Kolor'
+import type { Box } from './Box'
 
 import { clamp } from '../../controls/utils/clamp'
 import { getLCHFromString } from '../kolor/getLCHFromString'
-import { Box } from './Box'
 
 export type BoxNormalized = {
     base: Kolor | null //       BASE              (relative to its parent's BASE)

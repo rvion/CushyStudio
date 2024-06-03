@@ -1,7 +1,8 @@
+import type { BoolButtonProps } from './InputBoolUI'
+
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
-import { BoolButtonProps } from './InputBoolUI'
 
 export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false

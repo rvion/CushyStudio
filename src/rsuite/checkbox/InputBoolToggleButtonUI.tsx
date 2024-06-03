@@ -1,9 +1,8 @@
+import type { BoolButtonProps } from './InputBoolUI'
+
 import { observer } from 'mobx-react-lite'
 
-// import { useCushyKit } from '../../controls/context/CushyKitCtx'
-// import { InputBoolToggleButtonBoxUI } from './InputBoolToggleButtonBoxUI'
 import { Frame } from '../frame/Frame'
-import { BoolButtonProps } from './InputBoolUI'
 
 export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false

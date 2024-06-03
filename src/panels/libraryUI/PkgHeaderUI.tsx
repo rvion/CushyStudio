@@ -38,7 +38,7 @@
 //                     <div tw='flex-grow whitespace-nowrap overflow-hidden overflow-ellipsis'>{pkg.name}</div>
 //                     {pkg.manifestError && (
 //                         <RevealUI tw='shrink-0'>
-//                             <div className='btn btn-sm btn-narrow text-base-content'>
+//                             <div className='btn btn-sm btn-narrow'>
 //                                 <span className='material-symbols-outlined opacity-50'>error</span>
 //                             </div>
 //                             <PkgManifestErrorUI err={pkg.manifestError} />

@@ -136,7 +136,7 @@ export const Message = observer(function Message_(p: {
                     ? 'bg-error text-error-content'
                     : p.type === 'warning'
                       ? 'bg-warning text-warning-content'
-                      : 'bg-base text-base-content',
+                      : 'bg-base',
             ]}
             {...rest}
         >

@@ -1,7 +1,8 @@
+import type { THEME } from './Theme2'
+
 import { createContext } from 'react'
 
 import { NumberVar } from './CSSVar'
-import { THEME } from './Theme2'
 
 export const defaultDarkTheme: THEME = {
     // NEW

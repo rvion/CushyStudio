@@ -37,7 +37,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             tw={[
                 //
                 'flex flex-col',
-                'text-base-content shadow-xl border border-neutral border-opacity-25',
+                'shadow-xl border border-neutral border-opacity-25',
                 `STYLE_A`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',

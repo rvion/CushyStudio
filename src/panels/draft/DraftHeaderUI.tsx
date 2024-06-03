@@ -30,7 +30,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
             className={p.className}
             tw='_DraftHeaderUI flex sticky top-0 z-50'
         >
-            <div tw='flex gap-1 mt-1 flex-grow relative text-base-content'>
+            <div tw='flex gap-1 mt-1 flex-grow relative'>
                 <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
                     <div tw='flex text-sm gap-1'>

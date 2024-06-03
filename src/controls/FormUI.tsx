@@ -1,11 +1,11 @@
+import type { Box } from '../rsuite/box/Box'
 import type { Form } from './Form'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { CovariantFC } from './utils/CovariantFC'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type ReactNode } from 'react'
 
-import { type Box } from '../rsuite/box/Box'
 import { Button } from '../rsuite/button/Button'
 import { Frame } from '../rsuite/frame/Frame'
 import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'

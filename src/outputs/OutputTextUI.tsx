@@ -42,7 +42,7 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
                 {'<HTML/>'}
             </div>
         ) : (
-            <div tw='text-base-content text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
+            <div tw='text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
         )
 
     return <OutputPreviewWrapperUI output={p.output}>{message}</OutputPreviewWrapperUI>

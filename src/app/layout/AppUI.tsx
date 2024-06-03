@@ -74,7 +74,7 @@ export const CushyUI = observer(function CushyUI_() {
                     }}
                     ref={appRef}
                     tw={[
-                        'col grow h-full text-base-content overflow-clip',
+                        'col grow h-full overflow-clip',
                         // topic=WZ2sEOGiLy
                         st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
                     ]}

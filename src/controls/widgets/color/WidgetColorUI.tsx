@@ -2,8 +2,6 @@ import type { Widget_color } from './WidgetColor'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../../icons/iconHelpers'
-
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
     const widget = p.widget
     return (

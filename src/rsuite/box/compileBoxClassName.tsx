@@ -1,9 +1,9 @@
 import type { Kolor } from '../kolor/Kolor'
+import type { BoxNormalized } from './BoxNormalized'
 import type { CurrentStyle } from './CurrentStyleCtx'
 
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { overrideKolor } from '../kolor/overrideKolor'
-import { type BoxNormalized } from './BoxNormalized'
 
 export const applyBoxToCtx = (ctx: CurrentStyle, box: BoxNormalized): CurrentStyle => {
     const nextBase = applyKolorToOKLCH(ctx.base, box.base)
