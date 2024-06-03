@@ -20,7 +20,7 @@ const frame_default: BoxNormalized = extractNormalizeBox({
 
 const frame_primary: BoxNormalized = extractNormalizeBox({
     textShadow: 100,
-    base: { contrast: 0.2, chroma: 0.1 },
+    base: { contrast: 0.1, chroma: 0.1 },
     border: 0.1,
 })
 
