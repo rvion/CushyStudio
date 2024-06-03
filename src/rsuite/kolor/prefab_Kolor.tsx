@@ -154,7 +154,7 @@ export const ui_Kolor = (
             body: (p) => {
                 const { l, c, h } = p.widget.children
                 return (
-                    <div tw='grid flex-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
+                    <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
                         {/* ------------------ */}
                         {l && (
                             <Fragment>
