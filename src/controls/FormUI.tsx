@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
 import { type Box } from '../rsuite/box/Box'
+import { Button } from '../rsuite/button/Button'
 import { Frame } from '../rsuite/frame/Frame'
 import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
 
@@ -48,8 +49,9 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
             {p.submitButton ??
                 (submitAction == null ? null : submitAction === 'confetti' ? (
                     <div tw='flex'>
-                        <div
-                            tw='btn btn-primary ml-auto'
+                        <Button
+                            look='primary'
+                            tw='ml-auto'
                             onClick={async () => {
                                 // @ts-ignore
                                 const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
@@ -57,13 +59,13 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
                             }}
                         >
                             {p.submitLabel ?? 'Submit'}
-                        </div>
+                        </Button>
                     </div>
                 ) : (
                     <div tw='flex'>
-                        <div tw='btn btn-primary ml-auto' onClick={() => submitAction(form)}>
+                        <Button look='primary' tw='ml-auto' onClick={() => submitAction(form)}>
                             {p.submitLabel ?? 'Submit'}
-                        </div>
+                        </Button>
                     </div>
                 ))}
         </Frame>
