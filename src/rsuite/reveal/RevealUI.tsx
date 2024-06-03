@@ -46,7 +46,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     return (
         <RevealCtx.Provider value={nextTower}>
             <div //
-                tw={['inline-block', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
+                tw={['inline-flex', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
                 className={p.className}
                 ref={ref}
                 style={p.style}
