@@ -4,12 +4,13 @@ import { ReactNode } from 'react'
 import { useSizeOf } from './useSizeOf'
 
 export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { className?: string; children?: ReactNode }) {
-    // return p.children
     const { ref: refFn, size } = useSizeOf()
 
     return (
-        <div className={p.className} tw='animated overflow-hidden' style={{ height: `${size.height}px` }}>
-            <div ref={refFn}>{p.children}</div>
+        <div className={p.className} tw='smooth-resize-container animated overflow-hidden' style={{ height: `${size.height}px` }}>
+            <div className='smooth-resize-content' ref={refFn}>
+                {p.children}
+            </div>
         </div>
     )
 })
