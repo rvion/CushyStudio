@@ -99,7 +99,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
                         <IkonOf name='mdiDragHorizontalVariant'></IkonOf>
                     </Frame>
                 </div>
-                <div tw='z-10 px-1 h-full items-center justify-center'>{p.footer}</div>B
+                <div tw='z-10 px-1 h-full items-center justify-center'>{p.footer}</div>
             </Frame>
         </Frame>
     )
