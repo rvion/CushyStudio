@@ -1,5 +1,4 @@
 import type { IWidget } from '../IWidget'
-import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -96,8 +95,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* HEADER OPTIONS (undo, menu, ...) */}
                 <div tw='ml-auto'></div>
                 {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI tw='self-start' widget={widget} />}
-                {kit.showWidgetMenu && <WidgetMenuUI tw='self-start' widget={widget} />}
+                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI widget={widget} />}
+                {kit.showWidgetMenu && <WidgetMenuUI widget={widget} />}
             </WidgetHeaderContainerUI>
 
             {/* BODY  ------------------------------------------------------------------------------ */}
