@@ -21,7 +21,12 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
     return (
         <div
             className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
-            tw={['flex items-center gap-0.5 select-none']}
+            tw={[
+                'flex gap-0.5 select-none',
+                // 2024-06-03 rvion, changing 'items-center' to 'items-start'
+                // as well as adding some `h-input` class to <WidgetLabelContainerUI />
+                'items-start',
+            ]}
             onMouseDown={(ev) => {
                 if (ev.button != 0 || !widget.isCollapsible) return
                 const target = ev.target as HTMLElement
