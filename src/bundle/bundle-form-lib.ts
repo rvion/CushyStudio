@@ -239,6 +239,18 @@ execSync(commandToGenOutputCSSTailwind, { cwd: DIST_RELPATH, stdio: 'inherit' })
 // await buildTailwind()
 // await waitConfirm()
 
+section(`3.3 copy css files`)
+
+const addToPackage = (relPath: string) => {
+    console.log(`    - copy ${chalk.underline(relPath)} to ${chalk.underline(`${PACKAGE_NAME}/${relPath}`)}`)
+    cpSync(relPath, `${PACKAGE_NAME}/${relPath}`)
+}
+
+addToPackage('src/theme/form.vars.css')
+addToPackage('src/theme/markdown.css')
+addToPackage('src/theme/form.css')
+addToPackage('src/controls/widgets/number/InputNumberUI.css')
+
 // --------------------------------------------------------------------
 section(`4. generating DTS and JS`)
 sectionTool('tsc')
