@@ -108,6 +108,11 @@ export const ui_Kolor = (
             ),
         },
         {
+            default: {
+                l: def?.lightness != null || def?.contrast != null,
+                c: def?.chroma != null || def?.chromaBlend != null,
+                h: def?.hue != null || def?.hueShift != null,
+            },
             presets: [
                 {
                     icon: 'mdiText',
