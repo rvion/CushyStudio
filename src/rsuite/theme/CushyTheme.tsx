@@ -27,19 +27,6 @@ export class CushyThemeProvider {
                 if (raw == null) return undefined
                 return run_Kolor(raw)
             },
-            // inputBorder: new NumberVar(
-            //     'input-border',
-            //     (() => {
-            //         const x = observable({ value: 0 })
-            //         let y = 0
-            //         setInterval(() => {
-            //             // y++
-            //             x.value += 10
-            //             if (x.value > 100) x.value = 0
-            //         }, 100)
-            //         return () => x.value
-            //     })(),
-            // ),
         }
     }
 }
