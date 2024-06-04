@@ -13,7 +13,11 @@
         "eqeqeq": "off",
         "no-throw-literal": "warn",
         "semi": "off",
-        "@typescript-eslint/prefer-as-const": "off"
+        "@typescript-eslint/prefer-as-const": "off",
+        // https://typescript-eslint.io/rules/no-floating-promises
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-this-alias": "off", // sometimes, we need to preserve this.
+        "consistent-this": [2, "self", "that"] // as a paliative solution to above permissive rule
     },
     "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }
