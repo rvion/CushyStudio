@@ -1,9 +1,11 @@
 import type { FC } from 'react'
 
 import * as icons from '@mdi/js'
-import { Icon } from '@mdi/react'
+import IconA from '@mdi/react'
 
 import { allIcons, type IconName } from './icons'
+
+const Icon = IconA ?? (((await import('@mdi/react')) as any).default.Icon as typeof import('@mdi/react').Icon)
 
 type RawIconProps = import('@mdi/react/dist/IconProps.d.ts').IconProps
 type MyIconProps = Omit<RawIconProps, 'path'>
