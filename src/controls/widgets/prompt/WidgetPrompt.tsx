@@ -159,7 +159,7 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
     compile = (p: {
         /** for wildcard */
         seed?: number
-        onLora: (lora: Enum_Load_Lora_lora_name) => void
+        onLora: (lora: Enum_LoraLoader_lora_name) => void
         /** @default true */
         printWildcards?: boolean
     }): CompiledPrompt =>
