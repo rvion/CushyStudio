@@ -280,7 +280,7 @@ export default config
 section(`6. packing types together`)
 sectionTool('rollup + plugin-dts + plugin-visualizer')
 // const rollupRoot = `${cwd()}/src/scripts`
-const rollupBin = '/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup'
+const rollupBin = './src/scripts/node_modules/.bin/rollup'
 // /Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup -c /Users/loco/dev/CushyStudio/src/controls/FormBuilder.loco.rollup.config.mjs
 //`'${rollupRoot}/node_modules/.bin/rollup'`
 console.log(` `)
