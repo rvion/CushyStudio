@@ -7,7 +7,6 @@ import { useLayoutEffect } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
 import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { BoxSubtle } from '../../rsuite/box/BoxMisc'
 import { Frame } from '../../rsuite/frame/Frame'
 import { MarkdownUI } from '../../rsuite/MarkdownUI'
 import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
@@ -115,18 +114,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
-                <div tw='pb-10'>
-                    <FormUI
-                        // theme={{
-                        //     // base: 'oklch(0, 0, 200)',
-                        //     // base: 'rgb(255, 250, 240)',
-                        //     // base: '#1E212B',
-                        //     text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
-                        // }}
-                        key={draft.id}
-                        form={draft.form}
-                    />
-                </div>
+                <FormUI tw='pb-10' key={draft.id} form={draft.form} />
                 <RevealUI
                     content={() => (
                         <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>

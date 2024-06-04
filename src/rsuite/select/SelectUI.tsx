@@ -48,6 +48,7 @@ export type SelectProps<T> = {
     getSearchQuery?: () => string
     setSearchQuery?: (val: string) => void
 }
+
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
@@ -84,44 +85,26 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     {s.isOpen || s.isFocused ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
                         <div
-                            tw={[
-                                //
-                                ' h-full w-full items-center',
-                                'px-0.5',
-                                'grid',
-                            ]}
+                            tw={[' h-full w-full items-center', 'px-0.5', 'grid']}
                             style={{ gridTemplateColumns: '24px 1fr 24px' }}
                         >
                             <Ikon.mdiTextBoxSearchOutline size={'18px'} />
                             <div tw='overflow-hidden line-clamp-1 text-ellipsis flex-grow'>{s.displayValue}</div>
                             <Ikon.mdiChevronDown size={'18px'} />
                         </div>
-                        // <div tw='grid w-full items-center' style={{ gridTemplateColumns: '24px 1fr 24px' }}>
-                        //     <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
-                        //         <span className='suffix material-symbols-outlined ml-auto'>arrow_drop_down</span>
-                        //     </div>
-                        // </div>
                     )}
                 </div>
 
+                {/* MODAL */}
                 <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    {/* it's important for the input to be here so tabulation flow normally */}
-                    {/* <div tw='btn btn-square btn-xs bg-transparent border-0'>
-                        <span className='material-symbols-outlined'>search</span>
-                    </div> */}
                     <input
-                        //
                         placeholder={s.isOpen ? p.placeholder : undefined}
                         ref={s.inputRef}
                         onChange={s.handleInputChange}
                         tw='w-full h-full !outline-none bg-transparent'
                         type='text'
                         value={s.searchQuery}
-                        // onChange={() => {}}
                     />
-                    {/* <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
-                        <span className='material-symbols-outlined'>arrow_drop_down</span>
-                    </div> */}
                 </div>
                 {/* TOOLTIP */}
                 {s.isOpen && <SelectPopupUI s={s} />}
