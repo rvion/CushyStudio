@@ -705,6 +705,12 @@ export const migrations: {
         name: 'misc indexes',
         up: [`CREATE INDEX idx__media_image__path ON media_image(path);`],
     },
+    {
+        id: 'ULe2UYqDZy',
+        name: 'add isSelected to tree_entry',
+        up: ['alter table tree_entry add column isSelected int default 0'],
+    },
+
     // ⏸️ {
     // ⏸️     skip: true,
     // ⏸️     id: 'mNDq6De-sm',

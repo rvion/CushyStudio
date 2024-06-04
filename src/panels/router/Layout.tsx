@@ -11,6 +11,7 @@ import { regionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
 import { Message } from '../../rsuite/shims'
 import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
+import { type CustomPanelRef, registerCustomPanel } from '../Panel_Temporary'
 import { hashJSONObject } from './hash'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
@@ -464,6 +465,24 @@ export class CushyLayoutManager {
     }
 
     fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_FullScreenLibrary> }> = null
+
+    /**
+     * @experimental
+     * @unstable
+     */
+    addCustom = <T extends any>(panel: CustomPanelRef<any, T>, props: T) => {
+        this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
+    }
+
+    /**
+     * @experimental
+     * @unstable
+     */
+    addCustomV2 = <T extends any>(fn: FC<T>, props: T) => {
+        const uid = uniqueIDByMemoryRef(fn)
+        const panel = registerCustomPanel(uid, fn)
+        this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
+    }
 
     factory = (node: FL.TabNode): React.ReactNode => {
         // 1. get panel name

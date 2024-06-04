@@ -13,8 +13,8 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
     return (
         <Frame
             //
-            base={{ contrast: 0.05, hue: 220, chroma: 0.04 }}
-            tw='virtualBorder p-1 rounded flex items-center gap-2'
+            base={{ contrast: 0.05, hue: 0, chroma: 0.04 }}
+            tw='p-1 rounded flex items-center gap-2'
             className={p.className}
         >
             <Ikon.mdiAlertBox />

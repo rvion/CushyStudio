@@ -251,9 +251,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     return (
         <Frame /* Root */
             style={p.style}
-            base={{ contrast: isEditing ? -0.1 : 0.05 }}
+            base={5}
+            // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border={{ contrast: border }}
-            hover
+            hover={{ contrast: 0.03 }}
             className={p.className}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
@@ -261,7 +262,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 'WIDGET-FIELD relative',
                 'input-number-ui',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
-                !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
+                // !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {
                 /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
@@ -287,8 +288,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
                 <Frame /* Left Button */
                     className='control'
-                    hover={-0.1}
-                    base={25}
+                    // hover={-0.1}
+                    // base={5}
                     border
                     tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}
@@ -418,8 +419,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
 
                 <Frame /* Right Button */
                     className='control'
-                    hover={-0.1}
-                    base={25}
+                    // hover={-0.1}
+                    // base={5}
                     border
                     tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
                     tabIndex={-1}

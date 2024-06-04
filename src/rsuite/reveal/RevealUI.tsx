@@ -153,8 +153,9 @@ const mkTooltip = (uist: RevealState | null) => {
             <Frame
                 // border
                 // base={0}
+                shadow
                 className={p.tooltipWrapperClassName}
-                tw={['_RevealUI shadow-xl pointer-events-auto']}
+                tw={['_RevealUI pointer-events-auto']}
                 onClick={(ev) => ev.stopPropagation()}
                 onMouseEnter={uist.onMouseEnterTooltip}
                 onMouseLeave={uist.onMouseLeaveTooltip}
@@ -173,7 +174,7 @@ const mkTooltip = (uist: RevealState | null) => {
                 {p.title != null && (
                     <div tw='px-2'>
                         <div tw='py-0.5'>{p.title}</div>
-                        <div tw='w-full rounded bg-neutral-content' style={{ height: '1px' }}></div>
+                        <Frame tw='w-full rounded' base={{ contrast: 0.2 }} style={{ height: '1px' }}></Frame>
                     </div>
                 )}
                 {hiddenContent}
@@ -181,10 +182,9 @@ const mkTooltip = (uist: RevealState | null) => {
                 {/* LOCK */}
                 {
                     uist._lock ? (
-                        <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                            <Ikon.mdiLock />
+                        <Frame icon='mdiLock' text={{ contrast: 0.3 }} tw='italic text-sm flex gap-1 items-center justify-center'>
                             shift+right-click to unlock
-                        </span>
+                        </Frame>
                     ) : null
                     // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
                     //     <Ikon.mdiLockOffOutline />

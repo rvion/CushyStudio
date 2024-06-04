@@ -14,7 +14,8 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
         <Frame
             base={{ contrast: 0.05, hue: 220, chroma: 0.04 }}
             className={p.className}
-            tw='virtualBorder p-1 rounded flex items-center gap-2'
+            border={10}
+            tw='p-1 rounded flex items-center gap-2'
         >
             <Ikon.mdiInformation />
             {p.title ? (

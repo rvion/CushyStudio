@@ -20,7 +20,7 @@ export class TreeWidget implements ITreeEntry {
     }
 
     get name() {
-        return `${this.label} = ${this.widget.summary}`
+        return `${this.label} = ${this.widget.id /* 🔴 */}`
     }
 
     get isFolder() {

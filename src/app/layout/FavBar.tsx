@@ -8,6 +8,7 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
+import { Button } from '../../rsuite/button/Button'
 import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
 import { Frame } from '../../rsuite/frame/Frame'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
@@ -227,17 +228,12 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         tw='flex rounded pb-2'
                     >
                         <input
-                            tw='input-sm w-full rounded rounded-r-none border border-base-200 border-r-base-300 outline-none focus:border-primary'
+                            tw='cushy-basic-input w-full rounded-r-none'
                             value={filterText}
                             onChange={(ev) => setFilterText(ev.currentTarget.value)}
                             placeholder='Filter Drafts'
                         ></input>
-                        <button
-                            tw='btn btn-sm text-center items-center self-center snap-center p-1'
-                            onClick={(ev) => setFilterText('')}
-                        >
-                            <span className='material-symbols-outlined'>cancel</span>
-                        </button>
+                        <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
                     </div>
                     <div //App Grid Container
                         tw='grid grid-cols-3 gap-2 max-h-96 overflow-scroll'

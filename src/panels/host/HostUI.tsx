@@ -49,7 +49,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <Button look='ghost' onClick={() => host.CONNECT()}>
                         {host.isConnected ? 'Re-Connect' : 'Connect'}
                     </Button>
-                    <div
+                    <Button
+                        icon='mdiDelete'
                         tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
                         onClick={() => {
                             if (host.isReadonly) return
@@ -63,9 +64,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             //     if (index != null) config.comfyUIHosts?.splice(index, 1)
                             // })
                         }}
-                    >
-                        <span className='material-symbols-outlined'>delete_forever</span>
-                    </div>
+                    ></Button>
                 </div>
 
                 {/* <div tw='divider m-1'></div> */}
@@ -75,7 +74,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>name</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         onChange={(ev) => host.update({ name: ev.target.value })}
                         value={host.data.name ?? 'unnamed'}
                     ></input>
@@ -86,7 +85,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Host</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='cushy-basic-input w-full' //
                         onChange={(ev) => host.update({ hostname: ev.target.value })}
                         value={host.data.hostname ?? ''}
                     ></input>
@@ -97,7 +96,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Port</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='cushy-basic-input w-full' //
                         value={host.data.port ?? 8188}
                         onChange={(ev) => {
                             const next = ev.target.value
@@ -123,7 +122,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <LabelUI>absolute path to ComfyUI install folder</LabelUI>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         type='string'
                         onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
                         value={host.data.absolutePathToComfyUI ?? ''}
@@ -132,7 +131,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div tw='flex flex-col'>
                     <LabelUI>Absolute path to model folder</LabelUI>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         type='string'
                         disabled={disabled}
                         onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}

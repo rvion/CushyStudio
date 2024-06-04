@@ -3,12 +3,12 @@ import { useLayoutEffect } from 'react'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
+import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
 import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
-import { PanelHeaderUI } from '../PanelHeader'
+import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
-import { PlaygroundImportFromComfy } from './PlaygroundImporter'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
@@ -26,6 +26,7 @@ const Header_Playground = CushyFormManager.fields(
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
+                customPanels: ui.group(),
                 requirements: ui.group(),
                 registeredForms: ui.group(),
                 widgetShowcase: ui.group(),
@@ -53,10 +54,10 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
 
     return (
         <>
-            <PanelHeaderUI>
-                <FormUI form={Header_Playground} />
-                {mode.value.requirements && <PlaygroundRequirementsHeader />}
-            </PanelHeaderUI>
+            {/* <PanelHeaderUI> */}
+            <FormUI form={Header_Playground} />
+            {mode.value.requirements && <PlaygroundRequirementsHeader />}
+            {/* </PanelHeaderUI> */}
             <div tw='px-1'>
                 <MessageInfoUI>
                     <div tw='inline text-sm overflow-clip'>
@@ -70,15 +71,18 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                     </div>
                 </MessageInfoUI>
             </div>
-            <div tw='h-full overflow-auto'>
-                {/* 👇 PLAYGROUND HERE */}
-                {mode.value.requirements && <PlaygroundRequirements />}
-                {mode.value.registeredForms && <PlaygroundRegisteredForms />}
-                {mode.value.widgetShowcase && <PlaygroundWidgetDisplay />}
-                {mode.value.scratchPad && <PlaygroundScratchPad />}
-                {mode.value.graph && <PlaygroundGraphUI />}
-                {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
-            </div>
+            <ErrorBoundaryUI>
+                <div tw='h-full overflow-auto p-1'>
+                    {/* 👇 PLAYGROUND HERE */}
+                    {mode.value.requirements && <PlaygroundRequirements />}
+                    {mode.value.registeredForms && <PlaygroundRegisteredForms />}
+                    {mode.value.widgetShowcase && <PlaygroundWidgetDisplay />}
+                    {mode.value.scratchPad && <PlaygroundScratchPad />}
+                    {mode.value.graph && <PlaygroundGraphUI />}
+                    {mode.value.customPanels && <PlaygroundCustomPanelsUI />}
+                    {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
+                </div>
+            </ErrorBoundaryUI>
         </>
     )
 })

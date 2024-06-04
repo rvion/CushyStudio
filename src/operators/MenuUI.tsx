@@ -75,7 +75,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             onClick={(event) => {
                                 activityManager.startActivity({
                                     event,
-                                    uid: 'createPreset',
+                                    uid: 'createPreset❓',
                                     placement: 'auto',
                                     shell: 'popup-lg',
                                     UI: (p) => (

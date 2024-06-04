@@ -63,7 +63,13 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 },
                 UI: (w) => <CreatePresetUI widget={widget} />,
             }),
-                    )
+        )
+        // out.push(
+        //     new SimpleMenuAction({
+        //         label: 'Create Preset (V2)',
+        //         onPick: () => cushy.layout.addCustomV2(CreatePresetUI, { widget /* 🔴 */ }),
+        //     }),
+        // )
         out.push(MenuDividerUI_)
         const presets = widget.config.presets ?? []
         for (const entry of presets) {

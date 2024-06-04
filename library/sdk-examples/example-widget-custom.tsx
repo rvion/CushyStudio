@@ -21,7 +21,7 @@ const MyCustomComponent = observer(function (
             {/* Text Input -------------------------------------------------------- */}
             type "reset" in the field here and press play to reset the state
             <input
-                tw='input input-bordered p-2'
+                tw='cushy-basic-input p-2'
                 value={value.text ?? `Nothing to see here!`}
                 onChange={(ev) => (value.text = ev.target.value)}
             />

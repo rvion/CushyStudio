@@ -938,6 +938,8 @@ export type TreeEntryTable = {
     updatedAt: Generated<number>
     /** @default: null, sqlType: INT */
     isExpanded?: Maybe<number>
+    /** @default: "0", sqlType: INT */
+    isSelected?: Generated<Maybe<number>>
 }
 export type NewTreeEntry = Insertable<TreeEntryTable>
 export type TreeEntryUpdate = Updateable<TreeEntryTable>
@@ -948,6 +950,7 @@ export const TreeEntrySchema = Type.Object(
         createdAt: Type.Number(),
         updatedAt: Type.Number(),
         isExpanded: Type.Optional(T.Nullable(Type.Number())),
+        isSelected: Type.Optional(T.Nullable(Type.Number())),
     },
     { additionalProperties: false },
 )
@@ -960,6 +963,7 @@ export const TreeEntryFields = {
     createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
     updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
     isExpanded: { cid: 3, name: 'isExpanded', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    isSelected: { cid: 4, name: 'isSelected', type: 'INT', notnull: 0, dflt_value: '0', pk: 0 },
 }
 
 export const asHostID = (s: string): HostID => s as any
@@ -1460,6 +1464,7 @@ export type LiveDBSubKeys =
     | 'tree_entry.createdAt'
     | 'tree_entry.updatedAt'
     | 'tree_entry.isExpanded'
+    | 'tree_entry.isSelected'
     | 'host'
     | 'host.id'
     | 'host.createdAt'
@@ -1644,6 +1649,7 @@ export const liveDBSubKeys = new Set([
     'tree_entry.createdAt',
     'tree_entry.updatedAt',
     'tree_entry.isExpanded',
+    'tree_entry.isSelected',
     'host',
     'host.id',
     'host.createdAt',

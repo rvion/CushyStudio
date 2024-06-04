@@ -50,10 +50,12 @@ export class TreeNode {
         return this.entryL.data.isExpanded ?? false
     }
     open() {
+        console.log(`[🤠] opening`)
         this.data.onExpand?.(this)
         this.entryL.update({ isExpanded: SQLITE_true })
     }
     close() {
+        console.log(`[🤠] closing`)
         this.entryL.update({ isExpanded: SQLITE_false })
     }
     toggle() {

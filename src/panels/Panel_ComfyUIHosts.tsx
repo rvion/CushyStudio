@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { resolve } from 'pathe'
 
 import { SQLITE_false } from '../db/SQLITE_boolean'
-import { Frame } from '../rsuite/frame/Frame'
+import { Button } from '../rsuite/button/Button'
+import { MessageInfoUI } from '../rsuite/messages/MessageInfoUI'
 import { SelectUI } from '../rsuite/select/SelectUI'
 import { Surface } from '../rsuite/shims'
-import { knownOKLCHHues } from '../rsuite/tinyCSS/knownHues'
 import { useSt } from '../state/stateContext'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { HostUI } from './host/HostUI'
@@ -27,13 +27,9 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                 />
             </div> */}
             <div tw='flex gap-1'>
-                <Frame
-                    base={{ hue: knownOKLCHHues.blueInfo, chroma: 0.08, contrast: 0.1 }}
-                    icon='mdiInformation'
-                    tw='virtualBorder p-1 rounded flex items-center gap-2'
-                >
+                <MessageInfoUI tw='virtualBorder p-1 rounded flex items-center gap-2'>
                     The Primary host is the one used for typigns, and to send prompts to by default.
-                </Frame>
+                </MessageInfoUI>
             </div>
             <div className='line'>
                 <div>Primary Host:</div>
@@ -71,8 +67,9 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
 export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <div
-            tw='btn-sm btn btn-primary'
+        <Button
+            icon='mdiPlus'
+            look='primary'
             onClick={() => {
                 st.configFile.update(() => {
                     st.db.host.create({
@@ -88,8 +85,7 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
                 })
             }}
         >
-            <span className='material-symbols-outlined'>add</span>
             Add Host
-        </div>
+        </Button>
     )
 })

@@ -3,13 +3,17 @@ import type { ITreeElement } from '../TreeEntry'
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { type SQLITE_boolean_, SQLITE_false } from '../../../../db/SQLITE_boolean'
+import { type SQLITE_boolean_, SQLITE_true } from '../../../../db/SQLITE_boolean'
 import { TreeNode } from './TreeNode'
 
 // ------------------------------------------------------------------------
+export type ITreeNodeState = {
+    isExpanded?: Maybe<SQLITE_boolean_>
+    isSelected?: Maybe<SQLITE_boolean_>
+}
 export type INodeStore = {
-    data: { isExpanded?: Maybe<SQLITE_boolean_> }
-    update: (data: { isExpanded: SQLITE_boolean_ }) => void
+    data: ITreeNodeState
+    update: (data: Partial<ITreeNodeState>) => void
 }
 
 export type TreeStorageConfig = {
@@ -26,10 +30,13 @@ export type TreeStorageConfig = {
 }
 
 export const defaultTreeStorage = (node: TreeNode): INodeStore => {
-    const data: { isExpanded: SQLITE_boolean_ } = { isExpanded: SQLITE_false }
+    const data: ITreeNodeState = observable({
+        isExpanded: SQLITE_true,
+        isSelected: SQLITE_true,
+    })
     return observable({
         data,
-        update: (next) => (data.isExpanded = next.isExpanded),
+        update: (next) => Object.assign(data, next),
     })
 }
 // ------------------------------------------------------------------------

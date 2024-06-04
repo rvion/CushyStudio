@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
+import { Button } from '../rsuite/button/Button'
 import { Dropdown } from '../rsuite/dropdown/Dropdown'
 import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
@@ -121,16 +122,15 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                                     {d.name}
                                     <div className='ml-auto line'>
                                         <div tw='opacity-55 italic'>{d.app.name}</div>
-                                        <div
+                                        <Button
+                                            square
+                                            icon='mdiOpenInNew'
                                             onClick={(ev) => {
                                                 ev.stopPropagation()
                                                 ev.preventDefault()
                                                 d.openOrFocusTab()
                                             }}
-                                            tw='btn btn-xs btn-square'
-                                        >
-                                            <span className='material-symbols-outlined'>open_in_new</span>
-                                        </div>
+                                        ></Button>
                                     </div>
                                 </div>
                             </MenuItem>

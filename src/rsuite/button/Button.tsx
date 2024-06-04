@@ -32,6 +32,7 @@ export const Button = observer(function Button_(
             {...rest}
             tw={[
                 'inline-flex',
+                p.square ? null : 'px-2',
                 'font-semibold',
                 'ui-button',
                 'rounded-sm gap-2 items-center',

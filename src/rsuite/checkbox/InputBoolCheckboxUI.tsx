@@ -34,7 +34,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
                 hover
                 {...p.box}
             />
-            {label ? label : null}
+            {label ? <div tw='ml-1'>{label}</div> : null}
         </Frame>
     )
 })

@@ -5,6 +5,7 @@ import type { Widget_enum } from './WidgetEnum'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../../icons/iconHelpers'
+import { MessageErrorUI } from '../../../rsuite/messages/MessageErrorUI'
 import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/select/SelectUI'
 import { useSt } from '../../../state/stateContext'
@@ -70,14 +71,16 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                     <RevealUI
                         placement='bottom'
                         content={() => (
-                            <div>
-                                <span>
-                                    <span tw='bord'>{value.candidateValue}</span> is not in your ComfyUI install folder
-                                </span>
+                            <MessageErrorUI>
                                 <div>
-                                    <span tw='bord'>{value.finalValue}</span> used instead
+                                    <div>
+                                        <div tw='bord'>{value.candidateValue}</div> is not in your ComfyUI install folder
+                                    </div>
+                                    <div>
+                                        <div tw='bord'>{value.finalValue}</div> used instead
+                                    </div>
                                 </div>
-                            </div>
+                            </MessageErrorUI>
                         )}
                     >
                         <div className='text-orange-500 flex items-center'>

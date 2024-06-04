@@ -10,9 +10,9 @@ input::-webkit-inner-spin-button {
     opacity: 100;
 }
 
-.input-number-ui:hover .inui-foreground {
+/* .input-number-ui:hover .inui-foreground {
     filter: brightness(1.20)
-}
+} */
 
 .input-number-ui .input[type=text] {
     min-width: none;

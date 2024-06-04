@@ -37,7 +37,14 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
             >
                 {/* Item Caret */}
                 {hasChildren ? (
-                    <label onClick={() => n.toggle()} className='swap swap-rotate opacity-50'>
+                    <label
+                        onClick={(ev) => {
+                            console.log(`[🤠] ok`, n.isOpen)
+                            n.toggle()
+                            ev.stopPropagation()
+                        }}
+                        className='swap swap-rotate opacity-50'
+                    >
                         {n.isOpen ? <Ikon.mdiChevronDown /> : <Ikon.mdiChevronRight />}
                     </label>
                 ) : (
