@@ -64,9 +64,6 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 UI: (w) => <CreatePresetUI widget={widget} />,
             }),
                     )
-                },
-            }),
-        )
         out.push(MenuDividerUI_)
         const presets = widget.config.presets ?? []
         for (const entry of presets) {
