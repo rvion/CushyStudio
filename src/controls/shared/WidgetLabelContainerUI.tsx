@@ -16,6 +16,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     const theme = useTheme()
     return (
         <Frame
+            hover
             tw='COLLAPSE-PASSTHROUGH h-input flex justify-end gap-0.5 flex-none items-center shrink-0 flex-1 items-center'
             style={p.justify ? justifyStyle : undefined}
             text={theme.value.labelText}

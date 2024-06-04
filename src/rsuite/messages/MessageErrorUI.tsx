@@ -16,8 +16,8 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
             base={{ contrast: 0.05, hue: 0, chroma: 0.04 }}
             tw='p-1 rounded flex items-center gap-2'
             className={p.className}
+            icon={'mdiSkull'}
         >
-            <Ikon.mdiAlertBox />
             {p.title ? (
                 <div>
                     <div tw='text-xl w-full font-bold'>{p.title}</div>

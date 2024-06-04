@@ -2,6 +2,7 @@ import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/button/Button'
 import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
@@ -17,9 +18,11 @@ export const RecompileUI = observer(function RecompileUI_(p: {
     return (
         <MessageWarningUI>
             need recompile: {status.reason}
-            <div onClick={() => app.file.extractScriptFromFileAndUpdateApps({ force: true })} tw='btn-sm btn btn-warning'>
+            <Button //
+                onClick={() => app.file.extractScriptFromFileAndUpdateApps({ force: true })}
+            >
                 Recompile
-            </div>
+            </Button>
         </MessageWarningUI>
     )
 })

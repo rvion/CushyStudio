@@ -5,6 +5,7 @@ import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
 import { HostL } from '../../models/Host'
 import { Button } from '../../rsuite/button/Button'
 import { InputBoolUI } from '../../rsuite/checkbox/InputBoolUI'
+import { Frame } from '../../rsuite/frame/Frame'
 import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
@@ -17,19 +18,11 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const isMain = host.id === config.mainComfyHostID
     const disabled = host.data.isVirtual ? true : false
     return (
-        <div
-            tw={[
-                //
-                'virtualBorder',
-                'p-2 w-96 shadow-xl',
-                isMain && 'bg-primary bg-opacity-30',
-            ]}
+        <Frame
+            base={{ contrast: 0.03, chroma: isMain ? 0.1 : undefined }}
+            border={10}
+            tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >
-            {/* {host.data.isReadonly ? (
-                <div tw='bg-secondary text-secondary-content p-0.5 opacity-50'>Readonly Host (Built-in)</div>
-            ) : (
-                <Box base={5} tw='p-0.5'>Custom Host</Box base={5}>
-            )} */}
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
                 {host.data.isVirtual ? (
@@ -51,7 +44,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     </Button>
                     <Button
                         icon='mdiDelete'
-                        tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
+                        disabled={host.isReadonly}
                         onClick={() => {
                             if (host.isReadonly) return
                             runInAction(() => {
@@ -162,6 +155,6 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div>isLoaded: {host.isConnected ? 'true' : 'false'}</div>
             </div> */}
             {/* STATUS */}
-        </div>
+        </Frame>
     )
 })

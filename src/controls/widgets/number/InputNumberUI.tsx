@@ -245,8 +245,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
-    const theme = useTheme()
-    const border = theme.value.inputBorder
+    const border = useTheme().value.inputBorder
 
     return (
         <Frame /* Root */

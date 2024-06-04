@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 
 import { Ikon } from '../../icons/iconHelpers'
 import { Frame } from '../frame/Frame'
+import { useTheme } from '../theme/useTheme'
 import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
 
@@ -52,13 +53,14 @@ export type SelectProps<T> = {
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
+    const border = useTheme().value.inputBorder
     return (
         <Frame /* Container/Root */
             base={{ contrast: 0.05 }}
             hover
             tabIndex={-1}
             tw={['WIDGET-FIELD ', 'flex flex-1 items-center relative']}
-            border
+            border={{ contrast: border }}
             className={p.className}
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}

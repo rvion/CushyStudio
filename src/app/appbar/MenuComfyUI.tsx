@@ -2,6 +2,7 @@ import type { HostL } from '../../models/Host'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/button/Button'
 import { Dropdown } from '../../rsuite/dropdown/Dropdown'
 import { MenuItem } from '../../rsuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
@@ -66,8 +67,7 @@ export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL
                 {p.showID && (
                     <div tw='opacity-50 text-xs'>
                         {host.id}
-                        <div
-                            className='btn btn-xs'
+                        <Button
                             onClick={(ev) => {
                                 ev.stopPropagation()
                                 ev.preventDefault()
@@ -75,41 +75,38 @@ export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL
                             }}
                         >
                             <span className='material-symbols-outlined'>open_in_new</span>
-                        </div>
+                        </Button>
                     </div>
                 )}
             </div>
             <div className='join'>
-                <div
-                    className='btn btn-xs'
+                <Button
+                    subtle
+                    icon='mdiOpenInApp'
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         cushy.layout.FOCUS_OR_CREATE('Hosts', {})
                     }}
-                >
-                    <span className='material-symbols-outlined'>settings</span>
-                </div>
-                <div
-                    className='btn btn-xs'
+                />
+                <Button
+                    subtle
+                    icon='mdiOpenInNew'
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         cushy.layout.FOCUS_OR_CREATE('ComfyUI', {})
                     }}
-                >
-                    <span className='material-symbols-outlined'>open_in_browser</span>
-                </div>
-                <div
-                    className='btn btn-xs'
+                />
+                <Button
+                    subtle
+                    icon='mdiFullscreen'
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         cushy.layout.FOCUS_OR_CREATE('ComfyUI', {}, 'full')
                     }}
-                >
-                    <span className='material-symbols-outlined'>open_in_full</span>
-                </div>
+                ></Button>
             </div>
         </MenuItem>
     )

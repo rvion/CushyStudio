@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { HostL } from '../../models/Host'
+import { Button } from '../../rsuite/button/Button'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { Message } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
@@ -15,26 +16,26 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
     if (p.host.data.isVirtual)
         return (
             <RevealUI showDelay={0} content={() => <div tw='p-2'>Not Applicable</div>}>
-                <div tw='btn btn-sm btn-ghost text-opacity-25'>WS</div>
+                <Button>WS</Button>
             </RevealUI>
         )
     return (
         <RevealUI showDelay={0} content={() => <HostQuickMenuUI host={p.host} />}>
             {ws == null ? (
-                <div tw='btn btn-sm btn-ghost opacity-50'>
+                <Button subtle tw='opacity-50'>
                     {p.showIcon && <span className='material-symbols-outlined '>cloud_off</span>}
                     <span className=''>WS</span>
-                </div>
+                </Button>
             ) : ws?.isOpen ? (
-                <div tw='btn btn-sm btn-ghost'>
+                <Button subtle>
                     {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                     <span className='text-success'>WS</span>
-                </div>
+                </Button>
             ) : (
-                <div tw='btn btn-sm btn-ghost btn-error flex-nowrap'>
+                <Button subtle tw='btn-error flex-nowrap'>
                     <div tw='loading loading-spinner loading-xs' />
                     WS
-                </div>
+                </Button>
             )}
         </RevealUI>
     )

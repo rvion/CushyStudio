@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/button/Button'
 import { Frame } from '../../rsuite/frame/Frame'
+import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
 import { useSt } from '../../state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
 
@@ -10,21 +12,15 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
     if (fpc == null) return null
     return (
         <>
-            {/* generic close button in calse esc does not wrk */}
-            <div
-                //
+            <Button // generic close button in calse esc does not wrk
                 tw='absolute top-1 right-1'
-                onClick={() => {
-                    st.layout.fullPageComp = null
-                }}
+                look='primary'
+                onClick={() => (st.layout.fullPageComp = null)}
                 style={{ zIndex: 101 }}
-            >
-                <div tw='btn btn-subtle'>
-                    <span className='material-symbols-outlined'>close</span>
-                </div>
-            </div>
-            {/* full screen panel wrapper */}
-            <div
+                base={{ hue: knownOKLCHHues.success }}
+                icon='mdiClose'
+            ></Button>
+            <div // full screen panel wrapper
                 onKeyUp={(ev) => {
                     if (ev.key === 'Escape') {
                         st.layout.fullPageComp = null
@@ -39,7 +35,7 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
                     zIndex: 100,
                 }}
             >
-                <Frame base={5} tw='h-full'>
+                <Frame tw='h-full'>
                     {/* full screen panel content */}
                     <RenderPanelUI panel={fpc.panel} panelProps={fpc.props} />
                 </Frame>
