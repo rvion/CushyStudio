@@ -4,7 +4,9 @@ import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
-import { randomColorHSLNice, randomNiceColor } from '../../panels/Panel_Canvas/utils/randomColor'
+import { randomColorHSLNice } from '../../panels/Panel_Canvas/utils/randomColor'
+import { hashString } from '../../panels/router/hash'
+import { Frame } from '../../rsuite/frame/Frame'
 import { ProgressLine } from '../../rsuite/shims'
 import { bang } from '../../utils/misc/bang'
 import { NodeSlotSize } from './NodeSlotSize'
@@ -118,11 +120,13 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             )
                         })}
                         {/* ACTUAL NODE */}
-                        <div
-                            className='node rounded'
+                        <Frame
+                            base={{ contrast: 0.03, hue: getChroma(node.$schema.nameInComfy), chroma: 0.07 }}
+                            hover
+                            border={20}
+                            className='node rounded-sm'
                             key={node.uid}
                             style={{
-                                border: '1px solid #4c4c4c',
                                 zIndex: 991,
                                 fontWeight: '20px',
                                 lineHeight: '20px',
@@ -130,7 +134,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                 top: bang(node.y),
                                 left: bang(node.x),
                                 width: bang(node.width),
-                                height: bang(node.height),
+                                height: bang(node.height) + 2,
                             }}
                         >
                             <ProgressLine
@@ -139,14 +143,15 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                 percent={pgr?.percent}
                             />
 
-                            <div
+                            <Frame
+                                base={6}
                                 style={{ height: '20px' }}
-                                tw='bg-primary/20 overflow-hidden whitespace-nowrap overflow-ellipsis'
+                                tw='overflow-hidden font-bold whitespace-nowrap overflow-ellipsis'
                             >
                                 {node.$schema.nameInComfy} [{node.uid}]
-                            </div>
-                            <div tw='text-sm px-2'>
-                                <div tw='flex justify-between' /* style={{ borderBottom: '1px solid gray' }} */>
+                            </Frame>
+                            <div tw='text-sm'>
+                                <Frame tw='flex justify-between px-2' /* style={{ borderBottom: '1px solid gray' }} */>
                                     <div>
                                         {node._incomingEdges().map((ie) => (
                                             <div tw='truncate overflow-hidden' style={{ height: '20px' }} key={ie.inputName}>
@@ -161,24 +166,31 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                                {node._primitives().map((ie) => (
-                                    <div //
+                                </Frame>
+                                {node._primitives().map((ie, ix) => (
+                                    <Frame //
+                                        // base={ix % 2 === 0 ? 3 : 6}
+                                        // base={3}
+                                        hover
                                         key={ie.inputName}
                                         style={{ height: '20px' }}
-                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis'
+                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis px-2'
                                     >
                                         <div tw='flex'>
                                             <div>{ie.inputName}:</div>
                                             <div tw='ml-auto'>{JSON.stringify(ie.value)}</div>
                                         </div>
-                                    </div>
+                                    </Frame>
                                 ))}
                             </div>
-                        </div>
+                        </Frame>
                     </Fragment>
                 )
             })}
         </div>
     )
 })
+
+const getChroma = (type: string): number => {
+    return hashString(type) % 360
+}

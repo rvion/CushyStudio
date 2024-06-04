@@ -49,7 +49,12 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
             <panelContext.Provider value={{ id: panelID }}>
                 <Frame
                     //
-                    tw='flex-1 h-full w-full overflow-scroll' // overflow-auto to only show scrollbar when needed
+                    tw={[
+                        //
+                        'flex-1 h-full w-full',
+                        'overflow-auto', // overflow-auto to only show scrollbar when needed
+                        // 'overflow-scroll',
+                    ]}
                     className={`Region-${panel}`}
                     data-panel-id={panelID}
                     id={panelID}

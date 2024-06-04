@@ -4,13 +4,17 @@ import { observer } from 'mobx-react-lite'
 
 import { FormUI } from '../../controls/FormUI'
 import { Ikon } from '../../icons/iconHelpers'
+import { Button } from '../../rsuite/button/Button'
 import { Frame } from '../../rsuite/frame/Frame'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
-export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: { title?: string; form: Form<any> }) {
+export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
+    //
+    title?: string
+    form: Form<any>
+}) {
     return (
         <RevealUI
-            tw='WIDGET-FIELD'
             title={p.title}
             content={() => (
                 <div style={{ width: '500px' }} tw='flex-shrink-0'>
@@ -18,14 +22,10 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                 </div>
             )}
         >
-            <Frame
-                // border
-                hover
-                tw='flex px-1 w-full h-full items-center justify-center hover:brightness-125 border border-base-100'
-            >
+            <Button size='input'>
                 <Ikon.mdiCog />
                 <Ikon.mdiChevronDown />
-            </Frame>
+            </Button>
         </RevealUI>
     )
 })

@@ -14,7 +14,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitMan
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
-                updater.install()
+                return updater.install()
             }}
         >
             Install

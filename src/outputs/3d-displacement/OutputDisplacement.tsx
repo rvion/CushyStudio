@@ -105,7 +105,7 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     mkdirSync(dirname(absPath), { recursive: true })
     canvas.toBlob(async (blob) => {
         if (blob == null) return toastError('❌ canvas.toBlob returned null')
-        createMediaImage_fromBlobObject(cushy, blob, absPath)
+        return createMediaImage_fromBlobObject(cushy, blob, absPath)
     })
 }
 

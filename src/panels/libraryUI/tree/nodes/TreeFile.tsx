@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
 
-import { LibraryFile } from '../../../../cards/LibraryFile'
+import { LibraryFile, type ScriptExtractionResult } from '../../../../cards/LibraryFile'
 import { assets } from '../../../../utils/assets/assets'
 import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeApp } from './TreeApp'
@@ -49,20 +49,20 @@ export class TreeFile implements ITreeEntry {
             name: 'add Draft',
             icon: 'find_in_page', //'play_arrow',
             mode: 'small',
-            onClick: () => {
+            onClick: async (): Promise<ScriptExtractionResult | undefined> => {
                 if (this.file == null) return
-                this.file.extractScriptFromFile()
+                return this.file.extractScriptFromFile()
             },
         },
     ]
 
-    onFocusItem = () => {
+    onFocusItem = async (): Promise<ScriptExtractionResult | undefined> => {
         if (this.file.scriptExtractionAttemptedOnce) return
-        this.file.extractScriptFromFile()
+        return this.file.extractScriptFromFile()
     }
 
     onPrimaryAction = (n: TreeNode) => {
-        this.file.extractScriptFromFile()
+        void this.file.extractScriptFromFile()
         if (!n.isOpen) {
             n.open()
             this.script?.evaluateAndUpdateAppsAndViews()

@@ -71,7 +71,7 @@ export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL
                             onClick={(ev) => {
                                 ev.stopPropagation()
                                 ev.preventDefault()
-                                openFolderInOS(`${cushy.rootPath}/schema/hosts/${host.id}` as AbsolutePath)
+                                return openFolderInOS(`${cushy.rootPath}/schema/hosts/${host.id}` as AbsolutePath)
                             }}
                         >
                             <span className='material-symbols-outlined'>open_in_new</span>

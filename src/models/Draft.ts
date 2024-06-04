@@ -191,8 +191,6 @@ export class DraftL {
         // ⏸️ const builder = req.builder
         // ⏸️ builder._cache.count++ 🔴
 
-        // console.log(`[👙] 🔴`, JSON.stringify(widget.serial))
-        // debugger
         const graph = startGraph.clone()
         // 4. create step
         const step = this.db.step.create({
@@ -205,7 +203,9 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({
+
+        // start step without waiting
+        void step.start({
             formInstance: widget,
             imageToStartFrom: p.imageToStartFrom,
         })

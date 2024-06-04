@@ -14,7 +14,7 @@ export class ObservablePromise<T> {
         this.promise = new Promise((resolve, reject) => {
             this.resolve = (t: T | PromiseLike<T>) => {
                 if (isPromise(t)) {
-                    ;(t as Promise<T>).then((final) => {
+                    void (t as Promise<T>).then((final) => {
                         this.result = final
                         resolve(final)
                     })

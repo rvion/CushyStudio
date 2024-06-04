@@ -12,6 +12,7 @@
 import type { IconName } from '../../icons/icons'
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { FrameSize } from './FrameSize'
+import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext } from 'react'
@@ -26,7 +27,7 @@ import { formatOKLCH } from '../kolor/formatOKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { getClassNameForSize } from './FrameSize'
-import { type FrameAppearance, frames } from './FrameTemplates'
+import { frames } from './FrameTemplates'
 
 export type FrameProps = {
     // logic --------------------------------------------------
@@ -148,6 +149,7 @@ export const Frame = observer(
                     //
                     'BOX',
                     look && `box-${look}`,
+                    loading && 'relative',
                     getClassNameForSize(p),
                     expand && 'flex-1',
                     // inline && 'inline-flex',
@@ -161,10 +163,10 @@ export const Frame = observer(
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider value={nextCtx}>
-                    {icon && <IkonOf tw='pointer-events-none' name={icon} />}
+                    {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} />}
                     {p.children}
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} />}
-                    {loading && <div tw='loading loading-spinner loading-sm' />}
+                    {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
             </div>
         )

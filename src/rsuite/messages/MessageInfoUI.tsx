@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../icons/iconHelpers'
 import { Frame } from '../frame/Frame'
 import { MarkdownUI } from '../MarkdownUI'
+import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
 export const MessageInfoUI = observer(function MessageInfoUI_(p: {
     title?: string
@@ -12,12 +12,12 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
 }) {
     return (
         <Frame
-            base={{ contrast: 0.05, hue: 220, chroma: 0.04 }}
-            className={p.className}
+            base={{ contrast: 0.05, hue: knownOKLCHHues.info, chroma: 0.04 }}
             border={10}
+            className={p.className}
             tw='p-1 rounded flex items-center gap-2'
+            icon='mdiInformationOutline'
         >
-            <Ikon.mdiInformation />
             {p.title ? (
                 <div>
                     <div tw='text-xl w-full font-bold'>{p.title}</div>

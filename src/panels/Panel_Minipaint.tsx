@@ -80,7 +80,7 @@ class MinipaintState {
         return this.fileName + '.png'
     }
 
-    saveImage() {
+    saveImage(): void {
         var Layers = getLayers()
         var dim = Layers.get_dimensions()
         var tempCanvas = document.createElement('canvas')
@@ -94,7 +94,7 @@ class MinipaintState {
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
             const relPath = `outputs/minipaint/${this.fileNameWithExt}`
-            createMediaImage_fromBlobObject(this.st, blob, relPath)
+            void createMediaImage_fromBlobObject(this.st, blob, relPath)
         })
     }
 }
@@ -120,12 +120,8 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         size='sm'
                         icon='mdiContentSave'
                         look='primary'
-                        base={{ hue: knownOKLCHHues.green, chroma: 0.2 }}
-                        onClick={() => {
-                            runInAction(() => {
-                                uist.saveImage()
-                            })
-                        }}
+                        base={{ hue: knownOKLCHHues.success }}
+                        onClick={() => runInAction(() => uist.saveImage())}
                     >
                         Save
                     </Button>
@@ -142,7 +138,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         <input
                             onChange={(ev) => (uist.fileName = ev.target.value)}
                             value={uist.fileName}
-                            tw='input input-sm join-item input-bordered'
+                            tw='cushy-basic-input'
                             type='text'
                         />
                         .png

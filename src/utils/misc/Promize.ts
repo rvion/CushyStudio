@@ -23,11 +23,11 @@ export class Promize<T = any> implements PromiseLike<T> {
         const _key = stableStringify({ key, params })
         if (!Promize._CACHE.has(_key)) {
             console.log(`[🤠] CACHE MISS FOR KEY ${_key}`)
-            const kwery = new Promize<T>()
-            Promize._CACHE.set(_key, kwery)
-            if (typeof set === 'function') kwery.set(set())
-            else kwery.set(set)
-            return kwery
+            const promize = new Promize<T>()
+            Promize._CACHE.set(_key, promize)
+            if (typeof set === 'function') void promize.set(set())
+            else void promize.set(set)
+            return promize
         } else {
             return Promize._CACHE.get(_key) as Promize<T>
         }
@@ -95,6 +95,6 @@ export class Promize<T = any> implements PromiseLike<T> {
             this.reject = reject
         })
         this.then = this.promise.then.bind(this.promise)
-        makeAutoObservable(this)
+        void makeAutoObservable(this)
     }
 }

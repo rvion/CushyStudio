@@ -182,9 +182,7 @@ export class STATE {
         return def[0]
     }
 
-    openInVSCode = (filePathWithinWorkspace: RelativePath) => {
-        openInVSCode(this, filePathWithinWorkspace)
-    }
+    openInVSCode = (filePathWithinWorkspace: RelativePath) => openInVSCode(this, filePathWithinWorkspace)
 
     getKnownCheckpoints = () => this.managerRepository.getKnownCheckpoints()
 
@@ -630,7 +628,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
-        this.startupFileIndexing()
+        void this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
 
         // this.themeManager = new CushyThemeManager()

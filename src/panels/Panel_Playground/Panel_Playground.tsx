@@ -64,7 +64,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                         <span>Use this panel as a scratchpad by modifying </span>
                         <span tw='rounded bg-error-2 px-1'>PlaygroundScratchPad</span>
                         <span> in </span>
-                        <span onClick={() => st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
+                        <span onClick={() => void st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
                             {relPathToThisPage}
                         </span>{' '}
                         <span>Do not commit changes in this file unless specifically adding functionality to it.</span>

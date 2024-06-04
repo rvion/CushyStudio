@@ -63,7 +63,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 disabled={!img?.absPath}
                 onClick={() => {
                     if (!img?.absPath) return
-                    showItemInFolder(img.absPath)
+                    return showItemInFolder(img.absPath)
                 }}
             >
                 Open folder
@@ -76,7 +76,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 onClick={() => {
                     const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
                     if (imgPathWithFileProtocol == null) return
-                    openExternal(imgPathWithFileProtocol)
+                    return openExternal(imgPathWithFileProtocol)
                 }}
             >
                 Open

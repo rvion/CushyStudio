@@ -7,7 +7,7 @@ export function getLCHFromStringAsString(str: string): string {
         const color = new Color(str)
         const [l, c, h_] = color.oklch
         const h = isNaN(h_!) ? 0 : h_
-        return `lch(${fmtNum1(l! * 100)}%, ${fmtNum2(c!)}, ${fmtNum1(h!)})`
+        return `lch(${fmtNum1(l! * 100)}% ${fmtNum2(c!)} ${fmtNum1(h!)})`
     } catch (e) {
         console.error(`[🔴] getLCHFromStringAsString FAILURE (string is: "${str}")`)
         return `lch(.5 1 0)`

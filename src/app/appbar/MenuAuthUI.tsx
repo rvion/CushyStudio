@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../rsuite/button/Button'
 import { Dropdown } from '../../rsuite/dropdown/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
@@ -21,18 +22,13 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
             content={() => (
                 <div tw='flex flex-col'>
                     {st.auth.isConnected ? (
-                        <div onClick={() => st.auth.logout()} tw='btn btn-sm btn-outline btn-error'>
+                        <Button icon='mdiLogout' text={{ hue: 0, contrast: 0.2, chroma: 0.5 }} onClick={() => st.auth.logout()}>
                             LogOut
-                        </div>
+                        </Button>
                     ) : (
-                        <div
-                            tw='btn'
-                            onClick={() => {
-                                st.auth.startLoginFlowWithGithub()
-                            }}
-                        >
+                        <Button icon='mdiLogin' onClick={() => void st.auth.startLoginFlowWithGithub()}>
                             login
-                        </div>
+                        </Button>
                     )}
                     {st.auth.user && <JsonViewUI value={st.auth.user} />}
                 </div>

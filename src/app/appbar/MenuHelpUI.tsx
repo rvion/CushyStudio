@@ -14,27 +14,27 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
             content={() => (
                 <>
                     {/* <MenuItem
-                        onClick={() => { window.require('electron').shell.openExternal('https://www.CushyStudio.com/documentation') }}
+                        onClick={() => { void window.require('electron').shell.openExternal('https://www.CushyStudio.com/documentation') }}
                         icon={<span className='material-symbols-outlined text-purple-300'>menu_book</span>}
                         label='Open documentation'
                     /> */}
                     <MenuItem
                         onClick={() => {
-                            window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
+                            void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
                         }}
                         icon={<Ikon.mdiGithub />}
                         label='Open Github'
                     />
                     <MenuItem
                         onClick={() => {
-                            window.require('electron').shell.openExternal('https://www.CushyStudio.com')
+                            void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
                         }}
                         icon={<Icon path={mdiGithub} size={1} />}
                         label='Open Website'
                     />
                     <MenuItem
                         onClick={() => {
-                            window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
+                            void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
                         }}
                         icon={
                             <Icon path={mdiPost} size={1} />

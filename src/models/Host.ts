@@ -63,15 +63,15 @@ export class HostL {
     private wantLog: boolean = true
     enableServerLogs = () => {
         this.wantLog = true
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     disableServerLogs = () => {
         this.wantLog = false
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     toggleServerLogs = () => {
         this.wantLog = !this.wantLog
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     maxLogs = 200
     serverLogs: { at: string; content: string; id: number }[] = []

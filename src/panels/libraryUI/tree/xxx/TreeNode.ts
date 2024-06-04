@@ -166,6 +166,7 @@ export class TreeNode {
 
     get prevSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
+        // eslint-disable-next-line consistent-this
         let SELF = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
         if (siblings[0] === SELF) return // first of the fratry
@@ -202,6 +203,7 @@ export class TreeNode {
     /** return the last descendant
      * [a[b,c],x[y,z]] => z */
     get lastDescendant(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         let out: TreeNode | undefined
         while ((at = at.lastChild)) out = at
@@ -213,6 +215,7 @@ export class TreeNode {
     }
 
     get root(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         while (at.parent) {
             at = at.parent
@@ -237,6 +240,7 @@ export class TreeNode {
     }
 
     get lastOpenedDescendant(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         let out: TreeNode | undefined
         if (!at.isOpen) return
@@ -266,6 +270,7 @@ export class TreeNode {
     get nodeBelowInView(): TreeNode | undefined {
         if (this.isOpen && this.firstChild) return this.firstChild
         if (this.nextSibling) return this.nextSibling
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         while ((at = at.parent)) if (at.nextSibling) return at.nextSibling
     }

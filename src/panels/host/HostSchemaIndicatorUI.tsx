@@ -30,9 +30,9 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                     <div
                         tw='btn btn-sm'
-                        onClick={() => {
-                            host.fetchAndUpdateSchema()
-                            host.manager.updateHostPluginsAndModels()
+                        onClick={async () => {
+                            await host.fetchAndUpdateSchema()
+                            return host.manager.updateHostPluginsAndModels()
                         }}
                     >
                         Reload Schema

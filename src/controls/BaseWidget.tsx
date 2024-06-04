@@ -349,6 +349,7 @@ export abstract class BaseWidget {
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
+        // eslint-disable-next-line consistent-this
         const self = this as any as IWidget
         const config = self.config
         const serial = self.serial

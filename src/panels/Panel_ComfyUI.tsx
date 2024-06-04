@@ -62,7 +62,7 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
 
     useLayoutEffect(() => {
         if (!st.comfyUIIframeRef.current) return
-        loadFn()
+        void loadFn()
     }, [st.comfyUIIframeRef.current])
 
     return (

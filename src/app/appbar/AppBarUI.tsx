@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { cmd_fav_toggleFavBar } from '../../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicatorUI'
+import { Button } from '../../rsuite/button/Button'
 import { Frame } from '../../rsuite/frame/Frame'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { assets } from '../../utils/assets/assets'
@@ -27,6 +28,13 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
                 </div>
+                <Button
+                    onClick={() => {
+                        return new Promise((yes) => setTimeout(yes, 2000))
+                    }}
+                >
+                    test
+                </Button>
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />

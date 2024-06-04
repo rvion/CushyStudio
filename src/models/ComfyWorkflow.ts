@@ -79,7 +79,7 @@ export class ComfyWorkflowL {
         const path = this.getTargetPromptFilePath()
         // console.log('>>>🟢', { path })
         // open folder containing file
-        window.require('electron').shell.openExternal(`file://${path}/..`)
+        void window.require('electron').shell.openExternal(`file://${path}/..`)
         writeFileSync(path, JSON.stringify(jsonPrompt, null, 3))
     }
 
@@ -95,7 +95,7 @@ export class ComfyWorkflowL {
         const path = this.getTargetWorkflowFilePath()
         console.log('>>>🟢', { path })
         // open folder containing file
-        window.require('electron').shell.openExternal(`file://${path}/..`)
+        void window.require('electron').shell.openExternal(`file://${path}/..`)
         writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
     }
 

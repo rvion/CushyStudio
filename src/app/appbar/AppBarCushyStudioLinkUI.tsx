@@ -9,7 +9,7 @@ export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
-                window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio')
+                void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio')
             }}
         >
             {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}

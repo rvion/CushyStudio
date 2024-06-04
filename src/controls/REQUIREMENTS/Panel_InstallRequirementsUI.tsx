@@ -71,20 +71,17 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         </div>
                     )}
                 >
-                    <div tw='btn btn-sm'>See Installed</div>
+                    <Button>See Installed</Button>
                 </RevealUI>
-                <div
-                    tw='btn btn-sm'
-                    onClick={() => {
-                        host.fetchAndUpdateSchema()
-                        host.manager.updateHostPluginsAndModels()
+                <Button
+                    onClick={async () => {
+                        await host.fetchAndUpdateSchema()
+                        await host.manager.updateHostPluginsAndModels()
                     }}
                 >
                     Reload Schema
-                </div>
-                <div tw='btn btn-sm' onClick={() => host.manager.rebootComfyUI()}>
-                    Restart ComfyUI
-                </div>
+                </Button>
+                <Button onClick={() => host.manager.rebootComfyUI()}>Restart ComfyUI</Button>
             </div>
             <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' />
             <div tw='flex flex-col overflow-scroll gap-2'>

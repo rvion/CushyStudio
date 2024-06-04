@@ -54,13 +54,11 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
             inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
             visualHelper = (
                 <Frame //
-                    tw='w-full h-full text-xs flex items-center font-mono'
+                    tw='w-full h-full flex items-center font-mono whitespace-nowrap text-[0.6rem]'
                     base={val ? val : undefined}
                     text={{ contrast: 1 }}
-                    // textShadow={{ contrast: 1 }}
                 >
-                    {/* <div>{val}</div> */}
-                    <div>{getLCHFromStringAsString(val)}</div>
+                    {getLCHFromStringAsString(val)}
                 </Frame>
             )
             // highlight = false

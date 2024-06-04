@@ -39,8 +39,8 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                     if (entry.char === key) {
                         if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onPick()
                         // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
-                        else if (isBoundCommand(entry.entry)) entry.entry.execute()
-                        else if (isCommand(entry.entry)) entry.entry.execute()
+                        else if (isBoundCommand(entry.entry)) void entry.entry.execute()
+                        else if (isCommand(entry.entry)) void entry.entry.execute()
                         p.menu.onStop()
                         ev.stopPropagation()
                         ev.preventDefault()
@@ -98,7 +98,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             key={ix}
                             shortcut={char}
                             onClick={() => {
-                                entry.execute()
+                                void entry.execute()
                                 p.menu.onStop()
                             }}
                             label={
