@@ -182,18 +182,14 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div tw='opacity-50 italic text-xs'>
                 *: Only trigger words will be multiplied by weights; to change the lora model and clip strength, use [x,y] syntax
             </div>
-            <div>
-                <Button
-                    size='sm'
-                    onClick={() => openExternal(associatedUrl)}
-                    icon='mdiOpenInNew'
-                    // icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                >
+            <div tw='flex items-center gap-1'>
+                <Button size='input' icon='mdiOpenInNew' onClick={() => openExternal(associatedUrl)}>
                     Associated URL
                 </Button>
                 <Input
-                    tw='WIDGET-FIELD  rounded'
                     type='text'
+                    tw='w-full'
+                    placeholder='Associated URL....'
                     value={associatedUrl}
                     onChange={(ev) => {
                         const nextURL = ev.target.value

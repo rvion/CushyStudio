@@ -34,16 +34,14 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                 </Whisper>
             </div>
             <input
-                tw='input input-sm input-bordered join-item'
+                tw='cushy-basic-input'
+                value={githubUsername}
+                placeholder='your github username'
                 onChange={(ev) => {
                     st.configFile.update({ githubUsername: ev.target.value })
                     st.updateTsConfig()
                 }}
-                value={githubUsername}
-                // tw='font-mono'
-                // style={{ width: `${githubUsername.length + 4}ch` }}
-                placeholder='your github username'
-            ></input>
+            />
         </div>
     )
 })

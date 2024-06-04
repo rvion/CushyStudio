@@ -56,8 +56,8 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         onChange={(ev) => draft.update({ canvasToolCategory: ev.target.value ? ev.target.value : null })}
                         value={draft.data.canvasToolCategory ?? ''}
                         placeholder='unified-canvas category (blank=none)'
+                        tw='cushy-basic-input'
                         type='text'
-                        tw='input input-sm'
                     />
                     <div tw='divider my-0'></div>
                     <MenuItem

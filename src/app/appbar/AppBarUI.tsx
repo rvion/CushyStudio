@@ -28,13 +28,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
                 </div>
-                <Button
-                    onClick={() => {
-                        return new Promise((yes) => setTimeout(yes, 2000))
-                    }}
-                >
-                    test
-                </Button>
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />

@@ -285,10 +285,11 @@ export class ComfySchemaL {
                         index: node.inputs.length, // 🔴
                     })
                 } else {
-                    console.log('ipt', toJS(ipt))
-                    console.log('typeDef', toJS(typeDef))
-                    console.log(toJS({ slotType: slotType }))
-                    console.error(`🔴 invalid inputTypeName for node: ${nodeNameInComfy}, input: "${ipt.name}"`)
+                    console.error(`❌ invalid input schema in node: "${nodeNameInComfy}", input: "${ipt.name}"`, {
+                        ipt: toJS(ipt),
+                        typeDef: toJS(typeDef),
+                        slotType: toJS(slotType),
+                    })
                     // throw new Error(`object type not supported`)
                 }
             }

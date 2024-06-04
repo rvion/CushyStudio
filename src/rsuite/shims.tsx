@@ -12,7 +12,7 @@ export const FormHelpTextUI = (p: any) => <div {...p}></div>
 export const Input = (p: JSX.IntrinsicElements['input']) => {
     const { tw, className, children, ...rest } = p
     return (
-        <input tw={[tw, className, 'input input-bordered input-sm']} {...rest}>
+        <input tw={[tw, className, 'cushy-basic-input']} {...rest}>
             {children}
         </input>
     )

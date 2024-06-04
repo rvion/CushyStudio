@@ -22,12 +22,12 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             mode='int'
                             value={draft.st.project.data.autostartDelay}
                             onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
-                            tw='input input-bordered input-sm'
+                            className='cushy-basic-input'
                             placeholder='ms'
-                            min={0}
                             softMax={5000}
-                            step={250}
                             hideSlider
+                            step={250}
+                            min={0}
                         />
                         <div>max ms to wait before running anyway</div>
                         <InputNumberUI
@@ -37,12 +37,12 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             onValueChange={(val) => {
                                 draft.st.project.update({ autostartMaxDelay: val })
                             }}
-                            tw='input input-bordered input-sm'
+                            className='cushy-basic-input'
                             placeholder='ms'
-                            min={0}
                             softMax={5000}
-                            step={250}
                             hideSlider
+                            step={250}
+                            min={0}
                         />
                     </div>
                 )}

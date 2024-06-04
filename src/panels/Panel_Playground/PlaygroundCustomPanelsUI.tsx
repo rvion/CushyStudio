@@ -16,6 +16,8 @@ export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanels
             <Button onClick={() => cushy.layout.addCustom(HANDLE, { name: '@rvion' })} icon='mdiAbTesting'>
                 Open custom Panel
             </Button>
+            <hr />
+            <Button onClick={() => new Promise((yes) => setTimeout(yes, 2000))}>test</Button>
         </div>
     )
 })
