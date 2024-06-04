@@ -66,11 +66,21 @@
 }
 
 /* ------------------------------------------------------------------------------------------- */
+.cushy-basic-input:focus{
+    outline: none;
+    border: 1px solid oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) c h);
+}
+.cushy-basic-input:hover {
+    background: oklch(from var(--KLR) calc(l + 0.11 * var(--DIR)) c h);
+}
 .cushy-basic-input {
     /* 🔴 FINISH ME */
-    background: oklch(from var(--KLR) calc(l + 0.03 * var(--DIR)) c h);
-    border: 1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h);;
+    height: var(--input-height);
+    min-height: var(--input-height);
+    background: oklch(from var(--KLR) calc(l + 0.08 * var(--DIR)) c h);
+    border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
     border-radius: .2rem;
+    padding: 0 .3rem;
 }
 
 /* //InputNumberUI */
