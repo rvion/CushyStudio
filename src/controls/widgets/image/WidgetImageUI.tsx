@@ -72,20 +72,20 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
     )
 })
 
-{
-    // bird_d: Dunno how to test this or what it even is.
-    /* {suggestions.length > 0 && (
-                        <div tw='bd1'>
-                            <div tw='text-xs text-gray-500'>suggested</div>
-                            {suggestions.map((relPath) => (
-                                <img
-                                    key={relPath}
-                                    tw='w-16 h-16 object-cover cursor-pointer'
-                                    onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
-                                    src={relPath}
-                                    alt='suggested asset'
-                                />
-                            ))}
-                        </div>
-                    )} */
-}
+// {
+//     // bird_d: Dunno how to test this or what it even is.
+//     /* {suggestions.length > 0 && (
+//                         <div tw='bd1'>
+//                             <div tw='text-xs text-gray-500'>suggested</div>
+//                             {suggestions.map((relPath) => (
+//                                 <img
+//                                     key={relPath}
+//                                     tw='w-16 h-16 object-cover cursor-pointer'
+//                                     onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
+//                                     src={relPath}
+//                                     alt='suggested asset'
+//                                 />
+//                             ))}
+//                         </div>
+//                     )} */
+// }

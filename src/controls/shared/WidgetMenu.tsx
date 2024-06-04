@@ -61,14 +61,8 @@ export const menu_widgetActions: Menu<IWidget> = menu({
                 submit: () => {
                     console.log(`[🤠] values`)
                 },
-                UI: () => {
-                    const tree = new Tree([widget.asTreeElement('root')])
-                    const treeView = new TreeView(tree, { selectable: true })
-                    return (
-                        <TreeUI //
-                            title='Select values to include in preset'
-                            treeView={treeView}
-                        />
+                UI: (w) => <CreatePresetUI widget={widget} />,
+            }),
                     )
                 },
             }),
@@ -95,4 +89,15 @@ export const menu_widgetActions: Menu<IWidget> = menu({
         //     // menu_copyImageAs.bind(image),
         // ]
     },
+})
+
+export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: IWidget }) {
+    const tree = new Tree([p.widget.asTreeElement('root')])
+    const treeView = new TreeView(tree, { selectable: true })
+    return (
+        <TreeUI //
+            title='Select values to include in preset'
+            treeView={treeView}
+        />
+    )
 })

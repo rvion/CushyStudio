@@ -100,9 +100,10 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
             square
             size='xs'
             border={10}
-            tw={['flex', 'overflow-clip', 'items-center justify-center']}
+            tw={['flex', 'overflow-clip', 'items-center justify-center', 'cursor-pointer']}
             style={{ borderRadius: '0px' }}
             onClick={uist.flip}
+            hover
         >
             <Frame
                 base={10}

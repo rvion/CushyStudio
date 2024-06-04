@@ -47,15 +47,15 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const showBorder = subWidget.border
                         const isCollapsible: boolean = subWidget.isCollapsible
                         const boxBorder = showBorder ? 20 : 0
-                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.04 } : undefined
+                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
                                 <Frame border={boxBorder} tw={'flex flex-col'} base={boxBase}>
                                     <div tw='flex items-center'>
                                         <Button
-                                            look='ghost'
+                                            subtle
                                             square
-                                            size='xs'
+                                            size='input'
                                             icon='mdiChevronRight'
                                             onClick={() => subWidget.toggleCollapsed()}
                                         />
@@ -81,8 +81,8 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <Button
                                                 disabled={min != null && widget.items.length <= min}
                                                 square
-                                                size='xs'
-                                                look='ghost'
+                                                size='input'
+                                                subtle
                                                 icon='mdiDeleteOutline'
                                                 onClick={() => widget.removeItem(subWidget)}
                                             />
@@ -92,7 +92,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
                                         <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
-                                            <Button icon='mdiDotsVertical' look='ghost' square size='xs' />
+                                            <Button icon='mdiDotsVertical' subtle square size='input' />
                                         </RevealUI>
                                     </div>
                                     {widgetBody && !collapsed && subWidget != null && (
@@ -114,7 +114,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
-            <Button size='xs' look='ghost' square icon='mdiDragHorizontalVariant' />
+            <Button size='input' subtle square icon='mdiDragHorizontalVariant' />
         </div>
     )
 })
