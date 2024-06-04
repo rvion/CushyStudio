@@ -134,13 +134,17 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
-                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
             const child = this.children[branchName]
             if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
             if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
             // re-check if child is now enabled
             const childAfter = this.children[branchName]
-            if (childAfter && childAfter.hasChanges) return true
+            if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
         this.bumpValue()
     }
