@@ -47,10 +47,13 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                     </div>
                 )}
             >
-                <Button icon='mdiTimer'>timer</Button>
+                <Button size='sm' icon='mdiTimer'>
+                    timer
+                </Button>
             </RevealUI>
             <Button
                 icon='mdiRepeat'
+                size='sm'
                 loading={draft.shouldAutoStart}
                 active={draft.shouldAutoStart}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
@@ -60,6 +63,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             <Button
                 base={{ hue: knownOKLCHHues.success }}
                 look='primary'
+                size='sm'
                 expand
                 className='self-start'
                 icon={icon}

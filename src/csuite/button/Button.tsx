@@ -19,7 +19,7 @@ export const Button = observer(function Button_(
     const { size, look, onClick, ...rest } = p
     return (
         <Frame //
-            size={size ?? 'sm'}
+            size={size ?? 'input'}
             look={look}
             base={p.subtle ? 0 : uist.running ? 10 : 5}
             border={10}

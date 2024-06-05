@@ -10,7 +10,7 @@ export type FrameSize = {
 // prettier-ignore
 export function getClassNameForSize(p: FrameSize) {
     if (p.square) {
-        if (p.size === 'input') return `h-input w-input`
+        if (p.size === 'input') return `h-input w-input text-sm`
 
         if (p.size === 'xs')    return 'w-6  h-6'
         if (p.size === 'sm')    return 'w-8  h-8'
@@ -20,7 +20,7 @@ export function getClassNameForSize(p: FrameSize) {
         if (p.size == null)     return
         exhaust(p.size)
     } else {
-        if (p.size === 'input') return `line-height-[1.1em] h-input`
+        if (p.size === 'input') return `line-height-[1.1em] h-input text-sm`
 
         if (p.size === 'xs')    return 'line-height-[1.1em] text-xs px-0.5 py-0.5'
         if (p.size === 'sm')    return 'line-height-[1.1em] text-sm px-1   py-1  '
