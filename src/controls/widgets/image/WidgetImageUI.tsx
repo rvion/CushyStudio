@@ -5,10 +5,10 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
+import { ResizableFrame } from '../../../csuite/resizableFrame/resizableFrameUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
-import { ResizableFrame } from '../resizableFrame/resizableFrameUI'
 import { SpacerUI } from '../spacer/SpacerUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {

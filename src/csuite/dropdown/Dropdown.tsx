@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../icons/icons'
 import type { Kolor } from '../kolor/Kolor'
 
 import { ReactNode } from 'react'

@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { FormUI } from '../../controls/FormUI'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { Ikon } from '../../icons/iconHelpers'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
     //

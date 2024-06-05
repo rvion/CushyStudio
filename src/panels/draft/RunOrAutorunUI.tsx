@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../csuite/icons/icons'
 import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'

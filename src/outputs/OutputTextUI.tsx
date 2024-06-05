@@ -3,7 +3,7 @@ import type { MediaTextL } from '../models/MediaText'
 import { observer } from 'mobx-react-lite'
 
 import { TabUI } from '../app/layout/TabUI'
-import { MarkdownUI } from '../csuite/MarkdownUI'
+import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { Surface } from '../csuite/shims'
 import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'

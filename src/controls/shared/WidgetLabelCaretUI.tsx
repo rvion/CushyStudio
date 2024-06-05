@@ -2,7 +2,7 @@ import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../icons/iconHelpers'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: { widget: BaseWidget }) {
     if (!p.widget.isCollapsed && !p.widget.isCollapsible) return null

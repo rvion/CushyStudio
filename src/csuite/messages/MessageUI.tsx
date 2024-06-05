@@ -1,11 +1,11 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../icons/icons'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { IkonOf } from '../../icons/iconHelpers'
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
-import { MarkdownUI } from '../MarkdownUI'
+import { IkonOf } from '../icons/iconHelpers'
+import { MarkdownUI } from '../markdown/MarkdownUI'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
 export const MessageUI = observer(function MessageInfoUI_(p: {
@@ -27,7 +27,11 @@ export const MessageUI = observer(function MessageInfoUI_(p: {
             className={p.className}
             tw='p-0.5 rounded flex items-start gap-1'
         >
-            {p.icon && <IkonOf name={p.icon} tw='flex-none text-lg h-input' />}
+            {p.icon && (
+                <Frame text={{ chroma: 0.1, contrast: 0.2 }}>
+                    <IkonOf name={p.icon} tw='flex-none text-lg h-input' />
+                </Frame>
+            )}
             <div>
                 {p.title && <div tw='w-full font-bold'>{p.title}</div>}
                 {p.children}

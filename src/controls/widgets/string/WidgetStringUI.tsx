@@ -128,17 +128,4 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
             />
         </Frame>
     )
-    // <>
-    //     <Button icon='mdiUndoVariant' disabled={!widget.isChanged} onClick={() => widget.reset()}></Button>
-    // </>
 })
-// 1-a 2-a
-// 1-b 2-a
-
-// behaviours
-// 1. updateValueOn:
-//      - a keystroke
-//      - b enter
-// 2. onEscape or tab or click away:
-//      - a revert to last committed value
-//      - b do nothing

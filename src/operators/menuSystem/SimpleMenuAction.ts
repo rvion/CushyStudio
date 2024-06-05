@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../csuite/icons/icons'
 
 /**
  * a simple Menu entry for when you don't want to resort to commands nor custom widgets

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
-import { Ikon } from '../icons/iconHelpers'
+import { Ikon } from '../csuite/icons/iconHelpers'
 
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     return (

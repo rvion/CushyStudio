@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../csuite/icons/icons'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { Form } from './Form'

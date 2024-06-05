@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { InputStringUI, sampleInputStringUIProps } from '../../controls/widgets/string/InputStringUI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
@@ -10,6 +11,11 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
     return (
         <ErrorBoundaryUI>
             <div tw='flex flex-col gap-1'>
+                <div tw='flex flex-col gap-1'>
+                    <InputStringUI tw='w-96' {...sampleInputStringUIProps} />
+                    <InputStringUI tw='w-96' icon {...sampleInputStringUIProps} />
+                    <InputStringUI tw='w-96' icon='mdiAccessPointCheck' {...sampleInputStringUIProps} />
+                </div>
                 <div tw='divider my-0'>test</div>
                 <div tw='w-fit'>
                     <MessageInfoUI title='foo' />

@@ -1,6 +1,6 @@
 import type { Box } from '../csuite/box/Box'
+import type { IconName } from '../csuite/icons/icons'
 import type { Kolor } from '../csuite/kolor/Kolor'
-import type { IconName } from '../icons/icons'
 import type { BaseWidget } from './BaseWidget'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'

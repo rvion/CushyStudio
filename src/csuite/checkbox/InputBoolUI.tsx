@@ -1,5 +1,5 @@
-import type { IconName } from '../../icons/icons'
 import type { Box } from '../box/Box'
+import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
 import { createElement, type CSSProperties } from 'react'

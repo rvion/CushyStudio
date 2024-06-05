@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
-import { Ikon } from '../../icons/iconHelpers'
 import { Frame } from '../frame/Frame'
+import { Ikon } from '../icons/iconHelpers'
 import { useTheme } from '../theme/useTheme'
 import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'

@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Frame } from '../../../csuite/frame/Frame'
+import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { useTheme } from '../../../csuite/theme/useTheme'
-import { Ikon } from '../../../icons/iconHelpers'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKit } from '../../context/CushyKitCtx'
 

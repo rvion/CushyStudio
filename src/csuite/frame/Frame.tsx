@@ -9,19 +9,19 @@
 // the frame will merge the low level api on top of the compiled style from
 // the high level api
 
-import type { IconName } from '../../icons/icons'
 import type { BoxUIProps } from '../box/BoxUIProps'
+import type { IconName } from '../icons/icons'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext } from 'react'
 
-import { IkonOf } from '../../icons/iconHelpers'
 import { extractNormalizeBox } from '../box/BoxNormalized'
 import { applyBoxToCtx, hashKolor } from '../box/compileBoxClassName'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
+import { IkonOf } from '../icons/iconHelpers'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
 import { formatOKLCH } from '../kolor/formatOKLCH'

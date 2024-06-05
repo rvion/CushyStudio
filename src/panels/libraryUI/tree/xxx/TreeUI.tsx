@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../../../../app/accelerators/ComboUI'
 import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
+import { Ikon } from '../../../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../../../csuite/reveal/RevealUI'
-import { Ikon } from '../../../../icons/iconHelpers'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 

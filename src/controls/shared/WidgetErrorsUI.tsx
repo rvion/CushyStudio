@@ -2,8 +2,8 @@ import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
-import { Ikon } from '../../icons/iconHelpers'
 
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: BaseWidget }) {

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
-import { Ikon } from '../icons/iconHelpers'
+import { Ikon } from '../csuite/icons/iconHelpers'
 import { useSt } from '../state/stateContext'
 
 export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
