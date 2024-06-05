@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react-lite'
 
-import { getDBStats } from '../../db/getDBStats'
-import { quickBench } from '../../db/quickBench'
-import { Ikon } from '../../icons/iconHelpers'
-import { activityManager } from '../../operators/Activity'
-import { DEMO_ACTIVITY } from '../../operators/useDebugActivity'
-import { Dropdown } from '../../rsuite/dropdown/Dropdown'
-import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
-import { MenuItem } from '../../rsuite/dropdown/MenuItem'
-import { useSt } from '../../state/stateContext'
-import { KEYS } from '../shortcuts/shorcutKeys'
+import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { getDBStats } from '../db/getDBStats'
+import { quickBench } from '../db/quickBench'
+import { Ikon } from '../icons/iconHelpers'
+import { activityManager } from '../operators/Activity'
+import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
+import { Dropdown } from '../rsuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../rsuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
+import { useSt } from '../state/stateContext'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()

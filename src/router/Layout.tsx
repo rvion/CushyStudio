@@ -1,4 +1,4 @@
-import type { STATE } from '../../state/state'
+import type { STATE } from '../state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
@@ -7,12 +7,12 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
-import { regionMonitor } from '../../operators/RegionMonitor'
-import { Trigger } from '../../operators/RET'
-import { Message } from '../../rsuite/shims'
-import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
-import { type CustomPanelRef, registerCustomPanel } from '../Panel_Temporary'
-import { hashJSONObject } from './hash'
+import { hashJSONObject } from '../hashUtils/hash'
+import { regionMonitor } from '../operators/RegionMonitor'
+import { Trigger } from '../operators/RET'
+import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
+import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
+import { Message } from '../rsuite/shims'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
 
@@ -387,6 +387,8 @@ export class CushyLayoutManager {
                 tabEnableRename: false,
                 borderEnableAutoHide: true,
                 borderAutoSelectTabWhenClosed: true,
+                tabSetHeaderHeight: 24,
+                tabSetTabStripHeight: 24,
                 //
                 // tabSetEnableSingleTabStretch: true,
             },

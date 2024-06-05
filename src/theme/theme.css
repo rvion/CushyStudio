@@ -107,7 +107,10 @@
 /* mod 5. make close button slightly close to the text to save a few PX */
 .flexlayout__tab_button { gap: .1rem }
 
-
+/* mod 6. remove the small top padding above tabs */
+.flexlayout__tabset_tabbar_inner_tab_container_top{
+    border-top: 0;
+}
 
 
 /* COMFY NODES -------------------------------------------------------------------------------------- */

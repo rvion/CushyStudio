@@ -2,9 +2,9 @@ import { mdiGithub, mdiPost } from '@mdi/js'
 import { Icon } from '@mdi/react'
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../icons/iconHelpers'
-import { Dropdown } from '../../rsuite/dropdown/Dropdown'
-import { MenuItem } from '../../rsuite/dropdown/MenuItem'
+import { Ikon } from '../icons/iconHelpers'
+import { Dropdown } from '../rsuite/dropdown/Dropdown'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
 
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     return (

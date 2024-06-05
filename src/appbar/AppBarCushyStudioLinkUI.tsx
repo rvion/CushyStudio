@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { assets } from '../../utils/assets/assets'
+import { assets } from '../utils/assets/assets'
 
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
     return (

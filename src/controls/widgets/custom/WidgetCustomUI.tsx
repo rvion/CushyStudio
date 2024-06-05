@@ -1,4 +1,4 @@
-import type { PropsOf } from '../../../panels/router/Layout'
+import type { PropsOf } from '../../../router/Layout'
 import type { Widget_custom } from './WidgetCustom'
 
 import { observer } from 'mobx-react-lite'

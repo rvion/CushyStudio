@@ -3,9 +3,9 @@ import type * as FL from 'flexlayout-react'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
-import { Frame } from '../../rsuite/frame/Frame'
-import { Message } from '../../rsuite/shims'
+import { ErrorBoundaryUI } from '../rsuite/errors/ErrorBoundaryUI'
+import { Frame } from '../rsuite/frame/Frame'
+import { Message } from '../rsuite/shims'
 import { PanelNames, panels } from './PANELS'
 import { panelContext } from './usePanel'
 

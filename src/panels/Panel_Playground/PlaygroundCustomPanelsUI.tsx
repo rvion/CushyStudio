@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../rsuite/button/Button'
 import { registerCustomPanel } from '../Panel_Temporary'
-import { usePanelTemporaryData } from '../router/usePanelTemporaryData'
+import { usePanelTemporaryData } from '../../router/usePanelTemporaryData'
 
 export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanelsUI_(p: {}) {
     return (

@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
-import { stableStringify } from '../../panels/router/hash'
+import { stableStringify } from '../../hashUtils/hash'
 
 const newly = Symbol('newly')
 type NEWLY = typeof newly

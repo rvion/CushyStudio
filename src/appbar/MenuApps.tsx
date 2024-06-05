@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
-import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Dropdown } from '../../rsuite/dropdown/Dropdown'
-import { MenuItem } from '../../rsuite/dropdown/MenuItem'
-import { useSt } from '../../state/stateContext'
-import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
-import { KEYS } from '../shortcuts/shorcutKeys'
+import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
+import { Dropdown } from '../rsuite/dropdown/Dropdown'
+import { MenuItem } from '../rsuite/dropdown/MenuItem'
+import { useSt } from '../state/stateContext'
+import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()

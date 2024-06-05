@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/button/Button'
-import { Frame } from '../../rsuite/frame/Frame'
-import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
-import { useSt } from '../../state/stateContext'
+import { Button } from '../rsuite/button/Button'
+import { Frame } from '../rsuite/frame/Frame'
+import { knownOKLCHHues } from '../rsuite/tinyCSS/knownHues'
+import { useSt } from '../state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
 
 export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p: {}) {
