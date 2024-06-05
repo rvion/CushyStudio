@@ -2,8 +2,8 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
-import { SelectUI } from '../../../rsuite/select/SelectUI'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { SelectUI } from '../../../csuite/select/SelectUI'
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {

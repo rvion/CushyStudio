@@ -3,7 +3,7 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxSubtle } from '../../../rsuite/box/BoxMisc'
+import { BoxSubtle } from '../../../csuite/box/BoxMisc'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 

@@ -3,15 +3,15 @@ import type { IWidget } from '../IWidget'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { menu } from '../../operators/Menu'
 import { SimpleMenuAction } from '../../operators/menuSystem/SimpleMenuAction'
 import { SimpleMenuModal } from '../../operators/menuSystem/SimpleMenuModal'
 import { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'
-import { Button } from '../../rsuite/button/Button'
-import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: IWidget }) {
     return (

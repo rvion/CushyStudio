@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Ikon } from '../icons/iconHelpers'
-import { Dropdown } from '../rsuite/dropdown/Dropdown'
-import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {

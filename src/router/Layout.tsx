@@ -7,12 +7,12 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
+import { Message } from '../csuite/shims'
 import { hashJSONObject } from '../hashUtils/hash'
 import { regionMonitor } from '../operators/RegionMonitor'
 import { Trigger } from '../operators/RET'
 import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
-import { Message } from '../rsuite/shims'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
 

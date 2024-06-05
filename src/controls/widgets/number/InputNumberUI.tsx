@@ -4,9 +4,9 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
+import { Frame } from '../../../csuite/frame/Frame'
+import { useTheme } from '../../../csuite/theme/useTheme'
 import { Ikon } from '../../../icons/iconHelpers'
-import { Frame } from '../../../rsuite/frame/Frame'
-import { useTheme } from '../../../rsuite/theme/useTheme'
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 import { useCushyKit } from '../../context/CushyKitCtx'
 

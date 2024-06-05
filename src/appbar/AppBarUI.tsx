@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../csuite/frame/Frame'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
-import { Frame } from '../rsuite/frame/Frame'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'

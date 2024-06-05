@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (

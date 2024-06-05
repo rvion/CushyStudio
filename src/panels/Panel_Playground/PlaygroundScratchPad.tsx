@@ -2,9 +2,9 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
-import { BoxBase, BoxSubtle, BoxTitle } from '../../rsuite/box/BoxMisc'
-import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
-import { Frame } from '../../rsuite/frame/Frame'
+import { BoxBase, BoxSubtle, BoxTitle } from '../../csuite/box/BoxMisc'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { Frame } from '../../csuite/frame/Frame'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 

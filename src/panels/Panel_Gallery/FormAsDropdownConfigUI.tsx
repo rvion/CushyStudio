@@ -3,10 +3,10 @@ import type { Form } from '../../controls/Form'
 import { observer } from 'mobx-react-lite'
 
 import { FormUI } from '../../controls/FormUI'
+import { Button } from '../../csuite/button/Button'
+import { Frame } from '../../csuite/frame/Frame'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { Ikon } from '../../icons/iconHelpers'
-import { Button } from '../../rsuite/button/Button'
-import { Frame } from '../../rsuite/frame/Frame'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
     //

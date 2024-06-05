@@ -4,8 +4,8 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
+import { Frame } from '../../csuite/frame/Frame'
 import { getAllIcons } from '../../icons/iconHelpers'
-import { Frame } from '../../rsuite/frame/Frame'
 import { searchMatches } from '../../utils/misc/searchMatches'
 import { PanelHeaderUI } from '../PanelHeader'
 

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { Tag, Whisper } from '../../rsuite/shims'
+import { Tag, Whisper } from '../../csuite/shims'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 

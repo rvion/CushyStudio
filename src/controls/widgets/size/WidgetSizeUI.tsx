@@ -4,8 +4,8 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
-import { Frame } from '../../../rsuite/frame/Frame'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../../csuite/frame/Frame'
 import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {

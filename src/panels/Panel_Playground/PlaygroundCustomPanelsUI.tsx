@@ -3,9 +3,9 @@ import type { FormSerial } from '../../controls/FormSerial'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/button/Button'
-import { registerCustomPanel } from '../Panel_Temporary'
+import { Button } from '../../csuite/button/Button'
 import { usePanelTemporaryData } from '../../router/usePanelTemporaryData'
+import { registerCustomPanel } from '../Panel_Temporary'
 
 export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanelsUI_(p: {}) {
     return (

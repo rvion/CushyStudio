@@ -3,7 +3,7 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem, ModelImage 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
 

@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
-import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
-import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
-import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p: {}) {

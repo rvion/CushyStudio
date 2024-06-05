@@ -2,9 +2,9 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown } from '../../rsuite/dropdown/Dropdown'
-import { MenuDividerUI_ } from '../../rsuite/dropdown/MenuDividerUI'
-import { MenuItem } from '../../rsuite/dropdown/MenuItem'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 
 export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {

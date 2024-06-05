@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
+import { MessageErrorUI } from '../csuite/messages/MessageErrorUI'
 
 // ------------------------------------------------------------
 export type CustomPanelRef<UID extends string, Props> = {

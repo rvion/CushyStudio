@@ -2,7 +2,7 @@ import type { CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 

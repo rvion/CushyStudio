@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { Message } from '../../csuite/shims'
 import { HostL } from '../../models/Host'
-import { Button } from '../../rsuite/button/Button'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Message } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 

@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
+import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { CushyAppL } from '../../models/CushyApp'
-import { Button } from '../../rsuite/button/Button'
-import { InputBoolCheckboxUI } from '../../rsuite/checkbox/InputBoolCheckboxUI'
-import { InputBoolToggleButtonUI } from '../../rsuite/checkbox/InputBoolToggleButtonUI'
-import { Frame } from '../../rsuite/frame/Frame'
-import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
 import { useSt } from '../../state/stateContext'
 import { AppIllustrationUI } from './AppIllustrationUI'
 

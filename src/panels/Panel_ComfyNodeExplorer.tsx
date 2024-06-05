@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../core/Colors'
-import { Input } from '../rsuite/shims'
+import { Input } from '../csuite/shims'
 import { useSt } from '../state/stateContext'
 import { searchMatches } from '../utils/misc/searchMatches'
 

@@ -2,8 +2,8 @@ import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/button/Button'
-import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
+import { Button } from '../../csuite/button/Button'
+import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const RecompileUI = observer(function RecompileUI_(p: {

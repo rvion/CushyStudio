@@ -1,4 +1,4 @@
-import type { RevealPlacement } from '../rsuite/reveal/RevealPlacement'
+import type { RevealPlacement } from '../csuite/reveal/RevealPlacement'
 import type { FC } from 'react'
 
 import { makeAutoObservable } from 'mobx'

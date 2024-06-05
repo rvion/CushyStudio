@@ -2,8 +2,8 @@ import type { IWidget } from '../IWidget'
 
 import { observer } from 'mobx-react-lite'
 
-import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
-import { Frame } from '../../rsuite/frame/Frame'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { useCushyKit } from '../context/CushyKitCtx'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'

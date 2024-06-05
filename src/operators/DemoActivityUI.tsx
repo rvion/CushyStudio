@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../rsuite/button/Button'
-import { Frame } from '../rsuite/frame/Frame'
-import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../rsuite/reveal/RevealExamples'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { Button } from '../csuite/button/Button'
+import { Frame } from '../csuite/frame/Frame'
+import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../csuite/reveal/RevealExamples'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 import { menu_imageActions } from './commands/cmd_copyImage'
 
 export const DemoActivityUI = observer(() => {

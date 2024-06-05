@@ -2,8 +2,8 @@ import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../icons/iconHelpers'
-import { Frame } from '../../rsuite/frame/Frame'
 
 export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: { widget: BaseWidget }) {
     const iconName = p.widget.icon

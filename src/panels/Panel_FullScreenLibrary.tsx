@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { AppCardUI } from '../cards/fancycard/AppCardUI'
-import { Button } from '../rsuite/button/Button'
-import { Slider, Toggle } from '../rsuite/shims'
+import { Button } from '../csuite/button/Button'
+import { Slider, Toggle } from '../csuite/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'

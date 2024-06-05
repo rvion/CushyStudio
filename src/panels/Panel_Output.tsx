@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 
 import { Status } from '../back/Status'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { Button } from '../csuite/button/Button'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 import { OutputPreviewUI, OutputUI } from '../outputs/OutputUI'
 import { StepOutputsHeaderV2UI } from '../outputs/StepOutputsV2UI'
-import { Button } from '../rsuite/button/Button'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 

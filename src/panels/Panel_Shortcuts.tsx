@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
 import { commandManager } from '../app/shortcuts/CommandManager'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { FormHelpTextUI } from '../csuite/shims'
 import { Trigger } from '../operators/RET'
-import { MessageInfoUI } from '../rsuite/messages/MessageInfoUI'
-import { FormHelpTextUI } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 

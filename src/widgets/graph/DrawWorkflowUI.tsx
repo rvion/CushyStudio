@@ -3,11 +3,11 @@ import type { NodePort } from '../../core/ComfyNode'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
+import { Frame } from '../../csuite/frame/Frame'
+import { ProgressLine } from '../../csuite/shims'
 import { hashString } from '../../hashUtils/hash'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/Panel_Canvas/utils/randomColor'
-import { Frame } from '../../rsuite/frame/Frame'
-import { ProgressLine } from '../../rsuite/shims'
 import { bang } from '../../utils/misc/bang'
 import { NodeSlotSize } from './NodeSlotSize'
 

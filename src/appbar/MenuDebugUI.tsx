@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../csuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { getDBStats } from '../db/getDBStats'
 import { quickBench } from '../db/quickBench'
 import { Ikon } from '../icons/iconHelpers'
 import { activityManager } from '../operators/Activity'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
-import { Dropdown } from '../rsuite/dropdown/Dropdown'
-import { MenuDividerUI_ } from '../rsuite/dropdown/MenuDividerUI'
-import { MenuItem } from '../rsuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {

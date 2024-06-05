@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/button/Button'
+import { Button } from '../../../csuite/button/Button'
 
 export type IWidgetListLike = {
     addItem(): void

@@ -2,7 +2,7 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/button/Button'
+import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | ComfyWorkflowID }) {

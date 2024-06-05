@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { Button } from '../../rsuite/button/Button'
+import { Button } from '../../csuite/button/Button'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 import { PanelHeaderUI } from '../PanelHeader'
 

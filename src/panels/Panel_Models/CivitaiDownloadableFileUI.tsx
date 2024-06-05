@@ -3,14 +3,14 @@ import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultI
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
 import { formatSize } from '../../db/getDBStats'
 import { Ikon } from '../../icons/iconHelpers'
 import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
 import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
 import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
-import { MessageWarningUI } from '../../rsuite/messages/MessageWarningUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../rsuite/select/SelectUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 

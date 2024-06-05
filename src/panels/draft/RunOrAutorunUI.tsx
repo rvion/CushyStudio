@@ -4,9 +4,9 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
-import { Button } from '../../rsuite/button/Button'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { knownOKLCHHues } from '../../rsuite/tinyCSS/knownHues'
+import { Button } from '../../csuite/button/Button'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft

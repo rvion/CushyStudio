@@ -2,8 +2,8 @@
 import debounce from 'lodash.debounce'
 import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 
-import { Button } from '../../rsuite/button/Button'
-import { Input, Slider } from '../../rsuite/shims'
+import { Button } from '../../csuite/button/Button'
+import { Input, Slider } from '../../csuite/shims'
 import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from './FieldAndLabelUI'
 

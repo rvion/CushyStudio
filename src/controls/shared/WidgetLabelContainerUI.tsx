@@ -2,8 +2,8 @@ import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Frame } from '../../rsuite/frame/Frame'
-import { useTheme } from '../../rsuite/theme/useTheme'
+import { Frame } from '../../csuite/frame/Frame'
+import { useTheme } from '../../csuite/theme/useTheme'
 
 export type WidgetLabelContainerProps = {
     //

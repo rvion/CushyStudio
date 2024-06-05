@@ -2,10 +2,10 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../../rsuite/checkbox/InputBoolToggleButtonUI'
-import { Frame } from '../../../rsuite/frame/Frame'
-import { useTheme } from '../../../rsuite/theme/useTheme'
+import { Button } from '../../../csuite/button/Button'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { useTheme } from '../../../csuite/theme/useTheme'
 import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {

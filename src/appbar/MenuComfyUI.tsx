@@ -3,9 +3,9 @@ import type { HostL } from '../models/Host'
 import { observer } from 'mobx-react-lite'
 
 import { openFolderInOS } from '../app/layout/openExternal'
-import { Button } from '../rsuite/button/Button'
-import { Dropdown } from '../rsuite/dropdown/Dropdown'
-import { MenuItem } from '../rsuite/dropdown/MenuItem'
+import { Button } from '../csuite/button/Button'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {

@@ -3,9 +3,9 @@ import type { MediaTextL } from '../models/MediaText'
 import { observer } from 'mobx-react-lite'
 
 import { TabUI } from '../app/layout/TabUI'
+import { MarkdownUI } from '../csuite/MarkdownUI'
+import { Surface } from '../csuite/shims'
 import { StepL } from '../models/Step'
-import { MarkdownUI } from '../rsuite/MarkdownUI'
-import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 

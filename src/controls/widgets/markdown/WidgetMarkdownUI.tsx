@@ -2,7 +2,7 @@ import type { Widget_markdown } from './WidgetMarkdown'
 
 import { observer } from 'mobx-react-lite'
 
-import { MarkdownUI } from '../../../rsuite/MarkdownUI'
+import { MarkdownUI } from '../../../csuite/MarkdownUI'
 
 export const WidgetMardownUI = observer(function WidgetMardownUI_(p: { widget: Widget_markdown }) {
     const widget = p.widget

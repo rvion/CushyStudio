@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/button/Button'
+import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {

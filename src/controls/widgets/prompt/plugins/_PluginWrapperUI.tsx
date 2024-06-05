@@ -2,8 +2,8 @@ import type { PromptPlugin } from './PromptPlugin'
 
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../../../../csuite/frame/Frame'
 import { Ikon } from '../../../../icons/iconHelpers'
-import { Frame } from '../../../../rsuite/frame/Frame'
 
 export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
     //

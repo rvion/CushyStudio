@@ -2,7 +2,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { ErrorBoundaryUI } from '../rsuite/errors/ErrorBoundaryUI'
+import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { useSt } from '../state/stateContext'
 import { StepOutput } from '../types/StepOutput'
 

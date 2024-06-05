@@ -2,7 +2,7 @@ import type { Widget_bool } from './WidgetBool'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../../../rsuite/checkbox/InputBoolUI'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { SpacerUI } from '../spacer/SpacerUI'
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {

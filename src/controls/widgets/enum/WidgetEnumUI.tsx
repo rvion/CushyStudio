@@ -4,10 +4,10 @@ import type { Widget_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
+import { MessageErrorUI } from '../../../csuite/messages/MessageErrorUI'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../../csuite/select/SelectUI'
 import { Ikon } from '../../../icons/iconHelpers'
-import { MessageErrorUI } from '../../../rsuite/messages/MessageErrorUI'
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../../rsuite/select/SelectUI'
 import { useSt } from '../../../state/stateContext'
 
 // UI

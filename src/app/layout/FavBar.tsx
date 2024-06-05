@@ -6,12 +6,12 @@ import { fileURLToPath } from 'url'
 
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Button } from '../../csuite/button/Button'
+import { CachedResizedImage } from '../../csuite/CachedResizedImageUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
-import { Button } from '../../rsuite/button/Button'
-import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
-import { Frame } from '../../rsuite/frame/Frame'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?

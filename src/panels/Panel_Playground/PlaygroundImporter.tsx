@@ -4,7 +4,7 @@ import type { ComfyPromptJSON } from '../../types/ComfyPrompt'
 import { observer } from 'mobx-react-lite'
 
 import { convertWorkflowToPrompt } from '../../core/litegraphToPrompt'
-import { ErrorBoundaryUI } from '../../rsuite/errors/ErrorBoundaryUI'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 

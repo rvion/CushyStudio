@@ -3,8 +3,8 @@ import type { Widget_string } from './WidgetString'
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
 
-import { Frame } from '../../../rsuite/frame/Frame'
-import { getLCHFromStringAsString } from '../../../rsuite/kolor/getLCHFromStringAsString'
+import { Frame } from '../../../csuite/frame/Frame'
+import { getLCHFromStringAsString } from '../../../csuite/kolor/getLCHFromStringAsString'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 

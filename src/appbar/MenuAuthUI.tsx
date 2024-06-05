@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../rsuite/button/Button'
-import { Dropdown } from '../rsuite/dropdown/Dropdown'
+import { Button } from '../csuite/button/Button'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { useSt } from '../state/stateContext'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 

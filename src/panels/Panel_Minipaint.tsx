@@ -6,9 +6,9 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 
+import { Button } from '../csuite/button/Button'
+import { knownOKLCHHues } from '../csuite/tinyCSS/knownHues'
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
-import { Button } from '../rsuite/button/Button'
-import { knownOKLCHHues } from '../rsuite/tinyCSS/knownHues'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 

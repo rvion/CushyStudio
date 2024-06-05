@@ -2,9 +2,9 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
+import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { MenuItem } from '../rsuite/dropdown/MenuItem'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'

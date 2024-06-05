@@ -3,7 +3,7 @@ import type { Widget_optional } from '../widgets/optional/WidgetOptional'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../../rsuite/checkbox/InputBoolUI'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { isWidgetOptional } from '../widgets/WidgetUI.DI'
 
 export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { className?: string; widget: BaseWidget }) {
