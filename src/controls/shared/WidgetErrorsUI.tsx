@@ -2,18 +2,21 @@ import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../icons/iconHelpers'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
+
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: BaseWidget }) {
     const widget = p.widget
     if (widget.hasErrors === false) return null
     return (
-        <div tw='widget-error-ui'>
+        <MessageErrorUI>
             {widget.errors.map((e, i) => (
                 <div key={i} tw='flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
+                    <Ikon.mdiAlert />
                     {e.message}
                 </div>
             ))}
-        </div>
+        </MessageErrorUI>
     )
 })

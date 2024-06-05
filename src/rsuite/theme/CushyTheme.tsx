@@ -41,6 +41,7 @@ export const CushyTheme = observer((p: { children: ReactNode }) => {
                     '--KLR': cushy.theme.root.value.base,
                     '--KLRH': cushy.theme.root.value.base,
                     '--input-border': theme.value.inputBorder.value / 100,
+                    '--DIR': 1,
                 }}
                 base={cushy.theme.value.base}
                 text={cushy.themeText /* chromaBlend: 99, hueShift: 0 */}

@@ -35,21 +35,23 @@ export const menu_widgetActions: Menu<IWidget> = menu({
             }),
         )
         out.push(MenuDividerUI_)
-        // FOLD ALL CHILDREN
-        out.push(
-            new SimpleMenuAction({
-                label: 'Expand All',
-                icon: 'mdiExpandAll',
-                disabled: widget.hasNoChild,
-                onPick: () => widget.expandAllChildren(),
-            }),
-        )
+
         // COLLAPSE ALL CHILDREN
         out.push(
             new SimpleMenuAction({
                 label: 'Collapse All',
                 icon: 'mdiCollapseAll',
                 onPick: () => widget.collapseAllChildren(),
+            }),
+        )
+
+        // EXPAND ALL CHILDREN
+        out.push(
+            new SimpleMenuAction({
+                label: 'Expand All',
+                icon: 'mdiExpandAll',
+                disabled: widget.hasNoChild,
+                onPick: () => widget.expandAllChildren(),
             }),
         )
 

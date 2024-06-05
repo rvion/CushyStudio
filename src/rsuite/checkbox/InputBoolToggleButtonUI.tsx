@@ -14,7 +14,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
 
     return (
         <Frame
-            tw='WIDGET-FIELD !select-none cursor-pointer justify-center px-1 py-1 text-sm flex items-center'
+            tw='h-input !select-none cursor-pointer justify-center px-1 py-1 text-sm flex items-center'
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
             look='default'

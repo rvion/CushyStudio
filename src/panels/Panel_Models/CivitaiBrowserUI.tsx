@@ -14,16 +14,14 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                     style={{ borderRight: '1px solid #aaa' }}
                 >
                     <div // SEARCH
-                        className='row gap'
+                        className='px-1'
                     >
-                        <div className='join m-1'>
-                            <input
-                                tw='input input-bordered input-sm'
-                                placeholder='rechercher'
-                                value={civitai.query.value}
-                                onChange={(ev) => (civitai.query.value = (ev.target as any).value)}
-                            />
-                        </div>
+                        <input
+                            tw='cushy-basic-input w-full'
+                            placeholder='rechercher'
+                            value={civitai.query.value}
+                            onChange={(ev) => (civitai.query.value = (ev.target as any).value)}
+                        />
                     </div>
                     <div //RESULS
                         tw='flex flex-col flex-initial overflow-auto'

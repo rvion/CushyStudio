@@ -27,7 +27,7 @@ type ResizableFrameProps = {
      * Pixel interval to snap to.
      * Ignored for relative movement
      * */
-    snap?: number // TODO(bird_d): This should snap by WIDGET-FIELD's height when undefined
+    snap?: number // TODO(bird_d): This should snap by h-input's height when undefined
 } & FrameProps
 
 class ResizableFrameStableState {
@@ -87,7 +87,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
                 style={{ borderRadius: '0px', height: '1px' }}
             ></Frame>
             <Frame // Footer
-                className='WIDGET-FIELD w-full relative'
+                className='h-input w-full relative'
                 // hover
             >
                 <div tw='absolute w-full h-full'>

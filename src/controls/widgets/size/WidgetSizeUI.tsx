@@ -29,7 +29,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
         <div className='flex flex-1 flex-col gap-1'>
             <Frame //Joined container
                 border={{ contrast: 0.05 }}
-                tw={['WIDGET-FIELD w-full h-full flex gap-2 items-center overflow-clip']}
+                tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
                 <InputNumberUI

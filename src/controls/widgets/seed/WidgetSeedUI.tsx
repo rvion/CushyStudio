@@ -14,7 +14,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
     const border = useTheme().value.inputBorder
 
     return (
-        <Frame border={{ contrast: border }} tw={['WIDGET-FIELD', 'flex-1 flex items-center']}>
+        <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>
             <InputBoolToggleButtonUI // Random
                 // tw='!border-l-0'
                 icon='mdiShuffle'

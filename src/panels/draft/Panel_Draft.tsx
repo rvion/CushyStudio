@@ -9,6 +9,7 @@ import { FormUI } from '../../controls/FormUI'
 import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { Frame } from '../../rsuite/frame/Frame'
 import { MarkdownUI } from '../../rsuite/MarkdownUI'
+import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
 import { PhoneWrapperUI } from '../../rsuite/PhoneWrapperUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
@@ -106,11 +107,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </MessageInfoUI>
                 )}
 
-                {metadata?.description && (
+                {/* {metadata?.description && (
                     <BoxSubtle>
                         <MarkdownUI tw='_WidgetMardownUI text-sm italic px-1 w-full' markdown={metadata.description} />
                     </BoxSubtle>
-                )}
+                )} */}
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
@@ -160,7 +161,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
     return (
         <div tw='h-full'>
-            <Message type='error'>{p.children}</Message>
+            <MessageErrorUI>
+                <div>{p.children}</div>
+            </MessageErrorUI>
         </div>
     )
 })

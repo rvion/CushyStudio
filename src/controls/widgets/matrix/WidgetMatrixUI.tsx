@@ -8,18 +8,8 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
     const rows = widget.rows
     if (cols.length === 0) return <div>❌ no cols</div>
     if (rows.length === 0) return <div>❌ no rows</div>
-    // const collapsed = widget.state.collapsed
-    // if (collapsed)
-    //     return (
-    //         <Button look='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-    //             {collapsed ? '▸' : '▿'}
-    //         </Button>
-    //     )
     return (
         <>
-            {/* <Button look='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                {collapsed ? '▸' : '▿'}
-            </Button> */}
             <table cellSpacing={0} cellPadding={0}>
                 <thead>
                     <tr>

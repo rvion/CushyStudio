@@ -22,7 +22,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                 )}
                 <SpacerUI />
                 <RevealUI
-                    tw='WIDGET-FIELD'
+                    tw='h-input'
                     title='Step Options'
                     content={() => (
                         <div tw='w-64 p-2' className='line'>

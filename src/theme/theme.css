@@ -19,7 +19,6 @@
 /* ---------------------------------------------------------------------------------------------- */
 /* Should be used for right-click/context/pop-up menus */
 .MENU-ROOT {
-    /* padding: 0.5rem; */
     padding: 4px;
 }
 
@@ -58,15 +57,9 @@
 /* border stuff ----------------------------------------------------------------------------------- */
 .bd { border: 2px solid oklch(var(--p)) }
 .bd1 { border: 1px solid oklch(var(--p)) }
-.bdl1 { border-left: 1px solid oklch(var(--p)) }
+
 .konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
 .virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
-.virtualBorder2 { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5)); }
-
-
-.animated {
-    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
  /* helpers ----------------------------------------------------------------------------------- */
 .flex-2{ flex: 2 1 0%; }

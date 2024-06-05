@@ -109,7 +109,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
 
-            {img ? <ImageDropdownUI tw='WIDGET-FIELD' img={img} /> : null}
+            {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
 
             <SpacerUI />
 
@@ -127,21 +127,16 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     </div>
                 )}
             >
-                <div tw='WIDGET-FIELD flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
+                <div tw='h-input flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
                     <Ikon.mdiInformation />
 
                     {img ? (
                         <>
-                            <div tw='WIDGET-FIELD p-1 truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+                            <div tw='h-input p-1 truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
                             {img.data.fileSize && (
-                                <div tw='WIDGET-FIELD border-l border-base-100 p-1 truncate'>{`${formatSize(
-                                    img.data.fileSize,
-                                )}`}</div>
+                                <div tw='h-input border-l border-base-100 p-1 truncate'>{`${formatSize(img.data.fileSize)}`}</div>
                             )}
-                            <div tw='WIDGET-FIELD border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(
-                                0,
-                                5,
-                            )}...`}</div>
+                            <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
                         </>
                     ) : null}
                     {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}

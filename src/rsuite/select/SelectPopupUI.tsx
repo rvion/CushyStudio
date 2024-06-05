@@ -55,7 +55,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     <div tw='overflow-hidden'>{s.displayValue}</div>
                 </li>
                 {/* No results */}
-                {s.filteredOptions.length === 0 ? <li className='WIDGET-FIELD text-base'>No results</li> : null}
+                {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}
 
                 {/* Entries */}
                 {s.filteredOptions.map((option, index) => {
@@ -89,7 +89,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                                           : 0,
                                 }}
                                 tw={[
-                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
+                                    'h-input pl-0.5 flex w-full items-center rounded',
                                     'active:cursor-default cursor-pointer',
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                 ]}

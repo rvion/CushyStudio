@@ -22,8 +22,10 @@ import { extractNormalizeBox } from '../box/BoxNormalized'
 import { applyBoxToCtx, hashKolor } from '../box/compileBoxClassName'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
+import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
 import { formatOKLCH } from '../kolor/formatOKLCH'
+import { isSameOKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { getClassNameForSize } from './FrameSize'
@@ -78,12 +80,15 @@ export const Frame = observer(
         }
 
         // MODIFIERS ---------------------------------------------
+        // 2024-06-05 I'm not quite sure having those modifiers here is a good idea
+        // I originally though they were standard; but they are probably not
         const isDisabled = disabled || false
         if (isDisabled) {
             box.text = { contrast: 0.1 }
             box.base = { contrast: 0 }
             box.border = null
         }
+
         if (active) {
             box.border = { contrast: 0.5 }
             box.text = { contrast: 0.9 }
@@ -91,55 +96,55 @@ export const Frame = observer(
 
         // CONTEXT ---------------------------------------------
         const prevCtx = useContext(CurrentStyleCtx)
-        const nextCtx = applyBoxToCtx(prevCtx, box)
+
+        // const nextCtx = applyBoxToCtx(prevCtx, box)
+        const nextBase = applyKolorToOKLCH(prevCtx.base, box.base)
+
+        const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
+        const nextLightness = nextBase.lightness
+        const nextext = overrideKolor(prevCtx.text, box.text)!
+
+        const goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
+        const goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
+        const nextDir = goingTooDark ? -1 : goingTooLight ? 1 : prevCtx.dir
 
         // STYLE ---------------------------------------------
-        const variables: { [key: string]: string | number } = {
-            '--KLR': formatOKLCH(nextCtx.base),
-            '--KLRH': formatOKLCH(nextCtx.baseH),
-            '--DIR': nextCtx.dir?.toString(), // === -1 ? -1 : 1,
-            // '--PREV_BASE_L': prevCtx.base.lightness, // === -1 ? -1 : 1,
-            // '--NEXT_BASE_L': nextCtx.base.lightness, // === -1 ? -1 : 1,
-        }
+        const variables: { [key: string]: string | number } = {}
+        if (!isSameOKLCH(prevCtx.base, nextBase)) variables['--KLR'] = formatOKLCH(nextBase)
+        if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
+        if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // CLASSES ---------------------------------------------
         const classes: string[] = []
 
-        // ⏸️ if (box.base) {
-        // ⏸️     const clsName = hashKolor(box.base)
-        // ⏸️     if (!seen.has(clsName)) setRule(`.${CSS.escape(clsName)}`, `background: var(--KLR);`)
-        // ⏸️     classes.push(clsName)
-        // ⏸️ }
+        if (box.base_) {
+            const clsName = 'bg' + hashKolor(box.base_, nextDir)
+            const selector = `.${CSS.escape(clsName)}`
+            if (!hasRule(selector)) addRule(`.${CSS.escape(clsName)}`, `background: ${compileKolorToCSSExpression('KLR', box.base_)};`) // prettier-ignore
+            classes.push(clsName)
+        }
 
         const boxText = box.text ?? prevCtx.text
         if (boxText) {
-            const clsName = 'text' + hashKolor(boxText)
+            const clsName = 'text' + hashKolor(boxText, nextDir)
             const selector = `.${CSS.escape(clsName)}`
             if (!hasRule(selector)) addRule(selector, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
             classes.push(clsName)
         }
 
         if (box.textShadow) {
-            const clsName = 'textShadow' + hashKolor(box.textShadow)
+            const clsName = 'textShadow' + hashKolor(box.textShadow, nextDir)
             const selector = `.${CSS.escape(clsName)}`
             if (!hasRule(selector)) addRule(selector, `text-shadow: 0px 0px 2px ${compileKolorToCSSExpression('KLR', box.textShadow)};`) // prettier-ignore
             classes.push(clsName)
         }
 
         if (box.border) {
-            const clsName = 'border' + hashKolor(box.border)
+            const clsName = 'border' + hashKolor(box.border, nextDir)
             const selector = `.${CSS.escape(clsName)}`
             if (!hasRule(selector)) addRule(selector, `border: 1px solid ${compileKolorToCSSExpression('KLR', box.border)};`) // prettier-ignore
             classes.push(clsName)
         }
-
-        // if (box.hover) {
-        //     // COMPLETELY WRONG
-        //     /* 🔴  */ const clsName = 'h' + hashKolor(box.hover)
-        //     /* 🔴  */ const selector = `.${CSS.escape(clsName)}:hover`
-        //     /* 🔴  */ if (!hasRule(selector)) addRule(selector, `background: red`)
-        //     /* 🔴  */ classes.push(clsName)
-        // }
 
         return (
             <div //
@@ -152,7 +157,6 @@ export const Frame = observer(
                     loading && 'relative',
                     getClassNameForSize(p),
                     expand && 'flex-1',
-                    // inline && 'inline-flex',
                     ...classes,
                     className,
                 ]}
@@ -162,7 +166,14 @@ export const Frame = observer(
                     ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
-                <CurrentStyleCtx.Provider value={nextCtx}>
+                <CurrentStyleCtx.Provider
+                    value={{
+                        dir: nextDir,
+                        base: nextBase,
+                        baseH: nextBaseH,
+                        text: nextext,
+                    }}
+                >
                     {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} />}
                     {p.children}
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} />}

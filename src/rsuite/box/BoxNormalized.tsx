@@ -9,6 +9,7 @@ export type BoxNormalized = {
     hover: Kolor | null //      BASE when hovered (relative to its parent's BASE)
 
     text: Kolor | null //       relative to BASE
+    base_: Kolor | null // relative to BASE
     border: Kolor | null //     relative to BASE
     textShadow: Kolor | null // relative to BASE
     shadow: Kolor | null //     relative to BASE
@@ -19,6 +20,7 @@ export function extractNormalizeBox(box: Box): BoxNormalized {
         base: normalizeBoxKolor(box.base),
         hover: normalizeBoxKolor(box.hover),
         // ----------
+        base_: normalizeBoxKolor(box.base_),
         text: normalizeBoxKolor(box.text),
         textShadow: normalizeBoxKolor(box.textShadow),
         shadow: normalizeBoxKolor(box.shadow),

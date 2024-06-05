@@ -9,6 +9,7 @@ import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
+import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
@@ -33,6 +34,7 @@ const Header_Playground = CushyFormManager.fields(
                 scratchPad: ui.group(),
                 graph: ui.group(),
                 comfyImport: ui.group(),
+                messages: ui.group(),
             },
         }),
     }),
@@ -62,7 +64,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 <MessageInfoUI>
                     <div tw='inline text-sm overflow-clip'>
                         <span>Use this panel as a scratchpad by modifying </span>
-                        <span tw='rounded bg-error-2 px-1'>PlaygroundScratchPad</span>
+                        <span tw='rounded px-1'>PlaygroundScratchPad</span>
                         <span> in </span>
                         <span onClick={() => void st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
                             {relPathToThisPage}
@@ -80,6 +82,8 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                     {mode.value.scratchPad && <PlaygroundScratchPad />}
                     {mode.value.graph && <PlaygroundGraphUI />}
                     {mode.value.customPanels && <PlaygroundCustomPanelsUI />}
+                    {mode.value.messages && <PlaygroundMessages />}
+
                     {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
                 </div>
             </ErrorBoundaryUI>

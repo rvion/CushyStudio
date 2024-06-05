@@ -9,64 +9,29 @@
 }
 
 /* ------------------------------------------------------------------------------------------------------- */
-.widget-error-ui {
-    border: 1px solid red;
-    color:red;
-}
-.FIELD:hover {
-    border-left: 2px groove oklch(var(--s)/0.5);
-}
-.FIELDSimple._isTopLevel,
-.FIELD._isTopLevel {
-    margin-left: 0;
-    border: none;
-    padding-left: 0;
-    transform: none;
-    /* border-left: 2px groove oklch(var(--p)/0.5); */
-    /* border-top-left-radius: .8rem; */
+.WIDGET-BLOCK {
+    margin-left: .6rem;
+    margin-top: .1rem;
+    /* margin-right: .4rem; */
+    /* padding: .4rem; */
 }
 
-.FIELD,
-.FIELDSimple {
-    margin-left: .5rem;
-    padding-left: .5rem;
-    border-left: 2px groove oklch(var(--p)/0.5);
+.animated {
+    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.FIELD {
-    position: relative;
-    padding-left: .5rem;
-}
-
-.WIDGET-FIELD {
-    height: var(--input-height);
-    min-height: var(--input-height);
-}
-
-.w-input { width: var(--input-height);  min-width: var(--input-height); }
-.h-input { height: var(--input-height);  min-height: var(--input-height); }
-
-/* .WIDGET-FIELD *::selection {
-    background-color: oklch(var(--pc));
-} */
+/* ------------------------------------------------------------------------------------------------------- */
+/* WIDGET SIZES */
+.w-input      { width: var(--input-height);  min-width: var(--input-height); }
+.h-input      { height: var(--input-height); min-height: var(--input-height); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
 }
 
-.SUB-FIELD {
-    flex: 1;
-}
-
-.WIDGET-BLOCK {
-    margin-left: .6rem;
-    /* margin-right: .4rem; */
-    margin-top: .1rem;
-    /* padding: .4rem; */
-}
-
 /* ------------------------------------------------------------------------------------------- */
-.cushy-basic-input:focus{
+/* make sure cushy default inputs look like custom inputs */
+.cushy-basic-input:focus {
     outline: none;
     border: 1px solid oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) c h);
 }
@@ -83,7 +48,6 @@
     padding: 0 .3rem;
 }
 
-/* //InputNumberUI */
 /* Form Utils ------------------------------------------------------------------------------------- */
 /* Text Shading - These are defined in theme.css*/
 .text-shadow {
@@ -104,6 +68,7 @@
         /* 0 0 10px 1px oklch(var(--b3)); */
 }
 
+/* 🔶 deprecated; will be removed soon */
 .rsx-field-error {
     border: 1px solid red !important;
 }

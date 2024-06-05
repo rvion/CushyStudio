@@ -3,6 +3,11 @@ import { ReactNode } from 'react'
 
 import { useSizeOf } from './useSizeOf'
 
+/**
+ * this widget allow to make size transition smooth
+ * there might be better ways to do that;
+ * I did that pretty naively, but it seems to be working
+ */
 export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { className?: string; children?: ReactNode }) {
     const { ref: refFn, size } = useSizeOf()
 

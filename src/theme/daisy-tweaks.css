@@ -2,12 +2,5 @@
 /* tweak so it's presence in dropdown entry doesn't impact height */
 .kbd-sm { min-height: 1.2rem; }
 
-/* LEGACY ------------------------------------------------------------------------------------- */
-/* 🔶 FIXME: still in use */
-.bg-error-2 { background-color: oklch(var(--er)/.2); }
-
-/* 🔶 FIXME: .still in use */
-.bg-warning-2 { background-color: oklch(var(--wa)/.2); }
-
 /* 🔶 FIXME: still in use */
 .bg-success-1 { background-color: oklch(var(--su)/.1); }

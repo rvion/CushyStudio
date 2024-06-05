@@ -148,7 +148,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <div tw='flex flex-grow join'>
                     <Input
                         //
-                        tw='WIDGET-FIELD rounded join-item'
+                        tw='h-input rounded join-item'
                         type='text'
                         value={associatedText}
                         onChange={(ev) => {

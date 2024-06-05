@@ -58,7 +58,6 @@ import { CushyLayoutManager } from '../panels/router/Layout'
 import { run_Kolor } from '../rsuite/kolor/prefab_Kolor'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
-import { ThemeManager } from '../theme/ThemeManager'
 import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
 import { CleanedEnumResult } from '../types/EnumUtils'
 import { StepOutput } from '../types/StepOutput'
@@ -106,7 +105,6 @@ export class STATE {
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
-    themeMgr: ThemeManager
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
@@ -557,7 +555,6 @@ export class STATE {
         // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
-        this.themeMgr = new ThemeManager(this)
         this.updater = new GitManagedFolder(this, {
             absFolderPath: this.rootPath,
             shouldAutoUpdate: true,
@@ -630,8 +627,6 @@ export class STATE {
         })
         void this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
-
-        // this.themeManager = new CushyThemeManager()
     }
 
     get mainComfyHostID(): HostID {

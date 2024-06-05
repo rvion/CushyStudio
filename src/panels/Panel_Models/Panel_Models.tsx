@@ -21,7 +21,7 @@ export const Panel_Models = observer(function Panel_Models_() {
                 <SectionTitleUI
                     label={
                         <div tw='flex'>
-                            <img tw='WIDGET-FIELD' src={assets.CivitaiLogo_png} alt='Civitai logo' />
+                            <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
                             CIVITAI
                         </div>
                     }
@@ -29,7 +29,7 @@ export const Panel_Models = observer(function Panel_Models_() {
                 />
                 <SpacerUI />
                 <RevealUI
-                    tw='WIDGET-FIELD'
+                    tw='h-input'
                     title='CIVITAI Options'
                     content={() => (
                         <div tw='p-1'>

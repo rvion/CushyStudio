@@ -13,6 +13,9 @@ export type Box = {
      */
     base?: KolorExt
 
+    /** slightly different from base; allow to change the background without affecting the base */
+    base_?: KolorExt
+
     /**
      * BASE when hovered (relative to its parent's BASE)
      * NOT INHERITED

@@ -59,7 +59,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             base={{ contrast: 0.05 }}
             hover
             tabIndex={-1}
-            tw={['WIDGET-FIELD ', 'flex flex-1 items-center relative']}
+            tw={['SelectUI h-input', 'flex flex-1 items-center relative']}
             border={{ contrast: border }}
             className={p.className}
             ref={s.anchorRef}

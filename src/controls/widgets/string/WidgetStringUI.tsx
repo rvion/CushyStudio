@@ -71,7 +71,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     /* I think we should handle some of these widgets by ourselves so we have better control over
      *  the actual widget, instead of relying on the browser's <input>. */
     // if (widget.config.inputType && widget.config.inputType === 'color') {
-    //     return <Frame active tw='WIDGET-FIELD w-full h-full' style={{ background: val }}></Frame>
+    //     return <Frame active tw='h-input w-full h-full' style={{ background: val }}></Frame>
     // }
 
     return (
@@ -82,7 +82,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
             border
             tw={[
                 //
-                'WIDGET-FIELD',
+                'h-input',
                 'h-full w-full',
                 'flex flex-1 items-center relative',
                 'overflow-clip text-sm',
