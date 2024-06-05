@@ -3,7 +3,7 @@ import type { UnifiedImage } from '../states/UnifiedImage'
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 
-import { ComboUI } from '../../../app/shortcuts/ComboUI'
+import { ComboUI } from '../../../app/accelerators/ComboUI'
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { InputNumberUI } from '../../../controls/widgets/number/InputNumberUI'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'

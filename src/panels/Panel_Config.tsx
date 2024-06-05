@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../app/shortcuts/ComboUI'
+import { ComboUI } from '../app/accelerators/ComboUI'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { useEffect } from 'react'
 
-import { hasMod } from '../app/shortcuts/META_NAME'
+import { hasMod } from '../app/accelerators/META_NAME'
 
 export type HoveredRegion = {
     id: string

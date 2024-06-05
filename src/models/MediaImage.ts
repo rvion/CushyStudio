@@ -16,7 +16,7 @@ import { lookup } from 'mime-types'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
-import { hasMod } from '../app/shortcuts/META_NAME'
+import { hasMod } from '../app/accelerators/META_NAME'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { Trigger } from '../operators/RET'
 import { SafetyResult } from '../safety/Safety'

@@ -18,7 +18,7 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
-import { commandManager, type CommandManager } from '../app/shortcuts/CommandManager'
+import { commandManager, type CommandManager } from '../app/accelerators/CommandManager'
 import { createRandomGenerator } from '../back/random'
 import { asAppPath } from '../cards/asAppPath'
 import { GithubRepoName } from '../cards/githubRepo'

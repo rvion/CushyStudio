@@ -1,9 +1,9 @@
-import type { CushyShortcut } from '../../app/shortcuts/CommandManager'
+import type { CushyShortcut } from '../../app/accelerators/CommandManager'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { ComboUI } from '../../app/shortcuts/ComboUI'
+import { ComboUI } from '../../app/accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
 
 export const MenuItem = observer(function DropdownItem_(p: {
