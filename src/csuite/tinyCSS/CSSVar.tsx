@@ -14,6 +14,7 @@ export class NumberVar<Name extends string = string> {
     ) {
         makeObservable(this, { value_: observable, value: computed })
     }
+
     toString() {
         return `var(--${this.name})`
     }
@@ -22,8 +23,9 @@ export class NumberVar<Name extends string = string> {
 /**
  * extract value from a number of NumberVar
  */
-export function getNum(a: Maybe<number | NumberVar>, def?: undefined): number | undefined
+export function getNum(a: number | NumberVar): number
 export function getNum(a: Maybe<number | NumberVar>, def: number): number
+export function getNum(a: Maybe<number | NumberVar>, def?: undefined): number | undefined
 export function getNum(a: Maybe<number | NumberVar>, def?: number): number | undefined {
     if (a == null) return def
     return typeof a === 'number' ? a : a.value

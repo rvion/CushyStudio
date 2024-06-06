@@ -2,7 +2,7 @@ import type { Kolor } from './Kolor'
 import type { OKLCH } from './OKLCH'
 
 import { clamp } from '../../controls/utils/clamp'
-import { getNum } from '../theme/CSSVar'
+import { getNum } from '../tinyCSS/CSSVar'
 
 // prettier-ignore
 export const applyKolorToOKLCH = (a: OKLCH, b?: Maybe<Kolor>): OKLCH => {

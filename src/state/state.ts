@@ -30,6 +30,7 @@ import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
+import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
 import { run_Kolor } from '../csuite/kolor/prefab_Kolor'
 import { LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
@@ -939,6 +940,7 @@ export class STATE {
     }
 
     theme = themeConf
+    csuite = new CSuite_ThemeCushy(this)
 
     get themeText(): Kolor {
         return run_Kolor(this.theme.value.text)

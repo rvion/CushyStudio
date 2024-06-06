@@ -3,7 +3,7 @@ import type { Kolor } from './Kolor'
 
 import { Fragment } from 'react/jsx-runtime'
 
-import { getNum } from '../theme/CSSVar'
+import { getNum } from '../tinyCSS/CSSVar'
 
 export type UI_Kolor = XChoices<{
     l: XChoice<{

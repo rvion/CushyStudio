@@ -2,10 +2,10 @@ import type { IWidget } from '../IWidget'
 
 import { observer } from 'mobx-react-lite'
 
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
-import { useCushyKit } from '../context/CushyKitCtx'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
@@ -42,7 +42,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const justify = p.justifyLabel ?? getIfWidgetNeedAlignedLabel(widget)
     const showBorder = widget.border
     const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
-    const kit = useCushyKit()
+    const csuite = useCSuite()
     const showContrast = /* 🤮👉 */ (widget.background && widget.isCollapsible) || showBorder
     const boxBase = showContrast ? { contrast: 0.05 } : undefined
 
@@ -87,8 +87,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* HEADER OPTIONS (undo, menu, ...) */}
                 <div tw='ml-auto'></div>
                 {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
-                {kit.showWidgetUndo && <WidgetUndoChangesButtonUI widget={originalWidget} />}
-                {kit.showWidgetMenu && <WidgetMenuUI widget={widget} />}
+                {csuite.showWidgetUndo && <WidgetUndoChangesButtonUI widget={originalWidget} />}
+                {csuite.showWidgetMenu && <WidgetMenuUI widget={widget} />}
             </WidgetHeaderContainerUI>
 
             {/* BODY  ------------------------------------------------------------------------------ */}

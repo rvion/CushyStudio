@@ -6,10 +6,10 @@ import { observer } from 'mobx-react-lite'
 import { ReactElement, useState } from 'react'
 
 import { Button } from '../button/Button'
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
-import { useTheme } from '../theme/useTheme'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
@@ -69,7 +69,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
             inputTailwind = 'w-full h-full !outline-none bg-transparent'
             break
     }
-
+    const csuite = useCSuite()
     return (
         <Frame
             base={5}
@@ -77,7 +77,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
             border={
                 isDirty //
                     ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
-                    : { contrast: useTheme().value.inputBorder }
+                    : { contrast: csuite.inputBorder }
             }
             tw={['h-input w-full flex flex-1 items-center relative text-sm']}
             onMouseDown={(ev) => {

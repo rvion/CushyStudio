@@ -5,9 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { AppBarUI } from '../../appbar/AppBarUI'
-import { CushyKitCtx } from '../../controls/context/CushyKitCtx'
+import { CSuite_ThemeLoco } from '../../csuite/ctx/CSuite_ThemeLoco'
+import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 import { RevealState } from '../../csuite/reveal/RevealState'
-import { CushyTheme } from '../../csuite/theme/CushyTheme'
 import { ActivityStackUI } from '../../operators/activity/ActivityUI'
 import { useRegionMonitor } from '../../operators/regions/RegionMonitor'
 import { Trigger } from '../../operators/RET'
@@ -58,43 +58,41 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <CushyKitCtx.Provider value={st}>
-            <CushyTheme>
-                <div
-                    id='CushyStudio'
-                    tabIndex={-1}
-                    onClick={(ev) => {
-                        // if a click has bubbled outwards up to the body, then we want to close various things
-                        // such as contet menus, tooltips, Revals, etc.
-                        runInAction(() => {
-                            RevealState.shared.current?.close()
-                            RevealState.shared.current = null
-                        })
-                    }}
-                    ref={appRef}
-                    tw={[
-                        'col grow h-full overflow-clip',
-                        // topic=WZ2sEOGiLy
-                        st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
-                    ]}
+        <CSuiteProvider config={cushy.csuite}>
+            <div
+                id='CushyStudio'
+                tabIndex={-1}
+                onClick={(ev) => {
+                    // if a click has bubbled outwards up to the body, then we want to close various things
+                    // such as contet menus, tooltips, Revals, etc.
+                    runInAction(() => {
+                        RevealState.shared.current?.close()
+                        RevealState.shared.current = null
+                    })
+                }}
+                ref={appRef}
+                tw={[
+                    'col grow h-full overflow-clip',
+                    // topic=WZ2sEOGiLy
+                    st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+                ]}
+            >
+                <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
+                    id='tooltip-root'
+                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
                 >
-                    <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
-                        id='tooltip-root'
-                        tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
-                    >
-                        <ActivityStackUI />
-                    </div>
-                    <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
-                    <AppBarUI />
-                    <RenderFullPagePanelUI />
-                    <div className='flex flex-grow relative overflow-clip'>
-                        <FavBarUI direction='row' />
-                        <ProjectUI />
-                    </div>
-                    <FooterBarUI />
+                    <ActivityStackUI />
                 </div>
-            </CushyTheme>
-        </CushyKitCtx.Provider>
+                <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
+                <AppBarUI />
+                <RenderFullPagePanelUI />
+                <div className='flex flex-grow relative overflow-clip'>
+                    <FavBarUI direction='row' />
+                    <ProjectUI />
+                </div>
+                <FooterBarUI />
+            </div>
+        </CSuiteProvider>
     )
 })
 

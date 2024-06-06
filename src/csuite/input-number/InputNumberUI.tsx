@@ -1,14 +1,13 @@
-import type { CushyKit } from '../../controls/context/CushyKit'
+import type { CSuiteConfig } from '../ctx/CSuiteConfig'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
-import { useCushyKit } from '../../controls/context/CushyKitCtx'
 import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
-import { useTheme } from '../theme/useTheme'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -47,7 +46,7 @@ class InputNumberStableState {
     constructor(
         //
         public props: InputNumberProps,
-        public kit: Maybe<CushyKit>,
+        public kit: Maybe<CSuiteConfig>,
     ) {
         makeAutoObservable(this)
     }
@@ -230,7 +229,7 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
-    const kit = useCushyKit()
+    const kit = useCSuite()
     const uist = useMemo(() => new InputNumberStableState(p, kit), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -245,7 +244,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const rounding = uist.rounding
     const isEditing = uist.isEditing
 
-    const border = useTheme().value.inputBorder
+    const csuite = useCSuite()
+    const border = csuite.inputBorder
 
     return (
         <Frame /* Root */

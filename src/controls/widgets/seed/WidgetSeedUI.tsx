@@ -4,14 +4,15 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { useCSuite } from '../../../csuite/ctx/useCSuite'
 import { Frame } from '../../../csuite/frame/Frame'
 import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
-import { useTheme } from '../../../csuite/theme/useTheme'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
     const val = widget.serial.val
-    const border = useTheme().value.inputBorder
+    const csuite = useCSuite()
+    const border = csuite.inputBorder
 
     return (
         <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>

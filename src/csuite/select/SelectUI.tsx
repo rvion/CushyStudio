@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
-import { useTheme } from '../theme/useTheme'
 import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
 
@@ -53,7 +53,8 @@ export type SelectProps<T> = {
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
-    const border = useTheme().value.inputBorder
+    const csuite = useCSuite()
+    const border = csuite.inputBorder
     return (
         <Frame /* Container/Root */
             base={{ contrast: 0.05 }}

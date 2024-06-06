@@ -1,4 +1,4 @@
-import type { NumberVar } from '../theme/CSSVar'
+import type { NumberVar } from '../tinyCSS/CSSVar'
 
 // prettier-ignore
 export type Kolor = {
