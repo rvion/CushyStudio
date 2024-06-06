@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 
 import { statusUI } from '../back/statusUI'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
+import { _formatPreviewDate } from '../csuite/formatters/_formatPreviewDate'
 import { useSt } from '../state/stateContext'
-import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI } from './OutputUI'
 
 export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: StepL }) {

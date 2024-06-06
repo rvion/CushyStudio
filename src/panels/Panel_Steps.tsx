@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { _formatPreviewDate } from '../csuite/formatters/_formatPreviewDate'
 import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { StepOutputsBodyV1UI, StepOutputsHeaderV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
 import { useSt } from '../state/stateContext'
-import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {

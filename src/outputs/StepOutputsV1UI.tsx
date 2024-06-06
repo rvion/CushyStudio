@@ -2,7 +2,7 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
+import { _formatPreviewDate } from '../csuite/formatters/_formatPreviewDate'
 import { OutputPreviewUI } from './OutputUI'
 import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
 
