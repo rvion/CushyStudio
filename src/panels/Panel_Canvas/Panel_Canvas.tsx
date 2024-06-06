@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useMemo } from 'react'
 
-import { RegionUI } from '../../operators/RegionUI'
+import { RegionUI } from '../../operators/regions/RegionUI'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { PanelHeaderUI } from '../PanelHeader'

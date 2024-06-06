@@ -1,9 +1,9 @@
-import type { RevealPlacement } from '../csuite/reveal/RevealPlacement'
+import type { RevealPlacement } from '../../csuite/reveal/RevealPlacement'
 import type { FC } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 
-import { type DomId, Trigger } from './RET'
+import { type DomId, Trigger } from '../RET'
 
 // ACTIVITY = global app state machine state you can be in;
 // consume all events, and react to them

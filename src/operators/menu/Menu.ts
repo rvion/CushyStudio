@@ -1,16 +1,17 @@
-import type { IWidget } from '../controls/IWidget'
-import type { SimpleMenuModal } from './menuSystem/SimpleMenuModal'
-import type { NO_PROPS } from './NO_PROPS'
-import type { Trigger } from './RET'
+import type { IWidget } from '../../controls/IWidget'
+import type { BoundCommand } from '../Command'
+import type { NO_PROPS } from '../NO_PROPS'
+import type { Trigger } from '../RET'
+import type { SimpleMenuModal } from './SimpleMenuModal'
 
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
 
-import { Activity, activityManager } from './Activity'
-import { type BoundCommand, Command } from './Command'
-import { BoundMenuSym } from './introspect/_isBoundMenu'
-import { SimpleMenuAction } from './menuSystem/SimpleMenuAction'
+import { Activity, activityManager } from '../activity/Activity'
+import { Command } from '../Command'
+import { BoundMenuSym } from '../introspect/_isBoundMenu'
 import { MenuRootUI, MenuUI } from './MenuUI'
+import { SimpleMenuAction } from './SimpleMenuAction'
 
 // ------------------------------------------------------------------------------------------
 // COMMAND MANAGER Centralize every single command

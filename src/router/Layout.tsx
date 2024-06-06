@@ -9,7 +9,7 @@ import { createElement, createRef, FC } from 'react'
 
 import { Message } from '../csuite/shims'
 import { hashJSONObject } from '../hashUtils/hash'
-import { regionMonitor } from '../operators/RegionMonitor'
+import { regionMonitor } from '../operators/regions/RegionMonitor'
 import { Trigger } from '../operators/RET'
 import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'

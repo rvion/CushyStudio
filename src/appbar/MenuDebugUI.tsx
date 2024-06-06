@@ -7,7 +7,7 @@ import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Ikon } from '../csuite/icons/iconHelpers'
 import { getDBStats } from '../db/getDBStats'
 import { quickBench } from '../db/quickBench'
-import { activityManager } from '../operators/Activity'
+import { activityManager } from '../operators/activity/Activity'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
 import { useSt } from '../state/stateContext'
 

@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom'
 
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
-import { ModalShellUI } from './ModalShell'
+import { ModalShellUI } from '../modal/ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'
 import { RevealState, RevealStateLazy } from './RevealState'

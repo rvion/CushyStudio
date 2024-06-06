@@ -3,8 +3,8 @@ import type { CSSProperties, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
-import { ModalShellUI } from '../csuite/reveal/ModalShell'
-import { computePlacement } from '../csuite/reveal/RevealPlacement'
+import { ModalShellUI } from '../../csuite/modal/ModalShell'
+import { computePlacement } from '../../csuite/reveal/RevealPlacement'
 import { type Activity, activityManager } from './Activity'
 
 export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {

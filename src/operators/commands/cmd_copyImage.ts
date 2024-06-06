@@ -2,11 +2,14 @@ import { CushyFormManager } from '../../controls/FormBuilder'
 import { MediaImageL } from '../../models/MediaImage'
 import { command, type Command } from '../Command'
 import { ctx_image } from '../contexts/ctx_image'
-import { menu, type Menu } from '../Menu'
+import { menu, type Menu } from '../menu/Menu'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'
 
-type CopyImageParams = { image: MediaImageL; format?: AvailableImageCopyFormats }
+type CopyImageParams = {
+    image: MediaImageL
+    format?: AvailableImageCopyFormats
+}
 
 // first we define command;
 // command can take props

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
-import { DebugControlsUI } from '../../operators/DebugControlsUI'
+import { DebugControlsUI } from '../../operators/debug/DebugControlsUI'
 
 export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
     return (
