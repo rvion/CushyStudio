@@ -2,7 +2,7 @@ import type { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from '../../number/InputNumberUI'
+import { InputNumberUI } from '../../../../csuite/input-number/InputNumberUI'
 
 export const Plugin_AdjustWeightsUI = observer(function Plugin_AdjustWeightsUI_(p: {
     //

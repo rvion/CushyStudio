@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { InputStringUI, sampleInputStringUIProps } from '../../controls/widgets/string/InputStringUI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { InputStringUI, sampleInputStringUIProps } from '../../csuite/input-string/InputStringUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
@@ -12,25 +12,50 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
         <ErrorBoundaryUI>
             <div tw='flex flex-col gap-1'>
                 <div tw='flex flex-col gap-1'>
+                    <div tw='divider my-0'>text non-buffered</div>
+                    <InputStringUI tw='w-96' {...sampleInputStringUIProps} buffered={null} />
+                    <div tw='divider my-0'>text buffered</div>
                     <InputStringUI tw='w-96' {...sampleInputStringUIProps} />
                     <InputStringUI tw='w-96' icon {...sampleInputStringUIProps} />
                     <InputStringUI tw='w-96' icon='mdiAccessPointCheck' {...sampleInputStringUIProps} />
                 </div>
-                <div tw='divider my-0'>test</div>
+                <div tw='divider my-0'>w-fit on container</div>
                 <div tw='w-fit'>
                     <MessageInfoUI title='foo' />
-                    <MessageErrorUI title='foo' />
+                    <MessageErrorUI title='foobar' />
                     <MessageWarningUI title='foo' />
                 </div>
-                <div tw='divider my-0'>test</div>
+                <div tw='divider my-0'>w-fit on message</div>
+                <div>
+                    <MessageInfoUI tw='w-fit' title='foo' />
+                    <MessageErrorUI tw='w-fit' title='foobar' />
+                    <MessageWarningUI tw='w-fit' title='foo' />
+                </div>
+                <div tw='divider my-0'>messages w-full with simple test</div>
                 <MessageInfoUI>test</MessageInfoUI>
                 <MessageErrorUI>test</MessageErrorUI>
                 <MessageWarningUI>test</MessageWarningUI>
-                <div tw='divider my-0'>test</div>
-                <div tw='flex gap-1'>
+                <div tw='divider my-0'>inline flex-start</div>
+                <div tw='flex gap-1 items-start'>
                     <MessageInfoUI>test</MessageInfoUI>
-                    <MessageErrorUI>test</MessageErrorUI>
+                    <MessageErrorUI title='test'>test</MessageErrorUI>
                     <MessageWarningUI>test</MessageWarningUI>
+                    <MessageErrorUI title='test'>
+                        <div>test</div>
+                        <div>test</div>
+                        <div>test</div>
+                    </MessageErrorUI>
+                </div>
+                <div tw='divider my-0'>inline</div>
+                <div tw='flex gap-1 '>
+                    <MessageInfoUI>test</MessageInfoUI>
+                    <MessageErrorUI title='test'>test</MessageErrorUI>
+                    <MessageWarningUI>test</MessageWarningUI>
+                    <MessageErrorUI title='test'>
+                        <div>test</div>
+                        <div>test</div>
+                        <div>test</div>
+                    </MessageErrorUI>
                 </div>
                 <div tw='divider my-0'>test</div>
                 <MessageInfoUI title='Info title'>test</MessageInfoUI>

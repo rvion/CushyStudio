@@ -2,7 +2,7 @@ import type { Widget_number } from './WidgetNumber'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from './InputNumberUI'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {
     const widget = p.widget

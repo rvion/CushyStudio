@@ -3,8 +3,8 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
 import { Button } from '../../csuite/button/Button'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 

@@ -1,14 +1,15 @@
-import type { IconName } from '../../../csuite/icons/icons'
-import type { Widget_string_config } from './WidgetString'
+import type { Widget_string_config } from '../../controls/widgets/string/WidgetString'
+import type { IconName } from '../icons/icons'
 
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, ReactElement } from 'react'
+import { type CSSProperties, ReactElement, useState } from 'react'
 
-import { Frame } from '../../../csuite/frame/Frame'
-import { IkonOf } from '../../../csuite/icons/iconHelpers'
-import { getLCHFromStringAsString } from '../../../csuite/kolor/getLCHFromStringAsString'
-import { useTheme } from '../../../csuite/theme/useTheme'
+import { Button } from '../button/Button'
+import { Frame } from '../frame/Frame'
+import { IkonOf } from '../icons/iconHelpers'
+import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
+import { useTheme } from '../theme/useTheme'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
@@ -21,7 +22,7 @@ export const sampleInputStringUIProps = observable({
     },
     // get / set buffered value
     temporaryValue: null as string | null,
-    bufferred: {
+    buffered: {
         getTemporaryValue: (): string | null => sampleInputStringUIProps.temporaryValue,
         setTemporaryValue: (value: string | null) => {
             sampleInputStringUIProps.temporaryValue = value
@@ -61,6 +62,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
     const value = widget.getValue()
     const temporaryValue = widget.buffered?.getTemporaryValue?.()
 
+    const [reveal, setReveal] = useState(false)
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
 
@@ -105,7 +107,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
             )}
             <input
                 tw={['px-2', inputTailwind]}
-                type={widget.inputType}
+                type={reveal ? 'text' : widget.inputType}
                 pattern={widget.pattern}
                 placeholder={widget.placeHolder}
                 value={temporaryValue ?? value}
@@ -134,6 +136,16 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
                     }
                 }}
             />
+            {p.inputType === 'password' && (
+                <Button
+                    subtle
+                    borderless
+                    icon={reveal ? 'mdiEyeOff' : 'mdiEye'}
+                    onClick={() => setReveal(!reveal)}
+                    tw='mx-1 cursor-pointer'
+                    square
+                />
+            )}
         </Frame>
     )
 })

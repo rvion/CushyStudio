@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../../../csuite/frame/Frame'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { useTheme } from '../../../csuite/theme/useTheme'
-import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget

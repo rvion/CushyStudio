@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { Status } from '../back/Status'
-import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { Button } from '../csuite/button/Button'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { OutputPreviewUI, OutputUI } from '../outputs/OutputUI'
 import { StepOutputsHeaderV2UI } from '../outputs/StepOutputsV2UI'

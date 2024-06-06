@@ -1,14 +1,14 @@
-import type { CushyKit } from '../../context/CushyKit'
+import type { CushyKit } from '../../controls/context/CushyKit'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
-import { Frame } from '../../../csuite/frame/Frame'
-import { Ikon } from '../../../csuite/icons/iconHelpers'
-import { useTheme } from '../../../csuite/theme/useTheme'
-import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
-import { useCushyKit } from '../../context/CushyKitCtx'
+import { useCushyKit } from '../../controls/context/CushyKitCtx'
+import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
+import { Frame } from '../frame/Frame'
+import { Ikon } from '../icons/iconHelpers'
+import { useTheme } from '../theme/useTheme'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../../csuite/frame/Frame'
-import { InputNumberUI } from '../number/InputNumberUI'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
     return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />

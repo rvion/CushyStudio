@@ -249,7 +249,7 @@ const addToPackage = (relPath: string) => {
 addToPackage('src/theme/form.vars.css')
 addToPackage('src/theme/markdown.css')
 addToPackage('src/theme/form.css')
-addToPackage('src/controls/widgets/number/InputNumberUI.css')
+addToPackage('src/csuite/input-number/InputNumberUI.css')
 
 // --------------------------------------------------------------------
 section(`4. generating DTS and JS`)

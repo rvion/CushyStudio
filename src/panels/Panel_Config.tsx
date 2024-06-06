@@ -3,10 +3,12 @@ import { observer } from 'mobx-react-lite'
 import { ComboUI } from '../app/accelerators/ComboUI'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
-import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { WidgetLabelContainerUI } from '../controls/shared/WidgetLabelContainerUI'
 import { Button } from '../csuite/button/Button'
 import { InputBoolCheckboxUI } from '../csuite/checkbox/InputBoolCheckboxUI'
 import { Frame } from '../csuite/frame/Frame'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { FormHelpTextUI } from '../csuite/shims'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
@@ -52,7 +54,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Your github username'>
                     <input //
-                        tw='w-full'
+                        tw='cushy-basic-input w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => {
                             config.update({ githubUsername: ev.target.value })
@@ -63,7 +65,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Your Cushy CloudGPU api Key'>
                     <input //
-                        tw='w-full'
+                        tw='cushy-basic-input w-full'
                         value={config.value.cushyCloudGPUApiKey}
                         onChange={(ev) => {
                             config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -101,7 +103,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Check update every X minutes'>
                     <input //
-                        tw=''
+                        tw='cushy-basic-input w-full'
                         type='number'
                         placeholder='48'
                         name='galleryImageSize'
@@ -120,6 +122,15 @@ export const Panel_Config = observer(function Panel_Config_() {
                         }}
                     />
                 </FieldUI>
+                <FieldUI label='OpenRouter API KEY'>
+                    <InputStringUI
+                        icon='mdiKey'
+                        inputType='password'
+                        getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
+                        setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
+                    />
+                </FieldUI>
+
                 <FieldUI label='OpenRouter API KEY'>
                     <input
                         tw=''
@@ -149,7 +160,9 @@ export const FieldUI = observer(function FieldUI_(p: {
 }) {
     return (
         <div className={p.className} tw='flex gap-2 items-center'>
-            <label tw='whitespace-nowrap'>{p.label}</label>
+            <WidgetLabelContainerUI justify>
+                <label tw='whitespace-nowrap'>{p.label}</label>
+            </WidgetLabelContainerUI>
             {p.children}
             {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
         </div>

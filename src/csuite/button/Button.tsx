@@ -6,7 +6,10 @@ import { Frame, FrameProps } from '../frame/Frame'
 
 export const Button = observer(function Button_(
     p: FrameProps & {
+        /** no contrast */
         subtle?: boolean
+        /** no border */
+        borderless?: boolean
     },
 ) {
     const uist = useMemo(() => new ButtonState(p), [])
@@ -22,7 +25,7 @@ export const Button = observer(function Button_(
             size={size ?? 'input'}
             look={look}
             base={p.subtle ? 0 : uist.running ? 10 : 5}
-            border={10}
+            border={p.borderless ? 0 : 10}
             hover={p.disabled ? false : 3}
             active={uist.visuallyActive}
             disabled={p.disabled}

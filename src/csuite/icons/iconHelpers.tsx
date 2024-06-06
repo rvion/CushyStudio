@@ -1,6 +1,5 @@
-import type { FC } from 'react'
+import type { FC, MouseEventHandler } from 'react'
 
-import * as icons from '@mdi/js'
 import IconA from '@mdi/react'
 
 import { allIcons, type IconName } from './icons'
@@ -10,6 +9,12 @@ const Icon = IconA ?? (((await import('@mdi/react')) as any).default.Icon as typ
 type RawIconProps = import('@mdi/react/dist/IconProps.d.ts').IconProps
 type MyIconProps = Omit<RawIconProps, 'path'>
 
+/**
+ * Automagical component you can use like that
+ * <Ikon.mdiCancel />
+ * <Ikon.mdiAlert size=' />
+ *
+ */
 export const Ikon: {
     [key in keyof typeof allIcons]: FC<MyIconProps>
 } = new Proxy({} as any, {
@@ -19,7 +24,13 @@ export const Ikon: {
     },
 }) as any
 
+/** reexport Icon from `@mdi/react` and add siz='1.1em' */
 export const IkonOf = function IkonOf_({ name, ...p }: { name: IconName } & MyIconProps) {
-    return <Icon path={(allIcons as any)[name]} size='1.1em' {...p} />
+    return (
+        <Icon //
+            path={(allIcons as any)[name]}
+            size='1.1em'
+            {...p}
+        />
+    )
 }
-export const getAllIcons = () => Object.keys(icons) as (keyof typeof icons)[]

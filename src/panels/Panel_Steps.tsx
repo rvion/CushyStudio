@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { StepOutputsBodyV1UI, StepOutputsHeaderV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
 import { useSt } from '../state/stateContext'
