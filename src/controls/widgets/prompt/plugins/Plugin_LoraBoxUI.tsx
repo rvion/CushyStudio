@@ -5,7 +5,7 @@ import { Button } from '../../../../csuite/button/Button'
 import { Frame } from '../../../../csuite/frame/Frame'
 import { InputNumberUI } from '../../../../csuite/input-number/InputNumberUI'
 import { MessageErrorUI } from '../../../../csuite/messages/MessageErrorUI'
-import { Input } from '../../../../csuite/shims'
+import { InputLegacy } from '../../../../csuite/shims'
 import { useSt } from '../../../../state/stateContext'
 import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
@@ -146,7 +146,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>Trigger Words*</div>
                 <div tw='flex flex-grow join'>
-                    <Input
+                    <InputLegacy
                         //
                         tw='h-input rounded join-item'
                         type='text'
@@ -186,7 +186,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <Button size='input' icon='mdiOpenInNew' onClick={() => openExternal(associatedUrl)}>
                     Associated URL
                 </Button>
-                <Input
+                <InputLegacy
                     type='text'
                     tw='w-full'
                     placeholder='Associated URL....'

@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce'
 import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
-import { Input, Slider } from '../../csuite/shims'
+import { InputLegacy, Slider } from '../../csuite/shims'
 import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from './FieldAndLabelUI'
 
@@ -86,7 +86,7 @@ export const ScribbleCanvas = (p: {
                     reset
                 </Button>
                 <FieldAndLabelUI label='Weight'>
-                    <Input
+                    <InputLegacy
                         tw='input-xs'
                         style={{
                             fontFamily: 'monospace',
@@ -98,7 +98,7 @@ export const ScribbleCanvas = (p: {
                     />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='Height'>
-                    <Input
+                    <InputLegacy
                         tw='input-xs'
                         style={{
                             fontFamily: 'monospace',

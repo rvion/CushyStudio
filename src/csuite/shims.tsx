@@ -9,10 +9,10 @@ import { RevealUI } from './reveal/RevealUI'
 // form
 export const FormHelpTextUI = (p: any) => <div {...p}></div>
 
-export const Input = (p: JSX.IntrinsicElements['input']) => {
-    const { tw, className, children, ...rest } = p
+export const InputLegacy = (p: JSX.IntrinsicElements['input']) => {
+    const { className, children, ...rest } = p
     return (
-        <input tw={[tw, className, 'cushy-basic-input']} {...rest}>
+        <input tw={['cushy-basic-input', className]} {...rest}>
             {children}
         </input>
     )

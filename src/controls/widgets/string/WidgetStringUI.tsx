@@ -1,12 +1,9 @@
 import type { Widget_string } from './WidgetString'
 
 import { observer } from 'mobx-react-lite'
-import { ReactElement } from 'react'
 
 import { Frame } from '../../../csuite/frame/Frame'
-import { getLCHFromStringAsString } from '../../../csuite/kolor/getLCHFromStringAsString'
-
-type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
+import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 
 // Textarea HEADER
 export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
@@ -44,88 +41,22 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 // string HEADER
 export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
-    const val = widget.value
-
-    let inputTailwind: string | ClassLike[] | undefined
-    let visualHelper: ReactElement<any, any> | undefined
-
-    switch (widget.config.inputType) {
-        case 'color':
-            inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
-            visualHelper = (
-                <Frame //
-                    tw='w-full h-full flex items-center font-mono whitespace-nowrap text-[0.6rem]'
-                    base={val ? val : undefined}
-                    text={{ contrast: 1 }}
-                >
-                    {getLCHFromStringAsString(val)}
-                </Frame>
-            )
-            // highlight = false
-            break
-        default:
-            inputTailwind = 'w-full h-full !outline-none bg-transparent'
-            break
-    }
-
-    /* I think we should handle some of these widgets by ourselves so we have better control over
-     *  the actual widget, instead of relying on the browser's <input>. */
-    // if (widget.config.inputType && widget.config.inputType === 'color') {
-    //     return <Frame active tw='h-input w-full h-full' style={{ background: val }}></Frame>
-    // }
-
+    const config = widget.config
     return (
-        <Frame
-            // style={color.styles}
-            base={5}
-            text={{ contrast: 1, chromaBlend: 1 }}
-            border
-            tw={[
-                //
-                'h-input',
-                'h-full w-full',
-                'flex flex-1 items-center relative',
-                'overflow-clip text-sm',
-            ]}
-            onMouseDown={(ev) => {
-                if (ev.button == 1) {
-                    const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
-                    textInput.focus()
-                }
-            }}
-        >
-            {visualHelper}
-            <input
-                tw={inputTailwind}
-                type={widget.config.inputType}
-                pattern={widget.config.pattern}
-                placeholder={widget.config.placeHolder}
-                value={widget.config.buffered ? widget.temporaryValue ?? val : val}
-                onChange={(ev) => {
-                    if (widget.config.buffered) widget.setTemporaryValue(ev.target.value)
-                    else widget.value = ev.currentTarget.value
-                }}
-                /* Prevents drag n drop of selected text, so selecting is easier. */
-                onDragStart={(ev) => ev.preventDefault()}
-                onFocus={(ev) => {
-                    widget.setTemporaryValue(widget.value ?? '')
-                    ev.currentTarget.select()
-                }}
-                onBlur={() => {
-                    if (widget.config.buffered && widget.temporaryValue != null) {
-                        widget.value = widget.temporaryValue
-                    }
-                }}
-                onKeyDown={(ev) => {
-                    if (ev.key === 'Enter') {
-                        ev.currentTarget.blur()
-                    } else if (ev.key === 'Escape') {
-                        if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
-                        widget.setTemporaryValue(null)
-                        ev.currentTarget.blur()
-                    }
-                }}
-            />
-        </Frame>
+        <InputStringUI
+            type={config.inputType}
+            pattern={config.pattern}
+            className={config.className}
+            getValue={() => widget.value}
+            setValue={(value) => (widget.value = value)}
+            buffered={
+                widget.config.buffered
+                    ? {
+                          getTemporaryValue: () => widget.temporaryValue,
+                          setTemporaryValue: (value) => (widget.temporaryValue = value),
+                      }
+                    : undefined
+            }
+        />
     )
 })

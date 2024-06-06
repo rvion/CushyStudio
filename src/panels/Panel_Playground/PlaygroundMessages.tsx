@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
-import { InputStringUI, sampleInputStringUIProps } from '../../csuite/input-string/InputStringUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { sampleInputStringUIProps } from '../../csuite/input-string/sampleInputStringUIProps'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'

@@ -126,7 +126,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 <FieldUI label='OpenRouter API KEY'>
                     <InputStringUI
                         icon='mdiKey'
-                        inputType='password'
+                        type='password'
                         getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
                         setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
                     />

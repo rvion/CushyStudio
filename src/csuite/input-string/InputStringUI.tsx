@@ -1,34 +1,18 @@
 import type { Widget_string_config } from '../../controls/widgets/string/WidgetString'
 import type { IconName } from '../icons/icons'
+import type { CSSProperties } from 'react'
 
-import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, ReactElement, useState } from 'react'
+import { ReactElement, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
 import { useTheme } from '../theme/useTheme'
+import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
-
-export const sampleInputStringUIProps = observable({
-    // get / set value
-    value: '',
-    getValue: () => sampleInputStringUIProps.value,
-    setValue: (value: string) => {
-        sampleInputStringUIProps.value = value
-    },
-    // get / set buffered value
-    temporaryValue: null as string | null,
-    buffered: {
-        getTemporaryValue: (): string | null => sampleInputStringUIProps.temporaryValue,
-        setTemporaryValue: (value: string | null) => {
-            sampleInputStringUIProps.temporaryValue = value
-        },
-    },
-})
 
 export const InputStringUI = observer(function WidgetStringUI_(p: {
     /** when true => 'mdiText' */
@@ -45,7 +29,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
     }>
 
     /** default to text */
-    inputType?: Widget_string_config['inputType']
+    type?: Widget_string_config['inputType']
 
     /** text pattern */
     pattern?: Widget_string_config['pattern']
@@ -60,13 +44,15 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
     const widget = p
 
     const value = widget.getValue()
+    const isBuffered = Boolean(widget.buffered)
     const temporaryValue = widget.buffered?.getTemporaryValue?.()
+    const isDirty = isBuffered && temporaryValue != null && temporaryValue !== value
 
     const [reveal, setReveal] = useState(false)
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
 
-    switch (widget.inputType) {
+    switch (widget.type) {
         case 'color':
             inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
             visualHelper = (
@@ -88,7 +74,11 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
         <Frame
             base={5}
             text={{ contrast: 1, chromaBlend: 1 }}
-            border={{ contrast: useTheme().value.inputBorder }}
+            border={
+                isDirty //
+                    ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
+                    : { contrast: useTheme().value.inputBorder }
+            }
             tw={['h-input w-full flex flex-1 items-center relative text-sm']}
             onMouseDown={(ev) => {
                 if (ev.button == 1) {
@@ -107,10 +97,10 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
             )}
             <input
                 tw={['px-2', inputTailwind]}
-                type={reveal ? 'text' : widget.inputType}
+                type={reveal ? 'text' : widget.type}
                 pattern={widget.pattern}
                 placeholder={widget.placeHolder}
-                value={temporaryValue ?? value}
+                value={widget.buffered ? temporaryValue ?? value : value}
                 onChange={(ev) => {
                     if (widget.buffered) widget.buffered.setTemporaryValue(ev.target.value)
                     else widget.setValue(ev.currentTarget.value)
@@ -122,9 +112,10 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
                     ev.currentTarget.select()
                 }}
                 onBlur={() => {
-                    if (temporaryValue != null) {
-                        widget.setValue(temporaryValue)
-                    }
+                    // need to be deferenced here because of how it's called in
+                    // the onKeyDown handler a few lines below
+                    const tempValue = widget.buffered?.getTemporaryValue?.()
+                    if (tempValue != null) widget.setValue(tempValue)
                 }}
                 onKeyDown={(ev) => {
                     if (ev.key === 'Enter') {
@@ -136,7 +127,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
                     }
                 }}
             />
-            {p.inputType === 'password' && (
+            {p.type === 'password' && (
                 <Button
                     subtle
                     borderless
