@@ -76,7 +76,7 @@ export const Frame = observer(
             const template = frames[look]
             if (template.base) box.base = overrideKolor(template.base, box.base)
             if (template.border) box.border = overrideKolor(template.border, box.border)
-            if (template.text) box.border = overrideKolor(template.text, box.text)
+            if (template.text) box.text = overrideKolor(template.text, box.text)
         }
 
         // MODIFIERS ---------------------------------------------

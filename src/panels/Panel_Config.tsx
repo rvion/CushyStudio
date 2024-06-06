@@ -23,12 +23,11 @@ export const Panel_Config = observer(function Panel_Config_() {
                 <FormUI form={cushy.theme} />
             </Frame>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
-            <div tw='flex flex-col gap-1'>
-                <FieldUI label='Comfig file path'>
-                    <pre tw='rounded-btn px-2'>{config.path}</pre>
-                    <div className='btn btn-sm btn-link' onClick={() => openInVSCode(st, config.path)}>
-                        open <span className='material-symbols-outlined text-sm'>open_in_new</span>
-                    </div>
+            <div tw='flex flex-col gap-1 w-full'>
+                <FieldUI label='Config file path'>
+                    <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(st, config.path)}>
+                        {config.path}
+                    </Button>
                 </FieldUI>
                 <FieldUI label='Set tags file'>
                     <input
@@ -129,15 +128,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                         type='password'
                         getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
                         setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
-                    />
-                </FieldUI>
-
-                <FieldUI label='OpenRouter API KEY'>
-                    <input
-                        tw=''
-                        type='password' //
-                        value={config.value.OPENROUTER_API_KEY ?? ''}
-                        onChange={(ev) => config.update({ OPENROUTER_API_KEY: ev.target.value })}
                     />
                 </FieldUI>
                 <FieldUI label='Configure hosts:'>

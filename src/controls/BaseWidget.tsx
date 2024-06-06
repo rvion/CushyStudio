@@ -271,8 +271,21 @@ export abstract class BaseWidget {
     }
 
     // UI ----------------------------------------------------
-    ui(this: IWidget): JSX.Element {
-        return <WidgetWithLabelUI isTopLevel key={this.id} widget={this} rootKey='_' />
+    ui(
+        this: IWidget,
+        p?: {
+            label?: string | false
+            justifyLabel?: boolean
+        },
+    ): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                {...p}
+                widget={this}
+                rootKey='_'
+            />
+        )
     }
 
     defaultHeader(this: IWidget): JSX.Element | undefined {

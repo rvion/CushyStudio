@@ -6,7 +6,9 @@ import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../../csuite/frame/Frame'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
+import { FrameSubtle } from '../../../csuite/wrappers/FrameSubtle'
 import { useSt } from '../../../state/stateContext'
+import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -23,7 +25,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? (
-                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
                 <div /* spacer */ />
             )}

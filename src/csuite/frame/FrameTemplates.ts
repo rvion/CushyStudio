@@ -18,6 +18,11 @@ const frame_default: BoxNormalized = extractNormalizeBox({
     base: 0.2,
 })
 
+const frame_link: BoxNormalized = extractNormalizeBox({
+    border: 0,
+    text: { hue: 220, chroma: 0.3, contrast: 0.4 },
+})
+
 const frame_primary: BoxNormalized = extractNormalizeBox({
     textShadow: 100,
     base: { contrast: 0.1, chroma: 0.1 },
@@ -30,6 +35,7 @@ const frame_secondary: BoxNormalized = extractNormalizeBox({
 })
 
 export const frames = {
+    link: frame_link,
     ghost: frame_ghost,
     subtle: frame_subtle,
     default: frame_default,

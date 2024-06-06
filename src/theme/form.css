@@ -24,6 +24,7 @@
 /* WIDGET SIZES */
 .w-input      { width: var(--input-height);  min-width: var(--input-height); }
 .h-input      { height: var(--input-height); min-height: var(--input-height); }
+.lh-input     { line-height: var(--input-height); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;

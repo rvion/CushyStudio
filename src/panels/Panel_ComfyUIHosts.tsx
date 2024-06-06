@@ -17,20 +17,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
 
     return (
         <Surface tw='w-full h-full flex flex-col gap-2 p-2'>
-            {/* <div tw='flex flex-wrap gap-2'>
-                <SelectUI<HostL>
-                    label='Current Host'
-                    options={() => allHosts}
-                    value={() => mainHost}
-                    onChange={null}
-                    getLabelText={(h) => h.data.name || h.id}
-                />
-            </div> */}
-            <div tw='flex gap-1'>
-                <MessageInfoUI tw='virtualBorder p-1 rounded flex items-center gap-2'>
-                    The Primary host is the one used for typigns, and to send prompts to by default.
-                </MessageInfoUI>
-            </div>
+            <MessageInfoUI>The Primary host is the one used for typigns, and to send prompts to by default.</MessageInfoUI>
             <div className='line'>
                 <div>Primary Host:</div>
                 <SelectUI

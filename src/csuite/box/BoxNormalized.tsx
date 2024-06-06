@@ -25,6 +25,7 @@ export function extractNormalizeBox(box: Box): BoxNormalized {
         textShadow: normalizeBoxKolor(box.textShadow),
         shadow: normalizeBoxKolor(box.shadow),
         border: normalizeBoxKolor(box.border),
+        //
     }
 }
 
