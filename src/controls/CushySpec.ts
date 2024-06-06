@@ -1,16 +1,16 @@
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import type { XList, XOptional } from './FormBuilder'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { Requirements } from './Requirements'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { createElement } from 'react'
 
+import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { Channel, type ChannelId, Producer } from './Channel'
 import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
-import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
 export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {

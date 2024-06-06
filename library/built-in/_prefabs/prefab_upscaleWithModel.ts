@@ -1,6 +1,6 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
-import type { Requirements } from '../../../src/controls/Requirements'
+import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
 export const ui_upscaleWithModel = () => {

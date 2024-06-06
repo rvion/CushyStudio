@@ -6,8 +6,8 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
 import { useTheme } from '../../../csuite/theme/useTheme'
+import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
-import { WidgetFieldsContainerUI } from '../group/WidgetGroupUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
@@ -25,7 +25,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
-        <WidgetFieldsContainerUI //
+        <WidgetsContainerUI //
             layout={widget.config.layout}
             tw={[widget.config.className, p.className]}
         >
@@ -34,7 +34,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                 if (subWidget == null) return <>❌ error</>
                 return (
                     <WidgetWithLabelUI //
-                        alignLabel={p.alignLabel}
+                        justifyLabel={p.alignLabel}
                         key={val.branch}
                         rootKey={val.branch}
                         widget={subWidget}
@@ -42,7 +42,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                     />
                 )
             })}
-        </WidgetFieldsContainerUI>
+        </WidgetsContainerUI>
     )
 })
 

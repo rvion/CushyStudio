@@ -1,5 +1,5 @@
 import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
-import type { Requirements } from '../Requirements'
+import type { Requirements } from './Requirements'
 
 import { observer } from 'mobx-react-lite'
 

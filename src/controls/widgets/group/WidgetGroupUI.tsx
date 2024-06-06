@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { BoxSubtle } from '../../../csuite/box/BoxMisc'
 import { bang } from '../../../utils/misc/bang'
+import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
 // UI
@@ -31,38 +32,16 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     const isHorizontal = widget.config.layout === 'H'
 
     return (
-        <WidgetFieldsContainerUI layout={p.widget.config.layout} tw={[widget.config.className, p.className]}>
+        <WidgetsContainerUI layout={p.widget.config.layout} tw={[widget.config.className, p.className]}>
             {groupFields.map(([rootKey, sub], ix) => (
                 <WidgetWithLabelUI //
                     isTopLevel={isTopLevel}
                     key={rootKey}
                     rootKey={rootKey}
-                    alignLabel={isHorizontal ? false : widget.config.alignLabel}
+                    justifyLabel={isHorizontal ? false : widget.config.alignLabel}
                     widget={bang(sub)}
                 />
             ))}
-        </WidgetFieldsContainerUI>
-    )
-})
-
-export const WidgetFieldsContainerUI = observer(function WidgetFieldsContainerUI_(p: {
-    layout?: 'H' | 'V'
-    className?: string
-    children?: React.ReactNode
-}) {
-    const isHorizontal = p.layout === 'H'
-
-    return (
-        <div
-            className={p.className}
-            tw={[
-                //
-                isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
-                'w-full',
-                p.className,
-            ]}
-        >
-            {p.children}
-        </div>
+        </WidgetsContainerUI>
     )
 })

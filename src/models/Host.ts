@@ -1,8 +1,8 @@
-import type { Requirements } from '../controls/Requirements'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'

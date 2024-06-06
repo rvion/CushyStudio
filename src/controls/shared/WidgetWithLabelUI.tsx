@@ -24,7 +24,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: IWidget
     rootKey: string
     isTopLevel?: boolean
-    alignLabel?: boolean
+    justifyLabel?: boolean
     /**
      * override the label (false to force disable the label)
      * some widget like `choice`, already display the selected header in their own way
@@ -38,7 +38,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
-    const justify = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
+    const justify = p.justifyLabel ?? getIfWidgetNeedAlignedLabel(widget)
     const showBorder = widget.border
 
     const labelText: string | false = (() => {

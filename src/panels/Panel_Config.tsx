@@ -45,6 +45,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     <input
                         tw='cushy-basic-input w-full'
                         name='preferredTextEditor'
+                        placeholder='code (vscode)'
                         value={config.get('preferredTextEditor') ?? ''}
                         onChange={(ev) => {
                             config.update({ preferredTextEditor: ev.target.value })
@@ -63,7 +64,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                         name='githubUsername'
                     />
                 </FieldUI>
-                <FieldUI label='Your Cushy CloudGPU api Key'>
+                {/* <FieldUI label='Your Cushy CloudGPU api Key'>
                     <input //
                         tw='cushy-basic-input w-full'
                         value={config.value.cushyCloudGPUApiKey}
@@ -73,7 +74,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                         }}
                         name='githubUsername'
                     />
-                </FieldUI>
+                </FieldUI> */}
                 {/* <FieldUI label='Gallery Image Size (px)'>
                     <InputNumberUI //
                         placeholder='48'

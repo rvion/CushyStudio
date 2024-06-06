@@ -1,4 +1,4 @@
-import type { Requirements } from '../controls/Requirements'
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { Static, Type } from '@sinclair/typebox'
 
