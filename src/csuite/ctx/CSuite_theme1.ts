@@ -1,5 +1,6 @@
+import type { CSuiteConfig } from './CSuiteConfig'
+
 import { NumberVar } from '../tinyCSS/CSSVar'
-import { CSuiteConfig } from './CSuiteConfig'
 
 /** default simple example configuration for external project
  * using cushy kit
