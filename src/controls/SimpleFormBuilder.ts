@@ -1,4 +1,4 @@
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { Form } from './Form'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
@@ -7,7 +7,7 @@ import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { SimpleSpec } from './SimpleSpec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'

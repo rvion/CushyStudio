@@ -1,11 +1,11 @@
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
