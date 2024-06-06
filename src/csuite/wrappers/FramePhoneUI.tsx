@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-export const PhoneWrapperUI = observer(function PhoneWrapperUI_(p: {
+export const FramePhoneUI = observer(function FramePhoneUI_(p: {
     //
     className?: string
     size: 0 | 1 | 2 | 3 | 4 | 5 | 6

@@ -3,7 +3,7 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
-import { BoxSubtle } from '../../../csuite/box/BoxMisc'
+import { FrameSubtle } from '../../../csuite/wrappers/FrameSubtle'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
@@ -15,9 +15,9 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 }) {
     if (!p.widget.serial.collapsed) return null
     return (
-        <BoxSubtle className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic'>
+        <FrameSubtle className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic'>
             {p.widget.summary}
-        </BoxSubtle>
+        </FrameSubtle>
     )
 })
 

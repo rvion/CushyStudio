@@ -2,9 +2,11 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
-import { BoxBase, BoxSubtle, BoxTitle } from '../../csuite/box/BoxMisc'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
+import { FrameBase } from '../../csuite/wrappers/FrameBase'
+import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
+import { FrameTitle } from '../../csuite/wrappers/FrameTitle'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 
@@ -76,19 +78,19 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                     )}
                 />
                 A 1
-                <BoxBase border tw='p-1'>
-                    <BoxBase border tw='p-1'>
-                        <BoxBase border>yay</BoxBase>
-                    </BoxBase>
-                </BoxBase>
-                <BoxTitle children='test' />
-                <BoxSubtle children='test' />
+                <FrameBase border tw='p-1'>
+                    <FrameBase border tw='p-1'>
+                        <FrameBase border>yay</FrameBase>
+                    </FrameBase>
+                </FrameBase>
+                <FrameTitle children='test' />
+                <FrameSubtle children='test' />
                 <Frame tw='p-1 m-1' base={{ contrast: 0.05 }}>
                     A 2
-                    <BoxSubtle>
+                    <FrameSubtle>
                         test 1
-                        <BoxSubtle children='test 2' />
-                    </BoxSubtle>
+                        <FrameSubtle children='test 2' />
+                    </FrameSubtle>
                 </Frame>
                 <Frame tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
@@ -98,7 +100,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                             A 5
                             <Frame tw='p-1 m-1 _bd' border={20} base={20}>
                                 A 6
-                                <BoxTitle tw='text-xl font-bold' children='Test' />
+                                <FrameTitle tw='text-xl font-bold' children='Test' />
                                 <Frame
                                     tw='p-1 m-1 _bd'
                                     border={{ contrast: 0.3, chromaBlend: 1 }}

@@ -11,9 +11,9 @@ import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
-import { PhoneWrapperUI } from '../../csuite/PhoneWrapperUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
+import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
@@ -145,9 +145,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     return t.label
                 }}
             />
-            <PhoneWrapperUI tw='m-auto' size={5}>
+            <FramePhoneUI tw='m-auto' size={5}>
                 {OUT}
-            </PhoneWrapperUI>
+            </FramePhoneUI>
         </div>
     )
 })
