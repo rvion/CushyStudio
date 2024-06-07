@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 // @ts-ignore
-import { allIcons } from '../../../src/icons/icons'
+import { allIcons } from '../../../src/csuite/icons/icons'
 
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
@@ -83,7 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         // match ICONS ===============================================================
         const iconDecoration: vscode.DecorationOptions[] = []
-        const regEx = /[ml]di([A-Z-a-z]+)/g
+        const regEx = /[mlc]di([A-Z-a-z0-9]+)/g
         let match
         while ((match = regEx.exec(text))) {
             const iconName = match[0]
