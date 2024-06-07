@@ -18,7 +18,7 @@ import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext } from 'react'
 
 import { extractNormalizeBox } from '../box/BoxNormalized'
-import { applyBoxToCtx, hashKolor } from '../box/compileBoxClassName'
+import { hashKolor } from '../box/compileBoxClassName'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
@@ -43,7 +43,6 @@ export type FrameProps = {
     // FITT size ----------------------------------------------------
     // /** when true flex=1 */
     expand?: boolean
-    // inline?: boolean
 
     /** HIGH LEVEL THEME-DEFINED BOX STYLES */
     look?: FrameAppearance
@@ -61,7 +60,7 @@ export const Frame = observer(
         const {
             active, disabled, // built-in state & style modifiers
             icon, suffixIcon, loading, // addons
-            expand, square, /* inline, */ size, // size
+            expand, square, size, // size
             look, // templates
             base, hover, border, text, textShadow, shadow, // box stuff
             onMouseDown, onMouseEnter, onClick, triggerOnPress,
@@ -82,8 +81,7 @@ export const Frame = observer(
         // MODIFIERS ---------------------------------------------
         // 2024-06-05 I'm not quite sure having those modifiers here is a good idea
         // I originally though they were standard; but they are probably not
-        const isDisabled = disabled || false
-        if (isDisabled) {
+        if (disabled) {
             box.text = { contrast: 0.1 }
             box.base = { contrast: 0 }
             box.border = null

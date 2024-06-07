@@ -113,7 +113,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: booleanForm,
                     }),
                 },
@@ -138,7 +138,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: intForm,
                     }),
                 },
@@ -153,7 +153,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: floatForm,
                     }),
                 },
@@ -169,11 +169,11 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                 items: {
                     v1: ui.group({
                         border: false,
-                        items: { color: ui.color({}), colorN: ui.color({ label: false, alignLabel: false }) },
+                        items: { color: ui.color({}), colorN: ui.color({ label: false, justifyLabel: false }) },
                     }),
                     v2: ui.group({
                         border: false,
-                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, alignLabel: false }) },
+                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, justifyLabel: false }) },
                     }),
                 },
             }),
@@ -186,7 +186,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: dateForm,
                     }),
                 },
@@ -195,7 +195,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             email: ui.group({
                 items: {
                     aligned: ui.group({ border: false, items: emailForm }),
-                    notAligned: ui.group({ border: false, alignLabel: false, items: emailForm }),
+                    notAligned: ui.group({ border: false, justifyLabel: false, items: emailForm }),
                 },
             }),
 
@@ -206,7 +206,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             group: ui.group({
                 items: {
                     group: ui.group({ items: { inside: ui.float() } }),
-                    groupNoAlign: ui.group({ alignLabel: false, items: { inside: ui.float() } }),
+                    groupNoAlign: ui.group({ justifyLabel: false, items: { inside: ui.float() } }),
                     groupNoBorder: ui.group({ border: false, items: { inside: ui.float() } }),
                     groupNoCollapse: ui.group({ collapsed: false, items: { inside: ui.float() } }),
                     columnExamples: ui.group({
@@ -220,7 +220,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                             }),
                             column2: ui.column({
                                 border: true,
-                                alignLabel: false,
+                                justifyLabel: false,
                                 items: {
                                     top: ui.float({ label: false }),
                                     middle: ui.float({ label: false }),
@@ -240,7 +240,6 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                             }),
                             row2: ui.row({
                                 border: true,
-                                // alignLabel: false, // False by default since layout is set to 'H'
                                 items: {
                                     left: ui.float({ label: false }),
                                     center: ui.float({ label: false }),

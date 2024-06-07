@@ -1,4 +1,5 @@
 import type { IconName } from '../csuite/icons/icons'
+import type { Kolor, KolorExt } from '../csuite/kolor/Kolor'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { Form } from './Form'
@@ -242,8 +243,12 @@ export abstract class BaseWidget {
         return true
     }
 
+    get background(): KolorExt | undefined {
+        return this.config.background
+    }
+
     /** if provided, override the default logic to decide if the widget need to be bordered */
-    get border(): boolean {
+    get border(): KolorExt {
         // avoif borders for the top level form
         if (this.parent == null) return false
         // if (this.parent.subWidgets.length === 0) return false
@@ -252,7 +257,7 @@ export abstract class BaseWidget {
         // if the widget do NOT have a body => we do not show the border
         if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
-        return true
+        return 5
     }
 
     /** root form this widget has benn registered to */
@@ -271,11 +276,16 @@ export abstract class BaseWidget {
     }
 
     // UI ----------------------------------------------------
-    ui(
+    renderWithLabel(
         this: IWidget,
         p?: {
+            noHeader?: boolean
+            noBody?: boolean
+            noErrors?: boolean
             label?: string | false
             justifyLabel?: boolean
+            showWidgetUndo?: boolean
+            showWidgetMenu?: boolean
         },
     ): JSX.Element {
         return (
@@ -283,7 +293,7 @@ export abstract class BaseWidget {
                 key={this.id}
                 {...p}
                 widget={this}
-                rootKey='_'
+                fieldName='_'
             />
         )
     }

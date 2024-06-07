@@ -1,6 +1,6 @@
 import type { Box } from '../csuite/box/Box'
 import type { IconName } from '../csuite/icons/icons'
-import type { Kolor } from '../csuite/kolor/Kolor'
+import type { Kolor, KolorExt } from '../csuite/kolor/Kolor'
 import type { BaseWidget } from './BaseWidget'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
@@ -29,6 +29,7 @@ export const isWidget = (x: any): x is IWidget => {
     )
 }
 
+// TODO: completely remove `IWidget` and only keep `BaseWidget` ?
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget {
     // ---------------------------------------------------------------------------------------------------
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -61,15 +62,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidg
 
     /** unified api to allow setting serial from value */
     setValue(val: K['$Value']): void
-
-    // ---------------------------------------------------------------------------------------------------
-
-    /** if specified, override the default algorithm to decide if the widget should have label aligned */
-    alignLabel?: boolean
-
-    // 2024-03-27 rvion: not really a fan of those options
-    /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
-    background?: boolean
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */
@@ -199,9 +191,6 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      */
     showID?: boolean
 
-    // ⏸️ /** The widget requirements */
-    // ⏸️ requirements?: Requirements[]
-
     /**
      * override the default `collapsed` status
      * only taken into account when widget is collapsible
@@ -212,10 +201,13 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     collapsed?: false
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
-    border?: boolean
+    border?: KolorExt
+
+    /** frame background used in the widget with label */
+    background?: KolorExt
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
-    alignLabel?: boolean
+    justifyLabel?: boolean
 
     /** if provided, widget will be hidden */
     hidden?: boolean

@@ -5,7 +5,7 @@ import { Ikon } from '../icons/iconHelpers'
 
 export const InputBoolToggleButtonBoxUI = observer(function InputBoolToggleButtonBoxUI_(p: {
     //
-    mode: 'radio' | 'checkbox'
+    mode: 'radio' | 'checkbox' | false
     isActive: boolean
 }) {
     const { mode, isActive } = p

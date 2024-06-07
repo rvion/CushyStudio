@@ -63,8 +63,8 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
 
             {/* ------------ */}
             <FormUI form={Header_Playground} />
-            {Header_Playground.root.ui()}
-            {Header_Playground.root.ui({ label: false })}
+            {Header_Playground.root.renderWithLabel()}
+            {Header_Playground.root.renderWithLabel({ label: false })}
             {Header_Playground.root.header()}
             {/* ------------ */}
             {mode.requirements && <PlaygroundRequirementsHeader />}

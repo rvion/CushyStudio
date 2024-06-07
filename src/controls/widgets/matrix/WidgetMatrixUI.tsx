@@ -38,7 +38,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                             <td
                                 //
                                 onClick={() => widget.setRow(row, !widget.getCell(row, cols[0]!).value)}
-                                className='bg-base-302 virtualBorder cursor-pointer'
+                                className='virtualBorder cursor-pointer'
                             >
                                 {row}
                             </td>
@@ -49,7 +49,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                         key={colIx}
                                         className='hover:bg-gray-400 cursor-pointer virtualBorder'
                                         onClick={() => widget.setCell(row, col, !checked)}
-                                        tw={[checked ? undefined : 'bg-base-200']}
+                                        tw={[checked ? undefined : '']}
                                         style={{
                                             background: checked ? 'oklch(var(--p)/.5)' : undefined,
                                             height: '2rem',

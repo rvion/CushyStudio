@@ -29,6 +29,6 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
 const justifyStyle: CSSProperties = {
     textAlign: 'right',
     minWidth: '8rem',
-    width: /* alignLabel && HeaderUI ? */ '35%' /* : undefined */,
-    marginRight: /* alignLabel && HeaderUI ? */ '0.25rem' /* : undefined */,
+    width: '35%',
+    marginRight: '0.25rem',
 }

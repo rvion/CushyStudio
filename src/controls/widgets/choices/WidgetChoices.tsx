@@ -56,10 +56,9 @@ export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widge
 export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
-    UIChildren = () => <WidgetChoices_BodyUI widget={this} alignLabel={false} />
+    UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
-    /* override */ background = true
     readonly id: string
 
     readonly type: 'choices' = 'choices'

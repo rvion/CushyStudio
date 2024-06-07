@@ -117,7 +117,7 @@ export class SimpleFormBuilder implements IFormBuilder {
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config },
+                : { inHeader: true, label: false, justifyLabel: false, ...config },
         )
 
     int = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {

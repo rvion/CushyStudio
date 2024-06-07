@@ -145,7 +145,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         </RevealUI>
                     )
                 } else if (isWidget(entry)) {
-                    return entry.ui()
+                    return entry.renderWithLabel()
                 } else {
                     return <Fragment key={ix}>{createElement(entry)}</Fragment>
                 }

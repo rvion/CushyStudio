@@ -104,7 +104,6 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
             DefaultHeaderUI: false,
         })
     }
-    /* override */ background = true
 
     // sentinel value so we know when to trigger update effect in the UI to update
     // codemirror uncontrolled component

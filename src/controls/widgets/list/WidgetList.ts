@@ -88,7 +88,6 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
-    /* override */ background = true
 
     get hasChanges() {
         // in auto mode, length is managed, so we must not take it into account

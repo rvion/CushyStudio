@@ -3,12 +3,14 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
+import { getInputBoolChroma, getInputBoolContrast } from './InputBoolChroma'
 
 export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false
     const label = p.text
     const mode = p.mode ?? false // 'checkbox'
-    const chroma = isActive ? 0.08 : 0.01
+    const chroma = getInputBoolChroma(isActive)
+    const contrast = getInputBoolContrast(isActive)
     return (
         <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
             style={p.style}
@@ -29,7 +31,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
                 tw={['!select-none object-contain h-input', mode === 'radio' ? 'rounded-full' : 'rounded-sm']}
                 border={{ contrast: 0.2, chroma }}
                 style={{ width: 'var(--input-height)' /* hacky */ }}
-                base={{ contrast: isActive ? 0.09 : 0, chroma }}
+                base={{ contrast, chroma }}
                 size='sm'
                 hover
                 {...p.box}

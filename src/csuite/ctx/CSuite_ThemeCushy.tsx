@@ -15,11 +15,21 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     }
 
     // form behaviour
-    clickAndSlideMultiplicator = 1
-    showWidgetUndo = true
-    showWidgetMenu = true
-    showWidgetDiff = true
-    showToggleButtonBox = true
+    get clickAndSlideMultiplicator() {
+        return this.st.clickAndSlideMultiplicator ?? 1
+    }
+    get showWidgetUndo() {
+        return this.st.theme.value.showWidgetUndo ?? true
+    }
+    get showWidgetMenu() {
+        return this.st.theme.value.showWidgetMenu ?? true
+    }
+    get showWidgetDiff() {
+        return this.st.theme.value.showWidgetDiff ?? true
+    }
+    get showToggleButtonBox() {
+        return this.st.theme.value.showToggleButtonBox ?? false
+    }
     // theme
     get baseStr() {
         return this.st.theme.root.value.base

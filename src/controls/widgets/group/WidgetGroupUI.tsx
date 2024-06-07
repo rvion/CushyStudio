@@ -28,8 +28,8 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
             {groupFields.map(([rootKey, sub], ix) => (
                 <WidgetWithLabelUI //
                     key={rootKey}
-                    rootKey={rootKey}
-                    justifyLabel={isHorizontal ? false : widget.config.alignLabel}
+                    fieldName={rootKey}
+                    justifyLabel={isHorizontal ? false : widget.config.justifyLabel}
                     widget={bang(sub)}
                 />
             ))}

@@ -94,7 +94,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
-    /* override */ background = true
 
     private _defaultSerial = (): Widget_group_serial<T> => {
         return {

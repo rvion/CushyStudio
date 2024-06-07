@@ -79,7 +79,7 @@ export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_t
     rows: string[]
     cols: string[]
 
-    alignLabel = false
+    // justifyLabel = false
 
     constructor(
         //

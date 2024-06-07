@@ -6,7 +6,7 @@ export const ui_model = () => {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
-        box: { base: { hue: 240, contrast: 0, chroma: 0.05 } },
+        box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
         presets: [
             {

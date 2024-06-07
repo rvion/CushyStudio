@@ -117,7 +117,7 @@ export class FormBuilder implements IFormBuilder {
         return new Spec<Widget_size>('size', config)
     }
     spacer = (config: Widget_spacer_config = {}): XSpacer => {
-        return new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+        return new Spec<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
     }
     orbit = (config: Widget_orbit_config = {}): XOrbit => {
         return new Spec<Widget_orbit>('orbit', config)
@@ -146,7 +146,7 @@ export class FormBuilder implements IFormBuilder {
         const config_: Widget_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config }
+                : { inHeader: true, label: false, justifyLabel: false, ...config }
         return new Spec<Widget_markdown>('markdown', config_)
     }
     image = (config: Widget_image_config = {}): XImage => {

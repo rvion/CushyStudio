@@ -4,7 +4,7 @@ app({
         description: 'add a gradient background to the input image',
     },
     ui: (form) => ({
-        from: form.image({ alignLabel: false }),
+        from: form.image({ justifyLabel: false }),
     }),
     canStartFromImage: true,
     run: async (run, ui, ctximg) => {

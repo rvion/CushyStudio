@@ -17,7 +17,7 @@ export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p:
 
 export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
     widget: Widget_choices<T>
-    alignLabel?: boolean
+    justify?: boolean
     className?: string
 }) {
     const widget = p.widget
@@ -34,9 +34,9 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                 if (subWidget == null) return <>❌ error</>
                 return (
                     <WidgetWithLabelUI //
-                        justifyLabel={p.alignLabel}
+                        justifyLabel={p.justify}
                         key={val.branch}
-                        rootKey={val.branch}
+                        fieldName={val.branch}
                         widget={subWidget}
                         label={widget.isSingle ? false : undefined}
                     />
@@ -101,7 +101,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
             tw={[
                 //
                 'relative',
-                p.widget.expand || p.widget.config.alignLabel ? 'w-full' : 'w-64',
+                p.widget.expand || p.widget.config.justifyLabel ? 'w-full' : 'w-64',
             ]}
             onMouseDown={(ev) => {
                 ev.preventDefault()

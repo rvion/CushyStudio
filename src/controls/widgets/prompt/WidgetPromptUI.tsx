@@ -3,10 +3,9 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../../../csuite/frame/Frame'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
-import { FrameSubtle } from '../../../csuite/wrappers/FrameSubtle'
 import { useSt } from '../../../state/stateContext'
 import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
@@ -45,7 +44,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 </div>
                             )}
                         >
-                            <InputBoolUI
+                            <InputBoolToggleButtonUI
                                 value={Boolean(active)}
                                 icon={plugin.icon}
                                 onValueChange={() => st.configFile.set(plugin.configKey, !active)}

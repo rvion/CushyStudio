@@ -50,10 +50,6 @@ export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdo
         return WidgetMardownUI
     }
 
-    get alignLabel() {
-        if (this.config.inHeader) return false
-    }
-
     get baseErrors(): Problem_Ext {
         return null
     }
