@@ -1,6 +1,9 @@
-// MOVE THIS FILE AS REEXPORT ENTRYPOINT
 import { FormManager } from './FormManager'
 import { SimpleFormBuilder } from './SimpleFormBuilder'
+
+// MOVE THIS FILE AS REEXPORT ENTRYPOINT
+export { CSuiteProvider } from '../csuite/ctx/CSuiteProvider'
+export { CSuite_ThemeLoco } from '../csuite/ctx/CSuite_ThemeLoco'
 
 export type { IFormBuilder } from './IFormBuilder'
 export type { FormSerial } from './FormSerial'
