@@ -25,11 +25,11 @@ export const Ikon: {
 }) as any
 
 /** reexport Icon from `@mdi/react` and add siz='1.1em' */
-export const IkonOf = function IkonOf_({ name, ...p }: { name: IconName } & MyIconProps) {
+export const IkonOf = function IkonOf_({ name, size, ...p }: { name: IconName } & MyIconProps) {
     return (
         <Icon //
             path={(allIcons as any)[name]}
-            size='1.1em'
+            size={size ?? '1.1em'}
             {...p}
         />
     )

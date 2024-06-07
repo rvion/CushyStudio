@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
+import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 
@@ -9,6 +10,15 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     const st = useSt()
     return (
         <div tw='h-full p-1 overflow-auto'>
+            <CSuiteOverride
+                config={{
+                    //
+                    showWidgetUndo: false,
+                    showWidgetMenu: false,
+                }}
+            >
+                <FormUI form={FORM_PlaygroundWidgetDisplay} />
+            </CSuiteOverride>
             <FormUI form={FORM_PlaygroundWidgetDisplay} />
         </div>
     )

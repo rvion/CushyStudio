@@ -515,7 +515,7 @@ export class STATE {
             }),
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
-            galleryBgColor: f.color({ label: 'background' }),
+            galleryBgColor: f.colorV2({ label: 'background' }).optional(),
             galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
             showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
             onlyShowBlurryThumbnails: f.boolean({ label: 'Blur Thumbnails' }),

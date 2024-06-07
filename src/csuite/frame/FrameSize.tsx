@@ -20,13 +20,13 @@ export function getClassNameForSize(p: FrameSize) {
         if (p.size == null)     return
         exhaust(p.size)
     } else {
-        if (p.size === 'input') return `line-height-[1.1em] h-input text-sm`
+        if (p.size === 'input') return `h-input text-sm`
 
-        if (p.size === 'xs')    return 'line-height-[1.1em] text-xs px-0.5 py-0.5'
-        if (p.size === 'sm')    return 'line-height-[1.1em] text-sm px-1   py-1  '
-        if (p.size === 'md')    return 'line-height-[1.1em]         px-2   py-1  '
-        if (p.size === 'lg')    return 'line-height-[1.1em] text-lg px-4   py-2  '
-        if (p.size === 'xl')    return 'line-height-[1.1em] text-xl px-8   py-8  '
+        if (p.size === 'xs')    return 'text-xs px-0.5 py-0.5'
+        if (p.size === 'sm')    return 'text-sm px-1   py-1  '
+        if (p.size === 'md')    return '        px-2   py-1  '
+        if (p.size === 'lg')    return 'text-lg px-4   py-2  '
+        if (p.size === 'xl')    return 'text-xl px-8   py-8  '
         if (p.size == null)     return
         exhaust(p.size)
     }

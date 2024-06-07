@@ -17,7 +17,13 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     return (
         <Frame
             hover
-            tw='COLLAPSE-PASSTHROUGH h-input flex justify-end gap-0.5 flex-none items-center shrink-0 flex-1 items-center'
+            tw={[
+                //
+                'COLLAPSE-PASSTHROUGH',
+                'minh-input',
+                'flex', // gap-0.5
+                'items-center flex-none shrink-0',
+            ]}
             style={p.justify ? justifyStyle : undefined}
             text={csuite.labelText}
         >
@@ -28,7 +34,8 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
 
 const justifyStyle: CSSProperties = {
     textAlign: 'right',
-    minWidth: '8rem',
-    width: '35%',
-    marginRight: '0.25rem',
+    minWidth: '8rem', // 🔴 move to theme options
+    width: '35%', // 🔴 move to theme options
+    marginRight: '0.25rem', // 🔴 move to theme options
+    justifyContent: 'flex-end',
 }

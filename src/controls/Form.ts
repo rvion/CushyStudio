@@ -70,8 +70,16 @@ export class Form<
      * without having to import any component; usage:
      * | <div>{x.renderAsConfigBtn()}</div>
      */
-    renderAsConfigBtn = (p?: { title?: string }): ReactNode =>
-        createElement(FormAsDropdownConfigUI, { form: this, title: p?.title })
+    renderAsConfigBtn = (p?: {
+        // 1. anchor option
+        // ...TODO
+        // 2. popup options
+        title?: string
+        className?: string
+        maxWidth?: string
+        minWidth?: string
+        width?: string
+    }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
     get value(): ROOT['$Value'] {
         return this.root.value

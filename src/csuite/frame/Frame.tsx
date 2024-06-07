@@ -48,6 +48,8 @@ export type FrameProps = {
     look?: FrameAppearance
     // ICON --------------------------------------------------
     icon?: Maybe<IconName>
+    iconSize?: string
+
     suffixIcon?: Maybe<IconName>
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
@@ -59,7 +61,7 @@ export const Frame = observer(
         // prettier-ignore
         const {
             active, disabled, // built-in state & style modifiers
-            icon, suffixIcon, loading, // addons
+            icon, iconSize, suffixIcon, loading, // addons
             expand, square, size, // size
             look, // templates
             base, hover, border, text, textShadow, shadow, // box stuff
@@ -152,8 +154,9 @@ export const Frame = observer(
                     //
                     'BOX',
                     look && `box-${look}`,
+                    size && `box-${size}`,
+                    square && `box-square`,
                     loading && 'relative',
-                    getClassNameForSize(p),
                     expand && 'flex-1',
                     ...classes,
                     className,
@@ -172,9 +175,9 @@ export const Frame = observer(
                         text: nextext,
                     }}
                 >
-                    {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} />}
+                    {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
                     {p.children}
-                    {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} />}
+                    {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
                     {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
             </div>

@@ -27,7 +27,7 @@ export const themeConf = CushyFormManager.form(
 
                 // 3. misc
                 border: ui.percent({ default: 8 }).optional(true),
-
+                inputHeight: ui.number({ min: 1.4, max: 3, default: 1.6, unit: 'rem', suffix: 'rem' }),
                 // 4. components
                 useDefaultCursorEverywhere: ui.boolean({ default: false }),
                 showWidgetUndo: ui.boolean({ tooltip: 'show undo button near every field', default: true }),

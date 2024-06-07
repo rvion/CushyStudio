@@ -13,7 +13,7 @@ export const WidgetsContainerUI = observer(function WidgetsContainerUI_(p: {
             tw={[
                 //
                 isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
-                'w-full',
+                'w-full overflow-auto',
                 p.className,
             ]}
         >

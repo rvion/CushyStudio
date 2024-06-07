@@ -16,7 +16,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetUndo = true
     showWidgetMenu = true
     showWidgetDiff = true
-    showToggleButtonBox = true
+    showToggleButtonBox = false
     // theme
     base: OKLCH = { lightness: 0.987, chroma: 0.01, hue: 286 }
     get baseStr() {
@@ -29,4 +29,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
 
     inputBorder = new NumberVar('input-border', 8)
     labelText = { contrast: 0.48, chroma: 0.035 }
+    inputHeight: number = 1.6
+    showWidgetExtra: boolean = true
+    truncateLabels?: boolean | undefined = false
 }

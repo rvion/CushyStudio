@@ -16,12 +16,13 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
 
     return (
         <Frame
-            tw='h-input !select-none cursor-pointer justify-center px-1 py-1 text-sm flex items-center'
+            tw='InputBoolToggleButtonUI minh-input !select-none cursor-pointer justify-center px-1 text-sm flex items-center'
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
             look='default'
             base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
             border={isActive ? 10 : 5}
+            iconSize='1.5em'
             hover={!p.disabled}
             expand={expand}
             style={p.style}
@@ -34,7 +35,11 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             }}
         >
             {kit.showToggleButtonBox && p.mode && <InputBoolToggleButtonBoxUI isActive={isActive} mode={p.mode} />}
-            <p tw='w-full text-center line-clamp-1'>{label}</p>
+            {/* 2024-06-07 rvion: make sure long label remain legible even on low width
+                - I removed the "line-clamp-1" from the paragraph below
+                - I replaced the "h-input" by "minh-input" in the Frame above
+            */}
+            <p tw='w-full text-center'>{label}</p>
         </Frame>
     )
 })

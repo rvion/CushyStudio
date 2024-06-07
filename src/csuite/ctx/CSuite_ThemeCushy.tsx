@@ -30,6 +30,11 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get showToggleButtonBox() {
         return this.st.theme.value.showToggleButtonBox ?? false
     }
+    showWidgetExtra: boolean = true
+    truncateLabels?: boolean | undefined = false
+    get inputHeight() {
+        return this.st.theme.value.inputHeight ?? 1.6
+    }
     // theme
     get baseStr() {
         return this.st.theme.root.value.base
@@ -37,7 +42,9 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get base(): OKLCH {
         return getLCHFromString(this.baseStr)
     }
-    get shiftDirection() { return this.base.lightness > 0.5 ? -1 : 1; } // prettier-ignore
+    get shiftDirection() {
+        return this.base.lightness > 0.5 ? -1 : 1
+    }
     get text(): Kolor {
         return run_Kolor(this.st.theme.value.text)
     }

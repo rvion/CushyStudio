@@ -33,6 +33,7 @@ export const Button = observer(function Button_(
             tabIndex={p.tabIndex ?? -1}
             onMouseDown={uist.press}
             onClick={uist.onClick}
+            // iconSize='1.3em'
             {...rest}
             tw={[
                 'inline-flex',

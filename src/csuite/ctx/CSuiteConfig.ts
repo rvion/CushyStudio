@@ -10,11 +10,20 @@ import { NumberVar } from '../tinyCSS/CSSVar'
  */
 export interface CSuiteConfig {
     clickAndSlideMultiplicator: number
+
+    showWidgetExtra: boolean
     showWidgetUndo: boolean
     showWidgetMenu: boolean
     showWidgetDiff: boolean
     showToggleButtonBox: boolean
-    //
+
+    inputHeight: number
+
+    /**
+     * @default false
+     * when true, force labels to remain inline, and show ellipsis when label is too long  */
+    truncateLabels?: boolean
+    // ---------------------------
     inputBorder: number | NumberVar<'input-border'>
     // -----------
     // base colors

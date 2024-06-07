@@ -18,4 +18,7 @@ export const CSuite_theme1: CSuiteConfig = {
     text: { contrast: 0.824 },
     labelText: { contrast: 0.48, chroma: 0.035 },
     shiftDirection: 1,
+    inputHeight: 1.6,
+    showWidgetExtra: true,
+    truncateLabels: false,
 }

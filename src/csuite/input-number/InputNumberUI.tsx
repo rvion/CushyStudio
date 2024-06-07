@@ -260,7 +260,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 p.disabled && 'pointer-events-none opacity-25',
                 'h-input relative',
                 'input-number-ui',
-                'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
+                'flex-1 select-none min-w-24 cursor-ew-resize overflow-clip',
                 // !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {

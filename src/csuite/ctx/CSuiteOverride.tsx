@@ -1,31 +1,36 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
 import { getNum } from '../tinyCSS/CSSVar'
 import { CSuiteCtx } from './CSuiteCtx'
+import { useCSuite } from './useCSuite'
 
-/**
- * minimalist wrapper around react context provider
- * that also inject CSS vars + set a few CSS properties to the root item
- * (color, ...)
- * */
-export const CSuiteProvider = observer(function CSuiteProvider_(p: {
+export const CSuiteOverride = observer(function CSuiteOverride_(p: {
     //
-
-    children: ReactNode
-    config: CSuiteConfig
     className?: string
-    style?: CSSProperties
+    config: Partial<CSuiteConfig>
+    children?: ReactNode
 }) {
-    const config = p.config
+    const prev = useCSuite()
+
+    const config = useMemo(
+        () =>
+            new Proxy(p.config, {
+                get: (target, prop) =>
+                    prop in target //
+                        ? (target as any)[prop]
+                        : (prev as any)[prop],
+            }),
+        [p.config],
+    ) as CSuiteConfig
+
     return (
         <CSuiteCtx.Provider value={config}>
             <Frame //
                 className={p.className}
-                tw='w-full h-full flex-1'
                 base={cushy.theme.value.base}
                 text={cushy.themeText}
                 style={{

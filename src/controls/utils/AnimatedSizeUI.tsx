@@ -12,7 +12,16 @@ export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { className?:
     const { ref: refFn, size } = useSizeOf()
 
     return (
-        <div className={p.className} tw='smooth-resize-container animated overflow-hidden' style={{ height: `${size.height}px` }}>
+        <div
+            className={p.className}
+            tw={[
+                //
+                'smooth-resize-container animated',
+                // 'overflow-hidden',
+                'overflow-y-hidden',
+            ]}
+            style={{ height: `${size.height}px` }}
+        >
             <div className='smooth-resize-content' ref={refFn}>
                 {p.children}
             </div>

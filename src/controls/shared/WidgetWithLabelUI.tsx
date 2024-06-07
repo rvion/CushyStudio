@@ -36,6 +36,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     label?: string | false
     justifyLabel?: boolean
+    showWidgetExtra?: boolean
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
 }) {
@@ -63,11 +64,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <WidgetLabelContainerUI justify={justify}>
                         <WidgetLabelCaretUI widget={widget} />
                         <WidgetLabelIconUI widget={widget} />
-                        {BodyUI && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
+                        {!justify && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                         <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
                         {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
-                        {!BodyUI && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
+                        {justify && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
                     </WidgetLabelContainerUI>
 
                     {/* HEADER CONTROLS */}
@@ -77,9 +78,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </WidgetHeaderControlsContainerUI>
                     )}
 
-                    {/* HEADER OPTIONS (undo, menu, ...) */}
-                    <div tw='ml-auto'></div>
-                    {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
+                    {/* HEADER EXTRA prettier-ignore */}
+                    {(p.showWidgetExtra ?? csuite.showWidgetExtra) && widget.spec.LabelExtraUI && (
+                        <widget.spec.LabelExtraUI widget={widget} />
+                    )}
                     {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI widget={originalWidget} />}
                     {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={widget} />}
                 </WidgetHeaderContainerUI>
@@ -98,10 +100,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {!p.noErrors && <WidgetErrorsUI widget={widget} />}
         </Frame>
     )
-    if (widget.animateResize) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+    if (widget.animateResize && !p.noBody && BodyUI) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
     return WUI
 })
-
-// context
-//
-// parent

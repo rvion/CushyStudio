@@ -27,12 +27,14 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             }}
         >
             <Frame // Checkbox
+                size='input'
+                square
                 icon={p.icon ?? (isActive ? 'mdiCheckBold' : null)}
-                tw={['!select-none object-contain h-input', mode === 'radio' ? 'rounded-full' : 'rounded-sm']}
+                tw={['!select-none', mode === 'radio' ? 'rounded-full' : 'rounded-sm']}
                 border={{ contrast: 0.2, chroma }}
-                style={{ width: 'var(--input-height)' /* hacky */ }}
                 base={{ contrast, chroma }}
-                size='sm'
+                // square
+                iconSize='var(--input-icon-height)'
                 hover
                 {...p.box}
             />

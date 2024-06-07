@@ -9,14 +9,27 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
     //
-    title?: string
     form: Form<any>
+    title?: string
+    className?: string
+    maxWidth?: string
+    minWidth?: string
+    width?: string
 }) {
     return (
         <RevealUI
             title={p.title}
             content={() => (
-                <div style={{ width: '500px' }} tw='flex-shrink-0'>
+                <div //
+                    tw='flex-shrink-0 p-1'
+                    className={p.className}
+                    style={{
+                        // maxWidth: p.maxWidth ?? '500px',
+                        maxWidth: p.maxWidth,
+                        minWidth: p.minWidth,
+                        width: p.width,
+                    }}
+                >
                     <FormUI form={p.form} />
                 </div>
             )}

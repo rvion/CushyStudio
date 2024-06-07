@@ -17,18 +17,16 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
     return (
         <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>
             <InputBoolToggleButtonUI // Random
-                // tw='!border-l-0'
-                icon='mdiShuffle'
+                icon='mdiAutoFix'
                 value={widget.serial.mode === 'randomize'}
                 onValueChange={() => widget.setToRandomize()}
-                text='Random'
+                // text='Random'
             />
             <InputBoolToggleButtonUI // Fixed
-                // tw='!border-l !border-r'
-                icon='mdiDotsGrid'
+                icon='mdiNumeric1CircleOutline'
                 value={widget.serial.mode === 'fixed'}
                 onValueChange={() => widget.setToFixed()}
-                text='Fixed'
+                // text='Fixed'
             />
             <InputNumberUI // Fixed value
                 disabled={widget.serial.mode === 'randomize'}
