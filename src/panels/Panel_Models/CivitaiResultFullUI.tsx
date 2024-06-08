@@ -53,7 +53,11 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                         key={version.id}
                         onValueChange={() => (selected.version = version)}
                     >
-                        <img style={{ width: '3rem', height: '3rem', objectFit: 'contain' }} src={version.images[0]?.url} />
+                        <img
+                            tw='pointer-events-none'
+                            style={{ width: '3rem', height: '3rem', objectFit: 'contain' }}
+                            src={version.images[0]?.url}
+                        />
                         <span>{version.name}</span>
                     </InputBoolToggleButtonUI>
                 ))}

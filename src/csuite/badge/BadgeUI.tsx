@@ -14,9 +14,12 @@ export const BadgeUI = observer(function BadgeUI_(p: {
      */
     autoHue?: string | boolean
     children?: ReactNode
+    className?: string
 }) {
     return (
         <Frame
+            tw='rounded-full px-2 py-0.5 [line-height:1rem]'
+            className={p.className}
             base={{
                 //
                 hue:
@@ -31,7 +34,6 @@ export const BadgeUI = observer(function BadgeUI_(p: {
                 contrast: 0.1,
                 chroma: 0.05,
             }}
-            tw='rounded-full px-2 py-0.5 [line-height:1rem]'
         >
             {p.children}
         </Frame>
