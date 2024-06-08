@@ -11,7 +11,7 @@ import '../theme/form.css'
 import '../theme/markdown.css'
 import '../theme/Tree.css'
 import '../theme/theme.css'
-import '../controls/widgets/number/InputNumberUI.css'
+import '../csuite/input-number/InputNumberUI.css'
 
 import ReactDOM from 'react-dom/client'
 

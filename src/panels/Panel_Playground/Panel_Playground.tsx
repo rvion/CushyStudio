@@ -3,38 +3,35 @@ import { useLayoutEffect } from 'react'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
-import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
-import { PanelHeaderUI } from '../PanelHeader'
+import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
-import { PlaygroundImportFromComfy } from './PlaygroundImporter'
+import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = CushyFormManager.fields(
-    (ui) => ({
-        mode: ui.choice({
+const Header_Playground = CushyFormManager.form(
+    (ui) =>
+        ui.choice({
             appearance: 'tab',
-            layout: 'H',
-            label: false,
-            alignLabel: false,
-            border: false,
-            collapsed: false,
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
+                customPanels: ui.group(),
                 requirements: ui.group(),
                 registeredForms: ui.group(),
                 widgetShowcase: ui.group(),
                 scratchPad: ui.group(),
                 graph: ui.group(),
                 comfyImport: ui.group(),
+                messages: ui.group(),
             },
         }),
-    }),
     {
         name: 'Playground Conf',
         initialSerial: () => readJSON('settings/playground_config.json'),
@@ -45,7 +42,7 @@ const Header_Playground = CushyFormManager.fields(
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()
     const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
-    const mode = Header_Playground.fields.mode
+    const mode = Header_Playground.value
 
     useLayoutEffect(() => {
         cushy.layout.syncTabTitle('Playground', {}, 'DevPlayground')
@@ -53,32 +50,34 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
 
     return (
         <>
-            <PanelHeaderUI>
-                <FormUI form={Header_Playground} />
-                {mode.value.requirements && <PlaygroundRequirementsHeader />}
-            </PanelHeaderUI>
-            <div tw='px-1'>
-                <MessageInfoUI>
-                    <div tw='inline text-sm overflow-clip'>
-                        <span>Use this panel as a scratchpad by modifying </span>
-                        <span tw='rounded bg-error-2 px-1'>PlaygroundScratchPad</span>
-                        <span> in </span>
-                        <span onClick={() => st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
-                            {relPathToThisPage}
-                        </span>{' '}
-                        <span>Do not commit changes in this file unless specifically adding functionality to it.</span>
-                    </div>
-                </MessageInfoUI>
-            </div>
-            <div tw='h-full overflow-auto'>
+            <MessageInfoUI tw='m-1'>
+                <div tw='inline text-sm overflow-clip'>
+                    <span>Use this panel as a scratchpad by modifying </span>
+                    <span tw='rounded px-1'>PlaygroundScratchPad</span>
+                    <span> in </span>
+                    <span onClick={() => void st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
+                        {relPathToThisPage}
+                    </span>
+                </div>
+            </MessageInfoUI>
+            {/* ------------ */}
+            {/* <FormUI form={Header_Playground} /> */}
+            {/* {Header_Playground.root.renderWithLabel()} */}
+            {/* {Header_Playground.root.renderWithLabel({ label: false })} */}
+            {Header_Playground.root.header()}
+            {/* ------------ */}
+            {/* {mode.requirements && <PlaygroundRequirementsHeader />} */}
+            <ErrorBoundaryUI>
                 {/* 👇 PLAYGROUND HERE */}
-                {mode.value.requirements && <PlaygroundRequirements />}
-                {mode.value.registeredForms && <PlaygroundRegisteredForms />}
-                {mode.value.widgetShowcase && <PlaygroundWidgetDisplay />}
-                {mode.value.scratchPad && <PlaygroundScratchPad />}
-                {mode.value.graph && <PlaygroundGraphUI />}
+                {mode.requirements && <PlaygroundRequirements />}
+                {mode.registeredForms && <PlaygroundRegisteredForms />}
+                {mode.widgetShowcase && <PlaygroundWidgetDisplay />}
+                {mode.scratchPad && <PlaygroundScratchPad />}
+                {mode.graph && <PlaygroundGraphUI />}
+                {mode.customPanels && <PlaygroundCustomPanelsUI />}
+                {mode.messages && <PlaygroundMessages />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
-            </div>
+            </ErrorBoundaryUI>
         </>
     )
 })

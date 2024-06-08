@@ -67,6 +67,9 @@
         "📌 TSC": "-------------------------------------------------------------------------",
         "tsc:perf": "bun ./src/perfs/monitorTSCPerfs",
         "tsc:peft0": "tsc -p tsconfig.perf.json --generateTrace tmp/traceDir --noEmit  && npx @typescript/analyze-trace tmp/traceDir --forceMillis=100 > x.txt",
+        "📌 LINT": "-------------------------------------------------------------------------",
+        "lint": "./node_modules/.bin/eslint src --ext .ts,.tsx",
+        "lint:fix": "./node_modules/.bin/eslint src --ext .ts,.tsx --fix",
         "📌 FORM": "-------------------------------------------------------------------------",
         "form:transpile": "   tsc -p tsconfig.doc.json",
         "form:ls": "          madge lib/controls/FormBuilder.loco.js",
@@ -75,9 +78,9 @@
         "form:deps:npm": "    madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.png && code tmp/depedencies.png",
         "form:deps-svg": "    madge lib/controls/FormBuilder.loco.js -i tmp/depedencies.svg && open tmp/depedencies.svg",
         "form:deps-svg:npm": "madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.svg && code tmp/depedencies.svg",
-        "form:export": "rsync -r ~/dev/CushyStudio/@cushy/forms/ ~/dev/monoloco/src/cushy-forms/ --exclude=node_modules --exclude=pre --exclude=.vscode --exclude=global.d.ts --exclude=rollup.config.mjs --exclude=tsconfig.tsbuildinfo --exclude=main.js --exclude=SUMMARY.txt --delete",
+        "form:export": "rsync -r $CUSHY_INSTALL_DIR/@cushy/forms/ $MONOLOCO_INSTALL_DIR/src/cushy-forms/ --exclude=node_modules --exclude=pre --exclude=.vscode --exclude=global.d.ts --exclude=rollup.config.mjs --exclude=tsconfig.tsbuildinfo --exclude=main.js --exclude=SUMMARY.txt --delete --exclude=.gitignore --exclude=README.md --exclude=main.css --exclude=main.d.ts --exclude=main.meta.json --exclude=main.tw.css --exclude=package-lock.json --exclude=package.json --exclude=dts/main.d.rollup-stats.json",
         "form:build": "       bun src/bundle-form-lib.ts",
-        "form:bundle-dts": "  '/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup' -c '/Users/loco/dev/CushyStudio/src/scripts/form.rollup.config.mjs'",
+        "form:bundle-dts": "  './src/scripts/node_modules/.bin/rollup' -c './src/scripts/form.rollup.config.mjs'",
         "form:bundle-dts2": " yarn form:bundle-dts && cp stats.json "
     },
     "dependencies": {
@@ -166,6 +169,7 @@
         "@types/react-dom": "^18.3.0",
         "@types/three": "^0.164.0",
         "@types/ws": "^8.5.10",
+        "@typescript-eslint/parser": "^7.12.0",
         "autoprefixer": "^10.4.19",
         "cross-env": "^7.0.3",
         "format-imports": "^4.0.4",
@@ -173,6 +177,7 @@
         "postcss": "^8.4.31",
         "supabase": "^1.164.1",
         "tailwindcss": "^3.4.3",
+        "typescript-eslint": "^7.12.0",
         "vite": "^5.2.10"
     },
     "pnpm": {

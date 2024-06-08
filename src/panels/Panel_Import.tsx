@@ -18,7 +18,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                     onClick={() => {
                         st.droppedFiles.splice(0)
                     }}
-                    tw='WIDGET-FIELD btn btn-sm  btn-warning'
+                    tw='h-input btn btn-sm  btn-warning'
                 >
                     <span className='material-symbols-outlined'>backspace</span>
                     Clear Items

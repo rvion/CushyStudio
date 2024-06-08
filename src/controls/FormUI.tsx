@@ -1,23 +1,34 @@
-import type { CovariantFn } from './BivariantHack'
-import type { CovariantFC } from './CovariantFC'
+import type { Box } from '../csuite/box/Box'
 import type { Form } from './Form'
+import type { ISpec } from './ISpec'
+import type { CovariantFn } from './utils/BivariantHack'
+import type { CovariantFC } from './utils/CovariantFC'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type ReactNode } from 'react'
 
-import { MessageErrorUI } from '../rsuite/messages/MessageErrorUI'
-import { Box, type BoxProps } from '../theme/colorEngine/Box'
+import { Button } from '../csuite/button/Button'
+import { Frame } from '../csuite/frame/Frame'
+import { MessageErrorUI } from '../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
-    // form -----------------------------------
-    form: Maybe<Form>
-    // look and feel --------------------------
-    /** from your daisy-ui config */
-    theme?: BoxProps
+    // form ---------------------------------------------------------
+    form: Maybe<Form<ISpec>>
+
+    // root wrapper
+    label?: string | false
+    justifyLabel?: boolean
+
+    // look and feel ------------------------------------------------
+    theme?: Box
     className?: string
     style?: CSSProperties
+
+    // extra --------------------------------------------------------
     /** any react children passed to this widget will be displayed at the end of the form */
     children?: ReactNode
+
+    // submit -------------------------------------------------------
     /**
      * override default label.
      * @default 'Submit'
@@ -41,14 +52,15 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form.root == null) return <MessageErrorUI markdown='form.root is null' />
     const submitAction = p.submitAction
     return (
-        <Box {...p.theme} className={p.className} style={p.style}>
-            {form.root.ui() /* FORM */}
+        <Frame {...p.theme} className={p.className} style={p.style}>
+            {form.root.renderWithLabel() /* FORM */}
 
             {p.submitButton ??
                 (submitAction == null ? null : submitAction === 'confetti' ? (
                     <div tw='flex'>
-                        <div
-                            tw='btn btn-primary ml-auto'
+                        <Button
+                            look='primary'
+                            tw='ml-auto'
                             onClick={async () => {
                                 // @ts-ignore
                                 const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
@@ -56,15 +68,15 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
                             }}
                         >
                             {p.submitLabel ?? 'Submit'}
-                        </div>
+                        </Button>
                     </div>
                 ) : (
                     <div tw='flex'>
-                        <div tw='btn btn-primary ml-auto' onClick={() => submitAction(form)}>
+                        <Button look='primary' tw='ml-auto' onClick={() => submitAction(form)}>
                             {p.submitLabel ?? 'Submit'}
-                        </div>
+                        </Button>
                     </div>
                 ))}
-        </Box>
+        </Frame>
     )
 })

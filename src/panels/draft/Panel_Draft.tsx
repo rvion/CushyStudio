@@ -6,16 +6,16 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
-import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { MarkdownUI } from '../../rsuite/MarkdownUI'
-import { MessageInfoUI } from '../../rsuite/messages/MessageInfoUI'
-import { PhoneWrapperUI } from '../../rsuite/PhoneWrapperUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../rsuite/SelectUI'
-import { Message } from '../../rsuite/shims'
+import { stringifyUnknown } from '../../csuite/formatters/stringifyUnknown'
+import { Frame } from '../../csuite/frame/Frame'
+import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
+import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
+import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
+import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from '../../state/stateContext'
-import { Box, BoxSubtle } from '../../theme/colorEngine/Box'
-import { stringifyUnknown } from '../../utils/formatters/stringifyUnknown'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { RecompileUI } from './RecompileUI'
@@ -83,8 +83,8 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
             <RecompileUI app={draft.app} />
-            <Box
-                // base={5}
+            <Frame
+                base={0}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw={['flex-1 flex flex-col p-2 gap-1', containerClassName]}
                 onKeyUp={(ev) => {
@@ -106,26 +106,15 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </MessageInfoUI>
                 )}
 
-                {metadata?.description && (
+                {/* {metadata?.description && (
                     <BoxSubtle>
                         <MarkdownUI tw='_WidgetMardownUI text-sm italic px-1 w-full' markdown={metadata.description} />
                     </BoxSubtle>
-                )}
+                )} */}
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
-                <div tw='pb-10'>
-                    <FormUI
-                        // theme={{
-                        //     // base: 'oklch(0, 0, 200)',
-                        //     // base: 'rgb(255, 250, 240)',
-                        //     // base: '#1E212B',
-                        //     text: { contrast: 0.9 /* chromaBlend: 99, hueShift: 0 */ },
-                        // }}
-                        key={draft.id}
-                        form={draft.form}
-                    />
-                </div>
+                <FormUI tw='pb-10' key={draft.id} form={draft.form} />
                 <RevealUI
                     content={() => (
                         <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
@@ -139,7 +128,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 >
                     <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
                 </RevealUI>
-            </Box>
+            </Frame>
         </draftContext.Provider>
     )
     if (!wrapMobile) return OUT
@@ -156,9 +145,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     return t.label
                 }}
             />
-            <PhoneWrapperUI tw='m-auto' size={5}>
+            <FramePhoneUI tw='m-auto' size={5}>
                 {OUT}
-            </PhoneWrapperUI>
+            </FramePhoneUI>
         </div>
     )
 })
@@ -171,7 +160,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
     return (
         <div tw='h-full'>
-            <Message type='error'>{p.children}</Message>
+            <MessageErrorUI>
+                <div>{p.children}</div>
+            </MessageErrorUI>
         </div>
     )
 })

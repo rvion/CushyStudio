@@ -17,7 +17,7 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
                     this.isRunning = false
                 })
                 if (isPromise(t)) {
-                    ;(t as Promise<T>).then((final) => this.setValue(final))
+                    void (t as Promise<T>).then((final) => this.setValue(final))
                 } else {
                     this.setValue(t as any)
                 }
@@ -32,7 +32,7 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
             }
         })
         this.then = this.promise.then.bind(this.promise)
-        makeObservable(this, {
+        void makeObservable(this, {
             done: observable,
             setValue: action,
             value: observable,

@@ -2,9 +2,9 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
-import { SelectUI } from '../../../rsuite/SelectUI'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { SelectUI } from '../../../csuite/select/SelectUI'
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
-import { InputBoolUI } from '../bool/InputBoolUI'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectOne<T>
@@ -27,7 +27,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                     return (
                         <InputBoolUI
                             key={c.id}
-                            active={isSelected}
+                            value={isSelected}
                             display='button'
                             text={c.label ?? c.id}
                             onValueChange={(value) => {

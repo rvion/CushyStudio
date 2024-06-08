@@ -9,7 +9,7 @@ import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldNa
 import { toastError } from '../../../utils/misc/toasts'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
@@ -54,9 +54,11 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
+    UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
+    UISelect = () => <WidgetChoices_HeaderUI widget={this} />
+    UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
-    /* override */ background = true
     readonly id: string
 
     readonly type: 'choices' = 'choices'
@@ -112,9 +114,13 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
 
     get hasChanges() {
         const def = this.config.default
-        for (const branchName in this.choices) {
+        for (const branchName of this.choices) {
             const shouldBeActive =
-                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
             const child = this.children[branchName]
             if (child && !shouldBeActive) return true
             if (!child && shouldBeActive) return true
@@ -125,15 +131,19 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
 
     reset() {
         const def = this.config.default
-        for (const branchName in this.choices) {
+        for (const branchName of this.choices) {
             const shouldBeActive =
-                def == null ? false : typeof def === 'string' ? branchName === def : (def as DefaultBranches<T>)[branchName]
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
             const child = this.children[branchName]
             if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
             if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
             // re-check if child is now enabled
             const childAfter = this.children[branchName]
-            if (childAfter && childAfter.hasChanges) return true
+            if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
         this.bumpValue()
     }

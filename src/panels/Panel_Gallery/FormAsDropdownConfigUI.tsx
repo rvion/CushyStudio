@@ -3,29 +3,41 @@ import type { Form } from '../../controls/Form'
 import { observer } from 'mobx-react-lite'
 
 import { FormUI } from '../../controls/FormUI'
-import { Ikon } from '../../icons/iconHelpers'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Box } from '../../theme/colorEngine/Box'
+import { Button } from '../../csuite/button/Button'
+import { Ikon } from '../../csuite/icons/iconHelpers'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 
-export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: { title?: string; form: Form<any> }) {
+export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
+    //
+    form: Form<any>
+    title?: string
+    className?: string
+    maxWidth?: string
+    minWidth?: string
+    width?: string
+}) {
     return (
         <RevealUI
-            tw='WIDGET-FIELD'
             title={p.title}
             content={() => (
-                <div style={{ width: '500px' }} tw='flex-shrink-0'>
+                <div //
+                    tw='flex-shrink-0 p-1'
+                    className={p.className}
+                    style={{
+                        // maxWidth: p.maxWidth ?? '500px',
+                        maxWidth: p.maxWidth,
+                        minWidth: p.minWidth,
+                        width: p.width,
+                    }}
+                >
                     <FormUI form={p.form} />
                 </div>
             )}
         >
-            <Box
-                border
-                hover
-                tw='flex px-1 w-full h-full items-center justify-center hover:brightness-125 border border-base-100'
-            >
+            <Button size='input'>
                 <Ikon.mdiCog />
                 <Ikon.mdiChevronDown />
-            </Box>
+            </Button>
         </RevealUI>
     )
 })

@@ -62,7 +62,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
         return this.config.default ?? cushy.defaultImage
     }
     get hasChanges() {
-        return this.value === this.defaultValue
+        return this.value !== this.defaultValue
     }
     reset = () => {
         this.value = this.defaultValue
@@ -87,6 +87,9 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
+    }
+    get animateResize() {
+        return false
     }
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!

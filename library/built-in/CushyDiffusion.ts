@@ -31,18 +31,18 @@ app({
     ui: (form: FormBuilder) => ({
         positive: form.prompt({
             icon: 'mdiPlusBoxOutline',
+            background: { hue: 150, chroma: 0.05 },
             default: [
                 'masterpiece, tree',
                 '?color, ?3d_term, ?adj_beauty, ?adj_general',
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
-            box: { base: { hue: 150, contrast: 0, chroma: 0.05 } },
         }),
         negative: form.prompt({
             icon: 'mdiMinusBoxOutline',
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
-            box: { base: { hue: 0, contrast: 0, chroma: 0.05 } },
+            box: { base: { hue: 0, chroma: 0.05 } },
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
@@ -84,7 +84,7 @@ app({
         if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
 
         const posPrompt = run_prompt({
-            prompt: ui.positive,
+            prompt: { text: positiveText },
             clip,
             ckpt,
             printWildcards: true,

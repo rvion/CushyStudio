@@ -2,10 +2,10 @@ import type { MediaTextL } from '../models/MediaText'
 
 import { observer } from 'mobx-react-lite'
 
-import { TabUI } from '../app/layout/TabUI'
+import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
+import { Surface } from '../csuite/shims'
+import { TabUI } from '../csuite/tabs/TabUI'
 import { StepL } from '../models/Step'
-import { MarkdownUI } from '../rsuite/MarkdownUI'
-import { Surface } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
@@ -42,7 +42,7 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
                 {'<HTML/>'}
             </div>
         ) : (
-            <div tw='text-base-content text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
+            <div tw='text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
         )
 
     return <OutputPreviewWrapperUI output={p.output}>{message}</OutputPreviewWrapperUI>

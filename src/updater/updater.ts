@@ -175,7 +175,7 @@ export class GitManagedFolder {
             }
 
             if (!this._hasPeriodicUpdateCheck()) {
-                this._startPeriodicUpdateCheck()
+                void this._startPeriodicUpdateCheck()
             }
 
             // helpers
@@ -249,7 +249,7 @@ export class GitManagedFolder {
             })
         })
         this.currentAction = null
-        this.updateInfos()
+        void this.updateInfos()
         return
     }
 
@@ -275,7 +275,7 @@ export class GitManagedFolder {
             this.git = null
             this.status = FolderGitStatus.DoesNotExist
         }
-        this.updateInfos()
+        void this.updateInfos()
     }
 
     // GIT INFOS -------------------------------------------------------------------------
@@ -419,7 +419,7 @@ export class GitManagedFolder {
         const periodicCheck = setInterval(async () => {
             this.nextFetchAt = Date.now() + interval
             await git.fetch()
-            this.checkForUpdatesNow()
+            await this.checkForUpdatesNow()
         }, interval)
         this._registerPeriodicUpdateCheck(periodicCheck)
     }

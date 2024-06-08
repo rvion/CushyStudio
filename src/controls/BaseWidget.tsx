@@ -1,16 +1,27 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../csuite/icons/icons'
+import type { Kolor, KolorExt } from '../csuite/kolor/Kolor'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
+import type { Form } from './Form'
 import type { ISpec } from './ISpec'
-import type { FC } from 'react'
+import type { CovariantFC } from './utils/CovariantFC'
+import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeWidget } from '../panels/libraryUI/tree/xxx/TreeWidget'
+import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
+import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
+import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
+import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
+import { WidgetHeaderContainerUI } from './shared/WidgetHeaderContainerUI'
+import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
+import { type WidgetLabelContainerProps, WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
+import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
+import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -24,6 +35,15 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
 export abstract class BaseWidget {
     abstract spec: ISpec
 
+    UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
+    UIErrors = () => <WidgetErrorsUI widget={this} />
+    UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
+    UILabelIcon = () => <WidgetLabelIconUI widget={this} />
+    UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
+    UIHeaderContainer = (p: { children: ReactNode }) => (
+        <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
+    )
+
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {
         return {
@@ -36,6 +56,35 @@ export abstract class BaseWidget {
     /** shorthand access to config */
     get config(): this['spec']['config'] {
         return this.spec.config
+    }
+
+    get animateResize() {
+        return true
+    }
+
+    /**
+     * return true when widget has no child
+     * return flase when widget has one or more child
+     * */
+    get hasNoChild(): boolean {
+        return this.subWidgets.length === 0
+    }
+
+    collapseAllChildren = () => {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            if (item.serial.collapsed) continue
+            const isCollapsible = item.isCollapsible
+            if (isCollapsible) item.setCollapsed(true)
+        }
+    }
+    expandAllChildren = () => {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            item.setCollapsed(undefined)
+        }
     }
 
     // change management ------------------------------------------------
@@ -157,8 +206,65 @@ export abstract class BaseWidget {
         }
     }
 
+    /** parent widget of this widget, if any */
+    abstract readonly parent: IWidget | null
+
+    /** default body UI */
+    abstract readonly DefaultBodyUI: CovariantFC<any> | undefined
+
+    /** the widget state that will be persisted UI */
+    abstract serial: { collapsed?: boolean }
+
+    get isHidden(): boolean {
+        if (this.config.hidden != null) return this.config.hidden
+        if (isWidgetGroup(this) && Object.keys(this.fields).length === 0) return true
+        return false
+    }
+
+    /** whether the widget should be considered inactive */
+    get isDisabled(): boolean {
+        return isWidgetOptional(this) && !this.serial.active
+    }
+
+    get isCollapsed(): boolean {
+        if (!this.isCollapsible) return false
+        if (this.serial.collapsed != null) return this.serial.collapsed
+        if (this.parent?.isDisabled) return true
+        return false
+    }
+
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    get isCollapsible(): boolean {
+        // top level widget is not collapsible; we may want to revisit this decision
+        // if (widget.parent == null) return false
+        if (this.config.collapsed != null) return this.config.collapsed //
+        if (!this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
+        if (this.config.label === false) return false
+        return true
+    }
+
+    get background(): KolorExt | undefined {
+        return this.config.background
+    }
+
+    /** if provided, override the default logic to decide if the widget need to be bordered */
+    get border(): KolorExt {
+        // avoif borders for the top level form
+        if (this.parent == null) return false
+        // if (this.parent.subWidgets.length === 0) return false
+        // if app author manually specify they want no border, then we respect that
+        if (this.config.border != null) return this.config.border
+        // if the widget do NOT have a body => we do not show the border
+        if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
+        // default case when we have a body => we show the border
+        return 5
+    }
+
+    /** root form this widget has benn registered to */
+    abstract readonly form: Form
+
     // FOLD ----------------------------------------------------
-    setCollapsed(this: IWidget, val?: boolean) {
+    setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
         this.form.serialChanged(this)
@@ -170,8 +276,26 @@ export abstract class BaseWidget {
     }
 
     // UI ----------------------------------------------------
-    ui(this: IWidget): JSX.Element {
-        return <WidgetWithLabelUI isTopLevel key={this.id} widget={this} rootKey='_' />
+    renderWithLabel(
+        this: IWidget,
+        p?: {
+            noHeader?: boolean
+            noBody?: boolean
+            noErrors?: boolean
+            label?: string | false
+            justifyLabel?: boolean
+            showWidgetUndo?: boolean
+            showWidgetMenu?: boolean
+        },
+    ): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                {...p}
+                widget={this}
+                fieldName='_'
+            />
+        )
     }
 
     defaultHeader(this: IWidget): JSX.Element | undefined {
@@ -248,6 +372,7 @@ export abstract class BaseWidget {
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
+        // eslint-disable-next-line consistent-this
         const self = this as any as IWidget
         const config = self.config
         const serial = self.serial

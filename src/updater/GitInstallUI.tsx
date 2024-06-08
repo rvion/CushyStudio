@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../rsuite/button/Button'
+import { Button } from '../csuite/button/Button'
 import { GitManagedFolder } from './updater'
 
 export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitManagedFolder }) {
@@ -14,7 +14,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitMan
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
-                updater.install()
+                return updater.install()
             }}
         >
             Install

@@ -3,7 +3,8 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
@@ -15,8 +16,8 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
     return (
         <Dropdown
             className={p.className}
-            startIcon='mdiMenu'
-            title='Drafts' //`${layout}`}
+            startIcon='mdiHistory'
+            title='Drafts'
             content={() => <DraftListUI app={p.draft.app} />}
         />
     )

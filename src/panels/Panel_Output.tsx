@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { Status } from '../back/Status'
-import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { Button } from '../csuite/button/Button'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 import { OutputPreviewUI, OutputUI } from '../outputs/OutputUI'
 import { StepOutputsHeaderV2UI } from '../outputs/StepOutputsV2UI'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
@@ -116,9 +117,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                     </div>
                 )}
             >
-                <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
-                    <span className='material-symbols-outlined'>settings</span>
-                </div>
+                <Button icon='mdiEyeSettings' style={{ width: size, height: size, lineHeight: size }}></Button>
             </RevealUI>
             {step?.finalStatus === Status.Running && (
                 <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>

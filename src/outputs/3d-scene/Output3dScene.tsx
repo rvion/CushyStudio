@@ -10,9 +10,9 @@ import { observer } from 'mobx-react-lite'
 // import * as three from 'three'
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 // import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
-import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { StepL } from '../../models/Step'
-import { MessageErrorUI } from '../../rsuite/messages/MessageErrorUI'
 // @ts-ignore
 import { jsx, jsxs } from '../../utils/custom-jsx/jsx-runtime'
 import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
@@ -57,7 +57,7 @@ export const Output3dSceneUI2 = observer(function Output3dSceneUI2_(p: {
                 <div tw='text-xs'>{JSON.stringify(p.output.data.params)}</div>
                 <div tw='text-xs'>{JSON.stringify({ viewID: p.output.data.viewID })}</div>
             </div>
-            <CushyErrorBoundarySimpleUI>
+            <ErrorBoundaryUI>
                 {view.def.render(p.output.data.params)}
                 {/* <react.Suspense fallback={<div tw='loading loading-spinner' />}>
                     <RenderSceneUI //
@@ -65,7 +65,7 @@ export const Output3dSceneUI2 = observer(function Output3dSceneUI2_(p: {
                         data={p.output.data.params ?? {}}
                     />
                 </react.Suspense> */}
-            </CushyErrorBoundarySimpleUI>
+            </ErrorBoundaryUI>
         </div>
     )
 })

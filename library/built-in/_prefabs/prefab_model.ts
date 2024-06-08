@@ -6,7 +6,7 @@ export const ui_model = () => {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
-        box: { base: { hue: 240, contrast: 0, chroma: 0.05 } },
+        box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
         presets: [
             {
@@ -65,8 +65,11 @@ export const ui_model = () => {
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
             if (ui.extra.pag) out += ` + PAG(${ui.extra.pag.scale})`
             if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
-            if (ui.extra.KohyaDeepShrink) out += ` + Shrink(${ui.extra.KohyaDeepShrink})`
-
+            // 2024-05-30 rvion:
+            // | changed the summary when Kohya DeepShrink is enabled.
+            // | Was causing some error (not able to convert ui.extra.KohyaDeepShrink to string)
+            // | automatically
+            if (ui.extra.KohyaDeepShrink) out += ` + Shrink(...)` // ${ui.extra.KohyaDeepShrink}
             return out
         },
         items: {

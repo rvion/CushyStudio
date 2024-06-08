@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Message } from '../rsuite/shims'
+import { Message } from '../csuite/shims'
 import { GitManagedFolder } from './updater'
 
 export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: GitManagedFolder }) {

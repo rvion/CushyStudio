@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { Loader } from '../rsuite/shims'
+import { Loader } from '../csuite/shims'
 import { exhaust } from '../utils/misc/exhaust'
 import { Status } from './Status'
 

@@ -7,18 +7,19 @@ type ElectronShell = typeof import('electron').shell
 
 export const openExternal = (stuff: string) => getElectronSheel().openExternal(stuff, { activate: true })
 
-export const showItemInFolder_BROKEN = (stuff: string) => {
+export const showItemInFolder_BROKEN = (stuff: string): void => {
     console.log(`opening ${stuff}`)
-    getElectronSheel().showItemInFolder(stuff)
+    return getElectronSheel().showItemInFolder(stuff)
 }
 
-export const showItemInFolder = (stuff: string) => {
+export const showItemInFolder = (stuff: string): Promise<void> => {
     console.log(`opening ${stuff} folder: ${dirname(stuff)}`)
-    getElectronSheel().openExternal(`file://${dirname(stuff)}`, { activate: true })
+    return getElectronSheel().openExternal(`file://${dirname(stuff)}`, { activate: true })
 }
 
-export const openFolderInOS = (folderAbsPath: AbsolutePath) => {
+export const openFolderInOS = (folderAbsPath: AbsolutePath): Promise<void> => {
     console.log(`opening ${folderAbsPath} folder: ${folderAbsPath}`)
-    getElectronSheel().openExternal(`file://${folderAbsPath}`, { activate: true })
+    return getElectronSheel().openExternal(`file://${folderAbsPath}`, { activate: true })
 }
+
 export const getElectronSheel = () => window.require('electron').shell as ElectronShell

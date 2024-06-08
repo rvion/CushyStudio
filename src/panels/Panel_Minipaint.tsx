@@ -6,8 +6,9 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 
+import { Button } from '../csuite/button/Button'
+import { knownOKLCHHues } from '../csuite/tinyCSS/knownHues'
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
-import { Button } from '../rsuite/button/Button'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 
@@ -79,7 +80,7 @@ class MinipaintState {
         return this.fileName + '.png'
     }
 
-    saveImage() {
+    saveImage(): void {
         var Layers = getLayers()
         var dim = Layers.get_dimensions()
         var tempCanvas = document.createElement('canvas')
@@ -93,7 +94,7 @@ class MinipaintState {
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
             const relPath = `outputs/minipaint/${this.fileNameWithExt}`
-            createMediaImage_fromBlobObject(this.st, blob, relPath)
+            void createMediaImage_fromBlobObject(this.st, blob, relPath)
         })
     }
 }
@@ -119,34 +120,25 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         size='sm'
                         icon='mdiContentSave'
                         look='primary'
-                        base={{ hue: 'green', chroma: 0.2 }}
-                        onClick={() => {
-                            runInAction(() => {
-                                uist.saveImage()
-                            })
-                        }}
+                        base={{ hue: knownOKLCHHues.success }}
+                        onClick={() => runInAction(() => uist.saveImage())}
                     >
                         Save
                     </Button>
-                    <div
+                    <Button
                         tw={['btn btn-sm virtualBorder self-start', uist.autoSave ? 'btn-active' : null]}
-                        // color={uist.autoSave ? 'green' : undefined}
+                        icon='mdiRepeat'
+                        loading={Boolean(uist.autoSave)}
                         onClick={() => uist.toggleAutoSave()}
                     >
                         AutoSave
-                        {uist.autoSave ? (
-                            <div className='loading loading-spinner loading-sm' />
-                        ) : (
-                            <span className='material-symbols-outlined'>repeat</span>
-                        )}
-                        {/* Auto */}
-                    </div>
+                    </Button>
                     <div>
                         outputs/minipaint/
                         <input
                             onChange={(ev) => (uist.fileName = ev.target.value)}
                             value={uist.fileName}
-                            tw='input input-sm join-item input-bordered'
+                            tw='cushy-basic-input'
                             type='text'
                         />
                         .png

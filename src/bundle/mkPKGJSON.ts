@@ -24,7 +24,8 @@ export function mkPKGJSON(name: string) {
     "scripts": {},
     "devDependencies": {
         "rollup": "^4.13.0",
-        "rollup-plugin-dts": "^6.1.0"
+        "rollup-plugin-dts": "^6.1.0",
+        "rollup-plugin-visualizer": "^5.12.0"
     }
 }
 `

@@ -1,40 +1,37 @@
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../app/shortcuts/ComboUI'
+import { ComboUI } from '../app/accelerators/ComboUI'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { FormUI } from '../controls/FormUI'
-import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
-import { FormHelpTextUI, Toggle } from '../rsuite/shims'
+import { WidgetLabelContainerUI } from '../controls/shared/WidgetLabelContainerUI'
+import { Button } from '../csuite/button/Button'
+import { InputBoolCheckboxUI } from '../csuite/checkbox/InputBoolCheckboxUI'
+import { Frame } from '../csuite/frame/Frame'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../csuite/input-string/InputStringUI'
+import { FormHelpTextUI } from '../csuite/shims'
 import { useSt } from '../state/stateContext'
-import { Box } from '../theme/colorEngine/Box'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
-import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
     const config = st.configFile
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
-            <SectionTitleUI label='CONFIG' className='block' />
-
-            <Box border base={5} tw='flex-1 w-full' /* temp hack */>
+            <Frame border tw='flex-1 w-full' /* temp hack */>
                 <FormUI form={cushy.theme} />
-            </Box>
-            <Box border base={5} tw='flex-1 w-full' /* temp hack */>
-                <FormUI form={cushy.formConf} />
-            </Box>
+            </Frame>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
-            <div tw='flex flex-col gap-1'>
-                <FieldUI label='Comfig file path'>
-                    <pre tw='rounded-btn px-2'>{config.path}</pre>
-                    <div className='btn btn-sm btn-link' onClick={() => openInVSCode(st, config.path)}>
-                        open <span className='material-symbols-outlined text-sm'>open_in_new</span>
-                    </div>
+            <div tw='flex flex-col gap-1 w-full'>
+                <FieldUI label='Config file path'>
+                    <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(st, config.path)}>
+                        {config.path}
+                    </Button>
                 </FieldUI>
                 <FieldUI label='Set tags file'>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         name='tagFile'
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                         onChange={(ev) => {
@@ -45,8 +42,9 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Preferred Text Editor'>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         name='preferredTextEditor'
+                        placeholder='code (vscode)'
                         value={config.get('preferredTextEditor') ?? ''}
                         onChange={(ev) => {
                             config.update({ preferredTextEditor: ev.target.value })
@@ -56,7 +54,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                 </FieldUI>
                 <FieldUI label='Your github username'>
                     <input //
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => {
                             config.update({ githubUsername: ev.target.value })
@@ -65,9 +63,9 @@ export const Panel_Config = observer(function Panel_Config_() {
                         name='githubUsername'
                     />
                 </FieldUI>
-                <FieldUI label='Your Cushy CloudGPU api Key'>
+                {/* <FieldUI label='Your Cushy CloudGPU api Key'>
                     <input //
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         value={config.value.cushyCloudGPUApiKey}
                         onChange={(ev) => {
                             config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -75,7 +73,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                         }}
                         name='githubUsername'
                     />
-                </FieldUI>
+                </FieldUI> */}
                 {/* <FieldUI label='Gallery Image Size (px)'>
                     <InputNumberUI //
                         placeholder='48'
@@ -98,14 +96,14 @@ export const Panel_Config = observer(function Panel_Config_() {
                     />
                 </FieldUI>
                 <FieldUI label='Enable TypeChecking Default Apps'>
-                    <Toggle
-                        onChange={(t) => config.update({ enableTypeCheckingBuiltInApps: t.target.checked })}
-                        checked={config.value.enableTypeCheckingBuiltInApps ?? false}
-                    ></Toggle>
+                    <InputBoolCheckboxUI
+                        onValueChange={(next) => config.update({ enableTypeCheckingBuiltInApps: next })}
+                        value={config.value.enableTypeCheckingBuiltInApps ?? false}
+                    />
                 </FieldUI>
                 <FieldUI label='Check update every X minutes'>
                     <input //
-                        tw='input input-bordered input-sm'
+                        tw='cushy-basic-input w-full'
                         type='number'
                         placeholder='48'
                         name='galleryImageSize'
@@ -125,22 +123,20 @@ export const Panel_Config = observer(function Panel_Config_() {
                     />
                 </FieldUI>
                 <FieldUI label='OpenRouter API KEY'>
-                    <input
-                        tw='input input-bordered input-sm'
-                        type='password' //
-                        value={config.value.OPENROUTER_API_KEY ?? ''}
-                        onChange={(ev) => config.update({ OPENROUTER_API_KEY: ev.target.value })}
+                    <InputStringUI
+                        icon='mdiKey'
+                        type='password'
+                        getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
+                        setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
                     />
                 </FieldUI>
                 <FieldUI label='Configure hosts:'>
-                    <div className='btn btn-sm' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
+                    <Button icon={'mdiOpenInNew'} onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
                         Open Hosts page
-                        <span className='material-symbols-outlined'>desktop_windows</span>
                         <ComboUI combo={KEYS.openPage_Hosts} />
-                    </div>
+                    </Button>
                 </FieldUI>
             </div>
-
             {/* <Panel_ComfyUIHosts /> */}
         </div>
     )
@@ -155,7 +151,9 @@ export const FieldUI = observer(function FieldUI_(p: {
 }) {
     return (
         <div className={p.className} tw='flex gap-2 items-center'>
-            <label tw='whitespace-nowrap'>{p.label}</label>
+            <WidgetLabelContainerUI justify>
+                <label tw='whitespace-nowrap'>{p.label}</label>
+            </WidgetLabelContainerUI>
             {p.children}
             {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
         </div>

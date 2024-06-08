@@ -4,7 +4,9 @@ import { observer } from 'mobx-react-lite'
 
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from '../rsuite/Dropdown'
+import { Button } from '../csuite/button/Button'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
@@ -58,11 +60,10 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <div className='divider my-1'>FileSystem</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
-                // appearance='subtle'
                 disabled={!img?.absPath}
                 onClick={() => {
                     if (!img?.absPath) return
-                    showItemInFolder(img.absPath)
+                    return showItemInFolder(img.absPath)
                 }}
             >
                 Open folder
@@ -71,12 +72,11 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
                 size='xs'
-                // appearance='subtle'
                 disabled={!img?.absPath}
                 onClick={() => {
                     const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
                     if (imgPathWithFileProtocol == null) return
-                    openExternal(imgPathWithFileProtocol)
+                    return openExternal(imgPathWithFileProtocol)
                 }}
             >
                 Open
@@ -122,16 +122,15 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                                     {d.name}
                                     <div className='ml-auto line'>
                                         <div tw='opacity-55 italic'>{d.app.name}</div>
-                                        <div
+                                        <Button
+                                            square
+                                            icon='mdiOpenInNew'
                                             onClick={(ev) => {
                                                 ev.stopPropagation()
                                                 ev.preventDefault()
                                                 d.openOrFocusTab()
                                             }}
-                                            tw='btn btn-xs btn-square'
-                                        >
-                                            <span className='material-symbols-outlined'>open_in_new</span>
-                                        </div>
+                                        ></Button>
                                     </div>
                                 </div>
                             </MenuItem>

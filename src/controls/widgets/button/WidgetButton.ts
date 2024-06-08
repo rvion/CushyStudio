@@ -1,3 +1,4 @@
+import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -21,7 +22,8 @@ export type Widget_button_config<K = any> = WidgetConfigFields<
         text?: string
         /** @default false */
         default?: boolean
-        kind?: `primary` | `special` | `warning`
+        look?: FrameAppearance
+        expand?: boolean
         useContext?: () => K
         // icon?: (ctx: Widget_button_context<K>) => string
         onClick?: (ctx: Widget_button_context<K>) => void

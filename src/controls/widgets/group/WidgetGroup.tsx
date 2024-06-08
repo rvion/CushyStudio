@@ -8,9 +8,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { BaseWidget } from '../../BaseWidget'
-import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
@@ -74,7 +72,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
     reset = () => {
-        for (const key in this.fields) this.fields[key].reset()
+        for (const sub of this.subWidgets) sub.reset()
     }
 
     get summary(): string {
@@ -84,21 +82,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     readonly id: string
 
     readonly type: 'group' = 'group'
-
-    collapseAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            if (item.serial.collapsed) continue
-            const isCollapsible = getIfWidgetIsCollapsible(item)
-            if (isCollapsible) item.setCollapsed(true)
-        }
-    }
-    expandAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            item.setCollapsed(undefined)
-        }
-    }
 
     /** all [key,value] pairs */
     get entries() {
@@ -111,7 +94,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
-    /* override */ background = true
 
     private _defaultSerial = (): Widget_group_serial<T> => {
         return {

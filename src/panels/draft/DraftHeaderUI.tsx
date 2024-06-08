@@ -3,8 +3,8 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Button } from '../../rsuite/button/Button'
-import { Box } from '../../theme/colorEngine/Box'
+import { Button } from '../../csuite/button/Button'
+import { Frame } from '../../csuite/frame/Frame'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
@@ -19,32 +19,26 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const { draft } = p
     const app = draft.appRef.item
     return (
-        <Box
-            base={10}
-            // border
-            style={{
-                // background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
-                zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
-            }}
+        <Frame
+            style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
             className={p.className}
-            tw='_DraftHeaderUI flex border-b border-b-base-300 sticky top-0 z-50'
+            tw='_DraftHeaderUI flex sticky top-0 z-50'
         >
-            <div tw='flex gap-1 mt-1 flex-grow relative text-base-content'>
+            <div tw='flex gap-1 mt-1 flex-grow relative'>
                 <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
                     <div tw='flex text-sm gap-1'>
-                        App <span tw='text-primary font-bold'>{app.name}</span>
+                        <span tw='font-bold'>{app.name}</span>
                     </div>
-                    <div className='flex items-center gap-2 justify-between text-sm'>
+                    <div className='flex items-center gap-2 justify-between'>
                         <input
-                            tw='input input-bordered input-xs flex-grow'
+                            tw='cushy-basic-input flex-grow'
                             onChange={(ev) => draft.update({ title: ev.target.value })}
-                            // tw='w-full'
                             value={draft.data.title ?? 'no title'}
-                        ></input>
+                        />
                     </div>
                     <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
-                    <div tw='flex'>
+                    <div tw='flex gap-0.5'>
                         <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
                         <DraftMenuJumpUI draft={draft} title='Drafts' />
                         {/* --------------------------------- */}
@@ -52,17 +46,23 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <PublishAppBtnUI app={app} />
                         <DraftMenuLooksUI draft={draft} title={app.name} />
                         {/* --------------------------------- */}
-                        <Button sm look='ghost' icon='mdiUnfoldMoreHorizontal' square onClick={draft.expandTopLevelFormEntries} />
                         <Button
-                            sm
-                            look='ghost'
+                            subtle
+                            square
+                            size='input'
+                            icon='mdiUnfoldMoreHorizontal'
+                            onClick={draft.expandTopLevelFormEntries}
+                        />
+                        <Button
+                            subtle
+                            square
+                            size='input'
                             icon='mdiUnfoldLessHorizontal'
-                            // square
                             onClick={draft.collapseTopLevelFormEntries}
                         />
                     </div>
                 </div>
             </div>
-        </Box>
+        </Frame>
     )
 })

@@ -1,21 +1,18 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useState } from 'react'
 import { fileURLToPath } from 'url'
 
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { FormUI } from '../../controls/FormUI'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
+import { Button } from '../../csuite/button/Button'
+import { CachedResizedImage } from '../../csuite/CachedResizedImageUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
-import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
-import { Box } from '../../theme/colorEngine/Box'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -46,8 +43,8 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     const sizeStr = size + 'px'
     return (
         <>
-            <Box
-                base={5}
+            <Frame
+                base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
                 tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
@@ -73,8 +70,8 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer icon='apps'>
                                         {st.favoriteApps.map((app) => (
-                                            <Box
-                                                border={2}
+                                            <Frame
+                                                border={20}
                                                 hover
                                                 // tw='rounded border border-base-300 overflow-clip box-content'
                                                 key={app.id}
@@ -88,7 +85,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                 >
                                                     <AppIllustrationUI className={'!rounded-none'} size={sizeStr} app={app} />
                                                 </RevealUI>
-                                            </Box>
+                                            </Frame>
                                         ))}
                                     </FavBarContainer>
                                 )}
@@ -103,7 +100,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                     showDelay={0}
                                                     placement='right'
                                                     content={() => (
-                                                        <Box base={5}>
+                                                        <Frame base={5}>
                                                             <div className='MENU-HEADER'>
                                                                 <div //Container
                                                                     tw='flex p-1 rounded w-full'
@@ -124,10 +121,10 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </Box>
+                                                        </Frame>
                                                     )}
                                                 >
-                                                    <Box
+                                                    <Frame
                                                         hover
                                                         border
                                                         tw='relative hover:brightness-125'
@@ -156,7 +153,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                 />
                                                             </div>
                                                         )}
-                                                    </Box>
+                                                    </Frame>
                                                 </RevealUI>
                                             </div>
                                         ))}
@@ -166,7 +163,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         </div>
                     </div>
                 </div>
-            </Box>
+            </Frame>
             {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>
                     <div tw='absolute insert-0 w-96'>
@@ -231,17 +228,12 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         tw='flex rounded pb-2'
                     >
                         <input
-                            tw='input-sm w-full rounded rounded-r-none border border-base-200 border-r-base-300 outline-none focus:border-primary'
+                            tw='cushy-basic-input w-full rounded-r-none'
                             value={filterText}
                             onChange={(ev) => setFilterText(ev.currentTarget.value)}
                             placeholder='Filter Drafts'
                         ></input>
-                        <button
-                            tw='btn btn-sm text-center items-center self-center snap-center p-1'
-                            onClick={(ev) => setFilterText('')}
-                        >
-                            <span className='material-symbols-outlined'>cancel</span>
-                        </button>
+                        <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
                     </div>
                     <div //App Grid Container
                         tw='grid grid-cols-3 gap-2 max-h-96 overflow-scroll'

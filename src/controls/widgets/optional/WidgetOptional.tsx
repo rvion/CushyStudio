@@ -70,7 +70,7 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
     get hasChanges() {
         // active by default
         if (this.config.startActive) {
-            if (!this.serial.active) return false
+            if (!this.serial.active) return true
             return this.child.hasChanges
         }
         // unactive by default

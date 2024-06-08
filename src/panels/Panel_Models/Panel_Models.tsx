@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { FormHelpTextUI } from '../../rsuite/shims'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { FormHelpTextUI } from '../../csuite/shims'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
@@ -21,7 +21,7 @@ export const Panel_Models = observer(function Panel_Models_() {
                 <SectionTitleUI
                     label={
                         <div tw='flex'>
-                            <img tw='WIDGET-FIELD' src={assets.CivitaiLogo_png} alt='Civitai logo' />
+                            <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
                             CIVITAI
                         </div>
                     }
@@ -29,7 +29,7 @@ export const Panel_Models = observer(function Panel_Models_() {
                 />
                 <SpacerUI />
                 <RevealUI
-                    tw='WIDGET-FIELD'
+                    tw='h-input'
                     title='CIVITAI Options'
                     content={() => (
                         <div tw='p-1'>

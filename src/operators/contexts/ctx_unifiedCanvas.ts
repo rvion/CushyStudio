@@ -2,7 +2,7 @@ import type { UnifiedCanvas } from '../../panels/Panel_Canvas/states/UnifiedCanv
 
 import { UnifiedCanvasCtx } from '../../panels/Panel_Canvas/UnifiedCanvasCtx'
 import { CommandContext } from '../Command'
-import { regionMonitor } from '../RegionMonitor'
+import { regionMonitor } from '../regions/RegionMonitor'
 import { Trigger } from '../RET'
 
 export const ctx_unifiedCanvas = new CommandContext<UnifiedCanvas>(

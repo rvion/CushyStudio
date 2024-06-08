@@ -3,7 +3,7 @@ import hljs from 'highlight.js/lib/core'
 import typescript from 'highlight.js/lib/languages/typescript'
 import { useLayoutEffect, useRef } from 'react'
 
-import { Button } from '../../rsuite/button/Button'
+import { Button } from '../../csuite/button/Button'
 
 hljs.registerLanguage('typescript', typescript)
 // hljs.registerLanguage('json', json)

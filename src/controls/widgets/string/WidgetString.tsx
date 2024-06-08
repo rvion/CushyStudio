@@ -67,7 +67,7 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly border = false
+    // readonly border = false
     readonly id: string
 
     readonly type: 'str' = 'str'
@@ -99,6 +99,10 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
             id: this.id,
         }
         makeAutoObservableInheritance(this)
+    }
+    get animateResize() {
+        if (this.config.textarea) return false
+        return true
     }
     setValue(val: Widget_string_value) {
         this.value = val

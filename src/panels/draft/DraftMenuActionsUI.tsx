@@ -4,8 +4,11 @@ import { observer } from 'mobx-react-lite'
 
 import { showItemInFolder } from '../../app/layout/openExternal'
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
-import { Loader } from '../../rsuite/shims'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../../csuite/dropdown/MenuItem'
+import { Ikon } from '../../csuite/icons/iconHelpers'
+import { Loader } from '../../csuite/shims'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 
@@ -53,8 +56,8 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         onChange={(ev) => draft.update({ canvasToolCategory: ev.target.value ? ev.target.value : null })}
                         value={draft.data.canvasToolCategory ?? ''}
                         placeholder='unified-canvas category (blank=none)'
+                        tw='cushy-basic-input'
                         type='text'
-                        tw='input input-sm'
                     />
                     <div tw='divider my-0'></div>
                     <MenuItem
@@ -111,7 +114,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         reset Form
                     </MenuItem>
 
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     {/* <button disabled={app.isPublishing} tw='btn btn-ghost btn-square btn-sm' onClick={async () => {}}></button> */}
                     <MenuItem
                         icon={app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
@@ -121,7 +124,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     </MenuItem>
                     <div tw='divider my-0'>Debug</div>
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>info</span>}
+                        icon={<Ikon.mdiInformation />}
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
                     >

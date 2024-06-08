@@ -118,7 +118,8 @@ export class Library {
                 // just in case. This should be enough to automatically discover new
                 // scripts when they're added
                 const xxfile = this.getFile(relPath)
-                xxfile.extractScriptFromFile({ force: true })
+                // 🔴🔴🔴 do we want to wait here ? 🔴🔴🔴
+                void xxfile.extractScriptFromFile({ force: true })
 
                 // RELOAD ALL APPS from opened drafts
                 // logic is a bit complex, but it seems like a good trade-off

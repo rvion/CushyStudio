@@ -7,9 +7,9 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { BaseWidget } from '../../BaseWidget'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
+import { clamp, clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { clamp, clampOpt } from './clamp'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
@@ -88,7 +88,6 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
-    /* override */ background = true
 
     get hasChanges() {
         // in auto mode, length is managed, so we must not take it into account

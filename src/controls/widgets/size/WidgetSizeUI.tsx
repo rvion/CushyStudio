@@ -4,18 +4,16 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { Box } from '../../../theme/colorEngine/Box'
-import { InputNumberUI } from '../number/InputNumberUI'
-import { Button } from '../../../rsuite/button/Button'
-import { Frame } from '../../../rsuite/button/Frame'
-import { InputBoolUI } from '../bool/InputBoolUI'
-
-export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
-    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
-})
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
     return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
+})
+
+export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
+    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
@@ -24,20 +22,14 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.sizeHelper
 
-    const ratio = uist.width / uist.height
+    // const ratio = uist.width / uist.height
     // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
 
     return (
         <div className='flex flex-1 flex-col gap-1'>
-            <Box //Joined container
-                // appearance='headless'
-                hover
-                border={{ contrast: 0.25 }}
-                tw={[
-                    'WIDGET-FIELD w-full h-full flex items-center overflow-clip',
-                    // 'border border-base-100 border-b-base-200',
-                    // 'border-b-2 hover:border-base-200 hover:border-b-base-300',
-                ]}
+            <Frame //Joined container
+                border={{ contrast: 0.05 }}
+                tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
                 <InputNumberUI
@@ -46,7 +38,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     max={p.bounds?.max ?? 4096}
                     step={p.bounds?.step ?? 32}
                     mode='int'
-                    tw='!border-none'
                     value={uist.width}
                     hideSlider
                     onValueChange={(next) => uist.setWidth(next)}
@@ -62,7 +53,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     step={p.bounds?.step ?? 32}
                     hideSlider
                     mode='int'
-                    tw='!border-none'
                     value={uist.height}
                     onValueChange={(next) => uist.setHeight(next)}
                     forceSnap={true}
@@ -74,11 +64,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                 <AspectRatioSquareUI sizeHelper={uist} />
                 <div tw='h-full' style={{ width: '1px' }} />
                 <AspectLockButtonUI sizeHelper={uist} />
-            </Box>
-            {/* <div tw='flex items-center gap-1'>
-                <div // Extra div because gap-1 will eat in to the child's width for SOME reason
-                ></div>
-            </div> */}
+            </Frame>
         </div>
     )
 })
@@ -112,18 +98,15 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
     return (
         <Frame // Aspect ratio display background
             square
-            xs
-            tw={[
-                //
-                'flex',
-                'overflow-clip',
-                'items-center justify-center',
-            ]}
-            // style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
-            style={{ border: 'unset', borderRadius: '0px' }}
+            size='xs'
+            border={10}
+            tw={['flex', 'overflow-clip', 'items-center justify-center', 'cursor-pointer']}
+            style={{ borderRadius: '0px' }}
             onClick={uist.flip}
+            hover
         >
             <Frame
+                base={10}
                 tw='!relative w-full h-full'
                 style={{
                     //
@@ -152,17 +135,16 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const resoBtn = (ar: AspectRatio) => (
         <InputBoolUI //
             display='button'
-            active={uist.desiredAspectRatio == ar}
+            value={uist.desiredAspectRatio == ar}
             onValueChange={() => uist.setAspectRatio(ar)}
             text={ar}
         />
     )
 
     const modelBtn = (model: ModelType) => (
-        <InputBoolUI
-            //
+        <InputBoolUI //
             display='button'
-            active={uist.desiredModelType == model}
+            value={uist.desiredModelType == model}
             onValueChange={() => uist.setModelType(model)}
             text={model}
         />
@@ -171,9 +153,9 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const portrait = uist.height / uist.width > 1.0
 
     return (
-        <Box
-            border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-            base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        <Frame
+        // border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
         >
             <div tw='flex'>
                 <div tw='join'>
@@ -203,6 +185,6 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                     </div>
                 </div>
             </div>
-        </Box>
+        </Frame>
     )
 })

@@ -3,9 +3,9 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
-import { MessageErrorUI } from '../../../rsuite/messages/MessageErrorUI'
-import { SelectUI } from '../../../rsuite/SelectUI'
-import { InputBoolUI } from '../bool/InputBoolUI'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { MessageErrorUI } from '../../../csuite/messages/MessageErrorUI'
+import { SelectUI } from '../../../csuite/select/SelectUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectMany<T>
@@ -26,7 +26,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     const isSelected = Boolean(widget.serial.values.find((item) => item.id === c.id))
                     return (
                         <InputBoolUI
-                            active={isSelected}
+                            value={isSelected}
                             display='button'
                             text={c.label}
                             onValueChange={(value) => {
@@ -42,7 +42,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     .filter((v) => widget.choices.find((i) => i.id === v.id) == null)
                     .map((item) => (
                         <InputBoolUI
-                            active={true}
+                            value={true}
                             style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
                             text={item.label ?? 'no label'}

@@ -2,7 +2,7 @@
 
 import { command } from '../Command'
 import { ctx_global } from '../contexts/ctx_global'
-import { menuWithoutProps, type MenuWithoutProps } from '../Menu'
+import { menuWithoutProps, type MenuWithoutProps } from '../menu/Menu'
 import { Trigger } from '../RET'
 
 export const menu_utils: MenuWithoutProps = menuWithoutProps({

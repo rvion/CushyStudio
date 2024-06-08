@@ -65,7 +65,7 @@ foreverRead.stdout.on('data', (chunk) => {
                 const ms = Number(process.hrtime.bigint() - PENDING_DIAGNOSTIC.start) / 1_000_000
                 console.log(`\n[🔥] COMPLETION [${chalk.bold.bgYellow(ms.toFixed(2))}ms]`) // debug
                 if (PENDING_DIAGNOSTIC.uid !== x.args.seq) throw new Error('❌ seq mismatch')
-                processRequest(PENDING_DIAGNOSTIC.lines)
+                void processRequest(PENDING_DIAGNOSTIC.lines)
                 return
             }
 
@@ -204,7 +204,7 @@ export const processRequest = async (
     if (frames.length > 0) {
         rmSync('anim/test.mp4', { recursive: true, force: true })
         const { createMP4FromImages } = await import('../utils/ffmpeg/ffmpegScripts')
-        createMP4FromImages(frames, 'anim/test.mp4', 10, cwd())
+        void createMP4FromImages(frames, 'anim/test.mp4', 10, cwd())
     }
 
     console.log(`[🤠] totalTime for the ${checkExpressionProcessed} checkExpression processed:`)

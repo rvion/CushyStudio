@@ -1,17 +1,10 @@
-.Box {
-    background:  var(--box-base);
-    color:       var(--box-text);
-    text-shadow: var(--box-text-shadow);
-    border:      var(--box-border);
-    /* misc */
-    border-radius: .2rem;
+.BOX:hover {
+    background: var(--KLRH);
 }
-.Box:hover {
-    background:  var(--box-hover-base);
-    color:       var(--box-hover-text);
-    text-shadow: var(--box-hover-text-shadow);
-    border:      var(--box-hover-border);
+.BOX {
+    background: var(--KLR);
 }
+
 /* ---------------------------------------------------------------------------------------------- */
 
 #CushyStudio:focus {
@@ -26,7 +19,6 @@
 /* ---------------------------------------------------------------------------------------------- */
 /* Should be used for right-click/context/pop-up menus */
 .MENU-ROOT {
-    /* padding: 0.5rem; */
     padding: 4px;
 }
 
@@ -65,15 +57,9 @@
 /* border stuff ----------------------------------------------------------------------------------- */
 .bd { border: 2px solid oklch(var(--p)) }
 .bd1 { border: 1px solid oklch(var(--p)) }
-.bdl1 { border-left: 1px solid oklch(var(--p)) }
+
 .konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
 .virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
-.virtualBorder2 { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5)); }
-
-
-.animated {
-    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
  /* helpers ----------------------------------------------------------------------------------- */
 .flex-2{ flex: 2 1 0%; }
@@ -91,21 +77,40 @@
 }
 
 /* ------------------------------------------------------------------------------------------- */
-.flexlayout__tab {
-    display: flex;
-    flex-direction: column;
+
+/* mod 1. makes tabs slightly close to each other */
+.flexlayout__tabset_tab_divider { width: 2px; }
+
+/* mod 2. attempt to remove the separation between tab name and content on selected tabs  */
+.flexlayout__tabset_tabbar_outer_top { border-bottom: none; }
+.flexlayout__tabset_tabbar_inner_tab_container  { padding-left: 0px; padding-right: 0px; }
+.flexlayout__tab_button--unselected  { border-bottom: 1px solid var(--color-tabset-background); }
+/* mod 2 bis. make it so active box is not too different */
+.flexlayout__tabset-selected { background-image: none; }
+
+/* mod 3. attempt to make a simple hover effect to indicate which tab is currently hovered */
+.flexlayout__tab{
+    border: 1px solid var(--color-tabset-background);
+    border-top: none;
 }
-.flexlayout__tabset_tabbar_inner_tab_container  {
-    padding-left: 0px;
-    padding-right: 0px;
+.flexlayout__tabset_tabbar_inner_tab_container {
+    border-left: 1px solid var(--color-tabset-background);
 }
-.flexlayout__tab_button {
-    gap: .1rem
-}
-.flexlayout__tabset-selected {
-    background-image: none;
+.flexlayout__tab:hover {
+    border: 1px solid oklch(from var(--KLR) 0.5 calc(c * 3) h);
+    border-top: none;
 }
 
+/* mod 4. make tabs be flex container by default (prob legacy ; 🔴 not needed anymore) */
+.flexlayout__tab { display: flex; flex-direction: column; }
+
+/* mod 5. make close button slightly close to the text to save a few PX */
+.flexlayout__tab_button { gap: .1rem }
+
+/* mod 6. remove the small top padding above tabs */
+.flexlayout__tabset_tabbar_inner_tab_container_top{
+    border-top: 0;
+}
 
 
 /* COMFY NODES -------------------------------------------------------------------------------------- */

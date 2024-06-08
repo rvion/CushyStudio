@@ -3,7 +3,7 @@ import JSON5 from 'json5'
 import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
-import { readableStringify } from '../utils/formatters/stringifyReadable'
+import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { bang } from '../utils/misc/bang'
 import { debounce } from '../utils/misc/debounce'

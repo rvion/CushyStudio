@@ -8,11 +8,11 @@ import { useMemo } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
 import { StepL } from '../../models/Step'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { bang } from '../../utils/misc/bang'
@@ -85,23 +85,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                     <FormUI form={st.displacementConf} />
                 </div>
             ) : (
-                <PanelHeaderUI>
-                    <SpacerUI />
-                    <RevealUI
-                        tw='WIDGET-FIELD'
-                        title='Displacement Options'
-                        content={() => (
-                            <div tw='p-2'>
-                                <FormUI form={st.displacementConf} />
-                            </div>
-                        )}
-                    >
-                        <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
-                            <span className='material-symbols-outlined'>settings</span>
-                            <span className='material-symbols-outlined'>expand_more</span>
-                        </div>
-                    </RevealUI>
-                </PanelHeaderUI>
+                <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
             )}
 
             <DisplacementUI uist={uist} />
@@ -121,7 +105,7 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     mkdirSync(dirname(absPath), { recursive: true })
     canvas.toBlob(async (blob) => {
         if (blob == null) return toastError('❌ canvas.toBlob returned null')
-        createMediaImage_fromBlobObject(cushy, blob, absPath)
+        return createMediaImage_fromBlobObject(cushy, blob, absPath)
     })
 }
 

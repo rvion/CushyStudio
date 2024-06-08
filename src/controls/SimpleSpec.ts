@@ -8,7 +8,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { makeObservable } from 'mobx'
 
-import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
+import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 

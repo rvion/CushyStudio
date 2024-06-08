@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../../../app/layout/openExternal'
-import { Button } from '../../../../rsuite/button/Button'
-import { MessageErrorUI } from '../../../../rsuite/messages/MessageErrorUI'
-import { Input } from '../../../../rsuite/shims'
+import { Button } from '../../../../csuite/button/Button'
+import { Frame } from '../../../../csuite/frame/Frame'
+import { InputNumberUI } from '../../../../csuite/input-number/InputNumberUI'
+import { MessageErrorUI } from '../../../../csuite/messages/MessageErrorUI'
+import { InputLegacy } from '../../../../csuite/shims'
 import { useSt } from '../../../../state/stateContext'
-import { Box } from '../../../../theme/colorEngine/Box'
-import { InputNumberUI } from '../../number/InputNumberUI'
 import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
@@ -79,7 +79,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
 
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <Box base={5} tw='rounded p-2'>
+        <Frame base={5} tw='rounded p-2'>
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
@@ -146,9 +146,9 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>Trigger Words*</div>
                 <div tw='flex flex-grow join'>
-                    <Input
+                    <InputLegacy
                         //
-                        tw='WIDGET-FIELD rounded join-item'
+                        tw='h-input rounded join-item'
                         type='text'
                         value={associatedText}
                         onChange={(ev) => {
@@ -182,18 +182,14 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div tw='opacity-50 italic text-xs'>
                 *: Only trigger words will be multiplied by weights; to change the lora model and clip strength, use [x,y] syntax
             </div>
-            <div>
-                <Button
-                    size='sm'
-                    onClick={() => openExternal(associatedUrl)}
-                    icon='mdiOpenInNew'
-                    // icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                >
+            <div tw='flex items-center gap-1'>
+                <Button size='input' icon='mdiOpenInNew' onClick={() => openExternal(associatedUrl)}>
                     Associated URL
                 </Button>
-                <Input
-                    tw='WIDGET-FIELD  rounded'
+                <InputLegacy
                     type='text'
+                    tw='w-full'
+                    placeholder='Associated URL....'
                     value={associatedUrl}
                     onChange={(ev) => {
                         const nextURL = ev.target.value
@@ -209,6 +205,6 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     }}
                 />
             </div>
-        </Box>
+        </Frame>
     )
 })

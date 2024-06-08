@@ -3,11 +3,11 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { Ikon } from '../../../icons/iconHelpers'
-import { Button } from '../../../rsuite/button/Button'
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
-import { Box } from '../../../theme/colorEngine/Box'
+import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -24,7 +24,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? (
-                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
                 <div /* spacer */ />
             )}
@@ -44,12 +44,10 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 </div>
                             )}
                         >
-                            <Button
-                                look='headless'
-                                sm
-                                active={Boolean(active)}
+                            <InputBoolToggleButtonUI
+                                value={Boolean(active)}
                                 icon={plugin.icon}
-                                onClick={() => st.configFile.set(plugin.configKey, !active)}
+                                onValueChange={() => st.configFile.set(plugin.configKey, !active)}
                             />
                         </RevealUI>
                     )
@@ -97,7 +95,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 
             {/* ACTIVE PLUGINS */}
             {haveAtLeastOnePluginActive && (
-                <Box className='flex flex-col gap-1 p-1 my-1'>
+                <Frame className='flex flex-col gap-1 p-1 my-1'>
                     {plugins.map((plugin) => {
                         const active = st.configFile.get(plugin.configKey) ?? false
                         if (!active) return null
@@ -107,7 +105,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                             </PluginWrapperUI>
                         )
                     })}
-                </Box>
+                </Frame>
             )}
         </div>
     )

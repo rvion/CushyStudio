@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { TabUI } from '../app/layout/TabUI'
 import { replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { TabUI } from '../csuite/tabs/TabUI'
 import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'

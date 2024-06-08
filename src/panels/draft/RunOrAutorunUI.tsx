@@ -1,11 +1,12 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../csuite/icons/icons'
 import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from '../../controls/widgets/number/InputNumberUI'
-import { Button } from '../../rsuite/button/Button'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Button } from '../../csuite/button/Button'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
@@ -20,15 +21,13 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             //
                             mode='int'
                             value={draft.st.project.data.autostartDelay}
-                            onValueChange={(value) => {
-                                draft.st.project.update({ autostartDelay: value })
-                            }}
-                            tw='input input-bordered input-sm'
+                            onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
+                            className='cushy-basic-input'
                             placeholder='ms'
-                            min={0}
                             softMax={5000}
-                            step={250}
                             hideSlider
+                            step={250}
+                            min={0}
                         />
                         <div>max ms to wait before running anyway</div>
                         <InputNumberUI
@@ -38,31 +37,32 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             onValueChange={(val) => {
                                 draft.st.project.update({ autostartMaxDelay: val })
                             }}
-                            tw='input input-bordered input-sm'
+                            className='cushy-basic-input'
                             placeholder='ms'
-                            min={0}
                             softMax={5000}
-                            step={250}
                             hideSlider
+                            step={250}
+                            min={0}
                         />
                     </div>
                 )}
             >
-                <div tw='btn btn-sm virtualBorder btn-square'>
-                    <span className='material-symbols-outlined'>timer</span>
-                </div>
+                <Button size='sm' icon='mdiTimer'>
+                    timer
+                </Button>
             </RevealUI>
-            <Button active={draft.shouldAutoStart} onClick={() => draft.setAutostart(!draft.shouldAutoStart)}>
+            <Button
+                icon='mdiRepeat'
+                size='sm'
+                loading={draft.shouldAutoStart}
+                active={draft.shouldAutoStart}
+                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+            >
                 Autorun
-                {draft.shouldAutoStart ? (
-                    <div className='loading loading-spinner loading-sm' />
-                ) : (
-                    <span className='material-symbols-outlined'>repeat</span>
-                )}
             </Button>
             <Button
-                base={{ hue: 'green', chroma: 0.2 }}
-                look='primary'
+                look='success'
+                size='sm'
                 expand
                 className='self-start'
                 icon={icon}

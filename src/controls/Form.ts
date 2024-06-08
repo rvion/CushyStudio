@@ -1,9 +1,10 @@
-import type { CovariantFn } from './BivariantHack'
+import type { BaseWidget } from './BaseWidget'
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
+import type { CovariantFn } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
@@ -69,7 +70,16 @@ export class Form<
      * without having to import any component; usage:
      * | <div>{x.renderAsConfigBtn()}</div>
      */
-    renderAsConfigBtn = (): ReactNode => createElement(FormAsDropdownConfigUI, { form: this })
+    renderAsConfigBtn = (p?: {
+        // 1. anchor option
+        // ...TODO
+        // 2. popup options
+        title?: string
+        className?: string
+        maxWidth?: string
+        minWidth?: string
+        width?: string
+    }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
     get value(): ROOT['$Value'] {
         return this.root.value
@@ -124,14 +134,13 @@ export class Form<
     valueChanged = (widget: IWidget) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
-        console.log(`[🦊] value changed`)
         this._onValueChange?.(this)
     }
 
     knownShared: Map<string, IWidget> = new Map()
 
     /** every widget node must call this function once it's serial changed */
-    serialChanged = (_widget: IWidget) => {
+    serialChanged = (_widget: BaseWidget) => {
         this.serialLastUpdatedAt = Date.now()
         this._onSerialChange?.(this)
     }

@@ -3,7 +3,7 @@ import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/button/Button'
+import { Button } from '../../../csuite/button/Button'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISpec>(p: {
@@ -32,7 +32,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         >
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetWithLabelUI rootKey={subWidget.id} widget={subWidget} />
+                        <WidgetWithLabelUI fieldName={subWidget.id} widget={subWidget} />
                         <Button
                             look='subtle'
                             disabled={min ? widget.entries.length <= min : undefined}

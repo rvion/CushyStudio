@@ -3,12 +3,12 @@ import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 
+import { global_RevealStack } from '../../csuite/reveal/RevealStack'
 import { command, type Command } from '../../operators/Command'
 import { ctx_global } from '../../operators/contexts/ctx_global'
 import { Trigger } from '../../operators/RET'
-import { global_RevealStack } from '../../rsuite/reveal/RevealStack'
+import { CushyShortcut } from '../accelerators/CommandManager'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
-import { CushyShortcut } from './CommandManager'
 import { KEYS } from './shorcutKeys'
 
 // ------------------------------------------------------------------------------------

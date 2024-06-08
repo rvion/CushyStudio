@@ -1,4 +1,9 @@
 {
+    "eslint.format.enable": true,
+    "eslint.validate": ["typescript", "typescriptreact"],
+    "eslint.options": { "extensions": [".ts", ".tsx"] },
+
+    //
     "editor.linkedEditing": true,
     "fileswitcher.mappings": [
         // { "from": "library/([^/]+)/([^/]+)/(.*).tsx?", "to": "library/:1/:2/dist/:3.js" },

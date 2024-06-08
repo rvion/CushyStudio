@@ -2,9 +2,8 @@ import type { Widget_bool } from './WidgetBool'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../../icons/iconHelpers'
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { SpacerUI } from '../spacer/SpacerUI'
-import { InputBoolUI } from './InputBoolUI'
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {
     const widget = p.widget
@@ -22,7 +21,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
                 icon={widget.icon}
                 text={widget.config.text ?? widget.config.label2}
                 // value
-                active={widget.value}
+                value={widget.value}
                 onValueChange={(value) => (widget.value = value)}
             />
 

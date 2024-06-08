@@ -2,7 +2,9 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 
 export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {
@@ -29,13 +31,13 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                     >
                         Expand top level entries
                     </MenuItem>
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     {file?.liteGraphJSON && (
                         <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
                             Open in ComfyUI
                         </MenuItem>
                     )}
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem
                         icon={<span className='material-symbols-outlined'>open_with</span>}
                         onClick={() => (st.preferedFormLayout = 'auto')}
@@ -58,7 +60,7 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                     >
                         Expanded Layout
                     </MenuItem>
-                    <div tw='divider my-0' />
+                    <MenuDividerUI_ />
                     <MenuItem
                         icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
                         onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}

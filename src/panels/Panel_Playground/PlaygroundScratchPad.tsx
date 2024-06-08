@@ -2,17 +2,20 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 // import { FormManager } from '../../controls/FormManager'
 import { FormUI } from '../../controls/FormUI'
-import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
-import { Box, BoxBase, BoxSubtle, BoxTitle } from '../../theme/colorEngine/Box'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { FrameBase } from '../../csuite/wrappers/FrameBase'
+import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
+import { FrameTitle } from '../../csuite/wrappers/FrameTitle'
 
 // import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
     return (
-        <CushyErrorBoundarySimpleUI>
+        <ErrorBoundaryUI>
             <ThemeConfigUI />
-        </CushyErrorBoundarySimpleUI>
+        </ErrorBoundaryUI>
     )
 })
 
@@ -44,11 +47,11 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
     return (
         <div tw='w-full h-full p-1'>
             {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
-            <Box
+            <Frame
                 //
                 tw='p-1 m-1'
                 base={uist.base /* 'oklch(.3 0.05 0)' */}
-                border={2}
+                border={20}
                 text={{ contrast: 1, chromaBlend: 1, hueShift: 45 }}
             >
                 <FormUI
@@ -75,44 +78,44 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                     )}
                 />
                 A 1
-                <BoxBase border tw='p-1'>
-                    <BoxBase border tw='p-1'>
-                        <BoxBase border>yay</BoxBase>
-                    </BoxBase>
-                </BoxBase>
-                <BoxTitle children='test' />
-                <BoxSubtle children='test' />
-                <Box tw='p-1 m-1' base={{ contrast: 0.05 }}>
+                <FrameBase border tw='p-1'>
+                    <FrameBase border tw='p-1'>
+                        <FrameBase border>yay</FrameBase>
+                    </FrameBase>
+                </FrameBase>
+                <FrameTitle children='test' />
+                <FrameSubtle children='test' />
+                <Frame tw='p-1 m-1' base={{ contrast: 0.05 }}>
                     A 2
-                    <BoxSubtle>
+                    <FrameSubtle>
                         test 1
-                        <BoxSubtle children='test 2' />
-                    </BoxSubtle>
-                </Box>
-                <Box tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
+                        <FrameSubtle children='test 2' />
+                    </FrameSubtle>
+                </Frame>
+                <Frame tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
-                    <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                    <Frame tw='p-1 m-1 _bd' border={20} base={20}>
                         A 4
-                        <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                        <Frame tw='p-1 m-1 _bd' border={20} base={20}>
                             A 5
-                            <Box tw='p-1 m-1 _bd' border={2} base={20}>
+                            <Frame tw='p-1 m-1 _bd' border={20} base={20}>
                                 A 6
-                                <BoxTitle tw='text-xl font-bold' children='Test' />
-                                <Box
+                                <FrameTitle tw='text-xl font-bold' children='Test' />
+                                <Frame
                                     tw='p-1 m-1 _bd'
                                     border={{ contrast: 0.3, chromaBlend: 1 }}
                                     base={{ contrast: 0.0, hueShift: 30 }}
                                 >
                                     A 7
-                                    <Box tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
+                                    <Frame tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
                                         A 8
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
+                                    </Frame>
+                                </Frame>
+                            </Frame>
+                        </Frame>
+                    </Frame>
+                </Frame>
+            </Frame>
             {/* <FormUI form={ThemeForm} /> */}
         </div>
     )

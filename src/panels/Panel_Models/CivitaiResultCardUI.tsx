@@ -2,7 +2,7 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './Ci
 
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
     //

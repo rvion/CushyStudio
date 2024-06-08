@@ -7,7 +7,7 @@ export const ui_mask = () => {
         appearance: 'tab',
         label: 'Mask',
         default: 'noMask',
-        // box: { base: { hue: 20, contrast: 0, chroma: 0.02 } },
+        // box: { base: { hue: 20, chroma: 0.03 } },
         items: {
             noMask: form.group(),
             mask: form.group({

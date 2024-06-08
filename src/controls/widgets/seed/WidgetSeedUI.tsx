@@ -2,47 +2,33 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/button/Button'
-import { Box } from '../../../theme/colorEngine/Box'
-import { InputNumberUI } from '../number/InputNumberUI'
+import { Button } from '../../../csuite/button/Button'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { useCSuite } from '../../../csuite/ctx/useCSuite'
+import { Frame } from '../../../csuite/frame/Frame'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
     const val = widget.serial.val
+    const csuite = useCSuite()
+    const border = csuite.inputBorder
 
     return (
-        <Box
-            border
-            tw={[
-                'WIDGET-FIELD',
-                'flex-1 flex items-center',
-                'rounded overflow-clip text-shadow',
-                // 'border border-base-200 hover:border-base-200',
-                // 'bg-primary/5',
-                // 'border-b-2 border-b-base-200 hover:border-b-base-300',
-                // '!outline-none',
-            ]}
-        >
-            <Button
-                tw='!border-l-0'
-                icon='mdiShuffle'
-                active={widget.serial.mode === 'randomize'}
-                onClick={() => widget.setToRandomize()}
-                // tw='!border-none'
-                // appearance='ghost'
-            >
-                Random
-            </Button>
-            <Button //
-                tw='!border-l !border-r'
-                // tw='!border-none'
-                icon='mdiAccessPoint'
-                active={widget.serial.mode === 'fixed'}
-                onClick={() => widget.setToFixed()}
-            >
-                Fixed
-            </Button>
-            <InputNumberUI
+        <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>
+            <InputBoolToggleButtonUI // Random
+                icon='mdiAutoFix'
+                value={widget.serial.mode === 'randomize'}
+                onValueChange={() => widget.setToRandomize()}
+                // text='Random'
+            />
+            <InputBoolToggleButtonUI // Fixed
+                icon='mdiNumeric1CircleOutline'
+                value={widget.serial.mode === 'fixed'}
+                onValueChange={() => widget.setToFixed()}
+                // text='Fixed'
+            />
+            <InputNumberUI // Fixed value
                 disabled={widget.serial.mode === 'randomize'}
                 tw={['!border-none flex-1']}
                 min={widget.config.min}
@@ -52,12 +38,13 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                 mode='int'
                 onValueChange={(value) => widget.setValue(value)}
             />
-            <Button
+            <Button // reset fixed value
+                size='input'
                 tw='!border-l !border-r-0'
                 onClick={() => widget.setToFixed(Math.floor(Math.random() * 100000000))}
                 icon='mdiAutorenew'
                 square
             />
-        </Box>
+        </Frame>
     )
 })
