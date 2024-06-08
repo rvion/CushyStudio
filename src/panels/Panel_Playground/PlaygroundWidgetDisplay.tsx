@@ -4,6 +4,10 @@ import { Fragment } from 'react/jsx-runtime'
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
+import { getIconName } from '../../csuite/icons/getAllIcons'
+import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
+import { mapObjectValues } from '../../csuite/utils/mapObjectValues'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 
@@ -172,7 +176,25 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
 
             button: ui.group({
                 startCollapsed: true,
-                items: { button: ui.button({}) },
+                items: {
+                    button: ui.button({}),
+                    ...mapObjectValues(frameTemplates, (k, v, ix) =>
+                        ui.button({
+                            text: k,
+                            icon: getIconName(ix * 10),
+                            look: k as FrameAppearance,
+                        }),
+                    ),
+                    ...mapObjectEntries(frameTemplates, (k, v, ix) => [
+                        k + '_',
+                        ui.button({
+                            text: k,
+                            icon: getIconName(1000 + ix * 10),
+                            look: k as FrameAppearance,
+                            expand: true,
+                        }),
+                    ]),
+                },
             }),
 
             color: ui.group({
