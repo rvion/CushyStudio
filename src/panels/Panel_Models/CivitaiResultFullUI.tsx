@@ -1,8 +1,12 @@
-import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem, ModelImage } from './CivitaiSpec'
+import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
+import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
+import { Button } from '../../csuite/button/Button'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
@@ -30,19 +34,11 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 {item.nsfw ? <div tw='badge badge-lg badge-error'>nsfw</div> : null}
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={item} />}>
-                    <div tw='btn btn-sm btn'>Show full json</div>
+                    <Button>Show full json</Button>
                 </RevealUI>
             </div>
 
-            {item.tags ? (
-                <div tw='flex flex-wrap gap-1'>
-                    {item.tags.map((tag) => (
-                        <div key={tag} tw='badge badge-neutral badge-sm'>
-                            {tag}
-                        </div>
-                    ))}
-                </div>
-            ) : null}
+            <BadgeListUI autoHue badges={item.tags} />
 
             <div // top description
                 tw='line-clamp-3 text-sm'
@@ -53,16 +49,14 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 tw='flex flex-wrap gap-0.5'
             >
                 {item.modelVersions.map((version: CivitaiModelVersion) => (
-                    <div
+                    <InputBoolToggleButtonUI
+                        value={selected.version === version}
                         key={version.id}
-                        tw={['btn btn-narrow', selected.version === version ? 'btn-primary' : 'btn-outline']}
-                        onClick={() => {
-                            selected.version = version
-                        }}
+                        onValueChange={() => (selected.version = version)}
                     >
                         <img style={{ width: '3rem', height: '3rem', objectFit: 'contain' }} src={version.images[0]?.url} />
                         <span>{version.name}</span>
-                    </div>
+                    </InputBoolToggleButtonUI>
                 ))}
             </div>
 

@@ -2,6 +2,8 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './Ci
 
 import { observer } from 'mobx-react-lite'
 
+import { BadgeContainerUI } from '../../csuite/badge/BadgeContainerUI'
+import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -41,41 +43,10 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                     <div tw='flex items-center gap-1'>
                         <div tw='opacity-50 text-sm'>{item.modelVersions.length} version</div>
                         <div tw='flex-1'></div>
-                        <div
-                            tw={[
-                                'badge badge-sm text-black',
-                                item.type === 'Checkpoint'
-                                    ? 'bg-yellow-600'
-                                    : item.type === 'LORA'
-                                      ? 'bg-blue-500'
-                                      : 'bg-green-400',
-                            ]}
-                        >
-                            {item.type}
-                        </div>
-                        {item.nsfw ? <div tw='badge badge-sm badge-error'>nsfw</div> : null}
+                        <BadgeUI autoHue={item.type}>{item.type}</BadgeUI>
+                        {item.nsfw ? <BadgeUI hue={0}>nsfw</BadgeUI> : null}
                     </div>
-                    {item.tags ? (
-                        <div tw='flex flex-wrap gap-1'>
-                            {item.tags.slice(0, 10).map((tag) => (
-                                <BadgeUI key={tag}>{tag}</BadgeUI>
-                            ))}
-                            {item.tags.length > 10 ? (
-                                <RevealUI
-                                    trigger='hover'
-                                    content={() => (
-                                        <div>
-                                            {item.tags.slice(10).map((tag) => (
-                                                <BadgeUI key={tag}>{tag}</BadgeUI>
-                                            ))}
-                                        </div>
-                                    )}
-                                >
-                                    <div tw='badge badge-neutral badge-sm font-bold'>+{item.tags.length - 10} more</div>
-                                </RevealUI>
-                            ) : null}
-                        </div>
-                    ) : null}
+                    <BadgeListUI autoHue badges={item.tags} />
                 </div>
             </div>
             <div //

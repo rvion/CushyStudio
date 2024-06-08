@@ -28,7 +28,6 @@ import { formatOKLCH } from '../kolor/formatOKLCH'
 import { isSameOKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
-import { getClassNameForSize } from './FrameSize'
 import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {

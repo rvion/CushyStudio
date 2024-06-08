@@ -4,13 +4,12 @@ import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
-import { getInputBoolChroma, getInputBoolContrast } from './InputBoolChroma'
-import { InputBoolToggleButtonBoxUI } from './InputBoolToggleButtonBoxUI'
+import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
+import { InputBoolToggleButtonBoxUI } from './_InputBoolToggleButtonBoxUI'
 
 export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false
     const expand = p.expand
-    const label = p.text
     const chroma = getInputBoolChroma(isActive)
     const kit = useCSuite()
 
@@ -39,7 +38,8 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 - I removed the "line-clamp-1" from the paragraph below
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
-            <p tw='w-full text-center'>{label}</p>
+
+            {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
         </Frame>
     )
 })

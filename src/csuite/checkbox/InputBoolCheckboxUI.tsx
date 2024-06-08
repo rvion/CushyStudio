@@ -3,7 +3,7 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
-import { getInputBoolChroma, getInputBoolContrast } from './InputBoolChroma'
+import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 
 export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false
@@ -38,7 +38,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
                 hover
                 {...p.box}
             />
-            {label ? <div tw='ml-1'>{label}</div> : null}
+            {p.children ?? (label ? <div tw='ml-1'>{label}</div> : null)}
         </Frame>
     )
 })

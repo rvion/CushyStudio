@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
-import { hashJSONObject } from '../csuite/hashUtils/hash'
+import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { Message } from '../csuite/shims'
 import { regionMonitor } from '../operators/regions/RegionMonitor'
 import { Trigger } from '../operators/RET'
@@ -297,7 +297,7 @@ export class CushyLayoutManager {
         props: PropsOf<Panels[K]['widget']>,
         title: string,
     ) => {
-        const tabID = `/${component}/${hashJSONObject(props ?? {})}`
+        const tabID = `/${component}/${hashJSONObjectToNumber(props ?? {})}`
         const tab = this.model.getNodeById(tabID)
         if (tab == null) return
         runInAction(() => {
@@ -320,7 +320,7 @@ export class CushyLayoutManager {
         if (currentLayout == null) return void console.log('❌ no currentLayout')
 
         // 2. get previous tab
-        const tabID = `/${panelName}/${hashJSONObject(panelProps ?? {})}`
+        const tabID = `/${panelName}/${hashJSONObjectToNumber(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
         // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
@@ -364,7 +364,7 @@ export class CushyLayoutManager {
         canClose?: boolean
     }): FL.IJsonTabNode => {
         const { panel, props } = p
-        const id = `/${panel}/${hashJSONObject(props ?? {})}`
+        const id = `/${panel}/${hashJSONObjectToNumber(props ?? {})}`
         const { icon, title } = panels[panel].header(props as any)
         return {
             id: id,

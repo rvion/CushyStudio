@@ -2,7 +2,7 @@ import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
-import { createElement, type CSSProperties } from 'react'
+import { createElement, type CSSProperties, type ReactNode } from 'react'
 
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
 import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
@@ -19,7 +19,11 @@ export class BoolButtonProps {
 
     expand?: boolean
     icon?: Maybe<IconName>
+
+    children?: ReactNode
+    /** alternative way to specify children */
     text?: string
+
     className?: string
     style?: CSSProperties
     box?: Box

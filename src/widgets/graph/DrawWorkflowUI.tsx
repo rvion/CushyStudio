@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
-import { hashString } from '../../csuite/hashUtils/hash'
+import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { ProgressLine } from '../../csuite/shims'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/Panel_Canvas/utils/randomColor'
@@ -192,5 +192,5 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
 })
 
 const getChroma = (type: string): number => {
-    return hashString(type) % 360
+    return hashStringToNumber(type) % 360
 }

@@ -1,5 +1,6 @@
-export const hashJSONObject = (obj: object): number => hashString(stableStringify(obj))
-export const hashString = (s: string): number => {
+export const hashJSONObjectToNumber = (obj: object): number => hashStringToNumber(stableStringify(obj))
+
+export const hashStringToNumber = (s: string): number => {
     let hash = 0,
         i,
         chr
