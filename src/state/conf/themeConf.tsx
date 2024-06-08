@@ -33,7 +33,10 @@ export const themeConf = CushyFormManager.form(
                 showWidgetUndo: ui.boolean({ tooltip: 'show undo button near every field', default: true }),
                 showWidgetMenu: ui.boolean({ tooltip: 'show action buttons at the bottom of the form', default: true }),
                 showWidgetDiff: ui.boolean({ tooltip: 'show diff button near every field', default: true }),
-                showToggleButtonBox: ui.boolean({ default: true }),
+                showToggleButtonBox: ui.boolean({
+                    default: false,
+                    tooltip: 'show either chekbox icon or radio button icon in every InputBool',
+                }),
             },
             { label: 'Theme' },
         ),

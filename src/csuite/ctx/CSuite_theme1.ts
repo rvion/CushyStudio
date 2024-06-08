@@ -11,7 +11,7 @@ export const CSuite_theme1: CSuiteConfig = {
     showWidgetUndo: true,
     showWidgetMenu: true,
     showWidgetDiff: true,
-    showToggleButtonBox: true,
+    showToggleButtonBox: false,
     inputBorder: new NumberVar('input-border', 8),
     base: { lightness: 0.987, chroma: 0.01, hue: 286 },
     baseStr: 'oklch(0.987 0.01 286)',

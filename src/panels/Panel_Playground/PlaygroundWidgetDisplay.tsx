@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { Fragment } from 'react/jsx-runtime'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
@@ -9,7 +10,7 @@ import { useSt } from '../../state/stateContext'
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
     const st = useSt()
     return (
-        <div tw='h-full p-1 overflow-auto'>
+        <Fragment>
             <CSuiteOverride
                 config={{
                     //
@@ -20,7 +21,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
                 <FormUI form={FORM_PlaygroundWidgetDisplay} />
             </CSuiteOverride>
             <FormUI form={FORM_PlaygroundWidgetDisplay} />
-        </div>
+        </Fragment>
     )
 })
 

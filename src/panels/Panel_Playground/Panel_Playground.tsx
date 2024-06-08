@@ -61,24 +61,22 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 </div>
             </MessageInfoUI>
             {/* ------------ */}
-            <FormUI form={Header_Playground} />
-            {Header_Playground.root.renderWithLabel()}
-            {Header_Playground.root.renderWithLabel({ label: false })}
+            {/* <FormUI form={Header_Playground} /> */}
+            {/* {Header_Playground.root.renderWithLabel()} */}
+            {/* {Header_Playground.root.renderWithLabel({ label: false })} */}
             {Header_Playground.root.header()}
             {/* ------------ */}
-            {mode.requirements && <PlaygroundRequirementsHeader />}
+            {/* {mode.requirements && <PlaygroundRequirementsHeader />} */}
             <ErrorBoundaryUI>
-                <div tw='h-full overflow-auto p-1'>
-                    {/* 👇 PLAYGROUND HERE */}
-                    {mode.requirements && <PlaygroundRequirements />}
-                    {mode.registeredForms && <PlaygroundRegisteredForms />}
-                    {mode.widgetShowcase && <PlaygroundWidgetDisplay />}
-                    {mode.scratchPad && <PlaygroundScratchPad />}
-                    {mode.graph && <PlaygroundGraphUI />}
-                    {mode.customPanels && <PlaygroundCustomPanelsUI />}
-                    {mode.messages && <PlaygroundMessages />}
-                    {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
-                </div>
+                {/* 👇 PLAYGROUND HERE */}
+                {mode.requirements && <PlaygroundRequirements />}
+                {mode.registeredForms && <PlaygroundRegisteredForms />}
+                {mode.widgetShowcase && <PlaygroundWidgetDisplay />}
+                {mode.scratchPad && <PlaygroundScratchPad />}
+                {mode.graph && <PlaygroundGraphUI />}
+                {mode.customPanels && <PlaygroundCustomPanelsUI />}
+                {mode.messages && <PlaygroundMessages />}
+                {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
         </>
     )
