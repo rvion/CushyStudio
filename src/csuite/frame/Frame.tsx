@@ -29,7 +29,7 @@ import { isSameOKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { getClassNameForSize } from './FrameSize'
-import { frames } from './FrameTemplates'
+import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {
     // logic --------------------------------------------------
@@ -74,7 +74,7 @@ export const Frame = observer(
         // const theme = useTheme().value
         const box = extractNormalizeBox(p)
         if (look != null) {
-            const template = frames[look]
+            const template = frameTemplates[look]
             if (template.base) box.base = overrideKolor(template.base, box.base)
             if (template.border) box.border = overrideKolor(template.border, box.border)
             if (template.text) box.text = overrideKolor(template.text, box.text)

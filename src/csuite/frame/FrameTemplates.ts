@@ -29,18 +29,37 @@ const frame_primary: BoxNormalized = extractNormalizeBox({
     border: 0.1,
 })
 
+const frame_primarySuccess: BoxNormalized = extractNormalizeBox({
+    textShadow: 100,
+    base: { contrast: 1, chroma: 0.1, hue: 135 },
+    border: 0.1,
+})
+const frame_primaryWarning: BoxNormalized = extractNormalizeBox({
+    textShadow: 100,
+    base: { contrast: 0.1, chroma: 0.1, hue: 60 },
+    border: 0.1,
+})
+const frame_primaryError: BoxNormalized = extractNormalizeBox({
+    textShadow: 100,
+    base: { contrast: 0.1, chroma: 0.1, hue: 0 },
+    border: 0.1,
+})
+
 const frame_secondary: BoxNormalized = extractNormalizeBox({
     border: 0.3,
     base: { contrast: 0.3, chroma: 0.2, hueShift: 180 },
 })
 
-export const frames = {
+export const frameTemplates = {
     link: frame_link,
     ghost: frame_ghost,
     subtle: frame_subtle,
     default: frame_default,
     primary: frame_primary,
+    success: frame_primarySuccess,
+    warning: frame_primaryWarning,
+    error: frame_primaryError,
     secondary: frame_secondary,
 }
-
-export type FrameAppearance = keyof typeof frames
+export const frameTemplateNames = Object.keys(frameTemplates) as FrameAppearance[]
+export type FrameAppearance = keyof typeof frameTemplates
