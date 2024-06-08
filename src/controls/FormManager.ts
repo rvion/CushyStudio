@@ -39,7 +39,6 @@ export class FormManager<BUILDER extends IFormBuilder> {
                 builder.group({
                     label: false,
                     items: ui(builder as BUILDER),
-                    topLevel: true,
                     collapsed: false,
                 }),
             )

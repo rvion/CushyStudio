@@ -21,14 +21,6 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
          */
         items?: T | (() => T)
 
-        /**
-         * legacy property, will be removed soon
-         * you can alreay check if you're a top-level property
-         * by checking if this.parent is null
-         * @deprecated
-         */
-        topLevel?: boolean
-
         /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
     },
