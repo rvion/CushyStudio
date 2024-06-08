@@ -71,5 +71,3 @@ export const allIcons = {
 }
 
 export type IconName = keyof typeof allIcons
-
-export const getAllIcons = () => Object.keys(icons) as (keyof typeof icons)[]
