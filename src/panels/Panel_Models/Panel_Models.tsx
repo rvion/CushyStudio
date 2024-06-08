@@ -23,12 +23,12 @@ export const Panel_Models = observer(function Panel_Models_() {
                         <div tw='flex gap-1'>
                             <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
                             CIVITAI
-                            {st.civitaiConf.renderAsConfigBtn()}
                         </div>
                     }
                     className='block'
                 />
                 <SpacerUI />
+                {st.civitaiConf.renderAsConfigBtn({ title: 'CIVITAI Options' })}
             </PanelHeaderUI>
             <CivitaiUI tw='flex-1' civitai={civitai} />
         </div>

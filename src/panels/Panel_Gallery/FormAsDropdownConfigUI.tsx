@@ -34,7 +34,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                 </div>
             )}
         >
-            <Button size='input'>
+            <Button size='input' tw='!gap-0'>
                 <Ikon.mdiCog />
                 <Ikon.mdiChevronDown />
             </Button>
