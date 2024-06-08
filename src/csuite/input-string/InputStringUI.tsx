@@ -15,6 +15,8 @@ import { knownOKLCHHues } from '../tinyCSS/knownHues'
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 export const InputStringUI = observer(function WidgetStringUI_(p: {
+    placeholder?: string
+
     /** when true => 'mdiText' */
     icon?: IconName | boolean
 

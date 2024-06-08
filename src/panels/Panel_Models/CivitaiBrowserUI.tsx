@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { CivitaiResultCardUI } from './CivitaiResultCardUI'
 import { CivitaiResultFullUI } from './CivitaiResultFullUI'
 import { Civitai, CivitaiSearchResultItem } from './CivitaiSpec'
@@ -16,11 +17,12 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                     <div // SEARCH
                         className='px-1'
                     >
-                        <input
+                        <InputStringUI
+                            icon='mdiMagnify'
                             tw='cushy-basic-input w-full'
                             placeholder='rechercher'
-                            value={civitai.query.value}
-                            onChange={(ev) => (civitai.query.value = (ev.target as any).value)}
+                            getValue={() => civitai.query.value}
+                            setValue={(next) => (civitai.query.value = next)}
                         />
                     </div>
                     <div //RESULS
@@ -28,7 +30,11 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                     >
                         {civitai.results?.ui((x) =>
                             x.items.map((i: CivitaiSearchResultItem) => (
-                                <CivitaiResultCardUI key={i.id} civitai={civitai} item={i} />
+                                <CivitaiResultCardUI //
+                                    key={i.id}
+                                    civitai={civitai}
+                                    item={i}
+                                />
                             )),
                         )}
                     </div>
@@ -36,7 +42,10 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                 <div //DETAILS
                 >
                     {civitai.selectedResult && ( //
-                        <CivitaiResultFullUI civitai={civitai} item={civitai.selectedResult} />
+                        <CivitaiResultFullUI //
+                            civitai={civitai}
+                            item={civitai.selectedResult}
+                        />
                     )}
                 </div>
             </div>

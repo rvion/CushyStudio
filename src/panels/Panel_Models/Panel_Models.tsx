@@ -20,28 +20,15 @@ export const Panel_Models = observer(function Panel_Models_() {
             <PanelHeaderUI>
                 <SectionTitleUI
                     label={
-                        <div tw='flex'>
+                        <div tw='flex gap-1'>
                             <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
                             CIVITAI
+                            {st.civitaiConf.renderAsConfigBtn()}
                         </div>
                     }
                     className='block'
                 />
                 <SpacerUI />
-                <RevealUI
-                    tw='h-input'
-                    title='CIVITAI Options'
-                    content={() => (
-                        <div tw='p-1'>
-                            <FormUI form={st.civitaiConf} />
-                        </div>
-                    )}
-                >
-                    <div tw='flex px-1 cursor-default rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
-                        <span className='material-symbols-outlined'>settings</span>
-                        <span className='material-symbols-outlined'>expand_more</span>
-                    </div>
-                </RevealUI>
             </PanelHeaderUI>
             <CivitaiUI tw='flex-1' civitai={civitai} />
         </div>

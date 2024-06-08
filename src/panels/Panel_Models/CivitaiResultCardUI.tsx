@@ -2,6 +2,8 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './Ci
 
 import { observer } from 'mobx-react-lite'
 
+import { BadgeUI } from '../../csuite/badge/BadgeUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
@@ -15,15 +17,14 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
     const img0 = v0Imgs?.[0]
     const active = p.civitai.selectedResult === item
     return (
-        <div
-            style={{ borderBottom: '1px solid #777' }}
+        <Frame
+            active={active}
+            border={10}
+            hover
+            // look={active ? 'primary' : undefined}
+            base={active ? 10 : 0}
             onClick={() => (p.civitai.selectedResult = item)}
-            tw={[
-                //
-                'w-80',
-                active && 'bg-base-300',
-                'hover:cursor-pointer',
-            ]}
+            tw={['w-80', 'cursor-pointer']}
         >
             <div tw={['flex gap-0.5']}>
                 {img0 && (
@@ -57,9 +58,7 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                     {item.tags ? (
                         <div tw='flex flex-wrap gap-1'>
                             {item.tags.slice(0, 10).map((tag) => (
-                                <div key={tag} tw='badge badge-neutral badge-sm'>
-                                    {tag}
-                                </div>
+                                <BadgeUI key={tag}>{tag}</BadgeUI>
                             ))}
                             {item.tags.length > 10 ? (
                                 <RevealUI
@@ -67,9 +66,7 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                                     content={() => (
                                         <div>
                                             {item.tags.slice(10).map((tag) => (
-                                                <div key={tag} tw='badge badge-neutral badge-sm'>
-                                                    {tag}
-                                                </div>
+                                                <BadgeUI key={tag}>{tag}</BadgeUI>
                                             ))}
                                         </div>
                                     )}
@@ -85,6 +82,6 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                 tw='line-clamp-3 text-sm'
                 dangerouslySetInnerHTML={{ __html: item.description }}
             ></div>
-        </div>
+        </Frame>
     )
 })
