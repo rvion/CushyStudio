@@ -13,6 +13,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_<K extends 
         <Button
             look={p.widget.config.look}
             className='self-start'
+            icon={p.widget.icon}
             expand={p.widget.config.expand}
             onClick={() => runInAction(() => p.widget.config.onClick?.(context))}
         >
