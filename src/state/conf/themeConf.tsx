@@ -22,7 +22,7 @@ export const themeConf = CushyFormManager.form(
                 }),
                 textLabel: ui_Kolor(ui, {
                     contrast: 0.45,
-                    chroma: 0.1,
+                    chroma: 0.045,
                 }).optional(true),
 
                 // 3. misc
