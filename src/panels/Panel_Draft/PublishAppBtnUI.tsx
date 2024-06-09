@@ -1,14 +1,18 @@
 import { observer } from 'mobx-react-lite'
 
 import { CushyAppL } from '../../models/CushyApp'
+import { Button } from '../../csuite/button/Button'
 
 export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: CushyAppL }) {
     const app = p.app
     const st = app.st
-    if (!app.canBePublishedByUser) return null
+
     return (
-        <div
-            tw='btn btn-accent btn-xs'
+        <Button
+            // look='primary'
+            disabled={!app.canBePublishedByUser}
+            square
+            tooltip={'Publish app to the Cushy App Store'}
             onClick={async () => {
                 // ensure is connected
                 if (!st.auth.isConnected) {
@@ -25,9 +29,8 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: Cush
                 // publish
                 await app.publish()
             }}
-        >
-            {app.isPublishing ? <div tw='loading' /> : <span className='material-symbols-outlined'>publish</span>}
-            Publish
-        </div>
+            loading={app.isPublishing}
+            icon={'mdiPublish'}
+        />
     )
 })

@@ -85,7 +85,7 @@ export const Frame = observer(
         if (disabled) {
             box.text = { contrast: 0.1 }
             box.base = { contrast: 0 }
-            box.border = null
+            //     box.border = null
         }
 
         if (active) {
