@@ -12,7 +12,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const draft = p.draft
     const icon: IconName = draft.shouldAutoStart ? 'mdiPause' : 'mdiPlay'
     return (
-        <div tw='flex gap-1' className={p.className}>
+        <div tw='flex h-full' className={p.className}>
             <RevealUI
                 content={() => (
                     <div tw='p-2'>
@@ -47,22 +47,12 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                     </div>
                 )}
             >
-                <Button size='sm' icon='mdiTimer'>
-                    timer
-                </Button>
+                <Button tw='!gap-0 !px-0.5' icon='mdiTimer' suffixIcon={'mdiChevronDown'} />
             </RevealUI>
             <Button
-                icon='mdiRepeat'
-                size='sm'
-                loading={draft.shouldAutoStart}
-                active={draft.shouldAutoStart}
-                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-            >
-                Autorun
-            </Button>
-            <Button
+                // tw='h-input'
                 look='success'
-                size='sm'
+                // size='xs'
                 expand
                 className='self-start'
                 icon={icon}
@@ -74,6 +64,16 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             >
                 Run
             </Button>
+            <Button // TODO(bird_d): Need a button that can be tied to an command, and will pull the relevant info from it. Like a label for the- label, and a description for the tooltip.
+                icon='mdiAnimationPlay'
+                look='success'
+                // size='xs'
+                // tw='h-input'
+                square
+                loading={draft.shouldAutoStart}
+                active={draft.shouldAutoStart}
+                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+            />
         </div>
     )
 })

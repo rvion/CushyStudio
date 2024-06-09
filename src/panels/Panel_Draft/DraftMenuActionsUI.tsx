@@ -52,14 +52,6 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         Favorite Draft
                     </MenuItem>
                     <div tw='divider my-0'></div>
-                    <input
-                        onChange={(ev) => draft.update({ canvasToolCategory: ev.target.value ? ev.target.value : null })}
-                        value={draft.data.canvasToolCategory ?? ''}
-                        placeholder='unified-canvas category (blank=none)'
-                        tw='cushy-basic-input'
-                        type='text'
-                    />
-                    <div tw='divider my-0'></div>
                     <MenuItem
                         shortcut={KEYS.duplicateCurrentDraft}
                         icon={<span className='material-symbols-outlined text-green-500'>content_copy</span>}

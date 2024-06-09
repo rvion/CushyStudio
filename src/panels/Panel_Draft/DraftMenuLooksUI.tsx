@@ -6,6 +6,7 @@ import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 
 export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
@@ -16,19 +17,21 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
         <Dropdown
             className={p.className}
             // startIcon={<span className='material-symbols-outlined'>looks</span>}
-            title={'UI'} //`${layout}`}
+            title={'View'} //`${layout}`}
             content={() => (
                 <>
                     <MenuItem
                         onClick={draft.collapseTopLevelFormEntries}
-                        icon={<span className='material-symbols-outlined'>unfold_less</span>}
+                        // icon={<span className='material-symbols-outlined'>unfold_less</span>}
                     >
+                        <Ikon.mdiArrowCollapseVertical />
                         Collapse top level entries
                     </MenuItem>
                     <MenuItem
                         onClick={draft.expandTopLevelFormEntries}
-                        icon={<span className='material-symbols-outlined'>unfold_more</span>}
+                        // icon={<span className='material-symbols-outlined'>unfold_more</span>}
                     >
+                        <Ikon.mdiArrowExpandVertical />
                         Expand top level entries
                     </MenuItem>
                     <MenuDividerUI_ />
@@ -39,33 +42,37 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                     )}
                     <MenuDividerUI_ />
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>open_with</span>}
+                        // icon={<span className='material-symbols-outlined'>open_with</span>}
                         onClick={() => (st.preferedFormLayout = 'auto')}
                         active={layout == 'auto'}
                     >
+                        <Ikon.mdiArrowExpandAll />
                         Auto Layout
                         <div tw='badge badge-neutral'>recommended</div>
                     </MenuItem>
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
+                        // icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
                         onClick={() => (st.preferedFormLayout = 'dense')}
                         active={layout == 'dense'}
                     >
+                        <Ikon.mdiImageSizeSelectSmall />
                         Dense Layout
                     </MenuItem>
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>panorama_wide_angle</span>}
+                        // icon={<span className='material-symbols-outlined'>panorama_wide_angle</span>}
                         onClick={() => (st.preferedFormLayout = 'mobile')}
                         active={layout == 'mobile'}
                     >
+                        <Ikon.mdiImageSizeSelectLarge />
                         Expanded Layout
                     </MenuItem>
                     <MenuDividerUI_ />
                     <MenuItem
-                        icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
+                        // icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
                         onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
                         active={st.isConfigValueEq('draft.mockup-mobile', true)}
                     >
+                        <Ikon.mdiCellphone />
                         Mobile
                     </MenuItem>
                 </>

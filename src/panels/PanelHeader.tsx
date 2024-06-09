@@ -19,12 +19,14 @@ import { Frame } from '../csuite/frame/Frame'
  */
 export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     //
+    className?: string
     title?: string
     icon?: IconName
     children?: ReactNode
 }) {
     return (
         <Frame // Container
+            className={p.className}
             base={8}
             tw={['CSHY-panel-header w-full', 'flex gap-1 select-none', 'items-center p-1']}
             onWheel={(event) => {

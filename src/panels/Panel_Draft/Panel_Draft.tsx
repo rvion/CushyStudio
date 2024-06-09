@@ -29,12 +29,13 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 })
 
 export const PanelDraftV2UI = observer(function PanelDraftV2UI_(p: { draft: Maybe<DraftL> }) {
-    return (
-        <>
-            <PanelHeaderUI>Draft</PanelHeaderUI>
-            <DraftUI draft={p.draft} />
-        </>
-    )
+    return <DraftUI draft={p.draft} />
+    // return (
+    //     <>
+    //         <PanelHeaderUI>Draft</PanelHeaderUI>
+    //         <DraftUI draft={p.draft} />
+    //     </>
+    // )
 })
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()
@@ -91,6 +92,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     // {/* <ActionDraftListUI card={card} /> */}
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
+            <DraftHeaderUI draft={draft} />
+            {draft.shouldAutoStart && (
+                <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
+            )}
             <RecompileUI app={draft.app} />
             <Frame
                 base={0}
@@ -105,10 +110,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     }
                 }}
             >
-                <DraftHeaderUI draft={draft} />
-                {draft.shouldAutoStart && (
-                    <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
-                )}
                 {metadata?.help && (
                     <MessageInfoUI>
                         <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
