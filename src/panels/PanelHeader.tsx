@@ -1,3 +1,5 @@
+import type { IconName } from '../csuite/icons/icons'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
@@ -17,6 +19,8 @@ import { Frame } from '../csuite/frame/Frame'
  */
 export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     //
+    title?: string
+    icon?: IconName
     children?: ReactNode
 }) {
     return (
@@ -28,6 +32,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
                 event.stopPropagation()
             }}
         >
+            {p.title && <div tw='text-lg font-bold'>{p.title}</div>}
             {p.children}
         </Frame>
     )

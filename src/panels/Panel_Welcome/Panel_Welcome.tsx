@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
-import { AppCardUI } from '../cards/fancycard/AppCardUI'
-import { Button } from '../csuite/button/Button'
-import { useSt } from '../state/stateContext'
-import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
-import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
+import { AppCardUI } from '../../cards/fancycard/AppCardUI'
+import { Button } from '../../csuite/button/Button'
+import { useSt } from '../../state/stateContext'
+import { CreateAppBtnUI } from './CreateAppBtnUI'
+import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './LibraryHeaderUI'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     const st = useSt()

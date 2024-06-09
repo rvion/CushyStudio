@@ -176,6 +176,9 @@ export class FormBuilder implements IFormBuilder {
     number = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
         return new Spec<Widget_number>('number', { mode: 'float', ...config })
     }
+    remSize = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
+    }
     custom = <T>(config: Widget_custom_config<T>): XCustom<T> => {
         return new Spec<Widget_custom<T>>('custom', config)
     }

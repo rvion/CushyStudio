@@ -102,7 +102,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 )}
             </div>
             <div tw='flex gap-2'>
-                <Button tw='btn-info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
+                <Button look='info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
                     REFRESH
                 </Button>
 

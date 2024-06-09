@@ -9,7 +9,8 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
     //
-    form: Form<any>
+    form?: Form<any>
+    children?: React.ReactNode
     title?: string
     className?: string
     maxWidth?: string
@@ -30,7 +31,8 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                         width: p.width,
                     }}
                 >
-                    <FormUI form={p.form} />
+                    {p.form && <FormUI form={p.form} />}
+                    {p.children}
                 </div>
             )}
         >

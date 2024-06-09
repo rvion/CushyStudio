@@ -17,6 +17,7 @@ import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
+import { PanelHeaderUI } from '../PanelHeader'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { RecompileUI } from './RecompileUI'
 
@@ -24,9 +25,17 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
     // 1. get draft
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
-    return <DraftUI draft={draft} />
+    return <PanelDraftV2UI draft={draft} />
 })
 
+export const PanelDraftV2UI = observer(function PanelDraftV2UI_(p: { draft: Maybe<DraftL> }) {
+    return (
+        <>
+            <PanelHeaderUI>Draft</PanelHeaderUI>
+            <DraftUI draft={p.draft} />
+        </>
+    )
+})
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()
     const draft = p.draft
