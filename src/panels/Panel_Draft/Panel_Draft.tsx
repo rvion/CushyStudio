@@ -29,12 +29,13 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 })
 
 export const PanelDraftV2UI = observer(function PanelDraftV2UI_(p: { draft: Maybe<DraftL> }) {
-    return (
-        <>
-            <PanelHeaderUI>Draft</PanelHeaderUI>
-            <DraftUI draft={p.draft} />
-        </>
-    )
+    return <DraftUI draft={p.draft} />
+    // return (
+    //     <>
+    //         <PanelHeaderUI>Draft</PanelHeaderUI>
+    //         <DraftUI draft={p.draft} />
+    //     </>
+    // )
 })
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()

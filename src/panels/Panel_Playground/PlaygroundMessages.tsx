@@ -14,8 +14,8 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
             <div tw='flex flex-col gap-1'>
                 <div tw='flex flex-col gap-1'>
                     <div tw='divider my-0'>text non-buffered</div>
-                    <InputStringUI tw='w-96' {...sampleInputStringUIProps} placeHolder='test' />
-                    <InputStringUI tw='w-96' getValue={() => ''} setValue={() => {}} placeHolder='test' />
+                    <InputStringUI tw='w-96' {...sampleInputStringUIProps} placeholder='test' />
+                    <InputStringUI tw='w-96' getValue={() => ''} setValue={() => {}} placeholder='test' />
                     <InputStringUI tw='w-96' {...sampleInputStringUIProps} buffered={null} />
                     <div tw='divider my-0'>text buffered</div>
                     <InputStringUI tw='w-96' {...sampleInputStringUIProps} />
