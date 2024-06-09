@@ -20,7 +20,7 @@ import { Panel_LastStep } from '../panels/Panel_LastStep/Panel_LastStep'
 import { Panel_Marketplace } from '../panels/Panel_Marketplace'
 import { Panel_Minipaint } from '../panels/Panel_Minipaint'
 import { Panel_Models } from '../panels/Panel_Models/Panel_Models'
-import { Panel_Output } from '../panels/Panel_Output/Panel_Output'
+import { Panel_Step } from '../panels/Panel_Output/Panel_Output'
 import { Panel_Playground } from '../panels/Panel_Playground/Panel_Playground'
 import { Panel_Script } from '../panels/Panel_Script'
 import { Panel_Shortcuts } from '../panels/Panel_Shortcuts'
@@ -97,8 +97,8 @@ export const panels = {
     // misc
     Output: {
         name: 'Output',
-        widget: Panel_Output,
-        header: (p: PropsOf<typeof Panel_Output>) => ({ title: 'Output', icon: undefined }),
+        widget: Panel_Step,
+        header: (p: PropsOf<typeof Panel_Step>) => ({ title: 'Output', icon: undefined }),
     },
     Steps: {
         name: 'Steps',

@@ -3,6 +3,7 @@ import type { StepL } from '../models/Step'
 import { observer } from 'mobx-react-lite'
 
 import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { useSt } from '../state/stateContext'
@@ -17,6 +18,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
         // <RevealUI showDelay={0} hideDelay={100}>
 
         <RevealUI
+            className='w-full h-full item-center justify-center'
             content={() => (
                 <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
                     {/* <ImageDropdownMenuUI img={image} /> */}
@@ -51,17 +53,11 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
                 </ul>
             )}
         >
-            <div style={{ width: size, height: size }} tw='flex item-center justify-center'>
-                <span
-                    className='material-symbols-outlined text-primary block'
-                    style={{
-                        marginTop: `calc(0.2 * ${size})`,
-                        fontSize: `calc(0.6 * ${size})`,
-                    }}
-                >
-                    account_tree
-                </span>
-            </div>
+            <Frame //
+                border={10}
+                icon='mdiGraph'
+                iconSize='100%'
+            />
         </RevealUI>
     )
 })

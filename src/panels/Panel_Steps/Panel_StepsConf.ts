@@ -58,6 +58,8 @@ function ui_outputFilter(ui: FormBuilder) {
         },
         {
             // appearance: 'select',
+            label: false,
+            tabPosition: 'center',
             default: {
                 MediaTextL: true,
                 MediaImageL: true,

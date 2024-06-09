@@ -17,10 +17,9 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     return (
         <div className='flex flex-col h-full'>
             <PanelHeaderUI tw='sticky top-0' title='Steps' icon='mdiStepForward'>
-                <SpacerUI />
-                <FormAsDropdownConfigUI form={PanelStepsConf} title='Step Options' />
+                <FormAsDropdownConfigUI tw='ml-auto' form={PanelStepsConf} title='Step Options' />
             </PanelHeaderUI>
-            <div className='flex flex-col flex-grow select-none' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col gap-0.5 flex-grow select-none' style={{ overflow: 'auto' }}>
                 {PanelStepsConf.render()}
                 {steps.map((step) => (
                     <StepCardUI key={step.id} step={step} />

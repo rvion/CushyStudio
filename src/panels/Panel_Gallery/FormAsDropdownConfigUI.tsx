@@ -8,7 +8,6 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-    //
     form?: Form<any>
     children?: React.ReactNode
     title?: string
@@ -20,10 +19,10 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
     return (
         <RevealUI
             title={p.title}
+            className={p.className}
             content={() => (
                 <div //
-                    tw='flex-shrink-0 p-1'
-                    className={p.className}
+                    tw='flex-none'
                     style={{
                         // maxWidth: p.maxWidth ?? '500px',
                         maxWidth: p.maxWidth,

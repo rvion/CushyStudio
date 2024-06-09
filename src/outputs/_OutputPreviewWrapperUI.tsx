@@ -22,9 +22,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     return (
         <ErrorBoundaryUI>
             <Frame
-                tw='overflow-clip'
-                border
-                base={10}
+                tw='overflow-clip p-0.5'
                 hover
                 style={{ width: size, height: size }}
                 onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}

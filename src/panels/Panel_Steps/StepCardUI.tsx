@@ -51,47 +51,45 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
 
     return (
         <Frame
-            border={10}
-            base={10}
-            tw={['relative oerflowv-hidden', 'cursor-pointer justify-between', p.className]}
-            onClick={() => (st.focusedStepID = step.id)}
+            // border={10}
+            tw={['flex flex-wrap relative cursor-pointer', p.className]}
+            onClick={() => {
+                st.layout.FOCUS_OR_CREATE('Output', { stepID: step.id })
+            }}
             style={p.style}
         >
-            <div tw='flex flex-wrap gap-1 minh-input items-center'>
-                {showStatus && <div>{statusUI(p.step.finalStatus)}</div>}
-                {showTitle && <div>{step.name}</div>}
-                {showDate && <div className='text-xs w-12 truncate'>{_formatPreviewDate(new Date(step.createdAt))}</div>}
-                {showApp && (
-                    <div
-                        tw={['cursor-pointer', isSelected ? 'border-2 border-primary' : '']}
-                        style={{ width: appSize, height: appSize, flexShrink: 0 }}
-                    >
-                        {step.app ? (
-                            <AppIllustrationUI tw='hover:opacity-100' size={appSize} app={step.app} />
-                        ) : (
-                            <div style={{ width: appSize, height: appSize }}>❓</div>
-                        )}
-                    </div>
-                )}
-                {/* 4. DRAFT --------------------------------------------------------------- */}
-                {showDraft &&
-                    (step.draft ? (
-                        <DraftIllustrationUI draft={step.draft} size={appSize} />
+            {showStatus && <div>{statusUI(p.step.finalStatus)}</div>}
+            {showTitle && <div>{step.name}</div>}
+            {showDate && <div className='text-xs w-12 truncate'>{_formatPreviewDate(new Date(step.createdAt))}</div>}
+            {showApp && (
+                <div
+                    tw={['cursor-pointer', isSelected ? 'border-2 border-primary' : '']}
+                    style={{ width: appSize, height: appSize, flexShrink: 0 }}
+                >
+                    {step.app ? (
+                        <AppIllustrationUI tw='hover:opacity-100' size={appSize} app={step.app} />
                     ) : (
                         <div style={{ width: appSize, height: appSize }}>❓</div>
-                    ))}
-                {/* 6. OUTPUTS --------------------------------------------------------------- */}
-                {showOutputs &&
-                    step?.outputs?.map((output, ix) => (
-                        <OutputPreviewUI //
-                            key={ix}
-                            step={step}
-                            size={appSize}
-                            // size={outputSize}
-                            output={output}
-                        />
-                    ))}
-            </div>
+                    )}
+                </div>
+            )}
+            {/* 4. DRAFT --------------------------------------------------------------- */}
+            {showDraft &&
+                (step.draft ? (
+                    <DraftIllustrationUI draft={step.draft} size={appSize} />
+                ) : (
+                    <div style={{ width: appSize, height: appSize }}>❓</div>
+                ))}
+            {/* 6. OUTPUTS --------------------------------------------------------------- */}
+            {showOutputs &&
+                step?.outputs?.map((output, ix) => (
+                    <OutputPreviewUI //
+                        key={ix}
+                        step={step}
+                        size={appSize}
+                        output={output}
+                    />
+                ))}
         </Frame>
     )
 })
