@@ -22,6 +22,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
         multi: boolean
         /** either a branch name if only one branch is active, or a Dict<boolean> if multiple */
         default?: DefaultBranches<T> | keyof T
+        // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
         placeholder?: string
         appearance?: 'select' | 'tab'
         tabPosition?: TabPositionConfig

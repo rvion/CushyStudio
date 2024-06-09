@@ -50,12 +50,10 @@ export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI
     if (output instanceof MediaVideoL)           return <OutputVideoPreviewUI        step={p.step} output={output} />
     if (output instanceof MediaSplatL)           return <OutputSplatPreviewUI        step={p.step} output={output} />
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
-
     if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
     if (output instanceof ComfyWorkflowL)        return <OutputWorkflowPreviewUI     step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴 StepL not yet supported</>
     if (output instanceof MediaCustomL)          return <Output3dScenePreviewUI      step={p.step} output={output} />
-
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
 
     exhaust(output)
