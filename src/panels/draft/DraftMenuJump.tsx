@@ -6,20 +6,31 @@ import { observer } from 'mobx-react-lite'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { Button } from '../../csuite/button/Button'
+import { Frame } from '../../csuite/frame/Frame'
 
-export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
+/* TODO(bird_d): In the future it might be good to define a plethora of datablock types and just have a DataBlockTemplateUI and feed it the type/data for a consistent look throughout the program. */
+export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
     //
     title: string
     draft: DraftL
     className?: string
 }) {
     return (
-        <Dropdown
-            className={p.className}
-            startIcon='mdiHistory'
-            title='Drafts'
-            content={() => <DraftListUI app={p.draft.app} />}
-        />
+        <Frame tw='flex flex-row'>
+            <Dropdown
+                className={p.className}
+                startIcon='mdiPencilBox'
+                title={false}
+                content={() => <DraftListUI app={p.draft.app} />}
+                button={<Button tw='!gap-0 !px-0.5' icon='mdiPencilBox' suffixIcon={'mdiChevronDown'} />}
+            />
+            <InputStringUI //
+                getValue={() => p.draft.name}
+                setValue={(val) => p.draft.update({ title: val })}
+            />
+        </Frame>
     )
 })
 

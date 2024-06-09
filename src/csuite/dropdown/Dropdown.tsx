@@ -4,7 +4,7 @@ import type { Kolor } from '../kolor/Kolor'
 import { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
-import { Frame } from '../frame/Frame'
+import { Frame, FrameProps } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 
 export const Dropdown = (p: {
@@ -14,6 +14,7 @@ export const Dropdown = (p: {
     title: ReactNode
     theme?: Kolor
     content?: () => ReactNode
+    button?: ReactNode
 }) => (
     <RevealUI
         tw={[p.className]}
@@ -23,15 +24,17 @@ export const Dropdown = (p: {
             </Frame>
         )}
     >
-        <Button
-            //
-            look='ghost'
-            border={false}
-            icon={p.startIcon}
-            tabIndex={0}
-            base={0}
-        >
-            {p.title}
-        </Button>
+        {p.button ?? (
+            <Button
+                //
+                look='ghost'
+                border={false}
+                icon={p.startIcon}
+                tabIndex={0}
+                base={0}
+            >
+                {p.title}
+            </Button>
+        )}
     </RevealUI>
 )
