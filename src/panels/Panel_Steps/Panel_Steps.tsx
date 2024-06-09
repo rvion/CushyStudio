@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { clamp } from 'three/src/math/MathUtils'
 
+import { clamp } from '../../controls/utils/clamp'
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
 import { useSt } from '../../state/stateContext'
 import { FormAsDropdownConfigUI } from '../Panel_Gallery/FormAsDropdownConfigUI'

@@ -94,11 +94,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                 {/* 4. DRAFT --------------------------------------------------------------- */}
                 {showDraft &&
                     (step.draft ? (
-                        <div>
-                            {/*  */}
-                            <DraftIllustrationUI draft={step.draft} size={appSize} />
-                            {/* draft: {step.draft?.name ?? '❓'} */}
-                        </div>
+                        <DraftIllustrationUI draft={step.draft} size={appSize} />
                     ) : (
                         <div style={{ width: appSize, height: appSize }}>❓</div>
                     ))}
