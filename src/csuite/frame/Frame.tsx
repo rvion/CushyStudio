@@ -31,6 +31,7 @@ import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {
+    tooltip?: string
     // logic --------------------------------------------------
     /** TODO: */
     triggerOnPress?: { startingState: boolean }
@@ -66,6 +67,7 @@ export const Frame = observer(
             base, hover, border, text, textShadow, shadow, // box stuff
             onMouseDown, onMouseEnter, onClick, triggerOnPress,
             style, className,
+            tooltip,
             ...rest
         } = p
 
@@ -147,8 +149,8 @@ export const Frame = observer(
 
         return (
             <div //
-                {...rest}
                 ref={ref}
+                title={tooltip}
                 tw={[
                     //
                     'BOX',
