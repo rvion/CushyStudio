@@ -2,7 +2,9 @@ import { observer } from 'mobx-react-lite'
 
 import { AppCardUI } from '../cards/fancycard/AppCardUI'
 import { Button } from '../csuite/button/Button'
+import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../csuite/frame/Frame'
+import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { Slider, Toggle } from '../csuite/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
@@ -49,33 +51,37 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                     <Button look='primary' onClick={st.startupFileIndexing}>
                         Index All Apps
                     </Button>
-                    <FieldAndLabelUI label='Descriptions'>
-                        <Toggle
-                            onChange={(t) => (st.library.showDescription = t.target.checked)}
-                            checked={st.library.showDescription}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='Drafts'>
-                        <Toggle //
-                            onChange={(t) => (st.library.showDrafts = t.target.checked)}
-                            checked={st.library.showDrafts}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='Favorites'>
-                        <Toggle
-                            onChange={(t) => (st.library.showFavorites = t.target.checked)}
-                            checked={st.library.showFavorites}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='size'>
-                        <Slider
-                            min={3}
-                            max={20}
-                            style={{ width: '5rem' }}
-                            onChange={(t) => (st.library.imageSize = `${t.target.value}rem`)}
-                            value={parseInt(st.library.imageSize.slice(0, -3), 10)}
-                        />
-                    </FieldAndLabelUI>
+                    <InputBoolToggleButtonUI
+                        showToggleButtonBox
+                        mode='checkbox'
+                        text='Descriptions'
+                        value={st.library.showDescription}
+                        onValueChange={(next) => (st.library.showDescription = next)}
+                    />
+                    <InputBoolToggleButtonUI
+                        showToggleButtonBox
+                        mode='checkbox'
+                        text='Drafts'
+                        value={st.library.showDrafts}
+                        onValueChange={(next) => (st.library.showDrafts = next)}
+                    />
+                    <InputBoolToggleButtonUI
+                        showToggleButtonBox
+                        mode='checkbox'
+                        text='Favorites'
+                        value={st.library.showFavorites}
+                        onValueChange={(next) => (st.library.showFavorites = next)}
+                    />
+                    <InputNumberUI
+                        text='size'
+                        mode='int'
+                        min={3}
+                        max={20}
+                        style={{ width: '10rem' }}
+                        suffix='rem'
+                        onValueChange={(next) => (st.library.imageSize = `${next}rem`)}
+                        value={parseInt(st.library.imageSize.slice(0, -3), 10)}
+                    />
                 </div>
             </Frame>
             <div tw='flex flex-col flex-grow p-4 overflow-auto'>

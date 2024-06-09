@@ -39,6 +39,11 @@ const frame_primaryWarning: BoxNormalized = extractNormalizeBox({
     base: { contrast: 0.1, chroma: 0.1, hue: 60 },
     border: 0.1,
 })
+const frame_primaryInfo: BoxNormalized = extractNormalizeBox({
+    textShadow: 100,
+    base: { contrast: 0.1, chroma: 0.1, hue: 240 },
+    border: 0.1,
+})
 const frame_primaryError: BoxNormalized = extractNormalizeBox({
     textShadow: 100,
     base: { contrast: 0.1, chroma: 0.1, hue: 0 },
@@ -57,6 +62,7 @@ export const frameTemplates = {
     default: frame_default,
     primary: frame_primary,
     success: frame_primarySuccess,
+    info: frame_primaryInfo,
     warning: frame_primaryWarning,
     error: frame_primaryError,
     secondary: frame_secondary,

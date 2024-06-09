@@ -389,6 +389,7 @@ export class CushyLayoutManager {
                 borderAutoSelectTabWhenClosed: true,
                 tabSetHeaderHeight: 24,
                 tabSetTabStripHeight: 24,
+                tabSetEnableSingleTabStretch: false /* 🔴 */,
                 //
                 // tabSetEnableSingleTabStretch: true,
             },

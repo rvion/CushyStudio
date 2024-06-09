@@ -47,6 +47,10 @@ const myCustomIcons = {
 
     // cushy -------------------------------------------------------------------------
     cdiTest: 'M 2.40,7.20 A 20,20 0,0,1 12.00,7.20 A 20,20 0,0,1 21.60,7.20 Q 21.60,14.40 12.00,21.60 Q 2.40,14.40 2.40,7.20 z',
+    cdiDraft: icons.mdiPencil,
+    cdiApp: icons.mdiAbacus,
+    cdiStep: icons.mdiAccessPoint,
+    cdiPreset: icons.mdiAccessPoint,
     // AI stuff goes there
     // ....
 

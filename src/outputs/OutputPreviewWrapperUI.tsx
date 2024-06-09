@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
+import { Frame } from '../csuite/frame/Frame'
 import { useSt } from '../state/stateContext'
 import { StepOutput } from '../types/StepOutput'
 
@@ -20,11 +21,11 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     const sizeStr = p.size ? `${p.size}px` : st.historySizeStr
     return (
         <ErrorBoundaryUI>
-            <div
-                // STYLE
-                tw={['rounded overflow-clip border border-base-300 hover:border-primary hover:brightness-110 box-content']}
+            <Frame
+                border
+                base={10}
+                hover
                 style={{ width: sizeStr, height: sizeStr }}
-                // LOGIC
                 onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}
                 onMouseEnter={(ev) => runInAction(() => (st.hovered = p.output))}
                 onMouseLeave={() => {
@@ -32,7 +33,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
                 }}
             >
                 {p.children}
-            </div>
+            </Frame>
         </ErrorBoundaryUI>
     )
 })
