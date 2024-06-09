@@ -9,12 +9,12 @@ export const PanelStepsConf = CushyFormManager.form(
                 //
                 maxItem: ui.int({ default: 10, min: 1, max: 100, step: 1 }),
                 appSize: ui.remSize(),
-                outputSize: ui.remSize(),
+                // outputSize: ui.remSize(),
                 show: ui.choicesV2(
                     {
                         title: ui.ok(),
-                        app: ui.ok(),
-                        draft: ui.ok(),
+                        app: ui.ok({ label: 'App illustration' }),
+                        draft: ui.ok({ label: 'Draft illustration' }),
                         status: ui.ok(),
                         outputs: ui.ok(),
                         executionTime: ui.ok(),
@@ -23,8 +23,8 @@ export const PanelStepsConf = CushyFormManager.form(
                     {
                         default: {
                             title: true,
-                            app: true,
-                            draft: true,
+                            app: false,
+                            draft: false,
                             status: true,
                             outputs: true,
                             executionTime: true,

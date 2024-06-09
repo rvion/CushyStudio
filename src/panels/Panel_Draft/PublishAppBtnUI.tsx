@@ -1,6 +1,7 @@
+import type { CushyAppL } from '../../models/CushyApp'
+
 import { observer } from 'mobx-react-lite'
 
-import { CushyAppL } from '../../models/CushyApp'
 import { Button } from '../../csuite/button/Button'
 
 export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: CushyAppL }) {
@@ -9,10 +10,9 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: Cush
 
     return (
         <Button
-            // look='primary'
             disabled={!app.canBePublishedByUser}
             square
-            tooltip={'Publish app to the Cushy App Store'}
+            tooltip='Publish app to the Cushy App Store'
             onClick={async () => {
                 // ensure is connected
                 if (!st.auth.isConnected) {

@@ -6,27 +6,22 @@ import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { Surface } from '../csuite/shims'
 import { TabUI } from '../csuite/tabs/TabUI'
 import { StepL } from '../models/Step'
-import { useSt } from '../state/stateContext'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //
     step?: Maybe<StepL>
     output: MediaTextL
 }) {
-    const st = useSt()
     const output = p.output
-    const size = st.historySize
-    const sizeStr = st.historySizeStr
     const message =
         output.data.kind === 'markdown' ? ( //
             <div
                 tw={[
                     //
+                    '[line-height:100%] [font-size:60%]',
                     'bg-accent text-accent-content',
                     'text-center w-full font-bold',
                 ]}
-                style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
             >
                 MD
             </div>
@@ -34,18 +29,22 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             <div
                 tw={[
                     //
+                    '[line-height:100%] [font-size:60%]',
                     'bg-purple-500 text-black',
                     'text-center w-full font-bold',
                 ]}
-                style={{ lineHeight: sizeStr, fontSize: `${size / 5}px` }}
             >
                 {'<HTML/>'}
             </div>
         ) : (
-            <div tw='text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>{output.data.content}</div>
+            <div //
+                tw='text-xs whitespace-pre-wrap overflow-hidden '
+            >
+                {output.data.content}
+            </div>
         )
 
-    return <OutputPreviewWrapperUI output={p.output}>{message}</OutputPreviewWrapperUI>
+    return message
 })
 
 export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<StepL>; output: MediaTextL }) {

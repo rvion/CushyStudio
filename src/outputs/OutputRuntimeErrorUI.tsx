@@ -4,18 +4,12 @@ import { Surface } from '../csuite/shims'
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorPreviewUI_(p: {
     step?: Maybe<StepL>
     output: RuntimeErrorL
 }) {
-    const msg = p.output
-    return (
-        <OutputPreviewWrapperUI output={p.output}>
-            <div tw='text-error-content bg-error font-bold'>Runtime Error</div>
-        </OutputPreviewWrapperUI>
-    )
+    return <div tw='text-error-content bg-error font-bold'>Runtime Error</div>
 })
 
 export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: { step?: Maybe<StepL>; output: RuntimeErrorL }) {

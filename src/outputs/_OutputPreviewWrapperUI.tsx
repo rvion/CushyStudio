@@ -15,17 +15,18 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     children: ReactNode
 
     /** size in px */
-    size?: number
+    size?: string
 }) {
     const st = useSt()
-    const sizeStr = p.size ? `${p.size}px` : st.historySizeStr
+    const size = p.size ?? '2rem'
     return (
         <ErrorBoundaryUI>
             <Frame
+                tw='overflow-clip'
                 border
                 base={10}
                 hover
-                style={{ width: sizeStr, height: sizeStr }}
+                style={{ width: size, height: size }}
                 onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}
                 onMouseEnter={(ev) => runInAction(() => (st.hovered = p.output))}
                 onMouseLeave={() => {

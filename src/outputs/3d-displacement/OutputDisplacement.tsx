@@ -7,8 +7,6 @@ import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
 import { StepL } from '../../models/Step'
@@ -17,7 +15,6 @@ import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { bang } from '../../utils/misc/bang'
 import { toastError } from '../../utils/misc/toasts'
-import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
 import { DisplacementState } from './DisplacementState'
 import { DisplacementUI } from './DisplacementUI'
 
@@ -29,14 +26,12 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const size = st.historySize
     const sizeStr = st.historySizeStr
     return (
-        <OutputPreviewWrapperUI size={size} output={p.output}>
-            <div
-                tw={['bg-orange-500 text-black', 'text-center w-full font-bold']}
-                style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
-            >
-                3D
-            </div>
-        </OutputPreviewWrapperUI>
+        <div
+            tw={['bg-orange-500 text-black', 'text-center w-full font-bold']}
+            style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
+        >
+            3D
+        </div>
     )
 })
 
