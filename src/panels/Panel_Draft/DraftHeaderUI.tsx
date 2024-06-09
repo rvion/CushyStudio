@@ -3,13 +3,17 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
-import { DraftMenuJumpUI } from './DraftMenuJump'
+import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
+import { PanelHeaderUI } from '../PanelHeader'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { Button } from '../../csuite/button/Button'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //
@@ -22,47 +26,47 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
         <Frame
             style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
             className={p.className}
-            tw='_DraftHeaderUI flex sticky top-0 z-50'
+            tw='_DraftHeaderUI flex flex-col sticky top-0 z-50 overflow-clip'
         >
-            <div tw='flex gap-1 mt-1 flex-grow relative'>
-                <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
-                <div tw='flex flex-col gap-1 flex-grow'>
-                    <div tw='flex text-sm gap-1'>
-                        <span tw='font-bold'>{app.name}</span>
-                    </div>
-                    <div className='flex items-center gap-2 justify-between'>
-                        <input
-                            tw='cushy-basic-input flex-grow'
-                            onChange={(ev) => draft.update({ title: ev.target.value })}
-                            value={draft.data.title ?? 'no title'}
-                        />
-                    </div>
-                    <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
-                    <div tw='flex gap-0.5'>
-                        <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
-                        <DraftMenuJumpUI draft={draft} title='Drafts' />
-                        {/* --------------------------------- */}
-                        <div tw='flex-grow'></div>
-                        <PublishAppBtnUI app={app} />
-                        <DraftMenuLooksUI draft={draft} title={app.name} />
-                        {/* --------------------------------- */}
-                        <Button
-                            subtle
-                            square
-                            size='input'
-                            icon='mdiUnfoldMoreHorizontal'
-                            onClick={draft.expandTopLevelFormEntries}
-                        />
-                        <Button
-                            subtle
-                            square
-                            size='input'
-                            icon='mdiUnfoldLessHorizontal'
-                            onClick={draft.collapseTopLevelFormEntries}
-                        />
-                    </div>
+            <PanelHeaderUI>
+                <DraftMenuLooksUI draft={draft} title={app.name} />
+                <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
+                <SpacerUI />
+                <Dropdown //
+                    // tw={'flex-grow'}
+                    title={false}
+                    content={() => <></>}
+                    button={
+                        <Button //
+                            tw={'w-full'}
+                            icon={'mdiApplication'}
+                        >
+                            {app.name}
+                        </Button>
+                    }
+                />
+                <PublishAppBtnUI
+                    app={app} // TODO(bird_d): Make this "joined" with the app selection button when not hidden.
+                />
+                <SpacerUI />
+            </PanelHeaderUI>
+            <Frame tw='flex w-full gap-2 p-2 flex-grow text-base-content' base={{ contrast: -0.025 }}>
+                <DraftIllustrationUI
+                    revealAppIllustrationOnHover
+                    draft={draft}
+                    size='3.69rem'
+                    // XXX: This is bad because h-input will change from the theme settings, but this will not.
+                />
+                <div tw='flex flex-col gap-2'>
+                    <DraftMenuDataBlockUI draft={draft} title='Drafts' />
+                    <InputStringUI
+                        getValue={() => draft.data.canvasToolCategory ?? ''}
+                        setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
+                        placeholder='Unified Canvas Category'
+                    />
                 </div>
-            </div>
+                <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
+            </Frame>
         </Frame>
     )
 })
