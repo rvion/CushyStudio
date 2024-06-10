@@ -46,7 +46,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 subtle
                 disabled={!canClear}
                 square
-                icon='mdiDeleteForever'
+                icon='mdiDeleteOutline'
                 onClick={(ev) => {
                     if (!canClear) return
                     ev.stopPropagation()

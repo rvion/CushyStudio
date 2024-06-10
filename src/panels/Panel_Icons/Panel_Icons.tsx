@@ -1,20 +1,20 @@
 import * as icons from '@mdi/js'
 import { Icon } from '@mdi/react'
+import { makeAutoObservable } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
+import { CSSProperties, useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { Button } from '../../csuite/button/Button'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { getAllIcons } from '../../csuite/icons/getAllIcons'
-import { searchMatches } from '../../utils/misc/searchMatches'
-import { PanelHeaderUI } from '../PanelHeader'
-import { Button } from '../../csuite/button/Button'
-import { CSSProperties, useMemo } from 'react'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { makeAutoObservable } from 'mobx'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
-import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
-import { toastInfo } from '../../utils/misc/toasts'
+import { searchMatches } from '../../utils/misc/searchMatches'
+import { toastError, toastInfo } from '../../utils/misc/toasts'
+import { PanelHeaderUI } from '../PanelHeader'
 
 class IconPanelStableState {
     constructor() {
@@ -28,16 +28,20 @@ class IconPanelStableState {
     /** Used to filter down the icons to match the query. Only used when filter is enabled. */
     query: string = ''
 
-    copy = (icon: string) => {
+    copy = async (icon: string): Promise<void> => {
         const found = this.recent.indexOf(icon)
         if (found > -1) {
             this.recent.splice(found, 1)
         }
         this.recent.unshift(icon)
 
-        // Probably should check if it errored, but lazy.
-        navigator.clipboard.writeText(icon)
-        toastInfo(`'${icon}' copied to clipboard`)
+        try {
+            // Probably should check if it errored, but lazy.
+            await navigator.clipboard.writeText(icon)
+            toastInfo(`'${icon}' copied to clipboard`)
+        } catch (e) {
+            toastError(`Error copying to clipboard: ${e}`)
+        }
     }
 }
 
@@ -54,7 +58,7 @@ const CopyButton = observer(function CopyButton_(p: {
             base={{ contrast: 0 }}
             style={p.style}
             onClick={() => {
-                p.uist.copy(p.icon)
+                return p.uist.copy(p.icon)
             }}
         >
             <Icon path={(icons as any)[p.icon]} />
@@ -102,6 +106,7 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                 <Frame tw='h-input flex flex-row'>
                     <InputStringUI
                         // placeholder='filename'
+                        autofocus
                         getValue={() => uist.query}
                         setValue={(val) => (uist.query = val)}
                     />

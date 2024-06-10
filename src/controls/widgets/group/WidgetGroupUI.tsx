@@ -17,8 +17,8 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     if (!p.widget.serial.collapsed) {
         return (
             <div tw='ml-auto'>
-                <Button onClick={() => p.widget.expandAllChildren()} subtle icon='mdiExpandAll'></Button>
-                <Button onClick={() => p.widget.collapseAllChildren()} subtle icon='mdiCollapseAll'></Button>
+                <Button onClick={() => p.widget.expandAllChildren()} subtle icon='mdiUnfoldMoreHorizontal'></Button>
+                <Button onClick={() => p.widget.collapseAllChildren()} subtle icon='mdiUnfoldLessHorizontal'></Button>
             </div>
         )
         return null
