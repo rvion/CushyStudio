@@ -5,35 +5,31 @@ import { clamp } from '../../controls/utils/clamp'
 import { getLCHFromString } from '../kolor/getLCHFromString'
 
 export type BoxNormalized = {
-    base: Kolor | null //       BASE              (relative to its parent's BASE)
-    hover: Kolor | null //      BASE when hovered (relative to its parent's BASE)
-
-    text: Kolor | null //       relative to BASE
-    base_: Kolor | null // relative to BASE
-    border: Kolor | null //     relative to BASE
-    textShadow: Kolor | null // relative to BASE
-    shadow: Kolor | null //     relative to BASE
+    base?: Kolor //       BASE              (relative to its parent's BASE)
+    hover?: Kolor //      BASE when hovered (relative to its parent's BASE)
+    text?: Kolor //       relative to BASE
+    shock?: Kolor //      relative to BASE
+    border?: Kolor //     relative to BASE
+    textShadow?: Kolor // relative to BASE
+    shadow?: Kolor //     relative to BASE
 }
 
-export function extractNormalizeBox(box: Box): BoxNormalized {
-    return {
-        base: normalizeBoxKolor(box.base),
-        hover: normalizeBoxKolor(box.hover),
-        // ----------
-        base_: normalizeBoxKolor(box.base_),
-        text: normalizeBoxKolor(box.text),
-        textShadow: normalizeBoxKolor(box.textShadow),
-        shadow: normalizeBoxKolor(box.shadow),
-        border: normalizeBoxKolor(box.border),
-        //
-    }
+export function normalizeBox(box: Box): BoxNormalized {
+    const out: BoxNormalized = {}
+    if (box.base) out.base = _normalizeKolor(box.base)
+    if (box.hover) out.hover = _normalizeKolor(box.hover)
+    if (box.shock) out.shock = _normalizeKolor(box.shock)
+    if (box.text) out.text = _normalizeKolor(box.text)
+    if (box.textShadow) out.textShadow = _normalizeKolor(box.textShadow)
+    if (box.shadow) out.shadow = _normalizeKolor(box.shadow)
+    if (box.border) out.border = _normalizeKolor(box.border)
+    return out
 }
 
-export function normalizeBoxKolor(
+function _normalizeKolor(
     //
-    kolor: Kolor | string | number | boolean | undefined,
-): Kolor | null {
-    if (kolor == null) return null
+    kolor: Kolor | string | number | boolean,
+): Kolor {
     if (typeof kolor === 'boolean') return { contrast: kolor ? /* 0.2 */ 0.03 : 0 }
     if (typeof kolor === 'number') return { contrast: clamp(kolor / 100, 0, 1) }
     if (typeof kolor === 'string') return getLCHFromString(kolor)

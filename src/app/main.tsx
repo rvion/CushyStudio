@@ -1,8 +1,6 @@
 import '../theme/tw.css'
 import 'react-toastify/dist/ReactToastify.css'
 import 'highlight.js/styles/stackoverflow-dark.css'
-// must be first
-import '../theme/form.vars.css'
 import '../theme/flexlayout.css'
 import '../theme/index.css'
 import '../theme/daisy-tweaks.css'

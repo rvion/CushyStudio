@@ -28,10 +28,10 @@ export const Dropdown = (p: {
             <Button
                 //
                 look='ghost'
-                border={false}
+                borderless
+                subtle
                 icon={p.startIcon}
                 tabIndex={0}
-                base={0}
             >
                 {p.title}
             </Button>

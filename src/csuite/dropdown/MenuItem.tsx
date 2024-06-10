@@ -26,7 +26,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 contrast: active ? 0.1 : 0,
                 chroma: active ? 0.1 : undefined,
             }}
-            hover
+            // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
+            hover={15}
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()

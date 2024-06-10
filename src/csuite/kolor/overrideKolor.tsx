@@ -10,10 +10,10 @@ import type { Kolor } from './Kolor'
  */
 export const overrideKolor = (
     //
-    a: Kolor | null,
-    b: Kolor | null,
-): Kolor | null => {
-    if (a == null && b == null) return null
+    a: Maybe<Kolor>,
+    b: Maybe<Kolor>,
+): Kolor => {
+    if (a == null && b == null) return {}
     if (a == null) return b!
     if (b == null) return a
 

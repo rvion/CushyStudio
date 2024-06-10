@@ -15,19 +15,20 @@ import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, useContext } from 'react'
+import { forwardRef, useContext, useState } from 'react'
 
-import { extractNormalizeBox } from '../box/BoxNormalized'
-import { hashKolor } from '../box/compileBoxClassName'
+import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
-import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
 import { formatOKLCH } from '../kolor/formatOKLCH'
 import { isSameOKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
-import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
+import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
+// import { hashKolor } from '../box/compileBoxClassName'
+// import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
+// import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {
@@ -55,6 +56,25 @@ export type FrameProps = {
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
+// ----------------------------------------------------------------------
+// 2024-06-10 rvion:
+// TODO:
+//  ❌ we can't compile hover with the same name as non hover sadly;
+//  🟢 but we can add both classes directly
+//  🟢 we could also probably debounce class compilation
+//  🟢 and auto-clean classes
+//  🟢 and have some better caching mechanism so we don't have to normalize colors
+//     nor do anything extra when the input does change
+
+// ------------------------------------------------------------------
+// quick and dirty way to configure frame to use either style or className
+type FrameMode = 'CLASSNAME' | 'STYLE'
+let frameMode: FrameMode = 1 - 1 === 1 ? 'STYLE' : 'CLASSNAME'
+export const configureFrameEngine = (mode: FrameMode) => {
+    frameMode = mode
+}
+// ------------------------------------------------------------------
+
 export const Frame = observer(
     forwardRef(function Frame_(p: FrameProps, ref: any) {
         // PROPS --------------------------------------------
@@ -73,10 +93,14 @@ export const Frame = observer(
 
         // TEMPLATE -------------------------------------------
         // const theme = useTheme().value
-        const box = extractNormalizeBox(p)
+        const box = normalizeBox(p)
+
+        const [hovered, setHovered] = useState(false)
+        let realBase = hovered ? box.hover ?? box.base : box.base
+
         if (look != null) {
             const template = frameTemplates[look]
-            if (template.base) box.base = overrideKolor(template.base, box.base)
+            if (template.base) realBase = overrideKolor(template.base, realBase)
             if (template.border) box.border = overrideKolor(template.border, box.border)
             if (template.text) box.text = overrideKolor(template.text, box.text)
         }
@@ -86,7 +110,7 @@ export const Frame = observer(
         // I originally though they were standard; but they are probably not
         if (disabled) {
             box.text = { contrast: 0.1 }
-            box.base = { contrast: 0 }
+            realBase = { contrast: 0 }
             //     box.border = null
         }
 
@@ -99,15 +123,16 @@ export const Frame = observer(
         const prevCtx = useContext(CurrentStyleCtx)
 
         // const nextCtx = applyBoxToCtx(prevCtx, box)
-        const nextBase = applyKolorToOKLCH(prevCtx.base, box.base)
+        const nextBase = applyKolorToOKLCH(prevCtx.base, realBase)
 
         const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
-        const nextLightness = nextBase.lightness
         const nextext = overrideKolor(prevCtx.text, box.text)!
 
-        const goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
-        const goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
-        const nextDir = goingTooDark ? -1 : goingTooLight ? 1 : prevCtx.dir
+        // next dir
+        const nextLightness = nextBase.lightness
+        const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
+        const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
+        const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
 
         // STYLE ---------------------------------------------
         const variables: { [key: string]: string | number } = {}
@@ -118,43 +143,29 @@ export const Frame = observer(
         // CLASSES ---------------------------------------------
         const classes: string[] = []
 
-        if (box.base_) {
-            const clsName = 'bg' + hashKolor(box.base_, nextDir)
-            const selector = `.${CSS.escape(clsName)}`
-            if (!hasRule(selector)) addRule(`.${CSS.escape(clsName)}`, `background: ${compileKolorToCSSExpression('KLR', box.base_)};`) // prettier-ignore
-            classes.push(clsName)
-        }
-
+        if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(nextBase, box.shock))
+        else variables.background = formatOKLCH(nextBase)
         const boxText = box.text ?? prevCtx.text
-        if (boxText) {
-            const clsName = 'text' + hashKolor(boxText, nextDir)
-            const selector = `.${CSS.escape(clsName)}`
-            if (!hasRule(selector)) addRule(selector, `color: ${compileKolorToCSSExpression('KLR', boxText)};`)
-            classes.push(clsName)
-        }
+        if (boxText) variables.color = formatOKLCH(applyKolorToOKLCH(nextBase, boxText))
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(nextBase, box.textShadow))}`
+        if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(nextBase, box.border))}`
 
-        if (box.textShadow) {
-            const clsName = 'textShadow' + hashKolor(box.textShadow, nextDir)
-            const selector = `.${CSS.escape(clsName)}`
-            if (!hasRule(selector)) addRule(selector, `text-shadow: 0px 0px 2px ${compileKolorToCSSExpression('KLR', box.textShadow)};`) // prettier-ignore
-            classes.push(clsName)
-        }
-
-        if (box.border) {
-            const clsName = 'border' + hashKolor(box.border, nextDir)
-            const selector = `.${CSS.escape(clsName)}`
-            if (!hasRule(selector)) addRule(selector, `border: 1px solid ${compileKolorToCSSExpression('KLR', box.border)};`) // prettier-ignore
-            classes.push(clsName)
+        let _onMouseOver: any = undefined
+        let _onMouseOut: any = undefined
+        if (p.hover) {
+            _onMouseOver = () => setHovered(true)
+            _onMouseOut = () => setHovered(false)
         }
 
         return (
             <div //
                 ref={ref}
                 title={tooltip}
+                onMouseOver={_onMouseOver}
+                onMouseOut={_onMouseOut}
                 tw={[
-                    //
-                    'BOX',
-                    look && `box-${look}`,
+                    'box',
+                    frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
                     size && `box-${size}`,
                     square && `box-square`,
                     loading && 'relative',
@@ -162,7 +173,7 @@ export const Frame = observer(
                     ...classes,
                     className,
                 ]}
-                style={{ ...style, ...variables }}
+                style={frameMode === 'CLASSNAME' ? style : { ...style, ...variables }}
                 {...rest}
                 {...(triggerOnPress != null
                     ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
