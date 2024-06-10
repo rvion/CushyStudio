@@ -53,8 +53,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
     )
 })
 
-export const MenuDivider = observer(function Divider_(p: { children: ReactNode }) {
-    return <div className='divider px-2 !h-input my-2 text-sm'>{p.children}</div>
+export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
+    return <div className='divider px-2 !h-input my-2 text-sm'>{p.children ?? <></>}</div>
 })
 // Can we do subcomponents somehow?
 // MenuItem.Divider = Divider
