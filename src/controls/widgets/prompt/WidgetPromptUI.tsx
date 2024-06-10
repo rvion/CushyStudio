@@ -28,31 +28,36 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
             ) : (
                 <div /* spacer */ />
             )}
-            <div tw='flex self-end gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    // const Icon = Ikon[plugin.icon]
-                    return (
-                        <RevealUI
-                            key={plugin.key}
-                            trigger='hover'
-                            placement='topEnd'
-                            content={() => (
-                                <div tw='p-2'>
-                                    <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                    <div tw='whitespace-nowrap'>{plugin.description}</div>
-                                </div>
-                            )}
-                        >
-                            <InputBoolToggleButtonUI
-                                value={Boolean(active)}
-                                icon={plugin.icon}
-                                onValueChange={() => st.configFile.set(plugin.configKey, !active)}
-                            />
-                        </RevealUI>
-                    )
-                })}
-            </div>
+        </div>
+    )
+})
+
+export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
+    return (
+        <div tw='flex self-end gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
+            {plugins.map((plugin) => {
+                const active = cushy.configFile.get(plugin.configKey) ?? false
+                // const Icon = Ikon[plugin.icon]
+                return (
+                    <RevealUI
+                        key={plugin.key}
+                        trigger='hover'
+                        placement='topEnd'
+                        content={() => (
+                            <div tw='p-2'>
+                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
+                                <div tw='whitespace-nowrap'>{plugin.description}</div>
+                            </div>
+                        )}
+                    >
+                        <InputBoolToggleButtonUI
+                            value={Boolean(active)}
+                            icon={plugin.icon}
+                            onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
+                        />
+                    </RevealUI>
+                )
+            })}
         </div>
     )
 })
@@ -94,6 +99,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
+            <PluginToggleBarUI />
             {haveAtLeastOnePluginActive && (
                 <Frame className='flex flex-col gap-1 p-1 my-1'>
                     {plugins.map((plugin) => {

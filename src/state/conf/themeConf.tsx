@@ -7,7 +7,10 @@ export const themeConf = CushyFormManager.form(
         ui.fields(
             {
                 // name copied from flexlayout; will be used
-                tabSetEnableSingleTabStretch: ui.boolean({ default: false, label: '....bird_d....' }),
+                tabSetEnableSingleTabStretch: ui.boolean({
+                    default: false,
+                    label: 'Stretch single tab in tabset',
+                }),
 
                 // 1. colors
                 base: ui.colorV2({

@@ -3,14 +3,26 @@ import type { Widget_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../../csuite/button/Button'
 import { bang } from '../../../utils/misc/bang'
 import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
 // HEADER
-export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: { widget: Widget_group<any> }) {
-    if (!p.widget.serial.collapsed) return null
+export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
+    //
+    widget: Widget_group<any>
+}) {
+    if (!p.widget.serial.collapsed) {
+        return (
+            <div tw='ml-auto'>
+                <Button onClick={() => p.widget.expandAllChildren()} subtle icon='mdiExpandAll'></Button>
+                <Button onClick={() => p.widget.collapseAllChildren()} subtle icon='mdiCollapseAll'></Button>
+            </div>
+        )
+        return null
+    }
     return <WidgetSingleLineSummaryUI>{p.widget.summary}</WidgetSingleLineSummaryUI>
 })
 

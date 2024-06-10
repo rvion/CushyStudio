@@ -7,6 +7,7 @@ import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { useSt } from '../state/stateContext'
+import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
 
@@ -74,7 +75,11 @@ export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: 
                     <ButtonOpenInComfyUI graph={graph} />
                 </div> */}
             <div tw='text-sm italic opacity-50'>graphID: {graph.id}</div>
-            <GraphPreviewUI graph={graph} />
+            {/* <GraphPreviewUI graph={graph} /> */}
+            <DrawWorkflowUI //
+                // offset={isDragging ? { x: dx, y: dy } : undefined}
+                workflow={graph}
+            />
         </div>
         // {/* <div>ComfyUI</div>
         // {litegraphK.ui((json) => (
