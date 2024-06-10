@@ -23,7 +23,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             : cushy.db.step.get(p.stepID)
     if (step == null) return null
     const out1 = st.hovered ?? st.focusedStepOutput ?? step.lastMediaOutput ?? st.db.media_image.last()
-    const out2 = step.comfy_workflows.findLast((i) => i.createdAt)
+    // const out2 = step.comfy_workflows.findLast((i) => i.createdAt)
 
     return (
         <div
@@ -61,7 +61,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             <div tw={['flex flex-grow overflow-auto']}>{out1 && <OutputUI output={out1} />}</div>
 
             {/* alt 2. last output created */}
-            <div tw={['absolute bottom-0 z-30']}>{out2 && <OutputUI output={out2} />}</div>
+            {/* <div tw={['absolute bottom-0 z-30']}>{out2 && <OutputUI output={out2} />}</div> */}
             <LatentIfLastUI />
         </div>
     )

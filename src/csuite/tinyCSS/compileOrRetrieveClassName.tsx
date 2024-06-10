@@ -12,7 +12,10 @@ export function addRule(selector: string, block: string = ''): CSSStyleRule {
     const rules = styleSheet.cssRules
     if (rules == null) throw new Error('❌ no rules')
 
-    console.log(`[🏛️] add ${knownRules.size}th rule (no check)`, selector, knownRules.has(selector))
+    // quick and dirty console log to make sure we don't over create css rules
+    if (knownRules.size > 0 && knownRules.size % 100 === 0)
+        console.log(`[🏛️] ${knownRules.size}th rule added`, selector, knownRules.has(selector))
+
     knownRules.add(selector)
 
     // create rule
@@ -51,25 +54,3 @@ function getStyleElement(): HTMLStyleElement {
     }
     return _styleElement!
 }
-
-// ⏸️ import { createHash } from 'crypto'
-// ⏸️ import { type CSSProperties } from 'react'
-// ⏸️
-// ⏸️ const cache: Record<string, string> = {}
-// ⏸️
-// ⏸️ export const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
-// ⏸️     const vals = JSON.stringify(appearance)
-// ⏸️     const hash = 'col-' + createHash('md5').update(vals).digest('hex')
-// ⏸️     if (hash in cache) return cache[hash]!
-// ⏸️     // console.log(`[🌈] `, `.${hash}`, appearance)
-// ⏸️     const cssBlock = Object.entries(appearance)
-// ⏸️         .map(([key, val]) => {
-// ⏸️             // console.log(`[🌈] ---`, key, val)
-// ⏸️             if (val == null) return ''
-// ⏸️             return `${key}: ${val};`
-// ⏸️         })
-// ⏸️         .join('\n')
-// ⏸️     setRule(`.${hash}`, cssBlock)
-// ⏸️     cache[hash] = hash
-// ⏸️     return hash
-// ⏸️ }

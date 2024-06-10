@@ -49,7 +49,12 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return run_Kolor(this.st.theme.value.text)
     }
 
-    inputBorder = new NumberVar('input-border', () => this.st.theme.value.border ?? 20)
+    inputBorder = new NumberVar(
+        //
+        'input-border',
+        () => (this.st.theme.value.border ?? 20) / 100,
+    )
+
     get labelText(): Kolor | undefined {
         const raw = this.st.theme.value.textLabel
         if (raw == null) return undefined

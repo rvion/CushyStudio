@@ -33,6 +33,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
         />
     )
 })
+
 export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI_(p: {}) {
     return (
         <>
@@ -40,6 +41,7 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
                 .map((draft) => (
                     <MenuItem
+                        key={draft.id}
                         onClick={() => draft.openOrFocusTab()}
                         icon={<DraftIllustrationUI draft={draft} size='2rem' />}
                         // label={draft.name}

@@ -36,8 +36,8 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
-                    '--KLRH': config.baseStr,
-                    '--input-border': getNum(config.inputBorder) / 100,
+                    // '--KLRH': config.baseStr,
+                    // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
                     '--input-height': `${config.inputHeight}rem`,

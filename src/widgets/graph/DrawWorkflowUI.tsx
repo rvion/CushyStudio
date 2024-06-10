@@ -26,8 +26,12 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     }
     const ref = useRef<HTMLDivElement>(null)
     const colorFn = randomColorHSLNice // randomNiceColor
+    const update = () => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
+    useEffect(update, [JSON.stringify(cushy.autolayoutOpts), wflow.id])
+
     useEffect(() => {
         if (ref.current == null) return
+
         if (p.offset) {
             // console.log(`[🤠] `, { left: p.offset.x, top: p.offset.y })
             ref.current.scrollTo({
