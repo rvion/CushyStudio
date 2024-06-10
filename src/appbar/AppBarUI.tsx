@@ -13,7 +13,6 @@ import { MenuAboutUI } from './MenuAboutUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuPanelsUI } from './MenuPanelsUI'
 import { MenuSettingsUI } from './MenuSettingsUI'
-import { MenuThemeUI } from './MenuThemeUI'
 import { MenuUtilsUI } from './MenuUtilsUI'
 import { PanelHeaderUI } from '../panels/PanelHeader'
 
@@ -32,7 +31,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuAppsUI />
                 <cmd_fav_toggleFavBar.NavBarBtnUI label='Favs' />
                 <MenuSettingsUI />
-                <MenuThemeUI />
                 <MenuDebugUI />
                 <MenuAboutUI />
                 {/* <MenuAuthUI /> */}

@@ -2,8 +2,9 @@ import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
-import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
+import { Ikon } from '../csuite/icons/iconHelpers'
 
 export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
     const st = useSt()
@@ -31,6 +32,13 @@ export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
                         icon={<span className='material-symbols-outlined text-purple-400'>keyboard</span>}
                         shortcut={KEYS.openPage_Shortcuts}
                         label='Shortcuts'
+                    />
+                    <MenuDivider />
+                    <Dropdown // TODO(bird_d): Temporary, just to clean up the top bar for now. Not good to have this be a pop-up imo and should be removed when done testing the theming stuff.
+                        startIcon={'mdiThemeLightDark'}
+                        expand
+                        title='Quick Theming'
+                        content={() => <>{cushy.theme.render()}</>}
                     />
                 </>
             )}
