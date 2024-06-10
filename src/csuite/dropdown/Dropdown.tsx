@@ -19,7 +19,7 @@ export const Dropdown = (p: {
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Frame tabIndex={0} tw='z-[1]'>
+            <Frame tabIndex={0} tw='flex flex-col z-[1]'>
                 {p.content?.()}
             </Frame>
         )}
