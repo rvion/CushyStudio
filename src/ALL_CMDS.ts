@@ -20,6 +20,7 @@ import {
     cmd_nav_openGallery1,
     cmd_nav_openGallery2,
     cmd_nav_openGallery3,
+    cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
 import {
     cmd_unifiedCanvas_activateGenerateTool,
@@ -37,6 +38,7 @@ export const allCommands = [
     cmd_open_copyImageAs_menu,
     //
     cmd_nav_openCivitaiPanel,
+    cmd_nav_openIcons,
     cmd_nav_openGallery1,
     cmd_nav_openGallery2,
     cmd_nav_openGallery3,

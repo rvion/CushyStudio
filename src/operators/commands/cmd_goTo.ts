@@ -30,6 +30,17 @@ const cmd_nav_openGallery = (ix?: number) => {
     })
 }
 
+export const cmd_nav_openIcons = command({
+    id: `nav.openIcons`,
+    label: `Open Icons`,
+    ctx: ctx_global,
+    combos: ['mod+i'],
+    action: (p) => {
+        cushy.layout.FOCUS_OR_CREATE('Icons', {})
+        return Trigger.Success
+    },
+})
+
 export const cmd_nav_openGallery1 = cmd_nav_openGallery()
 export const cmd_nav_openGallery2 = cmd_nav_openGallery(2)
 export const cmd_nav_openGallery3 = cmd_nav_openGallery(3)
