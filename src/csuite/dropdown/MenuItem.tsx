@@ -33,13 +33,27 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 p.onClick?.(ev)
             }}
             style={{ lineHeight: '1.6rem' }}
-            tw={['_MenuItem', 'px-2 py-0.5 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
+            tw={[
+                //
+                '_MenuItem ',
+                'px-2 py-0.5 flex items-center gap-2 whitespace-nowrap cursor-pointer',
+                // Grid this so we have a consistent icon width and every label lines up
+                'grid grid-cols-[18px_1fr]',
+            ]}
             {...rest}
         >
-            {icon}
-            {label}
-            {children}
-            {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+            <div tw='flex h-full items-center'>{icon}</div>
+            <div tw='flex items-center'>
+                {label}
+                {children}
+                {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+            </div>
         </Frame>
     )
 })
+
+export const MenuDivider = observer(function Divider_(p: { children: ReactNode }) {
+    return <div className='divider px-2 !h-input my-2 text-sm'>{p.children}</div>
+})
+// Can we do subcomponents somehow?
+// MenuItem.Divider = Divider
