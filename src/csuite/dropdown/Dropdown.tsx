@@ -15,6 +15,7 @@ export const Dropdown = (p: {
     theme?: Kolor
     content?: () => ReactNode
     button?: ReactNode
+    expand?: boolean
 }) => (
     <RevealUI
         tw={[p.className]}
@@ -32,6 +33,7 @@ export const Dropdown = (p: {
                 subtle
                 icon={p.startIcon}
                 tabIndex={0}
+                expand={p.expand}
             >
                 {p.title}
             </Button>
