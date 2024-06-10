@@ -246,7 +246,7 @@ const addToPackage = (relPath: string) => {
     cpSync(relPath, `${PACKAGE_NAME}/${relPath}`)
 }
 
-addToPackage('src/theme/form.vars.css')
+// addToPackage('src/theme/form.vars.css')
 addToPackage('src/theme/markdown.css')
 addToPackage('src/theme/form.css')
 addToPackage('src/csuite/input-number/InputNumberUI.css')

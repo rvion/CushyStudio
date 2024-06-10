@@ -11,13 +11,5 @@ export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widge
             type='color'
             onChange={(ev) => (widget.value = ev.target.value)}
         />
-        //     <div
-        //         tw={[widget.hasChanged ? undefined : 'btn-disabled opacity-50']}
-        //         onClick={() => widget.reset()}
-        //         className='btn btn-xs btn-narrower btn-ghost'
-        //     >
-        //         <Ikon.mdiUndoVariant />
-        //     </div>
-        // </div>
     )
 })

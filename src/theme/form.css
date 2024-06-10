@@ -1,13 +1,3 @@
-/* Btn Utils ------------------------------------------------------------------------------------- */
-.btn-narrow {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
-}
-.btn-narrower {
-    padding-left: 0.1em;
-    padding-right: 0.1em;
-}
-
 /* box sizes */
 .box.box-square {
     display: flex;
@@ -84,11 +74,15 @@
 /* Form Utils ------------------------------------------------------------------------------------- */
 /* Text Shading - These are defined in theme.css*/
 .text-shadow {
-    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 .text-shadow-inv {
-    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 /* Select Utils ------------------------------------------------------------------------------------- */

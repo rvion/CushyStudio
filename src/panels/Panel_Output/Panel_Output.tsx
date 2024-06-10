@@ -35,7 +35,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             ]}
         >
             <PanelHeaderUI // STEP HEADER ======================================================================
-                title={'Step: ' + p.stepID == null ? 'latest' : `${step.name} (#${step.id})`}
+                title={'Step: ' + p.stepID == null ? 'latest' : `${step.name} ${step.id.slice(0, 5)}`}
                 icon={'mdiExitRun'}
             >
                 <SpacerUI />

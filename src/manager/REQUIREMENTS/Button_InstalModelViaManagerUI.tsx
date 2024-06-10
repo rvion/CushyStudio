@@ -2,6 +2,7 @@ import type { ModelInfo } from '../../manager/model-list/model-list-loader-types
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 import { renderStatus } from './renderStatus'
 
@@ -26,8 +27,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                         {host.manager.modelsBeeingInstalled.has(mi.name) ? (
                             <div tw='loading loading-spinner'></div>
                         ) : (
-                            <div
-                                tw='btn btn-sm btn-outline btn-sm btn-narrow'
+                            <Button
                                 onClick={async () => {
                                     const res = await host.manager.installModel(mi)
                                     if (!res) return
@@ -35,7 +35,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                             >
                                 {/* <span className='material-symbols-outlined'>cloud_download</span> */}
                                 <span>Install</span>
-                            </div>
+                            </Button>
                         )}
                         {renderStatus(modelStatus, p.optional)}
                     </div>

@@ -58,7 +58,6 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
                 subtle
                 square
                 icon='mdiUnfoldMoreHorizontal'
-                // tw={['btn btn-xs btn-narrow btn-ghost']}
                 onClick={(ev) => {
                     ev.stopPropagation()
                     widget.expandAllItems()
