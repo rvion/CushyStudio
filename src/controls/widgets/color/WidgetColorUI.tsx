@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
     const widget = p.widget
     return (
-        // <div>
         <input //
             value={widget.serial.value}
             type='color'

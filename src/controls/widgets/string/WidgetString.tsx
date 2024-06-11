@@ -1,3 +1,4 @@
+import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -28,6 +29,7 @@ export type Widget_string_config = WidgetConfigFields<
          * hitting esc will revert to the last committed value
          * */
         buffered?: boolean
+        innerIcon?: IconName
     },
     Widget_string_types
 >

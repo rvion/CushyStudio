@@ -16,7 +16,7 @@ type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 export const InputStringUI = observer(function WidgetStringUI_(p: {
     /** when true => 'mdiText' */
-    icon?: IconName | boolean
+    icon?: IconName | boolean | null | undefined
 
     // get / set value
     getValue: () => string
@@ -74,12 +74,13 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
         <Frame
             base={5}
             text={{ contrast: 1, chromaBlend: 1 }}
+            hover
             border={
                 isDirty //
                     ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
                     : { contrast: csuite.inputBorder }
             }
-            tw={['h-input w-full flex flex-1 items-center relative text-sm']}
+            tw={['h-input w-full flex flex-1 items-center relative text-sm rounded-sm']}
             onMouseDown={(ev) => {
                 if (ev.button == 1) {
                     const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
@@ -88,7 +89,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
             }}
         >
             {visualHelper}
-            {p.icon && (
+            {p.icon != null && (
                 <IkonOf //
                     tw='mx-1'
                     size='1.2rem'

@@ -16,13 +16,13 @@ export type BoxNormalized = {
 
 export function normalizeBox(box: Box): BoxNormalized {
     const out: BoxNormalized = {}
-    if (box.base) out.base = _normalizeKolor(box.base)
-    if (box.hover) out.hover = _normalizeKolor(box.hover)
-    if (box.shock) out.shock = _normalizeKolor(box.shock)
-    if (box.text) out.text = _normalizeKolor(box.text)
-    if (box.textShadow) out.textShadow = _normalizeKolor(box.textShadow)
-    if (box.shadow) out.shadow = _normalizeKolor(box.shadow)
-    if (box.border) out.border = _normalizeKolor(box.border)
+    if (box.base != null) out.base = _normalizeKolor(box.base)
+    if (box.hover != null) out.hover = _normalizeKolor(box.hover)
+    if (box.shock != null) out.shock = _normalizeKolor(box.shock)
+    if (box.text != null) out.text = _normalizeKolor(box.text)
+    if (box.textShadow != null) out.textShadow = _normalizeKolor(box.textShadow)
+    if (box.shadow != null) out.shadow = _normalizeKolor(box.shadow)
+    if (box.border != null) out.border = _normalizeKolor(box.border)
     return out
 }
 

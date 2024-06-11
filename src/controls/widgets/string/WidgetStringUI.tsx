@@ -44,6 +44,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     const config = widget.config
     return (
         <InputStringUI
+            icon={p.widget.config.innerIcon}
             type={config.inputType}
             pattern={config.pattern}
             className={config.className}

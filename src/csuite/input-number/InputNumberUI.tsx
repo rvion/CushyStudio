@@ -335,6 +335,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         ref={uist.inputRef}
                         onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                         tw={[
+                            // 'text-shadow outline-0',
                             /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                              * Can't use `hidden` here because it messes up focusing. */
                             !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',

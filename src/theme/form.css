@@ -1,3 +1,9 @@
+/* Btn Utils ------------------------------------------------------------------------------------- */
+:root {
+    --input-height: 1.6rem;
+    --input-icon-height: 1.4rem;
+}
+
 /* box sizes */
 .box.box-square {
     display: flex;

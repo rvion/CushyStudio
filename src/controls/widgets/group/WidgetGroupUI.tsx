@@ -16,7 +16,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 }) {
     if (!p.widget.serial.collapsed) {
         return (
-            <div tw='ml-auto flex'>
+            <div tw='ml-auto flex gap-0.5'>
                 <Button square onClick={() => p.widget.expandAllChildren()} subtle icon='mdiUnfoldMoreHorizontal'></Button>
                 <Button square onClick={() => p.widget.collapseAllChildren()} subtle icon='mdiUnfoldLessHorizontal'></Button>
             </div>

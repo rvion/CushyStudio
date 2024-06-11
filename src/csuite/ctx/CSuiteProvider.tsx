@@ -1,9 +1,11 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
-import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
+import { observer } from 'mobx-react-lite'
+
 import { Frame } from '../frame/Frame'
+
 import { CSuiteCtx } from './CSuiteCtx'
 
 /**

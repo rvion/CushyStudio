@@ -11,6 +11,7 @@
 
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
+import type { Kolor } from '../kolor/Kolor'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
@@ -18,14 +19,15 @@ import { forwardRef, useContext, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { normalizeBox } from '../box/BoxNormalized'
+import { type BoxNormalized, normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { isSameOKLCH } from '../kolor/OKLCH'
+import { isSameOKLCH, type OKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
+import { overrideKolorsV2 } from '../kolor/overrideKolorsV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 
 // import { hashKolor } from '../box/compileBoxClassName'
@@ -94,63 +96,90 @@ export const Frame = observer(
         } = p
 
         // TEMPLATE -------------------------------------------
-        // const theme = useTheme().value
         const box = normalizeBox(p)
-
         const [hovered, setHovered] = useState(false)
-        let realBase = hovered ? box.hover ?? box.base : box.base
-
-        if (look != null) {
-            const template = frameTemplates[look]
-            if (template.base) realBase = overrideKolor(template.base, realBase)
-            if (template.border) box.border = overrideKolor(template.border, box.border)
-            if (template.text) box.text = overrideKolor(template.text, box.text)
-        }
-
-        // MODIFIERS ---------------------------------------------
-        // 2024-06-05 I'm not quite sure having those modifiers here is a good idea
-        // I originally though they were standard; but they are probably not
-        if (disabled) {
-            box.text = { contrast: 0.1 }
-            realBase = { contrast: 0 }
-            //     box.border = null
-        }
-
-        if (active) {
-            box.border = { contrast: 0.5 }
-            box.text = { contrast: 0.9 }
-        }
-
-        // CONTEXT ---------------------------------------------
         const prevCtx = useContext(CurrentStyleCtx)
+        const variables: { [key: string]: string | number } = {}
 
-        // const nextCtx = applyBoxToCtx(prevCtx, box)
-        const nextBase = applyKolorToOKLCH(prevCtx.base, realBase)
+        // retrieve template if specified
+        const template:BoxNormalized | null = (look!=null)? frameTemplates[look]:null
 
-        const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
-        const nextext = overrideKolor(prevCtx.text, box.text)!
+        // let baseA = box.base // ?? prevCtx.base
+        // nextBase =
+        //  ctx.base
+        //  |> apply look.base
+        //  |> apply p.base
+        //  |> apply disable (contrast: 0)
+        //  |> apply p.hover if hovered
+        let KBase: OKLCH = applyKolorToOKLCH(
+            prevCtx.base,
+            overrideKolorsV2(
+                template?.base,
+                box.base,
+                disabled && {lightness: prevCtx.base.lightness},
+                // hovered && !disabled && box.hover
+            )
+        )
+        // if (template?.base) KBase = applyKolorToOKLCH(KBase, template.base)
+        // if (box.base) KBase = applyKolorToOKLCH(KBase, box.base)
+        // if (disabled) KBase.lightness = prevCtx.base.lightness
+
+        if (hovered && !disabled && box.hover) {
+            KBase = applyKolorToOKLCH(KBase, box.hover)
+        }
+
+        //  update ctx.base for children
+        if (!isSameOKLCH(prevCtx.base, KBase)) {
+            variables['--KLR'] = formatOKLCH(KBase)
+        }
+        // set the background to the KBase (apply shock if any)
+        if (box.shock == null) {
+            variables.background = formatOKLCH(KBase)
+        } else {
+            const KShock = applyKolorToOKLCH(KBase, box.shock)
+            variables.background = formatOKLCH(KShock)
+        }
+
+
+        // text
+        // ctx.text
+        //  |> merge
+        //  |> apply look
+        //  |> apply whatever
+        let KText: OKLCH = KBase
+        const textRule = overrideKolorsV2(prevCtx.text, template?.text, box.text)!
+        if (template?.text) KText = applyKolorToOKLCH(KText, template.text)
+        // if (disabled) KText = applyKolorToOKLCH(KText, { contrast: 0.1 })
+        // else
+        KText = applyKolorToOKLCH(KText, textRule)
+        variables.color = formatOKLCH(KText)
+        // const boxText = textRule // box.text ?? prevCtx.text
+        // CONTEXT ---------------------------------------------
+
+
+        if (box.border || template?.border) {
+            let KBorder = KBase
+            const borderRule = overrideKolor(box.border, template?.border)
+            KBorder = applyKolorToOKLCH(KBorder, borderRule)
+            variables.border = `1px solid ${formatOKLCH(KBorder)}`
+        }
 
         // next dir
-        const nextLightness = nextBase.lightness
+        const nextLightness = KBase.lightness
         const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
         const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
-
-        // STYLE ---------------------------------------------
-        const variables: { [key: string]: string | number } = {}
-        if (!isSameOKLCH(prevCtx.base, nextBase)) variables['--KLR'] = formatOKLCH(nextBase)
-        if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
-        // CLASSES ---------------------------------------------
-        const classes: string[] = []
+        // STYLE ---------------------------------------------
+        // if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
+        // ⏸️ if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
 
-        if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(nextBase, box.shock))
-        else variables.background = formatOKLCH(nextBase)
-        const boxText = box.text ?? prevCtx.text
-        if (boxText != null) variables.color = formatOKLCH(applyKolorToOKLCH(nextBase, boxText))
-        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(nextBase, box.textShadow))}`
-        if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(nextBase, box.border))}`
+        // CLASSES ---------------------------------------------
+        // const classes: string[] = []
+
+
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(KBase, box.textShadow))}`
 
         let _onMouseOver: any = undefined
         let _onMouseOut: any = undefined
@@ -172,7 +201,7 @@ export const Frame = observer(
                     square && `box-square`,
                     loading && 'relative',
                     expand && 'flex-1',
-                    ...classes,
+                    // ...classes,
                     className,
                 ]}
                 style={frameMode === 'CLASSNAME' ? style : { ...style, ...variables }}
@@ -184,9 +213,9 @@ export const Frame = observer(
                 <CurrentStyleCtx.Provider
                     value={{
                         dir: nextDir,
-                        base: nextBase,
-                        baseH: nextBaseH,
-                        text: nextext,
+                        base: KBase,
+                        // ⏸️ baseH: nextBaseH,
+                        text: textRule,
                     }}
                 >
                     {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
@@ -198,3 +227,26 @@ export const Frame = observer(
         )
     }),
 )
+
+// if (look != null) {
+//     const template = frameTemplates[look]
+//     if (template.base) baseA = overrideKolor(template.base, baseA)
+//     if (template.border) box.border = overrideKolor(template.border, box.border)
+//     if (template.text) box.text = overrideKolor(template.text, box.text)
+// }
+
+// let realBase = hovered ? box.hover ?? baseA : baseA
+
+// MODIFIERS ---------------------------------------------
+// 2024-06-05 I'm not quite sure having those modifiers here is a good idea
+// I originally though they were standard; but they are probably not
+// ⏸️ if (disabled) {
+// ⏸️     box.text = { contrast: 0.1 }
+// ⏸️     realBase = { contrast: 0 }
+// ⏸️     //     box.border = null
+// ⏸️ }
+// ⏸️
+// ⏸️ if (active) {
+// ⏸️     box.border = { contrast: 0.5 }
+// ⏸️     box.text = { contrast: 0.9 }
+// ⏸️ }

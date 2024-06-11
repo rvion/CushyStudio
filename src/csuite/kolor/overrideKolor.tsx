@@ -17,7 +17,7 @@ export const overrideKolor = (
     if (a == null) return b!
     if (b == null) return a
 
-    let out: Kolor = {}
+    const out: Kolor = {}
     /**/ if (b.lightness != null) out.lightness = b.lightness
     else if (b.contrast != null) out.contrast = b.contrast
     else if (a.lightness != null) out.lightness = a.lightness
