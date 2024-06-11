@@ -4,6 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import React, { ReactNode } from 'react'
 
 import { searchMatches } from '../../utils/misc/searchMatches'
+import { BadgeUI } from '../badge/BadgeUI'
 
 interface ToolTipPosition {
     top?: number | undefined
@@ -119,14 +120,13 @@ export class AutoCompleteSelectState<T> {
                       const label = this.p.getLabelText(i)
                       if (!this.p.multiple) return label
                       return (
-                          <div
-                              tw='badge badge-primary text-shadow-inv cursor-not-allowed line-clamp-1'
+                          <BadgeUI
                               key={label}
                               // hack to allow to unselect quickly selected items
                               onClick={() => this.p.onChange?.(i, this)}
                           >
                               {label}
-                          </div>
+                          </BadgeUI>
                       )
                   })
         if (this.p.label)
