@@ -1,4 +1,4 @@
-import type { SelectProps } from './SelectUI'
+import type { SelectProps } from './SelectProps'
 
 import { makeAutoObservable } from 'mobx'
 import React, { ReactNode } from 'react'
@@ -131,11 +131,11 @@ export class AutoCompleteSelectState<T> {
                   })
         if (this.p.label)
             return (
-                <div tw='flex gap-1'>
+                <div tw='flex flex-wrap gap-1'>
                     {this.p.label}: {str}
                 </div>
             )
-        return <div tw='flex gap-1'>{str}</div>
+        return <div tw='flex flex-wrap gap-1'>{str}</div>
         // } else {
         //     const str = this.p.getLabelText(value)
         //     if (this.p.label) return `${this.p.label}: ${str}`
