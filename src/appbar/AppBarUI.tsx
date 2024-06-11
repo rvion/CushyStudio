@@ -6,7 +6,6 @@ import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
-import { MenuDebugUI } from './MenuDebugUI'
 import { MenuAboutUI } from './MenuAboutUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
@@ -14,6 +13,7 @@ import { PanelHeaderUI } from '../panels/PanelHeader'
 import { MenuWindowUI } from './MenuWindowUI'
 import { MenuEditUI } from './MenuEditUI'
 import { Button } from '../csuite/button/Button'
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
@@ -29,16 +29,16 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
                 </div>
-                <MenuWindowUI />
                 <MenuEditUI />
-                <MenuSettingsUI />
+                <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
+                />
+                <MenuWindowUI />
                 <MenuAboutUI />
-                {/* <MenuAuthUI /> */}
-                <div className='flex flex-grow'></div>
+
+                <SpacerUI />
                 <HostWebsocketIndicatorUI host={mainHost} />
                 <HostSchemaIndicatorUI host={mainHost} />
                 <MenuNSFWCheckerUI />
-                {/* <CushyStudioLinkUI /> */}
             </PanelHeaderUI>
         </Frame>
     )
