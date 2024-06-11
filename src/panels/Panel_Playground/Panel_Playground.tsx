@@ -13,6 +13,7 @@ import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
+import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
 const Header_Playground = CushyFormManager.form(
@@ -30,6 +31,7 @@ const Header_Playground = CushyFormManager.form(
                 graph: ui.group(),
                 comfyImport: ui.group(),
                 messages: ui.group(),
+                select: ui.group(),
             },
         }),
     {
@@ -76,6 +78,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.graph && <PlaygroundGraphUI />}
                 {mode.customPanels && <PlaygroundCustomPanelsUI />}
                 {mode.messages && <PlaygroundMessages />}
+                {mode.select && <PlaygroundSelectUI />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
         </>
