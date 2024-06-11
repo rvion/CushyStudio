@@ -15,6 +15,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
+            expand
             // startIcon={<span className='material-symbols-outlined'>sync</span>}
             title='Debug'
             content={() => (

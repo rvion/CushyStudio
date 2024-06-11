@@ -14,6 +14,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const isConnected = st.ws?.isOpen ?? false
     return (
         <Dropdown
+            expand
             tw={[isConnected ? null : 'text-error-content bg-error']}
             // startIcon={<span /* tw='text-blue-400' */ className='material-symbols-outlined'>account_tree</span>}
             theme={isConnected ? undefined : { chroma: 0.1, hue: 0, contrast: 1 }}
@@ -72,7 +73,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     )
 })
 
-export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
+const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
     const host = p.host
     const isMain = host.id === cushy.configFile.value.mainComfyHostID
     return (

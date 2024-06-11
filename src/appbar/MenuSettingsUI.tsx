@@ -5,6 +5,7 @@ import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 import { Ikon } from '../csuite/icons/iconHelpers'
+import { MenuDebugUI } from './MenuDebugUI'
 
 export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
     const st = useSt()
@@ -40,6 +41,8 @@ export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
                         title='Quick Theming'
                         content={() => <>{cushy.theme.render()}</>}
                     />
+                    <MenuDivider />
+                    <MenuDebugUI />
                 </>
             )}
         />

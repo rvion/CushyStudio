@@ -6,15 +6,13 @@ import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
-import { MenuAppsUI } from './MenuApps'
-import { MenuComfyUI } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuAboutUI } from './MenuAboutUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
-import { MenuPanelsUI } from './MenuPanelsUI'
 import { MenuSettingsUI } from './MenuSettingsUI'
-import { MenuUtilsUI } from './MenuUtilsUI'
 import { PanelHeaderUI } from '../panels/PanelHeader'
+import { MenuWindowUI } from './MenuWindowUI'
+import { MenuEditUI } from './MenuEditUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
@@ -25,13 +23,10 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
                 </div>
-                <MenuPanelsUI />
-                <MenuComfyUI />
-                <MenuUtilsUI />
-                <MenuAppsUI />
+                <MenuWindowUI />
+                <MenuEditUI />
                 <cmd_fav_toggleFavBar.NavBarBtnUI label='Favs' />
                 <MenuSettingsUI />
-                <MenuDebugUI />
                 <MenuAboutUI />
                 {/* <MenuAuthUI /> */}
                 <div className='flex flex-grow'></div>

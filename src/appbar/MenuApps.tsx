@@ -12,6 +12,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
+            expand
             title='Apps'
             content={() => (
                 <>
