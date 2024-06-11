@@ -4,7 +4,7 @@ import type { Kolor } from '../kolor/Kolor'
 import { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
-import { Frame, FrameProps } from '../frame/Frame'
+import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 
 export const Dropdown = (p: {
