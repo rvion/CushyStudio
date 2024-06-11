@@ -8,12 +8,14 @@ export const BadgeListUI = observer(function BadgeListUI_(p: {
     //
     autoHue?: boolean
     badges?: string[]
+    /** @default true */
+    wrap?: boolean
 }) {
     const items = p.badges
     if (items == null) return null
     if (items.length === 0) return null
     return (
-        <BadgeContainerUI>
+        <BadgeContainerUI wrap={p.wrap}>
             {items.slice(0, 10).map((tag) => (
                 <BadgeUI autoHue={p.autoHue} key={tag}>
                     {tag}
