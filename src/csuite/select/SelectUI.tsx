@@ -51,8 +51,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                                 tw={[
                                     'flex gap-0.5 flex-grow items-center',
                                     p.wrap //
-                                        ? 'flex-wrap '
-                                        : 'overflow-hidden line-clamp-1 text-ellipsis',
+                                        ? 'flex-wrap'
+                                        : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
                                 ]}
                             >
                                 {s.displayValue}
