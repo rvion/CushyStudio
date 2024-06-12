@@ -73,8 +73,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         value={s.searchQuery}
                     />
                 </div>
+
                 {/* TOOLTIP */}
-                {s.isOpen && <SelectPopupUI s={s} />}
+                {s.isOpen && <SelectPopupUI showValues={!p.wrap} s={s} />}
             </div>
         </Frame>
     )

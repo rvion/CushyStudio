@@ -8,7 +8,12 @@ import { FixedSizeList, type ListChildComponentProps } from 'react-window'
 import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../frame/Frame'
 
-export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCompleteSelectState<T> }) {
+export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
+    //
+    s: AutoCompleteSelectState<T>
+    /** @default true */
+    showValues: boolean
+}) {
     const s = p.s
 
     return createPortal(
@@ -43,8 +48,17 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             }}
         >
             <ul className='max-h-96' tw='flex-col w-full'>
-                {/* list of all values */}
-                <div tw='overflow-au flex flex-wrap gap-0.5'>{s.displayValue}</div>
+                {(p.showValues ?? true) && (
+                    <div // list of all values
+                        tw={[
+                            //
+                            'overflow-au flex flex-wrap gap-0.5',
+                            'max-w-sm',
+                        ]}
+                    >
+                        {s.displayValue}
+                    </div>
+                )}
 
                 {/* No results */}
                 {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}
