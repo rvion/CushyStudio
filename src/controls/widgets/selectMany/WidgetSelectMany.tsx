@@ -129,7 +129,10 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
             values: config.default ?? [],
         }
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
-        makeAutoObservableInheritance(this)
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     /** un-select given item */
