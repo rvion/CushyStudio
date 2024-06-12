@@ -52,7 +52,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             <ul className=' max-h-96' tw='flex-col w-full'>
                 {/* list of all values */}
                 <li>
-                    <div tw='overflow-hidden'>{s.displayValue}</div>
+                    <div tw='overflow-hidden flex flex-wrap gap-0.5'>{s.displayValue}</div>
                 </li>
                 {/* No results */}
                 {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}

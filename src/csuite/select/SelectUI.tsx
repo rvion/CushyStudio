@@ -18,7 +18,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             base={{ contrast: 0.05 }}
             hover
             tabIndex={-1}
-            tw={['SelectUI h-input', 'flex flex-1 items-center relative']}
+            tw={['SelectUI minh-input', 'flex flex-1 items-center relative']}
             border={{ contrast: border }}
             className={p.className}
             ref={s.anchorRef}
@@ -45,12 +45,18 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 >
                     {s.isOpen || s.isFocused ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
-                        <div
-                            tw={[' h-full w-full items-center', 'px-0.5', 'grid']}
-                            style={{ gridTemplateColumns: '24px 1fr 24px' }}
-                        >
+                        <div tw={[' h-full w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
                             <Ikon.mdiTextBoxSearchOutline size={'18px'} />
-                            <div tw='overflow-hidden line-clamp-1 text-ellipsis flex-grow'>{s.displayValue}</div>
+                            <div
+                                tw={[
+                                    'flex gap-0.5 flex-grow items-center',
+                                    p.wrap //
+                                        ? 'flex-wrap '
+                                        : 'overflow-hidden line-clamp-1 text-ellipsis',
+                                ]}
+                            >
+                                {s.displayValue}
+                            </div>
                             <Ikon.mdiChevronDown size={'18px'} />
                         </div>
                     )}

@@ -131,11 +131,11 @@ export class AutoCompleteSelectState<T> {
                   })
         if (this.p.label)
             return (
-                <div tw='flex gap-1'>
+                <>
                     {this.p.label}: {str}
-                </div>
+                </>
             )
-        return <div tw='flex gap-1'>{str}</div>
+        return <>{str}</>
         // } else {
         //     const str = this.p.getLabelText(value)
         //     if (this.p.label) return `${this.p.label}: ${str}`
