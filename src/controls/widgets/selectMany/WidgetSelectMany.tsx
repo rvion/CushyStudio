@@ -35,6 +35,9 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFi
         disableLocalFiltering?: boolean
         appearance?: SelectAppearance
         getLabelUI?: (t: T) => React.ReactNode
+
+        //
+        wrap?: boolean
     },
     Widget_selectMany_types<T>
 >
@@ -91,7 +94,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
     reset = () => {
         this.value = this.defaultValue
     }
-
+    wrap = this.config.wrap ?? false
     get choices(): T[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //

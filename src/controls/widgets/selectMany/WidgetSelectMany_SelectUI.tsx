@@ -3,6 +3,8 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolCheckboxUI } from '../../../csuite/checkbox/InputBoolCheckboxUI'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
 
 export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {
@@ -10,9 +12,10 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
 }) {
     const widget = p.widget
     return (
-        <div tw='flex-1'>
+        <div tw='flex flex-1 gap-1'>
             <SelectUI<T>
                 multiple
+                wrap={widget.wrap}
                 tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
                 getLabelUI={widget.config.getLabelUI}
@@ -24,12 +27,13 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 equalityCheck={(a, b) => a.id === b.id}
                 onChange={(selectOption) => widget.toggleItem(selectOption)}
             />
-            {widget.baseErrors && (
-                <div tw='text-red-500 flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
-                    {widget.baseErrors}
-                </div>
-            )}
+            <InputBoolCheckboxUI
+                tw='self-start'
+                // box={{ border: 0 }}
+                icon={p.widget.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
+                value={p.widget.wrap}
+                onValueChange={(next) => (p.widget.wrap = next)}
+            />
         </div>
     )
 })
