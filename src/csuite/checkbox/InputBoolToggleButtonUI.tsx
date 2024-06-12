@@ -8,7 +8,10 @@ import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 import { InputBoolToggleButtonBoxUI } from './_InputBoolToggleButtonBoxUI'
 
 export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI_(
-    p: BoolButtonProps & { showToggleButtonBox?: boolean },
+    p: BoolButtonProps & {
+        preventDefault?: boolean
+        showToggleButtonBox?: boolean
+    },
 ) {
     const isActive = p.value ?? false
     const expand = p.expand
@@ -33,6 +36,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 // wasEnabled = !isActive
                 ev.stopPropagation()
                 p.onValueChange?.(!isActive)
+                if (p.preventDefault) ev.preventDefault()
             }}
         >
             {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode && (
