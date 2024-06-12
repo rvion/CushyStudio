@@ -19,13 +19,13 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             className={p.className}
             hover
             tw={[
-                //
                 'COLLAPSE-PASSTHROUGH',
                 'minh-input',
                 'flex', // gap-0.5
-                'items-center flex-none shrink-0',
+                'flex-none shrink-0',
+                'items-center',
             ]}
-            style={p.justify ? justifyStyle : undefined}
+            style={p.justify ? justifiedStyle : undefined}
             text={csuite.labelText}
         >
             {p.children}
@@ -33,7 +33,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     )
 })
 
-const justifyStyle: CSSProperties = {
+const justifiedStyle: CSSProperties = {
     textAlign: 'right',
     minWidth: '8rem', // 🔴 move to theme options
     width: '35%', // 🔴 move to theme options

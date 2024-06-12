@@ -21,7 +21,6 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                 <Button square onClick={() => p.widget.collapseAllChildren()} subtle icon='mdiUnfoldLessHorizontal'></Button>
             </div>
         )
-        return null
     }
     return <WidgetSingleLineSummaryUI>{p.widget.summary}</WidgetSingleLineSummaryUI>
 })

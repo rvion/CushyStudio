@@ -13,7 +13,21 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
 }) {
     const widget = p.widget
     return (
-        <ResizableFrame tw='w-full'>
+        <ResizableFrame
+            header={
+                <>
+                    <input
+                        // placeholder={s.isOpen ? p.placeholder : undefined}
+                        // ref={s.inputRef}
+                        // onChange={s.handleInputChange}
+                        tw='w-full h-full !outline-none cushy-basic-input'
+                        type='text'
+                        // value={s.searchQuery}
+                    />
+                </>
+            }
+            tw='w-full'
+        >
             {widget.choices.slice(0, 100).map((c) => {
                 const isSelected = Boolean(widget.serial.values.find((item) => item.id === c.id))
                 return (
