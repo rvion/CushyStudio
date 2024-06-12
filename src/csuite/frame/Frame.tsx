@@ -35,6 +35,10 @@ import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {
     tooltip?: string
+
+    /** allow to pretend the frame is hovered */
+    hovered?: boolean
+
     // logic --------------------------------------------------
     /** TODO: */
     triggerOnPress?: { startingState: boolean }
