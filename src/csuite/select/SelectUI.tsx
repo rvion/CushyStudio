@@ -37,19 +37,23 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 <div // ANCHOR
                     tabIndex={-1}
                     tw={[
+                        //
                         'text-sm',
-                        'flex items-center gap-1',
+                        'flex gap-1',
                         'p-0 h-full bg-transparent',
-                        'select-none pointer-events-none overflow-clip',
+                        'select-none overflow-clip',
                     ]}
                 >
-                    {s.isOpen || s.isFocused ? null : (
+                    {false && (s.isOpen || s.isFocused) ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
-                        <div tw={[' h-full w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
-                            <Ikon.mdiTextBoxSearchOutline size='18px' tw='self-center' />
+                        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
+                            <Ikon.mdiTextBoxSearchOutline //
+                                tw='box-border m-[2px]' // 2px for parent border + 2 * 2px for icon padding
+                                size='calc((var(--input-height) - 4px - 2px)'
+                            />
                             <div
                                 tw={[
-                                    'flex gap-0.5 flex-grow items-center',
+                                    'flex gap-0.5 flex-grow items-center lh-input-2 ',
                                     p.wrap //
                                         ? 'flex-wrap'
                                         : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
@@ -57,7 +61,10 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                             >
                                 {s.displayValue}
                             </div>
-                            <Ikon.mdiChevronDown size='18px' tw='self-center' />
+                            <Ikon.mdiChevronDown //
+                                tw='box-border m-[2px]'
+                                size='calc((var(--input-height) - 4px - 2px)'
+                            />
                         </div>
                     )}
                 </div>
@@ -68,7 +75,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         placeholder={s.isOpen ? p.placeholder : undefined}
                         ref={s.inputRef}
                         onChange={s.handleInputChange}
-                        tw='w-full h-full !outline-none bg-transparent'
+                        style={{ opacity: s.isOpen ? 1 : 0 }}
+                        tw={['cushy-basic-input', 'w-full h-full !outline-none']}
                         type='text'
                         value={s.searchQuery}
                     />

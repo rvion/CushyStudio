@@ -48,11 +48,17 @@
 
 /* ------------------------------------------------------------------------------------------------------- */
 /* WIDGET SIZES */
-.w-input    { width: var(--input-height);  min-width: var(--input-height); }
-.h-input    { height: var(--input-height); min-height: var(--input-height); }
-.minh-input { min-height: var(--input-height); }
-.min2-input { min-width: var(--input-height); }
+.w-input    {       width: var(--input-height); min-width:  var(--input-height); }
+.h-input    {      height: var(--input-height); min-height: var(--input-height); }
+.minh-input {  min-height: var(--input-height); }
+.minw-input {   min-width: var(--input-height); }
 .lh-input   { line-height: var(--input-height); }
+
+.h-input-2 {        height: calc(var(--input-height) - 2px); }
+.w-input-2 {         width: calc(var(--input-height) - 2px); }
+.minh-input-2 { min-height: calc(var(--input-height) - 2px); }
+.minw-input-2 {  min-width: calc(var(--input-height) - 2px); }
+.lh-input-2 {  line-height: calc(var(--input-height) - 2px); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
