@@ -68,6 +68,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                         icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                         label='Last STEP'
                     />
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Steps', {})}
+                        icon={<span className='material-symbols-outlined text-red-400'>history</span>}
+                        label='STEPS'
+                    />
                     <div className='divider my-1'>Layout Navigation</div>
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('LastStep', {})}
