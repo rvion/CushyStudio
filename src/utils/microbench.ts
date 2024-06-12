@@ -20,6 +20,6 @@ export const sqlbench = <A>(
     const B = process.hrtime.bigint() // TIMER end
     const ms = Number(B - A) / 1_000_000
     const emoji = ms > 4 ? '🔴' : ms > 1 ? '🔶' : ''
-    if (ms > 4) console.log(`[🚧] SQL [${ms.toFixed(1)}ms] ${emoji}`, query.sql, query.parameters) // debug
+    /* if (ms > 4) */ console.log(`[🚧] SQL [${ms.toFixed(1)}ms] ${emoji}`, query.sql, query.parameters) // debug
     return x
 }
