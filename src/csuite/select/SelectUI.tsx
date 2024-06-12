@@ -46,7 +46,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     {s.isOpen || s.isFocused ? null : (
                         /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
                         <div tw={[' h-full w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
-                            <Ikon.mdiTextBoxSearchOutline size={'18px'} />
+                            <Ikon.mdiTextBoxSearchOutline size='18px' tw='self-center' />
                             <div
                                 tw={[
                                     'flex gap-0.5 flex-grow items-center',
@@ -57,7 +57,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                             >
                                 {s.displayValue}
                             </div>
-                            <Ikon.mdiChevronDown size={'18px'} />
+                            <Ikon.mdiChevronDown size='18px' tw='self-center' />
                         </div>
                     )}
                 </div>

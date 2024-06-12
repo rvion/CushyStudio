@@ -1,7 +1,7 @@
 import type { SelectProps } from './SelectProps'
 
 import { makeAutoObservable } from 'mobx'
-import React, { ReactNode } from 'react'
+import React, { type FocusEvent, ReactNode } from 'react'
 
 import { searchMatches } from '../../utils/misc/searchMatches'
 import { BadgeUI } from '../badge/BadgeUI'
@@ -307,7 +307,9 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onBlur = () => this.closeMenu()
+    onBlur = (_ev: FocusEvent<HTMLDivElement, Element>) => {
+        this.closeMenu()
+    }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent) => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
