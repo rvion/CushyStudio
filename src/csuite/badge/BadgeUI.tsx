@@ -23,7 +23,8 @@ export const BadgeUI = observer(function BadgeUI_({
 } & FrameProps) {
     return (
         <Frame
-            tw='rounded px-2 [line-height:1.1rem] whitespace-nowrap'
+            // [line-height:1.1rem]
+            tw='rounded px-2 whitespace-nowrap'
             base={{
                 //
                 hue:
