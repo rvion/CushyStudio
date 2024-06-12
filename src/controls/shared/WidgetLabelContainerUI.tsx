@@ -16,6 +16,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     const csuite = useCSuite()
     return (
         <Frame
+            className={p.className}
             hover
             tw={[
                 //
