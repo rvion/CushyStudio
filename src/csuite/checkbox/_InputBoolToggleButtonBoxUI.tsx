@@ -12,7 +12,7 @@ export const InputBoolToggleButtonBoxUI = observer(function InputBoolToggleButto
     const chroma = isActive ? 0.08 : 0.02
     return (
         <div>
-            <Frame tw='text-lg mr-1' text={{ contrast: 0.8, chroma: isActive ? 0.15 : chroma }}>
+            <Frame tw='text-lg mr-1' text={{ contrast: 0.3, chroma: isActive ? 0.15 : chroma }}>
                 {mode === 'radio' ? (
                     isActive ? (
                         <Ikon.mdiCheckCircle />
