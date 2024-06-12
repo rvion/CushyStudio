@@ -4,7 +4,7 @@ import { SelectUI } from '../../csuite/select/SelectUI'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
     return (
-        <div tw='flex gap-1'>
+        <div tw='flex gap-1 items-center'>
             <input
                 tw='cushy-basic-input my-0.5'
                 placeholder='filename'
