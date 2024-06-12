@@ -11,6 +11,8 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     p: BoolButtonProps & {
         preventDefault?: boolean
         showToggleButtonBox?: boolean
+        /** emulate beeing hovered, passed down to frame as-is */
+        hovered?: boolean
     },
 ) {
     const isActive = p.value ?? false
@@ -30,6 +32,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             hover={!p.disabled}
             expand={expand}
             style={p.style}
+            hovered={p.hovered}
             icon={p.icon}
             {...p.box}
             onClick={(ev) => {
