@@ -3,6 +3,7 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { MessageErrorUI } from '../../../csuite/messages/MessageErrorUI'
 import { ResizableFrame } from '../../../csuite/resizableFrame/resizableFrameUI'
@@ -16,9 +17,10 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
             {widget.choices.slice(0, 100).map((c) => {
                 const isSelected = Boolean(widget.serial.values.find((item) => item.id === c.id))
                 return (
-                    <InputBoolUI
+                    <InputBoolToggleButtonUI
                         value={isSelected}
-                        display='button'
+                        mode='checkbox'
+                        showToggleButtonBox
                         tw='w-full'
                         text={c.label}
                         onValueChange={(value) => {
