@@ -145,7 +145,6 @@ export const Frame = observer(
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // CLASSES ---------------------------------------------
-        const classes: string[] = []
 
         if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(nextBase, box.shock))
         else variables.background = formatOKLCH(nextBase)
@@ -174,7 +173,6 @@ export const Frame = observer(
                     square && `box-square`,
                     loading && 'relative',
                     expand && 'flex-1',
-                    ...classes,
                     className,
                 ]}
                 style={frameMode === 'CLASSNAME' ? style : { ...style, ...variables }}
