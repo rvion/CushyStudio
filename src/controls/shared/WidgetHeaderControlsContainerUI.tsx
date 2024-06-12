@@ -7,7 +7,12 @@ export const WidgetHeaderControlsContainerUI = observer(function WidgetHeaderCon
     return (
         <div //
             className={p.className}
-            tw={'widget-header-container-ui COLLAPSE-PASSTHROUGH flex items-center gap-0.5 flex-1'}
+            tw={[
+                //
+                'widget-header-container-ui',
+                'COLLAPSE-PASSTHROUGH',
+                'flex flex-1 items-center gap-0.5',
+            ]}
         >
             {p.children}
         </div>
