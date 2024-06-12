@@ -7,6 +7,8 @@ import { createElement, type CSSProperties, type ReactNode } from 'react'
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
 import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 
+export type BoolButtonMode = 'radio' | 'checkbox' | false
+
 export class BoolButtonProps {
     /** true when active, false when inactive, undefined when unset */
     value?: Maybe<boolean>
@@ -15,7 +17,7 @@ export class BoolButtonProps {
     display?: 'check' | 'button'
 
     /** @default 'checkbox' */
-    mode?: 'radio' | 'checkbox' | false
+    mode?: BoolButtonMode
 
     expand?: boolean
     icon?: Maybe<IconName>
