@@ -1,4 +1,4 @@
-import type { SelectProps } from './SelectUI'
+import type { SelectProps } from './SelectProps'
 
 import { makeAutoObservable } from 'mobx'
 import React, { ReactNode } from 'react'
