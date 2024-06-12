@@ -14,9 +14,8 @@ import type { IconName } from '../icons/icons'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
-import { forwardRef, useContext, useState } from 'react'
-
 import { observer } from 'mobx-react-lite'
+import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
@@ -27,7 +26,6 @@ import { formatOKLCH } from '../kolor/formatOKLCH'
 import { isSameOKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
-
 // import { hashKolor } from '../box/compileBoxClassName'
 // import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
 // import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
@@ -100,9 +98,29 @@ export const Frame = observer(
 
         // TEMPLATE -------------------------------------------
         // const theme = useTheme().value
+        const prevCtx = useContext(CurrentStyleCtx)
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
         const hovered = hovered__ ?? hovered_
+        const variables: { [key: string]: string | number } = {}
+
+        // 👉 2024-06-12 rvion: we should probably be able to
+        // stop here by checking against a hash of those props
+        // | + prevCtx
+        // | + box
+        // | + disabled
+        // | + hovered
+        // | + look
+
+        // let KBase: OKLCH = applyKolorToOKLCH(
+        //     prevCtx.base,
+        //     overrideKolorsV2(
+        //         template?.base,
+        //         box.base,
+        //         disabled && { lightness: prevCtx.base.lightness },
+        //         // hovered && !disabled && box.hover
+        //     ),
+        // )
 
         let realBase = hovered ? box.hover ?? box.base : box.base
 
@@ -128,7 +146,6 @@ export const Frame = observer(
         }
 
         // CONTEXT ---------------------------------------------
-        const prevCtx = useContext(CurrentStyleCtx)
 
         // const nextCtx = applyBoxToCtx(prevCtx, box)
         const nextBase = applyKolorToOKLCH(prevCtx.base, realBase)
@@ -143,7 +160,6 @@ export const Frame = observer(
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
 
         // STYLE ---------------------------------------------
-        const variables: { [key: string]: string | number } = {}
         if (!isSameOKLCH(prevCtx.base, nextBase)) variables['--KLR'] = formatOKLCH(nextBase)
         if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
