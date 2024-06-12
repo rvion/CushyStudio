@@ -86,6 +86,7 @@ export const Frame = observer(
             icon, iconSize, suffixIcon, loading, // addons
             expand, square, size, // size
             look, // templates
+            hovered: hovered__,
             base, hover, border, text, textShadow, shadow, // box stuff
             onMouseDown, onMouseEnter, onClick, triggerOnPress,
             style, className,
@@ -96,8 +97,9 @@ export const Frame = observer(
         // TEMPLATE -------------------------------------------
         // const theme = useTheme().value
         const box = normalizeBox(p)
+        const [hovered_, setHovered] = useState(false)
+        const hovered = hovered__ ?? hovered_
 
-        const [hovered, setHovered] = useState(false)
         let realBase = hovered ? box.hover ?? box.base : box.base
 
         if (look != null) {
