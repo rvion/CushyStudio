@@ -45,7 +45,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             </PanelHeaderUI>
 
             <div // STEP OUTPUTS ======================================================================
-                tw={'flex overflow-auto flex-shrink-0 items-center max-h-[50%]'}
+                tw={'flex overflow-auto flex-shrink-0 items-center max-h-[50%] p-0.5'}
             >
                 {step?.finalStatus === Status.Running && (
                     <Button look='error' onClick={() => st.stopCurrentPrompt()}>
