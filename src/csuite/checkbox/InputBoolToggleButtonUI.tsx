@@ -12,7 +12,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
         preventDefault?: boolean
         showToggleButtonBox?: boolean
         /** emulate beeing hovered, passed down to frame as-is */
-        hovered?: boolean
+        hovered?: boolean | undefined
     },
 ) {
     const isActive = p.value ?? false

@@ -36,7 +36,7 @@ export type FrameProps = {
     tooltip?: string
 
     /** allow to pretend the frame is hovered */
-    hovered?: boolean
+    hovered?: boolean | undefined
 
     // logic --------------------------------------------------
     /** TODO: */
