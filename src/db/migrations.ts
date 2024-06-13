@@ -728,4 +728,9 @@ export const migrations: {
     // ⏸️         },
     // ⏸️     ],
     // ⏸️ },
+    {
+        id: 'nanoid',
+        name: 'add step created_at missing index',
+        up: [`CREATE INDEX idx__step__createdAt ON step(createdAt);`],
+    },
 ]
