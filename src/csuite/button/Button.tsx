@@ -41,7 +41,7 @@ export const Button = observer(function Button_(
                 p.square ? null : 'px-2',
                 'font-semibold',
                 'ui-button',
-                'rounded-sm gap-2 items-center',
+                'rounded-sm gap-1 items-center',
                 p.disabled ? null : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',
