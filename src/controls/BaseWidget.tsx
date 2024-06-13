@@ -287,6 +287,7 @@ export abstract class BaseWidget {
                 showWidgetMenu={false}
                 showWidgetExtra={false}
                 showWidgetUndo={false}
+                justifyLabel={false}
                 fieldName='_'
                 {...p}
             />
@@ -295,7 +296,13 @@ export abstract class BaseWidget {
 
     renderSimpleAll(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
-            <CSuiteOverride config={{ showWidgetMenu: false, showWidgetExtra: false, showWidgetUndo: false }}>
+            <CSuiteOverride
+                config={{
+                    showWidgetMenu: false,
+                    showWidgetExtra: false,
+                    showWidgetUndo: false,
+                }}
+            >
                 <WidgetWithLabelUI key={this.id} widget={this} fieldName='_' {...p} />
             </CSuiteOverride>
         )
