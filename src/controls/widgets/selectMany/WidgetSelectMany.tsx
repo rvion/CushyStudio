@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectAppearance = 'select' | 'tab' | 'list'
@@ -74,7 +75,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
 export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
-    DefaultBodyUI = undefined
+    DefaultBodyUI = WidgetSelectMany_ListUI
 
     readonly id: string
 

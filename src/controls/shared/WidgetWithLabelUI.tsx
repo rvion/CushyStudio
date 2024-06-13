@@ -22,7 +22,7 @@ import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
-export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
+export type WidgetWithLabelProps = {
     widget: IWidget
     fieldName: string
     /**
@@ -33,13 +33,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     noHeader?: boolean
     noBody?: boolean
     noErrors?: boolean
-
     label?: string | false
     justifyLabel?: boolean
     showWidgetExtra?: boolean
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
-}) {
+}
+
+export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
     if (p.widget.isHidden) return null
     const originalWidget = p.widget
     const widget = getActualWidgetToDisplay(originalWidget)

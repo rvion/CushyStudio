@@ -63,7 +63,9 @@ export class Form<
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => createElement(FormUI, { form: this, ...p })
+    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => {
+        return createElement(FormUI, { form: this, ...p })
+    }
 
     /**
      * allow to quickly render the form in a dropdown button

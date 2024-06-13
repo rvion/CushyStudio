@@ -10,6 +10,7 @@ import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
@@ -20,7 +21,7 @@ import { WidgetHeaderContainerUI } from './shared/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
-import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
+import { type WidgetWithLabelProps, WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
 import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
@@ -277,24 +278,36 @@ export abstract class BaseWidget {
     }
 
     // UI ----------------------------------------------------
-    renderWithLabel(
-        this: IWidget,
-        p?: {
-            noHeader?: boolean
-            noBody?: boolean
-            noErrors?: boolean
-            label?: string | false
-            justifyLabel?: boolean
-            showWidgetUndo?: boolean
-            showWidgetMenu?: boolean
-        },
-    ): JSX.Element {
+
+    renderSimple(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
+                widget={this}
+                showWidgetMenu={false}
+                showWidgetExtra={false}
+                showWidgetUndo={false}
+                fieldName='_'
                 {...p}
+            />
+        )
+    }
+
+    renderSimpleAll(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+        return (
+            <CSuiteOverride config={{ showWidgetMenu: false, showWidgetExtra: false, showWidgetUndo: false }}>
+                <WidgetWithLabelUI key={this.id} widget={this} fieldName='_' {...p} />
+            </CSuiteOverride>
+        )
+    }
+
+    renderWithLabel(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
                 widget={this}
                 fieldName='_'
+                {...p}
             />
         )
     }

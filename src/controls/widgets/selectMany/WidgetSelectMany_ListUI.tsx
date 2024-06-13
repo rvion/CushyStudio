@@ -4,8 +4,6 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
-import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
-import { MessageErrorUI } from '../../../csuite/messages/MessageErrorUI'
 import { ResizableFrame } from '../../../csuite/resizableFrame/resizableFrameUI'
 
 export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {

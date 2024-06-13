@@ -1,3 +1,4 @@
+import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -10,7 +11,11 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
-export type BaseSelectEntry<T = string> = { id: T; label?: string }
+export type BaseSelectEntry<T = string> = {
+    id: T
+    label?: string
+    icon?: IconName
+}
 
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
@@ -35,6 +40,9 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
         appearance?: 'select' | 'tab'
+
+        //
+        wrap?: boolean
     },
     Widget_selectOne_types<T>
 >

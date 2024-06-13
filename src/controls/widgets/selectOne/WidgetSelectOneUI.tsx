@@ -20,30 +20,32 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
     const widget = p.widget
     const selected = widget.serial.val
     return (
-        <div>
-            <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
-                {widget.choices.map((c) => {
-                    const isSelected = selected?.id === c.id
-                    return (
-                        <InputBoolUI
-                            key={c.id}
-                            value={isSelected}
-                            display='button'
-                            text={c.label ?? c.id}
-                            onValueChange={(value) => {
-                                if (value === isSelected) return
-                                widget.value = c
-                            }}
-                        />
-                    )
-                })}
-            </div>
-            {widget.baseErrors && (
-                <div tw='text-red-500 flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
-                    {widget.baseErrors}
-                </div>
-            )}
+        <div
+            tw={[
+                //
+                'flex',
+                (widget.config.wrap ?? true) && 'flex-wrap',
+                'rounded ml-auto justify-end',
+                'select-none',
+                'gap-x-0.5 gap-y-0',
+            ]}
+        >
+            {widget.choices.map((c) => {
+                const isSelected = selected?.id === c.id
+                return (
+                    <InputBoolUI
+                        key={c.id}
+                        icon={c.icon}
+                        value={isSelected}
+                        display='button'
+                        text={c.label ?? c.id}
+                        onValueChange={(value) => {
+                            if (value === isSelected) return
+                            widget.value = c
+                        }}
+                    />
+                )
+            })}
         </div>
     )
 })
