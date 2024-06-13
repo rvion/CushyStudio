@@ -19,6 +19,7 @@ import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { PanelHeaderUI } from '../PanelHeader'
 import { DraftHeaderUI } from './DraftHeaderUI'
+import { run_justify, ui_justify } from './prefab_justify'
 import { RecompileUI } from './RecompileUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
@@ -40,6 +41,7 @@ export const PanelDraftV2UI = observer(function PanelDraftV2UI_(p: { draft: Mayb
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()
     const draft = p.draft
+    const justify = cushy.forms.use(ui_justify)
 
     // useEffect(() => draft?.AWAKE(), [draft?.id])
 
@@ -73,7 +75,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (guiR.error)
         return (
             <>
-                <DraftHeaderUI draft={draft} />
+                <DraftHeaderUI draft={draft} children={justify.render()} />
                 <ErrorPanelUI>
                     <RecompileUI always app={draft.app} />
                     <b>App failed to load</b>
@@ -92,7 +94,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     // {/* <ActionDraftListUI card={card} /> */}
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
-            <DraftHeaderUI draft={draft} />
+            <DraftHeaderUI draft={draft} children={justify.root.renderSimple({ className: 'ml-auto' })} />
             {draft.shouldAutoStart && (
                 <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
             )}
@@ -100,7 +102,12 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <Frame
                 base={0}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={['flex-1 flex flex-col p-2 gap-1', containerClassName]}
+                tw={[
+                    //
+                    'flex-1 flex flex-col p-2 gap-1',
+                    run_justify(justify.value),
+                    containerClassName,
+                ]}
                 onKeyUp={(ev) => {
                     // submit on meta+enter
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {

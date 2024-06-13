@@ -19,7 +19,7 @@ export const Button = observer(function Button_(
 
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
-    const { size, look, subtle, borderless, onClick, ...rest } = p
+    const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     return (
         <Frame //
             size={size ?? 'input'}
@@ -33,7 +33,7 @@ export const Button = observer(function Button_(
             tabIndex={p.tabIndex ?? -1}
             onMouseDown={uist.press}
             onClick={uist.onClick}
-            // iconSize='1.3em'
+            iconSize={iconSize ?? '1.1rem'}
             {...rest}
             tw={[
                 'inline-flex',

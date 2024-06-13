@@ -1,5 +1,5 @@
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { SelectAppearance, Widget_selectMany } from './WidgetSelectMany'
+import type { SelectManyAppearance, Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
@@ -12,7 +12,7 @@ export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extend
     widget: Widget_selectMany<T>
 }) {
     const widget = p.widget
-    const appearance: SelectAppearance = widget.config.appearance ?? 'tab'
+    const appearance: SelectManyAppearance = widget.config.appearance ?? 'tab'
     if (appearance === 'tab') return <WidgetSelectMany_TabUI widget={widget} />
     if (appearance === 'select') return <WidgetSelectMany_SelectUI widget={widget} />
     if (appearance === 'list') return <WidgetSelectMany_ListUI widget={widget} />

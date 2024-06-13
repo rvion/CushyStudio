@@ -38,6 +38,7 @@ export type WidgetWithLabelProps = {
     showWidgetExtra?: boolean
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
+    className?: string
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
@@ -53,7 +54,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
     const WUI = (
         <Frame
             //
-            tw='flex flex-col gap-1'
+            className={p.className}
+            tw='WidgetWithLabelUI flex flex-col gap-1'
             base={widget.background}
             border={widget.border}
             {...p.widget.config.box}

@@ -17,6 +17,8 @@ export type BaseSelectEntry<T = string> = {
     icon?: IconName
 }
 
+export type SelectOneSkin = 'select' | 'tab' | 'roll'
+
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
@@ -39,9 +41,7 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
-        appearance?: 'select' | 'tab'
-
-        //
+        appearance?: SelectOneSkin
         wrap?: boolean
     },
     Widget_selectOne_types<T>

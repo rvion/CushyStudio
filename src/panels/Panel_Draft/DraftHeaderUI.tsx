@@ -3,25 +3,26 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Button } from '../../csuite/button/Button'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { PanelHeaderUI } from '../PanelHeader'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
-import { PanelHeaderUI } from '../PanelHeader'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import { Dropdown } from '../../csuite/dropdown/Dropdown'
-import { Button } from '../../csuite/button/Button'
-import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //
     draft: DraftL
     className?: string
+    children?: React.ReactNode
 }) {
     const { draft } = p
     const app = draft.appRef.item
+
     return (
         <Frame
             style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
@@ -60,6 +61,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         />
                     </Frame>
                 </div>
+                {p.children}
             </PanelHeaderUI>
             <Frame tw='flex w-full gap-2 p-2 flex-grow text-base-content' base={{ contrast: -0.025 }}>
                 <DraftIllustrationUI

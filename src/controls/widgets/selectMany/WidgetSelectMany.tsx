@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
-export type SelectAppearance = 'select' | 'tab' | 'list'
+export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
@@ -34,7 +34,7 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFi
         choices: T[] | ((self: Widget_selectMany<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
-        appearance?: SelectAppearance
+        appearance?: SelectManyAppearance
         getLabelUI?: (t: T) => React.ReactNode
 
         //
