@@ -11,7 +11,7 @@ export const applyBoxToCtx = (
     box: BoxNormalized,
 ): CurrentStyle => {
     const nextBase = applyKolorToOKLCH(ctx.base, box.base)
-    const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
+    // const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
     const nextLightness = nextBase.lightness
     const nextext = overrideKolor(ctx.text, box.text)!
     const nextDir =
@@ -23,7 +23,7 @@ export const applyBoxToCtx = (
     return {
         dir: nextDir,
         base: nextBase,
-        baseH: nextBaseH,
+        // baseH: nextBaseH,
         text: nextext,
     }
 }

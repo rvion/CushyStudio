@@ -10,7 +10,7 @@ import { createContext } from 'react'
  */
 export type CurrentStyle = {
     base: OKLCH
-    baseH: OKLCH
+    // baseH: OKLCH
     text: Kolor
     dir: 1 | -1
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
@@ -18,7 +18,7 @@ export type CurrentStyle = {
 
 export const CurrentStyleCtx = createContext<CurrentStyle>({
     base: { lightness: 0.1, chroma: 0.05, hue: 0 },
-    baseH: { lightness: 0.1, chroma: 0.05, hue: 0 },
+    // baseH: { lightness: 0.1, chroma: 0.05, hue: 0 },
     text: { contrast: 1, chromaBlend: 0, hueShift: 0 },
     dir: 1,
     /**

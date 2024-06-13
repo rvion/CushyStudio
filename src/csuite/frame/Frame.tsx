@@ -23,8 +23,9 @@ import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { isSameOKLCH } from '../kolor/OKLCH'
+import { isSameOKLCH, type OKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
+import { overrideKolorsV2 } from '../kolor/overrideKolorsV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 // import { hashKolor } from '../box/compileBoxClassName'
 // import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
@@ -112,21 +113,25 @@ export const Frame = observer(
         // | + hovered
         // | + look
 
-        // let KBase: OKLCH = applyKolorToOKLCH(
-        //     prevCtx.base,
-        //     overrideKolorsV2(
-        //         template?.base,
-        //         box.base,
-        //         disabled && { lightness: prevCtx.base.lightness },
-        //         // hovered && !disabled && box.hover
-        //     ),
-        // )
+        const template = look != null ? frameTemplates[look] : undefined
+        let KBase: OKLCH = applyKolorToOKLCH(
+            prevCtx.base,
+            overrideKolorsV2(
+                //
+                template?.base,
+                box.base,
+                disabled && { lightness: prevCtx.base.lightness },
+            ),
+        )
+        if (hovered && !disabled && box.hover) {
+            KBase = applyKolorToOKLCH(KBase, box.hover)
+        }
 
-        let realBase = hovered ? box.hover ?? box.base : box.base
+        // let realBase = KBase // hovered ? box.hover ?? box.base : box.base
 
         if (look != null) {
             const template = frameTemplates[look]
-            if (template.base) realBase = overrideKolor(template.base, realBase)
+            // 🔶 if (template.base) realBase = overrideKolor(template.base, realBase)
             if (template.border) box.border = overrideKolor(template.border, box.border)
             if (template.text) box.text = overrideKolor(template.text, box.text)
         }
@@ -136,8 +141,6 @@ export const Frame = observer(
         // I originally though they were standard; but they are probably not
         if (disabled) {
             box.text = { contrast: 0.1 }
-            realBase = { contrast: 0 }
-            //     box.border = null
         }
 
         if (active) {
@@ -146,32 +149,27 @@ export const Frame = observer(
         }
 
         // CONTEXT ---------------------------------------------
-
-        // const nextCtx = applyBoxToCtx(prevCtx, box)
-        const nextBase = applyKolorToOKLCH(prevCtx.base, realBase)
-
-        const nextBaseH = applyKolorToOKLCH(nextBase, box.hover)
         const nextext = overrideKolor(prevCtx.text, box.text)!
 
         // next dir
-        const nextLightness = nextBase.lightness
+        const nextLightness = KBase.lightness
         const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
         const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
 
         // STYLE ---------------------------------------------
-        if (!isSameOKLCH(prevCtx.base, nextBase)) variables['--KLR'] = formatOKLCH(nextBase)
-        if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
+        if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
+        // if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // CLASSES ---------------------------------------------
 
-        if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(nextBase, box.shock))
-        else variables.background = formatOKLCH(nextBase)
+        if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(KBase, box.shock))
+        else variables.background = formatOKLCH(KBase)
         const boxText = box.text ?? prevCtx.text
-        if (boxText != null) variables.color = formatOKLCH(applyKolorToOKLCH(nextBase, boxText))
-        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(nextBase, box.textShadow))}`
-        if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(nextBase, box.border))}`
+        if (boxText != null) variables.color = formatOKLCH(applyKolorToOKLCH(KBase, boxText))
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(KBase, box.textShadow))}`
+        if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(KBase, box.border))}`
 
         let _onMouseOver: any = undefined
         let _onMouseOut: any = undefined
@@ -204,8 +202,7 @@ export const Frame = observer(
                 <CurrentStyleCtx.Provider
                     value={{
                         dir: nextDir,
-                        base: nextBase,
-                        baseH: nextBaseH,
+                        base: KBase,
                         text: nextext,
                     }}
                 >
