@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
 import { runInAction } from 'mobx'
@@ -22,7 +22,7 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
         items?: T | (() => T)
 
         /** if provided, will be used in the header when fields are folded */
-        summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+        summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
     },
     Widget_group_types<T>
 >
@@ -35,7 +35,7 @@ export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
 
 // VALUE
 export type Widget_group_value<T extends SchemaDict> = {
-    [k in keyof T]: GetWidgetResult<T[k]>
+    [k in keyof T]: T[k]['$Value']
 }
 
 // TYPES
@@ -190,7 +190,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
     }
 
     // @internal
-    __value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+    __value: { [k in keyof T]: T[k]['$Value'] } = new Proxy({} as any, {
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
