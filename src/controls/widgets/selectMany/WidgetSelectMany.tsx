@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
 import { runInAction } from 'mobx'
@@ -44,7 +45,7 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFi
 >
 
 // SERIAL
-export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
+export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerial<{
     type: 'selectMany'
     query: string
     values: T[]
@@ -117,7 +118,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget<Wid
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {

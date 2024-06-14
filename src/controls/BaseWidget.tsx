@@ -1,11 +1,14 @@
 import type { IconName } from '../csuite/icons/icons'
-import type { Kolor, KolorExt } from '../csuite/kolor/Kolor'
+import type { KolorExt } from '../csuite/kolor/Kolor'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
+import type { $WidgetTypes } from './$WidgetTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
 import type { WidgetLabelContainerProps } from './shared/WidgetLabelContainerUI'
+import type { WidgetWithLabelProps } from './shared/WidgetWithLabelUI'
 import type { CovariantFC } from './utils/CovariantFC'
+import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -14,7 +17,6 @@ import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym } from './$WidgetSym'
-import { type $WidgetTypes, type IWidget } from './IWidget'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
@@ -22,8 +24,8 @@ import { WidgetHeaderContainerUI } from './shared/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
-import { type WidgetWithLabelProps, WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
-import { normalizeProblem, type Problem, type Problem_Ext } from './Validation'
+import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
+import { normalizeProblem } from './Validation'
 import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
@@ -83,7 +85,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     )
 
     // abstract readonly id: string
-    asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {
+    asTreeElement(key: string): ITreeElement<{ widget: BaseWidget; key: string }> {
         return {
             key: (this as any).id,
             ctor: TreeWidget as any,
@@ -162,7 +164,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     // 🚴🏠 -> consume / pull / receive / fetch / ... ?
     consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
         const channelId = typeof chan === 'string' ? chan : chan.id
-        let at = this as any as IWidget | null
+        let at = this as any as BaseWidget | null
         while (at != null) {
             if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
             at = at.parent
@@ -186,13 +188,13 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const SELF = this as any as IWidget
+        const SELF = this as any as BaseWidget
         const baseErrors = normalizeProblem(SELF.baseErrors)
         return [...baseErrors, ...this.customErrors]
     }
 
     get customErrors(): Problem[] {
-        const SELF = this as any as IWidget
+        const SELF = this as any as BaseWidget
         if (SELF.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
@@ -203,13 +205,13 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: IWidget) {
+    bumpSerial(this: BaseWidget) {
         this.form.serialChanged(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: IWidget) {
+    bumpValue(this: BaseWidget) {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */
@@ -224,7 +226,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
      *  - by defining a getter on the _advertisedValues object of all parents
      *  - by only setting this getter up once.
      * */
-    publishValue(this: IWidget) {
+    publishValue(this: BaseWidget) {
         const producers = this.spec.producers
         if (producers.length === 0) return
 
@@ -235,7 +237,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
             producedValues[channelId] = producer.produce(this)
         }
         // Assign values to every parent widget in the hierarchy
-        let at = this as any as IWidget | null
+        let at = this as any as BaseWidget | null
         while (at != null) {
             Object.assign(at._advertisedValues, producedValues)
             at = at.parent
@@ -243,7 +245,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** parent widget of this widget, if any */
-    abstract readonly parent: IWidget | null
+    abstract readonly parent: BaseWidget | null
 
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden
@@ -300,14 +302,14 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         this.form.serialChanged(this)
     }
 
-    toggleCollapsed(this: IWidget) {
+    toggleCollapsed(this: BaseWidget) {
         this.serial.collapsed = !this.serial.collapsed
         this.form.serialChanged(this)
     }
 
     // UI ----------------------------------------------------
 
-    renderSimple(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimple(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
@@ -322,7 +324,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    renderSimpleAll(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimpleAll(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <CSuiteOverride
                 config={{
@@ -336,7 +338,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    renderWithLabel(this: IWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderWithLabel(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
@@ -347,17 +349,17 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    defaultHeader(this: IWidget): JSX.Element | undefined {
+    defaultHeader(this: BaseWidget): JSX.Element | undefined {
         if (this.DefaultHeaderUI == null) return
         return <this.DefaultHeaderUI widget={this} />
     }
 
-    defaultBody(this: IWidget): JSX.Element | undefined {
+    defaultBody(this: BaseWidget): JSX.Element | undefined {
         if (this.DefaultBodyUI == null) return
         return <this.DefaultBodyUI widget={this} />
     }
 
-    header(this: IWidget): JSX.Element | undefined {
+    header(this: BaseWidget): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
                 ? ensureObserver(this.config.header)
@@ -366,7 +368,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         return <HeaderUI widget={this} />
     }
 
-    body(this: IWidget): JSX.Element | undefined {
+    body(this: BaseWidget): JSX.Element | undefined {
         const BodyUI =
             'body' in this.config //
                 ? ensureObserver(this.config.body)
@@ -376,11 +378,12 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgets(): IWidget[] {
+    get subWidgets(): BaseWidget[] {
         return []
     }
+
     /** list of all subwidgets, without named keys */
-    get subWidgetsWithKeys(): { key: string; widget: IWidget }[] {
+    get subWidgetsWithKeys(): { key: string; widget: BaseWidget }[] {
         return []
     }
 
@@ -422,7 +425,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         makeAutoObservableInheritance(this, mobxOverrides)
 
         // eslint-disable-next-line consistent-this
-        const self = this as any as IWidget
+        const self = this as any as BaseWidget
         const config = self.config
         const serial = self.serial
 

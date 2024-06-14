@@ -2,8 +2,9 @@ import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -25,7 +26,7 @@ export type Widget_enum_config<O> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = WidgetSerialFields<{
+export type Widget_enum_serial<O> = WidgetSerial<{
     type: 'enum'
     active: true
     val: O
@@ -66,7 +67,7 @@ export class Widget_enum<O> extends BaseWidget<Widget_enum_types<O>> {
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {

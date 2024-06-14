@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -28,7 +29,7 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
+export type Widget_group_serial<T extends SchemaDict> = WidgetSerial<{
     type: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
@@ -76,7 +77,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, IWidget][]
+        return Object.entries(this.fields) as [string, BaseWidget][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
@@ -97,7 +98,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
@@ -196,13 +197,13 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
         },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]!
+            const subWidget: BaseWidget = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
         getOwnPropertyDescriptor: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]!
+            const subWidget: BaseWidget = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,

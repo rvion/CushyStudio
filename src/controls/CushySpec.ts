@@ -1,7 +1,7 @@
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
+import type { BaseWidget } from './BaseWidget'
 import type { XList, XOptional } from './FormBuilder'
 import type { ISpec } from './ISpec'
-import type { IWidget } from './IWidget'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -13,7 +13,7 @@ import { Channel, type ChannelId, Producer } from './Channel'
 import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
-export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
+export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widget> {
     $Widget!: Widget
     $Type!: Widget['type']
     $Config!: Widget['$Config']
@@ -65,7 +65,7 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
         return this
     }
 
-    Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
+    Make = <X extends BaseWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
 
     constructor(
         //

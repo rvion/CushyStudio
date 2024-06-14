@@ -1,5 +1,4 @@
 import type { BaseWidget } from '../BaseWidget'
-import type { IWidget } from '../IWidget'
 
 import { observer } from 'mobx-react-lite'
 

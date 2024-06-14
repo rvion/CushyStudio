@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -58,7 +59,7 @@ export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_list_serial<T extends ISpec> = WidgetSerialFields<{
+export type Widget_list_serial<T extends ISpec> = WidgetSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
@@ -111,8 +112,8 @@ export class Widget_list<T extends ISpec> //
         for (const i of this.items) i.reset()
     }
 
-    findItemIndexContaining = (widget: IWidget): number | null => {
-        let at = widget as IWidget | null
+    findItemIndexContaining = (widget: BaseWidget): number | null => {
+        let at = widget as BaseWidget | null
         let child = at
         while (at != null) {
             at = at.parent
@@ -174,7 +175,7 @@ export class Widget_list<T extends ISpec> //
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {

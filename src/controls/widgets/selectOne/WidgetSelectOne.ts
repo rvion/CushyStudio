@@ -1,7 +1,8 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -57,7 +58,7 @@ export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
 })
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
+export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerial<{
     type: 'selectOne'
     query: string
     val: T
@@ -120,7 +121,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {

@@ -1,6 +1,6 @@
 import type { Spec } from '../CushySpec'
 import type { FormBuilder } from '../FormBuilder'
-import type { WidgetConfigFields } from '../IWidget'
+import type { WidgetConfigFields } from '../WidgetConfig'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
 import type { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 import type { Widget_group } from '../widgets/group/WidgetGroup'

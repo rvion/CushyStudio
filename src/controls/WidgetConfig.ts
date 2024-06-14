@@ -1,59 +1,12 @@
 import type { Box } from '../csuite/box/Box'
 import type { IconName } from '../csuite/icons/icons'
-import type { Kolor, KolorExt } from '../csuite/kolor/Kolor'
-import type { BaseWidget } from './BaseWidget'
-import type { Form } from './Form'
-import type { ISpec } from './ISpec'
+import type { KolorExt } from '../csuite/kolor/Kolor'
+import type { $WidgetTypes } from './$WidgetTypes'
 import type { CovariantFn } from './utils/BivariantHack'
-import type { CovariantFC } from './utils/CovariantFC'
 import type { Problem_Ext } from './Validation'
 
-/**
- * base widget type; default type-level param when we work with unknown widget
- * still allow to use SharedConfig properties, and SharedSerial properties
- * */
-export type $WidgetTypes = {
-    $Type: string
-    $Config: SharedWidgetConfig<any>
-    $Serial: SharedWidgetSerial
-    $Value: any
-    $Widget: BaseWidget
-}
-
-// TODO: completely remove `IWidget` and only keep `BaseWidget` ?
-export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget<K> {}
-
-/** common properties we expect to see in a widget serial */
-export type SharedWidgetSerial = {
-    id?: string
-    /** name of the widget, so we can later re-instanciate a widget from this */
-    type: string
-    /** if true, widget should be displayed folded when it make sense in given context */
-    collapsed?: boolean
-    /** timestap this widget was last updated */
-    lastUpdatedAt?: number
-    /** unused internally, here so you can add whatever you want inside */
-    custom?: any
-
-    /**
-     * DO NOT MANUALLY SET THIS VALUE;
-     * this value will be set by the init() function (BaseWidget class)
-     * use to know if the onCreate function should be re-run or not
-     * */
-    _creationKey?: string
-}
-
-export type WidgetSerialFields<X> = X & SharedWidgetSerial
-export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
-
-export type WidgetMenuAction<T extends $WidgetTypes> = {
-    /** https://pictogrammers.com/library/mdi/ */
-    label: string
-    icon?: IconName
-    apply: (form: T['$Widget']) => void
-}
-
-export type SharedWidgetConfig<T extends $WidgetTypes> = {
+export type WidgetConfigFields<X, T extends $WidgetTypes> = X & WidgetConfig_CommonProperties<T>
+export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
     /**
      * @since 2024-05-20
      * @stability beta
@@ -62,6 +15,7 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
      */
     icon?: IconName | CovariantFn<T['$Widget'], IconName> // IconName
+
     /**
      * @since 2024-05-19
      * @stability beta
@@ -126,7 +80,6 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      * Allow you to customize look and feel a bit without having
      * to use custom widgets
      * */
-
     className?: string
 
     /**
@@ -158,4 +111,11 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
+}
+
+export type WidgetMenuAction<T extends $WidgetTypes> = {
+    /** https://pictogrammers.com/library/mdi/ */
+    label: string
+    icon?: IconName
+    apply: (form: T['$Widget']) => void
 }

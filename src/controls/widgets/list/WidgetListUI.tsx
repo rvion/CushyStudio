@@ -1,5 +1,5 @@
+import type { BaseWidget } from '../../BaseWidget'
 import type { ISpec } from '../../ISpec'
-import type { IWidget } from '../../IWidget'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -110,7 +110,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidget }>((p, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: BaseWidget }>((p, ref) => {
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>

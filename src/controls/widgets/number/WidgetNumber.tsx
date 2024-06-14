@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -30,7 +31,7 @@ export type Widget_number_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
+export type Widget_number_serial = WidgetSerial<{ type: 'number'; val: number }>
 
 // VALUE
 export type Widget_number_value = number
@@ -70,7 +71,7 @@ export class Widget_number extends BaseWidget<Widget_number_types> {
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_number>,
         serial?: Widget_number_serial,
     ) {

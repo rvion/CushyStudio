@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
@@ -25,7 +26,7 @@ export type Widget_custom_config<T> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_serial<T> = WidgetSerial<{ type: 'custom'; active: true; value: T }>
 
 // VALUE
 export type Widget_custom_value<T> = T
@@ -62,7 +63,7 @@ export class Widget_custom<T> extends BaseWidget<Widget_custom_types<T>> {
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {

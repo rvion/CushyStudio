@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -23,7 +24,7 @@ export type Widget_seed_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_seed_serial = WidgetSerialFields<{
+export type Widget_seed_serial = WidgetSerial<{
     type: 'seed'
     val: number
     mode: SeedMode
@@ -101,7 +102,7 @@ export class Widget_seed extends BaseWidget<Widget_seed_types> {
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {

@@ -1,7 +1,7 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { BaseWidget } from './BaseWidget'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
-import type { IWidget } from './IWidget'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
@@ -333,7 +333,7 @@ export class FormBuilder implements IFormBuilder {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE = <T extends ISpec>( //
-        parent: IWidget | null,
+        parent: BaseWidget | null,
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {
@@ -399,7 +399,7 @@ export class FormBuilder implements IFormBuilder {
     }
 
     _HYDRATE = <T extends ISpec>( //
-        parent: IWidget | null,
+        parent: BaseWidget | null,
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {

@@ -1,8 +1,9 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -35,7 +36,7 @@ export type Widget_string_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
+export type Widget_string_serial = WidgetSerial<{ type: 'str'; val?: string }>
 
 // SERIAL FROM VALUE
 export const Widget_string_fromValue = (val: string): Widget_string_serial => ({
@@ -86,7 +87,7 @@ export class Widget_string extends BaseWidget<Widget_string_types> {
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_string>,
         serial?: Widget_string_serial,
     ) {
