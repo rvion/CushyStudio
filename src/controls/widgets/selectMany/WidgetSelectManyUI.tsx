@@ -3,7 +3,7 @@ import type { SelectManyAppearance, Widget_selectMany } from './WidgetSelectMany
 
 import { observer } from 'mobx-react-lite'
 
-import { exhaust } from '../../../utils/misc/exhaust'
+import { exhaust } from '../../../csuite/utils/exhaust'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'

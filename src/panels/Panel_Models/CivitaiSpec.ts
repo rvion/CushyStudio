@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from '../../utils/misc/Debounced'
-import { Promize } from '../../utils/misc/Promize'
+import { Debounced } from '../../csuite/utils/Debounced'
+import { Promize } from '../../csuite/utils/Promize'
 
 // civitai wrapper
 export class Civitai {

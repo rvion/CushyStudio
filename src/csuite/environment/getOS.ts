@@ -12,7 +12,6 @@ export function getOS() {
 
 function getOS_(): 'Mac' | 'iOS' | 'Windows' | 'Android' | 'Linux' | 'unknown' {
     try {
-
         const userAgent = window.navigator.userAgent
         const platform = window.navigator.platform
         if (['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'].indexOf(platform) !== -1) return 'Mac'

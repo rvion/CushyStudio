@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'

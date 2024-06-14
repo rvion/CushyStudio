@@ -4,8 +4,8 @@ import type { PostgrestSingleResponse } from '@supabase/supabase-js'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from '../utils/misc/Debounced'
-import { Promize } from '../utils/misc/Promize'
+import { Debounced } from '../csuite/utils/Debounced'
+import { Promize } from '../csuite/utils/Promize'
 
 type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
 // type SupaUser = Database['auth']['Tables']['users']['Row']

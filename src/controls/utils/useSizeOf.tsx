@@ -2,7 +2,7 @@ import { runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
 import { useCallback } from 'react'
 
-import { bang } from '../../utils/misc/bang'
+import { bang } from '../../csuite/utils/bang'
 
 type RefFn = (e: HTMLDivElement | null) => void
 type DynamicSize = {

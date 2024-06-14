@@ -7,8 +7,8 @@ import type { Runtime } from './Runtime'
 import { makeAutoObservable } from 'mobx'
 
 import { ImageStore } from '../back/ImageStore'
-import { bang } from '../utils/misc/bang'
-import { exhaust } from '../utils/misc/exhaust'
+import { bang } from '../csuite/utils/bang'
+import { exhaust } from '../csuite/utils/exhaust'
 
 export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 

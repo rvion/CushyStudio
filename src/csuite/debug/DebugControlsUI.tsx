@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { commandManager } from '../../app/accelerators/CommandManager'
+import { commandManager } from '../commands/CommandManager'
 import { regionMonitor } from '../regions/RegionMonitor'
 
 export const DebugControlsUI = observer(function DebugControlsUI_(p: {}) {

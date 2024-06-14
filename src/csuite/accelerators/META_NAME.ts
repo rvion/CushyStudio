@@ -1,7 +1,7 @@
-import type { KeyName } from './CommandManager'
+import type { KeyName } from '../commands/CommandManager'
 import type { MouseEvent } from 'react'
 
-import { getOS } from './getOS'
+import { getOS } from '../environment/getOS'
 
 const platform = getOS() // process.platform
 

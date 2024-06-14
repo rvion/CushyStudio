@@ -1,7 +1,7 @@
 import type { PromptLangNodeName } from '../grammar/grammar.types'
 import type { SyntaxNode, Tree } from '@lezer/common'
 
-import { bang } from '../../../../utils/misc/bang'
+import { bang } from '../../../../csuite/utils/bang'
 
 export const $smartResolve = (tree: Tree, at: number): SyntaxNode => {
     const a = tree.resolve(at, -1)

@@ -2,7 +2,7 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
-import { exhaust } from '../../../utils/misc/exhaust'
+import { exhaust } from '../../../csuite/utils/exhaust'
 import { WidgetSelectOne_RollUI } from './WidgetSelectOne_RollUI'
 import { WidgetSelectOne_SelectUI } from './WidgetSelectOne_SelectUI'
 import { WidgetSelectOne_TabUI } from './WidgetSelectOne_TabUI'

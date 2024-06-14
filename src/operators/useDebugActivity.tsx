@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { activityManager } from './activity/Activity'
+import { activityManager } from '../csuite/activity/ActivityManager'
 import { DemoActivityUI } from './DemoActivityUI'
 
 export const useDemoActivity = () =>

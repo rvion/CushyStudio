@@ -3,8 +3,8 @@ import type { SelectProps } from './SelectProps'
 import { makeAutoObservable } from 'mobx'
 import React, { type FocusEvent, ReactNode } from 'react'
 
-import { searchMatches } from '../../utils/misc/searchMatches'
 import { BadgeUI } from '../badge/BadgeUI'
+import { searchMatches } from '../utils/searchMatches'
 
 interface ToolTipPosition {
     top?: number | undefined

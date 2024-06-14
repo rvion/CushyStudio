@@ -1,7 +1,7 @@
 import * as csv from '@fast-csv/parse'
 import { createReadStream } from 'fs'
 
-import { bang } from '../../../../utils/misc/bang'
+import { bang } from '../../../../csuite/utils/bang'
 
 export type UserTag = {
     key: string

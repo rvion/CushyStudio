@@ -1,8 +1,8 @@
-import { commandManager, type CushyShortcut } from '../app/accelerators/CommandManager'
-import { Button } from '../csuite/button/Button'
-import { BoundCommandSym } from './introspect/_isBoundCommand'
-import { CommandSym } from './introspect/_isCommand'
-import { Trigger } from './RET'
+import { Button } from '../button/Button'
+import { BoundCommandSym } from '../introspect/_isBoundCommand'
+import { CommandSym } from '../introspect/_isCommand'
+import { Trigger } from '../trigger/Trigger'
+import { commandManager, type CushyShortcut } from './CommandManager'
 
 // ------------------------------------------------------------------------------------------
 // COMMAND = a function with a name, a description, and a condition whether it can be started or not

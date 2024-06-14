@@ -1,3 +1,4 @@
+import type { Activity } from './Activity'
 import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -5,7 +6,7 @@ import { Fragment } from 'react/jsx-runtime'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
-import { type Activity, activityManager } from './Activity'
+import { activityManager } from './ActivityManager'
 
 export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
     return (

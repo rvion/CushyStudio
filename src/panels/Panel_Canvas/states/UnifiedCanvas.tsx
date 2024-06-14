@@ -9,7 +9,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-import { toastError } from '../../../utils/misc/toasts'
+import { toastError } from '../../../csuite/utils/toasts'
 import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
 import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
 import { setupStageForPainting } from '../behaviours/setupStageForPainting'

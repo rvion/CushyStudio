@@ -8,8 +8,8 @@ import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 
+import { bang } from '../csuite/utils/bang'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
-import { bang } from '../utils/misc/bang'
 import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
 
 export type ImageCreationOpts = {

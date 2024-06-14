@@ -6,9 +6,9 @@ import { Fragment, useEffect, useRef } from 'react'
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { ProgressLine } from '../../csuite/shims'
+import { bang } from '../../csuite/utils/bang'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/Panel_Canvas/utils/randomColor'
-import { bang } from '../../utils/misc/bang'
 import { NodeSlotSize } from './NodeSlotSize'
 
 export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {

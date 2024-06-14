@@ -4,7 +4,6 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolCheckboxUI } from '../../../csuite/checkbox/InputBoolCheckboxUI'
-import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
 
 export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {

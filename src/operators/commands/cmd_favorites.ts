@@ -1,6 +1,6 @@
-import { command } from '../Command'
+import { command } from '../../csuite/commands/Command'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { ctx_global } from '../contexts/ctx_global'
-import { Trigger } from '../RET'
 
 export const cmd_fav_toggleFavBar = command({
     id: 'fav.toggleFavBar',

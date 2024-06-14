@@ -1,7 +1,7 @@
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
-import { bang } from '../../../src/utils/misc/bang'
+import { bang } from '../../../src/csuite/utils/bang'
 import { run_cnet_IPAdapter, ui_subform_IPAdapter } from '../_ipAdapter/prefab_ipAdapter_base'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from '../_ipAdapter/prefab_ipAdapter_face'
 import { run_cnet_canny, ui_subform_Canny } from './prefab_cnet_canny'

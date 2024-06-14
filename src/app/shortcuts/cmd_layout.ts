@@ -1,4 +1,4 @@
-import { command, type Command } from '../../operators/Command'
+import { command, type Command } from '../../csuite/commands/Command'
 import { ctx_global } from '../../operators/contexts/ctx_global'
 
 // ACTIVE

@@ -1,5 +1,5 @@
 /** this module helps break the import cycle between MenuUI and Command  */
-import type { Command } from '../Command'
+import type { Command } from '../commands/Command'
 
 // 🔵 Explore: should I use Symbol.for here for extra sefety ?
 export const CommandSym = Symbol('Command')

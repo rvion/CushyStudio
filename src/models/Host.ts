@@ -10,11 +10,11 @@ import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { toastError, toastSuccess } from '../utils/misc/toasts'
 
 export interface HostL extends LiveInstance<TABLES['host']> {}
 

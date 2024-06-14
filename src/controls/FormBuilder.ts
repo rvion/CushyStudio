@@ -6,7 +6,7 @@ import type { ISpec, SchemaDict } from './ISpec'
 import { makeAutoObservable, reaction } from 'mobx'
 
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
-import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
+import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
