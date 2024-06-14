@@ -1,4 +1,4 @@
-import type { IWidget } from '../IWidget'
+import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { Button } from '../../csuite/button/Button'
 export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: {
     //
     className?: string
-    widget: IWidget
+    widget: BaseWidget
 }) {
     const widget = p.widget
     return (

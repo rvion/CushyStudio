@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -17,10 +18,10 @@ export type OrbitData = {
 }
 
 // CONFIG
-export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitData> }, Widget_orbit_types>
+export type Widget_orbit_config = WidgetConfig<{ default?: Partial<OrbitData> }, Widget_orbit_types>
 
 // SERIAL
-export type Widget_orbit_serial = WidgetSerialFields<{
+export type Widget_orbit_serial = WidgetSerial<{
     type: 'orbit'
     value: OrbitData
 }>
@@ -51,8 +52,7 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends Widget_orbit_types {}
-export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_types> {
+export class Widget_orbit extends BaseWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -104,7 +104,7 @@ export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_typ
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {

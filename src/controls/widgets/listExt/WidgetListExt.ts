@@ -1,13 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { clampOpt } from '../../utils/clamp'
@@ -17,7 +17,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
+export type Widget_listExt_config<T extends ISpec> = WidgetConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -32,7 +32,7 @@ export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends ISpec> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends ISpec> = WidgetSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -57,8 +57,7 @@ export type Widget_listExt_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T> {}
-export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidget<Widget_listExt_types<T>> {
+export class Widget_listExt<T extends ISpec> extends BaseWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -121,7 +120,7 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {

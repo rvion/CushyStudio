@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
@@ -15,7 +16,7 @@ import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = WidgetConfigFields<
+export type Widget_custom_config<T> = WidgetConfig<
     {
         defaultValue: () => T
         subTree?: () => ISpec
@@ -25,7 +26,7 @@ export type Widget_custom_config<T> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_serial<T> = WidgetSerial<{ type: 'custom'; active: true; value: T }>
 
 // VALUE
 export type Widget_custom_value<T> = T
@@ -40,8 +41,7 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export interface Widget_custom<T> extends Widget_custom_types<T> {}
-export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custom_types<T>> {
+export class Widget_custom<T> extends BaseWidget<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -63,7 +63,7 @@ export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custo
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {

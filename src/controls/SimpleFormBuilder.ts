@@ -1,8 +1,8 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { BaseWidget } from './BaseWidget'
 import type { Form } from './Form'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
-import type { IWidget } from './IWidget'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
@@ -231,7 +231,7 @@ export class SimpleFormBuilder implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
+    private __HYDRATE = <T extends ISpec>(parent: BaseWidget | null, spec: T, serial: any | null): T['$Widget'] => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -295,7 +295,7 @@ export class SimpleFormBuilder implements IFormBuilder {
         )
     }
 
-    _HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
+    _HYDRATE = <T extends ISpec>(parent: BaseWidget | null, spec: T, serial: any | null): T['$Widget'] => {
         const w = this.__HYDRATE(parent, spec, serial)
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {

@@ -1,7 +1,8 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -20,7 +21,7 @@ export type BaseSelectEntry<T = string> = {
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
+export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfig<
     {
         default?: T
         /**
@@ -57,7 +58,7 @@ export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
 })
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
+export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerial<{
     type: 'selectOne'
     query: string
     val: T
@@ -76,11 +77,12 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectOne<T> extends Widget_selectOne_types<T> {}
 
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
-export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectOne_types<T>> {
+export class Widget_selectOne<T extends BaseSelectEntry> //
+    extends BaseWidget<Widget_selectOne_types<T>>
+{
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
 
@@ -119,7 +121,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {

@@ -83,17 +83,22 @@ export const configureFrameEngine = (mode: FrameMode) => {
 export const Frame = observer(
     forwardRef(function Frame_(p: FrameProps, ref: any) {
         // PROPS --------------------------------------------
+
         // prettier-ignore
         const {
-            active, disabled, // built-in state & style modifiers
-            icon, iconSize, suffixIcon, loading, // addons
-            expand, square, size, // size
-            look, // templates
-            hovered: hovered__,
-            base, hover, border, text, textShadow, shadow, // box stuff
-            onMouseDown, onMouseEnter, onClick, triggerOnPress,
-            style, className,
+            active, disabled,                                   // built-in state & style modifiers
+            icon, iconSize, suffixIcon, loading,                // addons
+            expand, square, size,                               // size
+
+            look,                                               // style: 1/3: frame templates
+            base, hover, border, text, textShadow, shadow,      // style: 2/3: frame overrides
+            style, className,                                   // style: 3/3: css, className
+
+            hovered: hovered__,                                 // state
+            onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
             tooltip,
+
+            // remaining properties
             ...rest
         } = p
 
@@ -127,8 +132,8 @@ export const Frame = observer(
             KBase = applyKolorToOKLCH(KBase, box.hover)
         }
 
-        // let realBase = KBase // hovered ? box.hover ?? box.base : box.base
-
+        // ===================================================================
+        // apply various overrides to `box`
         if (look != null) {
             const template = frameTemplates[look]
             // 🔶 if (template.base) realBase = overrideKolor(template.base, realBase)
@@ -136,41 +141,42 @@ export const Frame = observer(
             if (template.text) box.text = overrideKolor(template.text, box.text)
         }
 
-        // MODIFIERS ---------------------------------------------
-        // 2024-06-05 I'm not quite sure having those modifiers here is a good idea
-        // I originally though they were standard; but they are probably not
+        // MODIFIERS
+        // 2024-06-05 I'm not quite sure having those modifiers
+        // here is a good idea; I originally though they were standard;
+        // but they are probably not
         if (disabled) {
             box.text = { contrast: 0.1 }
-        }
-
-        if (active) {
+        } else if (active) {
             box.border = { contrast: 0.5 }
             box.text = { contrast: 0.9 }
         }
 
-        // CONTEXT ---------------------------------------------
-        const nextext = overrideKolor(prevCtx.text, box.text)!
-
-        // next dir
+        // ===================================================================
+        // DIR
         const nextLightness = KBase.lightness
         const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
         const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
-
-        // STYLE ---------------------------------------------
-        if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
-        // if (!isSameOKLCH(prevCtx.baseH, nextBaseH)) variables['--KLRH'] = formatOKLCH(nextBaseH)
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
-        // CLASSES ---------------------------------------------
-
+        // BACKGROUND
+        if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
         if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(KBase, box.shock))
         else variables.background = formatOKLCH(KBase)
+
+        // TEXT
+        const nextext = overrideKolor(prevCtx.text, box.text)!
         const boxText = box.text ?? prevCtx.text
         if (boxText != null) variables.color = formatOKLCH(applyKolorToOKLCH(KBase, boxText))
+
+        // TEXT-SHADOW
         if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(KBase, box.textShadow))}`
+
+        // BORDER
         if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(KBase, box.border))}`
 
+        // ===================================================================
         let _onMouseOver: any = undefined
         let _onMouseOut: any = undefined
         if (p.hover != null) {
@@ -178,6 +184,7 @@ export const Frame = observer(
             _onMouseOut = () => setHovered(false)
         }
 
+        // ===================================================================
         return (
             <div //
                 ref={ref}

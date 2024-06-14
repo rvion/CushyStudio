@@ -1,8 +1,9 @@
 import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -17,7 +18,7 @@ export type Widget_button_context<K> = {
 }
 
 // CONFIG
-export type Widget_button_config<K = any> = WidgetConfigFields<
+export type Widget_button_config<K = any> = WidgetConfig<
     {
         text?: string
         /** @default false */
@@ -32,7 +33,7 @@ export type Widget_button_config<K = any> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_button_serial = WidgetSerialFields<{
+export type Widget_button_serial = WidgetSerial<{
     type: 'button'
     val: boolean
 }>
@@ -50,8 +51,7 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export interface Widget_button<K> extends Widget_button_types<K> {}
-export class Widget_button<K> extends BaseWidget implements IWidget<Widget_button_types<K>> {
+export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -66,7 +66,7 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {

@@ -1,8 +1,8 @@
-// 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { runInAction } from 'mobx'
@@ -14,7 +14,7 @@ import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
-export type Widget_size_config = WidgetConfigFields<
+export type Widget_size_config = WidgetConfig<
     {
         default?: CushySizeByRatio
         min?: number
@@ -25,7 +25,7 @@ export type Widget_size_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_size_serial = WidgetSerialFields<CushySize>
+export type Widget_size_serial = WidgetSerial<CushySize>
 
 // SERIAL FROM VALUE
 export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
@@ -45,8 +45,7 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types {}
-export class Widget_size extends BaseWidget implements IWidget<Widget_size_types> {
+export class Widget_size extends BaseWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
@@ -108,7 +107,7 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_size>,
         serial?: Widget_size_serial,
     ) {

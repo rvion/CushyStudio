@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
 import { runInAction } from 'mobx'
@@ -14,7 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
-export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
+export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfig<
     {
         default?: T[]
         /**
@@ -44,7 +45,7 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFi
 >
 
 // SERIAL
-export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
+export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerial<{
     type: 'selectMany'
     query: string
     values: T[]
@@ -72,8 +73,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
-export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectMany_types<T>> {
+export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
 
@@ -118,7 +118,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {

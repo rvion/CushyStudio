@@ -3,7 +3,6 @@ import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec } from './ISpec'
-import type { IWidget } from './IWidget'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
@@ -133,13 +132,13 @@ export class Form<
         : null
 
     /** every widget node must call this function once it's value change */
-    valueChanged = (widget: IWidget) => {
+    valueChanged = (widget: BaseWidget) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
         this._onValueChange?.(this)
     }
 
-    knownShared: Map<string, IWidget> = new Map()
+    knownShared: Map<string, BaseWidget> = new Map()
 
     /** every widget node must call this function once it's serial changed */
     serialChanged = (_widget: BaseWidget) => {

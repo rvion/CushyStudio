@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { IWidget, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial, WidgetSerial_CommonProperties } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -15,7 +16,7 @@ export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfig<
     {
         expand?: boolean
         items: T
@@ -31,7 +32,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
 >
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerial<{
     type: 'choices'
     active: true
     branches: DefaultBranches<T>
@@ -53,8 +54,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
     UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
@@ -152,7 +152,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -258,7 +258,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
         // prev serial seems compmatible => we use it
-        const prevBranchSerial: Maybe<SharedWidgetSerial> = this.serial.values_?.[branch]
+        const prevBranchSerial: Maybe<WidgetSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
             this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
         }

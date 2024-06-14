@@ -1,8 +1,8 @@
-import type { IWidget } from '../IWidget'
+import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
-export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: IWidget }) {
+export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: BaseWidget }) {
     const widget = p.widget
     return (
         <span

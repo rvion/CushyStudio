@@ -3,8 +3,9 @@ import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -14,7 +15,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
-export type Widget_image_config = WidgetConfigFields<
+export type Widget_image_config = WidgetConfig<
     {
         default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>
@@ -24,11 +25,17 @@ export type Widget_image_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_image_serial = WidgetSerialFields<{
+export type Widget_image_serial = WidgetSerial<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
-    imageHash?: string /** for form expiration */
-    /** Height of the resizable frame's content, the width is aspect ratio locked. */
+
+    /** for form expiration */
+    imageHash?: string
+
+    /**
+     * Height of the resizable frame's content,
+     * the width is aspect ratio locked.
+     */
     size: number
 }>
 
@@ -45,8 +52,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends Widget_image_types {} // prettier-ignore
-export class Widget_image extends BaseWidget implements IWidget<Widget_image_types> {
+export class Widget_image extends BaseWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -71,7 +77,7 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_image>,
         serial?: Widget_image_serial,
     ) {

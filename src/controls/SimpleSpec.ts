@@ -1,6 +1,6 @@
+import type { BaseWidget } from './BaseWidget'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { ISpec } from './ISpec'
-import type { IWidget } from './IWidget'
 import type { SList, SOptional } from './SimpleSpecAliases'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
@@ -12,7 +12,7 @@ import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
+export class SimpleSpec<W extends BaseWidget = BaseWidget> implements ISpec<W> {
     $Widget!: W
     $Type!: W['type']
     $Config!: W['$Config']
@@ -52,7 +52,7 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     }
 
     // -----------------------------------------------------
-    Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new SimpleSpec(type, config)
+    Make = <X extends BaseWidget>(type: X['type'], config: X['$Config']) => new SimpleSpec(type, config)
 
     constructor(
         //

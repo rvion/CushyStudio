@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -11,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = WidgetConfigFields<
+export type Widget_markdown_config = WidgetConfig<
     {
         markdown: string | ((form: Form) => string)
         inHeader?: boolean
@@ -20,7 +21,7 @@ export type Widget_markdown_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_markdown_serial = WidgetSerialFields<{
+export type Widget_markdown_serial = WidgetSerial<{
     type: 'markdown'
     active: true
 }>
@@ -38,8 +39,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends Widget_markdown_types {}
-export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdown_types> {
+export class Widget_markdown extends BaseWidget<Widget_markdown_types> {
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -67,7 +67,7 @@ export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdo
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {

@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -21,7 +22,7 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfigFields<
+export type Widget_matrix_config = WidgetConfig<
     {
         default?: { row: string; col: string }[]
         rows: string[]
@@ -31,7 +32,11 @@ export type Widget_matrix_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_serial = WidgetSerial<{
+    type: 'matrix'
+    active: true
+    selected: Widget_matrix_cell[]
+}>
 
 // VALUE
 export type Widget_matrix_value = Widget_matrix_cell[]
@@ -46,8 +51,7 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends Widget_matrix_types {}
-export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_types> {
+export class Widget_matrix extends BaseWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -84,7 +88,7 @@ export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_t
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {

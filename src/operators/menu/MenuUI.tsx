@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
-import { isWidget } from '../../controls/IWidget'
+import { isWidget } from '../../controls/$WidgetSym'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
