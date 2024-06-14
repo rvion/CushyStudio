@@ -2,7 +2,7 @@ import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -17,7 +17,7 @@ type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'un
 type CssProprtyResize = CssProprtyGlobals | 'block' | 'both' | 'horizontal' | 'inline' | 'none' | 'vertical'
 
 // CONFIG
-export type Widget_string_config = WidgetConfigFields<
+export type Widget_string_config = WidgetConfig<
     {
         default?: string
         textarea?: boolean

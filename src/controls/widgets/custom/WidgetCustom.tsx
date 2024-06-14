@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { FC } from 'react'
 
@@ -16,7 +16,7 @@ import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = WidgetConfigFields<
+export type Widget_custom_config<T> = WidgetConfig<
     {
         defaultValue: () => T
         subTree?: () => ISpec

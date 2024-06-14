@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial, WidgetSerial_CommonProperties } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
@@ -16,7 +16,7 @@ export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfig<
     {
         expand?: boolean
         items: T

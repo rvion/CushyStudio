@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -22,7 +22,7 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfigFields<
+export type Widget_matrix_config = WidgetConfig<
     {
         default?: { row: string; col: string }[]
         rows: string[]

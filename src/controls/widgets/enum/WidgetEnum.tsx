@@ -3,7 +3,7 @@ import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -15,7 +15,7 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
-export type Widget_enum_config<O> = WidgetConfigFields<
+export type Widget_enum_config<O> = WidgetConfig<
     {
         enumName: string
         default?: O //Requirable[T] | EnumDefault<T>

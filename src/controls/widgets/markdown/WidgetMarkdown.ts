@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = WidgetConfigFields<
+export type Widget_markdown_config = WidgetConfig<
     {
         markdown: string | ((form: Form) => string)
         inHeader?: boolean

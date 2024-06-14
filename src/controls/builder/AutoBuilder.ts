@@ -1,6 +1,6 @@
 import type { Spec } from '../CushySpec'
 import type { FormBuilder } from '../FormBuilder'
-import type { WidgetConfigFields } from '../WidgetConfig'
+import type { WidgetConfig } from '../WidgetConfig'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
 import type { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 import type { Widget_group } from '../widgets/group/WidgetGroup'
@@ -74,7 +74,7 @@ export class AutoBuilder {
         const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
-                value: (ext?: Partial<WidgetConfigFields<{}, any>>) => {
+                value: (ext?: Partial<WidgetConfig<{}, any>>) => {
                     const items: any = {}
                     for (const field of node.inputs) {
                         // console.log(`[👗] DEBUG:`, field, field.isPrimitive)

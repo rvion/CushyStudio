@@ -2,7 +2,7 @@ import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -18,7 +18,7 @@ export type Widget_button_context<K> = {
 }
 
 // CONFIG
-export type Widget_button_config<K = any> = WidgetConfigFields<
+export type Widget_button_config<K = any> = WidgetConfig<
     {
         text?: string
         /** @default false */

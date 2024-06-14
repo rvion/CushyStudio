@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
@@ -13,7 +13,7 @@ import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 // CONFIG
-export type Widget_seed_config = WidgetConfigFields<
+export type Widget_seed_config = WidgetConfig<
     {
         default?: number
         defaultMode?: SeedMode

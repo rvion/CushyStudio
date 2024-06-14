@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable } from 'mobx'
@@ -15,7 +15,7 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfigFields<{}, Widget_spacer_types>
+export type Widget_spacer_config = WidgetConfig<{}, Widget_spacer_types>
 
 // SERIAL
 export type Widget_spacer_serial = WidgetSerial<{ type: 'spacer' }>

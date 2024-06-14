@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable, reaction } from 'mobx'
@@ -26,7 +26,7 @@ type AutoBehaviour<T extends ISpec> = {
 }
 
 // CONFIG
-export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
+export type Widget_list_config<T extends ISpec> = WidgetConfig<
     {
         element: ((ix: number) => T) | T
         /**

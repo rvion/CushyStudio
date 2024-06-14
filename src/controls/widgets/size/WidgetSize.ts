@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
@@ -14,7 +14,7 @@ import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
-export type Widget_size_config = WidgetConfigFields<
+export type Widget_size_config = WidgetConfig<
     {
         default?: CushySizeByRatio
         min?: number

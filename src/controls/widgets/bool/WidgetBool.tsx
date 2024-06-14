@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
@@ -15,7 +15,7 @@ import { WidgetBoolUI } from './WidgetBoolUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = WidgetConfigFields<
+export type Widget_bool_config = WidgetConfig<
     {
         /**
          * default value; true or false

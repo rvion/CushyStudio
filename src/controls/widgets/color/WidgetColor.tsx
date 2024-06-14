@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Widget_color_config = WidgetConfigFields<{ default?: string }, Widget_color_types>
+export type Widget_color_config = WidgetConfig<{ default?: string }, Widget_color_types>
 
 // SERIAL
 export type Widget_color_serial = WidgetSerial<{

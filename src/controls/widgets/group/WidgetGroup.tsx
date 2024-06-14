@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -14,7 +14,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
+export type Widget_group_config<T extends SchemaDict> = WidgetConfig<
     {
         /**
          * Lambda function is deprecated, prefer passing the items as an object

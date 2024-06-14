@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BoardPosition } from './WidgetListExtTypes'
 
@@ -17,7 +17,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
+export type Widget_listExt_config<T extends ISpec> = WidgetConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number

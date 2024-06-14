@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
@@ -18,7 +18,7 @@ export type OrbitData = {
 }
 
 // CONFIG
-export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitData> }, Widget_orbit_types>
+export type Widget_orbit_config = WidgetConfig<{ default?: Partial<OrbitData> }, Widget_orbit_types>
 
 // SERIAL
 export type Widget_orbit_serial = WidgetSerial<{

@@ -1,7 +1,7 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -21,7 +21,7 @@ export type BaseSelectEntry<T = string> = {
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
+export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfig<
     {
         default?: T
         /**

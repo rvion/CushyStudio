@@ -4,7 +4,7 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
@@ -15,7 +15,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
-export type Widget_image_config = WidgetConfigFields<
+export type Widget_image_config = WidgetConfig<
     {
         default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>

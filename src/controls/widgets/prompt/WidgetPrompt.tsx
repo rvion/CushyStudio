@@ -2,7 +2,7 @@ import type { Timestamp } from '../../../cards/Timestamp'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { Tree } from '@lezer/common'
 
@@ -26,7 +26,7 @@ export type CompiledPrompt = {
 }
 
 // CONFIG
-export type Widget_prompt_config = WidgetConfigFields<
+export type Widget_prompt_config = WidgetConfig<
     {
         default?: string
         placeHolder?: string

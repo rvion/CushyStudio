@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable } from 'mobx'
@@ -11,7 +11,7 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfigFields<
+export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfig<
     {
         startActive?: boolean
         widget: T

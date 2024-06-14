@@ -5,7 +5,7 @@ import type { $WidgetTypes } from './$WidgetTypes'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { Problem_Ext } from './Validation'
 
-export type WidgetConfigFields<X, T extends $WidgetTypes> = X & WidgetConfig_CommonProperties<T>
+export type WidgetConfig<X, T extends $WidgetTypes> = X & WidgetConfig_CommonProperties<T>
 export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
     /**
      * @since 2024-05-20

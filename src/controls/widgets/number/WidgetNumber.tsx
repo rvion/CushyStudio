@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
@@ -11,7 +11,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
-export type Widget_number_config = WidgetConfigFields<
+export type Widget_number_config = WidgetConfig<
     {
         mode: 'int' | 'float'
         default?: number

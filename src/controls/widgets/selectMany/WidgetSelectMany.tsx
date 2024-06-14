@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { WidgetConfigFields } from '../../WidgetConfig'
+import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
@@ -15,7 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
-export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
+export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfig<
     {
         default?: T[]
         /**
