@@ -77,4 +77,11 @@ export const allIcons = {
     ...myCustomIcons,
 }
 
-export type IconName = keyof typeof allIcons
+// slow when used in union => will break typescript
+// export type IconName = keyof typeof allIcons
+
+// possibly fast ???, using [x][0] instead of x prevent distribution
+// https://stackoverflow.com/questions/70924508/why-doesnt-union-distribution-happen-with-tnumber-where-t-is-an-arraylike
+// > Distribution happens only over naked type parameters, meaning a single type parameter without any other type operation applied to it.
+// > T[number] is not a naked type parameter, so no distribution. Elem is a naked type parameter in the second type, so distribution occurs.
+export type IconName = [keyof typeof allIcons][0]

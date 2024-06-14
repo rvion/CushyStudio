@@ -46,6 +46,12 @@ export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 
 // v3 (experimental) ---------------------------------------
 export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
+    // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
+    // $Widget!: K['$Widget'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+
     /** spec used to instanciate this widget */
     abstract spec: ISpec
 

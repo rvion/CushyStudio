@@ -83,8 +83,8 @@
     "typescript.enablePromptUseWorkspaceTsdk": true,
 
     // debug
-    "typescript.tsserver.log": "normal",
-    "typescript.tsserver.enableTracing": true,
+    // "typescript.tsserver.log": "normal",
+    // "typescript.tsserver.enableTracing": true,
 
     // perf
     "typescript.tsserver.maxTsServerMemory": 8000

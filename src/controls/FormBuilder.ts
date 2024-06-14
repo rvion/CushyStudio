@@ -36,6 +36,8 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
+export type { SchemaDict } from './ISpec'
+
 // attempt to make type safety better --------------------------------------------------------
 export type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
 export type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
@@ -336,7 +338,7 @@ export class FormBuilder implements IFormBuilder {
         parent: BaseWidget | null,
         spec: T,
         serial: any | null,
-    ): T['$Widget'] => {
+    ): BaseWidget<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -403,7 +405,7 @@ export class FormBuilder implements IFormBuilder {
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {
-        const w = this.__HYDRATE(parent, spec, serial)
+        const w = this.__HYDRATE(parent, spec, serial) as T['$Widget']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later
