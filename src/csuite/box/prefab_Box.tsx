@@ -1,17 +1,16 @@
-import type { XBool, XChoices } from '../../controls/FormBuilder'
 import type { Widget_choices_config } from '../../controls/widgets/choices/WidgetChoices'
 import type { FormBuilder } from '../../CUSHY'
 import type { Box } from './Box'
 
 import { run_Kolor, ui_Kolor, type UI_Kolor } from '../kolor/prefab_Kolor'
 
-export type UI_Box = XChoices<{
+export type UI_Box = X.XChoices<{
     base: UI_Kolor
     text: UI_Kolor
     textShadow: UI_Kolor
     shadow: UI_Kolor
     border: UI_Kolor
-    hover: XBool
+    hover: X.XBool
 }>
 
 export const ui_Box = (

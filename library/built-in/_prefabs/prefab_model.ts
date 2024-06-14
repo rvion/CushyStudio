@@ -1,5 +1,22 @@
-import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
+
+import { ui_pag } from './prefab_pag'
+
+type UI_Model = X.XGroup<{
+    ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
+    checkpointConfig: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
+    extra: X.XChoices<{
+        rescaleCFG: X.XNumber
+        vae: X.XEnum<Enum_VAELoader_vae_name>
+        clipSkip: X.XNumber
+        freeU: X.XGroup<X.SchemaDict>
+        freeUv2: X.XGroup<X.SchemaDict>
+        pag: X.XGroup<any>
+        sag: X.XGroup<any>
+        KohyaDeepShrink: X.XGroup<any>
+        civitai_ckpt_air: X.XString
+    }>
+}>
 
 // UI -----------------------------------------------------------
 export const ui_model = () => {
@@ -103,47 +120,7 @@ export const ui_model = () => {
     })
 }
 
-const ui_pag = (form: FormBuilder) => {
-    return form
-        .fields(
-            {
-                include: form.choices({
-                    items: { base: form.fields({}), hiRes: form.fields({}) },
-                    appearance: 'tab',
-                    default: { base: true, hiRes: false },
-                }),
-                scale: form.float({
-                    default: 3,
-                    min: 0,
-                    softMax: 6,
-                    max: 100,
-                    step: 0.1,
-                    tooltip:
-                        'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
-                }),
-                adaptiveScale: form.float({
-                    default: 0,
-                    min: 0,
-                    max: 1,
-                    step: 0.1,
-                    tooltip:
-                        'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
-                }),
-            },
-            {
-                startCollapsed: true,
-                tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
-                summary: (ui) => {
-                    return `scale:${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} scale:${
-                        ui.scale
-                    } dampening:${ui.adaptiveScale}`
-                },
-            },
-        )
-        .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'PerturbedAttention' }])
-}
-
-const ui_sag = (form: FormBuilder) => {
+const ui_sag = (form: X.FormBuilder) => {
     return form.fields(
         {
             include: form.choices({
@@ -164,7 +141,7 @@ const ui_sag = (form: FormBuilder) => {
     )
 }
 
-const ui_kohyaDeepShrink = (form: FormBuilder) => {
+const ui_kohyaDeepShrink = (form: X.FormBuilder) => {
     return form.fields(
         {
             include: form.choices({

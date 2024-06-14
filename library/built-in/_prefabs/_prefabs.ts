@@ -11,7 +11,6 @@
  * ❌ import {...} from '...'`
  * */
 
-import type * as X from '../../../src/controls/FormBuilder'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
 
 // this should be a default

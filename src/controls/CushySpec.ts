@@ -1,6 +1,5 @@
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import type { BaseWidget } from './BaseWidget'
-import type { XList, XOptional } from './FormBuilder'
 import type { ISpec } from './ISpec'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
@@ -74,13 +73,13 @@ export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widge
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): XList<this> =>
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>
         new Spec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = (startActive: boolean = false): XOptional<this> =>
+    optional = (startActive: boolean = false): X.XOptional<this> =>
         new Spec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,

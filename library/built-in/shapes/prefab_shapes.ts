@@ -7,7 +7,6 @@
  *  3. the main helper funtion that print stuff on canvas
  */
 
-import type * as X from '../../../src/controls/FormBuilder'
 import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------

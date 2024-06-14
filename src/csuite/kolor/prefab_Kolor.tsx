@@ -1,28 +1,27 @@
-import type { FormBuilder, XChoice, XChoices, XNumber } from '../../controls/FormBuilder'
 import type { Kolor } from './Kolor'
 
 import { Fragment } from 'react/jsx-runtime'
 
 import { getNum } from '../tinyCSS/CSSVar'
 
-export type UI_Kolor = XChoices<{
-    l: XChoice<{
-        lightness: XNumber
-        contrast: XNumber
+export type UI_Kolor = X.XChoices<{
+    l: X.XChoice<{
+        lightness: X.XNumber
+        contrast: X.XNumber
     }>
-    c: XChoice<{
-        chroma: XNumber
-        chromaBlend: XNumber
+    c: X.XChoice<{
+        chroma: X.XNumber
+        chromaBlend: X.XNumber
     }>
-    h: XChoice<{
-        hue: XNumber
-        hueShift: XNumber
+    h: X.XChoice<{
+        hue: X.XNumber
+        hueShift: X.XNumber
     }>
 }>
 
 export const ui_Kolor = (
     //
-    ui: FormBuilder,
+    ui: X.FormBuilder,
     def?: Kolor,
 ): UI_Kolor => {
     return ui.choicesV2(

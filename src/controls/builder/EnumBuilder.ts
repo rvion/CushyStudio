@@ -3,7 +3,7 @@
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Form } from '../Form'
-import type { FormBuilder, XEnum, XOptional, XSelectMany } from '../FormBuilder'
+import type { FormBuilder } from '../FormBuilder'
 import type { ISpec } from '../ISpec'
 import type { Widget_enum_config } from '../widgets/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../widgets/selectMany/WidgetSelectMany'
@@ -14,13 +14,13 @@ import { Spec } from '../CushySpec'
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
-    ) => XEnum<Requirable[K]['$Value']>
+    ) => X.XEnum<Requirable[K]['$Value']>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-    ) => XOptional<XEnum<Requirable[K]['$Value']>>
+    ) => X.XOptional<X.XEnum<Requirable[K]['$Value']>>
 }
 
 export interface EnumBuilder extends IEnumBuilder {}
@@ -104,7 +104,7 @@ export class EnumBuilderOpt {
 export type IEnumListBuilder = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_selectMany_config<BaseSelectEntry<Requirable[K]['$Value'] & string>>, 'choices'>,
-    ) => XSelectMany<BaseSelectEntry<Requirable[K]['$Value'] & string>>
+    ) => X.XSelectMany<BaseSelectEntry<Requirable[K]['$Value'] & string>>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}

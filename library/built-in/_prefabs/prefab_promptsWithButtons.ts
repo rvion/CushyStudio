@@ -1,22 +1,7 @@
 /** by @Vinsi (slightly adapted) */
 
-import type * as X from '../../../src/controls/FormBuilder'
 import type { SchemaDict } from '../../../src/controls/ISpec'
 import type { OutputFor } from '../../local/pony/_prefab_PonyDiffusion'
-
-export const run_advancedPrompt = (
-    //
-    ui: OutputFor<typeof ui_advancedPrompt>,
-): string => {
-    return ui
-        .map((item) => {
-            const promptText = item.prompt?.text || ''
-            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
-            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
-            return `${promptText}${characterText}${styleText}`
-        })
-        .join('\n')
-}
 
 // 📝 2024-06-14 rvion: explicitly adding types is optional;
 // I tend to prefer adding them in built-in prefabs to help
@@ -88,6 +73,17 @@ export const ui_advancedPrompt = (): UI_advancedPrompt => {
                 },
             }),
     })
+}
+
+export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
+    return ui
+        .map((item) => {
+            const promptText = item.prompt?.text || ''
+            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
+            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
+            return `${promptText}${characterText}${styleText}`
+        })
+        .join('\n')
 }
 
 // Custom function
