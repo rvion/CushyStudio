@@ -16,7 +16,11 @@ export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
      *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
      *   - "ldi..." for Locomotive design icons
      */
-    icon?: IconName // | CovariantFn<T['$Widget'], IconName> // IconName
+    icon?: IconName
+
+    // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
+    // ❌ CHOKE typescript typechecking performances.
+    // icon?: IconName | CovariantFn<T['$Widget'], IconName> // IconName
 
     /**
      * @since 2024-05-19
