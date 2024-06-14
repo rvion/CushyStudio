@@ -65,16 +65,16 @@ export class ComfyPromptL {
     graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', 'comfy_workflow')
     get graph() { return this.graphRef.item } // prettier-ignore
 
-    onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
+    onPromptRelatedMessage = (msg: PromptRelated_WsMsg): void => {
         // console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
         const graph = this.graph
         if (msg.type === 'execution_start') return
         if (msg.type === 'execution_cached') return graph.onExecutionCached(msg)
-        if (msg.type === 'executing') return this.onExecuting(msg)
+        if (msg.type === 'executing') return void this.onExecuting(msg)
         if (msg.type === 'progress') return graph.onProgress(msg)
         if (msg.type === 'executed') return this.onExecuted(msg)
-        if (msg.type === 'execution_error') return this.onError(msg)
-        console.log(`[🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴] `, msg)
+        if (msg.type === 'execution_error') return void this.onError(msg)
+        console.log(`🔴 UNEXPECTED MESSAGE:`, msg)
         exhaust(msg)
         // await Promise.all(images.map(i => i.savedPromise))
         // const uris = FrontWebview.with((curr) => {
@@ -89,7 +89,7 @@ export class ComfyPromptL {
     }
 
     /** update pointer to the currently executing node */
-    private onExecuting = (msg: WsMsgExecuting) => {
+    private onExecuting = async (msg: WsMsgExecuting): Promise<void> => {
         this.graph.onExecuting(msg)
         if (msg.data.node == null) {
             // * When `msg.data.node` is null, it means the prompt has nothing
@@ -98,13 +98,11 @@ export class ComfyPromptL {
             // * Pending promises hold the async post-processing operations
             //   spawned when receiving outputs.
             // console.log(`[🔴🔴🔴🔴] ${this.pendingPromises.length} pending Promises`)
-            Promise.all(this.pendingPromises).then(() => {
-                this._finish({ status: 'Success' })
-            })
-            return
+            await Promise.all(this.pendingPromises)
+            return await this._finish({ status: 'Success' })
         }
     }
-    private onError = (msg: WsMsgExecutionError) => {
+    private onError = async (msg: WsMsgExecutionError): Promise<void> => {
         console.error(msg)
         this.db.runtime_error.create({
             message: 'Prompt failed',
@@ -114,7 +112,7 @@ export class ComfyPromptL {
             stepID: this.step.id,
         })
         this.step.update({ status: Status.Failure })
-        this._finish({ status: 'Failure', error: msg })
+        return await this._finish({ status: 'Failure', error: msg })
     }
 
     /**
@@ -225,8 +223,8 @@ export class ComfyPromptL {
                 .toFormat(format, sf.quality ? { quality: Math.round(sf.quality * 100) } : undefined)
                 .toFile(outputRelPath)
             // .webp({ quality: 80 })
-            openFolderInOS(dirname(outputRelPath) as AbsolutePath)
 
+            // void openFolderInOS(dirname(outputRelPath) as AbsolutePath)
             // console.log(`[FUCK 2 🔴] `, await sharp(outputRelPath).metadata())
             // const canvas = document.createElement('canvas')
             // let ctx = canvas.getContext('2d')

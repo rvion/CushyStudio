@@ -23,7 +23,7 @@
 //                     star
 //                 </span>
 //             </div>
-//             <div tw='flex-1 text-base-content'>Favorites</div>
+//             <div tw='flex-1'>Favorites</div>
 //             <label className='swap swap-rotate opacity-30'>
 //                 <input
 //                     type='checkbox'

@@ -32,7 +32,6 @@ Known Users:
     border-left: 1px solid #333333;
 }
 
-
 ._MD code{
     border: 1px solid oklch(var(--p)/.2);
     display: block;

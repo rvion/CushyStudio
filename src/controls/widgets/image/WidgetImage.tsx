@@ -9,7 +9,6 @@ import type { Problem_Ext } from '../../Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
@@ -17,7 +16,7 @@ import { WidgetSelectImageUI } from './WidgetImageUI'
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<
     {
-        defaultActive?: boolean
+        default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>
         assetSuggested?: RelativePath | RelativePath[]
     },
@@ -29,6 +28,8 @@ export type Widget_image_serial = WidgetSerialFields<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
     imageHash?: string /** for form expiration */
+    /** Height of the resizable frame's content, the width is aspect ratio locked. */
+    size: number
 }>
 
 // VALUE
@@ -49,11 +50,22 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
+    // size: number = 192
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get defaultValue(): MediaImageL {
+        return this.config.default ?? cushy.defaultImage
+    }
+    get hasChanges() {
+        return this.value !== this.defaultValue
+    }
+    reset = () => {
+        this.value = this.defaultValue
     }
 
     constructor(
@@ -68,12 +80,16 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
         this.serial = serial ?? {
             type: 'image',
             id: this.id,
-            imageID: cushy.defaultImage.id,
+            imageID: this.config.default?.id ?? cushy.defaultImage.id,
+            size: 128,
         }
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
+    }
+    get animateResize() {
+        return false
     }
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
@@ -87,6 +103,14 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             this.serial.imageID = next.id
             this.bumpValue()
         })
+    }
+
+    set size(val: number) {
+        this.serial.size = val
+        this.bumpSerial()
+    }
+    get size() {
+        return this.serial.size
     }
 }
 

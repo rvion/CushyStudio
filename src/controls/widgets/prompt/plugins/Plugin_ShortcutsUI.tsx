@@ -1,12 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
+import { ComboUI } from '../../../../app/accelerators/ComboUI'
 import { openExternal } from '../../../../app/layout/openExternal'
-import { ComboUI } from '../../../../app/shortcuts/ComboUI'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
-import { PluginWrapperUI } from './_PluginWrapperUI'
 
 export const Plugin_ShortcutsUI = observer(function Plugin_ShortcutsUI_(p: { uist: WidgetPromptUISt }) {
-    const uist = p.uist
     return (
         <div>
             <div tw='text-xs italic'>

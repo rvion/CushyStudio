@@ -3,9 +3,11 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
-import { MessageInfoUI } from '../panels/MessageUI'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { Button, Loader, Message } from '../rsuite/shims'
+import { Button } from '../csuite/button/Button'
+import { Frame } from '../csuite/frame/Frame'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { RevealUI } from '../csuite/reveal/RevealUI'
+import { Loader, Message } from '../csuite/shims'
 import { exhaust } from '../utils/misc/exhaust'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { GitInstallUI } from './GitInstallUI'
@@ -20,16 +22,16 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
 }) {
     const updater = p.updater
     let ANCHOR = (
-        <div
+        <Frame
             //
             className={p.className}
-            tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}
+            tw={['flex items-center', updater.hasUpdateAvailable && 'btn-warning']}
         >
             {p.children}
             <div tw='text-xs italic opacity-50'>
                 <UpdaterAnchorUI updater={updater} />
             </div>
-        </div>
+        </Frame>
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
@@ -68,7 +70,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                         className='animate-pulse'
                         color='red'
                         size='sm'
-                        appearance='primary'
+                        look='primary'
                         icon={<span className='material-symbols-outlined'>update</span>}
                         onClick={async (ev) => {
                             ev.stopPropagation()
@@ -100,14 +102,10 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 )}
             </div>
             <div tw='flex gap-2'>
-                <Button
-                    tw='btn-info'
-                    size='sm'
-                    onClick={() => updater.checkForUpdatesNow()}
-                    icon={<span className='material-symbols-outlined'>refresh</span>}
-                >
+                <Button look='info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
                     REFRESH
                 </Button>
+
                 {/* {updater.config.canBeUninstalled ? ( //
                     <UninstallUI updater={updater} />
                 ) : null} */}

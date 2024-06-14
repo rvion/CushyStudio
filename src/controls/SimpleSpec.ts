@@ -6,7 +6,9 @@ import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
-import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
+import { makeObservable } from 'mobx'
+
+import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 
@@ -56,7 +58,9 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
         //
         public readonly type: W['type'],
         public readonly config: W['$Config'],
-    ) {}
+    ) {
+        makeObservable(this, { config: true })
+    }
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> =>
@@ -78,6 +82,15 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
-    /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = (): SimpleSpec<W> => new SimpleSpec<W>(this.type, { ...this.config, hidden: true })
+    /** clone the spec, and patch the cloned config */
+    withConfig = (config: Partial<W['$Config']>): SimpleSpec<W> => {
+        const mergedConfig = { ...this.config, ...config }
+        const cloned = new SimpleSpec<W>(this.type, mergedConfig)
+        // 🔴 Keep producers and reactions -> could probably be part of the ctor
+        cloned.producers = this.producers
+        cloned.reactions = this.reactions
+        return cloned
+    }
+
+    hidden = (): SimpleSpec<W> => this.withConfig({ hidden: true })
 }

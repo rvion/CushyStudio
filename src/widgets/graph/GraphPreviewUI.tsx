@@ -33,12 +33,12 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
             for (const x of workflow.nodes) {
                 // prettier-ignore
                 ctx.fillStyle =
-                    x.status === 'cached'    ? 'yellow'     :
-                    x.status === 'done'      ? 'lightgreen' :
-                    x.status === 'error'     ? 'red'        :
-                    x.status === 'executing' ? 'pink'       :
-                    x.status === 'waiting'   ? 'blue'       :
-                    x.status ===  null       ? 'blue'       :
+                    x.status === 'cached'    ? 'yellow'      :
+                    x.status === 'done'      ? 'lightgreen'  :
+                    x.status === 'error'     ? 'red'         :
+                    x.status === 'executing' ? 'pink'        :
+                    x.status === 'waiting'   ? 'blue'        :
+                    x.status ===  null       ? '#88888811' :
                     'purple'
                 ctx.fillRect(
                     //
@@ -70,7 +70,11 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
                 id='map'
                 ref={canvasRef}
                 {...props}
-                style={{ width: '100px', height: '100px', zIndex: 1000, border: '1px solid blue' }}
+                style={{
+                    width: '100px',
+                    height: '100px',
+                    zIndex: 1000,
+                }}
                 // onMouseOverCapture={}
                 onMouseEnter={() => {
                     domNode.style.opacity = '1'

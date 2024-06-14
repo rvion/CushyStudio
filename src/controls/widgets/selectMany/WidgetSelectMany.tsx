@@ -9,8 +9,10 @@ import { nanoid } from 'nanoid'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
+export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
@@ -32,8 +34,11 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFi
         choices: T[] | ((self: Widget_selectMany<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
-        appearance?: 'select' | 'tab'
+        appearance?: SelectManyAppearance
         getLabelUI?: (t: T) => React.ReactNode
+
+        //
+        wrap?: boolean
     },
     Widget_selectMany_types<T>
 >
@@ -70,13 +75,27 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
 export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
-    DefaultBodyUI = undefined
+    DefaultBodyUI = WidgetSelectMany_ListUI
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>
 
+    get defaultValue(): Widget_selectMany_value<T> {
+        return this.config.default ?? []
+    }
+    get hasChanges() {
+        if (this.serial.values.length !== this.defaultValue.length) return true
+        for (const item of this.serial.values) {
+            if (!this.defaultValue.find((i) => i.id === item.id)) return true
+        }
+        return false
+    }
+    reset = () => {
+        this.value = this.defaultValue
+    }
+    wrap = this.config.wrap ?? false
     get choices(): T[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //
@@ -104,8 +123,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
         serial?: Widget_selectMany_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'selectMany',
             collapsed: config.startCollapsed,
@@ -114,7 +133,10 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
             values: config.default ?? [],
         }
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
-        makeAutoObservableInheritance(this)
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     /** un-select given item */

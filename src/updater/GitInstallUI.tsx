@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../rsuite/shims'
+import { Button } from '../csuite/button/Button'
 import { GitManagedFolder } from './updater'
 
 export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitManagedFolder }) {
@@ -8,13 +8,13 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitMan
     return (
         <Button
             loading={updater.currentAction != null}
-            appearance='primary'
+            look='primary'
             size='xs'
-            icon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+            icon='mdiCloudDownload'
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
-                updater.install()
+                return updater.install()
             }}
         >
             Install

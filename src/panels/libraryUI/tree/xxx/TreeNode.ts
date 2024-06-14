@@ -1,11 +1,9 @@
-import type { Tree } from './Tree'
+import type { ITreeElement, ITreeEntry } from '../TreeEntry'
+import type { INodeStore, Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
 import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
-import { asTreeEntryID } from '../../../../db/TYPES.gen'
-import { TreeEntryL } from '../../../../models/TreeEntry'
-import { ITreeElement, ITreeEntry } from '../TreeEntry'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 
@@ -52,10 +50,12 @@ export class TreeNode {
         return this.entryL.data.isExpanded ?? false
     }
     open() {
+        console.log(`[🤠] opening`)
         this.data.onExpand?.(this)
         this.entryL.update({ isExpanded: SQLITE_true })
     }
     close() {
+        console.log(`[🤠] closing`)
         this.entryL.update({ isExpanded: SQLITE_false })
     }
     toggle() {
@@ -68,7 +68,10 @@ export class TreeNode {
 
     data: ITreeEntry
     id: string
-    entryL: TreeEntryL
+
+    /* TreeEntryL */
+    entryL: INodeStore
+
     constructor(
         //
         public tree: Tree,
@@ -76,10 +79,11 @@ export class TreeNode {
         public parent: TreeNode | undefined,
     ) {
         const key = elem.key
-        // console.log(`[👙] 🔴REF= ${key}`)
         this.id = (parent?.id ?? '') + '/' + key
-        // console.log(`[👙] `, this.id)
-        this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
+
+        // 🔴 TODO: check if next line should be moved below the `this.data = ...` line
+        this.entryL = tree.config.getNodeState(this)
+        // 🔴 this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
         // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor
@@ -162,6 +166,7 @@ export class TreeNode {
 
     get prevSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
+        // eslint-disable-next-line consistent-this
         let SELF = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
         if (siblings[0] === SELF) return // first of the fratry
@@ -198,6 +203,7 @@ export class TreeNode {
     /** return the last descendant
      * [a[b,c],x[y,z]] => z */
     get lastDescendant(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         let out: TreeNode | undefined
         while ((at = at.lastChild)) out = at
@@ -209,6 +215,7 @@ export class TreeNode {
     }
 
     get root(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         while (at.parent) {
             at = at.parent
@@ -233,6 +240,7 @@ export class TreeNode {
     }
 
     get lastOpenedDescendant(): TreeNode | undefined {
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         let out: TreeNode | undefined
         if (!at.isOpen) return
@@ -262,6 +270,7 @@ export class TreeNode {
     get nodeBelowInView(): TreeNode | undefined {
         if (this.isOpen && this.firstChild) return this.firstChild
         if (this.nextSibling) return this.nextSibling
+        // eslint-disable-next-line consistent-this
         let at: TreeNode | undefined = this
         while ((at = at.parent)) if (at.nextSibling) return at.nextSibling
     }

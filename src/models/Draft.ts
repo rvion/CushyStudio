@@ -25,10 +25,10 @@ export class DraftL {
     shouldAutoStart = false
 
     /** collapse all top-level form entryes */
-    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllEntries()
+    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllChildren()
 
     /** expand all top-level form entries */
-    expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
+    expandTopLevelFormEntries = () => this.form?.root?.expandAllChildren()
 
     // TODO: rename
     // get illustrationFilePathAbs(): AbsolutePath | null {
@@ -216,8 +216,6 @@ export class DraftL {
         // ⏸️ const builder = req.builder
         // ⏸️ builder._cache.count++ 🔴
 
-        // console.log(`[👙] 🔴`, JSON.stringify(widget.serial))
-        // debugger
         const graph = startGraph.clone()
         // 4. create step
         const step = this.db.step.create({
@@ -230,7 +228,9 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({
+
+        // start step without waiting
+        void step.start({
             formInstance: widget,
             imageToStartFrom: p.imageToStartFrom,
         })

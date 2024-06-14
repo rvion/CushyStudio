@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
-import { SelectUI } from '../../rsuite/SelectUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
     return (
-        <div tw='flex gap-1'>
+        <div tw='flex gap-1 items-center'>
             <input
-                tw='input my-0.5 input-xs'
+                tw='cushy-basic-input my-0.5'
                 placeholder='filename'
                 value={cushy.galleryFilterPath ?? ''}
                 type='text'
@@ -18,7 +18,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
             />
 
             <input
-                tw='input my-0.5 input-xs'
+                tw='cushy-basic-input my-0.5'
                 placeholder='tags'
                 value={cushy.galleryFilterTag ?? ''}
                 type='text'

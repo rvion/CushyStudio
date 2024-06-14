@@ -3,9 +3,9 @@ import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
 import type { FormSerial } from '../controls/FormSerial'
+import type { Kolor } from '../csuite/kolor/Kolor'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
-import type { RevealState } from '../rsuite/reveal/RevealState'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -18,7 +18,7 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
-import { commandManager, type CommandManager } from '../app/shortcuts/CommandManager'
+import { commandManager, type CommandManager } from '../app/accelerators/CommandManager'
 import { createRandomGenerator } from '../back/random'
 import { asAppPath } from '../cards/asAppPath'
 import { GithubRepoName } from '../cards/githubRepo'
@@ -30,9 +30,11 @@ import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
+import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
+import { run_Kolor } from '../csuite/kolor/prefab_Kolor'
 import { LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
-import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
@@ -44,20 +46,19 @@ import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
-import { regionMonitor, RegionMonitor } from '../operators/RegionMonitor'
+import { activityManager } from '../operators/activity/Activity'
+import { regionMonitor, RegionMonitor } from '../operators/regions/RegionMonitor'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
 import { treeElement } from '../panels/libraryUI/tree/TreeEntry'
-import { Tree } from '../panels/libraryUI/tree/xxx/Tree'
+import { Tree, type TreeStorageConfig } from '../panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
-import { CushyLayoutManager } from '../panels/router/Layout'
-// import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
+import { CushyLayoutManager } from '../router/Layout'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
-import { ThemeManager } from '../theme/ThemeManager'
 import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
 import { CleanedEnumResult } from '../types/EnumUtils'
 import { StepOutput } from '../types/StepOutput'
@@ -71,6 +72,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
+import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
@@ -99,12 +101,9 @@ export class STATE {
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
-    __TEMPT__maxStepsToShow = 10
-
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
-    themeMgr: ThemeManager
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
@@ -117,6 +116,10 @@ export class STATE {
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
 
+    get showWidgetUndo() { return this.theme.value.showWidgetUndo } // prettier-ignore
+    get showWidgetMenu() { return this.theme.value.showWidgetMenu } // prettier-ignore
+    get showWidgetDiff() { return this.theme.value.showWidgetDiff } // prettier-ignore
+    get showToggleButtonBox() { return this.theme.value.showToggleButtonBox } // prettier-ignore
     _updateTime = () => {
         const now = Date.now()
         // console.log(`time is now ${now}`)
@@ -176,9 +179,7 @@ export class STATE {
         return def[0]
     }
 
-    openInVSCode = (filePathWithinWorkspace: RelativePath) => {
-        openInVSCode(this, filePathWithinWorkspace)
-    }
+    openInVSCode = (filePathWithinWorkspace: RelativePath) => openInVSCode(this, filePathWithinWorkspace)
 
     getKnownCheckpoints = () => this.managerRepository.getKnownCheckpoints()
 
@@ -249,6 +250,7 @@ export class STATE {
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
+    // themeManager: CushyThemeManager
 
     // showPreviewInFullScreen
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
@@ -439,6 +441,9 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
+    get activityManager() {
+        return activityManager
+    }
     civitaiConf = CushyFormManager.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
@@ -455,21 +460,10 @@ export class STATE {
     )
     favbar = CushyFormManager.fields(
         (f) => ({
-            size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
             grayscale: f.boolean({ label: 'Grayscale' }),
-            appIcons: f
-                .int({
-                    label: false,
-                    alignLabel: false,
-                    text: 'App Icons',
-                    default: 100,
-                    step: 10,
-                    min: 1,
-                    max: 100,
-                    suffix: '%',
-                })
-                .optional(true),
+            appIcons: f.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
         }),
         {
             name: 'SideBar Conf',
@@ -496,9 +490,9 @@ export class STATE {
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
             removeBackground: form.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
-            ambientLightColor: form.color({ label: 'light color' }),
+            ambientLightColor: form.colorV2({ label: 'light color', default: '#ffffff' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
-            takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+            // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
             metalness: form.float({ min: 0, max: 1 }),
             roughness: form.float({ min: 0, max: 1 }),
             skyBox: form.bool({}),
@@ -519,17 +513,10 @@ export class STATE {
             }),
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
-            galleryBgColor: f.color({ label: 'background' }),
+            galleryBgColor: f.colorV2({ label: 'background' }).optional(),
             galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
             showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
-            onlyShowBlurryThumbnails: f.boolean({
-                alignLabel: false,
-                text: 'Only Show Blurry Thumbnails',
-                expand: true,
-                display: 'button',
-                icon: 'lock',
-                label: false,
-            }),
+            onlyShowBlurryThumbnails: f.boolean({ label: 'Blur Thumbnails' }),
         }),
         {
             name: 'Gallery Conf',
@@ -567,7 +554,6 @@ export class STATE {
         // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
-        this.themeMgr = new ThemeManager(this)
         this.updater = new GitManagedFolder(this, {
             absFolderPath: this.rootPath,
             shouldAutoUpdate: true,
@@ -588,14 +574,24 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
-        this.tree1 = new Tree(this, [
-            //
-            treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
-            treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
-            treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
-            treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
-            // '#apps',
-        ])
+
+        const treeAdapter: TreeStorageConfig = {
+            getNodeState: (node: TreeNode) => this.db.tree_entry.upsert({ id: node.id })!,
+            updateAll: (data: { isExpanded: SQLITE_boolean_ | null }) =>
+                this.db.tree_entry.updateAll({ isExpanded: data.isExpanded }),
+        }
+
+        this.tree1 = new Tree(
+            [
+                //
+                treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
+                treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
+                treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
+                treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
+                // '#apps',
+            ],
+            treeAdapter,
+        )
         this.tree1View = new TreeView(this.tree1, {
             onFocusChange: (node?: TreeNode) => {
                 if (node == null) return
@@ -605,18 +601,21 @@ export class STATE {
                 return
             },
         })
-        this.tree2 = new Tree(this, [
-            // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
-            treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
-            treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
-            treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
-            treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
-            //
-            // 'path#library',
-            // 'path#library/built-in',
-            // 'path#library/local',
-            // 'path#library/sdk-examples',
-        ])
+        this.tree2 = new Tree(
+            [
+                // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
+                treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
+                treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
+                treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
+                treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
+                //
+                // 'path#library',
+                // 'path#library/built-in',
+                // 'path#library/local',
+                // 'path#library/sdk-examples',
+            ],
+            treeAdapter,
+        )
         this.tree2View = new TreeView(this.tree2, {
             onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })
@@ -625,7 +624,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
-        this.startupFileIndexing()
+        void this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
     }
 
@@ -937,5 +936,11 @@ export class STATE {
         mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content, 'utf-8')
     }
-    // ----------------------------
+
+    theme = themeConf
+    csuite = new CSuite_ThemeCushy(this)
+
+    get themeText(): Kolor {
+        return run_Kolor(this.theme.value.text)
+    }
 }

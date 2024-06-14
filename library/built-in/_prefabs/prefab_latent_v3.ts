@@ -8,9 +8,11 @@ export const ui_latent_v3 = () => {
     const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
 
     return form.choice({
+        icon: 'mdiStarThreePoints',
         appearance: 'tab',
         default: 'emptyLatent',
         label: 'Latent Input',
+        background: { hue: 270, chroma: 0.04 },
         items: {
             emptyLatent: form.group({
                 collapsed: false,
@@ -22,7 +24,7 @@ export const ui_latent_v3 = () => {
                 border: false,
                 items: {
                     batchSize,
-                    image: form.image(),
+                    image: form.image({ label: false, justifyLabel: false }),
                     resize: form.auto.Image_Resize().optional(),
                 },
             }),

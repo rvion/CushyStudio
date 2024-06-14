@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { TabUI } from '../app/layout/TabUI'
 import { replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { TabUI } from '../csuite/tabs/TabUI'
 import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'
@@ -29,9 +29,9 @@ export const Panel_Script = observer(function Panel_Script_(p: { scriptID: Cushy
             <div>extracted from: {script.relPath}</div>
             <TabUI>
                 <div>text (before import rewrite)</div>
-                <pre tw='bg-base-200 text-xs font-mono'>{script.data.code}</pre>
+                <pre tw='text-xs font-mono'>{script.data.code}</pre>
                 <div>text (after import rewrite)</div>
-                <pre tw='bg-base-200 text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
+                <pre tw='text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
                 <div>code</div>
                 <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
             </TabUI>

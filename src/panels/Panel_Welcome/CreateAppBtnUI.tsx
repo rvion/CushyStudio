@@ -2,20 +2,21 @@ import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Button } from '../../csuite/button/Button'
+import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { toastError } from '../../utils/misc/toasts'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
-import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
         <RevealUI placement='popup-lg' title='Create an app' content={() => <CreateAppPopupUI />}>
-            <div tw='btn btn-sm btn-accent'>
+            <Button look='primary' icon='mdiOpenInNew'>
                 Create My App
-                <span className='material-symbols-outlined'>open_in_new</span>
-            </div>
+            </Button>
         </RevealUI>
     )
 })

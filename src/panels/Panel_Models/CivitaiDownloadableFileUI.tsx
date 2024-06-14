@@ -3,14 +3,18 @@ import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultI
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { BadgeUI } from '../../csuite/badge/BadgeUI'
+import { Button } from '../../csuite/button/Button'
+import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
+import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
 import { formatSize } from '../../db/getDBStats'
 import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
 import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
 import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../rsuite/SelectUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
-import { MessageWarningUI } from '../MessageUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 
 const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel_Base> => {
@@ -66,18 +70,18 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
     }
     const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)
     return (
-        <div tw='bd1'>
-            <div tw='badge badge-lg badge-neutral'>type={file.type}</div>
+        <Frame border={39} tw='p-1' hover>
+            <BadgeUI tw='inline-flex'>type={file.type}</BadgeUI>
             <div // File name
                 tw='flex items-center gap-1'
             >
-                <span className='material-symbols-outlined'>insert_drive_file</span>
+                <Ikon.mdiFile />
                 <div tw='font-bold flex items-center'>{file.name}</div>
                 <div tw='text-sm underline'>{formatSize(file.sizeKB * 1000)}</div>
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={file} />}>
                     <div tw='btn btn-xs btn-outline'>
-                        <span className='material-symbols-outlined'>info</span>
+                        <Ikon.mdiInformation />
                         infos
                     </div>
                 </RevealUI>
@@ -111,14 +115,15 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                     {detectedType == null ? <MessageWarningUI markdown={errMsg(p, 'Type')} /> : null}
                 </div>
                 <div tw='flex'>
-                    <div // Download button
-                        tw={['btn btn-primary btn-sm', isBeeingInstalled && 'btn-disabled']}
+                    <Button // Download button
+                        look='primary'
+                        loading={isBeeingInstalled}
                         onClick={() => cushy.mainHost.manager.installModel(mi)}
                     >
                         {isBeeingInstalled && <div tw='loading loading-spinner'></div>}
                         <span className='material-symbols-outlined'>download</span>
                         Download
-                    </div>
+                    </Button>
                     <RevealUI content={() => <JsonViewUI value={mi} />}>
                         <div tw='btn btn-sm btn-link'>show ComfyManager payload</div>
                     </RevealUI>
@@ -133,7 +138,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
             {/* <div tw='text-sm'>{f.scannedAt}</div> */}
             {/* <div tw='text-sm'>pikle scan: {f.pickleScanResult}</div> */}
             {/* <div tw='text-sm'>virus scan: {f.virusScanResult}</div> */}
-        </div>
+        </Frame>
     )
 })
 

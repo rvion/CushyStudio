@@ -1,7 +1,8 @@
+import type { TreeNode } from './xxx/TreeNode'
+
 import { observer } from 'mobx-react-lite'
 
 import { TreeIcon1UI } from './RenderTreeIcon1'
-import { TreeNode } from './xxx/TreeNode'
 
 export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node: TreeNode }) {
     const node = p.node

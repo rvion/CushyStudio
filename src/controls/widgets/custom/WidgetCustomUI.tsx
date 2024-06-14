@@ -1,11 +1,11 @@
-import type { PropsOf } from '../../../panels/router/Layout'
+import type { PropsOf } from '../../../router/Layout'
 import type { Widget_custom } from './WidgetCustom'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { JsonViewUI } from '../../../widgets/workspace/JsonViewUI'
-import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { widget: Widget_custom<T> }) {
     const widget = p.widget

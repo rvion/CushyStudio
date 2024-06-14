@@ -1,3 +1,4 @@
+import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -6,7 +7,6 @@ import type { Problem_Ext } from '../../Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
@@ -20,9 +20,12 @@ export type Widget_button_context<K> = {
 export type Widget_button_config<K = any> = WidgetConfigFields<
     {
         text?: string
-        kind?: `primary` | `special` | `warning`
+        /** @default false */
+        default?: boolean
+        look?: FrameAppearance
+        expand?: boolean
         useContext?: () => K
-        icon?: (ctx: Widget_button_context<K>) => string
+        // icon?: (ctx: Widget_button_context<K>) => string
         onClick?: (ctx: Widget_button_context<K>) => void
     },
     Widget_button_types<K>
@@ -52,7 +55,7 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
 
@@ -68,17 +71,17 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
         serial?: Widget_button_serial,
     ) {
         super()
+        this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (config.text) {
             config.label = config.label ?? ` `
         }
 
-        this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'button',
             collapsed: config.startCollapsed,
             id: this.id,
-            val: false,
+            val: config.default ?? false,
         }
 
         this.init({
@@ -86,6 +89,10 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
             DefaultBodyUI: false,
         })
     }
+
+    get defaultValue(): boolean { return this.config.default ?? false } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    reset = () => (this.value = this.defaultValue)
 
     get value(): Widget_button_value {
         return this.serial.val

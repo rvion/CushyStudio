@@ -8,7 +8,6 @@ import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './Wi
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
@@ -54,6 +53,25 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
         return null
     }
 
+    get defaultValue(): Widget_size_value {
+        const config = this.spec.config
+        const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
+        const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
+        const width = config.default?.width ?? parseInt(modelType.split(' ')[1]!)
+        const height = config.default?.height ?? parseInt(modelType.split(' ')[1]!)
+        return { type: 'size', aspectRatio, modelType, height, width }
+    }
+    get hasChanges() {
+        const def = this.defaultValue
+        if (this.serial.width !== def.width) return true
+        if (this.serial.height !== def.height) return true
+        if (this.serial.aspectRatio !== def.aspectRatio) return true
+        return false
+    }
+    reset() {
+        this.value = this.defaultValue
+    }
+
     get width() { return this.serial.width } // prettier-ignore
     get height() { return this.serial.height } // prettier-ignore
     set width(next: number) {
@@ -83,7 +101,7 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
     // ⏸️ }
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial
 
@@ -95,8 +113,8 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
         serial?: Widget_size_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         if (serial) {
             this.serial = serial
         } else {
@@ -114,7 +132,11 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
             }
         }
 
-        this.init({ sizeHelper: false })
+        this.init({
+            sizeHelper: false,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     setValue(val: Widget_size_value) {

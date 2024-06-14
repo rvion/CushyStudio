@@ -24,6 +24,7 @@ export const CushyDiffusionUI = (form: FormBuilder) => ({
     //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
     // }),
     positive: form.prompt({
+        icon: 'mdiBatteryPositive',
         // check: (v) => [
         //     //
         //     v.text.length > 10 || 'too short',
@@ -45,7 +46,7 @@ export const CushyDiffusionUI = (form: FormBuilder) => ({
     mask: ui_mask(),
     sampler: ui_sampler(),
     highResFix: ui_highresfix().optional(true),
-    upscale: ui_upscaleWithModel(),
+    upscale: ui_upscaleWithModel().optional(),
     customSave: ui_customSave(),
     removeBG: ui_rembg_v1(),
     show3d: ui_3dDisplacement().optional(),

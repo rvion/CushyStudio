@@ -38,7 +38,11 @@ app({
 
         // 2.
         const graph = run.nodes
-        const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
+
+        const ckpt = graph.ImageOnlyCheckpointLoader({
+            // @ts-ignore
+            ckpt_name: 'stable_zero123.ckpt',
+        })
         const startImage2 = await run.loadImageAnswer(ui.image)
         const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
         for (const angle of run.range(ui.from, ui.to, ui.step)) {

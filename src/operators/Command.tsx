@@ -1,4 +1,5 @@
-import { commandManager, type CushyShortcut } from '../app/shortcuts/CommandManager'
+import { commandManager, type CushyShortcut } from '../app/accelerators/CommandManager'
+import { Button } from '../csuite/button/Button'
 import { BoundCommandSym } from './introspect/_isBoundCommand'
 import { CommandSym } from './introspect/_isCommand'
 import { Trigger } from './RET'
@@ -40,7 +41,7 @@ export class Command<Ctx = any> {
      * using when to both extract context and check if command can run
      * */
     execute = () => {
-        console.warn(`[CMD] ☣️ TRYING TO RUN... ${this.label}`)
+        console.info(`[CMD] ☣️ TRYING TO RUN... ${this.label}`)
         const context = this.conf.ctx.check()
         if (context === Trigger.UNMATCHED) {
             console.warn(`[CMD] 🔴 FAILED TO RUN`)
@@ -51,7 +52,11 @@ export class Command<Ctx = any> {
     }
 
     NavBarBtnUI = (p: { label?: string }) => {
-        return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
+        return (
+            <Button border={false} onClick={() => this.execute()}>
+                {p.label ?? this.label}
+            </Button>
+        )
     }
 }
 

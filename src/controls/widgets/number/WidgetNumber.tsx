@@ -5,7 +5,6 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWid
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
@@ -51,13 +50,13 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
-    get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => {
         if (this.serial.val === this.defaultValue) return
         this.value = this.defaultValue
@@ -77,8 +76,8 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
         serial?: Widget_number_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'number',
             collapsed: config.startCollapsed,
@@ -89,6 +88,8 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
         this.init({
             serial: observable,
             value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
         })
     }
 

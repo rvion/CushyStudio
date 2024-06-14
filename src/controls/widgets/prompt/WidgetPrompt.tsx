@@ -7,7 +7,6 @@ import type { Tree } from '@lezer/common'
 
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
@@ -66,11 +65,20 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'prompt' = 'prompt'
 
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get hasChanges() {
+        return (this.serial.val ?? '') !== (this.config.default ?? '')
+    }
+    reset() {
+        // /!\ reset function need to go though the `set text()` setter
+        // to ensure the UI is updated (code-mirror specificity here)
+        this.text = this.config.default ?? ''
     }
 
     serial: Widget_prompt_serial
@@ -83,17 +91,19 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
         serial?: Widget_prompt_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'prompt',
             val: config.default,
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        this.init({ DefaultBodyUI: false, DefaultHeaderUI: false })
+        this.init({
+            DefaultBodyUI: false,
+            DefaultHeaderUI: false,
+        })
     }
-    /* override */ background = true
 
     // sentinel value so we know when to trigger update effect in the UI to update
     // codemirror uncontrolled component
@@ -139,10 +149,16 @@ export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_t
         // }
     }
 
+    get animateResize() {
+        // codemirror resize automatically every time a line is added
+        // the animation is just annoying there.
+        return false
+    }
+
     compile = (p: {
         /** for wildcard */
         seed?: number
-        onLora: (lora: Enum_Load_Lora_lora_name) => void
+        onLora: (lora: Enum_LoraLoader_lora_name) => void
         /** @default true */
         printWildcards?: boolean
     }): CompiledPrompt =>

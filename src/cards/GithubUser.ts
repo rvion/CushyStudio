@@ -54,7 +54,7 @@ export class GithubUser {
 
         // 2. cache avatar
         if (!existsSync(this.githubUserAvatarRelPath)) {
-            this.downloadImage()
+            void this.downloadImage()
         }
         makeAutoObservable(this)
     }

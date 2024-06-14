@@ -3,8 +3,8 @@ import type { MediaImageL } from '../../models/MediaImage'
 import { existsSync, type PathLike } from 'fs'
 import { observer } from 'mobx-react-lite'
 
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
@@ -48,6 +48,10 @@ export const ImageUI = observer(function ImageUI_(p: {
             onMouseEnter={image.onMouseEnter}
             onMouseLeave={image.onMouseLeave}
             onClick={image.onClick}
+            onAuxClick={(ev) => {
+                if (ev.button === 1) return image.onMiddleClick()
+                if (ev.button === 2) return image.onRightClick()
+            }}
             ref={dragRef}
             loading='lazy'
             style={{ backgroundImage: `url(${image.thumbhashURL})`, width: ImageWidth, height: ImageWidth, opacity }}
@@ -57,7 +61,7 @@ export const ImageUI = observer(function ImageUI_(p: {
         <RevealUI
             tw='flex w-full h-full items-center'
             content={() => (
-                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
                     <ImageDropdownMenuUI img={image} />
                 </ul>
             )}
@@ -67,7 +71,7 @@ export const ImageUI = observer(function ImageUI_(p: {
             ) : image.existsLocally && !existsSync(image?.absPath as PathLike) ? (
                 <ImageErrorDisplayUI className='hover:border-transparent' icon={'folder'} />
             ) : (
-                <div>{IMG}</div>
+                <div tw='flex w-full justify-center items-center'>{IMG}</div>
             )}
         </RevealUI>
     )

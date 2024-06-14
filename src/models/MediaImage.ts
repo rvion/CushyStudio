@@ -16,7 +16,7 @@ import { lookup } from 'mime-types'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
-import { hasMod } from '../app/shortcuts/META_NAME'
+import { hasMod } from '../app/accelerators/META_NAME'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { Trigger } from '../operators/RET'
 import { SafetyResult } from '../safety/Safety'
@@ -108,11 +108,10 @@ export class MediaImageL {
         }
     }
 
-    copyToClipboardAsBase64 = () => {
+    copyToClipboardAsBase64 = () =>
         navigator.clipboard.writeText(this.getBase64Url()).then(() => {
             toastInfo('Image copied to clipboard!')
         })
-    }
 
     useAsDraftIllustration = (draft_?: DraftL) => {
         const draft = draft_ ?? this.draft
@@ -149,6 +148,11 @@ export class MediaImageL {
     onMouseLeave = (ev: MouseEvent): void => {
         if (cushy.hovered === this) cushy.hovered = null
     }
+
+    onMiddleClick = () => {
+        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+    }
+    onRightClick = () => {}
     onClick = (ev: MouseEvent): void => {
         if (hasMod(ev)) {
             ev.stopPropagation()
@@ -373,7 +377,7 @@ export class MediaImageL {
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
-        this._mkThumbnail()
+        void this._mkThumbnail()
         return transparentImgURL
     }
 

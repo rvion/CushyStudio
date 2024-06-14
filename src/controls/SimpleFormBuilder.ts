@@ -1,8 +1,4 @@
-import '../theme/form.vars.css'
-import '../theme/markdown.css'
-import '../theme/form.css'
-
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { Form } from './Form'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
@@ -11,7 +7,7 @@ import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { SimpleSpec } from './SimpleSpec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
@@ -121,7 +117,7 @@ export class SimpleFormBuilder implements IFormBuilder {
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config },
+                : { inHeader: true, label: false, justifyLabel: false, ...config },
         )
 
     int = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {

@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../Validation'
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
@@ -54,7 +53,33 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
+    reset = () => {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) this.setActive(true)
+            if (this.child.hasChanges) this.child.reset()
+            return
+        }
+        // unactive by default
+        else {
+            if (this.serial.active) this.setActive(false)
+            return
+        }
+    }
+    get hasChanges() {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) return true
+            return this.child.hasChanges
+        }
+        // unactive by default
+        else {
+            if (!this.serial.active) return false
+            return true
+        }
+    }
+
     readonly type: 'optional' = 'optional'
     get baseErrors(): Problem_Ext {
         return null
@@ -101,8 +126,8 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
         serial?: Widget_optional_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         const defaultActive = config.startActive
         this.serial = serial ?? {
             id: this.id,
@@ -117,7 +142,12 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        this.init({ serial: observable, value: computed })
+        this.init({
+            serial: observable,
+            value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     setValue(val: Widget_optional_value<T>) {

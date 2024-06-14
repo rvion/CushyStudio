@@ -12,7 +12,7 @@
 //                 await updater._gitInit()
 //             }}
 //             size='xs'
-//             appearance='primary'
+//             look='primary'
 //         >
 //             git init
 //         </Button>

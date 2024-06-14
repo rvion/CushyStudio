@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../Validation'
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
@@ -49,11 +48,6 @@ export type Widget_bool_config = WidgetConfigFields<
          *          true will enable expansion
          */
         expand?: boolean
-
-        /** Set the icon of the button
-         *  - Uses "material-symbols-outlined" as the icon set
-         */
-        icon?: string | undefined
     },
     Widget_bool_types
 >
@@ -76,10 +70,9 @@ export type Widget_bool_types = {
 // STATE
 export interface Widget_bool extends Widget_bool_types {}
 export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types> {
-    DefaultHeaderUI = WidgetBoolUI
-    DefaultBodyUI = undefined
+    readonly DefaultHeaderUI = WidgetBoolUI
+    readonly DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'bool' = 'bool'
 
     get baseErrors(): Problem_Ext {
@@ -93,7 +86,7 @@ export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types
     toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     constructor(

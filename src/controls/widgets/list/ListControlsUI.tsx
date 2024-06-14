@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../../csuite/button/Button'
+
 export type IWidgetListLike = {
     addItem(): void
     removeAllItems(): void
@@ -21,50 +23,56 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
     const canClear = min ? widget.items.length > min : true
     return (
         <div
-            tw='sticky top-0 flex gap-1 z-[50] w-full'
+            tw='sticky flex gap-0.5 top-0 flex z-[50] w-full'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
             }}
         >
-            <div
-                tw={[!canAdd && 'btn-disabled', 'btn btn-xs btn-narrow btn-ghost']}
+            <Button
+                size='input'
+                subtle
+                disabled={!canAdd}
+                square
+                icon='mdiPlus'
                 onClick={(ev) => {
                     if (!canAdd) return
                     ev.stopPropagation()
                     widget.addItem()
                 }}
-            >
-                <span className='material-symbols-outlined'>add</span>
-            </div>
-            <div
-                tw={[!canClear && 'btn-disabled', 'btn btn-xs btn-narrow btn-ghost']}
+            />
+            <Button
+                size='input'
+                subtle
+                disabled={!canClear}
+                square
+                icon='mdiDeleteOutline'
                 onClick={(ev) => {
                     if (!canClear) return
                     ev.stopPropagation()
                     widget.removeAllItems()
                 }}
-            >
-                <span className='material-symbols-outlined'>delete_forever</span>
-            </div>
-            <div
-                tw={['btn btn-xs btn-narrow btn-ghost']}
+            />
+            <Button
+                size='input'
+                subtle
+                square
+                icon='mdiUnfoldMoreHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
                     widget.expandAllItems()
                 }}
-            >
-                <span className='material-symbols-outlined'>unfold_more</span>
-            </div>
-            <div
-                tw={['btn btn-xs btn-narrow btn-ghost']}
+            />
+            <Button
+                size='input'
+                subtle
+                square
+                icon='mdiUnfoldLessHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
                     widget.collapseAllItems()
                 }}
-            >
-                <span className='material-symbols-outlined'>unfold_less</span>
-            </div>
+            />
             {/* <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? req.items.length >= max : undefined}

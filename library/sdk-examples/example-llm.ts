@@ -1,6 +1,6 @@
-import type { OpenRouter_Models } from '../../src/llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../../src/csuite/openrouter/OpenRouter_models'
 
-import { openRouterInfos } from '../../src/llm/OpenRouter_infos'
+import { openRouterInfos } from '../../src/csuite/openrouter/OpenRouter_infos'
 
 const defaultSystemPrompt = [
     //

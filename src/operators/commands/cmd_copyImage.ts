@@ -2,11 +2,14 @@ import { CushyFormManager } from '../../controls/FormBuilder'
 import { MediaImageL } from '../../models/MediaImage'
 import { command, type Command } from '../Command'
 import { ctx_image } from '../contexts/ctx_image'
-import { menu, type Menu } from '../Menu'
+import { menu, type Menu } from '../menu/Menu'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'
 
-type CopyImageParams = { image: MediaImageL; format?: AvailableImageCopyFormats }
+type CopyImageParams = {
+    image: MediaImageL
+    format?: AvailableImageCopyFormats
+}
 
 // first we define command;
 // command can take props
@@ -41,7 +44,7 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
 })
 
 const form_foo = CushyFormManager.fields((ui) => ({
-    quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, alignLabel: false, label: 'test' }),
+    quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
 }))
 
 export const menu_imageActions: Menu<MediaImageL> = menu({

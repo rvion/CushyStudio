@@ -26,42 +26,30 @@ app({
     metadata: {
         name: 'Cushy Diffusion',
         illustration: 'library/built-in/_illustrations/mc.jpg',
-        description:
-            'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.',
+        description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
-    // ⏸️ presets: {
-    // ⏸️     test: (f) => {
-    // ⏸️         f.root.fields.positive
-    // ⏸️     },
-    // ⏸️ },
     ui: (form: FormBuilder) => ({
-        // modelType: form.selectOne({
-        //     appearance: 'tab',
-        //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
-        // }),
         positive: form.prompt({
-            // check: (v) => [
-            //     //
-            //     v.text.length > 10 || 'too short',
-            //     v.text.length < 20 || 'too long',
-            // ],
+            icon: 'mdiPlusBoxOutline',
+            background: { hue: 150, chroma: 0.05 },
             default: [
-                //
                 'masterpiece, tree',
                 '?color, ?3d_term, ?adj_beauty, ?adj_general',
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
         }),
         negative: form.prompt({
+            icon: 'mdiMinusBoxOutline',
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
+            box: { base: { hue: 0, chroma: 0.05 } },
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
-        mask: ui_mask(),
         sampler: ui_sampler(),
+        mask: ui_mask(),
         highResFix: ui_highresfix().optional(true),
-        upscale: ui_upscaleWithModel(),
+        upscale: ui_upscaleWithModel().optional(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),
@@ -96,7 +84,7 @@ app({
         if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
 
         const posPrompt = run_prompt({
-            prompt: ui.positive,
+            prompt: { text: positiveText },
             clip,
             ckpt,
             printWildcards: true,
@@ -165,6 +153,7 @@ app({
             ckpt: run_model_modifiers(ui.model, ckptPos, false),
             clip: clipPos,
             vae,
+            // @ts-ignore 🔴 TODO: review this one
             latent,
             positive: positive,
             negative: negative,

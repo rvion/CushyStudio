@@ -1,16 +1,31 @@
 import { observer } from 'mobx-react-lite'
+import { Fragment } from 'react/jsx-runtime'
 
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { FormUI } from '../../controls/FormUI'
+import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
+import { getIconName } from '../../csuite/icons/getAllIcons'
+import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
+import { mapObjectValues } from '../../csuite/utils/mapObjectValues'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
     const st = useSt()
     return (
-        <div tw='h-full bg-base-300 p-1 overflow-auto'>
+        <Fragment>
+            <CSuiteOverride
+                config={{
+                    //
+                    showWidgetUndo: false,
+                    showWidgetMenu: false,
+                }}
+            >
+                <FormUI form={FORM_PlaygroundWidgetDisplay} />
+            </CSuiteOverride>
             <FormUI form={FORM_PlaygroundWidgetDisplay} />
-        </div>
+        </Fragment>
     )
 })
 
@@ -24,8 +39,8 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             }),
             checkLabelIcon: ui.bool({
                 label: false,
-                text: 'Check Label',
-                icon: 'save',
+                text: 'Check Label w icon',
+                icon: 'mdiContentSaveOutline',
             }),
             toggleButton: ui.bool({
                 label: '',
@@ -36,7 +51,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                 label: false,
                 text: 'Toggle Button Icon',
                 display: 'button',
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
             toggleButtonExpand: ui.bool({
                 label: '',
@@ -46,10 +61,10 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             }),
             toggleButtonExpandIcon: ui.bool({
                 label: '',
-                text: 'Toggle Button Expand',
+                text: 'Toggle Button Expand w Icon',
                 display: 'button',
                 expand: true,
-                icon: 'check_box',
+                icon: 'mdiCheckboxOutline',
             }),
         }
 
@@ -113,7 +128,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: booleanForm,
                     }),
                 },
@@ -138,7 +153,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: intForm,
                     }),
                 },
@@ -153,7 +168,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: floatForm,
                     }),
                 },
@@ -161,7 +176,25 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
 
             button: ui.group({
                 startCollapsed: true,
-                items: { button: ui.button({}) },
+                items: {
+                    button: ui.button({}),
+                    ...mapObjectValues(frameTemplates, (k, v, ix) =>
+                        ui.button({
+                            text: k,
+                            icon: getIconName(ix * 10),
+                            look: k as FrameAppearance,
+                        }),
+                    ),
+                    ...mapObjectEntries(frameTemplates, (k, v, ix) => [
+                        k + '_',
+                        ui.button({
+                            text: k,
+                            icon: getIconName(1000 + ix * 10),
+                            look: k as FrameAppearance,
+                            expand: true,
+                        }),
+                    ]),
+                },
             }),
 
             color: ui.group({
@@ -169,11 +202,11 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                 items: {
                     v1: ui.group({
                         border: false,
-                        items: { color: ui.color({}), colorN: ui.color({ label: false, alignLabel: false }) },
+                        items: { color: ui.color({}), colorN: ui.color({ label: false, justifyLabel: false }) },
                     }),
                     v2: ui.group({
                         border: false,
-                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, alignLabel: false }) },
+                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, justifyLabel: false }) },
                     }),
                 },
             }),
@@ -186,7 +219,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                     }),
                     notAligned: ui.group({
                         border: false,
-                        alignLabel: false,
+                        justifyLabel: false,
                         items: dateForm,
                     }),
                 },
@@ -195,7 +228,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             email: ui.group({
                 items: {
                     aligned: ui.group({ border: false, items: emailForm }),
-                    notAligned: ui.group({ border: false, alignLabel: false, items: emailForm }),
+                    notAligned: ui.group({ border: false, justifyLabel: false, items: emailForm }),
                 },
             }),
 
@@ -206,7 +239,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
             group: ui.group({
                 items: {
                     group: ui.group({ items: { inside: ui.float() } }),
-                    groupNoAlign: ui.group({ alignLabel: false, items: { inside: ui.float() } }),
+                    groupNoAlign: ui.group({ justifyLabel: false, items: { inside: ui.float() } }),
                     groupNoBorder: ui.group({ border: false, items: { inside: ui.float() } }),
                     groupNoCollapse: ui.group({ collapsed: false, items: { inside: ui.float() } }),
                     columnExamples: ui.group({
@@ -220,7 +253,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                             }),
                             column2: ui.column({
                                 border: true,
-                                alignLabel: false,
+                                justifyLabel: false,
                                 items: {
                                     top: ui.float({ label: false }),
                                     middle: ui.float({ label: false }),
@@ -240,7 +273,6 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                             }),
                             row2: ui.row({
                                 border: true,
-                                // alignLabel: false, // False by default since layout is set to 'H'
                                 items: {
                                     left: ui.float({ label: false }),
                                     center: ui.float({ label: false }),

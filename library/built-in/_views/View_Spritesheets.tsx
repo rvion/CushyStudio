@@ -29,10 +29,18 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
                 },
                 {
                     label: 'controls',
-                    presets: {
-                        '4 dirs': (f) => f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
-                        'run 1x6': (f) => f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
-                    },
+                    presets: [
+                        {
+                            icon: 'mdiAnimationPlay',
+                            label: '4 dirs',
+                            apply: (f) => f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
+                        },
+                        {
+                            icon: 'mdiRun',
+                            label: 'run 1x6',
+                            apply: (f) => f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
+                        },
+                    ],
                 },
             ),
         {

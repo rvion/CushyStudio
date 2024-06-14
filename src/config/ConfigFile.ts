@@ -1,4 +1,3 @@
-import type { ThemeName } from '../theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
 
 // import { ComfyHostID } from './ComfyHostDef'
@@ -37,8 +36,7 @@ export type ConfigFile = {
 
     mainComfyHostID?: Maybe<HostID>
     enableTypeCheckingBuiltInApps?: boolean
-    /** 'light' or 'dark'; default to dark */
-    theme?: ThemeName
+
     /** cloud service api key */
     cushyCloudGPUApiKey?: string
     // ---------------------------------------------------------------------------------------

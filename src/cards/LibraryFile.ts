@@ -105,7 +105,7 @@ export class LibraryFile {
     get script(): Maybe<CushyScriptL> {
         if (this.lastSuccessfullExtractedScriptDuringSession) return this.lastSuccessfullExtractedScriptDuringSession
         if (this.scriptInDB) return this.scriptInDB
-        this.extractScriptFromFile()
+        void this.extractScriptFromFile()
         return null
     }
     /** load a file trying all compatible strategies */

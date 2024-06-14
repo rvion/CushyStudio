@@ -7,11 +7,11 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { Surface } from '../csuite/shims'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
-import { MessageInfoUI } from '../panels/MessageUI'
-import { Panel } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
-import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { toastError } from '../utils/misc/toasts'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
@@ -103,7 +103,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
     ]
     return (
-        <Panel className={p.className} tw='bg-base-300 overflow-auto virtua'>
+        <Surface className={p.className} tw='overflow-auto virtua'>
             <Field k='name' v={file.name} />
             <Field k='size' v={file.size} />
             <Field k='name' v={file.type} />
@@ -162,7 +162,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
             )}
             {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
             {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
-        </Panel>
+        </Surface>
     )
 })
 

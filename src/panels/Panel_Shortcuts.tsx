@@ -2,13 +2,13 @@ import type { Command } from '../operators/Command'
 
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../app/shortcuts/ComboUI'
-import { commandManager } from '../app/shortcuts/CommandManager'
+import { ComboUI } from '../app/accelerators/ComboUI'
+import { commandManager } from '../app/accelerators/CommandManager'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { FormHelpTextUI } from '../csuite/shims'
 import { Trigger } from '../operators/RET'
-import { FormHelpTextUI } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
-import { MessageInfoUI } from './MessageUI'
 
 export const Command_ContextTableUI = observer(function Command_ContextTableUI_(p: {}) {
     return (

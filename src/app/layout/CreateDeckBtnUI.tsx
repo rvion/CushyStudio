@@ -14,7 +14,7 @@
 //             <Button
 //                 tw='btn-sm'
 //                 onClick={uist.handleOpen}
-//                 appearance='primary'
+//                 look='primary'
 //                 color='green'
 //                 icon={<span className='material-symbols-outlined'>add</span>}
 //             >
@@ -59,11 +59,11 @@
 //                                     uist.isCreating = false
 //                                     uist.handleClose()
 //                                 }}
-//                                 appearance='primary'
+//                                 look='primary'
 //                             >
 //                                 Ok
 //                             </Button>
-//                             <Button onClick={uist.handleClose} appearance='subtle'>
+//                             <Button onClick={uist.handleClose} look='subtle'>
 //                                 Cancel
 //                             </Button>
 //                         </div>

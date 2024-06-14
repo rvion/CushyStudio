@@ -4,17 +4,19 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { CushyKitCtx } from '../../controls/shared/CushyKitCtx'
-import { ActivityUI } from '../../operators/ActivityUI'
-import { useRegionMonitor } from '../../operators/RegionMonitor'
+import { AppBarUI } from '../../appbar/AppBarUI'
+import { CSuite_ThemeLoco } from '../../csuite/ctx/CSuite_ThemeLoco'
+import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
+import { RevealState } from '../../csuite/reveal/RevealState'
+import { ActivityStackUI } from '../../operators/activity/ActivityUI'
+import { useRegionMonitor } from '../../operators/regions/RegionMonitor'
 import { Trigger } from '../../operators/RET'
-import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
-import { RevealState } from '../../rsuite/reveal/RevealState'
+import { RenderFullPagePanelUI } from '../../router/RenderFullPagePanelUI'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
-import { AppBarUI } from '../appbar/AppBarUI'
-import { commandManager } from '../shortcuts/CommandManager'
+import { commandManager } from '../accelerators/CommandManager'
 import { FavBarUI } from './FavBar'
+import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
@@ -56,10 +58,8 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <CushyKitCtx.Provider value={st}>
+        <CSuiteProvider config={cushy.csuite}>
             <div
-                //
-                data-theme={st.themeMgr.theme}
                 id='CushyStudio'
                 tabIndex={-1}
                 onClick={(ev) => {
@@ -71,15 +71,18 @@ export const CushyUI = observer(function CushyUI_() {
                     })
                 }}
                 ref={appRef}
-                tw='col grow h-full text-base-content overflow-clip'
+                tw={[
+                    'col grow h-full overflow-clip',
+                    // topic=WZ2sEOGiLy
+                    st.theme.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+                ]}
             >
                 <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                     id='tooltip-root'
                     tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
                 >
-                    <ActivityUI />
+                    <ActivityStackUI />
                 </div>
-
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
                 <RenderFullPagePanelUI />
@@ -87,8 +90,9 @@ export const CushyUI = observer(function CushyUI_() {
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
+                <FooterBarUI />
             </div>
-        </CushyKitCtx.Provider>
+        </CSuiteProvider>
     )
 })
 

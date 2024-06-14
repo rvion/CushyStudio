@@ -1,7 +1,11 @@
+import type { IconName } from '../csuite/icons/icons'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-/** Re-usable Dock-Panel Header, gives a `bg-base-300` bar with a horizontal flex to put widgets in.
+import { Frame } from '../csuite/frame/Frame'
+
+/** Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
  *
  * `NOTE`: It will automatically set the height of any child widgets.
  *
@@ -9,22 +13,29 @@ import { ReactNode } from 'react'
  *
  * ```
  * <PanelHeaderUI>
- *      <div tw='btn btn-sm'>Hello World!<div>
+ *      <Button>Hello World!<Button>
  * </PanelHeaderUI>
  * ```
  */
-export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children?: ReactNode }) {
+export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
+    //
+    className?: string
+    title?: string
+    icon?: IconName
+    children?: ReactNode
+}) {
     return (
-        <div // Container
-            // This may be good to pass in the future? I don't think this really needs to/should be modifiable though.
-            // className={p.className}
-            tw={['CSHY-panel-header', 'flex select-none', 'items-center p-1', 'bg-base-300']}
+        <Frame // Container
+            className={p.className}
+            base={8}
+            tw={['CSHY-panel-header w-full', 'flex gap-1 select-none', 'items-center p-1']}
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY
                 event.stopPropagation()
             }}
         >
+            {p.title && <div>{p.title}</div>}
             {p.children}
-        </div>
+        </Frame>
     )
 })

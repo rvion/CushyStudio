@@ -1,7 +1,7 @@
 // prettier-ignore
 export type KnownModel_SavePath =
     | "vae_approx"                                       // x   4
-    | "default"                                          // x  82
+    | "default"                                          // x  83
     | "upscale_models/ldsr"                              // x   1
     | "checkpoints/upscale"                              // x   1
     | "insightface"                                      // x   2
@@ -56,11 +56,20 @@ export type KnownModel_SavePath =
     | "checkpoints/depthfm"                              // x   2
     | "checkpoints/SUPIR"                                // x   4
     | "rams"                                             // x   3
+    | "instantid/SDXL"                                   // x   1
+    | "controlnet/SDXL/instantid"                        // x   1
+    | "insightface/models"                               // x   1
+    | "unet/IC-Light"                                    // x   3
+    | "custom_nodes/ComfyUI_ID_Animator/models"          // x   1
+    | "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models" // x   1
+    | "custom_nodes/ComfyUI_ID_Animator/models/image_encoder" // x   1
+    | "custom_nodes/ComfyUI_CustomNet/pretrain"          // x   1
+    | "controlnet/SDXL"                                  // x   1
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
     "vae_approx"                                      ,  // x   4
-    "default"                                         ,  // x  82
+    "default"                                         ,  // x  83
     "upscale_models/ldsr"                             ,  // x   1
     "checkpoints/upscale"                             ,  // x   1
     "insightface"                                     ,  // x   2
@@ -115,6 +124,15 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "checkpoints/depthfm"                             ,  // x   2
     "checkpoints/SUPIR"                               ,  // x   4
     "rams"                                            ,  // x   3
+    "instantid/SDXL"                                  ,  // x   1
+    "controlnet/SDXL/instantid"                       ,  // x   1
+    "insightface/models"                              ,  // x   1
+    "unet/IC-Light"                                   ,  // x   3
+    "custom_nodes/ComfyUI_ID_Animator/models"         ,  // x   1
+    "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models",  // x   1
+    "custom_nodes/ComfyUI_ID_Animator/models/image_encoder",  // x   1
+    "custom_nodes/ComfyUI_CustomNet/pretrain"         ,  // x   1
+    "controlnet/SDXL"                                 ,  // x   1
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 

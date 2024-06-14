@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { Message } from '../../csuite/shims'
 import { HostL } from '../../models/Host'
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Message } from '../../rsuite/shims'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
     //
@@ -30,9 +30,9 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                     <div
                         tw='btn btn-sm'
-                        onClick={() => {
-                            host.fetchAndUpdateSchema()
-                            host.manager.updateHostPluginsAndModels()
+                        onClick={async () => {
+                            await host.fetchAndUpdateSchema()
+                            return host.manager.updateHostPluginsAndModels()
                         }}
                     >
                         Reload Schema

@@ -1,17 +1,15 @@
+import type { Tree } from './Tree'
+import type { TreeNode, TreeScrollOptions } from './TreeNode'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-import { Tree } from './Tree'
-import { TreeNode, TreeScrollOptions } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {
     /** treeview id; only for debugging purpose */
     id = nanoid(4)
-
-    /** legacy stuff; should be mostly unused */
-    isFolded: boolean = false
 
     constructor(
         //

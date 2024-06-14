@@ -40,17 +40,17 @@ export type CustomView<T = any> = {
 }
 
 export type App<FIELDS extends SchemaDict> = {
-    /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (form: Form<XGroup<FIELDS>, FormBuilder>) => void>
-
     /** app interface (GUI) */
     ui: (form: FormBuilder) => FIELDS
+
+    /** so you cana have fancy buttons to switch between a few things */
+    presets?: Record<string, (form: Form<XGroup<NoInfer<FIELDS>>, FormBuilder>) => void>
 
     /** app execution logic */
     run: (
         //
-        runtime: Runtime<FIELDS>,
-        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Value'] },
+        runtime: Runtime<NoInfer<FIELDS>>,
+        formResult: { [k in keyof NoInfer<FIELDS>]: NoInfer<FIELDS>[k]['$Value'] },
         starImage?: Maybe<MediaImageL>,
     ) => void | Promise<void>
 

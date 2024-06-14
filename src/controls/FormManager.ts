@@ -4,8 +4,8 @@ import type { Widget_group } from './widgets/group/WidgetGroup'
 
 import { type DependencyList, useMemo } from 'react'
 
+import { runWithGlobalForm } from './context/runWithGlobalForm'
 import { Form, FormProperties } from './Form'
-import { runWithGlobalForm } from './shared/runWithGlobalForm'
 
 /**
  * you need one per project;
@@ -39,7 +39,6 @@ export class FormManager<BUILDER extends IFormBuilder> {
                 builder.group({
                     label: false,
                     items: ui(builder as BUILDER),
-                    topLevel: true,
                     collapsed: false,
                 }),
             )

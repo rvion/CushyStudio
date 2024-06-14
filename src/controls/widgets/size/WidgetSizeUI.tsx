@@ -4,14 +4,16 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from '../number/InputNumberUI'
-
-export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
-    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
-})
+import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
     return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
+})
+
+export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
+    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
@@ -20,23 +22,22 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.sizeHelper
 
+    // const ratio = uist.width / uist.height
+    // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
+
     return (
         <div className='flex flex-1 flex-col gap-1'>
-            <div //Joined container
-                tw={[
-                    'WIDGET-FIELD w-full h-full flex items-center join rounded gap-0.5 overflow-clip',
-                    'border border-base-100 border-b-base-200',
-                    'border-b-2 hover:border-base-200 hover:border-b-base-300',
-                ]}
+            <Frame //Joined container
+                border={{ contrast: 0.05 }}
+                tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
+                style={{ padding: '0px' }}
             >
-                <AspectLockButtonUI sizeHelper={uist} />
                 <InputNumberUI
                     //
                     min={p.bounds?.min ?? 128}
                     max={p.bounds?.max ?? 4096}
                     step={p.bounds?.step ?? 32}
                     mode='int'
-                    tw='join-item !border-none'
                     value={uist.width}
                     hideSlider
                     onValueChange={(next) => uist.setWidth(next)}
@@ -44,9 +45,9 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Width'
                     suffix='px'
                 />
+                <div tw='h-full' style={{ width: '1px' }} />
                 <InputNumberUI
                     //
-                    tw='join-item !border-none'
                     min={p.bounds?.min ?? 128}
                     max={p.bounds?.max ?? 4096}
                     step={p.bounds?.step ?? 32}
@@ -58,12 +59,12 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Height'
                     suffix='px'
                 />
+                {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
+                <div tw='h-full' style={{ width: '1px' }} />
                 <AspectRatioSquareUI sizeHelper={uist} />
-            </div>
-            {/* <div tw='flex items-center gap-1'>
-                <div // Extra div because gap-1 will eat in to the child's width for SOME reason
-                ></div>
-            </div> */}
+                <div tw='h-full' style={{ width: '1px' }} />
+                <AspectLockButtonUI sizeHelper={uist} />
+            </Frame>
         </div>
     )
 })
@@ -71,12 +72,11 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: ResolutionState }) {
     const uist = p.sizeHelper
     return (
-        <button // Aspect Lock button
-            tw={[
-                'btn btn-xs h-8 rounded-none join-item !border-none !outline-none',
-                uist.isAspectRatioLocked && 'bg-primary hover:bg-primary text-primary-content !border-none',
-            ]}
-            onClick={(ev) => {
+        <Frame // Aspect Lock button
+            active={uist.isAspectRatioLocked}
+            style={{ border: 'unset', borderRadius: '0px' }}
+            icon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
+            onMouseDown={(ev) => {
                 uist.isAspectRatioLocked = !uist.isAspectRatioLocked
                 if (!uist.isAspectRatioLocked) {
                     return
@@ -88,9 +88,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
                     uist.setWidth(uist.width)
                 }
             }}
-        >
-            <span className='material-symbols-outlined'>{uist.isAspectRatioLocked ? 'link' : 'link_off'}</span>
-        </button>
+        />
     )
 })
 
@@ -98,28 +96,32 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
     const uist = p.sizeHelper
     const ratioDisplaySize = 26
     return (
-        <div // Aspect ratio display background
-            tw={[
-                //
-                'flex rounded-sm virtualBorder bg-base-300',
-                'overflow-clip',
-                'items-center justify-center',
-            ]}
-            style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
+        <Frame // Aspect ratio display background
+            square
+            size='xs'
+            border={10}
+            tw={['flex', 'overflow-clip', 'items-center justify-center', 'cursor-pointer']}
+            style={{ borderRadius: '0px' }}
+            onClick={uist.flip}
+            hover
         >
-            <div // Aspect ratio display foreground
-                tw='relative bg-primary'
+            <Frame
+                base={10}
+                tw='!relative w-full h-full'
                 style={{
                     //
                     width: '100%',
                     height: '100%',
+                    borderRadius: '0px',
                     // Use transform here because it works with floats and will not cause popping/mis-alignments.
                     transform: `
-        scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
-        scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
+                 scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
+                 scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
                 }}
-            ></div>
-        </div>
+                // icon='mdiCheckboxBlank'
+                square
+            />
+        </Frame>
     )
 })
 
@@ -131,54 +133,58 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const uist = p.sizeHelper
     // if (!uist.isAspectRatioLocked) return null
     const resoBtn = (ar: AspectRatio) => (
-        <button
-            type='button'
-            tw={['btn btn-xs join-item', uist.desiredAspectRatio === ar ? 'btn-primary' : 'btn-ghost']}
-            onClick={() => uist.setAspectRatio(ar)}
-        >
-            {ar}
-        </button>
+        <InputBoolUI //
+            display='button'
+            value={uist.desiredAspectRatio == ar}
+            onValueChange={() => uist.setAspectRatio(ar)}
+            text={ar}
+        />
     )
 
     const modelBtn = (model: ModelType) => (
-        <button
-            type='button'
-            tw={['btn btn-xs join-item', uist.desiredModelType === model ? 'btn-primary' : 'btn-ghost']}
-            onClick={() => uist.setModelType(model)}
-        >
-            {model}
-        </button>
+        <InputBoolUI //
+            display='button'
+            value={uist.desiredModelType == model}
+            onValueChange={() => uist.setModelType(model)}
+            text={model}
+        />
     )
 
+    const portrait = uist.height / uist.width > 1.0
+
     return (
-        <div className='flex flex-col gap-1 mt-0.5 rounded-b'>
-            <div tw='flex items-start gap-2'>
-                <div tw='join virtualBorder'>
+        <Frame
+        // border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
+        >
+            <div tw='flex'>
+                <div tw='join'>
                     {modelBtn('1.5')}
                     {modelBtn('xl')}
                 </div>
-                <div tw='btn btn-xs' onClick={() => uist.flip()}>
-                    <span className='material-symbols-outlined'>rotate_right</span>
-                </div>
-                <div tw='ml-auto flex items-center gap-1'>
-                    <div tw='join virtualBorder'>{resoBtn('1:1')}</div>
+
+                {/* <div tw='btn btn-xs' onClick={() => uist.flip()}> */}
+                {/* <span className='material-symbols-outlined'>rotate_right</span> */}
+                {/* </div> */}
+                <div tw='ml-auto flex items-center gap-1.5'>
+                    <div tw='join'>{resoBtn('1:1')}</div>
                     {/* <div>|</div> */}
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
                     </div>
                     {/* <div>|</div> */}
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
                     </div>
                     {/* <div>|</div> */}
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
                     </div>
                 </div>
             </div>
-        </div>
+        </Frame>
     )
 })

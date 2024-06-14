@@ -1,16 +1,14 @@
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
-import type { DraftL } from '../models/Draft'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
 
-import { makeAutoObservable, reaction, runInAction } from 'mobx'
+import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import { useDraft } from '../widgets/misc/useDraft'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
+import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
 import { Form } from './Form'
 import { FormManager } from './FormManager'
@@ -46,6 +44,7 @@ export type XShared<T extends ISpec> = Widget_shared<T>
 export type XString = Spec<Widget_string>
 export type XPrompt = Spec<Widget_prompt>
 export type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
+export type XChoice<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
 export type XNumber = Spec<Widget_number>
 export type XColor = Spec<Widget_color>
 export type XEnum<T> = Spec<Widget_enum<T>>
@@ -75,6 +74,7 @@ export class FormBuilder implements IFormBuilder {
             auto: false,
             autoField: false,
             enum: false,
+            enums: false,
             enumOpt: false,
             SpecCtor: false,
         })
@@ -117,7 +117,7 @@ export class FormBuilder implements IFormBuilder {
         return new Spec<Widget_size>('size', config)
     }
     spacer = (config: Widget_spacer_config = {}): XSpacer => {
-        return new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+        return new Spec<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
     }
     orbit = (config: Widget_orbit_config = {}): XOrbit => {
         return new Spec<Widget_orbit>('orbit', config)
@@ -146,7 +146,7 @@ export class FormBuilder implements IFormBuilder {
         const config_: Widget_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config }
+                : { inHeader: true, label: false, justifyLabel: false, ...config }
         return new Spec<Widget_markdown>('markdown', config_)
     }
     image = (config: Widget_image_config = {}): XImage => {
@@ -175,6 +175,9 @@ export class FormBuilder implements IFormBuilder {
     }
     number = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
         return new Spec<Widget_number>('number', { mode: 'float', ...config })
+    }
+    remSize = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
     custom = <T>(config: Widget_custom_config<T>): XCustom<T> => {
         return new Spec<Widget_custom<T>>('custom', config)
@@ -219,25 +222,31 @@ export class FormBuilder implements IFormBuilder {
     fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
     }
     choiceV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'>,
-    ) => {
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+    ): XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
     }
-    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): XChoices<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
+    }
+    choicesV2 = <T extends { [key: string]: ISpec }>(
+        items: Widget_choices_config<T>['items'],
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+    ): XChoices<T> => {
+        return new Spec<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
     }
     ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** simple choice alternative api */
-    tabs = <T extends { [key: string]: Spec }>(
+    tabs = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+        config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
     optional = <T extends ISpec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
@@ -247,26 +256,26 @@ export class FormBuilder implements IFormBuilder {
         return this.selectOne({ default: def, choices })
     }
 
-    /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
-    inlineRun = (config: Widget_button_config = {}) =>
-        new Spec<Widget_button<DraftL>>('button', {
-            useContext: useDraft,
-            onClick: (p) =>
-                runInAction(() => {
-                    if (p.widget.value === true) return
-                    const draft = p.context
-                    p.widget.value = true
-                    draft.setAutostart(false)
-                    draft.start({})
-                    setTimeout(() => (p.widget.value = false), 100) // Reset value back to false for future runs
-                    p.widget.bumpValue()
-                }),
-            icon: (p) => {
-                if (p.context.shouldAutoStart) return 'pause'
-                return 'play_arrow'
-            },
-            ...config,
-        })
+    // /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
+    // inlineRun = (config: Widget_button_config = {}) =>
+    //     new Spec<Widget_button<DraftL>>('button', {
+    //         useContext: useDraft,
+    //         onClick: (p) =>
+    //             runInAction(() => {
+    //                 if (p.widget.value === true) return
+    //                 const draft = p.context
+    //                 p.widget.value = true
+    //                 draft.setAutostart(false)
+    //                 draft.start({})
+    //                 setTimeout(() => (p.widget.value = false), 100) // Reset value back to false for future runs
+    //                 p.widget.bumpValue()
+    //             }),
+    //         icon: (p) => {
+    //             if (p.context.shouldAutoStart) return 'pause'
+    //             return 'play_arrow'
+    //         },
+    //         ...config,
+    //     })
 
     /**
      * Calling this function will mount and instanciate the subform right away
@@ -306,6 +315,11 @@ export class FormBuilder implements IFormBuilder {
     get enum() {
         const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enum', { value: _ })
+        return _
+    }
+    get enums() {
+        const _ = new EnumListBuilder(this.form) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'enums', { value: _ })
         return _
     }
     get enumOpt() {

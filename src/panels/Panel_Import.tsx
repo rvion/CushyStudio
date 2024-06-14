@@ -18,7 +18,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                     onClick={() => {
                         st.droppedFiles.splice(0)
                     }}
-                    tw='WIDGET-FIELD btn btn-sm  btn-warning'
+                    tw='h-input btn btn-sm  btn-warning'
                 >
                     <span className='material-symbols-outlined'>backspace</span>
                     Clear Items
@@ -26,7 +26,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
             </PanelHeaderUI>
             <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (
-                    <div key={`${file.name}+${ix}`} tw='card card-bordered p-2 bg-base-200'>
+                    <div key={`${file.name}+${ix}`} tw='card card-bordered p-2'>
                         <div tw='card-title'>Imported file</div>
                         <div tw='italic text-sm'>"{file.name}"</div>
                         <ul>

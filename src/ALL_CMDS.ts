@@ -5,6 +5,7 @@ import './operators/commands/cmd_favorites'
 import './operators/commands/cmd_goTo'
 import './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
+import { cmd_maximize_active_panel, cmd_maximize_hovered_panel } from './app/shortcuts/cmd_layout'
 import { allCommandsV1 } from './app/shortcuts/cmd_mix'
 import {
     cmd_copyImage,
@@ -19,6 +20,7 @@ import {
     cmd_nav_openGallery1,
     cmd_nav_openGallery2,
     cmd_nav_openGallery3,
+    cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
 import {
     cmd_unifiedCanvas_activateGenerateTool,
@@ -36,10 +38,13 @@ export const allCommands = [
     cmd_open_copyImageAs_menu,
     //
     cmd_nav_openCivitaiPanel,
+    cmd_nav_openIcons,
     cmd_nav_openGallery1,
     cmd_nav_openGallery2,
     cmd_nav_openGallery3,
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
+    cmd_maximize_active_panel,
+    cmd_maximize_hovered_panel,
     ...allCommandsV1,
 ]

@@ -2,13 +2,14 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
+import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { Frame } from '../csuite/frame/Frame'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { MenuItem } from '../rsuite/Dropdown'
-import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
+import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const st = useSt()
@@ -17,55 +18,48 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
     return (
         // <RevealUI showDelay={0} hideDelay={100}>
 
-        <OutputPreviewWrapperUI output={p.output}>
-            <RevealUI
-                content={() => (
-                    <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
-                        {/* <ImageDropdownMenuUI img={image} /> */}
-                        <MenuItem
-                            icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                            onClick={graph.menuAction_openInTab}
-                        >
-                            open in ComfyUI Tab
-                        </MenuItem>
-                        <MenuItem
-                            icon={<span className='material-symbols-outlined'>open_in_full</span>}
-                            onClick={graph.menuAction_openInFullScreen}
-                        >
-                            open in ComfyUI FULL
-                        </MenuItem>
-                        <div className='divider my-0'></div>
-                        <MenuItem
-                            icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                            onClick={graph.menuAction_downloadWorkflow}
-                        >
-                            Download ComfyUI Workflow
-                        </MenuItem>
-                        <MenuItem
-                            icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                            onClick={graph.menuAction_downloadPrompt}
-                        >
-                            Download ComfyUI PROMPT
-                        </MenuItem>
-                        <div className='divider my-0'>Quick Graph preview</div>
-                        <GraphPreviewUI graph={graph} />
-                        <ButtonOpenInComfyUI graph={p.output} />
-                    </ul>
-                )}
-            >
-                <div style={{ width: size, height: size }} tw='flex item-center justify-center'>
-                    <span
-                        className='material-symbols-outlined text-primary block'
-                        style={{
-                            marginTop: `calc(0.2 * ${size})`,
-                            fontSize: `calc(0.6 * ${size})`,
-                        }}
+        <RevealUI
+            className='w-full h-full item-center justify-center'
+            content={() => (
+                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
+                    {/* <ImageDropdownMenuUI img={image} /> */}
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>open_in_new</span>}
+                        onClick={graph.menuAction_openInTab}
                     >
-                        account_tree
-                    </span>
-                </div>
-            </RevealUI>
-        </OutputPreviewWrapperUI>
+                        open in ComfyUI Tab
+                    </MenuItem>
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>open_in_full</span>}
+                        onClick={graph.menuAction_openInFullScreen}
+                    >
+                        open in ComfyUI FULL
+                    </MenuItem>
+                    <div className='divider my-0'></div>
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>cloud_download</span>}
+                        onClick={graph.menuAction_downloadWorkflow}
+                    >
+                        Download ComfyUI Workflow
+                    </MenuItem>
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>cloud_download</span>}
+                        onClick={graph.menuAction_downloadPrompt}
+                    >
+                        Download ComfyUI PROMPT
+                    </MenuItem>
+                    <div className='divider my-0'>Quick Graph preview</div>
+                    <GraphPreviewUI graph={graph} />
+                    <ButtonOpenInComfyUI graph={p.output} />
+                </ul>
+            )}
+        >
+            <Frame //
+                border={10}
+                icon='mdiGraph'
+                iconSize='100%'
+            />
+        </RevealUI>
     )
 })
 
@@ -81,7 +75,11 @@ export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: 
                     <ButtonOpenInComfyUI graph={graph} />
                 </div> */}
             <div tw='text-sm italic opacity-50'>graphID: {graph.id}</div>
-            <GraphPreviewUI graph={graph} />
+            {/* <GraphPreviewUI graph={graph} /> */}
+            <DrawWorkflowUI //
+                // offset={isDragging ? { x: dx, y: dy } : undefined}
+                workflow={graph}
+            />
         </div>
         // {/* <div>ComfyUI</div>
         // {litegraphK.ui((json) => (

@@ -6,23 +6,57 @@ export const ui_model = () => {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
-        presets: {
-            test1: (w) => {
-                w.value = {
-                    checkpointConfig: undefined,
-                    ckpt_name: 'albedobaseXL_v21.safetensors',
-                    extra: { clipSkip: 2 },
-                }
+        box: { base: { hue: 240, chroma: 0.03 } },
+        icon: 'mdiFlaskEmptyPlusOutline',
+        presets: [
+            {
+                label: 'withPopup',
+                icon: 'mdiTrain',
+                apply: (w) => {
+                    const form = cushy.forms.form((ui) =>
+                        ui.fields({
+                            a: ui.string({ label: 'A' }),
+                            b: ui.int({ label: 'B' }),
+                        }),
+                    )
+                    cushy.activityManager.startActivity({
+                        uid: 'test',
+                        title: 'Multi-Step preset Demo',
+                        shell: 'popup-lg',
+                        UI: (p) =>
+                            form.render({
+                                submitAction: () => {
+                                    console.log('submit')
+                                    cushy.activityManager.stopActivity(p.activity) // 🔴
+                                },
+                            }),
+                    })
+                },
             },
-            test2: (w) => {
-                w.setValue({
-                    checkpointConfig: undefined,
-                    ckpt_name: 'revAnimated_v122.safetensors',
-                    extra: {},
-                })
+            {
+                icon: 'mdiStairsBox',
+                label: 'test1',
+                apply: (w) => {
+                    w.value = {
+                        checkpointConfig: undefined,
+                        ckpt_name: 'albedobaseXL_v21.safetensors',
+                        extra: { clipSkip: 2 },
+                    }
+                },
             },
-        },
-        label: 'AI Model',
+            {
+                icon: 'mdiAccountMusic',
+                label: 'test2',
+                apply: (w) => {
+                    w.setValue({
+                        checkpointConfig: undefined,
+                        ckpt_name: 'revAnimated_v122.safetensors',
+                        extra: {},
+                    })
+                },
+            },
+        ],
+        label: 'Model',
         summary: (ui) => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
@@ -31,8 +65,11 @@ export const ui_model = () => {
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
             if (ui.extra.pag) out += ` + PAG(${ui.extra.pag.scale})`
             if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
-            if (ui.extra.KohyaDeepShrink) out += ` + Shrink(${ui.extra.KohyaDeepShrink})`
-
+            // 2024-05-30 rvion:
+            // | changed the summary when Kohya DeepShrink is enabled.
+            // | Was causing some error (not able to convert ui.extra.KohyaDeepShrink to string)
+            // | automatically
+            if (ui.extra.KohyaDeepShrink) out += ` + Shrink(...)` // ${ui.extra.KohyaDeepShrink}
             return out
         },
         items: {
@@ -67,42 +104,43 @@ export const ui_model = () => {
 }
 
 const ui_pag = (form: FormBuilder) => {
-    return form.fields(
-        {
-            include: form.choices({
-                items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
-                default: { base: true, hiRes: false },
-            }),
-            scale: form.float({
-                default: 3,
-                min: 0,
-                softMax: 6,
-                max: 100,
-                step: 0.1,
-                tooltip:
-                    'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
-            }),
-            adaptiveScale: form.float({
-                default: 0,
-                min: 0,
-                max: 1,
-                step: 0.1,
-                tooltip:
-                    'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
-            }),
-        },
-        {
-            startCollapsed: true,
-            tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
-            summary: (ui) => {
-                return `scale:${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} scale:${
-                    ui.scale
-                } dampening:${ui.adaptiveScale}`
+    return form
+        .fields(
+            {
+                include: form.choices({
+                    items: { base: form.fields({}), hiRes: form.fields({}) },
+                    appearance: 'tab',
+                    default: { base: true, hiRes: false },
+                }),
+                scale: form.float({
+                    default: 3,
+                    min: 0,
+                    softMax: 6,
+                    max: 100,
+                    step: 0.1,
+                    tooltip:
+                        'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
+                }),
+                adaptiveScale: form.float({
+                    default: 0,
+                    min: 0,
+                    max: 1,
+                    step: 0.1,
+                    tooltip:
+                        'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
+                }),
             },
-        },
-    )
-    .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'PerturbedAttention' }])
+            {
+                startCollapsed: true,
+                tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
+                summary: (ui) => {
+                    return `scale:${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} scale:${
+                        ui.scale
+                    } dampening:${ui.adaptiveScale}`
+                },
+            },
+        )
+        .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'PerturbedAttention' }])
 }
 
 const ui_sag = (form: FormBuilder) => {

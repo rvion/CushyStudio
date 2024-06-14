@@ -3,8 +3,11 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
+import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -21,44 +24,40 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? (
-                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
-                <div></div>
+                <div /* spacer */ />
             )}
-            <div
-                tw='flex self-end'
-                onMouseDown={(ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                }}
-            >
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    return (
-                        <RevealUI
-                            key={plugin.key}
-                            trigger='hover'
-                            placement='topEnd'
-                            content={() => (
-                                <div tw='p-2'>
-                                    <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                    <div tw='whitespace-nowrap'>{plugin.description}</div>
-                                </div>
-                            )}
-                        >
-                            <div
-                                onClick={() => st.configFile.set(plugin.configKey, !active)}
-                                tw={[
-                                    active ? 'btn-primary' : null,
-                                    'btn btn-icon btn-square opacity-50 hover:opacity-100 btn-xs text-sm',
-                                ]}
-                            >
-                                <span className='material-symbols-outlined'>{plugin.icon}</span>
+        </div>
+    )
+})
+
+export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
+    return (
+        <div tw='flex self-end gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
+            {plugins.map((plugin) => {
+                const active = cushy.configFile.get(plugin.configKey) ?? false
+                // const Icon = Ikon[plugin.icon]
+                return (
+                    <RevealUI
+                        key={plugin.key}
+                        trigger='hover'
+                        placement='topEnd'
+                        content={() => (
+                            <div tw='p-2'>
+                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
+                                <div tw='whitespace-nowrap'>{plugin.description}</div>
                             </div>
-                        </RevealUI>
-                    )
-                })}
-            </div>
+                        )}
+                    >
+                        <InputBoolToggleButtonUI
+                            value={Boolean(active)}
+                            icon={plugin.icon}
+                            onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
+                        />
+                    </RevealUI>
+                )
+            })}
         </div>
     )
 })
@@ -80,12 +79,17 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
         uist.replaceTextBy(widget.text)
     }, [widget._valueUpdatedViaAPIAt])
 
+    const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
         <div
             tw='flex flex-col'
             onKeyDownCapture={(ev) => {
                 // Prevent new-line when using the run shortcut
                 // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
+                // ⏸️ if (ev.ctrlKey && ev.key == ' ') {
+                // ⏸️     ev.preventDefault()
+                // ⏸️     ev.stopPropagation()
+                // ⏸️ }
                 if (ev.ctrlKey && ev.key == 'Enter') {
                     ev.preventDefault()
                     ev.stopPropagation()
@@ -95,17 +99,20 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
-            <div className='flex flex-col gap-1'>
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    if (!active) return null
-                    return (
-                        <PluginWrapperUI key={plugin.key} plugin={plugin}>
-                            <plugin.Widget uist={uist} />
-                        </PluginWrapperUI>
-                    )
-                })}
-            </div>
+            <PluginToggleBarUI />
+            {haveAtLeastOnePluginActive && (
+                <Frame className='flex flex-col gap-1 p-1 my-1'>
+                    {plugins.map((plugin) => {
+                        const active = st.configFile.get(plugin.configKey) ?? false
+                        if (!active) return null
+                        return (
+                            <PluginWrapperUI key={plugin.key} plugin={plugin}>
+                                <plugin.Widget uist={uist} />
+                            </PluginWrapperUI>
+                        )
+                    })}
+                </Frame>
+            )}
         </div>
     )
 })
@@ -113,7 +120,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 const pluginReorder: PromptPlugin = {
     key: 'plugin-reorder',
     configKey: 'showPromptPluginPreview',
-    icon: 'format_list_numbered',
+    icon: 'mdiCursorMove',
     title: 'Reorder',
     description: 'Reorder top level items (drag-and-drop friendly for those without RSI yet)',
     Widget: Plugin_ReorderTopLevelStuffUI,
@@ -121,7 +128,7 @@ const pluginReorder: PromptPlugin = {
 const pluginShortcuts: PromptPlugin = {
     key: 'plugin-shortcuts',
     configKey: 'showPromptPluginReorder',
-    icon: 'keyboard',
+    icon: 'mdiCodeJson',
     title: 'Keyboard Shortcuts',
     description: 'Increase/Decrease weights, and more',
     Widget: Plugin_ShortcutsUI,
@@ -129,7 +136,7 @@ const pluginShortcuts: PromptPlugin = {
 const pluginWeights: PromptPlugin = {
     key: 'plugin-weights',
     configKey: 'showPromptPluginWeights',
-    icon: 'line_weight',
+    icon: 'mdiWeightKilogram',
     title: 'Adjust weights',
     description: 'Adjust top-level weights',
     Widget: Plugin_AdjustWeightsUI,
@@ -137,7 +144,7 @@ const pluginWeights: PromptPlugin = {
 const pluginPreview: PromptPlugin = {
     key: 'plugin-preview',
     configKey: 'showPromptPluginLora',
-    icon: 'preview',
+    icon: 'mdiText',
     title: 'Preview Prompt',
     description: 'Preview the prompt that will be sent to ComfyUI',
     Widget: Plugin_PreviewPromptUI,
@@ -145,7 +152,7 @@ const pluginPreview: PromptPlugin = {
 const pluginLora: PromptPlugin = {
     key: 'plugin-lora',
     configKey: 'showPromptPluginAst',
-    icon: 'format_list_numbered',
+    icon: 'mdiAt',
     title: 'Lora plugin to adjust model_weight, clip_weights, and trigger words',
     description: 'Lora plugin',
     Widget: Plugin_LoraControlsUI,
@@ -153,7 +160,7 @@ const pluginLora: PromptPlugin = {
 const pluginAst: PromptPlugin = {
     key: 'plugin-ast',
     configKey: 'showPromptPluginShortcuts',
-    icon: 'account_tree',
+    icon: 'mdiKeyboard',
     title: 'Show Ast',
     description: 'Show the Prompt AST to review if everything is as expected',
     Widget: Plugin_DebugAST,

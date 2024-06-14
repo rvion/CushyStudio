@@ -5,8 +5,8 @@ export const ui_watermark_v1 = () => {
     const ui = getCurrentForm()
     return ui.fields({
         pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
-        font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { alignLabel: false }),
-        format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { alignLabel: false }),
+        font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
+        format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
         content: ui.textarea({ default: 'Cushy Diffusion' }),
         color: ui.colorV2({ default: 'black' }),
         fontSize: ui.int({ default: 20, min: 3, softMax: 30 }),

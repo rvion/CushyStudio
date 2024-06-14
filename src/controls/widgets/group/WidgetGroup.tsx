@@ -1,4 +1,3 @@
-import type { CovariantFn } from '../../BivariantHack'
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
@@ -8,11 +7,8 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
-import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
@@ -24,14 +20,6 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
          * directly
          */
         items?: T | (() => T)
-
-        /**
-         * legacy property, will be removed soon
-         * you can alreay check if you're a top-level property
-         * by checking if this.parent is null
-         * @deprecated
-         */
-        topLevel?: boolean
 
         /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
@@ -72,28 +60,20 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         return null
     }
 
+    get hasChanges() {
+        return Object.values(this.fields).some((f) => f.hasChanges)
+    }
+    reset = () => {
+        for (const sub of this.subWidgets) sub.reset()
+    }
+
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
-    readonly type: 'group' = 'group'
 
-    collapseAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            if (item.serial.collapsed) continue
-            const isCollapsible = getIfWidgetIsCollapsible(item)
-            if (isCollapsible) item.setCollapsed(true)
-        }
-    }
-    expandAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            item.setCollapsed(undefined)
-        }
-    }
+    readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */
     get entries() {
@@ -106,7 +86,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
-    /* override */ background = true
 
     private _defaultSerial = (): Widget_group_serial<T> => {
         return {

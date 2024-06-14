@@ -17,16 +17,13 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
     return (
         <div tw='overflow-auto virtualBorder'>
             <div tw='flex flex-col gap-1' style={{ width: serial.width * scale }}>
-                <div
-                    style={{ minHeight: '1rem', width: serial.width * scale }}
-                    tw='bg-base-300 timeline-item w-full relative'
-                ></div>
+                <div style={{ minHeight: '1rem', width: serial.width * scale }} tw='timeline-item w-full relative'></div>
                 {widget.entries.map(({ shape: position, widget }, ix) => {
                     return (
                         <div
                             key={widget.id}
                             style={{ minHeight: '2rem', width: serial.width * scale }}
-                            tw='bg-base-300 timeline-item w-full relative'
+                            tw='timeline-item w-full relative'
                         >
                             <div
                                 tw={[
