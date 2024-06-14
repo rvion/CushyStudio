@@ -23,9 +23,6 @@ export type $WidgetTypes = {
 // TODO: completely remove `IWidget` and only keep `BaseWidget` ?
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget<K> {}
 
-/** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Serial'] instead */
-export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? Serial : never
-
 /** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
     id?: string
