@@ -57,8 +57,7 @@ export type Widget_listExt_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T> {}
-export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidget<Widget_listExt_types<T>> {
+export class Widget_listExt<T extends ISpec> extends BaseWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 

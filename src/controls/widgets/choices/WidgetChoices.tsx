@@ -53,8 +53,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
     UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />

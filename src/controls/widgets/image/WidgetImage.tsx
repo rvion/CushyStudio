@@ -27,8 +27,14 @@ export type Widget_image_config = WidgetConfigFields<
 export type Widget_image_serial = WidgetSerialFields<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
-    imageHash?: string /** for form expiration */
-    /** Height of the resizable frame's content, the width is aspect ratio locked. */
+
+    /** for form expiration */
+    imageHash?: string
+
+    /**
+     * Height of the resizable frame's content,
+     * the width is aspect ratio locked.
+     */
     size: number
 }>
 
@@ -45,8 +51,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends Widget_image_types {} // prettier-ignore
-export class Widget_image extends BaseWidget implements IWidget<Widget_image_types> {
+export class Widget_image extends BaseWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string

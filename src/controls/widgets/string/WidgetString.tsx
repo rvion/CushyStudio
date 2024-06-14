@@ -56,8 +56,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_string extends Widget_string_types {}
-export class Widget_string extends BaseWidget implements IWidget<Widget_string_types> {
+export class Widget_string extends BaseWidget<Widget_string_types> {
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI

@@ -51,8 +51,7 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends Widget_orbit_types {}
-export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_types> {
+export class Widget_orbit extends BaseWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string

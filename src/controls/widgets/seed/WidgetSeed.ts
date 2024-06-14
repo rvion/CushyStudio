@@ -49,8 +49,7 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export interface Widget_seed extends Widget_seed_types {}
-export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types> {
+export class Widget_seed extends BaseWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
 

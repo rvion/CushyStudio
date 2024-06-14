@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite'
 import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
-import { $WidgetSym, type IWidget } from './IWidget'
+import { $WidgetSym, type $WidgetTypes, type IWidget } from './IWidget'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
@@ -22,7 +22,7 @@ import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { type WidgetWithLabelProps, WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
-import { normalizeProblem, type Problem } from './Validation'
+import { normalizeProblem, type Problem, type Problem_Ext } from './Validation'
 import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
@@ -33,9 +33,44 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
+export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
+}
+
 // v3 (experimental) ---------------------------------------
-export abstract class BaseWidget {
+export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    /** spec used to instanciate this widget */
     abstract spec: ISpec
+
+    /** unique ID; each node in the form tree has one; persisted in serial */
+    abstract readonly id: string
+
+    /** widget type; can be used instead of `instanceof` to known which wiget it is */
+    abstract readonly type: K['$Type']
+
+    /** wiget value is the simple/easy-to-use representation of that widget  */
+    abstract value: K['$Value']
+
+    /** wiget serial is the full serialized representation of that widget  */
+    abstract readonly serial: K['$Serial']
+    // 🔶 abstract serial: { collapsed?: boolean }
+
+    /** base validation errors specific to this widget; */
+    abstract readonly baseErrors: Problem_Ext
+
+    /** unified api to allow setting serial from value */
+    abstract setValue(val: K['$Value']): void
+
+    // ---------------------------------------------------------------------------------------------------
+    /** default header UI */
+    abstract readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
+
+    /** default body UI */
+    abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 
     UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
@@ -55,7 +90,7 @@ export abstract class BaseWidget {
         }
     }
 
-    /** shorthand access to config */
+    /** shorthand access to spec.config */
     get config(): this['spec']['config'] {
         return this.spec.config
     }
@@ -140,8 +175,6 @@ export abstract class BaseWidget {
         return errors.length > 0
     }
 
-    abstract value: unknown
-
     /**
      * return a short string summary
      * expected to be overriden in child classes
@@ -210,12 +243,6 @@ export abstract class BaseWidget {
 
     /** parent widget of this widget, if any */
     abstract readonly parent: IWidget | null
-
-    /** default body UI */
-    abstract readonly DefaultBodyUI: CovariantFC<any> | undefined
-
-    /** the widget state that will be persisted UI */
-    abstract serial: { collapsed?: boolean }
 
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden

@@ -25,16 +25,6 @@ export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerialFields
     active: boolean
 }>
 
-// // SERIAL FROM VALUE
-// export const Widget_optional_fromValue = <T extends ISpec = ISpec>(
-//     config/* 🔴 */: Widget_optional_config<T>,
-//     value: Widget_optional_value<T>,
-// ): Widget_optional_serial<T> => ({
-//     type: 'optional',
-//     active: value != null,
-//     child: config.widget,
-// })
-
 // VALUE
 export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
 
@@ -48,8 +38,7 @@ export type Widget_optional_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T> {}
-export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_optional_types<T>> {
+export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string

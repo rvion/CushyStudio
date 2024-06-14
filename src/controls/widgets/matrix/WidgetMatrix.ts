@@ -31,7 +31,11 @@ export type Widget_matrix_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_serial = WidgetSerialFields<{
+    type: 'matrix'
+    active: true
+    selected: Widget_matrix_cell[]
+}>
 
 // VALUE
 export type Widget_matrix_value = Widget_matrix_cell[]
@@ -46,8 +50,7 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends Widget_matrix_types {}
-export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_types> {
+export class Widget_matrix extends BaseWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string

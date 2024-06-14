@@ -45,8 +45,7 @@ export type Widget_number_types = {
 }
 
 // STATE
-export interface Widget_number extends Widget_number_types {}
-export class Widget_number extends BaseWidget implements IWidget<Widget_number_types> {
+export class Widget_number extends BaseWidget<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string

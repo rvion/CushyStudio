@@ -68,8 +68,7 @@ export type Widget_bool_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_bool_types {}
-export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types> {
+export class Widget_bool extends BaseWidget<Widget_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
     readonly id: string

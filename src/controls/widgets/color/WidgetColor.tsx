@@ -33,8 +33,7 @@ export type Widget_color_types = {
 }
 
 // STATE
-export interface Widget_color extends Widget_color_types {}
-export class Widget_color extends BaseWidget implements IWidget<Widget_color_types> {
+export class Widget_color extends BaseWidget<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string

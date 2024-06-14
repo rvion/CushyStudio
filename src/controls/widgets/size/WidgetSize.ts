@@ -45,8 +45,7 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types {}
-export class Widget_size extends BaseWidget implements IWidget<Widget_size_types> {
+export class Widget_size extends BaseWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {

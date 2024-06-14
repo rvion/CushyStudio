@@ -40,8 +40,7 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export interface Widget_custom<T> extends Widget_custom_types<T> {}
-export class Widget_custom<T> extends BaseWidget implements IWidget<Widget_custom_types<T>> {
+export class Widget_custom<T> extends BaseWidget<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string

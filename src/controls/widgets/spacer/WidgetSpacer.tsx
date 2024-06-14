@@ -37,8 +37,7 @@ export type Widget_spacer_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_spacer_types {}
-export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_types> {
+export class Widget_spacer extends BaseWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {

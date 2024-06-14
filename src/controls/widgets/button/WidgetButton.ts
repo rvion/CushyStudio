@@ -50,8 +50,7 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export interface Widget_button<K> extends Widget_button_types<K> {}
-export class Widget_button<K> extends BaseWidget implements IWidget<Widget_button_types<K>> {
+export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string

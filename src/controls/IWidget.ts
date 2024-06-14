@@ -17,7 +17,7 @@ export type $WidgetTypes = {
     $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Value: any
-    $Widget: IWidget<$WidgetTypes>
+    $Widget: BaseWidget
 }
 
 export const isWidget = (x: any): x is IWidget => {
@@ -30,46 +30,7 @@ export const isWidget = (x: any): x is IWidget => {
 }
 
 // TODO: completely remove `IWidget` and only keep `BaseWidget` ?
-export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget {
-    // ---------------------------------------------------------------------------------------------------
-    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
-
-    // ---------------------------------------------------------------------------------------------------
-    /** unique ID; each node in the form tree has one; persisted in serial */
-    readonly id: string
-
-    /** spec used to instanciate this widget */
-    readonly spec: ISpec<any>
-
-    /** widget type; can be used instead of `instanceof` to known which wiget it is */
-    readonly type: K['$Type']
-
-    /** the provided config  */
-    readonly config: K['$Config']
-
-    /** wiget value is the simple/easy-to-use representation of that widget  */
-    readonly value: K['$Value']
-
-    /** wiget serial is the full serialized representation of that widget  */
-    readonly serial: K['$Serial']
-
-    /** base validation errors specific to this widget; */
-    readonly baseErrors: Problem_Ext
-
-    /** unified api to allow setting serial from value */
-    setValue(val: K['$Value']): void
-
-    // ---------------------------------------------------------------------------------------------------
-    /** default header UI */
-    readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
-
-    /** default body UI */
-    readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
-}
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget<K> {}
 
 export const $WidgetSym = Symbol('Widget')
 

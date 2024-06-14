@@ -76,11 +76,12 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectOne<T> extends Widget_selectOne_types<T> {}
 
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
-export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectOne_types<T>> {
+export class Widget_selectOne<T extends BaseSelectEntry> //
+    extends BaseWidget<Widget_selectOne_types<T>>
+{
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
 

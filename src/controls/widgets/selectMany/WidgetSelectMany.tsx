@@ -72,8 +72,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
-export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectMany_types<T>> {
+export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
 

@@ -58,8 +58,7 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export interface Widget_prompt extends Widget_prompt_types {}
-export class Widget_prompt extends BaseWidget implements IWidget<Widget_prompt_types> {
+export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI

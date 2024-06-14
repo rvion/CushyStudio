@@ -42,8 +42,7 @@ export type Widget_shared_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T> {}
-export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_shared_types<T>> {
+export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget<Widget_shared_types<T>> {
     readonly id: string
     get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'

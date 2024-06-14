@@ -38,8 +38,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends Widget_markdown_types {}
-export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdown_types> {
+export class Widget_markdown extends BaseWidget<Widget_markdown_types> {
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined

@@ -16,7 +16,7 @@ import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
     {
         /**
-         * lambda function is deprecated, prefer passing the items as an object
+         * Lambda function is deprecated, prefer passing the items as an object
          * directly
          */
         items?: T | (() => T)
@@ -48,8 +48,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
-export class Widget_group<T extends SchemaDict> extends BaseWidget implements IWidget<Widget_group_types<T>> {
+export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
