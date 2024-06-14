@@ -20,19 +20,8 @@ export type $WidgetTypes = {
     $Widget: BaseWidget
 }
 
-export const isWidget = (x: any): x is IWidget => {
-    return (
-        x != null && //
-        typeof x === 'object' &&
-        '$WidgetSym' in x &&
-        x.$WidgetSym === $WidgetSym
-    )
-}
-
 // TODO: completely remove `IWidget` and only keep `BaseWidget` ?
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget<K> {}
-
-export const $WidgetSym = Symbol('Widget')
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
 export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never
