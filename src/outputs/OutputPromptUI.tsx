@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
+import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ProgressReport } from '../models/ComfyWorkflow'
 import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'
-import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: {

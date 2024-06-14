@@ -1,5 +1,5 @@
 /** this module helps break the import cycle between MenuUI and Command  */
-import type { BoundCommand } from '../Command'
+import type { BoundCommand } from '../commands/Command'
 
 // 🔵 Explore: should I use Symbol.for here for extra sefety ?
 export const BoundCommandSym = Symbol('BoundCommand')

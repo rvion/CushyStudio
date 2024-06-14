@@ -1,12 +1,12 @@
-import type { Command } from '../operators/Command'
+import type { Command } from '../csuite/commands/Command'
 
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../app/accelerators/ComboUI'
-import { commandManager } from '../app/accelerators/CommandManager'
+import { ComboUI } from '../csuite/accelerators/ComboUI'
+import { commandManager } from '../csuite/commands/CommandManager'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { FormHelpTextUI } from '../csuite/shims'
-import { Trigger } from '../operators/RET'
+import { Trigger } from '../csuite/trigger/Trigger'
 import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 

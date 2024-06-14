@@ -1,13 +1,13 @@
 /** @todo improve to detect shortkey without order */
 
-import type { Command, CommandContext } from '../../operators/Command'
+import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
 import { computed, makeObservable, observable } from 'mobx'
 
-import { Trigger } from '../../operators/RET'
-import { isPromise } from '../../utils/misc/ManualPromise'
-import { META_NAME, MOD_KEY } from './META_NAME'
+import { META_NAME, MOD_KEY } from '../accelerators/META_NAME'
+import { Trigger } from '../trigger/Trigger'
+import { isPromise } from '../utils/ManualPromise'
 
 export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shift+i'
 

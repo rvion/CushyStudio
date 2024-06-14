@@ -1,8 +1,8 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 
-import { command } from '../../../operators/Command'
+import { command } from '../../../csuite/commands/Command'
+import { Trigger } from '../../../csuite/trigger/Trigger'
 import { ctx_unifiedCanvas } from '../../../operators/contexts/ctx_unifiedCanvas'
-import { Trigger } from '../../../operators/RET'
 
 export const cmd_unifiedCanvas_activateGenerateTool = command<UnifiedCanvas>({
     id: 'unifiedCanvas.activateGenerateTool',

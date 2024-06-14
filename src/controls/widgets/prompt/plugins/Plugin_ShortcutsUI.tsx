@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../../../../app/accelerators/ComboUI'
 import { openExternal } from '../../../../app/layout/openExternal'
+import { ComboUI } from '../../../../csuite/accelerators/ComboUI'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 export const Plugin_ShortcutsUI = observer(function Plugin_ShortcutsUI_(p: { uist: WidgetPromptUISt }) {

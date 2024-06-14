@@ -5,7 +5,7 @@ import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
 import { cwd } from 'process'
 
-import { toastError, toastInfo } from '../misc/toasts'
+import { toastError, toastInfo } from '../../csuite/utils/toasts'
 
 const workspaceFolderPath = cwd()
 

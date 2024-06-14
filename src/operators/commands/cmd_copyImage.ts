@@ -1,8 +1,8 @@
 import { CushyFormManager } from '../../controls/FormBuilder'
+import { command, type Command } from '../../csuite/commands/Command'
+import { menu, type Menu } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'
-import { command, type Command } from '../Command'
 import { ctx_image } from '../contexts/ctx_image'
-import { menu, type Menu } from '../menu/Menu'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'
 

@@ -1,4 +1,4 @@
-import { exhaust } from '../../../src/utils/misc/exhaust'
+import { exhaust } from '../../../src/csuite/utils/exhaust'
 import { type SimpleColor, type SimpleKind, type SimpleRarity } from './_stsAssets'
 import { type STSCard } from './_stsCards'
 

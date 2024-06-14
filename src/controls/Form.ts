@@ -10,8 +10,8 @@ import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx
 import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
+import { debounce } from '../csuite/utils/debounce'
 import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownConfigUI'
-import { debounce } from '../utils/misc/debounce'
 import { FormUI, type FormUIProps } from './FormUI'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
 

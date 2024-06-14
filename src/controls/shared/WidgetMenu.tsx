@@ -1,14 +1,14 @@
-import type { Menu, MenuEntry } from '../../operators/menu/Menu'
+import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
 import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { menu } from '../../csuite/menu/Menu'
+import { SimpleMenuAction } from '../../csuite/menu/SimpleMenuAction'
+import { SimpleMenuModal } from '../../csuite/menu/SimpleMenuModal'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { menu } from '../../operators/menu/Menu'
-import { SimpleMenuAction } from '../../operators/menu/SimpleMenuAction'
-import { SimpleMenuModal } from '../../operators/menu/SimpleMenuModal'
 import { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'

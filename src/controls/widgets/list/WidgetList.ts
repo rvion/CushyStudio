@@ -6,7 +6,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { clampOpt } from '../../utils/clamp'

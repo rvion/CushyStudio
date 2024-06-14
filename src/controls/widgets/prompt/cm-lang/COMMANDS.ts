@@ -3,7 +3,7 @@ import type { EditorView } from '@codemirror/view'
 import { syntaxTree } from '@codemirror/language'
 import { keymap } from '@codemirror/view'
 
-import { bang } from '../../../../utils/misc/bang'
+import { bang } from '../../../../csuite/utils/bang'
 import { PromptLangNodeName } from '../grammar/grammar.types'
 import { $commonAncestor, $smartResolve } from './utils'
 

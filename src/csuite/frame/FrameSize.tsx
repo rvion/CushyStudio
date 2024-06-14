@@ -1,6 +1,6 @@
 import type { RSSize } from '../RsuiteTypes'
 
-import { exhaust } from '../../utils/misc/exhaust'
+import { exhaust } from '../utils/exhaust'
 
 export type FrameSize = {
     size?: Maybe<RSSize>

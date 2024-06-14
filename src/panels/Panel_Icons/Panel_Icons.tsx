@@ -12,8 +12,8 @@ import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { getAllIcons } from '../../csuite/icons/getAllIcons'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
-import { searchMatches } from '../../utils/misc/searchMatches'
-import { toastError, toastInfo } from '../../utils/misc/toasts'
+import { searchMatches } from '../../csuite/utils/searchMatches'
+import { toastError, toastInfo } from '../../csuite/utils/toasts'
 import { PanelHeaderUI } from '../PanelHeader'
 
 class IconPanelStableState {

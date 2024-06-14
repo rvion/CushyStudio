@@ -10,7 +10,7 @@ import type { PluginInstallStatus } from './REQUIREMENTS/PluginInstallStatus'
 
 import { makeAutoObservable, observable } from 'mobx'
 
-import { toastError, toastSuccess } from '../utils/misc/toasts'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
 
 type HostPluginList = {
     custom_nodes: {

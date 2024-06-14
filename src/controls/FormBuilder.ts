@@ -6,7 +6,7 @@ import type { ISpec, SchemaDict } from './ISpec'
 import { makeAutoObservable, reaction } from 'mobx'
 
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
-import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
+import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
@@ -35,6 +35,8 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
+
+export type { SchemaDict } from './ISpec'
 
 // attempt to make type safety better --------------------------------------------------------
 export type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
@@ -336,7 +338,7 @@ export class FormBuilder implements IFormBuilder {
         parent: BaseWidget | null,
         spec: T,
         serial: any | null,
-    ): T['$Widget'] => {
+    ): BaseWidget<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -403,7 +405,7 @@ export class FormBuilder implements IFormBuilder {
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {
-        const w = this.__HYDRATE(parent, spec, serial)
+        const w = this.__HYDRATE(parent, spec, serial) as T['$Widget']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later

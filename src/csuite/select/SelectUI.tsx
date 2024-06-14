@@ -1,3 +1,5 @@
+import type { SelectProps } from './SelectProps'
+
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
@@ -5,7 +7,6 @@ import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
 import { SelectPopupUI } from './SelectPopupUI'
-import { SelectProps } from './SelectProps'
 import { AutoCompleteSelectState } from './SelectState'
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {

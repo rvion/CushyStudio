@@ -1,6 +1,6 @@
+import { CommandContext } from '../../csuite/commands/Command'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { MediaImageL } from '../../models/MediaImage'
-import { CommandContext } from '../Command'
-import { Trigger } from '../RET'
 
 export const ctx_image = new CommandContext<MediaImageL>('over image', () => {
     if (

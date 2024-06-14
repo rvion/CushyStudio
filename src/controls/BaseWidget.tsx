@@ -46,6 +46,12 @@ export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 
 // v3 (experimental) ---------------------------------------
 export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
+    // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
+    // $Widget!: K['$Widget'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+
     /** spec used to instanciate this widget */
     abstract spec: ISpec
 
@@ -60,7 +66,6 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 
     /** wiget serial is the full serialized representation of that widget  */
     abstract readonly serial: K['$Serial']
-    // 🔶 abstract serial: { collapsed?: boolean }
 
     /** base validation errors specific to this widget; */
     abstract readonly baseErrors: Problem_Ext
@@ -94,11 +99,11 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** shorthand access to spec.config */
-    get config(): this['spec']['config'] {
+    get config(): this['$Config'] {
         return this.spec.config
     }
 
-    get animateResize() {
+    get animateResize(): boolean {
         return true
     }
 
@@ -110,7 +115,8 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         return this.subWidgets.length === 0
     }
 
-    collapseAllChildren = () => {
+    /** collapse all children that can be collapsed */
+    collapseAllChildren(): void {
         for (const _item of this.subWidgets) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = getActualWidgetToDisplay(_item)
@@ -119,7 +125,9 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
             if (isCollapsible) item.setCollapsed(true)
         }
     }
-    expandAllChildren = () => {
+
+    /** expand all children that can are collapsed */
+    expandAllChildren(): void {
         for (const _item of this.subWidgets) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = getActualWidgetToDisplay(_item)
@@ -182,7 +190,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
      * return a short string summary
      * expected to be overriden in child classes
      */
-    get summary() {
+    get summary(): string {
         return JSON.stringify(this.value)
     }
 
@@ -205,13 +213,13 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: BaseWidget) {
+    bumpSerial(this: BaseWidget): void {
         this.form.serialChanged(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: BaseWidget) {
+    bumpValue(this: BaseWidget): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */

@@ -4,7 +4,7 @@ import type { CovariantFC } from './utils/CovariantFC'
 
 export type SchemaDict = { [key: string]: ISpec }
 
-export interface ISpec<W extends BaseWidget = BaseWidget> {
+export interface ISpec<out W extends BaseWidget = BaseWidget> {
     // real fields
     type: W['type']
     config: W['$Config']

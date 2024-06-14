@@ -4,7 +4,7 @@ import type { Widget_group } from './WidgetGroup'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../../csuite/button/Button'
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'

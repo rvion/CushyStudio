@@ -5,7 +5,6 @@ import type { CSuiteConfig } from './CSuiteConfig'
 import { makeAutoObservable } from 'mobx'
 
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 export class CSuite_ThemeLoco implements CSuiteConfig {
     constructor() {

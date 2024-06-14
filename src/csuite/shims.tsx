@@ -3,8 +3,8 @@ import type { RSSize } from './RsuiteTypes'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
+import { exhaust } from './utils/exhaust'
 
 // form
 export const FormHelpTextUI = (p: any) => <div {...p}></div>

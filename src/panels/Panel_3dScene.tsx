@@ -4,7 +4,7 @@ import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import { Slider, Toggle } from '../csuite/shims'
-import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
+import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
 const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls')

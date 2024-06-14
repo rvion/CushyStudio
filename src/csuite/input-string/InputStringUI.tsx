@@ -16,7 +16,7 @@ type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 export const InputStringUI = observer(function WidgetStringUI_(p: {
     /** when true => 'mdiText' */
-    icon?: IconName | boolean | null | undefined
+    icon?: IconName // | boolean | null | undefined
 
     // get / set value
     getValue: () => string

@@ -1,43 +1,9 @@
 import type { RevealPlacement } from '../../csuite/reveal/RevealPlacement'
 import type { FC } from 'react'
 
-import { makeAutoObservable } from 'mobx'
+import { Trigger } from '../trigger/Trigger'
 
-import { type DomId, Trigger } from '../RET'
-
-// ACTIVITY = global app state machine state you can be in;
-// consume all events, and react to them
-// may let some pass though; or not
-
-class ActivityManager {
-    /** currently active activities */
-    _stack: Activity[] = []
-
-    startActivity = (activity: Activity) => {
-        this._stack.push(activity)
-        activity.onStart?.()
-        return Trigger.Success
-    }
-
-    stopActivity(activity: Activity): void {
-        const ix = this._stack.indexOf(activity)
-        if (ix === -1) return
-        this._stack.splice(ix, 1)
-        activity.onStop?.()
-    }
-
-    stopCurrentActivity = () => {
-        const activity = this._stack.pop()
-        activity?.onStop?.()
-    }
-
-    current = () => this._stack[this._stack.length - 1]
-
-    constructor() {
-        makeAutoObservable(this)
-    }
-}
-export const activityManager = new ActivityManager()
+export type DomId = string
 
 export interface Activity {
     /** human-readable activity title */
