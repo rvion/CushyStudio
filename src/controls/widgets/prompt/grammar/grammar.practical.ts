@@ -326,7 +326,7 @@ export class Prompt_WeightedExpression extends ManagedNode<'WeightedExpression'>
         return this.getChild('Content')?.text ?? ''
     }
     get weight() {
-        return this.getChild('Number')?.number ?? 1
+        return this.getChild('Number')?.number ?? 1.1
     }
     set weight(value: number) {
         this.getChild('Number')?.setNumber(value)

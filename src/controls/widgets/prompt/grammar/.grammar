@@ -20,7 +20,7 @@ expression[@isGroup=Expression] {
 @skip { space }
 
 Content {expression+ }
-WeightedExpression { "(" Content ")*" Number }
+WeightedExpression { "(" Content ")" ("*" Number)? }
 
 Permutations { "{" Content "}" }
 
