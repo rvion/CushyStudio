@@ -14,11 +14,11 @@ import fs, { writeFileSync } from 'fs'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { createRandomGenerator } from '../back/random'
 import { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import { compilePrompt } from '../controls/widgets/prompt/_compile'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
+import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
 import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
@@ -182,7 +182,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }): CompiledPrompt =>
         compilePrompt({
             text: p.text,
-            st: this.Cushy,
+            ctx: this.Cushy,
             seed: p.seed,
             onLora: p.onLora,
             printWildcards: p.printWildcards ?? true,

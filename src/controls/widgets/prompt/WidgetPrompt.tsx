@@ -163,7 +163,7 @@ export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
         printWildcards?: boolean
     }): CompiledPrompt =>
         compilePrompt({
-            st: cushy,
+            ctx: cushy,
             text: this.text,
             //
             onLora: p.onLora,

@@ -8,7 +8,6 @@ export const createRandomGenerator = (hash: string) => {
 }
 
 // FROM: https://stackoverflow.com/a/47593316/567524
-
 function xmur3(str: string) {
     let h = 1779033703 ^ str.length
     for (let i = 0; i < str.length; i++) {
