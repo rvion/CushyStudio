@@ -1,8 +1,10 @@
 import type { OutputFor } from './_prefabs'
 
-import { ui_pag } from './prefab_pag'
+import { ui_model_kohyaDeepShrink, type UI_model_kohyaDeepShrink } from './prefab_model_kohyaDeepShrink'
+import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
+import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
-type UI_Model = X.XGroup<{
+export type UI_Model = X.XGroup<{
     ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
     checkpointConfig: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
     extra: X.XChoices<{
@@ -11,15 +13,15 @@ type UI_Model = X.XGroup<{
         clipSkip: X.XNumber
         freeU: X.XGroup<X.SchemaDict>
         freeUv2: X.XGroup<X.SchemaDict>
-        pag: X.XGroup<any>
-        sag: X.XGroup<any>
-        KohyaDeepShrink: X.XGroup<any>
+        pag: UI_model_pag
+        sag: UI_model_sag
+        KohyaDeepShrink: UI_model_kohyaDeepShrink
         civitai_ckpt_air: X.XString
     }>
 }>
 
 // UI -----------------------------------------------------------
-export const ui_model = () => {
+export function ui_model(): UI_Model {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
@@ -104,9 +106,9 @@ export const ui_model = () => {
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
                     freeUv2: form.group(),
-                    pag: ui_pag(form),
-                    sag: ui_sag(form),
-                    KohyaDeepShrink: ui_kohyaDeepShrink(form),
+                    pag: ui_model_pag(form),
+                    sag: ui_model_sag(form),
+                    KohyaDeepShrink: ui_model_kohyaDeepShrink(form),
                     civitai_ckpt_air: form
                         .string({
                             tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
@@ -120,74 +122,6 @@ export const ui_model = () => {
     })
 }
 
-const ui_sag = (form: X.FormBuilder) => {
-    return form.fields(
-        {
-            include: form.choices({
-                items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
-                default: { base: true, hiRes: true },
-            }),
-            scale: form.float({ default: 0.5, step: 0.1, min: -2.0, max: 5.0 }),
-            blur_sigma: form.float({ default: 2.0, step: 0.1, min: 0, max: 10.0 }),
-        },
-        {
-            startCollapsed: true,
-            tooltip: 'Self Attention Guidance can improve image quality but runs slower',
-            summary: (ui) => {
-                return `${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''}`
-            },
-        },
-    )
-}
-
-const ui_kohyaDeepShrink = (form: X.FormBuilder) => {
-    return form.fields(
-        {
-            include: form.choices({
-                items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
-                default: { base: false, hiRes: true },
-            }),
-            advancedSettings: form.fields(
-                {
-                    downscaleFactor: form.float({
-                        default: 2,
-                        min: 0.1,
-                        max: 9,
-                        softMax: 4,
-                        step: 0.25,
-                        tooltip: 'only applies to shrink on base model. hires will use hires scale factor.',
-                    }),
-                    block_number: form.int({ default: 3, max: 32, min: 1 }),
-                    startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
-                    endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
-                    downscaleAfterSkip: form.bool({ default: false }),
-                    downscaleMethod: form.enum.Enum_PatchModelAddDownscale_downscale_method({
-                        default: 'bislerp',
-                    }),
-                    upscaleMethod: form.enum.Enum_PatchModelAddDownscale_upscale_method({ default: 'bicubic' }),
-                },
-                {
-                    startCollapsed: true,
-                    summary: (ui) => {
-                        return `scale:${ui.downscaleFactor} end:${ui.endPercent} afterSkip:${ui.downscaleAfterSkip} downMethod:${ui.downscaleMethod}`
-                    },
-                },
-            ),
-        },
-        {
-            startCollapsed: true,
-            tooltip:
-                'Shrinks and patches the model. Can be used to generate resolutions higher than the model training and helps with hires fix.',
-            summary: (ui) => {
-                return `${ui.include.base ? '🟢Base (' + ui.advancedSettings.downscaleFactor + ')' : ''}${
-                    ui.include.hiRes ? '🟢HiRes ' : ''
-                } end:${ui.advancedSettings.endPercent}`
-            },
-        },
-    )
-}
 // RUN -----------------------------------------------------------
 export const run_model = (
     ui: OutputFor<typeof ui_model>,

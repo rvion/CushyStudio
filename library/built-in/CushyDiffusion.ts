@@ -1,26 +1,23 @@
-import type { FormBuilder } from '../../src/CUSHY'
-
-import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
-import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
-import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
-import { ui_highresfix } from './_prefabs/_prefabs'
-import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
-import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
-import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
+import { Cnet_args, Cnet_return, run_cnet } from './_controlNet/prefab_cnet'
+import { run_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
+import { run_Dispacement1, run_Dispacement2 } from './_prefabs/prefab_3dDisplacement'
+import { run_refiners_fromImage } from './_prefabs/prefab_detailer'
+import { run_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { run_mask, ui_mask } from './_prefabs/prefab_mask'
-import { run_model, run_model_modifiers, ui_model } from './_prefabs/prefab_model'
+import { run_mask } from './_prefabs/prefab_mask'
+import { run_model, run_model_modifiers } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
-import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
-import { ui_recursive } from './_prefabs/prefab_recursive'
-import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
-import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
-import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
-import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
-import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
-import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
+import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
+import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
+import { run_rembg_v1 } from './_prefabs/prefab_rembg'
+import { Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
+import { run_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from './_prefabs/prefab_watermark'
+import { run_customSave } from './_prefabs/saveSmall'
 import { CustomView3dCan } from './_views/View_3d_TinCan'
 import { CustomViewSpriteSheet } from './_views/View_Spritesheets'
+import { CushyDiffusionUI } from './CushyDiffusionUI'
 
 app({
     metadata: {
@@ -28,54 +25,11 @@ app({
         illustration: 'library/built-in/_illustrations/mc.jpg',
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
-    ui: (form: FormBuilder) => ({
-        positive: form.prompt({
-            icon: 'mdiPlusBoxOutline',
-            background: { hue: 150, chroma: 0.05 },
-            default: [
-                'masterpiece, tree',
-                '?color, ?3d_term, ?adj_beauty, ?adj_general',
-                '(nature)*0.9, (intricate_details)*1.1',
-            ].join('\n'),
-        }),
-        negative: form.prompt({
-            icon: 'mdiMinusBoxOutline',
-            startCollapsed: true,
-            default: 'bad quality, blurry, low resolution, pixelated, noisy',
-            box: { base: { hue: 0, chroma: 0.05 } },
-        }),
-        model: ui_model(),
-        latent: ui_latent_v3(),
-        sampler: ui_sampler(),
-        mask: ui_mask(),
-        highResFix: ui_highresfix().optional(true),
-        upscale: ui_upscaleWithModel().optional(),
-        customSave: ui_customSave(),
-        removeBG: ui_rembg_v1(),
-        show3d: ui_3dDisplacement().optional(),
-        controlnets: ui_cnet(),
-        ipAdapter: ui_IPAdapterV2().optional(),
-        faceID: ui_IPAdapterFaceIDV2().optional(),
-        extra: form.choices({
-            appearance: 'tab',
-            items: {
-                regionalPrompt: ui_regionalPrompting_v1(),
-                refine: ui_refiners(),
-                reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
-                makeAVideo: form.group(),
-                summary: form.group(),
-                gaussianSplat: form.group(),
-                promtPlus: ui_advancedPrompt(),
-                displayAsBeerCan: form.group({}),
-                displayAsSpriteSheet: form.group({}),
-                recursiveImgToImg: ui_recursive(),
-                watermark: ui_watermark_v1(),
-                fancyWatermark: form.group(),
-            },
-        }),
-    }),
+    ui: CushyDiffusionUI,
     run: async (run, ui, imgCtx) => {
         const graph = run.nodes
+        //
+        // ui.
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
 
@@ -190,7 +144,7 @@ app({
         const HRF = ui.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
-                ckpt: run_model_modifiers(ui.model, ckptPos, true, ui.highResFix.scaleFactor),
+                ckpt: run_model_modifiers(ui.model, ckptPos, true, HRF.scaleFactor),
                 clip: clipPos,
                 vae,
                 latent,
@@ -223,8 +177,8 @@ app({
                     cfg: ui.sampler.cfg,
                     steps: HRF.steps,
                     denoise: HRF.denoise,
-                    sampler_name: ui.highResFix.useMainSampler ? ui.sampler.sampler_name : 'ddim',
-                    scheduler: ui.highResFix.useMainSampler ? ui.sampler.scheduler : 'ddim_uniform',
+                    sampler_name: HRF.useMainSampler ? ui.sampler.sampler_name : 'ddim',
+                    scheduler: HRF.useMainSampler ? ui.sampler.scheduler : 'ddim_uniform',
                 },
                 { ...ctx_sampler_fix, latent, preview: false },
             ).latent
@@ -267,8 +221,8 @@ app({
             run.output_custom({ view: CustomViewSpriteSheet, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
-        if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)
-        if (ui.extra.fancyWatermark) run_addFancyWatermarkToAllImage()
+        if (ui.extra.watermark) await run_watermark_v1(ui.extra.watermark, run.lastImage)
+        if (ui.extra.fancyWatermark) await run_addFancyWatermarkToAllImage()
         if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })
