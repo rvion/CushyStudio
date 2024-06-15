@@ -29,7 +29,7 @@ describe('prompt grammar', () => {
         )
     })
 
-    describe('find all Lora', () => {
+    it('find all Lora', () => {
         const matches = expr.findAll('Lora')
         expect(matches.length).toBe(2)
         expect(matches[0]!.name).toBe('a' as any)
