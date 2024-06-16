@@ -107,7 +107,9 @@ export const ui_IPAdapterV2 = () => {
                 help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             },
             {
+                icon: 'mdiAnvil',
                 label: 'IPAdapter',
+                box: { base: { hue: 70, chroma: 0.1 } },
                 summary: (ui) => {
                     return `images:${1 + ui.settings.extra.length} | strength:${ui.settings.adapterStrength} | model:${
                         ui.settings.models.type

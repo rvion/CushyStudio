@@ -5,6 +5,7 @@ export const ui_customSave = () => {
     return form
         .group({
             label: 'Save As...',
+            icon: 'mdiContentSaveCogOutline',
             items: {
                 subfolder: form.string({
                     label: 'Subfolder',
