@@ -28,3 +28,55 @@ export type AspectRatio =
     | '1:1'
     | '16:9' | '4:3' | '3:2'
     | '9:16' | '3:4' | '2:3'
+    | '15:16'
+    | '15:17'
+    | '14:17'
+    | '7:9'
+    | '13:18'
+    | '13:19'
+    | '3:5'
+    | '4:7'
+    | '11:21'
+    | '1:2'
+    | '16:15'
+    | '17:15'
+    | '17:14'
+    | '9:7'
+    | '18:13'
+    | '19:13'
+    | '5:3'
+    | '7:4'
+    | '21:11'
+    | '2:1'
+
+export const aspectRatioMap: { [key: string]: { width: number; height: number } } = {
+    '15:16': { width: 960, height: 1024 },
+    '16:15': { width: 1024, height: 960 },
+
+    '15:17': { width: 960, height: 1088 },
+    '17:15': { width: 1088, height: 896 },
+
+    '14:17': { width: 896, height: 1088 },
+    '17:14': { width: 1088, height: 896 },
+
+    '7:9': { width: 896, height: 1152 },
+    '9:7': { width: 1152, height: 896 },
+
+    '13:18': { width: 832, height: 1152 },
+    '18:13': { width: 1152, height: 832 },
+
+    '13:19': { width: 832, height: 1216 },
+    '19:13': { width: 1216, height: 832 },
+
+    '3:5': { width: 768, height: 1280 },
+    '5:3': { width: 1280, height: 768 },
+
+    '4:7': { width: 768, height: 1344 },
+    '7:4': { width: 1344, height: 768 },
+
+    '11:21': { width: 704, height: 1344 },
+    '21:11': { width: 1344, height: 704 },
+
+    '1:2': { width: 704, height: 1408 },
+    '2:1': { width: 1408, height: 704 },
+}

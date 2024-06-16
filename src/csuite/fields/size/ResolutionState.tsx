@@ -1,8 +1,7 @@
-import type { AspectRatio, ModelType } from './WidgetSizeTypes'
-
 import { makeAutoObservable } from 'mobx'
 
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
+import { type AspectRatio, aspectRatioMap, type ModelType } from './WidgetSizeTypes'
 
 // ugly hack so I can both
 // - share the widget with non form components
@@ -47,7 +46,16 @@ export class ResolutionState {
             if (ratio === parseFloatNoRoundingErr(1 / 1, 2)) return '1:1'
             if (ratio === parseFloatNoRoundingErr(16 / 9, 2)) return '16:9'
             if (ratio === parseFloatNoRoundingErr(4 / 3, 2)) return '4:3'
-            if (ratio === parseFloatNoRoundingErr(3 / 2, 2)) return '3:2'
+            if (ratio === parseFloatNoRoundingErr(16 / 15, 2)) return '16:15'
+            if (ratio === parseFloatNoRoundingErr(17 / 15, 2)) return '17:15'
+            if (ratio === parseFloatNoRoundingErr(17 / 14, 2)) return '17:14'
+            if (ratio === parseFloatNoRoundingErr(9 / 7, 2)) return '9:7'
+            if (ratio === parseFloatNoRoundingErr(18 / 13, 2)) return '18:13'
+            if (ratio === parseFloatNoRoundingErr(19 / 13, 2)) return '19:13'
+            if (ratio === parseFloatNoRoundingErr(5 / 3, 2)) return '5:3'
+            if (ratio === parseFloatNoRoundingErr(7 / 4, 2)) return '7:4'
+            if (ratio === parseFloatNoRoundingErr(21 / 11, 2)) return '21:11'
+            if (ratio === parseFloatNoRoundingErr(2 / 1, 2)) return '2:1'
             return '1:1'
         })()
         makeAutoObservable(this)
@@ -88,8 +96,14 @@ export class ResolutionState {
 
     setAspectRatio(aspectRatio: AspectRatio) {
         this.desiredAspectRatio = aspectRatio
+        const definedHeight = aspectRatioMap[this.desiredAspectRatio]?.height
+        const definedWidth = aspectRatioMap[this.desiredAspectRatio]?.width
+        if (definedHeight && definedWidth) {
+            this.height = definedHeight
+            this.width = definedWidth
+        }
         // if (this.isAspectRatioLocked) {
-        if (this.wasHeightAdjustedLast) {
+        else if (this.wasHeightAdjustedLast) {
             this.updateWidthBasedOnAspectRatio()
         } else {
             this.updateHeightBasedOnAspectRatio()
