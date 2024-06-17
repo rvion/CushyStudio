@@ -451,5 +451,19 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         if (config.onInit) {
             config.onInit(this)
         }
+
+        // register self into `form._allFormWidgets`
+        this.form._allFormWidgets.set(this.id, this)
+
+        // register self in  `manager._allWidgets
+        this.form.manager._allWidgets.set(this.id, this)
+
+        // register self in  `manager._allWidgetsByType(<type>)
+        const prev = this.form.manager._allWidgetsByType.get(this.type)
+        if (prev == null) {
+            this.form.manager._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
+        } else {
+            prev.set(this.id, this)
+        }
     }
 }

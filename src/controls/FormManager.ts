@@ -1,3 +1,4 @@
+import type { BaseWidget } from './BaseWidget'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { Widget_group } from './widgets/group/WidgetGroup'
@@ -14,6 +15,29 @@ import { Form, FormProperties } from './Form'
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
 export class FormManager<BUILDER extends IFormBuilder> {
+    //
+    _allForms: Map<string, Form> = new Map()
+    _allWidgets: Map<string, BaseWidget> = new Map()
+    _allWidgetsByType: Map<string, Map<string, BaseWidget>> = new Map()
+
+    getFormByID = (uid: string): Maybe<Form> => {
+        return this._allForms.get(uid)
+    }
+
+    getWidgetByID = (widgetUID: string): Maybe<BaseWidget> => {
+        return this._allWidgets.get(widgetUID)
+    }
+
+    /**
+     * return all currently instanciated widgets
+     * field of a given input type
+     */
+    getWidgetsByType = <W extends BaseWidget = BaseWidget>(type: string): W[] => {
+        const typeStore = this._allWidgetsByType.get(type)
+        if (!typeStore) return []
+        return Array.from(typeStore.values()) as W[]
+    }
+
     constructor(
         //
         public builderCtor: { new (form: Form<any /* SchemaDict */, BUILDER>): BUILDER },

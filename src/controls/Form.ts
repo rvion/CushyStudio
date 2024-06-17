@@ -138,7 +138,12 @@ export class Form<
         this._onValueChange?.(this)
     }
 
+    _allFormWidgets: Map<string, BaseWidget> = new Map()
     knownShared: Map<string, BaseWidget> = new Map()
+
+    getWidgetByID = (id: string): Maybe<BaseWidget> => {
+        return this._allFormWidgets.get(id)
+    }
 
     /** every widget node must call this function once it's serial changed */
     serialChanged = (_widget: BaseWidget) => {
