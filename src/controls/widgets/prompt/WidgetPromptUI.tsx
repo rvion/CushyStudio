@@ -3,11 +3,13 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
+import { Button } from '../../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../../../csuite/frame/Frame'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
+import { PromptEditorUI } from './__TEMP__'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -19,10 +21,16 @@ import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
-    const st = useSt()
     const widget = p.widget
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
+            <Button
+                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: widget.id })}
+                icon='mdiAbacus'
+                borderless
+                subtle
+                square
+            />
             {widget.serial.collapsed ? (
                 <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
