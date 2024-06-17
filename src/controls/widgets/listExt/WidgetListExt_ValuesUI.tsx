@@ -3,7 +3,7 @@ import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../../rsuite/shims'
+import { Button } from '../../../csuite/button/Button'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISpec>(p: {
@@ -26,15 +26,15 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         <input value={proj.fill} onChange={(ev) => (proj.fill = ev.target.value)} type='color' tw='w-7'></input>
                         <Button
                             style={{ width: `${indexWidth}rem` }}
-                            appearance='subtle'
+                            look='subtle'
                             size='sm'
                             onClick={() => subWidget.setCollapsed(!Boolean(subWidget.serial.collapsed))}
                         >
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetWithLabelUI rootKey={subWidget.id} widget={subWidget} />
+                        <WidgetWithLabelUI fieldName={subWidget.id} widget={subWidget} />
                         <Button
-                            appearance='subtle'
+                            look='subtle'
                             disabled={min ? widget.entries.length <= min : undefined}
                             tw='self-start'
                             onClick={() => widget.removeItem(subWidget)}

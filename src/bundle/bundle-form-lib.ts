@@ -7,9 +7,9 @@ import { readJSONSync } from 'fs-extra'
 import { dirname, resolve } from 'pathe'
 import { parseArgs } from 'util'
 
+import { bang } from '../csuite/utils/bang'
 import { buildJS } from '../scripts/build-form-JS'
 import { microbench } from '../utils/microbench'
-import { bang } from '../utils/misc/bang'
 import { mkPKGJSON } from './mkPKGJSON'
 import { CRASH, section, sectionObjective, sectionTool } from './utils/_section'
 import { _showESBUILDOutput } from './utils/_showESBUILDOutput'
@@ -239,6 +239,18 @@ execSync(commandToGenOutputCSSTailwind, { cwd: DIST_RELPATH, stdio: 'inherit' })
 // await buildTailwind()
 // await waitConfirm()
 
+section(`3.3 copy css files`)
+
+const addToPackage = (relPath: string) => {
+    console.log(`    - copy ${chalk.underline(relPath)} to ${chalk.underline(`${PACKAGE_NAME}/${relPath}`)}`)
+    cpSync(relPath, `${PACKAGE_NAME}/${relPath}`)
+}
+
+// addToPackage('src/theme/form.vars.css')
+addToPackage('src/theme/markdown.css')
+addToPackage('src/theme/form.css')
+addToPackage('src/csuite/input-number/InputNumberUI.css')
+
 // --------------------------------------------------------------------
 section(`4. generating DTS and JS`)
 sectionTool('tsc')
@@ -280,7 +292,7 @@ export default config
 section(`6. packing types together`)
 sectionTool('rollup + plugin-dts + plugin-visualizer')
 // const rollupRoot = `${cwd()}/src/scripts`
-const rollupBin = '/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup'
+const rollupBin = './src/scripts/node_modules/.bin/rollup'
 // /Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup -c /Users/loco/dev/CushyStudio/src/controls/FormBuilder.loco.rollup.config.mjs
 //`'${rollupRoot}/node_modules/.bin/rollup'`
 console.log(` `)

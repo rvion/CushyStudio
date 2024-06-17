@@ -3,9 +3,11 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { Ikon } from '../../../icons/iconHelpers'
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
+import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -22,45 +24,40 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? (
-                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
-                <div />
+                <div /* spacer */ />
             )}
-            <div
-                tw='flex self-end'
-                onMouseDown={(ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                }}
-            >
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    const Icon = Ikon[plugin.icon]
-                    return (
-                        <RevealUI
-                            key={plugin.key}
-                            trigger='hover'
-                            placement='topEnd'
-                            content={() => (
-                                <div tw='p-2'>
-                                    <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                    <div tw='whitespace-nowrap'>{plugin.description}</div>
-                                </div>
-                            )}
-                        >
-                            <div
-                                onClick={() => st.configFile.set(plugin.configKey, !active)}
-                                tw={[
-                                    active ? 'btn-primary' : null,
-                                    'btn btn-icon btn-square opacity-50 hover:opacity-100 btn-xs text-sm',
-                                ]}
-                            >
-                                <Icon />
+        </div>
+    )
+})
+
+export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
+    return (
+        <div tw='flex self-end gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
+            {plugins.map((plugin) => {
+                const active = cushy.configFile.get(plugin.configKey) ?? false
+                // const Icon = Ikon[plugin.icon]
+                return (
+                    <RevealUI
+                        key={plugin.key}
+                        trigger='hover'
+                        placement='topEnd'
+                        content={() => (
+                            <div tw='p-2'>
+                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
+                                <div tw='whitespace-nowrap'>{plugin.description}</div>
                             </div>
-                        </RevealUI>
-                    )
-                })}
-            </div>
+                        )}
+                    >
+                        <InputBoolToggleButtonUI
+                            value={Boolean(active)}
+                            icon={plugin.icon}
+                            onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
+                        />
+                    </RevealUI>
+                )
+            })}
         </div>
     )
 })
@@ -82,6 +79,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
         uist.replaceTextBy(widget.text)
     }, [widget._valueUpdatedViaAPIAt])
 
+    const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
         <div
             tw='flex flex-col'
@@ -101,17 +99,20 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
-            <div className='flex flex-col gap-1'>
-                {plugins.map((plugin) => {
-                    const active = st.configFile.get(plugin.configKey) ?? false
-                    if (!active) return null
-                    return (
-                        <PluginWrapperUI key={plugin.key} plugin={plugin}>
-                            <plugin.Widget uist={uist} />
-                        </PluginWrapperUI>
-                    )
-                })}
-            </div>
+            <PluginToggleBarUI />
+            {haveAtLeastOnePluginActive && (
+                <Frame className='flex flex-col gap-1 p-1 my-1'>
+                    {plugins.map((plugin) => {
+                        const active = st.configFile.get(plugin.configKey) ?? false
+                        if (!active) return null
+                        return (
+                            <PluginWrapperUI key={plugin.key} plugin={plugin}>
+                                <plugin.Widget uist={uist} />
+                            </PluginWrapperUI>
+                        )
+                    })}
+                </Frame>
+            )}
         </div>
     )
 })

@@ -1,25 +1,29 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { IWidget, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial, WidgetSerial_CommonProperties } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
-import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
-import { toastError } from '../../../utils/misc/toasts'
+import { makeLabelFromFieldName } from '../../../csuite/utils/makeLabelFromFieldName'
+import { toastError } from '../../../csuite/utils/toasts'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
+type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfig<
     {
         expand?: boolean
         items: T
         multi: boolean
-        default?: { [k in keyof T]?: boolean } | keyof T
+        /** either a branch name if only one branch is active, or a Dict<boolean> if multiple */
+        default?: DefaultBranches<T> | keyof T
+        // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
         placeholder?: string
         appearance?: 'select' | 'tab'
         tabPosition?: TabPositionConfig
@@ -28,10 +32,10 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
 >
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerial<{
     type: 'choices'
     active: true
-    branches: { [k in keyof T]?: boolean }
+    branches: DefaultBranches<T>
     values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
@@ -50,13 +54,14 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget<Widget_choices_types<T>> {
+    UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
+    UISelect = () => <WidgetChoices_HeaderUI widget={this} />
+    UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
-    /* override */ background = true
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
@@ -108,17 +113,53 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         return this.children[this.firstActiveBranchName]
     }
 
+    get hasChanges() {
+        const def = this.config.default
+        for (const branchName of this.choices) {
+            const shouldBeActive =
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
+            const child = this.children[branchName]
+            if (child && !shouldBeActive) return true
+            if (!child && shouldBeActive) return true
+            if (child && shouldBeActive && child.hasChanges) return true
+        }
+        return false
+    }
+
+    reset() {
+        const def = this.config.default
+        for (const branchName of this.choices) {
+            const shouldBeActive =
+                def == null //
+                    ? false
+                    : typeof def === 'string'
+                      ? branchName === def
+                      : (def as DefaultBranches<T>)[branchName]
+            const child = this.children[branchName]
+            if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
+            if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
+            // re-check if child is now enabled
+            const childAfter = this.children[branchName]
+            if (childAfter && childAfter.hasChanges) childAfter.reset()
+        }
+        this.bumpValue()
+    }
+
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
         super()
+        this.id = serial?.id ?? nanoid()
         const config = spec.config
         // ensure ID
-        this.id = serial?.id ?? nanoid()
         // TODO: investigate why this contructor is called so many times (5 times ???)
 
         // basic sanity check because of the recent breaking change
@@ -217,7 +258,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
         // prev serial seems compmatible => we use it
-        const prevBranchSerial: Maybe<SharedWidgetSerial> = this.serial.values_?.[branch]
+        const prevBranchSerial: Maybe<WidgetSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
             this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
         }

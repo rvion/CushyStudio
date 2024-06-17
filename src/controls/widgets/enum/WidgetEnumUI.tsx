@@ -4,8 +4,10 @@ import type { Widget_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { SelectUI } from '../../../rsuite/SelectUI'
+import { Ikon } from '../../../csuite/icons/iconHelpers'
+import { MessageErrorUI } from '../../../csuite/messages/MessageErrorUI'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../../csuite/select/SelectUI'
 import { useSt } from '../../../state/stateContext'
 
 // UI
@@ -15,28 +17,22 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
     const enumName = widget.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
-        <>
-            {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
-            <EnumSelectorUI
-                value={() => widget.status}
-                disabled={!widget.serial.active}
-                isOptional={isOptional}
-                enumName={enumName}
-                // substituteValue={req.status}
-                onChange={(e) => {
-                    if (e == null) return // ❓
-                    widget.value = e
-                }}
-            />
-            <div
-                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
-                onClick={() => widget.reset()}
-                className='btn btn-xs btn-narrower btn-ghost'
-            >
-                <span className='material-symbols-outlined'>undo</span>
-            </div>
-        </>
+        <EnumSelectorUI
+            value={() => widget.status}
+            disabled={!widget.serial.active}
+            isOptional={isOptional}
+            enumName={enumName}
+            // substituteValue={req.status}
+            onChange={(e) => {
+                if (e == null) return // ❓
+                widget.value = e
+            }}
+        />
     )
+    // <>
+    //     {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
+    //     <Button icon='mdiUndoVariant' disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
+    // </>
 })
 
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
@@ -75,18 +71,20 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                     <RevealUI
                         placement='bottom'
                         content={() => (
-                            <div>
-                                <span>
-                                    <span tw='bord'>{value.candidateValue}</span> is not in your ComfyUI install folder
-                                </span>
+                            <MessageErrorUI>
                                 <div>
-                                    <span tw='bord'>{value.finalValue}</span> used instead
+                                    <div>
+                                        <div tw='bord'>{value.candidateValue}</div> is not in your ComfyUI install folder
+                                    </div>
+                                    <div>
+                                        <div tw='bord'>{value.finalValue}</div> used instead
+                                    </div>
                                 </div>
-                            </div>
+                            </MessageErrorUI>
                         )}
                     >
                         <div className='text-orange-500 flex items-center'>
-                            <span className='material-symbols-outlined'>info</span>
+                            <Ikon.mdiInformation />
                             <span>{value.finalValue}</span>
                         </div>
                     </RevealUI>

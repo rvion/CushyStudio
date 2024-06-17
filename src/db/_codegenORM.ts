@@ -2,7 +2,7 @@ import BetterSqlite3 from 'better-sqlite3'
 import { writeFileSync } from 'fs'
 import JSON5 from 'json5'
 
-import { bang } from '../utils/misc/bang'
+import { bang } from '../csuite/utils/bang'
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
 

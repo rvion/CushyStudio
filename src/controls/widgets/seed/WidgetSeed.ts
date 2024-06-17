@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -10,11 +11,12 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
+type SeedMode = 'randomize' | 'fixed' | 'last'
 // CONFIG
-export type Widget_seed_config = WidgetConfigFields<
+export type Widget_seed_config = WidgetConfig<
     {
         default?: number
-        defaultMode?: 'randomize' | 'fixed' | 'last'
+        defaultMode?: SeedMode
         min?: number
         max?: number
     },
@@ -22,10 +24,10 @@ export type Widget_seed_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_seed_serial = WidgetSerialFields<{
+export type Widget_seed_serial = WidgetSerial<{
     type: 'seed'
     val: number
-    mode: 'randomize' | 'fixed' | 'last'
+    mode: SeedMode
 }>
 
 // SERIAL FROM VALUE
@@ -48,21 +50,44 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export interface Widget_seed extends Widget_seed_types {}
-export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types> {
+export class Widget_seed extends BaseWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
+
     readonly id: string
+
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    get config() { return this.spec.config } // prettier-ignore
+    get hasChanges() {
+        if (this.serial.mode !== this.defaultMode) return true
+        if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
+        return false
+    }
+    reset = () => {
+        this.setMode(this.defaultMode)
+        if (this.serial.mode !== 'randomize') this.setValue(this.defaultValue)
+    }
+
+    get defaultMode(): SeedMode {
+        return this.config.defaultMode ?? 'randomize'
+    }
+
+    get defaultValue(): number {
+        return this.config.default ?? 0
+    }
+
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
 
+    setMode = (mode: SeedMode) => {
+        if (this.serial.mode === mode) return
+        this.serial.mode = mode
+        this.bumpValue()
+    }
+
     setToFixed = (val?: number) => {
-        if (this.serial.mode === 'fixed') return
         this.serial.mode = 'fixed'
         if (val) this.serial.val = val
         this.bumpValue()
@@ -74,28 +99,36 @@ export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types
         this.bumpValue()
     }
 
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: BaseWidget | null,
+        public readonly spec: ISpec<Widget_seed>,
+        serial?: Widget_seed_serial,
+    ) {
+        super()
+        this.id = serial?.id ?? nanoid()
+        const config = spec.config
+        this.serial = serial ?? {
+            type: 'seed',
+            id: this.id,
+            val: this.defaultValue,
+            mode: this.defaultMode,
+        }
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
+    }
+
     setValue = (val: number) => {
         this.serial.val = val
         this.bumpValue()
     }
 
-    constructor(
-        //
-        public readonly form: Form,
-        public readonly parent: IWidget | null,
-        public readonly spec: ISpec<Widget_seed>,
-        serial?: Widget_seed_serial,
-    ) {
-        super()
-        const config = spec.config
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
-            type: 'seed',
-            id: this.id,
-            val: config.default ?? 0,
-            mode: config.defaultMode ?? 'randomize',
-        }
-        makeAutoObservableInheritance(this)
+    set value(val: number) {
+        this.serial.val = val
+        this.bumpValue()
     }
 
     get value(): Widget_seed_value {

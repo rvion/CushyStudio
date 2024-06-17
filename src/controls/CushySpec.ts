@@ -1,19 +1,18 @@
-import type { XList, XOptional } from './FormBuilder'
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
+import type { BaseWidget } from './BaseWidget'
 import type { ISpec } from './ISpec'
-import type { IWidget } from './IWidget'
-import type { Requirements } from './Requirements'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { createElement } from 'react'
 
+import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { Channel, type ChannelId, Producer } from './Channel'
-import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
-import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
+import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
-export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
+export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widget> {
     $Widget!: Widget
     $Type!: Widget['type']
     $Config!: Widget['$Config']
@@ -65,7 +64,7 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
         return this
     }
 
-    Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
+    Make = <X extends BaseWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
 
     constructor(
         //
@@ -74,13 +73,13 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): XList<this> =>
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>
         new Spec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = (startActive: boolean = false): XOptional<this> =>
+    optional = (startActive: boolean = false): X.XOptional<this> =>
         new Spec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,

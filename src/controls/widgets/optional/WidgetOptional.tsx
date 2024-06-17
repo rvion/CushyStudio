@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,7 +11,7 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfigFields<
+export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfig<
     {
         startActive?: boolean
         widget: T
@@ -19,21 +20,11 @@ export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfigFields
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
-
-// // SERIAL FROM VALUE
-// export const Widget_optional_fromValue = <T extends ISpec = ISpec>(
-//     config/* 🔴 */: Widget_optional_config<T>,
-//     value: Widget_optional_value<T>,
-// ): Widget_optional_serial<T> => ({
-//     type: 'optional',
-//     active: value != null,
-//     child: config.widget,
-// })
 
 // VALUE
 export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
@@ -48,12 +39,37 @@ export type Widget_optional_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T> {}
-export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_optional_types<T>> {
+export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
+    reset = () => {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) this.setActive(true)
+            if (this.child.hasChanges) this.child.reset()
+            return
+        }
+        // unactive by default
+        else {
+            if (this.serial.active) this.setActive(false)
+            return
+        }
+    }
+    get hasChanges() {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) return true
+            return this.child.hasChanges
+        }
+        // unactive by default
+        else {
+            if (!this.serial.active) return false
+            return true
+        }
+    }
+
     readonly type: 'optional' = 'optional'
     get baseErrors(): Problem_Ext {
         return null
@@ -95,13 +111,13 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         const defaultActive = config.startActive
         this.serial = serial ?? {
             id: this.id,
@@ -116,7 +132,12 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        this.init({ serial: observable, value: computed })
+        this.init({
+            serial: observable,
+            value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     setValue(val: Widget_optional_value<T>) {

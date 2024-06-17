@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -21,7 +22,7 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfigFields<
+export type Widget_matrix_config = WidgetConfig<
     {
         default?: { row: string; col: string }[]
         rows: string[]
@@ -31,7 +32,11 @@ export type Widget_matrix_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_serial = WidgetSerial<{
+    type: 'matrix'
+    active: true
+    selected: Widget_matrix_cell[]
+}>
 
 // VALUE
 export type Widget_matrix_value = Widget_matrix_cell[]
@@ -46,33 +51,50 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends Widget_matrix_types {}
-export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_types> {
+export class Widget_matrix extends BaseWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial
     get baseErrors(): Problem_Ext {
         return null
     }
 
+    get hasChanges() {
+        const def = this.config.default
+        if (def == null) return this.value.length != 0
+        else {
+            if (def.length != this.value.length) return true
+            for (const v of this.value) {
+                if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
+            }
+            return false
+        }
+    }
+    reset() {
+        this.setAll(false)
+        for (const i of this.config.default ?? []) {
+            this.setCell(i.row, i.col, true)
+        }
+    }
+
     rows: string[]
     cols: string[]
 
-    alignLabel = false
+    // justifyLabel = false
 
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 
         const rows = config.rows

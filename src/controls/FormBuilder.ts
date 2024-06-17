@@ -1,14 +1,14 @@
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { BaseWidget } from './BaseWidget'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
-import type { IWidget } from './IWidget'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
-import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
+import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
+import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
 import { Form } from './Form'
 import { FormManager } from './FormManager'
@@ -36,32 +36,41 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
-// attempt to make type safety better --------------------------------------------------------
-export type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
-export type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
-export type XBool = Spec<Widget_bool>
-export type XShared<T extends ISpec> = Widget_shared<T>
-export type XString = Spec<Widget_string>
-export type XPrompt = Spec<Widget_prompt>
-export type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
-export type XNumber = Spec<Widget_number>
-export type XColor = Spec<Widget_color>
-export type XEnum<T> = Spec<Widget_enum<T>>
-export type XList<T extends ISpec> = Spec<Widget_list<T>>
-export type XOrbit = Spec<Widget_orbit>
-export type XListExt<T extends ISpec> = Spec<Widget_listExt<T>>
-export type XButton<T> = Spec<Widget_button<T>>
-export type XSeed = Spec<Widget_seed>
-export type XMatrix = Spec<Widget_matrix>
-export type XImage = Spec<Widget_image>
-export type XSelectOne<T extends BaseSelectEntry> = Spec<Widget_selectOne<T>>
-export type XSelectMany<T extends BaseSelectEntry> = Spec<Widget_selectMany<T>>
-export type XSelectOne_<T extends string> = Spec<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-export type XSelectMany_<T extends string> = Spec<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
-export type XSize = Spec<Widget_size>
-export type XSpacer = Spec<Widget_spacer>
-export type XMarkdown = Spec<Widget_markdown>
-export type XCustom<T> = Spec<Widget_custom<T>>
+// export type { SchemaDict } from './ISpec'
+declare global {
+    namespace X {
+        type SchemaDict = import('./ISpec').SchemaDict
+        type FormBuilder = import('./FormBuilder').FormBuilder
+
+        // attempt to make type safety better --------------------------------------------------------
+        type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
+        type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
+        type XBool = Spec<Widget_bool>
+        type XShared<T extends ISpec> = Widget_shared<T>
+        type XString = Spec<Widget_string>
+        type XPrompt = Spec<Widget_prompt>
+        type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
+        type XChoice<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
+        type XNumber = Spec<Widget_number>
+        type XColor = Spec<Widget_color>
+        type XEnum<T> = Spec<Widget_enum<T>>
+        type XList<T extends ISpec> = Spec<Widget_list<T>>
+        type XOrbit = Spec<Widget_orbit>
+        type XListExt<T extends ISpec> = Spec<Widget_listExt<T>>
+        type XButton<T> = Spec<Widget_button<T>>
+        type XSeed = Spec<Widget_seed>
+        type XMatrix = Spec<Widget_matrix>
+        type XImage = Spec<Widget_image>
+        type XSelectOne<T extends BaseSelectEntry> = Spec<Widget_selectOne<T>>
+        type XSelectMany<T extends BaseSelectEntry> = Spec<Widget_selectMany<T>>
+        type XSelectOne_<T extends string> = Spec<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSelectMany_<T extends string> = Spec<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSize = Spec<Widget_size>
+        type XSpacer = Spec<Widget_spacer>
+        type XMarkdown = Spec<Widget_markdown>
+        type XCustom<T> = Spec<Widget_custom<T>>
+    }
+}
 
 /** cushy studio form builder */
 export class FormBuilder implements IFormBuilder {
@@ -73,91 +82,92 @@ export class FormBuilder implements IFormBuilder {
             auto: false,
             autoField: false,
             enum: false,
+            enums: false,
             enumOpt: false,
             SpecCtor: false,
         })
     }
 
-    time = (config: Widget_string_config = {}): XString => {
+    time = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'time', ...config })
     }
-    date = (config: Widget_string_config = {}): XString => {
+    date = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'date', ...config })
     }
-    datetime = (config: Widget_string_config = {}): XString => {
+    datetime = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'datetime-local', ...config })
     }
-    password = (config: Widget_string_config = {}): XString => {
+    password = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'password', ...config })
     }
-    email = (config: Widget_string_config = {}): XString => {
+    email = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'email', ...config })
     }
-    url = (config: Widget_string_config = {}): XString => {
+    url = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'url', ...config })
     }
-    string = (config: Widget_string_config = {}): XString => {
+    string = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', config)
     }
-    text = (config: Widget_string_config = {}): XString => {
+    text = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', config)
     }
-    textarea = (config: Widget_string_config = {}): XString => {
+    textarea = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { textarea: true, ...config })
     }
-    boolean = (config: Widget_bool_config = {}): XBool => {
+    boolean = (config: Widget_bool_config = {}): X.XBool => {
         return new Spec<Widget_bool>('bool', config)
     }
-    bool = (config: Widget_bool_config = {}): XBool => {
+    bool = (config: Widget_bool_config = {}): X.XBool => {
         return new Spec<Widget_bool>('bool', config)
     }
-    size = (config: Widget_size_config = {}): XSize => {
+    size = (config: Widget_size_config = {}): X.XSize => {
         return new Spec<Widget_size>('size', config)
     }
-    spacer = (config: Widget_spacer_config = {}): XSpacer => {
-        return new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+    spacer = (config: Widget_spacer_config = {}): X.XSpacer => {
+        return new Spec<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
     }
-    orbit = (config: Widget_orbit_config = {}): XOrbit => {
+    orbit = (config: Widget_orbit_config = {}): X.XOrbit => {
         return new Spec<Widget_orbit>('orbit', config)
     }
-    seed = (config: Widget_seed_config = {}): XSeed => {
+    seed = (config: Widget_seed_config = {}): X.XSeed => {
         return new Spec<Widget_seed>('seed', config)
     }
-    color = (config: Widget_color_config = {}): XColor => {
+    color = (config: Widget_color_config = {}): X.XColor => {
         return new Spec<Widget_color>('color', config)
     }
-    colorV2 = (config: Widget_string_config = {}): XString => {
+    colorV2 = (config: Widget_string_config = {}): X.XString => {
         return new Spec<Widget_string>('str', { inputType: 'color', ...config })
     }
-    matrix = (config: Widget_matrix_config): XMatrix => {
+    matrix = (config: Widget_matrix_config): X.XMatrix => {
         return new Spec<Widget_matrix>('matrix', config)
     }
-    button = <K>(config: Widget_button_config<K>): XButton<K> => {
+    button = <K>(config: Widget_button_config<K>): X.XButton<K> => {
         return new Spec<Widget_button<K>>('button', config)
     }
     /** variants: `header` */
-    markdown = (config: Widget_markdown_config | string): XMarkdown => {
+    markdown = (config: Widget_markdown_config | string): X.XMarkdown => {
         return new Spec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
     }
     /** [markdown variant]: inline=true, label=false */
-    header = (config: Widget_markdown_config | string): XMarkdown => {
+    header = (config: Widget_markdown_config | string): X.XMarkdown => {
         const config_: Widget_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config }
+                : { inHeader: true, label: false, justifyLabel: false, ...config }
         return new Spec<Widget_markdown>('markdown', config_)
     }
-    image = (config: Widget_image_config = {}): XImage => {
+    image = (config: Widget_image_config = {}): X.XImage => {
         return new Spec<Widget_image>('image', config)
     }
-    prompt = (config: Widget_prompt_config = {}): XPrompt => {
+    prompt = (config: Widget_prompt_config = {}): X.XPrompt => {
         return new Spec<Widget_prompt>('prompt', config)
     }
-    int = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+    int = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Spec<Widget_number>('number', { mode: 'int', ...config })
     }
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+    percent = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Spec<Widget_number>('number', {
             mode: 'int',
             default: 100,
@@ -168,19 +178,22 @@ export class FormBuilder implements IFormBuilder {
             ...config,
         })
     }
-    float = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+    float = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Spec<Widget_number>('number', { mode: 'float', ...config })
     }
-    number = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+    number = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Spec<Widget_number>('number', { mode: 'float', ...config })
     }
-    custom = <T>(config: Widget_custom_config<T>): XCustom<T> => {
+    remSize = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
+        return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
+    }
+    custom = <T>(config: Widget_custom_config<T>): X.XCustom<T> => {
         return new Spec<Widget_custom<T>>('custom', config)
     }
-    list = <T extends ISpec>(config: Widget_list_config<T>): XList<T> => {
+    list = <T extends ISpec>(config: Widget_list_config<T>): X.XList<T> => {
         return new Spec<Widget_list<T>>('list', config)
     }
-    listExt = <T extends ISpec>(config: Widget_listExt_config<T>): XListExt<T> => {
+    listExt = <T extends ISpec>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Spec<Widget_listExt<T>>('listExt', config)
     }
     timeline = <T extends ISpec>(config: Widget_listExt_config<T>) => {
@@ -192,7 +205,7 @@ export class FormBuilder implements IFormBuilder {
     selectOneV2 = <T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): XSelectOne<BaseSelectEntry<T>> => {
+    ): X.XSelectOne<BaseSelectEntry<T>> => {
         return new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) => {
@@ -202,40 +215,46 @@ export class FormBuilder implements IFormBuilder {
         return new Spec<Widget_selectMany<T>>('selectMany', config)
     }
     /** see also: `fields` for a more practical api */
-    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
+    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
+    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
+    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
     }
     /** simpler way to create `group` */
-    fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): XGroup<T> => {
+    fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): X.XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
     }
     choiceV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'>,
-    ) => {
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+    ): X.XChoice<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
     }
-    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoices<T> => {
         return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
+    }
+    choicesV2 = <T extends { [key: string]: ISpec }>(
+        items: Widget_choices_config<T>['items'],
+        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+    ): X.XChoices<T> => {
+        return new Spec<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
     }
     ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** simple choice alternative api */
-    tabs = <T extends { [key: string]: Spec }>(
+    tabs = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+        config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
     optional = <T extends ISpec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
@@ -306,6 +325,11 @@ export class FormBuilder implements IFormBuilder {
         Object.defineProperty(this, 'enum', { value: _ })
         return _
     }
+    get enums() {
+        const _ = new EnumListBuilder(this.form) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'enums', { value: _ })
+        return _
+    }
     get enumOpt() {
         const _ = new EnumBuilderOpt(this.form)
         Object.defineProperty(this, 'enumOpt', { value: _ })
@@ -317,10 +341,10 @@ export class FormBuilder implements IFormBuilder {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE = <T extends ISpec>( //
-        parent: IWidget | null,
+        parent: BaseWidget | null,
         spec: T,
         serial: any | null,
-    ): T['$Widget'] => {
+    ): BaseWidget<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -383,11 +407,11 @@ export class FormBuilder implements IFormBuilder {
     }
 
     _HYDRATE = <T extends ISpec>( //
-        parent: IWidget | null,
+        parent: BaseWidget | null,
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {
-        const w = this.__HYDRATE(parent, spec, serial)
+        const w = this.__HYDRATE(parent, spec, serial) as T['$Widget']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later

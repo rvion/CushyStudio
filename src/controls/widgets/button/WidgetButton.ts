@@ -1,7 +1,9 @@
+import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -16,10 +18,13 @@ export type Widget_button_context<K> = {
 }
 
 // CONFIG
-export type Widget_button_config<K = any> = WidgetConfigFields<
+export type Widget_button_config<K = any> = WidgetConfig<
     {
         text?: string
-        kind?: `primary` | `special` | `warning`
+        /** @default false */
+        default?: boolean
+        look?: FrameAppearance
+        expand?: boolean
         useContext?: () => K
         // icon?: (ctx: Widget_button_context<K>) => string
         onClick?: (ctx: Widget_button_context<K>) => void
@@ -28,7 +33,7 @@ export type Widget_button_config<K = any> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_button_serial = WidgetSerialFields<{
+export type Widget_button_serial = WidgetSerial<{
     type: 'button'
     val: boolean
 }>
@@ -46,12 +51,11 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export interface Widget_button<K> extends Widget_button_types<K> {}
-export class Widget_button<K> extends BaseWidget implements IWidget<Widget_button_types<K>> {
+export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
 
@@ -62,22 +66,22 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
         super()
+        this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (config.text) {
             config.label = config.label ?? ` `
         }
 
-        this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'button',
             collapsed: config.startCollapsed,
             id: this.id,
-            val: false,
+            val: config.default ?? false,
         }
 
         this.init({
@@ -85,6 +89,10 @@ export class Widget_button<K> extends BaseWidget implements IWidget<Widget_butto
             DefaultBodyUI: false,
         })
     }
+
+    get defaultValue(): boolean { return this.config.default ?? false } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    reset = () => (this.value = this.defaultValue)
 
     get value(): Widget_button_value {
         return this.serial.val

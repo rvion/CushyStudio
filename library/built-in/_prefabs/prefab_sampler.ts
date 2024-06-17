@@ -23,7 +23,7 @@ export const ui_sampler = (p?: {
         },
         {
             icon: 'mdiTimerSandComplete',
-            box: { base: { hue: 120, contrast: 0, chroma: 0.05 } },
+            box: { base: { hue: 120, chroma: 0.03 } },
             summary: (ui) => {
                 return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
             },

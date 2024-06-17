@@ -3,7 +3,7 @@ import type { ComfyNode } from './ComfyNode'
 
 import { toJS } from 'mobx'
 
-import { bang } from '../utils/misc/bang'
+import { bang } from '../csuite/utils/bang'
 
 /** comfy workflows are simply LiteGraphs workflows */
 export type ComfyWorkflowJSON = LiteGraphJSON

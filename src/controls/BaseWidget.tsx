@@ -1,16 +1,32 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../csuite/icons/icons'
+import type { KolorExt } from '../csuite/kolor/Kolor'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
+import type { $WidgetTypes } from './$WidgetTypes'
 import type { Channel, ChannelId } from './Channel'
+import type { Form } from './Form'
 import type { ISpec } from './ISpec'
-import type { FC } from 'react'
+import type { WidgetLabelContainerProps } from './shared/WidgetLabelContainerUI'
+import type { WidgetWithLabelProps } from './shared/WidgetWithLabelUI'
+import type { CovariantFC } from './utils/CovariantFC'
+import type { Problem, Problem_Ext } from './Validation'
+import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeWidget } from '../panels/libraryUI/tree/xxx/TreeWidget'
+import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
+import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
-import { $WidgetSym, type IWidget } from './IWidget'
+import { $WidgetSym } from './$WidgetSym'
+import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
+import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
+import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
+import { WidgetHeaderContainerUI } from './shared/WidgetHeaderContainerUI'
+import { WidgetLabelCaretUI } from './shared/WidgetLabelCaretUI'
+import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
+import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
-import { normalizeProblem, type Problem } from './Validation'
+import { normalizeProblem } from './Validation'
+import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -20,18 +36,126 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
+export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
+}
+
 // v3 (experimental) ---------------------------------------
-export abstract class BaseWidget {
+export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+    // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
+    // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
+    // $Widget!: K['$Widget'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+
+    /** spec used to instanciate this widget */
     abstract spec: ISpec
 
+    /** unique ID; each node in the form tree has one; persisted in serial */
+    abstract readonly id: string
+
+    /** widget type; can be used instead of `instanceof` to known which wiget it is */
+    abstract readonly type: K['$Type']
+
+    /** wiget value is the simple/easy-to-use representation of that widget  */
+    abstract value: K['$Value']
+
+    /** wiget serial is the full serialized representation of that widget  */
+    abstract readonly serial: K['$Serial']
+
+    /** base validation errors specific to this widget; */
+    abstract readonly baseErrors: Problem_Ext
+
+    /** unified api to allow setting serial from value */
+    abstract setValue(val: K['$Value']): void
+
+    // ---------------------------------------------------------------------------------------------------
+    /** default header UI */
+    abstract readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
+
+    /** default body UI */
+    abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
+
+    UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
+    UIErrors = () => <WidgetErrorsUI widget={this} />
+    UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
+    UILabelIcon = () => <WidgetLabelIconUI widget={this} />
+    UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
+    UIHeaderContainer = (p: { children: ReactNode }) => (
+        <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
+    )
+
     // abstract readonly id: string
-    asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {
+    asTreeElement(key: string): ITreeElement<{ widget: BaseWidget; key: string }> {
         return {
             key: (this as any).id,
             ctor: TreeWidget as any,
             props: { key, widget: this as any },
         }
     }
+
+    /** shorthand access to spec.config */
+    get config(): this['$Config'] {
+        return this.spec.config
+    }
+
+    get animateResize(): boolean {
+        return true
+    }
+
+    /**
+     * return true when widget has no child
+     * return flase when widget has one or more child
+     * */
+    get hasNoChild(): boolean {
+        return this.subWidgets.length === 0
+    }
+
+    /** collapse all children that can be collapsed */
+    collapseAllChildren(): void {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            if (item.serial.collapsed) continue
+            const isCollapsible = item.isCollapsible
+            if (isCollapsible) item.setCollapsed(true)
+        }
+    }
+
+    /** expand all children that can are collapsed */
+    expandAllChildren(): void {
+        for (const _item of this.subWidgets) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = getActualWidgetToDisplay(_item)
+            item.setCollapsed(undefined)
+        }
+    }
+
+    // change management ------------------------------------------------
+    /**
+     * every component should be able to be restet and must implement
+     * the reset function
+     * 2024-05-24 rvion: we could have some generic reset function that
+     * | simply do a this.setValue(this.defaultValue)
+     * | but it feels like a wrong implementation 🤔
+     * | it's simpler  though
+     * 🔶 some widget like `WidgetPrompt` would not work with such logic
+     * */
+    abstract reset(): void
+    abstract readonly hasChanges: boolean
+
+    /**
+     * 2024-05-24 rvion: do we want some abstract defaultValue() too ?
+     * feels like it's going to be PITA to use for higher level objects 🤔
+     * but also... why not...
+     * 🔶 some widget like `WidgetPrompt` would not work with such logic
+     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
+     */
+    // abstract readonly defaultValue: this['spec']['$Value'] |
 
     $WidgetSym: typeof $WidgetSym = $WidgetSym
 
@@ -48,7 +172,7 @@ export abstract class BaseWidget {
     // 🚴🏠 -> consume / pull / receive / fetch / ... ?
     consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
         const channelId = typeof chan === 'string' ? chan : chan.id
-        let at = this as any as IWidget | null
+        let at = this as any as BaseWidget | null
         while (at != null) {
             if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
             at = at.parent
@@ -62,25 +186,23 @@ export abstract class BaseWidget {
         return errors.length > 0
     }
 
-    abstract value: unknown
-
     /**
      * return a short string summary
      * expected to be overriden in child classes
      */
-    get summary() {
+    get summary(): string {
         return JSON.stringify(this.value)
     }
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const SELF = this as any as IWidget
+        const SELF = this as any as BaseWidget
         const baseErrors = normalizeProblem(SELF.baseErrors)
         return [...baseErrors, ...this.customErrors]
     }
 
     get customErrors(): Problem[] {
-        const SELF = this as any as IWidget
+        const SELF = this as any as BaseWidget
         if (SELF.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
@@ -91,13 +213,13 @@ export abstract class BaseWidget {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: IWidget) {
+    bumpSerial(this: BaseWidget): void {
         this.form.serialChanged(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: IWidget) {
+    bumpValue(this: BaseWidget): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */
@@ -112,7 +234,7 @@ export abstract class BaseWidget {
      *  - by defining a getter on the _advertisedValues object of all parents
      *  - by only setting this getter up once.
      * */
-    publishValue(this: IWidget) {
+    publishValue(this: BaseWidget) {
         const producers = this.spec.producers
         if (producers.length === 0) return
 
@@ -123,41 +245,129 @@ export abstract class BaseWidget {
             producedValues[channelId] = producer.produce(this)
         }
         // Assign values to every parent widget in the hierarchy
-        let at = this as any as IWidget | null
+        let at = this as any as BaseWidget | null
         while (at != null) {
             Object.assign(at._advertisedValues, producedValues)
             at = at.parent
         }
     }
 
+    /** parent widget of this widget, if any */
+    abstract readonly parent: BaseWidget | null
+
+    get isHidden(): boolean {
+        if (this.config.hidden != null) return this.config.hidden
+        if (isWidgetGroup(this) && Object.keys(this.fields).length === 0) return true
+        return false
+    }
+
+    /** whether the widget should be considered inactive */
+    get isDisabled(): boolean {
+        return isWidgetOptional(this) && !this.serial.active
+    }
+
+    get isCollapsed(): boolean {
+        if (!this.isCollapsible) return false
+        if (this.serial.collapsed != null) return this.serial.collapsed
+        if (this.parent?.isDisabled) return true
+        return false
+    }
+
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    get isCollapsible(): boolean {
+        // top level widget is not collapsible; we may want to revisit this decision
+        // if (widget.parent == null) return false
+        if (this.config.collapsed != null) return this.config.collapsed //
+        if (!this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
+        if (this.config.label === false) return false
+        return true
+    }
+
+    get background(): KolorExt | undefined {
+        return this.config.background
+    }
+
+    /** if provided, override the default logic to decide if the widget need to be bordered */
+    get border(): KolorExt {
+        // avoif borders for the top level form
+        if (this.parent == null) return false
+        // if (this.parent.subWidgets.length === 0) return false
+        // if app author manually specify they want no border, then we respect that
+        if (this.config.border != null) return this.config.border
+        // if the widget do NOT have a body => we do not show the border
+        if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
+        // default case when we have a body => we show the border
+        return 5
+    }
+
+    /** root form this widget has benn registered to */
+    abstract readonly form: Form
+
     // FOLD ----------------------------------------------------
-    setCollapsed(this: IWidget, val?: boolean) {
+    setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
         this.form.serialChanged(this)
     }
 
-    toggleCollapsed(this: IWidget) {
+    toggleCollapsed(this: BaseWidget) {
         this.serial.collapsed = !this.serial.collapsed
         this.form.serialChanged(this)
     }
 
     // UI ----------------------------------------------------
-    ui(this: IWidget): JSX.Element {
-        return <WidgetWithLabelUI isTopLevel key={this.id} widget={this} rootKey='_' />
+
+    renderSimple(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                widget={this}
+                showWidgetMenu={false}
+                showWidgetExtra={false}
+                showWidgetUndo={false}
+                justifyLabel={false}
+                fieldName='_'
+                {...p}
+            />
+        )
     }
 
-    defaultHeader(this: IWidget): JSX.Element | undefined {
+    renderSimpleAll(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+        return (
+            <CSuiteOverride
+                config={{
+                    showWidgetMenu: false,
+                    showWidgetExtra: false,
+                    showWidgetUndo: false,
+                }}
+            >
+                <WidgetWithLabelUI key={this.id} widget={this} fieldName='_' {...p} />
+            </CSuiteOverride>
+        )
+    }
+
+    renderWithLabel(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                widget={this}
+                fieldName='_'
+                {...p}
+            />
+        )
+    }
+
+    defaultHeader(this: BaseWidget): JSX.Element | undefined {
         if (this.DefaultHeaderUI == null) return
         return <this.DefaultHeaderUI widget={this} />
     }
 
-    defaultBody(this: IWidget): JSX.Element | undefined {
+    defaultBody(this: BaseWidget): JSX.Element | undefined {
         if (this.DefaultBodyUI == null) return
         return <this.DefaultBodyUI widget={this} />
     }
 
-    header(this: IWidget): JSX.Element | undefined {
+    header(this: BaseWidget): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
                 ? ensureObserver(this.config.header)
@@ -166,7 +376,7 @@ export abstract class BaseWidget {
         return <HeaderUI widget={this} />
     }
 
-    body(this: IWidget): JSX.Element | undefined {
+    body(this: BaseWidget): JSX.Element | undefined {
         const BodyUI =
             'body' in this.config //
                 ? ensureObserver(this.config.body)
@@ -176,11 +386,12 @@ export abstract class BaseWidget {
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgets(): IWidget[] {
+    get subWidgets(): BaseWidget[] {
         return []
     }
+
     /** list of all subwidgets, without named keys */
-    get subWidgetsWithKeys(): { key: string; widget: IWidget }[] {
+    get subWidgetsWithKeys(): { key: string; widget: BaseWidget }[] {
         return []
     }
 
@@ -221,7 +432,8 @@ export abstract class BaseWidget {
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
-        const self = this as any as IWidget
+        // eslint-disable-next-line consistent-this
+        const self = this as any as BaseWidget
         const config = self.config
         const serial = self.serial
 

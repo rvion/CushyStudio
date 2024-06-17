@@ -1,99 +1,113 @@
 /* Btn Utils ------------------------------------------------------------------------------------- */
-.btn-narrow {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+:root {
+    --input-height: 1.6rem;
+    --input-icon-height: 1.4rem;
 }
-.btn-narrower {
-    padding-left: 0.1em;
-    padding-right: 0.1em;
+
+/* box sizes */
+.box.box-square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box.box-square.box-input {
+    width: var(--input-height);
+    height: var(--input-height);
+    min-width: var(--input-height);
+    min-height: var(--input-height);
+    @apply text-sm;
+}
+.box.box-square.box-xs { @apply w-6  h-6; }
+.box.box-square.box-sm { @apply w-8  h-8; }
+.box.box-square.box-md { @apply w-10 h-10; }
+.box.box-square.box-lg { @apply w-12 h-12; }
+.box.box-square.box-xl { @apply w-14 h-14; }
+
+.box.box-input {
+    height: var(--input-height);
+    min-height: var(--input-height);
+    @apply text-sm;
+}
+.box.box-xs { @apply text-xs px-0.5 py-0.5; }
+.box.box-sm { @apply text-sm px-1   py-1  ; }
+.box.box-md { @apply         px-2   py-1  ; }
+.box.box-lg { @apply text-lg px-4   py-2  ; }
+.box.box-xl { @apply text-xl px-8   py-8  ; }
+
+/* ------------------------------------------------------------------------------------------------------- */
+.WIDGET-BLOCK {
+    margin-left: .6rem;
+    margin-top: .1rem;
+    /* margin-right: .4rem; */
+    /* padding: .4rem; */
+}
+
+.animated {
+    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 /* ------------------------------------------------------------------------------------------------------- */
-.widget-error-ui {
-    border: 1px solid red;
-    color:red;
-}
-.FIELD:hover {
-    border-left: 2px groove oklch(var(--s)/0.5);
-}
-.FIELDSimple._isTopLevel,
-.FIELD._isTopLevel {
-    margin-left: 0;
-    border: none;
-    padding-left: 0;
-    transform: none;
-    /* border-left: 2px groove oklch(var(--p)/0.5); */
-    /* border-top-left-radius: .8rem; */
-}
+/* WIDGET SIZES */
+.w-input    {       width: var(--input-height); min-width:  var(--input-height); }
+.h-input    {      height: var(--input-height); min-height: var(--input-height); }
+.minh-input {  min-height: var(--input-height); }
+.minw-input {   min-width: var(--input-height); }
+.lh-input   { line-height: var(--input-height); }
 
-.FIELD,
-.FIELDSimple {
-    margin-left: .5rem;
-    padding-left: .5rem;
-    border-left: 2px groove oklch(var(--p)/0.5);
-}
-
-.FIELD {
-    position: relative;
-    padding-left: .5rem;
-}
-
-.WIDGET-FIELD {
-    height: var(--input-height);
-    min-height: var(--input-height);
-}
-
-.WIDGET-FIELD *::selection {
-    background-color: oklch(var(--pc));
-}
-
-.WIDGET-GROUP-BORDERED {
-    border-radius: .3rem;
-    border-top: 1px solid oklch(var(--p)/.4);
-    border-left: 1px solid oklch(var(--p)/.4);
-    border-right: 1px solid oklch(var(--p)/.2);
-    border-bottom: 1px solid oklch(var(--p)/.2);
-}
+.h-input-2 {        height: calc(var(--input-height) - 2px); }
+.w-input-2 {         width: calc(var(--input-height) - 2px); }
+.minh-input-2 { min-height: calc(var(--input-height) - 2px); }
+.minw-input-2 {  min-width: calc(var(--input-height) - 2px); }
+.lh-input-2 {  line-height: calc(var(--input-height) - 2px); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
 }
 
-.SUB-FIELD {
-    flex: 1;
-}
-
-.WIDGET-BLOCK {
-    margin-left: .6rem;
-    margin-right: .4rem;
-    margin-top: .1rem;
-    /* padding: .4rem; */
-}
-
 /* ------------------------------------------------------------------------------------------- */
-.input {
-    background-color: oklch(var( --p)/.15) !important;
+/* make sure cushy default inputs look like custom inputs */
+.cushy-basic-input:focus {
+    outline: none;
+    border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
+}
+.cushy-basic-input:hover {
+    background: oklch(from var(--KLR) calc(l + 0.06 * var(--DIR)) c h);
+}
+.cushy-basic-input {
+    /* 🔴 FINISH ME */
+    height: var(--input-height);
+    min-height: var(--input-height);
+    background: oklch(from var(--KLR) calc(l + 0.03 * var(--DIR)) c h);
+    border: 1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h);
+    border-radius: .2rem;
+    padding: 0 .3rem;
 }
 
-/* //InputNumberUI */
 /* Form Utils ------------------------------------------------------------------------------------- */
 /* Text Shading - These are defined in theme.css*/
 .text-shadow {
-    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 .text-shadow-inv {
-    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 /* Select Utils ------------------------------------------------------------------------------------- */
 ._SelectPopupUI,
 ._RevealUI {
     box-shadow:
-        0 2px 5px -2px oklch(var(--pc));
+          0    15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+         15px  15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+        -15px  15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
         /* 0 0 10px 1px oklch(var(--b3)); */
 }
 
+/* 🔶 deprecated; will be removed soon */
 .rsx-field-error {
     border: 1px solid red !important;
 }

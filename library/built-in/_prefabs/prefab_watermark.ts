@@ -1,12 +1,13 @@
-import type { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
+
+import { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
 
 export const ui_watermark_v1 = () => {
     const ui = getCurrentForm()
     return ui.fields({
         pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
-        font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { alignLabel: false }),
-        format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { alignLabel: false }),
+        font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
+        format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
         content: ui.textarea({ default: 'Cushy Diffusion' }),
         color: ui.colorV2({ default: 'black' }),
         fontSize: ui.int({ default: 20, min: 3, softMax: 30 }),
@@ -15,11 +16,11 @@ export const ui_watermark_v1 = () => {
     })
 }
 
-export const run_watermark_v1 = (
+export const run_watermark_v1 = async (
     //
     ui: OutputFor<typeof ui_watermark_v1>,
     img?: Maybe<MediaImageL>,
-): void => {
+): Promise<Maybe<MediaImageL>> => {
     const run = getCurrentRun()
     const image = img ?? run.lastImage ?? cushy.db.media_image.last()
     if (!image) return
@@ -33,29 +34,34 @@ export const run_watermark_v1 = (
         quality: ui.quality,
     }
     if (ui.tool.id === 'canvas') {
-        image.addWatermark_withCanvas(ui.content, params)
+        return image.addWatermark_withCanvas(ui.content, params)
     } else {
-        image.addWatermark_withKonva(ui.content, params)
+        return image.addWatermark_withKonva(ui.content, params)
     }
 }
 
-export const run_addFancyWatermarkToAllImage = () => {
+/** add a watermark to every image generated in this step */
+export const run_addFancyWatermarkToAllImage = (): Promise<MediaImageL[]> => {
     const run = getCurrentRun()
+    const out: Promise<MediaImageL>[] = []
     for (const img of run.generatedImages)
-        img.processImage((ctx: CanvasRenderingContext2D) => {
-            // params
-            const ratio = img.width / 1000
-            const X = img.width - 250 * ratio
-            ctx.fillStyle = 'white'
-            ctx.strokeStyle = 'black'
+        out.push(
+            img.processImage((ctx: CanvasRenderingContext2D) => {
+                // params
+                const ratio = img.width / 1000
+                const X = img.width - 250 * ratio
+                ctx.fillStyle = 'white'
+                ctx.strokeStyle = 'black'
 
-            // draw big text saying AI
-            ctx.font = `bold ${200 * ratio}px Arial`
-            ctx.fillText('AI', X, img.height - 90 * ratio)
-            ctx.strokeText('AI', X, img.height - 90 * ratio)
+                // draw big text saying AI
+                ctx.font = `bold ${200 * ratio}px Arial`
+                ctx.fillText('AI', X, img.height - 90 * ratio)
+                ctx.strokeText('AI', X, img.height - 90 * ratio)
 
-            // draw small text saying CushyStudio
-            ctx.font = `${40 * ratio}px Arial`
-            ctx.fillText('CushyStudio', X, img.height - 40 * ratio)
-        })
+                // draw small text saying CushyStudio
+                ctx.font = `${40 * ratio}px Arial`
+                ctx.fillText('CushyStudio', X, img.height - 40 * ratio)
+            }),
+        )
+    return Promise.all(out)
 }

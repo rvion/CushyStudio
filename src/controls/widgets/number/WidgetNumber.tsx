@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,7 +11,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
-export type Widget_number_config = WidgetConfigFields<
+export type Widget_number_config = WidgetConfig<
     {
         mode: 'int' | 'float'
         default?: number
@@ -30,7 +31,7 @@ export type Widget_number_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
+export type Widget_number_serial = WidgetSerial<{ type: 'number'; val: number }>
 
 // VALUE
 export type Widget_number_value = number
@@ -45,18 +46,17 @@ export type Widget_number_types = {
 }
 
 // STATE
-export interface Widget_number extends Widget_number_types {}
-export class Widget_number extends BaseWidget implements IWidget<Widget_number_types> {
+export class Widget_number extends BaseWidget<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
-    get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => {
         if (this.serial.val === this.defaultValue) return
         this.value = this.defaultValue
@@ -71,13 +71,13 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_number>,
         serial?: Widget_number_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'number',
             collapsed: config.startCollapsed,
@@ -88,6 +88,8 @@ export class Widget_number extends BaseWidget implements IWidget<Widget_number_t
         this.init({
             serial: observable,
             value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
         })
     }
 

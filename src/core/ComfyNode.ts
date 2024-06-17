@@ -263,8 +263,10 @@ export class ComfyNode<
     }
 
     // dimensions for autolayout algorithm
-    get width() { return 200 } // prettier-ignore
-    get height() {
+    get width(): number {
+        return 200
+    }
+    get height(): number {
         const inputLen = this._incomingEdges().length
         const outputLen = this.$schema.outputs.length
         const headerCount = Math.max(inputLen, outputLen)

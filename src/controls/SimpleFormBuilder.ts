@@ -1,18 +1,13 @@
-import '../theme/form.vars.css'
-import '../theme/markdown.css'
-import '../theme/form.css'
-import '../controls/widgets/number/InputNumberUI.css'
-
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { BaseWidget } from './BaseWidget'
 import type { Form } from './Form'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
-import type { IWidget } from './IWidget'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { openRouterInfos } from '../llm/OpenRouter_infos'
+import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { SimpleSpec } from './SimpleSpec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
@@ -122,7 +117,7 @@ export class SimpleFormBuilder implements IFormBuilder {
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config },
+                : { inHeader: true, label: false, justifyLabel: false, ...config },
         )
 
     int = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
@@ -234,9 +229,33 @@ export class SimpleFormBuilder implements IFormBuilder {
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
+    _HYDRATE = <T extends ISpec>(
+        //
+        parent: BaseWidget | null,
+        spec: T,
+        serial: any | null,
+    ): T['$Widget'] => {
+        const w = this.__HYDRATE(parent, spec, serial) as T['$Widget']
+        w.publishValue()
+        for (const { expr, effect } of spec.reactions) {
+            // 🔴 Need to dispose later
+            reaction(
+                () => expr(w),
+                (arg) => effect(arg, w),
+                { fireImmediately: true },
+            )
+        }
+        return w
+    }
+
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
+    private __HYDRATE = <T extends ISpec>(
+        //
+        parent: BaseWidget | null,
+        spec: T,
+        serial: any | null,
+    ): BaseWidget<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -298,19 +317,5 @@ export class SimpleFormBuilder implements IFormBuilder {
             parent,
             new SimpleSpec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
-    }
-
-    _HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
-        const w = this.__HYDRATE(parent, spec, serial)
-        w.publishValue()
-        for (const { expr, effect } of spec.reactions) {
-            // 🔴 Need to dispose later
-            reaction(
-                () => expr(w),
-                (arg) => effect(arg, w),
-                { fireImmediately: true },
-            )
-        }
-        return w
     }
 }

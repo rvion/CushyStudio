@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -14,7 +15,7 @@ import { WidgetBoolUI } from './WidgetBoolUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = WidgetConfigFields<
+export type Widget_bool_config = WidgetConfig<
     {
         /**
          * default value; true or false
@@ -53,7 +54,7 @@ export type Widget_bool_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
+export type Widget_bool_serial = WidgetSerial<{ type: 'bool'; active: boolean }>
 
 // VALUE
 export type Widget_bool_value = boolean
@@ -68,12 +69,10 @@ export type Widget_bool_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_bool_types {}
-export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types> {
-    DefaultHeaderUI = WidgetBoolUI
-    DefaultBodyUI = undefined
+export class Widget_bool extends BaseWidget<Widget_bool_types> {
+    readonly DefaultHeaderUI = WidgetBoolUI
+    readonly DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'bool' = 'bool'
 
     get baseErrors(): Problem_Ext {
@@ -87,13 +86,13 @@ export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types
     toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {

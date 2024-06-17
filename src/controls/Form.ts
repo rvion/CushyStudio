@@ -1,17 +1,17 @@
-import type { CovariantFn } from './BivariantHack'
+import type { BaseWidget } from './BaseWidget'
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec } from './ISpec'
-import type { IWidget } from './IWidget'
+import type { CovariantFn } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
+import { debounce } from '../csuite/utils/debounce'
 import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownConfigUI'
-import { debounce } from '../utils/misc/debounce'
 import { FormUI, type FormUIProps } from './FormUI'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
@@ -62,19 +62,30 @@ export class Form<
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => createElement(FormUI, { form: this, ...p })
-    renderAsConfigBtn = (): ReactNode =>
-        createElement(FormAsDropdownConfigUI, {
-            form: this,
-        })
+    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => {
+        return createElement(FormUI, { form: this, ...p })
+    }
+
+    /**
+     * allow to quickly render the form in a dropdown button
+     * without having to import any component; usage:
+     * | <div>{x.renderAsConfigBtn()}</div>
+     */
+    renderAsConfigBtn = (p?: {
+        // 1. anchor option
+        // ...TODO
+        // 2. popup options
+        title?: string
+        className?: string
+        maxWidth?: string
+        minWidth?: string
+        width?: string
+    }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
     get value(): ROOT['$Value'] {
         return this.root.value
     }
 
-    // get rootSerial(): ROOT['$Serial'] {
-    //     return this.root.serial
-    // }
     get serial(): FormSerial {
         return {
             type: 'FormSerial',
@@ -121,17 +132,16 @@ export class Form<
         : null
 
     /** every widget node must call this function once it's value change */
-    valueChanged = (widget: IWidget) => {
+    valueChanged = (widget: BaseWidget) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
-        console.log(`[🦊] value changed`)
         this._onValueChange?.(this)
     }
 
-    knownShared: Map<string, IWidget> = new Map()
+    knownShared: Map<string, BaseWidget> = new Map()
 
     /** every widget node must call this function once it's serial changed */
-    serialChanged = (_widget: IWidget) => {
+    serialChanged = (_widget: BaseWidget) => {
         this.serialLastUpdatedAt = Date.now()
         this._onSerialChange?.(this)
     }

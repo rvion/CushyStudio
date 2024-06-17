@@ -1,20 +1,20 @@
-import type { Requirements } from '../controls/Requirements'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { readableStringify } from '../csuite/formatters/stringifyReadable'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
-import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
-import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { toastError, toastSuccess } from '../utils/misc/toasts'
 
 export interface HostL extends LiveInstance<TABLES['host']> {}
 
@@ -63,15 +63,15 @@ export class HostL {
     private wantLog: boolean = true
     enableServerLogs = () => {
         this.wantLog = true
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     disableServerLogs = () => {
         this.wantLog = false
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     toggleServerLogs = () => {
         this.wantLog = !this.wantLog
-        this.manager.configureLogging(this.wantLog)
+        return this.manager.configureLogging(this.wantLog)
     }
     maxLogs = 200
     serverLogs: { at: string; content: string; id: number }[] = []

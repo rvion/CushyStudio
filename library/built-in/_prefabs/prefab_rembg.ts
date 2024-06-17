@@ -4,7 +4,7 @@ export const ui_rembg_v1 = () => {
     const form = getCurrentForm()
     return form
         .choices({
-            appearance: 'tab',
+            // appearance: 'tab',
             expand: true,
             // appearance: 'tab',
             // prettier-ignore

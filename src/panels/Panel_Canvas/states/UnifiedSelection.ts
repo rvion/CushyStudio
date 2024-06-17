@@ -13,9 +13,9 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { toast } from 'react-toastify'
 
+import { bang } from '../../../csuite/utils/bang'
 import { createMediaImage_fromDataURI } from '../../../models/createMediaImage_fromWebFile'
 import { MediaImageL } from '../../../models/MediaImage'
-import { bang } from '../../../utils/misc/bang'
 
 export class UnifiedSelection {
     id: string = nanoid()

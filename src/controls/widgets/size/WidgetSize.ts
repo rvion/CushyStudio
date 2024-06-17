@@ -1,8 +1,8 @@
-// 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { runInAction } from 'mobx'
@@ -14,7 +14,7 @@ import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
-export type Widget_size_config = WidgetConfigFields<
+export type Widget_size_config = WidgetConfig<
     {
         default?: CushySizeByRatio
         min?: number
@@ -25,7 +25,7 @@ export type Widget_size_config = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_size_serial = WidgetSerialFields<CushySize>
+export type Widget_size_serial = WidgetSerial<CushySize>
 
 // SERIAL FROM VALUE
 export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
@@ -45,12 +45,30 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types {}
-export class Widget_size extends BaseWidget implements IWidget<Widget_size_types> {
+export class Widget_size extends BaseWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
         return null
+    }
+
+    get defaultValue(): Widget_size_value {
+        const config = this.spec.config
+        const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
+        const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
+        const width = config.default?.width ?? parseInt(modelType.split(' ')[1]!)
+        const height = config.default?.height ?? parseInt(modelType.split(' ')[1]!)
+        return { type: 'size', aspectRatio, modelType, height, width }
+    }
+    get hasChanges() {
+        const def = this.defaultValue
+        if (this.serial.width !== def.width) return true
+        if (this.serial.height !== def.height) return true
+        if (this.serial.aspectRatio !== def.aspectRatio) return true
+        return false
+    }
+    reset() {
+        this.value = this.defaultValue
     }
 
     get width() { return this.serial.width } // prettier-ignore
@@ -82,20 +100,20 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
     // ⏸️ }
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial
 
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_size>,
         serial?: Widget_size_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         if (serial) {
             this.serial = serial
         } else {
@@ -113,7 +131,11 @@ export class Widget_size extends BaseWidget implements IWidget<Widget_size_types
             }
         }
 
-        this.init({ sizeHelper: false })
+        this.init({
+            sizeHelper: false,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     setValue(val: Widget_size_value) {

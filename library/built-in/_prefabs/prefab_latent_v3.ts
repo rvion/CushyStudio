@@ -12,7 +12,7 @@ export const ui_latent_v3 = () => {
         appearance: 'tab',
         default: 'emptyLatent',
         label: 'Latent Input',
-        box: { base: { hue: 200, contrast: 0, chroma: 0.05 } },
+        background: { hue: 270, chroma: 0.04 },
         items: {
             emptyLatent: form.group({
                 collapsed: false,
@@ -24,7 +24,7 @@ export const ui_latent_v3 = () => {
                 border: false,
                 items: {
                     batchSize,
-                    image: form.image(),
+                    image: form.image({ label: false, justifyLabel: false }),
                     resize: form.auto.Image_Resize().optional(),
                 },
             }),

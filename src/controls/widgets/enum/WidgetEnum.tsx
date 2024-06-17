@@ -2,20 +2,20 @@ import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
-export type Widget_enum_config<O> = WidgetConfigFields<
+export type Widget_enum_config<O> = WidgetConfig<
     {
         enumName: string
         default?: O //Requirable[T] | EnumDefault<T>
@@ -26,7 +26,7 @@ export type Widget_enum_config<O> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = WidgetSerialFields<{
+export type Widget_enum_serial<O> = WidgetSerial<{
     type: 'enum'
     active: true
     val: O
@@ -45,15 +45,15 @@ export type Widget_enum_types<O> = {
 }
 
 // STATE
-export interface Widget_enum<O> extends Widget_enum_types<O> {}
-export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_types<O>> {
+export class Widget_enum<O> extends BaseWidget<Widget_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'enum' = 'enum'
 
-    get isChanged() { return this.serial.val !== this.config.default } // prettier-ignore
+    get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.value = this.defaultValue } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
@@ -64,17 +64,16 @@ export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_ty
     }
 
     serial: Widget_enum_serial<O>
-    get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'enum',
             id: this.id,

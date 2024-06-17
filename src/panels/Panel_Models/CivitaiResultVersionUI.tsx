@@ -2,7 +2,9 @@ import type { CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { BadgeUI } from '../../csuite/badge/BadgeUI'
+import { Button } from '../../csuite/button/Button'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 
@@ -36,10 +38,10 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                     <div // key infos
                         tw='flex gap-2'
                     >
-                        <div tw='badge badge-lg badge-neutral'>version={version.name}</div>
-                        <div tw='badge badge-lg badge-neutral'>baseModel={version.baseModel}</div>
+                        <BadgeUI>version={version.name}</BadgeUI>
+                        <BadgeUI>baseModel={version.baseModel}</BadgeUI>
                         <RevealUI tw='ml-auto' content={() => <JsonViewUI value={p.version} />}>
-                            <div tw='btn btn-xs btn-outline'>Show version json</div>
+                            <Button>Show version json</Button>
                         </RevealUI>
                     </div>
                     <div tw='flex flex-col gap-1'>
@@ -70,7 +72,7 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                 </div>
                 {/* {v.trainedWords && <div tw='text-sm'>{v.trainedWords}</div>} */}
             </div>
-            <div tw='flex flex-row gap-1'>
+            <div tw='flex flex-row flex-wrap gap-1'>
                 {version.images.map((img, ix) => (
                     <img
                         //

@@ -41,7 +41,7 @@
 //                     <Button
 //                         size='xs'
 //                         color='blue'
-//                         appearance='ghost'
+//                         look='ghost'
 //                         startIcon={<span className='material-symbols-outlined'>edit</span>}
 //                         onClick={() => openInVSCode(cwd(), card.absPath)}
 //                     >

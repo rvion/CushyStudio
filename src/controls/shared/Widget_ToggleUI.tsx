@@ -1,19 +1,18 @@
-import type { IWidget } from '../IWidget'
+import type { BaseWidget } from '../BaseWidget'
 import type { Widget_optional } from '../widgets/optional/WidgetOptional'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../widgets/bool/InputBoolUI'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { isWidgetOptional } from '../widgets/WidgetUI.DI'
 
-export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
-    // only do something if widget is Optional
+export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { className?: string; widget: BaseWidget }) {
     if (!isWidgetOptional(p.widget)) return null
     const widget = p.widget as Widget_optional
-
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget
-            active={widget.serial.active}
+            className={p.className}
+            value={widget.serial.active}
             expand={false}
             onValueChange={(value) => widget.setActive(value)}
         />

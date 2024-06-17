@@ -1,26 +1,97 @@
 import * as icons from '@mdi/js'
 import { Icon } from '@mdi/react'
+import { makeAutoObservable } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
+import { CSSProperties, useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../controls/utils/useSizeOf'
-import { getAllIcons } from '../../icons/iconHelpers'
-import { searchMatches } from '../../utils/misc/searchMatches'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { Button } from '../../csuite/button/Button'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { getAllIcons } from '../../csuite/icons/getAllIcons'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { searchMatches } from '../../csuite/utils/searchMatches'
+import { toastError, toastInfo } from '../../csuite/utils/toasts'
 import { PanelHeaderUI } from '../PanelHeader'
+
+class IconPanelStableState {
+    constructor() {
+        makeAutoObservable(this)
+    }
+
+    /** Whether or not to use the filter when displaying icons */
+    filter: boolean = true
+    /** List of recently copied icons */
+    recent: Array<string> = []
+    /** Used to filter down the icons to match the query. Only used when filter is enabled. */
+    query: string = ''
+
+    copy = async (icon: string): Promise<void> => {
+        const found = this.recent.indexOf(icon)
+        if (found > -1) {
+            this.recent.splice(found, 1)
+        }
+        this.recent.unshift(icon)
+
+        try {
+            // Probably should check if it errored, but lazy.
+            await navigator.clipboard.writeText(icon)
+            toastInfo(`'${icon}' copied to clipboard`)
+        } catch (e) {
+            toastError(`Error copying to clipboard: ${e}`)
+        }
+    }
+}
+
+const CopyButton = observer(function CopyButton_(p: {
+    uist: IconPanelStableState
+    icon: string
+    showName?: boolean
+    style?: CSSProperties
+}) {
+    return (
+        <Button //
+            tw={'flex-col overflow-clip'}
+            border={false}
+            base={{ contrast: 0 }}
+            style={p.style}
+            onClick={() => {
+                return p.uist.copy(p.icon)
+            }}
+        >
+            <Icon path={(icons as any)[p.icon]} />
+        </Button>
+    )
+})
 
 export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
     const { ref: refFn, size } = useSizeOf()
-    const uist = useLocalObservable(() => ({ query: '' }))
+    const uist = useMemo(() => new IconPanelStableState(), [])
     const form = cushy.forms.use((ui) =>
-        ui.fields({
-            size: ui.int({ min: 32, max: 500, default: 64 }),
-            showNames: ui.boolean({ default: false }),
-        }),
+        ui.fields(
+            {
+                size: ui.int({
+                    //
+                    label: false, // NOTE(bird_d): This should just do the same thing as justifyLabel == false. Honestly, this should be handled at the group level, then widgets that are children should get the parent's option for whether it should align the label or not.
+                    justifyLabel: false,
+                    text: 'Size',
+                    min: 32,
+                    max: 500,
+                    default: 64,
+                    step: 24,
+                    hideSlider: true,
+                }),
+            },
+            { collapsed: false },
+        ),
     )
     const allIconsUnfiltered = getAllIcons()
-    const allIcons = uist.query //
-        ? allIconsUnfiltered.filter((x) => searchMatches(x, uist.query))
-        : allIconsUnfiltered
+    const allIcons =
+        uist.query && uist.filter //
+            ? allIconsUnfiltered.filter((x) => searchMatches(x, uist.query))
+            : allIconsUnfiltered
     const total = allIcons.length
     const itemSize = form.value.size
     const itemWidth = itemSize /* 100 */
@@ -29,23 +100,46 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
     const containerHeight = size.height ?? 100
     const nbCols = Math.floor(containerWidth / itemWidth) || 1
     const nbRows = Math.ceil(total / nbCols) + 1
-    const showNames = form.value.showNames
     return (
         <div tw='h-full w-full flex flex-col'>
             <PanelHeaderUI>
-                {/*  */}
-                {form.renderAsConfigBtn()}
-                <input
-                    tw='input my-0.5 input-xs'
-                    placeholder='filename'
-                    value={uist.query ?? ''}
-                    type='text'
-                    onChange={(x) => (uist.query = x.target.value)}
-                />
+                <Frame tw='h-input flex flex-row'>
+                    <InputStringUI
+                        // placeholder='filename'
+                        autofocus
+                        getValue={() => uist.query}
+                        setValue={(val) => (uist.query = val)}
+                    />
+                    <InputBoolUI
+                        value={uist.filter}
+                        icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
+                        onValueChange={() => {
+                            uist.filter = !uist.filter
+                        }}
+                    />
+                </Frame>
+                <SpacerUI />
+                <Button
+                    onClick={() => {
+                        uist.recent = []
+                    }}
+                >
+                    Clear Recent
+                </Button>
+                {form.renderAsConfigBtn({ title: 'Icon Settings' })}
             </PanelHeaderUI>
-            <div ref={refFn} tw='flex-1 overflow-clip'>
+            <Frame
+                base={{ contrast: -0.025 }}
+                tw='flex w-full items-center justify-center'
+                style={{ height: itemHeight + 8, padding: '4px' }}
+            >
+                {uist.recent.map((value) => {
+                    return <CopyButton style={{ height: itemHeight, width: itemWidth }} uist={uist} key={value} icon={value} />
+                })}
+            </Frame>
+            <Frame text={{ contrast: 0.5, chroma: 0.1, hueShift: 100 }} ref={refFn} tw='flex-1 overflow-clip'>
                 <FixedSizeGrid //
-                    key={`${showNames}`}
+                    // key={``}
                     // container
                     height={containerHeight}
                     width={containerWidth}
@@ -59,30 +153,10 @@ export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
                     {({ columnIndex, rowIndex, style }) => {
                         const iconName = allIcons[rowIndex * nbCols + columnIndex]
                         if (iconName == null) return
-                        if (showNames) {
-                            return (
-                                <div style={style} tw='overflow-clip'>
-                                    <Icon
-                                        tw='hover:text-blue-200 text-white duration-100'
-                                        size={`${itemSize - 20}px`}
-                                        path={(icons as any)[iconName]}
-                                    />
-                                    <span style={{ lineHeight: '10px', fontSize: '10px' }}>{iconName.slice(3)}</span>
-                                </div>
-                            )
-                        } else {
-                            return (
-                                <div style={style}>
-                                    <Icon //
-                                        tw='hover:text-blue-200 text-white duration-100'
-                                        path={(icons as any)[iconName]}
-                                    />
-                                </div>
-                            )
-                        }
+                        return <CopyButton uist={uist} icon={iconName} style={style} />
                     }}
                 </FixedSizeGrid>
-            </div>
+            </Frame>
         </div>
     )
 })

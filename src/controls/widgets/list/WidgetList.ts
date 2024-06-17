@@ -1,13 +1,15 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { BaseWidget } from '../../BaseWidget'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
+import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
@@ -24,7 +26,7 @@ type AutoBehaviour<T extends ISpec> = {
 }
 
 // CONFIG
-export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
+export type Widget_list_config<T extends ISpec> = WidgetConfig<
     {
         element: ((ix: number) => T) | T
         /**
@@ -57,7 +59,7 @@ export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_list_serial<T extends ISpec> = WidgetSerialFields<{
+export type Widget_list_serial<T extends ISpec> = WidgetSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
@@ -75,22 +77,43 @@ export type Widget_list_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_list<T extends ISpec> extends Widget_list_types<T> {}
-export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<Widget_list_types<T>> {
+export class Widget_list<T extends ISpec> //
+    extends BaseWidget<Widget_list_types<T>>
+{
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
 
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
-    /* override */ background = true
 
-    findItemIndexContaining = (widget: IWidget): number | null => {
-        let at = widget as IWidget | null
+    get hasChanges() {
+        // in auto mode, length is managed, so we must not take it into account
+        if (!this.config.auto) {
+            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+            if (this.items.length !== defaultLength) return true
+        }
+        // check if any remaining item has changes
+        return this.items.some((i) => i.hasChanges)
+    }
+    reset = () => {
+        // fix size
+        if (!this.config.auto) {
+            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+            for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
+            for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
+        }
+
+        // reset all remaining values
+        for (const i of this.items) i.reset()
+    }
+
+    findItemIndexContaining = (widget: BaseWidget): number | null => {
+        let at = widget as BaseWidget | null
         let child = at
         while (at != null) {
             at = at.parent
@@ -152,7 +175,7 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {

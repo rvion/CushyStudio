@@ -1,11 +1,17 @@
 import type { STATE } from '../../../state/state'
 import type { CompiledPrompt } from './WidgetPrompt'
 
+import { chooseRandomly } from '../../../csuite/rnd/chooseRnadomly'
 import { Prompt_Node, PromptAST } from './grammar/grammar.practical'
+
+export type PromptCompilationCtx = {
+    getLoraAssociatedTriggerWords(loraName: string): Maybe<string>
+    wildcards: { [wildcardName: string]: string[] }
+}
 
 export const compilePrompt = (p: {
     text: string
-    st: STATE
+    ctx: PromptCompilationCtx
     /** for wildcard */
     seed?: number
     onLora: (
@@ -34,7 +40,7 @@ export const compilePrompt = (p: {
     // const getLastNegativePromptChar = () => NEG[NEG.length - 1] ?? ''
     // -----------
     // ⏸️ const CONTENT = p.text
-    const st = p.st
+    const st = p.ctx
     // ⏸️ const tree = parser.parse(CONTENT ?? '')
 
     const weightStack = [1]
@@ -78,7 +84,7 @@ export const compilePrompt = (p: {
                     console.log(`[❌] invalid wildcard`)
                     return false
                 }
-                const picked = st.chooseRandomly(node.name, p.seed ?? Math.floor(Math.random() * 99999999), options)
+                const picked = chooseRandomly(node.name, p.seed ?? Math.floor(Math.random() * 99999999), options)
                 if (p.printWildcards ?? true) debugText.push(picked)
                 set(picked)
                 return false

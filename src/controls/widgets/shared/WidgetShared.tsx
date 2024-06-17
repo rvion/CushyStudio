@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -10,7 +11,7 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfigFields<
+export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfig<
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
@@ -20,7 +21,7 @@ export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_shared_serial = WidgetSerialFields<{
+export type Widget_shared_serial = WidgetSerial<{
     type: 'shared'
 }>
 
@@ -42,8 +43,7 @@ export type Widget_shared_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T> {}
-export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_shared_types<T>> {
+export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget<Widget_shared_types<T>> {
     readonly id: string
     get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
@@ -53,6 +53,13 @@ export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implement
     $Widget!: T['$Widget']
 
     serial: Widget_shared_serial
+
+    get hasChanges() {
+        return this.config.widget.hasChanges
+    }
+    reset() {
+        return this.config.widget.reset()
+    }
 
     get shared(): T['$Widget'] {
         return this.config.widget
@@ -72,13 +79,13 @@ export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implement
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         makeAutoObservableInheritance(this)
     }

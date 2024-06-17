@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { ErrorBoundary } from 'react-error-boundary'
 
+import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { useSt } from '../state/stateContext'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
-import { ErrorBoundaryFallback } from '../widgets/misc/ErrorBoundary'
 
 export const Panel_LastGraph = observer(function Panel_LastGraph_(p: {}) {
     const st = useSt()
@@ -11,9 +10,9 @@ export const Panel_LastGraph = observer(function Panel_LastGraph_(p: {}) {
     return (
         <div>
             {lastGraph && (
-                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                <ErrorBoundaryUI>
                     <GraphPreviewUI graph={lastGraph} />
-                </ErrorBoundary>
+                </ErrorBoundaryUI>
             )}
         </div>
     )

@@ -1,19 +1,31 @@
 /** by @Vinsi (slightly adapted) */
 
+import type { SchemaDict } from '../../../src/controls/ISpec'
 import type { OutputFor } from '../../local/pony/_prefab_PonyDiffusion'
 
-export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
-    return ui
-        .map((item) => {
-            const promptText = item.prompt?.text || ''
-            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
-            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
-            return `${promptText}${characterText}${styleText}`
-        })
-        .join('\n')
-}
+// 📝 2024-06-14 rvion: explicitly adding types is optional;
+// I tend to prefer adding them in built-in prefabs to help
+// with codebase typechecking performances, and making breaking
+// changes more explicit.
+export type UI_advancedPrompt = X.XList<
+    X.XChoice<{
+        prompt: X.XPrompt
+        characters: X.XChoice<{
+            [k: string]: X.XChoice<{
+                [k: string]: X.XGroup<SchemaDict>
+            }>
+        }>
+        styles: X.XChoice<{
+            [k: string]: X.XChoice<{
+                [k: string]: X.XChoice<{
+                    [k: string]: X.XGroup<SchemaDict>
+                }>
+            }>
+        }>
+    }>
+>
 
-export const ui_advancedPrompt = () => {
+export const ui_advancedPrompt = (): UI_advancedPrompt => {
     const form = getCurrentForm()
     return form.list({
         min: 1,
@@ -61,6 +73,17 @@ export const ui_advancedPrompt = () => {
                 },
             }),
     })
+}
+
+export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
+    return ui
+        .map((item) => {
+            const promptText = item.prompt?.text || ''
+            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
+            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
+            return `${promptText}${characterText}${styleText}`
+        })
+        .join('\n')
 }
 
 // Custom function

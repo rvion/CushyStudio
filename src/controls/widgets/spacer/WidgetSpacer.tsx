@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -14,10 +15,10 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfigFields<{}, Widget_spacer_types>
+export type Widget_spacer_config = WidgetConfig<{}, Widget_spacer_types>
 
 // SERIAL
-export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
+export type Widget_spacer_serial = WidgetSerial<{ type: 'spacer' }>
 
 // SERIAL FROM VALUE
 export const Widget_spacer_fromValue = (val: Widget_spacer_value): Widget_spacer_serial => ({
@@ -37,22 +38,24 @@ export type Widget_spacer_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_spacer_types {}
-export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_types> {
+export class Widget_spacer extends BaseWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {
         return null
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
+
+    hasChanges = false
+    reset = () => {}
 
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
@@ -64,7 +67,11 @@ export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_t
             collapsed: false,
         }
 
-        this.init({ serial: observable })
+        this.init({
+            serial: observable,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     get value() {

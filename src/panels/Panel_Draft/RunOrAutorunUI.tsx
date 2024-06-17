@@ -1,0 +1,79 @@
+import type { IconName } from '../../csuite/icons/icons'
+import type { DraftL } from '../../models/Draft'
+
+import { observer } from 'mobx-react-lite'
+
+import { Button } from '../../csuite/button/Button'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
+
+export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
+    const draft = p.draft
+    const icon: IconName = draft.shouldAutoStart ? 'mdiPause' : 'mdiPlay'
+    return (
+        <div tw='flex h-full' className={p.className}>
+            <RevealUI
+                content={() => (
+                    <div tw='p-2'>
+                        <div>ms to wait after a change</div>
+                        <InputNumberUI
+                            //
+                            mode='int'
+                            value={draft.st.project.data.autostartDelay}
+                            onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
+                            className='cushy-basic-input'
+                            placeholder='ms'
+                            softMax={5000}
+                            hideSlider
+                            step={250}
+                            min={0}
+                        />
+                        <div>max ms to wait before running anyway</div>
+                        <InputNumberUI
+                            //
+                            mode='int'
+                            value={draft.st.project.data.autostartMaxDelay}
+                            onValueChange={(val) => {
+                                draft.st.project.update({ autostartMaxDelay: val })
+                            }}
+                            className='cushy-basic-input'
+                            placeholder='ms'
+                            softMax={5000}
+                            hideSlider
+                            step={250}
+                            min={0}
+                        />
+                    </div>
+                )}
+            >
+                <Button tw='!gap-0 !px-0.5' icon='mdiTimer' suffixIcon={'mdiChevronDown'} />
+            </RevealUI>
+            <Button
+                // tw='h-input'
+                look='success'
+                // size='xs'
+                expand
+                className='self-start'
+                icon={icon}
+                onClick={() => {
+                    draft.st.layout.FOCUS_OR_CREATE('Output', {}, 'RIGHT_PANE_TABSET')
+                    draft.setAutostart(false)
+                    draft.start({})
+                }}
+            >
+                Run
+            </Button>
+            <Button // TODO(bird_d): Need a button that can be tied to an command, and will pull the relevant info from it. Like a label for the- label, and a description for the tooltip.
+                icon='mdiAnimationPlay'
+                look='success'
+                // size='xs'
+                // tw='h-input'
+                square
+                loading={draft.shouldAutoStart}
+                active={draft.shouldAutoStart}
+                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+            />
+        </div>
+    )
+})

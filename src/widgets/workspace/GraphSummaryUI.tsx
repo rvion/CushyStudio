@@ -2,8 +2,8 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
-import { Panel, ProgressLine } from '../../rsuite/shims'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { ProgressLine, Surface } from '../../csuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
@@ -12,7 +12,7 @@ import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     return (
-        <Panel tw='relative [min-width:2rem]'>
+        <Surface tw='relative [min-width:2rem]'>
             <GraphProgressUI graph={p.graph} />
             {p.graph.done ? null : <NodeProgressUI graph={p.graph} />}
             {/* </div> */}
@@ -28,15 +28,13 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                         {/* {n.status ?? '❓'} */}
                         <RevealUI content={() => <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />}>
                             <span>{n.statusEmoji}</span>
-
-                            {/* <span className='material-symbols-outlined'>info</span> */}
                         </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />
                         <span tw='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{n.$schema.nameInComfy}</span>
                     </div>
                 ))}
             </div>
-        </Panel>
+        </Surface>
     )
 })
 

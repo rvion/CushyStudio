@@ -1,10 +1,10 @@
+import type { BaseWidget } from './BaseWidget'
 import type { Channel, ChannelId, Producer } from './Channel'
-import type { CovariantFC } from './CovariantFC'
-import type { IWidget } from './IWidget'
+import type { CovariantFC } from './utils/CovariantFC'
 
 export type SchemaDict = { [key: string]: ISpec }
 
-export interface ISpec<W extends IWidget = IWidget> {
+export interface ISpec<out W extends BaseWidget = BaseWidget> {
     // real fields
     type: W['type']
     config: W['$Config']

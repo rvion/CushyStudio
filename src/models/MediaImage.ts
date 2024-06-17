@@ -16,15 +16,15 @@ import { lookup } from 'mime-types'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
-import { hasMod } from '../app/shortcuts/META_NAME'
+import { hasMod } from '../csuite/accelerators/META_NAME'
+import { Trigger } from '../csuite/trigger/Trigger'
+import { asSTRING_orCrash } from '../csuite/utils/bang'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
+import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { Trigger } from '../operators/RET'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { asSTRING_orCrash } from '../utils/misc/bang'
-import { ManualPromise } from '../utils/misc/ManualPromise'
-import { toastError, toastImage, toastInfo } from '../utils/misc/toasts'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
 import { createMediaImage_fromDataURI, type ImageCreationOpts } from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
@@ -108,11 +108,10 @@ export class MediaImageL {
         }
     }
 
-    copyToClipboardAsBase64 = () => {
+    copyToClipboardAsBase64 = () =>
         navigator.clipboard.writeText(this.getBase64Url()).then(() => {
             toastInfo('Image copied to clipboard!')
         })
-    }
 
     useAsDraftIllustration = (draft_?: DraftL) => {
         const draft = draft_ ?? this.draft
@@ -378,7 +377,7 @@ export class MediaImageL {
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
-        this._mkThumbnail()
+        void this._mkThumbnail()
         return transparentImgURL
     }
 

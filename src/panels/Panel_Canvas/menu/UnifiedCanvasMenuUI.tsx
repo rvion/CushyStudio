@@ -3,11 +3,11 @@ import type { UnifiedImage } from '../states/UnifiedImage'
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 
-import { ComboUI } from '../../../app/shortcuts/ComboUI'
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
-import { InputNumberUI } from '../../../controls/widgets/number/InputNumberUI'
-import { Ikon } from '../../../icons/iconHelpers'
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { ComboUI } from '../../../csuite/accelerators/ComboUI'
+import { Ikon } from '../../../csuite/icons/iconHelpers'
+import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
@@ -18,7 +18,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <>
-            <div tw='flex flex-col gap-1 bg-base-200 w-80 absolute right-2 top-2 z-50'>
+            <div tw='flex flex-col gap-1 w-80 absolute right-2 top-2 z-50'>
                 <div>
                     <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
                         Undo (stack.size={canvas.undoBuffer.length})

@@ -1,51 +1,42 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../../../utils/misc/bang'
+import { bang } from '../../../csuite/utils/bang'
 import { BaseWidget } from '../../BaseWidget'
-import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
-import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
+export type Widget_group_config<T extends SchemaDict> = WidgetConfig<
     {
         /**
-         * lambda function is deprecated, prefer passing the items as an object
+         * Lambda function is deprecated, prefer passing the items as an object
          * directly
          */
         items?: T | (() => T)
 
-        /**
-         * legacy property, will be removed soon
-         * you can alreay check if you're a top-level property
-         * by checking if this.parent is null
-         * @deprecated
-         */
-        topLevel?: boolean
-
         /** if provided, will be used in the header when fields are folded */
-        summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+        summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
     },
     Widget_group_types<T>
 >
 
 // SERIAL
-export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
+export type Widget_group_serial<T extends SchemaDict> = WidgetSerial<{
     type: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // VALUE
 export type Widget_group_value<T extends SchemaDict> = {
-    [k in keyof T]: GetWidgetResult<T[k]>
+    [k in keyof T]: T[k]['$Value']
 }
 
 // TYPES
@@ -58,8 +49,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
-export class Widget_group<T extends SchemaDict> extends BaseWidget implements IWidget<Widget_group_types<T>> {
+export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -70,32 +60,24 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         return null
     }
 
+    get hasChanges() {
+        return Object.values(this.fields).some((f) => f.hasChanges)
+    }
+    reset = () => {
+        for (const sub of this.subWidgets) sub.reset()
+    }
+
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
-    readonly type: 'group' = 'group'
 
-    collapseAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            if (item.serial.collapsed) continue
-            const isCollapsible = getIfWidgetIsCollapsible(item)
-            if (isCollapsible) item.setCollapsed(true)
-        }
-    }
-    expandAllEntries = () => {
-        for (const [key, _item] of this.entries) {
-            const item = getActualWidgetToDisplay(_item)
-            item.setCollapsed(undefined)
-        }
-    }
+    readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, IWidget][]
+        return Object.entries(this.fields) as [string, BaseWidget][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
@@ -104,7 +86,6 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
-    /* override */ background = true
 
     private _defaultSerial = (): Widget_group_serial<T> => {
         return {
@@ -117,7 +98,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
@@ -210,19 +191,19 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
     }
 
     // @internal
-    __value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+    __value: { [k in keyof T]: T[k]['$Value'] } = new Proxy({} as any, {
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]!
+            const subWidget: BaseWidget = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
         getOwnPropertyDescriptor: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]!
+            const subWidget: BaseWidget = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,

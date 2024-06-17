@@ -1,16 +1,15 @@
-import type { IWidget } from '../IWidget'
+import type { BaseWidget } from '../BaseWidget'
 
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 
-export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: IWidget }) {
+export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: BaseWidget }) {
     const widget = p.widget
     return (
         <RevealUI content={() => <div>{widget.config.tooltip}</div>}>
-            <div className='btn btn-sm btn-square btn-ghost'>
-                <span className='material-symbols-outlined'>info</span>
-            </div>
+            <Frame square icon={'mdiInformationOutline'}></Frame>
         </RevealUI>
     )
 })

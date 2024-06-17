@@ -1,7 +1,9 @@
+import type { IconName } from '../../../csuite/icons/icons'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,7 +17,7 @@ type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'un
 type CssProprtyResize = CssProprtyGlobals | 'block' | 'both' | 'horizontal' | 'inline' | 'none' | 'vertical'
 
 // CONFIG
-export type Widget_string_config = WidgetConfigFields<
+export type Widget_string_config = WidgetConfig<
     {
         default?: string
         textarea?: boolean
@@ -28,12 +30,13 @@ export type Widget_string_config = WidgetConfigFields<
          * hitting esc will revert to the last committed value
          * */
         buffered?: boolean
+        innerIcon?: IconName
     },
     Widget_string_types
 >
 
 // SERIAL
-export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
+export type Widget_string_serial = WidgetSerial<{ type: 'str'; val?: string }>
 
 // SERIAL FROM VALUE
 export const Widget_string_fromValue = (val: string): Widget_string_serial => ({
@@ -54,8 +57,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_string extends Widget_string_types {}
-export class Widget_string extends BaseWidget implements IWidget<Widget_string_types> {
+export class Widget_string extends BaseWidget<Widget_string_types> {
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
@@ -67,9 +69,9 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly border = false
+    // readonly border = false
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'str' = 'str'
 
     // --------------
@@ -79,19 +81,19 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
 
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''
-    get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.value = this.defaultValue } // prettier-ignore
 
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_string>,
         serial?: Widget_string_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'str',
             val: this.config.default,
@@ -99,6 +101,10 @@ export class Widget_string extends BaseWidget implements IWidget<Widget_string_t
             id: this.id,
         }
         makeAutoObservableInheritance(this)
+    }
+    get animateResize() {
+        if (this.config.textarea) return false
+        return true
     }
     setValue(val: Widget_string_value) {
         this.value = val

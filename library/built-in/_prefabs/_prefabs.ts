@@ -11,12 +11,10 @@
  * ❌ import {...} from '...'`
  * */
 
-import type * as X from '../../../src/controls/FormBuilder'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
-import type { GetWidgetResult } from '../../../src/controls/IWidget'
 
 // this should be a default
-export type OutputFor<UIFn extends (...args: any[]) => any> = GetWidgetResult<ReturnType<UIFn>>
+export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
 
 type UI_HighResFix = X.XGroup<{
     upscaleMethod: X.XSelectOne<{ readonly id: 'regular' } | { readonly id: 'Neural 1.5' } | { readonly id: 'Neural XL' }>

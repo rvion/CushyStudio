@@ -110,6 +110,7 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
 
     /** retrieve the closest ancestor of given class */
     firstAncestor = <T extends KnownNodeNames>(kind: T): Maybe<CLASSES[T]> => {
+        // eslint-disable-next-line consistent-this
         let current: Maybe<ManagedNode> = this
         while (current) {
             if (current.$kind === kind) return current as Maybe<CLASSES[T]>
@@ -144,6 +145,7 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
 
     get ancestorsIncludingSelf(): ManagedNode[] {
         let result: ManagedNode[] = []
+        // eslint-disable-next-line consistent-this
         let current: Maybe<ManagedNode> = this
         while (current) {
             result.push(current)
@@ -324,7 +326,7 @@ export class Prompt_WeightedExpression extends ManagedNode<'WeightedExpression'>
         return this.getChild('Content')?.text ?? ''
     }
     get weight() {
-        return this.getChild('Number')?.number ?? 1
+        return this.getChild('Number')?.number ?? 1.1
     }
     set weight(value: number) {
         this.getChild('Number')?.setNumber(value)

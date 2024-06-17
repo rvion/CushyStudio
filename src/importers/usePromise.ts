@@ -1,7 +1,7 @@
 import { observable } from 'mobx'
 import { DependencyList, useMemo } from 'react'
 
-import { ManualPromise } from '../utils/misc/ManualPromise'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
 
 export const usePromise = (fn: () => Promise<any>, deps: DependencyList) => {
     return useMemo(() => {

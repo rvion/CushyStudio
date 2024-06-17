@@ -48,7 +48,14 @@ export const ui_subform_Depth_Preprocessor = () => {
     })
 }
 
-export const ui_subform_Depth_Midas = () => {
+// ================================================================================
+export type UI_subform_Depth_Midas = X.XGroup<{
+    a_value: X.XNumber
+    bg_threshold: X.XNumber
+    saveProcessedImage: X.XBool
+}>
+
+export const ui_subform_Depth_Midas = (): UI_subform_Depth_Midas => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Midas',

@@ -25,11 +25,11 @@ export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
         <div>
             <div tw='p-2 flex gap-2'>
                 <input
-                    value={mkp.query.value}
                     onChange={(e) => (mkp.query.value = e.target.value)}
+                    className='cushy-basic-input'
+                    value={mkp.query.value}
                     placeholder='Search'
                     type='text'
-                    tw='input input-sm'
                 />
                 <div className='flex-1'></div>
                 <CreateAppBtnUI />

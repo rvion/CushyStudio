@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
-import { Loader } from '../rsuite/shims'
-import { exhaust } from '../utils/misc/exhaust'
+import { Loader } from '../csuite/shims'
+import { exhaust } from '../csuite/utils/exhaust'
 import { Status } from './Status'
 
 export const statusUI = (status: Status): ReactNode => {

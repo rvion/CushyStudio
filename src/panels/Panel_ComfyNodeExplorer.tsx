@@ -6,9 +6,9 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../core/Colors'
-import { Input } from '../rsuite/shims'
+import { InputLegacy } from '../csuite/shims'
+import { searchMatches } from '../csuite/utils/searchMatches'
 import { useSt } from '../state/stateContext'
-import { searchMatches } from '../utils/misc/searchMatches'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''
@@ -57,20 +57,20 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                     <tr>
                         <th>
                             <div>name</div>
-                            <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
+                            <InputLegacy value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
                         </th>
                         <th>Found in...</th>
                         <th>
                             <div>input</div>
-                            <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
+                            <InputLegacy value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
                         </th>
                         <th>
                             <div>output</div>
-                            <Input value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
+                            <InputLegacy value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
                         </th>
                         <th>
                             <div>category</div>
-                            <Input value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
+                            <InputLegacy value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
                         </th>
                     </tr>
                 </thead>

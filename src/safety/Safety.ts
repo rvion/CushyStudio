@@ -1,9 +1,9 @@
 import type { STATE } from '../state/state'
 import type nsfwjs from 'nsfwjs'
 
-import { bang } from '../utils/misc/bang'
-import { exhaust } from '../utils/misc/exhaust'
-import { ManualPromise } from '../utils/misc/ManualPromise'
+import { bang } from '../csuite/utils/bang'
+import { exhaust } from '../csuite/utils/exhaust'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
 
 export type SafetyRating = nsfwjs.predictionType
 export type SafetyResult = {
@@ -22,16 +22,21 @@ export class SafetyChecker {
             const nsfwjsImpl = require('nsfwjs') as typeof import('nsfwjs')
             this.loaded = true
             this.model = nsfwjsImpl.load('/safety/')
-            this.model.then(() => console.log(`[🙈] model loaded`))
+            void this.model.then(() => console.log(`[🙈] model loaded`))
             //'https://labs.site.com/nsfwjs/example/nsfw_demo/public/quant_nsfw_mobilenet/')
         }
 
         const prev = this.promises.get(url)
         if (prev) return prev
 
+        // create a new manual promise
         const next = new ManualPromise<SafetyResult>()
+
+        // store it
         this.promises.set(url, next)
-        this.model?.then(async (model) => {
+
+        // schedule safety check when model will be loaded
+        void this.model?.then(async (model) => {
             // 1. get dom image and wait for it to be ready
             const img = await new Promise<HTMLImageElement>((yes, no) => {
                 const img = new Image()
@@ -57,6 +62,8 @@ export class SafetyChecker {
             })()
             next.resolve({ isSafe, prediction })
         })
+
+        // return the manual promise that will soon be resolved
         return next
     }
 }

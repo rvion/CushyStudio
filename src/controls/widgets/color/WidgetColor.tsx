@@ -1,7 +1,8 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
+import type { WidgetConfig } from '../../WidgetConfig'
+import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,10 +12,10 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Widget_color_config = WidgetConfigFields<{ default?: string }, Widget_color_types>
+export type Widget_color_config = WidgetConfig<{ default?: string }, Widget_color_types>
 
 // SERIAL
-export type Widget_color_serial = WidgetSerialFields<{
+export type Widget_color_serial = WidgetSerial<{
     type: 'color'
     /** color, stored as string */
     value: string
@@ -33,12 +34,11 @@ export type Widget_color_types = {
 }
 
 // STATE
-export interface Widget_color extends Widget_color_types {}
-export class Widget_color extends BaseWidget implements IWidget<Widget_color_types> {
+export class Widget_color extends BaseWidget<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
-    get config() { return this.spec.config } // prettier-ignore
+
     readonly type: 'color' = 'color'
 
     get baseErrors(): Problem_Ext {
@@ -46,7 +46,7 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
     }
 
     readonly defaultValue: string = this.config.default ?? '#000000'
-    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     serial: Widget_color_serial
@@ -54,13 +54,13 @@ export class Widget_color extends BaseWidget implements IWidget<Widget_color_typ
     constructor(
         //
         public readonly form: Form,
-        public readonly parent: IWidget | null,
+        public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_color>,
         serial?: Widget_color_serial,
     ) {
         super()
-        const config = spec.config
         this.id = serial?.id ?? nanoid()
+        const config = spec.config
         this.serial = serial ?? {
             type: 'color',
             collapsed: config.startCollapsed,

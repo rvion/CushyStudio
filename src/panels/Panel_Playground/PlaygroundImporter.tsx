@@ -3,8 +3,8 @@ import type { ComfyPromptJSON } from '../../types/ComfyPrompt'
 
 import { observer } from 'mobx-react-lite'
 
-import { CushyErrorBoundarySimpleUI } from '../../controls/shared/CushyErrorBoundarySimple'
 import { convertWorkflowToPrompt } from '../../core/litegraphToPrompt'
+import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 
@@ -15,16 +15,16 @@ export const PlaygroundImportFromComfy = observer(function PlaygroundImportFromC
     const promptJSON: ComfyPromptJSON = convertWorkflowToPrompt(cushy.schema, wflowJSON)
     const code = cushy.importer.convertPromptToCode(promptJSON, { autoUI: false, preserveId: false })
     return (
-        <CushyErrorBoundarySimpleUI>
+        <ErrorBoundaryUI>
             <h3>play with imports</h3>
             <div tw='font-bold'>
                 2024-03-26 rvion: trying to import stuff from https://github.com/MrForExample/ComfyUI-3D-Pack, got problems, so I
                 crated this playground panel to improve / fix import (below: library/built-in/3d/3d-app-1/3d1.workflow.json)
             </div>
-            <div tw='bg-base-300 h-full overflow-auto'>
+            <div tw='h-full overflow-auto'>
                 <TypescriptHighlightedCodeUI code={code} />
                 <JsonViewUI value={promptJSON} />
             </div>
-        </CushyErrorBoundarySimpleUI>
+        </ErrorBoundaryUI>
     )
 })

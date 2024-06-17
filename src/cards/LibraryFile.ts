@@ -10,12 +10,12 @@ import path, { basename, dirname } from 'pathe'
 
 import { createEsbuildContextFor } from '../compiler/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { exhaust } from '../csuite/utils/exhaust'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
+import { toastError } from '../csuite/utils/toasts'
 import { asCushyScriptID } from '../db/TYPES.gen'
 import { CushyScriptL } from '../models/CushyScript'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/exhaust'
-import { ManualPromise } from '../utils/misc/ManualPromise'
-import { toastError } from '../utils/misc/toasts'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { AppMetadata } from './AppManifest'
 
@@ -105,7 +105,7 @@ export class LibraryFile {
     get script(): Maybe<CushyScriptL> {
         if (this.lastSuccessfullExtractedScriptDuringSession) return this.lastSuccessfullExtractedScriptDuringSession
         if (this.scriptInDB) return this.scriptInDB
-        this.extractScriptFromFile()
+        void this.extractScriptFromFile()
         return null
     }
     /** load a file trying all compatible strategies */

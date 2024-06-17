@@ -1,4 +1,4 @@
-import type { CovariantFn } from './BivariantHack'
+import type { CovariantFn } from './utils/BivariantHack'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

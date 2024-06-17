@@ -1,9 +1,11 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
 import { HostL } from '../../models/Host'
-import { Toggle } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
@@ -16,19 +18,11 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const isMain = host.id === config.mainComfyHostID
     const disabled = host.data.isVirtual ? true : false
     return (
-        <div
-            tw={[
-                //
-                'virtualBorder',
-                'p-2 bg-base-200 w-96 shadow-xl',
-                isMain && 'bg-primary bg-opacity-30',
-            ]}
+        <Frame
+            base={{ contrast: 0.03, chroma: isMain ? 0.1 : undefined }}
+            border={10}
+            tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >
-            {/* {host.data.isReadonly ? (
-                <div tw='bg-secondary text-secondary-content p-0.5 opacity-50'>Readonly Host (Built-in)</div>
-            ) : (
-                <div tw='bg-base-100 p-0.5'>Custom Host</div>
-            )} */}
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
                 {host.data.isVirtual ? (
@@ -40,23 +34,17 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <div tw='flex join virtualBorder'>
-                    <div
-                        tw={[
-                            //
-                            isMain ? 'btn-success' : 'btn-info btn-outline',
-                            `btn btn-sm flex-grow font-bold`,
-                        ]}
-                        onClick={() => host.electAsPrimary()}
-                    >
+                <div tw='flex join gap-1'>
+                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()}>
                         Set Primary
                         {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
-                    </div>
-                    <div onClick={() => host.CONNECT()} tw='btn btn-sm btn-outline'>
+                    </Button>
+                    <Button look='ghost' onClick={() => host.CONNECT()}>
                         {host.isConnected ? 'Re-Connect' : 'Connect'}
-                    </div>
-                    <div
-                        tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
+                    </Button>
+                    <Button
+                        icon='mdiDelete'
+                        disabled={host.isReadonly}
                         onClick={() => {
                             if (host.isReadonly) return
                             runInAction(() => {
@@ -69,9 +57,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             //     if (index != null) config.comfyUIHosts?.splice(index, 1)
                             // })
                         }}
-                    >
-                        <span className='material-symbols-outlined'>delete_forever</span>
-                    </div>
+                    ></Button>
                 </div>
 
                 {/* <div tw='divider m-1'></div> */}
@@ -81,7 +67,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>name</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         onChange={(ev) => host.update({ name: ev.target.value })}
                         value={host.data.name ?? 'unnamed'}
                     ></input>
@@ -92,7 +78,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Host</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='cushy-basic-input w-full' //
                         onChange={(ev) => host.update({ hostname: ev.target.value })}
                         value={host.data.hostname ?? ''}
                     ></input>
@@ -103,7 +89,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Port</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='cushy-basic-input w-full' //
                         value={host.data.port ?? 8188}
                         onChange={(ev) => {
                             const next = ev.target.value
@@ -112,32 +98,24 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     ></input>
                 </div>
 
-                {/* HTTPS */}
-                <div tw='flex gap-2'>
-                    <Toggle //
-                        disabled={disabled}
-                        checked={host.data.useHttps ? true : false}
-                        onChange={(ev) => host.update({ useHttps: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        name='useHttps'
-                    />
-                    <LabelUI>use HTTPS</LabelUI>
-                </div>
+                <InputBoolUI // HTTPS
+                    disabled={disabled}
+                    value={host.data.useHttps ? true : false}
+                    onValueChange={(next) => host.update({ useHttps: next ? SQLITE_true : SQLITE_false })}
+                    text='use HTTPS'
+                />
+                <InputBoolUI // LOCAL PATH
+                    disabled={disabled}
+                    onValueChange={(next) => host.update({ isLocal: next ? SQLITE_true : SQLITE_false })}
+                    value={host.data.isLocal ? true : false}
+                    text='Is local'
+                />
 
-                {/* LOCAL PATH */}
-                <div tw='flex items-center gap-1'>
-                    <Toggle
-                        //
-                        disabled={disabled}
-                        onChange={(ev) => host.update({ isLocal: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        checked={host.data.isLocal ? true : false}
-                    />
-                    <LabelUI>is local</LabelUI>
-                </div>
                 <div tw='flex flex-col'>
                     <LabelUI>absolute path to ComfyUI install folder</LabelUI>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         type='string'
                         onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
                         value={host.data.absolutePathToComfyUI ?? ''}
@@ -146,7 +124,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div tw='flex flex-col'>
                     <LabelUI>Absolute path to model folder</LabelUI>
                     <input
-                        tw='input input-bordered input-sm w-full'
+                        tw='cushy-basic-input w-full'
                         type='string'
                         disabled={disabled}
                         onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}
@@ -157,15 +135,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div tw='flex'>
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
                 </div>
-                <div
-                    className='btn'
+                <Button
                     onClick={async () => {
                         const res = await host.manager.configureLogging(true)
                         console.log(`[🤠] res=`, res)
                     }}
                 >
-                    test
-                </div>
+                    Forward logs via manager
+                </Button>
             </div>
             {/* <div tw='divider m-1'></div> */}
             {/* <div tw='font-bold under'>Status</div> */}
@@ -178,6 +155,6 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div>isLoaded: {host.isConnected ? 'true' : 'false'}</div>
             </div> */}
             {/* STATUS */}
-        </div>
+        </Frame>
     )
 })

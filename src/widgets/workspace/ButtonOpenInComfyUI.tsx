@@ -2,7 +2,7 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../rsuite/shims'
+import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | ComfyWorkflowID }) {
@@ -16,20 +16,10 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
     return (
         <div tw='flex gap-2 items-center'>
             Open:
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInTab}
-            >
+            <Button icon='mdiOpenInNew' look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
                 open in ComfyUI Tab
             </Button>
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_full</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInFullScreen}
-            >
+            <Button icon='mdiFullscreen' look='ghost' size='sm' onClick={graph.menuAction_openInFullScreen}>
                 open in ComfyUI FULL
             </Button>
         </div>
