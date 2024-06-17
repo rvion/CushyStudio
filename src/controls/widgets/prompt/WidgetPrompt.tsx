@@ -12,6 +12,7 @@ import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
+import { PromptAST } from './grammar/grammar.practical'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
@@ -130,8 +131,13 @@ export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
     get text() {
         return this.serial.val ?? ''
     }
+
     // the parsed tree
-    get ast(): Tree {
+    get ast(): PromptAST {
+        return new PromptAST(this.text)
+    }
+
+    get ast_generic(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
     setValue(val: Widget_prompt_value) {
