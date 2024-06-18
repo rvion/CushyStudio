@@ -1,5 +1,5 @@
 import { CushyFormManager } from '../../controls/FormBuilder'
-import { ui_tint } from '../../csuite/kolor/prefab_Kolor'
+import { ui_tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const themeConf = CushyFormManager.form(

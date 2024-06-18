@@ -17,6 +17,7 @@ export class Kolor implements Tint {
             return new Kolor(0.5, 0.1, 0)
         }
     }
+
     constructor(
         /** 0 to 1 */
         public lightness: number,

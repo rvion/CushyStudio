@@ -2,7 +2,7 @@ import type { Widget_choices_config } from '../../controls/widgets/choices/Widge
 import type { FormBuilder } from '../../CUSHY'
 import type { Box } from './Box'
 
-import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Kolor'
+import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'
 
 export type UI_Box = X.XChoices<{
     base: UI_Tint
