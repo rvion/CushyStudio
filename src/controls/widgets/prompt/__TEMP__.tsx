@@ -1,8 +1,6 @@
-import type { Widget_prompt } from './WidgetPrompt'
-
 import { EditorState } from '@codemirror/state'
 import { basicSetup, EditorView } from 'codemirror'
-import { makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable, reaction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
@@ -13,6 +11,7 @@ import { SelectUI } from '../../../csuite/select/SelectUI'
 import { toastError } from '../../../csuite/utils/toasts'
 import { PromptLang } from './cm-lang/LANG'
 import { type Prompt_Lora, PromptAST } from './grammar/grammar.practical'
+import { Widget_prompt } from './WidgetPrompt'
 
 type X = { id: string; label?: string }
 
@@ -27,50 +26,55 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
     const uist = useMemo(
         () =>
             new (class {
-                _text = initialText
-                get text() {
-                    return this._text
+                // ------------------------------------------------------------------
+                /** local copy of the text value of the local codemirror */
+                internalText: string = ''
+
+                /** remote text value */
+                get linkedText() {
+                    return this.currentlyLinkedWidget?.text ?? ''
                 }
 
-                set text(v: string) {
-                    this._text = v
-                    if (this.currentlyLinkedWidget && this.sync) {
-                        this.currentlyLinkedWidget.text = v
-                    }
+                set linkedText(v: string) {
+                    if (this.currentlyLinkedWidget == null) return
+                    this.currentlyLinkedWidget.text = v
                 }
-                sync: boolean = true
-                mountRef = createRef<HTMLDivElement>()
-                editorView: Maybe<EditorView> = null
-                editorState: EditorState
-                get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
-                get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
-                get debugView() { return this.ast.toString() } // prettier-ignore
 
-                mount = (domNode: HTMLDivElement) => {
-                    domNode.innerHTML = ''
-                    let view = new EditorView({ state: this.editorState, parent: domNode })
-                    this.editorView = view
-                }
-                replaceTextBy = (nextText: string) => {
+                // ------------------------------------------------------------------
+                setInternalText = (nextText: string) => {
+                    if (this.internalText === nextText) return
                     this.editorView?.dispatch({
                         changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
                     })
                 }
-                get currentlyLinkedWidget() {
-                    return this._currentlyLinkedWidget
-                }
+
+                // ------------------------------------------------------------------
+                get currentlyLinkedWidget() { return this._currentlyLinkedWidget } // prettier-ignore
                 set currentlyLinkedWidget(v: Widget_prompt | undefined) {
                     if (v === this._currentlyLinkedWidget) return
                     if (v == null) return
 
                     this._currentlyLinkedWidget = v
-                    this.text = v.text ?? ''
-                    this.replaceTextBy(v.text ?? '')
+                    this.linkedText = v.text ?? ''
+                    this.setInternalText(v.text ?? '')
+                }
+
+                // ------------------------------------------------------------------
+                mountRef = createRef<HTMLDivElement>()
+                editorView: Maybe<EditorView> = null
+                editorState: EditorState
+                get ast(): PromptAST { return new PromptAST(this.linkedText, this.editorView) } // prettier-ignore
+                get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
+                get debugView() { return this.ast.toString() } // prettier-ignore
+                mount = (domNode: HTMLDivElement) => {
+                    domNode.innerHTML = ''
+                    let view = new EditorView({ state: this.editorState, parent: domNode })
+                    this.editorView = view
                 }
 
                 constructor(private _currentlyLinkedWidget?: Widget_prompt) {
                     this.editorState = EditorState.create({
-                        doc: this.text,
+                        doc: this.linkedText,
                         extensions: [
                             //
                             EditorView.updateListener.of((ev) => {
@@ -78,7 +82,8 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                                 // const tree = syntaxTree(ev.state)
                                 if (ev.docChanged) {
                                     const nextText = ev.state.doc.toString()
-                                    this.text = nextText
+                                    this.internalText = nextText
+                                    this.linkedText = nextText
                                 }
                             }),
                             basicSetup,
@@ -87,8 +92,13 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                     })
                     // add a 'ok' at the end though a dispatch action
                     this.editorState.update({
-                        changes: { from: this.text.length, to: this.text.length, insert: 'ok' },
+                        changes: { from: this.linkedText.length, to: this.linkedText.length, insert: 'ok' },
                     })
+
+                    reaction(
+                        () => this.linkedText,
+                        (newText) => this.setInternalText(newText),
+                    )
                     makeAutoObservable(this, {
                         editorView: observable.ref,
                         editorState: observable.ref,
@@ -107,14 +117,6 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
     return (
         <div tw='p-2 flex flex-col gap-1'>
             <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI>
-            <InputBoolToggleButtonUI //
-                showToggleButtonBox
-                mode='checkbox'
-                text={'sync'}
-                value={uist.sync}
-                onValueChange={() => (uist.sync = !uist.sync)}
-            />
-
             <div className='flex flex-wrap'>
                 {cushy.forms.getWidgetsByType<Widget_prompt>('prompt').map((widget) => (
                     <InputBoolToggleButtonUI //
@@ -125,8 +127,14 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                     />
                 ))}
             </div>
+            <textarea
+                onChange={(e) => uist.setInternalText(e.target.value)}
+                tw='basic-cushy-input bg-white'
+                value={uist.linkedText}
+            />
+
             <div ref={uist.mountRef}></div>
-            <Button onClick={() => uist.replaceTextBy(uist.text + '!')}>add "!"</Button>
+            <Button onClick={() => uist.setInternalText(uist.linkedText + '!')}>add "!"</Button>
             <SelectUI<X>
                 value={() => ({ id: p.promptID, label: 'current' })}
                 getLabelText={(i) => i.label ?? i.id}
@@ -134,15 +142,14 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                     const nextWidget = cushy.forms.getWidgetByID(i.id) as Widget_prompt
                     if (!nextWidget) return toastError('widget not found')
                     if (nextWidget.type !== 'prompt') return toastError('widget is not a prompt')
-                    uist._text = nextWidget.text
-                    uist.replaceTextBy(nextWidget.text)
                     uist.currentlyLinkedWidget = nextWidget
-
+                    // uist._text = nextWidget.text
+                    // uist.replaceTextBy(nextWidget.text)
                     // cushy.layout.addCustomV2(PromptEditorUI, { promptID: i.id })
                 }}
                 options={(): X[] => {
-                    const allPrompts = cushy.forms.getWidgetsByType('prompt')
-                    return allPrompts.map((i) => ({ id: i.id, label: i.id }))
+                    const allPrompts = cushy.forms.getWidgetsByType<Widget_prompt>('prompt')
+                    return allPrompts.map((i) => ({ id: i.id, label: i.text ?? '' }))
                 }}
             />
         </div>
