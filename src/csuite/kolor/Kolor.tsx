@@ -3,6 +3,8 @@ import type { Tint } from './Tint'
 // bad lib; todo: rewrite it
 import Color from 'colorjs.io'
 
+import { clamp } from '../../controls/utils/clamp'
+
 export class Kolor implements Tint {
     static fromString = (str: string): Kolor => {
         try {
@@ -24,6 +26,13 @@ export class Kolor implements Tint {
         /** 0 to 1 */
         public opacity = 1,
     ) {}
+
+    formatOKLCH = (): string => {
+        const l = clamp(this.lightness, 0.0001, 0.9999).toFixed(3)
+        const c = this.chroma.toFixed(3)
+        const h = this.hue.toFixed(3)
+        return `oklch(${l} ${c} ${h})`
+    }
 
     /** true if strictly same values */
     isSame = (b: Kolor): boolean => {

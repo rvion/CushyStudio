@@ -3,7 +3,6 @@ import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
 
-import { formatOKLCH } from '../kolor/formatOKLCH'
 import { Kolor } from '../kolor/Kolor'
 
 export class CSuite_ThemeLoco implements CSuiteConfig {
@@ -19,7 +18,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
     get baseStr() {
-        return formatOKLCH(this.base)
+        return this.base.formatOKLCH()
     }
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1
