@@ -103,16 +103,10 @@ export const Frame = observer(
         // | + look
 
         const template = look != null ? frameTemplates[look] : undefined
-        let KBase: Kolor = prevCtx.base.tint(
-            overrideTintV2(
-                //
-                template?.base,
-                box.base,
-                disabled && { lightness: prevCtx.base.lightness },
-            ),
-        )
+        const baseTint = overrideTintV2(template?.base, box.base, disabled && { lightness: prevCtx.base.lightness })
+        let KBase: Kolor = prevCtx.base.tintBg(baseTint)
         if (hovered && !disabled && box.hover) {
-            KBase = KBase.tint(box.hover)
+            KBase = KBase.tintBg(box.hover)
         }
 
         // ===================================================================
@@ -137,27 +131,26 @@ export const Frame = observer(
 
         // ===================================================================
         // DIR
-        const nextLightness = KBase.lightness
-        const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
-        const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
+        const _goingTooDark = prevCtx.dir === 1 && KBase.lightness > 0.7
+        const _goingTooLight = prevCtx.dir === -1 && KBase.lightness < 0.45
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // BACKGROUND
         if (!prevCtx.base.isSame(KBase)) variables['--KLR'] = KBase.toOKLCH()
-        if (box.shock) variables.background = KBase.tint(box.shock).toOKLCH()
+        if (box.shock) variables.background = KBase.tintBg(box.shock).toOKLCH()
         else variables.background = KBase.toOKLCH()
 
         // TEXT
         const nextext = overrideTint(prevCtx.text, box.text)!
         const boxText = box.text ?? prevCtx.text
-        if (boxText != null) variables.color = KBase.tint(boxText).toOKLCH()
+        if (boxText != null) variables.color = KBase.tintFg(boxText).toOKLCH()
 
         // TEXT-SHADOW
-        if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tint(box.textShadow).toOKLCH()}`
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
         // BORDER
-        if (box.border) variables.border = `1px solid ${KBase.tint(box.border).toOKLCH()}`
+        if (box.border) variables.border = `1px solid ${KBase.tintFg(box.border).toOKLCH()}`
 
         // ===================================================================
         let _onMouseOver: any = undefined

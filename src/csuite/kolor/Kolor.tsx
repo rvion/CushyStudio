@@ -1,10 +1,15 @@
 import type { Tint } from './Tint'
+import type { Oklch } from 'culori'
 
 // bad lib; todo: rewrite it
 import Color from 'colorjs.io'
+// @ts-ignore 🔴
+import { inGamut } from 'culori'
 
 import { clamp } from '../../controls/utils/clamp'
 import { getNum } from '../tinyCSS/CSSVar'
+
+export type ColorSpace = 'p3' | 'rgb' | 'srgb'
 
 export class Kolor implements Tint {
     static fromString = (str: string): Kolor => {
@@ -17,6 +22,14 @@ export class Kolor implements Tint {
             return new Kolor(0.5, 0.1, 0)
         }
     }
+
+    get culoriColor(): Oklch {
+        return { mode: 'oklch', l: this.lightness, c: this.chroma, h: this.hue }
+    }
+
+    get isInRBGGamut():     boolean { return inGamut('rgb')(this.culoriColor) } // prettier-ignore
+    get isInP3Gamut():      boolean { return inGamut('p3')(this.culoriColor) } // prettier-ignore
+    get isInRec2020Gamut(): boolean { return inGamut('rec2020')(this.culoriColor) } // prettier-ignore
 
     constructor(
         /** 0 to 1 */
@@ -44,14 +57,31 @@ export class Kolor implements Tint {
         return true
     }
 
-    tint = (b?: Maybe<Tint>): Kolor => {
+
+    tintBg = (b: Maybe<Tint>): Kolor => this.tint(b, 'Bg')
+    tintFg = (b: Maybe<Tint>): Kolor => this.tint(b, 'Fg')
+    tint = (b: Maybe<Tint>, usage: 'Fg' | 'Bg'): Kolor => {
         if (b == null) return this
-        const lightness = getNum(b.lightness) ?? this._autoContrast(this.lightness, getNum(b.contrast, 0))
-        const chroma = getNum(b.chroma) ?? this.chroma * getNum(b.chromaBlend, 1)
-        const hue = getNum(b.hue) ?? this.hue + getNum(b.hueShift, 0)
-        return new Kolor(lightness, clamp(chroma, 0, 0.4), hue)
+
+        const chroma =
+            getNum(b.chroma) ?? //
+            this.chroma * getNum(b.chromaBlend, 1)
+
+        const hue =
+            getNum(b.hue) ?? //
+            this.hue + getNum(b.hueShift, 0)
+
+        const lightness =
+            getNum(b.lightness) ?? //
+            this._autoContrast(this.lightness, getNum(b.contrast, 0))
+
+        const next = new Kolor(lightness, clamp(chroma, 0, 0.4), hue)
+        return next
     }
 
+    get webLink() {
+        return `https://oklch.com/#${(this.lightness * 100).toFixed(2)},${this.chroma.toFixed(3)},${this.hue.toFixed(3)},100`
+    }
     /*
      * 🔴 WAY TOO NAIVE => rewrite later
      * This slightly favors using the darker color by adding a small
