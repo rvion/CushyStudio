@@ -1,6 +1,6 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
-import type { Kolor } from '../kolor/OKLCH'
+import type { Kolor } from '../kolor/Kolor'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 

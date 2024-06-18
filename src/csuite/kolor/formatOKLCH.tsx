@@ -1,4 +1,4 @@
-import type { Kolor } from './OKLCH'
+import type { Kolor } from './Kolor'
 
 import { clamp } from '../../controls/utils/clamp'
 

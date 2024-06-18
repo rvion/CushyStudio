@@ -1,4 +1,4 @@
-import type { Kolor } from '../kolor/OKLCH'
+import type { Kolor } from '../kolor/Kolor'
 import type { Tint } from '../kolor/Tint'
 
 import { NumberVar } from '../tinyCSS/CSSVar'

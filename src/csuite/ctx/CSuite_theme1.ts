@@ -1,6 +1,6 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
-import { Kolor } from '../kolor/OKLCH'
+import { Kolor } from '../kolor/Kolor'
 import { NumberVar } from '../tinyCSS/CSSVar'
 
 /**

@@ -1,11 +1,10 @@
 import type { STATE } from '../../state/state'
-import type { Kolor } from '../kolor/OKLCH'
 import type { Tint } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
 
-import { getLCHFromString } from '../kolor/getLCHFromString'
+import { Kolor } from '../kolor/Kolor'
 import { run_tint } from '../kolor/prefab_Kolor'
 import { NumberVar } from '../tinyCSS/CSSVar'
 
@@ -40,7 +39,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.theme.root.value.base
     }
     get base(): Kolor {
-        return getLCHFromString(this.baseStr)
+        return Kolor.fromString(this.baseStr)
     }
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1

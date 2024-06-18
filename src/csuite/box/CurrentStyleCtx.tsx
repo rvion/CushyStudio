@@ -2,7 +2,7 @@ import type { Tint } from '../kolor/Tint'
 
 import { createContext } from 'react'
 
-import { Kolor } from '../kolor/OKLCH'
+import { Kolor } from '../kolor/Kolor'
 
 /** the react-side theming context that travels with every widget,
  * so we always know the surrounding lightness / chroma / hue.

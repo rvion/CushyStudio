@@ -2,7 +2,7 @@ import type { Tint } from '../kolor/Tint'
 import type { Box } from './Box'
 
 import { clamp } from '../../controls/utils/clamp'
-import { getLCHFromString } from '../kolor/getLCHFromString'
+import { Kolor } from '../kolor/Kolor'
 
 export type BoxNormalized = {
     base?: Tint //       BASE              (relative to its parent's BASE)
@@ -32,6 +32,6 @@ function _normalizeTint(
 ): Tint {
     if (typeof tint === 'boolean') return { contrast: tint ? /* 0.2 */ 0.03 : 0 }
     if (typeof tint === 'number') return { contrast: clamp(tint / 100, 0, 1) }
-    if (typeof tint === 'string') return getLCHFromString(tint)
+    if (typeof tint === 'string') return Kolor.fromString(tint)
     return tint
 }

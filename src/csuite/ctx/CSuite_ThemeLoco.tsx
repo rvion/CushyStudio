@@ -4,7 +4,7 @@ import type { CSuiteConfig } from './CSuiteConfig'
 import { makeAutoObservable } from 'mobx'
 
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { Kolor } from '../kolor/OKLCH'
+import { Kolor } from '../kolor/Kolor'
 
 export class CSuite_ThemeLoco implements CSuiteConfig {
     constructor() {
