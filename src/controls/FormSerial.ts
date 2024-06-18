@@ -6,6 +6,7 @@ export type AnyWidgetSerial = WidgetSerial_CommonProperties /* {} */
 /** a form serial ready to be persisted somewhere */
 export type FormSerial = {
     type: 'FormSerial'
+    uid: string
     name: string
     root: AnyWidgetSerial
     shared: Record<string, AnyWidgetSerial>

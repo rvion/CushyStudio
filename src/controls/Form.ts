@@ -35,8 +35,6 @@ export class Form<
      * */
     BUILDER extends IFormBuilder = IFormBuilder,
 > {
-    uid = nanoid()
-
     constructor(
         public manager: FormManager<BUILDER>,
         public ui: CovariantFn<BUILDER, ROOT>,
@@ -89,6 +87,7 @@ export class Form<
     get serial(): FormSerial {
         return {
             type: 'FormSerial',
+            uid: this.uid,
             name: this.formConfig.name,
             root: this.root.serial,
             shared: this.shared,
@@ -158,12 +157,22 @@ export class Form<
     _ROOT!: ROOT['$Widget']
 
     ready = false
+
+    /** only available once initialized */
+    private _uid!: Maybe<string>
+    get uid(): string {
+        if (this._uid == null) throw new Error('🔴 uid not available before form is initialized')
+        return this._uid
+    }
+
     init = (): ROOT => {
         console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
 
         try {
             let formSerial = this.formConfig.initialSerial?.()
+            this._uid = formSerial?.uid ?? nanoid()
+
             // ensure form serial is observable, so we avoid working with soon to expire refs
             if (formSerial && !isObservable(formSerial)) formSerial = observable(formSerial)
 
@@ -190,6 +199,7 @@ export class Form<
                 }
                 formSerial = {
                     name: this.formConfig.name,
+                    uid: nanoid(),
                     type: 'FormSerial',
                     root: formSerial,
                     shared: oldsharedSerial,
