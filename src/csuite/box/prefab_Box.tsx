@@ -2,14 +2,14 @@ import type { Widget_choices_config } from '../../controls/widgets/choices/Widge
 import type { FormBuilder } from '../../CUSHY'
 import type { Box } from './Box'
 
-import { run_Kolor, ui_Kolor, type UI_Kolor } from '../kolor/prefab_Kolor'
+import { run_Kolor, ui_tint, type UI_Tint } from '../kolor/prefab_Kolor'
 
 export type UI_Box = X.XChoices<{
-    base: UI_Kolor
-    text: UI_Kolor
-    textShadow: UI_Kolor
-    shadow: UI_Kolor
-    border: UI_Kolor
+    base: UI_Tint
+    text: UI_Tint
+    textShadow: UI_Tint
+    shadow: UI_Tint
+    border: UI_Tint
     hover: X.XBool
 }>
 
@@ -20,13 +20,13 @@ export const ui_Box = (
 ): UI_Box => {
     return ui.choicesV2(
         {
-            base: ui_Kolor(ui),
+            base: ui_tint(ui),
             // text stuff
-            text: ui_Kolor(ui),
-            textShadow: ui_Kolor(ui),
+            text: ui_tint(ui),
+            textShadow: ui_tint(ui),
             // border stuff
-            shadow: ui_Kolor(ui),
-            border: ui_Kolor(ui),
+            shadow: ui_tint(ui),
+            border: ui_tint(ui),
             // interraction effect
             hover: ui.boolean(),
         },

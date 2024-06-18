@@ -3,7 +3,7 @@ import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
 import type { FormSerial } from '../controls/FormSerial'
-import type { Kolor } from '../csuite/kolor/Kolor'
+import type { Tint } from '../csuite/kolor/Tint'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
@@ -940,7 +940,7 @@ export class STATE {
     theme = themeConf
     csuite = new CSuite_ThemeCushy(this)
 
-    get themeText(): Kolor {
+    get themeText(): Tint {
         return run_Kolor(this.theme.value.text)
     }
 }

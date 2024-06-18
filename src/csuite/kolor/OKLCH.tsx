@@ -1,15 +1,21 @@
-export type OKLCH = {
-    /** 0 to 1 */
-    lightness: number
-    /** 0 to 1 */
-    chroma: number
-    /** 0 to 360 or -180 to 180 */
-    hue: number
-}
+export class OKLCH {
+    // lightness: number
+    // chroma: number
+    // hue: number
+    constructor(
+        /** 0 to 1 */
+        public lightness: number,
+        /** 0 to 1 */
+        public chroma: number,
+        /** 0 to 360 or -180 to 180 */
+        public hue: number,
+    ) {}
 
-export const isSameOKLCH = (a: OKLCH, b: OKLCH) => {
-    if (a.lightness !== b.lightness) return false
-    if (a.chroma !== b.chroma) return false
-    if (a.hue !== b.hue) return false
-    return true
+    /** true if strictly same values */
+    isSameOKLCH = (b: OKLCH): boolean => {
+        if (this.lightness !== b.lightness) return false
+        if (this.chroma !== b.chroma) return false
+        if (this.hue !== b.hue) return false
+        return true
+    }
 }

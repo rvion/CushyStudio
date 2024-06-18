@@ -1,5 +1,5 @@
 import type { IconName } from '../csuite/icons/icons'
-import type { KolorExt } from '../csuite/kolor/Kolor'
+import type { TintExt } from '../csuite/kolor/Tint'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { $WidgetTypes } from './$WidgetTypes'
 import type { Channel, ChannelId } from './Channel'
@@ -283,12 +283,12 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         return true
     }
 
-    get background(): KolorExt | undefined {
+    get background(): TintExt | undefined {
         return this.config.background
     }
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
-    get border(): KolorExt {
+    get border(): TintExt {
         // avoif borders for the top level form
         if (this.parent == null) return false
         // if (this.parent.subWidgets.length === 0) return false

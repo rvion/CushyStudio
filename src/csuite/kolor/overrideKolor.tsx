@@ -1,4 +1,4 @@
-import type { Kolor } from './Kolor'
+import type { Tint } from './Tint'
 
 /**
  * This function aims to "merge" two Kolor objects by
@@ -10,14 +10,14 @@ import type { Kolor } from './Kolor'
  */
 export const overrideKolor = (
     //
-    a: Maybe<Kolor>,
-    b: Maybe<Kolor>,
-): Kolor => {
+    a: Maybe<Tint>,
+    b: Maybe<Tint>,
+): Tint => {
     if (a == null && b == null) return {}
     if (a == null) return b!
     if (b == null) return a
 
-    const out: Kolor = {}
+    const out: Tint = {}
     /**/ if (b.lightness != null) out.lightness = b.lightness
     else if (b.contrast != null) out.contrast = b.contrast
     else if (a.lightness != null) out.lightness = a.lightness

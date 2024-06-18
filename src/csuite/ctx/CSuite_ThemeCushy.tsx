@@ -1,6 +1,6 @@
 import type { STATE } from '../../state/state'
-import type { Kolor } from '../kolor/Kolor'
 import type { OKLCH } from '../kolor/OKLCH'
+import type { Tint } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
@@ -45,7 +45,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1
     }
-    get text(): Kolor {
+    get text(): Tint {
         return run_Kolor(this.st.theme.value.text)
     }
 
@@ -55,7 +55,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         () => (this.st.theme.value.border ?? 20) / 100,
     )
 
-    get labelText(): Kolor | undefined {
+    get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel
         if (raw == null) return undefined
         return run_Kolor(raw)

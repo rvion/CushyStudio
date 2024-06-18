@@ -1,5 +1,5 @@
-import type { Kolor } from '../kolor/Kolor'
 import type { OKLCH } from '../kolor/OKLCH'
+import type { Tint } from '../kolor/Tint'
 
 import { NumberVar } from '../tinyCSS/CSSVar'
 
@@ -29,9 +29,9 @@ export interface CSuiteConfig {
     // base colors
     base: OKLCH
     baseStr: string
-    text: Kolor
+    text: Tint
     // misc:
-    labelText?: Kolor
+    labelText?: Tint
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
     shiftDirection?: 1 | -1
 }

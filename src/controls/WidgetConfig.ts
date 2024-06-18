@@ -1,6 +1,6 @@
 import type { Box } from '../csuite/box/Box'
 import type { IconName } from '../csuite/icons/icons'
-import type { KolorExt } from '../csuite/kolor/Kolor'
+import type { TintExt } from '../csuite/kolor/Tint'
 import type { $WidgetTypes } from './$WidgetTypes'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { Problem_Ext } from './Validation'
@@ -104,10 +104,10 @@ export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
     collapsed?: false
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
-    border?: KolorExt
+    border?: TintExt
 
     /** frame background used in the widget with label */
-    background?: KolorExt
+    background?: TintExt
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
     justifyLabel?: boolean

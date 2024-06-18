@@ -1,7 +1,7 @@
 import type { NumberVar } from '../tinyCSS/CSSVar'
 
 // prettier-ignore
-export type Kolor = {
+export type Tint = {
     /**
      * -1 to 1
      * eg. 0 for background from parent bg
@@ -28,7 +28,7 @@ export type Kolor = {
 }
 
 // prettier-ignore
-export type KolorExt =
+export type TintExt =
     /** absolute color */
     | string
 
@@ -39,29 +39,4 @@ export type KolorExt =
     | boolean
 
     /** extended color where every prop can ben a CSSVars */
-    |  Kolor
-// {
-//     /**
-//      * -1 to 1
-//      * eg. 0 for background from parent bg
-//      * eg. 1 for text to it's background
-//      * */
-//     contrast?:     number | CSSVar
-//     lightness?:    number | CSSVar
-
-//     /**
-//      * 0 to 1
-//      * multiplier for chroma (saturation)
-//      * how much colorfulness to retain from the background
-//      */
-//     chromaBlend?:  number | CSSVar
-//     chroma?:       number | CSSVar
-
-//     /** 0 to 360 */
-//     hueShift?:     number | CSSVar
-//     hue?:          number | CSSVar
-
-//     /** TBD */
-//     opacity?:      number | CSSVar
-//     opacityBlend?: number | CSSVar
-// }
+    |  Tint

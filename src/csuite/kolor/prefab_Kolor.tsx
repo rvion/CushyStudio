@@ -1,10 +1,10 @@
-import type { Kolor } from './Kolor'
+import type { Tint } from './Tint'
 
 import { Fragment } from 'react/jsx-runtime'
 
 import { getNum } from '../tinyCSS/CSSVar'
 
-export type UI_Kolor = X.XChoices<{
+export type UI_Tint = X.XChoices<{
     l: X.XChoice<{
         lightness: X.XNumber
         contrast: X.XNumber
@@ -19,11 +19,11 @@ export type UI_Kolor = X.XChoices<{
     }>
 }>
 
-export const ui_Kolor = (
+export const ui_tint = (
     //
     ui: X.FormBuilder,
-    def?: Kolor,
-): UI_Kolor => {
+    def?: Tint,
+): UI_Tint => {
     return ui.choicesV2(
         {
             l: ui.choiceV2(
@@ -196,7 +196,7 @@ export const ui_Kolor = (
     )
 }
 
-export const run_Kolor = (ui: ReturnType<typeof ui_Kolor>['$Value']): Kolor => {
+export const run_Kolor = (ui: ReturnType<typeof ui_tint>['$Value']): Tint => {
     return {
         // l
         lightness: ui.l?.lightness,

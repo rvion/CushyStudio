@@ -1,16 +1,6 @@
-// HIGH LEVEL THEME-DEFINED BOX STYLES
-// everything is boxes,
-// but lot of boxes have similar styles
-// and lot of behaviours (beeing pressed, beeing active)
-// need to slightly ajust those styles
-// frame offer a semantic vocabulary to define look and feel of
-// any surface at a higher level than the Box API.
-// you can always specify BOX api directly if you need more control
-// the frame will merge the low level api on top of the compiled style from
-// the high level api
-
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
+import type { OKLCH } from '../kolor/OKLCH'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
@@ -23,13 +13,9 @@ import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { applyKolorToOKLCH } from '../kolor/applyRelative'
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { isSameOKLCH, type OKLCH } from '../kolor/OKLCH'
 import { overrideKolor } from '../kolor/overrideKolor'
 import { overrideKolorsV2 } from '../kolor/overrideKolorsV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
-// import { hashKolor } from '../box/compileBoxClassName'
-// import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
-// import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { frameTemplates } from './FrameTemplates'
 
 export type FrameProps = {
@@ -161,7 +147,7 @@ export const Frame = observer(
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // BACKGROUND
-        if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
+        if (!prevCtx.base.isSameOKLCH(KBase)) variables['--KLR'] = formatOKLCH(KBase)
         if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(KBase, box.shock))
         else variables.background = formatOKLCH(KBase)
 

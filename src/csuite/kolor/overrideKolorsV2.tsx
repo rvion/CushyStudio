@@ -1,35 +1,32 @@
-import type { Kolor } from './Kolor'
+import type { Tint } from './Tint'
 
-export const overrideKolorsV2 = (
-    ...kolors: Maybe<Kolor | boolean>[]
-) => {
-
-    const out: Kolor = {}
-    for (const kolor of kolors) {
-        if (typeof kolor === 'boolean') continue
-        if (kolor == null) continue
+export const overrideKolorsV2 = (...tints: Maybe<Tint | boolean>[]) => {
+    const out: Tint = {}
+    for (const tint of tints) {
+        if (typeof tint === 'boolean') continue
+        if (tint == null) continue
         // L
-        if (kolor.lightness != null) {
-            out.lightness = kolor.lightness
+        if (tint.lightness != null) {
+            out.lightness = tint.lightness
             delete out.contrast
-        } else if (kolor.contrast != null) {
-            out.contrast = kolor.contrast
+        } else if (tint.contrast != null) {
+            out.contrast = tint.contrast
             delete out.lightness
         }
         // C
-        if (kolor.chroma != null) {
-            out.chroma = kolor.chroma
+        if (tint.chroma != null) {
+            out.chroma = tint.chroma
             delete out.chromaBlend
-        } else if (kolor.chromaBlend != null) {
-            out.chromaBlend = kolor.chromaBlend
+        } else if (tint.chromaBlend != null) {
+            out.chromaBlend = tint.chromaBlend
             delete out.chroma
         }
         // H
-        if (kolor.hue != null) {
-            out.hue = kolor.hue
+        if (tint.hue != null) {
+            out.hue = tint.hue
             delete out.hueShift
-        } else if (kolor.hueShift != null) {
-            out.hueShift = kolor.hueShift
+        } else if (tint.hueShift != null) {
+            out.hueShift = tint.hueShift
             delete out.hue
         }
     }

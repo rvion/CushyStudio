@@ -1,17 +1,17 @@
-import type { Kolor } from '../kolor/Kolor'
+import type { Tint } from '../kolor/Tint'
 import type { Box } from './Box'
 
 import { clamp } from '../../controls/utils/clamp'
 import { getLCHFromString } from '../kolor/getLCHFromString'
 
 export type BoxNormalized = {
-    base?: Kolor //       BASE              (relative to its parent's BASE)
-    hover?: Kolor //      BASE when hovered (relative to its parent's BASE)
-    text?: Kolor //       relative to BASE
-    shock?: Kolor //      relative to BASE
-    border?: Kolor //     relative to BASE
-    textShadow?: Kolor // relative to BASE
-    shadow?: Kolor //     relative to BASE
+    base?: Tint //       BASE              (relative to its parent's BASE)
+    hover?: Tint //      BASE when hovered (relative to its parent's BASE)
+    text?: Tint //       relative to BASE
+    shock?: Tint //      relative to BASE
+    border?: Tint //     relative to BASE
+    textShadow?: Tint // relative to BASE
+    shadow?: Tint //     relative to BASE
 }
 
 export function normalizeBox(box: Box): BoxNormalized {
@@ -28,8 +28,8 @@ export function normalizeBox(box: Box): BoxNormalized {
 
 function _normalizeKolor(
     //
-    kolor: Kolor | string | number | boolean,
-): Kolor {
+    kolor: Tint | string | number | boolean,
+): Tint {
     if (typeof kolor === 'boolean') return { contrast: kolor ? /* 0.2 */ 0.03 : 0 }
     if (typeof kolor === 'number') return { contrast: clamp(kolor / 100, 0, 1) }
     if (typeof kolor === 'string') return getLCHFromString(kolor)

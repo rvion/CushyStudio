@@ -1,16 +1,16 @@
-import type { Kolor } from './Kolor'
-import type { OKLCH } from './OKLCH'
+import type { Tint } from './Tint'
 
 import { clamp } from '../../controls/utils/clamp'
 import { getNum } from '../tinyCSS/CSSVar'
+import { OKLCH } from './OKLCH'
 
 // prettier-ignore
-export const applyKolorToOKLCH = (a: OKLCH, b?: Maybe<Kolor>): OKLCH => {
+export const applyKolorToOKLCH = (a: OKLCH, b?: Maybe<Tint>): OKLCH => {
     if (b == null) return a
     const lightness = getNum(b.lightness) ?? _autoContrast(a.lightness, getNum(b.contrast, 0))
     const chroma    = getNum(b.chroma)    ?? a.chroma * getNum(b.chromaBlend, 1)
     const hue       = getNum(b.hue)       ?? a.hue    + getNum(b.hueShift, 0)
-    return { lightness: lightness, chroma: clamp(chroma, 0, 0.4), hue: hue }
+    return new OKLCH( lightness,  clamp(chroma, 0, 0.4), hue)
 }
 
 /*
