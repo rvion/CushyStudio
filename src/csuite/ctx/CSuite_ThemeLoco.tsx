@@ -18,7 +18,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
     get baseStr() {
-        return this.base.formatOKLCH()
+        return this.base.toOKLCH()
     }
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1

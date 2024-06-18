@@ -11,7 +11,6 @@ import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
-import { applyTintToOKLCH } from '../kolor/applyRelative'
 import { overrideTint } from '../kolor/overrideTint'
 import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
@@ -104,8 +103,7 @@ export const Frame = observer(
         // | + look
 
         const template = look != null ? frameTemplates[look] : undefined
-        let KBase: Kolor = applyTintToOKLCH(
-            prevCtx.base,
+        let KBase: Kolor = prevCtx.base.tint(
             overrideTintV2(
                 //
                 template?.base,
@@ -114,7 +112,7 @@ export const Frame = observer(
             ),
         )
         if (hovered && !disabled && box.hover) {
-            KBase = applyTintToOKLCH(KBase, box.hover)
+            KBase = KBase.tint(box.hover)
         }
 
         // ===================================================================
@@ -146,20 +144,20 @@ export const Frame = observer(
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // BACKGROUND
-        if (!prevCtx.base.isSame(KBase)) variables['--KLR'] = KBase.formatOKLCH()
-        if (box.shock) variables.background = applyTintToOKLCH(KBase, box.shock).formatOKLCH()
-        else variables.background = KBase.formatOKLCH()
+        if (!prevCtx.base.isSame(KBase)) variables['--KLR'] = KBase.toOKLCH()
+        if (box.shock) variables.background = KBase.tint(box.shock).toOKLCH()
+        else variables.background = KBase.toOKLCH()
 
         // TEXT
         const nextext = overrideTint(prevCtx.text, box.text)!
         const boxText = box.text ?? prevCtx.text
-        if (boxText != null) variables.color = applyTintToOKLCH(KBase, boxText).formatOKLCH()
+        if (boxText != null) variables.color = KBase.tint(boxText).toOKLCH()
 
         // TEXT-SHADOW
-        if (box.textShadow) variables.textShadow = `0px 0px 2px ${applyTintToOKLCH(KBase, box.textShadow).formatOKLCH()}`
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tint(box.textShadow).toOKLCH()}`
 
         // BORDER
-        if (box.border) variables.border = `1px solid ${applyTintToOKLCH(KBase, box.border).formatOKLCH()}`
+        if (box.border) variables.border = `1px solid ${KBase.tint(box.border).toOKLCH()}`
 
         // ===================================================================
         let _onMouseOver: any = undefined

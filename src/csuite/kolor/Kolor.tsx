@@ -4,6 +4,7 @@ import type { Tint } from './Tint'
 import Color from 'colorjs.io'
 
 import { clamp } from '../../controls/utils/clamp'
+import { getNum } from '../tinyCSS/CSSVar'
 
 export class Kolor implements Tint {
     static fromString = (str: string): Kolor => {
@@ -27,7 +28,7 @@ export class Kolor implements Tint {
         public opacity = 1,
     ) {}
 
-    formatOKLCH = (): string => {
+    toOKLCH = (): string => {
         const l = clamp(this.lightness, 0.0001, 0.9999).toFixed(3)
         const c = this.chroma.toFixed(3)
         const h = this.hue.toFixed(3)
@@ -40,5 +41,25 @@ export class Kolor implements Tint {
         if (this.chroma !== b.chroma) return false
         if (this.hue !== b.hue) return false
         return true
+    }
+
+    tint = (b?: Maybe<Tint>): Kolor => {
+        if (b == null) return this
+        const lightness = getNum(b.lightness) ?? this._autoContrast(this.lightness, getNum(b.contrast, 0))
+        const chroma = getNum(b.chroma) ?? this.chroma * getNum(b.chromaBlend, 1)
+        const hue = getNum(b.hue) ?? this.hue + getNum(b.hueShift, 0)
+        return new Kolor(lightness, clamp(chroma, 0, 0.4), hue)
+    }
+
+    /*
+     * 🔴 WAY TOO NAIVE => rewrite later
+     * This slightly favors using the darker color by adding a small
+     * float to ensure we always have -1/1 from Math.sign
+     */
+    private _autoContrast(lightness: number, contrast: number): number {
+        const start = lightness
+        const dir = Math.sign(0.5 - lightness - 0.00001)
+        const final = start + dir * contrast
+        return clamp(final, 0, 1)
     }
 }
