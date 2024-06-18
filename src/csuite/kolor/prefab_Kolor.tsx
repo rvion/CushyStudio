@@ -196,7 +196,7 @@ export const ui_tint = (
     )
 }
 
-export const run_Kolor = (ui: ReturnType<typeof ui_tint>['$Value']): Tint => {
+export const run_tint = (ui: ReturnType<typeof ui_tint>['$Value']): Tint => {
     return {
         // l
         lightness: ui.l?.lightness,

@@ -1,12 +1,12 @@
 import type { STATE } from '../../state/state'
-import type { OKLCH } from '../kolor/OKLCH'
+import type { Kolor } from '../kolor/OKLCH'
 import type { Tint } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
 
 import { getLCHFromString } from '../kolor/getLCHFromString'
-import { run_Kolor } from '../kolor/prefab_Kolor'
+import { run_tint } from '../kolor/prefab_Kolor'
 import { NumberVar } from '../tinyCSS/CSSVar'
 
 export class CSuite_ThemeCushy implements CSuiteConfig {
@@ -39,14 +39,14 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get baseStr() {
         return this.st.theme.root.value.base
     }
-    get base(): OKLCH {
+    get base(): Kolor {
         return getLCHFromString(this.baseStr)
     }
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1
     }
     get text(): Tint {
-        return run_Kolor(this.st.theme.value.text)
+        return run_tint(this.st.theme.value.text)
     }
 
     inputBorder = new NumberVar(
@@ -58,7 +58,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel
         if (raw == null) return undefined
-        return run_Kolor(raw)
+        return run_tint(raw)
     }
 
     // get value(): THEME {

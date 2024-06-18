@@ -31,7 +31,7 @@ import { JsonFile } from '../core/JsonFile'
 import { activityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
-import { run_Kolor } from '../csuite/kolor/prefab_Kolor'
+import { run_tint } from '../csuite/kolor/prefab_Kolor'
 import { regionMonitor, RegionMonitor } from '../csuite/regions/RegionMonitor'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { exhaust } from '../csuite/utils/exhaust'
@@ -941,6 +941,6 @@ export class STATE {
     csuite = new CSuite_ThemeCushy(this)
 
     get themeText(): Tint {
-        return run_Kolor(this.theme.value.text)
+        return run_tint(this.theme.value.text)
     }
 }

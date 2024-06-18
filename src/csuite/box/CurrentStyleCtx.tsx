@@ -2,7 +2,7 @@ import type { Tint } from '../kolor/Tint'
 
 import { createContext } from 'react'
 
-import { OKLCH } from '../kolor/OKLCH'
+import { Kolor } from '../kolor/OKLCH'
 
 /** the react-side theming context that travels with every widget,
  * so we always know the surrounding lightness / chroma / hue.
@@ -10,7 +10,7 @@ import { OKLCH } from '../kolor/OKLCH'
  * found a way to do it yet.
  */
 export type CurrentStyle = {
-    base: OKLCH
+    base: Kolor
     // baseH: OKLCH
     text: Tint
     dir: 1 | -1
@@ -18,7 +18,7 @@ export type CurrentStyle = {
 }
 
 export const CurrentStyleCtx = createContext<CurrentStyle>({
-    base: new OKLCH(0.1, 0.05, 0),
+    base: new Kolor(0.1, 0.05, 0),
     text: { contrast: 1, chromaBlend: 0, hueShift: 0 },
     dir: 1,
     /**

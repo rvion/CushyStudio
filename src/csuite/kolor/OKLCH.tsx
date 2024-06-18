@@ -1,4 +1,4 @@
-export class OKLCH {
+export class Kolor {
     // lightness: number
     // chroma: number
     // hue: number
@@ -12,7 +12,7 @@ export class OKLCH {
     ) {}
 
     /** true if strictly same values */
-    isSameOKLCH = (b: OKLCH): boolean => {
+    isSame = (b: Kolor): boolean => {
         if (this.lightness !== b.lightness) return false
         if (this.chroma !== b.chroma) return false
         if (this.hue !== b.hue) return false

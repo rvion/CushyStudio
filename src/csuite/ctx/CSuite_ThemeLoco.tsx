@@ -4,7 +4,7 @@ import type { CSuiteConfig } from './CSuiteConfig'
 import { makeAutoObservable } from 'mobx'
 
 import { formatOKLCH } from '../kolor/formatOKLCH'
-import { OKLCH } from '../kolor/OKLCH'
+import { Kolor } from '../kolor/OKLCH'
 
 export class CSuite_ThemeLoco implements CSuiteConfig {
     constructor() {
@@ -17,7 +17,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetDiff = true
     showToggleButtonBox = false
     // theme
-    base: OKLCH = new OKLCH(0.9999, 0, 240)
+    base: Kolor = new Kolor(0.9999, 0, 240)
     get baseStr() {
         return formatOKLCH(this.base)
     }

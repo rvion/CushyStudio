@@ -2,7 +2,7 @@ import type { Widget_choices_config } from '../../controls/widgets/choices/Widge
 import type { FormBuilder } from '../../CUSHY'
 import type { Box } from './Box'
 
-import { run_Kolor, ui_tint, type UI_Tint } from '../kolor/prefab_Kolor'
+import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Kolor'
 
 export type UI_Box = X.XChoices<{
     base: UI_Tint
@@ -36,10 +36,10 @@ export const ui_Box = (
 
 export const run_Box = (ui: UI_Box['$Value']): Box => {
     const box: Box = { hover: ui.hover }
-    if (ui.base) box.base = run_Kolor(ui.base)
-    if (ui.text) box.text = run_Kolor(ui.text)
-    if (ui.textShadow) box.textShadow = run_Kolor(ui.textShadow)
-    if (ui.shadow) box.shadow = run_Kolor(ui.shadow)
-    if (ui.border) box.border = run_Kolor(ui.border)
+    if (ui.base) box.base = run_tint(ui.base)
+    if (ui.text) box.text = run_tint(ui.text)
+    if (ui.textShadow) box.textShadow = run_tint(ui.textShadow)
+    if (ui.shadow) box.shadow = run_tint(ui.shadow)
+    if (ui.border) box.border = run_tint(ui.border)
     return box
 }

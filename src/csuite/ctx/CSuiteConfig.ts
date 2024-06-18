@@ -1,4 +1,4 @@
-import type { OKLCH } from '../kolor/OKLCH'
+import type { Kolor } from '../kolor/OKLCH'
 import type { Tint } from '../kolor/Tint'
 
 import { NumberVar } from '../tinyCSS/CSSVar'
@@ -27,7 +27,7 @@ export interface CSuiteConfig {
     inputBorder: number | NumberVar<'input-border'>
     // -----------
     // base colors
-    base: OKLCH
+    base: Kolor
     baseStr: string
     text: Tint
     // misc:

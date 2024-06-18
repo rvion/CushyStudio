@@ -8,7 +8,7 @@ import type { Tint } from './Tint'
  * | for now, the semantic is such that we can only have either absolute
  * | or relative values; not both.
  */
-export const overrideKolor = (
+export const overrideTint = (
     //
     a: Maybe<Tint>,
     b: Maybe<Tint>,

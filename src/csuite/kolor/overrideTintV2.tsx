@@ -1,6 +1,6 @@
 import type { Tint } from './Tint'
 
-export const overrideKolorsV2 = (...tints: Maybe<Tint | boolean>[]) => {
+export function overrideTintV2(...tints: Maybe<Tint | boolean>[]): Tint {
     const out: Tint = {}
     for (const tint of tints) {
         if (typeof tint === 'boolean') continue
