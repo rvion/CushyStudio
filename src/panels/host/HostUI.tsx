@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../csuite/frame/Frame'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
 import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
@@ -19,7 +20,11 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const disabled = host.data.isVirtual ? true : false
     return (
         <Frame
-            base={{ contrast: 0.03, chroma: isMain ? 0.1 : undefined }}
+            base={{
+                contrast: isMain ? 0.1 : 0.03,
+                chroma: isMain ? 0.05 : undefined,
+                hue: isMain ? knownOKLCHHues.success : undefined,
+            }}
             border={10}
             tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >

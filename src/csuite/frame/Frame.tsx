@@ -102,11 +102,13 @@ export const Frame = observer(
         // | + hovered
         // | + look
 
+        const dir = prevCtx.dir
         const template = look != null ? frameTemplates[look] : undefined
         const baseTint = overrideTintV2(template?.base, box.base, disabled && { lightness: prevCtx.base.lightness })
-        let KBase: Kolor = prevCtx.base.tintBg(baseTint)
+        let KBase: Kolor = prevCtx.base.tintBg(baseTint, dir)
         if (hovered && !disabled && box.hover) {
-            KBase = KBase.tintBg(box.hover)
+            // console.log(`[🤠] box.hover`, box.hover, { contrast: 0.08 })
+            KBase = KBase.tintBg(/* { contrast: 0.06 } */ box.hover, dir)
         }
 
         // ===================================================================
@@ -138,7 +140,7 @@ export const Frame = observer(
 
         // BACKGROUND
         if (!prevCtx.base.isSame(KBase)) variables['--KLR'] = KBase.toOKLCH()
-        if (box.shock) variables.background = KBase.tintBg(box.shock).toOKLCH()
+        if (box.shock) variables.background = KBase.tintBg(box.shock, dir).toOKLCH()
         else variables.background = KBase.toOKLCH()
 
         // TEXT
