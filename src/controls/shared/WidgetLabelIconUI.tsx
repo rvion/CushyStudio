@@ -1,11 +1,11 @@
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 
-export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: { widget: BaseWidget }) {
+export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: { widget: BaseField }) {
     const iconName = p.widget.icon
     if (iconName == null) return null
     return (

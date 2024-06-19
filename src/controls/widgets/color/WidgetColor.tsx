@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
@@ -34,7 +34,7 @@ export type Widget_color_types = {
 }
 
 // STATE
-export class Widget_color extends BaseWidget<Widget_color_types> {
+export class Widget_color extends BaseField<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -54,8 +54,8 @@ export class Widget_color extends BaseWidget<Widget_color_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_color>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_color>,
         serial?: Widget_color_serial,
     ) {
         super()

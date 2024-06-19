@@ -1,7 +1,7 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
-import type { BaseWidget } from './BaseWidget'
-import type { IFormBuilder } from './IFormBuilder'
-import type { ISpec, SchemaDict } from './ISpec'
+import type { BaseField } from './BaseField'
+import type { IBlueprint, SchemaDict } from './IBlueprint'
+import type { IDomain } from './IFormBuilder'
 import type { Model } from './Model'
 import type * as SS from './SimpleSpecAliases'
 
@@ -28,12 +28,12 @@ import { Widget_spacer } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
 // -------------------------------------------------------------------------------------------
-export class SimpleFormBuilder implements IFormBuilder {
+export class SimpleFormBuilder implements IDomain {
     /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Model<ISpec, SimpleFormBuilder>) {
+    constructor(public form: Model<IBlueprint, SimpleFormBuilder>) {
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -145,7 +145,7 @@ export class SimpleFormBuilder implements IFormBuilder {
         return new SimpleSpec<Widget_number>('number', { mode: 'float', ...config })
     }
 
-    list = <const T extends ISpec>(config: Widget_list_config<T>): SS.SList<T> => {
+    list = <const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> => {
         return new SimpleSpec<Widget_list<T>>('list', config)
     }
 
@@ -180,24 +180,26 @@ export class SimpleFormBuilder implements IFormBuilder {
         return new SimpleSpec<Widget_group<T>>('group', { items: fields, ...config })
     }
 
-    choice = <const T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> => {
+    choice = <const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> => {
         return new SimpleSpec<Widget_choices<T>>('choices', { multi: false, ...config })
     }
 
-    choices = <const T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> => {
+    choices = <const T extends { [key: string]: IBlueprint }>(
+        config: Omit<Widget_choices_config<T>, 'multi'>,
+    ): SS.SChoices<T> => {
         return new SimpleSpec<Widget_choices<T>>('choices', { multi: true, ...config })
     }
 
     ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new SimpleSpec<Widget_group<T>>('group', config)
 
     /** simple choice alternative api */
-    tabs = <const T extends { [key: string]: ISpec }>(
+    tabs = <const T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ) => new SimpleSpec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
 
     // optional wrappers
-    optional = <const T extends ISpec>(p: Widget_optional_config<T>): SS.SOptional<T> => {
+    optional = <const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> => {
         return new SimpleSpec<Widget_optional<T>>('optional', p)
     }
 
@@ -215,7 +217,7 @@ export class SimpleFormBuilder implements IFormBuilder {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends ISpec>(key: string, spec: W): Widget_shared<W> => {
+    shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
         const prevSerial = this.form.shared[key]
         let widget
         if (prevSerial && prevSerial.type === spec.type) {
@@ -229,9 +231,9 @@ export class SimpleFormBuilder implements IFormBuilder {
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
-    _HYDRATE = <T extends ISpec>(
+    _HYDRATE = <T extends IBlueprint>(
         //
-        parent: BaseWidget | null,
+        parent: BaseField | null,
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {
@@ -250,12 +252,12 @@ export class SimpleFormBuilder implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends ISpec>(
+    private __HYDRATE = <T extends IBlueprint>(
         //
-        parent: BaseWidget | null,
+        parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): BaseWidget<any> /* T['$Widget'] */ => {
+    ): BaseField<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)

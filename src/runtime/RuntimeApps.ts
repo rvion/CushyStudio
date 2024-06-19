@@ -1,4 +1,4 @@
-import type { SchemaDict } from '../controls/ISpec'
+import type { SchemaDict } from '../controls/IBlueprint'
 import type { CushyAppL } from '../models/CushyApp'
 import type { Runtime, RuntimeExecutionResult } from './Runtime'
 

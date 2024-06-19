@@ -1,5 +1,5 @@
 import type { IconName } from '../../../csuite/icons/icons'
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -8,7 +8,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
@@ -81,7 +81,7 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
 export class Widget_selectOne<T extends BaseSelectEntry> //
-    extends BaseWidget<Widget_selectOne_types<T>>
+    extends BaseField<Widget_selectOne_types<T>>
 {
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
@@ -121,8 +121,8 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_selectOne<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
         super()

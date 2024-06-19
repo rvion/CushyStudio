@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
@@ -50,7 +50,7 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export class Widget_seed extends BaseWidget<Widget_seed_types> {
+export class Widget_seed extends BaseField<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
 
@@ -102,8 +102,8 @@ export class Widget_seed extends BaseWidget<Widget_seed_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_seed>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
         super()

@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -7,14 +7,14 @@ import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
-type AutoBehaviour<T extends ISpec> = {
+type AutoBehaviour<T extends IBlueprint> = {
     /** list of keys that must be present */
     keys: (self: T['$Widget']) => string[] // ['foo', 'bar', 'baz']
 
@@ -26,7 +26,7 @@ type AutoBehaviour<T extends ISpec> = {
 }
 
 // CONFIG
-export type Widget_list_config<T extends ISpec> = WidgetConfig<
+export type Widget_list_config<T extends IBlueprint> = WidgetConfig<
     {
         element: ((ix: number) => T) | T
         /**
@@ -59,16 +59,16 @@ export type Widget_list_config<T extends ISpec> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_list_serial<T extends ISpec> = WidgetSerial<{
+export type Widget_list_serial<T extends IBlueprint> = WidgetSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // VALUE
-export type Widget_list_value<T extends ISpec> = T['$Value'][]
+export type Widget_list_value<T extends IBlueprint> = T['$Value'][]
 
 // TYPES
-export type Widget_list_types<T extends ISpec> = {
+export type Widget_list_types<T extends IBlueprint> = {
     $Type: 'list'
     $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -77,8 +77,8 @@ export type Widget_list_types<T extends ISpec> = {
 }
 
 // STATE
-export class Widget_list<T extends ISpec> //
-    extends BaseWidget<Widget_list_types<T>>
+export class Widget_list<T extends IBlueprint> //
+    extends BaseField<Widget_list_types<T>>
 {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
@@ -112,8 +112,8 @@ export class Widget_list<T extends ISpec> //
         for (const i of this.items) i.reset()
     }
 
-    findItemIndexContaining = (widget: BaseWidget): number | null => {
-        let at = widget as BaseWidget | null
+    findItemIndexContaining = (widget: BaseField): number | null => {
+        let at = widget as BaseField | null
         let child = at
         while (at != null) {
             at = at.parent
@@ -175,8 +175,8 @@ export class Widget_list<T extends ISpec> //
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_list<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
         super()

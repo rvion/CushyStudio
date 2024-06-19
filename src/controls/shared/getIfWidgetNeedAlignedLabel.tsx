@@ -1,6 +1,6 @@
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 
-export const getIfWidgetNeedJustifiedLabel = (widget: BaseWidget): boolean => {
+export const getIfWidgetNeedJustifiedLabel = (widget: BaseField): boolean => {
     // return true
     if (widget.config.justifyLabel != null) return widget.config.justifyLabel
     // if (widget.justifyLabel != null) return widget.justifyLabel

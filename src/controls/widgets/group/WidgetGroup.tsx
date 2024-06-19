@@ -1,4 +1,4 @@
-import type { ISpec, SchemaDict } from '../../ISpec'
+import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -8,7 +8,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
@@ -49,7 +49,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_types<T>> {
+export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -77,7 +77,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, BaseWidget][]
+        return Object.entries(this.fields) as [string, BaseField][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
@@ -98,8 +98,8 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_group<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,
@@ -197,13 +197,13 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget<Widget_group_
         },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseWidget = this.fields[prop]!
+            const subWidget: BaseField = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
         getOwnPropertyDescriptor: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseWidget = this.fields[prop]!
+            const subWidget: BaseField = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,

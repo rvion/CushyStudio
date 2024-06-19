@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -8,7 +8,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
@@ -73,7 +73,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget<Widget_selectMany_types<T>> {
+export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
 
@@ -118,8 +118,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget<Wid
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_selectMany<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
         super()

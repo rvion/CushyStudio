@@ -1,4 +1,4 @@
-import type { ISpec, SchemaDict } from './ISpec'
+import type { IBlueprint, SchemaDict } from './IBlueprint'
 import type { SimpleSpec } from './SimpleSpec'
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_button } from './widgets/button/WidgetButton'
@@ -18,13 +18,13 @@ import type { Widget_spacer } from './widgets/spacer/WidgetSpacer'
 import type { Widget_string } from './widgets/string/WidgetString'
 
 export type SGroup<T extends SchemaDict> = SimpleSpec<Widget_group<T>>
-export type SOptional<T extends ISpec> = SimpleSpec<Widget_optional<T>>
+export type SOptional<T extends IBlueprint> = SimpleSpec<Widget_optional<T>>
 export type SBool = SimpleSpec<Widget_bool>
 export type SString = SimpleSpec<Widget_string>
 export type SChoices<T extends SchemaDict = SchemaDict> = SimpleSpec<Widget_choices<T>>
 export type SNumber = SimpleSpec<Widget_number>
 export type SColor = SimpleSpec<Widget_color>
-export type SList<T extends ISpec> = SimpleSpec<Widget_list<T>>
+export type SList<T extends IBlueprint> = SimpleSpec<Widget_list<T>>
 export type SButton<T> = SimpleSpec<Widget_button<T>>
 export type SSeed = SimpleSpec<Widget_seed>
 export type SMatrix = SimpleSpec<Widget_matrix>

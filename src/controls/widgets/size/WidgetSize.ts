@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -8,7 +8,7 @@ import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './Wi
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
@@ -45,7 +45,7 @@ export type Widget_size_types = {
 }
 
 // STATE
-export class Widget_size extends BaseWidget<Widget_size_types> {
+export class Widget_size extends BaseField<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
@@ -107,8 +107,8 @@ export class Widget_size extends BaseWidget<Widget_size_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_size>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_size>,
         serial?: Widget_size_serial,
     ) {
         super()

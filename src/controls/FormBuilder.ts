@@ -1,15 +1,15 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
-import type { BaseWidget } from './BaseWidget'
-import type { IFormBuilder } from './IFormBuilder'
-import type { ISpec, SchemaDict } from './ISpec'
+import type { BaseField } from './BaseField'
+import type { IBlueprint, SchemaDict } from './IBlueprint'
+import type { IDomain } from './IFormBuilder'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
+import { Blueprint } from './Blueprint'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
-import { Spec } from './CushySpec'
 import { ModelManager } from './FormManager'
 import { Model } from './Model'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
@@ -39,45 +39,45 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 // export type { SchemaDict } from './ISpec'
 declare global {
     namespace X {
-        type SchemaDict = import('./ISpec').SchemaDict
+        type SchemaDict = import('./IBlueprint').SchemaDict
         type FormBuilder = import('./FormBuilder').FormBuilder
 
         // attempt to make type safety better --------------------------------------------------------
-        type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
-        type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
-        type XBool = Spec<Widget_bool>
-        type XShared<T extends ISpec> = Widget_shared<T>
-        type XString = Spec<Widget_string>
-        type XPrompt = Spec<Widget_prompt>
-        type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
-        type XChoice<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
-        type XNumber = Spec<Widget_number>
-        type XColor = Spec<Widget_color>
-        type XEnum<T> = Spec<Widget_enum<T>>
-        type XList<T extends ISpec> = Spec<Widget_list<T>>
-        type XOrbit = Spec<Widget_orbit>
-        type XListExt<T extends ISpec> = Spec<Widget_listExt<T>>
-        type XButton<T> = Spec<Widget_button<T>>
-        type XSeed = Spec<Widget_seed>
-        type XMatrix = Spec<Widget_matrix>
-        type XImage = Spec<Widget_image>
-        type XSelectOne<T extends BaseSelectEntry> = Spec<Widget_selectOne<T>>
-        type XSelectMany<T extends BaseSelectEntry> = Spec<Widget_selectMany<T>>
-        type XSelectOne_<T extends string> = Spec<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type XSelectMany_<T extends string> = Spec<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type XSize = Spec<Widget_size>
-        type XSpacer = Spec<Widget_spacer>
-        type XMarkdown = Spec<Widget_markdown>
-        type XCustom<T> = Spec<Widget_custom<T>>
+        type XGroup<T extends SchemaDict> = Blueprint<Widget_group<T>>
+        type XOptional<T extends IBlueprint> = Blueprint<Widget_optional<T>>
+        type XBool = Blueprint<Widget_bool>
+        type XShared<T extends IBlueprint> = Widget_shared<T>
+        type XString = Blueprint<Widget_string>
+        type XPrompt = Blueprint<Widget_prompt>
+        type XChoices<T extends SchemaDict = SchemaDict> = Blueprint<Widget_choices<T>>
+        type XChoice<T extends SchemaDict = SchemaDict> = Blueprint<Widget_choices<T>>
+        type XNumber = Blueprint<Widget_number>
+        type XColor = Blueprint<Widget_color>
+        type XEnum<T> = Blueprint<Widget_enum<T>>
+        type XList<T extends IBlueprint> = Blueprint<Widget_list<T>>
+        type XOrbit = Blueprint<Widget_orbit>
+        type XListExt<T extends IBlueprint> = Blueprint<Widget_listExt<T>>
+        type XButton<T> = Blueprint<Widget_button<T>>
+        type XSeed = Blueprint<Widget_seed>
+        type XMatrix = Blueprint<Widget_matrix>
+        type XImage = Blueprint<Widget_image>
+        type XSelectOne<T extends BaseSelectEntry> = Blueprint<Widget_selectOne<T>>
+        type XSelectMany<T extends BaseSelectEntry> = Blueprint<Widget_selectMany<T>>
+        type XSelectOne_<T extends string> = Blueprint<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSelectMany_<T extends string> = Blueprint<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSize = Blueprint<Widget_size>
+        type XSpacer = Blueprint<Widget_spacer>
+        type XMarkdown = Blueprint<Widget_markdown>
+        type XCustom<T> = Blueprint<Widget_custom<T>>
     }
 }
 
 /** cushy studio form builder */
-export class FormBuilder implements IFormBuilder {
-    SpecCtor = Spec
+export class FormBuilder implements IDomain {
+    SpecCtor = Blueprint
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Model<ISpec, FormBuilder>) {
+    constructor(public form: Model<IBlueprint, FormBuilder>) {
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -89,65 +89,65 @@ export class FormBuilder implements IFormBuilder {
     }
 
     time = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'time', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'time', ...config })
     }
     date = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'date', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'date', ...config })
     }
     datetime = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'datetime-local', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'datetime-local', ...config })
     }
     password = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'password', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'password', ...config })
     }
     email = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'email', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'email', ...config })
     }
     url = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'url', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'url', ...config })
     }
     string = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', config)
+        return new Blueprint<Widget_string>('str', config)
     }
     text = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', config)
+        return new Blueprint<Widget_string>('str', config)
     }
     textarea = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { textarea: true, ...config })
+        return new Blueprint<Widget_string>('str', { textarea: true, ...config })
     }
     boolean = (config: Widget_bool_config = {}): X.XBool => {
-        return new Spec<Widget_bool>('bool', config)
+        return new Blueprint<Widget_bool>('bool', config)
     }
     bool = (config: Widget_bool_config = {}): X.XBool => {
-        return new Spec<Widget_bool>('bool', config)
+        return new Blueprint<Widget_bool>('bool', config)
     }
     size = (config: Widget_size_config = {}): X.XSize => {
-        return new Spec<Widget_size>('size', config)
+        return new Blueprint<Widget_size>('size', config)
     }
     spacer = (config: Widget_spacer_config = {}): X.XSpacer => {
-        return new Spec<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
+        return new Blueprint<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
     }
     orbit = (config: Widget_orbit_config = {}): X.XOrbit => {
-        return new Spec<Widget_orbit>('orbit', config)
+        return new Blueprint<Widget_orbit>('orbit', config)
     }
     seed = (config: Widget_seed_config = {}): X.XSeed => {
-        return new Spec<Widget_seed>('seed', config)
+        return new Blueprint<Widget_seed>('seed', config)
     }
     color = (config: Widget_color_config = {}): X.XColor => {
-        return new Spec<Widget_color>('color', config)
+        return new Blueprint<Widget_color>('color', config)
     }
     colorV2 = (config: Widget_string_config = {}): X.XString => {
-        return new Spec<Widget_string>('str', { inputType: 'color', ...config })
+        return new Blueprint<Widget_string>('str', { inputType: 'color', ...config })
     }
     matrix = (config: Widget_matrix_config): X.XMatrix => {
-        return new Spec<Widget_matrix>('matrix', config)
+        return new Blueprint<Widget_matrix>('matrix', config)
     }
     button = <K>(config: Widget_button_config<K>): X.XButton<K> => {
-        return new Spec<Widget_button<K>>('button', config)
+        return new Blueprint<Widget_button<K>>('button', config)
     }
     /** variants: `header` */
     markdown = (config: Widget_markdown_config | string): X.XMarkdown => {
-        return new Spec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+        return new Blueprint<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
     }
     /** [markdown variant]: inline=true, label=false */
     header = (config: Widget_markdown_config | string): X.XMarkdown => {
@@ -155,20 +155,20 @@ export class FormBuilder implements IFormBuilder {
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config }
-        return new Spec<Widget_markdown>('markdown', config_)
+        return new Blueprint<Widget_markdown>('markdown', config_)
     }
     image = (config: Widget_image_config = {}): X.XImage => {
-        return new Spec<Widget_image>('image', config)
+        return new Blueprint<Widget_image>('image', config)
     }
     prompt = (config: Widget_prompt_config = {}): X.XPrompt => {
-        return new Spec<Widget_prompt>('prompt', config)
+        return new Blueprint<Widget_prompt>('prompt', config)
     }
     int = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Spec<Widget_number>('number', { mode: 'int', ...config })
+        return new Blueprint<Widget_number>('number', { mode: 'int', ...config })
     }
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Spec<Widget_number>('number', {
+        return new Blueprint<Widget_number>('number', {
             mode: 'int',
             default: 100,
             step: 10,
@@ -179,85 +179,85 @@ export class FormBuilder implements IFormBuilder {
         })
     }
     float = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Spec<Widget_number>('number', { mode: 'float', ...config })
+        return new Blueprint<Widget_number>('number', { mode: 'float', ...config })
     }
     number = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Spec<Widget_number>('number', { mode: 'float', ...config })
+        return new Blueprint<Widget_number>('number', { mode: 'float', ...config })
     }
     remSize = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
     custom = <T>(config: Widget_custom_config<T>): X.XCustom<T> => {
-        return new Spec<Widget_custom<T>>('custom', config)
+        return new Blueprint<Widget_custom<T>>('custom', config)
     }
-    list = <T extends ISpec>(config: Widget_list_config<T>): X.XList<T> => {
-        return new Spec<Widget_list<T>>('list', config)
+    list = <T extends IBlueprint>(config: Widget_list_config<T>): X.XList<T> => {
+        return new Blueprint<Widget_list<T>>('list', config)
     }
-    listExt = <T extends ISpec>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Spec<Widget_listExt<T>>('listExt', config)
+    listExt = <T extends IBlueprint>(config: Widget_listExt_config<T>): X.XListExt<T> => {
+        return new Blueprint<Widget_listExt<T>>('listExt', config)
     }
-    timeline = <T extends ISpec>(config: Widget_listExt_config<T>) => {
-        return new Spec<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
+    timeline = <T extends IBlueprint>(config: Widget_listExt_config<T>) => {
+        return new Blueprint<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
     }
-    regional = <T extends ISpec>(config: Widget_listExt_config<T>) => {
-        return new Spec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
+    regional = <T extends IBlueprint>(config: Widget_listExt_config<T>) => {
+        return new Blueprint<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
     }
     selectOneV2 = <T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectOne<BaseSelectEntry<T>> => {
-        return new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new Blueprint<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) => {
-        return new Spec<Widget_selectOne<T>>('selectOne', config)
+        return new Blueprint<Widget_selectOne<T>>('selectOne', config)
     }
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>) => {
-        return new Spec<Widget_selectMany<T>>('selectMany', config)
+        return new Blueprint<Widget_selectMany<T>>('selectMany', config)
     }
     /** see also: `fields` for a more practical api */
     group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Spec<Widget_group<T>>('group', config)
+        return new Blueprint<Widget_group<T>>('group', config)
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
     column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
+        return new Blueprint<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
     row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
+        return new Blueprint<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
     }
     /** simpler way to create `group` */
     fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): X.XGroup<T> => {
-        return new Spec<Widget_group<T>>('group', { items: fields, ...config })
+        return new Blueprint<Widget_group<T>>('group', { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoice<T> => {
-        return new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
+    choice = <T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoice<T> => {
+        return new Blueprint<Widget_choices<T>>('choices', { multi: false, ...config })
     }
-    choiceV2 = <T extends { [key: string]: ISpec }>(
+    choiceV2 = <T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoice<T> => {
-        return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
+        return new Blueprint<Widget_choices<T>>('choices', { multi: false, items, ...config })
     }
-    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoices<T> => {
-        return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
+    choices = <T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoices<T> => {
+        return new Blueprint<Widget_choices<T>>('choices', { multi: true, ...config })
     }
-    choicesV2 = <T extends { [key: string]: ISpec }>(
+    choicesV2 = <T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoices<T> => {
-        return new Spec<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
+        return new Blueprint<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
     }
     ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
-        return new Spec<Widget_group<T>>('group', config)
+        return new Blueprint<Widget_group<T>>('group', config)
     }
     /** simple choice alternative api */
-    tabs = <T extends { [key: string]: ISpec }>(
+    tabs = <T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    ) => new Blueprint<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
-    optional = <T extends ISpec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
+    optional = <T extends IBlueprint>(p: Widget_optional_config<T>) => new Blueprint<Widget_optional<T>>('optional', p)
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
@@ -293,7 +293,7 @@ export class FormBuilder implements IFormBuilder {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends ISpec>(key: string, spec: W): Widget_shared<W> => {
+    shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
         const prevSerial = this.form.shared[key]
         let widget
         if (prevSerial && prevSerial.type === spec.type) {
@@ -303,7 +303,7 @@ export class FormBuilder implements IFormBuilder {
         }
         this.form.shared[key] = widget.serial
         this.form.knownShared.set(key, widget)
-        const sharedSpec = new Spec<Widget_shared<W>>('shared', { rootKey: key, widget })
+        const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
@@ -340,11 +340,11 @@ export class FormBuilder implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends ISpec>( //
-        parent: BaseWidget | null,
+    private __HYDRATE = <T extends IBlueprint>( //
+        parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): BaseWidget<any> /* T['$Widget'] */ => {
+    ): BaseField<any> /* T['$Widget'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
@@ -357,7 +357,7 @@ export class FormBuilder implements IFormBuilder {
             // return unmounted.shared
         }
 
-        if (!(spec instanceof Spec)) {
+        if (!(spec instanceof Blueprint)) {
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
 
@@ -402,12 +402,12 @@ export class FormBuilder implements IFormBuilder {
         return new Widget_markdown(
             this.form,
             parent,
-            new Spec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
+            new Blueprint<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
     }
 
-    _HYDRATE = <T extends ISpec>( //
-        parent: BaseWidget | null,
+    _HYDRATE = <T extends IBlueprint>( //
+        parent: BaseField | null,
         spec: T,
         serial: any | null,
     ): T['$Widget'] => {

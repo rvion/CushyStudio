@@ -1,5 +1,5 @@
 import type { Timestamp } from '../../../cards/Timestamp'
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -8,7 +8,7 @@ import type { Tree } from '@lezer/common'
 
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
@@ -60,7 +60,7 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
+export class Widget_prompt extends BaseField<Widget_prompt_types> {
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
@@ -87,8 +87,8 @@ export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_prompt>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
         super()

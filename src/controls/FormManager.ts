@@ -1,6 +1,6 @@
-import type { BaseWidget } from './BaseWidget'
-import type { IFormBuilder } from './IFormBuilder'
-import type { ISpec, SchemaDict } from './ISpec'
+import type { BaseField } from './BaseField'
+import type { IBlueprint, SchemaDict } from './IBlueprint'
+import type { IDomain } from './IFormBuilder'
 import type { Widget_group } from './widgets/group/WidgetGroup'
 
 import { type DependencyList, useMemo } from 'react'
@@ -16,17 +16,17 @@ export type NoContext = null
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class ModelManager<DOMAIN extends IFormBuilder> {
+export class ModelManager<DOMAIN extends IDomain> {
     //
     _allForms: Map<string, Model> = new Map()
-    _allWidgets: Map<string, BaseWidget> = new Map()
-    _allWidgetsByType: Map<string, Map<string, BaseWidget>> = new Map()
+    _allWidgets: Map<string, BaseField> = new Map()
+    _allWidgetsByType: Map<string, Map<string, BaseField>> = new Map()
 
     getFormByID = (uid: string): Maybe<Model> => {
         return this._allForms.get(uid)
     }
 
-    getWidgetByID = (widgetUID: string): Maybe<BaseWidget> => {
+    getWidgetByID = (widgetUID: string): Maybe<BaseField> => {
         return this._allWidgets.get(widgetUID)
     }
 
@@ -34,7 +34,7 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
      * return all currently instanciated widgets
      * field of a given input type
      */
-    getWidgetsByType = <W extends BaseWidget = BaseWidget>(type: string): W[] => {
+    getWidgetsByType = <W extends BaseField = BaseField>(type: string): W[] => {
         const typeStore = this._allWidgetsByType.get(type)
         if (!typeStore) return []
         return Array.from(typeStore.values()) as W[]
@@ -58,9 +58,9 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         buildFn: (form: DOMAIN) => FIELDS,
-        modelConfig: ModelConfig<ISpec<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
-    ): Model<ISpec<Widget_group<FIELDS>>, DOMAIN> => {
-        const FN = (domain: DOMAIN): ISpec<Widget_group<FIELDS>> => {
+        modelConfig: ModelConfig<IBlueprint<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
+    ): Model<IBlueprint<Widget_group<FIELDS>>, DOMAIN> => {
+        const FN = (domain: DOMAIN): IBlueprint<Widget_group<FIELDS>> => {
             return runWithGlobalForm(domain, () =>
                 domain.group({
                     label: false,
@@ -69,12 +69,12 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
                 }),
             )
         }
-        const form = new Model<ISpec<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
+        const form = new Model<IBlueprint<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
         return form
     }
 
     /** simple alias to create a new Form */
-    form<ROOT extends ISpec>(
+    form<ROOT extends IBlueprint>(
         buildFn: (form: DOMAIN) => ROOT,
         modelConfig: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
     ): Model<ROOT, DOMAIN> {
@@ -82,7 +82,7 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
     }
 
     /** simple way to defined forms and in react components */
-    use<ROOT extends ISpec>(
+    use<ROOT extends IBlueprint>(
         ui: (form: DOMAIN) => ROOT,
         formProperties: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
         deps: DependencyList = [],
@@ -92,7 +92,7 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
         }, deps)
     }
 
-    formWithContext<ROOT extends ISpec, CONTEXT>(
+    formWithContext<ROOT extends IBlueprint, CONTEXT>(
         buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
         context: CONTEXT,
         modelConfig: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
@@ -101,7 +101,7 @@ export class ModelManager<DOMAIN extends IFormBuilder> {
     }
 
     /** simple way to defined forms and in react components */
-    useWithContext<ROOT extends ISpec, CONTEXT>(
+    useWithContext<ROOT extends IBlueprint, CONTEXT>(
         buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
         context: CONTEXT,
         formProperties: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },

@@ -1,5 +1,5 @@
 import type { CustomViewRef } from '../cards/App'
-import type { SchemaDict } from '../controls/ISpec'
+import type { SchemaDict } from '../controls/IBlueprint'
 import type { CompiledPrompt } from '../controls/widgets/prompt/WidgetPrompt'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'

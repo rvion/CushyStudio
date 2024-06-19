@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
@@ -9,7 +9,7 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends ISpec>(p: {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends IBlueprint>(p: {
     widget: Widget_listExt<T>
 }) {
     const widget = p.widget

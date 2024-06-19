@@ -1,7 +1,7 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -10,7 +10,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
@@ -52,7 +52,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export class Widget_image extends BaseWidget<Widget_image_types> {
+export class Widget_image extends BaseField<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -77,8 +77,8 @@ export class Widget_image extends BaseWidget<Widget_image_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_image>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_image>,
         serial?: Widget_image_serial,
     ) {
         super()

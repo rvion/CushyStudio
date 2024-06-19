@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -9,7 +9,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 
@@ -51,7 +51,7 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export class Widget_matrix extends BaseWidget<Widget_matrix_types> {
+export class Widget_matrix extends BaseField<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -88,8 +88,8 @@ export class Widget_matrix extends BaseWidget<Widget_matrix_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_matrix>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
         super()

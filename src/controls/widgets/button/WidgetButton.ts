@@ -1,5 +1,5 @@
 import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -8,7 +8,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
 
@@ -51,7 +51,7 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
+export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -66,8 +66,8 @@ export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_button<K>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
         super()

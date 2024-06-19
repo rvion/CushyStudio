@@ -1,4 +1,4 @@
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 
 import { observer } from 'mobx-react-lite'
 
@@ -23,7 +23,7 @@ import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
 export type WidgetWithLabelProps = {
-    widget: BaseWidget
+    widget: BaseField
     fieldName: string
     /**
      * override the label (false to force disable the label)

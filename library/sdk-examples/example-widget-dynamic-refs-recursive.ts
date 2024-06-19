@@ -1,4 +1,4 @@
-import type { Spec } from '../../src/controls/CushySpec'
+import type { Blueprint } from '../../src/controls/Blueprint'
 import type { Model } from '../../src/controls/Model'
 import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
@@ -29,11 +29,11 @@ app({
                                 // so to make sure code is correct, we need to cast it to the correct type
                                 // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    Spec<
+                                    Blueprint<
                                         Widget_choices<{
-                                            sampler_output_abc_asdf: Spec<Widget_selectOne<any>>
-                                            empty_latent: Spec<Widget_group<any>>
-                                            pick_image: Spec<Widget_image>
+                                            sampler_output_abc_asdf: Blueprint<Widget_selectOne<any>>
+                                            empty_latent: Blueprint<Widget_group<any>>
+                                            pick_image: Blueprint<Widget_image>
                                         }>
                                     >
                                 >

@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
@@ -39,7 +39,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export class Widget_markdown extends BaseWidget<Widget_markdown_types> {
+export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -67,8 +67,8 @@ export class Widget_markdown extends BaseWidget<Widget_markdown_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_markdown>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
         super()

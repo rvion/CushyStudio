@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -9,7 +9,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
@@ -19,7 +19,7 @@ export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./
 export type Widget_custom_config<T> = WidgetConfig<
     {
         defaultValue: () => T
-        subTree?: () => ISpec
+        subTree?: () => IBlueprint
         Component: FC<CustomWidgetProps<T>>
     },
     Widget_custom_types<T>
@@ -41,7 +41,7 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export class Widget_custom<T> extends BaseWidget<Widget_custom_types<T>> {
+export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -63,8 +63,8 @@ export class Widget_custom<T> extends BaseWidget<Widget_custom_types<T>> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_custom<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
         super()

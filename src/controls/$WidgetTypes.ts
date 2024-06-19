@@ -1,4 +1,4 @@
-import type { BaseWidget } from './BaseWidget'
+import type { BaseField } from './BaseField'
 import type { WidgetConfig_CommonProperties } from './WidgetConfig'
 import type { WidgetSerial_CommonProperties } from './WidgetSerialFields'
 
@@ -7,10 +7,10 @@ import type { WidgetSerial_CommonProperties } from './WidgetSerialFields'
  * still allow to use SharedConfig properties, and SharedSerial properties
  * */
 
-export type $WidgetTypes = {
+export type $FieldTypes = {
     $Type: string
     $Config: WidgetConfig_CommonProperties<any>
     $Serial: WidgetSerial_CommonProperties
     $Value: any
-    $Widget: BaseWidget
+    $Widget: BaseField
 }

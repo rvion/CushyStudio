@@ -1,11 +1,11 @@
-import type { IFormBuilder } from '../IFormBuilder'
+import type { IDomain } from '../IFormBuilder'
 
 import { nanoid } from 'nanoid'
 
 // ---------------------------------------------
 export class GlobalFormCtx {
     id = nanoid()
-    currentForm: Maybe<IFormBuilder> = null
+    currentForm: Maybe<IDomain> = null
 }
 const globalCtx = new GlobalFormCtx()
 ;(globalThis as any).globalCtx = globalCtx
@@ -21,7 +21,7 @@ const globalCtx = new GlobalFormCtx()
 // ⏸️ }
 
 /** every function that may potentially call prefab form needs to be wrapped with that */
-export const runWithGlobalForm = <T>(form: IFormBuilder, f: () => T): T => {
+export const runWithGlobalForm = <T>(form: IDomain, f: () => T): T => {
     // const globalCtx = getGlobalCtx()
 
     // same form, no need to do anything
@@ -48,7 +48,7 @@ export const runWithGlobalForm = <T>(form: IFormBuilder, f: () => T): T => {
  *   | to be properly typed soon
  *
  * */
-export const getCurrentForm_IMPL = (): IFormBuilder => {
+export const getCurrentForm_IMPL = (): IDomain => {
     // const globalCtx = getGlobalCtx()
     if (globalCtx.currentForm == null) {
         console.log(`[👙] `, globalCtx)

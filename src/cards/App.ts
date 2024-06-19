@@ -1,4 +1,4 @@
-import type { SchemaDict } from '../controls/ISpec'
+import type { SchemaDict } from '../controls/IBlueprint'
 import type { Model } from '../controls/Model'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from '../runtime/Runtime'

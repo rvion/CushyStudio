@@ -1,11 +1,11 @@
-import type { BaseWidget } from '../../../../controls/BaseWidget'
+import type { BaseField } from '../../../../controls/BaseField'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
 
 import { makeAutoObservable } from 'mobx'
 
 export class TreeWidget implements ITreeEntry {
-    constructor(public widgetWithKey: { widget: BaseWidget; key: string }) {
+    constructor(public widgetWithKey: { widget: BaseField; key: string }) {
         makeAutoObservable(this)
     }
 

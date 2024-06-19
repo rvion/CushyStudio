@@ -1,5 +1,5 @@
 import type { IconName } from '../../../csuite/icons/icons'
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -9,7 +9,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
@@ -57,7 +57,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export class Widget_string extends BaseWidget<Widget_string_types> {
+export class Widget_string extends BaseField<Widget_string_types> {
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
@@ -87,8 +87,8 @@ export class Widget_string extends BaseWidget<Widget_string_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_string>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_string>,
         serial?: Widget_string_serial,
     ) {
         super()

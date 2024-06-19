@@ -1,4 +1,4 @@
-import type { Spec } from '../CushySpec'
+import type { Blueprint } from '../Blueprint'
 import type { FormBuilder } from '../FormBuilder'
 import type { WidgetConfig } from '../WidgetConfig'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
@@ -10,20 +10,20 @@ import type { Widget_string } from '../widgets/string/WidgetString'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
-        ? Spec<Widget_number>
+        ? Blueprint<Widget_number>
         : T['kind'] extends 'string'
-          ? Spec<Widget_string>
+          ? Blueprint<Widget_string>
           : T['kind'] extends 'boolean'
-            ? Spec<Widget_bool>
+            ? Blueprint<Widget_bool>
             : T['kind'] extends 'prompt'
-              ? Spec<Widget_prompt>
+              ? Blueprint<Widget_prompt>
               : T['kind'] extends 'enum'
-                ? Spec<Widget_enum<X>>
+                ? Blueprint<Widget_enum<X>>
                 : any
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Spec<
+    [K in keyof FormHelper]: () => Blueprint<
         Widget_group<{
             [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
         }>

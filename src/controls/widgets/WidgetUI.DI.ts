@@ -8,7 +8,7 @@
 | build to include those.
 
 */
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_optional } from './optional/WidgetOptional'
 import type { Widget_shared } from './shared/WidgetShared'
@@ -20,7 +20,7 @@ import type { Widget_string } from './string/WidgetString'
  * regardless of circular dependencies.
  * 2024-03-27 update: now that we support splitting parts of
  * */
-let WidgetDI: { [widgetName: string]: BaseWidget<any> } = {}
+let WidgetDI: { [widgetName: string]: BaseField<any> } = {}
 
 export const getWidgetClass = <Type extends { $Type: string }>(widgetName: Type['$Type']): Type => {
     return WidgetDI[widgetName] as any

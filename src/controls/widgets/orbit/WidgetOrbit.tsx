@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
@@ -52,7 +52,7 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export class Widget_orbit extends BaseWidget<Widget_orbit_types> {
+export class Widget_orbit extends BaseField<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -104,8 +104,8 @@ export class Widget_orbit extends BaseWidget<Widget_orbit_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_orbit>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
         super()

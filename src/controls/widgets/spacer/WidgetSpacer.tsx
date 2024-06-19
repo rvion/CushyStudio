@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,7 +7,7 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
 
@@ -38,7 +38,7 @@ export type Widget_spacer_types = {
 }
 
 // STATE
-export class Widget_spacer extends BaseWidget<Widget_spacer_types> {
+export class Widget_spacer extends BaseField<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {
@@ -55,8 +55,8 @@ export class Widget_spacer extends BaseWidget<Widget_spacer_types> {
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_spacer>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
         super()

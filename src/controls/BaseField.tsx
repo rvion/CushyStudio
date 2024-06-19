@@ -1,9 +1,9 @@
 import type { IconName } from '../csuite/icons/icons'
 import type { TintExt } from '../csuite/kolor/Tint'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
-import type { $WidgetTypes } from './$WidgetTypes'
+import type { $FieldTypes } from './$WidgetTypes'
 import type { Channel, ChannelId } from './Channel'
-import type { ISpec } from './ISpec'
+import type { IBlueprint } from './IBlueprint'
 import type { Model } from './Model'
 import type { WidgetLabelContainerProps } from './shared/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from './shared/WidgetWithLabelUI'
@@ -36,7 +36,7 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
-export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+export interface BaseField<K extends $FieldTypes = $FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -45,7 +45,7 @@ export interface BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 }
 
 // v3 (experimental) ---------------------------------------
-export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
+export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
     // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
     // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
@@ -53,7 +53,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     // $Widget!: K['$Widget'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
 
     /** spec used to instanciate this widget */
-    abstract spec: ISpec
+    abstract spec: IBlueprint
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     abstract readonly id: string
@@ -90,7 +90,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     )
 
     // abstract readonly id: string
-    asTreeElement(key: string): ITreeElement<{ widget: BaseWidget; key: string }> {
+    asTreeElement(key: string): ITreeElement<{ widget: BaseField; key: string }> {
         return {
             key: (this as any).id,
             ctor: TreeWidget as any,
@@ -172,7 +172,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     // 🚴🏠 -> consume / pull / receive / fetch / ... ?
     consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
         const channelId = typeof chan === 'string' ? chan : chan.id
-        let at = this as any as BaseWidget | null
+        let at = this as any as BaseField | null
         while (at != null) {
             if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
             at = at.parent
@@ -196,13 +196,13 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const SELF = this as any as BaseWidget
+        const SELF = this as any as BaseField
         const baseErrors = normalizeProblem(SELF.baseErrors)
         return [...baseErrors, ...this.customErrors]
     }
 
     get customErrors(): Problem[] {
-        const SELF = this as any as BaseWidget
+        const SELF = this as any as BaseField
         if (SELF.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
@@ -213,13 +213,13 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: BaseWidget): void {
+    bumpSerial(this: BaseField): void {
         this.form.serialChanged(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: BaseWidget): void {
+    bumpValue(this: BaseField): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */
@@ -234,7 +234,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
      *  - by defining a getter on the _advertisedValues object of all parents
      *  - by only setting this getter up once.
      * */
-    publishValue(this: BaseWidget) {
+    publishValue(this: BaseField) {
         const producers = this.spec.producers
         if (producers.length === 0) return
 
@@ -245,7 +245,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
             producedValues[channelId] = producer.produce(this)
         }
         // Assign values to every parent widget in the hierarchy
-        let at = this as any as BaseWidget | null
+        let at = this as any as BaseField | null
         while (at != null) {
             Object.assign(at._advertisedValues, producedValues)
             at = at.parent
@@ -253,7 +253,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** parent widget of this widget, if any */
-    abstract readonly parent: BaseWidget | null
+    abstract readonly parent: BaseField | null
 
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden
@@ -310,14 +310,14 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         this.form.serialChanged(this)
     }
 
-    toggleCollapsed(this: BaseWidget) {
+    toggleCollapsed(this: BaseField) {
         this.serial.collapsed = !this.serial.collapsed
         this.form.serialChanged(this)
     }
 
     // UI ----------------------------------------------------
 
-    renderSimple(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimple(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
@@ -332,7 +332,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    renderSimpleAll(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimpleAll(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <CSuiteOverride
                 config={{
@@ -346,7 +346,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    renderWithLabel(this: BaseWidget, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderWithLabel(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
@@ -357,17 +357,17 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         )
     }
 
-    defaultHeader(this: BaseWidget): JSX.Element | undefined {
+    defaultHeader(this: BaseField): JSX.Element | undefined {
         if (this.DefaultHeaderUI == null) return
         return <this.DefaultHeaderUI widget={this} />
     }
 
-    defaultBody(this: BaseWidget): JSX.Element | undefined {
+    defaultBody(this: BaseField): JSX.Element | undefined {
         if (this.DefaultBodyUI == null) return
         return <this.DefaultBodyUI widget={this} />
     }
 
-    header(this: BaseWidget): JSX.Element | undefined {
+    header(this: BaseField): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
                 ? ensureObserver(this.config.header)
@@ -376,7 +376,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         return <HeaderUI widget={this} />
     }
 
-    body(this: BaseWidget): JSX.Element | undefined {
+    body(this: BaseField): JSX.Element | undefined {
         const BodyUI =
             'body' in this.config //
                 ? ensureObserver(this.config.body)
@@ -386,12 +386,12 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgets(): BaseWidget[] {
+    get subWidgets(): BaseField[] {
         return []
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgetsWithKeys(): { key: string; widget: BaseWidget }[] {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return []
     }
 
@@ -433,7 +433,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
         makeAutoObservableInheritance(this, mobxOverrides)
 
         // eslint-disable-next-line consistent-this
-        const self = this as any as BaseWidget
+        const self = this as any as BaseField
         const config = self.config
         const serial = self.serial
 

@@ -1,5 +1,5 @@
-import type { BaseWidget } from '../../BaseWidget'
-import type { ISpec } from '../../ISpec'
+import type { BaseField } from '../../BaseField'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -31,7 +31,7 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widge
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISpec>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends IBlueprint>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
@@ -110,7 +110,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: BaseWidget }>((p, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: BaseField }>((p, ref) => {
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>

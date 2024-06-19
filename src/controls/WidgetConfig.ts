@@ -1,13 +1,13 @@
 import type { Box } from '../csuite/box/Box'
 import type { IconName } from '../csuite/icons/icons'
 import type { TintExt } from '../csuite/kolor/Tint'
-import type { $WidgetTypes } from './$WidgetTypes'
+import type { $FieldTypes } from './$WidgetTypes'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { Problem_Ext } from './Validation'
 
-export type WidgetConfig<X, T extends $WidgetTypes> = X & WidgetConfig_CommonProperties<T>
+export type WidgetConfig<X, T extends $FieldTypes> = X & WidgetConfig_CommonProperties<T>
 
-export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
+export type WidgetConfig_CommonProperties<T extends $FieldTypes> = {
     /**
      * @since 2024-05-20
      * @stability beta
@@ -119,7 +119,7 @@ export type WidgetConfig_CommonProperties<T extends $WidgetTypes> = {
     custom?: any
 }
 
-export type WidgetMenuAction<T extends $WidgetTypes> = {
+export type WidgetMenuAction<T extends $FieldTypes> = {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName

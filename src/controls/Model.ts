@@ -1,8 +1,8 @@
-import type { BaseWidget } from './BaseWidget'
+import type { BaseField } from './BaseField'
 import type { ModelManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
-import type { IFormBuilder } from './IFormBuilder'
-import type { ISpec } from './ISpec'
+import type { IBlueprint } from './IBlueprint'
+import type { IDomain } from './IFormBuilder'
 import type { CovariantFn2 } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
@@ -17,8 +17,8 @@ import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
 export type ModelConfig<
     //
-    ROOT extends ISpec<any>,
-    DOMAIN extends IFormBuilder,
+    ROOT extends IBlueprint<any>,
+    DOMAIN extends IDomain,
     CONTEXT,
 > = {
     name: string
@@ -29,12 +29,12 @@ export type ModelConfig<
 
 export class Model<
     /** shape of the form, to preserve type safety down to nested children */
-    ROOT extends ISpec<any> = ISpec<any>,
+    ROOT extends IBlueprint<any> = IBlueprint<any>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
      * */
-    DOMAIN extends IFormBuilder = IFormBuilder,
+    DOMAIN extends IDomain = IDomain,
     /** custom context, so your model can access whatever it wants in most callbacks */
     CONTEXT = any,
 > {
@@ -101,7 +101,7 @@ export class Model<
     }
 
     /** @deprecated ; only work when root is a Widget_group */
-    get fields(): ROOT extends ISpec<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } : never {
+    get fields(): ROOT extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } : never {
         if (isWidgetGroup(this.root)) return this.root.fields as any
         throw new Error('🔴 root is not a group')
     }
@@ -135,21 +135,21 @@ export class Model<
         : null
 
     /** every widget node must call this function once it's value change */
-    valueChanged = (widget: BaseWidget) => {
+    valueChanged = (widget: BaseField) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
         this._onValueChange?.(this)
     }
 
-    _allFormWidgets: Map<string, BaseWidget> = new Map()
-    knownShared: Map<string, BaseWidget> = new Map()
+    _allFormWidgets: Map<string, BaseField> = new Map()
+    knownShared: Map<string, BaseField> = new Map()
 
-    getWidgetByID = (id: string): Maybe<BaseWidget> => {
+    getWidgetByID = (id: string): Maybe<BaseField> => {
         return this._allFormWidgets.get(id)
     }
 
     /** every widget node must call this function once it's serial changed */
-    serialChanged = (_widget: BaseWidget) => {
+    serialChanged = (_widget: BaseField) => {
         this.serialLastUpdatedAt = Date.now()
         this._onSerialChange?.(this)
     }

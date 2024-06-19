@@ -1,4 +1,4 @@
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 
 import { observer } from 'mobx-react-lite'
 
@@ -13,7 +13,7 @@ const isDraggingListener = (ev: MouseEvent) => {
 }
 
 export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_(p: {
-    widget: BaseWidget
+    widget: BaseField
     children?: React.ReactNode
 }) {
     const widget = p.widget

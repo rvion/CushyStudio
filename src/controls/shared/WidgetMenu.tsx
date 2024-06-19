@@ -1,5 +1,5 @@
 import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
-import type { BaseWidget } from '../BaseWidget'
+import type { BaseField } from '../BaseField'
 
 import { observer } from 'mobx-react-lite'
 
@@ -13,7 +13,7 @@ import { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
 import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
 import { TreeView } from '../../panels/libraryUI/tree/xxx/TreeView'
 
-export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseWidget }) {
+export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
     return (
         <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
             <Button subtle icon='mdiDotsVertical' look='ghost' square size='input' />
@@ -21,9 +21,9 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
     )
 })
 
-export const menu_widgetActions: Menu<BaseWidget> = menu({
+export const menu_widgetActions: Menu<BaseField> = menu({
     title: 'widget actions',
-    entries: (widget: BaseWidget) => {
+    entries: (widget: BaseField) => {
         const out: MenuEntry[] = []
         // RESET
         out.push(
@@ -96,7 +96,7 @@ export const menu_widgetActions: Menu<BaseWidget> = menu({
     },
 })
 
-export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: BaseWidget }) {
+export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: BaseField }) {
     const tree = new Tree([p.widget.asTreeElement('root')])
     const treeView = new TreeView(tree, { selectable: true })
     return (

@@ -1,6 +1,6 @@
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
-import type { BaseWidget } from './BaseWidget'
-import type { ISpec } from './ISpec'
+import type { BaseField } from './BaseField'
+import type { IBlueprint } from './IBlueprint'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -12,26 +12,26 @@ import { Channel, type ChannelId, Producer } from './Channel'
 import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
-export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widget> {
-    $Widget!: Widget
-    $Type!: Widget['type']
-    $Config!: Widget['$Config']
-    $Serial!: Widget['$Serial']
-    $Value!: Widget['$Value']
+export class Blueprint<Field extends BaseField = BaseField> implements IBlueprint<Field> {
+    $Widget!: Field
+    $Type!: Field['type']
+    $Config!: Field['$Config']
+    $Serial!: Field['$Serial']
+    $Value!: Field['$Value']
 
-    LabelExtraUI = (p: { widget: Widget }) =>
+    LabelExtraUI = (p: { widget: Field }) =>
         createElement(InstallRequirementsBtnUI, {
             active: isWidgetOptional(p.widget) ? p.widget.serial.active : true,
             requirements: this.requirements,
         })
 
-    producers: Producer<any, Widget['$Widget']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Widget['$Widget']) => T): this {
+    producers: Producer<any, Field['$Widget']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Widget']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Widget['$Widget']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Widget']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -42,13 +42,13 @@ export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widge
     }
 
     reactions: {
-        expr: (self: Widget['$Widget']) => any
-        effect: (arg: any, self: Widget['$Widget']) => void
+        expr: (self: Field['$Widget']) => any
+        effect: (arg: any, self: Field['$Widget']) => void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: Widget['$Widget']) => T,
-        effect: (arg: T, self: Widget['$Widget']) => void,
+        expr: (self: Field['$Widget']) => T,
+        effect: (arg: T, self: Field['$Widget']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this
@@ -64,23 +64,23 @@ export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widge
         return this
     }
 
-    Make = <X extends BaseWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
+    Make = <X extends BaseField>(type: X['type'], config: X['$Config']) => new Blueprint(type, config)
 
     constructor(
         //
-        public readonly type: Widget['type'],
-        public readonly config: Widget['$Config'],
+        public readonly type: Field['type'],
+        public readonly config: Field['$Config'],
     ) {}
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>
-        new Spec<Widget_list<this>>('list', {
+        new Blueprint<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
     optional = (startActive: boolean = false): X.XOptional<this> =>
-        new Spec<Widget_optional<this>>('optional', {
+        new Blueprint<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -93,5 +93,5 @@ export class Spec<Widget extends BaseWidget = BaseWidget> implements ISpec<Widge
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new Spec(this.type, { ...this.config, hidden: true })
+    hidden = () => new Blueprint(this.type, { ...this.config, hidden: true })
 }

@@ -1,9 +1,9 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends ISpec>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends IBlueprint>(p: {
     //
     widget: Widget_listExt<T>
 }) {

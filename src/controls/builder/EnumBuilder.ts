@@ -1,5 +1,5 @@
 import type { FormBuilder } from '../FormBuilder'
-import type { ISpec } from '../ISpec'
+import type { IBlueprint } from '../IBlueprint'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -9,7 +9,7 @@ import type { Widget_enum_config } from '../widgets/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../widgets/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../widgets/selectOne/WidgetSelectOne'
 
-import { Spec } from '../CushySpec'
+import { Blueprint } from '../Blueprint'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
@@ -25,7 +25,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Model<ISpec, FormBuilder>) {
+    constructor(public form: Model<IBlueprint, FormBuilder>) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -45,13 +45,13 @@ export class EnumBuilder {
                 const enumSchema = schema.knownEnumsByName.get(enumName)
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
-                    return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                    return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -83,7 +83,7 @@ export class EnumBuilderOpt {
                         form.builder.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            widget: new Spec('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
+                            widget: new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -94,7 +94,7 @@ export class EnumBuilderOpt {
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Spec('enum', /* form, */ { ...config, enumName }),
+                        widget: new Blueprint('enum', /* form, */ { ...config, enumName }),
                     })
             },
         })

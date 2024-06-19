@@ -1,4 +1,4 @@
-import type { ISpec, SchemaDict } from '../../ISpec'
+import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 
 import { makeLabelFromFieldName } from '../../../csuite/utils/makeLabelFromFieldName'
 import { toastError } from '../../../csuite/utils/toasts'
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
@@ -54,7 +54,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget<Widget_choices_types<T>> {
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
     UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
@@ -152,8 +152,8 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_choices<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
         super()

@@ -1,4 +1,4 @@
-import type { ISpec } from '../../ISpec'
+import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
@@ -7,11 +7,11 @@ import type { WidgetSerial } from '../../WidgetSerialFields'
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseWidget } from '../../BaseWidget'
+import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfig<
+export type Widget_optional_config<T extends IBlueprint = IBlueprint> = WidgetConfig<
     {
         startActive?: boolean
         widget: T
@@ -20,17 +20,17 @@ export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerial<{
+export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = WidgetSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
+export type Widget_optional_value<T extends IBlueprint = IBlueprint> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends ISpec = ISpec> = {
+export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
     $Type: 'optional'
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -39,7 +39,7 @@ export type Widget_optional_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget<Widget_optional_types<T>> {
+export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseField<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
@@ -111,8 +111,8 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget<Widget_
     constructor(
         //
         public readonly form: Model,
-        public readonly parent: BaseWidget | null,
-        public readonly spec: ISpec<Widget_optional<T>>,
+        public readonly parent: BaseField | null,
+        public readonly spec: IBlueprint<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
         super()
