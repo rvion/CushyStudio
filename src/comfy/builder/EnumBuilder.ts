@@ -9,7 +9,7 @@ import type { IBlueprint } from '../../controls/model/IBlueprint'
  */
 import type { Model } from '../../controls/model/Model'
 
-import { Blueprint } from '../../controls/model/Blueprint'
+import { Blueprint } from '../../controls/cushy/Blueprint'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (

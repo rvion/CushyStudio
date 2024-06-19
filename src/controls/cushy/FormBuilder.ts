@@ -32,9 +32,9 @@ import { Widget_shared } from '../fields/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from '../fields/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { Blueprint } from '../model/Blueprint'
 import { Model } from '../model/Model'
-import { ModelManager } from '../ModelManager'
+import { ModelManager } from '../model/ModelManager'
+import { Blueprint } from './Blueprint'
 
 // export type { SchemaDict } from './ISpec'
 declare global {

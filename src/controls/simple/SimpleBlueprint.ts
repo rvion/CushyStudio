@@ -4,7 +4,7 @@ import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
 import type { IBlueprint } from '../model/IBlueprint'
-import type { SList, SOptional } from '../SimpleSpecAliases'
+import type { SList, SOptional } from './SimpleSpecAliases'
 
 import { makeObservable } from 'mobx'
 

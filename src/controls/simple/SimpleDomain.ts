@@ -3,7 +3,7 @@ import type { BaseField } from '../model/BaseField'
 import type { IBlueprint, SchemaDict } from '../model/IBlueprint'
 import type { IDomain } from '../model/IDomain'
 import type { Model } from '../model/Model'
-import type * as SS from '../SimpleSpecAliases'
+import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
@@ -25,7 +25,7 @@ import { Widget_shared } from '../fields/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from '../fields/size/WidgetSize'
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { SimpleBlueprint } from './SimpleSpec'
+import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
 export class SimpleDomain implements IDomain {

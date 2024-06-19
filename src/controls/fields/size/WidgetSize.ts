@@ -2,7 +2,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { IBlueprint } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
-import type { Problem_Ext } from '../../Validation'
+import type { Problem_Ext } from '../../model/Validation'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { runInAction } from 'mobx'

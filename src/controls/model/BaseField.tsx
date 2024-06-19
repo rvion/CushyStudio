@@ -4,11 +4,11 @@ import type { CovariantFC } from '../../csuite/variance/CovariantFC'
 import type { ITreeElement } from '../../panels/libraryUI/tree/TreeEntry'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
-import type { Problem, Problem_Ext } from '../Validation'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { IBlueprint } from './IBlueprint'
 import type { Model } from './Model'
+import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -25,8 +25,8 @@ import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
-import { normalizeProblem } from '../Validation'
 import { $FieldSym } from './$FieldSym'
+import { normalizeProblem } from './Validation'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
