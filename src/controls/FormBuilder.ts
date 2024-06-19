@@ -5,11 +5,11 @@ import type { IDomain } from './IDomain'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
+import { mkFormAutoBuilder } from '../comfy/builder/AutoBuilder'
+import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from '../comfy/builder/EnumBuilder'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Blueprint } from './Blueprint'
-import { mkFormAutoBuilder } from './builder/AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './fields/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './fields/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './fields/choices/WidgetChoices'

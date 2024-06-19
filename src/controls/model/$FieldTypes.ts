@@ -1,6 +1,6 @@
-import type { BaseField } from './BaseField'
-import type { FieldConfig_CommonProperties } from './FieldConfig'
-import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { BaseField } from '../BaseField'
+import type { FieldConfig_CommonProperties } from '../FieldConfig'
+import type { FieldSerial_CommonProperties } from '../FieldSerial'
 
 /**
  * base widget type; default type-level param when we work with unknown widget

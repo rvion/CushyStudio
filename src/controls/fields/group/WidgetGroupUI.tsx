@@ -5,9 +5,9 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../../csuite/button/Button'
 import { bang } from '../../../csuite/utils/bang'
-import { WidgetsContainerUI } from '../../shared/WidgetsContainerUI'
-import { WidgetSingleLineSummaryUI } from '../../shared/WidgetSingleLineSummaryUI'
-import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { WidgetsContainerUI } from '../../widget/WidgetsContainerUI'
+import { WidgetSingleLineSummaryUI } from '../../widget/WidgetSingleLineSummaryUI'
+import { WidgetWithLabelUI } from '../../widget/WidgetWithLabelUI'
 
 // HEADER
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {

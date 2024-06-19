@@ -1,15 +1,15 @@
-import type { Widget_enum_config } from '../fields/enum/WidgetEnum'
-import type { Widget_selectMany_config } from '../fields/selectMany/WidgetSelectMany'
-import type { BaseSelectEntry } from '../fields/selectOne/WidgetSelectOne'
-import type { FormBuilder } from '../FormBuilder'
-import type { IBlueprint } from '../IBlueprint'
+import type { Widget_enum_config } from '../../controls/fields/enum/WidgetEnum'
+import type { Widget_selectMany_config } from '../../controls/fields/selectMany/WidgetSelectMany'
+import type { BaseSelectEntry } from '../../controls/fields/selectOne/WidgetSelectOne'
+import type { FormBuilder } from '../../controls/FormBuilder'
+import type { IBlueprint } from '../../controls/IBlueprint'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Model } from '../Model'
+import type { Model } from '../../controls/Model'
 
-import { Blueprint } from '../Blueprint'
+import { Blueprint } from '../../controls/Blueprint'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (

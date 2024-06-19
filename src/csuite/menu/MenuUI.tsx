@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
-import { isWidget } from '../../controls/$FieldSym'
+import { isWidget } from '../../controls/model/$FieldSym'
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
 import { IkonOf } from '../icons/iconHelpers'
