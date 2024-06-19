@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -20,7 +20,7 @@ export type Widget_optional_config<T extends IBlueprint = IBlueprint> = WidgetCo
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = WidgetSerial<{
+export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean

@@ -1,8 +1,8 @@
 import type { IconName } from '../../../csuite/icons/icons'
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -58,7 +58,7 @@ export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
 })
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerial<{
+export type Widget_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectOne'
     query: string
     val: T

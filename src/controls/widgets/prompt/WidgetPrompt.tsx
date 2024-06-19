@@ -1,9 +1,9 @@
 import type { Timestamp } from '../../../cards/Timestamp'
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { Tree } from '@lezer/common'
 
 import { nanoid } from 'nanoid'
@@ -42,7 +42,7 @@ export const Widget_prompt_fromValue = (val: Widget_prompt_value): Widget_prompt
 })
 
 // SERIAL
-export type Widget_prompt_serial = WidgetSerial<{
+export type Widget_prompt_serial = FieldSerial<{
     type: 'prompt'
     val?: string
 }>

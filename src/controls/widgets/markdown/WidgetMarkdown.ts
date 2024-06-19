@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -21,7 +21,7 @@ export type Widget_markdown_config = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_markdown_serial = WidgetSerial<{
+export type Widget_markdown_serial = FieldSerial<{
     type: 'markdown'
     active: true
 }>

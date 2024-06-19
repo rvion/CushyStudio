@@ -1,4 +1,4 @@
-import type { FormSerial } from '../../controls/FormSerial'
+import type { ModelSerial } from '../../controls/FormSerial'
 
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -25,7 +25,7 @@ export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanels
 const HANDLE = registerCustomPanel(
     'myCustomPanel',
     observer((p: { name: string }) => {
-        const store = usePanelTemporaryData((): { data: Maybe<FormSerial> } =>
+        const store = usePanelTemporaryData((): { data: Maybe<ModelSerial> } =>
             observable({
                 data: null,
             }),

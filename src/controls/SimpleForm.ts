@@ -1,4 +1,4 @@
-import { ModelManager } from './FormManager'
+import { ModelManager } from './ModelManager'
 import { SimpleFormBuilder } from './SimpleFormBuilder'
 
 // MOVE THIS FILE AS REEXPORT ENTRYPOINT
@@ -6,7 +6,7 @@ export { CSuiteProvider } from '../csuite/ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from '../csuite/ctx/CSuite_ThemeLoco'
 
 export type { IDomain as IFormBuilder } from './IFormBuilder'
-export type { FormSerial } from './FormSerial'
+export type { ModelSerial as FormSerial } from './FormSerial'
 export type { ModelConfig as FormProperties } from './Model'
 export type { SchemaDict, IBlueprint as ISpec } from './IBlueprint'
 export type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'

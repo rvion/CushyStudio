@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -21,7 +21,7 @@ export type OrbitData = {
 export type Widget_orbit_config = WidgetConfig<{ default?: Partial<OrbitData> }, Widget_orbit_types>
 
 // SERIAL
-export type Widget_orbit_serial = WidgetSerial<{
+export type Widget_orbit_serial = FieldSerial<{
     type: 'orbit'
     value: OrbitData
 }>

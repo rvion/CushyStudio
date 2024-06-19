@@ -1,10 +1,10 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -26,7 +26,7 @@ export type Widget_enum_config<O> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = WidgetSerial<{
+export type Widget_enum_serial<O> = FieldSerial<{
     type: 'enum'
     active: true
     val: O

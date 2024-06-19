@@ -1,8 +1,8 @@
 import type { BaseField } from './BaseField'
-import type { ModelManager } from './FormManager'
-import type { FormSerial } from './FormSerial'
+import type { ModelSerial } from './FormSerial'
 import type { IBlueprint } from './IBlueprint'
 import type { IDomain } from './IFormBuilder'
+import type { ModelManager } from './ModelManager'
 import type { CovariantFn2 } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
@@ -24,7 +24,7 @@ export type ModelConfig<
     name: string
     onSerialChange?: (form: Model<ROOT, DOMAIN>) => void
     onValueChange?: (form: Model<ROOT, DOMAIN>) => void
-    initialSerial?: (context: CONTEXT) => Maybe<FormSerial>
+    initialSerial?: (context: CONTEXT) => Maybe<ModelSerial>
 }
 
 export class Model<
@@ -88,7 +88,7 @@ export class Model<
         return this.root.value
     }
 
-    get serial(): FormSerial {
+    get serial(): ModelSerial {
         return {
             type: 'FormSerial',
             uid: this.uid,

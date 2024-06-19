@@ -1,6 +1,6 @@
 import type { BaseField } from './BaseField'
+import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { WidgetConfig_CommonProperties } from './WidgetConfig'
-import type { WidgetSerial_CommonProperties } from './WidgetSerialFields'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -10,7 +10,7 @@ import type { WidgetSerial_CommonProperties } from './WidgetSerialFields'
 export type $FieldTypes = {
     $Type: string
     $Config: WidgetConfig_CommonProperties<any>
-    $Serial: WidgetSerial_CommonProperties
+    $Serial: FieldSerial_CommonProperties
     $Value: any
     $Field: BaseField
 }

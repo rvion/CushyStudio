@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -18,7 +18,7 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
 export type Widget_spacer_config = WidgetConfig<{}, Widget_spacer_types>
 
 // SERIAL
-export type Widget_spacer_serial = WidgetSerial<{ type: 'spacer' }>
+export type Widget_spacer_serial = FieldSerial<{ type: 'spacer' }>
 
 // SERIAL FROM VALUE
 export const Widget_spacer_fromValue = (val: Widget_spacer_value): Widget_spacer_serial => ({

@@ -1,7 +1,7 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -31,7 +31,7 @@ export type Widget_number_config = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_number_serial = WidgetSerial<{ type: 'number'; val: number }>
+export type Widget_number_serial = FieldSerial<{ type: 'number'; val: number }>
 
 // VALUE
 export type Widget_number_value = number

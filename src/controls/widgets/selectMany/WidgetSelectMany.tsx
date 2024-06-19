@@ -1,7 +1,7 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
 import { runInAction } from 'mobx'
@@ -45,7 +45,7 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerial<{
+export type Widget_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectMany'
     query: string
     values: T[]

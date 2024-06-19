@@ -1,9 +1,9 @@
 import type { IconName } from '../../../csuite/icons/icons'
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -36,7 +36,7 @@ export type Widget_string_config = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_string_serial = WidgetSerial<{ type: 'str'; val?: string }>
+export type Widget_string_serial = FieldSerial<{ type: 'str'; val?: string }>
 
 // SERIAL FROM VALUE
 export const Widget_string_fromValue = (val: string): Widget_string_serial => ({

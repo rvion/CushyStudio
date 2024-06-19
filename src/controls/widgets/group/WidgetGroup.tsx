@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -29,7 +29,7 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_group_serial<T extends SchemaDict> = WidgetSerial<{
+export type Widget_group_serial<T extends SchemaDict> = FieldSerial<{
     type: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>

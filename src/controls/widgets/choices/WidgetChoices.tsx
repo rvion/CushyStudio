@@ -1,8 +1,8 @@
+import type { FieldSerial, FieldSerial_CommonProperties } from '../../FieldSerial'
 import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial, WidgetSerial_CommonProperties } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -32,7 +32,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
 >
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerial<{
+export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
     type: 'choices'
     active: true
     branches: DefaultBranches<T>
@@ -258,7 +258,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
         // prev serial seems compmatible => we use it
-        const prevBranchSerial: Maybe<WidgetSerial_CommonProperties> = this.serial.values_?.[branch]
+        const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
             this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
         }

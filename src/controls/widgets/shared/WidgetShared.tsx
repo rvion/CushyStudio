@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { nanoid } from 'nanoid'
 
@@ -21,7 +21,7 @@ export type Widget_shared_config<T extends IBlueprint = IBlueprint> = WidgetConf
 >
 
 // SERIAL
-export type Widget_shared_serial = WidgetSerial<{
+export type Widget_shared_serial = FieldSerial<{
     type: 'shared'
 }>
 

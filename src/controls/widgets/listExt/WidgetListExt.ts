@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { runInAction } from 'mobx'
@@ -32,7 +32,7 @@ export type Widget_listExt_config<T extends IBlueprint> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends IBlueprint> = WidgetSerial<{
+export type Widget_listExt_serial<T extends IBlueprint> = FieldSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number

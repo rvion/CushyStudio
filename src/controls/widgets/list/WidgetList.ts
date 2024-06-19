@@ -1,7 +1,7 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -59,7 +59,7 @@ export type Widget_list_config<T extends IBlueprint> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_list_serial<T extends IBlueprint> = WidgetSerial<{
+export type Widget_list_serial<T extends IBlueprint> = FieldSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>

@@ -17,5 +17,3 @@ export interface Producer<T, W> {
     chan: Channel<T> | ChannelId
     produce: CovariantFn<W, T>
 }
-
-// export const $EmptyChannel = Symbol('EmptyChannel')

@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { runInAction } from 'mobx'
@@ -25,7 +25,7 @@ export type Widget_size_config = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_size_serial = WidgetSerial<CushySize>
+export type Widget_size_serial = FieldSerial<CushySize>
 
 // SERIAL FROM VALUE
 export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({

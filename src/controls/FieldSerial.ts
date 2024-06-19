@@ -1,8 +1,8 @@
 /** helper to define widget serial types */
-export type WidgetSerial<X> = X & WidgetSerial_CommonProperties
+export type FieldSerial<X> = X & FieldSerial_CommonProperties
 
 /** common properties we expect to see in a widget serial */
-export type WidgetSerial_CommonProperties = {
+export type FieldSerial_CommonProperties = {
     id?: string
     /** name of the widget, so we can later re-instanciate a widget from this */
     type: string

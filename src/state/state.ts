@@ -2,7 +2,7 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
-import type { FormSerial } from '../controls/FormSerial'
+import type { ModelSerial } from '../controls/FormSerial'
 import type { Tint } from '../csuite/kolor/Tint'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
@@ -501,7 +501,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialSerial: () => readJSON<FormSerial>('settings/displacement.json'),
+            initialSerial: () => readJSON<ModelSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )

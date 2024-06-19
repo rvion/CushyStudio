@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
@@ -26,7 +26,7 @@ export type Widget_custom_config<T> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_custom_serial<T> = WidgetSerial<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_serial<T> = FieldSerial<{ type: 'custom'; active: true; value: T }>
 
 // VALUE
 export type Widget_custom_value<T> = T

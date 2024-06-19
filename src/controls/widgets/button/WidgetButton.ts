@@ -1,9 +1,9 @@
 import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -33,7 +33,7 @@ export type Widget_button_config<K = any> = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_button_serial = WidgetSerial<{
+export type Widget_button_serial = FieldSerial<{
     type: 'button'
     val: boolean
 }>

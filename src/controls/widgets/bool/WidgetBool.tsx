@@ -1,8 +1,8 @@
+import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
-import type { WidgetSerial } from '../../WidgetSerialFields'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -54,7 +54,7 @@ export type Widget_bool_config = WidgetConfig<
 >
 
 // SERIAL
-export type Widget_bool_serial = WidgetSerial<{ type: 'bool'; active: boolean }>
+export type Widget_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
 
 // VALUE
 export type Widget_bool_value = boolean
