@@ -1,7 +1,7 @@
 import type { DraftL } from '../../../../models/Draft'
-import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import type { ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
 
-import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
+import { DraftFavoriteBtnUI } from './misc/CardPicker2UI'
 
 export class TreeDraft implements ITreeEntry {
     get name() { return `${this.draft.name}` } // prettier-ignore

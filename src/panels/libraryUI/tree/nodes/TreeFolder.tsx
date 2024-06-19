@@ -1,4 +1,4 @@
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
 
 import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -6,7 +6,7 @@ import { basename } from 'pathe'
 
 import { shouldSkip } from '../../../../cards/shouldSkip'
 import { asRelativePath } from '../../../../utils/fs/pathUtils'
-import { TreeNode } from '../xxx/TreeNode'
+import { TreeNode } from '../tree/TreeNode'
 import { TreeFile } from './TreeFile'
 
 export class TreeFolder implements ITreeEntry<RelativePath> {

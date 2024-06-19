@@ -1,4 +1,4 @@
-import type { ITreeElement } from '../TreeEntry'
+import type { ITreeElement } from './TreeEntry'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'

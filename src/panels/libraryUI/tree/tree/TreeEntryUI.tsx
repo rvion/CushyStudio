@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 
 import { Ikon } from '../../../../csuite/icons/iconHelpers'
-import { RenderItemTitleUI } from '../RenderItemTitleUI'
+import { RenderItemTitleUI } from './RenderItemTitleUI'
 import { useTreeView } from './TreeCtx'
 
 export const TreeEntryUI = observer(function TreeEntryUI_(p: {

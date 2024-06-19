@@ -1,5 +1,5 @@
 import type { TreeEntryAction } from './TreeEntry'
-import type { TreeNode } from './xxx/TreeNode'
+import type { TreeNode } from './TreeNode'
 
 import { observer } from 'mobx-react-lite'
 

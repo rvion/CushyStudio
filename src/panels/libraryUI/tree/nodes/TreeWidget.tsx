@@ -1,6 +1,6 @@
 import type { BaseField } from '../../../../controls/model/BaseField'
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import type { TreeNode } from '../xxx/TreeNode'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
+import type { TreeNode } from '../tree/TreeNode'
 
 import { makeAutoObservable } from 'mobx'
 

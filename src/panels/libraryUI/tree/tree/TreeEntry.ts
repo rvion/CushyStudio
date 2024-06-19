@@ -1,4 +1,4 @@
-import type { TreeNode } from './xxx/TreeNode'
+import type { TreeNode } from './TreeNode'
 import type { ReactNode } from 'react'
 
 export type TreeItemID = string

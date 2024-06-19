@@ -1,5 +1,5 @@
-import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { INodeStore, Tree } from './Tree'
+import type { ITreeElement, ITreeEntry } from './TreeEntry'
 
 import { makeAutoObservable } from 'mobx'
 

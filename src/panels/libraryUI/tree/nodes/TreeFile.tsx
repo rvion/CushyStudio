@@ -1,4 +1,4 @@
-import type { TreeNode } from '../xxx/TreeNode'
+import type { TreeNode } from '../tree/TreeNode'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
@@ -6,7 +6,7 @@ import { cwd } from 'process'
 
 import { LibraryFile, type ScriptExtractionResult } from '../../../../cards/LibraryFile'
 import { assets } from '../../../../utils/assets/assets'
-import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
 import { TreeApp } from './TreeApp'
 
 export class TreeFile implements ITreeEntry {

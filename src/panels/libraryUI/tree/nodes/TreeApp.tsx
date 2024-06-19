@@ -1,13 +1,13 @@
 import type { CushyAppL } from '../../../../models/CushyApp'
 import type { DraftL } from '../../../../models/Draft'
-import type { VirtualFolder } from '../../VirtualHierarchy'
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import type { TreeNode } from '../xxx/TreeNode'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
+import type { TreeNode } from '../tree/TreeNode'
+import type { VirtualFolder } from '../tree/VirtualHierarchy'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { AppFavoriteBtnUI } from '../../CardPicker2UI'
+import { AppFavoriteBtnUI } from './misc/CardPicker2UI'
 import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
 

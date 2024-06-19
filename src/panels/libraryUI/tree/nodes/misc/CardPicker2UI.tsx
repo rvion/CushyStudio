@@ -1,5 +1,5 @@
-import type { CushyAppL } from '../../models/CushyApp'
-import type { DraftL } from '../../models/Draft'
+import type { CushyAppL } from '../../../../../models/CushyApp'
+import type { DraftL } from '../../../../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 

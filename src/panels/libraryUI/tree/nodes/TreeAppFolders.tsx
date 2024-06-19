@@ -1,7 +1,7 @@
 import type { CushyAppL } from '../../../../models/CushyApp'
-import type { VirtualFolder } from '../../VirtualHierarchy'
-import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { TreeNode } from '../xxx/TreeNode'
+import type { ITreeElement, ITreeEntry } from '../tree/TreeEntry'
+import type { TreeNode } from '../tree/TreeNode'
+import type { VirtualFolder } from '../tree/VirtualHierarchy'
 
 import { basename } from 'pathe'
 
