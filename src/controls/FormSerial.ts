@@ -1,4 +1,4 @@
-import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { FieldSerial_CommonProperties } from './model/FieldSerial'
 
 /** quick type alias used for unknown serial; for now, default to shared fields */
 export type AnyWidgetSerial = FieldSerial_CommonProperties /* {} */

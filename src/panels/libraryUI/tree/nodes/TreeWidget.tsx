@@ -1,4 +1,4 @@
-import type { BaseField } from '../../../../controls/BaseField'
+import type { BaseField } from '../../../../controls/model/BaseField'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
 

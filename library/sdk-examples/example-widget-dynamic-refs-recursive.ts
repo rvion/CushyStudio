@@ -1,10 +1,10 @@
-import type { Blueprint } from '../../src/controls/Blueprint'
 import type { Widget_choices } from '../../src/controls/fields/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/fields/group/WidgetGroup'
 import type { Widget_image } from '../../src/controls/fields/image/WidgetImage'
 import type { Widget_list } from '../../src/controls/fields/list/WidgetList'
 import type { Widget_selectOne } from '../../src/controls/fields/selectOne/WidgetSelectOne'
 import type { Model } from '../../src/controls/Model'
+import type { Blueprint } from '../../src/controls/model/Blueprint'
 
 app({
     ui: (form) => ({

@@ -1,4 +1,4 @@
-import type { CovariantFn } from '../csuite/variance/BivariantHack'
+import type { CovariantFn } from '../../csuite/variance/BivariantHack'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

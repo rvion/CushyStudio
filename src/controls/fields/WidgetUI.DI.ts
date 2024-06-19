@@ -8,7 +8,7 @@
 | build to include those.
 
 */
-import type { BaseField } from '../BaseField'
+import type { BaseField } from '../model/BaseField'
 import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_optional } from './optional/WidgetOptional'
 import type { Widget_shared } from './shared/WidgetShared'

@@ -1,5 +1,5 @@
 import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
-import type { BaseField } from '../BaseField'
+import type { BaseField } from '../model/BaseField'
 
 import { observer } from 'mobx-react-lite'
 

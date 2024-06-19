@@ -1,5 +1,5 @@
-import type { BaseField } from '../BaseField'
 import type { Widget_optional } from '../fields/optional/WidgetOptional'
+import type { BaseField } from '../model/BaseField'
 
 import { observer } from 'mobx-react-lite'
 

@@ -1,5 +1,3 @@
-import type { Blueprint } from '../../controls/Blueprint'
-import type { FieldConfig } from '../../controls/FieldConfig'
 import type { Widget_bool } from '../../controls/fields/bool/WidgetBool'
 import type { Widget_enum, Widget_enum_config } from '../../controls/fields/enum/WidgetEnum'
 import type { Widget_group } from '../../controls/fields/group/WidgetGroup'
@@ -7,6 +5,8 @@ import type { Widget_number } from '../../controls/fields/number/WidgetNumber'
 import type { Widget_prompt } from '../../controls/fields/prompt/WidgetPrompt'
 import type { Widget_string } from '../../controls/fields/string/WidgetString'
 import type { FormBuilder } from '../../controls/FormBuilder'
+import type { Blueprint } from '../../controls/model/Blueprint'
+import type { FieldConfig } from '../../controls/model/FieldConfig'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'

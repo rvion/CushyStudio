@@ -1,14 +1,14 @@
-import type { FieldConfig } from '../../FieldConfig'
-import type { FieldSerial, FieldSerial_CommonProperties } from '../../FieldSerial'
 import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
+import type { FieldConfig } from '../../model/FieldConfig'
+import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
 import type { Problem_Ext } from '../../Validation'
 
 import { nanoid } from 'nanoid'
 
 import { makeLabelFromFieldName } from '../../../csuite/utils/makeLabelFromFieldName'
 import { toastError } from '../../../csuite/utils/toasts'
-import { BaseField } from '../../BaseField'
+import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 

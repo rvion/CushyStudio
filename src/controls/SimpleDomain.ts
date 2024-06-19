@@ -1,8 +1,8 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
-import type { BaseField } from './BaseField'
 import type { IBlueprint, SchemaDict } from './IBlueprint'
 import type { IDomain } from './IDomain'
 import type { Model } from './Model'
+import type { BaseField } from './model/BaseField'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'

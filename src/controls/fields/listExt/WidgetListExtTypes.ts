@@ -1,4 +1,4 @@
-import type { BaseField } from '../../BaseField'
+import type { BaseField } from '../../model/BaseField'
 
 export type BoardSize = {
     width: number

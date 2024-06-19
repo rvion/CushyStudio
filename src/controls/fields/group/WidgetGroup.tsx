@@ -1,15 +1,15 @@
-import type { FieldConfig } from '../../FieldConfig'
-import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
+import type { FieldConfig } from '../../model/FieldConfig'
+import type { FieldSerial } from '../../model/FieldSerial'
 import type { Problem_Ext } from '../../Validation'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
-import { BaseField } from '../../BaseField'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
+import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 

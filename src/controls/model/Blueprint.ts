@@ -1,16 +1,16 @@
-import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
+import type { Requirements } from '../../manager/REQUIREMENTS/Requirements'
+import type { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
+import type { Widget_optional } from '../fields/optional/WidgetOptional'
+import type { Widget_shared } from '../fields/shared/WidgetShared'
+import type { IBlueprint } from '../IBlueprint'
 import type { BaseField } from './BaseField'
-import type { Widget_list, Widget_list_config } from './fields/list/WidgetList'
-import type { Widget_optional } from './fields/optional/WidgetOptional'
-import type { Widget_shared } from './fields/shared/WidgetShared'
-import type { IBlueprint } from './IBlueprint'
 
 import { createElement } from 'react'
 
-import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { getCurrentForm_IMPL } from '../context/runWithGlobalForm'
+import { isWidgetOptional } from '../fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from './Channel'
-import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
-import { isWidgetOptional } from './fields/WidgetUI.DI'
 
 export class Blueprint<Field extends BaseField = BaseField> implements IBlueprint<Field> {
     $Field!: Field

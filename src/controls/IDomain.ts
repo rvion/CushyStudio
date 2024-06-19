@@ -1,8 +1,8 @@
-import type { BaseField } from './BaseField'
 import type { Widget_group, Widget_group_config } from './fields/group/WidgetGroup'
 import type { Widget_shared } from './fields/shared/WidgetShared'
 import type { IBlueprint } from './IBlueprint'
 import type { Model } from './Model'
+import type { BaseField } from './model/BaseField'
 
 export interface IDomain {
     _cache: { count: number }

@@ -1,9 +1,9 @@
 import type { CovariantFn2 } from '../csuite/variance/BivariantHack'
-import type { BaseField } from './BaseField'
 import type { Widget_group, Widget_group_serial } from './fields/group/WidgetGroup'
 import type { ModelSerial } from './FormSerial'
 import type { IBlueprint } from './IBlueprint'
 import type { IDomain } from './IDomain'
+import type { BaseField } from './model/BaseField'
 import type { ModelManager } from './ModelManager'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'

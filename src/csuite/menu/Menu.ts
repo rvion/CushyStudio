@@ -1,4 +1,4 @@
-import type { BaseField } from '../../controls/BaseField'
+import type { BaseField } from '../../controls/model/BaseField'
 import type { BoundCommand } from '../commands/Command'
 import type { NO_PROPS } from '../NO_PROPS'
 import type { Trigger } from '../trigger/Trigger'

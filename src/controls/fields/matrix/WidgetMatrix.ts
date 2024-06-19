@@ -1,7 +1,7 @@
-import type { FieldConfig } from '../../FieldConfig'
-import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
+import type { FieldConfig } from '../../model/FieldConfig'
+import type { FieldSerial } from '../../model/FieldSerial'
 import type { Problem_Ext } from '../../Validation'
 
 import { runInAction } from 'mobx'
@@ -9,7 +9,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseField } from '../../BaseField'
+import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 

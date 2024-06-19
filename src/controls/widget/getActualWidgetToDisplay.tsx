@@ -1,4 +1,4 @@
-import type { BaseField } from '../BaseField'
+import type { BaseField } from '../model/BaseField'
 
 import { isWidgetOptional, isWidgetShared } from '../fields/WidgetUI.DI'
 

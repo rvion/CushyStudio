@@ -11,7 +11,7 @@ export type { ModelConfig as FormProperties } from './Model'
 export type { SchemaDict, IBlueprint as ISpec } from './IBlueprint'
 export type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 export type * from './SimpleSpecAliases'
-export { Channel } from './Channel'
+export { Channel } from './model/Channel'
 export { ActivityContainerUI, ActivityStackUI } from '../csuite/activity/ActivityUI'
 
 export const SimpleModelManager: ModelManager<SimpleDomain> = new ModelManager(SimpleDomain)

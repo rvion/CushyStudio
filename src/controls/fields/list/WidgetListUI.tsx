@@ -1,5 +1,5 @@
-import type { BaseField } from '../../BaseField'
 import type { IBlueprint } from '../../IBlueprint'
+import type { BaseField } from '../../model/BaseField'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'

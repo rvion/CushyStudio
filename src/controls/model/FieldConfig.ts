@@ -1,9 +1,9 @@
-import type { Box } from '../csuite/box/Box'
-import type { IconName } from '../csuite/icons/icons'
-import type { TintExt } from '../csuite/kolor/Tint'
-import type { CovariantFn } from '../csuite/variance/BivariantHack'
-import type { $FieldTypes } from './model/$FieldTypes'
-import type { Problem_Ext } from './Validation'
+import type { Box } from '../../csuite/box/Box'
+import type { IconName } from '../../csuite/icons/icons'
+import type { TintExt } from '../../csuite/kolor/Tint'
+import type { CovariantFn } from '../../csuite/variance/BivariantHack'
+import type { Problem_Ext } from '../Validation'
+import type { $FieldTypes } from './$FieldTypes'
 
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
 
