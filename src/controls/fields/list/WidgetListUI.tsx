@@ -10,7 +10,7 @@ import { ErrorBoundaryUI } from '../../../csuite/errors/ErrorBoundaryUI'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { Frame } from '../../../csuite/frame/Frame'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
-import { menu_widgetActions } from '../../widget/WidgetMenu'
+import { menu_widgetActions } from '../../form/WidgetMenu'
 import { SpacerUI } from '../spacer/SpacerUI'
 import { ListControlsUI } from './ListControlsUI'
 

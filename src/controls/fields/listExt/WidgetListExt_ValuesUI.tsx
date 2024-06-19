@@ -4,7 +4,7 @@ import type { Widget_listExt } from './WidgetListExt'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../../csuite/button/Button'
-import { WidgetWithLabelUI } from '../../widget/WidgetWithLabelUI'
+import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends IBlueprint>(p: {
     //

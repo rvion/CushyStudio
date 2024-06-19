@@ -5,8 +5,8 @@ import type { BaseField } from './model/BaseField'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { runWithGlobalForm } from './context/runWithGlobalForm'
 import { Model, ModelConfig } from './Model'
+import { runWithGlobalForm } from './model/runWithGlobalForm'
 
 export type NoContext = null
 

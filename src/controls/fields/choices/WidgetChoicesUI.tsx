@@ -6,8 +6,8 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 import { useCSuite } from '../../../csuite/ctx/useCSuite'
 import { SelectUI } from '../../../csuite/select/SelectUI'
-import { WidgetsContainerUI } from '../../widget/WidgetsContainerUI'
-import { WidgetWithLabelUI } from '../../widget/WidgetWithLabelUI'
+import { WidgetsContainerUI } from '../../form/WidgetsContainerUI'
+import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {

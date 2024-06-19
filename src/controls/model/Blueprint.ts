@@ -8,9 +8,9 @@ import type { BaseField } from './BaseField'
 import { createElement } from 'react'
 
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { getCurrentForm_IMPL } from '../context/runWithGlobalForm'
 import { isWidgetOptional } from '../fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from './Channel'
+import { getCurrentForm_IMPL } from './runWithGlobalForm'
 
 export class Blueprint<Field extends BaseField = BaseField> implements IBlueprint<Field> {
     $Field!: Field

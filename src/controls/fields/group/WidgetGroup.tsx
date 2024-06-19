@@ -8,8 +8,8 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
-import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { BaseField } from '../../model/BaseField'
+import { runWithGlobalForm } from '../../model/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 

@@ -8,8 +8,8 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
 import { clampOpt } from '../../../csuite/utils/clamp'
-import { runWithGlobalForm } from '../../context/runWithGlobalForm'
 import { BaseField } from '../../model/BaseField'
+import { runWithGlobalForm } from '../../model/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 

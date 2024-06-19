@@ -8,7 +8,7 @@ import type { SList, SOptional } from './SimpleSpecAliases'
 
 import { makeObservable } from 'mobx'
 
-import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
+import { getCurrentForm_IMPL } from './model/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 

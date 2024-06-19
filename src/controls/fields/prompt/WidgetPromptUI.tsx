@@ -8,7 +8,7 @@ import { InputBoolToggleButtonUI } from '../../../csuite/checkbox/InputBoolToggl
 import { Frame } from '../../../csuite/frame/Frame'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
-import { WidgetSingleLineSummaryUI } from '../../widget/WidgetSingleLineSummaryUI'
+import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 import { PromptEditorUI } from './__TEMP__'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
