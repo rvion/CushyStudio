@@ -47,7 +47,7 @@ export type Widget_matrix_types = {
     $Config: Widget_matrix_config
     $Serial: Widget_matrix_serial
     $Value: Widget_matrix_value
-    $Widget: Widget_matrix
+    $Field: Widget_matrix
 }
 
 // STATE

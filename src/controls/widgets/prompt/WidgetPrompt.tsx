@@ -56,7 +56,7 @@ export type Widget_prompt_types = {
     $Config: Widget_prompt_config
     $Serial: Widget_prompt_serial
     $Value: Widget_prompt_value
-    $Widget: Widget_prompt
+    $Field: Widget_prompt
 }
 
 // STATE

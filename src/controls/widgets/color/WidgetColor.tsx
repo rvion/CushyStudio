@@ -30,7 +30,7 @@ export type Widget_color_types = {
     $Config: Widget_color_config
     $Serial: Widget_color_serial
     $Value: Widget_color_value
-    $Widget: Widget_color
+    $Field: Widget_color
 }
 
 // STATE

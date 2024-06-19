@@ -1,7 +1,7 @@
 import type { IconName } from '../csuite/icons/icons'
 import type { TintExt } from '../csuite/kolor/Tint'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
-import type { $FieldTypes } from './$WidgetTypes'
+import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { IBlueprint } from './IBlueprint'
 import type { Model } from './Model'
@@ -16,7 +16,7 @@ import { observer } from 'mobx-react-lite'
 import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
-import { $WidgetSym } from './$WidgetSym'
+import { $FieldSym } from './$FieldSym'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
@@ -41,7 +41,7 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
 }
 
 // v3 (experimental) ---------------------------------------
@@ -50,7 +50,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
     // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
     // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
-    // $Widget!: K['$Widget'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
 
     /** spec used to instanciate this widget */
     abstract spec: IBlueprint
@@ -75,10 +75,10 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */
-    abstract readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
+    abstract readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Field'] }> | undefined
 
     /** default body UI */
-    abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
+    abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Field'] }> | undefined
 
     UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
@@ -157,7 +157,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
      */
     // abstract readonly defaultValue: this['spec']['$Value'] |
 
-    $WidgetSym: typeof $WidgetSym = $WidgetSym
+    $FieldSym: typeof $FieldSym = $FieldSym
 
     /**
      * when this widget or one of its descendant publishes a value,

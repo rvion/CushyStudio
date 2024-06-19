@@ -45,7 +45,7 @@ export type Widget_group_types<T extends SchemaDict> = {
     $Config: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
     $Value: Widget_group_value<T>
-    $Widget: Widget_group<T>
+    $Field: Widget_group<T>
 }
 
 // STATE
@@ -80,11 +80,11 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         return Object.entries(this.fields) as [string, BaseField][]
     }
 
-    at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
+    at = <K extends keyof T>(key: K): T[K]['$Field'] => this.fields[key]
     get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
 
     /** the dict of all child widgets */
-    fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
+    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
 
     private _defaultSerial = (): Widget_group_serial<T> => {

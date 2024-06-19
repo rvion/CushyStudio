@@ -10,7 +10,7 @@ export interface IBlueprint<out W extends BaseField = BaseField> {
     config: W['$Config']
 
     // type utils
-    $Widget: W
+    $Field: W
     $Type: W['type']
     $Config: W['$Config']
     $Serial: W['$Serial']
@@ -21,9 +21,9 @@ export interface IBlueprint<out W extends BaseField = BaseField> {
 
     // -----------
     producers: Producer<any, any>[]
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Widget']) => T): this
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Widget']) => void): this
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Field']) => T): this
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Field']) => void): this
 
     reactions: { expr: (self: any) => any; effect: (arg: any, self: any) => void }[]
-    addReaction<T>(expr: (self: W['$Widget']) => T, effect: (arg: T, self: W['$Widget']) => void): this
+    addReaction<T>(expr: (self: W['$Field']) => T, effect: (arg: T, self: W['$Field']) => void): this
 }

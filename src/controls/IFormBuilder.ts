@@ -11,9 +11,9 @@ export interface IDomain {
         self: BaseField | null,
         spec: T,
         serial: any | null,
-    ) => T['$Widget']
+    ) => T['$Field']
     form: Model
-    // optional: <const T extends ISpec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
+    // optional: <const T extends ISpec<IWidget<$FieldTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
     shared: <W extends IBlueprint<any>>(key: string, spec: W) => Widget_shared<W>
     group: (config: Widget_group_config<any>) => IBlueprint<Widget_group<any>>
     SpecCtor: { new <T extends BaseField>(type: T['$Type'], config: T['$Config']): IBlueprint<T> }

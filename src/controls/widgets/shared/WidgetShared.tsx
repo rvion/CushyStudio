@@ -15,7 +15,7 @@ export type Widget_shared_config<T extends IBlueprint = IBlueprint> = WidgetConf
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
-        widget: T['$Widget']
+        widget: T['$Field']
     },
     Widget_shared_types<T>
 >
@@ -39,7 +39,7 @@ export type Widget_shared_types<T extends IBlueprint = IBlueprint> = {
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Widget: IBlueprint['$Widget']
+    $Field: IBlueprint['$Field']
 }
 
 // STATE
@@ -50,7 +50,7 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
-    $Widget!: T['$Widget']
+    $Field!: T['$Field']
 
     serial: Widget_shared_serial
 
@@ -61,7 +61,7 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
         return this.config.widget.reset()
     }
 
-    get shared(): T['$Widget'] {
+    get shared(): T['$Field'] {
         return this.config.widget
     }
 

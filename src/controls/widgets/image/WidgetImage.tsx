@@ -48,7 +48,7 @@ export type Widget_image_types = {
     $Config: Widget_image_config
     $Serial: Widget_image_serial
     $Value: Widget_image_value
-    $Widget: Widget_image
+    $Field: Widget_image
 }
 
 // STATE

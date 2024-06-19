@@ -35,7 +35,7 @@ export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
     $Value: Widget_optional_value<T>
-    $Widget: Widget_optional<T>
+    $Field: Widget_optional<T>
 }
 
 // STATE
@@ -75,9 +75,9 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         return null
     }
     serial: Widget_optional_serial<T>
-    child!: T['$Widget']
+    child!: T['$Field']
 
-    get childOrThrow(): T['$Widget'] {
+    get childOrThrow(): T['$Field'] {
         if (this.child == null) throw new Error('❌ optional active but child is null')
         return this.child
     }

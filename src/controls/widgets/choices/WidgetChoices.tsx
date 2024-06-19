@@ -50,7 +50,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Config: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
     $Value: Widget_choices_value<T>
-    $Widget: Widget_choices<T>
+    $Field: Widget_choices<T>
 }
 
 // STATE
@@ -77,7 +77,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return !this.config.multi
     }
 
-    children: { [k in keyof T]?: T[k]['$Widget'] } = {}
+    children: { [k in keyof T]?: T[k]['$Field'] } = {}
 
     serial: Widget_choices_serial<T>
 
@@ -108,7 +108,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return this.activeBranches[0]
     }
 
-    get firstActiveBranchWidget(): T[keyof T]['$Widget'] | undefined {
+    get firstActiveBranchWidget(): T[keyof T]['$Field'] | undefined {
         if (this.firstActiveBranchName == null) return undefined
         return this.children[this.firstActiveBranchName]
     }

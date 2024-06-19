@@ -47,7 +47,7 @@ export type Widget_button_types<K> = {
     $Config: Widget_button_config<K>
     $Serial: Widget_button_serial
     $Value: Widget_button_value
-    $Widget: Widget_button<K>
+    $Field: Widget_button<K>
 }
 
 // STATE

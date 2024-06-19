@@ -41,7 +41,7 @@ export type Widget_enum_types<O> = {
     $Config: Widget_enum_config<O>
     $Serial: Widget_enum_serial<O>
     $Value: Widget_enum_value<O>
-    $Widget: Widget_enum<O>
+    $Field: Widget_enum<O>
 }
 
 // STATE

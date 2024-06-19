@@ -69,7 +69,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
     $Config: Widget_selectMany_config<T>
     $Serial: Widget_selectMany_serial<T>
     $Value: Widget_selectMany_value<T>
-    $Widget: Widget_selectMany<T>
+    $Field: Widget_selectMany<T>
 }
 
 // STATE

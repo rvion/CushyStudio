@@ -13,7 +13,7 @@ import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 // Simple Spec --------------------------------------------------------
 
 export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W> {
-    $Widget!: W
+    $Field!: W
     $Type!: W['type']
     $Config!: W['$Config']
     $Serial!: W['$Serial']
@@ -22,13 +22,13 @@ export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W
     LabelExtraUI = (p: {}) => null
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, W['$Widget']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Widget']) => T): this {
+    producers: Producer<any, W['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Widget']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -39,13 +39,13 @@ export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W
     }
 
     reactions: {
-        expr: (self: W['$Widget']) => any
-        effect: (arg: any, self: W['$Widget']) => void
+        expr: (self: W['$Field']) => any
+        effect: (arg: any, self: W['$Field']) => void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: W['$Widget']) => T,
-        effect: (arg: T, self: W['$Widget']) => void,
+        expr: (self: W['$Field']) => T,
+        effect: (arg: T, self: W['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this

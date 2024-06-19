@@ -53,7 +53,7 @@ export type Widget_listExt_types<T extends IBlueprint> = {
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
     $Value: Widget_listExt_value<T>
-    $Widget: Widget_listExt<T>
+    $Field: Widget_listExt<T>
 }
 
 // STATE
@@ -102,12 +102,12 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         return state
     }
 
-    entries: { widget: T['$Widget']; shape: BoardPosition }[] = []
+    entries: { widget: T['$Field']; shape: BoardPosition }[] = []
 
     serial: Widget_listExt_serial<T>
 
     // for compatibility with Widget_list
-    get items(): T['$Widget'][] {
+    get items(): T['$Field'][] {
         return this.entries.map((i) => i.widget)
     }
 
@@ -216,7 +216,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         this.bumpValue()
     }
 
-    removeItem = (item: T['$Widget']) => {
+    removeItem = (item: T['$Field']) => {
         // ensure item is in the list
         const i = this.entries.findIndex((i) => i.widget === item)
         if (i < 0) return console.log(`[🔶] listExt.removeItem: item not found`)

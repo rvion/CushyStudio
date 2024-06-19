@@ -12,5 +12,5 @@ export type $FieldTypes = {
     $Config: WidgetConfig_CommonProperties<any>
     $Serial: WidgetSerial_CommonProperties
     $Value: any
-    $Widget: BaseField
+    $Field: BaseField
 }

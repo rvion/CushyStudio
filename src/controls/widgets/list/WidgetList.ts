@@ -16,10 +16,10 @@ import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 /** */
 type AutoBehaviour<T extends IBlueprint> = {
     /** list of keys that must be present */
-    keys: (self: T['$Widget']) => string[] // ['foo', 'bar', 'baz']
+    keys: (self: T['$Field']) => string[] // ['foo', 'bar', 'baz']
 
     /** for every item given by the list above */
-    getKey: (self: T['$Widget'], ix: number) => string
+    getKey: (self: T['$Field'], ix: number) => string
 
     /** once an item if  */
     init: (key: string /* foo */) => T['$Value']
@@ -73,7 +73,7 @@ export type Widget_list_types<T extends IBlueprint> = {
     $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
     $Value: Widget_list_value<T>
-    $Widget: Widget_list<T>
+    $Field: Widget_list<T>
 }
 
 // STATE
@@ -88,7 +88,7 @@ export class Widget_list<T extends IBlueprint> //
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
-    items: T['$Widget'][]
+    items: T['$Field'][]
     serial: Widget_list_serial<T>
 
     get hasChanges() {
@@ -118,7 +118,7 @@ export class Widget_list<T extends IBlueprint> //
         while (at != null) {
             at = at.parent
             if (at === this) {
-                return this.items.indexOf(child as T['$Widget'])
+                return this.items.indexOf(child as T['$Field'])
             }
             child = at
         }
@@ -304,7 +304,7 @@ export class Widget_list<T extends IBlueprint> //
         this.bumpValue()
     }
 
-    removeItem = (item: T['$Widget']) => {
+    removeItem = (item: T['$Field']) => {
         // ensure item is in the list
         const i = this.items.indexOf(item)
         if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)

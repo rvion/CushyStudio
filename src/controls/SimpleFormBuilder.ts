@@ -236,8 +236,8 @@ export class SimpleFormBuilder implements IDomain {
         parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): T['$Widget'] => {
-        const w = this.__HYDRATE(parent, spec, serial) as T['$Widget']
+    ): T['$Field'] => {
+        const w = this.__HYDRATE(parent, spec, serial) as T['$Field']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later
@@ -257,7 +257,7 @@ export class SimpleFormBuilder implements IDomain {
         parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): BaseField<any> /* T['$Widget'] */ => {
+    ): BaseField<any> /* T['$Field'] */ => {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)

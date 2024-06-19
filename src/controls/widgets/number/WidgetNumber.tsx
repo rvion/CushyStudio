@@ -42,7 +42,7 @@ export type Widget_number_types = {
     $Config: Widget_number_config
     $Serial: Widget_number_serial
     $Value: Widget_number_value
-    $Widget: Widget_number
+    $Field: Widget_number
 }
 
 // STATE

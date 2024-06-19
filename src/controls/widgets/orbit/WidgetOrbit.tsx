@@ -48,7 +48,7 @@ export type Widget_orbit_types = {
     $Config: Widget_orbit_config
     $Serial: Widget_orbit_serial
     $Value: Widget_orbit_value
-    $Widget: Widget_orbit
+    $Field: Widget_orbit
 }
 
 // STATE

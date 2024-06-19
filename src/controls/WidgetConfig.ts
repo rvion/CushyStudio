@@ -1,7 +1,7 @@
 import type { Box } from '../csuite/box/Box'
 import type { IconName } from '../csuite/icons/icons'
 import type { TintExt } from '../csuite/kolor/Tint'
-import type { $FieldTypes } from './$WidgetTypes'
+import type { $FieldTypes } from './$FieldTypes'
 import type { CovariantFn } from './utils/BivariantHack'
 import type { Problem_Ext } from './Validation'
 
@@ -20,7 +20,7 @@ export type WidgetConfig_CommonProperties<T extends $FieldTypes> = {
 
     // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
     // ❌ CHOKE typescript typechecking performances.
-    // icon?: IconName | CovariantFn<T['$Widget'], IconName> // IconName
+    // icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
 
     /**
      * @since 2024-05-19
@@ -35,23 +35,23 @@ export type WidgetConfig_CommonProperties<T extends $FieldTypes> = {
      * This function will be executed either on first creation, or when the
      * evaluationKey changes. The evaluationKey is stored in the group serial.
      */
-    onCreate?: CovariantFn<T['$Widget'], void> & { evaluationKey?: string }
+    onCreate?: CovariantFn<T['$Field'], void> & { evaluationKey?: string }
 
     /**
      * @since 2024-05-14
      * @stability beta
      * This function will be executed either on every widget instanciation.
      */
-    onInit?: CovariantFn<T['$Widget'], void>
+    onInit?: CovariantFn<T['$Field'], void>
 
     /** allow to specify custom headers */
-    header?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+    header?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
 
     /** allow to specify custom body */
-    body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+    body?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
 
     /** will be called when value changed */
-    onValueChange?: (val: T['$Value'], self: T['$Widget']) => void
+    onValueChange?: (val: T['$Value'], self: T['$Field']) => void
 
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]
@@ -65,7 +65,7 @@ export type WidgetConfig_CommonProperties<T extends $FieldTypes> = {
      *  - ["errMsg", ...]
      *  - "errMsg"
      * */
-    check?: (val: T['$Widget']) => Problem_Ext
+    check?: (val: T['$Field']) => Problem_Ext
 
     /**
      * The label to display.
@@ -123,5 +123,5 @@ export type WidgetMenuAction<T extends $FieldTypes> = {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName
-    apply: (form: T['$Widget']) => void
+    apply: (form: T['$Field']) => void
 }

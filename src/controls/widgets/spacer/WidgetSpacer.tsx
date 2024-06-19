@@ -34,7 +34,7 @@ export type Widget_spacer_types = {
     $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
     $Value: Widget_spacer_value
-    $Widget: Widget_spacer
+    $Field: Widget_spacer
 }
 
 // STATE

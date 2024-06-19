@@ -101,13 +101,13 @@ export class Model<
     }
 
     /** @deprecated ; only work when root is a Widget_group */
-    get fields(): ROOT extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } : never {
+    get fields(): ROOT extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
         if (isWidgetGroup(this.root)) return this.root.fields as any
         throw new Error('🔴 root is not a group')
     }
 
     // 🔴 👇 remove that
-    get root(): ROOT['$Widget'] {
+    get root(): ROOT['$Field'] {
         const root = this.init()
         Object.defineProperty(this, 'root', { value: root })
         return root
@@ -158,7 +158,7 @@ export class Model<
     builder: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
-    _ROOT!: ROOT['$Widget']
+    _ROOT!: ROOT['$Field']
 
     ready = false
 

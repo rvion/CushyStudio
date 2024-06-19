@@ -65,7 +65,7 @@ export type Widget_bool_types = {
     $Config: Widget_bool_config
     $Serial: Widget_bool_serial
     $Value: Widget_bool_value
-    $Widget: Widget_bool
+    $Field: Widget_bool
 }
 
 // STATE

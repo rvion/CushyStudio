@@ -13,7 +13,7 @@ import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
 export class Blueprint<Field extends BaseField = BaseField> implements IBlueprint<Field> {
-    $Widget!: Field
+    $Field!: Field
     $Type!: Field['type']
     $Config!: Field['$Config']
     $Serial!: Field['$Serial']
@@ -25,13 +25,13 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
             requirements: this.requirements,
         })
 
-    producers: Producer<any, Field['$Widget']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Widget']) => T): this {
+    producers: Producer<any, Field['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Widget']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -42,13 +42,13 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
     }
 
     reactions: {
-        expr: (self: Field['$Widget']) => any
-        effect: (arg: any, self: Field['$Widget']) => void
+        expr: (self: Field['$Field']) => any
+        effect: (arg: any, self: Field['$Field']) => void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: Field['$Widget']) => T,
-        effect: (arg: T, self: Field['$Widget']) => void,
+        expr: (self: Field['$Field']) => T,
+        effect: (arg: T, self: Field['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this

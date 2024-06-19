@@ -46,7 +46,7 @@ export type Widget_seed_types = {
     $Config: Widget_seed_config
     $Serial: Widget_seed_serial
     $Value: Widget_seed_value
-    $Widget: Widget_seed
+    $Field: Widget_seed
 }
 
 // STATE

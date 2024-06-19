@@ -53,7 +53,7 @@ export type Widget_string_types = {
     $Config: Widget_string_config
     $Serial: Widget_string_serial
     $Value: Widget_string_value
-    $Widget: Widget_string
+    $Field: Widget_string
 }
 
 // STATE
