@@ -1,7 +1,7 @@
 import type { IconName } from '../../csuite/icons/icons'
 import type { TintExt } from '../../csuite/kolor/Tint'
+import type { ITreeElement } from '../../csuite/tree/TreeEntry'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
-import type { ITreeElement } from '../../panels/libraryUI/tree/tree/TreeEntry'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { $FieldTypes } from './$FieldTypes'

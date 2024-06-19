@@ -8,11 +8,11 @@ import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
+import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { LiveInstance } from '../db/LiveInstance'
 import { LiveRef } from '../db/LiveRef'
 import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
-import { VirtualHierarchy } from '../panels/libraryUI/tree/tree/VirtualHierarchy'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
 export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}

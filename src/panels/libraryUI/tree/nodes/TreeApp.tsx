@@ -1,8 +1,8 @@
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
 import type { CushyAppL } from '../../../../models/CushyApp'
 import type { DraftL } from '../../../../models/Draft'
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
-import type { TreeNode } from '../tree/TreeNode'
-import type { VirtualFolder } from '../tree/VirtualHierarchy'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'

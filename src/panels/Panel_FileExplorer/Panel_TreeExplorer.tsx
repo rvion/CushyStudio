@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { TreeUI } from '../../csuite/tree/TreeUI'
 import { useSt } from '../../state/stateContext'
-import { TreeUI } from '../libraryUI/tree/tree/TreeUI'
 import { PanelHeaderUI } from '../PanelHeader'
 import { LibraryHeaderUI } from './TreeExplorerHeader'
 

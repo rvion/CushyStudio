@@ -2,10 +2,10 @@ import type { TreeView } from './TreeView'
 
 import { observer } from 'mobx-react-lite'
 
-import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
-import { ComboUI } from '../../../../csuite/accelerators/ComboUI'
-import { Ikon } from '../../../../csuite/icons/iconHelpers'
-import { RevealUI } from '../../../../csuite/reveal/RevealUI'
+import { KEYS } from '../../app/shortcuts/shorcutKeys'
+import { ComboUI } from '../accelerators/ComboUI'
+import { Ikon } from '../icons/iconHelpers'
+import { RevealUI } from '../reveal/RevealUI'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 

@@ -1,5 +1,5 @@
+import type { ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
 import type { DraftL } from '../../../../models/Draft'
-import type { ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
 
 import { DraftFavoriteBtnUI } from './misc/CardPicker2UI'
 

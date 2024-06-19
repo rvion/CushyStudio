@@ -9,9 +9,9 @@ import { menu } from '../../csuite/menu/Menu'
 import { SimpleMenuAction } from '../../csuite/menu/SimpleMenuAction'
 import { SimpleMenuModal } from '../../csuite/menu/SimpleMenuModal'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { Tree } from '../../panels/libraryUI/tree/tree/Tree'
-import { TreeUI } from '../../panels/libraryUI/tree/tree/TreeUI'
-import { TreeView } from '../../panels/libraryUI/tree/tree/TreeView'
+import { Tree } from '../../csuite/tree/Tree'
+import { TreeUI } from '../../csuite/tree/TreeUI'
+import { TreeView } from '../../csuite/tree/TreeView'
 
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
     return (
