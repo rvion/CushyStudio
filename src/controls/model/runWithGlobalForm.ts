@@ -1,4 +1,4 @@
-import type { IDomain } from '../IDomain'
+import type { IDomain } from './IDomain'
 
 import { nanoid } from 'nanoid'
 

@@ -1,6 +1,6 @@
 import type { CustomViewRef } from '../cards/App'
 import type { CompiledPrompt } from '../controls/fields/prompt/WidgetPrompt'
-import type { SchemaDict } from '../controls/IBlueprint'
+import type { SchemaDict } from '../controls/model/IBlueprint'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'

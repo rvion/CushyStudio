@@ -1,7 +1,7 @@
-import type { IBlueprint, SchemaDict } from '../../IBlueprint'
-import type { Model } from '../../Model'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
+import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
+import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../Validation'
 
 import { nanoid } from 'nanoid'

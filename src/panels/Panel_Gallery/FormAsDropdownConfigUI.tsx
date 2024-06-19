@@ -1,8 +1,8 @@
-import type { Model } from '../../controls/Model'
+import type { Model } from '../../controls/model/Model'
 
 import { observer } from 'mobx-react-lite'
 
-import { FormUI } from '../../controls/FormUI'
+import { FormUI } from '../../controls/form/FormUI'
 import { Button } from '../../csuite/button/Button'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../csuite/reveal/RevealUI'

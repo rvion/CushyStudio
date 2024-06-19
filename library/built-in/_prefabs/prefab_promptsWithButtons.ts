@@ -1,6 +1,6 @@
 /** by @Vinsi (slightly adapted) */
 
-import type { SchemaDict } from '../../../src/controls/IBlueprint'
+import type { SchemaDict } from '../../../src/controls/model/IBlueprint'
 import type { OutputFor } from '../../local/pony/_prefab_PonyDiffusion'
 
 // 📝 2024-06-14 rvion: explicitly adding types is optional;

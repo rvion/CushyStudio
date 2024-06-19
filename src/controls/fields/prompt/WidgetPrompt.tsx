@@ -1,8 +1,8 @@
 import type { Timestamp } from '../../../cards/Timestamp'
-import type { IBlueprint } from '../../IBlueprint'
-import type { Model } from '../../Model'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
+import type { IBlueprint } from '../../model/IBlueprint'
+import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../Validation'
 import type { Tree } from '@lezer/common'
 

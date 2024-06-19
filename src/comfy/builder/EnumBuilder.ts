@@ -1,13 +1,13 @@
+import type { FormBuilder } from '../../controls/cushy/FormBuilder'
 import type { Widget_enum_config } from '../../controls/fields/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../../controls/fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../../controls/fields/selectOne/WidgetSelectOne'
-import type { FormBuilder } from '../../controls/FormBuilder'
-import type { IBlueprint } from '../../controls/IBlueprint'
+import type { IBlueprint } from '../../controls/model/IBlueprint'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Model } from '../../controls/Model'
+import type { Model } from '../../controls/model/Model'
 
 import { Blueprint } from '../../controls/model/Blueprint'
 

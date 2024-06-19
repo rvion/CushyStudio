@@ -1,14 +1,14 @@
-import type { Widget_list, Widget_list_config } from './fields/list/WidgetList'
-import type { Widget_optional } from './fields/optional/WidgetOptional'
-import type { Widget_shared } from './fields/shared/WidgetShared'
-import type { IBlueprint } from './IBlueprint'
-import type { BaseField } from './model/BaseField'
-import type { Channel, ChannelId, Producer } from './model/Channel'
-import type { SList, SOptional } from './SimpleSpecAliases'
+import type { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
+import type { Widget_optional } from '../fields/optional/WidgetOptional'
+import type { Widget_shared } from '../fields/shared/WidgetShared'
+import type { BaseField } from '../model/BaseField'
+import type { Channel, ChannelId, Producer } from '../model/Channel'
+import type { IBlueprint } from '../model/IBlueprint'
+import type { SList, SOptional } from '../SimpleSpecAliases'
 
 import { makeObservable } from 'mobx'
 
-import { getCurrentForm_IMPL } from './model/runWithGlobalForm'
+import { getCurrentForm_IMPL } from '../model/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 

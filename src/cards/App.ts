@@ -1,5 +1,5 @@
-import type { SchemaDict } from '../controls/IBlueprint'
-import type { Model } from '../controls/Model'
+import type { SchemaDict } from '../controls/model/IBlueprint'
+import type { Model } from '../controls/model/Model'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'

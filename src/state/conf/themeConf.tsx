@@ -1,4 +1,4 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { CushyFormManager } from '../../controls/cushy/FormBuilder'
 import { ui_tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 

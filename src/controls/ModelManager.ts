@@ -1,11 +1,11 @@
 import type { Widget_group } from './fields/group/WidgetGroup'
-import type { IBlueprint, SchemaDict } from './IBlueprint'
-import type { IDomain } from './IDomain'
 import type { BaseField } from './model/BaseField'
+import type { IBlueprint, SchemaDict } from './model/IBlueprint'
+import type { IDomain } from './model/IDomain'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { Model, ModelConfig } from './Model'
+import { Model, ModelConfig } from './model/Model'
 import { runWithGlobalForm } from './model/runWithGlobalForm'
 
 export type NoContext = null

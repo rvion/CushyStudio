@@ -1,4 +1,4 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { CushyFormManager } from '../../controls/cushy/FormBuilder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { menu, type Menu } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'

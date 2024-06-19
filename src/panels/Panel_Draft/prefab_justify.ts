@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../controls/FormBuilder'
+import type { FormBuilder } from '../../controls/cushy/FormBuilder'
 
 export const ui_justify = (ui: FormBuilder) =>
     ui.selectOne({

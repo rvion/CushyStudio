@@ -14,8 +14,8 @@ import type { BaseSelectEntry, Widget_selectOne } from './fields/selectOne/Widge
 import type { Widget_size } from './fields/size/WidgetSize'
 import type { Widget_spacer } from './fields/spacer/WidgetSpacer'
 import type { Widget_string } from './fields/string/WidgetString'
-import type { IBlueprint, SchemaDict } from './IBlueprint'
-import type { SimpleBlueprint } from './SimpleSpec'
+import type { SimpleBlueprint } from './loco/SimpleSpec'
+import type { IBlueprint, SchemaDict } from './model/IBlueprint'
 
 export type SGroup<T extends SchemaDict> = SimpleBlueprint<Widget_group<T>>
 export type SOptional<T extends IBlueprint> = SimpleBlueprint<Widget_optional<T>>

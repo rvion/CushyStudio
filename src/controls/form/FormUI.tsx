@@ -1,15 +1,15 @@
-import type { Box } from '../csuite/box/Box'
-import type { CovariantFn } from '../csuite/variance/BivariantHack'
-import type { CovariantFC } from '../csuite/variance/CovariantFC'
-import type { IBlueprint } from './IBlueprint'
-import type { Model } from './Model'
+import type { Box } from '../../csuite/box/Box'
+import type { CovariantFn } from '../../csuite/variance/BivariantHack'
+import type { CovariantFC } from '../../csuite/variance/CovariantFC'
+import type { IBlueprint } from '../model/IBlueprint'
+import type { Model } from '../model/Model'
 import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../csuite/button/Button'
-import { Frame } from '../csuite/frame/Frame'
-import { MessageErrorUI } from '../csuite/messages/MessageErrorUI'
+import { Button } from '../../csuite/button/Button'
+import { Frame } from '../../csuite/frame/Frame'
+import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
     // form ---------------------------------------------------------

@@ -1,4 +1,4 @@
-import type { IBlueprint } from '../../IBlueprint'
+import type { IBlueprint } from '../../model/IBlueprint'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'

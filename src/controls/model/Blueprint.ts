@@ -2,8 +2,8 @@ import type { Requirements } from '../../manager/REQUIREMENTS/Requirements'
 import type { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
 import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { Widget_shared } from '../fields/shared/WidgetShared'
-import type { IBlueprint } from '../IBlueprint'
 import type { BaseField } from './BaseField'
+import type { IBlueprint } from './IBlueprint'
 
 import { createElement } from 'react'
 

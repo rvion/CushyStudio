@@ -1,7 +1,7 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 // import { FormManager } from '../../controls/FormManager'
-import { FormUI } from '../../controls/FormUI'
+import { FormUI } from '../../controls/form/FormUI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { FrameBase } from '../../csuite/wrappers/FrameBase'

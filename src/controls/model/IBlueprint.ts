@@ -1,6 +1,6 @@
-import type { CovariantFC } from '../csuite/variance/CovariantFC'
-import type { BaseField } from './model/BaseField'
-import type { Channel, ChannelId, Producer } from './model/Channel'
+import type { CovariantFC } from '../../csuite/variance/CovariantFC'
+import type { BaseField } from './BaseField'
+import type { Channel, ChannelId, Producer } from './Channel'
 
 export type SchemaDict = { [key: string]: IBlueprint }
 
