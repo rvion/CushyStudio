@@ -1,3 +1,6 @@
+import type { Widget_enum_config } from '../fields/enum/WidgetEnum'
+import type { Widget_selectMany_config } from '../fields/selectMany/WidgetSelectMany'
+import type { BaseSelectEntry } from '../fields/selectOne/WidgetSelectOne'
 import type { FormBuilder } from '../FormBuilder'
 import type { IBlueprint } from '../IBlueprint'
 /**
@@ -5,9 +8,6 @@ import type { IBlueprint } from '../IBlueprint'
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Model } from '../Model'
-import type { Widget_enum_config } from '../widgets/enum/WidgetEnum'
-import type { Widget_selectMany_config } from '../widgets/selectMany/WidgetSelectMany'
-import type { BaseSelectEntry } from '../widgets/selectOne/WidgetSelectOne'
 
 import { Blueprint } from '../Blueprint'
 

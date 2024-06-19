@@ -1,6 +1,6 @@
 import type { LibraryFile } from '../cards/LibraryFile'
+import type { Widget_group } from '../controls/fields/group/WidgetGroup'
 import type { Model } from '../controls/Model'
-import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'

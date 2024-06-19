@@ -1,6 +1,6 @@
 import type { BaseField } from '../BaseField'
 
-import { isWidgetOptional, isWidgetShared } from '../widgets/WidgetUI.DI'
+import { isWidgetOptional, isWidgetShared } from '../fields/WidgetUI.DI'
 
 /** allow to handle shared and optionals */
 export function getActualWidgetToDisplay(originalWidget: BaseField): BaseField {

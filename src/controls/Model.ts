@@ -1,10 +1,10 @@
 import type { CovariantFn2 } from '../csuite/variance/BivariantHack'
 import type { BaseField } from './BaseField'
+import type { Widget_group, Widget_group_serial } from './fields/group/WidgetGroup'
 import type { ModelSerial } from './FormSerial'
 import type { IBlueprint } from './IBlueprint'
 import type { IDomain } from './IDomain'
 import type { ModelManager } from './ModelManager'
-import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,8 +12,8 @@ import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../csuite/utils/debounce'
 import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownConfigUI'
+import { isWidgetGroup } from './fields/WidgetUI.DI'
 import { FormUI, type FormUIProps } from './FormUI'
-import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
 export type ModelConfig<
     //

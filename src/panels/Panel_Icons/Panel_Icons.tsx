@@ -5,7 +5,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { CSSProperties, useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../../controls/fields/spacer/SpacerUI'
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../csuite/frame/Frame'

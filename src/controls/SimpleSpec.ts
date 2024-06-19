@@ -1,10 +1,10 @@
 import type { BaseField } from './BaseField'
 import type { Channel, ChannelId, Producer } from './Channel'
+import type { Widget_list, Widget_list_config } from './fields/list/WidgetList'
+import type { Widget_optional } from './fields/optional/WidgetOptional'
+import type { Widget_shared } from './fields/shared/WidgetShared'
 import type { IBlueprint } from './IBlueprint'
 import type { SList, SOptional } from './SimpleSpecAliases'
-import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
-import type { Widget_optional } from './widgets/optional/WidgetOptional'
-import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { makeObservable } from 'mobx'
 

@@ -17,6 +17,7 @@ import { CSuiteOverride } from '../csuite/ctx/CSuiteOverride'
 import { TreeWidget } from '../panels/libraryUI/tree/nodes/TreeWidget'
 import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
+import { isWidgetGroup, isWidgetOptional } from './fields/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './shared/getActualWidgetToDisplay'
 import { Widget_ToggleUI } from './shared/Widget_ToggleUI'
 import { WidgetErrorsUI } from './shared/WidgetErrorsUI'
@@ -26,7 +27,6 @@ import { WidgetLabelContainerUI } from './shared/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './shared/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem } from './Validation'
-import { isWidgetGroup, isWidgetOptional } from './widgets/WidgetUI.DI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {

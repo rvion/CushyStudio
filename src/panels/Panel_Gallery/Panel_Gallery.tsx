@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../../controls/fields/spacer/SpacerUI'
 import { useSt } from '../../state/stateContext'
 import { PanelHeaderUI } from '../PanelHeader'
 import { FormAsDropdownConfigUI } from './FormAsDropdownConfigUI'

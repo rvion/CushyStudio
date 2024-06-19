@@ -1,4 +1,4 @@
-import type { Widget_choices_config } from '../../controls/widgets/choices/WidgetChoices'
+import type { Widget_choices_config } from '../../controls/fields/choices/WidgetChoices'
 import type { FormBuilder } from '../../CUSHY'
 import type { Box } from './Box'
 
