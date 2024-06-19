@@ -1,6 +1,6 @@
 import type { Timestamp } from '../../../cards/Timestamp'
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -86,7 +86,7 @@ export class Widget_prompt extends BaseWidget<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_prompt>,
         serial?: Widget_prompt_serial,

@@ -1,6 +1,6 @@
 import type { BaseWidget } from './BaseWidget'
-import type { Form } from './Form'
 import type { ISpec } from './ISpec'
+import type { Model } from './Model'
 import type { Widget_group, Widget_group_config } from './widgets/group/WidgetGroup'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
@@ -12,7 +12,7 @@ export interface IFormBuilder {
         spec: T,
         serial: any | null,
     ) => T['$Widget']
-    form: Form
+    form: Model
     // optional: <const T extends ISpec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
     shared: <W extends ISpec<any>>(key: string, spec: W) => Widget_shared<W>
     group: (config: Widget_group_config<any>) => ISpec<Widget_group<any>>

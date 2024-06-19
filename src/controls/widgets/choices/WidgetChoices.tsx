@@ -1,5 +1,5 @@
-import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial, WidgetSerial_CommonProperties } from '../../WidgetSerialFields'
@@ -151,7 +151,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,

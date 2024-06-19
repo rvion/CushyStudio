@@ -1,5 +1,5 @@
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -53,7 +53,7 @@ export class Widget_color extends BaseWidget<Widget_color_types> {
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_color>,
         serial?: Widget_color_serial,

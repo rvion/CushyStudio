@@ -1,9 +1,9 @@
 import type { BaseWidget } from './BaseWidget'
-import type { FormManager } from './FormManager'
+import type { ModelManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec } from './ISpec'
-import type { CovariantFn } from './utils/BivariantHack'
+import type { CovariantFn2 } from './utils/BivariantHack'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
@@ -15,30 +15,34 @@ import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownCo
 import { FormUI, type FormUIProps } from './FormUI'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
-export type FormProperties<
+export type ModelConfig<
     //
     ROOT extends ISpec<any>,
-    BUILDER extends IFormBuilder,
+    DOMAIN extends IFormBuilder,
+    CONTEXT,
 > = {
     name: string
-    onSerialChange?: (form: Form<ROOT, BUILDER>) => void
-    onValueChange?: (form: Form<ROOT, BUILDER>) => void
-    initialSerial?: () => Maybe<FormSerial>
+    onSerialChange?: (form: Model<ROOT, DOMAIN>) => void
+    onValueChange?: (form: Model<ROOT, DOMAIN>) => void
+    initialSerial?: (context: CONTEXT) => Maybe<FormSerial>
 }
 
-export class Form<
+export class Model<
     /** shape of the form, to preserve type safety down to nested children */
     ROOT extends ISpec<any> = ISpec<any>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
      * */
-    BUILDER extends IFormBuilder = IFormBuilder,
+    DOMAIN extends IFormBuilder = IFormBuilder,
+    /** custom context, so your model can access whatever it wants in most callbacks */
+    CONTEXT = any,
 > {
     constructor(
-        public manager: FormManager<BUILDER>,
-        public ui: CovariantFn<BUILDER, ROOT>,
-        public formConfig: FormProperties<ROOT, BUILDER>,
+        public manager: ModelManager<DOMAIN>,
+        public buildFn: CovariantFn2<DOMAIN, CONTEXT, ROOT>,
+        public config: ModelConfig<ROOT, DOMAIN, CONTEXT>,
+        public context: CONTEXT,
     ) {
         this.builder = manager.getBuilder(this)
         makeAutoObservable(this, {
@@ -56,7 +60,7 @@ export class Form<
     FormUI = FormUI
 
     /**
-     * allow to quickly render the form in a react component
+     * allow to quickly render the model as a react form
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
@@ -88,7 +92,7 @@ export class Form<
         return {
             type: 'FormSerial',
             uid: this.uid,
-            name: this.formConfig.name,
+            name: this.config.name,
             root: this.root.serial,
             shared: this.shared,
             serialLastUpdatedAt: this.serialLastUpdatedAt,
@@ -122,12 +126,12 @@ export class Form<
     /** timestamp at which form serial was last updated, or 0 when form still pristine */
     serialLastUpdatedAt: Timestamp = 0
 
-    private _onSerialChange: ((form: Form<ROOT, any>) => void) | null = this.formConfig.onSerialChange //
-        ? debounce(this.formConfig.onSerialChange, 200)
+    private _onSerialChange: ((form: Model<ROOT, any>) => void) | null = this.config.onSerialChange //
+        ? debounce(this.config.onSerialChange, 200)
         : null
 
-    private _onValueChange: ((form: Form<ROOT, any>) => void) | null = this.formConfig.onValueChange //
-        ? debounce(this.formConfig.onValueChange, 5)
+    private _onValueChange: ((form: Model<ROOT, any>) => void) | null = this.config.onValueChange //
+        ? debounce(this.config.onValueChange, 5)
         : null
 
     /** every widget node must call this function once it's value change */
@@ -151,7 +155,7 @@ export class Form<
     }
 
     /** from builder, offering simple API for your project specifc widgets  */
-    builder: BUILDER
+    builder: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: ROOT['$Widget']
@@ -166,11 +170,11 @@ export class Form<
     }
 
     init = (): ROOT => {
-        console.log(`[🥐] Building form ${this.formConfig.name}`)
+        console.log(`[🥐] Building form ${this.config.name}`)
         const formBuilder = this.builder
 
         try {
-            let formSerial = this.formConfig.initialSerial?.()
+            let formSerial = this.config.initialSerial?.(this.context)
             this._uid = formSerial?.uid ?? nanoid()
 
             // ensure form serial is observable, so we avoid working with soon to expire refs
@@ -198,7 +202,7 @@ export class Form<
                     }
                 }
                 formSerial = {
-                    name: this.formConfig.name,
+                    name: this.config.name,
                     uid: nanoid(),
                     type: 'FormSerial',
                     root: formSerial,
@@ -219,17 +223,17 @@ export class Form<
             this.shared = formSerial?.shared || {}
 
             // instanciate the root widget
-            const spec: ROOT = this.ui?.(formBuilder)
+            const spec: ROOT = this.buildFn?.(formBuilder, this.context)
             const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
             return rootWidget
         } catch (e) {
-            console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
+            console.error(`[👙🔴] Building form ${this.config.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            const spec: ROOT = this.ui?.(formBuilder)
+            const spec: ROOT = this.buildFn?.(formBuilder, this.context)
             return formBuilder._HYDRATE(null, spec, null)
         }
     }

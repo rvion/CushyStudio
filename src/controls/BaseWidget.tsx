@@ -3,8 +3,8 @@ import type { TintExt } from '../csuite/kolor/Tint'
 import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { $WidgetTypes } from './$WidgetTypes'
 import type { Channel, ChannelId } from './Channel'
-import type { Form } from './Form'
 import type { ISpec } from './ISpec'
+import type { Model } from './Model'
 import type { WidgetLabelContainerProps } from './shared/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from './shared/WidgetWithLabelUI'
 import type { CovariantFC } from './utils/CovariantFC'
@@ -301,7 +301,7 @@ export abstract class BaseWidget<K extends $WidgetTypes = $WidgetTypes> {
     }
 
     /** root form this widget has benn registered to */
-    abstract readonly form: Form
+    abstract readonly form: Model
 
     // FOLD ----------------------------------------------------
     setCollapsed(val?: boolean) {

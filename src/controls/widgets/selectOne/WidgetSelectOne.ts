@@ -1,6 +1,6 @@
 import type { IconName } from '../../../csuite/icons/icons'
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
 
@@ -120,7 +120,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,

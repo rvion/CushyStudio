@@ -1,5 +1,5 @@
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -14,7 +14,7 @@ import { WidgetMardownUI } from './WidgetMarkdownUI'
 // CONFIG
 export type Widget_markdown_config = WidgetConfig<
     {
-        markdown: string | ((form: Form) => string)
+        markdown: string | ((form: Model) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -66,7 +66,7 @@ export class Widget_markdown extends BaseWidget<Widget_markdown_types> {
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_markdown>,
         serial?: Widget_markdown_serial,

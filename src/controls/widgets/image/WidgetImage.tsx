@@ -1,8 +1,8 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -76,7 +76,7 @@ export class Widget_image extends BaseWidget<Widget_image_types> {
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_image>,
         serial?: Widget_image_serial,

@@ -1,5 +1,5 @@
 import type { Spec } from '../../src/controls/CushySpec'
-import type { Form } from '../../src/controls/Form'
+import type { Model } from '../../src/controls/Model'
 import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from '../../src/controls/widgets/image/WidgetImage'

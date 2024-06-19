@@ -1,6 +1,6 @@
 import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -65,7 +65,7 @@ export class Widget_button<K> extends BaseWidget<Widget_button_types<K>> {
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_button<K>>,
         serial?: Widget_button_serial,

@@ -1,5 +1,5 @@
-import type { Form } from '../controls/Form'
 import type { SchemaDict } from '../controls/ISpec'
+import type { Model } from '../controls/Model'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
@@ -43,7 +43,7 @@ export type App<FIELDS extends SchemaDict> = {
     ui: (form: X.FormBuilder) => FIELDS
 
     /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (form: Form<X.XGroup<NoInfer<FIELDS>>, X.FormBuilder>) => void>
+    presets?: Record<string, (form: Model<X.XGroup<NoInfer<FIELDS>>, X.FormBuilder>) => void>
 
     /** app execution logic */
     run: (

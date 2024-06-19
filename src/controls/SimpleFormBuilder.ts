@@ -1,8 +1,8 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { BaseWidget } from './BaseWidget'
-import type { Form } from './Form'
 import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
+import type { Model } from './Model'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
@@ -33,7 +33,7 @@ export class SimpleFormBuilder implements IFormBuilder {
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<ISpec, SimpleFormBuilder>) {
+    constructor(public form: Model<ISpec, SimpleFormBuilder>) {
         makeAutoObservable(this, {
             SpecCtor: false,
         })

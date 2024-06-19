@@ -6,7 +6,9 @@ import type { Widget_group } from './widgets/group/WidgetGroup'
 import { type DependencyList, useMemo } from 'react'
 
 import { runWithGlobalForm } from './context/runWithGlobalForm'
-import { Form, FormProperties } from './Form'
+import { Model, ModelConfig } from './Model'
+
+export type NoContext = null
 
 /**
  * you need one per project;
@@ -14,13 +16,13 @@ import { Form, FormProperties } from './Form'
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class FormManager<BUILDER extends IFormBuilder> {
+export class ModelManager<DOMAIN extends IFormBuilder> {
     //
-    _allForms: Map<string, Form> = new Map()
+    _allForms: Map<string, Model> = new Map()
     _allWidgets: Map<string, BaseWidget> = new Map()
     _allWidgetsByType: Map<string, Map<string, BaseWidget>> = new Map()
 
-    getFormByID = (uid: string): Maybe<Form> => {
+    getFormByID = (uid: string): Maybe<Model> => {
         return this._allForms.get(uid)
     }
 
@@ -40,12 +42,12 @@ export class FormManager<BUILDER extends IFormBuilder> {
 
     constructor(
         //
-        public builderCtor: { new (form: Form<any /* SchemaDict */, BUILDER>): BUILDER },
+        public builderCtor: { new (form: Model<any /* SchemaDict */, DOMAIN>): DOMAIN },
     ) {}
 
-    _builders = new WeakMap<Form, BUILDER>()
+    _builders = new WeakMap<Model, DOMAIN>()
 
-    getBuilder = (form: Form<any, BUILDER>): BUILDER => {
+    getBuilder = (form: Model<any, DOMAIN>): DOMAIN => {
         const prev = this._builders.get(form)
         if (prev) return prev
         const builder = new this.builderCtor(form)
@@ -55,38 +57,58 @@ export class FormManager<BUILDER extends IFormBuilder> {
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
-        ui: (form: BUILDER) => FIELDS,
-        formProperties: FormProperties<ISpec<Widget_group<FIELDS>>, BUILDER> = { name: 'unnamed' },
-    ): Form<ISpec<Widget_group<FIELDS>>, BUILDER> => {
-        const FN = (builder: BUILDER): ISpec<Widget_group<FIELDS>> => {
-            return runWithGlobalForm(builder, () =>
-                builder.group({
+        buildFn: (form: DOMAIN) => FIELDS,
+        modelConfig: ModelConfig<ISpec<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
+    ): Model<ISpec<Widget_group<FIELDS>>, DOMAIN> => {
+        const FN = (domain: DOMAIN): ISpec<Widget_group<FIELDS>> => {
+            return runWithGlobalForm(domain, () =>
+                domain.group({
                     label: false,
-                    items: ui(builder as BUILDER),
+                    items: buildFn(domain as DOMAIN),
                     collapsed: false,
                 }),
             )
         }
-        const form = new Form<ISpec<Widget_group<FIELDS>>, BUILDER>(this, FN, formProperties)
+        const form = new Model<ISpec<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
         return form
     }
 
     /** simple alias to create a new Form */
-    form = <ROOT extends ISpec>(
-        ui: (form: BUILDER) => ROOT,
-        formProperties: FormProperties<ROOT, BUILDER> = { name: 'unnamed' },
-    ): Form<ROOT, BUILDER> => {
-        return new Form<ROOT, BUILDER>(this, ui, formProperties)
+    form<ROOT extends ISpec>(
+        buildFn: (form: DOMAIN) => ROOT,
+        modelConfig: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
+    ): Model<ROOT, DOMAIN> {
+        return new Model<ROOT, DOMAIN>(this, buildFn, modelConfig, null)
     }
 
     /** simple way to defined forms and in react components */
-    use = <ROOT extends ISpec>(
-        ui: (form: BUILDER) => ROOT,
-        formProperties: FormProperties<ROOT, BUILDER> = { name: 'unnamed' },
+    use<ROOT extends ISpec>(
+        ui: (form: DOMAIN) => ROOT,
+        formProperties: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
         deps: DependencyList = [],
-    ): Form<ROOT, BUILDER> => {
+    ): Model<ROOT, DOMAIN> {
         return useMemo(() => {
-            return new Form<ROOT, BUILDER>(this, ui, formProperties)
+            return new Model<ROOT, DOMAIN>(this, ui, formProperties, null)
+        }, deps)
+    }
+
+    formWithContext<ROOT extends ISpec, CONTEXT>(
+        buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
+        context: CONTEXT,
+        modelConfig: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
+    ): Model<ROOT, DOMAIN> {
+        return new Model<ROOT, DOMAIN, CONTEXT>(this, buildFn, modelConfig, context)
+    }
+
+    /** simple way to defined forms and in react components */
+    useWithContext<ROOT extends ISpec, CONTEXT>(
+        buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
+        context: CONTEXT,
+        formProperties: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
+        deps: DependencyList = [],
+    ): Model<ROOT, DOMAIN> {
+        return useMemo(() => {
+            return new Model<ROOT, DOMAIN, CONTEXT>(this, buildFn, formProperties, context)
         }, deps)
     }
 }

@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { Form } from '../controls/Form'
+import type { Model } from '../controls/Model'
 import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
@@ -220,7 +220,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Form<any, FormBuilder>> = null
+    _form: Maybe<Model<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)

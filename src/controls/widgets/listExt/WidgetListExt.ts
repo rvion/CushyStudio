@@ -1,5 +1,5 @@
-import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
+import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
 import type { WidgetConfig } from '../../WidgetConfig'
 import type { WidgetSerial } from '../../WidgetSerialFields'
@@ -119,7 +119,7 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget<Widget_listExt_t
 
     constructor(
         //
-        public readonly form: Form,
+        public readonly form: Model,
         public readonly parent: BaseWidget | null,
         public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,

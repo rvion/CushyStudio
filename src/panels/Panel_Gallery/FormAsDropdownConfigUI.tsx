@@ -1,4 +1,4 @@
-import type { Form } from '../../controls/Form'
+import type { Model } from '../../controls/Model'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-    form?: Form<any>
+    form?: Model<any>
     children?: React.ReactNode
     title?: string
     className?: string

@@ -10,8 +10,8 @@ import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './builder/EnumBuilder'
 import { Spec } from './CushySpec'
-import { Form } from './Form'
-import { FormManager } from './FormManager'
+import { ModelManager } from './FormManager'
+import { Model } from './Model'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -77,7 +77,7 @@ export class FormBuilder implements IFormBuilder {
     SpecCtor = Spec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<ISpec, FormBuilder>) {
+    constructor(public form: Model<ISpec, FormBuilder>) {
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -425,5 +425,5 @@ export class FormBuilder implements IFormBuilder {
     }
 }
 
-export type CushyFormManager = FormManager<FormBuilder>
-export const CushyFormManager: CushyFormManager = new FormManager<FormBuilder>(FormBuilder)
+export type CushyFormManager = ModelManager<FormBuilder>
+export const CushyFormManager: CushyFormManager = new ModelManager<FormBuilder>(FormBuilder)
