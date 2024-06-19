@@ -2,7 +2,7 @@ import type { CovariantFn2 } from '../csuite/variance/BivariantHack'
 import type { BaseField } from './BaseField'
 import type { ModelSerial } from './FormSerial'
 import type { IBlueprint } from './IBlueprint'
-import type { IDomain } from './IFormBuilder'
+import type { IDomain } from './IDomain'
 import type { ModelManager } from './ModelManager'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 

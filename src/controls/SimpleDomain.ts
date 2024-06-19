@@ -1,14 +1,14 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { BaseField } from './BaseField'
 import type { IBlueprint, SchemaDict } from './IBlueprint'
-import type { IDomain } from './IFormBuilder'
+import type { IDomain } from './IDomain'
 import type { Model } from './Model'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
-import { SimpleSpec } from './SimpleSpec'
+import { SimpleBlueprint } from './SimpleSpec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -28,92 +28,92 @@ import { Widget_spacer } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
 // -------------------------------------------------------------------------------------------
-export class SimpleFormBuilder implements IDomain {
+export class SimpleDomain implements IDomain {
     /** (@internal) DO NOT USE YOURSELF */
-    SpecCtor = SimpleSpec
+    SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Model<IBlueprint, SimpleFormBuilder>) {
+    constructor(public form: Model<IBlueprint, SimpleDomain>) {
         makeAutoObservable(this, {
             SpecCtor: false,
         })
     }
 
     time = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'time', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'time', ...config })
     }
 
     date = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'date', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'date', ...config })
     }
 
     datetime = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'datetime-local', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'datetime-local', ...config })
     }
 
     password = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'password', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'password', ...config })
     }
 
     email = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'email', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'email', ...config })
     }
 
     url = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'url', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'url', ...config })
     }
 
     string = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', config)
+        return new SimpleBlueprint<Widget_string>('str', config)
     }
 
     text = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', config)
+        return new SimpleBlueprint<Widget_string>('str', config)
     }
 
     textarea = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { textarea: true, ...config })
+        return new SimpleBlueprint<Widget_string>('str', { textarea: true, ...config })
     }
 
     boolean = (config: Widget_bool_config = {}): SS.SBool => {
-        return new SimpleSpec<Widget_bool>('bool', config)
+        return new SimpleBlueprint<Widget_bool>('bool', config)
     }
 
     bool = (config: Widget_bool_config = {}): SS.SBool => {
-        return new SimpleSpec<Widget_bool>('bool', config)
+        return new SimpleBlueprint<Widget_bool>('bool', config)
     }
 
     size = (config: Widget_size_config = {}): SS.SSize => {
-        return new SimpleSpec<Widget_size>('size', config)
+        return new SimpleBlueprint<Widget_size>('size', config)
     }
 
     seed = (config: Widget_seed_config = {}): SS.SSeed => {
-        return new SimpleSpec<Widget_seed>('seed', config)
+        return new SimpleBlueprint<Widget_seed>('seed', config)
     }
 
     color = (config: Widget_color_config = {}): SS.SColor => {
-        return new SimpleSpec<Widget_color>('color', config)
+        return new SimpleBlueprint<Widget_color>('color', config)
     }
 
     colorV2 = (config: Widget_string_config = {}): SS.SString => {
-        return new SimpleSpec<Widget_string>('str', { inputType: 'color', ...config })
+        return new SimpleBlueprint<Widget_string>('str', { inputType: 'color', ...config })
     }
 
     matrix = (config: Widget_matrix_config): SS.SMatrix => {
-        return new SimpleSpec<Widget_matrix>('matrix', config)
+        return new SimpleBlueprint<Widget_matrix>('matrix', config)
     }
 
     button = <K>(config: Widget_button_config): SS.SButton<K> => {
-        return new SimpleSpec<Widget_button<K>>('button', config)
+        return new SimpleBlueprint<Widget_button<K>>('button', config)
     }
 
     /** variants: `header` */
     markdown = (config: Widget_markdown_config | string): SS.SMarkdown =>
-        new SimpleSpec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+        new SimpleBlueprint<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
 
     /** [markdown variant]: inline=true, label=false */
     header = (config: Widget_markdown_config | string): SS.SMarkdown =>
-        new SimpleSpec<Widget_markdown>(
+        new SimpleBlueprint<Widget_markdown>(
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
@@ -121,12 +121,12 @@ export class SimpleFormBuilder implements IDomain {
         )
 
     int = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
-        return new SimpleSpec<Widget_number>('number', { mode: 'int', ...config })
+        return new SimpleBlueprint<Widget_number>('number', { mode: 'int', ...config })
     }
 
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
-        return new SimpleSpec<Widget_number>('number', {
+        return new SimpleBlueprint<Widget_number>('number', {
             mode: 'int',
             default: 100,
             step: 10,
@@ -138,23 +138,23 @@ export class SimpleFormBuilder implements IDomain {
     }
 
     float = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
-        return new SimpleSpec<Widget_number>('number', { mode: 'float', ...config })
+        return new SimpleBlueprint<Widget_number>('number', { mode: 'float', ...config })
     }
 
     number = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
-        return new SimpleSpec<Widget_number>('number', { mode: 'float', ...config })
+        return new SimpleBlueprint<Widget_number>('number', { mode: 'float', ...config })
     }
 
     list = <const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> => {
-        return new SimpleSpec<Widget_list<T>>('list', config)
+        return new SimpleBlueprint<Widget_list<T>>('list', config)
     }
 
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): SS.SSelectOne<T> => {
-        return new SimpleSpec<Widget_selectOne<T>>('selectOne', config)
+        return new SimpleBlueprint<Widget_selectOne<T>>('selectOne', config)
     }
 
     selectOneV2 = (p: string[]): SS.SSelectOne<BaseSelectEntry> => {
-        return new SimpleSpec<Widget_selectOne<BaseSelectEntry>>('selectOne', {
+        return new SimpleBlueprint<Widget_selectOne<BaseSelectEntry>>('selectOne', {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
         })
@@ -164,43 +164,44 @@ export class SimpleFormBuilder implements IDomain {
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): SS.SSelectOne_<T> => {
-        return new SimpleSpec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new SimpleBlueprint<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): SS.SSelectMany<T> => {
-        return new SimpleSpec<Widget_selectMany<T>>('selectMany', config)
+        return new SimpleBlueprint<Widget_selectMany<T>>('selectMany', config)
     }
 
     /** see also: `fields` for a more practical api */
     group = <const T extends SchemaDict>(config: Widget_group_config<T> = {}): SS.SGroup<T> => {
-        return new SimpleSpec<Widget_group<T>>('group', config)
+        return new SimpleBlueprint<Widget_group<T>>('group', config)
     }
 
     fields = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): SS.SGroup<T> => {
-        return new SimpleSpec<Widget_group<T>>('group', { items: fields, ...config })
+        return new SimpleBlueprint<Widget_group<T>>('group', { items: fields, ...config })
     }
 
     choice = <const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> => {
-        return new SimpleSpec<Widget_choices<T>>('choices', { multi: false, ...config })
+        return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: false, ...config })
     }
 
     choices = <const T extends { [key: string]: IBlueprint }>(
         config: Omit<Widget_choices_config<T>, 'multi'>,
     ): SS.SChoices<T> => {
-        return new SimpleSpec<Widget_choices<T>>('choices', { multi: true, ...config })
+        return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: true, ...config })
     }
 
-    ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new SimpleSpec<Widget_group<T>>('group', config)
+    ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
+        new SimpleBlueprint<Widget_group<T>>('group', config)
 
     /** simple choice alternative api */
     tabs = <const T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
-    ) => new SimpleSpec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    ) => new SimpleBlueprint<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
 
     // optional wrappers
     optional = <const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> => {
-        return new SimpleSpec<Widget_optional<T>>('optional', p)
+        return new SimpleBlueprint<Widget_optional<T>>('optional', p)
     }
 
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
@@ -227,7 +228,7 @@ export class SimpleFormBuilder implements IDomain {
         }
         this.form.shared[key] = widget.serial
         this.form.knownShared.set(key, widget)
-        const sharedSpec = new SimpleSpec<Widget_shared<W>>('shared', { rootKey: key, widget })
+        const sharedSpec = new SimpleBlueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
@@ -268,7 +269,7 @@ export class SimpleFormBuilder implements IDomain {
         if (spec instanceof Widget_shared) return spec
 
         // ensure we receive a valid spec
-        if (!(spec instanceof SimpleSpec))
+        if (!(spec instanceof SimpleBlueprint))
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
 
         const type = spec.type
@@ -317,7 +318,7 @@ export class SimpleFormBuilder implements IDomain {
         return new Widget_markdown(
             this.form,
             parent,
-            new SimpleSpec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
+            new SimpleBlueprint<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
     }
 }

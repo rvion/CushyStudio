@@ -1,9 +1,9 @@
 import type { IconName } from '../../../csuite/icons/icons'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -17,7 +17,7 @@ type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'un
 type CssProprtyResize = CssProprtyGlobals | 'block' | 'both' | 'horizontal' | 'inline' | 'none' | 'vertical'
 
 // CONFIG
-export type Widget_string_config = WidgetConfig<
+export type Widget_string_config = FieldConfig<
     {
         default?: string
         textarea?: boolean

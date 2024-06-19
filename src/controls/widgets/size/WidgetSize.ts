@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { runInAction } from 'mobx'
@@ -14,7 +14,7 @@ import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
-export type Widget_size_config = WidgetConfig<
+export type Widget_size_config = FieldConfig<
     {
         default?: CushySizeByRatio
         min?: number

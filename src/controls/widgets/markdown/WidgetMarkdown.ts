@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = WidgetConfig<
+export type Widget_markdown_config = FieldConfig<
     {
         markdown: string | ((form: Model) => string)
         inHeader?: boolean

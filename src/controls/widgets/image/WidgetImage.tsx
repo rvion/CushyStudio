@@ -1,11 +1,11 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
-export type Widget_image_config = WidgetConfig<
+export type Widget_image_config = FieldConfig<
     {
         default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>

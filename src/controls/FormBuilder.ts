@@ -1,7 +1,7 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { BaseField } from './BaseField'
 import type { IBlueprint, SchemaDict } from './IBlueprint'
-import type { IDomain } from './IFormBuilder'
+import type { IDomain } from './IDomain'
 
 import { makeAutoObservable, reaction } from 'mobx'
 

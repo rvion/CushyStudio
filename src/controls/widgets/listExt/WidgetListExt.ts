@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { runInAction } from 'mobx'
@@ -17,7 +17,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends IBlueprint> = WidgetConfig<
+export type Widget_listExt_config<T extends IBlueprint> = FieldConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number

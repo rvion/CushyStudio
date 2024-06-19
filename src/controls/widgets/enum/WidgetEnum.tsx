@@ -1,10 +1,10 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
-export type Widget_enum_config<O> = WidgetConfig<
+export type Widget_enum_config<O> = FieldConfig<
     {
         enumName: string
         default?: O //Requirable[T] | EnumDefault<T>

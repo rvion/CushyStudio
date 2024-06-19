@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import { WidgetBoolUI } from './WidgetBoolUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = WidgetConfig<
+export type Widget_bool_config = FieldConfig<
     {
         /**
          * default value; true or false

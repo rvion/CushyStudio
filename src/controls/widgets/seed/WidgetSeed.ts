@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -13,7 +13,7 @@ import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 // CONFIG
-export type Widget_seed_config = WidgetConfig<
+export type Widget_seed_config = FieldConfig<
     {
         default?: number
         defaultMode?: SeedMode

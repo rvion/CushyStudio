@@ -1,8 +1,8 @@
 import type { IconName } from '../../../csuite/icons/icons'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -21,7 +21,7 @@ export type BaseSelectEntry<T = string> = {
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfig<
+export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
     {
         default?: T
         /**

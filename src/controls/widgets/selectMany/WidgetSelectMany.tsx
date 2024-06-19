@@ -1,7 +1,7 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
-import type { WidgetConfig } from '../../WidgetConfig'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
 import { runInAction } from 'mobx'
@@ -15,7 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
-export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfig<
+export type Widget_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
     {
         default?: T[]
         /**

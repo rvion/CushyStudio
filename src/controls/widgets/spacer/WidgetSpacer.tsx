@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfig<{}, Widget_spacer_types>
+export type Widget_spacer_config = FieldConfig<{}, Widget_spacer_types>
 
 // SERIAL
 export type Widget_spacer_serial = FieldSerial<{ type: 'spacer' }>

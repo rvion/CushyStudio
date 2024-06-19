@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Widget_color_config = WidgetConfig<{ default?: string }, Widget_color_types>
+export type Widget_color_config = FieldConfig<{ default?: string }, Widget_color_types>
 
 // SERIAL
 export type Widget_color_serial = FieldSerial<{

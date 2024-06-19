@@ -12,7 +12,7 @@ import { getCurrentForm_IMPL } from './context/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W> {
+export class SimpleBlueprint<W extends BaseField = BaseField> implements IBlueprint<W> {
     $Field!: W
     $Type!: W['type']
     $Config!: W['$Config']
@@ -52,7 +52,7 @@ export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W
     }
 
     // -----------------------------------------------------
-    Make = <X extends BaseField>(type: X['type'], config: X['$Config']) => new SimpleSpec(type, config)
+    Make = <X extends BaseField>(type: X['type'], config: X['$Config']) => new SimpleBlueprint(type, config)
 
     constructor(
         //
@@ -64,13 +64,13 @@ export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> =>
-        new SimpleSpec<Widget_list<this>>('list', {
+        new SimpleBlueprint<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
     optional = (startActive: boolean = false): SOptional<this> =>
-        new SimpleSpec<Widget_optional<this>>('optional', {
+        new SimpleBlueprint<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -83,14 +83,14 @@ export class SimpleSpec<W extends BaseField = BaseField> implements IBlueprint<W
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config */
-    withConfig = (config: Partial<W['$Config']>): SimpleSpec<W> => {
+    withConfig = (config: Partial<W['$Config']>): SimpleBlueprint<W> => {
         const mergedConfig = { ...this.config, ...config }
-        const cloned = new SimpleSpec<W>(this.type, mergedConfig)
+        const cloned = new SimpleBlueprint<W>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
         return cloned
     }
 
-    hidden = (): SimpleSpec<W> => this.withConfig({ hidden: true })
+    hidden = (): SimpleBlueprint<W> => this.withConfig({ hidden: true })
 }

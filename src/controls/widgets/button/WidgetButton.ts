@@ -1,9 +1,9 @@
 import type { FrameAppearance } from '../../../csuite/frame/FrameTemplates'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -18,7 +18,7 @@ export type Widget_button_context<K> = {
 }
 
 // CONFIG
-export type Widget_button_config<K = any> = WidgetConfig<
+export type Widget_button_config<K = any> = FieldConfig<
     {
         text?: string
         /** @default false */

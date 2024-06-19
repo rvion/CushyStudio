@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
@@ -16,7 +16,7 @@ import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = WidgetConfig<
+export type Widget_custom_config<T> = FieldConfig<
     {
         defaultValue: () => T
         subTree?: () => IBlueprint

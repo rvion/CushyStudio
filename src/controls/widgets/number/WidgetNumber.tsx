@@ -1,7 +1,7 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,7 +11,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
-export type Widget_number_config = WidgetConfig<
+export type Widget_number_config = FieldConfig<
     {
         mode: 'int' | 'float'
         default?: number

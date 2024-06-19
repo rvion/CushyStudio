@@ -1,7 +1,7 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -26,7 +26,7 @@ type AutoBehaviour<T extends IBlueprint> = {
 }
 
 // CONFIG
-export type Widget_list_config<T extends IBlueprint> = WidgetConfig<
+export type Widget_list_config<T extends IBlueprint> = FieldConfig<
     {
         element: ((ix: number) => T) | T
         /**

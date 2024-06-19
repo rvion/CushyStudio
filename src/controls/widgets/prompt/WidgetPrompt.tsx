@@ -1,9 +1,9 @@
 import type { Timestamp } from '../../../cards/Timestamp'
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 import type { Tree } from '@lezer/common'
 
 import { nanoid } from 'nanoid'
@@ -27,7 +27,7 @@ export type CompiledPrompt = {
 }
 
 // CONFIG
-export type Widget_prompt_config = WidgetConfig<
+export type Widget_prompt_config = FieldConfig<
     {
         default?: string
         placeHolder?: string

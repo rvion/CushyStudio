@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -22,7 +22,7 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfig<
+export type Widget_matrix_config = FieldConfig<
     {
         default?: { row: string; col: string }[]
         rows: string[]

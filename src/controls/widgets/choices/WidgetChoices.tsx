@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../FieldSerial'
 import type { IBlueprint, SchemaDict } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -16,7 +16,7 @@ export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfig<
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
     {
         expand?: boolean
         items: T

@@ -5,9 +5,9 @@ import type { CovariantFn } from '../csuite/variance/BivariantHack'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Problem_Ext } from './Validation'
 
-export type WidgetConfig<X, T extends $FieldTypes> = X & WidgetConfig_CommonProperties<T>
+export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
 
-export type WidgetConfig_CommonProperties<T extends $FieldTypes> = {
+export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
     /**
      * @since 2024-05-20
      * @stability beta

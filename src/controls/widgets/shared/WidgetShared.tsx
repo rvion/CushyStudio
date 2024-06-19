@@ -1,8 +1,8 @@
+import type { FieldConfig } from '../../FieldConfig'
 import type { FieldSerial } from '../../FieldSerial'
 import type { IBlueprint } from '../../IBlueprint'
 import type { Model } from '../../Model'
 import type { Problem_Ext } from '../../Validation'
-import type { WidgetConfig } from '../../WidgetConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -11,7 +11,7 @@ import { BaseField } from '../../BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends IBlueprint = IBlueprint> = WidgetConfig<
+export type Widget_shared_config<T extends IBlueprint = IBlueprint> = FieldConfig<
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
