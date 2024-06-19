@@ -2,8 +2,8 @@ import type { Tint } from './Tint'
 
 import Color from 'colorjs.io'
 
-import { clamp } from '../../controls/utils/clamp'
 import { getNum } from '../tinyCSS/CSSVar'
+import { clamp } from '../utils/clamp'
 
 const white = new Color('oklch', [1, 0, 0])
 const black = new Color('oklch', [0, 0, 0])

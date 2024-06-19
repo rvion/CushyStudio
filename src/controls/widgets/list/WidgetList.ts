@@ -7,9 +7,9 @@ import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../csuite/utils/bang'
+import { clampOpt } from '../../../csuite/utils/clamp'
 import { BaseField } from '../../BaseField'
 import { runWithGlobalForm } from '../../context/runWithGlobalForm'
-import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { clamp } from '../../controls/utils/clamp'
+import { clamp } from '../../csuite/utils/clamp'
 import { useSt } from '../../state/stateContext'
 import { FormAsDropdownConfigUI } from '../Panel_Gallery/FormAsDropdownConfigUI'
 import { PanelHeaderUI } from '../PanelHeader'

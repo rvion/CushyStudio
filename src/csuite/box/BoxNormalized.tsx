@@ -1,8 +1,8 @@
 import type { Tint } from '../kolor/Tint'
 import type { Box } from './Box'
 
-import { clamp } from '../../controls/utils/clamp'
 import { Kolor } from '../kolor/Kolor'
+import { clamp } from '../utils/clamp'
 
 export type BoxNormalized = {
     base?: Tint //       BASE              (relative to its parent's BASE)
