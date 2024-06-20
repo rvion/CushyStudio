@@ -18,7 +18,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
                         // placeholder={s.isOpen ? p.placeholder : undefined}
                         // ref={s.inputRef}
                         // onChange={s.handleInputChange}
-                        tw='w-full h-full !outline-none cushy-basic-input'
+                        tw='w-full h-full !outline-none csuite-basic-input'
                         type='text'
                         // value={s.searchQuery}
                     />

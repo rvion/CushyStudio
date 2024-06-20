@@ -1,10 +1,10 @@
-import type { BaseField } from '../../../../csuite/model/BaseField'
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
-import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
+import type { TreeNode } from '../tree/TreeNode'
+import type { BaseField } from './BaseField'
 
 import { makeAutoObservable } from 'mobx'
 
-export class TreeWidget implements ITreeEntry {
+export class TreeEntry_Field implements ITreeEntry {
     constructor(public widgetWithKey: { widget: BaseField; key: string }) {
         makeAutoObservable(this)
     }

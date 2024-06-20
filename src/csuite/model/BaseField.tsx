@@ -13,7 +13,6 @@ import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeWidget } from '../../panels/libraryUI/tree/nodes/TreeWidget'
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
@@ -26,6 +25,7 @@ import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
+import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 
 /** make sure the user-provided function will properly react to any mobx changes */
@@ -93,7 +93,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     asTreeElement(key: string): ITreeElement<{ widget: BaseField; key: string }> {
         return {
             key: (this as any).id,
-            ctor: TreeWidget as any,
+            ctor: TreeEntry_Field as any,
             props: { key, widget: this as any },
         }
     }

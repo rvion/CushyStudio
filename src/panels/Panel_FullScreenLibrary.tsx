@@ -24,7 +24,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                             <span className='material-symbols-outlined'>search</span>
                         </div>
                         <input
-                            tw='cushy-basic-input'
+                            tw='csuite-basic-input'
                             type='string'
                             value={library.query}
                             onChange={(ev) => {

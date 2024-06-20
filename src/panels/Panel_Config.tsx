@@ -35,7 +35,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </FieldUI>
                     <FieldUI label='Set tags file'>
                         <input
-                            tw='cushy-basic-input w-full'
+                            tw='csuite-basic-input w-full'
                             name='tagFile'
                             value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                             onChange={(ev) => {
@@ -46,7 +46,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </FieldUI>
                     <FieldUI label='Preferred Text Editor'>
                         <input
-                            tw='cushy-basic-input w-full'
+                            tw='csuite-basic-input w-full'
                             name='preferredTextEditor'
                             placeholder='code (vscode)'
                             value={config.get('preferredTextEditor') ?? ''}
@@ -58,7 +58,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </FieldUI>
                     <FieldUI label='Your github username'>
                         <input //
-                            tw='cushy-basic-input w-full'
+                            tw='csuite-basic-input w-full'
                             value={config.value.githubUsername}
                             onChange={(ev) => {
                                 config.update({ githubUsername: ev.target.value })
@@ -69,7 +69,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </FieldUI>
                     {/* <FieldUI label='Your Cushy CloudGPU api Key'>
                     <input //
-                        tw='cushy-basic-input w-full'
+                        tw='csuite-basic-input w-full'
                         value={config.value.cushyCloudGPUApiKey}
                         onChange={(ev) => {
                             config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -107,7 +107,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     </FieldUI>
                     <FieldUI label='Check update every X minutes'>
                         <input //
-                            tw='cushy-basic-input w-full'
+                            tw='csuite-basic-input w-full'
                             type='number'
                             placeholder='48'
                             name='galleryImageSize'

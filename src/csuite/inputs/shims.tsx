@@ -12,7 +12,7 @@ export const FormHelpTextUI = (p: any) => <div {...p}></div>
 export const InputLegacy = (p: JSX.IntrinsicElements['input']) => {
     const { className, children, ...rest } = p
     return (
-        <input tw={['cushy-basic-input', className]} {...rest}>
+        <input tw={['csuite-basic-input', className]} {...rest}>
             {children}
         </input>
     )

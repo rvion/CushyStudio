@@ -228,7 +228,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         tw='flex rounded pb-2'
                     >
                         <input
-                            tw='cushy-basic-input w-full rounded-r-none'
+                            tw='csuite-basic-input w-full rounded-r-none'
                             value={filterText}
                             onChange={(ev) => setFilterText(ev.currentTarget.value)}
                             placeholder='Filter Drafts'

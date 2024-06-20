@@ -26,7 +26,7 @@ export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
             <div tw='p-2 flex gap-2'>
                 <input
                     onChange={(e) => (mkp.query.value = e.target.value)}
-                    className='cushy-basic-input'
+                    className='csuite-basic-input'
                     value={mkp.query.value}
                     placeholder='Search'
                     type='text'

@@ -66,14 +66,14 @@
 
 /* ------------------------------------------------------------------------------------------- */
 /* make sure cushy default inputs look like custom inputs */
-.cushy-basic-input:focus {
+.csuite-basic-input:focus {
     outline: none;
     border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
-.cushy-basic-input:hover {
+.csuite-basic-input:hover {
     background: oklch(from var(--KLR) calc(l + 0.06 * var(--DIR)) c h);
 }
-.cushy-basic-input {
+.csuite-basic-input {
     /* 🔴 FINISH ME */
     height: var(--input-height);
     min-height: var(--input-height);

@@ -2,7 +2,6 @@
 
 🔶 2024-03-27 rvion:
 | In order to make splitting forms as easy as possible
-| we need to make sure this is not importing all cushy types
 | transitively; but I'm ok with some types to be imported,
 | like group, optional, shared, etc, because I expect all standalone
 | build to include those.

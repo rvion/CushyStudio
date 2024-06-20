@@ -34,7 +34,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                 </Whisper>
             </div>
             <input
-                tw='cushy-basic-input'
+                tw='csuite-basic-input'
                 value={githubUsername}
                 placeholder='your github username'
                 onChange={(ev) => {
