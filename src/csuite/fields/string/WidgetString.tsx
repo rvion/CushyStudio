@@ -99,7 +99,7 @@ export class Widget_string extends BaseField<Widget_string_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        this.init(this)
+        this.init({})
     }
     get animateResize() {
         if (this.config.textarea) return false
