@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
@@ -125,7 +124,10 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
         /* 💊 */ const serialAny = this.serial as any
         /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
 
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     // x: Partial<number> = 0

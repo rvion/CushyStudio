@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
@@ -87,7 +86,10 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
     setValue(val: Widget_shared_value<T>) {
         this.value = val

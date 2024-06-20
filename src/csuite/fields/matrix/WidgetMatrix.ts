@@ -7,7 +7,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -115,7 +114,10 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         this.rows = config.rows
         this.cols = config.cols
         // make observable
-        makeAutoObservableInheritance(this)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
     setValue(val: Widget_matrix_value) {

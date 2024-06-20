@@ -51,7 +51,7 @@ export async function buildJS(p: {
         // external:
         // external: ['three'],
         // jsx: 'react',
-        jsxImportSource: 'src/csuite/custom-jsx/jsx-runtime.js',
+        jsxImportSource: 'src/csuite/custom-jsx',
         alias: {
             // -----------------------------------------------------------------------
             // three: './src/syms/three.js',

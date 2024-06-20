@@ -8,7 +8,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
@@ -100,7 +99,7 @@ export class Widget_string extends BaseField<Widget_string_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        makeAutoObservableInheritance(this)
+        this.init(this)
     }
     get animateResize() {
         if (this.config.textarea) return false

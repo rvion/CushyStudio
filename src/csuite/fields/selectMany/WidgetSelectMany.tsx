@@ -7,7 +7,6 @@ import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
@@ -133,7 +132,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
             values: config.default ?? [],
         }
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
-        makeAutoObservableInheritance(this, {
+        this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

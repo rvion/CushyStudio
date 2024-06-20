@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
@@ -75,7 +74,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        makeAutoObservableInheritance(this)
+        this.init({})
     }
 
     /** always return false */
