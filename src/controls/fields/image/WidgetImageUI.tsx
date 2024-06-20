@@ -10,6 +10,9 @@ import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { SpacerUI } from '../spacer/SpacerUI'
+import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
+import { nanoid } from 'nanoid'
+import { asRelativePath } from '../../../utils/fs/pathUtils'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget
@@ -35,7 +38,40 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             base={{ contrast: -0.025 }}
             header={
                 <>
-                    <SpacerUI /> <Button onClick={() => (widget.value = cushy.defaultImage)} icon={'mdiRestore'}></Button>
+                    <SpacerUI />
+                    <Button
+                        square
+                        icon='mdiContentPaste'
+                        onClick={() => {
+                            // XXX: This is slow, should probably be done through electron's api, but works for now. Could also be made re-usable? getImageFromClipboard()?
+                            navigator.clipboard
+                                .read()
+                                .then(async (clipboardItems) => {
+                                    for (const clipboardItem of clipboardItems) {
+                                        for (const type of clipboardItem.types) {
+                                            if (type == 'image/png') {
+                                                const blob = await clipboardItem.getType(type)
+                                                const imageID = nanoid()
+                                                const filename = `${imageID}.png`
+
+                                                const relPath = asRelativePath(`outputs/imported/${filename}`)
+
+                                                const out = await createMediaImage_fromBlobObject(cushy, blob, relPath)
+                                                widget.value = out
+                                            }
+                                        }
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.error(err)
+                                })
+                        }}
+                    />
+                    <Button //
+                        square
+                        icon={'mdiRestore'}
+                        onClick={() => (widget.value = cushy.defaultImage)}
+                    />
                 </>
             }
             footer={
