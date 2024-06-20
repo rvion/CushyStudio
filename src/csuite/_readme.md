@@ -1,8 +1,11 @@
 # CSUITE
 
 `csuite` is a design system + component system.
+
 It is quite opinionated.
+
 It tries to come battery included to build complex apps
+
 It comes with several core non-UI abstractions and.
 
 Main authors: @rvion @birdddev @Globidev
@@ -50,3 +53,7 @@ Misc notes about things to document later
 
 - Shortcuts
     - Commands are what are bound to shortcuts.
+
+- Frame
+    - a visual rectable with colouring / hovering / bordering / tooltip capabilities
+    - basic building block for most layout parts.
