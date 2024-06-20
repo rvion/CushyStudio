@@ -5,7 +5,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { FormUI } from '../../controls/form/FormUI'
+import { FormUI } from '../../csuite/form/FormUI'
 import { stringifyUnknown } from '../../csuite/formatters/stringifyUnknown'
 import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'

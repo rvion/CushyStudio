@@ -1,5 +1,5 @@
-import type { BaseField } from '../../controls/model/BaseField'
 import type { BoundCommand } from '../commands/Command'
+import type { BaseField } from '../model/BaseField'
 import type { NO_PROPS } from '../NO_PROPS'
 import type { Trigger } from '../trigger/Trigger'
 import type { SimpleMenuModal } from './SimpleMenuModal'

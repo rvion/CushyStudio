@@ -1,4 +1,4 @@
-import { CushyFormManager } from '../../controls/cushy/FormBuilder'
+import { CushyFormManager } from '../../controls/FormBuilder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 export const PanelOutputConf = CushyFormManager.form(

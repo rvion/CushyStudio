@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../src/controls/cushy/FormBuilder'
+import type { FormBuilder } from '../../src/controls/FormBuilder'
 import type { ImageAndMask } from '../../src/CUSHY'
 
 import { toJS } from 'mobx'

@@ -4,7 +4,7 @@ import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 
 import { Status } from '../back/Status'
-import { Widget_group } from '../controls/fields/group/WidgetGroup'
+import { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
