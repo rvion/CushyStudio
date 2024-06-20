@@ -3,9 +3,9 @@ import type { TABLES } from '../db/TYPES.gen'
 import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 
+import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { DraftL } from './Draft'
 
 export type ProjectID = Branded<string, { ProjectID: true }>

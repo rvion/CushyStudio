@@ -4,8 +4,8 @@ import type { Widget_custom } from './WidgetCustom'
 import { observer } from 'mobx-react-lite'
 
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
-import { JsonViewUI } from '../../../widgets/workspace/JsonViewUI'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
+import { JsonViewUI } from '../../json/JsonViewUI'
 
 export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { widget: Widget_custom<T> }) {
     const widget = p.widget

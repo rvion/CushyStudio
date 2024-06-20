@@ -2,12 +2,12 @@ import type { TreeView } from './TreeView'
 
 import { observer } from 'mobx-react-lite'
 
-import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { ComboUI } from '../accelerators/ComboUI'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
+import { TreeKeys } from './TreeKeys'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //
@@ -29,7 +29,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                         trigger={'hover'}
                         content={() => (
                             <div tw='flex gap-1 whitespace-nowrap p-2'>
-                                collapse tree: <ComboUI combo={KEYS.collapseAllTree} />
+                                collapse tree: <ComboUI combo={TreeKeys.collapseAllTree} />
                             </div>
                         )}
                     >

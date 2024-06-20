@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { useSt } from '../state/stateContext'
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 
 export const Panel_DraftJsonResult = observer(function Panel_DraftJsonResult_(p: { draftID: DraftID }) {
     const st = useSt()

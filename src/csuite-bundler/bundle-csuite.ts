@@ -42,7 +42,7 @@ type UID = Tagged<string, 'UID'>
 let out = ''
 const append = (x: string) => (out += x + '\n')
 
-const ENTRYPOINT = 'src/controls/SimpleForm.ts'
+const ENTRYPOINT = 'src/csuite/index.ts'
 const PACKAGE_NAME = '@cushy/forms'
 const DIST_RELPATH = PACKAGE_NAME
 const DIST_ABSPATH = resolve(PACKAGE_NAME)
@@ -68,8 +68,8 @@ await microbench('took', async () => {
         console.log(`- copy ${chalk.underline(src)} to ${chalk.underline(dest)}`)
     }
     // copy jsx-runtime.js' & 'jsx-dev-runtime.js' to lib, since they won't be copied by tsc
-    cpSync2('src/utils/custom-jsx/jsx-runtime.js', 'lib/utils/custom-jsx/jsx-runtime.js')
-    cpSync2('src/utils/custom-jsx/jsx-dev-runtime.js', 'lib/utils/custom-jsx/jsx-dev-runtime.js')
+    cpSync2('src/csuite/custom-jsx/jsx-runtime.js', 'lib/csuite/custom-jsx/jsx-runtime.js')
+    cpSync2('src/csuite/custom-jsx/jsx-dev-runtime.js', 'lib/csuite/custom-jsx/jsx-dev-runtime.js')
     cpSync2('src/types/types.d.ts', `${DIST_RELPATH}/types.d.ts`)
 })
 
@@ -200,7 +200,7 @@ let libEntrypointCode = ''
 let mainReexportTSCode = '' // code at the root of the package that re-export everything
 for (const srcRelPath of allFilesNoExt) {
     // const
-    if (srcRelPath === 'src/utils/custom-jsx/jsx-runtime') continue
+    if (srcRelPath === 'src/csuite/custom-jsx/jsx-runtime') continue
     if (srcRelPath.endsWith('.css')) continue
     const libRelPath = srcRelPath.replace(/^src\//, '../')
     libEntrypointCode += `export * from '${libRelPath}'\n`

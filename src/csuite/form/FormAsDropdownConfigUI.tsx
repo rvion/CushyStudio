@@ -1,11 +1,11 @@
-import type { Model } from '../../csuite/model/Model'
+import type { Model } from '../model/Model'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../csuite/button/Button'
-import { FormUI } from '../../csuite/form/FormUI'
-import { Ikon } from '../../csuite/icons/iconHelpers'
-import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { Button } from '../button/Button'
+import { Ikon } from '../icons/iconHelpers'
+import { RevealUI } from '../reveal/RevealUI'
+import { FormUI } from './FormUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
     form?: Model<any>

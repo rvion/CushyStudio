@@ -1,4 +1,4 @@
-import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
+import { JsonViewUI } from '../json/JsonViewUI'
 
 export const ErrorBoundaryFallback = (p: {
     // 🔴 pretty unsafe
