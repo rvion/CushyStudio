@@ -3,17 +3,17 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { SpacerUI } from '../controls/fields/spacer/SpacerUI'
 import { Button } from '../csuite/button/Button'
+import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
+import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { formatSize } from '../db/getDBStats'
 import { useSt } from '../state/stateContext'
 import { assets } from '../utils/assets/assets'
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //

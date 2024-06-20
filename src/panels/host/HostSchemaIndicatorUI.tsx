@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { Message } from '../../csuite/shims'
 import { HostL } from '../../models/Host'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {

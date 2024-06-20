@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 
 import { convertWorkflowToPrompt } from '../../core/litegraphToPrompt'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
-import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundImportFromComfy = observer(function PlaygroundImportFromComfy_(p: {}) {

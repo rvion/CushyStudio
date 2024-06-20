@@ -1,6 +1,6 @@
 /** 📝 This needs to be a .tsx file */
 
-import type { CustomWidgetProps } from '../../src/controls/fields/custom/WidgetCustom'
+import type { CustomWidgetProps } from '../../src/csuite/fields/custom/WidgetCustom'
 
 import { observer } from 'mobx-react-lite'
 import Confetti from 'react-confetti'
@@ -21,7 +21,7 @@ const MyCustomComponent = observer(function (
             {/* Text Input -------------------------------------------------------- */}
             type "reset" in the field here and press play to reset the state
             <input
-                tw='cushy-basic-input p-2'
+                tw='csuite-basic-input p-2'
                 value={value.text ?? `Nothing to see here!`}
                 onChange={(ev) => (value.text = ev.target.value)}
             />

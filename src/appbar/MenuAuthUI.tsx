@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
+import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { useSt } from '../state/stateContext'
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 
 export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     const st = useSt()

@@ -19,7 +19,7 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                     >
                         <InputStringUI
                             icon='mdiMagnify'
-                            tw='cushy-basic-input w-full'
+                            tw='csuite-basic-input w-full'
                             placeholder='rechercher'
                             getValue={() => civitai.query.value}
                             setValue={(next) => (civitai.query.value = next)}

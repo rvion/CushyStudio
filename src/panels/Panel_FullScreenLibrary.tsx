@@ -5,7 +5,8 @@ import { Button } from '../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../csuite/frame/Frame'
 import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
-import { Slider, Toggle } from '../csuite/shims'
+import { InputSliderUI_legacy } from '../csuite/input-slider/Slider'
+import { Toggle } from '../csuite/inputs/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
@@ -23,7 +24,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                             <span className='material-symbols-outlined'>search</span>
                         </div>
                         <input
-                            tw='cushy-basic-input'
+                            tw='csuite-basic-input'
                             type='string'
                             value={library.query}
                             onChange={(ev) => {

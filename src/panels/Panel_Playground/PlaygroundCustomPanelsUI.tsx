@@ -1,4 +1,4 @@
-import type { ModelSerial } from '../../controls/model/ModelSerial'
+import type { ModelSerial } from '../../csuite/model/ModelSerial'
 
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'

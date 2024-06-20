@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
+import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
 import { clamp } from '../../csuite/utils/clamp'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
-import { FormAsDropdownConfigUI } from '../Panel_Gallery/FormAsDropdownConfigUI'
-import { PanelHeaderUI } from '../PanelHeader'
 import { PanelStepsConf } from './Panel_StepsConf'
 import { StepCardUI } from './StepCardUI'
 

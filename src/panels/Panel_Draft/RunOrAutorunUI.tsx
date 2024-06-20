@@ -22,7 +22,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             mode='int'
                             value={draft.st.project.data.autostartDelay}
                             onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
-                            className='cushy-basic-input'
+                            className='csuite-basic-input'
                             placeholder='ms'
                             softMax={5000}
                             hideSlider
@@ -37,7 +37,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             onValueChange={(val) => {
                                 draft.st.project.update({ autostartMaxDelay: val })
                             }}
-                            className='cushy-basic-input'
+                            className='csuite-basic-input'
                             placeholder='ms'
                             softMax={5000}
                             hideSlider

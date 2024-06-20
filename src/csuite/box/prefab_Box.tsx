@@ -1,5 +1,5 @@
-import type { Widget_choices_config } from '../../controls/fields/choices/WidgetChoices'
 import type { FormBuilder } from '../../CUSHY'
+import type { Widget_choices_config } from '../fields/choices/WidgetChoices'
 import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'

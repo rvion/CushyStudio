@@ -20,6 +20,6 @@ If  you're unfamiliar with tailwind, make sure you have the`"bradlc.vscode-tailw
 
 ## The specila \`tw\` property
 
-most styling can be done though the magical `tw` property that is injected in all components and helps writing conditional classes, or tailwind classes more easilly. (check the `src/utils/custom-jsx/jsx-runtime.js`  module to look at the implementation)
+most styling can be done though the magical `tw` property that is injected in all components and helps writing conditional classes, or tailwind classes more easilly. (check the `src/csuite/custom-jsx/jsx-runtime.js`  module to look at the implementation)
 
 more generally, please take a look at [setting-up-vscode.md](setting-up-vscode.md "mention")to ensure you have everything properly hooked up

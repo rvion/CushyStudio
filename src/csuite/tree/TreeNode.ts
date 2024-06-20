@@ -3,7 +3,7 @@ import type { ITreeElement, ITreeEntry } from './TreeEntry'
 
 import { makeAutoObservable } from 'mobx'
 
-import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
+import { SQLITE_false, SQLITE_true } from '../types/SQLITE_boolean'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 

@@ -3,7 +3,7 @@ import type { ITreeElement } from './TreeEntry'
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { type SQLITE_boolean_, SQLITE_true } from '../../db/SQLITE_boolean'
+import { type SQLITE_boolean_, SQLITE_true } from '../types/SQLITE_boolean'
 import { TreeNode } from './TreeNode'
 
 // ------------------------------------------------------------------------

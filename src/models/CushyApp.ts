@@ -9,10 +9,10 @@ import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
+import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { LiveInstance } from '../db/LiveInstance'
 import { LiveRef } from '../db/LiveRef'
-import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
 export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}

@@ -4,8 +4,8 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { Button } from '../../csuite/button/Button'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 
 export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: {

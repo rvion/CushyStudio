@@ -6,8 +6,8 @@ import { useEffect } from 'react'
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { Button } from '../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
 
 export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
