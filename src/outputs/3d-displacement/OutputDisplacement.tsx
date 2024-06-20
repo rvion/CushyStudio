@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
-import { FormUI } from '../../controls/FormUI'
+import { FormUI } from '../../controls/form/FormUI'
 import { bang } from '../../csuite/utils/bang'
 import { toastError } from '../../csuite/utils/toasts'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'

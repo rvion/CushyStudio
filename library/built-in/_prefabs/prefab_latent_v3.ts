@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/cushy/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator } from '../shapes/prefab_shapes'

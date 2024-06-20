@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { FormUI } from '../../controls/FormUI'
+import { FormUI } from '../../controls/form/FormUI'
 import { useSt } from '../../state/stateContext'
 
 /** This will allow devs to view re-usable forms once the form registering system is implemented */

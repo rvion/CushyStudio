@@ -1,4 +1,4 @@
-import type { BaseWidget } from '../../controls/BaseWidget'
+import type { BaseField } from '../../controls/model/BaseField'
 import type { BoundCommand } from '../commands/Command'
 import type { NO_PROPS } from '../NO_PROPS'
 import type { Trigger } from '../trigger/Trigger'
@@ -30,7 +30,7 @@ export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: numbe
 // prettier-ignore
 export type MenuEntry =
     /** inline subform  */
-    | BaseWidget
+    | BaseField
     /** custom component  */
     | FC<{}>
     /** a command */

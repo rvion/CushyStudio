@@ -1,4 +1,4 @@
-import type { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
+import type { Tree } from '../../csuite/tree/Tree'
 import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'

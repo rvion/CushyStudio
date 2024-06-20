@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
-import { FormUI } from '../controls/FormUI'
-import { WidgetLabelContainerUI } from '../controls/shared/WidgetLabelContainerUI'
+import { FormUI } from '../controls/form/FormUI'
+import { WidgetLabelContainerUI } from '../controls/form/WidgetLabelContainerUI'
 import { ComboUI } from '../csuite/accelerators/ComboUI'
 import { Button } from '../csuite/button/Button'
 import { InputBoolCheckboxUI } from '../csuite/checkbox/InputBoolCheckboxUI'

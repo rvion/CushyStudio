@@ -335,7 +335,7 @@ const whitelist: string[] = [
     'src/controls/IFormBuilder',
     'src/controls/ISpec',
     'src/controls/shared/CushyKit',
-    'src/controls/widgets/size/WidgetSizeTypes',
+    'src/controls/fields/size/WidgetSizeTypes',
     'src/llm/OpenRouter_models',
     'src/rsuite/RsuiteTypes',
     'src/rsuite/reveal/RevealProps',

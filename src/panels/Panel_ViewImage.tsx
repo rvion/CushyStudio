@@ -3,7 +3,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../controls/fields/spacer/SpacerUI'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'

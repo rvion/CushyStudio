@@ -4,7 +4,7 @@
 
 // 📝 Ideally, modular UI kits only import types with `import type {...}`
 // and do not import anything else
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/cushy/FormBuilder'
 
 // Example 1 -------------------------------------------------------------------------------------
 // 📝 this is a self-contained UI kit you can use in any card you want.

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Status } from '../../back/Status'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../../controls/fields/spacer/SpacerUI'
 import { Button } from '../../csuite/button/Button'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { OutputUI } from '../../outputs/OutputUI'

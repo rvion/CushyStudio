@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { SchemaDict } from '../controls/ISpec'
+import type { SchemaDict } from '../controls/model/IBlueprint'
 import type { LiveInstance } from '../db/LiveInstance'
 
 import { statSync } from 'fs'
@@ -8,7 +8,7 @@ import { basename } from 'pathe'
 
 import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
-import { getCurrentForm_IMPL } from '../controls/context/runWithGlobalForm'
+import { getCurrentForm_IMPL } from '../controls/model/runWithGlobalForm'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { asCushyAppID, type TABLES } from '../db/TYPES.gen'

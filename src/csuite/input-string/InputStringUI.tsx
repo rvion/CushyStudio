@@ -1,4 +1,4 @@
-import type { Widget_string_config } from '../../controls/widgets/string/WidgetString'
+import type { Widget_string_config } from '../../controls/fields/string/WidgetString'
 import type { IconName } from '../icons/icons'
 import type { CSSProperties } from 'react'
 

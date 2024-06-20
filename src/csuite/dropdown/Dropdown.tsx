@@ -1,5 +1,5 @@
 import type { IconName } from '../icons/icons'
-import type { Kolor } from '../kolor/Kolor'
+import type { Tint } from '../kolor/Tint'
 
 import { ReactNode } from 'react'
 
@@ -12,7 +12,7 @@ export const Dropdown = (p: {
     className?: string
     startIcon?: Maybe<IconName>
     title: ReactNode
-    theme?: Kolor
+    theme?: Tint
     content?: () => ReactNode
     button?: ReactNode
 }) => (

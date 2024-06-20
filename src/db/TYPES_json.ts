@@ -1,6 +1,6 @@
 import type { Status } from '../back/Status'
-import type { FormSerial } from '../controls/FormSerial'
-import type { Widget_group_serial } from '../controls/widgets/group/WidgetGroup'
+import type { Widget_group_serial } from '../controls/fields/group/WidgetGroup'
+import type { ModelSerial } from '../controls/model/ModelSerial'
 import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
@@ -38,7 +38,7 @@ export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), T
 export type Media3dScene_params = Record<string, any>
 export const Media3dScene_params_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Draft_formSerial = FormSerial
+export type Draft_formSerial = ModelSerial
 export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())
 
 export type CustomData_json = any
