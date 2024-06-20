@@ -6,7 +6,7 @@ export { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from '../../csuite/ctx/CSuite_ThemeLoco'
 
 export type { IDomain as IFormBuilder } from '../model/IDomain'
-export type { ModelSerial as FormSerial } from '../model/FormSerial'
+export type { ModelSerial as FormSerial } from '../model/ModelSerial'
 export type { ModelConfig as FormProperties } from '../model/Model'
 export type { SchemaDict, IBlueprint as ISpec } from '../model/IBlueprint'
 export type { OpenRouter_Models } from '../../csuite/openrouter/OpenRouter_models'

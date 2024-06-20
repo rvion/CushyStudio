@@ -9,6 +9,7 @@ export type ModelSerial = {
     uid: string
     name: string
     root: AnyWidgetSerial
+    snapshot?: AnyWidgetSerial
     shared: Record<string, AnyWidgetSerial>
     valueLastUpdatedAt: Timestamp
     serialLastUpdatedAt: Timestamp

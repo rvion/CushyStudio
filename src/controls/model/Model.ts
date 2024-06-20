@@ -1,10 +1,10 @@
 import type { CovariantFn2 } from '../../csuite/variance/BivariantHack'
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
-import type { ModelSerial } from './FormSerial'
 import type { IBlueprint } from './IBlueprint'
 import type { IDomain } from './IDomain'
 import type { ModelManager } from './ModelManager'
+import type { ModelSerial } from './ModelSerial'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -53,6 +53,41 @@ export class Model<
         })
     }
 
+    /** current form snapshot */
+    snapshot: Maybe<any> = undefined
+
+    /**
+     * update current model snapshot
+     */
+    saveSnapshot() {
+        this.snapshot = JSON.parse(JSON.stringify(this.root.serial))
+    }
+
+    /**
+     * rever to the last snapshot
+     */
+    revertToSnapshot() {
+        throw new Error('❌ not implemented')
+    }
+
+    /**
+     * @since 2024-06-20
+     * @status broken
+     * shrot text summarizing changes from default
+     */
+    get diffSummaryFromDefault(): string {
+        return (this.root as BaseField).diffSummaryFromDefault
+    }
+
+    /**
+     * @since 2024-06-20
+     * @status broken
+     * shrot text summarizing changes from default
+     * */
+    get diffSummaryFromSnapshot(): string {
+        return (this.root as BaseField).diffSummaryFromDefault
+    }
+
     /** loading error  */
     error: Maybe<string> = null
 
@@ -94,6 +129,7 @@ export class Model<
             uid: this.uid,
             name: this.config.name,
             root: this.root.serial,
+            snapshot: this.snapshot,
             shared: this.shared,
             serialLastUpdatedAt: this.serialLastUpdatedAt,
             valueLastUpdatedAt: this.valueLastUpdatedAt,
@@ -221,7 +257,7 @@ export class Model<
 
             // restore shared serials
             this.shared = formSerial?.shared || {}
-
+            this.snapshot = formSerial?.snapshot
             // instanciate the root widget
             const spec: ROOT = this.buildFn?.(formBuilder, this.context)
             const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)

@@ -2,7 +2,7 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
-import type { ModelSerial } from '../controls/model/FormSerial'
+import type { ModelSerial } from '../controls/model/ModelSerial'
 import type { Tint } from '../csuite/kolor/Tint'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { MediaImageL } from '../models/MediaImage'

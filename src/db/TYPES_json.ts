@@ -1,6 +1,6 @@
 import type { Status } from '../back/Status'
 import type { Widget_group_serial } from '../controls/fields/group/WidgetGroup'
-import type { ModelSerial } from '../controls/model/FormSerial'
+import type { ModelSerial } from '../controls/model/ModelSerial'
 import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'

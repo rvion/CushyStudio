@@ -115,6 +115,33 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         return this.subWidgets.length === 0
     }
 
+    get diffSummaryFromSnapshot(): string {
+        throw new Error('❌ not implemented')
+    }
+
+    get diffSummaryFromDefault(): string {
+        return [
+            this.hasChanges //
+                ? `${this.path}(${this.value?.toString?.() ?? '.'})`
+                : null,
+            ...this.subWidgets.map((w) => w.diffSummaryFromDefault),
+        ]
+            .filter(Boolean)
+            .join('\n')
+    }
+
+    /** path within the model */
+    get path(): string {
+        const p = this.parent
+        if (p == null) return '$'
+        return p.path + '.' + this.mountKey
+    }
+
+    get mountKey(): string {
+        if (this.parent == null) return '$'
+        return this.parent.subWidgetsWithKeys.find(({ widget }) => widget === this)?.key ?? '<error>'
+    }
+
     /** collapse all children that can be collapsed */
     collapseAllChildren(): void {
         for (const _item of this.subWidgets) {

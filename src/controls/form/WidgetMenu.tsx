@@ -12,6 +12,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { Tree } from '../../csuite/tree/Tree'
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { TreeView } from '../../csuite/tree/TreeView'
+import { toastInfo } from '../../csuite/utils/toasts'
 
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
     return (
@@ -23,15 +24,15 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
 
 export const menu_widgetActions: Menu<BaseField> = menu({
     title: 'widget actions',
-    entries: (widget: BaseField) => {
+    entries: (field: BaseField) => {
         const out: MenuEntry[] = []
         // RESET
         out.push(
             new SimpleMenuAction({
                 label: 'Reset',
                 icon: 'mdiUndoVariant',
-                disabled: () => !widget.hasChanges,
-                onPick: () => widget.reset(),
+                disabled: () => !field.hasChanges,
+                onPick: () => field.reset(),
             }),
         )
         out.push(MenuDividerUI_)
@@ -41,7 +42,7 @@ export const menu_widgetActions: Menu<BaseField> = menu({
             new SimpleMenuAction({
                 label: 'Collapse All',
                 icon: 'mdiCollapseAll',
-                onPick: () => widget.collapseAllChildren(),
+                onPick: () => field.collapseAllChildren(),
             }),
         )
 
@@ -50,8 +51,8 @@ export const menu_widgetActions: Menu<BaseField> = menu({
             new SimpleMenuAction({
                 label: 'Expand All',
                 icon: 'mdiExpandAll',
-                disabled: widget.hasNoChild,
-                onPick: () => widget.expandAllChildren(),
+                disabled: field.hasNoChild,
+                onPick: () => field.expandAllChildren(),
             }),
         )
 
@@ -63,7 +64,7 @@ export const menu_widgetActions: Menu<BaseField> = menu({
                 submit: () => {
                     console.log(`[🤠] values`)
                 },
-                UI: (w) => <CreatePresetUI widget={widget} />,
+                UI: (w) => <CreatePresetUI widget={field} />,
             }),
         )
         // out.push(
@@ -72,17 +73,31 @@ export const menu_widgetActions: Menu<BaseField> = menu({
         //         onPick: () => cushy.layout.addCustomV2(CreatePresetUI, { widget /* 🔴 */ }),
         //     }),
         // )
-        out.push(MenuDividerUI_)
-        const presets = widget.config.presets ?? []
-        for (const entry of presets) {
-            out.push(
-                new SimpleMenuAction({
-                    label: entry.label,
-                    icon: entry.icon,
-                    onPick: () => entry.apply(widget),
-                }),
-            )
+        const presets = field.config.presets ?? []
+        if (presets.length > 0) {
+            out.push(MenuDividerUI_)
+            for (const entry of presets) {
+                out.push(
+                    new SimpleMenuAction({
+                        label: entry.label,
+                        icon: entry.icon,
+                        onPick: () => entry.apply(field),
+                    }),
+                )
+            }
         }
+
+        out.push(MenuDividerUI_)
+        out.push(
+            new SimpleMenuAction({
+                label: `copy path (${field.path})`,
+                icon: 'mdiContentCopy',
+                onPick: () => {
+                    toastInfo(field.path)
+                    return navigator.clipboard.writeText(field.path)
+                },
+            }),
+        )
 
         return out
         // CUSTOM ACTIONS
