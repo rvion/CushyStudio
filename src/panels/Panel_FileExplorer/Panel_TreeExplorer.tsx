@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { TreeUI } from '../../csuite/tree/TreeUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
-import { PanelHeaderUI } from '../PanelHeader'
 import { LibraryHeaderUI } from './TreeExplorerHeader'
 
 export const Panel_TreeExplorer = observer(function Panel_TreeExplorer_(p: {}) {

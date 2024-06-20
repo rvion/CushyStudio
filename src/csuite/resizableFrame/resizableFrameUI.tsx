@@ -2,9 +2,9 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useMemo } from 'react'
 
-import { PanelHeaderUI } from '../../panels/PanelHeader'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
+import { PanelHeaderUI } from '../wrappers/PanelHeader'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0

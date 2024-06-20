@@ -1,9 +1,9 @@
-import type { IconName } from '../csuite/icons/icons'
+import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { Frame } from '../csuite/frame/Frame'
+import { Frame } from '../frame/Frame'
 
 /** Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
  *

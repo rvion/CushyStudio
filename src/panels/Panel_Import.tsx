@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
 import { TargetBox } from '../importers/TargetBox'
 import { useSt } from '../state/stateContext'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {
     const st = useSt()

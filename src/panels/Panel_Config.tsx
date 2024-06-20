@@ -10,10 +10,10 @@ import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { FormHelpTextUI } from '../csuite/inputs/shims'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { run_justify, ui_justify } from './Panel_Draft/prefab_justify'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()

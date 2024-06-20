@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
-import { PanelHeaderUI } from '../PanelHeader'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
     const workflow = cushy.db.comfy_workflow.last()!

@@ -14,7 +14,7 @@ import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
 import { searchMatches } from '../../csuite/utils/searchMatches'
 import { toastError, toastInfo } from '../../csuite/utils/toasts'
-import { PanelHeaderUI } from '../PanelHeader'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 
 class IconPanelStableState {
     constructor() {

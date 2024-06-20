@@ -9,11 +9,11 @@ import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { formatSize } from '../db/getDBStats'
 import { useSt } from '../state/stateContext'
 import { assets } from '../utils/assets/assets'
 import { ImageDropdownUI } from './ImageDropdownUI'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
