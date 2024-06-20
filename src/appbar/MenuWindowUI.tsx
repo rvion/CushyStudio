@@ -83,7 +83,13 @@ const PanelsDropdown = observer(function PanelsDropdown_(p: {}) {
                         icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                         label='Last STEP'
                     />
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Steps', {})}
+                        icon={<span className='material-symbols-outlined text-red-400'>history</span>}
+                        label='STEPS'
+                    />
                     <MenuDivider />
+                    <div className='divider my-1'>Layout Navigation</div>
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('LastStep', {})}
                         icon={<span className='material-symbols-outlined text-red-400'>keyboard_arrow_left</span>}

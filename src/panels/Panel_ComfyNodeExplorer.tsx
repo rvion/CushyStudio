@@ -7,8 +7,8 @@ import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../core/Colors'
 import { InputLegacy } from '../csuite/shims'
+import { searchMatches } from '../csuite/utils/searchMatches'
 import { useSt } from '../state/stateContext'
-import { searchMatches } from '../utils/misc/searchMatches'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''

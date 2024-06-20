@@ -5,7 +5,7 @@
 
 import type { MediaImageL } from '../../../src/models/MediaImage'
 
-import { bang } from '../../../src/utils/misc/bang'
+import { bang } from '../../../src/csuite/utils/bang'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'

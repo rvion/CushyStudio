@@ -2,7 +2,7 @@
 Any component rendering markdown expect to have a class of `_MD` on the root element.
 Known Users:
     - <MarkdownUI /> in `src/rsuite/MarkdownUI.tsx`
-    - WidgetMarkdown in `src/controls/widgets/markdown/WidgetMarkdown.ts`
+    - WidgetMarkdown in `src/controls/fields/markdown/WidgetMarkdown.ts`
 */
 /* markdown related stuff */
 

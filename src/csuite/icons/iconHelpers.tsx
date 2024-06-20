@@ -1,10 +1,10 @@
 import type { FC, MouseEventHandler } from 'react'
 
-import IconA from '@mdi/react'
+import * as IconImport from '@mdi/react'
 
 import { allIcons, type IconName } from './icons'
 
-const Icon = IconA ?? (((await import('@mdi/react')) as any).default.Icon as typeof import('@mdi/react').Icon)
+const Icon = IconImport.Icon
 
 type RawIconProps = import('@mdi/react/dist/IconProps.d.ts').IconProps
 type MyIconProps = Omit<RawIconProps, 'path'>

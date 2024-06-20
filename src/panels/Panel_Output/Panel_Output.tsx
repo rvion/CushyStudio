@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Status } from '../../back/Status'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../../controls/fields/spacer/SpacerUI'
 import { Button } from '../../csuite/button/Button'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { OutputUI } from '../../outputs/OutputUI'
@@ -35,7 +35,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             ]}
         >
             <PanelHeaderUI // STEP HEADER ======================================================================
-                title={'Step: ' + p.stepID == null ? 'latest' : `${step.name} (#${step.id})`}
+                title={'Step: ' + p.stepID == null ? 'latest' : `${step.name} ${step.id.slice(0, 5)}`}
                 icon={'mdiExitRun'}
             >
                 <SpacerUI />
@@ -45,7 +45,7 @@ export const Panel_Step = observer(function Panel_Step_(p: {
             </PanelHeaderUI>
 
             <div // STEP OUTPUTS ======================================================================
-                tw={'flex overflow-auto flex-shrink-0 items-center max-h-[50%]'}
+                tw={'flex overflow-auto flex-shrink-0 items-center max-h-[50%] p-0.5'}
             >
                 {step?.finalStatus === Status.Running && (
                     <Button look='error' onClick={() => st.stopCurrentPrompt()}>

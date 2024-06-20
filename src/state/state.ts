@@ -2,10 +2,10 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
-import type { FormSerial } from '../controls/FormSerial'
-import type { Kolor } from '../csuite/kolor/Kolor'
+import type { ModelSerial } from '../controls/model/FormSerial'
+import type { Tint } from '../csuite/kolor/Tint'
+import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { MediaImageL } from '../models/MediaImage'
-import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -18,8 +18,6 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
-import { commandManager, type CommandManager } from '../app/accelerators/CommandManager'
-import { createRandomGenerator } from '../back/random'
 import { asAppPath } from '../cards/asAppPath'
 import { GithubRepoName } from '../cards/githubRepo'
 import { GithubUserName } from '../cards/GithubUser'
@@ -28,10 +26,19 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { CushyFormManager } from '../controls/FormBuilder'
+import { CushyFormManager } from '../controls/cushy/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
+import { activityManager } from '../csuite/activity/ActivityManager'
+import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
-import { run_Kolor } from '../csuite/kolor/prefab_Kolor'
+import { run_tint } from '../csuite/kolor/prefab_Tint'
+import { regionMonitor, RegionMonitor } from '../csuite/regions/RegionMonitor'
+import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
+import { Tree, type TreeStorageConfig } from '../csuite/tree/Tree'
+import { treeElement } from '../csuite/tree/TreeEntry'
+import { TreeView } from '../csuite/tree/TreeView'
+import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
+import { exhaust } from '../csuite/utils/exhaust'
 import { LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
 import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
@@ -46,16 +53,10 @@ import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
-import { activityManager } from '../operators/activity/Activity'
-import { regionMonitor, RegionMonitor } from '../operators/regions/RegionMonitor'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
-import { treeElement } from '../panels/libraryUI/tree/TreeEntry'
-import { Tree, type TreeStorageConfig } from '../panels/libraryUI/tree/xxx/Tree'
-import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
-import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../router/Layout'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
@@ -67,7 +68,6 @@ import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { SearchManager } from '../utils/electron/findInPage'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/exhaust'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
@@ -501,7 +501,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialSerial: () => readJSON<FormSerial>('settings/displacement.json'),
+            initialSerial: () => readJSON<ModelSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
@@ -940,7 +940,7 @@ export class STATE {
     theme = themeConf
     csuite = new CSuite_ThemeCushy(this)
 
-    get themeText(): Kolor {
-        return run_Kolor(this.theme.value.text)
+    get themeText(): Tint {
+        return run_tint(this.theme.value.text)
     }
 }

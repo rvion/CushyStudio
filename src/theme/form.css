@@ -1,11 +1,7 @@
 /* Btn Utils ------------------------------------------------------------------------------------- */
-.btn-narrow {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
-}
-.btn-narrower {
-    padding-left: 0.1em;
-    padding-right: 0.1em;
+:root {
+    --input-height: 1.6rem;
+    --input-icon-height: 1.4rem;
 }
 
 /* box sizes */
@@ -52,11 +48,17 @@
 
 /* ------------------------------------------------------------------------------------------------------- */
 /* WIDGET SIZES */
-.w-input    { width: var(--input-height);  min-width: var(--input-height); }
-.h-input    { height: var(--input-height); min-height: var(--input-height); }
-.minh-input { min-height: var(--input-height); }
-.min2-input { min-width: var(--input-height); }
+.w-input    {       width: var(--input-height); min-width:  var(--input-height); }
+.h-input    {      height: var(--input-height); min-height: var(--input-height); }
+.minh-input {  min-height: var(--input-height); }
+.minw-input {   min-width: var(--input-height); }
 .lh-input   { line-height: var(--input-height); }
+
+.h-input-2 {        height: calc(var(--input-height) - 2px); }
+.w-input-2 {         width: calc(var(--input-height) - 2px); }
+.minh-input-2 { min-height: calc(var(--input-height) - 2px); }
+.minw-input-2 {  min-width: calc(var(--input-height) - 2px); }
+.lh-input-2 {  line-height: calc(var(--input-height) - 2px); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
@@ -66,7 +68,7 @@
 /* make sure cushy default inputs look like custom inputs */
 .cushy-basic-input:focus {
     outline: none;
-    border: 1px solid oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) c h);
+    border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 .cushy-basic-input:hover {
     background: oklch(from var(--KLR) calc(l + 0.06 * var(--DIR)) c h);
@@ -84,11 +86,15 @@
 /* Form Utils ------------------------------------------------------------------------------------- */
 /* Text Shading - These are defined in theme.css*/
 .text-shadow {
-    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 .text-shadow-inv {
-    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
+    text-shadow: 0px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
+    -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 /* Select Utils ------------------------------------------------------------------------------------- */

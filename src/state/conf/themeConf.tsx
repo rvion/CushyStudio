@@ -1,5 +1,5 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
-import { ui_Kolor } from '../../csuite/kolor/prefab_Kolor'
+import { CushyFormManager } from '../../controls/cushy/FormBuilder'
+import { ui_tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const themeConf = CushyFormManager.form(
@@ -24,10 +24,10 @@ export const themeConf = CushyFormManager.form(
                 appbar: ui.colorV2({ default: '#313338' }).optional(true),
 
                 // 2. texts
-                text: ui_Kolor(ui, {
+                text: ui_tint(ui, {
                     contrast: 0.824,
                 }),
-                textLabel: ui_Kolor(ui, {
+                textLabel: ui_tint(ui, {
                     contrast: 0.45,
                     chroma: 0.045,
                 }).optional(true),

@@ -4,7 +4,7 @@ import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'reac
 
 import { Button } from '../../csuite/button/Button'
 import { InputLegacy, Slider } from '../../csuite/shims'
-import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
+import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from './FieldAndLabelUI'
 
 export const ScribbleCanvas = (p: {

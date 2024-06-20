@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../controls/fields/spacer/SpacerUI'
 import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
 import { TargetBox } from '../importers/TargetBox'
 import { useSt } from '../state/stateContext'

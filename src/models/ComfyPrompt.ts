@@ -10,12 +10,12 @@ import sharp, { type FormatEnum } from 'sharp'
 
 import { openFolderInOS } from '../app/layout/openExternal'
 import { Status } from '../back/Status'
+import { exhaust } from '../csuite/utils/exhaust'
 import { LiveRef } from '../db/LiveRef'
 import { SQLITE_true } from '../db/SQLITE_boolean'
 import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/exhaust'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import {
     _createMediaImage_fromLocalyAvailableImage,

@@ -1,13 +1,13 @@
-import type { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
+import type { Tree } from '../../csuite/tree/Tree'
 import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 
+import { command, type Command } from '../../csuite/commands/Command'
+import { CushyShortcut } from '../../csuite/commands/CommandManager'
 import { global_RevealStack } from '../../csuite/reveal/RevealStack'
-import { command, type Command } from '../../operators/Command'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { ctx_global } from '../../operators/contexts/ctx_global'
-import { Trigger } from '../../operators/RET'
-import { CushyShortcut } from '../accelerators/CommandManager'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
 

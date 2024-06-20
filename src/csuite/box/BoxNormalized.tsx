@@ -1,37 +1,37 @@
-import type { Kolor } from '../kolor/Kolor'
+import type { Tint } from '../kolor/Tint'
 import type { Box } from './Box'
 
-import { clamp } from '../../controls/utils/clamp'
-import { getLCHFromString } from '../kolor/getLCHFromString'
+import { Kolor } from '../kolor/Kolor'
+import { clamp } from '../utils/clamp'
 
 export type BoxNormalized = {
-    base?: Kolor //       BASE              (relative to its parent's BASE)
-    hover?: Kolor //      BASE when hovered (relative to its parent's BASE)
-    text?: Kolor //       relative to BASE
-    shock?: Kolor //      relative to BASE
-    border?: Kolor //     relative to BASE
-    textShadow?: Kolor // relative to BASE
-    shadow?: Kolor //     relative to BASE
+    base?: Tint //       BASE              (relative to its parent's BASE)
+    hover?: Tint //      BASE when hovered (relative to its parent's BASE)
+    text?: Tint //       relative to BASE
+    shock?: Tint //      relative to BASE
+    border?: Tint //     relative to BASE
+    textShadow?: Tint // relative to BASE
+    shadow?: Tint //     relative to BASE
 }
 
 export function normalizeBox(box: Box): BoxNormalized {
     const out: BoxNormalized = {}
-    if (box.base) out.base = _normalizeKolor(box.base)
-    if (box.hover) out.hover = _normalizeKolor(box.hover)
-    if (box.shock) out.shock = _normalizeKolor(box.shock)
-    if (box.text) out.text = _normalizeKolor(box.text)
-    if (box.textShadow) out.textShadow = _normalizeKolor(box.textShadow)
-    if (box.shadow) out.shadow = _normalizeKolor(box.shadow)
-    if (box.border) out.border = _normalizeKolor(box.border)
+    if (box.base != null) out.base = _normalizeTint(box.base)
+    if (box.hover != null) out.hover = _normalizeTint(box.hover)
+    if (box.shock != null) out.shock = _normalizeTint(box.shock)
+    if (box.text != null) out.text = _normalizeTint(box.text)
+    if (box.textShadow != null) out.textShadow = _normalizeTint(box.textShadow)
+    if (box.shadow != null) out.shadow = _normalizeTint(box.shadow)
+    if (box.border != null) out.border = _normalizeTint(box.border)
     return out
 }
 
-function _normalizeKolor(
+function _normalizeTint(
     //
-    kolor: Kolor | string | number | boolean,
-): Kolor {
-    if (typeof kolor === 'boolean') return { contrast: kolor ? /* 0.2 */ 0.03 : 0 }
-    if (typeof kolor === 'number') return { contrast: clamp(kolor / 100, 0, 1) }
-    if (typeof kolor === 'string') return getLCHFromString(kolor)
-    return kolor
+    tint: Tint | string | number | boolean,
+): Tint {
+    if (typeof tint === 'boolean') return { contrast: tint ? /* 0.2 */ 0.03 : 0 }
+    if (typeof tint === 'number') return { contrast: clamp(tint / 100, 0, 1) }
+    if (typeof tint === 'string') return Kolor.fromString(tint)
+    return tint
 }

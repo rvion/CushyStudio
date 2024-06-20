@@ -10,6 +10,8 @@ export const Button = observer(function Button_(
         subtle?: boolean
         /** no border */
         borderless?: boolean
+        /** hue */
+        hue?: number
     },
 ) {
     const uist = useMemo(() => new ButtonState(p), [])
@@ -19,21 +21,24 @@ export const Button = observer(function Button_(
 
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
-    const { size, look, subtle, borderless, onClick, ...rest } = p
+    const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     return (
         <Frame //
             size={size ?? 'input'}
             look={look}
-            base={subtle ? 0 : uist.running ? 10 : 5}
+            base={{
+                contrast: subtle ? 0 : uist.visuallyActive || uist.running ? 0.3 : 0.2,
+                hue: p.hue,
+            }}
             border={borderless ? 0 : 10}
             hover={p.disabled ? false : 3}
-            active={uist.visuallyActive}
+            // active={uist.visuallyActive}
             disabled={p.disabled}
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex ?? -1}
             onMouseDown={uist.press}
             onClick={uist.onClick}
-            // iconSize='1.3em'
+            iconSize={iconSize ?? '1.1rem'}
             {...rest}
             tw={[
                 'inline-flex',
@@ -41,7 +46,7 @@ export const Button = observer(function Button_(
                 p.square ? null : 'px-2',
                 'font-semibold',
                 'ui-button',
-                'rounded-sm gap-2 items-center',
+                'rounded-sm gap-1 items-center',
                 p.disabled ? null : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',

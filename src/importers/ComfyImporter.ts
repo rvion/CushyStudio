@@ -2,13 +2,13 @@ import type { STATE } from '../state/state'
 
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
+import { bang } from '../csuite/utils/bang'
+import { TEdge, toposort } from '../csuite/utils/toposort'
 import { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
-import { bang } from '../utils/misc/bang'
-import { TEdge, toposort } from '../utils/misc/toposort'
 import { Namer } from './Namer'
 
 /** Converts Comfy JSON prompts to ComfyScript code */

@@ -1,4 +1,3 @@
-import type { XBool, XGroup, XNumber } from '../../../src/controls/FormBuilder'
 import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
@@ -49,11 +48,14 @@ export const ui_subform_Depth_Preprocessor = () => {
     })
 }
 
-export const ui_subform_Depth_Midas = (): XGroup<{
-    a_value: XNumber
-    bg_threshold: XNumber
-    saveProcessedImage: XBool
-}> => {
+// ================================================================================
+export type UI_subform_Depth_Midas = X.XGroup<{
+    a_value: X.XNumber
+    bg_threshold: X.XNumber
+    saveProcessedImage: X.XBool
+}>
+
+export const ui_subform_Depth_Midas = (): UI_subform_Depth_Midas => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Midas',

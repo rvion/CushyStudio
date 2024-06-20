@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 import { type ReactNode, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
-import { getNum } from '../tinyCSS/CSSVar'
 import { CSuiteCtx } from './CSuiteCtx'
 import { useCSuite } from './useCSuite'
 

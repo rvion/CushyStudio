@@ -3,7 +3,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../controls/fields/spacer/SpacerUI'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
@@ -150,16 +150,17 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             <Frame base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Frame>
 
-            <div // Delete button
-                tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'
+            <Button // Delete button
+                look='warning'
+                icon='mdiDeleteForever'
+                iconSize='1.2rem'
                 onClick={() => {
                     if (img == null) return
                     st.db.media_image.delete(img.id)
                 }}
             >
-                <span className='material-symbols-outlined'>delete_forever</span>
-                <p tw='px-1'>Delete</p>
-            </div>
+                Delete
+            </Button>
         </PanelHeaderUI>
     )
 })

@@ -34,7 +34,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
                 event.stopPropagation()
             }}
         >
-            {p.title && <div tw='text-lg font-bold'>{p.title}</div>}
+            {p.title && <div>{p.title}</div>}
             {p.children}
         </Frame>
     )

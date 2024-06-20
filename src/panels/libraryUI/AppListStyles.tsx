@@ -1,3 +1,0 @@
-export const PkgHeaderStyle = 'hover:mb-0.5'
-export const AppEntryStyle = ' hover:bg-base-200'
-export const AppEntryStyleSelected = 'font-bold' // 'bg-primary text-primary-content hover:bg-opacity-90'

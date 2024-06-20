@@ -7,9 +7,9 @@ import { readJSONSync } from 'fs-extra'
 import { dirname, resolve } from 'pathe'
 import { parseArgs } from 'util'
 
+import { bang } from '../csuite/utils/bang'
 import { buildJS } from '../scripts/build-form-JS'
 import { microbench } from '../utils/microbench'
-import { bang } from '../utils/misc/bang'
 import { mkPKGJSON } from './mkPKGJSON'
 import { CRASH, section, sectionObjective, sectionTool } from './utils/_section'
 import { _showESBUILDOutput } from './utils/_showESBUILDOutput'
@@ -246,7 +246,7 @@ const addToPackage = (relPath: string) => {
     cpSync(relPath, `${PACKAGE_NAME}/${relPath}`)
 }
 
-addToPackage('src/theme/form.vars.css')
+// addToPackage('src/theme/form.vars.css')
 addToPackage('src/theme/markdown.css')
 addToPackage('src/theme/form.css')
 addToPackage('src/csuite/input-number/InputNumberUI.css')
@@ -335,7 +335,7 @@ const whitelist: string[] = [
     'src/controls/IFormBuilder',
     'src/controls/ISpec',
     'src/controls/shared/CushyKit',
-    'src/controls/widgets/size/WidgetSizeTypes',
+    'src/controls/fields/size/WidgetSizeTypes',
     'src/llm/OpenRouter_models',
     'src/rsuite/RsuiteTypes',
     'src/rsuite/reveal/RevealProps',

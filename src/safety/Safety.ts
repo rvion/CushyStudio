@@ -1,9 +1,9 @@
 import type { STATE } from '../state/state'
 import type nsfwjs from 'nsfwjs'
 
-import { bang } from '../utils/misc/bang'
-import { exhaust } from '../utils/misc/exhaust'
-import { ManualPromise } from '../utils/misc/ManualPromise'
+import { bang } from '../csuite/utils/bang'
+import { exhaust } from '../csuite/utils/exhaust'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
 
 export type SafetyRating = nsfwjs.predictionType
 export type SafetyResult = {

@@ -7,8 +7,8 @@ import { Button } from '../../csuite/button/Button'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { exhaust } from '../../csuite/utils/exhaust'
 import { useSt } from '../../state/stateContext'
-import { exhaust } from '../../utils/misc/exhaust'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
 
@@ -20,6 +20,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
     const st = useSt()
     if (p.requirements.length == 0) return null
     const rr = p.requirements
+    const actionRequired = p.active && !st.mainHost.matchRequirements(rr)
     return (
         <RevealUI
             content={() => (
@@ -28,11 +29,11 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
                 </div>
             )}
         >
-            <Button
+            <Button //
                 icon='mdiDownload'
-                subtle
-                text={p.active && !st.mainHost.matchRequirements(rr) ? { hue: 0, chroma: 0.5 } : { contrast: 0.1 }}
-                tw={[p.label ? 'btn btn-sm btn-outline' : 'btn btn-square btn-xs']}
+                square={!p.label}
+                subtle={!actionRequired}
+                look={actionRequired ? 'error' : undefined}
             >
                 {p.label}
             </Button>

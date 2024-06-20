@@ -7,6 +7,8 @@ import { createElement, type CSSProperties, type ReactNode } from 'react'
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
 import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 
+export type BoolButtonMode = 'radio' | 'checkbox' | false
+
 export class BoolButtonProps {
     /** true when active, false when inactive, undefined when unset */
     value?: Maybe<boolean>
@@ -15,10 +17,13 @@ export class BoolButtonProps {
     display?: 'check' | 'button'
 
     /** @default 'checkbox' */
-    mode?: 'radio' | 'checkbox' | false
+    mode?: BoolButtonMode
 
     expand?: boolean
     icon?: Maybe<IconName>
+    // 2024-06-12 rvion: I think I'd like having this in addition to the single icon prop
+    // iconOn?: Maybe<IconName | false>
+    // iconOff?: Maybe<IconName | false>
 
     children?: ReactNode
     /** alternative way to specify children */

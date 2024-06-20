@@ -8,7 +8,12 @@ import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 import { InputBoolToggleButtonBoxUI } from './_InputBoolToggleButtonBoxUI'
 
 export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI_(
-    p: BoolButtonProps & { showToggleButtonBox?: boolean },
+    p: BoolButtonProps & {
+        preventDefault?: boolean
+        showToggleButtonBox?: boolean
+        /** emulate beeing hovered, passed down to frame as-is */
+        hovered?: boolean | undefined
+    },
 ) {
     const isActive = p.value ?? false
     const expand = p.expand
@@ -22,17 +27,19 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             triggerOnPress={{ startingState: isActive }}
             look='default'
             base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
-            border={isActive ? 10 : 5}
+            border={10 /* isActive ? 10 : 20 */}
             iconSize='1.5em'
             hover={!p.disabled}
             expand={expand}
             style={p.style}
+            hovered={p.hovered}
             icon={p.icon}
             {...p.box}
             onClick={(ev) => {
                 // wasEnabled = !isActive
                 ev.stopPropagation()
                 p.onValueChange?.(!isActive)
+                if (p.preventDefault) ev.preventDefault()
             }}
         >
             {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode && (

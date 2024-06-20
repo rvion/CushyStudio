@@ -82,15 +82,15 @@
     "typescript.preferences.preferTypeOnlyAutoImports": true, // should be on
     "typescript.enablePromptUseWorkspaceTsdk": true,
 
+    // debug
+    // "typescript.tsserver.log": "normal",
+    // "typescript.tsserver.enableTracing": true,
+
     // perf
     "typescript.tsserver.maxTsServerMemory": 8000
     // "typescript.tsserver.nodePath": ".cushy/node/v18.19.0-darwin-arm64/bin/node",
     // "editor.inlayHints.enabled": "off"
     // "editor.semanticHighlighting.enabled": false,
-
-    // debug
-    // "typescript.tsserver.log": "normal",
-    // "typescript.tsserver.enableTracing": true
 
     // misc
     // "typescript.tsdk": "node_modules/typescript/lib",

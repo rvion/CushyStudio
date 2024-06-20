@@ -9,7 +9,7 @@ import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInA
 import { nanoid } from 'nanoid'
 
 import { kysely } from '../DB'
-import { sqlbench } from '../utils/microbench'
+import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
@@ -85,6 +85,9 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     /** return first entity from table, or null if table is empty */
     stmt_first = this.db.compileSelectOne_<TABLE>(this.schema, `select * from ${this.name} order by createdAt asc limit 1`)
     first = (): Maybe<TABLE['$L']> => {
+        return this.first_
+    }
+    get first_(): Maybe<TABLE['$L']> {
         const data = this.stmt_first()
         // 2023-11-30 rvion:
         // 👇 first should mosltly not depends on anything
@@ -104,9 +107,18 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     // 🟢 --------------------------------------------------------------------------------
     /** return last entity from table, or null if table is empty */
-    stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, `select * from ${this.name} order by createdAt desc limit 1`)
+    stmt_query = `select * from ${this.name} order by createdAt desc limit 1`
+    stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
+
+    // 2024-06-13 rvion; perf issue was caused by this
+    // beeing a function instead of a getter;
     last = (): Maybe<TABLE['$L']> => {
-        const data = this.stmt_last()
+        return this.last_
+    }
+
+    get last_(): Maybe<TABLE['$L']> {
+        console.log(`[🤠] last ${this.name} (hash=size:${this.liveEntities.size})`)
+        const data = sqlbenchRaw(this.stmt_query, this.stmt_last) // sqlbench(this.stmt_last, 0 as any)
         DEPENDS_ON(this.liveEntities.size)
         // console.log('last =', data)
         if (data == null) return null

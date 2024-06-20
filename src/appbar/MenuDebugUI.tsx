@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { activityManager } from '../csuite/activity/ActivityManager'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Ikon } from '../csuite/icons/iconHelpers'
 import { getDBStats } from '../db/getDBStats'
 import { quickBench } from '../db/quickBench'
-import { activityManager } from '../operators/activity/Activity'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
 import { useSt } from '../state/stateContext'
 

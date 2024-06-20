@@ -1,12 +1,12 @@
 import chalk from 'chalk'
-import * as X from 'child_process'
-import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, statfsSync, statSync, watch } from 'fs'
-import { join, relative } from 'pathe'
+import { exec as exec_ } from 'child_process'
+import { appendFileSync, existsSync, readFileSync, renameSync, statSync, watch } from 'fs'
+import { join } from 'pathe'
 import { promisify } from 'util'
 
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
-const exec = promisify(X.exec)
+const exec = promisify(exec_)
 
 const logFile = join(__dirname, 'cushy-screenshots-logs.txt')
 console.log(`[👙] echo starting cushy screenshot manager!`)

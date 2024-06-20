@@ -1,6 +1,7 @@
-import { createHash } from 'crypto'
-import { customAlphabet, nanoid } from 'nanoid'
 import { type CSSProperties } from 'react'
+
+import { customAlphabet } from 'nanoid'
+import { hash } from 'spark-md5'
 
 import { addRule } from './compileOrRetrieveClassName'
 
@@ -10,8 +11,8 @@ const cache: Record<string, string> = {}
 
 export const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
     const vals = JSON.stringify(appearance)
-    const hash = createHash('md5').update(vals).digest('hex')
-    if (hash in cache) return cache[hash]!
+    const uid = hash(vals)
+    if (uid in cache) return cache[uid]!
 
     const className = 'box-' + mkClassName()
     // console.log(`[🌈] `, `.${hash}`, appearance)
@@ -24,7 +25,7 @@ export const compileOrRetrieveClassName = (appearance: CSSProperties): string =>
         .join('\n')
 
     addRule(`.${className}`, cssBlock)
-    cache[hash] = className
+    cache[uid] = className
 
     return className
 }

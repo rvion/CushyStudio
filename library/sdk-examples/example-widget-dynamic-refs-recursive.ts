@@ -1,10 +1,10 @@
-import type { Spec } from '../../src/controls/CushySpec'
-import type { Form } from '../../src/controls/Form'
-import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
-import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
-import type { Widget_image } from '../../src/controls/widgets/image/WidgetImage'
-import type { Widget_list } from '../../src/controls/widgets/list/WidgetList'
-import type { Widget_selectOne } from '../../src/controls/widgets/selectOne/WidgetSelectOne'
+import type { Blueprint } from '../../src/controls/cushy/Blueprint'
+import type { Widget_choices } from '../../src/controls/fields/choices/WidgetChoices'
+import type { Widget_group } from '../../src/controls/fields/group/WidgetGroup'
+import type { Widget_image } from '../../src/controls/fields/image/WidgetImage'
+import type { Widget_list } from '../../src/controls/fields/list/WidgetList'
+import type { Widget_selectOne } from '../../src/controls/fields/selectOne/WidgetSelectOne'
+import type { Model } from '../../src/controls/model/Model'
 
 app({
     ui: (form) => ({
@@ -29,11 +29,11 @@ app({
                                 // so to make sure code is correct, we need to cast it to the correct type
                                 // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    Spec<
+                                    Blueprint<
                                         Widget_choices<{
-                                            sampler_output_abc_asdf: Spec<Widget_selectOne<any>>
-                                            empty_latent: Spec<Widget_group<any>>
-                                            pick_image: Spec<Widget_image>
+                                            sampler_output_abc_asdf: Blueprint<Widget_selectOne<any>>
+                                            empty_latent: Blueprint<Widget_group<any>>
+                                            pick_image: Blueprint<Widget_image>
                                         }>
                                     >
                                 >

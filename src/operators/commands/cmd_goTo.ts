@@ -1,9 +1,9 @@
 // ---------------------------------------------------------------------
 
-import { command } from '../Command'
+import { command } from '../../csuite/commands/Command'
+import { menuWithoutProps, type MenuWithoutProps } from '../../csuite/menu/Menu'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { ctx_global } from '../contexts/ctx_global'
-import { menuWithoutProps, type MenuWithoutProps } from '../menu/Menu'
-import { Trigger } from '../RET'
 
 export const menu_utils: MenuWithoutProps = menuWithoutProps({
     title: 'Utils',
@@ -53,39 +53,3 @@ export const cmd_nav_openCivitaiPanel = command({
         return Trigger.Success
     },
 })
-
-// --------------------------------------------------------------------------------------------------------------
-// const Stack = StackItem[]
-// const st = 0 as any
-// const op_startMove = operator(st.in3dView && st.itemSelected, startActivity(sk_moveObject, T))
-// const kb_startmove = trigger(op_startMove, 'G')
-// const sk_moveObject= activity()
-
-// menu():MenuActivity
-
-// ------------------------------------------------------------------------------------------------------------
-// const copyImageOp = operator({
-//     id: 'GALLERY_OT_copy_hovered',
-//     label: 'Copy Hovered Image in Gallery',
-//     description: `Copy the image under the mouse in the gallery to the clipboard (as png)`,
-//     preCheck: (/* self: Operator, */ ctx: STATE, event: Event) => {
-//         if (ctx.hovered instanceof MediaImageL) return ctx.hovered
-//         return 'UNMATCHED'
-//     },
-//     invoke: (/* self: Operator, */ ctx: STATE, image: MediaImageL) => {
-//         image.copyToClipboard()
-//         return 'FINISHED'
-//     },
-// })
-
-// KeyBinding -----------------------------------------------------------------------------------------------------
-// KeyBinding -----------------------------------------------------------------------------------------------------
-// const keybinding = kb({
-//     id: 'GALLERY_OT_copy_hovered',
-//     when: () => {
-//         if (cushy.mouse.isOver('Gallery') && cushy.hovered instanceof MediaImageL) return cushy.hovered
-//         return 'UNMATCHED'
-//     },
-//     defaultKeyMap: 'Ctrl+C',
-//     action: copyImageOp,
-// })

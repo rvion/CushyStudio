@@ -6,7 +6,12 @@ import { useSt } from '../../state/stateContext'
 export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <Button icon='mdiMagnifyScan' look='primary' base={{ hue: 220 }} onClick={st.startupFileIndexing}>
+        <Button //
+            icon='mdiMagnifyScan'
+            look='primary'
+            hue={200}
+            onClick={st.startupFileIndexing}
+        >
             Index Apps
         </Button>
     )

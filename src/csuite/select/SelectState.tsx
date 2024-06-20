@@ -1,9 +1,10 @@
-import type { SelectProps } from './SelectUI'
+import type { SelectProps } from './SelectProps'
 
 import { makeAutoObservable } from 'mobx'
-import React, { ReactNode } from 'react'
+import React, { type FocusEvent, ReactNode } from 'react'
 
-import { searchMatches } from '../../utils/misc/searchMatches'
+import { BadgeUI } from '../badge/BadgeUI'
+import { searchMatches } from '../utils/searchMatches'
 
 interface ToolTipPosition {
     top?: number | undefined
@@ -119,23 +120,22 @@ export class AutoCompleteSelectState<T> {
                       const label = this.p.getLabelText(i)
                       if (!this.p.multiple) return label
                       return (
-                          <div
-                              tw='badge badge-primary text-shadow-inv cursor-not-allowed line-clamp-1'
+                          <BadgeUI
                               key={label}
                               // hack to allow to unselect quickly selected items
                               onClick={() => this.p.onChange?.(i, this)}
                           >
                               {label}
-                          </div>
+                          </BadgeUI>
                       )
                   })
         if (this.p.label)
             return (
-                <div tw='flex gap-1'>
+                <>
                     {this.p.label}: {str}
-                </div>
+                </>
             )
-        return <div tw='flex gap-1'>{str}</div>
+        return <>{str}</>
         // } else {
         //     const str = this.p.getLabelText(value)
         //     if (this.p.label) return `${this.p.label}: ${str}`
@@ -307,7 +307,9 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onBlur = () => this.closeMenu()
+    onBlur = (_ev: FocusEvent<HTMLDivElement, Element>) => {
+        this.closeMenu()
+    }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent) => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
