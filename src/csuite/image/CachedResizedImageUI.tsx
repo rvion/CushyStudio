@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { CSSProperties, useState } from 'react'
 import sharp from 'sharp'
 
-import { ClassLike } from '../utils/custom-jsx/global'
-import { ImageErrorDisplayUI } from '../widgets/galleries/ImageErrorDisplayUI'
+import { ClassLike } from '../../utils/custom-jsx/global'
+import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 
 /* XXX: Should only be temporary until a better system is made. */
 

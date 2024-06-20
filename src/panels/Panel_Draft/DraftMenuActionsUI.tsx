@@ -8,7 +8,7 @@ import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { Loader } from '../../csuite/shims'
+import { Loader } from '../../csuite/inputs/shims'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 

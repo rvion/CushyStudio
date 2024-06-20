@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Surface } from '../csuite/shims'
+import { Surface } from '../csuite/inputs/shims'
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'

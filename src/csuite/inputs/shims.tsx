@@ -1,10 +1,10 @@
-import type { RSSize } from './RsuiteTypes'
+import type { RSSize } from '../types/RsuiteTypes'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { RevealUI } from './reveal/RevealUI'
-import { exhaust } from './utils/exhaust'
+import { RevealUI } from '../reveal/RevealUI'
+import { exhaust } from '../utils/exhaust'
 
 // form
 export const FormHelpTextUI = (p: any) => <div {...p}></div>
@@ -27,16 +27,6 @@ export const InputNumberBase = observer(function InputNumberBase_(
             type='number'
             tw={['input input-sm', sizeClass]}
             {...p}
-        ></input>
-    )
-})
-
-export const Slider = observer(function Slider_(p: JSX.IntrinsicElements['input']) {
-    return (
-        <input //
-            type='range'
-            {...p}
-            tw={['range range-sm range-primary']}
         ></input>
     )
 })
