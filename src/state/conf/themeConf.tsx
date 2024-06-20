@@ -45,7 +45,7 @@ export const themeConf = CushyFormManager.form(
                     tooltip: 'show either chekbox icon or radio button icon in every InputBool',
                 }),
             },
-            { label: 'Theme' },
+            { label: false, collapsed: false },
         ),
     {
         name: 'theme config',

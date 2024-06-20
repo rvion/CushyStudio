@@ -77,6 +77,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import type { ConfigMode } from '../panels/Panel_Config'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -241,6 +242,7 @@ export class STATE {
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
+    configMode: ConfigMode = 'legacy'
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils

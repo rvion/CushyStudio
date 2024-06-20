@@ -13,7 +13,7 @@ import { PanelHeaderUI } from '../panels/PanelHeader'
 import { MenuWindowUI } from './MenuWindowUI'
 import { MenuEditUI } from './MenuEditUI'
 import { Button } from '../csuite/button/Button'
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../controls/fields/spacer/SpacerUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
