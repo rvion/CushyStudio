@@ -4,7 +4,7 @@ import type { BaseField } from './BaseField'
 import type { IBlueprint } from './IBlueprint'
 import type { Model } from './Model'
 
-export interface IDomain {
+export interface Domain {
     _cache: { count: number }
     _HYDRATE: <T extends IBlueprint<any>>(
         //

@@ -2,7 +2,7 @@ import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGr
 import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
 import type { IBlueprint } from './IBlueprint'
-import type { IDomain } from './IDomain'
+import type { Domain } from './IDomain'
 import type { ModelManager } from './ModelManager'
 import type { ModelSerial } from './ModelSerial'
 
@@ -18,7 +18,7 @@ import { debounce } from '../utils/debounce'
 export type ModelConfig<
     //
     ROOT extends IBlueprint<any>,
-    DOMAIN extends IDomain,
+    DOMAIN extends Domain,
     CONTEXT,
 > = {
     name: string
@@ -34,7 +34,7 @@ export class Model<
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
      * */
-    DOMAIN extends IDomain = IDomain,
+    DOMAIN extends Domain = Domain,
     /** custom context, so your model can access whatever it wants in most callbacks */
     CONTEXT = any,
 > {

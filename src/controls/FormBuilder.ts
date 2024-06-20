@@ -1,6 +1,6 @@
 import type { BaseField } from '../csuite/model/BaseField'
 import type { IBlueprint, SchemaDict } from '../csuite/model/IBlueprint'
-import type { IDomain } from '../csuite/model/IDomain'
+import type { Domain } from '../csuite/model/IDomain'
 import type { Model } from '../csuite/model/Model'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 
@@ -73,7 +73,7 @@ declare global {
 }
 
 /** cushy studio form builder */
-export class FormBuilder implements IDomain {
+export class FormBuilder implements Domain {
     SpecCtor = Blueprint
 
     /** (@internal) don't call this yourself */
