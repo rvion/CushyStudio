@@ -169,7 +169,10 @@ export const Frame = observer(
         return (
             <div //
                 ref={ref}
-                title={tooltip}
+                // 📋 tooltip is now handled by csuite directly
+                // | no need to rely on the browser's default tooltip
+                // | // title={tooltip}
+
                 onMouseOver={_onMouseOver}
                 onMouseOut={_onMouseOut}
                 tw={[
