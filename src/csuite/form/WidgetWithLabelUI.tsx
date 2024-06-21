@@ -59,6 +59,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             tw='WidgetWithLabelUI'
             base={widget.background}
             border={widget.border}
+            tooltip={widget.config.tooltip}
             // border={8}
             {...p.widget.config.box}
         >
