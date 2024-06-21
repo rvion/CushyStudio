@@ -38,6 +38,8 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
             image: form.image({ label: 'Image' }),
             advanced: form.fields(
                 {
+                    imageWeight: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
+                    embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({ default: 'average' }),
                     imageAttentionMask: form
                         .image({
                             label: 'Image Attention Mask',
@@ -46,8 +48,6 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
                                 'This defines the region of the image the clip vision will attempt to interpret into an embedding',
                         })
                         .optional(),
-                    imageWeight: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-                    embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({ default: 'average' }),
                 },
                 {
                     startCollapsed: true,
@@ -190,7 +190,7 @@ export const run_IPAdapterV2 = async (
             pos_embed = combinedPos.outputs.EMBEDS
             // merge neg
             const combinedNeg = graph.IPAdapterCombineEmbeds({
-                embed1: pos_embed,
+                embed1: neg_embed,
                 embed2: Image.outputs.neg_embed,
                 method: ex.advanced.embedding_combination,
             })
