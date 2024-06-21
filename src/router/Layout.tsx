@@ -621,7 +621,12 @@ export class CushyLayoutManager {
                         // width: 512,
                         // enableClose: false,
                         // enableDeleteWhenEmpty: false,
-                        children: [this._add({ panel: 'Welcome', props: {}, width: 512 })],
+                        children: [
+                            //
+                            this._add({ panel: 'Welcome', props: {}, width: 512 }),
+                            this._add({ panel: 'FullScreenLibrary', props: {}, width: 512 }),
+                            this._add({ panel: 'TreeExplorer', props: {}, width: 512 }),
+                        ],
                         // enableSingleTabStretch: true,
                     },
                     //     ],
