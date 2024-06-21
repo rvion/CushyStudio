@@ -41,6 +41,7 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
                     imageAttentionMask: form
                         .image({
                             label: 'Image Attention Mask',
+                            startCollapsed: true,
                             tooltip:
                                 'This defines the region of the image the clip vision will attempt to interpret into an embedding',
                         })
@@ -75,7 +76,11 @@ export const ui_IPAdapterV2 = () => {
     return form
         .fields(
             {
-                baseImage: ui_IPAdapterImageInput(form),
+                //baseImage: ui_IPAdapterImageInput(form),
+                images: form.list({
+                    element: ui_IPAdapterImageInput(form),
+                    min: 1,
+                }),
                 settings: form.fields(
                     {
                         adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
@@ -90,17 +95,13 @@ export const ui_IPAdapterV2 = () => {
                                 },
                             },
                         ),
-                        extra: form.list({
-                            label: 'Extra Images',
-                            element: ui_IPAdapterImageInput(form),
-                        }),
                         advancedSettings: ui_ipadapter_advancedSettings(form),
                     },
                     {
                         label: 'IP Adapter Settings',
                         startCollapsed: true,
                         summary: (ui) => {
-                            return `extra images:${ui.extra.length} | strength:${ui.adapterStrength} | model:${ui.models.type}|`
+                            return `strength:${ui.adapterStrength} | model:${ui.models.type}|`
                         },
                     },
                 ),
@@ -111,7 +112,7 @@ export const ui_IPAdapterV2 = () => {
                 label: 'IPAdapter',
                 box: { base: { hue: 70, chroma: 0.1 } },
                 summary: (ui) => {
-                    return `images:${1 + ui.settings.extra.length} | strength:${ui.settings.adapterStrength} | model:${
+                    return `images:${1 + ui.images.length} | strength:${ui.settings.adapterStrength} | model:${
                         ui.settings.models.type
                     }`
                 },
@@ -152,29 +153,10 @@ export const run_IPAdapterV2 = async (
         ckpt_pos = ip_adapter_loader._MODEL
     }
 
-    let image: _IMAGE = await run.loadImageAnswer(ui.baseImage.image)
-    image = graph.PrepImageForClipVision({ image, crop_position: 'center', sharpening: 0, interpolation: 'LANCZOS' })
-    let baseMask: _MASK | undefined
-    if (ui.baseImage.advanced.imageAttentionMask) {
-        const maskLoad = await run.loadImageAnswer(ui.baseImage.advanced.imageAttentionMask)
-        const maskClipped = graph.PrepImageForClipVision({
-            image: maskLoad,
-            crop_position: 'center',
-            sharpening: 0,
-            interpolation: 'LANCZOS',
-        })
-        baseMask = graph.ImageToMask({ image: maskClipped._IMAGE, channel: 'red' })
-    }
-
-    let image_ = graph.IPAdapterEncoder({
-        ipadapter: ip_adapter,
-        image,
-        weight: ui.baseImage.advanced.imageWeight,
-        mask: baseMask,
-    }).outputs
-    let pos_embed: _EMBEDS = image_.pos_embed
-    let neg_embed: _EMBEDS = image_.neg_embed
-    for (const ex of ui.settings.extra) {
+    let pos_embed: _EMBEDS | null = null
+    let neg_embed: _EMBEDS | null = null
+    let i: number = 0
+    for (const ex of ui.images) {
         const extra = await run.loadImageAnswer(ex.image)
         let mask: _MASK | undefined
         if (ex.advanced.imageAttentionMask) {
@@ -187,7 +169,7 @@ export const run_IPAdapterV2 = async (
             })
             mask = graph.ImageToMask({ image: maskClipped._IMAGE, channel: 'red' })
         }
-        const extraImage = graph.IPAdapterEncoder({
+        const Image = graph.IPAdapterEncoder({
             image: graph.PrepImageForClipVision({
                 image: extra._IMAGE,
                 crop_position: 'center',
@@ -198,22 +180,30 @@ export const run_IPAdapterV2 = async (
             weight: ex.advanced.imageWeight,
             mask: mask,
         })
-        // merge pos
-        const combinedPos = graph.IPAdapterCombineEmbeds({
-            embed1: pos_embed,
-            embed2: extraImage.outputs.pos_embed,
-            method: ex.advanced.embedding_combination,
-        })
-        pos_embed = combinedPos.outputs.EMBEDS
-        // merge neg
-        const combinedNeg = graph.IPAdapterCombineEmbeds({
-            embed1: pos_embed,
-            embed2: extraImage.outputs.neg_embed,
-            method: ex.advanced.embedding_combination,
-        })
-        neg_embed = combinedNeg.outputs.EMBEDS
+        if (pos_embed && neg_embed) {
+            // merge pos
+            const combinedPos = graph.IPAdapterCombineEmbeds({
+                embed1: pos_embed,
+                embed2: Image.outputs.pos_embed,
+                method: ex.advanced.embedding_combination,
+            })
+            pos_embed = combinedPos.outputs.EMBEDS
+            // merge neg
+            const combinedNeg = graph.IPAdapterCombineEmbeds({
+                embed1: pos_embed,
+                embed2: Image.outputs.neg_embed,
+                method: ex.advanced.embedding_combination,
+            })
+            neg_embed = combinedNeg.outputs.EMBEDS
+        } else {
+            pos_embed = Image.outputs.pos_embed
+            neg_embed = Image.outputs.neg_embed
+        }
+        i += 0
     }
-
+    if (pos_embed == null || neg_embed == null) {
+        throw new Error('No embedding pipe generated.')
+    }
     const ip_adapted_model = graph.IPAdapterEmbeds({
         ipadapter: ip_adapter,
         pos_embed,
