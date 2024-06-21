@@ -23,4 +23,5 @@ export const CSuite_theme1: CSuiteConfig = {
     inputHeight: 1.6,
     showWidgetExtra: true,
     truncateLabels: false,
+    fieldGroups: {},
 }

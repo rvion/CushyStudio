@@ -3,51 +3,13 @@ import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 
+import { ctx_global } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
-import { CushyShortcut } from '../../csuite/commands/CommandManager'
 import { global_RevealStack } from '../../csuite/reveal/RevealStack'
 import { Trigger } from '../../csuite/trigger/Trigger'
-import { ctx_global } from '../../operators/contexts/ctx_global'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
-
-// ------------------------------------------------------------------------------------
-// basic utils
-const always = (fn: () => any) => (): Trigger.Success => {
-    fn()
-    return Trigger.Success
-}
-
-const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: string): Command => {
-    return command({
-        id: `placeholder_${info}`,
-        combos: Array.isArray(combo) ? combo : [combo],
-        label: info,
-        ctx: ctx_global,
-        validInInput: true,
-        action: () => Trigger.UNMATCHED,
-    })
-}
-
-const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: string): Command<null> => {
-    return placholder(combo, info, 'in tree')
-}
-
-// const simple = (shortcut: CushyShortcut | CushyShortcut[], info: string, action: (fn: STATE) => void): Shortcut<STATE> => ({
-//     combos: Array.isArray(shortcut) ? shortcut : [shortcut],
-//     action: always(action),
-//     info,
-// })
-
-const simpleValidInInput = (combo: CushyShortcut | CushyShortcut[], info: string, action: () => void): Command<null> =>
-    command({
-        id: `simple_${info}`,
-        combos: Array.isArray(combo) ? combo : [combo],
-        ctx: ctx_global,
-        action: always(action),
-        validInInput: true,
-        label: info,
-    })
+import { placeholderTree, simpleValidInInput } from './simpleValidInInput'
 
 const focusTree = (st: STATE, tree: Tree) =>
     runInAction(() => {
@@ -74,12 +36,13 @@ const focusTree = (st: STATE, tree: Tree) =>
 
 // ------------------------------------------------------------------------------------
 // core global shortcuts
-export const allCommandsV1: Command<null>[] = [
+export const allLegacyCommands: Command<null>[] = [
     simpleValidInInput(KEYS.search, 'search string globally in window', () => {
         if (cushy.search.active) cushy.search.active = false
         else cushy.search.active = true
         return Trigger.Success
     }),
+
     simpleValidInInput(KEYS.resizeWindowForVideoCapture, 'Resize Window for video capture', () => {
         cushy.resizeWindowForVideoCapture()
         return Trigger.Success
@@ -142,15 +105,6 @@ export const allCommandsV1: Command<null>[] = [
     // full screen library  --------------------------
     simpleValidInInput([KEYS.openFull_Library], 'open full screen library', () => cushy.toggleFullLibrary()),
     simpleValidInInput(['mod+escape'], 'close full screen library', () => cushy.closeFullLibrary()),
-
-    command({
-        id: 'closeCurrentTab',
-        combos: KEYS.closeCurrentTab,
-        validInInput: true,
-        ctx: ctx_global,
-        action: () => cushy.layout.closeCurrentTab(),
-        label: 'Close current tab',
-    }),
 
     command({
         id: 'closeDialogOrPopupsOrFullScreenPanel',

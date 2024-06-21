@@ -60,6 +60,12 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return run_tint(raw)
     }
 
+    get fieldGroups() {
+        return {
+            border: this.st.theme.value.fieldGroups?.border,
+            contrast: this.st.theme.value.fieldGroups?.contrast,
+        }
+    }
     // get value(): THEME {
     //     return {
     //         ...defaultDarkTheme,

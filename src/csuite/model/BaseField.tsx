@@ -324,7 +324,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         // if the widget do NOT have a body => we do not show the border
         if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
-        return 5
+        return true
     }
 
     /** root form this widget has benn registered to */

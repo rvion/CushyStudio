@@ -55,9 +55,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
         <Frame
             //
             className={p.className}
-            tw='WidgetWithLabelUI flex flex-col gap-1'
+            // tw='WidgetWithLabelUI flex flex-col gap-1'
+            tw='WidgetWithLabelUI'
             base={widget.background}
             border={widget.border}
+            // border={8}
             {...p.widget.config.box}
         >
             {/* HEADER --------------------------------------------------------------------------------- */}

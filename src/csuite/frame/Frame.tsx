@@ -45,16 +45,6 @@ export type FrameProps = {
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
-// ----------------------------------------------------------------------
-// 2024-06-10 rvion:
-// TODO:
-//  ❌ we can't compile hover with the same name as non hover sadly;
-//  🟢 but we can add both classes directly
-//  🟢 we could also probably debounce class compilation
-//  🟢 and auto-clean classes
-//  🟢 and have some better caching mechanism so we don't have to normalize colors
-//     nor do anything extra when the input does change
-
 // ------------------------------------------------------------------
 // quick and dirty way to configure frame to use either style or className
 type FrameMode = 'CLASSNAME' | 'STYLE'
@@ -152,7 +142,7 @@ export const Frame = observer(
         if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
         // BORDER
-        if (box.border) variables.border = `1px solid ${KBase.tintFg(box.border).toOKLCH()}`
+        if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 
         // ===================================================================
         let _onMouseOver: any = undefined

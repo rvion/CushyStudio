@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { useCSuite } from '../../ctx/useCSuite'
-import { WidgetsContainerUI } from '../../form/WidgetsContainerUI'
+import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 import { SelectUI } from '../../select/SelectUI'
 
@@ -25,7 +25,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
-        <WidgetsContainerUI //
+        <ListOfFieldsContainerUI //
             layout={widget.config.layout}
             tw={[widget.config.className, p.className]}
         >
@@ -42,7 +42,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                     />
                 )
             })}
-        </WidgetsContainerUI>
+        </ListOfFieldsContainerUI>
     )
 })
 

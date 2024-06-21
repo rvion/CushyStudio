@@ -34,4 +34,9 @@ export interface CSuiteConfig {
     labelText?: Tint
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
     shiftDirection?: 1 | -1
+
+    fieldGroups: {
+        border?: Maybe<number>
+        contrast?: Maybe<number>
+    }
 }

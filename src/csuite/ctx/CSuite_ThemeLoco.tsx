@@ -30,4 +30,5 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     inputHeight: number = 1.6
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
+    fieldGroups = {}
 }
