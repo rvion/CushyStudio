@@ -1,10 +1,9 @@
 import { ctx_global } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
 import { KEYS } from './shorcutKeys'
-import { simpleValidInInput } from './simpleValidInInput'
+import { globalValidInInput } from './simpleValidInInput'
 
-// all layout command should start with
-// `mod+k`
+// should every layout command start with `mod+k` for some consistency ?
 
 export const allLayoutCommands: Command<null>[] = [
     // maximize active panel
@@ -28,7 +27,7 @@ export const allLayoutCommands: Command<null>[] = [
     }),
 
     // move active tab to the right
-    simpleValidInInput(
+    globalValidInInput(
         //
         'mod+k mod+ArrowRight',
         'move tab to the right',
@@ -36,14 +35,14 @@ export const allLayoutCommands: Command<null>[] = [
     ),
 
     // move active tab to the left
-    simpleValidInInput(
+    globalValidInInput(
         //
         'mod+k mod+ArrowLeft',
         'move tab to the right',
         () => cushy.layout.moveActiveTabToLeft(),
     ),
 
-    simpleValidInInput(
+    globalValidInInput(
         //
         'mod+k mod+ArrowDown',
         'move tab to the right',
@@ -57,5 +56,23 @@ export const allLayoutCommands: Command<null>[] = [
         ctx: ctx_global,
         action: () => cushy.layout.closeCurrentTab(),
         label: 'Close current tab',
+    }),
+
+    command({
+        id: 'closeAllTabs',
+        label: 'Close all tabs',
+        combos: 'mod+k mod+shift+x',
+        validInInput: true,
+        ctx: ctx_global,
+        action: () => cushy.layout.closeAllTabs(),
+    }),
+
+    command({
+        id: 'closeCurrentTabset',
+        label: 'Close current tabset',
+        combos: 'mod+k mod+x',
+        validInInput: true,
+        ctx: ctx_global,
+        action: () => cushy.layout.closeCurrentTabset(),
     }),
 ]

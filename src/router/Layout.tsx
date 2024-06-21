@@ -85,7 +85,7 @@ export class CushyLayoutManager {
 
     /** utility to apply a function on the active tabset */
     _withActiveTabset = <Ret extends any>(fn: (tabset: FL.TabSetNode) => Ret): Ret | Trigger => {
-        const tabset: FL.TabSetNode | undefined = this.getActiveOrFirstTabset()
+        const tabset: FL.TabSetNode | undefined = this.getActiveOrFirstTabset_orThrow()
         return fn(tabset)
     }
 
@@ -107,6 +107,23 @@ export class CushyLayoutManager {
             return Trigger.UNMATCHED
         }
         return fn(layout)
+    }
+
+    closeAllTabs = (): Trigger => {
+        let tabset = this.getActiveOrFirstTabset_orNull()
+        if (tabset == null) return Trigger.UNMATCHED
+        while (tabset != null) {
+            this._doAction(Actions.deleteTabset(tabset.getId()))
+            tabset = this.getActiveOrFirstTabset_orNull()
+        }
+        return Trigger.Success
+    }
+
+    closeCurrentTabset = (): Trigger => {
+        let tabset = this.getActiveOrFirstTabset_orNull()
+        if (tabset == null) return Trigger.UNMATCHED
+        this._doAction(Actions.deleteTabset(tabset.getId()))
+        return Trigger.Success
     }
 
     /** maximize the active(=selected; with focus) tabset */
@@ -252,7 +269,7 @@ export class CushyLayoutManager {
         prev: Maybe<FL.TabSetNode>
         next: Maybe<FL.TabSetNode>
     }> => {
-        const tabset = this.getActiveOrFirstTabset()
+        const tabset = this.getActiveOrFirstTabset_orThrow()
 
         const parent = tabset.getParent()
         if (parent == null) return void toastError('tabset has no parent')
@@ -299,7 +316,7 @@ export class CushyLayoutManager {
                 }}
                 onModelChange={(model) => {
                     runInAction(() => {
-                        const tabset = this.getActiveOrFirstTabset()
+                        const tabset = this.getActiveOrFirstTabset_orThrow()
                         this.currentTabSet = tabset
                         this.currentTab = tabset?.getSelectedNode()
                         this.currentTabID = this.currentTab?.getId()
@@ -317,20 +334,32 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    private _assertTabsetNode = (node: FL.Node): FL.TabSetNode => {
+    private _assertTabsetNode_orThrow = (node: FL.Node): FL.TabSetNode => {
         if (node.getType() !== 'tabset') throw new Error(`[❌] node is not a tabset`)
         return node as FL.TabSetNode
     }
 
-    getActiveOrFirstTabset = (): FL.TabSetNode => {
+    private _assertTabsetNode_orNull = (node: FL.Node): Maybe<FL.TabSetNode> => {
+        if (node.getType() !== 'tabset') return null
+        return node as FL.TabSetNode
+    }
+
+    getActiveOrFirstTabset_orThrow = (): FL.TabSetNode => {
         return (
             this.model.getActiveTabset() ?? //
-            this._assertTabsetNode(this.model.getFirstTabSet())
+            this._assertTabsetNode_orThrow(this.model.getFirstTabSet())
+        )
+    }
+
+    getActiveOrFirstTabset_orNull = (): Maybe<FL.TabSetNode> => {
+        return (
+            this.model.getActiveTabset() ?? //
+            this._assertTabsetNode_orNull(this.model.getFirstTabSet())
         )
     }
     /** quickly rename the current tab */
     renameCurrentTab = (newName: string) => {
-        const tabset = this.getActiveOrFirstTabset()
+        const tabset = this.getActiveOrFirstTabset_orThrow()
         if (tabset == null) return
         const tab = tabset.getSelectedNode()
         if (tab == null) return
@@ -344,7 +373,7 @@ export class CushyLayoutManager {
             return Trigger.Success
         }
         // 1. find tabset
-        const tabset = this.getActiveOrFirstTabset()
+        const tabset = this.getActiveOrFirstTabset_orThrow()
         if (tabset == null) return Trigger.UNMATCHED
 
         // 2. find active tab
@@ -466,7 +495,7 @@ export class CushyLayoutManager {
         // 3. create tab if not prev type
         const { icon, title } = panels[panelName].header(panelProps as any)
         if (prevTab == null) {
-            const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset().getId()
+            const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset_orThrow().getId()
             // const tabsetIDToAddThePanelTo =
             //     where === 'current' //
             //         ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID

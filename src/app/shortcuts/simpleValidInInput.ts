@@ -27,7 +27,7 @@ export const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: st
 //     action: always(action),
 //     info,
 // })
-export const simpleValidInInput = (combo: CushyShortcut | CushyShortcut[], info: string, action: () => void): Command<null> =>
+export const globalValidInInput = (combo: CushyShortcut | CushyShortcut[], info: string, action: () => void): Command<null> =>
     command({
         id: `simple_${info}`,
         combos: Array.isArray(combo) ? combo : [combo],
