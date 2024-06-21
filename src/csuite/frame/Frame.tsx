@@ -5,7 +5,7 @@ import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, useContext, useState } from 'react'
+import { forwardRef, type MouseEvent, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
@@ -15,6 +15,7 @@ import { overrideTint } from '../kolor/overrideTint'
 import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { frameTemplates } from './FrameTemplates'
+import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
     tooltip?: string
@@ -145,11 +146,23 @@ export const Frame = observer(
         if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 
         // ===================================================================
-        let _onMouseOver: any = undefined
-        let _onMouseOut: any = undefined
-        if (p.hover != null) {
-            _onMouseOver = () => setHovered(true)
-            _onMouseOut = () => setHovered(false)
+        const _onMouseOver = (ev: MouseEvent) => {
+            if (p.hover) setHovered(true)
+            if (p.tooltip != null)
+                tooltipStuff.tooltip = {
+                    ref: ev.currentTarget,
+                    text: p.tooltip ?? 'test',
+                }
+        }
+
+        const _onMouseOut = (ev: MouseEvent) => {
+            if (p.hover) setHovered(false)
+            if (
+                p.tooltip != null && //
+                tooltipStuff.tooltip?.ref === ev.currentTarget
+            ) {
+                tooltipStuff.tooltip = null
+            }
         }
 
         // ===================================================================

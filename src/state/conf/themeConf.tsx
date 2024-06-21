@@ -23,6 +23,9 @@ export const themeConf = CushyFormManager.form(
                 appbar: ui.colorV2({ default: '#313338' }).optional(true),
 
                 // ...
+                tooltipDelay: ui
+                    .int({ min: 0, softMin: 50, softMax: 1000, default: 500, unit: 'ms', suffix: 'ms' })
+                    .optional(true),
                 gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
                 widgetWithLabel: ui.fields(
                     {
