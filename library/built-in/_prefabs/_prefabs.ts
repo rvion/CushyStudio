@@ -29,6 +29,8 @@ export function ui_highresfix(p: { activeByDefault?: true } = {}): UI_HighResFix
     const form = getCurrentForm()
     return form.group({
         label: 'Upscale Pass (High Res Fix)',
+        icon: 'mdiArrowExpandAll',
+        box: { base: { hue: 220, chroma: 0.1 } },
         items: {
             // NNLatentUpscale: form.bool({
             //     default: false,

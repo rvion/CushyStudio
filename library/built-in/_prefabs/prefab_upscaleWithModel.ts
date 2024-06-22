@@ -9,6 +9,8 @@ export const ui_upscaleWithModel = () => {
         .group({
             label: 'Upscale via Model',
             items: { model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }) },
+            icon: 'mdiArrowExpandAll',
+            box: { base: { hue: 180, chroma: 0.1 } },
         })
         .addRequirements([
             // // 2x
