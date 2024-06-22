@@ -25,6 +25,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             tw='InputBoolToggleButtonUI minh-input !select-none cursor-pointer justify-center px-1 text-sm flex items-center'
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
+            tooltip={p.tooltip}
             look='default'
             base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
             border={10 /* isActive ? 10 : 20 */}
