@@ -11,6 +11,9 @@ import { CanvasToolbarUI, UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Button } from '../../csuite/button/Button'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {
@@ -62,7 +65,41 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             className='flex flex-1 w-full h-full overflow-hidden'
         >
             <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
-                <PanelHeaderUI>test</PanelHeaderUI>
+                <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
+                    <div tw='flex '>
+                        <Button //
+                            square
+                            icon='mdiUndo'
+                            tooltip='Undo'
+                            onClick={() => canvas.undo()}
+                        />
+                        <Button
+                            square
+                            disabled
+                            icon='mdiRedo'
+                            tooltip='Redo (Not implemented)'
+                            // onClick={() => canvas.undo()}
+                        />
+                    </div>
+                    <div tw='flex justify-center items-center'>
+                        <InputNumberUI
+                            mode='int'
+                            min={32}
+                            step={4}
+                            onValueChange={(next) => (canvas.snapSize = next)}
+                            suffix='px'
+                            value={canvas.snapSize}
+                        />
+                        <InputBoolToggleButtonUI
+                            icon={'mdiGrid'}
+                            value={canvas.snapToGrid}
+                            onValueChange={(v) => {
+                                canvas.snapToGrid = !canvas.snapToGrid
+                            }}
+                        />
+                    </div>
+                    <div />
+                </PanelHeaderUI>
                 <div tw='absolute z-50'>
                     <CanvasToolbarUI />
                 </div>
