@@ -28,6 +28,8 @@ import * as icons from '@mdi/js'
 
 // prettier-ignore
 const myCustomIcons = {
+    _: 'M 0,0 z',
+
     // semantic stuff ----------------------------------------------------------------
     _missedCall: icons.mdiPhoneMissed,
     _transferredCall: icons.mdiPhoneInTalk,

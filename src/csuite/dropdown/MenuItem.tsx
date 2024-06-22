@@ -21,6 +21,9 @@ export const MenuItem = observer(function DropdownItem_(p: {
     label?: ReactNode
     shortcut?: CushyShortcut
     loading?: boolean
+    /** right before the (menu shortcust) */
+    beforeShortcut?: ReactNode
+    afterShortcut?: ReactNode
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
     return (
@@ -42,11 +45,13 @@ export const MenuItem = observer(function DropdownItem_(p: {
             tw={['_MenuItem', 'px-2 py-0.5 flex items-center gap-2 whitespace-nowrap cursor-pointer']}
             {...rest}
         >
-            {icon && <IkonOf name={icon} className={p.iconClassName ?? undefined} />}
+            <IkonOf name={icon ?? '_'} className={p.iconClassName ?? undefined} />
             {/* {icon} */}
             {label}
             {children}
+            {p.beforeShortcut}
             {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+            {p.afterShortcut}
         </Frame>
     )
 })

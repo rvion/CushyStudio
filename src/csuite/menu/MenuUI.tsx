@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
+import { ComboUI } from '../accelerators/ComboUI'
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
 import { IkonOf } from '../icons/iconHelpers'
@@ -57,7 +58,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             key={ix}
                             shortcut={char}
                             label={entry.opts.label}
-                            icon={entry.opts.icon ?? ('_' as any)}
+                            icon={entry.opts.icon}
                             onClick={() => {
                                 entry.opts.onPick()
                                 p.menu.onStop()
@@ -102,16 +103,21 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 void entry.execute()
                                 p.menu.onStop()
                             }}
+                            beforeShortcut={
+                                isCommand(entry) && entry.combos?.[0] ? <ComboUI combo={entry.combos[0]} /> : undefined
+                            }
                             label={
-                                charIx != null ? (
-                                    <div>
-                                        <span>{label.slice(0, charIx)}</span>
-                                        <span tw='underline text-red'>{label[charIx]}</span>
-                                        <span>{label.slice(charIx + 1)}</span>
-                                    </div>
-                                ) : (
-                                    label
-                                )
+                                <>
+                                    {charIx != null ? (
+                                        <div>
+                                            <span>{label.slice(0, charIx)}</span>
+                                            <span tw='underline text-red'>{label[charIx]}</span>
+                                            <span>{label.slice(charIx + 1)}</span>
+                                        </div>
+                                    ) : (
+                                        label
+                                    )}
+                                </>
                             }
                         />
                     )
@@ -128,19 +134,19 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 key={ix}
                                 shortcut={char}
                                 icon={entry.icon}
+                                afterShortcut={<IkonOf name='mdiMenuRight' />}
                                 // onClick={() => entry.open()}
                                 label={
                                     <Fragment>
-                                            {charIx != null ? (
-                                                <div>
-                                                    <span>{label.slice(0, charIx)}</span>
-                                                    <span tw='underline text-red'>{label[charIx]}</span>
-                                                    <span>{label.slice(charIx + 1)}</span>
-                                                </div>
-                                            ) : (
-                                                label
-                                            )}
-                                        <span className='material-symbols-outlined'>keyboard_arrow_right</span>
+                                        {charIx != null ? (
+                                            <div>
+                                                <span tw='font-bold'>{label.slice(0, charIx)}</span>
+                                                <span tw='underline text-red'>{label[charIx]}</span>
+                                                <span>{label.slice(charIx + 1)}</span>
+                                            </div>
+                                        ) : (
+                                            label
+                                        )}
                                     </Fragment>
                                 }
                             />

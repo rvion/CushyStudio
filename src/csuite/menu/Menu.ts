@@ -26,7 +26,16 @@ const menuManager = new MenuManager()
 
 // ------------------------------------------------------------------------------------------
 // ACTIVITY STACK
-export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: number }
+export type MenuEntryWithKey = {
+    entry: MenuEntry
+    /** local key bound to that menu entry */
+    char?: string
+    /**
+     * char index within the string;
+     * (value kept around to speed up later processing to add underline at the right position)
+     * */
+    charIx?: number
+}
 
 // prettier-ignore
 export type MenuEntry =
@@ -134,16 +143,19 @@ export class MenuInstance<Props> implements Activity {
         for (const entry of this.entries) {
             if (entry instanceof SimpleMenuAction) {
                 const res = this.findSuitableKeys(entry.opts.label, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // 2024-06-22 rvion: we don't want to skip entries,
+                // | we want to show them with no key if we can't find letter
+                // | for them
+                // | ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else if (entry instanceof Command) {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else if (entry instanceof BoundMenu) {
                 const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else {
                 out.push({ entry })
             }
