@@ -1,6 +1,6 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type ReactNode, useEffect, useMemo } from 'react'
+import { type FC, type ReactNode, useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
 import { ShelfState } from './ShelfState'

@@ -48,7 +48,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem //
                         iconClassName='text-green-500'
                         icon='mdiBug'
-                        onClick={() => activityManager.startActivity(DEMO_ACTIVITY)}
+                        onClick={() => activityManager.start(DEMO_ACTIVITY)}
                         label='Start debug activity'
                     />
                     <MenuItem

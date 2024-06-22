@@ -1,20 +1,23 @@
+import type { MediaImageL } from '../../models/MediaImage'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { Button } from '../../csuite/button/Button'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { CanvasToolbarUI, UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
+import { UCAGenerate } from './activities/activity_generate'
+import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
-import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
-import { Button } from '../../csuite/button/Button'
-import { Dropdown } from '../../csuite/dropdown/Dropdown'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {
@@ -23,8 +26,8 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
 }) {
     const st = useSt()
     const containerRef = React.useRef<HTMLDivElement>(null)
-    const img0 = st.db.media_image.get(p.imgID!)
-    const canvas = useMemo(() => {
+    const img0: Maybe<MediaImageL> = st.db.media_image.get(p.imgID!)
+    const canvas: UnifiedCanvas = useMemo(() => {
         if (img0 == null) throw new Error('img0 is null')
         return new UnifiedCanvas(st, img0)
     }, [img0])
@@ -71,6 +74,11 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         <div // TODO(bird_d): Needs Joinable
                             tw='flex'
                         >
+                            <Button
+                                onClick={() => cushy.activityManager.startFromClass(UCAGenerate, canvas)}
+                                children='test'
+                                icon='mdiAbTesting'
+                            />
                             <InputNumberUI //
                                 text='Brush Size'
                                 mode='int'

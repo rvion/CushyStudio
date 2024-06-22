@@ -2,16 +2,16 @@ import type { Activity } from '../activity/Activity'
 import type { BoundCommand } from '../commands/Command'
 import type { IconName } from '../icons/icons'
 import type { BaseField } from '../model/BaseField'
-import type { Trigger } from '../trigger/Trigger'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleMenuModal } from './SimpleMenuModal'
 
 import { nanoid } from 'nanoid'
-import { createElement, type FC, useMemo } from 'react'
+import { createElement, type FC, type UIEvent, useMemo } from 'react'
 
 import { activityManager } from '../activity/ActivityManager'
 import { Command } from '../commands/Command'
 import { BoundMenuSym } from '../introspect/_isBoundMenu'
+import { Trigger } from '../trigger/Trigger'
 import { MenuRootUI, MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
@@ -81,7 +81,8 @@ export class Menu<Props> {
     /** push the menu to current activity */
     open(props: Props): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, props)
-        return activityManager.startActivity(instance)
+        activityManager.start(instance)
+        return Trigger.Success
     }
 }
 
@@ -102,7 +103,8 @@ export class MenuWithoutProps {
     /** push the menu to current activity */
     open(): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, {})
-        return activityManager.startActivity(instance)
+        activityManager.start(instance)
+        return Trigger.Success
     }
 }
 
@@ -110,8 +112,8 @@ export class MenuInstance<Props> implements Activity {
     onStart = (): void => {}
 
     UI = () => createElement(MenuUI, { menu: this })
-    onEvent = (event: Event): Trigger | null => {
-        event.stopImmediatePropagation()
+    onEvent = (event: UIEvent): Trigger | null => {
+        // event.stopImmediatePropagation()
         event.stopPropagation()
         event.preventDefault()
         return null

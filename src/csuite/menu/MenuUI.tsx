@@ -1,10 +1,9 @@
 import type { MenuInstance } from './Menu'
 
 import { observer } from 'mobx-react-lite'
-import { createElement } from 'react'
+import { createElement, type MouseEvent } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
-import { ComboUI } from '../accelerators/ComboUI'
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
 import { IkonOf } from '../icons/iconHelpers'
@@ -73,10 +72,9 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             key={ix}
                             localShortcut={char}
                             label={entry.p.label}
-                            onClick={(event) => {
-                                activityManager.startActivity({
+                            onClick={(event: MouseEvent) => {
+                                activityManager.start({
                                     event,
-                                    uid: 'createPreset❓',
                                     placement: 'auto',
                                     shell: 'popup-lg',
                                     UI: (p) => (

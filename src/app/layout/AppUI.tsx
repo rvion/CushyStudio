@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { AppBarUI } from '../../appbar/AppBarUI'
-import { ActivityStackUI } from '../../csuite/activity/ActivityUI'
+import { ActivityStackUI } from '../../csuite/activity/ActivityStackUI'
+import { TooltipUI } from '../../csuite/activity/TooltipUI'
 import { commandManager } from '../../csuite/commands/CommandManager'
 import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
@@ -79,6 +80,7 @@ export const CushyUI = observer(function CushyUI_() {
                     id='tooltip-root'
                     tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
                 >
+                    <TooltipUI />
                     <ActivityStackUI />
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
