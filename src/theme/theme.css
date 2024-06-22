@@ -52,7 +52,7 @@
 .bd1 { border: 1px solid oklch(var(--p)) }
 
 .konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
-.virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
+/* .virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); } */
 
  /* helpers ----------------------------------------------------------------------------------- */
 .flex-2{ flex: 2 1 0%; }

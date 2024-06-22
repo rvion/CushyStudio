@@ -18,7 +18,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
             <Frame base tw='p-4 flex flex-wrap items-center'>
                 <div tw='text-2xl'>Library</div>
                 <div tw='flex gap-1 items-center'>
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         <div tw='flex items-center px-2 join-item'>
                             <span className='material-symbols-outlined'>search</span>
                         </div>

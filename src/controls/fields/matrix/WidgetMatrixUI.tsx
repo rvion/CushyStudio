@@ -15,7 +15,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                     <tr>
                         <th
                             //
-                            className='cursor-pointer hover:text-red-600 virtualBorder'
+                            className='cursor-pointer hover:text-red-600'
                             onClick={() => widget.setAll(!widget.firstValue)}
                         >
                             all
@@ -23,7 +23,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         {cols.map((col, ix) => (
                             <th
                                 //
-                                className='virtualBorder'
+                                className=''
                                 key={ix}
                                 onClick={() => widget.setCol(col, !widget.getCell(rows[0]!, col).value)}
                             >
@@ -38,7 +38,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                             <td
                                 //
                                 onClick={() => widget.setRow(row, !widget.getCell(row, cols[0]!).value)}
-                                className='virtualBorder cursor-pointer'
+                                className='cursor-pointer'
                             >
                                 {row}
                             </td>
@@ -47,7 +47,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                 return (
                                     <td
                                         key={colIx}
-                                        className='hover:bg-gray-400 cursor-pointer virtualBorder'
+                                        className='hover:bg-gray-400 cursor-pointer'
                                         onClick={() => widget.setCell(row, col, !checked)}
                                         tw={[checked ? undefined : '']}
                                         style={{

@@ -25,7 +25,6 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
                 onClick={() => tv.setFocusAt(n)}
                 tw={[
                     // 'py-1',
-                    // selected ? 'virtualBorder' : null,
                     {
                         _line: true,
                         _hasChildren: hasChildren,

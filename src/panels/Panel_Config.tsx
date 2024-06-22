@@ -181,11 +181,12 @@ export const Panel_Config = observer(function Panel_Config_() {
                         <ConfigModeButton mode='legacy' />
                         <Frame
                             tw={[
-                                'overflow-clip',
+                                // 'overflow-auto',
                                 // Join stuff and remove borders, can probably be a component or tw macro
                                 '[&>*]:!border-none',
                             ]}
                             border
+                            style={{ overflow: 'overlay !important' }}
                         >
                             <ConfigModeButton mode='hosts' />
                             <ConfigModeButton mode='input' />
