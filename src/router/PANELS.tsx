@@ -43,9 +43,9 @@ export const panels = {
     Canvas: new Panel({
         name: 'Canvas',
         widget: () => Panel_Canvas,
-        header: (p) => ({ title: '🎨 Canvas' }),
+        header: (p) => ({ title: 'Canvas' }),
         def: () => ({}),
-        icon: 'mdiCameraFrontVariant',
+        icon: 'mdiDraw',
     }),
     Image: new Panel({
         name: 'Image',
