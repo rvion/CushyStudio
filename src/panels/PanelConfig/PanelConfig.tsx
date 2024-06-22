@@ -43,7 +43,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             page = <LegacyOptions />
             break
         case 'theme':
-            page = <FormUI form={cushy.theme} />
+            page = <FormUI tw='flex-1' form={cushy.theme} />
             break
     }
 
@@ -61,7 +61,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
     }
 
     return (
-        <div className='flex flex-col items-start h-full'>
+        <div className='flex flex-1 flex-col h-full'>
             <PanelHeaderUI></PanelHeaderUI>
             <div tw='flex flex-1 flex-row overflow-clip'>
                 <BasicShelfUI resizeAnchor='right'>
