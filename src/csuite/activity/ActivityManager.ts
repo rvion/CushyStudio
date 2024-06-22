@@ -3,36 +3,56 @@ import type { Activity } from './Activity'
 import { makeAutoObservable } from 'mobx'
 
 import { Trigger } from '../trigger/Trigger'
+import { Routine } from './Routine'
 
 // ACTIVITY = global app state machine state you can be in;
 // consume all events, and react to them
 // may let some pass though; or not
 export class ActivityManager {
-    /** currently active activities */
-    _stack: Activity[] = []
+    constructor() {
+        makeAutoObservable(this)
+    }
 
-    startActivity = (activity: Activity) => {
-        this._stack.push(activity)
-        activity.onStart?.()
+    // ACCESSING ---------------------------------------------------------------
+    /** currently active activities */
+    routines: Routine[] = []
+
+    current = (): Maybe<Routine> => this.routines[this.routines.length - 1]
+
+    // STARTING ---------------------------------------------------------------
+    startFromClass = <Ctx extends any>(
+        //
+        ActivityKls: { new (ctx: Ctx): Activity },
+        ctx: NoInfer<Ctx>,
+    ) => {
+        const activity = new ActivityKls(ctx)
+        const routine = new Routine(activity)
+        this.routines.push(routine)
+        routine.start()
         return Trigger.Success
     }
 
-    stopActivity(activity: Activity): void {
-        const ix = this._stack.indexOf(activity)
-        if (ix === -1) return
-        this._stack.splice(ix, 1)
-        activity.onStop?.()
+    start = (activity: Activity): Routine => {
+        const routine = new Routine(activity)
+        this.routines.push(routine)
+        routine.start()
+        return routine
     }
 
-    stopCurrentActivity = () => {
-        const activity = this._stack.pop()
-        activity?.onStop?.()
+    // STOPPING ---------------------------------------------------------------
+    stop(routine: Routine): Trigger {
+        const ix = this.routines.indexOf(routine)
+        if (ix === -1) return Trigger.UNMATCHED
+        this.routines.splice(ix, 1)
+        routine.stop()
+        return Trigger.Success
     }
 
-    current = () => this._stack[this._stack.length - 1]
-
-    constructor() {
-        makeAutoObservable(this)
+    stopLast = (): Trigger => {
+        const routine = this.routines.pop()
+        if (routine == null) return Trigger.UNMATCHED
+        routine.stop()
+        return Trigger.Success
     }
 }
 

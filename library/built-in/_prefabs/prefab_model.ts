@@ -38,15 +38,14 @@ export function ui_model(): UI_Model {
                             b: ui.int({ label: 'B' }),
                         }),
                     )
-                    cushy.activityManager.startActivity({
-                        uid: 'test',
+                    cushy.activityManager.start({
                         title: 'Multi-Step preset Demo',
                         shell: 'popup-lg',
                         UI: (p) =>
                             form.render({
                                 submitAction: () => {
                                     console.log('submit')
-                                    cushy.activityManager.stopActivity(p.activity) // 🔴
+                                    cushy.activityManager.stop(p.routine) // 🔴
                                 },
                             }),
                     })

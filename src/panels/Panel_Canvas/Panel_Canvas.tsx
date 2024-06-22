@@ -1,12 +1,16 @@
+import type { MediaImageL } from '../../models/MediaImage'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { Button } from '../../csuite/button/Button'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
+import { UCAGenerate } from './activities/activity_generate'
 import { CanvasToolbarUI, UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
@@ -19,8 +23,8 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
 }) {
     const st = useSt()
     const containerRef = React.useRef<HTMLDivElement>(null)
-    const img0 = st.db.media_image.get(p.imgID!)
-    const canvas = useMemo(() => {
+    const img0: Maybe<MediaImageL> = st.db.media_image.get(p.imgID!)
+    const canvas: UnifiedCanvas = useMemo(() => {
         if (img0 == null) throw new Error('img0 is null')
         return new UnifiedCanvas(st, img0)
     }, [img0])
@@ -62,7 +66,14 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             className='flex flex-1 w-full h-full overflow-hidden'
         >
             <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
-                <PanelHeaderUI>test</PanelHeaderUI>
+                <PanelHeaderUI>
+                    test
+                    <Button
+                        onClick={() => cushy.activityManager.startFromClass(UCAGenerate, canvas)}
+                        children='test'
+                        icon='mdiAbTesting'
+                    />
+                </PanelHeaderUI>
                 <div tw='absolute z-50'>
                     <CanvasToolbarUI />
                 </div>

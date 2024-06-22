@@ -5,7 +5,7 @@ import { DemoActivityUI } from './DemoActivityUI'
 
 export const useDemoActivity = () =>
     useEffect(() => {
-        activityManager.startActivity(DEMO_ACTIVITY)
+        activityManager.start(DEMO_ACTIVITY)
     }, [])
 
 export const DEMO_ACTIVITY = {
