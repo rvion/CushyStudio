@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
-import { menu } from '../../csuite/menu/Menu'
+import { menuWithProps } from '../../csuite/menu/Menu'
 import { SimpleMenuAction } from '../../csuite/menu/SimpleMenuAction'
 import { SimpleMenuModal } from '../../csuite/menu/SimpleMenuModal'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -22,7 +22,7 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
     )
 })
 
-export const menu_widgetActions: Menu<BaseField> = menu({
+export const menu_widgetActions: Menu<BaseField> = menuWithProps({
     title: 'widget actions',
     entries: (field: BaseField) => {
         const out: MenuEntry[] = []

@@ -22,6 +22,7 @@ export const PanelConfig = new Panel({
     name: 'Config',
     widget: () => PanelConfigUI,
     header: (p) => ({ title: 'Config', icon: undefined }),
+    def: () => ({}),
 })
 
 export const PanelConfigUI = observer(function PanelConfigUI_(p: NO_PROPS) {

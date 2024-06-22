@@ -165,7 +165,7 @@ export class MenuInstance<Props> implements Activity {
         }
     }
 }
-export const menu = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
+export const menuWithProps = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
 export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => new MenuWithoutProps(def)
 
 // ------------------------------------------------------------------------------------------

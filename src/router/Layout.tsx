@@ -478,7 +478,9 @@ export class CushyLayoutManager {
         // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type
-        const { icon, title } = panels[panelName].header(panelProps as any)
+        const panel = panels[panelName]
+        const { title } = panel.header(panelProps as any)
+        const icon = panel.icon
         if (prevTab == null) {
             const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset_orThrow().getId()
             // const tabsetIDToAddThePanelTo =
@@ -528,21 +530,23 @@ export class CushyLayoutManager {
     // 🔴 todo: ensure we correctly pass ids there too
     private _add = <const K extends PanelNames>(p: {
         //
-        panel: K
+        panelName: K
         props: PropsOf<Panels[K]['widget']>
         width?: number
         minWidth?: number
         canClose?: boolean
     }): FL.IJsonTabNode => {
-        const { panel, props } = p
-        const id = `/${panel}/${hashJSONObjectToNumber(props ?? {})}`
-        const { icon, title } = panels[panel].header(props as any)
+        const { panelName, props } = p
+        const id = `/${panelName}/${hashJSONObjectToNumber(props ?? {})}`
+        const panel = panels[panelName]
+        const { title } = panel.header(props as any)
+        const icon = panel.icon
         return {
             id: id,
             type: 'tab',
             name: title,
             config: props,
-            component: p.panel,
+            component: p.panelName,
             enableClose: p.canClose ?? true,
             enableRename: false,
             enableFloat: false,
@@ -608,9 +612,9 @@ export class CushyLayoutManager {
                         // enableDeleteWhenEmpty: false,
                         children: [
                             //
-                            this._add({ panel: 'Welcome', props: {}, width: 512 }),
-                            this._add({ panel: 'FullScreenLibrary', props: {}, width: 512 }),
-                            this._add({ panel: 'TreeExplorer', props: {}, width: 512 }),
+                            this._add({ panelName: 'Welcome', props: {}, width: 512 }),
+                            this._add({ panelName: 'FullScreenLibrary', props: {}, width: 512 }),
+                            this._add({ panelName: 'TreeExplorer', props: {}, width: 512 }),
                         ],
                         // enableSingleTabStretch: true,
                     },
@@ -630,7 +634,7 @@ export class CushyLayoutManager {
                         minHeight: 100,
                         selected: 1,
                         children: [
-                            this._add({ panel: 'Output', props: {}, canClose: false }),
+                            this._add({ panelName: 'Output', props: {}, canClose: false }),
                             // this._add({ panel: 'Hosts', props: {}, canClose: false }),
                         ],
                     },

@@ -1,6 +1,6 @@
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { command, type Command } from '../../csuite/commands/Command'
-import { menu, type Menu } from '../../csuite/menu/Menu'
+import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'
 import { ctx_image } from '../contexts/ctx_image'
 
@@ -47,7 +47,7 @@ const form_foo = CushyFormManager.fields((ui) => ({
     quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
 }))
 
-export const menu_imageActions: Menu<MediaImageL> = menu({
+export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
     title: 'image actions',
     entries: (image: MediaImageL) => [
         //
@@ -56,7 +56,7 @@ export const menu_imageActions: Menu<MediaImageL> = menu({
     ],
 })
 
-export const menu_copyImageAs: Menu<MediaImageL> = menu({
+export const menu_copyImageAs: Menu<MediaImageL> = menuWithProps({
     title: 'Save image as',
     entries: (image: MediaImageL) => [
         cmd_copyImage_as_PNG.bind(image),

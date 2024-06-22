@@ -57,7 +57,13 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             key={ix}
                             shortcut={char}
                             label={entry.opts.label}
-                            icon={entry.opts.icon ? <IkonOf name={entry.opts.icon} /> : undefined}
+                            icon={
+                                entry.opts.icon ? ( //
+                                    <IkonOf name={entry.opts.icon} />
+                                ) : (
+                                    <IkonOf name={'_' as any} />
+                                )
+                            }
                             onClick={() => {
                                 entry.opts.onPick()
                                 p.menu.onStop()
