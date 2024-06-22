@@ -368,10 +368,6 @@ export class CushyLayoutManager {
     }
 
     closeCurrentTab = (): Trigger => {
-        if (this.fullPageComp != null) {
-            this.fullPageComp = null
-            return Trigger.Success
-        }
         // 1. find tabset
         const tabset = this.getActiveOrFirstTabset_orThrow()
         if (tabset == null) return Trigger.UNMATCHED
@@ -396,17 +392,6 @@ export class CushyLayoutManager {
         const shouldRefocusAfter = this.currentTabID === tabID
         this.model.doAction(Actions.deleteTab(tabID))
         return Trigger.Success
-    }
-
-    TOGGLE_FULL = <const K extends PanelNames>(component: K, props: PropsOf<Panels[K]['widget']>) => {
-        if (
-            this.fullPageComp == null || //
-            this.fullPageComp.panel !== component
-        ) {
-            this.fullPageComp = { props: props, panel: component }
-        } else {
-            this.fullPageComp = null
-        }
     }
 
     currentHoveredTabIs = <K extends PanelNames>(component: K) => {
@@ -657,8 +642,6 @@ export class CushyLayoutManager {
 
         return out
     }
-
-    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_FullScreenLibrary> }> = null
 
     /**
      * @experimental

@@ -11,7 +11,6 @@ import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
 import { RevealState } from '../../csuite/reveal/RevealState'
 import { Trigger } from '../../csuite/trigger/Trigger'
-import { RenderFullPagePanelUI } from '../../router/RenderFullPagePanelUI'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { FavBarUI } from './FavBar'
@@ -84,7 +83,6 @@ export const CushyUI = observer(function CushyUI_() {
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <RenderFullPagePanelUI />
                 <div className='flex flex-grow relative overflow-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />

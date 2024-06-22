@@ -36,7 +36,6 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
                                     app.openLastOrCreateDraft()
-                                    st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
                                 } else if (e.key === 'ArrowUp') {

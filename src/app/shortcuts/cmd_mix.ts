@@ -104,7 +104,6 @@ export const allLegacyCommands: Command<null>[] = [
 
     // full screen library  --------------------------
     globalValidInInput([KEYS.openFull_Library], 'open full screen library', () => cushy.toggleFullLibrary()),
-    globalValidInInput(['mod+escape'], 'close full screen library', () => cushy.closeFullLibrary()),
 
     command({
         id: 'closeDialogOrPopupsOrFullScreenPanel',
@@ -118,9 +117,7 @@ export const allLegacyCommands: Command<null>[] = [
                 item.close()
                 return Trigger.Success
             }
-            if (cushy.layout.fullPageComp == null) return Trigger.UNMATCHED
-            cushy.layout.fullPageComp = null
-            return Trigger.Success
+            return Trigger.UNMATCHED
         },
     }),
 ]

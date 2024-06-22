@@ -311,20 +311,8 @@ export class STATE {
 
     droppedFiles: File[] = []
 
-    // _allPublishedApps: Maybe<> = null
-
-    // showCardPicker: boolean = false
-    closeFullLibrary = () => (this.layout.fullPageComp = null)
-    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' })
     toggleFullLibrary = () => {
-        if (
-            this.layout.fullPageComp == null || //
-            this.layout.fullPageComp.panel !== 'FullScreenLibrary'
-        ) {
-            this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' }
-        } else {
-            this.layout.fullPageComp = null
-        }
+        this.layout.FOCUS_OR_CREATE('FullScreenLibrary', {})
     }
 
     // 🔴 this is not the right way to go cause it will cause the action to stay
