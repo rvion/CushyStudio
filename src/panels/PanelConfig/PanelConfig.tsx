@@ -1,154 +1,33 @@
-import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type ReactNode, useEffect, useMemo } from 'react'
 
-import { KEYS } from '../app/shortcuts/shorcutKeys'
-import { ComboUI } from '../csuite/accelerators/ComboUI'
-import { Button } from '../csuite/button/Button'
-import { InputBoolCheckboxUI } from '../csuite/checkbox/InputBoolCheckboxUI'
-import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
-import { FormUI } from '../csuite/form/FormUI'
-import { WidgetLabelContainerUI } from '../csuite/form/WidgetLabelContainerUI'
-import { Frame } from '../csuite/frame/Frame'
-import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
-import { InputStringUI } from '../csuite/input-string/InputStringUI'
-import { FormHelpTextUI } from '../csuite/inputs/shims'
-import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
+import { KEYS } from '../../app/shortcuts/shorcutKeys'
+import { ComboUI } from '../../csuite/accelerators/ComboUI'
+import { Button } from '../../csuite/button/Button'
+import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { FormUI } from '../../csuite/form/FormUI'
+import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { FormHelpTextUI } from '../../csuite/inputs/shims'
+import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
+import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
 // import { Panel_ComfyUIHosts } from './Panel_ComfyUIHosts'
-import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
-import { Panel } from '../router/Panel'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { Panel } from '../../router/Panel'
 // import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
-import { useSt } from '../state/stateContext'
-import { openInVSCode } from '../utils/electron/openInVsCode'
-import { PanelComfyHostsUI } from './PanelComfyHosts/Panel_ComfyUIHosts'
+import { useSt } from '../../state/stateContext'
+import { openInVSCode } from '../../utils/electron/openInVsCode'
+import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
 
 export type ConfigMode = 'hosts' | 'input' | 'legacy' | 'theme'
-
-// Shelf stuff should probably live in another file once this is okay'd.
-type ShelfProps = {
-    className?: string
-    defaultSize?: number
-    resizeAnchor: 'left' | 'right' | 'top' | 'bottom'
-    children?: ReactNode
-}
-
-let startValue = 0
 
 export const PanelConfig = new Panel({
     name: 'Config',
     widget: () => PanelConfigUI,
     header: (p) => ({ title: 'Config', icon: undefined }),
     def: () => ({}),
-})
-
-class ShelfState {
-    constructor(
-        //
-        public props: ShelfProps,
-    ) {
-        this.size = props.defaultSize ?? 200
-        makeAutoObservable(this)
-    }
-
-    size: number
-    dragging: boolean = false
-
-    begin = () => {
-        startValue = this.size
-
-        this.dragging = true
-        window.addEventListener('mousemove', this.onMouseMove, true)
-        window.addEventListener('pointerup', this.end, true)
-        window.addEventListener('mousedown', this.cancel, true)
-        window.addEventListener('keydown', this.cancel, true)
-    }
-
-    cancel = (ev: MouseEvent | KeyboardEvent) => {
-        // Only cancel if right click
-        if (ev instanceof MouseEvent && ev.button != 2) {
-            return
-        }
-
-        if (ev instanceof KeyboardEvent && ev.key != 'Escape') {
-            return
-        }
-
-        this.size = startValue
-        this.end()
-    }
-
-    onMouseMove = (ev: MouseEvent) => {
-        if (this.isHorizontal()) {
-            this.size += ev.movementX
-            return
-        }
-
-        this.size += ev.movementY
-    }
-
-    end = () => {
-        this.dragging = false
-        window.removeEventListener('mousemove', this.onMouseMove, true)
-        window.removeEventListener('pointerup', this.end, true)
-        window.removeEventListener('mousedown', this.cancel, true)
-        window.removeEventListener('keydown', this.cancel, true)
-    }
-
-    isHorizontal = (): boolean => {
-        return this.props.resizeAnchor == 'left' || this.props.resizeAnchor == 'right'
-    }
-}
-
-export const BasicShelf = observer(function Shelf_(p: ShelfProps) {
-    const uist = useMemo(() => new ShelfState(p), [])
-
-    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
-    runInAction(() => Object.assign(uist.props, p))
-
-    // ensure any unmounting of this component will properly clean-up
-    useEffect(() => uist.end, [])
-
-    const isHorizontal = uist.isHorizontal()
-    // const style = {
-    //     {isHorizontal && {height: ''}}
-    // }
-
-    return (
-        <Frame
-            className={p.className}
-            tw={[
-                // Feels hacky, makes sure the resize handle takes up the whole screen when dragging to not cause cursor flickering.
-                !uist.dragging && 'relative',
-                'flex-none',
-            ]}
-            // base={{ contrast: 0.1 }}
-            style={{
-                width: isHorizontal ? uist.size : 'unset',
-                height: !isHorizontal ? uist.size : 'unset',
-            }}
-        >
-            <div //Resize Handle Area
-                tw={[
-                    'absolute select-none',
-                    uist.dragging && '!top-0 !left-0',
-                    isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
-                ]}
-                style={{
-                    width: uist.dragging ? '100%' : isHorizontal ? 6 : '100%',
-                    height: uist.dragging ? '100%' : !isHorizontal && !uist.dragging ? 6 : '100%',
-                    [uist.props.resizeAnchor]: '-3px',
-                }}
-                onMouseDown={(ev) => {
-                    if (ev.button != 0) {
-                        return
-                    }
-
-                    uist.begin()
-                }}
-            />
-            {p.children}
-        </Frame>
-    )
 })
 
 export const PanelConfigUI = observer(function Panel_Config_() {
@@ -185,7 +64,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
         <div className='flex flex-col items-start h-full'>
             <PanelHeaderUI></PanelHeaderUI>
             <div tw='flex flex-1 flex-row overflow-clip'>
-                <BasicShelf resizeAnchor='right'>
+                <BasicShelfUI resizeAnchor='right'>
                     <div tw='flex flex-col p-2 gap'>
                         <ConfigModeButton mode='legacy' />
                         <Frame
@@ -202,7 +81,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
                             <ConfigModeButton mode='theme' />
                         </Frame>
                     </div>
-                </BasicShelf>
+                </BasicShelfUI>
 
                 <div tw='flex flex-1 p-2 overflow-scroll'>{page}</div>
             </div>

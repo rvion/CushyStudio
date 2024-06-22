@@ -1,7 +1,6 @@
 import { Panel_Canvas } from '../panels/Panel_Canvas/Panel_Canvas'
 import { Panel_ComfyNodeExplorer } from '../panels/Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../panels/Panel_ComfyUI'
-import { PanelConfig } from '../panels/Panel_Config'
 import { Panel_Draft } from '../panels/Panel_Draft/Panel_Draft'
 import { Panel_DraftJsonResult } from '../panels/Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../panels/Panel_DraftJsonSerial'
@@ -27,6 +26,7 @@ import { Panel_ViewImage } from '../panels/Panel_ViewImage'
 import { Panel_Welcome } from '../panels/Panel_Welcome/Panel_Welcome'
 import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
+import { PanelConfig } from '../panels/PanelConfig/PanelConfig'
 import { Panel } from './Panel'
 
 export const panels = {

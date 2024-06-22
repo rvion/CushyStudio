@@ -6,6 +6,7 @@ import type { Tint } from '../csuite/kolor/Tint'
 import type { ModelSerial } from '../csuite/model/ModelSerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { MediaImageL } from '../models/MediaImage'
+import type { ConfigMode } from '../panels/PanelConfig/PanelConfig'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -77,7 +78,6 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
-import type { ConfigMode } from '../panels/Panel_Config'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
