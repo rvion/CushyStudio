@@ -5,12 +5,14 @@ import { type ReactNode, useEffect, useMemo } from 'react'
 import { Frame } from '../frame/Frame'
 import { ShelfState } from './ShelfState'
 
-// Shelf stuff should probably live in another file once this is okay'd.
+//TODO(bird_d): Use the activity system for resizing, request a way to change the cursor on the fly for activities.
+
 export type ShelfProps = {
+    anchor: 'left' | 'right' | 'top' | 'bottom'
+    children?: ReactNode
     className?: string
     defaultSize?: number
-    resizeAnchor: 'left' | 'right' | 'top' | 'bottom'
-    children?: ReactNode
+    floating?: boolean
 }
 
 export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
@@ -23,9 +25,8 @@ export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
     useEffect(() => uist.end, [])
 
     const isHorizontal = uist.isHorizontal()
-    // const style = {
-    //     {isHorizontal && {height: ''}}
-    // }
+    const isFloating = p.floating ?? false
+
     return (
         <Frame
             className={p.className}
@@ -33,6 +34,8 @@ export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
                 // Feels hacky, makes sure the resize handle takes up the whole screen when dragging to not cause cursor flickering.
                 !uist.dragging && 'relative',
                 'flex-none',
+                isFloating && '!absolute !bg-transparent',
+                `${p.anchor}-0 ${isHorizontal ? 'top-0' : 'left-0'}`,
             ]}
             // base={{ contrast: 0.1 }}
             style={{
@@ -49,7 +52,7 @@ export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
                 style={{
                     width: uist.dragging ? '100%' : isHorizontal ? 6 : '100%',
                     height: uist.dragging ? '100%' : !isHorizontal && !uist.dragging ? 6 : '100%',
-                    [uist.props.resizeAnchor]: '-3px',
+                    [uist.computeResizeAnchor()]: '-3px',
                 }}
                 onMouseDown={(ev) => {
                     if (ev.button != 0) {
