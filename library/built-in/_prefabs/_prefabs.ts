@@ -11,7 +11,7 @@
  * ❌ import {...} from '...'`
  * */
 
-import type { FormBuilder } from '../../../src/controls/cushy/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']

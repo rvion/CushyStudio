@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { CushyFormManager } from '../../controls/cushy/FormBuilder'
-import { FormUI } from '../../controls/form/FormUI'
+import { CushyFormManager } from '../../controls/FormBuilder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { FormUI } from '../../csuite/form/FormUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'

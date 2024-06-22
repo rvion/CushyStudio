@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../../controls/fields/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
-import { PanelHeaderUI } from '../PanelHeader'
-import { FormAsDropdownConfigUI } from './FormAsDropdownConfigUI'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 

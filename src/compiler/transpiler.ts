@@ -15,7 +15,7 @@ import * as three from 'three'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 
-import { jsx, jsxs } from '../utils/custom-jsx/jsx-runtime'
+import { jsx, jsxs } from '../csuite/custom-jsx/jsx-runtime'
 
 // REWRITE LOGIC ------------------------------------------------------------------------
 export const CUSHY_IMPORT = (mod: string) => {

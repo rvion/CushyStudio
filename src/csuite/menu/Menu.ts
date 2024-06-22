@@ -1,13 +1,13 @@
-import type { BaseField } from '../../controls/model/BaseField'
+import type { Activity } from '../activity/Activity'
 import type { BoundCommand } from '../commands/Command'
-import type { NO_PROPS } from '../NO_PROPS'
+import type { BaseField } from '../model/BaseField'
 import type { Trigger } from '../trigger/Trigger'
+import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleMenuModal } from './SimpleMenuModal'
 
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
 
-import { Activity } from '../activity/Activity'
 import { activityManager } from '../activity/ActivityManager'
 import { Command } from '../commands/Command'
 import { BoundMenuSym } from '../introspect/_isBoundMenu'

@@ -2,9 +2,9 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useMemo } from 'react'
 
-import { PanelHeaderUI } from '../../panels/PanelHeader'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
+import { PanelHeaderUI } from '../wrappers/PanelHeader'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -82,12 +82,13 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
     // create stable state, that we can programmatically mutate witout caring about stale references
     const uist = useMemo(() => new ResizableFrameStableState(p), [])
 
+    const { currentSize, ...props } = p
     return (
         <Frame // container
             // hover
             tw='flex flex-col !p-0'
             style={{ gap: '0px', ...p.style }}
-            {...p}
+            {...props}
         >
             {p.header && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
 

@@ -6,7 +6,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
     return (
         <div tw='flex gap-1 items-center'>
             <input
-                tw='cushy-basic-input my-0.5'
+                tw='csuite-basic-input my-0.5'
                 placeholder='filename'
                 value={cushy.galleryFilterPath ?? ''}
                 type='text'
@@ -18,7 +18,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
             />
 
             <input
-                tw='cushy-basic-input my-0.5'
+                tw='csuite-basic-input my-0.5'
                 placeholder='tags'
                 value={cushy.galleryFilterTag ?? ''}
                 type='text'

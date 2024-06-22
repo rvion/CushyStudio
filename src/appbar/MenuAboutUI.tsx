@@ -4,7 +4,7 @@ import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
 import { Ikon } from '../csuite/icons/iconHelpers'
 import { Button } from '../csuite/button/Button'
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
+import { JsonViewUI } from '../csuite/json/JsonViewUI'
 
 export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
     return (

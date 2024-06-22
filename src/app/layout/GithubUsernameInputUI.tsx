@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { Tag, Whisper } from '../../csuite/shims'
+import { Tag, Whisper } from '../../csuite/inputs/shims'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 
@@ -34,7 +34,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                 </Whisper>
             </div>
             <input
-                tw='cushy-basic-input'
+                tw='csuite-basic-input'
                 value={githubUsername}
                 placeholder='your github username'
                 onChange={(ev) => {

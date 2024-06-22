@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
-import { CushyFormManager } from '../../controls/cushy/FormBuilder'
-import { FormUI } from '../../controls/form/FormUI'
+import { CushyFormManager } from '../../controls/FormBuilder'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
 import { getIconName } from '../../csuite/icons/getAllIcons'
 import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'

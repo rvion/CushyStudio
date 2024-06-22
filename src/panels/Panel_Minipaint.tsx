@@ -138,7 +138,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         <input
                             onChange={(ev) => (uist.fileName = ev.target.value)}
                             value={uist.fileName}
-                            tw='cushy-basic-input'
+                            tw='csuite-basic-input'
                             type='text'
                         />
                         .png

@@ -1,4 +1,4 @@
-import { CushyFormManager, type FormBuilder } from '../../controls/cushy/FormBuilder'
+import { CushyFormManager, type FormBuilder } from '../../controls/FormBuilder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead

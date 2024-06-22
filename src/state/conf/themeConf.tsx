@@ -1,4 +1,4 @@
-import { CushyFormManager } from '../../controls/cushy/FormBuilder'
+import { CushyFormManager } from '../../controls/FormBuilder'
 import { ui_tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
@@ -22,6 +22,29 @@ export const themeConf = CushyFormManager.form(
                     ],
                 }),
                 appbar: ui.colorV2({ default: '#313338' }).optional(true),
+
+                // ...
+                tooltipDelay: ui
+                    .int({ min: 0, softMin: 50, softMax: 1000, default: 500, unit: 'ms', suffix: 'ms' })
+                    .optional(true),
+                gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                widgetWithLabel: ui.fields(
+                    {
+                        border: ui.percent({ default: 8 }).optional(),
+                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
+                        padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                    },
+                    { background: { hueShift: 90 } },
+                ),
+                // fields group
+                fieldGroups: ui.fields(
+                    {
+                        border: ui.percent({ default: 8 }).optional(),
+                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
+                        padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                    },
+                    { background: { hue: 180 } },
+                ),
 
                 // 2. texts
                 text: ui_tint(ui, {

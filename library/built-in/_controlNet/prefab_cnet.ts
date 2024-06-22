@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/controls/cushy/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'

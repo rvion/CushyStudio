@@ -1,5 +1,8 @@
 import type { NumberVar } from '../tinyCSS/CSSVar'
 
+import { clamp } from '../utils/clamp'
+import { Kolor } from './Kolor'
+
 // prettier-ignore
 export type Tint = {
     /**
@@ -40,3 +43,14 @@ export type TintExt =
 
     /** extended color where every prop can ben a CSSVars */
     |  Tint
+
+    | null
+    | undefined
+
+export function normalizeTint(tint: TintExt): Tint {
+    if (tint == null) return {}
+    if (typeof tint === 'boolean') return { contrast: tint ? /* 0.2 */ 0.08 : 0 }
+    if (typeof tint === 'number') return { contrast: clamp(tint / 100, 0, 1) }
+    if (typeof tint === 'string') return Kolor.fromString(tint)
+    return tint
+}

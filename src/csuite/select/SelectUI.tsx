@@ -77,7 +77,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         ref={s.inputRef}
                         onChange={s.handleInputChange}
                         style={{ opacity: s.isOpen ? 1 : 0 }}
-                        tw={['cushy-basic-input', 'w-full h-full !outline-none']}
+                        tw={['csuite-basic-input', 'w-full h-full !outline-none']}
                         type='text'
                         value={s.searchQuery}
                     />

@@ -6,7 +6,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useRef } from 'react'
 
-import { ModelSerial } from '../../../src/controls/model/FormSerial'
+import { ModelSerial } from '../../../src/csuite/model/ModelSerial'
 
 /** this custom view  */
 export const CustomView3dCan = view<{

@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
-import { Message } from '../csuite/shims'
+import { Message } from '../csuite/inputs/shims'
 import { PanelNames, panels } from './PANELS'
 import { panelContext } from './usePanel'
 
