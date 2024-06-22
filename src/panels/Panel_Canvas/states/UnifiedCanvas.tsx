@@ -5,7 +5,7 @@ import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import Konva from 'konva'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
@@ -47,8 +47,9 @@ export class UnifiedCanvas {
     }
 
     tool: UnifiedCanvasTool = 'none'
+
     brushMode: UnifiedCanvasBrushMode = 'paint'
-    maskToolSize: number = 32
+
     maskColor = 'red'
     maskOpacity = 0.5
 
@@ -76,6 +77,8 @@ export class UnifiedCanvas {
         //
     }
 
+    // BRUSH -------------------------------------------------
+    maskToolSize: number = 32
     brush = new Konva.Circle({
         fill: this.brushMode === 'paint' ? 'black' : 'white',
         stroke: 'black',
@@ -83,6 +86,11 @@ export class UnifiedCanvas {
         radius: this.maskToolSize / 2,
         opacity: this.maskOpacity,
     })
+    setBrushSize = (size: number) => {
+        this.maskToolSize = size
+        this.brush.radius(size / 2)
+    }
+    // -------------------------------------------------
 
     enable_none = () => {
         this.tool = 'none'

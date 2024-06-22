@@ -13,6 +13,7 @@ export class SimpleMouseActivity implements Activity {
     constructor(
         public p: {
             //
+            onStart?: () => void
             onMove?: (info: Info) => void
             onCommit?: (info: Info) => void
             onCancel?: (info: Info) => void
@@ -32,6 +33,8 @@ export class SimpleMouseActivity implements Activity {
 
         this.lastX = cushy.region.mouseX
         this.lastY = cushy.region.mouseY
+
+        this.onStart?.()
     }
 
     private _getInfo = (event: MouseEvent): Info => {

@@ -55,9 +55,7 @@ export const onWheelScrollCanvas = (
 
     if (canvas.tool === 'mask' || canvas.tool === 'paint') {
         const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
-        canvas.maskToolSize = newSize
-        canvas.brush.radius(newSize / 2)
-        // canvas.brush.strokeWidth(newSize)
+        canvas.setBrushSize(newSize)
         return
     }
 
