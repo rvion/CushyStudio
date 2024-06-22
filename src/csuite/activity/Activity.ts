@@ -16,6 +16,12 @@ export type DomId = string
  * a bit more utilies packed in, like state management
  */
 export type Activity = {
+    /** @default false */
+    backdrop?: boolean
+
+    /** @default false */
+    closeOnBackdropClick?: boolean
+
     /** human-readable activity title */
     title?: Maybe<string>
 
@@ -27,23 +33,24 @@ export type Activity = {
 
     /** will be executed when activity end */
     onStop?: () => void
-
     /**
      * everytime an event bubbles upward to the activity root, it will
      * pass through this function
      */
-    onEvent?: (event: UIEvent) => Trigger | null
+    onEvent?: (event: UIEvent, routine: Routine) => Trigger | null
 
     /**
      * then if not cancelled, and if defined, will be passed
      * to the those
      */
-    onAuxClick?: (event: MouseEvent) => void
-    onClick?: (event: MouseEvent) => void
-    onMouseDown?: (event: MouseEvent) => void
-    onMouseEnter?: (event: MouseEvent) => void
-    onMouseLeave?: (event: MouseEvent) => void
-    onKeyUp?: (event: KeyboardEvent) => void
+    onAuxClick?: (event: MouseEvent, routine: Routine) => void
+    onClick?: (event: MouseEvent, routine: Routine) => void
+    onMouseMove?: (event: MouseEvent, routine: Routine) => void
+    onMouseUp?: (event: MouseEvent, routine: Routine) => void
+    onMouseDown?: (event: MouseEvent, routine: Routine) => void
+    onMouseEnter?: (event: MouseEvent, routine: Routine) => void
+    onMouseLeave?: (event: MouseEvent, routine: Routine) => void
+    onKeyUp?: (event: KeyboardEvent, routine: Routine) => void
 
     /**
      * @since 2024-05-21

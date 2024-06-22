@@ -22,6 +22,7 @@ import {
     cmd_nav_openGallery3,
     cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
+import { cmd_canvas_changeBrushSize } from './panels/Panel_Canvas/activities/activity_brushSize'
 import {
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
@@ -44,6 +45,7 @@ export const allCommands = [
     cmd_nav_openGallery3,
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
+    cmd_canvas_changeBrushSize,
     ...allLayoutCommands,
     ...allLegacyCommands,
 ]

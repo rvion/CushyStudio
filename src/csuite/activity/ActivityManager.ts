@@ -26,17 +26,30 @@ export class ActivityManager {
         ctx: NoInfer<Ctx>,
     ) => {
         const activity = new ActivityKls(ctx)
-        const routine = new Routine(activity)
+        const routine = new Routine(this, activity)
         this.routines.push(routine)
-        routine.start()
+        activity.onStart?.()
         return Trigger.Success
     }
 
+    /**
+     * start an activity, return the created routine
+     */
     start = (activity: Activity): Routine => {
-        const routine = new Routine(activity)
+        const routine = new Routine(this, activity)
         this.routines.push(routine)
-        routine.start()
+        activity.onStart?.()
         return routine
+    }
+
+    /**
+     * similar to `start`.
+     * start an activity, return Trigger.Success */
+    start_ = (activity: Activity): Trigger => {
+        const routine = new Routine(this, activity)
+        this.routines.push(routine)
+        activity.onStart?.()
+        return Trigger.Success
     }
 
     // STOPPING ---------------------------------------------------------------
@@ -44,14 +57,14 @@ export class ActivityManager {
         const ix = this.routines.indexOf(routine)
         if (ix === -1) return Trigger.UNMATCHED
         this.routines.splice(ix, 1)
-        routine.stop()
+        routine.activity.onStop?.()
         return Trigger.Success
     }
 
     stopLast = (): Trigger => {
         const routine = this.routines.pop()
         if (routine == null) return Trigger.UNMATCHED
-        routine.stop()
+        routine.activity.onStop?.()
         return Trigger.Success
     }
 }
