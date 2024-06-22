@@ -64,7 +64,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
         <div className='flex flex-1 flex-col h-full'>
             <PanelHeaderUI></PanelHeaderUI>
             <div tw='flex flex-1 flex-row overflow-clip'>
-                <BasicShelfUI resizeAnchor='right'>
+                <BasicShelfUI anchor='left'>
                     <div tw='flex flex-col p-2 gap'>
                         <ConfigModeButton mode='legacy' />
                         <Frame

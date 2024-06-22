@@ -40,12 +40,16 @@ export class ShelfState {
     }
 
     onMouseMove = (ev: MouseEvent) => {
-        if (this.isHorizontal()) {
-            this.size += ev.movementX
-            return
+        switch (this.props.anchor) {
+            case 'left':
+                return (this.size += ev.movementX)
+            case 'right':
+                return (this.size -= ev.movementX)
+            case 'bottom':
+                return (this.size += ev.movementY)
+            case 'top':
+                return (this.size -= ev.movementY)
         }
-
-        this.size += ev.movementY
     }
 
     end = () => {
@@ -57,6 +61,19 @@ export class ShelfState {
     }
 
     isHorizontal = (): boolean => {
-        return this.props.resizeAnchor == 'left' || this.props.resizeAnchor == 'right'
+        return this.props.anchor == 'left' || this.props.anchor == 'right'
+    }
+
+    computeResizeAnchor = () => {
+        switch (this.props.anchor) {
+            case 'left':
+                return 'right'
+            case 'right':
+                return 'left'
+            case 'bottom':
+                return 'top'
+            case 'top':
+                return 'bottom'
+        }
     }
 }
