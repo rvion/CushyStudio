@@ -1,5 +1,4 @@
 import { Panel_Canvas } from '../panels/Panel_Canvas/Panel_Canvas'
-import { Panel_Civitai } from '../panels/Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../panels/Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../panels/Panel_ComfyUI'
 import { PanelConfig } from '../panels/Panel_Config'
@@ -8,8 +7,8 @@ import { Panel_DraftJsonResult } from '../panels/Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../panels/Panel_DraftJsonSerial'
 import { Panel_TreeExplorer } from '../panels/Panel_FileExplorer/Panel_TreeExplorer'
 import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
-import { PanelGallery, PanelGalleryUI } from '../panels/Panel_Gallery/Panel_Gallery'
-import { Panel_Icons } from '../panels/Panel_Icons/Panel_Icons'
+import { PanelGallery } from '../panels/Panel_Gallery/Panel_Gallery'
+import { PanelIcon } from '../panels/Panel_Icons/Panel_Icons'
 import { Panel_Iframe } from '../panels/Panel_IFrame'
 import { Panel_Import } from '../panels/Panel_Import'
 import { Panel_LastGraph } from '../panels/Panel_LastGraph'
@@ -26,18 +25,13 @@ import { Panel_Steps } from '../panels/Panel_Steps/Panel_Steps'
 import { Panel_Custom } from '../panels/Panel_Temporary'
 import { Panel_ViewImage } from '../panels/Panel_ViewImage'
 import { Panel_Welcome } from '../panels/Panel_Welcome/Panel_Welcome'
-import { PanelComfyHosts, PanelComfyHostsUI } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
+import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
+import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
 import { Panel } from './Panel'
 
 export const panels = {
     // image related
-    Icons: new Panel({
-        name: 'Icons',
-        widget: () => Panel_Icons,
-        header: (p) => ({ title: 'Icons' }),
-        def: () => ({}),
-        icon: undefined,
-    }),
+    Icons: PanelIcon,
     Gallery: PanelGallery,
     Paint: new Panel({
         name: 'Paint',
@@ -196,13 +190,7 @@ export const panels = {
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils
-    Civitai: new Panel({
-        name: 'Civitai',
-        widget: () => Panel_Civitai,
-        header: (p) => ({ title: 'Civitai' }),
-        def: () => ({}),
-        icon: 'mdiAccountStarOutline',
-    }),
+    Civitai: PanelCivitai,
     Squoosh: new Panel({
         name: 'Squoosh',
         widget: () => Panel_Squoosh,
