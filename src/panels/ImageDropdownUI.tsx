@@ -30,14 +30,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 icon={'mdiOverscan'}
                 disabled={!img?.absPath}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
-                shortcut='mod+click'
+                localShortcut='mod+click'
             >
                 Dedicated Panel
             </MenuItem>
             <MenuItem
                 icon={'mdiFocusAuto'}
                 disabled={!img?.absPath}
-                shortcut='shift+click'
+                localShortcut='shift+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
             >
                 Unified Canvas
@@ -45,7 +45,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <MenuItem
                 icon={'mdiBrush'}
                 disabled={!img?.absPath}
-                shortcut='alt+click'
+                localShortcut='alt+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
             >
                 MiniPaint

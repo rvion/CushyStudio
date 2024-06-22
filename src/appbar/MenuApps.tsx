@@ -20,7 +20,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
                         icon='mdiCloudDownload'
-                        shortcut={KEYS.openPage_Marketplace}
+                        localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     />
                     <hr />

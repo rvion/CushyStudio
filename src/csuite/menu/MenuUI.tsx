@@ -56,7 +56,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         <MenuItem //
                             tw='_SimpleMenuAction min-w-60'
                             key={ix}
-                            shortcut={char}
+                            localShortcut={char}
                             label={entry.opts.label}
                             icon={entry.opts.icon}
                             onClick={() => {
@@ -71,7 +71,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         <MenuItem //
                             tw='_SimpleMenuModal min-w-60'
                             key={ix}
-                            shortcut={char}
+                            localShortcut={char}
                             label={entry.p.label}
                             onClick={(event) => {
                                 activityManager.startActivity({
@@ -97,15 +97,24 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         <MenuItem //
                             tw='min-w-60'
                             key={ix}
-                            shortcut={char}
+                            // localShortcut={char}
+                            globalShortcut={isCommand(entry) ? entry.firstCombo : char}
                             icon={entry.icon}
                             onClick={() => {
                                 void entry.execute()
                                 p.menu.onStop()
                             }}
-                            beforeShortcut={
-                                isCommand(entry) && entry.combos?.[0] ? <ComboUI combo={entry.combos[0]} /> : undefined
-                            }
+                            // beforeShortcut={
+                            //     isCommand(entry) && entry.combos ? (
+                            //         Array.isArray(entry.combos) ? (
+                            //             entry.combos.length > 0 ? (
+                            //                 <ComboUI combo={entry.combos[0]!} />
+                            //             ) : undefined
+                            //         ) : (
+                            //             <ComboUI combo={entry.combos} />
+                            //         )
+                            //     ) : undefined
+                            // }
                             label={
                                 <>
                                     {charIx != null ? (
@@ -132,7 +141,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         >
                             <MenuItem //
                                 key={ix}
-                                shortcut={char}
+                                localShortcut={char}
                                 icon={entry.icon}
                                 afterShortcut={<IkonOf name='mdiMenuRight' />}
                                 // onClick={() => entry.open()}

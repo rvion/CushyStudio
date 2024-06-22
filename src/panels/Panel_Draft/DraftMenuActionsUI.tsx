@@ -45,7 +45,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     </MenuItem>
                     <div tw='divider my-0'></div>
                     <MenuItem
-                        shortcut={KEYS.duplicateCurrentDraft}
+                        localShortcut={KEYS.duplicateCurrentDraft}
                         iconClassName='text-green-500'
                         icon='mdiContentCopy'
                         onClick={() => draft.duplicateAndFocus()}

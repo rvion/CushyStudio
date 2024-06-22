@@ -11,7 +11,8 @@ import { MenuAppsUI } from './MenuApps'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
-import { MenuHelpUI } from './MenuHelpUI'
+import { MenuHelpV2 } from './MenuHelpUI'
+// import { MenuHelpUI } from './MenuHelpUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuPanelsUI } from './MenuPanelsUI'
 import { MenuSettingsUI } from './MenuSettingsUI'
@@ -35,7 +36,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <cmd_fav_toggleFavBar.NavBarBtnUI label='Favs' />
                 <MenuSettingsUI />
                 <MenuThemeUI />
-                <MenuHelpUI />
+                <MenuHelpV2.UI />
                 <MenuDebugUI />
                 <MenuAuthUI />
                 <div className='flex flex-grow'></div>

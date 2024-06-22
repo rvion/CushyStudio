@@ -17,41 +17,41 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Models', {})}
                         icon='cdiExternalCivitai'
-                        shortcut={KEYS.openPage_Models}
+                        localShortcut={KEYS.openPage_Models}
                         label='Civitai (fast and clean)'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Civitai', {})}
                         icon='cdiExternalCivitai'
-                        shortcut={KEYS.openPage_Civitai}
+                        localShortcut={KEYS.openPage_Civitai}
                         label='Civitai (iframe)'
                     />
 
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Squoosh', {})}
                         icon={'cdiExternalSquoosh'}
-                        shortcut={KEYS.openPage_Squoosh}
+                        localShortcut={KEYS.openPage_Squoosh}
                         label='Squoosh'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })}
                         iconClassName='text-red-400'
                         icon='mdiBrush'
-                        shortcut={KEYS.openPage_Posemy}
+                        localShortcut={KEYS.openPage_Posemy}
                         label='3d Poser (posemy.art)'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
                         iconClassName='text-red-400'
                         icon='mdiBrush'
-                        shortcut={KEYS.openPage_Paint}
+                        localShortcut={KEYS.openPage_Paint}
                         label='Minipaint'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })}
                         iconClassName='text-purple-400'
                         icon='mdiImageSearch'
-                        shortcut={KEYS.openPage_Unsplash}
+                        localShortcut={KEYS.openPage_Unsplash}
                         label='Unsplash - Free images'
                     />
                 </>

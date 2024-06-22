@@ -19,7 +19,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
     className?: string
     children?: ReactNode
     label?: ReactNode
-    shortcut?: CushyShortcut
+    localShortcut?: CushyShortcut
+    globalShortcut?: CushyShortcut
     loading?: boolean
     /** right before the (menu shortcust) */
     beforeShortcut?: ReactNode
@@ -50,7 +51,12 @@ export const MenuItem = observer(function DropdownItem_(p: {
             {label}
             {children}
             {p.beforeShortcut}
-            {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+            {p.localShortcut ? (
+                <div tw='ml-auto pl-2 text-xs italic'>{p.localShortcut && <ComboUI combo={p.localShortcut} />}</div>
+            ) : null}
+            {p.globalShortcut ? (
+                <div tw='ml-auto pl-2 text-xs italic'>{p.globalShortcut && <ComboUI combo={p.globalShortcut} />}</div>
+            ) : null}
             {p.afterShortcut}
         </Frame>
     )

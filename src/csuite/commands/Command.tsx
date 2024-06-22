@@ -30,6 +30,14 @@ export interface Command<Ctx = any> extends Command_<Ctx> {}
 export class Command<Ctx = any> {
     $SYM = CommandSym
 
+    get firstCombo(): CushyShortcut | undefined {
+        if (this.combos == null) return undefined
+        if (Array.isArray(this.combos)) {
+            if (this.combos.length === 0) return undefined
+            else return this.combos[0]
+        } else return this.combos
+    }
+
     constructor(public conf: Command_<Ctx>) {
         Object.assign(this, conf)
     }
