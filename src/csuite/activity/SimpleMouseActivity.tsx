@@ -1,5 +1,5 @@
-import type { Activity } from '../../../csuite/activity/Activity'
-import type { Routine } from '../../../csuite/activity/Routine'
+import type { Activity } from './Activity'
+import type { Routine } from './Routine'
 import type { MouseEvent } from 'react'
 
 type Info = {
@@ -43,21 +43,20 @@ export class SimpleMouseActivity implements Activity {
         }
     }
     onMouseMove(event: MouseEvent, routine: Routine) {
-        // console.log('[🐭🐭🐭] move')
         const info = this._getInfo(event)
         this.p.onMove?.(info)
     }
 
     onMouseUp(event: MouseEvent, routine: Routine) {
         const btn = event.button
-        // console.log(`[🐭🐭🐭] up (button=${btn})`)
 
         const info = this._getInfo(event)
+        // case 1. right click / middle click => CANCEL
         if (btn === 1 || btn === 2) {
-            // case 1. right click => CANCEL
             this.p.onCancel?.(info)
-        } else {
-            // case 2. left click => commit
+        }
+        // case 2. left click => commit
+        else {
             this.p.onCommit?.(info)
         }
         routine.stop()

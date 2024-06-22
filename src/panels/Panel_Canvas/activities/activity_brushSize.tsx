@@ -1,6 +1,6 @@
+import { SimpleMouseActivity } from '../../../csuite/activity/SimpleMouseActivity'
 import { command } from '../../../csuite/commands/Command'
 import { ctx_unifiedCanvas } from '../../../operators/contexts/ctx_unifiedCanvas'
-import { SimpleMouseActivity } from './SimpleMouseActivity'
 
 export const cmd_canvas_changeBrushSize = command({
     id: 'canvas.changeBrushSize',
