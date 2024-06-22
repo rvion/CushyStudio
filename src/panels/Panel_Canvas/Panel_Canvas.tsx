@@ -106,20 +106,23 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         </div>
                     </div>
                     <div tw='flex justify-center items-center'>
-                        <InputNumberUI
+                        <InputNumberUI // TODO: This should be a menu that pops up a form that allows you to choose different snapping methods, possibly.
                             mode='int'
-                            min={32}
+                            min={2}
+                            softMin={8}
                             step={4}
                             onValueChange={(next) => (canvas.snapSize = next)}
                             suffix='px'
                             value={canvas.snapSize}
+                            text='Grid Snapping'
                         />
                         <InputBoolToggleButtonUI
-                            icon={'mdiGrid'}
+                            icon={canvas.snapToGrid ? 'mdiMagnetOn' : 'mdiMagnet'}
                             value={canvas.snapToGrid}
                             onValueChange={(v) => {
                                 canvas.snapToGrid = !canvas.snapToGrid
                             }}
+                            tooltip='Enable Snapping'
                         />
                     </div>
                     <div />
