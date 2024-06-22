@@ -21,6 +21,7 @@ export class BoolButtonProps {
 
     expand?: boolean
     icon?: Maybe<IconName>
+    tooltip?: string
     // 2024-06-12 rvion: I think I'd like having this in addition to the single icon prop
     // iconOn?: Maybe<IconName | false>
     // iconOff?: Maybe<IconName | false>
