@@ -23,6 +23,7 @@ import { UnifiedStep } from './UnifiedStep'
 export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
+    usePenPressure = true
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
     // ---------------------------------------------------

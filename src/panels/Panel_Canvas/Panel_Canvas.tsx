@@ -66,20 +66,44 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
         >
             <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
                 <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
-                    <div tw='flex '>
-                        <Button //
-                            square
-                            icon='mdiUndo'
-                            tooltip='Undo'
-                            onClick={() => canvas.undo()}
-                        />
-                        <Button
-                            square
-                            disabled
-                            icon='mdiRedo'
-                            tooltip='Redo (Not implemented)'
-                            // onClick={() => canvas.undo()}
-                        />
+                    <div tw='flex gap-2'>
+                        <div // TODO(bird_d): Needs Joinable
+                            tw='flex'
+                        >
+                            <InputNumberUI //
+                                text='Brush Size'
+                                mode='int'
+                                value={canvas.maskToolSize}
+                                onValueChange={(next) => (canvas.maskToolSize = next)}
+                                min={1}
+                                max={1000}
+                                suffix='px'
+                                step={10}
+                            />
+                            <InputBoolToggleButtonUI //
+                                value={canvas.usePenPressure}
+                                onValueChange={() => (canvas.usePenPressure = !canvas.usePenPressure)}
+                                icon={canvas.usePenPressure ? 'mdiPencil' : 'mdiPencilOff'}
+                                tooltip='(Not implemented) Whether or not pressure affects the radius size of a brush stroke'
+                            />
+                        </div>
+                        <div // TODO(bird_d): Should be a joined container thing
+                            tw='flex'
+                        >
+                            <Button //
+                                square
+                                icon='mdiUndo'
+                                tooltip='Undo'
+                                onClick={() => canvas.undo()}
+                            />
+                            <Button
+                                square
+                                disabled
+                                icon='mdiRedo'
+                                tooltip='Redo (Not implemented)'
+                                // onClick={() => canvas.undo()}
+                            />
+                        </div>
                     </div>
                     <div tw='flex justify-center items-center'>
                         <InputNumberUI
@@ -100,18 +124,13 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     </div>
                     <div />
                 </PanelHeaderUI>
-                <div tw='absolute z-50'>
-                    <CanvasToolbarUI />
-                </div>
-                <UnifiedCanvasMenuUI />
-                {/* <CanvasToolbarUI /> */}
                 <div
                     //
                     // key={canvas.stage.id()}
                     style={dropStyle}
                     ref={dropRef}
                     className='DROP_IMAGE_HANDLER'
-                    tw='_Panel_Canvas flex-grow flex flex-row h-full relative'
+                    tw='_Panel_Canvas flex-grow flex flex-row h-full relative !z-0'
                 >
                     {/* <GridTilingUI /> */}
                     {canvas.steps.map((s) => {
@@ -140,6 +159,8 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         )
                     })}
                     <div id={canvas.uid} ref={canvas.rootRef} tw='flex-1'></div>
+                    {/* <CanvasToolbarUI /> */}
+                    <UnifiedCanvasMenuUI />
                 </div>
             </RegionUI>
         </div>
