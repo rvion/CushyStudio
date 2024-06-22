@@ -61,7 +61,7 @@ await microbench('took', async () => {
     writeFileSync(distPackageJSONPath_ABS, mkPKGJSON(PACKAGE_NAME))
 
     console.log(`- ensure custom jsx-runtime will be found`)
-    mkdirSync('lib/utils/custom-jsx', { recursive: true })
+    mkdirSync('lib/csuite/custom-jsx', { recursive: true })
 
     const cpSync2 = (src: string, dest: string) => {
         cpSync(src, dest)
