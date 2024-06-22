@@ -8,8 +8,9 @@ export const themeConf = CushyFormManager.form(
             {
                 // name copied from flexlayout; will be used
                 tabSetEnableSingleTabStretch: ui.boolean({
+                    label: 'Auto-Hide Tabset',
+                    tooltip: 'Hide the tabset when there is only one tab',
                     default: false,
-                    label: 'Stretch single tab in tabset',
                 }),
 
                 // 1. colors
@@ -67,7 +68,7 @@ export const themeConf = CushyFormManager.form(
                     tooltip: 'show either chekbox icon or radio button icon in every InputBool',
                 }),
             },
-            { label: 'Theme' },
+            { label: false, collapsed: false },
         ),
     {
         name: 'theme config',

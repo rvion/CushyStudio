@@ -95,7 +95,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         // TODO(bird_d): Move this inside the resizable frame
         <div>
             <div
-                tw={'virtualBorder flex items-center justify-center text-5xl text-red-500'}
+                tw={'flex items-center justify-center text-5xl text-red-500'}
                 style={{
                     width: '5rem',
                     height: '5rem',

@@ -9,8 +9,8 @@ export const Plugin_PreviewPromptUI = observer(function Plugin_PreviewPromptUI_(
     const uist = p.uist
     return (
         <div>
-            <pre tw='virtualBorder whitespace-pre-wrap text-sm'>{uist.compiled.promptIncludingBreaks}</pre>
-            {/* <pre tw='virtualBorder whitespace-pre-wrap text-sm'>{uist.compiled.negativePrompt}</pre> */}
+            <pre tw='whitespace-pre-wrap text-sm'>{uist.compiled.promptIncludingBreaks}</pre>
+            {/* <pre tw='whitespace-pre-wrap text-sm'>{uist.compiled.negativePrompt}</pre> */}
         </div>
     )
 })

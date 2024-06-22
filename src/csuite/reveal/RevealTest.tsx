@@ -7,7 +7,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
         <div tw='flex-1 m-24'>
             {/*  */}
             🟢
-            <div tw='virtualBorder relative' style={{ height: '800px' }}>
+            <div tw='relative' style={{ height: '800px' }}>
                 <RevealUI placement='auto' tw='absolute top-8 left-8' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
                 </RevealUI>

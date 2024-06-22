@@ -22,8 +22,8 @@ export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: { hostI
     const mainHost = st.mainHost
 
     return (
-        <Surface tw='w-full h-full flex flex-col gap-2 p-2'>
-            <MessageInfoUI>The Primary host is the one used for typigns, and to send prompts to by default.</MessageInfoUI>
+        <div tw='w-full h-full flex flex-col gap-2 p-2'>
+            <MessageInfoUI>The Primary host is the one used for typings, and to send prompts to by default.</MessageInfoUI>
             <div className='line'>
                 <div>Primary Host:</div>
                 <SelectUI
@@ -53,6 +53,6 @@ export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: { hostI
                         return <HostUI key={host.id} host={host} />
                     })}
             </div>
-        </Surface>
+        </div>
     )
 })

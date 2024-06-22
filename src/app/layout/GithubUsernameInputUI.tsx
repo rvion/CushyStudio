@@ -13,7 +13,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const st = useSt()
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
-        <div tw='w-auto join virtualBorder'>
+        <div tw='w-auto join'>
             <div tw='flex items-center px-2 join-item'>
                 <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <Whisper

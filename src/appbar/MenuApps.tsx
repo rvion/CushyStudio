@@ -4,7 +4,7 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
-import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
@@ -12,8 +12,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            // text-green-400
-            // startIcon={<span className='material-symbols-outlined '>apps</span>}
+            expand
             title='Apps'
             content={() => (
                 <>
@@ -23,10 +22,9 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     />
-                    <hr />
-                    <div className='divider'>10 last ran Drafts</div>
+                    <MenuDivider>Recently Used Drafts</MenuDivider>
                     <RecentDrafMenuEntriesUI />
-                    <div className='divider'>5 last ran Apps</div>
+                    <MenuDivider>Recently Used Apps</MenuDivider>
                     <RecentAppMenuEntriesUI />
                 </>
             )}

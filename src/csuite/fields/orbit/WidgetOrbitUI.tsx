@@ -11,7 +11,7 @@ import { Cube } from './Cube3D'
 export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
     const ref = useRef<any>(null)
     return (
-        <div tw='virtualBorder'>
+        <div>
             <div tw='flex items-center'>
                 <div tw='btn' onClick={() => p.widget.reset()}>
                     reset
