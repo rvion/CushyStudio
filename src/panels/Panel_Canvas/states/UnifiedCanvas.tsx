@@ -24,6 +24,7 @@ export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
     usePenPressure = true
+    enableOverlay = true
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
     // ---------------------------------------------------
