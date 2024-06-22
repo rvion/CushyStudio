@@ -17,7 +17,7 @@
 
     // lint options
     "css.lint.unknownAtRules": "ignore",
-    "tailwindCSS.classAttributes": ["class", "className", "tw"],
+    "tailwindCSS.classAttributes": ["class", "className", "tw", "iconClassName"],
 
     // // Custom colors
     // "peacock.color": "#0b4867",
