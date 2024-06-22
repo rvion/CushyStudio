@@ -44,7 +44,7 @@
         "supa:migrate": "supabase migration up --linked",
         "js-1": "node --loader ts-node/esm             --experimental-modules    --experimental-specifier-resolution=node",
         "js": "node --loader @esbuild-kit/esm-loader --experimental-vm-modules --experimental-specifier-resolution=node",
-        "js-3": ".cushy/node/v18.19.0-darwin-arm64/bin/node --loader @esbuild-kit/esm-loader --experimental-vm-modules --experimental-specifier-resolution=node",
+        "js-3": ".cushy/node/v20.14.0-darwin-arm64/bin/node --loader @esbuild-kit/esm-loader --experimental-vm-modules --experimental-specifier-resolution=node",
         "📌 TEST": "------------------------------------------------------------------------",
         "test": "bun test src",
         "test:watch": "bun test --watch src",

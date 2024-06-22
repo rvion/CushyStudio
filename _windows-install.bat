@@ -1,5 +1,5 @@
 @echo off
-setlocal 
+setlocal
 setlocal EnableExtensions
 setlocal EnableDelayedExpansion
 
@@ -23,7 +23,7 @@ echo [===================================================]
 echo Ensuring Node version...
 
 rem --------------------------------------------------------------------------------
-set "NODE_VERSION=v18.19.0"
+set "NODE_VERSION=v20.14.0"
 set "NODE_ARCH=win-x64"
 set "CWD=%CD%"
 set "EXTRACT_DIR=%CWD%\.cushy\node\%NODE_VERSION%-%NODE_ARCH%"
