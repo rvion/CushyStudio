@@ -2,7 +2,6 @@ import { Panel_Canvas } from '../panels/Panel_Canvas/Panel_Canvas'
 import { Panel_Civitai } from '../panels/Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../panels/Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../panels/Panel_ComfyUI'
-import { Panel_ComfyUIHosts } from '../panels/Panel_ComfyUIHosts'
 import { PanelConfig } from '../panels/Panel_Config'
 import { Panel_Draft } from '../panels/Panel_Draft/Panel_Draft'
 import { Panel_DraftJsonResult } from '../panels/Panel_DraftJsonResult'
@@ -27,6 +26,7 @@ import { Panel_Steps } from '../panels/Panel_Steps/Panel_Steps'
 import { Panel_Custom } from '../panels/Panel_Temporary'
 import { Panel_ViewImage } from '../panels/Panel_ViewImage'
 import { Panel_Welcome } from '../panels/Panel_Welcome/Panel_Welcome'
+import { PanelComfyHosts, PanelComfyHostsUI } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
 import { Panel } from './Panel'
 
 export const panels = {
@@ -227,13 +227,7 @@ export const panels = {
         def: () => ({}),
         icon: undefined,
     }),
-    Hosts: new Panel({
-        name: 'Hosts',
-        widget: () => Panel_ComfyUIHosts,
-        header: (p) => ({ title: 'Hosts' }),
-        def: () => ({}),
-        icon: undefined,
-    }),
+    Hosts: PanelComfyHosts,
     Shortcuts: new Panel({
         name: 'Shortcuts',
         widget: () => Panel_Shortcuts,

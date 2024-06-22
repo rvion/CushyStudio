@@ -1,10 +1,41 @@
+import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
+import type { MenuEntry } from '../csuite/menu/Menu'
 
-import { type MenuEntry, menuWithoutProps } from '../csuite/menu/Menu'
+import { ctx_global } from '../csuite/command-topic/ctx_global'
+import { command } from '../csuite/commands/Command'
+import { menuWithoutProps } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
+import { Trigger } from '../csuite/trigger/Trigger'
 
 export class Panel<Props> {
     $Props!: Props
+
+    defaultCommand: Command
+    constructor(
+        public p: {
+            //
+            name: string
+            widget: () => React.FC<Props>
+            header: (p: NoInfer<Props>) => { title: string }
+            icon?: IconName
+            def: () => NoInfer<Props>
+            presets?: { [name: string]: () => NoInfer<Props> }
+        },
+    ) {
+        this.defaultCommand = command({
+            id: 'panel.default.open.' + this.name,
+            description: `Open ${this.name} panel`,
+            label: this.name,
+            ctx: ctx_global,
+            action: () => {
+                const props: Props = this.p.def()
+                cushy.layout.FOCUS_OR_CREATE(this.name as any, props, 'LEFT_PANE_TABSET')
+                return Trigger.Success
+            },
+            icon: this.icon,
+        })
+    }
 
     get name(): string {
         return this.p.name
@@ -26,14 +57,14 @@ export class Panel<Props> {
         const presets = Object.entries(this.p.presets ?? {})
         const out: MenuEntry[] = []
 
-        const defEntry = new SimpleMenuAction({
+        const defEntry = this.defaultCommand /* new SimpleMenuAction({
             label: this.name,
             icon: this.p.icon,
             onPick: () => {
                 const props: Props = this.p.def()
                 cushy.layout.FOCUS_OR_CREATE(this.name as any, {}, 'LEFT_PANE_TABSET')
             },
-        })
+        }) */
         if (presets.length === 0) {
             out.push(defEntry)
         } else {
@@ -57,16 +88,4 @@ export class Panel<Props> {
         }
         return out
     }
-
-    constructor(
-        public p: {
-            //
-            name: string
-            widget: () => React.FC<Props>
-            header: (p: NoInfer<Props>) => { title: string }
-            icon?: IconName
-            def: () => NoInfer<Props>
-            presets?: { [name: string]: () => NoInfer<Props> }
-        },
-    ) {}
 }

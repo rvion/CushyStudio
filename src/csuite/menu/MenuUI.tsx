@@ -120,7 +120,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                     return (
                         <RevealUI //
                             trigger='hover'
-                            tw='min-w-60'
+                            tw='min-w-60 !block'
                             placement='rightStart'
                             content={() => <MenuUI menu={entry.init(p.menu.allocatedKeys)} />}
                         >
@@ -131,15 +131,15 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 // onClick={() => entry.open()}
                                 label={
                                     <Fragment>
-                                        {charIx != null ? (
-                                            <div>
-                                                <span>{label.slice(0, charIx)}</span>
-                                                <span tw='underline text-red'>{label[charIx]}</span>
-                                                <span>{label.slice(charIx + 1)}</span>
-                                            </div>
-                                        ) : (
-                                            label
-                                        )}
+                                            {charIx != null ? (
+                                                <div>
+                                                    <span>{label.slice(0, charIx)}</span>
+                                                    <span tw='underline text-red'>{label[charIx]}</span>
+                                                    <span>{label.slice(charIx + 1)}</span>
+                                                </div>
+                                            ) : (
+                                                label
+                                            )}
                                         <span className='material-symbols-outlined'>keyboard_arrow_right</span>
                                     </Fragment>
                                 }

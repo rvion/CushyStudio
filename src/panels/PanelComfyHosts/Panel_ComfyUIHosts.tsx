@@ -1,16 +1,22 @@
 import { observer } from 'mobx-react-lite'
-import { resolve } from 'pathe'
 
-import { Button } from '../csuite/button/Button'
-import { Surface } from '../csuite/inputs/shims'
-import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
-import { SelectUI } from '../csuite/select/SelectUI'
-import { SQLITE_false } from '../csuite/types/SQLITE_boolean'
-import { useSt } from '../state/stateContext'
-import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { HostUI } from './host/HostUI'
+import { Surface } from '../../csuite/inputs/shims'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
+import { Panel } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
+import { HostUI } from '../host/HostUI'
+import { AddHostBtnUI } from './AddHostBtnUI'
 
-export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
+export const PanelComfyHosts = new Panel({
+    name: 'Hosts',
+    widget: () => PanelComfyHostsUI,
+    header: () => ({ title: 'Hosts' }),
+    def: () => ({}),
+    icon: 'mdiDesktopTower',
+})
+
+export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: { hostID?: HostID }) {
     const st = useSt()
     const allHosts = st.hosts
     const mainHost = st.mainHost
@@ -48,31 +54,5 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     })}
             </div>
         </Surface>
-    )
-})
-
-export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
-    const st = useSt()
-    return (
-        <Button
-            icon='mdiPlus'
-            look='primary'
-            onClick={() => {
-                st.configFile.update(() => {
-                    st.db.host.create({
-                        hostname: '192.168.1.19',
-                        port: 8188,
-                        name: '192.168.1.19',
-                        isLocal: SQLITE_false,
-                        useHttps: SQLITE_false,
-                        absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
-                        isVirtual: SQLITE_false,
-                        isReadonly: SQLITE_false,
-                    })
-                })
-            }}
-        >
-            Add Host
-        </Button>
     )
 })
