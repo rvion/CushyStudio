@@ -1,3 +1,5 @@
+import type { NO_PROPS } from '../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../app/shortcuts/shorcutKeys'
@@ -11,11 +13,18 @@ import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { FormHelpTextUI } from '../csuite/inputs/shims'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
+import { Panel } from '../router/Panel'
 import { useSt } from '../state/stateContext'
 import { openInVSCode } from '../utils/electron/openInVsCode'
 import { run_justify, ui_justify } from './Panel_Draft/prefab_justify'
 
-export const Panel_Config = observer(function Panel_Config_() {
+export const PanelConfig = new Panel({
+    name: 'Config',
+    widget: () => PanelConfigUI,
+    header: (p) => ({ title: 'Config', icon: undefined }),
+})
+
+export const PanelConfigUI = observer(function PanelConfigUI_(p: NO_PROPS) {
     const st = useSt()
     const config = st.configFile
     const justify = cushy.forms.use(ui_justify)

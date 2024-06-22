@@ -1,11 +1,9 @@
-import type { PropsOf } from './Layout'
-
 import { Panel_Canvas } from '../panels/Panel_Canvas/Panel_Canvas'
 import { Panel_Civitai } from '../panels/Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../panels/Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../panels/Panel_ComfyUI'
 import { Panel_ComfyUIHosts } from '../panels/Panel_ComfyUIHosts'
-import { Panel_Config } from '../panels/Panel_Config'
+import { PanelConfig } from '../panels/Panel_Config'
 import { Panel_Draft } from '../panels/Panel_Draft/Panel_Draft'
 import { Panel_DraftJsonResult } from '../panels/Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../panels/Panel_DraftJsonSerial'
@@ -27,189 +25,184 @@ import { Panel_Shortcuts } from '../panels/Panel_Shortcuts'
 import { Panel_Squoosh } from '../panels/Panel_Squoosh'
 import { Panel_Steps } from '../panels/Panel_Steps/Panel_Steps'
 import { Panel_Custom } from '../panels/Panel_Temporary'
-import { Panel_TypeDoc } from '../panels/Panel_TypeDoc'
 import { Panel_ViewImage } from '../panels/Panel_ViewImage'
 import { Panel_Welcome } from '../panels/Panel_Welcome/Panel_Welcome'
-import { assets } from '../utils/assets/assets'
+import { Panel } from './Panel'
 
 export const panels = {
     // image related
-    Icons: {
+    Icons: new Panel({
         name: 'Icons',
-        widget: Panel_Icons,
-        header: (p: PropsOf<typeof Panel_Gallery>) => ({ title: 'Icons', icon: undefined }),
-    },
-    Gallery: {
+        widget: () => Panel_Icons,
+        header: (p) => ({ title: 'Icons', icon: undefined }),
+    }),
+    Gallery: new Panel({
         name: 'Gallery',
-        widget: Panel_Gallery,
-        header: (p: PropsOf<typeof Panel_Gallery>) => ({ title: '🎑 Gallery', icon: undefined }),
-    },
-    Paint: {
+        widget: () => Panel_Gallery,
+        header: (p) => ({ title: 'Gallery', icon: 'mdiViewGallery' }),
+    }),
+    Paint: new Panel({
         name: 'Paint',
-        widget: Panel_Minipaint,
-        header: (p: PropsOf<typeof Panel_Minipaint>) => ({ title: '🎨 Paint', icon: assets.minipaint_images_logo_svg }),
-    },
-    Canvas: {
+        widget: () => Panel_Minipaint,
+        header: (p) => ({ title: '🎨 Paint', icon: 'mdiPencil' }),
+    }),
+    Canvas: new Panel({
         name: 'Canvas',
-        widget: Panel_Canvas,
-        header: (p: PropsOf<typeof Panel_Canvas>) => ({ title: '🎨 Canvas', icon: assets.minipaint_images_logo_svg }),
-    },
-    Image: {
+        widget: () => Panel_Canvas,
+        header: (p) => ({ title: '🎨 Canvas', icon: 'mdiCameraFrontVariant' }),
+    }),
+    Image: new Panel({
         name: 'Image',
-        widget: Panel_ViewImage,
-        header: (p: PropsOf<typeof Panel_ViewImage>) => ({ title: '🎇 Image', icon: undefined }),
-    },
+        widget: () => Panel_ViewImage,
+        header: (p) => ({ title: '🎇 Image', icon: undefined }),
+    }),
 
     // apps & marketplace
-    Marketplace: {
+    Marketplace: new Panel({
         name: 'Marketplace',
-        widget: Panel_Marketplace,
-        header: (p: PropsOf<typeof Panel_Marketplace>) => ({ title: 'Marketplace', icon: assets.CushyLogo_512_png }),
-    },
-    Deck: {
+        widget: () => Panel_Marketplace,
+        header: (p) => ({ title: 'Marketplace', icon: 'mdiCubeScan' }),
+    }),
+    Deck: new Panel({
         name: 'Deck',
-        widget: Panel_ComfyNodeExplorer,
-        header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({ title: 'Deck', icon: undefined }),
-    },
-    TreeExplorer: {
+        widget: () => Panel_ComfyNodeExplorer,
+        header: (p) => ({ title: 'Deck', icon: undefined }),
+    }),
+    TreeExplorer: new Panel({
         name: 'TreeExplorer',
-        widget: Panel_TreeExplorer,
-        header: (p: PropsOf<typeof Panel_TreeExplorer>) => ({ title: 'FileList', icon: undefined }),
-    },
-    Import: {
+        widget: () => Panel_TreeExplorer,
+        header: (p) => ({ title: 'FileList', icon: undefined }),
+    }),
+    Import: new Panel({
         name: 'Import',
-        widget: Panel_Import,
-        header: (p: PropsOf<typeof Panel_Import>) => ({ title: 'Import', icon: undefined }),
-    },
+        widget: () => Panel_Import,
+        header: (p) => ({ title: 'Import', icon: undefined }),
+    }),
 
     // ComfyUI
-    ComfyUI: {
+    ComfyUI: new Panel({
         name: 'ComfyUI',
-        widget: Panel_ComfyUI,
-        header: (p: PropsOf<typeof Panel_ComfyUI>) => ({ title: 'ComfyUI', icon: assets.ComfyUILogo_png }),
-    },
-    ComfyUINodeExplorer: {
+        widget: () => Panel_ComfyUI,
+        header: (p) => ({ title: 'ComfyUI', icon: 'mdiCabinAFrame' }),
+    }),
+    ComfyUINodeExplorer: new Panel({
         name: 'ComfyUINodeExplorer',
-        widget: Panel_ComfyNodeExplorer,
-        header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({ title: 'ComfyUINodeExplorer', icon: assets.ComfyUILogo_png }),
-    },
+        widget: () => Panel_ComfyNodeExplorer,
+        header: (p) => ({ title: 'ComfyUINodeExplorer', icon: 'mdiAccessPoint' }),
+    }),
 
     // misc
-    Output: {
+    Output: new Panel({
         name: 'Output',
-        widget: Panel_Step,
-        header: (p: PropsOf<typeof Panel_Step>) => ({ title: 'Output', icon: undefined }),
-    },
-    Steps: {
+        widget: () => Panel_Step,
+        header: (p) => ({ title: 'Output', icon: undefined }),
+    }),
+    Steps: new Panel({
         name: 'Steps',
-        widget: Panel_Steps,
-        header: (p: PropsOf<typeof Panel_Steps>) => ({ title: 'Steps', icon: undefined }),
-    },
-    LastGraph: {
+        widget: () => Panel_Steps,
+        header: (p) => ({ title: 'Steps', icon: undefined }),
+    }),
+    LastGraph: new Panel({
         name: 'LastGraph',
-        widget: Panel_LastGraph,
-        header: (p: PropsOf<typeof Panel_LastGraph>) => ({ title: '⏱️ LastGraph', icon: undefined }),
-    },
-    LastImage: {
+        widget: () => Panel_LastGraph,
+        header: (p) => ({ title: '⏱️ LastGraph', icon: undefined }),
+    }),
+    LastImage: new Panel({
         name: 'LastImage',
-        widget: Panel_ViewImage,
-        header: (p: PropsOf<typeof Panel_ViewImage>) => ({ title: '⏱️ LastImage', icon: undefined }),
-    },
-    // LastLatent:       { name: 'LastLatent',          widget: Panel_ViewLatent,        header: (p: PropsOf<typeof Panel_ViewLatent       >) => ({title: '⏱️ LastLatent',       icon: undefined                      }) },
-    LastStep: {
+        widget: () => Panel_ViewImage,
+        header: (p) => ({ title: '⏱️ LastImage', icon: undefined }),
+    }),
+    // LastLatent:       { name: 'LastLatent',          widget: () => Panel_ViewLatent,        header: (p) => ({title: '⏱️ LastLatent',       icon: undefined                      }) },
+    LastStep: new Panel({
         name: 'LastStep',
-        widget: Panel_LastStep,
-        header: (p: PropsOf<typeof Panel_LastStep>) => ({ title: 'LastStep', icon: undefined }),
-    },
-    FullScreenLibrary: {
+        widget: () => Panel_LastStep,
+        header: (p) => ({ title: 'LastStep', icon: undefined }),
+    }),
+    FullScreenLibrary: new Panel({
         name: 'FullScreenLibrary',
-        widget: Panel_FullScreenLibrary,
-        header: (p: PropsOf<typeof Panel_FullScreenLibrary>) => ({ title: 'FullScreenLibrary', icon: undefined }),
-    },
-    Draft: {
+        widget: () => Panel_FullScreenLibrary,
+        header: (p) => ({ title: 'FullScreenLibrary', icon: undefined }),
+    }),
+    Draft: new Panel({
         name: 'Draft',
-        widget: Panel_Draft,
-        header: (p: PropsOf<typeof Panel_Draft>) => ({ title: 'Draft', icon: undefined }),
-    },
-    DraftJsonResult: {
+        widget: () => Panel_Draft,
+        header: (p) => ({ title: 'Draft', icon: undefined }),
+    }),
+    DraftJsonResult: new Panel({
         name: 'DraftJsonResult',
-        widget: Panel_DraftJsonResult,
-        header: (p: PropsOf<typeof Panel_DraftJsonResult>) => ({ title: 'DraftJsonResult', icon: undefined }),
-    },
-    DraftJsonSerial: {
+        widget: () => Panel_DraftJsonResult,
+        header: (p) => ({ title: 'DraftJsonResult', icon: undefined }),
+    }),
+    DraftJsonSerial: new Panel({
         name: 'DraftJsonSerial',
-        widget: Panel_DraftJsonSerial,
-        header: (p: PropsOf<typeof Panel_DraftJsonSerial>) => ({ title: 'DraftJsonSerial', icon: undefined }),
-    },
-    Script: {
+        widget: () => Panel_DraftJsonSerial,
+        header: (p) => ({ title: 'DraftJsonSerial', icon: undefined }),
+    }),
+    Script: new Panel({
         name: 'Script',
-        widget: Panel_Script,
-        header: (p: PropsOf<typeof Panel_Script>) => ({ title: 'Script', icon: undefined }),
-    },
-    Welcome: {
+        widget: () => Panel_Script,
+        header: (p) => ({ title: 'Script', icon: undefined }),
+    }),
+    Welcome: new Panel({
         name: 'Welcome',
-        widget: Panel_Welcome,
-        header: (p: PropsOf<typeof Panel_Welcome>) => ({ title: 'Welcome', icon: undefined }),
-    },
-    Playground: {
+        widget: () => Panel_Welcome,
+        header: (p) => ({ title: 'Welcome', icon: undefined }),
+    }),
+    Playground: new Panel({
         name: 'Playground',
-        widget: Panel_Playground,
-        header: (p: PropsOf<typeof Panel_Playground>) => ({ title: 'Welcome', icon: undefined }),
-    },
-    // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                      }) },
+        widget: () => Panel_Playground,
+        header: (p) => ({ title: 'Welcome', icon: undefined }),
+    }),
+    // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils
-    Civitai: {
+    Civitai: new Panel({
         name: 'Civitai',
-        widget: Panel_Civitai,
-        header: (p: PropsOf<typeof Panel_Civitai>) => ({ title: 'Civitai', icon: assets.CivitaiLogo_png }),
-    },
-    Squoosh: {
+        widget: () => Panel_Civitai,
+        header: (p) => ({ title: 'Civitai', icon: 'mdiAccountStarOutline' }),
+    }),
+    Squoosh: new Panel({
         name: 'Squoosh',
-        widget: Panel_Squoosh,
-        header: (p: PropsOf<typeof Panel_Squoosh>) => ({ title: 'Squoosh', icon: undefined }),
-    },
-    IFrame: {
+        widget: () => Panel_Squoosh,
+        header: (p) => ({ title: 'Squoosh', icon: undefined }),
+    }),
+    IFrame: new Panel({
         name: 'IFrame',
-        widget: Panel_Iframe,
-        header: (p: PropsOf<typeof Panel_Squoosh>) => ({ title: 'IFrame', icon: undefined }),
-    },
+        widget: () => Panel_Iframe,
+        header: (p) => ({ title: 'IFrame', icon: undefined }),
+    }),
 
     // config
-    Config: {
-        name: 'Config',
-        widget: Panel_Config,
-        header: (p: PropsOf<typeof Panel_Config>) => ({ title: 'Config', icon: undefined }),
-    },
-    Models: {
+    Config: PanelConfig,
+    Models: new Panel({
         name: 'Models',
-        widget: Panel_Models,
-        header: (p: PropsOf<typeof Panel_Models>) => ({ title: 'Models', icon: undefined }),
-    },
-    Hosts: {
+        widget: () => Panel_Models,
+        header: (p) => ({ title: 'Models', icon: undefined }),
+    }),
+    Hosts: new Panel({
         name: 'Hosts',
-        widget: Panel_ComfyUIHosts,
-        header: (p: PropsOf<typeof Panel_ComfyUIHosts>) => ({ title: 'Hosts', icon: undefined }),
-    },
-    Shortcuts: {
+        widget: () => Panel_ComfyUIHosts,
+        header: (p) => ({ title: 'Hosts', icon: undefined }),
+    }),
+    Shortcuts: new Panel({
         name: 'Shortcuts',
-        widget: Panel_Shortcuts,
-        header: (p: PropsOf<typeof Panel_Shortcuts>) => ({ title: 'Shortcuts', icon: undefined }),
-    },
+        widget: () => Panel_Shortcuts,
+        header: (p) => ({ title: 'Shortcuts', icon: undefined }),
+    }),
 
-    // doc & help
-    TypeDoc: {
-        name: 'TypeDoc',
-        widget: Panel_TypeDoc,
-        header: (p: PropsOf<typeof Panel_TypeDoc>) => ({ title: 'TypeDoc', icon: assets.typescript_512_png }),
-    },
+    // // doc & help
+    // TypeDoc: new Page({
+    //     name: 'TypeDoc',
+    //     widget: Panel_TypeDoc,
+    //     header: (p) => ({ title: 'TypeDoc', icon: assets.typescript_512_png }),
+    // }),
 
-    Custom: {
+    Custom: new Panel({
         name: 'Temporary',
-        widget: Panel_Custom,
-        header: (p: PropsOf<typeof Panel_Custom>) => ({ title: 'Temporary', icon: assets.typescript_512_png }),
-    },
-}
+        widget: () => Panel_Custom,
+        header: (p) => ({ title: 'Temporary', icon: 'mdiSourceRepositoryMultiple' }),
+    }),
+} satisfies { [k in string]: Panel<any> }
 
 export type Panels = typeof panels
 export type PanelNames = keyof Panels

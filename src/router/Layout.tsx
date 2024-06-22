@@ -8,11 +8,11 @@ import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
+import { getIconAsDataSVG } from '../csuite/icons/iconStr'
 import { Message } from '../csuite/inputs/shims'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { toastError } from '../csuite/utils/toasts'
-import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
@@ -398,7 +398,7 @@ export class CushyLayoutManager {
         return regionMonitor.hoveredRegion?.type === component
     }
 
-    currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {
+    currentTabIs = <K extends PanelNames>(component: K): Maybe<Panels[K]['$Props']> => {
         const tabPrefix = `/${component}/`
         const current = this.currentTab
         if (current == null) {
@@ -423,7 +423,7 @@ export class CushyLayoutManager {
     ): {
         //
         tabNode: FL.TabNode
-        config: PropsOf<Panels[K]['widget']>
+        config: Panels[K]['$Props']
     }[] => {
         const tabPrefix = `/${component}/`
         const tabs: FL.TabNode[] = []
@@ -505,7 +505,7 @@ export class CushyLayoutManager {
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
                 id: tabID,
-                icon: icon,
+                icon: getIconAsDataSVG(icon),
                 name: title,
                 config: panelProps,
             })
@@ -546,7 +546,7 @@ export class CushyLayoutManager {
             enableClose: p.canClose ?? true,
             enableRename: false,
             enableFloat: false,
-            icon: icon,
+            icon: getIconAsDataSVG(icon),
         }
     }
 
