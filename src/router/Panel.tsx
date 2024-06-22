@@ -28,11 +28,11 @@ export class Panel<Props> {
 
         const defEntry = new SimpleMenuAction({
             label: this.name,
+            icon: this.p.icon,
             onPick: () => {
                 const props: Props = this.p.def()
                 cushy.layout.FOCUS_OR_CREATE(this.name as any, {}, 'LEFT_PANE_TABSET')
             },
-            icon: this.p.icon,
         })
         if (presets.length === 0) {
             out.push(defEntry)
@@ -48,6 +48,7 @@ export class Panel<Props> {
                 })
             })
             const x = menuWithoutProps({
+                icon: this.p.icon,
                 title: this.name,
                 id: this.name,
                 entries: () => [defEntry, ...sub],

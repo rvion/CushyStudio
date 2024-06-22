@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
+import { allCommands } from '../ALL_CMDS'
+import { allLayoutCommands } from '../app/shortcuts/cmd_layout'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
@@ -8,7 +10,7 @@ import { menuWithoutProps } from '../csuite/menu/Menu'
 import { allPanels } from '../router/PANELS'
 import { useSt } from '../state/stateContext'
 
-const menu = menuWithoutProps({
+const menuPanels = menuWithoutProps({
     title: 'Panels',
     entries: () => [
         menuWithoutProps({
@@ -19,14 +21,20 @@ const menu = menuWithoutProps({
     ],
 })
 
+const layoutShortcuts = menuWithoutProps({
+    title: 'shortcuts',
+    entries: () => [...allLayoutCommands],
+})
+
 export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     const st = useSt()
     return (
         <>
             {/* <MenuUI menu={menu.UI} /> */}
             {/* <menu.UI /> */}
-            <menu.UI />
-            <Dropdown
+            <menuPanels.UI />
+            <layoutShortcuts.UI />
+            {/* <Dropdown
                 // startIcon={<span className='material-symbols-outlined'>image</span>}
                 title='Panels'
                 content={() => (
@@ -111,7 +119,7 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                         />
                     </>
                 )}
-            />
+            /> */}
         </>
     )
 })

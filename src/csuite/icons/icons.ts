@@ -51,6 +51,10 @@ const myCustomIcons = {
     cdiApp: icons.mdiAbacus,
     cdiStep: icons.mdiAccessPoint,
     cdiPreset: icons.mdiAccessPoint,
+
+    // external stuff
+    cdiExternalCivitai: icons.mdiCityVariant,
+    cdiExternalSquoosh: icons.mdiCigar,
     // AI stuff goes there
     // ....
 

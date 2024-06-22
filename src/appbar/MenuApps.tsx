@@ -19,7 +19,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
                 <>
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
-                        icon={<span className='material-symbols-outlined'>cloud_download</span>}
+                        icon='mdiCloudDownload'
                         shortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     />
@@ -40,12 +40,8 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
             {cushy.db.draft
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
                 .map((draft) => (
-                    <MenuItem
-                        key={draft.id}
-                        onClick={() => draft.openOrFocusTab()}
-                        icon={<DraftIllustrationUI draft={draft} size='2rem' />}
-                        // label={draft.name}
-                    >
+                    <MenuItem key={draft.id} onClick={() => draft.openOrFocusTab()}>
+                        <DraftIllustrationUI draft={draft} size='2rem' />
                         <div tw='text' style={{ lineHeight: '1rem' }}>
                             <div>{draft.name}</div>
                             <div tw='italic text-sm text-gray-500 flex gap-1'>
@@ -65,11 +61,8 @@ export const RecentAppMenuEntriesUI = observer(function RecentAppMenuEntriesUI_(
             {cushy.db.cushy_app
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(5))
                 .map((app) => (
-                    <MenuItem
-                        onClick={() => app.openLastOrCreateDraft()}
-                        icon={<AppIllustrationUI app={app} size='1.5rem' />}
-                        // label={app.name}
-                    >
+                    <MenuItem onClick={() => app.openLastOrCreateDraft()}>
+                        <AppIllustrationUI app={app} size='1.5rem' />
                         <div tw='flex items-center'>{app.name}</div>
                         <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(app.data.lastRunAt)}</div>
                     </MenuItem>

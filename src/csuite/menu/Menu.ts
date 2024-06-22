@@ -1,5 +1,6 @@
 import type { Activity } from '../activity/Activity'
 import type { BoundCommand } from '../commands/Command'
+import type { IconName } from '../icons/icons'
 import type { BaseField } from '../model/BaseField'
 import type { Trigger } from '../trigger/Trigger'
 import type { NO_PROPS } from '../types/NO_PROPS'
@@ -49,6 +50,7 @@ export type MenuDef<Props> = {
      */
     id?: string
     title: string
+    icon?: Maybe<IconName>
     entries: (props: Props) => MenuEntry[]
 }
 
@@ -174,8 +176,11 @@ export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => ne
 export type BoundMenuOpts = { title?: string }
 export class BoundMenu<Ctx = any, Props = any> {
     $SYM = BoundMenuSym
-    get title() {
+    get title(): string {
         return this.ui?.title ?? this.menu.title
+    }
+    get icon(): Maybe<IconName> {
+        return this.menu.def.icon
     }
     constructor(
         //

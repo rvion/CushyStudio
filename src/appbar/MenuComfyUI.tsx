@@ -22,17 +22,20 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}
                         label='ComfyUI'
-                        icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
+                        iconClassName='text-cyan-400'
+                        icon='mdiTree'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
-                        icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
+                        iconClassName='text-cyan-400'
+                        icon={'mdiTableRowPlusAfter'}
                         label='Nodes Explorer'
                     />
                     {/* {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
                         <MenuItem
                             onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
-                            icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
+                            iconClassName='text-cyan-400'
+                            icon={<span className=''>settings</span>}
                             label='ComfyUI Hosts'
                         />
                     )} */}
@@ -52,14 +55,8 @@ export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL
     const isMain = host.id === cushy.configFile.value.mainComfyHostID
     return (
         <MenuItem
-            icon={
-                <span
-                    tw={[isMain && (cushy.ws?.isOpen ?? false ? 'text-green-500' : 'text-red-500')]}
-                    className='material-symbols-outlined'
-                >
-                    desktop_mac
-                </span>
-            }
+            iconClassName={isMain ? (cushy.ws?.isOpen ?? false ? 'text-green-500' : 'text-red-500') : undefined}
+            icon='mdiDesktopTower'
             onClick={() => host.electAsPrimary()}
         >
             <div tw='flex-grow'>

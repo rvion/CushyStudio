@@ -13,6 +13,7 @@ export const allLayoutCommands: Command<null>[] = [
         ctx: ctx_global,
         combos: 'ctrl+shift+space',
         action: () => cushy.layout.maximizeActiveTabset(),
+        icon: 'mdiWindowMaximize',
         validInInput: true,
     }),
 
@@ -22,6 +23,7 @@ export const allLayoutCommands: Command<null>[] = [
         label: 'maximize hovered panel',
         ctx: ctx_global,
         combos: ['alt+space', 'ctrl+u'],
+        icon: 'mdiWindowMaximize',
         action: () => cushy.layout.maximizHoveredTabset(),
         validInInput: true,
     }),

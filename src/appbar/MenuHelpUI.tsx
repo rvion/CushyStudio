@@ -13,33 +13,21 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
             title='Help'
             content={() => (
                 <>
-                    {/* <MenuItem
-                        onClick={() => { void window.require('electron').shell.openExternal('https://www.CushyStudio.com/documentation') }}
-                        icon={<span className='material-symbols-outlined text-purple-300'>menu_book</span>}
-                        label='Open documentation'
-                    /> */}
                     <MenuItem
-                        onClick={() => {
-                            void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
-                        }}
-                        icon={<Ikon.mdiGithub />}
+                        onClick={() =>
+                            window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
+                        }
+                        icon='mdiGithub'
                         label='Open Github'
                     />
                     <MenuItem
-                        onClick={() => {
-                            void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
-                        }}
-                        icon={<Icon path={mdiGithub} size={1} />}
+                        onClick={() => window.require('electron').shell.openExternal('https://www.CushyStudio.com')}
+                        icon='mdiGithub'
                         label='Open Website'
                     />
                     <MenuItem
-                        onClick={() => {
-                            void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
-                        }}
-                        icon={
-                            <Icon path={mdiPost} size={1} />
-                            // <span className='material-symbols-outlined text-purple-300'>web</span>
-                        }
+                        onClick={() => window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')}
+                        icon='mdiPost'
                         label='Open blog'
                     />
                 </>
