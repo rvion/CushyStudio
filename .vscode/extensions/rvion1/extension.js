@@ -37,24 +37,26 @@ module.exports = __toCommonJS(extension_exports);
 var vscode = __toESM(require("vscode"));
 
 // ../../../src/csuite/icons/icons.ts
+var icons3 = __toESM(require("@mdi/js"), 1);
+
+// ../../../src/csuite/icons/iconsCDI.ts
 var icons = __toESM(require("@mdi/js"), 1);
-var myCustomIcons = {
-  _missedCall: icons.mdiPhoneMissed,
-  _transferredCall: icons.mdiPhoneInTalk,
-  _close: icons.mdiClose,
-  _clear: icons.mdiClose,
-  _check: icons.mdiCheck,
-  _edit: icons.mdiPencil,
-  // grid
-  _gridFilter: icons.mdiFilterOutline,
-  _gridSortedAsc: icons.mdiArrowUp,
-  _gridSortedDesc: icons.mdiArrowDown,
-  _gridGroupBy: icons.mdiViewGrid,
-  // features
-  _webchat: icons.mdiChatProcessing,
-  // cushy
+var _CushyIcons = {
+  /* Inherited Icons */
+  cdiDraft: icons.mdiPencil,
+  cdiApp: icons.mdiAbacus,
+  cdiStep: icons.mdiAccessPoint,
+  cdiPreset: icons.mdiAccessPoint,
+  cdiExternalCivitai: icons.mdiCityVariant,
+  cdiExternalSquoosh: icons.mdiCigar,
+  /* Custom Icons */
   cdiTest: "M 2.40,7.20 A 20,20 0,0,1 12.00,7.20 A 20,20 0,0,1 21.60,7.20 Q 21.60,14.40 12.00,21.60 Q 2.40,14.40 2.40,7.20 z",
-  // locomotive
+  cdiNodes: "M 16,5 C 16,3.89 15.1,3 14,3 H 8 C 6.8954305,3 6,3.8954305 6,5 v 3 c 0,1 1,2 2,2 V 7 6 h 6 V 8 H 8 v 2 h 6 c 1,0 2,-1 2,-2 V 5 h 1 c 1,0 1,1 1,1 h 2 c 1,0 1,1 1,1 v 10 c 0,0 0,1 -1,1 h -5 c 0,0 0,1 -1,1 v -3 h -1 v 3 c 0,0 0,2 -2,2 V 19 17 H 5 v 2 h 6 v 2 H 5 C 3,21 3,19 3,19 v -3 c 0,0 0,-2 2,-2 h 6 c 2,0 2,2 2,2 h 1 c 1,0 1,1 1,1 h 5 V 16 7 h -2 c 0,1 -1,1 -1,1 V 5 Z"
+};
+
+// ../../../src/csuite/icons/iconsLDI.ts
+var _IconsLDI = {
+  // locomotive ---------------------------------------------------------------------
   ldiRegularStar: "M11.049 2.92664C11.3483 2.00537 12.6517 2.00538 12.951 2.92664L14.4699 7.60055C14.6038 8.01254 14.9877 8.29148 15.4209 8.29149L20.3354 8.29168C21.3041 8.29172 21.7068 9.53127 20.9232 10.1007L16.9474 12.9895C16.5969 13.2441 16.4503 13.6955 16.5841 14.1075L18.1026 18.7815C18.4019 19.7028 17.3475 20.4689 16.5638 19.8995L12.5878 17.011C12.2373 16.7564 11.7627 16.7564 11.4122 17.011L7.43622 19.8995C6.65252 20.4689 5.5981 19.7028 5.8974 18.7815L7.41589 14.1075C7.54974 13.6955 7.40309 13.2441 7.05263 12.9895L3.07683 10.1007C2.29317 9.53127 2.69592 8.29172 3.66461 8.29168L8.57911 8.29149C9.01231 8.29148 9.39623 8.01254 9.53011 7.60055L11.049 2.92664Z",
   ldiRegularStatusOnline: "M5.63604 18.3646C2.12132 14.8499 2.12132 9.15144 5.63604 5.63672M18.364 5.63672C21.8787 9.15144 21.8787 14.8499 18.364 18.3646M8.46447 15.5362C6.51184 13.5836 6.51184 10.4178 8.46447 8.46515M15.5355 8.46515C17.4882 10.4178 17.4882 13.5836 15.5355 15.5362M13 12.0007C13 12.553 12.5523 13.0007 12 13.0007C11.4477 13.0007 11 12.553 11 12.0007C11 11.4484 11.4477 11.0007 12 11.0007C12.5523 11.0007 13 11.4484 13 12.0007Z",
   ldiRegularUser: "M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z",
@@ -71,9 +73,37 @@ var myCustomIcons = {
   ldiSolidStar: "M7.49288 0.76784C7.88896 0.0878043 8.87138 0.0878028 9.26747 0.767838L11.2236 4.12633C11.3687 4.37544 11.6118 4.55208 11.8936 4.6131L15.6922 5.43567C16.4613 5.60223 16.7649 6.53657 16.2406 7.12341L13.6509 10.0216C13.4589 10.2366 13.366 10.5224 13.395 10.8092L13.7865 14.6761C13.8658 15.4591 13.071 16.0365 12.3509 15.7192L8.79424 14.1519C8.53043 14.0357 8.22991 14.0357 7.9661 14.1519L4.40948 15.7192C3.68932 16.0365 2.89453 15.4591 2.9738 14.6761L3.36532 10.8092C3.39436 10.5224 3.30149 10.2366 3.10941 10.0216L0.51978 7.12341C-0.00457591 6.53657 0.299008 5.60223 1.06816 5.43567L4.86676 4.6131C5.14851 4.55208 5.39164 4.37544 5.53673 4.12633L7.49288 0.76784Z",
   ldiSolidX: "M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L10 8.58579L14.2929 4.29289C14.6834 3.90237 15.3166 3.90237 15.7071 4.29289C16.0976 4.68342 16.0976 5.31658 15.7071 5.70711L11.4142 10L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L10 11.4142L5.70711 15.7071C5.31658 16.0976 4.68342 16.0976 4.29289 15.7071C3.90237 15.3166 3.90237 14.6834 4.29289 14.2929L8.58579 10L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
 };
+
+// ../../../src/csuite/icons/iconsXDI.ts
+var icons2 = __toESM(require("@mdi/js"), 1);
+var _IconsXDI = {
+  // semantic stuff ----------------------------------------------------------------
+  _missedCall: icons2.mdiPhoneMissed,
+  _transferredCall: icons2.mdiPhoneInTalk,
+  _close: icons2.mdiClose,
+  _clear: icons2.mdiClose,
+  _check: icons2.mdiCheck,
+  _edit: icons2.mdiPencil,
+  // grid
+  _gridFilter: icons2.mdiFilterOutline,
+  _gridSortedAsc: icons2.mdiArrowUp,
+  _gridSortedDesc: icons2.mdiArrowDown,
+  _gridGroupBy: icons2.mdiViewGrid,
+  // features
+  _webchat: icons2.mdiChatProcessing
+};
+
+// ../../../src/csuite/icons/icons.ts
 var allIcons = {
-  ...icons,
-  ...myCustomIcons
+  _: "M 0,0 z",
+  // made by pictogrammers, for all
+  ...icons3,
+  // made by/for ???
+  ..._IconsXDI,
+  // made by/for locomotive
+  ..._IconsLDI,
+  // made by/for cushy
+  ..._CushyIcons
 };
 
 // extension.ts
@@ -122,8 +152,7 @@ function activate(context) {
     vscode.window.showInformationMessage("rescale100To24: done");
   });
   function updateDecorations() {
-    if (!activeEditor)
-      return;
+    if (!activeEditor) return;
     function getDecorationIcon(path, iconColor = "white", size = 24) {
       const origin = `${size / 2} ${size / 2}`;
       return [
@@ -193,18 +222,14 @@ function activate(context) {
       clearTimeout(timeout);
       timeout = void 0;
     }
-    if (throttle)
-      timeout = setTimeout(updateDecorations, 500);
-    else
-      updateDecorations();
+    if (throttle) timeout = setTimeout(updateDecorations, 500);
+    else updateDecorations();
   }
-  if (activeEditor)
-    triggerUpdateDecorations();
+  if (activeEditor) triggerUpdateDecorations();
   vscode.window.onDidChangeActiveTextEditor(
     (editor) => {
       activeEditor = editor;
-      if (editor)
-        triggerUpdateDecorations();
+      if (editor) triggerUpdateDecorations();
     },
     null,
     context.subscriptions
