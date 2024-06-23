@@ -33,7 +33,7 @@ export class UnifiedCanvas {
     usePenPressure = true
     enableOverlay = true
 
-    toolShelf = { collapsed: false, size: cushy.preferences.interface.value.toolBarIconSize }
+    toolShelf = { visible: false, size: cushy.preferences.interface.value.toolBarIconSize }
 
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null

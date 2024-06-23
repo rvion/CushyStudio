@@ -12,7 +12,7 @@ import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 
 export type ToolShelfPanelState = {
     size: number
-    collapsed: boolean
+    visible: boolean
 }
 
 export type ToolShelfProps = {
@@ -38,43 +38,73 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
     const iconSize = cushy.preferences.interface.value.toolBarIconSize
 
     return (
-        <Frame
-            className={p.className}
-            tw={[
-                // Feels hacky, makes sure the resize handle takes up the whole screen when dragging to not cause cursor flickering.
-                !uist.dragging && 'relative',
-                'flex-none',
-                isFloating && '!absolute !bg-transparent',
-                `${p.anchor}-0 ${isHorizontal ? 'top-0' : 'left-0'}`,
-                uist.dragging ? '!bg-red-500' : '!bg-purple-500',
-            ]}
-            // base={{ contrast: 0.1 }}
-            style={{
-                width: isHorizontal ? uist.props.panelState.size + Math.round(p.panelState.size / iconSize) * 16 : 'unset',
-                height: !isHorizontal ? uist.props.panelState.size + 16 : 'unset',
-            }}
-        >
-            <div //Resize Handle Area
-                tw={[
-                    'absolute select-none',
-                    uist.dragging && '!top-0 !left-0',
-                    isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
-                ]}
-                style={{
-                    width: uist.dragging ? '100%' : isHorizontal ? 6 : '100%',
-                    height: uist.dragging ? '100%' : !isHorizontal && !uist.dragging ? 6 : '100%',
-                    [uist.computeResizeAnchor()]: '-3px',
-                }}
-                onMouseDown={(ev) => {
-                    if (ev.button != 0) {
-                        return
-                    }
+        <>
+            {
+                // "Show" Button
+                !uist.props.panelState.visible && (
+                    <div
+                        tw={[
+                            //
+                            'absolute',
+                            // 'w-1 h-1',
+                        ]}
+                    >
+                        <Button
+                            tw='relative top-16 -left-0.5'
+                            size={'xs'}
+                            square
+                            icon='mdiChevronRight'
+                            iconSize='14px'
+                            onClick={() => {
+                                uist.props.panelState.visible = true
+                            }}
+                        />
+                    </div>
+                )
+            }
+            {
+                // Toolshelf
+                uist.props.panelState.size > 0 && uist.props.panelState.visible && (
+                    <Frame
+                        className={p.className}
+                        tw={[
+                            // Feels hacky, makes sure the resize handle takes up the whole screen when dragging to not cause cursor flickering.
+                            !uist.dragging && 'relative',
+                            'flex-none',
+                            isFloating && '!absolute !bg-transparent',
+                            `${p.anchor}-0 ${isHorizontal ? 'top-0' : 'left-0'}`,
+                            uist.dragging ? '!bg-red-500' : '!bg-purple-500',
+                        ]}
+                        // base={{ contrast: 0.1 }}
+                        style={{
+                            width: isHorizontal ? uist.props.panelState.size + 16 : 'unset',
+                            height: !isHorizontal ? uist.props.panelState.size + 16 : 'unset',
+                        }}
+                    >
+                        <div //Resize Handle Area
+                            tw={[
+                                'absolute select-none',
+                                uist.dragging && '!top-0 !left-0',
+                                isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
+                            ]}
+                            style={{
+                                width: uist.dragging ? '100%' : isHorizontal ? 6 : '100%',
+                                height: uist.dragging ? '100%' : !isHorizontal && !uist.dragging ? 6 : '100%',
+                                [uist.computeResizeAnchor()]: '-3px',
+                            }}
+                            onMouseDown={(ev) => {
+                                if (ev.button != 0) {
+                                    return
+                                }
 
-                    uist.begin()
-                }}
-            />
-            {p.children}
-        </Frame>
+                                uist.begin()
+                            }}
+                        />
+                        {p.children}
+                    </Frame>
+                )
+            }
+        </>
     )
 })
 
@@ -101,7 +131,11 @@ export const ToolShelfGroupUI = observer(function ToolShelfGroupUI_(p: { panelSt
 })
 
 export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
-    p: { panelState: ToolShelfPanelState; text?: string; value?: boolean } & FrameProps,
+    p: {
+        panelState: ToolShelfPanelState
+        text?: string
+        value?: boolean
+    } & FrameProps,
 ) {
     const iconSize = cushy.preferences.interface.value.toolBarIconSize
     const expand = p.panelState.size > iconSize * 2
@@ -115,6 +149,7 @@ export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
             value={p.value}
             icon={p.icon}
             text={expand ? p.text : undefined}
+            tooltip={p.tooltip}
         />
     )
 })

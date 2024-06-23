@@ -31,16 +31,22 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
                 {canvas.allTools
                     .toSorted((x, y) => x.category.localeCompare(y.category))
                     .map((tool: Tool) => (
-                        <Frame
+                        // <Frame
+                        //     key={tool.id}
+                        //     tooltip='test'
+                        //     onClick={() => canvas.enable_generate()}
+                        //     tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
+                        // >
+                        //     <Ikon.mdiPlay />
+                        // </Frame>
+                        <ToolShelfButtonUI
                             key={tool.id}
-                            tooltip='test'
-                            onClick={() => canvas.enable_generate()}
-                            tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
-                        >
-                            <Ikon.mdiPlay />
-                        </Frame>
+                            panelState={canvas.toolShelf}
+                            tooltip={tool.description}
+                            icon={tool.icon}
+                            text='Generate'
+                        />
                     ))}
-                <ToolShelfButtonUI panelState={canvas.toolShelf} icon='mdiAbTesting' text='Generate' />
                 <div // MASK --------------------------------
                     onClick={() => canvas.enable_mask()}
                     tw={['btn btn-square', canvas.tool === 'mask' ? 'btn-primary' : null]}

@@ -17,7 +17,7 @@ export class ToolShelfState {
     dragging: boolean = false
 
     begin = () => {
-        startValue = this.size
+        startValue = this.size = this.props.panelState.size
 
         this.dragging = true
         window.addEventListener('mousemove', this.onMouseMove, true)
@@ -79,7 +79,9 @@ export class ToolShelfState {
 
         const pState = this.props.panelState
         if (pState.size == 0) {
-            pState.collapsed = true
+            pState.visible = false
+            // Makes sure to regrow to original size on show if the panel was collapsed from a drag by the user instead of hidden by a shortcut
+            pState.size = startValue
         }
     }
 
@@ -98,5 +100,14 @@ export class ToolShelfState {
             case 'top':
                 return 'bottom'
         }
+    }
+
+    show = () => {
+        this.props.panelState.visible = true
+    }
+
+    /** Hides the panel, do not adjust the size here as we return to that size when shown. */
+    hide = () => {
+        this.props.panelState.visible = false
     }
 }
