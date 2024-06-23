@@ -8,17 +8,18 @@ export const ui_rembg_v1 = () => {
             expand: true,
             // appearance: 'tab',
             // prettier-ignore
+            icon:'mdiTargetAccount',
             items: {
-            RemBG:           form.group(),
-            // ABG:             form.group(),
-            isnetAnime:      form.group(),
-            isnetGeneralUse: form.group(),
-            silueta:         form.group(),
-            u2net:           form.group(),
-            u2net_human_seg: form.group(),
-            u2netp:          form.group(),
-            RemBGV1_4:       form.group(),
-        },
+                RemBG: form.group(),
+                // ABG:             form.group(),
+                isnetAnime: form.group(),
+                isnetGeneralUse: form.group(),
+                silueta: form.group(),
+                u2net: form.group(),
+                u2net_human_seg: form.group(),
+                u2netp: form.group(),
+                RemBGV1_4: form.group(),
+            },
         })
         .addRequirements([
             { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
