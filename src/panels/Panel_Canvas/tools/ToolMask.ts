@@ -57,8 +57,11 @@ export class ToolMask implements ICanvasTool {
         // ----------
         canvas.addToUndo(() => {
             lastLine.destroy()
+
             // 🔴 TODO: remove that, will cause bugs; sadness.
-            if (!maskLayer.hasChildren()) maskLayer.add(new Konva.Rect({ x: 0, y: 0, width: 1, height: 1, opacity: 0 }))
+            if (!maskLayer.hasChildren()) {
+                maskLayer.add(new Konva.Rect({ x: 0, y: 0, width: 1, height: 1, opacity: 0 }))
+            }
             maskLayer.cache()
         })
     }

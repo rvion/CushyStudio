@@ -102,14 +102,15 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                                 square
                                 icon='mdiUndo'
                                 tooltip='Undo'
+                                disabled={!canvas.canUndo}
                                 onClick={() => canvas.undo()}
                             />
                             <Button
                                 square
-                                disabled
+                                disabled={!canvas.canRedo}
                                 icon='mdiRedo'
                                 tooltip='Redo (Not implemented)'
-                                // onClick={() => canvas.undo()}
+                                onClick={() => canvas.redo()}
                             />
                         </div>
                     </div>

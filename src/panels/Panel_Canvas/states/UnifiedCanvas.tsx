@@ -5,7 +5,7 @@ import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 import Konva from 'konva'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
@@ -64,22 +64,28 @@ export class UnifiedCanvas {
 
     // UNDO SYSTEM ---------------------------------------------------
     redo = () => {
-        const last = this.redoBuffer.pop()
+        const last = this._redoBuffer.pop()
         if (last == null) return toastError('Nothing to redo')
         last()
-        this.undoBuffer.push(last)
+        // this._undoBuffer.push(last)
     }
+
     undo = () => {
-        const last = this.undoBuffer.pop()
+        const last = this._undoBuffer.pop()
         if (last == null) return toastError('Nothing to undo')
         last()
-        this.redoBuffer.push(last)
+        // this._redoBuffer.push(last)
     }
-    private undoBuffer: (() => void)[] = []
-    private redoBuffer: (() => void)[] = []
+
+    _undoBuffer: (() => void)[] = []
+    _redoBuffer: (() => void)[] = []
+
+    get canUndo() { return this._undoBuffer.length > 0 } // prettier-ignore
+    get canRedo() { return this._redoBuffer.length > 0 } // prettier-ignore
+
     addToUndo = (fn: () => void) => {
-        this.undoBuffer.push(fn)
-        this.redoBuffer = []
+        this._undoBuffer.push(fn)
+        this._redoBuffer = []
     }
 
     // ---------------------------------------------------
@@ -192,7 +198,10 @@ export class UnifiedCanvas {
         this._activeMask = mask
         // this.activeMask = mask
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, {
+            _undoBuffer: observable.shallow,
+            _redoBuffer: observable.shallow,
+        })
         setupStage(this)
     }
 
