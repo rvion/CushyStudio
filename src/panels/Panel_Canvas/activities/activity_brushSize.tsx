@@ -12,15 +12,10 @@ export const cmd_canvas_changeBrushSize = command({
         const startSize = ctx.maskToolSize
         return cushy.activityManager.start_(
             new SimpleMouseActivity({
-                onStart: () => {
-                    console.log(`[🐭🟢] canvas.changeBrushSize: start`)
-                },
                 onMove: (info) => {
-                    console.log(`[🐭🟢] canvas.changeBrushSize: move`, info)
-                    ctx.setBrushSize(Math.round(startSize + info.offsetFromStart / 10))
+                    ctx.setBrushSize(Math.max(Math.round(startSize + info.offsetFromStart * (info.shiftKey ? 0.05 : 1)), 1))
                 },
                 onCancel: (info) => {
-                    console.log(`[🐭❌] canvas.changeBrushSize: cancel`, info)
                     ctx.setBrushSize(startSize)
                 },
             }),

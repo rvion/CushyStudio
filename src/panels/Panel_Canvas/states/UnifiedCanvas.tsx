@@ -197,7 +197,6 @@ export class UnifiedCanvas {
         this.tempLayer.add(this.brush)
 
         this.images = [new UnifiedImage(this, baseImage)]
-        this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
 
         // ------------------------------
