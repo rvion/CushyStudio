@@ -12,5 +12,6 @@ export class ToolPaint extends Tool {
         uc.brush //
             .x(uc.infos.viewPointerX)
             .y(uc.infos.viewPointerY)
+        return true
     }
 }

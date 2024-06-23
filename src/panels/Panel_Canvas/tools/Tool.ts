@@ -5,19 +5,39 @@ export class Tool {
     onStart() {}
     onStop() {}
 
+    /** return true if event is consumed */
     onMouseMove(
         //
-        ev: KonvaEventObject<MouseEvent>,
-        uc: UnifiedCanvas,
-    ) {}
+        _ev: KonvaEventObject<MouseEvent>,
+        _uc: UnifiedCanvas,
+    ) {
+        return false
+    }
+
+    /** return true if event is consumed */
     onMouseDown(
         //
-        ev: KonvaEventObject<MouseEvent>,
-        uc: UnifiedCanvas,
-    ) {}
+        _ev: KonvaEventObject<MouseEvent>,
+        _uc: UnifiedCanvas,
+    ) {
+        return false
+    }
+
+    /** return true if event is consumed */
     onMouseUp(
         //
-        ev: KonvaEventObject<MouseEvent>,
-        uc: UnifiedCanvas,
-    ) {}
+        _ev: KonvaEventObject<MouseEvent>,
+        _uc: UnifiedCanvas,
+    ) {
+        return false
+    }
+
+    /** return true if event is consumed */
+    onScroll(
+        //
+        _ev: KonvaEventObject<MouseEvent>,
+        _uc: UnifiedCanvas,
+    ) {
+        return false
+    }
 }

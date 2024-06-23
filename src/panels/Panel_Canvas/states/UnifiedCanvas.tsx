@@ -6,13 +6,13 @@ import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import Konva from 'konva'
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
 import { toastError } from '../../../csuite/utils/toasts'
-import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
-import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
+import { moveBehaviour_updatePointerInfos } from '../behaviours/moveBehaviour_updatePointerInfos'
+import { scrollBehavior_zoomCanvas } from '../behaviours/scrollBehavior_zoomCanvas'
 import { setupStageForPainting } from '../behaviours/setupStageForPainting'
 import { ToolGenerate } from '../tools/ToolGenerate'
 import { ToolMask } from '../tools/ToolMask'
@@ -164,26 +164,30 @@ export class UnifiedCanvas {
         public st: STATE,
         baseImage: MediaImageL,
     ) {
-        // core layers
         this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
         this.imageLayer = new Konva.Layer()
         this.tempLayer = new Konva.Layer()
         this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer)
-
-        // ------------------------------
         this.grid = new KonvaGrid(this)
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
-
         this.images = [new UnifiedImage(this, baseImage)]
-        this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
-        this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
+        this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => {
+            const consumed = this.currentTool.onScroll(e, this)
+            if (consumed) return
+            scrollBehavior_zoomCanvas(this, e)
+        })
+        this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => {
+            moveBehaviour_updatePointerInfos(e, this)
+            this.currentTool.onMouseMove?.(e, this)
+        })
 
         // ------------------------------
 
         const selection = this.addSelection()
         this.activeSelection = selection
+
         const mask = this.addMask()
         this._activeMask = mask
         // this.activeMask = mask

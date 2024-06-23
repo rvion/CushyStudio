@@ -24,5 +24,6 @@ export class ToolGenerate extends Tool {
             y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
         })
         sel.applyStableData()
+        return true
     }
 }

@@ -9,8 +9,8 @@ export const cmd_canvas_activateMaskTOol = command<UnifiedCanvas>({
     label: 'activate Mask Tool',
     combos: '2',
     ctx: ctx_unifiedCanvas,
-    action: (t) => {
-        t.currentTool = t.toolMask
+    action: (uc) => {
+        uc.currentTool = uc.toolMask
         return Trigger.Success
     },
 })
