@@ -35,7 +35,6 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
 
     const isHorizontal = uist.isHorizontal()
     const isFloating = p.floating ?? false
-    const iconSize = cushy.preferences.interface.value.toolBarIconSize
 
     return (
         <>
@@ -73,7 +72,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                             'flex-none',
                             isFloating && '!absolute !bg-transparent',
                             `${p.anchor}-0 ${isHorizontal ? 'top-0' : 'left-0'}`,
-                            uist.dragging ? '!bg-red-500' : '!bg-purple-500',
+                            // uist.dragging ? '!bg-red-500' : '!bg-purple-500',
                         ]}
                         // base={{ contrast: 0.1 }}
                         style={{
