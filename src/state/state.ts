@@ -2,6 +2,7 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
+import type { Activity } from '../csuite/activity/Activity'
 import type { Tint } from '../csuite/kolor/Tint'
 import type { ModelSerial } from '../csuite/model/ModelSerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
@@ -73,12 +74,12 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
+import { interfaceConf } from './conf/interfaceConf'
 import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
-import { interfaceConf } from './conf/interfaceConf'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -432,6 +433,12 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
+
+    /** practical shortcut to start activity */
+    startActivity(activity: Activity) {
+        activityManager.start(activity)
+    }
+
     get activityManager() {
         return activityManager
     }

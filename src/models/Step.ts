@@ -1,3 +1,4 @@
+import type { DraftExecutionContext } from '../cards/App'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepOutput } from '../types/StepOutput'
 import type { ComfyPromptL } from './ComfyPrompt'
@@ -38,7 +39,7 @@ export class StepL {
          * the live form
          * */
         formInstance: Widget_group<any>
-        imageToStartFrom: Maybe<MediaImageL>
+        context: DraftExecutionContext
     }) => {
         // ensure we have an executable
         const executable = this.executable

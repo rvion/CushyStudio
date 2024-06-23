@@ -15,7 +15,7 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
     if (isDelayed && conf != null) return null
     if (tooltip == null) return null
     const domRect = tooltip.ref.getBoundingClientRect()
-    const pos = computePlacement('bottom', domRect)
+    const pos = computePlacement(tooltip.placement ?? 'bottom', domRect)
     const txt = tooltip.text
 
     return (

@@ -26,7 +26,7 @@ app({
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
     ui: CushyDiffusionUI,
-    run: async (run, ui, imgCtx) => {
+    run: async (run, ui, ctx) => {
         const graph = run.nodes
         //
         // ui.
@@ -63,6 +63,7 @@ app({
         // let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------
+        const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 */ await (async () => ({
                   /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
@@ -73,11 +74,7 @@ app({
             : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
-        // if (imgCtx) {
-        //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
-        //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
-        // } else
-        let mask: Maybe<_MASK> = await run_mask(ui.mask)
+        let mask: Maybe<_MASK> = await run_mask(ui.mask, ctx.mask)
         if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------

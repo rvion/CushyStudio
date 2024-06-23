@@ -1,15 +1,11 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
-import { Tool } from './Tool'
-
-export class ToolMove extends Tool {
+export class ToolMove implements ICanvasTool {
     id: 'move' = 'move'
-    category: 'compositio' = 'compositio'
-    icon: IconName = 'mdiPlay'
-    description = '....'
-
-    constructor(public uc: UnifiedCanvas) {
-        super()
-    }
+    category: 'composition' = 'composition'
+    icon: IconName = 'mdiMoveResize'
+    description = 'move / resize any items in the canvas'
+    constructor(public canvas: UnifiedCanvas) {}
 }

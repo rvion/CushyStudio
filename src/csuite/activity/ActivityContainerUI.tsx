@@ -62,7 +62,8 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 // | I'm OK with escape being a built-in feature
                 // | safeguard for escape key
                 // | so no custom activity can lock the UI
-                if (ev.key === 'Escape') {
+                const shouldStopOnEscapeKey = activity.stopOnEscapeKey ?? true
+                if (shouldStopOnEscapeKey && ev.key === 'Escape') {
                     console.log('Escape key pressed')
                     p.stop?.()
                 }
@@ -99,7 +100,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                     style={{ zIndex: activityZIndex, ...pos }}
                     className='$activity-focus flex justify-center'
                     onMouseDown={(ev) => {
-                        if (!activity.closeOnBackdropClick) return
+                        if (!activity.stopOnBackdropClick) return
                         console.log('activity backref clicked')
                         if (ev.target === ev.currentTarget) p.stop() // ❌  => routine.stop()
                     }}

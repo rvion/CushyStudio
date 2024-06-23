@@ -1,12 +1,8 @@
-import type { Tool } from '../tools/Tool'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
-import { ComboUI } from '../../../csuite/accelerators/ComboUI'
-import { Frame } from '../../../csuite/frame/Frame'
-import { Ikon } from '../../../csuite/icons/iconHelpers'
-import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { ToolShelfButtonUI, ToolShelfUI } from '../../../csuite/shelf/ToolShelfUI'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
@@ -30,47 +26,20 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
                 </div> */}
                 {canvas.allTools
                     .toSorted((x, y) => x.category.localeCompare(y.category))
-                    .map((tool: Tool) => (
-                        // <Frame
-                        //     key={tool.id}
-                        //     tooltip='test'
-                        //     onClick={() => canvas.enable_generate()}
-                        //     tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
-                        // >
-                        //     <Ikon.mdiPlay />
-                        // </Frame>
+                    .map((tool: ICanvasTool) => (
                         <ToolShelfButtonUI
                             key={tool.id}
                             panelState={canvas.toolShelf}
                             tooltip={tool.description}
+                            tooltipPlacement='right'
                             icon={tool.icon}
-                            text='Generate'
+                            iconSize='2rem'
+                            text={tool.id}
+                            value={canvas.currentTool === tool}
+                            onValueChange={() => (canvas.currentTool = tool)}
                         />
                     ))}
-                <div // MASK --------------------------------
-                    onClick={() => canvas.enable_mask()}
-                    tw={['btn btn-square', canvas.tool === 'mask' ? 'btn-primary' : null]}
-                >
-                    Mask
-                    <Ikon.mdiTransitionMasked />
-                    <ComboUI combo='2' />
-                </div>
-                <div
-                    onClick={() => canvas.enable_paint()}
-                    tw={['btn btn-square', canvas.tool === 'paint' ? 'btn-primary' : null]}
-                >
-                    Paint
-                    <ComboUI combo='2' />
-                </div>
-                <div
-                    onClick={() => canvas.enable_move()}
-                    tw={['btn btn-lg btn-square', canvas.tool === 'move' ? 'btn-primary' : null]}
-                >
-                    Move
-                    <ComboUI combo='4' />
-                </div>
             </div>
-            <hr />
             <CanvasToolCategoriesUI />
             {/* <CanvasToolsUI /> */}
         </ToolShelfUI>

@@ -1,20 +1,17 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
-import { Tool } from './Tool'
-
-export class ToolPaint extends Tool {
+export class ToolPaint implements ICanvasTool {
     id: 'paint' = 'paint'
     category: 'draw' = 'draw'
-    icon: IconName = 'mdiPlay'
-    description = '....'
+    icon: IconName = 'mdiBrush'
+    description = 'draw on top of the canvas'
 
-    constructor(public uc: UnifiedCanvas) {
-        super()
-    }
+    constructor(public canvas: UnifiedCanvas) {}
 
-    onMouseMove() {
-        const uc = this.uc
+    onMove() {
+        const uc = this.canvas
         uc.brush //
             .x(uc.infos.viewPointerX)
             .y(uc.infos.viewPointerY)

@@ -46,7 +46,7 @@ check @birddev locomotive branch to check the sign calculation magic
   --color-tab-textbox-background:           oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
 
 
-  --color-splitter:                         oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
   --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
   --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
 

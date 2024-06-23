@@ -6,14 +6,13 @@ import * as React from 'react'
 import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
-import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { UCAGenerate } from './activities/activity_generate'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
@@ -74,11 +73,11 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         <div // TODO(bird_d): Needs Joinable
                             tw='flex'
                         >
-                            <Button
+                            {/* <Button
                                 onClick={() => cushy.activityManager.startFromClass(UCAGenerate, canvas)}
                                 children='test'
                                 icon='mdiAbTesting'
-                            />
+                            /> */}
                             <InputNumberUI //
                                 text='Brush Size'
                                 mode='int'
@@ -103,14 +102,15 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                                 square
                                 icon='mdiUndo'
                                 tooltip='Undo'
+                                disabled={!canvas.canUndo}
                                 onClick={() => canvas.undo()}
                             />
                             <Button
                                 square
-                                disabled
+                                disabled={!canvas.canRedo}
                                 icon='mdiRedo'
                                 tooltip='Redo (Not implemented)'
-                                // onClick={() => canvas.undo()}
+                                onClick={() => canvas.redo()}
                             />
                         </div>
                     </div>

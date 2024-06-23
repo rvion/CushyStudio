@@ -1,3 +1,4 @@
+import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import type { Model } from '../csuite/model/Model'
@@ -165,7 +166,7 @@ export class DraftL {
     start = (p: {
         //
         formValueOverride?: Maybe<any>
-        imageToStartFrom?: MediaImageL
+        context?: DraftExecutionContext
         httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
@@ -232,7 +233,7 @@ export class DraftL {
         // start step without waiting
         void step.start({
             formInstance: widget,
-            imageToStartFrom: p.imageToStartFrom,
+            context: p.context ?? {},
         })
         this.lastStarted = step
         void step.finished.then(() => {
