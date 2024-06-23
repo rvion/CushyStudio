@@ -173,11 +173,13 @@ export class UnifiedCanvas {
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
         this.images = [new UnifiedImage(this, baseImage)]
+
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => {
             const consumed = this.currentTool.onScroll(e, this)
             if (consumed) return
             scrollBehavior_zoomCanvas(this, e)
         })
+
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => {
             moveBehaviour_updatePointerInfos(e, this)
             this.currentTool.onMouseMove?.(e, this)

@@ -3,8 +3,6 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { runInAction } from 'mobx'
 
-import { snap } from '../utils/snap'
-
 export const moveBehaviour_updatePointerInfos = (e: KonvaEventObject<MouseEvent>, uc: UnifiedCanvas): void => {
     runInAction(() => {
         const stage = e.target.getStage()
