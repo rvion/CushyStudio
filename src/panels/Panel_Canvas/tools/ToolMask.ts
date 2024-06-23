@@ -31,38 +31,19 @@ export class ToolMask implements ICanvasTool {
         canvas.tempLayer.add(canvas._lastLine)
     }
 
-    onMove = ({ stroke }: ToolMovePayload) => {
-        const uc = this.canvas
-
-        // update brush preview position
-        uc.brush //
-            .x(uc.infos.viewPointerX)
-            .y(uc.infos.viewPointerY)
-
-        if (stroke == null) return
-        // return true
-
+    onMove = ({ stroke, ev, infos }: ToolMovePayload) => {
         const canvas = this.canvas
-        // ⏸️ e.evt.preventDefault() // prevent scrolling on touch devices
-        const pos = {
-            x: canvas.infos.viewPointerX,
-            y: canvas.infos.viewPointerY,
-        }
-        // console.log(`[🤠] onMove`, pos)
-        var newPoints = bang(canvas._lastLine) //
-            .points()
-            .concat([pos.x, pos.y])
-        // ⏸️ canvas.undoBuffer.push(() => bang(canvas._lastLine).points(bang(canvas._lastLine).points().slice(0, -2)))
-        bang(canvas._lastLine).points(newPoints)
-        return false
+        ev.evt.preventDefault() // prevent scrolling on touch devices
+        const x = infos.viewPointerX
+        const y = infos.viewPointerY
+        canvas.brush.x(x).y(y)
+        if (stroke == null) return
+        // WTF 🔴
+        /* 🔴 */ const newPoints = bang(canvas._lastLine).points().concat([x, y])
+        /* 🔴 */ bang(canvas._lastLine).points(newPoints)
     }
 
-    onCancel = () => {
-        // TODO
-        return false
-    }
-
-    onCommit = () => {
+    onRelease = () => {
         const canvas = this.canvas
         const lastLine = bang(canvas._lastLine)
         // ----------

@@ -1,4 +1,8 @@
 export class Stroke {
+    constructor(pos?: { x: number; y: number }) {
+        if (pos) this.reset(pos)
+    }
+
     startX: number = 0
     startY: number = 0
 

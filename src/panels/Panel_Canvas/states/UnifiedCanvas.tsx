@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
 import { toastError } from '../../../csuite/utils/toasts'
-import { setupStageForPainting } from '../events/setupStageForPainting'
+import { setupStage } from '../events/setupStage'
 import { ToolGenerate } from '../tools/ToolGenerate'
 import { ToolMask } from '../tools/ToolMask'
 import { ToolMove } from '../tools/ToolMove'
@@ -159,11 +159,7 @@ export class UnifiedCanvas {
         public st: STATE,
         baseImage: MediaImageL,
     ) {
-        this.stage = new Konva.Stage({
-            container: this.containerDiv,
-            width: 512,
-            height: 512,
-        })
+        this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
 
         // basic core layers
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
@@ -185,7 +181,7 @@ export class UnifiedCanvas {
         // this.activeMask = mask
 
         makeAutoObservable(this)
-        setupStageForPainting(this)
+        setupStage(this)
     }
 
     addImage = (img: MediaImageL, position?: { x: number; y: number }) => {

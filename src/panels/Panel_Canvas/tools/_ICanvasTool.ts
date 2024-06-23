@@ -21,19 +21,6 @@ export type ToolMovePayload = {
     ev: KonvaEventObject<MouseEvent>
 }
 
-export type ToolFinishPayload = {
-    //
-    stroke: Stroke
-    canvas: UnifiedCanvas
-    infos: UnifiedCanvasViewInfos
-    /**
-     * cancellation may not come from the mouse
-     * ev is null when cancellation comes from any other
-     * source
-     */
-    ev: Maybe<KonvaEventObject<MouseEvent>>
-}
-
 export type ToolCommitPayload = {
     //
     stroke: Stroke
@@ -68,31 +55,19 @@ export interface ICanvasTool {
     onDeselect?: () => void
 
     // ------------------------------------------------
-    // most tools can be implemented with those few methods
+    // simplified api (since most tools can be implemented with those)
 
     /** when a stroke starts */
     onPress?: (p: ToolPressPayload) => void
 
-    /** when mouse move; you can access stroke
+    /**
+     * when mouse move; you can access stroke
      * state if the move is part of a stroke
      */
     onMove?: (p: ToolMovePayload) => void
 
-    /**
-     * when esc is pressed or
-     * when the user right-click suring the stroke
-     */
-    onCancel?: (p: ToolFinishPayload) => void
-
-    /**
-     * whenthe gesture finishes with a natural mouse up
-     * no right click/ no esc
-     */
-    onCommit?: (p: ToolCommitPayload) => void
-
     /** when the gesture finishes, regardless of it's a cancel or commit */
-    onFinish?: (p: ToolFinishPayload) => void
-    // }
+    onRelease?: (p: ToolCommitPayload) => void
 }
 
 // export interface CanvasTool extends ICanvasTool {}
