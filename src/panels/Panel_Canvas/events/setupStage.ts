@@ -3,6 +3,7 @@ import type { ICanvasTool, ToolCommitPayload } from '../utils/_ICanvasTool'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { Stage } from 'konva/lib/Stage'
+import { observable } from 'mobx'
 
 import { MouseBtn } from '../../../csuite/types/MouseBtn'
 import { Stroke } from '../utils/_StrokeInfo'
@@ -17,10 +18,10 @@ export const setupStage = (canvas: UnifiedCanvas) => {
     const current: {
         stroke: Maybe<Stroke>
         tool: Maybe<ICanvasTool>
-    } = {
+    } = observable({
         stroke: null,
         tool: null,
-    }
+    })
 
     // scroll wheel is reserved for zooming, regardless which tool is used
     stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => {
@@ -62,7 +63,9 @@ export const setupStage = (canvas: UnifiedCanvas) => {
             return
         }
 
-        current.tool?.onMove?.({
+        // const tool = current.tool ?? canvas.currentTool
+        const tool = canvas.currentTool
+        tool.onMove?.({
             stroke: current?.stroke,
             canvas,
             infos: canvas.infos,

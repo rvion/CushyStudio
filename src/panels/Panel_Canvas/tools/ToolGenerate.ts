@@ -43,10 +43,10 @@ export class ToolGenerate implements ICanvasTool {
     onMove({ infos }: ToolMovePayload) {
         const uc = this.canvas
         const sel = uc.activeSelection
-        Object.assign(sel.stableData, {
-            x: snap(infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
-            y: snap(infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
-        })
+        const x = snap(infos.viewPointerX - sel.stableData.width / 2, uc.snapSize)
+        const y = snap(infos.viewPointerY - sel.stableData.height / 2, uc.snapSize)
+        // console.log(`[🤠] `, { x, y })
+        Object.assign(sel.stableData, { x, y })
         sel.applyStableData()
         return true
     }
