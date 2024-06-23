@@ -1,9 +1,15 @@
+import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 
 import { snap } from '../utils/snap'
 import { Tool } from './Tool'
 
 export class ToolGenerate extends Tool {
+    id: 'generate' = 'generate'
+    category: 'generate' = 'generate'
+    icon: IconName = 'mdiPlay'
+    description = '....'
+
     constructor(public uc: UnifiedCanvas) {
         super()
     }

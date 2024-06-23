@@ -1,7 +1,10 @@
+import type { Tool } from '../tools/Tool'
+
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { ComboUI } from '../../../csuite/accelerators/ComboUI'
+import { Frame } from '../../../csuite/frame/Frame'
 import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
 import { ToolShelfButtonUI, ToolShelfUI } from '../../../csuite/shelf/ToolShelfUI'
@@ -25,22 +28,18 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
                     <Ikon.mdiSetNone />
                     <ComboUI combo='0' />
                 </div> */}
-                <RevealUI // GENERATE -------------------------------------------------------
-                    trigger='hover'
-                    placement='right'
-                    content={() => (
-                        <div tw='flex gap-1'>
-                            Generate <ComboUI combo='1' />
-                        </div>
-                    )}
-                >
-                    <div
-                        onClick={() => canvas.enable_generate()}
-                        tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
-                    >
-                        <Ikon.mdiPlay />
-                    </div>
-                </RevealUI>
+                {canvas.allTools
+                    .toSorted((x, y) => x.category.localeCompare(y.category))
+                    .map((tool: Tool) => (
+                        <Frame
+                            key={tool.id}
+                            tooltip='test'
+                            onClick={() => canvas.enable_generate()}
+                            tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
+                        >
+                            <Ikon.mdiPlay />
+                        </Frame>
+                    ))}
                 <ToolShelfButtonUI panelState={canvas.toolShelf} icon='mdiAbTesting' text='Generate' />
                 <div // MASK --------------------------------
                     onClick={() => canvas.enable_mask()}
