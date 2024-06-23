@@ -33,7 +33,11 @@ export class ToolGenerate implements ICanvasTool {
         if (image && canvas.currentDraft) {
             const step = canvas.currentDraft.start({
                 focusOutput: false,
-                imageToStartFrom: image,
+                context: {
+                    image: image,
+                    mask: mask,
+                    canvas: canvas,
+                },
             })
             const us = new UnifiedStep(canvas, step)
             canvas.steps.push(us)

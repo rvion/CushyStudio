@@ -1,6 +1,7 @@
 import type { SchemaDict } from '../csuite/model/IBlueprint'
 import type { Model } from '../csuite/model/Model'
 import type { MediaImageL } from '../models/MediaImage'
+import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties, ReactNode } from 'react'
@@ -38,6 +39,12 @@ export type CustomView<T = any> = {
     render: (t: T) => ReactNode
 }
 
+export type DraftExecutionContext = {
+    image?: Maybe<MediaImageL>
+    mask?: Maybe<MediaImageL>
+    canvas?: Maybe<UnifiedCanvas>
+}
+
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
     ui: (form: X.FormBuilder) => FIELDS
@@ -50,7 +57,7 @@ export type App<FIELDS extends SchemaDict> = {
         //
         runtime: Runtime<NoInfer<FIELDS>>,
         formResult: { [k in keyof NoInfer<FIELDS>]: NoInfer<FIELDS>[k]['$Value'] },
-        starImage?: Maybe<MediaImageL>,
+        context: DraftExecutionContext,
     ) => void | Promise<void>
 
     /** if set to true, will register drafts to quick action in image context menu */

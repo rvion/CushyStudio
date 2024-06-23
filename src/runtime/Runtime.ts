@@ -1,4 +1,4 @@
-import type { CustomViewRef } from '../cards/App'
+import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
 import type { SchemaDict } from '../csuite/model/IBlueprint'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
@@ -326,7 +326,9 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
-    imageToStartFrom: Maybe<MediaImageL> = null
+    // imageToStartFrom: Maybe<MediaImageL> = null
+    /** execution context (image, canvas, mask, ...) */
+    context: Maybe<DraftExecutionContext> = null
 
     /**
      * @internal
@@ -335,7 +337,8 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     _EXECUTE = async (p: {
         //
         formInstance: Widget_group<any>
-        imageToStartFrom?: Maybe<MediaImageL>
+        context: DraftExecutionContext
+        // imageToStartFrom?: Maybe<MediaImageL>
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
@@ -345,7 +348,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         this.formResult = formResult as any
         this.formSerial = appFormSerial
         this.formInstance = p.formInstance
-        this.imageToStartFrom = p.imageToStartFrom
+        this.context = p.context
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
@@ -354,7 +357,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, formResult, p.imageToStartFrom)
+            await executable.run(this, formResult, this.context)
             // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
