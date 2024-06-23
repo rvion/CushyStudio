@@ -1,6 +1,7 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
+import type { Tool } from '../tools/Tool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
@@ -13,6 +14,11 @@ import { toastError } from '../../../csuite/utils/toasts'
 import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
 import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
 import { setupStageForPainting } from '../behaviours/setupStageForPainting'
+import { ToolGenerate } from '../tools/ToolGenerate'
+import { ToolMask } from '../tools/ToolMask'
+import { ToolNone } from '../tools/ToolNone'
+import { ToolPaint } from '../tools/ToolPaint'
+import { ToolStamp } from '../tools/ToolStamp'
 import { KonvaGrid } from './KonvaGrid1'
 import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
@@ -46,10 +52,25 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
+    // tools V2 ----------------------------------------------------------------
+    toolGenerate = new ToolGenerate(this)
+    toolNone = new ToolNone(this)
+    toolPaint = new ToolPaint(this)
+    toolMask = new ToolMask(this)
+    toolStamp = new ToolStamp(this)
+    allTools = [
+        //
+        this.toolNone,
+        this.toolGenerate,
+        this.toolPaint,
+        this.toolMask,
+        this.toolStamp,
+    ]
+    currentTool: Tool = this.toolNone
+
+    // ----------------------------------------------------------------------
     tool: UnifiedCanvasTool = 'none'
-
     brushMode: UnifiedCanvasBrushMode = 'paint'
-
     maskColor = 'red'
     maskOpacity = 0.5
 
@@ -71,10 +92,6 @@ export class UnifiedCanvas {
         viewportPointerX: 0,
         viewportPointerY: 0,
         isDown: false,
-    }
-
-    onWheel = (e: any) => {
-        //
     }
 
     // BRUSH -------------------------------------------------

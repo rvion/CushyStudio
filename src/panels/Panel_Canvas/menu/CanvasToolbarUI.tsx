@@ -4,7 +4,7 @@ import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { ComboUI } from '../../../csuite/accelerators/ComboUI'
 import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
-import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../ctx/UnifiedCanvasCtx'
 
 export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()

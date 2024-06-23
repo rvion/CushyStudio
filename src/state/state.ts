@@ -591,6 +591,7 @@ export class STATE {
                 return
             },
         })
+
         this.tree2 = new Tree(
             [
                 // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),

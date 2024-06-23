@@ -9,7 +9,6 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
     runInAction(() => {
         const stage = e.target.getStage()
         if (stage == null) return console.warn(`🔶 missing stage`)
-        // console.log(`[👙] stage`, stage)
         // const scaleBy = 1.15
         // stop default scrolling
         e.evt.preventDefault()
@@ -31,22 +30,25 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
             scale: scale,
         }
 
-        // if generate: handle selection -----------------------------------------
-        if (uc.tool === 'generate') {
-            const sel = uc.activeSelection
-            Object.assign(sel.stableData, {
-                x: snap(uc.infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
-                y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
-            })
-            sel.applyStableData()
-        }
+        // defer logic to current tool -----------------------------------------
+        uc.currentTool.onMouseMove(e, uc)
 
-        // if paint -----------------------------------------
-        if (uc.tool === 'paint' || uc.tool === 'mask') {
-            uc.brush //
-                .x(uc.infos.viewPointerX)
-                .y(uc.infos.viewPointerY)
-        }
+        // // if generate: handle selection -----------------------------------------
+        // if (uc.tool === 'generate') {
+        //     const sel = uc.activeSelection
+        //     Object.assign(sel.stableData, {
+        //         x: snap(uc.infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
+        //         y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
+        //     })
+        //     sel.applyStableData()
+        // }
+
+        // // if paint -----------------------------------------
+        // if (uc.tool === 'paint' || uc.tool === 'mask') {
+        //     uc.brush //
+        //         .x(uc.infos.viewPointerX)
+        //         .y(uc.infos.viewPointerY)
+        // }
 
         // how to scale? Zoom in? Or zoom out?
         // stage.position(newPos)

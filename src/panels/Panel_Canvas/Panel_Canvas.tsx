@@ -13,10 +13,10 @@ import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { UCAGenerate } from './activities/activity_generate'
+import { UnifiedCanvasCtx } from './ctx/UnifiedCanvasCtx'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
-import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
 
 // https://github.com/devforth/painterro
@@ -64,7 +64,6 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
         <div //
             tabIndex={0}
             onKeyDown={canvas.onKeyDown}
-            onWheel={canvas.onWheel}
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >
