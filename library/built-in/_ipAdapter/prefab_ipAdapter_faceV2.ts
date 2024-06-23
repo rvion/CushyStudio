@@ -111,6 +111,8 @@ export const ui_IPAdapterFaceIDV2 = () => {
             },
             {
                 label: 'FaceID',
+                icon: 'mdiStarFace',
+                box: { base: { hue: 50, chroma: 0.1 } },
                 summary: (ui) => {
                     return `images:${1 + ui.settings.extra.length} | weight:${ui.settings.weight} | weightV2:${
                         ui.settings.weight_faceidv2

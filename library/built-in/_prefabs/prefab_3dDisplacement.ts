@@ -7,6 +7,7 @@ export const ui_3dDisplacement = () => {
     const form = getCurrentForm()
     return form
         .group({
+            icon: 'mdiRotate3d',
             items: {
                 normal: form.selectOne({
                     tooltip: 'no Normal map may be better, bad model yields bumpy stuff',

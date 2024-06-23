@@ -48,6 +48,7 @@ export const CushyDiffusionUI = (ui: FormBuilder) => ({
     faceID: ui_IPAdapterFaceIDV2().optional(),
     extra: ui.choices({
         appearance: 'tab',
+        icon: 'mdiAlien',
         items: {
             regionalPrompt: ui_regionalPrompting_v1(),
             refine: ui_refiners(),
