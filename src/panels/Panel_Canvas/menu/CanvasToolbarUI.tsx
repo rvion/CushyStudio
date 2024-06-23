@@ -4,21 +4,27 @@ import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { ComboUI } from '../../../csuite/accelerators/ComboUI'
 import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
+import { ToolShelfButtonUI, ToolShelfUI } from '../../../csuite/shelf/ToolShelfUI'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
 export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
-        <div tw='absolute top-0 z-50 [left:0%]'>
+        <ToolShelfUI
+            anchor='left'
+            floating
+            panelState={canvas.toolShelf}
+            defaultSize={cushy.preferences.interface.value.toolBarIconSize}
+        >
             <div tw='flex flex-col p-2 gap-1'>
-                <div // NONE ----------------------------------------------------------------
+                {/* <div // NONE ----------------------------------------------------------------
                     onClick={() => canvas.enable_none()}
                     tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}
                 >
                     none
                     <Ikon.mdiSetNone />
                     <ComboUI combo='0' />
-                </div>
+                </div> */}
                 <RevealUI // GENERATE -------------------------------------------------------
                     trigger='hover'
                     placement='right'
@@ -35,6 +41,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
                         <Ikon.mdiPlay />
                     </div>
                 </RevealUI>
+                <ToolShelfButtonUI panelState={canvas.toolShelf} icon='mdiAbTesting' text='Generate' />
                 <div // MASK --------------------------------
                     onClick={() => canvas.enable_mask()}
                     tw={['btn btn-square', canvas.tool === 'mask' ? 'btn-primary' : null]}
@@ -61,7 +68,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
             <hr />
             <CanvasToolCategoriesUI />
             {/* <CanvasToolsUI /> */}
-        </div>
+        </ToolShelfUI>
     )
 })
 

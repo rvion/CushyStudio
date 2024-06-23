@@ -21,7 +21,7 @@ import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
 
-export type ConfigMode = 'hosts' | 'input' | 'legacy' | 'theme'
+export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'theme'
 
 export const PanelConfig = new Panel({
     name: 'Config',
@@ -38,6 +38,9 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             break
         case 'input':
             page = <>Not implemented</>
+            break
+        case 'interface':
+            page = <FormUI tw='flex flex-1' form={cushy.preferences.interface} />
             break
         case 'legacy':
             page = <LegacyOptions />
@@ -74,11 +77,21 @@ export const PanelConfigUI = observer(function Panel_Config_() {
                                 '[&>*]:!border-none',
                             ]}
                             border
-                            style={{ overflow: 'overlay !important' }}
+                            // style={{ overflow: ' !important' }}
                         >
-                            <ConfigModeButton mode='hosts' />
+                            <ConfigModeButton mode='interface' />
                             <ConfigModeButton mode='input' />
                             <ConfigModeButton mode='theme' />
+                        </Frame>
+                        <Frame
+                            tw={[
+                                // 'overflow-auto',
+                                // Join stuff and remove borders, can probably be a component or tw macro
+                                '[&>*]:!border-none',
+                            ]}
+                            border
+                        >
+                            <ConfigModeButton mode='hosts' />
                         </Frame>
                     </div>
                 </BasicShelfUI>

@@ -78,6 +78,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import { interfaceConf } from './conf/interfaceConf'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -929,6 +930,9 @@ export class STATE {
     }
 
     theme = themeConf
+    preferences = {
+        interface: interfaceConf,
+    }
     csuite = new CSuite_ThemeCushy(this)
 
     get themeText(): Tint {

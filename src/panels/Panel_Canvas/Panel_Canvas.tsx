@@ -6,6 +6,7 @@ import * as React from 'react'
 import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
+import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RegionUI } from '../../csuite/regions/RegionUI'
@@ -133,7 +134,25 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                             tooltip='Enable Snapping'
                         />
                     </div>
-                    <div />
+                    <div tw='flex items-end justify-end'>
+                        <InputBoolToggleButtonUI
+                            value={canvas.enableOverlay}
+                            onValueChange={(_) => (canvas.enableOverlay = !canvas.enableOverlay)}
+                            icon={canvas.enableOverlay ? 'mdiDrawing' : 'mdiDrawingBox'}
+                            tooltip={'(Not Implemented) Show Canvas Overlays'}
+                        />
+                        <Dropdown
+                            title=''
+                            startIcon={'mdiChevronDown'}
+                            content={() => (
+                                <
+                                    //
+                                >
+                                    <InputNumberUI mode='int' text='Mask Opacity' onValueChange={() => {}} />
+                                </>
+                            )}
+                        ></Dropdown>
+                    </div>
                 </PanelHeaderUI>
                 <div
                     //

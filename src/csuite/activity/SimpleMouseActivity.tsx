@@ -45,6 +45,7 @@ export class SimpleMouseActivity implements Activity {
             shiftKey: event.shiftKey,
         }
     }
+
     onMouseMove(event: MouseEvent, routine: Routine) {
         const info = this._getInfo(event)
         this.p.onMove?.(info)
