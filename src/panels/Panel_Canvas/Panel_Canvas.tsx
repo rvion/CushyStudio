@@ -13,6 +13,7 @@ import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { UCAGenerate } from './activities/activity_generate'
+import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
@@ -170,7 +171,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         )
                     })}
                     <div id={canvas.uid} ref={canvas.rootRef} tw='flex-1'></div>
-                    {/* <CanvasToolbarUI /> */}
+                    <CanvasToolbarUI />
                     <UnifiedCanvasMenuUI />
                 </div>
             </RegionUI>
