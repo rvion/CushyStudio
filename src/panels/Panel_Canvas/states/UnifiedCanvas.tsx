@@ -16,6 +16,7 @@ import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
 import { setupStageForPainting } from '../behaviours/setupStageForPainting'
 import { ToolGenerate } from '../tools/ToolGenerate'
 import { ToolMask } from '../tools/ToolMask'
+import { ToolMove } from '../tools/ToolMove'
 import { ToolNone } from '../tools/ToolNone'
 import { ToolPaint } from '../tools/ToolPaint'
 import { ToolStamp } from '../tools/ToolStamp'
@@ -32,13 +33,48 @@ export class UnifiedCanvas {
     usePenPressure = true
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
-    // ---------------------------------------------------
+
+    // tools V2 ----------------------------------------------------------------
+    toolGenerate = new ToolGenerate(this)
+    toolNone = new ToolNone(this)
+    toolPaint = new ToolPaint(this)
+    toolMove = new ToolMove(this)
+    toolMask = new ToolMask(this)
+    toolStamp = new ToolStamp(this)
+    allTools = [
+        //
+        this.toolNone,
+        this.toolGenerate,
+        this.toolPaint,
+        this.toolMove,
+        this.toolMask,
+        this.toolStamp,
+    ]
+    _currentTool: Tool = this.toolNone
+    get currentTool(): Tool {
+        return this._currentTool
+    }
+    set currentTool(tool: Tool) {
+        this._currentTool.onStop()
+        this._currentTool = tool
+        this._currentTool.onStart()
+    }
+
+    // backwards compatibility utils; to remove later
+    enable_none = () => (this.currentTool = this.toolNone)
+    enable_generate = () => (this.currentTool = this.toolGenerate)
+    enable_mask = () => (this.currentTool = this.toolMask)
+    enable_paint = () => (this.currentTool = this.toolPaint)
+    enable_move = () => (this.currentTool = this.toolMove)
+
+    // UNDO SYSTEM ---------------------------------------------------
     undo = () => {
         const last = this.undoBuffer.pop()
         if (last == null) return toastError('Nothing to undo')
         last()
     }
     undoBuffer: (() => void)[] = []
+
     // ---------------------------------------------------
 
     activeSelection: UnifiedSelection
@@ -51,22 +87,6 @@ export class UnifiedCanvas {
         mask.layer.show()
         mask.layer.moveToTop()
     }
-
-    // tools V2 ----------------------------------------------------------------
-    toolGenerate = new ToolGenerate(this)
-    toolNone = new ToolNone(this)
-    toolPaint = new ToolPaint(this)
-    toolMask = new ToolMask(this)
-    toolStamp = new ToolStamp(this)
-    allTools = [
-        //
-        this.toolNone,
-        this.toolGenerate,
-        this.toolPaint,
-        this.toolMask,
-        this.toolStamp,
-    ]
-    currentTool: Tool = this.toolNone
 
     // ----------------------------------------------------------------------
     tool: UnifiedCanvasTool = 'none'
@@ -108,62 +128,6 @@ export class UnifiedCanvas {
         this.brush.radius(size / 2)
     }
     // -------------------------------------------------
-
-    enable_none = () => {
-        this.tool = 'none'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_move()
-    }
-    disable_none = () => {}
-    enable_generate = () => {
-        this.tool = 'generate'
-        this.activeSelection.show()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_generate = () => {
-        this.activeSelection.hide()
-    }
-    enable_mask = () => {
-        this.tool = 'mask'
-        this.disable_generate()
-        this.disable_paint()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_mask = () => {}
-    enable_paint = () => {
-        this.tool = 'paint'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_paint = () => {}
-    enable_move = () => {
-        this.tool = 'move'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_none()
-    }
-    disable_move = () => {}
-
-    onKeyDown = (e: any) => {
-        if (e.key === '0') { this.enable_none(); return } // prettier-ignore
-        if (e.key === '1') { this.enable_generate(); return } // prettier-ignore
-        if (e.key === '2') { this.enable_mask(); return } // prettier-ignore
-        if (e.key === '3') { this.enable_paint(); return } // prettier-ignore
-        if (e.key === '4') { this.enable_move(); return } // prettier-ignore
-        if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-            this.undo()
-        }
-        e.preventDefault()
-    }
 
     // immutable base for calculations
     readonly base = Object.freeze({ width: 512, height: 512 })

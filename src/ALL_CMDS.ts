@@ -3,7 +3,6 @@
 import './operators/commands/cmd_copyImage'
 import './operators/commands/cmd_favorites'
 import './operators/commands/cmd_goTo'
-import './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
 import { allLayoutCommands } from './app/shortcuts/cmd_layout'
 import { allLegacyCommands } from './app/shortcuts/cmd_mix'
@@ -22,11 +21,7 @@ import {
     cmd_nav_openGallery3,
     cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
-import { cmd_canvas_changeBrushSize } from './panels/Panel_Canvas/activities/activity_brushSize'
-import {
-    cmd_unifiedCanvas_activateGenerateTool,
-    cmd_unifiedCanvas_activateMaskTOol,
-} from './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
+import { allCanvasCommands } from './panels/Panel_Canvas/commands/canvasCommands'
 
 export const allCommands = [
     //
@@ -43,9 +38,7 @@ export const allCommands = [
     cmd_nav_openGallery1,
     cmd_nav_openGallery2,
     cmd_nav_openGallery3,
-    cmd_unifiedCanvas_activateGenerateTool,
-    cmd_unifiedCanvas_activateMaskTOol,
-    cmd_canvas_changeBrushSize,
+    ...allCanvasCommands,
     ...allLayoutCommands,
     ...allLegacyCommands,
 ]

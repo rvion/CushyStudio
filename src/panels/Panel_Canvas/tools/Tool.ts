@@ -2,6 +2,9 @@ import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 export class Tool {
+    onStart() {}
+    onStop() {}
+
     onMouseMove(
         //
         ev: KonvaEventObject<MouseEvent>,

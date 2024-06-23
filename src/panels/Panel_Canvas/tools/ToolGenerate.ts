@@ -8,6 +8,14 @@ export class ToolGenerate extends Tool {
         super()
     }
 
+    onStart(): void {
+        this.uc.activeSelection.show()
+    }
+
+    onStop(): void {
+        this.uc.activeSelection.hide()
+    }
+
     onMouseMove() {
         const uc = this.uc
         const sel = uc.activeSelection

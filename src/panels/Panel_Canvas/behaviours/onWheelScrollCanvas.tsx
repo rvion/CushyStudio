@@ -53,11 +53,11 @@ export const onWheelScrollCanvas = (
         return
     }
 
-    if (canvas.tool === 'mask' || canvas.tool === 'paint') {
-        const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
-        canvas.setBrushSize(newSize)
-        return
-    }
+    // if (canvas.tool === 'mask' || canvas.tool === 'paint') {
+    //     const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
+    //     canvas.setBrushSize(newSize)
+    //     return
+    // }
 
     if (canvas.tool === 'generate') {
         let direction = e.evt.deltaY > 0 ? -1 : 1
