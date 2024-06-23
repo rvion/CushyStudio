@@ -74,12 +74,7 @@ app({
             : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
-        let mask: Maybe<_MASK>
-        if (ctx.mask /* override mask from context if provided */) {
-            mask = await ctx.mask.loadInWorkflowAsMask('alpha')
-        } else {
-            mask = await run_mask(ui.mask)
-        }
+        let mask: Maybe<_MASK> = await run_mask(ui.mask, ctx.mask)
         if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------
