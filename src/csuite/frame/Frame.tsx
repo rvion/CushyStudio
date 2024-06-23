@@ -1,6 +1,7 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
 import type { Kolor } from '../kolor/Kolor'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
@@ -19,6 +20,7 @@ import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
     tooltip?: string
+    tooltipPlacement?: RevealPlacement
 
     /** allow to pretend the frame is hovered */
     hovered?: boolean | undefined
@@ -152,6 +154,7 @@ export const Frame = observer(
                 tooltipStuff.tooltip = {
                     ref: ev.currentTarget,
                     text: p.tooltip ?? 'test',
+                    placement: p.tooltipPlacement ?? 'bottom',
                 }
         }
 

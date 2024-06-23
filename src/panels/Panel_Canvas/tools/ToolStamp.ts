@@ -1,15 +1,12 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { ICanvasTool } from './_ICanvasTool'
 
-import { Tool } from './Tool'
-
-export class ToolStamp extends Tool {
+export class ToolStamp implements ICanvasTool {
     id: 'stamp' = 'stamp'
     category: 'draw' = 'draw'
-    icon: IconName = 'mdiPlay'
+    icon: IconName = 'mdiStamper'
     description = '....'
 
-    constructor(public uc: UnifiedCanvas) {
-        super()
-    }
+    constructor(public canvas: UnifiedCanvas) {}
 }

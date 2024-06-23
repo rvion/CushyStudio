@@ -1,12 +1,15 @@
+import type { IconName } from '../icons/icons'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
+import type { ReactNode } from 'react'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type FC, type ReactNode, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { Frame, type FrameProps } from '../frame/Frame'
-import { ShelfState } from './ShelfState'
-import { ToolShelfState } from './ToolShelfState'
 import { Button } from '../button/Button'
 import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../frame/Frame'
+import { ToolShelfState } from './ToolShelfState'
 
 //TODO(bird_d): Use the activity system for resizing? Request a way to change the cursor on the fly for activities.
 
@@ -133,8 +136,13 @@ export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
     p: {
         panelState: ToolShelfPanelState
         text?: string
-        value?: boolean
-    } & FrameProps,
+        icon?: IconName
+        iconSize?: string
+        value: boolean
+        onValueChange: (value: boolean) => void
+        tooltip?: string
+        tooltipPlacement?: RevealPlacement
+    } /* & FrameProps */,
 ) {
     const iconSize = cushy.preferences.interface.value.toolBarIconSize
     const expand = p.panelState.size > iconSize * 2
@@ -147,8 +155,11 @@ export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
             }}
             value={p.value}
             icon={p.icon}
+            iconSize={!expand ? '100%' : p.iconSize}
+            onValueChange={p.onValueChange}
             text={expand ? p.text : undefined}
             tooltip={p.tooltip}
+            tooltipPlacement={p.tooltipPlacement}
         />
     )
 })

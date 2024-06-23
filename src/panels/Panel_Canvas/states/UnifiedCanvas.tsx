@@ -1,9 +1,8 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
-import type { Tool } from '../tools/Tool'
+import type { ICanvasTool } from '../tools/_ICanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
-import type { KonvaEventObject } from 'konva/lib/Node'
 
 import Konva from 'konva'
 import { makeAutoObservable } from 'mobx'
@@ -11,9 +10,7 @@ import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
 import { toastError } from '../../../csuite/utils/toasts'
-import { moveBehaviour_updatePointerInfos } from '../behaviours/moveBehaviour_updatePointerInfos'
-import { scrollBehavior_zoomCanvas } from '../behaviours/scrollBehavior_zoomCanvas'
-import { setupStageForPainting } from '../behaviours/setupStageForPainting'
+import { setupStageForPainting } from '../events/setupStageForPainting'
 import { ToolGenerate } from '../tools/ToolGenerate'
 import { ToolMask } from '../tools/ToolMask'
 import { ToolMove } from '../tools/ToolMove'
@@ -32,9 +29,10 @@ export class UnifiedCanvas {
     snapSize = 64
     usePenPressure = true
     enableOverlay = true
-
-    toolShelf = { visible: true, size: cushy.preferences.interface.value.toolBarIconSize }
-
+    toolShelf = {
+        visible: true,
+        size: cushy.preferences.interface.value.toolBarIconSize,
+    }
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
 
@@ -54,22 +52,15 @@ export class UnifiedCanvas {
         this.toolMask,
         this.toolStamp,
     ]
-    _currentTool: Tool = this.toolNone
-    get currentTool(): Tool {
+    private _currentTool: ICanvasTool = this.toolNone
+    get currentTool(): ICanvasTool {
         return this._currentTool
     }
-    set currentTool(tool: Tool) {
-        this._currentTool.onStop()
+    set currentTool(tool: ICanvasTool) {
+        this._currentTool.onDeselect?.()
         this._currentTool = tool
-        this._currentTool.onStart()
+        this._currentTool.onSelect?.()
     }
-
-    // backwards compatibility utils; to remove later
-    enable_none = () => (this.currentTool = this.toolNone)
-    enable_generate = () => (this.currentTool = this.toolGenerate)
-    enable_mask = () => (this.currentTool = this.toolMask)
-    enable_paint = () => (this.currentTool = this.toolPaint)
-    enable_move = () => (this.currentTool = this.toolMove)
 
     // UNDO SYSTEM ---------------------------------------------------
     undo = () => {
@@ -161,14 +152,20 @@ export class UnifiedCanvas {
     tempLayer: Konva.Layer // to hold the line currently being drawn
     imageLayer: Konva.Layer
 
-    /** used as container id for potential Portals to display html overlays */
+    /** used as container id for potential Portals to display html over122ays */
     uid = nanoid()
 
     constructor(
         public st: STATE,
         baseImage: MediaImageL,
     ) {
-        this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
+        this.stage = new Konva.Stage({
+            container: this.containerDiv,
+            width: 512,
+            height: 512,
+        })
+
+        // basic core layers
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
         this.imageLayer = new Konva.Layer()
         this.tempLayer = new Konva.Layer()
@@ -177,17 +174,6 @@ export class UnifiedCanvas {
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
         this.images = [new UnifiedImage(this, baseImage)]
-
-        this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => {
-            const consumed = this.currentTool.onScroll(e, this)
-            if (consumed) return
-            scrollBehavior_zoomCanvas(this, e)
-        })
-
-        this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => {
-            moveBehaviour_updatePointerInfos(e, this)
-            this.currentTool.onMouseMove?.(e, this)
-        })
 
         // ------------------------------
 

@@ -20,7 +20,12 @@ export type Activity = {
     backdrop?: boolean
 
     /** @default false */
-    closeOnBackdropClick?: boolean
+    stopOnBackdropClick?: boolean
+
+    /**
+     * hitting `escape` key will stop the activity
+     * @default true */
+    stopOnEscapeKey?: boolean
 
     /** human-readable activity title */
     title?: Maybe<string>

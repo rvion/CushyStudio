@@ -1,15 +1,12 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { ICanvasTool } from './_ICanvasTool'
 
-import { Tool } from './Tool'
-
-export class ToolNone extends Tool {
-    id: 'noe' = 'noe'
+export class ToolNone implements ICanvasTool {
+    id: 'none' = 'none'
     category: 'wft' = 'wft'
-    icon: IconName = 'mdiPlay'
+    icon: IconName = 'mdiWatchImport'
     description = '....'
 
-    constructor(public uc: UnifiedCanvas) {
-        super()
-    }
+    constructor(public canvas: UnifiedCanvas) {}
 }
