@@ -24,7 +24,6 @@ export const ui_ipadapter_CLIPSelection = (form: FormBuilder) => ({
     clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
         // @ts-ignore
         default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
-        requirements: [{ type: 'modelInManager', modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K' }],
         label: 'CLIP Vision Model',
-    }),
+    }).addRequirements([{ type: 'modelInManager', modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K' }]),
 })

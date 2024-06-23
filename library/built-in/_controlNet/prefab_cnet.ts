@@ -29,6 +29,8 @@ export const ui_cnet = () => {
     const cnetList = form
         .list({
             label: 'ControlNets',
+            icon: 'mdiCompass',
+            box: { base: { hue: 90, chroma: 0.1 } },
             tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
             // label: false,
             element: () =>

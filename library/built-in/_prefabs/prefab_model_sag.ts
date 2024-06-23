@@ -12,8 +12,14 @@ export const ui_model_sag = (form: X.FormBuilder): UI_model_sag => {
         {
             include: form.choices({
                 items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
                 default: { base: true, hiRes: true },
+                // -----------------------------
+                appearance: 'tab',
+                tabPosition: 'start',
+                border: false,
+                collapsed: false,
+                justifyLabel: true,
+                // --------------------------
             }),
             scale: form.float({ default: 0.5, step: 0.1, min: -2, max: 5 }),
             blur_sigma: form.float({ default: 2, step: 0.1, min: 0, max: 10 }),

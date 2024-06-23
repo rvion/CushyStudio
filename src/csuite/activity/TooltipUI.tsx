@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
 import { themeConf } from '../../state/conf/themeConf'
+import { Frame } from '../frame/Frame'
 import { tooltipStuff } from '../frame/tooltip'
 import { useDelay } from './useDelay'
 
@@ -19,10 +20,10 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
 
     return (
         <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999]'>
-            <div tw='bg-black mt-2 p-2'>
+            <Frame base={30} border shadow tw='p-2'>
                 {/* {isDelayed ? '🟢' : '❌'} */}
                 <div>{txt}</div>
-            </div>
+            </Frame>
             {/* {JSON.stringify(pos)} */}
         </div>
     )

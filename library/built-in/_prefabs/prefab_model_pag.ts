@@ -15,8 +15,14 @@ export const ui_model_pag = (form: FormBuilder): UI_model_pag => {
             {
                 include: form.choices({
                     items: { base: form.fields({}), hiRes: form.fields({}) },
-                    appearance: 'tab',
                     default: { base: true, hiRes: false },
+                    // -----------------------------
+                    appearance: 'tab',
+                    tabPosition: 'start',
+                    border: false,
+                    collapsed: false,
+                    justifyLabel: true,
+                    // --------------------------
                 }),
                 scale: form.float({
                     default: 3,
