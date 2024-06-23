@@ -5,10 +5,10 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 import { Stage } from 'konva/lib/Stage'
 
 import { MouseBtn } from '../../../csuite/types/MouseBtn'
-import { moveBehaviour_dragView } from '../behaviours/moveBehaviour_dragView'
-import { moveBehaviour_updatePointerInfos } from '../behaviours/moveBehaviour_updatePointerInfos'
-import { scrollBehavior_zoomCanvas } from '../behaviours/scrollBehavior_zoomCanvas'
 import { Stroke } from '../tools/_StrokeInfo'
+import { moveBehaviour_dragView } from './moveBehaviour_dragView'
+import { moveBehaviour_updatePointerInfos } from './moveBehaviour_updatePointerInfos'
+import { scrollBehavior_zoomCanvas } from './scrollBehavior_zoomCanvas'
 
 export const setupStageForPainting = (canvas: UnifiedCanvas) => {
     const stage: Stage = canvas.stage
