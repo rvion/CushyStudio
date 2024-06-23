@@ -7,7 +7,7 @@ import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
-import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const canvas = useUnifiedCanvas()

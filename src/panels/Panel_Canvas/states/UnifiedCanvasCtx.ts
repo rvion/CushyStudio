@@ -1,4 +1,4 @@
-import type { UnifiedCanvas } from './states/UnifiedCanvas'
+import type { UnifiedCanvas } from './UnifiedCanvas'
 
 import { createContext, useContext } from 'react'
 

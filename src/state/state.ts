@@ -243,7 +243,7 @@ export class STATE {
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
-    configMode: ConfigMode = 'interface'
+    configMode: ConfigMode = 'legacy'
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
@@ -592,6 +592,7 @@ export class STATE {
                 return
             },
         })
+
         this.tree2 = new Tree(
             [
                 // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),

@@ -17,7 +17,7 @@ import { UCAGenerate } from './activities/activity_generate'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
-import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
+import { UnifiedCanvasCtx } from './states/UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
 
 // https://github.com/devforth/painterro
@@ -64,8 +64,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
     return (
         <div //
             tabIndex={0}
-            onKeyDown={canvas.onKeyDown}
-            onWheel={canvas.onWheel}
+            // onKeyDown={canvas.onKeyDown}
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >

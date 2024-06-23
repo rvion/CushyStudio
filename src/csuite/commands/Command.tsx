@@ -79,6 +79,14 @@ export class CommandContext<Ctx = any> {
         /** actual function code */
         public check: () => Ctx | Trigger.UNMATCHED,
     ) {}
+
+    derive<X>(fn: (ctx: Ctx) => X | Trigger.UNMATCHED): CommandContext<X> {
+        return new CommandContext<X>(this.name, () => {
+            const ctx = this.check()
+            if (ctx === Trigger.UNMATCHED) return Trigger.UNMATCHED
+            return fn(ctx)
+        })
+    }
 }
 
 // small helper to create commands and register them globally

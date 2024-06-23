@@ -3,13 +3,10 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { runInAction } from 'mobx'
 
-import { snap } from '../utils/snap'
-
-export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEvent>): void => {
+export const moveBehaviour_updatePointerInfos = (e: KonvaEventObject<MouseEvent>, uc: UnifiedCanvas): void => {
     runInAction(() => {
         const stage = e.target.getStage()
         if (stage == null) return console.warn(`🔶 missing stage`)
-        // console.log(`[👙] stage`, stage)
         // const scaleBy = 1.15
         // stop default scrolling
         e.evt.preventDefault()
@@ -30,25 +27,27 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
             isDown: e.evt.buttons === 1,
             scale: scale,
         }
-
-        // if generate: handle selection -----------------------------------------
-        if (uc.tool === 'generate') {
-            const sel = uc.activeSelection
-            Object.assign(sel.stableData, {
-                x: snap(uc.infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
-                y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
-            })
-            sel.applyStableData()
-        }
-
-        // if paint -----------------------------------------
-        if (uc.tool === 'paint' || uc.tool === 'mask') {
-            uc.brush //
-                .x(uc.infos.viewPointerX)
-                .y(uc.infos.viewPointerY)
-        }
-
-        // how to scale? Zoom in? Or zoom out?
-        // stage.position(newPos)
     })
 }
+
+// defer logic to current tool -----------------------------------------
+
+// // if generate: handle selection -----------------------------------------
+// if (uc.tool === 'generate') {
+//     const sel = uc.activeSelection
+//     Object.assign(sel.stableData, {
+//         x: snap(uc.infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
+//         y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
+//     })
+//     sel.applyStableData()
+// }
+
+// // if paint -----------------------------------------
+// if (uc.tool === 'paint' || uc.tool === 'mask') {
+//     uc.brush //
+//         .x(uc.infos.viewPointerX)
+//         .y(uc.infos.viewPointerY)
+// }
+
+// how to scale? Zoom in? Or zoom out?
+// stage.position(newPos)
