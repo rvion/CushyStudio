@@ -5,7 +5,7 @@ import type { ICanvasTool } from '../utils/_ICanvasTool'
 export class ToolMove implements ICanvasTool {
     id: 'move' = 'move'
     category: 'composition' = 'composition'
-    icon: IconName = 'mdiPlay'
+    icon: IconName = 'mdiMoveResize'
     description = 'move / resize any items in the canvas'
     constructor(public canvas: UnifiedCanvas) {}
 }

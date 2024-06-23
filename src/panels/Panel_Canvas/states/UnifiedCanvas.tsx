@@ -14,7 +14,6 @@ import { setupStage } from '../events/setupStage'
 import { ToolGenerate } from '../tools/ToolGenerate'
 import { ToolMask } from '../tools/ToolMask'
 import { ToolMove } from '../tools/ToolMove'
-import { ToolNone } from '../tools/ToolNone'
 import { ToolPaint } from '../tools/ToolPaint'
 import { ToolStamp } from '../tools/ToolStamp'
 import { KonvaGrid } from './KonvaGrid1'
@@ -38,21 +37,19 @@ export class UnifiedCanvas {
 
     // tools V2 ----------------------------------------------------------------
     toolGenerate = new ToolGenerate(this)
-    toolNone = new ToolNone(this)
     toolPaint = new ToolPaint(this)
     toolMove = new ToolMove(this)
     toolMask = new ToolMask(this)
     toolStamp = new ToolStamp(this)
     allTools = [
         //
-        this.toolNone,
         this.toolGenerate,
         this.toolPaint,
         this.toolMove,
         this.toolMask,
         this.toolStamp,
     ]
-    private _currentTool: ICanvasTool = this.toolNone
+    private _currentTool: ICanvasTool = this.toolMove
     get currentTool(): ICanvasTool {
         return this._currentTool
     }
