@@ -78,6 +78,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import { interfaceConf } from './conf/interfaceConf'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -242,7 +243,7 @@ export class STATE {
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
-    configMode: ConfigMode = 'legacy'
+    configMode: ConfigMode = 'interface'
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
@@ -928,6 +929,9 @@ export class STATE {
     }
 
     theme = themeConf
+    preferences = {
+        interface: interfaceConf,
+    }
     csuite = new CSuite_ThemeCushy(this)
 
     get themeText(): Tint {
