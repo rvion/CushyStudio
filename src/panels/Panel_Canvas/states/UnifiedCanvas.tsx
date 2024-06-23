@@ -25,6 +25,9 @@ export class UnifiedCanvas {
     snapSize = 64
     usePenPressure = true
     enableOverlay = true
+
+    toolShelf = { collapsed: false, size: cushy.preferences.interface.value.toolBarIconSize }
+
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
     // ---------------------------------------------------
