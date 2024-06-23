@@ -1,6 +1,6 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool } from './_ICanvasTool'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 export class ToolNone implements ICanvasTool {
     id: 'none' = 'none'

@@ -1,6 +1,6 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from './_ICanvasTool'
+import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from '../utils/_ICanvasTool'
 
 import Konva from 'konva'
 
@@ -55,7 +55,7 @@ export class ToolMask implements ICanvasTool {
         maskLayer.opacity(0.5)
         maskLayer.cache()
         // ----------
-        canvas.undoBuffer.push(() => {
+        canvas.addToUndo(() => {
             lastLine.destroy()
             // 🔴 TODO: remove that, will cause bugs; sadness.
             if (!maskLayer.hasChildren()) maskLayer.add(new Konva.Rect({ x: 0, y: 0, width: 1, height: 1, opacity: 0 }))

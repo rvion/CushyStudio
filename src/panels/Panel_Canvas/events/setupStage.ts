@@ -1,11 +1,11 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool, ToolCommitPayload } from '../tools/_ICanvasTool'
+import type { ICanvasTool, ToolCommitPayload } from '../utils/_ICanvasTool'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { Stage } from 'konva/lib/Stage'
 
 import { MouseBtn } from '../../../csuite/types/MouseBtn'
-import { Stroke } from '../tools/_StrokeInfo'
+import { Stroke } from '../utils/_StrokeInfo'
 import { moveBehaviour_dragView } from './moveBehaviour_dragView'
 import { moveBehaviour_updatePointerInfos } from './moveBehaviour_updatePointerInfos'
 import { scrollBehavior_zoomCanvas } from './scrollBehavior_zoomCanvas'

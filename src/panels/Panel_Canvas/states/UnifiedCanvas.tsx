@@ -1,8 +1,8 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
-import type { ICanvasTool } from '../tools/_ICanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 import Konva from 'konva'
 import { makeAutoObservable } from 'mobx'
@@ -63,12 +63,24 @@ export class UnifiedCanvas {
     }
 
     // UNDO SYSTEM ---------------------------------------------------
+    redo = () => {
+        const last = this.redoBuffer.pop()
+        if (last == null) return toastError('Nothing to redo')
+        last()
+        this.undoBuffer.push(last)
+    }
     undo = () => {
         const last = this.undoBuffer.pop()
         if (last == null) return toastError('Nothing to undo')
         last()
+        this.redoBuffer.push(last)
     }
-    undoBuffer: (() => void)[] = []
+    private undoBuffer: (() => void)[] = []
+    private redoBuffer: (() => void)[] = []
+    addToUndo = (fn: () => void) => {
+        this.undoBuffer.push(fn)
+        this.redoBuffer = []
+    }
 
     // ---------------------------------------------------
 

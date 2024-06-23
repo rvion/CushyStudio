@@ -1,6 +1,6 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from './_ICanvasTool'
+import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from '../utils/_ICanvasTool'
 
 import { toastError } from '../../../csuite/utils/toasts'
 import { UnifiedStep } from '../states/UnifiedStep'

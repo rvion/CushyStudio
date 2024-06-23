@@ -1,4 +1,4 @@
-import type { ICanvasTool } from '../tools/_ICanvasTool'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 import { observer } from 'mobx-react-lite'
 
