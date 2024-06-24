@@ -149,7 +149,7 @@ export const Frame = observer(
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent) => {
-            if (p.hover) setHovered(true)
+            if (p.hover != null) setHovered(true)
             if (p.tooltip != null)
                 tooltipStuff.tooltip = {
                     ref: ev.currentTarget,
@@ -159,7 +159,7 @@ export const Frame = observer(
         }
 
         const _onMouseOut = (ev: MouseEvent) => {
-            if (p.hover) setHovered(false)
+            if (p.hover != null) setHovered(false)
             if (
                 p.tooltip != null && //
                 tooltipStuff.tooltip?.ref === ev.currentTarget
