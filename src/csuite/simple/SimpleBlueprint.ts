@@ -12,7 +12,7 @@ import { getCurrentForm_IMPL } from '../model/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleBlueprint<W extends BaseField = BaseField> implements IBlueprint<W> {
+export class SimpleBlueprint<out W extends BaseField = BaseField> implements IBlueprint<W> {
     $Field!: W
     $Type!: W['type']
     $Config!: W['$Config']
@@ -65,7 +65,7 @@ export class SimpleBlueprint<W extends BaseField = BaseField> implements IBluepr
     }
 
     /** wrap widget spec to list stuff */
-    list(config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this>{
+    list(config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> {
         return new SimpleBlueprint<Widget_list<this>>('list', {
             ...config,
             element: this,
