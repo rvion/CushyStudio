@@ -10,9 +10,9 @@ import { BaseField } from '../../model/BaseField'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
+import { TabPositionConfig } from './TabPositionConfig'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
-export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG

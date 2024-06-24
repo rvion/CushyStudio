@@ -8,6 +8,7 @@ import { useCSuite } from '../../ctx/useCSuite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 import { SelectUI } from '../../select/SelectUI'
+import { getJustifyContent } from './TabPositionConfig'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
@@ -57,16 +58,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
     return (
         <div
             tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0.5'
-            style={{
-                justifyContent:
-                    widget.config.tabPosition === 'start' //
-                        ? 'flex-start'
-                        : widget.config.tabPosition === 'center'
-                          ? 'center'
-                          : widget.config.tabPosition === 'end'
-                            ? 'flex-end'
-                            : 'flex-end',
-            }}
+            style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
         >
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]

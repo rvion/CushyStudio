@@ -24,18 +24,17 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     const widget = p.widget
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
-            <Button
-                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: widget.id })}
-                icon='mdiAbacus'
-                borderless
-                subtle
-                square
-            />
             {widget.serial.collapsed ? (
                 <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
                 <div /* spacer */ />
             )}
+            <Button
+                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: widget.id })}
+                icon='mdiAbacus'
+                subtle
+                square
+            />
         </div>
     )
 })
