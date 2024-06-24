@@ -24,7 +24,6 @@ import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
-
 import { $FieldSym } from './$FieldSym'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -89,6 +88,11 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     UIHeaderContainer = (p: { children: ReactNode }) => (
         <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
     )
+
+    get depth(): number {
+        if (this.parent == null) return 0
+        return this.parent.depth + 1
+    }
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: BaseField; key: string }> {

@@ -2,6 +2,7 @@ import type { FormBuilder } from '../../controls/FormBuilder'
 
 export const ui_justify = (ui: FormBuilder) =>
     ui.selectOne({
+        // appearance: 'tab',
         appearance: 'roll',
         wrap: false,
         choices: [

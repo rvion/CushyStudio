@@ -15,9 +15,9 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
             style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
             tw={[
                 //
-                'flex',
+                'flex flex-1',
                 (widget.config.wrap ?? true) && 'flex-wrap',
-                'rounded ml-auto',
+                'rounded',
                 'select-none',
                 'gap-x-0.5 gap-y-0',
             ]}

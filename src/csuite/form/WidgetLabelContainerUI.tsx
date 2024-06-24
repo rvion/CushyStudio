@@ -10,12 +10,15 @@ export type WidgetLabelContainerProps = {
     justify: boolean
     className?: string
     children: React.ReactNode
+    tooltip?: string
 }
 
 export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(p: WidgetLabelContainerProps) {
     const csuite = useCSuite()
     return (
         <Frame
+            tooltip={p.tooltip}
+            tooltipPlacement='right'
             className={p.className}
             hover
             tw={[
@@ -34,9 +37,8 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
 })
 
 const justifiedStyle: CSSProperties = {
-    textAlign: 'right',
     minWidth: '8rem', // 🔴 move to theme options
+    maxWidth: '20rem', // 🔴 move to theme options
     width: '35%', // 🔴 move to theme options
-    marginRight: '0.25rem', // 🔴 move to theme options
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
 }

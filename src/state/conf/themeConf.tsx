@@ -1,3 +1,5 @@
+import type { IconName } from '../../csuite/icons/icons'
+
 import { CushyFormManager } from '../../controls/FormBuilder'
 import { ui_tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
@@ -13,6 +15,15 @@ export const themeConf = CushyFormManager.form(
                     default: false,
                 }),
 
+                labelLayout: ui.selectOne<{ id: string; icon: IconName }>({
+                    appearance: 'tab',
+                    choices: [
+                        { id: 'left', icon: 'mdiAlignHorizontalLeft' },
+                        { id: 'right', icon: 'mdiAlignHorizontalRight' },
+                        { id: 'fluid', icon: 'mdiFullscreenExit' },
+                    ],
+                    default: { id: 'left', icon: 'mdiAlignHorizontalRight' },
+                }),
                 // 1. colors
                 base: ui.colorV2({
                     default: '#F4F5FB',

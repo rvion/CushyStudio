@@ -23,7 +23,7 @@ export type SelectOneSkin = 'select' | 'tab' | 'roll'
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
     {
-        default?: T
+        default?: NoInfer<T>
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic

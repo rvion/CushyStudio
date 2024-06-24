@@ -15,6 +15,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetMenu = true
     showWidgetDiff = true
     showToggleButtonBox = false
+    labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
     get baseStr() {

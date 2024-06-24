@@ -3,6 +3,7 @@ import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
 import type { Activity } from '../csuite/activity/Activity'
+import type { CSuiteConfig } from '../csuite/ctx/CSuiteConfig'
 import type { Tint } from '../csuite/kolor/Tint'
 import type { ModelSerial } from '../csuite/model/ModelSerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
@@ -940,7 +941,8 @@ export class STATE {
     preferences = {
         interface: interfaceConf,
     }
-    csuite = new CSuite_ThemeCushy(this)
+
+    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)
 
     get themeText(): Tint {
         return run_tint(this.theme.value.text)

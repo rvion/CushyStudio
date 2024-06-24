@@ -144,6 +144,11 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         this.value = val
     }
 
+    /** hack so optional fields do not increase nesting twice */
+    get depth() {
+        return this.parent?.depth ?? 0
+    }
+
     get subWidgets() {
         return this.serial.active ? [this.child] : []
     }

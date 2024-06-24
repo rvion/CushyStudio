@@ -14,6 +14,7 @@ import { WidgetDebugIDUI } from './WidgetDebugIDUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
 import { WidgetHeaderControlsContainerUI } from './WidgetHeaderControlsContainerUI'
+import { WidgetIndentUI } from './WidgetIndentUI'
 import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
@@ -47,10 +48,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
     const widget = getActualWidgetToDisplay(originalWidget)
     const HeaderUI = widget.header()
     const BodyUI = widget.body()
-    const justify = p.justifyLabel ?? getIfWidgetNeedJustifiedLabel(widget)
+    // const justify = true // p.justifyLabel ?? getIfWidgetNeedJustifiedLabel(widget)
     const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
     const csuite = useCSuite()
     const labelText: string | false = p.label ?? widget.config.label ?? makeLabelFromFieldName(p.fieldName)
+
+    const labellayout = csuite.labellayout
+    const justify = p.justifyLabel ?? (csuite.labellayout === 'fluid' ? false : true)
     const WUI = (
         <Frame
             //
@@ -67,15 +71,47 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             {!p.noHeader && (
                 <WidgetHeaderContainerUI widget={widget}>
                     {/* HEADER LABEL */}
-                    <WidgetLabelContainerUI justify={justify}>
-                        <WidgetLabelCaretUI widget={widget} />
-                        <WidgetLabelIconUI widget={widget} />
-                        {!justify && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                        <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
-                        {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
-                        {justify && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
+                    <WidgetLabelContainerUI
+                        // paddingLeft={`${widget.depth}rem`}
+                        //
+                        tooltip={widget.config.tooltip}
+                        justify={justify}
+                    >
+                        {labellayout === 'fixed-left' ? (
+                            <>
+                                <WidgetIndentUI depth={widget.depth} />
+                                <WidgetLabelCaretUI widget={widget} />
+                                <WidgetLabelIconUI tw='mr-1' widget={widget} />
+                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
+                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
+                                {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                            </>
+                        ) : labellayout === 'fixed-right' ? (
+                            <>
+                                <WidgetIndentUI depth={widget.depth} />
+                                <WidgetLabelCaretUI tw='mr-auto' widget={widget} />
+                                {!p.widget.isCollapsed && !p.widget.isCollapsible && <div tw='mr-auto' />}
+                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
+                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
+                                <WidgetLabelIconUI tw='mx-1' widget={widget} />
+                                {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                            </>
+                        ) : (
+                            <>
+                                <WidgetLabelCaretUI widget={widget} />
+                                <Widget_ToggleUI tw='mr-1' widget={originalWidget} />
+                                <WidgetLabelIconUI tw='mr-1' widget={widget} />
+                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
+                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
+                            </>
+                        )}
                     </WidgetLabelContainerUI>
+
+                    {/* TOOGLE (when justified) */}
+                    {justify && <Widget_ToggleUI /* tw='ml-1' */ widget={originalWidget} />}
 
                     {/* HEADER CONTROLS */}
                     {HeaderUI && (
