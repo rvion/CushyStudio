@@ -18,7 +18,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                         <InputBoolUI
                             value={isSelected}
                             display='button'
-                            text={c.label}
+                            text={c.label ?? c.id}
                             onValueChange={(value) => {
                                 if (value != isSelected) widget.toggleItem(c)
                             }}
