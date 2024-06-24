@@ -11,22 +11,23 @@ import { runWithGlobalForm } from '../../model/runWithGlobalForm'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
+
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
-type AutoBehaviour<T extends IBlueprint> = {
+interface AutoBehaviour<out T extends IBlueprint> {
     /** list of keys that must be present */
-    keys: (self: T['$Field']) => string[] // ['foo', 'bar', 'baz']
+    keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
 
     /** for every item given by the list above */
-    getKey: (self: T['$Field'], ix: number) => string
+    getKey(self: T['$Field'], ix: number): string
 
     /** once an item if  */
-    init: (key: string /* foo */) => T['$Value']
+    init(key: string /* foo */): T['$Value']
 }
 
 // CONFIG
-export type Widget_list_config<T extends IBlueprint> = FieldConfig<
+export interface Widget_list_config<out T extends IBlueprint> extends FieldConfig<
     {
         element: ((ix: number) => T) | T
         /**
@@ -56,7 +57,7 @@ export type Widget_list_config<T extends IBlueprint> = FieldConfig<
         defaultLength?: number
     },
     Widget_list_types<T>
->
+> {}
 
 // SERIAL
 export type Widget_list_serial<T extends IBlueprint> = FieldSerial<{
@@ -304,7 +305,7 @@ export class Widget_list<T extends IBlueprint> //
         this.bumpValue()
     }
 
-    removeItem = (item: T['$Field']) => {
+    removeItem(item: T['$Field']) {
         // ensure item is in the list
         const i = this.items.indexOf(item)
         if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)

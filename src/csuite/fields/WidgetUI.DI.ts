@@ -9,7 +9,10 @@
 */
 import type { BaseField } from '../model/BaseField'
 import type { Widget_group } from './group/WidgetGroup'
+import type { Widget_list } from './list/WidgetList'
+import type { Widget_number } from './number/WidgetNumber'
 import type { Widget_optional } from './optional/WidgetOptional'
+import type { Widget_selectOne } from './selectOne/WidgetSelectOne'
 import type { Widget_shared } from './shared/WidgetShared'
 import type { Widget_string } from './string/WidgetString'
 
@@ -19,7 +22,7 @@ import type { Widget_string } from './string/WidgetString'
  * regardless of circular dependencies.
  * 2024-03-27 update: now that we support splitting parts of
  * */
-let WidgetDI: { [widgetName: string]: BaseField<any> } = {}
+const WidgetDI: { [widgetName: string]: BaseField<any> } = {}
 
 export const getWidgetClass = <Type extends { $Type: string }>(widgetName: Type['$Type']): Type => {
     return WidgetDI[widgetName] as any
@@ -31,7 +34,14 @@ export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'
 
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
-export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
-export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'
-export const isWidgetGroup = (widget: any): widget is Widget_group<any> => widget.type === 'group'
-export const isWidgetString = (widget: any): widget is Widget_string => widget.type === 'string'
+export const isWidgetOptional = _isWidget<Widget_optional>('optional')
+export const isWidgetShared = _isWidget<Widget_shared>('shared')
+export const isWidgetGroup = _isWidget<Widget_group<any>>('group')
+export const isWidgetString = _isWidget<Widget_string>('str')
+export const isWidgetNumber = _isWidget<Widget_number>('number')
+export const isWidgetList = _isWidget<Widget_list<any>>('list')
+export const isWidgetSelectOne = _isWidget<Widget_selectOne<any>>('selectOne')
+
+function _isWidget<W extends { $Type: string }>(type: W['$Type']): ((widget: any) => widget is W) {
+    return (widget): widget is W => widget.type === type
+}

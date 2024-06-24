@@ -1,13 +1,14 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
-import type { CovariantFn } from '../variance/BivariantHack'
+import type { CovariantFn, CovariantFnX } from '../variance/BivariantHack'
+import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Problem_Ext } from './Validation'
 
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
 
-export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
+export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /**
      * @since 2024-05-20
      * @stability beta
@@ -35,7 +36,8 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
      * This function will be executed either on first creation, or when the
      * evaluationKey changes. The evaluationKey is stored in the group serial.
      */
-    onCreate?: CovariantFn<T['$Field'], void> & { evaluationKey?: string }
+    onCreate?: CovariantFn<T['$Field'], void> // & { evaluationKey?: string }
+    onCreateKey?: string
 
     /**
      * @since 2024-05-14
@@ -45,13 +47,13 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
     onInit?: CovariantFn<T['$Field'], void>
 
     /** allow to specify custom headers */
-    header?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
+    header?: null | CovariantFC<{ widget: T['$Field'] }>
 
     /** allow to specify custom body */
-    body?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
+    body?: null | CovariantFC<{ widget: T['$Field'] }>
 
     /** will be called when value changed */
-    onValueChange?: (val: T['$Value'], self: T['$Field']) => void
+    onValueChange?: CovariantFnX<[val: T['$Value'], self: T['$Field']], void>
 
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]
@@ -65,7 +67,7 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
      *  - ["errMsg", ...]
      *  - "errMsg"
      * */
-    check?: (val: T['$Field']) => Problem_Ext
+    check?: CovariantFnX<[val: T['$Field']], Problem_Ext>
 
     /**
      * The label to display.
@@ -119,9 +121,9 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
     custom?: any
 }
 
-export type WidgetMenuAction<T extends $FieldTypes> = {
+export interface WidgetMenuAction<out T extends $FieldTypes> {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName
-    apply: (form: T['$Field']) => void
+    apply(form: T['$Field']): void
 }

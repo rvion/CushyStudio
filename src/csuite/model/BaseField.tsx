@@ -24,6 +24,7 @@ import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
+
 import { $FieldSym } from './$FieldSym'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -45,7 +46,7 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
 }
 
 // v3 (experimental) ---------------------------------------
-export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
+export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
     // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
     // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
@@ -467,7 +468,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         // run the config.onCreation if needed
         if (config.onCreate) {
             const oldKey = serial._creationKey
-            const newKey = config.onCreate.evaluationKey ?? 'default'
+            const newKey = config.onCreateKey ?? 'default'
             if (oldKey !== newKey) {
                 config.onCreate(this)
                 serial._creationKey = newKey
