@@ -93,7 +93,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
-        if (selected == null) return 'selected value not in choices'
+        if (selected == null && !this.config.disableLocalFiltering) return 'selected value not in choices'
         return
     }
 
