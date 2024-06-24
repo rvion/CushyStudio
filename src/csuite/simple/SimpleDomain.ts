@@ -282,6 +282,7 @@ export class SimpleDomain implements Domain {
                 parent,
                 spec2,
                 serial,
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                 this.form._ROOT
                     ? undefined
                     : (x) => {
