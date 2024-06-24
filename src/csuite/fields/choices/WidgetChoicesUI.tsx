@@ -137,7 +137,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 )}
                 equalityCheck={(a, b) => a.key === b.key}
                 multiple={widget.config.multi ?? false}
-                closeOnPick={false}
+                // closeOnPick={false}
                 resetQueryOnPick={false}
                 onChange={(v) => widget.toggleBranch(v.key)}
             />
