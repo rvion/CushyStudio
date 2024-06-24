@@ -44,10 +44,11 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                         const widgetBody = subWidget.body()
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
-                        const showBorder = subWidget.border
+                        const showBorder = subWidget.border != null
                         const isCollapsible: boolean = subWidget.isCollapsible
                         const boxBorder = showBorder ? 20 : 0
-                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
+                        const boxBase =
+                            subWidget.background != null && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
                                 <Frame border={boxBorder} tw={'flex flex-col'} base={boxBase}>
