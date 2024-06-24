@@ -315,11 +315,11 @@ export class Widget_list<T extends IBlueprint> //
     }
 
     // MOVING ITEMS ---------------------------------------------------
-    moveItem = (
+    moveItem(
         //
         oldIndex: number,
         newIndex: number,
-    ) => {
+    ) {
         if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
         if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
         if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)

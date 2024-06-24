@@ -37,7 +37,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     const min = widget.config.min
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
+            <SortableList onSortEnd={(s, e) => p.widget.moveItem(s, e)} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
                         const widgetHeader = subWidget.header()
