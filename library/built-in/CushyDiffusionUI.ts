@@ -51,7 +51,11 @@ export const CushyDiffusionUI = (ui: FormBuilder) => ({
     controlnets: ui_cnet(),
     ipAdapter: ui_IPAdapterV2().optional(),
     faceID: ui_IPAdapterFaceIDV2().optional(),
-    extra: ui.choices({
+    extra: extra(ui),
+})
+
+function extra(ui: FormBuilder) {
+    return ui.choices({
         appearance: 'tab',
         icon: 'mdiAlien',
         items: {
@@ -68,5 +72,5 @@ export const CushyDiffusionUI = (ui: FormBuilder) => ({
             watermark: ui_watermark_v1(),
             fancyWatermark: ui.group(),
         },
-    }),
-})
+    })
+}

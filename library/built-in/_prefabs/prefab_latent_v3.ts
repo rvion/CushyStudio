@@ -1,9 +1,30 @@
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
-import type { OutputFor } from './_prefabs'
 
-import { run_LatentShapeGenerator, ui_LatentShapeGenerator } from '../shapes/prefab_shapes'
+import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
 
-export const ui_latent_v3 = () => {
+export type UI_LatentV3 = X.XChoice<{
+    emptyLatent: X.XGroup<{
+        batchSize: X.Shared<X.XNumber>
+        size: X.XSize
+    }>
+    image: X.XGroup<{
+        batchSize: X.Shared<X.XNumber>
+        image: X.XImage
+        resize: X.XOptional<
+            X.XGroup<{
+                mode: X.XEnum<Enum_CR_Upscale_Image_mode>
+                supersample: X.XEnum<Enum_ImageDrawRectangleRounded_top_left_corner>
+                resampling: X.XEnum<Enum_SEGSUpscaler_resampling_method>
+                rescale_factor: X.XNumber
+                resize_width: X.XNumber
+                resize_height: X.XNumber
+            }>
+        >
+    }>
+    random: UI_LatentShapeGenerator
+}>
+
+export function ui_latent_v3(): UI_LatentV3 {
     const form: FormBuilder = getCurrentForm()
     const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
 
@@ -19,7 +40,7 @@ export const ui_latent_v3 = () => {
                 // border: false,
                 items: {
                     batchSize: batchSize,
-                    size: form.size({ label: false, collapsed: false, border: false }),
+                    size: form.size({ border: false }),
                 },
             }),
             image: form.group({
@@ -38,9 +59,13 @@ export const ui_latent_v3 = () => {
 
 export const run_latent_v3 = async (p: {
     //
-    opts: OutputFor<typeof ui_latent_v3>
+    opts: ReturnType<typeof ui_latent_v3>['$Value']
     vae: _VAE
-}) => {
+}): Promise<{
+    latent: _LATENT
+    width: number
+    height: number
+}> => {
     // init stuff
     const run = getCurrentRun()
     const graph = run.nodes

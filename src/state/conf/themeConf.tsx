@@ -1,11 +1,40 @@
 import type { IconName } from '../../csuite/icons/icons'
+import type { Model } from '../../csuite/model/Model'
 
-import { CushyFormManager } from '../../controls/FormBuilder'
-import { ui_tint } from '../../csuite/kolor/prefab_Tint'
+import { CushyFormManager, type FormBuilder } from '../../controls/FormBuilder'
+import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const themeConf = CushyFormManager.form(
-    (ui) =>
+export type ThemeConf = X.XGroup<{
+    tabSetEnableSingleTabStretch: X.XBool
+    labelLayout: X.XSelectOne<{ id: 'left' | 'right' | 'fluid'; icon: IconName }>
+    base: X.XString
+    appbar: X.XOptional<X.XString>
+    tooltipDelay: X.XOptional<X.XNumber>
+    gap: X.XOptional<X.XNumber>
+    widgetWithLabel: X.XGroup<{
+        border: X.XOptional<X.XNumber>
+        contrast: X.XOptional<X.XNumber>
+        padding: X.XOptional<X.XNumber>
+    }>
+    fieldGroups: X.XGroup<{
+        border: X.XOptional<X.XNumber>
+        contrast: X.XOptional<X.XNumber>
+        padding: X.XOptional<X.XNumber>
+    }>
+    text: UI_Tint
+    textLabel: X.XOptional<UI_Tint>
+    border: X.XOptional<X.XNumber>
+    inputHeight: X.XNumber
+    useDefaultCursorEverywhere: X.XBool
+    showWidgetUndo: X.XBool
+    showWidgetMenu: X.XBool
+    showWidgetDiff: X.XBool
+    showToggleButtonBox: X.XBool
+}>
+
+export const themeConf: Model<ThemeConf, FormBuilder, {}> = CushyFormManager.form(
+    (ui): ThemeConf =>
         ui.fields(
             {
                 // name copied from flexlayout; will be used
@@ -15,7 +44,7 @@ export const themeConf = CushyFormManager.form(
                     default: false,
                 }),
 
-                labelLayout: ui.selectOne<{ id: string; icon: IconName }>({
+                labelLayout: ui.selectOne<{ id: 'left' | 'right' | 'fluid'; icon: IconName }>({
                     appearance: 'tab',
                     choices: [
                         { id: 'left', icon: 'mdiAlignHorizontalLeft' },

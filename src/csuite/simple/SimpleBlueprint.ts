@@ -9,26 +9,29 @@ import type { SList, SOptional } from './SimpleSpecAliases'
 import { makeObservable } from 'mobx'
 
 import { getCurrentForm_IMPL } from '../model/runWithGlobalForm'
+import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleBlueprint<out W extends BaseField = BaseField> implements IBlueprint<W> {
-    $Field!: W
-    $Type!: W['type']
-    $Config!: W['$Config']
-    $Serial!: W['$Serial']
-    $Value!: W['$Value']
+export class SimpleBlueprint<out Field extends BaseField = BaseField> implements IBlueprint<Field> {
+    $Field!: Field
+    $Type!: Field['type']
+    $Config!: Field['$Config']
+    $Serial!: Field['$Serial']
+    $Value!: Field['$Value']
 
-    LabelExtraUI = (p: {}) => null
+    LabelExtraUI() {
+        return null
+    }
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, W['$Field']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Field']) => T): this {
+    producers: Producer<any, Field['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Field']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -39,13 +42,13 @@ export class SimpleBlueprint<out W extends BaseField = BaseField> implements IBl
     }
 
     reactions: {
-        expr(self: W['$Field']): any
-        effect(arg: any, self: W['$Field']): void
+        expr(self: Field['$Field']): any
+        effect(arg: any, self: Field['$Field']): void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: W['$Field']) => T,
-        effect: (arg: T, self: W['$Field']) => void,
+        expr: (self: Field['$Field']) => T,
+        effect: (arg: T, self: Field['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this
@@ -58,8 +61,8 @@ export class SimpleBlueprint<out W extends BaseField = BaseField> implements IBl
 
     constructor(
         //
-        public readonly type: W['type'],
-        public readonly config: W['$Config'],
+        public readonly type: Field['type'],
+        public readonly config: Field['$Config'],
     ) {
         makeObservable(this, { config: true })
     }
@@ -89,16 +92,17 @@ export class SimpleBlueprint<out W extends BaseField = BaseField> implements IBl
     }
 
     /** clone the spec, and patch the cloned config */
-    withConfig(config: Partial<W['$Config']>): SimpleBlueprint<W> {
-        const mergedConfig = { ...this.config, ...config }
-        const cloned = new SimpleBlueprint<W>(this.type, mergedConfig)
+    withConfig(config: Partial<Field['$Config']>): SimpleBlueprint<Field> {
+        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
+        const cloned = new SimpleBlueprint<Field>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
         return cloned
     }
 
-    hidden(): SimpleBlueprint<W> {
+    /** clone the spec, and patch the cloned config to make it hidden */
+    hidden(): SimpleBlueprint<Field> {
         return this.withConfig({ hidden: true })
     }
 }

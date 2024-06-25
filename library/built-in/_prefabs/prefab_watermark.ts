@@ -1,8 +1,7 @@
+import type { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
-import { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
-
-export const ui_watermark_v1 = () => {
+export function ui_watermark_v1() {
     const ui = getCurrentForm()
     return ui.fields({
         pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
@@ -16,11 +15,11 @@ export const ui_watermark_v1 = () => {
     })
 }
 
-export const run_watermark_v1 = async (
+export async function run_watermark_v1(
     //
     ui: OutputFor<typeof ui_watermark_v1>,
     img?: Maybe<MediaImageL>,
-): Promise<Maybe<MediaImageL>> => {
+): Promise<Maybe<MediaImageL>> {
     const run = getCurrentRun()
     const image = img ?? run.lastImage ?? cushy.db.media_image.last()
     if (!image) return

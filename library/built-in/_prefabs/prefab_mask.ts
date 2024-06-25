@@ -15,7 +15,7 @@ export type UI_Mask = X.XChoice<{
     }>
 }>
 
-export const ui_mask = (): UI_Mask => {
+export function ui_mask(): UI_Mask {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
@@ -42,11 +42,11 @@ export const ui_mask = (): UI_Mask => {
     })
 }
 
-export const run_mask = async (
+export async function run_mask(
     //
-    x: UI_Mask['$Value'],
+    x: OutputFor<typeof ui_mask>,
     imageOverride?: Maybe<MediaImageL>,
-): Promise<HasSingle_MASK | null> => {
+): Promise<HasSingle_MASK | null> {
     const p = x.mask
     if (p == null) return null
 

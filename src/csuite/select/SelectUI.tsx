@@ -30,7 +30,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     s.openMenu()
                 }
             }}
-            onBlur={s.onBlur}
+            onBlur={(ev) => s.onBlur(ev)}
         >
             <Frame base={{ contrast: 0.05 }} hover className='flex-1 h-full '>
                 <div // ANCHOR

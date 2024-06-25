@@ -314,7 +314,7 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onBlur = (_ev: FocusEvent<HTMLDivElement, Element>) => {
+    onBlur(_ev: FocusEvent<HTMLDivElement, Element>) {
         this.closeMenu()
     }
 

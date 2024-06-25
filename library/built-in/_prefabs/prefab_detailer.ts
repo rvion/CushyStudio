@@ -8,7 +8,7 @@ const handNegativeDefault = 'bad hand, bad anatomy, bad details'
 const eyePositiveDefault = 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 const eyeNegativeDefault = 'bad eyes, bad anatomy, bad details'
 
-export const ui_refiners = () => {
+export function ui_refiners() {
     const form = getCurrentForm()
     return form.fields(
         {

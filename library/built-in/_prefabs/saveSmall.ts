@@ -1,6 +1,6 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_customSave = () => {
+export function ui_customSave() {
     const form = getCurrentForm()
     return form
         .group({

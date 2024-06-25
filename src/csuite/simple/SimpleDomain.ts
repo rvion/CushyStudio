@@ -39,93 +39,94 @@ export class SimpleDomain implements Domain {
         })
     }
 
-    time = (config: Widget_string_config = {}): SS.SString => {
+    time(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'time', ...config })
     }
 
-    date = (config: Widget_string_config = {}): SS.SString => {
+    date(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'date', ...config })
     }
 
-    datetime = (config: Widget_string_config = {}): SS.SString => {
+    datetime(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'datetime-local', ...config })
     }
 
-    password = (config: Widget_string_config = {}): SS.SString => {
+    password(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'password', ...config })
     }
 
-    email = (config: Widget_string_config = {}): SS.SString => {
+    email(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'email', ...config })
     }
 
-    url = (config: Widget_string_config = {}): SS.SString => {
+    url(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'url', ...config })
     }
 
-    string = (config: Widget_string_config = {}): SS.SString => {
+    string(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', config)
     }
 
-    text = (config: Widget_string_config = {}): SS.SString => {
+    text(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', config)
     }
 
-    textarea = (config: Widget_string_config = {}): SS.SString => {
+    textarea(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { textarea: true, ...config })
     }
 
-    boolean = (config: Widget_bool_config = {}): SS.SBool => {
+    boolean(config: Widget_bool_config = {}): SS.SBool {
         return new SimpleBlueprint<Widget_bool>('bool', config)
     }
 
-    bool = (config: Widget_bool_config = {}): SS.SBool => {
+    bool(config: Widget_bool_config = {}): SS.SBool {
         return new SimpleBlueprint<Widget_bool>('bool', config)
     }
 
-    size = (config: Widget_size_config = {}): SS.SSize => {
+    size(config: Widget_size_config = {}): SS.SSize {
         return new SimpleBlueprint<Widget_size>('size', config)
     }
 
-    seed = (config: Widget_seed_config = {}): SS.SSeed => {
+    seed(config: Widget_seed_config = {}): SS.SSeed {
         return new SimpleBlueprint<Widget_seed>('seed', config)
     }
 
-    color = (config: Widget_color_config = {}): SS.SColor => {
+    color(config: Widget_color_config = {}): SS.SColor {
         return new SimpleBlueprint<Widget_color>('color', config)
     }
 
-    colorV2 = (config: Widget_string_config = {}): SS.SString => {
+    colorV2(config: Widget_string_config = {}): SS.SString {
         return new SimpleBlueprint<Widget_string>('str', { inputType: 'color', ...config })
     }
 
-    matrix = (config: Widget_matrix_config): SS.SMatrix => {
+    matrix(config: Widget_matrix_config): SS.SMatrix {
         return new SimpleBlueprint<Widget_matrix>('matrix', config)
     }
 
-    button = <K>(config: Widget_button_config): SS.SButton<K> => {
+    button<K>(config: Widget_button_config): SS.SButton<K> {
         return new SimpleBlueprint<Widget_button<K>>('button', config)
     }
 
     /** variants: `header` */
-    markdown = (config: Widget_markdown_config | string): SS.SMarkdown =>
-        new SimpleBlueprint<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
-
+    markdown(config: Widget_markdown_config | string): SS.SMarkdown {
+        return new SimpleBlueprint<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+    }
     /** [markdown variant]: inline=true, label=false */
-    header = (config: Widget_markdown_config | string): SS.SMarkdown =>
-        new SimpleBlueprint<Widget_markdown>(
+    header(config: Widget_markdown_config | string): SS.SMarkdown {
+        return new SimpleBlueprint<Widget_markdown>(
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config },
         )
+    }
 
-    int = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
+    int(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
         return new SimpleBlueprint<Widget_number>('number', { mode: 'int', ...config })
     }
 
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
+    percent(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
         return new SimpleBlueprint<Widget_number>('number', {
             mode: 'int',
             default: 100,
@@ -137,74 +138,75 @@ export class SimpleDomain implements Domain {
         })
     }
 
-    float = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
+    float(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
         return new SimpleBlueprint<Widget_number>('number', { mode: 'float', ...config })
     }
 
-    number = (config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber => {
+    number(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
         return new SimpleBlueprint<Widget_number>('number', { mode: 'float', ...config })
     }
 
-    list = <const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> => {
+    list<const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> {
         return new SimpleBlueprint<Widget_list<T>>('list', config)
     }
 
-    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): SS.SSelectOne<T> => {
+    selectOne<const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): SS.SSelectOne<T> {
         return new SimpleBlueprint<Widget_selectOne<T>>('selectOne', config)
     }
 
-    selectOneV2 = (p: string[]): SS.SSelectOne<BaseSelectEntry> => {
+    selectOneV2(p: string[]): SS.SSelectOne<BaseSelectEntry> {
         return new SimpleBlueprint<Widget_selectOne<BaseSelectEntry>>('selectOne', {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
         })
     }
 
-    selectOneV3 = <T extends string>(
+    selectOneV3<T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): SS.SSelectOne_<T> => {
+    ): SS.SSelectOne_<T> {
         return new SimpleBlueprint<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
-    selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): SS.SSelectMany<T> => {
+    selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): SS.SSelectMany<T> {
         return new SimpleBlueprint<Widget_selectMany<T>>('selectMany', config)
     }
 
     /** see also: `fields` for a more practical api */
-    group = <const T extends SchemaDict>(config: Widget_group_config<T> = {}): SS.SGroup<T> => {
+    group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): SS.SGroup<T> {
         return new SimpleBlueprint<Widget_group<T>>('group', config)
     }
 
-    fields = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): SS.SGroup<T> => {
+    fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): SS.SGroup<T> {
         return new SimpleBlueprint<Widget_group<T>>('group', { items: fields, ...config })
     }
 
-    choice = <const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> => {
+    choice<const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
         return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: false, ...config })
     }
 
-    choices = <const T extends { [key: string]: IBlueprint }>(
-        config: Omit<Widget_choices_config<T>, 'multi'>,
-    ): SS.SChoices<T> => {
+    choices<const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
         return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: true, ...config })
     }
 
-    ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
-        new SimpleBlueprint<Widget_group<T>>('group', config)
+    ok<const T extends SchemaDict>(config: Widget_group_config<T> = {}) {
+        return new SimpleBlueprint<Widget_group<T>>('group', config)
+    }
 
     /** simple choice alternative api */
-    tabs = <const T extends { [key: string]: IBlueprint }>(
+    tabs<const T extends { [key: string]: IBlueprint }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
-    ) => new SimpleBlueprint<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    ) {
+        return new SimpleBlueprint<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    }
 
     // optional wrappers
-    optional = <const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> => {
+    optional<const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> {
         return new SimpleBlueprint<Widget_optional<T>>('optional', p)
     }
 
-    llmModel = (p: { default?: OpenRouter_Models } = {}) => {
+    llmModel(p: { default?: OpenRouter_Models } = {}) {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = p.default ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
@@ -218,7 +220,7 @@ export class SimpleDomain implements Domain {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
+    shared<W extends IBlueprint>(key: string, spec: W): Widget_shared<W> {
         const prevSerial = this.form.shared[key]
         let widget
         if (prevSerial && prevSerial.type === spec.type) {
@@ -232,12 +234,12 @@ export class SimpleDomain implements Domain {
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
-    _HYDRATE = <T extends IBlueprint>(
+    _HYDRATE<T extends IBlueprint>(
         //
         parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): T['$Field'] => {
+    ): T['$Field'] {
         const w = this.__HYDRATE(parent, spec, serial) as T['$Field']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
@@ -253,12 +255,12 @@ export class SimpleDomain implements Domain {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends IBlueprint>(
+    private __HYDRATE<T extends IBlueprint>(
         //
         parent: BaseField | null,
         spec: T,
         serial: any | null,
-    ): BaseField<any> /* T['$Field'] */ => {
+    ): BaseField<any> /* T['$Field'] */ {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)

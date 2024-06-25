@@ -17,7 +17,8 @@ import { run_cnet_Tile, ui_subform_Tile } from './prefab_cnet_tile'
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
     const form: FormBuilder = getCurrentForm()
-    const applyDuringUpscale = form
+
+    const applyDuringUpscale: X.Shared<X.XBool> = form
         .bool({
             tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
             label2: 'Apply during upscale',
@@ -32,7 +33,6 @@ export const ui_cnet = () => {
             icon: 'mdiCompass',
             box: { base: { hue: 90, chroma: 0.1 } },
             tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-            // label: false,
             element: () =>
                 form.group({
                     label: 'Controlnet Image',
@@ -92,11 +92,11 @@ export type Cnet_return = {
     ckpt_return: _MODEL
 }
 
-export const run_cnet = async (
+export async function run_cnet(
     //
     opts: OutputFor<typeof ui_cnet>,
     ctx: Cnet_args,
-) => {
+): Promise<Cnet_return> {
     const run = getCurrentRun()
     const cnetList = opts // opts?.controlNetList
     let args: Cnet_args = { ...ctx }

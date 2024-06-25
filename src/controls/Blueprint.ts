@@ -1,6 +1,6 @@
+import type { CovariantFC } from '../csuite'
 import type { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
 import type { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
-import type { Widget_shared } from '../csuite/fields/shared/WidgetShared'
 import type { BaseField } from '../csuite/model/BaseField'
 import type { IBlueprint } from '../csuite/model/IBlueprint'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
@@ -10,16 +10,17 @@ import { createElement } from 'react'
 import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
 import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
+import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export class Blueprint<Field extends BaseField = BaseField> implements IBlueprint<Field> {
+export class Blueprint<out Field extends BaseField = BaseField> implements IBlueprint<Field> {
     $Field!: Field
     $Type!: Field['type']
     $Config!: Field['$Config']
     $Serial!: Field['$Serial']
     $Value!: Field['$Value']
 
-    LabelExtraUI = (p: { widget: Field }) =>
+    LabelExtraUI: CovariantFC<{ widget: Field }> = (p: { widget: Field }) =>
         createElement(InstallRequirementsBtnUI, {
             active: isWidgetOptional(p.widget) ? p.widget.serial.active : true,
             requirements: this.requirements,
@@ -42,9 +43,10 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
     }
 
     reactions: {
-        expr: (self: Field['$Field']) => any
-        effect: (arg: any, self: Field['$Field']) => void
+        expr(self: Field['$Field']): any
+        effect(arg: any, self: Field['$Field']): void
     }[] = []
+
     addReaction<T>(
         //
         expr: (self: Field['$Field']) => T,
@@ -57,14 +59,17 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
     // Requirements (CushySpecifc)
     readonly requirements: Requirements[] = []
 
-    addRequirements = (requirements: Maybe<Requirements | Requirements[]>) => {
+    addRequirements(requirements: Maybe<Requirements | Requirements[]>) {
         if (requirements == null) return this
         if (Array.isArray(requirements)) this.requirements.push(...requirements)
         else this.requirements.push(requirements)
+        // this.🐌
         return this
     }
 
-    Make = <X extends BaseField>(type: X['type'], config: X['$Config']) => new Blueprint(type, config)
+    Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
+        return new Blueprint(type, config)
+    }
 
     constructor(
         //
@@ -81,7 +86,7 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
 
     /** clone the spec, and patch the cloned config */
     withConfig(config: Partial<Field['$Config']>): Blueprint<Field> {
-        const mergedConfig = { ...this.config, ...config }
+        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
         const cloned = new Blueprint<Field>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
@@ -89,8 +94,8 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
         return cloned
     }
 
-    optional = (startActive: boolean = false): X.XOptional<this> =>
-        new Blueprint<Widget_optional<this>>('optional', {
+    optional(startActive: boolean = false): X.XOptional<this> {
+        return new Blueprint<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -99,9 +104,14 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
+    }
 
-    shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
+    shared(key: string): X.Shared<this> {
+        return getCurrentForm_IMPL().shared(key, this)
+    }
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new Blueprint(this.type, { ...this.config, hidden: true })
+    hidden() {
+        return this.withConfig({ hidden: true })
+    }
 }
