@@ -96,7 +96,7 @@ export const SelectOptionUI = observer(function FooUI_<T>({
             mode={mode}
             preventDefault
             showToggleButtonBox
-            hovered={s.selectedIndex === index}
+            hovered={(b) => b || s.selectedIndex === index}
             value={isSelected}
             onValueChange={(value) => {
                 if (value != isSelected) s.selectOption(index)

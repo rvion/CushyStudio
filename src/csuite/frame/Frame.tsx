@@ -23,7 +23,7 @@ export type FrameProps = {
     tooltipPlacement?: RevealPlacement
 
     /** allow to pretend the frame is hovered */
-    hovered?: boolean | undefined
+    hovered?: (reallyHovered: boolean) => boolean | undefined
 
     // logic --------------------------------------------------
     /** TODO: */
@@ -84,7 +84,7 @@ export const Frame = observer(
         const prevCtx = useContext(CurrentStyleCtx)
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
-        const hovered = hovered__ ?? hovered_
+        const hovered = hovered__ ? hovered__(hovered_) : hovered_
         const variables: { [key: string]: string | number } = {}
 
         // 👉 2024-06-12 rvion: we should probably be able to
