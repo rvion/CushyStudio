@@ -18,7 +18,8 @@ export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI
             tw={[
                 //
                 isHorizontal ? `flex flex-wrap` : `flex flex-col`,
-                'w-full overflow-auto',
+                'w-full',
+                // 'w-full overflow-auto',
                 p.className,
             ]}
         >

@@ -149,6 +149,7 @@ export const Frame = observer(
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent) => {
+            // console.log(`[🤠] hover`, ev.currentTarget)
             if (p.hover != null) setHovered(true)
             if (p.tooltip != null)
                 tooltipStuff.tooltip = {

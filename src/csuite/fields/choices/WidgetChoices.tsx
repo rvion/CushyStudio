@@ -99,6 +99,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         }))
     }
 
+    /** hack so optional fields do not increase nesting twice */
+    get indentChildren() {
+        return 0
+    }
+
     /** array of all active branch keys */
     get activeBranches(): (keyof T & string)[] {
         return Object.keys(this.serial.branches).filter((x) => this.serial.branches[x])

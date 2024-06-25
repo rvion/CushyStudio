@@ -9,7 +9,14 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     className?: string
     widget: BaseField
 }) {
-    if (!p.widget.isCollapsed && !p.widget.isCollapsible) return null
+    if (!p.widget.isCollapsed && !p.widget.isCollapsible)
+        return (
+            <Ikon._
+                //
+                className={p.className}
+                tw='COLLAPSE-PASSTHROUGH'
+            />
+        )
     return (
         <WidgetLabelCaretAlwaysUI //
             className={p.className}

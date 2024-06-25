@@ -89,9 +89,13 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
     )
 
+    get indentChildren() {
+        return 1
+    }
+
     get depth(): number {
         if (this.parent == null) return 0
-        return this.parent.depth + 1
+        return this.parent.depth + this.parent.indentChildren
     }
 
     // abstract readonly id: string
@@ -329,7 +333,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         // if the widget do NOT have a body => we do not show the border
         if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
-        return true
+        return 8
     }
 
     /** root form this widget has benn registered to */

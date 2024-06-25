@@ -145,8 +145,8 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
     }
 
     /** hack so optional fields do not increase nesting twice */
-    get depth() {
-        return this.parent?.depth ?? 0
+    get indentChildren() {
+        return 0
     }
 
     get subWidgets() {
