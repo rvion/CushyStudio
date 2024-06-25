@@ -5,7 +5,7 @@ import { ipAdapterDoc } from './_ipAdapterDoc'
 import { ui_ipadapter_advancedSettings, type UI_ipadapter_advancedSettings } from './prefab_ipAdapter_baseV2'
 
 // ======================================================================================================
-type UI_FaceIDImageInput = X.XGroup<{
+export type UI_FaceIDImageInput = X.XGroup<{
     image: X.XImage
     advanced: X.XGroup<{
         sharpening: X.XNumber
@@ -41,7 +41,7 @@ export function ui_FaceIDImageInput(form: FormBuilder): UI_FaceIDImageInput {
 
 // ======================================================================================================
 // 🅿️ IPAdapter Basic
-type UI_IPAdapterFaceIDV2 = X.XGroup<{
+export type UI_IPAdapterFaceIDV2 = X.XGroup<{
     baseImage: UI_FaceIDImageInput
     settings: X.XGroup<{
         weight: X.XNumber

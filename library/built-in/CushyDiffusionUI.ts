@@ -5,17 +5,17 @@ import { ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
 import { ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
-import { ui_refiners } from './_prefabs/prefab_detailer'
+import { ui_refiners, type UI_Refiners } from './_prefabs/prefab_detailer'
 import { ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { ui_mask } from './_prefabs/prefab_mask'
 import { ui_model } from './_prefabs/prefab_model'
-import { ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
-import { ui_recursive } from './_prefabs/prefab_recursive'
-import { ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
+import { ui_advancedPrompt, type UI_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
+import { ui_recursive, type UI_recursive } from './_prefabs/prefab_recursive'
+import { ui_regionalPrompting_v1, type UI_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { ui_sampler } from './_prefabs/prefab_sampler'
 import { ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
-import { ui_watermark_v1 } from './_prefabs/prefab_watermark'
+import { ui_watermark_v1, type UI_watermark_v1 } from './_prefabs/prefab_watermark'
 import { ui_customSave } from './_prefabs/saveSmall'
 
 export const CushyDiffusionUI = (ui: FormBuilder) => ({
@@ -54,23 +54,39 @@ export const CushyDiffusionUI = (ui: FormBuilder) => ({
     extra: extra(ui),
 })
 
-function extra(ui: FormBuilder) {
+// ================================================================================
+
+export type UI_extra = X.XChoices<{
+    regionalPrompt: UI_regionalPrompting_v1
+    refine: UI_Refiners
+    reversePositiveAndNegative: X.XEmpty
+    makeAVideo: X.XEmpty
+    summary: X.XEmpty
+    gaussianSplat: X.XEmpty
+    promtPlus: UI_advancedPrompt
+    displayAsBeerCan: X.XEmpty
+    displayAsSpriteSheet: X.XEmpty
+    recursiveImgToImg: UI_recursive
+    watermark: UI_watermark_v1
+    fancyWatermark: X.XEmpty
+}>
+function extra(ui: FormBuilder): UI_extra {
     return ui.choices({
         appearance: 'tab',
         icon: 'mdiAlien',
         items: {
             regionalPrompt: ui_regionalPrompting_v1(),
             refine: ui_refiners(),
-            reversePositiveAndNegative: ui.group({ label: 'swap +/-' }),
-            makeAVideo: ui.group(),
-            summary: ui.group(),
-            gaussianSplat: ui.group(),
+            reversePositiveAndNegative: ui.empty({ label: 'swap +/-' }),
+            makeAVideo: ui.empty(),
+            summary: ui.empty(),
+            gaussianSplat: ui.empty(),
             promtPlus: ui_advancedPrompt(),
-            displayAsBeerCan: ui.group({}),
-            displayAsSpriteSheet: ui.group({}),
+            displayAsBeerCan: ui.empty(),
+            displayAsSpriteSheet: ui.empty(),
             recursiveImgToImg: ui_recursive(),
             watermark: ui_watermark_v1(),
-            fancyWatermark: ui.group(),
+            fancyWatermark: ui.empty(),
         },
     })
 }

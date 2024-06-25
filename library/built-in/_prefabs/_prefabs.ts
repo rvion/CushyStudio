@@ -16,7 +16,7 @@ import type { FormBuilder } from '../../../src/controls/FormBuilder'
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
 
-type UI_HighResFix = X.XGroup<{
+export type UI_HighResFix = X.XGroup<{
     upscaleMethod: X.XSelectOne<{ readonly id: 'regular' } | { readonly id: 'Neural 1.5' } | { readonly id: 'Neural XL' }>
     scaleFactor: X.XNumber
     steps: X.XNumber

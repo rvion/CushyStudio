@@ -8,7 +8,7 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter Basic ===================================================
 
-type UI_subform_IPAdapter = X.XGroup<
+export type UI_subform_IPAdapter = X.XGroup<
     {
         models: X.XGroup<{
             cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>

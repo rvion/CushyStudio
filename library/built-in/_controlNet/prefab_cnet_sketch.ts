@@ -2,7 +2,18 @@ import { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Sketch FORM ===================================================
-export const ui_subform_Sketch = () => {
+
+export type UI_subform_Sketch = X.XGroup<{
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+    cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+}>
+export function ui_subform_Sketch(): UI_subform_Sketch {
     const form = getCurrentForm()
     return form
         .group({

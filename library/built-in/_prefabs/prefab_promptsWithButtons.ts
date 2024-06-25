@@ -25,7 +25,7 @@ export type UI_advancedPrompt = X.XList<
     }>
 >
 
-export const ui_advancedPrompt = (): UI_advancedPrompt => {
+export function ui_advancedPrompt(): UI_advancedPrompt {
     const form = getCurrentForm()
     return form.list({
         min: 1,

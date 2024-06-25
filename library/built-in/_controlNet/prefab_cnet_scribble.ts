@@ -4,7 +4,19 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Scribble FORM ===================================================
-export const ui_subform_Scribble = () => {
+
+export type UI_subform_Scribble = X.XGroup<{
+    preprocessor: UI_subform_Scribble_Preprocessor
+    cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+export function ui_subform_Scribble(): UI_subform_Scribble {
     const form: FormBuilder = getCurrentForm()
     return form
         .group({
@@ -26,7 +38,14 @@ export const ui_subform_Scribble = () => {
         ])
 }
 
-export const ui_subform_Scribble_Preprocessor = () => {
+// ========================================================================================
+export type UI_subform_Scribble_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    ScribbleLines: UI_subform_Scribble_Lines
+    FakeScribble: UI_subform_Fake_Scribble_Lines
+    XDOG: UI_subform_Scribble_XDoG_Lines
+}>
+export function ui_subform_Scribble_Preprocessor(): UI_subform_Scribble_Preprocessor {
     const form = getCurrentForm()
     return form.choice({
         label: 'Scribble Preprocessor',
@@ -34,7 +53,7 @@ export const ui_subform_Scribble_Preprocessor = () => {
         appearance: 'tab',
         startCollapsed: true,
         items: {
-            None: form.group(),
+            None: form.empty(),
             ScribbleLines: ui_subform_Scribble_Lines(),
             FakeScribble: ui_subform_Fake_Scribble_Lines(),
             XDOG: ui_subform_Scribble_XDoG_Lines(),
@@ -42,7 +61,11 @@ export const ui_subform_Scribble_Preprocessor = () => {
     })
 }
 
-export const ui_subform_Scribble_Lines = () => {
+// ========================================================================================
+export type UI_subform_Scribble_Lines = X.XGroup<{
+    saveProcessedImage: X.XBool
+}>
+export const ui_subform_Scribble_Lines = (): UI_subform_Scribble_Lines => {
     const form = getCurrentForm()
     return form.group({
         label: 'Scribble Lines',
@@ -51,11 +74,15 @@ export const ui_subform_Scribble_Lines = () => {
     })
 }
 
-export const ui_subform_Fake_Scribble_Lines = () => {
+// ========================================================================================
+export type UI_subform_Fake_Scribble_Lines = X.XGroup<{
+    safe: X.XBool
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Fake_Scribble_Lines(): UI_subform_Fake_Scribble_Lines {
     const form = getCurrentForm()
     return form.group({
         label: 'Fake Scribble',
-        // startCollapsed: true,
         items: {
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: true }),
@@ -63,7 +90,12 @@ export const ui_subform_Fake_Scribble_Lines = () => {
     })
 }
 
-export const ui_subform_Scribble_XDoG_Lines = () => {
+// ========================================================================================
+export type UI_subform_Scribble_XDoG_Lines = X.XGroup<{
+    threshold: X.XNumber
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Scribble_XDoG_Lines(): UI_subform_Scribble_XDoG_Lines {
     const form = getCurrentForm()
     return form.group({
         label: 'Scribble_XDoG_Lines',
@@ -75,7 +107,8 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
     })
 }
 
-// 🅿️ Scribble RUN ===================================================
+// 🅿️ Scribble RUN =========================================================================
+
 export const run_cnet_Scribble = (
     Scribble: OutputFor<typeof ui_subform_Scribble>,
     image: _IMAGE,

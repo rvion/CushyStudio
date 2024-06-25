@@ -4,7 +4,18 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Depth FORM ===================================================
-export const ui_subform_Depth = () => {
+export type UI_subform_Depth = X.XGroup<{
+    preprocessor: UI_subform_Depth_Preprocessor
+    cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+export function ui_subform_Depth(): UI_subform_Depth {
     const ui: FormBuilder = getCurrentForm()
     return ui
         .group({
@@ -31,14 +42,21 @@ export const ui_subform_Depth = () => {
         ])
 }
 
-export const ui_subform_Depth_Preprocessor = () => {
+// ================================================================================
+export type UI_subform_Depth_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    Midas: UI_subform_Depth_Midas
+    Leres: UI_subform_Depth_LeReS
+    Zoe: UI_subform_Depth_Zoe
+}>
+export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
         default: 'Midas',
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             Midas: ui_subform_Depth_Midas(),
             Leres: ui_subform_Depth_LeReS(),
             Zoe: ui_subform_Depth_Zoe(),
@@ -55,7 +73,7 @@ export type UI_subform_Depth_Midas = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 
-export const ui_subform_Depth_Midas = (): UI_subform_Depth_Midas => {
+export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Midas',
@@ -71,7 +89,14 @@ export const ui_subform_Depth_Midas = (): UI_subform_Depth_Midas => {
     })
 }
 
-export const ui_subform_Depth_LeReS = () => {
+// ================================================================================
+export type UI_subform_Depth_LeReS = X.XGroup<{
+    rm_nearest: X.XNumber
+    rm_background: X.XNumber
+    boost: X.XBool
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'LeReS',
@@ -85,7 +110,11 @@ export const ui_subform_Depth_LeReS = () => {
     })
 }
 
-export const ui_subform_Depth_Zoe = () => {
+// ================================================================================
+export type UI_subform_Depth_Zoe = X.XGroup<{
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Zoe',

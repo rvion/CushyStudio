@@ -199,16 +199,16 @@ export class FormBuilder implements Domain {
     listExt = <T extends IBlueprint>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Blueprint<Widget_listExt<T>>('listExt', config)
     }
-    timeline = <T extends IBlueprint>(config: Widget_listExt_config<T>) => {
+    timeline = <T extends IBlueprint>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Blueprint<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
     }
-    regional = <T extends IBlueprint>(config: Widget_listExt_config<T>) => {
+    regional = <T extends IBlueprint>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Blueprint<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
     }
     selectOneV2 = <T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): X.XSelectOne<BaseSelectEntry<T>> => {
+    ): X.XSelectOne_<T> => {
         return new Blueprint<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {

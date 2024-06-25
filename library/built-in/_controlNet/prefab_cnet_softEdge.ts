@@ -4,7 +4,18 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ SoftEdge FORM ===================================================
-export const ui_subform_SoftEdge = () => {
+export type UI_subform_SoftEdge = X.XGroup<{
+    preprocessor: UI_subform_SoftEdge_Preprocessor
+    cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
     const form: FormBuilder = getCurrentForm()
     return form
         .group({
@@ -25,7 +36,13 @@ export const ui_subform_SoftEdge = () => {
         ])
 }
 
-export const ui_subform_SoftEdge_Preprocessor = () => {
+// ====================================================================================
+export type UI_subform_SoftEdge_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    HED: UI_subform_SoftEdge_Preprocessor_Options
+    Pidinet: UI_subform_SoftEdge_Preprocessor_Options
+}>
+export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preprocessor {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         label: 'SoftEdge Edge Preprocessor',
@@ -33,14 +50,19 @@ export const ui_subform_SoftEdge_Preprocessor = () => {
         default: 'HED',
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             HED: ui_subform_SoftEdge_Preprocessor_Options(form),
             Pidinet: ui_subform_SoftEdge_Preprocessor_Options(form),
         },
     })
 }
 
-export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
+// ====================================================================================
+export type UI_subform_SoftEdge_Preprocessor_Options = X.XGroup<{
+    safe: X.XBool
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_SoftEdge_Preprocessor_Options(form: FormBuilder): UI_subform_SoftEdge_Preprocessor_Options {
     return form.group({
         label: 'Settings',
         startCollapsed: true,

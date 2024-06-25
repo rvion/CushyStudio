@@ -1,7 +1,17 @@
 import type { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
-export function ui_watermark_v1() {
+export type UI_watermark_v1 = X.XGroup<{
+    pos: X.XGroup<{ x: X.XNumber; y: X.XNumber }>
+    font: X.XSelectOne_<'Arial' | 'Times New Roman' | 'Courier New'>
+    format: X.XSelectOne_<'image/webp' | 'image/png' | 'image/jpeg'>
+    content: X.XString
+    color: X.XString
+    fontSize: X.XNumber
+    quality: X.XNumber
+    tool: X.XSelectOne_<'canvas' | 'konva'>
+}>
+export function ui_watermark_v1(): UI_watermark_v1 {
     const ui = getCurrentForm()
     return ui.fields({
         pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
