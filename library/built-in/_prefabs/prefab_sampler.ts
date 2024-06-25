@@ -3,14 +3,24 @@ import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export const ui_sampler = (p?: {
+export type UI_Sampler = X.XGroup<{
+    denoise: X.XNumber
+    steps: X.XNumber
+    cfg: X.XNumber
+    seed: X.XSeed
+    sampler_name: X.XEnum<Enum_KSampler_sampler_name>
+    scheduler: X.XEnum<Enum_KSampler_scheduler>
+}>
+
+type UiSampleProps = {
     denoise?: number
     steps?: number
     cfg?: number
     sampler_name?: Enum_KSampler_sampler_name
     scheduler?: Enum_KSampler_scheduler
     startCollapsed?: boolean
-}) => {
+}
+export function ui_sampler(p?: UiSampleProps): UI_Sampler {
     const form: FormBuilder = getCurrentForm()
     return form.fields(
         {
@@ -44,7 +54,12 @@ export type Ctx_sampler = {
 }
 
 // RUN -----------------------------------------------------------
-export const run_sampler = (run: Runtime, opts: OutputFor<typeof ui_sampler>, ctx: Ctx_sampler): { latent: KSampler } => {
+export const run_sampler = (
+    //
+    run: Runtime,
+    opts: OutputFor<typeof ui_sampler>,
+    ctx: Ctx_sampler,
+): { latent: KSampler } => {
     const graph = run.nodes
     // flow.output_text(`run_sampler with seed : ${opts.seed}`)
     const latent = graph.KSampler({

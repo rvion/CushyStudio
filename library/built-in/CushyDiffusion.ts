@@ -65,11 +65,11 @@ app({
         // START IMAGE -------------------------------------------------------------------------
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
-            ? /* 🔴 */ await (async () => ({
-                  /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
-                  /* 🔴 */ height: imgCtx.height,
-                  /* 🔴 */ width: imgCtx.width,
-                  /* 🔴 */
+            ? /* 🔴 HACKY  */
+              await (async () => ({
+                  latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
+                  height: imgCtx.height,
+                  width: imgCtx.width,
               }))()
             : await run_latent_v3({ opts: ui.latent, vae })
 

@@ -25,7 +25,7 @@ type UI_HighResFix = X.XGroup<{
     useMainSampler: X.XBool
 }>
 
-export function ui_highresfix(p: { activeByDefault?: true } = {}): UI_HighResFix {
+export function ui_highresfix(): UI_HighResFix {
     const form = getCurrentForm()
     return form.group({
         label: 'High Res Fix',
