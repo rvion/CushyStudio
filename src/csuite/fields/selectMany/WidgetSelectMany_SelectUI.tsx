@@ -3,7 +3,7 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolCheckboxUI } from '../../checkbox/InputBoolCheckboxUI'
+import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
 
 export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {
@@ -26,9 +26,9 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 equalityCheck={(a, b) => a.id === b.id}
                 onChange={(selectOption) => widget.toggleItem(selectOption)}
             />
-            <InputBoolCheckboxUI
+            <InputBoolFlipButtonUI
+                tooltip='Wrap items'
                 tw='self-start'
-                // box={{ border: 0 }}
                 icon={p.widget.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
                 value={p.widget.wrap}
                 onValueChange={(next) => (p.widget.wrap = next)}

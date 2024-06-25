@@ -15,9 +15,12 @@ export const ui_latent_v3 = () => {
         background: { hue: 270, chroma: 0.04 },
         items: {
             emptyLatent: form.group({
-                collapsed: false,
-                border: false,
-                items: { batchSize: batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
+                // collapsed: false,
+                // border: false,
+                items: {
+                    batchSize: batchSize,
+                    size: form.size({ label: false, collapsed: false, border: false }),
+                },
             }),
             image: form.group({
                 collapsed: false,

@@ -3,6 +3,7 @@ import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/Fiel
 import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
+import type { TabPositionConfig } from './TabPositionConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -10,7 +11,6 @@ import { BaseField } from '../../model/BaseField'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { TabPositionConfig } from './TabPositionConfig'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
 type DefaultBranches<T> = { [key in keyof T]?: boolean }

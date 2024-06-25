@@ -38,8 +38,13 @@ export const CushyDiffusionUI = (ui: FormBuilder) => ({
     latent: ui_latent_v3(),
     sampler: ui_sampler(),
     mask: ui_mask(),
-    highResFix: ui_highresfix().optional(true),
-    upscale: ui_upscaleWithModel().optional(),
+    upscaleV2: ui.choicesV2(
+        {
+            highResFix: ui_highresfix(),
+            upscaleWithModel: ui_upscaleWithModel().withConfig({ label: 'Model' }),
+        },
+        { icon: 'mdiArrowExpandAll' },
+    ),
     customSave: ui_customSave(),
     removeBG: ui_rembg_v1(),
     show3d: ui_3dDisplacement().optional(),

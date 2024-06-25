@@ -79,6 +79,16 @@ export class Blueprint<Field extends BaseField = BaseField> implements IBlueprin
             element: this,
         })
 
+    /** clone the spec, and patch the cloned config */
+    withConfig(config: Partial<Field['$Config']>): Blueprint<Field> {
+        const mergedConfig = { ...this.config, ...config }
+        const cloned = new Blueprint<Field>(this.type, mergedConfig)
+        // 🔴 Keep producers and reactions -> could probably be part of the ctor
+        cloned.producers = this.producers
+        cloned.reactions = this.reactions
+        return cloned
+    }
+
     optional = (startActive: boolean = false): X.XOptional<this> =>
         new Blueprint<Widget_optional<this>>('optional', {
             widget: this,

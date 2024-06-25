@@ -22,10 +22,9 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             className={p.className}
             hover
             tw={[
-                '!&:bg-red-500',
                 'COLLAPSE-PASSTHROUGH',
                 'minh-input',
-                'self-stretch',
+                // 'self-stretch',
                 'flex', // gap-0.5
                 'flex-none shrink-0',
                 'items-center',
