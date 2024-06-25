@@ -3,6 +3,7 @@ import type { IBlueprint, SchemaDict } from '../csuite/model/IBlueprint'
 import type { Domain } from '../csuite/model/IDomain'
 import type { Model } from '../csuite/model/Model'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
@@ -45,6 +46,7 @@ declare global {
         // attempt to make type safety better --------------------------------------------------------
         type Shared<T extends IBlueprint> = Widget_shared<T>
         type XGroup<T extends SchemaDict> = Blueprint<Widget_group<T>>
+        type XEmpty = Blueprint<Widget_group<NO_PROPS>>
         type XOptional<T extends IBlueprint> = Blueprint<Widget_optional<T>>
         type XBool = Blueprint<Widget_bool>
         type XShared<T extends IBlueprint> = Widget_shared<T>
@@ -249,8 +251,8 @@ export class FormBuilder implements Domain {
     ): X.XChoices<T> => {
         return new Blueprint<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
     }
-    ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
-        return new Blueprint<Widget_group<T>>('group', config)
+    empty = (config: Widget_group_config<NO_PROPS> = {}): X.XEmpty => {
+        return new Blueprint<Widget_group<NO_PROPS>>('group', config)
     }
     /** simple choice alternative api */
     tabs = <T extends { [key: string]: IBlueprint }>(

@@ -12,13 +12,13 @@ export const PanelStepsConf = CushyFormManager.form(
                 // outputSize: ui.remSize(),
                 show: ui.choicesV2(
                     {
-                        title: ui.ok(),
-                        app: ui.ok({ label: 'App illustration' }),
-                        draft: ui.ok({ label: 'Draft illustration' }),
-                        status: ui.ok(),
+                        title: ui.empty(),
+                        app: ui.empty({ label: 'App illustration' }),
+                        draft: ui.empty({ label: 'Draft illustration' }),
+                        status: ui.empty(),
                         outputs: ui_outputFilter(ui),
-                        executionTime: ui.ok(),
-                        date: ui.ok(),
+                        executionTime: ui.empty(),
+                        date: ui.empty(),
                     },
                     {
                         default: {
@@ -45,16 +45,16 @@ export const PanelStepsConf = CushyFormManager.form(
 function ui_outputFilter(ui: FormBuilder) {
     return ui.choicesV2(
         {
-            MediaTextL: ui.ok(),
-            MediaImageL: ui.ok(),
-            MediaVideoL: ui.ok(),
-            MediaSplatL: ui.ok(),
-            Media3dDisplacementL: ui.ok(),
-            ComfyPromptL: ui.ok(),
-            ComfyWorkflowL: ui.ok(),
-            StepL: ui.ok(),
-            MediaCustomL: ui.ok(),
-            RuntimeErrorL: ui.ok(),
+            MediaTextL: ui.empty(),
+            MediaImageL: ui.empty(),
+            MediaVideoL: ui.empty(),
+            MediaSplatL: ui.empty(),
+            Media3dDisplacementL: ui.empty(),
+            ComfyPromptL: ui.empty(),
+            ComfyWorkflowL: ui.empty(),
+            StepL: ui.empty(),
+            MediaCustomL: ui.empty(),
+            RuntimeErrorL: ui.empty(),
         },
         {
             // appearance: 'select',
