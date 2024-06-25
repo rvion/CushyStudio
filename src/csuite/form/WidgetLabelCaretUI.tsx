@@ -14,7 +14,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
             <Ikon._
                 //
                 className={p.className}
-                tw='COLLAPSE-PASSTHROUGH'
+                tw='COLLAPSE-PASSTHROUGH shrink-0'
             />
         )
     return (
@@ -38,14 +38,14 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
             <Ikon.mdiChevronRight
                 //
                 className={className}
-                tw='COLLAPSE-PASSTHROUGH'
+                tw='COLLAPSE-PASSTHROUGH shrink-0'
             />
         )
     return (
         <Ikon.mdiChevronDown
             //
             className={className}
-            tw='COLLAPSE-PASSTHROUGH'
+            tw='COLLAPSE-PASSTHROUGH shrink-0'
         />
     )
     // return (

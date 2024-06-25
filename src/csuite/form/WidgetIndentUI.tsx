@@ -9,6 +9,7 @@ export const WidgetIndentUI = observer(function WidgetIndentUI_(p: { depth: numb
                 height: '100%',
                 width: `${(depth - 1) * 1}rem`,
                 marginRight: '.2rem',
+                flexShrink: 0,
                 // background: 'red',
                 // borderRight: '1px solid black',
             }}
