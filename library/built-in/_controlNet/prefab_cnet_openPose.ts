@@ -4,7 +4,19 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ OPEN POSE FORM ===================================================
-export const ui_subform_OpenPose = () => {
+export type UI_subform_OpenPose = X.XGroup<{
+    preprocessor: UI_subform_OpenPose_Preprocessor
+    cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+
+export function ui_subform_OpenPose(): UI_subform_OpenPose {
     const form: FormBuilder = getCurrentForm()
     return form
         .fields(
@@ -31,14 +43,34 @@ export const ui_subform_OpenPose = () => {
         .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' }])
 }
 
-export const ui_subform_OpenPose_Preprocessor = () => {
+// ================================================================================================
+
+type UI_subform_OpenPose_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    DWPose: X.XGroup<{
+        detect_body: X.XBool
+        detect_face: X.XBool
+        detect_hand: X.XBool
+        bbox_detector: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector>
+        pose_estimator: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator>
+        saveProcessedImage: X.XBool
+    }>
+    OpenPose: X.XGroup<{
+        detect_body: X.XBool
+        detect_face: X.XBool
+        detect_hand: X.XBool
+        saveProcessedImage: X.XBool
+    }>
+}>
+
+function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         label: 'Preprocessor',
         startCollapsed: true,
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             DWPose: form.group({
                 label: 'Settings',
                 startCollapsed: true,
