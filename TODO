@@ -1,5 +1,5 @@
 --------------
-
+☐ make sure choices always show in the same order
 ☐ debug electron
     - https://github.com/nodejs/node/blob/main/doc/abi_version_registry.json
     - https://www.electronjs.org/blog/electron-31-0
