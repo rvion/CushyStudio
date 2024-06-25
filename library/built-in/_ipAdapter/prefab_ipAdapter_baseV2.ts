@@ -3,12 +3,22 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
 
+export type UI_ipadapter_advancedSettings = X.XGroup<{
+    startAtStepPercent: X.XNumber
+    endAtStepPercent: X.XNumber
+    adapterAttentionMask: X.XOptional<X.XImage>
+    weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+    embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+    noise: X.XNumber
+    unfold_batch: X.XBool
+}>
+
 export const ui_ipadapter_advancedSettings = (
     form: FormBuilder,
     start: number = 0,
     end: number = 1,
     weight_type: Enum_IPAdapterAdvanced_weight_type = 'linear',
-) => {
+): UI_ipadapter_advancedSettings => {
     return form.fields(
         {
             startAtStepPercent: form.float({ default: start, min: 0, max: 1, step: 0.1 }),
@@ -32,7 +42,17 @@ export const ui_ipadapter_advancedSettings = (
     )
 }
 
-export const ui_IPAdapterImageInput = (form: FormBuilder) => {
+// -------------------------------------------------------------------------------------------
+
+export type UI_IPAdapterImageInput = X.XGroup<{
+    image: X.XImage
+    advanced: X.XGroup<{
+        imageWeight: X.XNumber
+        embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
+        imageAttentionMask: X.XOptional<X.XImage>
+    }>
+}>
+export function ui_IPAdapterImageInput(form: FormBuilder): UI_IPAdapterImageInput {
     return form.fields(
         {
             image: form.image({ label: 'Image' }),
@@ -71,38 +91,38 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
 }
 
 // 🅿️ IPAdapter Basic ===================================================
-export const ui_IPAdapterV2 = () => {
+export type UI_IPAdapterV2 = X.XGroup<{
+    images: X.XList<UI_IPAdapterImageInput>
+    settings: X.XGroup<{
+        adapterStrength: X.XNumber
+        models: X.XGroup<{
+            type: X.XEnum<Enum_AV$_StyleApply_preset>
+        }>
+        advancedSettings: UI_ipadapter_advancedSettings
+    }>
+    help: X.XMarkdown
+}>
+
+export function ui_IPAdapterV2(): UI_IPAdapterV2 {
     const form = getCurrentForm()
     return form
         .fields(
             {
                 //baseImage: ui_IPAdapterImageInput(form),
-                images: form.list({
-                    element: ui_IPAdapterImageInput(form),
-                    min: 1,
-                }),
+                images: form.list({ element: ui_IPAdapterImageInput(form), min: 1 }),
                 settings: form.fields(
                     {
                         adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
                         models: form.fields(
-                            {
-                                type: form.enum.Enum_IPAdapterUnifiedLoader_preset({ default: 'STANDARD (medium strength)' }),
-                            },
-                            {
-                                startCollapsed: true,
-                                summary: (ui) => {
-                                    return `model:${ui.type}`
-                                },
-                            },
+                            { type: form.enum.Enum_IPAdapterUnifiedLoader_preset({ default: 'STANDARD (medium strength)' }) },
+                            { startCollapsed: true, summary: (ui) => `model:${ui.type}` },
                         ),
                         advancedSettings: ui_ipadapter_advancedSettings(form),
                     },
                     {
                         label: 'IP Adapter Settings',
                         startCollapsed: true,
-                        summary: (ui) => {
-                            return `strength:${ui.adapterStrength} | model:${ui.models.type}|`
-                        },
+                        summary: (ui) => `strength:${ui.adapterStrength} | model:${ui.models.type}|`,
                     },
                 ),
                 help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
