@@ -31,6 +31,7 @@ import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
+import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
@@ -83,6 +84,8 @@ import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 
 export class STATE {
+    Channel = Channel // WIP remove me 2024-06-25 🔴
+
     // LEAVE THIS AT THE TOP OF THIS CLASS
     __INJECTION__ = (() => {
         //  globally register the state as this
@@ -623,6 +626,7 @@ export class STATE {
         makeAutoObservable(this, {
             comfyUIIframeRef: false,
             wildcards: false,
+            Channel: false, // WIP remove me 2024-06-25 🔴
         })
         void this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
