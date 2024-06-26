@@ -3,7 +3,6 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
-import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 
 export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p: BoolButtonProps) {
     const isActive = p.value ?? false

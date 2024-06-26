@@ -11,7 +11,9 @@ import { Trigger } from '../csuite/trigger/Trigger'
 export class Panel<Props> {
     $Props!: Props
 
+    /** default command to open the panel with default props */
     defaultCommand: Command
+
     constructor(
         public p: {
             //

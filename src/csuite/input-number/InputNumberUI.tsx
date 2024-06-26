@@ -7,7 +7,6 @@ import React, { useEffect, useMemo } from 'react'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
-import { Ikon } from '../icons/iconHelpers'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
