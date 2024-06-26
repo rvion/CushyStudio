@@ -16,6 +16,7 @@ import * as path from 'pathe'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
+import { toJSONError } from '../csuite/errors/toJSONError'
 import { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
@@ -369,7 +370,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             // console.error('🌠', 'RUN FAILURE')
             this.Cushy.db.runtime_error.create({
                 message: error.message ?? 'no-message',
-                infos: error,
+                infos: toJSONError(error),
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
