@@ -125,8 +125,15 @@ export class TableInfo<
                 data[col.name] = null
                 continue
             }
-            // when value is present
-            data[col.name] = JSON.parse(rawCol)
+            // 2024-06-26 ------------------------------------------------------------
+            try {
+                // when value is present
+                data[col.name] = JSON.parse(rawCol)
+            } catch (e) {
+                console.log(`[🔴] ERROR parsing field ${col.name} of table ${this.sql_name}`)
+                throw e
+            }
+            // -----------------------------------------------------------------------
         }
         return data
     }
