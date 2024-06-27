@@ -1,13 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
-import { themeConf } from '../../state/conf/themeConf'
 import { Frame } from '../frame/Frame'
 import { tooltipStuff } from '../frame/tooltip'
 import { useDelay } from './useDelay'
 
 export const TooltipUI = observer(function TooltipUI_(p: {}) {
-    const conf = themeConf.value.tooltipDelay
+    const conf = cushy.preferences.interface.value.tooltipDelay
 
     const isDelayed = useDelay(conf, [tooltipStuff.tooltip, conf])
     const tooltip = tooltipStuff.tooltip

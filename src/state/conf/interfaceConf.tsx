@@ -9,17 +9,54 @@ export const interfaceConf = CushyFormManager.form(
                 // name copied from flexlayout; will be used
                 tabSetEnableSingleTabStretch: ui.boolean({
                     label: 'Auto-Hide Tabset',
+                    text: 'Auto-Hide Tabset',
                     tooltip: 'Hide the tabset when there is only one tab',
                     default: false,
                 }),
 
-                // ...
-                tooltipDelay: ui.int({ min: 0, softMax: 1000, default: 500, unit: 'ms', suffix: 'ms' }).optional(true),
-                toolBarIconSize: ui.int({ min: 14, softMax: 128, default: 48, suffix: 'px' }),
-                // fields group
+                //
+                tooltipDelay: ui
+                    .int({
+                        label: false,
+                        justifyLabel: false,
+                        text: 'Tooltip Delay',
+                        tooltip:
+                            'How long in milliseconds that it takes for a tooltip to pop up when hovering over something that has a tooltip',
+                        min: 0,
+                        softMax: 1000,
+                        default: 500,
+                        unit: 'ms',
+                        suffix: 'ms',
+                    })
+                    .optional(true),
 
-                // 4. components
-                useDefaultCursorEverywhere: ui.boolean({ default: false }),
+                toolBarIconSize: ui.int({
+                    label: false,
+                    justifyLabel: false,
+                    text: 'Toolbar Icon Size',
+                    min: 14,
+                    softMax: 128,
+                    default: 48,
+                    suffix: 'px',
+                }),
+                inputHeight: ui.number({
+                    label: false,
+                    justifyLabel: false,
+                    text: 'Input Height',
+                    min: 1.4,
+                    max: 3,
+                    default: 1.6,
+                    unit: 'rem',
+                    suffix: 'rem',
+                }),
+                useDefaultCursorEverywhere: ui.boolean({
+                    text: 'Default Cursor Everywhere',
+                    tooltip:
+                        'Interactables will show the default cursor instead of the pointer finger. Reduces cursor flickering',
+                    default: false,
+                }),
+
+                // 4. Widget Components
                 showWidgetUndo: ui.boolean({
                     text: 'Widget Undo',
                     tooltip: 'Show undo button near every field',
@@ -35,8 +72,8 @@ export const interfaceConf = CushyFormManager.form(
                     tooltip: 'Show diff button near every field',
                     default: true,
                 }),
-                showToggleButtonIcons: ui.boolean({
-                    text: 'Toggle Button Icons',
+                showToggleButtonBox: ui.boolean({
+                    text: 'Toggle Button Box',
                     default: false,
                     tooltip: 'Show icons in toggle buttons',
                 }),
@@ -47,14 +84,24 @@ export const interfaceConf = CushyFormManager.form(
                 body: (w) => {
                     const f = w.widget.fields
                     return (
-                        <div tw='flex flex-col gap-1'>
-                            <div tw='flex flex-col gap-1'>
+                        <div
+                            tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
+                        >
+                            <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
+                                <WidgetWithLabelUI fieldName='' widget={f.toolBarIconSize} />
+                                <WidgetWithLabelUI fieldName='' widget={f.inputHeight} />
+                                <WidgetWithLabelUI fieldName='' widget={f.tooltipDelay} />
+                            </div>
+                            <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
+                                <WidgetWithLabelUI fieldName='' widget={f.tabSetEnableSingleTabStretch} label={false} />
+                                <WidgetWithLabelUI fieldName='' widget={f.useDefaultCursorEverywhere} label={false} />
+                            </div>
+                            <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 {/* <InputNumberUI mode='int' onValueChange={(val) => f.} /> */}
-                                <WidgetWithLabelUI fieldName='' widget={f.toolBarIconSize} label='Toolbar Icon Size' />
                                 {
                                     <WidgetWithLabelUI
                                         fieldName='// What does this even do lol, why is it mandatory?'
-                                        widget={f.showToggleButtonIcons}
+                                        widget={f.showToggleButtonBox}
                                         label='Show'
                                     />
                                 }
