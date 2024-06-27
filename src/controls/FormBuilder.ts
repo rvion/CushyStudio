@@ -1,3 +1,4 @@
+import type { Channel } from '../csuite'
 import type { BaseField } from '../csuite/model/BaseField'
 import type { IBlueprint, SchemaDict } from '../csuite/model/IBlueprint'
 import type { Domain } from '../csuite/model/IDomain'
@@ -15,6 +16,7 @@ import { Widget_custom, type Widget_custom_config } from '../csuite/fields/custo
 import { Widget_enum } from '../csuite/fields/enum/WidgetEnum'
 import { Widget_group, type Widget_group_config } from '../csuite/fields/group/WidgetGroup'
 import { Widget_image, type Widget_image_config } from '../csuite/fields/image/WidgetImage'
+import { Widget_link } from '../csuite/fields/link/WidgetLink'
 import { Widget_list, type Widget_list_config } from '../csuite/fields/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from '../csuite/fields/listExt/WidgetListExt'
 import { Widget_markdown, Widget_markdown_config } from '../csuite/fields/markdown/WidgetMarkdown'
@@ -44,12 +46,16 @@ declare global {
         type FormBuilder = import('./FormBuilder').FormBuilder
 
         // attempt to make type safety better --------------------------------------------------------
+        // 🔴
         type Shared<T extends IBlueprint> = Widget_shared<T>
+        type XShared<T extends IBlueprint> = Blueprint<Widget_shared<T['$Field']>>
+
         type XGroup<T extends SchemaDict> = Blueprint<Widget_group<T>>
         type XEmpty = Blueprint<Widget_group<NO_PROPS>>
         type XOptional<T extends IBlueprint> = Blueprint<Widget_optional<T>>
         type XBool = Blueprint<Widget_bool>
-        type XShared<T extends IBlueprint> = Widget_shared<T>
+        type XLink<A extends IBlueprint, B extends IBlueprint> = Blueprint<Widget_link<A, B>>
+        type FBool = Widget_bool
         type XString = Blueprint<Widget_string>
         type XPrompt = Blueprint<Widget_prompt>
         type XChoices<T extends SchemaDict = SchemaDict> = Blueprint<Widget_choices<T>>
@@ -80,7 +86,13 @@ export class FormBuilder implements Domain {
     SpecCtor = Blueprint
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Model<IBlueprint, FormBuilder>) {
+    constructor /**
+     * empty model/entity to build
+     * API is a bit weird; but since every project
+     * can have different widgets, we need all of those features
+     * to be moved in a dedicated file, outside of the model/entity file
+     */() {
+        // public model: Model<IBlueprint, FormBuilder>,
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -217,6 +229,32 @@ export class FormBuilder implements Domain {
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): X.XSelectMany<T> => {
         return new Blueprint<Widget_selectMany<T>>('selectMany', config)
     }
+
+    /**
+     * @since 2024-06-27
+     * @stability unstable
+     */
+    with<const T extends IBlueprint, U extends IBlueprint>(
+        //
+        injected: T,
+        // children: (shared: Channel<T['$Field']>) => U,
+        children: (shared: T['$Field']) => U,
+    ): X.XLink<T, U> {
+        return new Blueprint<Widget_link<T, U>>('link', { share: injected, children })
+    }
+
+    /**
+     * @since 2024-06-27
+     * @stability unstable
+     */
+    linkedV0 = <T extends BaseField>(fn: (parent: BaseField) => T): X.XShared<T> => {
+        return new Blueprint<Widget_shared<T>>('shared', { widget: fn })
+    }
+
+    linked = <T extends BaseField>(parent: T): X.XShared<T> => {
+        return new Blueprint<Widget_shared<T>>('shared', { widget: () => parent })
+    }
+
     /** see also: `fields` for a more practical api */
     group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
         return new Blueprint<Widget_group<T>>('group', config)
@@ -296,19 +334,11 @@ export class FormBuilder implements Domain {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
-        const prevSerial = this.form.shared[key]
-        let widget
-        if (prevSerial && prevSerial.type === spec.type) {
-            widget = this._HYDRATE(null, spec, prevSerial)
-        } else {
-            widget = this._HYDRATE(null, spec, null)
-        }
-        this.form.shared[key] = widget.serial
-        this.form.knownShared.set(key, widget)
-        const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
-        return new Widget_shared<W>(this.form, null, sharedSpec) as any
-    }
+    // shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
+    //     const field = this.model.hydrateSubtree(key, spec)
+    //     const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget: field })
+    //     return new Widget_shared<W>(this.model, null, sharedSpec) as any
+    // }
 
     // --------------------
 
@@ -324,17 +354,17 @@ export class FormBuilder implements Domain {
         return _
     }
     get enum(): EnumBuilder {
-        const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
+        const _ = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enum', { value: _ })
         return _
     }
     get enums(): EnumListBuilder {
-        const _ = new EnumListBuilder(this.form) /*<const T extends KnownEnumNames>*/
+        const _ = new EnumListBuilder(this) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enums', { value: _ })
         return _
     }
     get enumOpt() {
-        const _ = new EnumBuilderOpt(this.form)
+        const _ = new EnumBuilderOpt(this)
         Object.defineProperty(this, 'enumOpt', { value: _ })
         return _
     }
@@ -344,6 +374,7 @@ export class FormBuilder implements Domain {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE = <T extends IBlueprint>( //
+        model: Model<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
@@ -353,13 +384,7 @@ export class FormBuilder implements Domain {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
             serial = null
         }
-
-        if (spec instanceof Widget_shared) {
-            return spec
-            // return new Unmounted(unmounted.type, unmounted.config) as any
-            // return unmounted.shared
-        }
-
+        if (spec instanceof Widget_shared) return spec
         if (!(spec instanceof Blueprint)) {
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
@@ -368,53 +393,58 @@ export class FormBuilder implements Domain {
         const config = spec.config as any /* impossible to propagate union specification in the switch below */
         const spec2 = spec as any
 
-        if (type === 'group') return new Widget_group(this.form, parent, spec2, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x }) // prettier-ignore
-        if (type === 'shared') {
-            // turns out we should only work with Widget_shared directly, so we should be safe
-            // to simply not support Spec<shared>
-            throw new Error(`[❌] For now, Shared_Widget have been design to bypass spec hydratation completely.`)
-            // option 1:
-            // ⏸️ return new Widget_shared    (this.form, spec2, serial)
-            // option 2:
-            // ⏸️ return spec2.widget
-        }
-        if (type === 'optional') return new Widget_optional(this.form, parent, spec2, serial)
-        if (type === 'bool') return new Widget_bool(this.form, parent, spec2, serial)
-        if (type === 'str') return new Widget_string(this.form, parent, spec2, serial)
-        if (type === 'prompt') return new Widget_prompt(this.form, parent, spec2, serial)
-        if (type === 'choices') return new Widget_choices(this.form, parent, spec2, serial)
-        if (type === 'number') return new Widget_number(this.form, parent, spec2, serial)
-        if (type === 'color') return new Widget_color(this.form, parent, spec2, serial)
-        if (type === 'enum') return new Widget_enum(this.form, parent, spec2, serial)
-        if (type === 'list') return new Widget_list(this.form, parent, spec2, serial)
-        if (type === 'orbit') return new Widget_orbit(this.form, parent, spec2, serial)
-        if (type === 'listExt') return new Widget_listExt(this.form, parent, spec2, serial)
-        if (type === 'button') return new Widget_button(this.form, parent, spec2, serial)
-        if (type === 'seed') return new Widget_seed(this.form, parent, spec2, serial)
-        if (type === 'matrix') return new Widget_matrix(this.form, parent, spec2, serial)
-        if (type === 'image') return new Widget_image(this.form, parent, spec2, serial)
-        if (type === 'selectOne') return new Widget_selectOne(this.form, parent, spec2, serial)
-        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, spec2, serial)
-        if (type === 'size') return new Widget_size(this.form, parent, spec2, serial)
-        if (type === 'spacer') return new Widget_spacer(this.form, parent, spec2, serial)
-        if (type === 'markdown') return new Widget_markdown(this.form, parent, spec2, serial)
-        if (type === 'custom') return new Widget_custom(this.form, parent, spec2, serial)
+        if (type === 'group') return new Widget_group(model, parent, spec2, serial, model._ROOT ? undefined : (x) => { model._ROOT = x }) // prettier-ignore
+        // if (type === 'shared') {
+        //     // turns out we should only work with Widget_shared directly, so we should be safe
+        //     // to simply not support Spec<shared>
+        //     throw new Error(`[❌] For now, Shared_Widget have been design to bypass spec hydratation completely.`)
+        //     // option 1:
+        //     // ⏸️ return new Widget_shared    (this.form, spec2, serial)
+        //     // option 2:
+        //     // ⏸️ return spec2.widget
+        // }
+
+        // built-in capability to reuse models
+        if (type === 'shared') return new Widget_shared(model, parent, spec2, serial)
+        if (type === 'link') return new Widget_link(model, parent, spec2, serial)
+        if (type === 'optional') return new Widget_optional(model, parent, spec2, serial)
+        if (type === 'bool') return new Widget_bool(model, parent, spec2, serial)
+        if (type === 'str') return new Widget_string(model, parent, spec2, serial)
+        if (type === 'prompt') return new Widget_prompt(model, parent, spec2, serial)
+        if (type === 'choices') return new Widget_choices(model, parent, spec2, serial)
+        if (type === 'number') return new Widget_number(model, parent, spec2, serial)
+        if (type === 'color') return new Widget_color(model, parent, spec2, serial)
+        if (type === 'enum') return new Widget_enum(model, parent, spec2, serial)
+        if (type === 'list') return new Widget_list(model, parent, spec2, serial)
+        if (type === 'orbit') return new Widget_orbit(model, parent, spec2, serial)
+        if (type === 'listExt') return new Widget_listExt(model, parent, spec2, serial)
+        if (type === 'button') return new Widget_button(model, parent, spec2, serial)
+        if (type === 'seed') return new Widget_seed(model, parent, spec2, serial)
+        if (type === 'matrix') return new Widget_matrix(model, parent, spec2, serial)
+        if (type === 'image') return new Widget_image(model, parent, spec2, serial)
+        if (type === 'selectOne') return new Widget_selectOne(model, parent, spec2, serial)
+        if (type === 'selectMany') return new Widget_selectMany(model, parent, spec2, serial)
+        if (type === 'size') return new Widget_size(model, parent, spec2, serial)
+        if (type === 'spacer') return new Widget_spacer(model, parent, spec2, serial)
+        if (type === 'markdown') return new Widget_markdown(model, parent, spec2, serial)
+        if (type === 'custom') return new Widget_custom(model, parent, spec2, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
 
         return new Widget_markdown(
-            this.form,
+            model,
             parent,
             new Blueprint<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
     }
 
     _HYDRATE = <T extends IBlueprint>( //
+        model: Model<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
     ): T['$Field'] => {
-        const w = this.__HYDRATE(parent, spec, serial) as T['$Field']
+        const w = this.__HYDRATE(model, parent, spec, serial) as T['$Field']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later

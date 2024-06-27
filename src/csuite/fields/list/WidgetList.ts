@@ -28,36 +28,36 @@ interface AutoBehaviour<out T extends IBlueprint> {
 
 // CONFIG
 export interface Widget_list_config<out T extends IBlueprint> extends FieldConfig<
-    {
-        element: ((ix: number) => T) | T
-        /**
-         * when specified, the list will work in some AUTOMATIC mode
-         *  - disable the "add" button
-         *  - disable the "remove" button
-         *  - disable the "clear" button
-         *  - automatically add or remove missing items when reaction
-         *  - subscribe via mobx to anything you want
-         */
-        auto?: AutoBehaviour<T>
+        {
+            element: ((ix: number) => T) | T
+            /**
+             * when specified, the list will work in some AUTOMATIC mode
+             *  - disable the "add" button
+             *  - disable the "remove" button
+             *  - disable the "clear" button
+             *  - automatically add or remove missing items when reaction
+             *  - subscribe via mobx to anything you want
+             */
+            auto?: AutoBehaviour<T>
 
-        /** @default: true */
-        sortable?: boolean
+            /** @default: true */
+            sortable?: boolean
 
-        /**
-         * mininum length;
-         * if min > 0, list will be populated on creation
-         * if length < min, list will be populated with empty items
-         * if length <= min, list will not be clearable
-         * */
-        min?: number
+            /**
+             * mininum length;
+             * if min > 0, list will be populated on creation
+             * if length < min, list will be populated with empty items
+             * if length <= min, list will not be clearable
+             * */
+            min?: number
 
-        /** max length */
-        max?: number
+            /** max length */
+            max?: number
 
-        defaultLength?: number
-    },
-    Widget_list_types<T>
-> {}
+            defaultLength?: number
+        },
+        Widget_list_types<T>
+    > {}
 
 // SERIAL
 export type Widget_list_serial<T extends IBlueprint> = FieldSerial<{
@@ -207,7 +207,7 @@ export class Widget_list<T extends IBlueprint> //
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = form.builder._HYDRATE(this, unmounted, subSerial)
+                const subWidget = form.builder._HYDRATE(this.form, this, unmounted, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -274,7 +274,7 @@ export class Widget_list<T extends IBlueprint> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.form.builder._HYDRATE(this, schema, null)
+        const element = this.form.builder._HYDRATE(this.form, this, schema, null)
 
         // set initial value
         if (p.value) {

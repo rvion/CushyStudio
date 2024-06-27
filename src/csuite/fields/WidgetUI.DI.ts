@@ -9,6 +9,7 @@
 */
 import type { BaseField } from '../model/BaseField'
 import type { Widget_group } from './group/WidgetGroup'
+import type { Widget_link } from './link/WidgetLink'
 import type { Widget_list } from './list/WidgetList'
 import type { Widget_number } from './number/WidgetNumber'
 import type { Widget_optional } from './optional/WidgetOptional'
@@ -24,10 +25,12 @@ import type { Widget_string } from './string/WidgetString'
  * */
 const WidgetDI: { [widgetName: string]: BaseField<any> } = {}
 
-export const getWidgetClass = <Type extends { $Type: string }>(widgetName: Type['$Type']): Type => {
+export const getFieldClass = <Type extends { $Type: string }>(widgetName: Type['$Type']): Type => {
     return WidgetDI[widgetName] as any
 }
 
+/* TODO: rename to `registerFieldClass` */
+//           VVVVVVVVVVVVVVVVVVV
 export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'], kls: { new (...args: any[]): T }) => {
     WidgetDI[type] = kls as any
 }
@@ -35,6 +38,7 @@ export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isWidgetOptional = _isWidget<Widget_optional>('optional')
+export const isWidgetLink = _isWidget<Widget_link<any, any>>('link')
 export const isWidgetShared = _isWidget<Widget_shared>('shared')
 export const isWidgetGroup = _isWidget<Widget_group<any>>('group')
 export const isWidgetString = _isWidget<Widget_string>('str')
@@ -42,6 +46,6 @@ export const isWidgetNumber = _isWidget<Widget_number>('number')
 export const isWidgetList = _isWidget<Widget_list<any>>('list')
 export const isWidgetSelectOne = _isWidget<Widget_selectOne<any>>('selectOne')
 
-function _isWidget<W extends { $Type: string }>(type: W['$Type']): ((widget: any) => widget is W) {
+function _isWidget<W extends { $Type: string }>(type: W['$Type']): (widget: any) => widget is W {
     return (widget): widget is W => widget.type === type
 }

@@ -87,10 +87,6 @@ export class SimpleBlueprint<out Field extends BaseField = BaseField> implements
         })
     }
 
-    shared(key: string): Widget_shared<this> {
-        return getCurrentForm_IMPL().shared(key, this)
-    }
-
     /** clone the spec, and patch the cloned config */
     withConfig(config: Partial<Field['$Config']>): SimpleBlueprint<Field> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)

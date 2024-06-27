@@ -7,14 +7,16 @@ import type { Problem_Ext } from '../../model/Validation'
 import { nanoid } from 'nanoid'
 
 import { BaseField } from '../../model/BaseField'
+import { Channel } from '../../model/Channel'
+import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_shared_config<T extends IBlueprint = IBlueprint> = FieldConfig<
     {
         /** shared widgets must be registered in the form root group */
-        rootKey: string
-        widget: T['$Field']
+        // rootKey: string
+        widget: (parent: BaseField) => T['$Field']
     },
     Widget_shared_types<T>
 >
@@ -54,27 +56,23 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     serial: Widget_shared_serial
 
     get hasChanges() {
-        return this.config.widget.hasChanges
+        return this.shared?.hasChanges ?? false
     }
 
     reset(): void {
-        return this.config.widget.reset()
+        return this.shared?.reset()
     }
 
     get shared(): T['$Field'] {
-        return this.config.widget
+        return this.config.widget(this.parent!)
+        // return bang(this.consume(this.channel))
     }
 
     get baseErrors(): Problem_Ext {
-        return null
+        return this.shared?.baseErrors
     }
-    // 🔴
-    hidden = () => {
-        const ctor = this.form.builder.SpecCtor
-        const config: Widget_shared_config<T> = { ...this.spec.config, hidden: true }
-        const spec2: IBlueprint<Widget_shared<T>> = new ctor('shared', config)
-        new Widget_shared<T>(this.form, null, spec2, this.serial)
-    }
+
+    channel: Channel<T['$Field']>
 
     constructor(
         //
@@ -85,6 +83,7 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     ) {
         super()
         this.id = serial?.id ?? nanoid()
+        this.channel = new Channel(this.id)
         const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         this.init({
@@ -96,10 +95,10 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
         this.value = val
     }
     set value(val: Widget_shared_value<T>) {
-        this.config.widget.setValue(val)
+        this.shared.setValue(val)
     }
     get value(): Widget_shared_value<T> {
-        return this.config.widget.value
+        return this.shared.value
     }
 }
 

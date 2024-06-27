@@ -53,6 +53,10 @@ export class Model<
         })
     }
 
+    // get actions(){
+    //     return this.root.actions
+    // }
+
     /** current form snapshot */
     snapshot: Maybe<any> = undefined
 
@@ -69,6 +73,25 @@ export class Model<
     revertToSnapshot() {
         throw new Error('❌ not implemented')
     }
+
+    // hydrateSubtree = <W extends IBlueprint>(
+    //     //
+    //     key: string,
+    //     spec: W,
+    // ): W['$Field'] => {
+    //     const prevSerial = this.shared[key]
+    //     let widget: W['$Field']
+    //     if (prevSerial && prevSerial.type === spec.type) {
+    //         widget = this.domain._HYDRATE(this, null, spec, prevSerial)
+    //     } else {
+    //         widget = this.domain._HYDRATE(this, null, spec, null)
+    //     }
+    //     this.shared[key] = widget.serial
+    //     this.knownShared.set(key, widget)
+    //     return widget
+    //     // const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
+    //     // return new Widget_shared<W>(this, null, sharedSpec) as any
+    // }
 
     /**
      * @since 2024-06-20
@@ -130,7 +153,7 @@ export class Model<
             name: this.config.name,
             root: this.root.serial,
             snapshot: this.snapshot,
-            shared: this.shared,
+            // shared: this.shared,
             serialLastUpdatedAt: this.serialLastUpdatedAt,
             valueLastUpdatedAt: this.valueLastUpdatedAt,
         }
@@ -150,9 +173,9 @@ export class Model<
     }
 
     /** Out of Tree unmounted serials  */
-    shared: {
-        [key: string]: any
-    } = {}
+    // shared: {
+    //     [key: string]: any
+    // } = {}
 
     // Change tracking ------------------------------------
 
@@ -191,6 +214,8 @@ export class Model<
     }
 
     /** from builder, offering simple API for your project specifc widgets  */
+    // TODO: rename domain
+    // VVV
     builder: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
@@ -230,10 +255,10 @@ export class Model<
             ) {
                 console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(formSerial))
                 const oldSerial: Widget_group_serial<any> = formSerial as any
-                const oldsharedSerial: { [key: string]: any } = {}
+                // const oldsharedSerial: { [key: string]: any } = {}
                 for (const [k, v] of Object.entries(oldSerial.values_)) {
                     if (k.startsWith('__')) {
-                        oldsharedSerial[k.slice(2, -2)] = v
+                        // oldsharedSerial[k.slice(2, -2)] = v
                         delete oldSerial.values_[k]
                     }
                 }
@@ -242,7 +267,7 @@ export class Model<
                     uid: nanoid(),
                     type: 'FormSerial',
                     root: formSerial,
-                    shared: oldsharedSerial,
+                    // shared: oldsharedSerial,
                     serialLastUpdatedAt: 0,
                     valueLastUpdatedAt: 0,
                 }
@@ -256,11 +281,11 @@ export class Model<
             }
 
             // restore shared serials
-            this.shared = formSerial?.shared || {}
+            // this.shared = formSerial?.shared || {}
             this.snapshot = formSerial?.snapshot
             // instanciate the root widget
             const spec: ROOT = this.buildFn?.(formBuilder, this.context)
-            const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)
+            const rootWidget: ROOT = formBuilder._HYDRATE(this, null, spec, formSerial?.root)
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
@@ -270,7 +295,15 @@ export class Model<
             console.error(e)
             this.error = 'invalid form definition'
             const spec: ROOT = this.buildFn?.(formBuilder, this.context)
-            return formBuilder._HYDRATE(null, spec, null)
+            return formBuilder._HYDRATE(this, null, spec, null)
         }
     }
+
+    // _HYDRATE = (
+    //     //
+    //     spec: IBlueprint,
+    //     serial: ModelSerial,
+    // ): void => {
+    //     this.domain._HYDRATE(this, null, spec, serial.root)
+    // }
 }

@@ -68,6 +68,9 @@ export class Widget_string extends BaseField<Widget_string_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
+
+    UITextarea = () => <WidgetString_TextareaBodyUI widget={this} />
+    UIInputText = () => <WidgetString_HeaderUI widget={this} />
     // readonly border = false
     readonly id: string
 

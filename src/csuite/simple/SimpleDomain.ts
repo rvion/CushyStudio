@@ -33,7 +33,8 @@ export class SimpleDomain implements Domain {
     SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Model<IBlueprint, SimpleDomain>) {
+    constructor() // public model: Model<IBlueprint, SimpleDomain>, //
+    {
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -212,35 +213,14 @@ export class SimpleDomain implements Domain {
         return this.selectOne({ default: def, choices })
     }
 
-    /**
-     * Calling this function will mount and instanciate the subform right away
-     * Subform will be register in the root form `group`, using `__${key}__` as the key
-     * This is a core abstraction that enables features like
-     *  - mountting a widget at several places in the form
-     *  - recursive forms
-     *  - dynamic widgets depending on other widgets values
-     * */
-    shared<W extends IBlueprint>(key: string, spec: W): Widget_shared<W> {
-        const prevSerial = this.form.shared[key]
-        let widget
-        if (prevSerial && prevSerial.type === spec.type) {
-            widget = this._HYDRATE(null, spec, prevSerial)
-        } else {
-            widget = this._HYDRATE(null, spec, null)
-        }
-        this.form.shared[key] = widget.serial
-        this.form.knownShared.set(key, widget)
-        const sharedSpec = new SimpleBlueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
-        return new Widget_shared<W>(this.form, null, sharedSpec) as any
-    }
-
     _HYDRATE<T extends IBlueprint>(
         //
+        model: Model<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
     ): T['$Field'] {
-        const w = this.__HYDRATE(parent, spec, serial) as T['$Field']
+        const w = this.__HYDRATE(model, parent, spec, serial) as T['$Field']
         w.publishValue()
         for (const { expr, effect } of spec.reactions) {
             // 🔴 Need to dispose later
@@ -257,6 +237,7 @@ export class SimpleDomain implements Domain {
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE<T extends IBlueprint>(
         //
+        model: Model<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
@@ -280,15 +261,15 @@ export class SimpleDomain implements Domain {
 
         if (type === 'group')
             return new Widget_group(
-                this.form,
+                model,
                 parent,
                 spec2,
                 serial,
                 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-                this.form._ROOT
+                model._ROOT
                     ? undefined
                     : (x) => {
-                          this.form._ROOT = x
+                          model._ROOT = x
                       },
             )
         if (type === 'shared') {
@@ -300,26 +281,26 @@ export class SimpleDomain implements Domain {
             // option 2:
             // ⏸️ return config.widget
         }
-        if (type === 'optional') return new Widget_optional(this.form, parent, spec2, serial)
-        if (type === 'bool') return new Widget_bool(this.form, parent, spec2, serial)
-        if (type === 'str') return new Widget_string(this.form, parent, spec2, serial)
-        if (type === 'choices') return new Widget_choices(this.form, parent, spec2, serial)
-        if (type === 'number') return new Widget_number(this.form, parent, spec2, serial)
-        if (type === 'color') return new Widget_color(this.form, parent, spec2, serial)
-        if (type === 'list') return new Widget_list(this.form, parent, spec2, serial)
-        if (type === 'button') return new Widget_button(this.form, parent, spec2, serial)
-        if (type === 'seed') return new Widget_seed(this.form, parent, spec2, serial)
-        if (type === 'matrix') return new Widget_matrix(this.form, parent, spec2, serial)
-        if (type === 'selectOne') return new Widget_selectOne(this.form, parent, spec2, serial)
-        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, spec2, serial)
-        if (type === 'size') return new Widget_size(this.form, parent, spec2, serial)
-        if (type === 'spacer') return new Widget_spacer(this.form, parent, spec2, serial)
-        if (type === 'markdown') return new Widget_markdown(this.form, parent, spec2, serial)
+        if (type === 'optional') return new Widget_optional(model, parent, spec2, serial)
+        if (type === 'bool') return new Widget_bool(model, parent, spec2, serial)
+        if (type === 'str') return new Widget_string(model, parent, spec2, serial)
+        if (type === 'choices') return new Widget_choices(model, parent, spec2, serial)
+        if (type === 'number') return new Widget_number(model, parent, spec2, serial)
+        if (type === 'color') return new Widget_color(model, parent, spec2, serial)
+        if (type === 'list') return new Widget_list(model, parent, spec2, serial)
+        if (type === 'button') return new Widget_button(model, parent, spec2, serial)
+        if (type === 'seed') return new Widget_seed(model, parent, spec2, serial)
+        if (type === 'matrix') return new Widget_matrix(model, parent, spec2, serial)
+        if (type === 'selectOne') return new Widget_selectOne(model, parent, spec2, serial)
+        if (type === 'selectMany') return new Widget_selectMany(model, parent, spec2, serial)
+        if (type === 'size') return new Widget_size(model, parent, spec2, serial)
+        if (type === 'spacer') return new Widget_spacer(model, parent, spec2, serial)
+        if (type === 'markdown') return new Widget_markdown(model, parent, spec2, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
 
         return new Widget_markdown(
-            this.form,
+            model,
             parent,
             new SimpleBlueprint<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )

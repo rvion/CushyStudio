@@ -73,7 +73,7 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
         return false
     }
     /** reset azimuth and elevation */
-    reset = () => {
+    reset(): void {
         this.serial.value.azimuth = this.defaultAzimuth
         this.serial.value.elevation = this.defaultElevation
     }

@@ -25,7 +25,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Model<IBlueprint, FormBuilder>) {
+    constructor(public domain: FormBuilder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -59,7 +59,7 @@ export class EnumBuilder {
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
-    constructor(public form: Model<any, FormBuilder>) {
+    constructor(public domain: FormBuilder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -80,7 +80,7 @@ export class EnumBuilderOpt {
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
                     return (config: any = {}) =>
-                        form.builder.optional({
+                        domain.optional({
                             label: config.label,
                             startActive: config.startActive,
                             widget: new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
@@ -91,7 +91,7 @@ export class EnumBuilderOpt {
 
                 // return the builder
                 return (config: any = {}) =>
-                    form.builder.optional({
+                    domain.optional({
                         label: config.label,
                         startActive: config.startActive,
                         widget: new Blueprint('enum', /* form, */ { ...config, enumName }),
@@ -109,7 +109,7 @@ export type IEnumListBuilder = {
 
 export interface EnumListBuilder extends IEnumListBuilder {}
 export class EnumListBuilder {
-    constructor(public form: Model<any, FormBuilder>) {
+    constructor(public domain: FormBuilder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -132,7 +132,7 @@ export class EnumListBuilder {
                 // return (config: any = {}) => form.builder.bool()
                 // return the builder
                 return (config: any = {}) =>
-                    form.builder.selectMany({
+                    domain.selectMany({
                         choices: enumSchema.values.map((v) => ({ id: v.toString(), label: v })),
                         appearance: 'tab',
                         ...config,

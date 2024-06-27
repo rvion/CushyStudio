@@ -5,7 +5,7 @@ import type { BaseField } from '../csuite/model/BaseField'
 import type { IBlueprint } from '../csuite/model/IBlueprint'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
-import { createElement } from 'react'
+import { createElement, type ReactNode } from 'react'
 
 import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
@@ -19,6 +19,27 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
     $Config!: Field['$Config']
     $Serial!: Field['$Serial']
     $Value!: Field['$Value']
+
+    _methods: any = {}
+    actions<T extends { [methodName: string]: (self: Field) => any }>(t: T): Blueprint<Field & T> {
+        Object.assign(this._methods, t)
+        return this as any
+    }
+
+    _skins: any = {}
+    skins<
+        T extends {
+            // prettier-ignore
+            [methodName: string]:
+                /** simplified skin definition */
+                | { [key: string]: any }
+                /** full react field */
+                | ((p: { widget: Field }) => ReactNode)
+        },
+    >(t: T): Blueprint<Field & T /* & { skin: T } */> {
+        Object.assign(this._skins, t)
+        return this as any
+    }
 
     LabelExtraUI: CovariantFC<{ widget: Field }> = (p: { widget: Field }) =>
         createElement(InstallRequirementsBtnUI, {
@@ -104,10 +125,6 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
-    }
-
-    shared(key: string): X.Shared<this> {
-        return getCurrentForm_IMPL().shared(key, this)
     }
 
     /** clone the spec, and patch the cloned config to make it hidden */

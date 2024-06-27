@@ -1,60 +1,70 @@
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Channel } from '../../../src/csuite'
 
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
 
-export type UI_LatentV3 = X.XChoice<{
-    emptyLatent: X.XGroup<{
-        batchSize: X.Shared<X.XNumber>
-        size: X.XSize
+export type UI_LatentV3 = X.XLink<
+    X.XGroup<{ a: X.XNumber; b: X.XNumber }>,
+    X.XChoice<{
+        emptyLatent: X.XGroup<{
+            a: X.XNumber
+            b: X.XNumber
+        }>
+        image: X.XGroup<{
+            batchSize: X.Shared<X.XNumber>
+            image: X.XImage
+            resize: X.XOptional<
+                X.XGroup<{
+                    mode: X.XEnum<Enum_CR_Upscale_Image_mode>
+                    supersample: X.XEnum<Enum_ImageDrawRectangleRounded_top_left_corner>
+                    resampling: X.XEnum<Enum_SEGSUpscaler_resampling_method>
+                    rescale_factor: X.XNumber
+                    resize_width: X.XNumber
+                    resize_height: X.XNumber
+                }>
+            >
+        }>
+        random: UI_LatentShapeGenerator
     }>
-    image: X.XGroup<{
-        batchSize: X.Shared<X.XNumber>
-        image: X.XImage
-        resize: X.XOptional<
-            X.XGroup<{
-                mode: X.XEnum<Enum_CR_Upscale_Image_mode>
-                supersample: X.XEnum<Enum_ImageDrawRectangleRounded_top_left_corner>
-                resampling: X.XEnum<Enum_SEGSUpscaler_resampling_method>
-                rescale_factor: X.XNumber
-                resize_width: X.XNumber
-                resize_height: X.XNumber
-            }>
-        >
-    }>
-    random: UI_LatentShapeGenerator
-}>
+>
 
 export function ui_latent_v3(): UI_LatentV3 {
     const form: FormBuilder = getCurrentForm()
-    const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
-
-    return form.choice({
-        icon: 'mdiStarThreePoints',
-        appearance: 'tab',
-        default: 'emptyLatent',
-        label: 'Latent Input',
-        background: { hue: 270, chroma: 0.04 },
-        items: {
-            emptyLatent: form.group({
-                // collapsed: false,
-                // border: false,
+    return form.with(
+        form.fields({
+            a: form.int({ label: 'batchSize v1', step: 1, default: 1, min: 1, max: 8 }),
+            b: form.int({ label: 'batchSize v2', step: 1, default: 1, min: 1, max: 8 }),
+        }),
+        (chan) => {
+            const batchSize = form.linked(chan.fields.a)
+            return form.choice({
+                icon: 'mdiStarThreePoints',
+                appearance: 'tab',
+                default: 'emptyLatent',
+                label: 'Latent Input',
+                background: { hue: 270, chroma: 0.04 },
                 items: {
-                    batchSize: batchSize,
-                    size: form.size({ border: false }),
+                    emptyLatent: form.group({
+                        items: {
+                            batchSize,
+                            size: form.size({ border: false }),
+                        },
+                    }),
+                    // cas 2
+                    image: form.group({
+                        collapsed: false,
+                        border: false,
+                        items: {
+                            batchSize,
+                            image: form.image({ label: false, justifyLabel: false }),
+                            resize: form.auto.Image_Resize().optional(),
+                        },
+                    }),
+                    random: ui_LatentShapeGenerator(batchSize),
                 },
-            }),
-            image: form.group({
-                collapsed: false,
-                border: false,
-                items: {
-                    batchSize,
-                    image: form.image({ label: false, justifyLabel: false }),
-                    resize: form.auto.Image_Resize().optional(),
-                },
-            }),
-            random: ui_LatentShapeGenerator(batchSize),
+            })
         },
-    })
+    )
 }
 
 export const run_latent_v3 = async (p: {
@@ -131,3 +141,15 @@ export const run_latent_v3 = async (p: {
     // return everything
     return { latent, width, height }
 }
+
+// mountROOT: form.linked((self) => self.consume(chan)!), //
+// mountROOT2: form.linked(chan.getOrThrow), //
+// mountA: form.linked((self) => self.consume(chan)!.fields.a),
+// test: form.selectOne({
+//     choices: (self) => {
+//         // case 2: LOG (B+3) 🟢
+//         const x = self.consume(chan)
+//         const b = x?.fields.b.value ?? 0
+//         return []
+//     },
+// }),

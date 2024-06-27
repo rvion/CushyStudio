@@ -7,6 +7,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { IBlueprint } from './IBlueprint'
+import type { Domain } from './IDomain'
 import type { Model } from './Model'
 import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
@@ -51,7 +52,9 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
     // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
     // $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-
+    get domain(): Domain {
+        return this.form['builder']
+    }
     /** spec used to instanciate this widget */
     abstract spec: IBlueprint
 

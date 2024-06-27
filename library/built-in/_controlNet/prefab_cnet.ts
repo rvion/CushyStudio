@@ -39,7 +39,7 @@ export type UI_cnet = X.XList<
 export function ui_cnet(): UI_cnet {
     const form: FormBuilder = getCurrentForm()
 
-    const applyDuringUpscale: X.Shared<X.XBool> = form
+    const applyDuringUpscale = form
         .bool({
             tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
             label2: 'Apply during upscale',
