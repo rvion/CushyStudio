@@ -115,7 +115,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     get hasChanges() {
         return this.serial.val.id !== this.defaultValue.id
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 

@@ -44,7 +44,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
     DefaultBodyUI = undefined
     readonly id: string
 
-    reset = () => {
+    reset(): void {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) this.setActive(true)

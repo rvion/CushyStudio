@@ -101,7 +101,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
         }
         return false
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
     wrap = this.config.wrap ?? false

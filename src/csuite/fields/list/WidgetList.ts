@@ -101,7 +101,7 @@ export class Widget_list<T extends IBlueprint> //
         // check if any remaining item has changes
         return this.items.some((i) => i.hasChanges)
     }
-    reset = () => {
+    reset(): void {
         // fix size
         if (!this.config.auto) {
             const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)

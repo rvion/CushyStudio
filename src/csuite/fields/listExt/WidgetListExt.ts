@@ -74,7 +74,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         // check if any remaining item has changes
         return this.items.some((i) => i.hasChanges)
     }
-    reset = () => {
+    reset(): void {
         throw new Error('Method not implemented yet.')
     }
 

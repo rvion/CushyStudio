@@ -70,7 +70,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get hasChanges() {
         return this.value !== this.defaultValue
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 

@@ -64,7 +64,7 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
         return false
     }
-    reset = () => {
+    reset(): void {
         this.setMode(this.defaultMode)
         if (this.serial.mode !== 'randomize') this.setValue(this.defaultValue)
     }

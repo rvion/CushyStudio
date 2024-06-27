@@ -56,7 +56,8 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     get hasChanges() {
         return this.config.widget.hasChanges
     }
-    reset() {
+
+    reset(): void {
         return this.config.widget.reset()
     }
 

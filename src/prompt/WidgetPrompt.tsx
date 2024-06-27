@@ -75,7 +75,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
     get hasChanges() {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
     }
-    reset() {
+    reset(): void {
         // /!\ reset function need to go though the `set text()` setter
         // to ensure the UI is updated (code-mirror specificity here)
         this.text = this.config.default ?? ''

@@ -63,7 +63,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     get hasChanges() {
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
-    reset = () => {
+    reset(): void {
         for (const sub of this.subWidgets) sub.reset()
     }
 

@@ -81,7 +81,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     hasChanges = false
 
     /** do nothing */
-    reset = () => {}
+    reset(): void {}
 
     setValue(val: Widget_markdown_value) {
         this.value = val

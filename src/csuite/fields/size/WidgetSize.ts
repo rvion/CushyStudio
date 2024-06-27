@@ -67,7 +67,7 @@ export class Widget_size extends BaseField<Widget_size_types> {
         if (this.serial.aspectRatio !== def.aspectRatio) return true
         return false
     }
-    reset() {
+    reset(): void {
         this.value = this.defaultValue
     }
 

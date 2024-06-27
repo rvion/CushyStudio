@@ -135,7 +135,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return false
     }
 
-    reset() {
+    reset(): void {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =

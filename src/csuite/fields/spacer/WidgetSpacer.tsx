@@ -50,7 +50,7 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
     serial: Widget_spacer_serial
 
     hasChanges = false
-    reset = () => {}
+    reset(): void {}
 
     constructor(
         //

@@ -57,7 +57,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
     get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => {
+    reset(): void {
         if (this.serial.val === this.defaultValue) return
         this.value = this.defaultValue
     }

@@ -54,7 +54,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
 
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
     get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.value = this.defaultValue } // prettier-ignore
+    reset(){ this.value = this.defaultValue } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }

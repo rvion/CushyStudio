@@ -72,7 +72,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
             return false
         }
     }
-    reset() {
+    reset(): void {
         this.setAll(false)
         for (const i of this.config.default ?? []) {
             this.setCell(i.row, i.col, true)
