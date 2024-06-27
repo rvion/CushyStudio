@@ -34,6 +34,7 @@ export const interfaceConf = CushyFormManager.form(
                     label: false,
                     justifyLabel: false,
                     text: 'Toolbar Icon Size',
+                    tooltip: 'Icon size of the toolbar shelves in certain Panels/Editors',
                     min: 14,
                     softMax: 128,
                     default: 48,
@@ -43,6 +44,8 @@ export const interfaceConf = CushyFormManager.form(
                     label: false,
                     justifyLabel: false,
                     text: 'Input Height',
+                    tooltip:
+                        'Height of the fields for most widgets. For example, the Number Field, the single line string field, Boolean Toggles (Checkboxes/Toggle Buttons)',
                     min: 1.4,
                     max: 3,
                     default: 1.6,
