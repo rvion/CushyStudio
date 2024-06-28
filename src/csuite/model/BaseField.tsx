@@ -43,35 +43,25 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
-} //   👆 (merged at type-level here to avoid having extra real properties defined at runtime)
+}
+//     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
-// v3 (experimental) ---------------------------------------
 export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
-    // 👆 $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
-    // 👆 $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // 👆 $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // 👆 $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
-    // 👆 $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-
-    /** root form this widget has benn registered to */
-    readonly entity: Entity
-
-    /** parent widget of this widget, if any */
-    readonly parent: BaseField | null
-
-    /** spec used to instanciate this widget */
-    readonly spec: ISchema<K['$Field']>
+    // 👆 type only properties; do not use directly; used to make typings good and fast
+    // 👆 $Type!: K['$Type'] /*     = 0 as any  */
+    // 👆 $Config!: K['$Config'] /* = 0 as any  */
+    // 👆 $Serial!: K['$Serial'] /* = 0 as any  */
+    // 👆 $Value!: K['$Value'] /*   = 0 as any  */
+    // 👆 $Field!: K['$Field'] /*   = 0 as any  */
 
     constructor(
-        //
-        entity: Entity,
-        parent: BaseField | null,
-        spec: ISchema<K['$Field']>,
-    ) {
-        this.entity = entity
-        this.parent = parent
-        this.spec = spec
-    }
+        /** root form this widget has benn registered to */
+        public entity: Entity,
+        /** parent widget of this widget, if any */
+        public parent: BaseField | null,
+        /** spec used to instanciate this widget */
+        public spec: ISchema<K['$Field']>,
+    ) {}
 
     get domain(): Domain {
         return this.entity.domain
