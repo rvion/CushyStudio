@@ -88,12 +88,11 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
+
     get value(): Widget_enum_value<O> {
         return this.status.finalValue
     }
-    setValue(val: Widget_enum_value<O>) {
-        this.value = val
-    }
+
     set value(next: Widget_enum_value<O>) {
         if (this.serial.val === next) return
         runInAction(() => {

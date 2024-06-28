@@ -140,10 +140,6 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
         })
     }
 
-    setValue(val: Widget_optional_value<T>) {
-        this.value = val
-    }
-
     /** hack so optional fields do not increase nesting twice */
     get indentChildren(): number {
         return 0
@@ -157,18 +153,19 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
         return this.serial.active ? [{ key: 'child', widget: this.child }] : []
     }
 
+    get value(): Widget_optional_value<T> {
+        if (!this.serial.active) return null
+        return this.childOrThrow.value
+    }
+
     set value(next: Widget_optional_value<T>) {
         if (next == null) {
             this.setActive(false)
             return
         } else {
             this.setActive(true)
-            this.child.setValue(next)
+            this.child.value = next
         }
-    }
-    get value(): Widget_optional_value<T> {
-        if (!this.serial.active) return null
-        return this.childOrThrow.value
     }
 }
 

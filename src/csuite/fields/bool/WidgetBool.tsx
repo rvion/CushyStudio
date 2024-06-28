@@ -116,9 +116,6 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
     get value(): Widget_bool_value {
         return this.serial.active ?? false
     }
-    setValue(val: Widget_bool_value) {
-        this.value = val
-    }
     set value(next: Widget_bool_value) {
         if (this.serial.active === next) return
         runInAction(() => {

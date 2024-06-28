@@ -82,11 +82,8 @@ export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget
             DefaultBodyUI: false,
         })
     }
-    setValue(val: Widget_shared_value<T>) {
-        this.value = val
-    }
     set value(val: Widget_shared_value<T>) {
-        this.shared.setValue(val)
+        this.shared.value = val
     }
     get value(): Widget_shared_value<T> {
         return this.shared.value

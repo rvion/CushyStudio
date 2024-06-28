@@ -88,9 +88,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     get value(): Widget_custom_value<T> {
         return this.serial.value
     }
-    setValue(val: Widget_custom_value<T>) {
-        this.value = val
-    }
+
     set value(next: Widget_custom_value<T>) {
         if (this.serial.value === next) return
         runInAction(() => {

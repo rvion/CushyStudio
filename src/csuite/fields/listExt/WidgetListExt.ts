@@ -226,17 +226,17 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         this.applyValueUpdateEffects()
     }
 
-    setValue(xx: Widget_listExt_value<T>) {
+    set value(xx: Widget_listExt_value<T>) {
         const val = xx.items
         this.width = xx.width
         this.height = xx.height
         for (let i = 0; i < val.length; i++) {
             if (i < this.items.length) {
-                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.widget.value = val[i]!.value
                 this.entries[i]!.shape = val[i]!.position
             } else {
                 this.addItem({ skipBump: true })
-                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.widget.value = val[i]!.value
                 this.entries[i]!.shape = val[i]!.position
             }
         }

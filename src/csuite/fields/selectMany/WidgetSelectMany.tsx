@@ -182,8 +182,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
         }
     }
 
-    setValue(val: Widget_selectMany_value<T>) {
-        this.value = val
+    get value(): Widget_selectMany_value<T> {
+        return this.serial.values
     }
 
     set value(next: Widget_selectMany_value<T>) {
@@ -192,10 +192,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
             this.serial.values = next
             this.applyValueUpdateEffects()
         })
-    }
-
-    get value(): Widget_selectMany_value<T> {
-        return this.serial.values
     }
 }
 

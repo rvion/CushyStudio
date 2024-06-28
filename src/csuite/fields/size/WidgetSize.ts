@@ -138,8 +138,8 @@ export class Widget_size extends BaseField<Widget_size_types> {
         })
     }
 
-    setValue(val: Widget_size_value) {
-        this.value = val
+    get value(): Widget_size_value {
+        return this.serial
     }
 
     set value(val: Widget_size_value) {
@@ -155,9 +155,6 @@ export class Widget_size extends BaseField<Widget_size_types> {
             Object.assign(this.serial, val)
             this.applyValueUpdateEffects()
         })
-    }
-    get value(): Widget_size_value {
-        return this.serial
     }
 }
 

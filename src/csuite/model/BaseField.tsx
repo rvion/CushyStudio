@@ -75,7 +75,9 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     abstract readonly baseErrors: Problem_Ext
 
     /** unified api to allow setting serial from value */
-    abstract setValue(val: K['$Value']): void
+    setValue(val: K['$Value']) {
+        this.value = val
+    }
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */

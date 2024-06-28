@@ -77,8 +77,9 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
     get value() {
         return false
     }
-    setValue(val: boolean) {}
-    set value(val) {}
+    set value(val) {
+        // do nothing
+    }
 }
 
 // DI

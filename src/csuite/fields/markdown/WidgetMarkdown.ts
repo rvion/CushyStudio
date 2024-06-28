@@ -83,11 +83,9 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     /** do nothing */
     reset(): void {}
 
-    setValue(val: Widget_markdown_value) {
-        this.value = val
-    }
     set value(val: Widget_markdown_value) {
         // do nothing; markdown have no real value; only config
+        // this.value = val
     }
     get value(): Widget_markdown_value {
         return this.serial

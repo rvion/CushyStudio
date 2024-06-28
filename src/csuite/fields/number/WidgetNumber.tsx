@@ -93,8 +93,8 @@ export class Widget_number extends BaseField<Widget_number_types> {
         })
     }
 
-    setValue(val: Widget_number_value) {
-        this.value = val
+    get value(): Widget_number_value {
+        return this.serial.val
     }
 
     set value(next: Widget_number_value) {
@@ -103,10 +103,6 @@ export class Widget_number extends BaseField<Widget_number_types> {
             this.serial.val = next
             this.applyValueUpdateEffects()
         })
-    }
-
-    get value(): Widget_number_value {
-        return this.serial.val
     }
 }
 

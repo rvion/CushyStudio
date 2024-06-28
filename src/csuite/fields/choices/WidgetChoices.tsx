@@ -278,7 +278,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
-    setValue(val: Widget_choices_value<T>) {
+    set value(val: Widget_choices_value<T>) {
         for (const branch of this.choices) {
             // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
             if (val[branch] == null) {
@@ -291,7 +291,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
                     this.enableBranch(branch)
                 }
                 // patch branch value to given value
-                this.children[branch]!.setValue(val[branch]!)
+                this.children[branch]!.value = val[branch]!
             }
         }
         this.applyValueUpdateEffects()

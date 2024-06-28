@@ -97,12 +97,11 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get animateResize() {
         return false
     }
+
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
     }
-    setValue(val: MediaImageL) {
-        this.value = val
-    }
+
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
         runInAction(() => {

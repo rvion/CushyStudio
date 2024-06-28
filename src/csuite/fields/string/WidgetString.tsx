@@ -108,18 +108,17 @@ export class Widget_string extends BaseField<Widget_string_types> {
         if (this.config.textarea) return false
         return true
     }
-    setValue(val: Widget_string_value) {
-        this.value = val
+
+    get value(): Widget_string_value {
+        return this.serial.val ?? this.config.default ?? ''
     }
+
     set value(next: Widget_string_value) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
             this.applyValueUpdateEffects()
         })
-    }
-    get value(): Widget_string_value {
-        return this.serial.val ?? this.config.default ?? ''
     }
 }
 

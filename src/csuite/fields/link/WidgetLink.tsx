@@ -107,10 +107,6 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         this.init({})
     }
 
-    setValue(val: Widget_link_value<A, B>) {
-        this.value = val
-    }
-
     get subWidgets(): [A['$Field'], B['$Field']] {
         return [this.aField, this.bField]
     }
@@ -124,7 +120,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
 
     set value(val: Widget_link_value<A, B>) {
         runInAction(() => {
-            this.bField.setValue(val)
+            this.bField.value = val
             this.applyValueUpdateEffects()
         })
     }

@@ -223,21 +223,28 @@ export class Widget_list<T extends ISchema> //
         this.startAutoBehaviour()
     }
 
-    setValue(val: Widget_list_value<T>) {
-        for (let i = 0; i < val.length; i++) {
-            if (i < this.items.length) {
-                this.items[i]!.setValue(val[i])
-            } else {
-                this.addItem({ skipBump: true })
-                this.items[i]!.setValue(val[i])
-            }
-        }
-        this.serial.items_.splice(val.length)
-        this.items.splice(val.length)
-        this.applyValueUpdateEffects()
-    }
     get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
+    }
+
+    set value(val: Widget_list_value<T>) {
+        for (let i = 0; i < val.length; i++) {
+            // 1. replace existing items
+            if (i < this.items.length) {
+                this.items[i]!.value = val[i]
+            }
+            // 2. add missing items
+            else {
+                this.addItem({ skipBump: true })
+                this.items[i]!.value = val[i]
+            }
+        }
+        // 3. remove extra items
+        this.serial.items_.splice(val.length)
+        this.items.splice(val.length)
+
+        // 4. apply update effects
+        this.applyValueUpdateEffects()
     }
 
     // HELPERS =======================================================
@@ -278,7 +285,7 @@ export class Widget_list<T extends ISchema> //
 
         // set initial value
         if (p.value) {
-            element.setValue(p.value)
+            element.value = p.value
         }
 
         // insert item

@@ -120,8 +120,9 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         })
     }
 
-    setValue(val: Widget_matrix_value) {
-        this.value = val
+    get value(): Widget_matrix_value {
+        // if (!this.state.active) return undefined
+        return this.serial.selected
     }
 
     /** 🔶 this is inneficient */
@@ -138,11 +139,6 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
             // 3. update
             this.UPDATE()
         })
-    }
-
-    get value(): Widget_matrix_value {
-        // if (!this.state.active) return undefined
-        return this.serial.selected
     }
 
     private sep = ' &&& '

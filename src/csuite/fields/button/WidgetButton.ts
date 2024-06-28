@@ -97,9 +97,6 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
     get value(): Widget_button_value {
         return this.serial.val
     }
-    setValue(val: boolean) {
-        this.value = val
-    }
     set value(next: boolean) {
         if (this.serial.val === next) return
         runInAction(() => {

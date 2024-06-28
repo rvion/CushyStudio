@@ -155,9 +155,10 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         })
     }
 
-    setValue(val: Widget_selectOne_value<T>) {
-        this.value = val
+    get value(): Widget_selectOne_value<T> {
+        return this.serial.val
     }
+
     set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
         const nextHasSameID = this.serial.val.id === next.id
@@ -166,9 +167,6 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
             if (!nextHasSameID) this.applyValueUpdateEffects()
             else this.applySerialUpdateEffects()
         })
-    }
-    get value(): Widget_selectOne_value<T> {
-        return this.serial.val
     }
 }
 
