@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
@@ -12,7 +11,7 @@ export type UI_FaceIDImageInput = X.XGroup<{
         crop_position: X.XEnum<Enum_PrepImageForClipVision_crop_position>
     }>
 }>
-export function ui_FaceIDImageInput(form: Domain): UI_FaceIDImageInput {
+export function ui_FaceIDImageInput(form: X.Domain): UI_FaceIDImageInput {
     return form.fields(
         {
             image: form.image({ label: 'Image' }),
@@ -141,7 +140,7 @@ export type UI_extraIpAdapter = X.XGroup<{
     embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
     ipAdapterSettings: UI_ipadapter_advancedSettings
 }>
-function ui_extraIpAdapter(form: Domain): UI_extraIpAdapter {
+function ui_extraIpAdapter(form: X.Domain): UI_extraIpAdapter {
     return form.fields(
         {
             weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),

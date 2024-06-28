@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
@@ -14,7 +13,7 @@ export type UI_ipadapter_advancedSettings = X.XGroup<{
 }>
 
 export const ui_ipadapter_advancedSettings = (
-    form: Domain,
+    form: X.Domain,
     start: number = 0,
     end: number = 1,
     weight_type: Enum_IPAdapterAdvanced_weight_type = 'linear',
@@ -52,7 +51,7 @@ export type UI_IPAdapterImageInput = X.XGroup<{
         imageAttentionMask: X.XOptional<X.XImage>
     }>
 }>
-export function ui_IPAdapterImageInput(form: Domain): UI_IPAdapterImageInput {
+export function ui_IPAdapterImageInput(form: X.Domain): UI_IPAdapterImageInput {
     return form.fields(
         {
             image: form.image({ label: 'Image' }),

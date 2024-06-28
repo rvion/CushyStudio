@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -16,7 +15,7 @@ export type UI_subform_Depth = X.XGroup<{
     }>
 }>
 export function ui_subform_Depth(): UI_subform_Depth {
-    const ui: Domain = getCurrentForm()
+    const ui: X.Domain = getCurrentForm()
     return ui
         .group({
             label: 'Depth',
@@ -50,7 +49,7 @@ export type UI_subform_Depth_Preprocessor = X.XChoice<{
     Zoe: UI_subform_Depth_Zoe
 }>
 export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
         default: 'Midas',
@@ -74,7 +73,7 @@ export type UI_subform_Depth_Midas = X.XGroup<{
 }>
 
 export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         label: 'Midas',
         // startCollapsed: true,
@@ -97,7 +96,7 @@ export type UI_subform_Depth_LeReS = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         label: 'LeReS',
         // startCollapsed: true,
@@ -115,7 +114,7 @@ export type UI_subform_Depth_Zoe = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         label: 'Zoe',
         // startCollapsed: true,

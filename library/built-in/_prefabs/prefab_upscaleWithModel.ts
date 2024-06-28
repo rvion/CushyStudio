@@ -8,7 +8,7 @@ export type UI_upscaleWithModel = X.XGroup<{
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
-    const ui: Domain = getCurrentForm()
+    const ui: X.Domain = getCurrentForm()
     return ui
         .group({
             label: 'Upscale via Model',

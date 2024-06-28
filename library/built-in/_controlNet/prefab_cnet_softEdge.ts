@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -16,7 +15,7 @@ export type UI_subform_SoftEdge = X.XGroup<{
     }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form
         .group({
             label: 'SoftEdge',
@@ -43,7 +42,7 @@ export type UI_subform_SoftEdge_Preprocessor = X.XChoice<{
     Pidinet: UI_subform_SoftEdge_Preprocessor_Options
 }>
 export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preprocessor {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.choice({
         label: 'SoftEdge Edge Preprocessor',
         startCollapsed: true,
@@ -62,7 +61,7 @@ export type UI_subform_SoftEdge_Preprocessor_Options = X.XGroup<{
     safe: X.XBool
     saveProcessedImage: X.XBool
 }>
-export function ui_subform_SoftEdge_Preprocessor_Options(form: Domain): UI_subform_SoftEdge_Preprocessor_Options {
+export function ui_subform_SoftEdge_Preprocessor_Options(form: X.Domain): UI_subform_SoftEdge_Preprocessor_Options {
     return form.group({
         label: 'Settings',
         startCollapsed: true,

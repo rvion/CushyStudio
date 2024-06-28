@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
@@ -10,7 +9,7 @@ export type UI_3dDisplacement = X.XGroup<{
         MiDaS: X.XEmpty
         Zoe: X.XEmpty
         LeReS: X.XEmpty
-        Marigold: ReturnType<Domain['auto']['MarigoldDepthEstimation']>
+        Marigold: ReturnType<X.Domain['auto']['MarigoldDepthEstimation']>
     }>
 }>
 

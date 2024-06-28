@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -17,7 +16,7 @@ export type UI_subform_Scribble = X.XGroup<{
     }>
 }>
 export function ui_subform_Scribble(): UI_subform_Scribble {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form
         .group({
             label: 'Scribble',

@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -19,7 +18,7 @@ export type UI_subform_Lineart = X.XGroup<{
 }>
 
 export function ui_subform_Lineart(): UI_subform_Lineart {
-    const ui: Domain = getCurrentForm()
+    const ui: X.Domain = getCurrentForm()
     return ui
         .group({
             label: 'Lineart',
@@ -55,7 +54,7 @@ export type UI_subform_Lineart_Preprocessor = X.XChoice<{
     Manga: UI_subform_Lineart_Manga
 }>
 export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.choice({
         label: 'Lineart Preprocessor',
         startCollapsed: true,
@@ -76,7 +75,7 @@ export type UI_subform_Lineart_realistic = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -92,7 +91,7 @@ export type UI_subform_Lineart_Anime = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -107,7 +106,7 @@ export type UI_subform_Lineart_Manga = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,

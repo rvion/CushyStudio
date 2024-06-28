@@ -8,7 +8,7 @@ import type { Domain } from '../../../src/controls/Domain'
 
 // Example 1 -------------------------------------------------------------------------------------
 // 📝 this is a self-contained UI kit you can use in any card you want.
-export const ui_startImage = (form: Domain) =>
+export const ui_startImage = (form: X.Domain) =>
     form.group({
         items: {
             startImage: form.image({}).optional(),
@@ -25,14 +25,14 @@ export const ui_startImage = (form: Domain) =>
 // 🔶 BE CAREFUL ABOUT THIS NOTATION:
 // EXAMPLE 1. () => ({ a: 1 })
 // EXAMPLE 2. () => ({ a: 1 })
-export const subform_someFields1 = (form: Domain) => ({
+export const subform_someFields1 = (form: X.Domain) => ({
     startImage: form.image({}).optional(),
     width: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     height: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     batchSize: form.int({ default: 1, min: 1, max: 20 }),
 })
 
-export const subform_someFields2 = (form: Domain) => ({
+export const subform_someFields2 = (form: X.Domain) => ({
     X: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     Y: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
 })

@@ -55,7 +55,7 @@ export function ui_highresfix(): UI_HighResFix {
 }
 
 // ---------------------------------------------------------
-export const ui_themes = (form: Domain) =>
+export const ui_themes = (form: X.Domain) =>
     form.list({
         element: () =>
             form.group({
@@ -88,9 +88,9 @@ export const util_expandBrances = (str: string): string[] => {
     return Array.from(result)
 }
 
-export const ui_vaeName = (form: Domain) => form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
-export const ui_modelName = (form: Domain) => form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-export const ui_resolutionPicker = (form: Domain) =>
+export const ui_vaeName = (form: X.Domain) => form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
+export const ui_modelName = (form: X.Domain) => form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+export const ui_resolutionPicker = (form: X.Domain) =>
     form.selectOne({
         label: 'Resolution',
         choices: [
@@ -108,7 +108,7 @@ export const ui_resolutionPicker = (form: Domain) =>
     })
 
 /** allow to easilly pick a shape */
-export const ui_shapePickerBasic = (form: Domain) => {
+export const ui_shapePickerBasic = (form: X.Domain) => {
     return form.selectOne({
         label: 'Shape',
         choices: [{ id: 'round' }, { id: 'square' }],
@@ -116,7 +116,7 @@ export const ui_shapePickerBasic = (form: Domain) => {
 }
 
 /** allow to easilly pick any shape given as parameter */
-export const ui_shapePickerExt = <const T extends string>(form: Domain, values: T[]) => {
+export const ui_shapePickerExt = <const T extends string>(form: X.Domain, values: T[]) => {
     return form.selectOne({
         label: 'Shape',
         choices: values.map((t) => ({ id: t })),

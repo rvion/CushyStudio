@@ -1,5 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
-
 // 🅿️ CNET COMMON FORM ===================================================
 
 export type UI_cnet_ui_common = {
@@ -11,7 +9,7 @@ export type UI_cnet_ui_common = {
         upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
     }>
 }
-export function cnet_ui_common(ui: Domain): UI_cnet_ui_common {
+export function cnet_ui_common(ui: X.Domain): UI_cnet_ui_common {
     return {
         strength: ui.float({ default: 1, min: 0, max: 2, step: 0.1 }),
         advanced: ui.group({
@@ -27,7 +25,7 @@ export function cnet_ui_common(ui: Domain): UI_cnet_ui_common {
     }
 }
 
-export const cnet_preprocessor_ui_common = (form: Domain) => ({
+export const cnet_preprocessor_ui_common = (form: X.Domain) => ({
     //preview: form.inlineRun({ text: 'Preview', kind: 'special' }),
     saveProcessedImage: form.bool({ default: false, expand: true, label: 'Save image' }),
     //resolution: form.int({ default: 512, min: 512, max: 1024, step: 512 }),

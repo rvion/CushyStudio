@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -56,7 +55,7 @@ export type UI_subform_Tile_Preprocessor = X.XChoice<{
     }>
 }>
 export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
         startCollapsed: true,

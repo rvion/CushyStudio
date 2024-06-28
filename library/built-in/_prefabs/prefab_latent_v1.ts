@@ -1,4 +1,3 @@
-import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
 
 export function ui_latent_v1(): X.XGroup<{
@@ -6,7 +5,7 @@ export function ui_latent_v1(): X.XGroup<{
     batchSize: X.XNumber
     size: X.XSize
 }> {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.group({
         label: 'Start from',
         items: {

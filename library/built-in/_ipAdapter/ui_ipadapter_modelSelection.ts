@@ -1,4 +1,4 @@
-import type { Domain, KnownModel_Name } from '../../../src/CUSHY'
+import type { KnownModel_Name } from '../../../src/CUSHY'
 
 //🅿️ IPAdapter Model Selection ===================================================
 
@@ -7,7 +7,7 @@ export type UI_ipadapter_modelSelection = {
 }
 
 export const ui_ipadapter_modelSelection = (
-    form: Domain,
+    form: X.Domain,
     defaultModel: Enum_IPAdapterModelLoader_ipadapter_file = 'ip-adapter_sd15.safetensors',
     knownModels:
         | KnownModel_Name //

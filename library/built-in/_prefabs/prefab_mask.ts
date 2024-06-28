@@ -16,7 +16,7 @@ export type UI_Mask = X.XChoice<{
 }>
 
 export function ui_mask(): UI_Mask {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.choice({
         appearance: 'tab',
         icon: 'mdiDominoMask',

@@ -22,7 +22,7 @@ export const ui_sampler_advanced = (p?: {
     startCollapsed?: boolean
     sharedSampler?: boolean
 }) => {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.fields(
         {
             sampler_name: p?.sharedSampler

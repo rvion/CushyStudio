@@ -21,7 +21,7 @@ type UiSampleProps = {
     startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
     return form.fields(
         {
             denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),

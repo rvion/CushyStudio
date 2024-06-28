@@ -40,7 +40,7 @@ export type UI_cnet = X.XLink<
 >
 
 export function ui_cnet(): UI_cnet {
-    const form: Domain = getCurrentForm()
+    const form: X.Domain = getCurrentForm()
 
     const applyDuringUpscale2 = form.bool({
         tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
