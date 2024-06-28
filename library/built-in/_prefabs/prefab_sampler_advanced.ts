@@ -1,16 +1,16 @@
 import type { FormBuilder, Runtime } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
 
-export const shared_samplerName = () => {
-    const form = getCurrentForm()
-    return form.shared(
-        'samplerName',
-        form.enum.Enum_KSampler_sampler_name({
-            label: 'Sampler',
-            default: 'dpmpp_sde',
-        }),
-    )
-}
+// ⏸️ export const shared_samplerName = () => {
+// ⏸️     const form = getCurrentForm()
+// ⏸️     return form.shared(
+// ⏸️         'samplerName',
+// ⏸️         form.enum.Enum_KSampler_sampler_name({
+// ⏸️             label: 'Sampler',
+// ⏸️             default: 'dpmpp_sde',
+// ⏸️         }),
+// ⏸️     )
+// ⏸️ }
 
 // UI -----------------------------------------------------------
 export const ui_sampler_advanced = (p?: {
@@ -26,7 +26,11 @@ export const ui_sampler_advanced = (p?: {
     return form.fields(
         {
             sampler_name: p?.sharedSampler
-                ? shared_samplerName()
+                ? // ⏸️ shared_samplerName()
+                  form.enum.Enum_KSampler_sampler_name({
+                      label: 'Sampler',
+                      default: 'dpmpp_sde',
+                  })
                 : form.enum.Enum_KSampler_sampler_name({
                       label: 'Sampler',
                       default: p?.sampler_name ?? 'euler',
