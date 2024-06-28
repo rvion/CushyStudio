@@ -1,4 +1,4 @@
-import { cushyRepo } from '../../controls/Domain'
+import { cushyRepo } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'

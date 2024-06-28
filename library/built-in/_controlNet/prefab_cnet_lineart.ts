@@ -18,7 +18,7 @@ export type UI_subform_Lineart = X.XGroup<{
 }>
 
 export function ui_subform_Lineart(): UI_subform_Lineart {
-    const ui: X.Domain = getCurrentForm()
+    const ui: X.Builder = getCurrentForm()
     return ui
         .group({
             label: 'Lineart',
@@ -54,7 +54,7 @@ export type UI_subform_Lineart_Preprocessor = X.XChoice<{
     Manga: UI_subform_Lineart_Manga
 }>
 export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Lineart Preprocessor',
         startCollapsed: true,
@@ -75,7 +75,7 @@ export type UI_subform_Lineart_realistic = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -91,7 +91,7 @@ export type UI_subform_Lineart_Anime = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -106,7 +106,7 @@ export type UI_subform_Lineart_Manga = X.XGroup<{
     saveProcessedImage: X.XBool
 }>
 export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,

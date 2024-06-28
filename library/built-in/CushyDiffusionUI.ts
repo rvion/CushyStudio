@@ -43,7 +43,7 @@ export type CushyDiffusionUI_ = {
     extra: UI_extra
 }
 
-export function CushyDiffusionUI(ui: X.Domain): CushyDiffusionUI_ {
+export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
     return {
         positive: ui.prompt({
             icon: 'mdiPlusBoxOutline',
@@ -98,7 +98,7 @@ export type UI_extra = X.XChoices<{
     fancyWatermark: X.XEmpty
 }>
 
-function extra(ui: X.Domain): UI_extra {
+function extra(ui: X.Builder): UI_extra {
     return ui.choices({
         appearance: 'tab',
         icon: 'mdiAlien',

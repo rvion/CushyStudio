@@ -3,7 +3,7 @@ import type { BaseField } from './BaseField'
 import type { Entity } from './Entity'
 import type { ISchema } from './IBlueprint'
 
-export interface IDomain {
+export interface IBuilder {
     _cache: { count: number }
     _HYDRATE: <T extends ISchema<any>>(
         //

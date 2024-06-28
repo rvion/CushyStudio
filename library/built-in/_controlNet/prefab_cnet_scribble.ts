@@ -16,7 +16,7 @@ export type UI_subform_Scribble = X.XGroup<{
     }>
 }>
 export function ui_subform_Scribble(): UI_subform_Scribble {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form
         .group({
             label: 'Scribble',

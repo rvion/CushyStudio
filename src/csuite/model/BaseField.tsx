@@ -8,7 +8,7 @@ import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { Entity } from './Entity'
 import type { ISchema } from './IBlueprint'
-import type { IDomain } from './IDomain'
+import type { IBuilder } from './IBuilder'
 import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
@@ -63,7 +63,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         public spec: ISchema<K['$Field']>,
     ) {}
 
-    get domain(): IDomain {
+    get domain(): IBuilder {
         return this.entity.domain
     }
 

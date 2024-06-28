@@ -29,7 +29,7 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { cushyRepo, type CushyRepo } from '../controls/Domain'
+import { cushyRepo, type CushyRepo } from '../controls/Builder'
 import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager } from '../csuite/activity/ActivityManager'

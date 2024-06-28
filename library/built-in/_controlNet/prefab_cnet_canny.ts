@@ -18,7 +18,7 @@ export type UI_subform_Canny = X.XGroup<{
 }>
 
 export function ui_subform_Canny(): UI_subform_Canny {
-    const ui: X.Domain = getCurrentForm()
+    const ui: X.Builder = getCurrentForm()
     return ui
         .group({
             label: 'Canny',
@@ -57,7 +57,7 @@ type UI_subform_Canny_Preprocessor = X.XOptional<
     }>
 >
 
-function ui_subform_Canny_Preprocessor(ui: X.Domain): UI_subform_Canny_Preprocessor {
+function ui_subform_Canny_Preprocessor(ui: X.Builder): UI_subform_Canny_Preprocessor {
     return ui
         .group({
             label: 'Canny Edge Preprocessor',

@@ -1,4 +1,4 @@
-import type { Domain } from '../../../src/controls/Domain'
+import type { Builder } from '../../../src/controls/Builder'
 import type { Channel } from '../../../src/csuite'
 
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
@@ -29,7 +29,7 @@ export type UI_LatentV3 = X.XLink<
 >
 
 export function ui_latent_v3() {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize) => {
         // const batchSize = form.linked(chan)
         return form.choice({

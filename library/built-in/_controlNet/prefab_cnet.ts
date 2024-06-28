@@ -1,4 +1,4 @@
-import type { Domain } from '../../../src/controls/Domain'
+import type { Builder } from '../../../src/controls/Builder'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'
@@ -40,7 +40,7 @@ export type UI_cnet = X.XLink<
 >
 
 export function ui_cnet(): UI_cnet {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
 
     const applyDuringUpscale2 = form.bool({
         tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',

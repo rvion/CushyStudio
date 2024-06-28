@@ -2,7 +2,7 @@ import type { Widget_number, Widget_number_config } from '../fields/number/Widge
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
-import type { IDomain } from '../model/IDomain'
+import type { IBuilder } from '../model/IBuilder'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
@@ -21,13 +21,13 @@ import { Repository } from '../model/EntityManager'
 import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
-export class BasicDomain implements IDomain {
+export class BasicBuilder implements IBuilder {
     /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
     constructor() {
-        // public model: Model<IBlueprint, SimpleDomain>, //
+        // public model: Model<IBlueprint, BasicBuilder>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -149,10 +149,10 @@ export class BasicDomain implements IDomain {
     }
 }
 
-export const BasicModelManager: Repository<BasicDomain> = new Repository(new BasicDomain()) //
+export const BasicModelManager: Repository<BasicBuilder> = new Repository(new BasicBuilder()) //
 
 // Entity
-const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicDomain */) => {
+const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicBuilder */) => {
     const z = ui.int() // Schema<Field_number>  (🕣 SimpleBlueprint<Widget_number>)
 
     return ui.fields({

@@ -5,7 +5,7 @@ export function ui_latent_v1(): X.XGroup<{
     batchSize: X.XNumber
     size: X.XSize
 }> {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.group({
         label: 'Start from',
         items: {

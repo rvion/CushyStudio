@@ -591,10 +591,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
     // 🐉     //
-    // 🐉     requestFn: (q: Domain) => Req,
+    // 🐉     requestFn: (q: Builder) => Req,
     // 🐉     layout?: 0,
     // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    // 🐉     const reqBuilder = new Domain()
+    // 🐉     const reqBuilder = new Builder()
     // 🐉     const request = requestFn(reqBuilder)
     // 🐉     const ask = new ScriptStep_ask(request)
     // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })

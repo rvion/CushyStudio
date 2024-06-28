@@ -1,6 +1,6 @@
 import type { Entity } from '../csuite/model/Entity'
 import type { ISchema, SchemaDict } from '../csuite/model/IBlueprint'
-import type { IDomain } from '../csuite/model/IDomain'
+import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
@@ -42,7 +42,7 @@ import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
 declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/IBlueprint').SchemaDict
-        type Domain = import('./Domain').Domain
+        type Builder = import('./Builder').Builder
 
         // non blueprint aliases
         type Shared<T extends ISchema> = Widget_shared<T>
@@ -107,7 +107,7 @@ declare global {
 }
 
 /** cushy studio form builder */
-export class Domain implements IDomain {
+export class Builder implements IBuilder {
     SpecCtor = Schema
 
     /**
@@ -119,7 +119,7 @@ export class Domain implements IDomain {
      * to be moved in a dedicated file, outside of the model/entity file
      */
     constructor() {
-        // public model: Model<IBlueprint, Domain>,
+        // public model: Model<IBlueprint, Builder>,
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -447,8 +447,8 @@ export class Domain implements IDomain {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
-export type CushyRepo = Repository<Domain>
-export const cushyRepo: CushyRepo = new Repository<Domain>(new Domain())
+export type CushyRepo = Repository<Builder>
+export const cushyRepo: CushyRepo = new Repository<Builder>(new Builder())
 
 /**
  * Calling this function will mount and instanciate the subform right away

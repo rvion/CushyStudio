@@ -1,7 +1,7 @@
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
-import type { IDomain } from '../model/IDomain'
+import type { IBuilder } from '../model/IBuilder'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
 import type * as SS from './SimpleSpecAliases'
 
@@ -28,13 +28,13 @@ import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
-export class SimpleDomain implements IDomain {
+export class SimpleBuilder implements IBuilder {
     /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
     constructor() {
-        // public model: Model<IBlueprint, SimpleDomain>, //
+        // public model: Model<IBlueprint, SimpleBuilder>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })

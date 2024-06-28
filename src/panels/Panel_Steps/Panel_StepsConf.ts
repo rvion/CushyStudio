@@ -1,4 +1,4 @@
-import { cushyRepo, type Domain } from '../../controls/Domain'
+import { type Builder, cushyRepo } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
@@ -42,7 +42,7 @@ export const PanelStepsConf = cushyRepo.form(
     },
 )
 
-function ui_outputFilter(ui: Domain) {
+function ui_outputFilter(ui: Builder) {
     return ui.choicesV2(
         {
             MediaTextL: ui.empty(),

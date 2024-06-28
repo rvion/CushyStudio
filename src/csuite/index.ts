@@ -1,10 +1,10 @@
 import { Repository } from './model/EntityManager'
-import { SimpleDomain } from './simple/SimpleDomain'
+import { SimpleBuilder } from './simple/SimpleBuilder'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
-export type { IDomain as Domain } from './model/IDomain'
+export type { IBuilder as Builder } from './model/IBuilder'
 export type { EntitySerial as ModelSerial } from './model/ModelSerial'
 export type { ModelConfig } from './model/Entity'
 export type { SchemaDict, ISchema as IBlueprint } from './model/IBlueprint'
@@ -16,4 +16,4 @@ export type * from './simple/SimpleSpecAliases'
 export { Channel } from './model/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
-export const SimpleModelManager: Repository<SimpleDomain> = new Repository(new SimpleDomain())
+export const SimpleModelManager: Repository<SimpleBuilder> = new Repository(new SimpleBuilder())

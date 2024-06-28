@@ -9,7 +9,7 @@ export type UI_3dDisplacement = X.XGroup<{
         MiDaS: X.XEmpty
         Zoe: X.XEmpty
         LeReS: X.XEmpty
-        Marigold: ReturnType<X.Domain['auto']['MarigoldDepthEstimation']>
+        Marigold: ReturnType<X.Builder['auto']['MarigoldDepthEstimation']>
     }>
 }>
 

@@ -55,7 +55,7 @@ export type UI_subform_Tile_Preprocessor = X.XChoice<{
     }>
 }>
 export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
         startCollapsed: true,

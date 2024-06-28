@@ -7,7 +7,7 @@ import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne
  */
 import type { Entity } from '../csuite/model/Entity'
 import type { ISchema } from '../csuite/model/IBlueprint'
-import type { Domain } from './Domain'
+import type { Builder } from './Builder'
 
 import { Schema } from './Blueprint'
 
@@ -25,7 +25,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public domain: Domain) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -59,7 +59,7 @@ export class EnumBuilder {
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
-    constructor(public domain: Domain) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -109,7 +109,7 @@ export type IEnumListBuilder = {
 
 export interface EnumListBuilder extends IEnumListBuilder {}
 export class EnumListBuilder {
-    constructor(public domain: Domain) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols

@@ -52,7 +52,7 @@ type UI_subform_Normal_Preprocessor = X.XChoice<{
 }>
 
 function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Normal Preprocessor',
         startCollapsed: true,

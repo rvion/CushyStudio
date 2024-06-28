@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
-import { cushyRepo } from '../../controls/Domain'
+import { cushyRepo } from '../../controls/Builder'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'

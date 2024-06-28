@@ -16,7 +16,7 @@ export type UI_subform_OpenPose = X.XGroup<{
 }>
 
 export function ui_subform_OpenPose(): UI_subform_OpenPose {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form
         .fields(
             {
@@ -63,7 +63,7 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
 }>
 
 function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Preprocessor',
         startCollapsed: true,

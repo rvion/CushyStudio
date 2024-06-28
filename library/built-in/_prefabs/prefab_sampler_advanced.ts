@@ -1,4 +1,4 @@
-import type { Domain, Runtime } from '../../../src/CUSHY'
+import type { Builder, Runtime } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
 
 // ⏸️ export const shared_samplerName = () => {
@@ -22,7 +22,7 @@ export const ui_sampler_advanced = (p?: {
     startCollapsed?: boolean
     sharedSampler?: boolean
 }) => {
-    const form: X.Domain = getCurrentForm()
+    const form: X.Builder = getCurrentForm()
     return form.fields(
         {
             sampler_name: p?.sharedSampler

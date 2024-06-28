@@ -32,7 +32,7 @@ quickly add typings to your prefabs without having to import anything
 
 
 ```tsx
-import type { Domain } from '../../../src/controls/Domain'
+import type { Builder } from '../../../src/controls/Builder'
 import type { SchemaDict } from '../../../src/csuite'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
@@ -54,7 +54,7 @@ export type UI_Mask = X.XChoice<{
 // and add explit return type to your function
 //                         VVVVV
 export function ui_mask(): UI_Mask {
-    const form: Domain = getCurrentForm()
+    const form: Builder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
         icon: 'mdiDominoMask',
