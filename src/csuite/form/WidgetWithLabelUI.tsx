@@ -71,7 +71,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         <WidgetLabelCaretUI widget={widget} />
                         <WidgetLabelIconUI widget={widget} />
                         {!justify && <Widget_ToggleUI tw='mr-1' widget={originalWidget} />}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                        {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                         <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
                         {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
                         {justify && <Widget_ToggleUI tw='ml-1' widget={originalWidget} />}
