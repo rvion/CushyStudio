@@ -1,4 +1,4 @@
-import type { Timestamp } from '../cards/Timestamp'
+import type { Timestamp } from '../csuite/types/Timestamp'
 import type { STATE } from '../state/state'
 import type * as T from './TYPES.gen'
 import type { TableInfo } from './TYPES_json'
