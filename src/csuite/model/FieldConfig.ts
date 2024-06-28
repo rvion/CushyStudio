@@ -55,6 +55,9 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /** will be called when value changed */
     onValueChange?: CovariantFnX<[val: T['$Value'], self: T['$Field']], void>
 
+    /** will be called when serial changed */
+    onSerialChange?: CovariantFnX<[val: T['$Serial'], self: T['$Field']], void>
+
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]
 

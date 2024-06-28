@@ -227,11 +227,55 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     }
 
     /**
-     * return a short string summary
-     * expected to be overriden in child classes
+     * return a short string summary that display the value in a simple way.
+     * This method is expected to be overriden in most child classes
      */
     get summary(): string {
         return JSON.stringify(this.value)
+    }
+
+    /**
+     * Retrive the config custom data.
+     * 🔶: NOT TO BE CONFUSED WITH `getFieldCustom`
+     * Config custom data is NOT persisted anywhere,
+     * You can set config.custom when defining your schema.
+     * This data is completely unused internally by CSuite.
+     * It is READONLY.
+     */
+    getConfigCustom<T = unknown>(): Readonly<T> {
+        return this.config.custom ?? {}
+    }
+
+    /**
+     * Retrive the field custom data.
+     * 🔶: NOT TO BE CONFUSED WITH `getConfigCustom`
+     * Field custom data are persisted in the serial.custom.
+     * This data is completely unused internally by CSuite.
+     * You can use them however you want provided you keep them serializable.
+     * It's just a quick/hacky place to store stuff
+     */
+    getFieldCustom<T = unknown>(): T {
+        return this.serial.custom
+    }
+
+    /**
+     * update
+     * You can either return a new value, or patch the initial value
+     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
+     */
+    updateFieldCustom<T = unknown>(fn: (x: Maybe<T>) => T): this {
+        const prev = this.value
+        const next = fn(prev) ?? prev
+        this.serial.custom = JSON.parse(JSON.stringify(next))
+        this.bumpSerial()
+        return this
+    }
+
+    /** delete field custom data (delete this.serial.custom)  */
+    deleteFieldCustomData(): this {
+        delete this.serial.custom
+        this.bumpSerial()
+        return this
     }
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */

@@ -17,19 +17,20 @@ import { debounce } from '../utils/debounce'
 
 export type ModelConfig<
     //
-    ROOT extends IBlueprint<any>,
+    SCHEMA extends IBlueprint<any>,
     DOMAIN extends Domain,
     CONTEXT,
 > = {
     name: string
-    onSerialChange?: (form: Model<ROOT, DOMAIN>) => void
-    onValueChange?: (form: Model<ROOT, DOMAIN>) => void
+    // ----------------------------
+    onValueChange?: (form: Model<SCHEMA, DOMAIN>) => void
+    onSerialChange?: (form: Model<SCHEMA, DOMAIN>) => void
     initialSerial?: (context: CONTEXT) => Maybe<ModelSerial>
 }
 
 export class Model<
     /** shape of the form, to preserve type safety down to nested children */
-    ROOT extends IBlueprint<any> = IBlueprint<any>,
+    SCHEMA extends IBlueprint<any> = IBlueprint<any>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
@@ -40,8 +41,8 @@ export class Model<
 > {
     constructor(
         public manager: ModelManager<DOMAIN>,
-        public buildFn: CovariantFn2<DOMAIN, CONTEXT, ROOT>,
-        public config: ModelConfig<ROOT, DOMAIN, CONTEXT>,
+        public buildFn: CovariantFn2<DOMAIN, CONTEXT, SCHEMA>,
+        public config: ModelConfig<SCHEMA, DOMAIN, CONTEXT>,
         public context: CONTEXT,
     ) {
         this.domain = manager.getBuilder(this)
@@ -65,6 +66,7 @@ export class Model<
      */
     saveSnapshot() {
         this.snapshot = JSON.parse(JSON.stringify(this.root.serial))
+        this.snapshotLastUpdatedAt = Date.now()
     }
 
     /**
@@ -123,7 +125,7 @@ export class Model<
         width?: string
     }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
-    get value(): ROOT['$Value'] {
+    get value(): SCHEMA['$Value'] {
         return this.root.value
     }
 
@@ -137,26 +139,22 @@ export class Model<
             // shared: this.shared,
             serialLastUpdatedAt: this.serialLastUpdatedAt,
             valueLastUpdatedAt: this.valueLastUpdatedAt,
+            snapshotLastUpdatedAt: this.snapshotLastUpdatedAt,
         }
     }
 
     /** @deprecated ; only work when root is a Widget_group */
-    get fields(): ROOT extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
+    get fields(): SCHEMA extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
         if (isWidgetGroup(this.root)) return this.root.fields as any
         throw new Error('🔴 root is not a group')
     }
 
     // 🔴 👇 remove that
-    get root(): ROOT['$Field'] {
+    get root(): SCHEMA['$Field'] {
         const root = this.init()
         Object.defineProperty(this, 'root', { value: root })
         return root
     }
-
-    /** Out of Tree unmounted serials  */
-    // shared: {
-    //     [key: string]: any
-    // } = {}
 
     // Change tracking ------------------------------------
 
@@ -166,11 +164,14 @@ export class Model<
     /** timestamp at which form serial was last updated, or 0 when form still pristine */
     serialLastUpdatedAt: Timestamp = 0
 
-    private _onSerialChange: ((form: Model<ROOT, any>) => void) | null = this.config.onSerialChange //
+    /** timestamp at which last entity snapshot was updated, or 0 if no snpashot */
+    snapshotLastUpdatedAt: Timestamp = 0
+
+    private _onSerialChange: ((form: Model<SCHEMA, any>) => void) | null = this.config.onSerialChange //
         ? debounce(this.config.onSerialChange, 200)
         : null
 
-    private _onValueChange: ((form: Model<ROOT, any>) => void) | null = this.config.onValueChange //
+    private _onValueChange: ((form: Model<SCHEMA, any>) => void) | null = this.config.onValueChange //
         ? debounce(this.config.onValueChange, 5)
         : null
 
@@ -198,7 +199,7 @@ export class Model<
     domain: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
-    _ROOT!: ROOT['$Field']
+    _ROOT!: SCHEMA['$Field']
 
     ready = false
 
@@ -209,73 +210,54 @@ export class Model<
         return this._uid
     }
 
-    private init(): ROOT['$Field'] {
+    private init(): SCHEMA['$Field'] {
         console.log(`[🥐] Building form ${this.config.name}`)
         const formBuilder = this.domain
 
         try {
-            let formSerial = this.config.initialSerial?.(this.context)
-            this._uid = formSerial?.uid ?? nanoid()
+            // retrieve the previous entity serial
+            let serial = this.config.initialSerial?.(this.context)
+
+            // keep track of the prev uid, and set-it up so it's avaialable asap
+            this._uid = serial?.uid ?? nanoid()
 
             // ensure form serial is observable, so we avoid working with soon to expire refs
-            if (formSerial && !isObservable(formSerial)) formSerial = observable(formSerial)
-
-            // empty object case
-            // if and empty object `{}` is used instead of a real serial, let's pretend it's null
-            if (formSerial != null && Object.keys(formSerial).length === 0) {
-                formSerial = null
+            if (serial && !isObservable(serial)) {
+                serial = observable(serial)
             }
+
+            // if and empty object `{}` is used instead of a real serial, let's pretend it's null
+            if (serial != null && Object.keys(serial).length === 0) {
+                serial = null
+            }
+
             // attempt to recover from legacy serial
-            formSerial = recoverFromLegacySerial(formSerial, this.config)
+            serial = recoverFromLegacySerial(serial, this.config)
 
             // at this point, we expect the form serial to be fully valid
-            if (formSerial != null && formSerial.type !== 'FormSerial') {
+            if (serial != null && serial.type !== 'FormSerial') {
                 throw new Error('❌ INVALID form serial')
             }
 
-            this.snapshot = formSerial?.snapshot
-            // instanciate the root widget
-            const spec: ROOT = this.buildFn?.(formBuilder, this.context)
-            const rootWidget: ROOT = formBuilder._HYDRATE(this, null, spec, formSerial?.root)
+            this.snapshot = serial?.snapshot
+            this.valueLastUpdatedAt = serial?.valueLastUpdatedAt ?? 0
+            this.serialLastUpdatedAt = serial?.serialLastUpdatedAt ?? 0
+            this.snapshotLastUpdatedAt = serial?.snapshotLastUpdatedAt ?? 0
+
+            const schema: SCHEMA = this.buildFn?.(formBuilder, this.context)
+            const rootWidget: SCHEMA = formBuilder._HYDRATE(this, null, schema, serial?.root)
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
             return rootWidget
         } catch (e) {
-            console.error(`[👙🔴] Building form ${this.config.name} FAILED`, this)
+            console.error(`[🔴] Building form ${this.config.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            const spec: ROOT = this.buildFn?.(formBuilder, this.context)
+            const spec: SCHEMA = this.buildFn?.(formBuilder, this.context)
             return formBuilder._HYDRATE(this, null, spec, null)
         }
     }
-
-    // _HYDRATE = (
-    //     //
-    //     spec: IBlueprint,
-    //     serial: ModelSerial,
-    // ): void => {
-    //     this.domain._HYDRATE(this, null, spec, serial.root)
-    // }
-
-    // hydrateSubtree = <W extends IBlueprint>(
-    //     //
-    //     key: string,
-    //     spec: W,
-    // ): W['$Field'] => {
-    //     const prevSerial = this.shared[key]
-    //     let widget: W['$Field']
-    //     if (prevSerial && prevSerial.type === spec.type) {
-    //         widget = this.domain._HYDRATE(this, null, spec, prevSerial)
-    //     } else {
-    //         widget = this.domain._HYDRATE(this, null, spec, null)
-    //     }
-    //     this.shared[key] = widget.serial
-    //     this.knownShared.set(key, widget)
-    //     return widget
-    //     // const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
-    //     // return new Widget_shared<W>(this, null, sharedSpec) as any
-    // }
 }
 
 function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<ModelSerial> {
@@ -297,8 +279,6 @@ function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<Mod
             uid: nanoid(),
             type: 'FormSerial',
             root: json,
-            serialLastUpdatedAt: 0,
-            valueLastUpdatedAt: 0,
         }
         console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
     }
