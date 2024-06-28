@@ -176,15 +176,15 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
     }
 
+    get value() {
+        return this.__value
+    }
+
     set value(val: Widget_group_value<T>) {
         runInAction(() => {
             for (const key in val) this.fields[key].value = val[key]
             this.applyValueUpdateEffects()
         })
-    }
-
-    get value() {
-        return this.__value
     }
 
     // @internal

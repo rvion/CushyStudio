@@ -11,12 +11,11 @@ import { runWithGlobalForm } from './runWithGlobalForm'
 export type NoContext = null
 
 /**
- * you need one per project;
- * singleton.
+ * you need one, and only one (singleton) per project
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class EntityManager<DOMAIN extends Domain> {
+export class Repository<DOMAIN extends Domain> {
     //
     _allForms: Map<string, Entity> = new Map()
     _allWidgets: Map<string, BaseField> = new Map()

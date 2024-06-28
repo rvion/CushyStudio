@@ -22,7 +22,6 @@ export type Widget_markdown_config = FieldConfig<
 // SERIAL
 export type Widget_markdown_serial = FieldSerial<{
     type: 'markdown'
-    active: true
 }>
 
 // VALUE
@@ -39,6 +38,10 @@ export type Widget_markdown_types = {
 
 // STATE
 export class Widget_markdown extends BaseField<Widget_markdown_types> {
+    readonly id: string
+    readonly type: 'markdown' = 'markdown'
+    readonly serial: Widget_markdown_serial
+
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -52,10 +55,6 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly id: string
-
-    readonly type: 'markdown' = 'markdown'
-    readonly serial: Widget_markdown_serial
 
     get markdown(): string {
         const md = this.config.markdown
@@ -64,7 +63,6 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     }
 
     constructor(
-        //
         public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_markdown>,
@@ -73,8 +71,12 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
         super()
         this.id = serial?.id ?? nanoid()
         const config = spec.config
-        this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        this.init({})
+        this.serial = serial ?? {
+            type: 'markdown',
+            collapsed: config.startCollapsed,
+            id: this.id,
+        }
+        this.init()
     }
 
     /** always return false */

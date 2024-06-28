@@ -527,7 +527,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     }
 
     /** this function MUST be called at the end of every widget constructor */
-    init(mobxOverrides: any) {
+    init(mobxOverrides?: any) {
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
@@ -555,12 +555,12 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         this.entity._allFormWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgets
-        this.entity.manager._allWidgets.set(this.id, this)
+        this.entity.repository._allWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.entity.manager._allWidgetsByType.get(this.type)
+        const prev = this.entity.repository._allWidgetsByType.get(this.type)
         if (prev == null) {
-            this.entity.manager._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
+            this.entity.repository._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }

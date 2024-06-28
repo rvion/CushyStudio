@@ -1,7 +1,7 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
 import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
-import type { EntityManager } from './EntityManager'
+import type { Repository } from './EntityManager'
 import type { ISchema } from './IBlueprint'
 import type { Domain } from './IDomain'
 import type { EntitySerial } from './ModelSerial'
@@ -30,7 +30,7 @@ export type ModelConfig<
 
 export class Entity<
     /** shape of the form, to preserve type safety down to nested children */
-    SCHEMA extends ISchema<any> = ISchema<any>,
+    SCHEMA extends ISchema<any /* 🔴 */> = ISchema<any /* 🔴 */>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
@@ -40,18 +40,31 @@ export class Entity<
     CONTEXT = any,
 > {
     constructor(
-        public manager: EntityManager<DOMAIN>,
+        public repository: Repository<DOMAIN>,
         public buildFn: CovariantFn2<DOMAIN, CONTEXT, SCHEMA>,
         public config: ModelConfig<SCHEMA, DOMAIN, CONTEXT>,
         public context: CONTEXT,
     ) {
-        this.domain = manager.getBuilder(this)
+        this.domain = repository.getBuilder(this)
+
+        this._onSerialChange = this.config.onSerialChange //
+            ? debounce(this.config.onSerialChange, 200)
+            : null
+
+        this._onValueChange = this.config.onValueChange //
+            ? debounce(this.config.onValueChange, 5)
+            : null
+
         makeAutoObservable(this, {
             // @ts-ignore
             init: action,
             root: false,
             // builder: false,
         })
+    }
+
+    get subWidgets(): BaseField[] {
+        return this.root.subWidgets
     }
 
     // get actions(){
@@ -169,13 +182,8 @@ export class Entity<
     /** timestamp at which last entity snapshot was updated, or 0 if no snpashot */
     snapshotLastUpdatedAt: Timestamp = 0
 
-    private _onSerialChange: ((form: Entity<SCHEMA, any>) => void) | null = this.config.onSerialChange //
-        ? debounce(this.config.onSerialChange, 200)
-        : null
-
-    private _onValueChange: ((form: Entity<SCHEMA, any>) => void) | null = this.config.onValueChange //
-        ? debounce(this.config.onValueChange, 5)
-        : null
+    private _onSerialChange: ((form: Entity<SCHEMA, any>) => void) | null
+    private _onValueChange: ((form: Entity<SCHEMA, any>) => void) | null
 
     /** every widget node must call this function once it's value change */
     applyValueUpdateEffects = (widget: BaseField) => {

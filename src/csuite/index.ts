@@ -1,4 +1,4 @@
-import { EntityManager } from './model/EntityManager'
+import { Repository } from './model/EntityManager'
 import { SimpleDomain } from './simple/SimpleDomain'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
@@ -16,4 +16,4 @@ export type * from './simple/SimpleSpecAliases'
 export { Channel } from './model/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
-export const SimpleModelManager: EntityManager<SimpleDomain> = new EntityManager(SimpleDomain)
+export const SimpleModelManager: Repository<SimpleDomain> = new Repository(SimpleDomain)
