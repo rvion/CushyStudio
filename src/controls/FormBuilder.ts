@@ -244,7 +244,7 @@ export class FormBuilder implements Domain {
         return new Schema<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
     }
     selectOneV2 = <T extends string>(
-        p: T[],
+        p: readonly T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectOne_<T> => {
         return new Schema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
