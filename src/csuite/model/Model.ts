@@ -211,7 +211,7 @@ export class Model<
         return this._uid
     }
 
-    init = (): ROOT['$Field'] => {
+    private init(): ROOT['$Field'] {
         console.log(`[🥐] Building form ${this.config.name}`)
         const formBuilder = this.domain
 
