@@ -74,25 +74,6 @@ export class Model<
         throw new Error('❌ not implemented')
     }
 
-    // hydrateSubtree = <W extends IBlueprint>(
-    //     //
-    //     key: string,
-    //     spec: W,
-    // ): W['$Field'] => {
-    //     const prevSerial = this.shared[key]
-    //     let widget: W['$Field']
-    //     if (prevSerial && prevSerial.type === spec.type) {
-    //         widget = this.domain._HYDRATE(this, null, spec, prevSerial)
-    //     } else {
-    //         widget = this.domain._HYDRATE(this, null, spec, null)
-    //     }
-    //     this.shared[key] = widget.serial
-    //     this.knownShared.set(key, widget)
-    //     return widget
-    //     // const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
-    //     // return new Widget_shared<W>(this, null, sharedSpec) as any
-    // }
-
     /**
      * @since 2024-06-20
      * @status broken
@@ -255,10 +236,8 @@ export class Model<
             ) {
                 console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(formSerial))
                 const oldSerial: Widget_group_serial<any> = formSerial as any
-                // const oldsharedSerial: { [key: string]: any } = {}
                 for (const [k, v] of Object.entries(oldSerial.values_)) {
                     if (k.startsWith('__')) {
-                        // oldsharedSerial[k.slice(2, -2)] = v
                         delete oldSerial.values_[k]
                     }
                 }
@@ -267,7 +246,6 @@ export class Model<
                     uid: nanoid(),
                     type: 'FormSerial',
                     root: formSerial,
-                    // shared: oldsharedSerial,
                     serialLastUpdatedAt: 0,
                     valueLastUpdatedAt: 0,
                 }
@@ -280,8 +258,6 @@ export class Model<
                 throw new Error('❌ INVALID form serial')
             }
 
-            // restore shared serials
-            // this.shared = formSerial?.shared || {}
             this.snapshot = formSerial?.snapshot
             // instanciate the root widget
             const spec: ROOT = this.buildFn?.(formBuilder, this.context)
@@ -305,5 +281,24 @@ export class Model<
     //     serial: ModelSerial,
     // ): void => {
     //     this.domain._HYDRATE(this, null, spec, serial.root)
+    // }
+
+    // hydrateSubtree = <W extends IBlueprint>(
+    //     //
+    //     key: string,
+    //     spec: W,
+    // ): W['$Field'] => {
+    //     const prevSerial = this.shared[key]
+    //     let widget: W['$Field']
+    //     if (prevSerial && prevSerial.type === spec.type) {
+    //         widget = this.domain._HYDRATE(this, null, spec, prevSerial)
+    //     } else {
+    //         widget = this.domain._HYDRATE(this, null, spec, null)
+    //     }
+    //     this.shared[key] = widget.serial
+    //     this.knownShared.set(key, widget)
+    //     return widget
+    //     // const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
+    //     // return new Widget_shared<W>(this, null, sharedSpec) as any
     // }
 }
