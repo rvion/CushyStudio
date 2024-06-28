@@ -118,7 +118,7 @@ export const interfaceConf = CushyFormManager.form(
         ),
     {
         name: 'Interface Config',
-        initialSerial: () => readJSON('settings/theme2.json'),
-        onSerialChange: (form) => writeJSON('settings/theme2.json', form.serial),
+        initialSerial: () => readJSON('settings/interface.json'),
+        onSerialChange: (form) => writeJSON('settings/interface.json', form.serial),
     },
 )
