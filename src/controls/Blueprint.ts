@@ -1,4 +1,5 @@
-import type { CovariantFC } from '../csuite'
+import type { CovariantFC, CovariantFnX } from '../csuite'
+import type { Widget_link_config } from '../csuite/fields/link/WidgetLink'
 import type { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
 import type { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
 import type { BaseField } from '../csuite/model/BaseField'
@@ -18,6 +19,12 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
     $Config!: Field['$Config']
     $Serial!: Field['$Serial']
     $Value!: Field['$Value']
+
+    constructor(
+        //
+        public readonly type: Field['type'],
+        public readonly config: Field['$Config'],
+    ) {}
 
     _methods: any = {}
     actions<T extends { [methodName: string]: (self: Field) => any }>(t: T): Blueprint<Field & T> {
@@ -87,15 +94,17 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
         return this
     }
 
+    useIn<BP extends IBlueprint>(
+        //
+        fn: CovariantFnX<[self: Field], BP>,
+    ): X.XLink<this, BP> {
+        const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
+        return new Blueprint('link', linkConf)
+    }
+
     Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
         return new Blueprint(type, config)
     }
-
-    constructor(
-        //
-        public readonly type: Field['type'],
-        public readonly config: Field['$Config'],
-    ) {}
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>

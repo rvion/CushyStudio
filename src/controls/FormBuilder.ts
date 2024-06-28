@@ -257,16 +257,18 @@ export class FormBuilder implements Domain {
     }
 
     /**
+     * Allow to instanciate a field early, so you can re-use it in multiple places
+     * or access it's instance to dynamically change some other field schema.
+     *
      * @since 2024-06-27
      * @stability unstable
      */
-    with<const T extends IBlueprint, U extends IBlueprint>(
-        //
-        injected: T,
-        // children: (shared: Channel<T['$Field']>) => U,
-        children: (shared: T['$Field']) => U,
-    ): X.XLink<T, U> {
-        return new Blueprint<Widget_link<T, U>>('link', { share: injected, children })
+    with<const BP extends IBlueprint, U extends IBlueprint>(
+        /** the blueprint of the field you'll want to re-use the in second part */
+        injected: BP,
+        children: (shared: BP['$Field']) => U,
+    ): X.XLink<BP, U> {
+        return new Blueprint<Widget_link<BP, U>>('link', { share: injected, children })
     }
 
     /**

@@ -3,6 +3,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { IBlueprint } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
+import type { CovariantFnX } from '../../variance/BivariantHack'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,13 +12,17 @@ import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_link_config<A extends IBlueprint, B extends IBlueprint> = FieldConfig<
+export type Widget_link_config<
+    //
+    A extends IBlueprint,
+    B extends IBlueprint,
+> = FieldConfig<
     {
         // injected
         share: A
 
         // into
-        children: (child: A['$Field']) => B
+        children: CovariantFnX<[child: A['$Field']], B>
     },
     Widget_link_types<A, B>
 >
