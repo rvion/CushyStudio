@@ -80,6 +80,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import { systemConf } from './conf/systemConf'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -935,6 +936,7 @@ export class STATE {
     theme = themeConf
     preferences = {
         interface: interfaceConf,
+        system: systemConf,
     }
     csuite = new CSuite_ThemeCushy(this)
 

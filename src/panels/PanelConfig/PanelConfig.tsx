@@ -21,7 +21,7 @@ import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
 
-export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'theme'
+export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' | 'theme'
 
 export const PanelConfig = new Panel({
     name: 'Config',
@@ -44,6 +44,9 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             break
         case 'legacy':
             page = <LegacyOptions />
+            break
+        case 'system':
+            page = <FormUI tw='flex-1' form={cushy.preferences.system} />
             break
         case 'theme':
             page = <FormUI tw='flex-1' form={cushy.theme} />
@@ -91,6 +94,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
                             ]}
                             border
                         >
+                            <ConfigModeButton mode='system' />
                             <ConfigModeButton mode='hosts' />
                         </Frame>
                     </div>
@@ -146,18 +150,7 @@ const LegacyOptions = observer(function LegacyOptions_() {
                         }}
                     />
                 </FieldUI>
-                <FieldUI label='Preferred Text Editor'>
-                    <input
-                        tw='cushy-basic-input w-full'
-                        name='preferredTextEditor'
-                        placeholder='code (vscode)'
-                        value={config.get('preferredTextEditor') ?? ''}
-                        onChange={(ev) => {
-                            config.update({ preferredTextEditor: ev.target.value })
-                            st.updateTsConfig()
-                        }}
-                    />
-                </FieldUI>
+
                 <FieldUI label='Your github username'>
                     <input //
                         tw='cushy-basic-input w-full'
