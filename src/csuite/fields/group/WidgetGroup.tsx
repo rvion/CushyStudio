@@ -168,7 +168,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     setPartialValue(val: Partial<Widget_group_value<T>>) {
         runInAction(() => {
             for (const key in val) this.fields[key].setValue(val[key])
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 
@@ -183,7 +183,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     set value(val: Widget_group_value<T>) {
         runInAction(() => {
             for (const key in val) this.fields[key].setValue(val[key])
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get value() {

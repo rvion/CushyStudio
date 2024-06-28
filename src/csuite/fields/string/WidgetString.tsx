@@ -115,7 +115,7 @@ export class Widget_string extends BaseField<Widget_string_types> {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get value(): Widget_string_value {

@@ -83,7 +83,7 @@ export class Widget_color extends BaseField<Widget_color_types> {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

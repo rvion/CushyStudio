@@ -143,7 +143,7 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
     set value(val: Widget_orbit_value) {
         this.serial.value.azimuth = val.azimuth
         this.serial.value.elevation = val.elevation
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
     get value(): Widget_orbit_value {
         return {

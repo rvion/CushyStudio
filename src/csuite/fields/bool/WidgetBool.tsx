@@ -123,7 +123,7 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
         if (this.serial.active === next) return
         runInAction(() => {
             this.serial.active = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

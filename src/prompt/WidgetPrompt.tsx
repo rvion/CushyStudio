@@ -112,7 +112,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
     setText_INTERNAL = (next: string) => {
         if (this.serial.val === next) return
         this.serial.val = next
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     set text(next: string) {
@@ -123,7 +123,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
         // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
         this._valueUpdatedViaAPIAt = Date.now() as Timestamp
         this.serial.val = next
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     // the raw unparsed text

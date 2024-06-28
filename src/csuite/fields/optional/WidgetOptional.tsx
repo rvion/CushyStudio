@@ -85,7 +85,7 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
     setActive = (value: boolean) => {
         if (this.serial.active === value) return
         this.serial.active = value
-        this.bumpValue()
+        this.applyValueUpdateEffects()
 
         // update child collapsed state if need be
         if (value) this.child.setCollapsed(false)

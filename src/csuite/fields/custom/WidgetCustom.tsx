@@ -95,7 +95,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

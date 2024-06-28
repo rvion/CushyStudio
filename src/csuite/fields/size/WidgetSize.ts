@@ -77,14 +77,14 @@ export class Widget_size extends BaseField<Widget_size_types> {
         if (next === this.serial.width) return
         runInAction(() => {
             this.serial.width = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     set height(next: number) {
         if (next === this.serial.height) return
         runInAction(() => {
             this.serial.height = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get sizeHelper(): ResolutionState {
@@ -153,7 +153,7 @@ export class Widget_size extends BaseField<Widget_size_types> {
         }
         runInAction(() => {
             Object.assign(this.serial, val)
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get value(): Widget_size_value {

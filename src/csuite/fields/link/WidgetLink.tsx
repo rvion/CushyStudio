@@ -125,7 +125,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
     set value(val: Widget_link_value<A, B>) {
         runInAction(() => {
             this.bField.setValue(val)
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 

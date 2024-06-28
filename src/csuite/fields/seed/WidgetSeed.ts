@@ -83,19 +83,19 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
     setMode = (mode: SeedMode) => {
         if (this.serial.mode === mode) return
         this.serial.mode = mode
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToFixed = (val?: number) => {
         this.serial.mode = 'fixed'
         if (val) this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToRandomize = () => {
         if (this.serial.mode === 'randomize') return
         this.serial.mode = 'randomize'
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
@@ -122,12 +122,12 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
 
     setValue = (val: number) => {
         this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     set value(val: number) {
         this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     get value(): Widget_seed_value {

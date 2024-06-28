@@ -104,7 +104,7 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

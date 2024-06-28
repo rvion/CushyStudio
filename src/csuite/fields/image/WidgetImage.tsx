@@ -107,13 +107,13 @@ export class Widget_image extends BaseField<Widget_image_types> {
         if (this.serial.imageID === next.id) return
         runInAction(() => {
             this.serial.imageID = next.id
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 
     set size(val: number) {
         this.serial.size = val
-        this.bumpSerial()
+        this.applySerialUpdateEffects()
     }
     get size() {
         return this.serial.size

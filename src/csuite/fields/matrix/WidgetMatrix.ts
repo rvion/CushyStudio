@@ -152,7 +152,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     UPDATE = () => {
         this.serial.selected = this.RESULT
-        this.bumpValue() // only place to call bumpValue
+        this.applyValueUpdateEffects() // only place to call bumpValue
     }
 
     /** list of all cells that are ON */

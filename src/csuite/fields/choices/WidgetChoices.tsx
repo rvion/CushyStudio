@@ -151,7 +151,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
             const childAfter = this.children[branchName]
             if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
@@ -245,7 +245,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         delete this.children[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
         this.serial.branches[branch] = false
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     enableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
@@ -275,7 +275,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
 
         // set the active branch as active
         this.serial.branches[branch] = true
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     setValue(val: Widget_choices_value<T>) {
@@ -294,7 +294,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
                 this.children[branch]!.setValue(val[branch]!)
             }
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
     /** results, but only for active branches */
     get value(): Widget_choices_value<T> {

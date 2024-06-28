@@ -54,7 +54,7 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                                 key={`rect-${widget.id}`}
                                 onChange={(p) => {
                                     Object.assign(shape, p)
-                                    widget.bumpValue()
+                                    widget.applyValueUpdateEffects()
                                 }}
                                 isSelected={shape.isSelected}
                                 shape={shape}

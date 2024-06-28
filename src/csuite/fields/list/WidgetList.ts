@@ -167,7 +167,7 @@ export class Widget_list<T extends ISchema> //
                     this.removeItem(item)
                     needBump = true
                 }
-                if (needBump) this.bumpValue()
+                if (needBump) this.applyValueUpdateEffects()
             },
             { fireImmediately: true },
         )
@@ -234,7 +234,7 @@ export class Widget_list<T extends ISchema> //
         }
         this.serial.items_.splice(val.length)
         this.items.splice(val.length)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
     get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
@@ -289,7 +289,7 @@ export class Widget_list<T extends ISchema> //
             this.items.splice(p.at, 0, element)
             this.serial.items_.splice(p.at, 0, element.serial)
         }
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     // REMOVING ITEMS ------------------------------------------------
@@ -302,7 +302,7 @@ export class Widget_list<T extends ISchema> //
         // remove all items
         this.serial.items_ = this.serial.items_.slice(0, minLen)
         this.items = this.items.slice(0, minLen)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     removeItem(item: T['$Field']) {
@@ -312,7 +312,7 @@ export class Widget_list<T extends ISchema> //
         // remove item
         this.serial.items_.splice(i, 1)
         this.items.splice(i, 1)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     // MOVING ITEMS ---------------------------------------------------
@@ -332,7 +332,7 @@ export class Widget_list<T extends ISchema> //
         // instances
         const instances = this.items
         instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 }
 

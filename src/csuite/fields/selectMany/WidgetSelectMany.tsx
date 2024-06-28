@@ -156,7 +156,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
         // remove it
         this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     /** select given item */
@@ -167,7 +167,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
         // insert & bump
         this.serial.values.push(item)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     /** select item if item was not selected, un-select if item was selected */
@@ -175,10 +175,10 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
         const i = this.serial.values.findIndex((i) => i.id === item.id)
         if (i < 0) {
             this.serial.values.push(item)
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         } else {
             this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         }
     }
 
@@ -190,7 +190,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
         if (this.serial.values === next) return
         runInAction(() => {
             this.serial.values = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 

@@ -267,14 +267,14 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         const prev = this.value
         const next = fn(prev) ?? prev
         this.serial.custom = JSON.parse(JSON.stringify(next))
-        this.bumpSerial()
+        this.applySerialUpdateEffects()
         return this
     }
 
     /** delete field custom data (delete this.serial.custom)  */
     deleteFieldCustomData(): this {
         delete this.serial.custom
-        this.bumpSerial()
+        this.applySerialUpdateEffects()
         return this
     }
 
@@ -297,17 +297,26 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: BaseField): void {
-        this.entity.serialChanged(this)
+    applySerialUpdateEffects(): void {
+        this.entity.applySerialUpdateEffects(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: BaseField): void {
+    applyValueUpdateEffects(): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.entity.valueChanged(this)
+        this.parent?.applyChildValueUpdateEffects(this)
+        this.entity.applyValueUpdateEffects(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
+        this.publishValue() // 🔴  should probably be a reaction rather than this
+    }
+
+    /** recursively walk upwards on any field change  */
+    private applyChildValueUpdateEffects(child: BaseField): void {
+        this.serial.lastUpdatedAt = Date.now() as Timestamp
+        this.parent?.applyChildValueUpdateEffects(child)
+        this.config.onValueChange?.(this.value, this /* TODO: add extra param here:, child  */)
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
@@ -391,12 +400,12 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
-        this.entity.serialChanged(this)
+        this.entity.applySerialUpdateEffects(this)
     }
 
     toggleCollapsed(this: BaseField) {
         this.serial.collapsed = !this.serial.collapsed
-        this.entity.serialChanged(this)
+        this.entity.applySerialUpdateEffects(this)
     }
 
     // UI ----------------------------------------------------

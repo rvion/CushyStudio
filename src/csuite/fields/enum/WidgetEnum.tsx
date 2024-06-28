@@ -98,7 +98,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

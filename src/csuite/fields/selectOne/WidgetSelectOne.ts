@@ -163,8 +163,8 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         const nextHasSameID = this.serial.val.id === next.id
         runInAction(() => {
             this.serial.val = next
-            if (!nextHasSameID) this.bumpValue()
-            else this.bumpSerial()
+            if (!nextHasSameID) this.applyValueUpdateEffects()
+            else this.applySerialUpdateEffects()
         })
     }
     get value(): Widget_selectOne_value<T> {

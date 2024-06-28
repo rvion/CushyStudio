@@ -58,7 +58,9 @@ export class Entity<
     //     return this.root.actions
     // }
 
-    /** current form snapshot */
+    /**
+     * Snapshots are the immutable serialization, in plain objects, of a tree at a specific point in time. Snapshots can be inspected through getSnapshot(node, applyPostProcess). Snapshots don't contain any type information and are stripped from all actions, etc., so they are perfectly suitable for transportation. Requesting a snapshot is cheap as MST always maintains a snapshot of each node in the background and uses structural sharing.
+     */
     snapshot: Maybe<any> = undefined
 
     /**
@@ -176,9 +178,9 @@ export class Entity<
         : null
 
     /** every widget node must call this function once it's value change */
-    valueChanged = (widget: BaseField) => {
+    applyValueUpdateEffects = (widget: BaseField) => {
         this.valueLastUpdatedAt = Date.now()
-        this.serialChanged(widget)
+        this.applySerialUpdateEffects(widget)
         this._onValueChange?.(this)
     }
 
@@ -190,8 +192,10 @@ export class Entity<
     }
 
     /** every widget node must call this function once it's serial changed */
-    serialChanged = (_widget: BaseField) => {
+    applySerialUpdateEffects = (_widget: BaseField) => {
+        // bump serial last updated at
         this.serialLastUpdatedAt = Date.now()
+        // call entity config onSerialChange
         this._onSerialChange?.(this)
     }
 
@@ -274,13 +278,13 @@ function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<Ent
                 delete oldSerial.values_[k]
             }
         }
+        console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
         return {
             name: config.name,
             uid: nanoid(),
             type: 'FormSerial',
             root: json,
         }
-        console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
     }
 
     return json

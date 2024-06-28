@@ -86,14 +86,14 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         if (next === this.serial.width) return
         runInAction(() => {
             this.serial.width = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     set height(next: number) {
         if (next === this.serial.height) return
         runInAction(() => {
             this.serial.height = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get sizeHelper(): ResolutionState {
@@ -198,7 +198,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     // REMOVING ITEMS -------------------------------------------------
@@ -213,7 +213,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         // remove all items
         this.serial.entries = this.serial.entries.slice(0, minLen)
         this.entries = this.entries.slice(0, minLen)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     removeItem = (item: T['$Field']) => {
@@ -223,7 +223,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         // remove item
         this.serial.entries.splice(i, 1)
         this.entries.splice(i, 1)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setValue(xx: Widget_listExt_value<T>) {
