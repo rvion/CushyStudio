@@ -211,7 +211,7 @@ export class Model<
         return this._uid
     }
 
-    init = (): ROOT => {
+    init = (): ROOT['$Field'] => {
         console.log(`[🥐] Building form ${this.config.name}`)
         const formBuilder = this.domain
 
@@ -222,37 +222,14 @@ export class Model<
             // ensure form serial is observable, so we avoid working with soon to expire refs
             if (formSerial && !isObservable(formSerial)) formSerial = observable(formSerial)
 
-            // empty object case ---------------------------------------------------------------
+            // empty object case
             // if and empty object `{}` is used instead of a real serial, let's pretend it's null
             if (formSerial != null && Object.keys(formSerial).length === 0) {
                 formSerial = null
             }
+            // attempt to recover from legacy serial
+            formSerial = recoverFromLegacySerial(formSerial, this.config)
 
-            // BACKWARD COMPAT -----------------------------------------------------------------
-            if (
-                formSerial != null && //
-                formSerial.type !== 'FormSerial' &&
-                'values_' in formSerial
-            ) {
-                console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(formSerial))
-                const oldSerial: Widget_group_serial<any> = formSerial as any
-                for (const [k, v] of Object.entries(oldSerial.values_)) {
-                    if (k.startsWith('__')) {
-                        delete oldSerial.values_[k]
-                    }
-                }
-                formSerial = {
-                    name: this.config.name,
-                    uid: nanoid(),
-                    type: 'FormSerial',
-                    root: formSerial,
-                    serialLastUpdatedAt: 0,
-                    valueLastUpdatedAt: 0,
-                }
-                console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(formSerial, null, 3).slice(0, 800))
-            }
-
-            // ---------------------------------------------------------------------------------
             // at this point, we expect the form serial to be fully valid
             if (formSerial != null && formSerial.type !== 'FormSerial') {
                 throw new Error('❌ INVALID form serial')
@@ -301,4 +278,32 @@ export class Model<
     //     // const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget })
     //     // return new Widget_shared<W>(this, null, sharedSpec) as any
     // }
+}
+
+function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<ModelSerial> {
+    if (json == null) return null
+    if (typeof json !== 'object') return null
+    if (json.type === 'FormSerial') return json
+
+    // BACKWARD COMPAT -----------------------------------------------------------------
+    if ('values_' in json) {
+        console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(json))
+        const oldSerial: Widget_group_serial<any> = json as any
+        for (const [k, v] of Object.entries(oldSerial.values_)) {
+            if (k.startsWith('__')) {
+                delete oldSerial.values_[k]
+            }
+        }
+        return {
+            name: config.name,
+            uid: nanoid(),
+            type: 'FormSerial',
+            root: json,
+            serialLastUpdatedAt: 0,
+            valueLastUpdatedAt: 0,
+        }
+        console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
+    }
+
+    return json
 }
