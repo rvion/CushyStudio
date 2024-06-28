@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -102,7 +102,7 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_seed>,
+        public readonly spec: ISchema<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
         super()

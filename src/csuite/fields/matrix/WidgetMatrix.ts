@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -88,7 +88,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_matrix>,
+        public readonly spec: ISchema<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
         super()

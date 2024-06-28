@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -56,7 +56,7 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_spacer>,
+        public readonly spec: ISchema<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
         super()

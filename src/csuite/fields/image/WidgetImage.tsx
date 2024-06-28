@@ -3,7 +3,7 @@ import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -78,7 +78,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_image>,
+        public readonly spec: ISchema<Widget_image>,
         serial?: Widget_image_serial,
     ) {
         super()

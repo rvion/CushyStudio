@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
-import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
+import type { ISchema, SchemaDict } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 import type { TabPositionConfig } from './TabPositionConfig'
@@ -158,7 +158,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_choices<T>>,
+        public readonly spec: ISchema<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
         super()

@@ -14,17 +14,17 @@ import type { BaseSelectEntry, Widget_selectOne } from '../fields/selectOne/Widg
 import type { Widget_size } from '../fields/size/WidgetSize'
 import type { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import type { Widget_string } from '../fields/string/WidgetString'
-import type { IBlueprint, SchemaDict } from '../model/IBlueprint'
+import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { SimpleBlueprint } from './SimpleBlueprint'
 
 export type SGroup<T extends SchemaDict> = SimpleBlueprint<Widget_group<T>>
-export type SOptional<T extends IBlueprint> = SimpleBlueprint<Widget_optional<T>>
+export type SOptional<T extends ISchema> = SimpleBlueprint<Widget_optional<T>>
 export type SBool = SimpleBlueprint<Widget_bool>
 export type SString = SimpleBlueprint<Widget_string>
 export type SChoices<T extends SchemaDict = SchemaDict> = SimpleBlueprint<Widget_choices<T>>
 export type SNumber = SimpleBlueprint<Widget_number>
 export type SColor = SimpleBlueprint<Widget_color>
-export type SList<T extends IBlueprint> = SimpleBlueprint<Widget_list<T>>
+export type SList<T extends ISchema> = SimpleBlueprint<Widget_list<T>>
 export type SButton<T> = SimpleBlueprint<Widget_button<T>>
 export type SSeed = SimpleBlueprint<Widget_seed>
 export type SMatrix = SimpleBlueprint<Widget_matrix>

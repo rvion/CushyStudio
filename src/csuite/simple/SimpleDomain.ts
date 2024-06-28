@@ -1,5 +1,5 @@
 import type { BaseField } from '../model/BaseField'
-import type { IBlueprint, SchemaDict } from '../model/IBlueprint'
+import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { Domain } from '../model/IDomain'
 import type { Model } from '../model/Model'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
@@ -33,8 +33,7 @@ export class SimpleDomain implements Domain {
     SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
-    constructor() // public model: Model<IBlueprint, SimpleDomain>, //
-    {
+    constructor() { // public model: Model<IBlueprint, SimpleDomain>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -147,7 +146,7 @@ export class SimpleDomain implements Domain {
         return new SimpleBlueprint<Widget_number>('number', { mode: 'float', ...config })
     }
 
-    list<const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> {
+    list<const T extends ISchema>(config: Widget_list_config<T>): SS.SList<T> {
         return new SimpleBlueprint<Widget_list<T>>('list', config)
     }
 
@@ -182,11 +181,11 @@ export class SimpleDomain implements Domain {
         return new SimpleBlueprint<Widget_group<T>>('group', { items: fields, ...config })
     }
 
-    choice<const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
+    choice<const T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
         return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: false, ...config })
     }
 
-    choices<const T extends { [key: string]: IBlueprint }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
+    choices<const T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): SS.SChoices<T> {
         return new SimpleBlueprint<Widget_choices<T>>('choices', { multi: true, ...config })
     }
 
@@ -195,7 +194,7 @@ export class SimpleDomain implements Domain {
     }
 
     /** simple choice alternative api */
-    tabs<const T extends { [key: string]: IBlueprint }>(
+    tabs<const T extends { [key: string]: ISchema }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ) {
@@ -203,7 +202,7 @@ export class SimpleDomain implements Domain {
     }
 
     // optional wrappers
-    optional<const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> {
+    optional<const T extends ISchema>(p: Widget_optional_config<T>): SS.SOptional<T> {
         return new SimpleBlueprint<Widget_optional<T>>('optional', p)
     }
 
@@ -213,7 +212,7 @@ export class SimpleDomain implements Domain {
         return this.selectOne({ default: def, choices })
     }
 
-    _HYDRATE<T extends IBlueprint>(
+    _HYDRATE<T extends ISchema>(
         //
         model: Model<any>,
         parent: BaseField | null,
@@ -235,7 +234,7 @@ export class SimpleDomain implements Domain {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE<T extends IBlueprint>(
+    private __HYDRATE<T extends ISchema>(
         //
         model: Model<any>,
         parent: BaseField | null,

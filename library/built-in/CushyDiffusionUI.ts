@@ -1,4 +1,4 @@
-import type { Blueprint } from '../../src/controls/Blueprint'
+import type { Schema } from '../../src/controls/Blueprint'
 import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
 import type { FormBuilder } from '../../src/CUSHY'
 
@@ -29,7 +29,7 @@ export type CushyDiffusionUI_ = {
     mask: UI_Mask
     upscaleV2: X.XChoices<{
         highResFix: UI_HighResFix
-        upscaleWithModel: Blueprint<
+        upscaleWithModel: Schema<
             Widget_group<{
                 model: X.XEnum<Enum_UpscaleModelLoader_model_name>
             }>

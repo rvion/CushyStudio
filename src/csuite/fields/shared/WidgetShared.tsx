@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -10,7 +10,7 @@ import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends IBlueprint = IBlueprint> = FieldConfig<
+export type Widget_shared_config<T extends ISchema = ISchema> = FieldConfig<
     {
         /** shared widgets must be registered in the form root group */
         // rootKey: string
@@ -30,19 +30,19 @@ export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared
 })
 
 // VALUE
-export type Widget_shared_value<T extends IBlueprint = IBlueprint> = T['$Value']
+export type Widget_shared_value<T extends ISchema = ISchema> = T['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends IBlueprint = IBlueprint> = {
+export type Widget_shared_types<T extends ISchema = ISchema> = {
     $Type: 'shared'
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Field: IBlueprint['$Field']
+    $Field: ISchema['$Field']
 }
 
 // STATE
-export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<Widget_shared_types<T>> {
+export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget_shared_types<T>> {
     readonly id: string
     get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
@@ -70,7 +70,7 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_shared<T>>,
+        public readonly spec: ISchema<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
         super()

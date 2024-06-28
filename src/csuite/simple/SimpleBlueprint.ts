@@ -3,7 +3,7 @@ import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { IBlueprint } from '../model/IBlueprint'
+import type { ISchema } from '../model/IBlueprint'
 import type { SList, SOptional } from './SimpleSpecAliases'
 
 import { makeObservable } from 'mobx'
@@ -13,7 +13,7 @@ import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleBlueprint<out Field extends BaseField = BaseField> implements IBlueprint<Field> {
+export class SimpleBlueprint<out Field extends BaseField = BaseField> implements ISchema<Field> {
     $Field!: Field
     $Type!: Field['type']
     $Config!: Field['$Config']

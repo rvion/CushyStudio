@@ -2,7 +2,7 @@ import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -68,7 +68,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_enum<O>>,
+        public readonly spec: ISchema<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
         super()

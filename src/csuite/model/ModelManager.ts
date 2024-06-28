@@ -1,6 +1,6 @@
 import type { Widget_group } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
-import type { IBlueprint, SchemaDict } from './IBlueprint'
+import type { ISchema, SchemaDict } from './IBlueprint'
 import type { Domain } from './IDomain'
 
 import { type DependencyList, useMemo } from 'react'
@@ -58,9 +58,9 @@ export class ModelManager<DOMAIN extends Domain> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         buildFn: (form: DOMAIN) => FIELDS,
-        modelConfig: ModelConfig<IBlueprint<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
-    ): Model<IBlueprint<Widget_group<FIELDS>>, DOMAIN> => {
-        const FN = (domain: DOMAIN): IBlueprint<Widget_group<FIELDS>> => {
+        modelConfig: ModelConfig<ISchema<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
+    ): Model<ISchema<Widget_group<FIELDS>>, DOMAIN> => {
+        const FN = (domain: DOMAIN): ISchema<Widget_group<FIELDS>> => {
             return runWithGlobalForm(domain, () =>
                 domain.group({
                     label: false,
@@ -69,12 +69,12 @@ export class ModelManager<DOMAIN extends Domain> {
                 }),
             )
         }
-        const form = new Model<IBlueprint<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
+        const form = new Model<ISchema<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
         return form
     }
 
     /** simple alias to create a new Form */
-    form<ROOT extends IBlueprint>(
+    form<ROOT extends ISchema>(
         buildFn: (form: DOMAIN) => ROOT,
         modelConfig: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
     ): Model<ROOT, DOMAIN> {
@@ -82,7 +82,7 @@ export class ModelManager<DOMAIN extends Domain> {
     }
 
     /** simple way to defined forms and in react components */
-    use<ROOT extends IBlueprint>(
+    use<ROOT extends ISchema>(
         ui: (form: DOMAIN) => ROOT,
         formProperties: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
         deps: DependencyList = [],
@@ -92,7 +92,7 @@ export class ModelManager<DOMAIN extends Domain> {
         }, deps)
     }
 
-    formWithContext<ROOT extends IBlueprint, CONTEXT>(
+    formWithContext<ROOT extends ISchema, CONTEXT>(
         buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
         context: CONTEXT,
         modelConfig: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
@@ -101,7 +101,7 @@ export class ModelManager<DOMAIN extends Domain> {
     }
 
     /** simple way to defined forms and in react components */
-    useWithContext<ROOT extends IBlueprint, CONTEXT>(
+    useWithContext<ROOT extends ISchema, CONTEXT>(
         buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
         context: CONTEXT,
         formProperties: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },

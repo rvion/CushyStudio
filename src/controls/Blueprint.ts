@@ -3,7 +3,7 @@ import type { Widget_link_config } from '../csuite/fields/link/WidgetLink'
 import type { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
 import type { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
 import type { BaseField } from '../csuite/model/BaseField'
-import type { IBlueprint } from '../csuite/model/IBlueprint'
+import type { ISchema } from '../csuite/model/IBlueprint'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement, type ReactNode } from 'react'
@@ -13,7 +13,7 @@ import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export class Blueprint<out Field extends BaseField = BaseField> implements IBlueprint<Field> {
+export class Schema<out Field extends BaseField = BaseField> implements ISchema<Field> {
     $Field!: Field
     $Type!: Field['type']
     $Config!: Field['$Config']
@@ -27,7 +27,7 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
     ) {}
 
     _methods: any = {}
-    actions<T extends { [methodName: string]: (self: Field) => any }>(t: T): Blueprint<Field & T> {
+    actions<T extends { [methodName: string]: (self: Field) => any }>(t: T): Schema<Field & T> {
         Object.assign(this._methods, t)
         return this as any
     }
@@ -42,7 +42,7 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
                 /** full react field */
                 | ((p: { widget: Field }) => ReactNode)
         },
-    >(t: T): Blueprint<Field & T /* & { skin: T } */> {
+    >(t: T): Schema<Field & T /* & { skin: T } */> {
         Object.assign(this._skins, t)
         return this as any
     }
@@ -94,29 +94,29 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
         return this
     }
 
-    useIn<BP extends IBlueprint>(
+    useIn<BP extends ISchema>(
         //
         fn: CovariantFnX<[self: Field], BP>,
     ): X.XLink<this, BP> {
         const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
-        return new Blueprint('link', linkConf)
+        return new Schema('link', linkConf)
     }
 
     Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
-        return new Blueprint(type, config)
+        return new Schema(type, config)
     }
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>
-        new Blueprint<Widget_list<this>>('list', {
+        new Schema<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
     /** clone the spec, and patch the cloned config */
-    withConfig(config: Partial<Field['$Config']>): Blueprint<Field> {
+    withConfig(config: Partial<Field['$Config']>): Schema<Field> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new Blueprint<Field>(this.type, mergedConfig)
+        const cloned = new Schema<Field>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
@@ -124,7 +124,7 @@ export class Blueprint<out Field extends BaseField = BaseField> implements IBlue
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
-        return new Blueprint<Widget_optional<this>>('optional', {
+        return new Schema<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,

@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFnX } from '../../variance/BivariantHack'
@@ -14,8 +14,8 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 // CONFIG
 export type Widget_link_config<
     //
-    A extends IBlueprint,
-    B extends IBlueprint,
+    A extends ISchema,
+    B extends ISchema,
 > = FieldConfig<
     {
         // injected
@@ -28,7 +28,7 @@ export type Widget_link_config<
 >
 
 // SERIAL
-export type Widget_link_serial<A extends IBlueprint, B extends IBlueprint> = FieldSerial<{
+export type Widget_link_serial<A extends ISchema, B extends ISchema> = FieldSerial<{
     type: 'link'
     a?: A['$Serial']
     b?: B['$Serial']
@@ -37,12 +37,12 @@ export type Widget_link_serial<A extends IBlueprint, B extends IBlueprint> = Fie
 // VALUE
 export type Widget_link_value<
     //
-    A extends IBlueprint,
-    B extends IBlueprint,
+    A extends ISchema,
+    B extends ISchema,
 > = B['$Value']
 
 // TYPES
-export type Widget_link_types<A extends IBlueprint, B extends IBlueprint> = {
+export type Widget_link_types<A extends ISchema, B extends ISchema> = {
     $Type: 'link'
     $Config: Widget_link_config<A, B>
     $Serial: Widget_link_serial<A, B>
@@ -51,7 +51,7 @@ export type Widget_link_types<A extends IBlueprint, B extends IBlueprint> = {
 }
 
 // STATE
-export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
+export class Widget_link<A extends ISchema, B extends ISchema> //
     extends BaseField<Widget_link_types<A, B>>
 {
     DefaultHeaderUI = () => <>🟢</>
@@ -88,7 +88,7 @@ export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_link<A, B>>,
+        public readonly spec: ISchema<Widget_link<A, B>>,
         serial?: Widget_link_serial<A, B>,
     ) {
         super()

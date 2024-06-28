@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
+import type { ISchema, SchemaDict } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -99,7 +99,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_group<T>>,
+        public readonly spec: ISchema<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,

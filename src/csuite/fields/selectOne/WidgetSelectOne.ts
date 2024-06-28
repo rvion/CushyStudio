@@ -1,7 +1,7 @@
 import type { IconName } from '../../icons/icons'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
@@ -134,7 +134,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         // |            VVVV
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_selectOne<T>>,
+        public readonly spec: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
         super()

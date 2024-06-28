@@ -1,4 +1,4 @@
-import type { Blueprint } from '../../src/controls/Blueprint'
+import type { Schema } from '../../src/controls/Blueprint'
 import type { Widget_choices } from '../../src/csuite/fields/choices/WidgetChoices'
 import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
 import type { Widget_image } from '../../src/csuite/fields/image/WidgetImage'
@@ -29,11 +29,11 @@ app({
                                 // so to make sure code is correct, we need to cast it to the correct type
                                 // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    Blueprint<
+                                    Schema<
                                         Widget_choices<{
-                                            sampler_output_abc_asdf: Blueprint<Widget_selectOne<any>>
-                                            empty_latent: Blueprint<Widget_group<any>>
-                                            pick_image: Blueprint<Widget_image>
+                                            sampler_output_abc_asdf: Schema<Widget_selectOne<any>>
+                                            empty_latent: Schema<Widget_group<any>>
+                                            pick_image: Schema<Widget_image>
                                         }>
                                     >
                                 >

@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -67,7 +67,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_markdown>,
+        public readonly spec: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
         super()

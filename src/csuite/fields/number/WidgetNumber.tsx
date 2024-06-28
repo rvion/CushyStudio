@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 
 import { computed, observable, runInAction } from 'mobx'
@@ -72,7 +72,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_number>,
+        public readonly spec: ISchema<Widget_number>,
         serial?: Widget_number_serial,
     ) {
         super()

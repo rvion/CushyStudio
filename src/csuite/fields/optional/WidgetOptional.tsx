@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -11,7 +11,7 @@ import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends IBlueprint = IBlueprint> = FieldConfig<
+export type Widget_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
         startActive?: boolean
         widget: T
@@ -20,17 +20,17 @@ export type Widget_optional_config<T extends IBlueprint = IBlueprint> = FieldCon
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = FieldSerial<{
+export type Widget_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends IBlueprint = IBlueprint> = Maybe<T['$Value']>
+export type Widget_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
+export type Widget_optional_types<T extends ISchema = ISchema> = {
     $Type: 'optional'
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -39,7 +39,7 @@ export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
 }
 
 // STATE
-export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseField<Widget_optional_types<T>> {
+export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
@@ -112,7 +112,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_optional<T>>,
+        public readonly spec: ISchema<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
         super()

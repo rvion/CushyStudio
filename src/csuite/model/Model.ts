@@ -1,7 +1,7 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
 import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
-import type { IBlueprint } from './IBlueprint'
+import type { ISchema } from './IBlueprint'
 import type { Domain } from './IDomain'
 import type { ModelManager } from './ModelManager'
 import type { ModelSerial } from './ModelSerial'
@@ -17,7 +17,7 @@ import { debounce } from '../utils/debounce'
 
 export type ModelConfig<
     //
-    SCHEMA extends IBlueprint<any>,
+    SCHEMA extends ISchema<any>,
     DOMAIN extends Domain,
     CONTEXT,
 > = {
@@ -30,7 +30,7 @@ export type ModelConfig<
 
 export class Model<
     /** shape of the form, to preserve type safety down to nested children */
-    SCHEMA extends IBlueprint<any> = IBlueprint<any>,
+    SCHEMA extends ISchema<any> = ISchema<any>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
@@ -144,7 +144,7 @@ export class Model<
     }
 
     /** @deprecated ; only work when root is a Widget_group */
-    get fields(): SCHEMA extends IBlueprint<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
+    get fields(): SCHEMA extends ISchema<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
         if (isWidgetGroup(this.root)) return this.root.fields as any
         throw new Error('🔴 root is not a group')
     }

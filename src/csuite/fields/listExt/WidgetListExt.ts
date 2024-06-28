@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
@@ -17,7 +17,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends IBlueprint> = FieldConfig<
+export type Widget_listExt_config<T extends ISchema> = FieldConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -32,7 +32,7 @@ export type Widget_listExt_config<T extends IBlueprint> = FieldConfig<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends IBlueprint> = FieldSerial<{
+export type Widget_listExt_serial<T extends ISchema> = FieldSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -40,7 +40,7 @@ export type Widget_listExt_serial<T extends IBlueprint> = FieldSerial<{
 }>
 
 // VALUE
-export type Widget_listExt_value<T extends IBlueprint> = {
+export type Widget_listExt_value<T extends ISchema> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -48,7 +48,7 @@ export type Widget_listExt_value<T extends IBlueprint> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends IBlueprint> = {
+export type Widget_listExt_types<T extends ISchema> = {
     $Type: 'listExt'
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -57,7 +57,7 @@ export type Widget_listExt_types<T extends IBlueprint> = {
 }
 
 // STATE
-export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listExt_types<T>> {
+export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -121,7 +121,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_listExt<T>>,
+        public readonly spec: ISchema<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
         super()
@@ -194,8 +194,8 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
     addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const spec = this.schemaAt(this.length)
-        const element = this.entity.domain._HYDRATE(this.entity, this, spec, null)
+        const schema = this.schemaAt(this.length)
+        const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
         if (!p?.skipBump) this.bumpValue()

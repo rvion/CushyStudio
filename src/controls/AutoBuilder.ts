@@ -1,7 +1,7 @@
 import type { Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { Blueprint } from './Blueprint'
+import type { Schema } from './Blueprint'
 import type { FormBuilder } from './FormBuilder'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }

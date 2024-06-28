@@ -1,5 +1,6 @@
+import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
 import type { BaseField } from '../model/BaseField'
-import type { IBlueprint, SchemaDict } from '../model/IBlueprint'
+import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { Domain } from '../model/IDomain'
 import type { Model } from '../model/Model'
 import type * as SS from './SimpleSpecAliases'
@@ -10,15 +11,14 @@ import { Widget_bool, type Widget_bool_config } from '../fields/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from '../fields/button/WidgetButton'
 import { Widget_group, type Widget_group_config } from '../fields/group/WidgetGroup'
 import { Widget_list, type Widget_list_config } from '../fields/list/WidgetList'
+import { Widget_markdown } from '../fields/markdown/WidgetMarkdown'
 import { Widget_optional, type Widget_optional_config } from '../fields/optional/WidgetOptional'
 import { Widget_selectMany, type Widget_selectMany_config } from '../fields/selectMany/WidgetSelectMany'
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { SimpleBlueprint } from './SimpleBlueprint'
-import { Widget_markdown } from '../fields/markdown/WidgetMarkdown'
 import { ModelManager } from '../model/ModelManager'
-import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
+import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
 export class BasicDomain implements Domain {
@@ -57,7 +57,7 @@ export class BasicDomain implements Domain {
         return new SimpleBlueprint<Widget_button<K>>('button', config)
     }
 
-    list<const T extends IBlueprint>(config: Widget_list_config<T>): SS.SList<T> {
+    list<const T extends ISchema>(config: Widget_list_config<T>): SS.SList<T> {
         return new SimpleBlueprint<Widget_list<T>>('list', config)
     }
 
@@ -80,11 +80,11 @@ export class BasicDomain implements Domain {
         return new SimpleBlueprint<Widget_group<T>>('group', { items: fields, ...config })
     }
 
-    optional<const T extends IBlueprint>(p: Widget_optional_config<T>): SS.SOptional<T> {
+    optional<const T extends ISchema>(p: Widget_optional_config<T>): SS.SOptional<T> {
         return new SimpleBlueprint<Widget_optional<T>>('optional', p)
     }
 
-    _HYDRATE<T extends IBlueprint>(
+    _HYDRATE<T extends ISchema>(
         //
         model: Model<any>,
         parent: BaseField | null,
@@ -106,7 +106,7 @@ export class BasicDomain implements Domain {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE<T extends IBlueprint>(
+    private __HYDRATE<T extends ISchema>(
         //
         model: Model<any>,
         parent: BaseField | null,

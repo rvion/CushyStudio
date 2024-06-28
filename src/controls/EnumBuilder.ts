@@ -1,7 +1,7 @@
 import type { Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne'
-import type { IBlueprint } from '../csuite/model/IBlueprint'
+import type { ISchema } from '../csuite/model/IBlueprint'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -9,7 +9,7 @@ import type { IBlueprint } from '../csuite/model/IBlueprint'
 import type { Model } from '../csuite/model/Model'
 import type { FormBuilder } from './FormBuilder'
 
-import { Blueprint } from './Blueprint'
+import { Schema } from './Blueprint'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
@@ -45,13 +45,13 @@ export class EnumBuilder {
                 const enumSchema = schema.knownEnumsByName.get(enumName)
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
-                    return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                    return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -83,7 +83,7 @@ export class EnumBuilderOpt {
                         domain.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            widget: new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
+                            widget: new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -94,7 +94,7 @@ export class EnumBuilderOpt {
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Blueprint('enum', /* form, */ { ...config, enumName }),
+                        widget: new Schema('enum', /* form, */ { ...config, enumName }),
                     })
             },
         })

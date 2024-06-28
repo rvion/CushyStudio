@@ -1,7 +1,7 @@
 import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
-import type { IBlueprint } from '../model/IBlueprint'
+import type { ISchema } from '../model/IBlueprint'
 import type { Model } from '../model/Model'
 import type { CSSProperties, ReactNode } from 'react'
 
@@ -13,7 +13,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
     // form ---------------------------------------------------------
-    form: Maybe<Model<IBlueprint>>
+    form: Maybe<Model<ISchema>>
 
     // root wrapper
     label?: string | false

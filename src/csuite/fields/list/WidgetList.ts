@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 
 import { observable, reaction } from 'mobx'
@@ -14,7 +14,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
-interface AutoBehaviour<out T extends IBlueprint> {
+interface AutoBehaviour<out T extends ISchema> {
     /** list of keys that must be present */
     keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
 
@@ -26,7 +26,7 @@ interface AutoBehaviour<out T extends IBlueprint> {
 }
 
 // CONFIG
-export interface Widget_list_config<out T extends IBlueprint>
+export interface Widget_list_config<out T extends ISchema>
     extends FieldConfig<
         {
             element: ((ix: number) => T) | T
@@ -60,16 +60,16 @@ export interface Widget_list_config<out T extends IBlueprint>
     > {}
 
 // SERIAL
-export type Widget_list_serial<T extends IBlueprint> = FieldSerial<{
+export type Widget_list_serial<T extends ISchema> = FieldSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // VALUE
-export type Widget_list_value<T extends IBlueprint> = T['$Value'][]
+export type Widget_list_value<T extends ISchema> = T['$Value'][]
 
 // TYPES
-export type Widget_list_types<T extends IBlueprint> = {
+export type Widget_list_types<T extends ISchema> = {
     $Type: 'list'
     $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -78,7 +78,7 @@ export type Widget_list_types<T extends IBlueprint> = {
 }
 
 // STATE
-export class Widget_list<T extends IBlueprint> //
+export class Widget_list<T extends ISchema> //
     extends BaseField<Widget_list_types<T>>
 {
     DefaultHeaderUI = WidgetList_LineUI
@@ -177,7 +177,7 @@ export class Widget_list<T extends IBlueprint> //
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_list<T>>,
+        public readonly spec: ISchema<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
         super()

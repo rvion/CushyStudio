@@ -6,7 +6,7 @@ import type { ITreeElement } from '../tree/TreeEntry'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
-import type { IBlueprint } from './IBlueprint'
+import type { ISchema } from './IBlueprint'
 import type { Domain } from './IDomain'
 import type { Model } from './Model'
 import type { Problem, Problem_Ext } from './Validation'
@@ -57,7 +57,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         return this.entity.domain
     }
     /** spec used to instanciate this widget */
-    abstract spec: IBlueprint
+    abstract spec: ISchema
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     abstract readonly id: string

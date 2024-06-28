@@ -1,6 +1,6 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
@@ -18,7 +18,7 @@ export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./
 export type Widget_custom_config<T> = FieldConfig<
     {
         defaultValue: () => T
-        subTree?: () => IBlueprint
+        subTree?: () => ISchema
         Component: FC<CustomWidgetProps<T>>
     },
     Widget_custom_types<T>
@@ -63,7 +63,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
         //
         public readonly entity: Model,
         public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_custom<T>>,
+        public readonly spec: ISchema<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
         super()

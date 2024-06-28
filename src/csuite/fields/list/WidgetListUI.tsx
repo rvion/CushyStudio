@@ -1,5 +1,5 @@
 import type { BaseField } from '../../model/BaseField'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/IBlueprint'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -31,7 +31,7 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widge
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends IBlueprint>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
