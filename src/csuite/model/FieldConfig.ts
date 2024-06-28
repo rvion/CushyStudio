@@ -1,6 +1,7 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
+import type { Json, JSONDict } from '../types/Json'
 import type { CovariantFn, CovariantFnX } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
@@ -18,10 +19,9 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      *   - "ldi..." for Locomotive design icons
      */
     icon?: IconName
-
     // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
     // ❌ CHOKE typescript typechecking performances.
-    // icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
+    // ❌ | icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
 
     /**
      * @since 2024-05-19

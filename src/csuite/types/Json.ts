@@ -1,4 +1,5 @@
 // prettier-ignore
+/** type to enforce that a value is JSON serializable */
 export type Json =
     | string
     | number

@@ -1,4 +1,4 @@
-import type { Json } from './Json'
+import type { Json } from '../types/Json'
 
 /**
  * Convert any value to a JSON-serializable value.

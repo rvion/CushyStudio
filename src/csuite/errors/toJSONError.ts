@@ -1,4 +1,4 @@
-import type { JSONDict } from './Json'
+import type { JSONDict } from '../types/Json'
 
 import { convertToJSON_UNFINISHED } from './convertToJSON_UNFINISHED'
 
