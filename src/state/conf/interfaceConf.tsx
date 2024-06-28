@@ -100,7 +100,6 @@ export const interfaceConf = CushyFormManager.form(
                                 <WidgetWithLabelUI fieldName='' widget={f.useDefaultCursorEverywhere} label={false} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                {/* <InputNumberUI mode='int' onValueChange={(val) => f.} /> */}
                                 {
                                     <WidgetWithLabelUI
                                         fieldName='// What does this even do lol, why is it mandatory?'
@@ -118,7 +117,7 @@ export const interfaceConf = CushyFormManager.form(
             },
         ),
     {
-        name: 'theme config',
+        name: 'Interface Config',
         initialSerial: () => readJSON('settings/theme2.json'),
         onSerialChange: (form) => writeJSON('settings/theme2.json', form.serial),
     },
