@@ -29,7 +29,7 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { CushyFormManager } from '../controls/FormBuilder'
+import { cushyRepo, type CushyRepo } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager } from '../csuite/activity/ActivityManager'
@@ -119,7 +119,7 @@ export class STATE {
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
-    forms: CushyFormManager = CushyFormManager
+    forms: CushyRepo = cushyRepo
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
 
@@ -425,7 +425,7 @@ export class STATE {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
     }
-    graphConf = CushyFormManager.fields(
+    graphConf = cushyRepo.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -446,7 +446,7 @@ export class STATE {
     get activityManager() {
         return activityManager
     }
-    civitaiConf = CushyFormManager.fields(
+    civitaiConf = cushyRepo.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -460,7 +460,7 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = CushyFormManager.fields(
+    favbar = cushyRepo.fields(
         (f) => ({
             size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
@@ -478,7 +478,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = CushyFormManager.fields(
+    displacementConf = cushyRepo.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -508,7 +508,7 @@ export class STATE {
         },
     )
 
-    galleryConf = CushyFormManager.fields(
+    galleryConf = cushyRepo.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },

@@ -1,8 +1,8 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/FormBuilder'
 import { WidgetWithLabelUI } from '../../csuite/form/WidgetWithLabelUI'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const interfaceConf = CushyFormManager.form(
+export const interfaceConf = cushyRepo.form(
     (ui) =>
         ui.fields(
             {

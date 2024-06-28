@@ -1,8 +1,8 @@
-import { CushyFormManager, type FormBuilder } from '../../controls/FormBuilder'
+import { cushyRepo, type FormBuilder } from '../../controls/FormBuilder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = CushyFormManager.form(
+export const PanelStepsConf = cushyRepo.form(
     (ui) =>
         ui.fields(
             {

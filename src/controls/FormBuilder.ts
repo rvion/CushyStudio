@@ -1,6 +1,6 @@
 import type { Entity } from '../csuite/model/Entity'
 import type { ISchema, SchemaDict } from '../csuite/model/IBlueprint'
-import type { Domain } from '../csuite/model/IDomain'
+import type { IDomain } from '../csuite/model/IDomain'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
@@ -107,7 +107,7 @@ declare global {
 }
 
 /** cushy studio form builder */
-export class FormBuilder implements Domain {
+export class FormBuilder implements IDomain {
     SpecCtor = Schema
 
     /** (@internal) don't call this yourself */
@@ -445,8 +445,8 @@ export class FormBuilder implements Domain {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
-export type CushyFormManager = Repository<FormBuilder>
-export const CushyFormManager: CushyFormManager = new Repository<FormBuilder>(FormBuilder)
+export type CushyRepo = Repository<FormBuilder>
+export const cushyRepo: CushyRepo = new Repository<FormBuilder>(FormBuilder)
 
 /**
  * Calling this function will mount and instanciate the subform right away

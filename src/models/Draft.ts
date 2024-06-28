@@ -12,7 +12,7 @@ import { reaction } from 'mobx'
 
 // import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { cushyRepo, type FormBuilder } from '../controls/FormBuilder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { LiveRef } from '../db/LiveRef'
@@ -267,7 +267,7 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = CushyFormManager.fields(action.ui, {
+                this._form = cushyRepo.fields(action.ui, {
                     name: this.name,
                     initialSerial: () => this.data.formSerial,
                     onSerialChange: (form) => {

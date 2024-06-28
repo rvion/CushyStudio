@@ -1,7 +1,7 @@
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
-import type { Domain } from '../model/IDomain'
+import type { IDomain } from '../model/IDomain'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
 import type * as SS from './SimpleSpecAliases'
 
@@ -28,7 +28,7 @@ import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
-export class SimpleDomain implements Domain {
+export class SimpleDomain implements IDomain {
     /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleBlueprint
 

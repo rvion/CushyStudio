@@ -3,7 +3,7 @@ import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
 import type { Repository } from './EntityManager'
 import type { ISchema } from './IBlueprint'
-import type { Domain } from './IDomain'
+import type { IDomain } from './IDomain'
 import type { EntitySerial } from './ModelSerial'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
@@ -18,7 +18,7 @@ import { debounce } from '../utils/debounce'
 export type ModelConfig<
     //
     SCHEMA extends ISchema<any>,
-    DOMAIN extends Domain,
+    DOMAIN extends IDomain,
     CONTEXT,
 > = {
     name: string
@@ -35,7 +35,7 @@ export class Entity<
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
      * */
-    DOMAIN extends Domain = Domain,
+    DOMAIN extends IDomain = IDomain,
     /** custom context, so your model can access whatever it wants in most callbacks */
     CONTEXT = any,
 > {

@@ -1,7 +1,7 @@
 import type { Widget_group } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
 import type { ISchema, SchemaDict } from './IBlueprint'
-import type { Domain } from './IDomain'
+import type { IDomain } from './IDomain'
 
 import { type DependencyList, useMemo } from 'react'
 
@@ -15,7 +15,7 @@ export type NoContext = null
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class Repository<DOMAIN extends Domain> {
+export class Repository<DOMAIN extends IDomain> {
     //
     _allForms: Map<string, Entity> = new Map()
     _allWidgets: Map<string, BaseField> = new Map()

@@ -2,7 +2,7 @@ import type { Widget_number, Widget_number_config } from '../fields/number/Widge
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
-import type { Domain } from '../model/IDomain'
+import type { IDomain } from '../model/IDomain'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
@@ -21,7 +21,7 @@ import { Repository } from '../model/EntityManager'
 import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
-export class BasicDomain implements Domain {
+export class BasicDomain implements IDomain {
     /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleBlueprint
 

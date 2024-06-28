@@ -4,7 +4,7 @@ import { SimpleDomain } from './simple/SimpleDomain'
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
-export type { Domain } from './model/IDomain'
+export type { IDomain as Domain } from './model/IDomain'
 export type { EntitySerial as ModelSerial } from './model/ModelSerial'
 export type { ModelConfig } from './model/Entity'
 export type { SchemaDict, ISchema as IBlueprint } from './model/IBlueprint'
