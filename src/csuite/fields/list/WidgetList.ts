@@ -175,12 +175,12 @@ export class Widget_list<T extends ISchema> //
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_list<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
 
         // serial

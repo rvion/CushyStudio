@@ -54,12 +54,12 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_spacer>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,

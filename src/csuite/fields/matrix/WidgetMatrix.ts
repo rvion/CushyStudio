@@ -86,12 +86,12 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_matrix>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }

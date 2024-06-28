@@ -156,12 +156,12 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_choices<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         // ensure ID

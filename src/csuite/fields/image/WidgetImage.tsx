@@ -76,12 +76,12 @@ export class Widget_image extends BaseField<Widget_image_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_image>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_image>,
         serial?: Widget_image_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',

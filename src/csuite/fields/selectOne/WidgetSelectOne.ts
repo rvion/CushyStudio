@@ -132,12 +132,12 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     constructor(
         // 2024-06-27 TODO: rename that
         // |            VVVV
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_selectOne<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         const choices = this.choices

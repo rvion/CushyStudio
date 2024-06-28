@@ -61,12 +61,12 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_custom<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.Component = config.Component

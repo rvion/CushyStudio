@@ -44,7 +44,6 @@ export type Widget_shared_types<T extends ISchema = ISchema> = {
 // STATE
 export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget_shared_types<T>> {
     readonly id: string
-    get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
@@ -68,12 +67,12 @@ export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_shared<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }

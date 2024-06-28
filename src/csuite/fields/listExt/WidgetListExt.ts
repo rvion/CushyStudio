@@ -119,12 +119,12 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_listExt<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
 

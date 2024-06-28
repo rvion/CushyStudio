@@ -82,7 +82,9 @@ export class Widget_string extends BaseField<Widget_string_types> {
     // --------------
 
     serial: Widget_string_serial
-    readonly defaultValue: string = this.config.default ?? ''
+    get defaultValue(): string {
+        return this.config.default ?? ''
+    }
     get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
 
     reset(): void {
@@ -91,12 +93,12 @@ export class Widget_string extends BaseField<Widget_string_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_string>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_string>,
         serial?: Widget_string_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

@@ -144,6 +144,10 @@ export class Entity<
         return this.root.value
     }
 
+    set value(val: SCHEMA['$Value']) {
+        this.root.value = val
+    }
+
     get serial(): EntitySerial {
         return {
             type: 'FormSerial',
@@ -223,7 +227,7 @@ export class Entity<
     }
 
     private init(): SCHEMA['$Field'] {
-        console.log(`[🥐] Building form ${this.config.name}`)
+        // console.log(`[🥐] Building form ${this.config.name}`)
         const formBuilder = this.domain
 
         try {

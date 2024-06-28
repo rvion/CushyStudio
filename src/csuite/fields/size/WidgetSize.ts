@@ -106,12 +106,12 @@ export class Widget_size extends BaseField<Widget_size_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_size>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_size>,
         serial?: Widget_size_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (serial) {

@@ -110,12 +110,12 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_optional<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         const defaultActive = config.startActive

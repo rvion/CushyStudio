@@ -101,12 +101,12 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_seed>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

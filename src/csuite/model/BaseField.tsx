@@ -53,11 +53,29 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     // 👆 $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
     // 👆 $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
 
+    /** root form this widget has benn registered to */
+    readonly entity: Entity
+
+    /** parent widget of this widget, if any */
+    readonly parent: BaseField | null
+
+    /** spec used to instanciate this widget */
+    readonly spec: ISchema<K['$Field']>
+
+    constructor(
+        //
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<K['$Field']>,
+    ) {
+        this.entity = entity
+        this.parent = parent
+        this.spec = spec
+    }
+
     get domain(): Domain {
         return this.entity.domain
     }
-    /** spec used to instanciate this widget */
-    abstract spec: ISchema
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     abstract readonly id: string
@@ -347,9 +365,6 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         }
     }
 
-    /** parent widget of this widget, if any */
-    abstract readonly parent: BaseField | null
-
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden
         if (isWidgetGroup(this) && Object.keys(this.fields).length === 0) return true
@@ -394,9 +409,6 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         // default case when we have a body => we show the border
         return 8
     }
-
-    /** root form this widget has benn registered to */
-    abstract readonly entity: Entity
 
     // FOLD ----------------------------------------------------
     setCollapsed(val?: boolean) {

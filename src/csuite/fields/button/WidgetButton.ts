@@ -65,12 +65,12 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_button<K>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (config.text) {

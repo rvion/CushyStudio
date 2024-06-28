@@ -63,12 +63,13 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     }
 
     constructor(
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_markdown>,
+        //
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

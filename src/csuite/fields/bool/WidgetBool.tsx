@@ -91,12 +91,12 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_bool>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,

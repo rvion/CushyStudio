@@ -86,12 +86,12 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
     }
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_link<A, B>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_link<A, B>>,
         serial?: Widget_link_serial<A, B>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial =
             serial && serial.type === 'link' //

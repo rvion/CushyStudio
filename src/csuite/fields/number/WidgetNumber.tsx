@@ -55,7 +55,9 @@ export class Widget_number extends BaseField<Widget_number_types> {
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
-    readonly defaultValue: number = this.config.default ?? 0
+    get defaultValue(): number {
+        return this.config.default ?? 0
+    }
     get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset(): void {
         if (this.serial.val === this.defaultValue) return
@@ -70,12 +72,12 @@ export class Widget_number extends BaseField<Widget_number_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_number>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_number>,
         serial?: Widget_number_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

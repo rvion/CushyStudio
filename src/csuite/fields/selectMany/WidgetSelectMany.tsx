@@ -126,12 +126,12 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_selectMany<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

@@ -85,12 +85,12 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_prompt>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {

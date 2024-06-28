@@ -97,14 +97,16 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     }
     constructor(
         //
-        public readonly entity: Entity,
-        public readonly parent: BaseField | null,
-        public readonly spec: ISchema<Widget_group<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
-        /** used to register self as the root, before we start instanciating anything */
+        /**
+         * 🔴 🔴 REMOVE THAT CRAP
+         * used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
 
         this.serial =
