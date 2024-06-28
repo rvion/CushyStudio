@@ -13,7 +13,7 @@ import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleBlueprint<out Field extends BaseField = BaseField> implements ISchema<Field> {
+export class SimpleSchema<out Field extends BaseField = BaseField> implements ISchema<Field> {
     $Field!: Field
     $Type!: Field['type']
     $Config!: Field['$Config']
@@ -56,7 +56,7 @@ export class SimpleBlueprint<out Field extends BaseField = BaseField> implements
 
     // -----------------------------------------------------
     Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
-        return new SimpleBlueprint(type, config)
+        return new SimpleSchema(type, config)
     }
 
     constructor(
@@ -69,14 +69,14 @@ export class SimpleBlueprint<out Field extends BaseField = BaseField> implements
 
     /** wrap widget spec to list stuff */
     list(config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> {
-        return new SimpleBlueprint<Widget_list<this>>('list', {
+        return new SimpleSchema<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
     }
 
     optional(startActive: boolean = false): SOptional<this> {
-        return new SimpleBlueprint<Widget_optional<this>>('optional', {
+        return new SimpleSchema<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -88,9 +88,9 @@ export class SimpleBlueprint<out Field extends BaseField = BaseField> implements
     }
 
     /** clone the spec, and patch the cloned config */
-    withConfig(config: Partial<Field['$Config']>): SimpleBlueprint<Field> {
+    withConfig(config: Partial<Field['$Config']>): SimpleSchema<Field> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new SimpleBlueprint<Field>(this.type, mergedConfig)
+        const cloned = new SimpleSchema<Field>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
@@ -98,7 +98,7 @@ export class SimpleBlueprint<out Field extends BaseField = BaseField> implements
     }
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden(): SimpleBlueprint<Field> {
+    hidden(): SimpleSchema<Field> {
         return this.withConfig({ hidden: true })
     }
 }

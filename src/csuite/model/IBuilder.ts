@@ -13,7 +13,7 @@ export interface IBuilder {
         serial: any | null,
     ) => T['$Field']
     // optional: <const T extends ISpec<IWidget<$FieldTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
-    // shared: <W extends IBlueprint<any>>(key: string, spec: W) => Widget_shared<W>
+    // shared: <W extends ISchema<any>>(key: string, spec: W) => Widget_shared<W>
     group: (config: Widget_group_config<any>) => ISchema<Widget_group<any>>
     SpecCtor: { new <T extends BaseField>(type: T['$Type'], config: T['$Config']): ISchema<T> }
 }

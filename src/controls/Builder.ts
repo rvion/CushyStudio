@@ -44,7 +44,7 @@ declare global {
         type SchemaDict = import('../csuite/model/ISchema').SchemaDict
         type Builder = import('./Builder').Builder
 
-        // non blueprint aliases
+        // field aliases
         type Shared<T extends ISchema> = Widget_shared<T>
         type Group<T extends SchemaDict> = Widget_group<T>
         type Empty = Widget_group<NO_PROPS>
@@ -74,7 +74,7 @@ declare global {
         type Markdown = Widget_markdown
         type Custom<T> = Widget_custom<T>
 
-        // blueprint aliases
+        // schema aliases
         type XShared<T extends ISchema> = Schema<Widget_shared<T['$Field']>>
         type XGroup<T extends SchemaDict> = Schema<Widget_group<T>>
         type XEmpty = Schema<Widget_group<NO_PROPS>>
@@ -119,7 +119,7 @@ export class Builder implements IBuilder {
      * to be moved in a dedicated file, outside of the model/entity file
      */
     constructor() {
-        // public model: Model<IBlueprint, Builder>,
+        // public model: Model<ISchema, Builder>,
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -264,12 +264,12 @@ export class Builder implements IBuilder {
      * @since 2024-06-27
      * @stability unstable
      */
-    with<const BP extends ISchema, U extends ISchema>(
-        /** the blueprint of the field you'll want to re-use the in second part */
-        injected: BP,
-        children: (shared: BP['$Field']) => U,
-    ): X.XLink<BP, U> {
-        return new Schema<Widget_link<BP, U>>('link', { share: injected, children })
+    with<const SCHEMA1 extends ISchema, SCHEMA2 extends ISchema>(
+        /** the schema of the field you'll want to re-use the in second part */
+        injected: SCHEMA1,
+        children: (shared: SCHEMA1['$Field']) => SCHEMA2,
+    ): X.XLink<SCHEMA1, SCHEMA2> {
+        return new Schema<Widget_link<SCHEMA1, SCHEMA2>>('link', { share: injected, children })
     }
 
     /**
@@ -458,8 +458,8 @@ export const cushyRepo: CushyRepo = new Repository<Builder>(new Builder())
  *  - recursive forms
  *  - dynamic widgets depending on other widgets values
  * */
-// shared = <W extends IBlueprint>(key: string, spec: W): Widget_shared<W> => {
+// shared = <W extends ISchema>(key: string, spec: W): Widget_shared<W> => {
 //     const field = this.model.hydrateSubtree(key, spec)
-//     const sharedSpec = new Blueprint<Widget_shared<W>>('shared', { rootKey: key, widget: field })
+//     const sharedSpec = new Schema<Widget_shared<W>>('shared', { rootKey: key, widget: field })
 //     return new Widget_shared<W>(this.model, null, sharedSpec) as any
 // }

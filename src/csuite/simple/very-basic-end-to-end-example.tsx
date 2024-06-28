@@ -18,70 +18,70 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
 import { Repository } from '../model/EntityManager'
-import { SimpleBlueprint } from './SimpleSchema'
+import { SimpleSchema } from './SimpleSchema'
 
 // -------------------------------------------------------------------------------------------
 export class BasicBuilder implements IBuilder {
     /** (@internal) DO NOT USE YOURSELF */
-    SpecCtor = SimpleBlueprint
+    SpecCtor = SimpleSchema
 
     /** (@internal) don't call this yourself */
     constructor() {
-        // public model: Model<IBlueprint, BasicBuilder>, //
+        // public model: Model<ISchema, BasicBuilder>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })
     }
 
     email(config: Widget_string_config = {}): SS.SString {
-        return new SimpleBlueprint<Widget_string>('str', { inputType: 'email', ...config })
+        return new SimpleSchema<Widget_string>('str', { inputType: 'email', ...config })
     }
 
     string(config: Widget_string_config = {}): SS.SString {
-        return new SimpleBlueprint<Widget_string>('str', config)
+        return new SimpleSchema<Widget_string>('str', config)
     }
 
     textarea(config: Widget_string_config = {}): SS.SString {
-        return new SimpleBlueprint<Widget_string>('str', { textarea: true, ...config })
+        return new SimpleSchema<Widget_string>('str', { textarea: true, ...config })
     }
 
     int(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
-        return new SimpleBlueprint<Widget_number>('number', { mode: 'int', ...config })
+        return new SimpleSchema<Widget_number>('number', { mode: 'int', ...config })
     }
 
     boolean(config: Widget_bool_config = {}): SS.SBool {
-        return new SimpleBlueprint<Widget_bool>('bool', config)
+        return new SimpleSchema<Widget_bool>('bool', config)
     }
 
     button<K>(config: Widget_button_config): SS.SButton<K> {
-        return new SimpleBlueprint<Widget_button<K>>('button', config)
+        return new SimpleSchema<Widget_button<K>>('button', config)
     }
 
     list<const T extends ISchema>(config: Widget_list_config<T>): SS.SList<T> {
-        return new SimpleBlueprint<Widget_list<T>>('list', config)
+        return new SimpleSchema<Widget_list<T>>('list', config)
     }
 
     selectOneV3<T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): SS.SSelectOne_<T> {
-        return new SimpleBlueprint<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
     selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): SS.SSelectMany<T> {
-        return new SimpleBlueprint<Widget_selectMany<T>>('selectMany', config)
+        return new SimpleSchema<Widget_selectMany<T>>('selectMany', config)
     }
 
     group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): SS.SGroup<T> {
-        return new SimpleBlueprint<Widget_group<T>>('group', config)
+        return new SimpleSchema<Widget_group<T>>('group', config)
     }
 
     fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): SS.SGroup<T> {
-        return new SimpleBlueprint<Widget_group<T>>('group', { items: fields, ...config })
+        return new SimpleSchema<Widget_group<T>>('group', { items: fields, ...config })
     }
 
     optional<const T extends ISchema>(p: Widget_optional_config<T>): SS.SOptional<T> {
-        return new SimpleBlueprint<Widget_optional<T>>('optional', p)
+        return new SimpleSchema<Widget_optional<T>>('optional', p)
     }
 
     _HYDRATE<T extends ISchema>(
@@ -120,7 +120,7 @@ export class BasicBuilder implements IBuilder {
         }
 
         // ensure we receive a valid spec
-        if (!(spec instanceof SimpleBlueprint))
+        if (!(spec instanceof SimpleSchema))
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
 
         const type = spec.type
@@ -144,7 +144,7 @@ export class BasicBuilder implements IBuilder {
         return new Widget_markdown(
             model,
             parent,
-            new SimpleBlueprint<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
+            new SimpleSchema<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
     }
 }
@@ -153,7 +153,7 @@ export const BasicModelManager: Repository<BasicBuilder> = new Repository(new Ba
 
 // Entity
 const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicBuilder */) => {
-    const z = ui.int() // Schema<Field_number>  (🕣 SimpleBlueprint<Widget_number>)
+    const z = ui.int() // Schema<Field_number>  (🕣 SimpleSchema<Widget_number>)
 
     return ui.fields({
         foo: ui.string(),
@@ -180,11 +180,11 @@ const value = basicEntity.value // FieldValue
 const fooField = root.fields.foo // Field
 const fooValue = value.foo // FieldValue ie. string
 const fooValue2 = root.fields.foo.value // FieldValue
-const fooSchema = fooField.spec // Schema<Field_string> (🕣 IBlueprint<Widget_string>)
+const fooSchema = fooField.spec // Schema<Field_string> (🕣 ISchema<Widget_string>)
 const nestedValue = value.nested // FieldValue
 const nestedValue2 = root.fields.nested.value // FieldValue
 const fooSerial = fooField.serial // FieldSerial (🕣 Widget_string_serial)
 const fooUI = fooField.DefaultHeaderUI // WidgetStringUI
 const numField = root.fields.num // Field
 const numUI = numField.DefaultHeaderUI // WidgetNumberUI
-const numSchema = numField.spec // Schema<Field_number> (🕣 IBlueprint<Widget_number>)
+const numSchema = numField.spec // Schema<Field_number> (🕣 ISchema<Widget_number>)

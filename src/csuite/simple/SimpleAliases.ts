@@ -15,23 +15,23 @@ import type { Widget_size } from '../fields/size/WidgetSize'
 import type { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import type { Widget_string } from '../fields/string/WidgetString'
 import type { ISchema, SchemaDict } from '../model/ISchema'
-import type { SimpleBlueprint } from './SimpleSchema'
+import type { SimpleSchema } from './SimpleSchema'
 
-export type SGroup<T extends SchemaDict> = SimpleBlueprint<Widget_group<T>>
-export type SOptional<T extends ISchema> = SimpleBlueprint<Widget_optional<T>>
-export type SBool = SimpleBlueprint<Widget_bool>
-export type SString = SimpleBlueprint<Widget_string>
-export type SChoices<T extends SchemaDict = SchemaDict> = SimpleBlueprint<Widget_choices<T>>
-export type SNumber = SimpleBlueprint<Widget_number>
-export type SColor = SimpleBlueprint<Widget_color>
-export type SList<T extends ISchema> = SimpleBlueprint<Widget_list<T>>
-export type SButton<T> = SimpleBlueprint<Widget_button<T>>
-export type SSeed = SimpleBlueprint<Widget_seed>
-export type SMatrix = SimpleBlueprint<Widget_matrix>
-export type SSelectOne<T extends BaseSelectEntry> = SimpleBlueprint<Widget_selectOne<T>>
-export type SSelectMany<T extends BaseSelectEntry> = SimpleBlueprint<Widget_selectMany<T>>
-export type SSelectOne_<T extends string> = SimpleBlueprint<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-export type SSelectMany_<T extends string> = SimpleBlueprint<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
-export type SSize = SimpleBlueprint<Widget_size>
-export type SSpacer = SimpleBlueprint<Widget_spacer>
-export type SMarkdown = SimpleBlueprint<Widget_markdown>
+export type SGroup<T extends SchemaDict> = SimpleSchema<Widget_group<T>>
+export type SOptional<T extends ISchema> = SimpleSchema<Widget_optional<T>>
+export type SBool = SimpleSchema<Widget_bool>
+export type SString = SimpleSchema<Widget_string>
+export type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Widget_choices<T>>
+export type SNumber = SimpleSchema<Widget_number>
+export type SColor = SimpleSchema<Widget_color>
+export type SList<T extends ISchema> = SimpleSchema<Widget_list<T>>
+export type SButton<T> = SimpleSchema<Widget_button<T>>
+export type SSeed = SimpleSchema<Widget_seed>
+export type SMatrix = SimpleSchema<Widget_matrix>
+export type SSelectOne<T extends BaseSelectEntry> = SimpleSchema<Widget_selectOne<T>>
+export type SSelectMany<T extends BaseSelectEntry> = SimpleSchema<Widget_selectMany<T>>
+export type SSelectOne_<T extends string> = SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
+export type SSelectMany_<T extends string> = SimpleSchema<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+export type SSize = SimpleSchema<Widget_size>
+export type SSpacer = SimpleSchema<Widget_spacer>
+export type SMarkdown = SimpleSchema<Widget_markdown>
