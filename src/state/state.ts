@@ -5,7 +5,7 @@ import type { ActionTagMethodList } from '../cards/App'
 import type { Activity } from '../csuite/activity/Activity'
 import type { CSuiteConfig } from '../csuite/ctx/CSuiteConfig'
 import type { Tint } from '../csuite/kolor/Tint'
-import type { ModelSerial } from '../csuite/model/ModelSerial'
+import type { EntitySerial } from '../csuite/model/ModelSerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ConfigMode } from '../panels/PanelConfig/PanelConfig'
@@ -503,7 +503,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialSerial: () => readJSON<ModelSerial>('settings/displacement.json'),
+            initialSerial: () => readJSON<EntitySerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )

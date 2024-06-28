@@ -16,7 +16,7 @@ export type NoContext = null
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class ModelManager<DOMAIN extends Domain> {
+export class EntityManager<DOMAIN extends Domain> {
     //
     _allForms: Map<string, Entity> = new Map()
     _allWidgets: Map<string, BaseField> = new Map()

@@ -17,7 +17,7 @@ import { Widget_selectMany, type Widget_selectMany_config } from '../fields/sele
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { ModelManager } from '../model/ModelManager'
+import { EntityManager } from '../model/EntityManager'
 import { SimpleBlueprint } from './SimpleBlueprint'
 
 // -------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ export class BasicDomain implements Domain {
     }
 }
 
-export const BasicModelManager: ModelManager<BasicDomain> = new ModelManager(BasicDomain) //
+export const BasicModelManager: EntityManager<BasicDomain> = new EntityManager(BasicDomain) //
 
 // Entity
 const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicDomain */) => {

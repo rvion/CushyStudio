@@ -1,10 +1,10 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
 import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
+import type { EntityManager } from './EntityManager'
 import type { ISchema } from './IBlueprint'
 import type { Domain } from './IDomain'
-import type { ModelManager } from './ModelManager'
-import type { ModelSerial } from './ModelSerial'
+import type { EntitySerial } from './ModelSerial'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -25,7 +25,7 @@ export type ModelConfig<
     // ----------------------------
     onValueChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
     onSerialChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
-    initialSerial?: (context: CONTEXT) => Maybe<ModelSerial>
+    initialSerial?: (context: CONTEXT) => Maybe<EntitySerial>
 }
 
 export class Entity<
@@ -40,7 +40,7 @@ export class Entity<
     CONTEXT = any,
 > {
     constructor(
-        public manager: ModelManager<DOMAIN>,
+        public manager: EntityManager<DOMAIN>,
         public buildFn: CovariantFn2<DOMAIN, CONTEXT, SCHEMA>,
         public config: ModelConfig<SCHEMA, DOMAIN, CONTEXT>,
         public context: CONTEXT,
@@ -129,7 +129,7 @@ export class Entity<
         return this.root.value
     }
 
-    get serial(): ModelSerial {
+    get serial(): EntitySerial {
         return {
             type: 'FormSerial',
             uid: this.uid,
@@ -260,7 +260,7 @@ export class Entity<
     }
 }
 
-function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<ModelSerial> {
+function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<EntitySerial> {
     if (json == null) return null
     if (typeof json !== 'object') return null
     if (json.type === 'FormSerial') return json

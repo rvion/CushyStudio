@@ -1,11 +1,14 @@
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 
 /** quick type alias used for unknown serial; for now, default to shared fields */
-export type AnyWidgetSerial = FieldSerial_CommonProperties /* {} */
+export type AnyFieldSerial = FieldSerial_CommonProperties
 
 /** a form serial ready to be persisted somewhere */
-export type ModelSerial = {
-    /** */
+export type EntitySerial = {
+    /**
+     * practical to know what kind of json we're dealing with
+     * when viewed from some other software.
+     */
     type: 'FormSerial'
 
     /** unique entity serial */
@@ -19,10 +22,10 @@ export type ModelSerial = {
     name: string
 
     /** live value */
-    root: AnyWidgetSerial
+    root: AnyFieldSerial
 
     /** last saved value in case you want a simple way to revert your models */
-    snapshot?: AnyWidgetSerial
+    snapshot?: AnyFieldSerial
 
     /** timestamp of last value update */
     valueLastUpdatedAt?: Timestamp

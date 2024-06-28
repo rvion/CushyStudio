@@ -31,7 +31,7 @@ import { Widget_size, type Widget_size_config } from '../csuite/fields/size/Widg
 import { Widget_spacer, type Widget_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../csuite/fields/string/WidgetString'
 import { BaseField } from '../csuite/model/BaseField'
-import { ModelManager } from '../csuite/model/ModelManager'
+import { EntityManager } from '../csuite/model/EntityManager'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Widget_prompt, type Widget_prompt_config } from '../prompt/WidgetPrompt'
@@ -446,8 +446,8 @@ export class FormBuilder implements Domain {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
-export type CushyFormManager = ModelManager<FormBuilder>
-export const CushyFormManager: CushyFormManager = new ModelManager<FormBuilder>(FormBuilder)
+export type CushyFormManager = EntityManager<FormBuilder>
+export const CushyFormManager: CushyFormManager = new EntityManager<FormBuilder>(FormBuilder)
 
 /**
  * Calling this function will mount and instanciate the subform right away
