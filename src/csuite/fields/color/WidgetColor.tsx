@@ -46,7 +46,7 @@ export class Widget_color extends BaseField<Widget_color_types> {
     }
 
     readonly defaultValue: string = this.config.default ?? '#000000'
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     serial: Widget_color_serial

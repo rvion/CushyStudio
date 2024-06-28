@@ -83,7 +83,7 @@ export class Widget_string extends BaseField<Widget_string_types> {
 
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset(){ this.value = this.defaultValue } // prettier-ignore
 
     constructor(

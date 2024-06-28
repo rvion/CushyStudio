@@ -56,7 +56,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     st = () => cushy
 
     get defaultValue(): T { return this.config.defaultValue() } // prettier-ignore
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.config.defaultValue())
 
     constructor(

@@ -93,7 +93,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
     )
 
-    get indentChildren() {
+    get indentChildren(): number {
         return 1
     }
 

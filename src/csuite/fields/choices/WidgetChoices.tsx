@@ -100,7 +100,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
     }
 
     /** hack so optional fields do not increase nesting twice */
-    get indentChildren() {
+    get indentChildren(): number {
         return 0
     }
 
@@ -118,7 +118,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return this.children[this.firstActiveBranchName]
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
@@ -220,11 +220,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         })
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return Object.values(this.children)
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
     }
 

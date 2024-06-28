@@ -92,7 +92,7 @@ export class Widget_list<T extends IBlueprint> //
     items: T['$Field'][]
     serial: Widget_list_serial<T>
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         // in auto mode, length is managed, so we must not take it into account
         if (!this.config.auto) {
             const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
@@ -126,11 +126,11 @@ export class Widget_list<T extends IBlueprint> //
         return null
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return this.items
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 

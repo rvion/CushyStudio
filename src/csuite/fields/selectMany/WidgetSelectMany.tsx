@@ -94,7 +94,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
     get defaultValue(): Widget_selectMany_value<T> {
         return this.config.default ?? []
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.values.length !== this.defaultValue.length) return true
         for (const item of this.serial.values) {
             if (!this.defaultValue.find((i) => i.id === item.id)) return true

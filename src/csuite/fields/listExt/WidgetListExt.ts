@@ -68,7 +68,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
         if (this.items.length !== defaultLength) return true
         // check if any remaining item has changes
@@ -163,11 +163,11 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         })
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return this.items
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 

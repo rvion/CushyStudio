@@ -59,7 +59,7 @@ export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
         this.bField.reset()
     }
 
-    get indentChildren() {
+    get indentChildren(): number {
         return 0
     }
 

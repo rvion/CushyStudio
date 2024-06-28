@@ -67,7 +67,7 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
     get defaultElevation() {
         return this.config.default?.elevation ?? 0
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.value.azimuth !== this.defaultAzimuth) return true
         if (this.serial.value.elevation !== this.defaultElevation) return true
         return false

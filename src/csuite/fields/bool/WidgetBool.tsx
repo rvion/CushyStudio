@@ -86,7 +86,7 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
     toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     constructor(

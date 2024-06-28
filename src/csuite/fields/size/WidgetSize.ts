@@ -60,7 +60,7 @@ export class Widget_size extends BaseField<Widget_size_types> {
         const height = config.default?.height ?? parseInt(modelType.split(' ')[1]!)
         return { type: 'size', aspectRatio, modelType, height, width }
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.defaultValue
         if (this.serial.width !== def.width) return true
         if (this.serial.height !== def.height) return true

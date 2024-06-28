@@ -112,7 +112,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     get defaultValue(): T {
         return this.config.default ?? this.choices[0] ?? FAILOVER_VALUE
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.serial.val.id !== this.defaultValue.id
     }
     reset(): void {

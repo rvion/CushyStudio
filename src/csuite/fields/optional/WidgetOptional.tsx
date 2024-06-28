@@ -57,7 +57,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
             return
         }
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) return true
@@ -145,15 +145,15 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
     }
 
     /** hack so optional fields do not increase nesting twice */
-    get indentChildren() {
+    get indentChildren(): number {
         return 0
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return this.serial.active ? [this.child] : []
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return this.serial.active ? [{ key: 'child', widget: this.child }] : []
     }
 

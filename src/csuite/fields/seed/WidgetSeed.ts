@@ -59,7 +59,7 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.mode !== this.defaultMode) return true
         if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
         return false

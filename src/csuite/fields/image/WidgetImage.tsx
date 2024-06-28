@@ -67,7 +67,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get defaultValue(): MediaImageL {
         return this.config.default ?? cushy.defaultImage
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.value !== this.defaultValue
     }
     reset(): void {

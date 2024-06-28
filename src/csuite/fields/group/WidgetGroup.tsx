@@ -60,7 +60,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
     reset(): void {
@@ -172,11 +172,11 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         })
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return Object.values(this.fields)
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
     }
 

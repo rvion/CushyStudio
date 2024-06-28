@@ -91,7 +91,7 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
     }
 
     get defaultValue(): boolean { return this.config.default ?? false } // prettier-ignore
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     get value(): Widget_button_value {

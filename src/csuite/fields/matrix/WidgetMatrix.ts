@@ -61,7 +61,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         if (def == null) return this.value.length != 0
         else {

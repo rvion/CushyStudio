@@ -72,7 +72,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
     }
     reset(): void {
