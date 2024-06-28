@@ -9,7 +9,6 @@ import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { makeLabelFromFieldName } from '../../csuite/utils/makeLabelFromFieldName'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getIfWidgetNeedJustifiedLabel } from './getIfWidgetNeedAlignedLabel'
-import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetDebugIDUI } from './WidgetDebugIDUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
@@ -20,6 +19,7 @@ import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetLabelUI } from './WidgetLabelUI'
 import { WidgetMenuUI } from './WidgetMenu'
+import { WidgetToggleUI } from './WidgetToggleUI'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
@@ -98,7 +98,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         ) : (
                             <>
                                 <WidgetLabelCaretUI widget={widget} />
-                                <Widget_ToggleUI tw='mr-1' widget={originalWidget} />
+                                <WidgetToggleUI tw='mr-1' widget={originalWidget} />
                                 <WidgetLabelIconUI tw='mr-1' widget={widget} />
                                 {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                                 <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
@@ -109,7 +109,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                     </WidgetLabelContainerUI>
 
                     {/* TOOGLE (when justified) */}
-                    {justify && <Widget_ToggleUI /* tw='ml-1' */ widget={originalWidget} />}
+                    {justify && <WidgetToggleUI /* tw='ml-1' */ widget={originalWidget} />}
                     {/* HEADER CONTROLS */}
                     {HeaderUI && (
                         <WidgetHeaderControlsContainerUI className={extraClass}>

@@ -17,12 +17,12 @@ import { observer } from 'mobx-react-lite'
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
-import { Widget_ToggleUI } from '../form/Widget_ToggleUI'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
+import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
@@ -84,7 +84,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Field'] }> | undefined
 
-    UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
+    UIToggle = (p?: { className?: string }) => <WidgetToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
     UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
