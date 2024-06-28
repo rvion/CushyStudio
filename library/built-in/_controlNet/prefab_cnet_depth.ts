@@ -49,13 +49,13 @@ export type UI_subform_Depth_Preprocessor = X.XChoice<{
     Zoe: UI_subform_Depth_Zoe
 }>
 export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
-    const b: X.Builder = getCurrentForm()
-    return b.choice({
+    const ui: X.Builder = getCurrentForm()
+    return ui.choice({
         label: 'Depth Preprocessor',
         default: 'Midas',
         appearance: 'tab',
         items: {
-            None: b.empty(),
+            None: ui.empty(),
             Midas: ui_subform_Depth_Midas(),
             Leres: ui_subform_Depth_LeReS(),
             Zoe: ui_subform_Depth_Zoe(),
