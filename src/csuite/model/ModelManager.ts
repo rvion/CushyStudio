@@ -5,7 +5,7 @@ import type { Domain } from './IDomain'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { Model, ModelConfig } from './Model'
+import { Entity, ModelConfig } from './Entity'
 import { runWithGlobalForm } from './runWithGlobalForm'
 
 export type NoContext = null
@@ -18,11 +18,11 @@ export type NoContext = null
  */
 export class ModelManager<DOMAIN extends Domain> {
     //
-    _allForms: Map<string, Model> = new Map()
+    _allForms: Map<string, Entity> = new Map()
     _allWidgets: Map<string, BaseField> = new Map()
     _allWidgetsByType: Map<string, Map<string, BaseField>> = new Map()
 
-    getFormByID = (uid: string): Maybe<Model> => {
+    getFormByID = (uid: string): Maybe<Entity> => {
         return this._allForms.get(uid)
     }
 
@@ -42,12 +42,12 @@ export class ModelManager<DOMAIN extends Domain> {
 
     constructor(
         //
-        public builderCtor: { new (form: Model<any /* SchemaDict */, DOMAIN>): DOMAIN },
+        public builderCtor: { new (form: Entity<any /* SchemaDict */, DOMAIN>): DOMAIN },
     ) {}
 
-    _builders = new WeakMap<Model, DOMAIN>()
+    _builders = new WeakMap<Entity, DOMAIN>()
 
-    getBuilder = (form: Model<any, DOMAIN>): DOMAIN => {
+    getBuilder = (form: Entity<any, DOMAIN>): DOMAIN => {
         const prev = this._builders.get(form)
         if (prev) return prev
         const builder = new this.builderCtor(form)
@@ -59,7 +59,7 @@ export class ModelManager<DOMAIN extends Domain> {
     fields = <FIELDS extends SchemaDict>(
         buildFn: (form: DOMAIN) => FIELDS,
         modelConfig: ModelConfig<ISchema<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
-    ): Model<ISchema<Widget_group<FIELDS>>, DOMAIN> => {
+    ): Entity<ISchema<Widget_group<FIELDS>>, DOMAIN> => {
         const FN = (domain: DOMAIN): ISchema<Widget_group<FIELDS>> => {
             return runWithGlobalForm(domain, () =>
                 domain.group({
@@ -69,7 +69,7 @@ export class ModelManager<DOMAIN extends Domain> {
                 }),
             )
         }
-        const form = new Model<ISchema<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
+        const form = new Entity<ISchema<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
         return form
     }
 
@@ -77,8 +77,8 @@ export class ModelManager<DOMAIN extends Domain> {
     form<ROOT extends ISchema>(
         buildFn: (form: DOMAIN) => ROOT,
         modelConfig: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
-    ): Model<ROOT, DOMAIN> {
-        return new Model<ROOT, DOMAIN>(this, buildFn, modelConfig, null)
+    ): Entity<ROOT, DOMAIN> {
+        return new Entity<ROOT, DOMAIN>(this, buildFn, modelConfig, null)
     }
 
     /** simple way to defined forms and in react components */
@@ -86,9 +86,9 @@ export class ModelManager<DOMAIN extends Domain> {
         ui: (form: DOMAIN) => ROOT,
         formProperties: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
         deps: DependencyList = [],
-    ): Model<ROOT, DOMAIN> {
+    ): Entity<ROOT, DOMAIN> {
         return useMemo(() => {
-            return new Model<ROOT, DOMAIN>(this, ui, formProperties, null)
+            return new Entity<ROOT, DOMAIN>(this, ui, formProperties, null)
         }, deps)
     }
 
@@ -96,8 +96,8 @@ export class ModelManager<DOMAIN extends Domain> {
         buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
         context: CONTEXT,
         modelConfig: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
-    ): Model<ROOT, DOMAIN> {
-        return new Model<ROOT, DOMAIN, CONTEXT>(this, buildFn, modelConfig, context)
+    ): Entity<ROOT, DOMAIN> {
+        return new Entity<ROOT, DOMAIN, CONTEXT>(this, buildFn, modelConfig, context)
     }
 
     /** simple way to defined forms and in react components */
@@ -106,9 +106,9 @@ export class ModelManager<DOMAIN extends Domain> {
         context: CONTEXT,
         formProperties: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
         deps: DependencyList = [],
-    ): Model<ROOT, DOMAIN> {
+    ): Entity<ROOT, DOMAIN> {
         return useMemo(() => {
-            return new Model<ROOT, DOMAIN, CONTEXT>(this, buildFn, formProperties, context)
+            return new Entity<ROOT, DOMAIN, CONTEXT>(this, buildFn, formProperties, context)
         }, deps)
     }
 }

@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
@@ -126,7 +126,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,

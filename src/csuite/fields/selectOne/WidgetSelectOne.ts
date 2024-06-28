@@ -1,8 +1,8 @@
 import type { IconName } from '../../icons/icons'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { runInAction } from 'mobx'
@@ -132,7 +132,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     constructor(
         // 2024-06-27 TODO: rename that
         // |            VVVV
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,

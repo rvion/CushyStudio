@@ -1,10 +1,10 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -76,7 +76,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
 
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_image>,
         serial?: Widget_image_serial,

@@ -1,13 +1,13 @@
 import type { Widget_group, Widget_group_config } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
+import type { Entity } from './Entity'
 import type { ISchema } from './IBlueprint'
-import type { Model } from './Model'
 
 export interface Domain {
     _cache: { count: number }
     _HYDRATE: <T extends ISchema<any>>(
         //
-        model: Model<any>,
+        model: Entity<any>,
         self: BaseField | null,
         spec: T,
         serial: any | null,

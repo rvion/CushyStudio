@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -68,7 +68,7 @@ export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget
 
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_shared<T>>,
         serial?: Widget_shared_serial,

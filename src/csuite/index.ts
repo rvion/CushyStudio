@@ -6,7 +6,7 @@ export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
 export type { Domain } from './model/IDomain'
 export type { ModelSerial } from './model/ModelSerial'
-export type { ModelConfig } from './model/Model'
+export type { ModelConfig } from './model/Entity'
 export type { SchemaDict, ISchema as IBlueprint } from './model/IBlueprint'
 export type { OpenRouter_Models } from './openrouter/OpenRouter_models'
 export type { CovariantFC } from './variance/CovariantFC'

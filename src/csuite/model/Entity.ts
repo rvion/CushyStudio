@@ -23,12 +23,12 @@ export type ModelConfig<
 > = {
     name: string
     // ----------------------------
-    onValueChange?: (form: Model<SCHEMA, DOMAIN>) => void
-    onSerialChange?: (form: Model<SCHEMA, DOMAIN>) => void
+    onValueChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
+    onSerialChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
     initialSerial?: (context: CONTEXT) => Maybe<ModelSerial>
 }
 
-export class Model<
+export class Entity<
     /** shape of the form, to preserve type safety down to nested children */
     SCHEMA extends ISchema<any> = ISchema<any>,
     /**
@@ -167,11 +167,11 @@ export class Model<
     /** timestamp at which last entity snapshot was updated, or 0 if no snpashot */
     snapshotLastUpdatedAt: Timestamp = 0
 
-    private _onSerialChange: ((form: Model<SCHEMA, any>) => void) | null = this.config.onSerialChange //
+    private _onSerialChange: ((form: Entity<SCHEMA, any>) => void) | null = this.config.onSerialChange //
         ? debounce(this.config.onSerialChange, 200)
         : null
 
-    private _onValueChange: ((form: Model<SCHEMA, any>) => void) | null = this.config.onValueChange //
+    private _onValueChange: ((form: Entity<SCHEMA, any>) => void) | null = this.config.onValueChange //
         ? debounce(this.config.onValueChange, 5)
         : null
 

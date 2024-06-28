@@ -1,7 +1,7 @@
 import type { BaseField } from '../model/BaseField'
+import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { Domain } from '../model/IDomain'
-import type { Model } from '../model/Model'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
 import type * as SS from './SimpleSpecAliases'
 
@@ -33,7 +33,8 @@ export class SimpleDomain implements Domain {
     SpecCtor = SimpleBlueprint
 
     /** (@internal) don't call this yourself */
-    constructor() { // public model: Model<IBlueprint, SimpleDomain>, //
+    constructor() {
+        // public model: Model<IBlueprint, SimpleDomain>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -214,7 +215,7 @@ export class SimpleDomain implements Domain {
 
     _HYDRATE<T extends ISchema>(
         //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
@@ -236,7 +237,7 @@ export class SimpleDomain implements Domain {
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE<T extends ISchema>(
         //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,

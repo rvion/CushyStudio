@@ -6,9 +6,9 @@ import type { ITreeElement } from '../tree/TreeEntry'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
+import type { Entity } from './Entity'
 import type { ISchema } from './IBlueprint'
 import type { Domain } from './IDomain'
-import type { Model } from './Model'
 import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
@@ -385,7 +385,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     }
 
     /** root form this widget has benn registered to */
-    abstract readonly entity: Model
+    abstract readonly entity: Entity
 
     // FOLD ----------------------------------------------------
     setCollapsed(val?: boolean) {

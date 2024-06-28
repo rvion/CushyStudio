@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -13,7 +13,7 @@ import { WidgetMardownUI } from './WidgetMarkdownUI'
 // CONFIG
 export type Widget_markdown_config = FieldConfig<
     {
-        markdown: string | ((form: Model) => string)
+        markdown: string | ((form: Entity) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -65,7 +65,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
 
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,

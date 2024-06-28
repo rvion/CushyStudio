@@ -1,7 +1,7 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
-import type { Model } from '../csuite/model/Model'
+import type { Entity } from '../csuite/model/Entity'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
@@ -246,7 +246,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Model<any, FormBuilder>> = null
+    _form: Maybe<Entity<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)

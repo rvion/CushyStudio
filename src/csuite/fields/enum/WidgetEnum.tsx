@@ -1,9 +1,9 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -66,7 +66,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     serial: Widget_enum_serial<O>
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,

@@ -1,7 +1,7 @@
 import type { Channel } from '../csuite'
+import type { Entity } from '../csuite/model/Entity'
 import type { ISchema, SchemaDict } from '../csuite/model/IBlueprint'
 import type { Domain } from '../csuite/model/IDomain'
-import type { Model } from '../csuite/model/Model'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
@@ -363,7 +363,7 @@ export class FormBuilder implements Domain {
     _FIX_INDENTATION = _FIX_INDENTATION
 
     _HYDRATE = <T extends ISchema>( //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
@@ -388,7 +388,7 @@ export class FormBuilder implements Domain {
 
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE = <T extends ISchema>( //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,

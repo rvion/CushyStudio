@@ -1,7 +1,7 @@
+import type { Entity } from '../csuite/model/Entity'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
 import type { ISchema } from '../csuite/model/IBlueprint'
-import type { Model } from '../csuite/model/Model'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 
@@ -85,7 +85,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly entity: Model,
+        public readonly entity: Entity,
         public readonly parent: BaseField | null,
         public readonly spec: ISchema<Widget_prompt>,
         serial?: Widget_prompt_serial,

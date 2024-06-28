@@ -1,8 +1,8 @@
 import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
 import type { BaseField } from '../model/BaseField'
+import type { Entity } from '../model/Entity'
 import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { Domain } from '../model/IDomain'
-import type { Model } from '../model/Model'
 import type * as SS from './SimpleSpecAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
@@ -86,7 +86,7 @@ export class BasicDomain implements Domain {
 
     _HYDRATE<T extends ISchema>(
         //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,
@@ -108,7 +108,7 @@ export class BasicDomain implements Domain {
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE<T extends ISchema>(
         //
-        model: Model<any>,
+        model: Entity<any>,
         parent: BaseField | null,
         spec: T,
         serial: any | null,

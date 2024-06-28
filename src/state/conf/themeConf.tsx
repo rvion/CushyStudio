@@ -1,5 +1,5 @@
 import type { IconName } from '../../csuite/icons/icons'
-import type { Model } from '../../csuite/model/Model'
+import type { Entity } from '../../csuite/model/Entity'
 
 import { CushyFormManager, type FormBuilder } from '../../controls/FormBuilder'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
@@ -33,7 +33,7 @@ export type ThemeConf = X.XGroup<{
     showToggleButtonBox: X.XBool
 }>
 
-export const themeConf: Model<ThemeConf, FormBuilder, {}> = CushyFormManager.form(
+export const themeConf: Entity<ThemeConf, FormBuilder, {}> = CushyFormManager.form(
     (ui): ThemeConf =>
         ui.fields(
             {
