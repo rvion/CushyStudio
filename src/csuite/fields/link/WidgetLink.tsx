@@ -1,4 +1,3 @@
-import type { Channel } from '../../model/Channel'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { IBlueprint } from '../../model/IBlueprint'
@@ -11,18 +10,6 @@ import { nanoid } from 'nanoid'
 import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
-// { local, exposed }
-
-// With<Into, Context>
-
-// Derived<Field, Context>
-
-// A.
-// > Bound<Context, Field>
-// > Bind<Field>
-
-// B
-
 // CONFIG
 export type Widget_link_config<A extends IBlueprint, B extends IBlueprint> = FieldConfig<
     {
@@ -30,7 +17,7 @@ export type Widget_link_config<A extends IBlueprint, B extends IBlueprint> = Fie
         share: A
 
         // into
-        children: (chan: A['$Field']) => B
+        children: (child: A['$Field']) => B
     },
     Widget_link_types<A, B>
 >
@@ -106,17 +93,12 @@ export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
                 ? serial
                 : this._defaultSerial()
 
-        console.log(`[🤠] coucou 1`, this)
         this.aField = this.domain._HYDRATE(this.form, this, this.config.share, this.serial.a)
         this.serial.a = this.aField.serial // hook a serial
-
-        console.log(`[🤠] coucou 2`, this.aField)
-        // const chanForAField = this.aField.channel
 
         this.bField = this.domain._HYDRATE(this.form, this, this.config.children(this.aField), this.serial.b)
         this.serial.b = this.bField.serial // hook a serial
 
-        console.log(`[🤠] coucou 3`, this.bField)
         this.init({})
     }
 

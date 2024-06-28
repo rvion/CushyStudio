@@ -2,7 +2,9 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { BaseField } from './BaseField'
 import type { Channel, ChannelId, Producer } from './Channel'
 
-export type SchemaDict = { [key: string]: IBlueprint }
+export type SchemaDict = {
+    [key: string]: IBlueprint | BaseField
+}
 
 export interface IBlueprint<out W extends BaseField = BaseField> {
     // real fields

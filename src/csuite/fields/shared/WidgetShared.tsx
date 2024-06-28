@@ -7,8 +7,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import { nanoid } from 'nanoid'
 
 import { BaseField } from '../../model/BaseField'
-import { Channel } from '../../model/Channel'
-import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -50,29 +48,23 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
-    // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
-    $Field!: T['$Field']
-
     serial: Widget_shared_serial
 
-    get hasChanges() {
-        return this.shared?.hasChanges ?? false
+    get hasChanges(): boolean {
+        return this.shared.hasChanges ?? false
     }
 
     reset(): void {
-        return this.shared?.reset()
+        return this.shared.reset()
     }
 
     get shared(): T['$Field'] {
         return this.config.widget(this.parent!)
-        // return bang(this.consume(this.channel))
     }
 
     get baseErrors(): Problem_Ext {
-        return this.shared?.baseErrors
+        return this.shared.baseErrors
     }
-
-    channel: Channel<T['$Field']>
 
     constructor(
         //
@@ -83,7 +75,6 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
     ) {
         super()
         this.id = serial?.id ?? nanoid()
-        this.channel = new Channel(this.id)
         const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         this.init({

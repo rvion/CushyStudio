@@ -7,6 +7,7 @@
  *  3. the main helper funtion that print stuff on canvas
  */
 
+import type { Widget_number } from '../../../src/csuite/fields/number/WidgetNumber'
 import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ export interface Shape {
 // will make your vscode go brrrrr.
 
 export type UI_LatentShapeGenerator = X.XGroup<{
-    batchSize: X.XShared<X.XNumber> | X.XNumber
+    batchSize: X.XShared<X.XNumber> | X.XNumber | Widget_number
     size: X.XShared<X.XSize> | X.XSize
     amountCircle: X.XNumber
     amountRect: X.XNumber
@@ -45,7 +46,7 @@ export type UI_LatentShapeGenerator = X.XGroup<{
 // 1. ------------------------------------------------------------------------------------
 export function ui_LatentShapeGenerator(
     //
-    batchSize?: X.XShared<X.XNumber>,
+    batchSize?: Widget_number, // X.XShared<X.XNumber>,
     size?: X.XShared<X.XSize>,
 ): UI_LatentShapeGenerator {
     const ui = getCurrentForm()
