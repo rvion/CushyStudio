@@ -13,7 +13,7 @@ import { WidgetMardownUI } from './WidgetMarkdownUI'
 // CONFIG
 export type Widget_markdown_config = FieldConfig<
     {
-        markdown: string | ((form: Entity) => string)
+        markdown: string | ((self: Widget_markdown) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -60,7 +60,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.entity)
+        return md(this)
     }
 
     constructor(
