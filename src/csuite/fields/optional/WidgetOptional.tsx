@@ -101,9 +101,9 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(this.form, this, spec, prevSerial)
+            this.child = this.form.domain._HYDRATE(this.form, this, spec, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(this.form, this, spec, null)
+            this.child = this.form.domain._HYDRATE(this.form, this, spec, null)
             this.serial.child = this.child.serial
         }
     }

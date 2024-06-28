@@ -123,7 +123,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         const itemsDef = this.config.items
         const _newValues: SchemaDict =
             typeof itemsDef === 'function' //
-                ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
+                ? runWithGlobalForm(this.form.domain, itemsDef) ?? {}
                 : itemsDef ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
@@ -137,7 +137,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
                 //     this.fields[key] = newItem as any
                 // } else {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.form.builder._HYDRATE(this.form, this, unmounted, prevFieldSerial)
+                this.fields[key] = this.form.domain._HYDRATE(this.form, this, unmounted, prevFieldSerial)
                 // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
@@ -146,7 +146,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
                         `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.form.builder._HYDRATE(this.form, this, unmounted, null)
+                this.fields[key] = this.form.domain._HYDRATE(this.form, this, unmounted, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }

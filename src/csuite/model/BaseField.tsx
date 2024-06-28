@@ -43,17 +43,18 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
-}
+} //   👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
 // v3 (experimental) ---------------------------------------
 export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
-    // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
-    // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
-    // $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // 👆 $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
+    // 👆 $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // 👆 $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+    // 👆 $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
+    // 👆 $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+
     get domain(): Domain {
-        return this.form['builder']
+        return this.form.domain
     }
     /** spec used to instanciate this widget */
     abstract spec: IBlueprint

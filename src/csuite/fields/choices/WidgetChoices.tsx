@@ -265,11 +265,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(this.form, this, schema, prevBranchSerial)
+            this.children[branch] = this.form.domain._HYDRATE(this.form, this, schema, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(this.form, this, schema, null)
+            this.children[branch] = this.form.domain._HYDRATE(this.form, this, schema, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 

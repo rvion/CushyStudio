@@ -44,7 +44,7 @@ export class Model<
         public config: ModelConfig<ROOT, DOMAIN, CONTEXT>,
         public context: CONTEXT,
     ) {
-        this.builder = manager.getBuilder(this)
+        this.domain = manager.getBuilder(this)
         makeAutoObservable(this, {
             //
             // builder: false,
@@ -216,7 +216,7 @@ export class Model<
     /** from builder, offering simple API for your project specifc widgets  */
     // TODO: rename domain
     // VVV
-    builder: DOMAIN
+    domain: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: ROOT['$Field']
@@ -232,7 +232,7 @@ export class Model<
 
     init = (): ROOT => {
         console.log(`[🥐] Building form ${this.config.name}`)
-        const formBuilder = this.builder
+        const formBuilder = this.domain
 
         try {
             let formSerial = this.config.initialSerial?.(this.context)
