@@ -119,7 +119,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
@@ -148,7 +148,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form.domain._HYDRATE(this.form, this, schema, subSerial)
+            const subWidget = entity.domain._HYDRATE(this.entity, this, schema, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -175,7 +175,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.form.domain, () => _schema({ ix, width: this.width, height: this.width }))
+                ? runWithGlobalForm(this.entity.domain, () => _schema({ ix, width: this.width, height: this.width }))
                 : _schema
         return schema
     }
@@ -195,7 +195,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const spec = this.schemaAt(this.length)
-        const element = this.form.domain._HYDRATE(this.form, this, spec, null)
+        const element = this.entity.domain._HYDRATE(this.entity, this, spec, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
         if (!p?.skipBump) this.bumpValue()

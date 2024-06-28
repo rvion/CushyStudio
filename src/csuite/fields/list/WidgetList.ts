@@ -138,7 +138,7 @@ export class Widget_list<T extends IBlueprint> //
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.form.domain, () => _schema(ix))
+                ? runWithGlobalForm(this.entity.domain, () => _schema(ix))
                 : _schema
         return schema
     }
@@ -175,7 +175,7 @@ export class Widget_list<T extends IBlueprint> //
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
@@ -207,7 +207,7 @@ export class Widget_list<T extends IBlueprint> //
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = form.domain._HYDRATE(this.form, this, unmounted, subSerial)
+                const subWidget = entity.domain._HYDRATE(this.entity, this, unmounted, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -274,7 +274,7 @@ export class Widget_list<T extends IBlueprint> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.form.domain._HYDRATE(this.form, this, schema, null)
+        const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
 
         // set initial value
         if (p.value) {

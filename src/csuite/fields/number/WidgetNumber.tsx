@@ -70,7 +70,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_number>,
         serial?: Widget_number_serial,

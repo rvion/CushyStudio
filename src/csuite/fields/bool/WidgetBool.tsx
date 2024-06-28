@@ -91,7 +91,7 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_bool>,
         serial?: Widget_bool_serial,

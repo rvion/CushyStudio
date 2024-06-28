@@ -122,8 +122,8 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     get choices(): T[] {
         const _choices = this.config.choices
         if (typeof _choices === 'function') {
-            if (!this.form.ready) return []
-            if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
+            if (!this.entity.ready) return []
+            if (this.entity._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
             return _choices(this)
         }
         return _choices
@@ -132,7 +132,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     constructor(
         // 2024-06-27 TODO: rename that
         // |            VVVV
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,

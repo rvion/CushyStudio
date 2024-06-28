@@ -81,7 +81,7 @@ export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
     }
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_link<A, B>>,
         serial?: Widget_link_serial<A, B>,
@@ -93,10 +93,10 @@ export class Widget_link<A extends IBlueprint, B extends IBlueprint> //
                 ? serial
                 : this._defaultSerial()
 
-        this.aField = this.domain._HYDRATE(this.form, this, this.config.share, this.serial.a)
+        this.aField = this.domain._HYDRATE(this.entity, this, this.config.share, this.serial.a)
         this.serial.a = this.aField.serial // hook a serial
 
-        this.bField = this.domain._HYDRATE(this.form, this, this.config.children(this.aField), this.serial.b)
+        this.bField = this.domain._HYDRATE(this.entity, this, this.config.children(this.aField), this.serial.b)
         this.serial.b = this.bField.serial // hook a serial
 
         this.init({})

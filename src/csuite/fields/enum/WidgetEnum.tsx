@@ -66,7 +66,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     serial: Widget_enum_serial<O>
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,

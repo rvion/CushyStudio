@@ -61,7 +61,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,

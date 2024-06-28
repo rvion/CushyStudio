@@ -54,7 +54,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     // 👆 $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
 
     get domain(): Domain {
-        return this.form.domain
+        return this.entity.domain
     }
     /** spec used to instanciate this widget */
     abstract spec: IBlueprint
@@ -254,14 +254,14 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
 
     // BUMP ----------------------------------------------------
     bumpSerial(this: BaseField): void {
-        this.form.serialChanged(this)
+        this.entity.serialChanged(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     bumpValue(this: BaseField): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.form.valueChanged(this)
+        this.entity.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
         this.publishValue() // 🔴  should probably be a reaction rather than this
@@ -341,18 +341,18 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     }
 
     /** root form this widget has benn registered to */
-    abstract readonly form: Model
+    abstract readonly entity: Model
 
     // FOLD ----------------------------------------------------
     setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
-        this.form.serialChanged(this)
+        this.entity.serialChanged(this)
     }
 
     toggleCollapsed(this: BaseField) {
         this.serial.collapsed = !this.serial.collapsed
-        this.form.serialChanged(this)
+        this.entity.serialChanged(this)
     }
 
     // UI ----------------------------------------------------
@@ -430,6 +430,10 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         return []
     }
 
+    get root(): BaseField {
+        return this.entity.root
+    }
+
     /** list of all subwidgets, without named keys */
     get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return []
@@ -493,15 +497,15 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         }
 
         // register self into `form._allFormWidgets`
-        this.form._allFormWidgets.set(this.id, this)
+        this.entity._allFormWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgets
-        this.form.manager._allWidgets.set(this.id, this)
+        this.entity.manager._allWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.form.manager._allWidgetsByType.get(this.type)
+        const prev = this.entity.manager._allWidgetsByType.get(this.type)
         if (prev == null) {
-            this.form.manager._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
+            this.entity.manager._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }

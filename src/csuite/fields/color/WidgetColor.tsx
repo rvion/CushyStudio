@@ -53,7 +53,7 @@ export class Widget_color extends BaseField<Widget_color_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_color>,
         serial?: Widget_color_serial,

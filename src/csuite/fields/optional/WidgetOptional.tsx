@@ -101,16 +101,16 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.domain._HYDRATE(this.form, this, spec, prevSerial)
+            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, prevSerial)
         } else {
-            this.child = this.form.domain._HYDRATE(this.form, this, spec, null)
+            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, null)
             this.serial.child = this.child.serial
         }
     }
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,

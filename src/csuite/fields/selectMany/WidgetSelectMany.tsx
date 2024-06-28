@@ -126,7 +126,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,

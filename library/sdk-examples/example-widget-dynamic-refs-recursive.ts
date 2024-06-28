@@ -20,7 +20,8 @@ app({
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
                             choices: (self) => {
-                                const formRoot: Widget_group<any> = self.form.root
+                                const formRoot = self.root as Widget_group<any>
+
                                 // 🔶 null when the form is not yet fully initialized
                                 if (formRoot.fields.samplerUI == null) return []
 

@@ -195,8 +195,6 @@ export class Model<
     }
 
     /** from builder, offering simple API for your project specifc widgets  */
-    // TODO: rename domain
-    // VVV
     domain: DOMAIN
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */

@@ -76,7 +76,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_image>,
         serial?: Widget_image_serial,

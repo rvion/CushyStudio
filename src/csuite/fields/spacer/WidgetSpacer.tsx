@@ -54,7 +54,7 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_spacer>,
         serial?: Widget_spacer_serial,

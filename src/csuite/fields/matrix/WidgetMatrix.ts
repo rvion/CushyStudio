@@ -86,7 +86,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_matrix>,
         serial?: Widget_matrix_serial,

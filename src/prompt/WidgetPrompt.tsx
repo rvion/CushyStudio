@@ -85,7 +85,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_prompt>,
         serial?: Widget_prompt_serial,

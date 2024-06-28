@@ -65,7 +65,7 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_button<K>>,
         serial?: Widget_button_serial,

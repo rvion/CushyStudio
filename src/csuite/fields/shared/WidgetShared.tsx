@@ -68,7 +68,7 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_shared<T>>,
         serial?: Widget_shared_serial,

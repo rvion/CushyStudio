@@ -102,7 +102,7 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_orbit>,
         serial?: Widget_orbit_serial,

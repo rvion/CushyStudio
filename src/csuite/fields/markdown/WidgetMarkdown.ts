@@ -60,12 +60,12 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.form)
+        return md(this.entity)
     }
 
     constructor(
         //
-        public readonly form: Model,
+        public readonly entity: Model,
         public readonly parent: BaseField | null,
         public readonly spec: IBlueprint<Widget_markdown>,
         serial?: Widget_markdown_serial,
