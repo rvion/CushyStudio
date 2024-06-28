@@ -2,7 +2,7 @@ import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
 import type { Entity } from '../model/Entity'
-import type { ISchema } from '../model/IBlueprint'
+import type { ISchema } from '../model/ISchema'
 import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'

@@ -1,7 +1,7 @@
 import type { Entity } from '../csuite/model/Entity'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
-import type { ISchema } from '../csuite/model/IBlueprint'
+import type { ISchema } from '../csuite/model/ISchema'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 

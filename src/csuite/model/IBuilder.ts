@@ -1,7 +1,7 @@
 import type { Widget_group, Widget_group_config } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
 import type { Entity } from './Entity'
-import type { ISchema } from './IBlueprint'
+import type { ISchema } from './ISchema'
 
 export interface IBuilder {
     _cache: { count: number }

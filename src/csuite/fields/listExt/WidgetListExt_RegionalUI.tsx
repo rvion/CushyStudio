@@ -1,4 +1,4 @@
-import type { ISchema } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/ISchema'
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'

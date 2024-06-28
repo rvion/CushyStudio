@@ -1,5 +1,5 @@
 import type { Entity } from '../csuite/model/Entity'
-import type { SchemaDict } from '../csuite/model/IBlueprint'
+import type { SchemaDict } from '../csuite/model/ISchema'
 import type { MediaImageL } from '../models/MediaImage'
 import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'

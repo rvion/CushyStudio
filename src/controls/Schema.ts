@@ -3,7 +3,7 @@ import type { Widget_link_config } from '../csuite/fields/link/WidgetLink'
 import type { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
 import type { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
 import type { BaseField } from '../csuite/model/BaseField'
-import type { ISchema } from '../csuite/model/IBlueprint'
+import type { ISchema } from '../csuite/model/ISchema'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement, type ReactNode } from 'react'

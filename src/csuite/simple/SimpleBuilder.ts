@@ -1,9 +1,9 @@
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
-import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { IBuilder } from '../model/IBuilder'
+import type { ISchema, SchemaDict } from '../model/ISchema'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
-import type * as SS from './SimpleSpecAliases'
+import type * as SS from './SimpleAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
@@ -25,7 +25,7 @@ import { Widget_size, type Widget_size_config } from '../fields/size/WidgetSize'
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
 import { openRouterInfos } from '../openrouter/OpenRouter_infos'
-import { SimpleBlueprint } from './SimpleBlueprint'
+import { SimpleBlueprint } from './SimpleSchema'
 
 // -------------------------------------------------------------------------------------------
 export class SimpleBuilder implements IBuilder {

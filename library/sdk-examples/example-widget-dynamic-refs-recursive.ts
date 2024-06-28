@@ -1,4 +1,4 @@
-import type { Schema } from '../../src/controls/Blueprint'
+import type { Schema } from '../../src/controls/Schema'
 import type { Widget_choices } from '../../src/csuite/fields/choices/WidgetChoices'
 import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
 import type { Widget_image } from '../../src/csuite/fields/image/WidgetImage'

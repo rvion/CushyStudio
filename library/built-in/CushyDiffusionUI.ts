@@ -1,4 +1,4 @@
-import type { Schema } from '../../src/controls/Blueprint'
+import type { Schema } from '../../src/controls/Schema'
 import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
 
 import { ui_cnet, type UI_cnet } from './_controlNet/prefab_cnet'

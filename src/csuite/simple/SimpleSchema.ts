@@ -3,8 +3,8 @@ import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { ISchema } from '../model/IBlueprint'
-import type { SList, SOptional } from './SimpleSpecAliases'
+import type { ISchema } from '../model/ISchema'
+import type { SList, SOptional } from './SimpleAliases'
 
 import { makeObservable } from 'mobx'
 

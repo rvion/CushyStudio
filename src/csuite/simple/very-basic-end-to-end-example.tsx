@@ -1,9 +1,9 @@
 import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
-import type { ISchema, SchemaDict } from '../model/IBlueprint'
 import type { IBuilder } from '../model/IBuilder'
-import type * as SS from './SimpleSpecAliases'
+import type { ISchema, SchemaDict } from '../model/ISchema'
+import type * as SS from './SimpleAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
@@ -18,7 +18,7 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
 import { Repository } from '../model/EntityManager'
-import { SimpleBlueprint } from './SimpleBlueprint'
+import { SimpleBlueprint } from './SimpleSchema'
 
 // -------------------------------------------------------------------------------------------
 export class BasicBuilder implements IBuilder {

@@ -1,7 +1,7 @@
 import type { Widget_group } from '../fields/group/WidgetGroup'
 import type { BaseField } from './BaseField'
-import type { ISchema, SchemaDict } from './IBlueprint'
 import type { IBuilder } from './IBuilder'
+import type { ISchema, SchemaDict } from './ISchema'
 
 import { type DependencyList, useMemo } from 'react'
 

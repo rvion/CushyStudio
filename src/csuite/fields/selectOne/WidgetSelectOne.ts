@@ -2,7 +2,7 @@ import type { IconName } from '../../icons/icons'
 import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/ISchema'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { runInAction } from 'mobx'

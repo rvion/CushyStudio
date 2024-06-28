@@ -1,6 +1,6 @@
 import type { Entity } from '../csuite/model/Entity'
-import type { ISchema, SchemaDict } from '../csuite/model/IBlueprint'
 import type { IBuilder } from '../csuite/model/IBuilder'
+import type { ISchema, SchemaDict } from '../csuite/model/ISchema'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
@@ -35,13 +35,13 @@ import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Widget_prompt, type Widget_prompt_config } from '../prompt/WidgetPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { Schema } from './Blueprint'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
+import { Schema } from './Schema'
 
 // export type { SchemaDict } from './ISpec'
 declare global {
     namespace X {
-        type SchemaDict = import('../csuite/model/IBlueprint').SchemaDict
+        type SchemaDict = import('../csuite/model/ISchema').SchemaDict
         type Builder = import('./Builder').Builder
 
         // non blueprint aliases

@@ -6,10 +6,10 @@ import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Entity } from '../csuite/model/Entity'
-import type { ISchema } from '../csuite/model/IBlueprint'
+import type { ISchema } from '../csuite/model/ISchema'
 import type { Builder } from './Builder'
 
-import { Schema } from './Blueprint'
+import { Schema } from './Schema'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (

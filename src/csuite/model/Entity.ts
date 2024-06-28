@@ -2,8 +2,8 @@ import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGr
 import type { CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
 import type { Repository } from './EntityManager'
-import type { ISchema } from './IBlueprint'
 import type { IBuilder } from './IBuilder'
+import type { ISchema } from './ISchema'
 import type { EntitySerial } from './ModelSerial'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'

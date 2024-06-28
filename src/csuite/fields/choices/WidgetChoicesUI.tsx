@@ -1,4 +1,4 @@
-import type { SchemaDict } from '../../model/IBlueprint'
+import type { SchemaDict } from '../../model/ISchema'
 import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
