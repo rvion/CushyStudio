@@ -119,10 +119,6 @@ export class STATE {
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
 
-    get showWidgetUndo() { return this.theme.value.showWidgetUndo } // prettier-ignore
-    get showWidgetMenu() { return this.theme.value.showWidgetMenu } // prettier-ignore
-    get showWidgetDiff() { return this.theme.value.showWidgetDiff } // prettier-ignore
-    get showToggleButtonBox() { return this.theme.value.showToggleButtonBox } // prettier-ignore
     _updateTime = () => {
         const now = Date.now()
         // console.log(`time is now ${now}`)
