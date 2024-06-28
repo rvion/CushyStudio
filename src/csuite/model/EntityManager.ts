@@ -39,20 +39,12 @@ export class Repository<DOMAIN extends IDomain> {
         return Array.from(typeStore.values()) as W[]
     }
 
-    constructor(
-        //
-        public builderCtor: { new (form: Entity<any /* SchemaDict */, DOMAIN>): DOMAIN },
-    ) {}
+    domain: DOMAIN
+    constructor(domain: DOMAIN) {
+        this.domain = domain
+    }
 
     _builders = new WeakMap<Entity, DOMAIN>()
-
-    getBuilder = (form: Entity<any, DOMAIN>): DOMAIN => {
-        const prev = this._builders.get(form)
-        if (prev) return prev
-        const builder = new this.builderCtor(form)
-        this._builders.set(form, builder)
-        return builder
-    }
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(

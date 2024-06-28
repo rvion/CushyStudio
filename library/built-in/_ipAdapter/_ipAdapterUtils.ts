@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/CUSHY'
+import type { Domain } from '../../../src/CUSHY'
 
 export type UI_subform_IPAdapter_common = {
     strength: X.XNumber
@@ -17,7 +17,7 @@ export type UI_subform_IPAdapter_common = {
 // 🅿️ IPAdapter Common FORM ===================================================
 export function ui_subform_IPAdapter_common(
     //
-    ui: FormBuilder,
+    ui: Domain,
     defaultStrength: number = 1,
 ): UI_subform_IPAdapter_common {
     return {
@@ -49,7 +49,7 @@ export type UI_ipadapter_CLIPSelection = {
 }
 
 //🅿️ IPAdapter CLIP Selection ===================================================
-export function ui_ipadapter_CLIPSelection(form: FormBuilder): UI_ipadapter_CLIPSelection {
+export function ui_ipadapter_CLIPSelection(form: Domain): UI_ipadapter_CLIPSelection {
     return {
         clip_name: form.enum
             .Enum_CLIPVisionLoader_clip_name({

@@ -1,4 +1,4 @@
-import { cushyRepo } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Domain'
 import { WidgetWithLabelUI } from '../../csuite/form/WidgetWithLabelUI'
 import { readJSON, writeJSON } from '../jsonUtils'
 

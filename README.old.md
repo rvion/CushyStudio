@@ -405,10 +405,10 @@ Example:
 
 ```ts
 // FILE: `_ui.ts`
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Domain } from 'src/controls/Domain'
 
 // 📝 this is a ui prefab you can use in any card you want.
-export const ui_startImage = (form: FormBuilder) =>
+export const ui_startImage = (form: Domain) =>
     form.group({
         items: {
             startImage: form.imageOpt({ group: 'latent' }),

@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Domain } from '../../../src/controls/Domain'
 import type { SchemaDict } from '../../../src/csuite'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
@@ -16,7 +16,7 @@ export type UI_Mask = X.XChoice<{
 }>
 
 export function ui_mask(): UI_Mask {
-    const form: FormBuilder = getCurrentForm()
+    const form: Domain = getCurrentForm()
     return form.choice({
         appearance: 'tab',
         icon: 'mdiDominoMask',

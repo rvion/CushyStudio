@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/CUSHY'
+import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -17,7 +17,7 @@ export type UI_subform_OpenPose = X.XGroup<{
 }>
 
 export function ui_subform_OpenPose(): UI_subform_OpenPose {
-    const form: FormBuilder = getCurrentForm()
+    const form: Domain = getCurrentForm()
     return form
         .fields(
             {
@@ -64,7 +64,7 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
 }>
 
 function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
-    const form: FormBuilder = getCurrentForm()
+    const form: Domain = getCurrentForm()
     return form.choice({
         label: 'Preprocessor',
         startCollapsed: true,

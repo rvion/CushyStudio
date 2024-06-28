@@ -21,7 +21,7 @@ export type UI_Tint = X.XChoices<{
 
 export const ui_tint = (
     //
-    ui: X.FormBuilder,
+    ui: X.Domain,
     def?: Tint,
 ): UI_Tint => {
     return ui.choicesV2(

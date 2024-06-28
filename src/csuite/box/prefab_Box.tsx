@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../CUSHY'
+import type { Domain } from '../../CUSHY'
 import type { Widget_choices_config } from '../fields/choices/WidgetChoices'
 import type { Box } from './Box'
 
@@ -15,7 +15,7 @@ export type UI_Box = X.XChoices<{
 
 export const ui_Box = (
     //
-    ui: FormBuilder,
+    ui: Domain,
     config?: Omit<Widget_choices_config<any>, 'multi' | 'items'>,
 ): UI_Box => {
     return ui.choicesV2(

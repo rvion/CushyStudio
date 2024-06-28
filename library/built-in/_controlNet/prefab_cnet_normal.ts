@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/CUSHY'
+import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -53,7 +53,7 @@ type UI_subform_Normal_Preprocessor = X.XChoice<{
 }>
 
 function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
-    const form: FormBuilder = getCurrentForm()
+    const form: Domain = getCurrentForm()
     return form.choice({
         label: 'Normal Preprocessor',
         startCollapsed: true,

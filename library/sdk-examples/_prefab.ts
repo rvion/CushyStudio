@@ -2,14 +2,14 @@
 // this behaviour will be changed once the manifest is ready, but you can use this
 // trick for now.
 
-import { FormBuilder } from '../../src/CUSHY'
+import { Domain } from '../../src/CUSHY'
 
 // 📝 Ideally, modular UI kits only import types with `import type {...}`
 // and do not import anything else
 
 // Example 1 -------------------------------------------------------------------------------------
 // 📝 this is a self-contained UI kit you can use in any card you want.
-export const ui_startImage = (form: FormBuilder) =>
+export const ui_startImage = (form: Domain) =>
     form.group({
         items: {
             startImage: form.image({}).optional(),
@@ -26,14 +26,14 @@ export const ui_startImage = (form: FormBuilder) =>
 // 🔶 BE CAREFUL ABOUT THIS NOTATION:
 // EXAMPLE 1. () => ({ a: 1 })
 // EXAMPLE 2. () => ({ a: 1 })
-export const subform_someFields1 = (form: FormBuilder) => ({
+export const subform_someFields1 = (form: Domain) => ({
     startImage: form.image({}).optional(),
     width: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     height: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     batchSize: form.int({ default: 1, min: 1, max: 20 }),
 })
 
-export const subform_someFields2 = (form: FormBuilder) => ({
+export const subform_someFields2 = (form: Domain) => ({
     X: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
     Y: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
 })

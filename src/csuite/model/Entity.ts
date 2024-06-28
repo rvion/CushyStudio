@@ -33,7 +33,7 @@ export class Entity<
     SCHEMA extends ISchema<any /* 🔴 */> = ISchema<any /* 🔴 */>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
-     * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
+     * Cushy BUILDER is `Domain` in `src/controls/Domain.ts`
      * */
     DOMAIN extends IDomain = IDomain,
     /** custom context, so your model can access whatever it wants in most callbacks */
@@ -45,7 +45,7 @@ export class Entity<
         public config: ModelConfig<SCHEMA, DOMAIN, CONTEXT>,
         public context: CONTEXT,
     ) {
-        this.domain = repository.getBuilder(this)
+        this.domain = repository.domain
 
         this._onSerialChange = this.config.onSerialChange //
             ? debounce(this.config.onSerialChange, 200)

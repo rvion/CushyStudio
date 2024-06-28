@@ -1,4 +1,4 @@
-import { cushyRepo } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Domain'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 export const PanelOutputConf = cushyRepo.form(

@@ -44,7 +44,7 @@ export const runWithGlobalForm = <T>(form: IDomain, f: () => T): T => {
  * It is magically available in app context, and does not need to be imported.
  *
  * 2024-03-12 rvion: now that form library is going to be usable outside of cushy
- *   | type here must be generic (IFormBuilder) => but it's ok, cause it's going
+ *   | type here must be generic (IDomain) => but it's ok, cause it's going
  *   | to be properly typed soon
  *
  * */

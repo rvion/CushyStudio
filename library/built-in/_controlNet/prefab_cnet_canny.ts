@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/CUSHY'
+import type { Domain } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
@@ -19,7 +19,7 @@ export type UI_subform_Canny = X.XGroup<{
 }>
 
 export function ui_subform_Canny(): UI_subform_Canny {
-    const ui: FormBuilder = getCurrentForm()
+    const ui: Domain = getCurrentForm()
     return ui
         .group({
             label: 'Canny',
@@ -58,7 +58,7 @@ type UI_subform_Canny_Preprocessor = X.XOptional<
     }>
 >
 
-function ui_subform_Canny_Preprocessor(ui: FormBuilder): UI_subform_Canny_Preprocessor {
+function ui_subform_Canny_Preprocessor(ui: Domain): UI_subform_Canny_Preprocessor {
     return ui
         .group({
             label: 'Canny Edge Preprocessor',

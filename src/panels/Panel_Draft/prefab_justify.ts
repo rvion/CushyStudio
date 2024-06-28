@@ -1,6 +1,6 @@
-import type { FormBuilder } from '../../controls/FormBuilder'
+import type { Domain } from '../../controls/Domain'
 
-export const ui_justify = (ui: FormBuilder) =>
+export const ui_justify = (ui: Domain) =>
     ui.selectOne({
         // appearance: 'tab',
         appearance: 'roll',

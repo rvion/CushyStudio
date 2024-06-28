@@ -16,4 +16,4 @@ export type * from './simple/SimpleSpecAliases'
 export { Channel } from './model/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
-export const SimpleModelManager: Repository<SimpleDomain> = new Repository(SimpleDomain)
+export const SimpleModelManager: Repository<SimpleDomain> = new Repository(new SimpleDomain())

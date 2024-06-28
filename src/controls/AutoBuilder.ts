@@ -2,7 +2,7 @@ import type { Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { Schema } from './Blueprint'
-import type { FormBuilder } from './FormBuilder'
+import type { Domain } from './Domain'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
@@ -24,7 +24,7 @@ export type IAutoBuilder = {
     }>
 }
 
-export function mkFormAutoBuilder(form: FormBuilder): AutoBuilder {
+export function mkFormAutoBuilder(form: Domain): AutoBuilder {
     const autoBuilder = new AutoBuilder(form)
     return new Proxy(autoBuilder, {
         get(target, prop, receiver) {
@@ -64,7 +64,7 @@ export function mkFormAutoBuilder(form: FormBuilder): AutoBuilder {
 
 export interface AutoBuilder extends IAutoBuilder {}
 export class AutoBuilder {
-    constructor(public formBuilder: FormBuilder) {
+    constructor(public formBuilder: Domain) {
         const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {

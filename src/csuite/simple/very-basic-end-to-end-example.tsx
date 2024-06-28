@@ -149,7 +149,7 @@ export class BasicDomain implements IDomain {
     }
 }
 
-export const BasicModelManager: Repository<BasicDomain> = new Repository(BasicDomain) //
+export const BasicModelManager: Repository<BasicDomain> = new Repository(new BasicDomain()) //
 
 // Entity
 const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicDomain */) => {

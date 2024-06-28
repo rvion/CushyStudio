@@ -1,6 +1,6 @@
 import type { Schema } from '../../src/controls/Blueprint'
 import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
-import type { FormBuilder } from '../../src/CUSHY'
+import type { Domain } from '../../src/CUSHY'
 
 import { ui_cnet, type UI_cnet } from './_controlNet/prefab_cnet'
 import { ui_IPAdapterV2, type UI_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
@@ -44,7 +44,7 @@ export type CushyDiffusionUI_ = {
     extra: UI_extra
 }
 
-export function CushyDiffusionUI(ui: FormBuilder): CushyDiffusionUI_ {
+export function CushyDiffusionUI(ui: Domain): CushyDiffusionUI_ {
     return {
         positive: ui.prompt({
             icon: 'mdiPlusBoxOutline',
@@ -99,7 +99,7 @@ export type UI_extra = X.XChoices<{
     fancyWatermark: X.XEmpty
 }>
 
-function extra(ui: FormBuilder): UI_extra {
+function extra(ui: Domain): UI_extra {
     return ui.choices({
         appearance: 'tab',
         icon: 'mdiAlien',

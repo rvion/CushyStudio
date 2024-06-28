@@ -1,5 +1,5 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Domain } from '../../../src/controls/Domain'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
@@ -8,7 +8,7 @@ export type UI_upscaleWithModel = X.XGroup<{
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
-    const ui: FormBuilder = getCurrentForm()
+    const ui: Domain = getCurrentForm()
     return ui
         .group({
             label: 'Upscale via Model',

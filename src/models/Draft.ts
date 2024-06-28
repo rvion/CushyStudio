@@ -12,7 +12,7 @@ import { reaction } from 'mobx'
 
 // import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { cushyRepo, type FormBuilder } from '../controls/FormBuilder'
+import { cushyRepo, type Domain } from '../controls/Domain'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { LiveRef } from '../db/LiveRef'
@@ -246,7 +246,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Entity<any, FormBuilder>> = null
+    _form: Maybe<Entity<any, Domain>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { cushyRepo } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Domain'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'

@@ -42,7 +42,7 @@ import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
 declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/IBlueprint').SchemaDict
-        type FormBuilder = import('./FormBuilder').FormBuilder
+        type Domain = import('./Domain').Domain
 
         // non blueprint aliases
         type Shared<T extends ISchema> = Widget_shared<T>
@@ -107,17 +107,19 @@ declare global {
 }
 
 /** cushy studio form builder */
-export class FormBuilder implements IDomain {
+export class Domain implements IDomain {
     SpecCtor = Schema
 
-    /** (@internal) don't call this yourself */
-    constructor /**
+    /**
+     * (@internal) don't call this yourself
+     *
      * empty model/entity to build
      * API is a bit weird; but since every project
      * can have different widgets, we need all of those features
      * to be moved in a dedicated file, outside of the model/entity file
-     */() {
-        // public model: Model<IBlueprint, FormBuilder>,
+     */
+    constructor() {
+        // public model: Model<IBlueprint, Domain>,
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -445,8 +447,8 @@ export class FormBuilder implements IDomain {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
-export type CushyRepo = Repository<FormBuilder>
-export const cushyRepo: CushyRepo = new Repository<FormBuilder>(FormBuilder)
+export type CushyRepo = Repository<Domain>
+export const cushyRepo: CushyRepo = new Repository<Domain>(new Domain())
 
 /**
  * Calling this function will mount and instanciate the subform right away

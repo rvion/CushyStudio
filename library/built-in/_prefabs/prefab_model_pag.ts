@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/CUSHY'
+import type { Domain } from '../../../src/CUSHY'
 
 export type UI_model_pag = X.XGroup<{
     include: X.XChoices<{
@@ -9,7 +9,7 @@ export type UI_model_pag = X.XGroup<{
     adaptiveScale: X.XNumber
 }>
 
-export const ui_model_pag = (form: FormBuilder): UI_model_pag => {
+export const ui_model_pag = (form: Domain): UI_model_pag => {
     return form
         .fields(
             {
