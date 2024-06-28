@@ -46,10 +46,10 @@ export class Model<
     ) {
         this.domain = manager.getBuilder(this)
         makeAutoObservable(this, {
-            //
-            // builder: false,
-            root: false,
+            // @ts-ignore
             init: action,
+            root: false,
+            // builder: false,
         })
     }
 

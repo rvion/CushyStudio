@@ -96,6 +96,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
     setValue(val: Widget_number_value) {
         this.value = val
     }
+
     set value(next: Widget_number_value) {
         if (this.serial.val === next) return
         runInAction(() => {
@@ -103,6 +104,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
             this.bumpValue()
         })
     }
+
     get value(): Widget_number_value {
         return this.serial.val
     }
