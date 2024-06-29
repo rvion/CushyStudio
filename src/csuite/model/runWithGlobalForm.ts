@@ -1,6 +1,5 @@
+import type { Builder } from '../../controls/Builder'
 import type { IBuilder } from './IBuilder'
-
-import { builder, type Builder } from '../../controls/Builder'
 
 // ---------------------------------------------
 /**
@@ -16,5 +15,5 @@ export const runWithGlobalForm = <T>(_: IBuilder, f: () => T): T => {
  * @deprecated
  */
 export const getCurrentForm_IMPL = (): Builder => {
-    return builder
+    return cushy.builder
 }

@@ -1,3 +1,6 @@
+import type { Prompt_Lora } from './grammar/grammar.practical'
+import type { Widget_prompt } from './WidgetPrompt'
+
 import { EditorState } from '@codemirror/state'
 import { basicSetup, EditorView } from 'codemirror'
 import { makeAutoObservable, observable, reaction } from 'mobx'
@@ -10,8 +13,7 @@ import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../csuite/select/SelectUI'
 import { toastError } from '../csuite/utils/toasts'
 import { PromptLang } from './cm-lang/LANG'
-import { type Prompt_Lora, PromptAST } from './grammar/grammar.practical'
-import { Widget_prompt } from './WidgetPrompt'
+import { PromptAST } from './grammar/grammar.practical'
 
 type X = { id: string; label?: string }
 

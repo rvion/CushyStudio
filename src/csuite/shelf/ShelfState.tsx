@@ -1,6 +1,6 @@
-import { makeAutoObservable } from 'mobx'
+import type { ShelfProps } from './ShelfUI'
 
-import { ShelfProps } from './ShelfUI'
+import { makeAutoObservable } from 'mobx'
 
 let startValue = 0
 export class ShelfState {

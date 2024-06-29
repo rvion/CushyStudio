@@ -29,7 +29,7 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { cushyRepo, type CushyRepo } from '../controls/Builder'
+import { builder, cushyRepo, type CushyRepo } from '../controls/Builder'
 import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager } from '../csuite/activity/ActivityManager'
@@ -77,12 +77,12 @@ import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { interfaceConf } from './conf/interfaceConf'
+import { systemConf } from './conf/systemConf'
 import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
-import { systemConf } from './conf/systemConf'
 
 export class STATE {
     Channel = Channel // WIP remove me 2024-06-25 🔴
@@ -123,6 +123,7 @@ export class STATE {
     forms: CushyRepo = cushyRepo
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
+    builder = builder
 
     _updateTime = () => {
         const now = Date.now()

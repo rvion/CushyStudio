@@ -1,7 +1,7 @@
 import { describe, expect as expect_, it } from 'bun:test'
 import { toJS } from 'mobx'
 
-import { SimpleModelManager } from '../../'
+import { SimpleModelManager } from '../../index'
 
 // ------------------------------------------------------------------------------
 describe('publish', () => {
