@@ -7,7 +7,6 @@ import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { BaseField } from '../../model/BaseField'
-import { runWithGlobalForm } from '../../model/runWithGlobalForm'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -138,7 +137,7 @@ export class Widget_list<T extends ISchema> //
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.entity.builder, () => _schema(ix))
+                ? _schema(ix)
                 : _schema
         return schema
     }

@@ -9,7 +9,6 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { BaseField } from '../../model/BaseField'
-import { runWithGlobalForm } from '../../model/runWithGlobalForm'
 import { clampOpt } from '../../utils/clamp'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -175,7 +174,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.entity.builder, () => _schema({ ix, width: this.width, height: this.width }))
+                ? _schema({ ix, width: this.width, height: this.width })
                 : _schema
         return schema
     }

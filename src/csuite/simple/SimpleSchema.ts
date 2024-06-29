@@ -1,6 +1,5 @@
 import type { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
 import type { Widget_optional } from '../fields/optional/WidgetOptional'
-import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
 import type { ISchema } from '../model/ISchema'
@@ -8,7 +7,6 @@ import type { SList, SOptional } from './SimpleAliases'
 
 import { makeObservable } from 'mobx'
 
-import { getCurrentForm_IMPL } from '../model/runWithGlobalForm'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 // Simple Spec --------------------------------------------------------
