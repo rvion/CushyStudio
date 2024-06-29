@@ -125,7 +125,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         const itemsDef = this.config.items
         const _newValues: SchemaDict =
             typeof itemsDef === 'function' //
-                ? runWithGlobalForm(this.entity.domain, itemsDef) ?? {}
+                ? itemsDef() ?? {}
                 : itemsDef ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
