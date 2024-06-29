@@ -32,5 +32,5 @@ function assertCanBeTransformedToErrorDict(thrown: unknown) {
     const dict = toJSONError(thrown)
     expect(dict).toBeObject()
     expect(dict).toMatchObject(JSON.parse(JSON.stringify(dict)))
-    console.log(`[🤠]`, JSON.stringify(dict, null, 4))
+    // console.log(`[🤠]`, JSON.stringify(dict, null, 4))
 }
