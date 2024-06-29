@@ -451,8 +451,9 @@ export class Builder implements IBuilder {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
+export const builder = new Builder()
 export type CushyRepo = Repository<Builder>
-export const cushyRepo: CushyRepo = new Repository<Builder>(new Builder())
+export const cushyRepo: CushyRepo = new Repository<Builder>(builder)
 
 /**
  * Calling this function will mount and instanciate the subform right away
