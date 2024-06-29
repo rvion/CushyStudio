@@ -152,7 +152,7 @@ export class BasicBuilder implements IBuilder {
 export const BasicModelManager: Repository<BasicBuilder> = new Repository(new BasicBuilder()) //
 
 // Entity
-const basicEntity = BasicModelManager.form((ui /* 👈🏻 BasicBuilder */) => {
+const basicEntity = BasicModelManager.entity((ui /* 👈🏻 BasicBuilder */) => {
     const z = ui.int() // Schema<Field_number>  (🕣 SimpleSchema<Widget_number>)
 
     return ui.fields({

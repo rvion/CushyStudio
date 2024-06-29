@@ -1,5 +1,5 @@
 import type { Box } from '../../csuite/box/Box'
-import type { CovariantFn } from '../../csuite/variance/BivariantHack'
+import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
 import type { Entity } from '../model/Entity'
 import type { ISchema } from '../model/ISchema'
@@ -40,7 +40,7 @@ export type FormUIProps = {
     /**
      * override default ac
      */
-    submitAction?: CovariantFn<Entity, void> | 'confetti'
+    submitAction?: CovariantFn1<Entity, void> | 'confetti'
     /** if provided, submitLabel and submitActinod will not be used */
     submitButton?: CovariantFC<{ form: Entity }>
 }

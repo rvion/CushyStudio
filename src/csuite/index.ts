@@ -16,4 +16,6 @@ export type * from './simple/SimpleAliases'
 export { Channel } from './model/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
-export const SimpleModelManager: Repository<SimpleBuilder> = new Repository(new SimpleBuilder())
+
+export type SimpleRepo = Repository<SimpleBuilder>
+export const simpleRepo: SimpleRepo = new Repository(new SimpleBuilder())

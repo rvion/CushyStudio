@@ -16,7 +16,7 @@ import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = cushyRepo.form(
+const Header_Playground = cushyRepo.entity(
     (ui) =>
         ui.choice({
             appearance: 'tab',

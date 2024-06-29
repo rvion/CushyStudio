@@ -1,12 +1,12 @@
 import { describe, expect as expect_, it } from 'bun:test'
 import { toJS } from 'mobx'
 
-import { SimpleModelManager } from '../../index'
+import { simpleRepo } from '../../index'
 
 // ------------------------------------------------------------------------------
 describe('publish', () => {
     it('works with string', () => {
-        const E = SimpleModelManager.form((f) =>
+        const E = simpleRepo.entity((f) =>
             f.fields({
                 a: f.string({ default: 'test' }).publish('foo', (self) => self.value),
                 b: f.string().subscribe<string>('foo', (x, self) => (self.value = x)),
@@ -17,7 +17,7 @@ describe('publish', () => {
     })
 
     it('works with ints', () => {
-        const E = SimpleModelManager.form((f) =>
+        const E = simpleRepo.entity((f) =>
             f.fields({
                 a: f.int({ default: 8 }).publish('foo', (self) => self.value),
                 b: f.int({ default: 1 }).subscribe<number>('foo', (x, self) => (self.value = x)),
@@ -28,7 +28,7 @@ describe('publish', () => {
     })
 
     it('works regardless field order definition', () => {
-        const E = SimpleModelManager.form((f) =>
+        const E = simpleRepo.entity((f) =>
             f.fields({
                 b: f.string({ default: '🟡' }).subscribe<string>('foo', (x, self) => (self.value = x)),
                 a: f.string({ default: '🔵' }).publish('foo', (self) => self.value),
@@ -52,7 +52,7 @@ describe('publish', () => {
 describe('basic', () => {
     describe('group', () => {
         it('works', () => {
-            const ent = SimpleModelManager.form((f) => f.fields({}))
+            const ent = simpleRepo.entity((f) => f.fields({}))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
         })
@@ -60,7 +60,7 @@ describe('basic', () => {
 
     describe('markdown', () => {
         it('works', () => {
-            const E = SimpleModelManager.form((f) => f.fields({ md: f.markdown('ok') }))
+            const E = simpleRepo.entity((f) => f.fields({ md: f.markdown('ok') }))
             expect(E).toBeTruthy()
             expect(E.subWidgets.length).toBe(1)
             expect(E.subWidgets[0]!.type).toBe('markdown')
@@ -73,7 +73,7 @@ describe('basic', () => {
 
     describe('string', () => {
         it('works', () => {
-            const E = SimpleModelManager.form((f) => f.string())
+            const E = simpleRepo.entity((f) => f.string())
             expect(E.value).toBe('')
 
             // set root value through entity.value setter
@@ -85,14 +85,14 @@ describe('basic', () => {
             expect(E.value).toBe('super2')
             expect(E.root.value).toBe('super2')
 
-            const E2 = SimpleModelManager.form((f) => f.string({ default: 'ok' }))
+            const E2 = simpleRepo.entity((f) => f.string({ default: 'ok' }))
             expect(E2.value).toBe('ok')
         })
     })
 
     describe('Size', () => {
         it('works', () => {
-            const ent = SimpleModelManager.form((f) => f.fields({ size: f.size() }))
+            const ent = simpleRepo.entity((f) => f.fields({ size: f.size() }))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
             expect(ent.value.size).toMatchObject({

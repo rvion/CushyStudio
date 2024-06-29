@@ -1,8 +1,7 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
-import type { Json, JSONDict } from '../types/Json'
-import type { CovariantFn, CovariantFnX } from '../variance/BivariantHack'
+import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Problem_Ext } from './Validation'
@@ -36,7 +35,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * This function will be executed either on first creation, or when the
      * evaluationKey changes. The evaluationKey is stored in the group serial.
      */
-    onCreate?: CovariantFn<T['$Field'], void> // & { evaluationKey?: string }
+    onCreate?: CovariantFn1<T['$Field'], void> // & { evaluationKey?: string }
     onCreateKey?: string
 
     /**
@@ -44,7 +43,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * @stability beta
      * This function will be executed either on every widget instanciation.
      */
-    onInit?: CovariantFn<T['$Field'], void>
+    onInit?: CovariantFn1<T['$Field'], void>
 
     /** allow to specify custom headers */
     header?: null | CovariantFC<{ widget: T['$Field'] }>
@@ -53,10 +52,10 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     body?: null | CovariantFC<{ widget: T['$Field'] }>
 
     /** will be called when value changed */
-    onValueChange?: CovariantFnX<[val: T['$Value'], self: T['$Field']], void>
+    onValueChange?: CovariantFn<[val: T['$Value'], self: T['$Field']], void>
 
     /** will be called when serial changed */
-    onSerialChange?: CovariantFnX<[val: T['$Serial'], self: T['$Field']], void>
+    onSerialChange?: CovariantFn<[val: T['$Serial'], self: T['$Field']], void>
 
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]
@@ -70,7 +69,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      *  - ["errMsg", ...]
      *  - "errMsg"
      * */
-    check?: CovariantFnX<[val: T['$Field']], Problem_Ext>
+    check?: CovariantFn<[val: T['$Field']], Problem_Ext>
 
     /**
      * The label to display.

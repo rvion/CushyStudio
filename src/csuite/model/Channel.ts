@@ -1,4 +1,4 @@
-import type { CovariantFn } from '../variance/BivariantHack'
+import type { CovariantFn1 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
 
 import { makeAutoObservable } from 'mobx'
@@ -24,5 +24,5 @@ export class Channel<T> {
 
 export interface Producer<T, W> {
     chan: Channel<T> | ChannelId
-    produce: CovariantFn<W, T>
+    produce: CovariantFn1<W, T>
 }

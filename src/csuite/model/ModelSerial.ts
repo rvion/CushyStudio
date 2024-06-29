@@ -14,13 +14,6 @@ export type EntitySerial = {
     /** unique entity serial */
     uid: string
 
-    /**
-     * @deprecated
-     * human readable name of the Model
-     * Will ger removed soon; Entity shouldn't handle this responsibility
-     */
-    name: string
-
     /** live value */
     root: AnyFieldSerial
 
@@ -38,10 +31,4 @@ export type EntitySerial = {
 
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
-
-    // ⏸️ /**
-    // ⏸️  * When entity enableVersionning globally
-    // ⏸️  * All json patches will be stored there.
-    // ⏸️  * */
-    // ⏸️ _history: { at: Timestamp; version: any }[]
 }

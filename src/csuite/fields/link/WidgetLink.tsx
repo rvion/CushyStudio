@@ -3,7 +3,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
-import type { CovariantFnX } from '../../variance/BivariantHack'
+import type { CovariantFn } from '../../variance/BivariantHack'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -22,7 +22,7 @@ export type Widget_link_config<
         share: A
 
         // into
-        children: CovariantFnX<[child: A['$Field']], B>
+        children: CovariantFn<[child: A['$Field']], B>
     },
     Widget_link_types<A, B>
 >

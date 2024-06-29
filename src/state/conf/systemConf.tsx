@@ -2,7 +2,7 @@ import { cushyRepo } from '../../controls/Builder'
 import { WidgetWithLabelUI } from '../../csuite/form/WidgetWithLabelUI'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const systemConf = cushyRepo.form(
+export const systemConf = cushyRepo.entity(
     (ui) =>
         ui.fields(
             {

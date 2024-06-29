@@ -32,7 +32,7 @@ export function ui_model(): UI_Model {
                 label: 'withPopup',
                 icon: 'mdiTrain',
                 apply: (w) => {
-                    const form = cushy.forms.form((ui) =>
+                    const form = cushy.forms.entity((ui) =>
                         ui.fields({
                             a: ui.string({ label: 'A' }),
                             b: ui.int({ label: 'B' }),

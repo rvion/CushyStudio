@@ -1,5 +1,5 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
-import type { CovariantFn2 } from '../variance/BivariantHack'
+import type { CovariantFn, CovariantFn2 } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
 import type { Repository } from './EntityManager'
 import type { IBuilder } from './IBuilder'
@@ -21,28 +21,33 @@ export type ModelConfig<
     DOMAIN extends IBuilder,
     CONTEXT,
 > = {
-    name: string
-    // ----------------------------
     onValueChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
     onSerialChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
     initialSerial?: (context: CONTEXT) => Maybe<EntitySerial>
 }
 
 export class Entity<
-    /** shape of the form, to preserve type safety down to nested children */
+    /**
+     * shape of the form, to preserve type safety down to nested children
+     */
     SCHEMA extends ISchema<any /* 🔴 */> = ISchema<any /* 🔴 */>,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `Builder` in `src/controls/Builder.ts`
-     * */
-    DOMAIN extends IBuilder = IBuilder,
-    /** custom context, so your model can access whatever it wants in most callbacks */
+     */
+    BUILDER extends IBuilder = IBuilder,
+    /**
+     * Custom context, accessible in every callback
+     * unused internally, forwared at the type-level for your convenience
+     */
     CONTEXT = any,
 > {
+    root: SCHEMA['$Field']
+
     constructor(
-        public repository: Repository<DOMAIN>,
-        public buildFn: CovariantFn2<DOMAIN, CONTEXT, SCHEMA>,
-        public config: ModelConfig<SCHEMA, DOMAIN, CONTEXT>,
+        public repository: Repository<BUILDER>,
+        public buildFn: CovariantFn<[builder: BUILDER, context: CONTEXT], SCHEMA>,
+        public config: ModelConfig<SCHEMA, BUILDER, CONTEXT>,
         public context: CONTEXT,
     ) {
         this.domain = repository.domain
@@ -59,8 +64,9 @@ export class Entity<
             // @ts-ignore
             init: action,
             root: false,
-            // builder: false,
         })
+
+        this.root = this.init()
     }
 
     get subWidgets(): BaseField[] {
@@ -152,7 +158,6 @@ export class Entity<
         return {
             type: 'FormSerial',
             uid: this.uid,
-            name: this.config.name,
             root: this.root.serial,
             snapshot: this.snapshot,
             // shared: this.shared,
@@ -169,11 +174,11 @@ export class Entity<
     }
 
     // 🔴 👇 remove that
-    get root(): SCHEMA['$Field'] {
-        const root = this.init()
-        Object.defineProperty(this, 'root', { value: root })
-        return root
-    }
+    // get root(): SCHEMA['$Field'] {
+    //     const root = this.init()
+    //     Object.defineProperty(this, 'root', { value: root })
+    //     return root
+    // }
 
     // Change tracking ------------------------------------
 
@@ -212,7 +217,7 @@ export class Entity<
     }
 
     /** from builder, offering simple API for your project specifc widgets  */
-    domain: DOMAIN
+    domain: BUILDER
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: SCHEMA['$Field']
@@ -248,7 +253,7 @@ export class Entity<
             }
 
             // attempt to recover from legacy serial
-            serial = recoverFromLegacySerial(serial, this.config)
+            serial = recoverFromLegacySerial(serial)
 
             // at this point, we expect the form serial to be fully valid
             if (serial != null && serial.type !== 'FormSerial') {
@@ -264,10 +269,9 @@ export class Entity<
             const rootWidget: SCHEMA = formBuilder._HYDRATE(this, null, schema, serial?.root)
             this.ready = true
             this.error = null
-            // this.startMonitoring(rootWidget)
             return rootWidget
         } catch (e) {
-            console.error(`[🔴] Building form ${this.config.name} FAILED`, this)
+            console.error(`[🔴] Building entity FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
             const spec: SCHEMA = this.buildFn?.(formBuilder, this.context)
@@ -276,7 +280,7 @@ export class Entity<
     }
 }
 
-function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<EntitySerial> {
+function recoverFromLegacySerial(json: any): Maybe<EntitySerial> {
     if (json == null) return null
     if (typeof json !== 'object') return null
     if (json.type === 'FormSerial') return json
@@ -292,7 +296,6 @@ function recoverFromLegacySerial(json: any, config: { name: string }): Maybe<Ent
         }
         console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
         return {
-            name: config.name,
             uid: nanoid(),
             type: 'FormSerial',
             root: json,

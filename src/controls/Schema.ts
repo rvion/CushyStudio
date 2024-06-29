@@ -1,4 +1,4 @@
-import type { CovariantFC, CovariantFnX } from '../csuite'
+import type { CovariantFC, CovariantFn } from '../csuite'
 import type { Widget_link_config } from '../csuite/fields/link/WidgetLink'
 import type { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
 import type { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
@@ -96,7 +96,7 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
 
     useIn<BP extends ISchema>(
         //
-        fn: CovariantFnX<[self: Field], BP>,
+        fn: CovariantFn<[self: Field], BP>,
     ): X.XLink<this, BP> {
         const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
         return new Schema('link', linkConf)

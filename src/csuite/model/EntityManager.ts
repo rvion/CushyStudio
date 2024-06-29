@@ -65,7 +65,7 @@ export class Repository<DOMAIN extends IBuilder> {
     }
 
     /** simple alias to create a new Form */
-    form<ROOT extends ISchema>(
+    entity<ROOT extends ISchema>(
         buildFn: (form: DOMAIN) => ROOT,
         modelConfig: ModelConfig<ROOT, DOMAIN, NoContext> = { name: 'unnamed' },
     ): Entity<ROOT, DOMAIN> {

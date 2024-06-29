@@ -1,6 +1,6 @@
 import { Frame } from '../csuite/frame/Frame'
 
-const ticket = cushy.forms.form((ui) =>
+const ticket = cushy.forms.entity((ui) =>
     ui
         .fields({
             title: ui.text().skins({
