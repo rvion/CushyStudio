@@ -80,7 +80,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 <WidgetLabelCaretUI widget={widget} />
                                 <WidgetLabelIconUI tw='mr-1' widget={widget} />
                                 <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
-                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
@@ -90,7 +90,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 <WidgetLabelCaretUI tw='mr-auto' widget={widget} />
                                 {!p.widget.isCollapsed && !p.widget.isCollapsible && <div tw='mr-auto' />}
                                 <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
-                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
                                 <WidgetLabelIconUI tw='mx-1' widget={widget} />
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
@@ -100,7 +100,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 <WidgetLabelCaretUI widget={widget} />
                                 <WidgetToggleUI tw='mr-1' widget={originalWidget} />
                                 <WidgetLabelIconUI tw='mr-1' widget={widget} />
-                                {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
                                 {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
                             </>

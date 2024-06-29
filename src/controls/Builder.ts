@@ -248,7 +248,11 @@ export class Builder implements IBuilder {
         p: readonly T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectOne_<T> => {
-        return new Schema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new Schema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', {
+            choices: p.map((id) => ({ id, label: id })),
+            appearance: 'tab',
+            ...config,
+        })
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
         return new Schema<Widget_selectOne<T>>('selectOne', config)

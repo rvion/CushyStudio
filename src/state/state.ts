@@ -82,6 +82,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import { systemConf } from './conf/systemConf'
 
 export class STATE {
     Channel = Channel // WIP remove me 2024-06-25 🔴
@@ -123,10 +124,6 @@ export class STATE {
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
 
-    get showWidgetUndo() { return this.theme.value.showWidgetUndo } // prettier-ignore
-    get showWidgetMenu() { return this.theme.value.showWidgetMenu } // prettier-ignore
-    get showWidgetDiff() { return this.theme.value.showWidgetDiff } // prettier-ignore
-    get showToggleButtonBox() { return this.theme.value.showToggleButtonBox } // prettier-ignore
     _updateTime = () => {
         const now = Date.now()
         // console.log(`time is now ${now}`)
@@ -944,6 +941,7 @@ export class STATE {
     theme = themeConf
     preferences = {
         interface: interfaceConf,
+        system: systemConf,
     }
 
     csuite: CSuiteConfig = new CSuite_ThemeCushy(this)

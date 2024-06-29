@@ -18,16 +18,16 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
     get showWidgetUndo() {
-        return this.st.theme.value.showWidgetUndo ?? true
+        return this.st.preferences.interface.value.showWidgetUndo ?? true
     }
     get showWidgetMenu() {
-        return this.st.theme.value.showWidgetMenu ?? true
+        return this.st.preferences.interface.value.showWidgetMenu ?? true
     }
     get showWidgetDiff() {
-        return this.st.theme.value.showWidgetDiff ?? true
+        return this.st.preferences.interface.value.showWidgetDiff ?? true
     }
     get showToggleButtonBox() {
-        return this.st.theme.value.showToggleButtonBox ?? false
+        return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
     get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
         const x = this.st.theme.value.labelLayout
@@ -40,7 +40,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
     get inputHeight() {
-        return this.st.theme.value.inputHeight ?? 1.6
+        return this.st.preferences.interface.value.inputHeight ?? 1.6
     }
     // theme
     get baseStr() {
