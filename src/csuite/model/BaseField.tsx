@@ -6,8 +6,9 @@ import type { ITreeElement } from '../tree/TreeEntry'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
-import type { IBlueprint } from './IBlueprint'
-import type { Model } from './Model'
+import type { Entity } from './Entity'
+import type { IBuilder } from './IBuilder'
+import type { ISchema } from './ISchema'
 import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
@@ -16,12 +17,12 @@ import { observer } from 'mobx-react-lite'
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
-import { Widget_ToggleUI } from '../form/Widget_ToggleUI'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
+import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
@@ -43,17 +44,28 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
 }
+//     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
-// v3 (experimental) ---------------------------------------
-export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
-    // $Type!: K['$Type'] /* = 0 as any  */ /**     type only properties; do not use directly; used to make typings good and fast */
-    // $Config!: K['$Config'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // $Serial!: K['$Serial'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
-    // $Value!: K['$Value'] /* = 0 as any  */ /**   type only properties; do not use directly; used to make typings good and fast */
-    // $Field!: K['$Field'] /* = 0 as any  */ /** type only properties; do not use directly; used to make typings good and fast */
+export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
+    // 👆 type only properties; do not use directly; used to make typings good and fast
+    // 👆 $Type!: K['$Type'] /*     = 0 as any  */
+    // 👆 $Config!: K['$Config'] /* = 0 as any  */
+    // 👆 $Serial!: K['$Serial'] /* = 0 as any  */
+    // 👆 $Value!: K['$Value'] /*   = 0 as any  */
+    // 👆 $Field!: K['$Field'] /*   = 0 as any  */
 
-    /** spec used to instanciate this widget */
-    abstract spec: IBlueprint
+    constructor(
+        /** root form this widget has benn registered to */
+        public entity: Entity,
+        /** parent widget of this widget, if any */
+        public parent: BaseField | null,
+        /** spec used to instanciate this widget */
+        public spec: ISchema<K['$Field']>,
+    ) {}
+
+    get domain(): IBuilder {
+        return this.entity.domain
+    }
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     abstract readonly id: string
@@ -71,7 +83,9 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     abstract readonly baseErrors: Problem_Ext
 
     /** unified api to allow setting serial from value */
-    abstract setValue(val: K['$Value']): void
+    setValue(val: K['$Value']) {
+        this.value = val
+    }
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */
@@ -80,7 +94,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Field'] }> | undefined
 
-    UIToggle = (p?: { className?: string }) => <Widget_ToggleUI widget={this} {...p} />
+    UIToggle = (p?: { className?: string }) => <WidgetToggleUI widget={this} {...p} />
     UIErrors = () => <WidgetErrorsUI widget={this} />
     UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
@@ -88,6 +102,15 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     UIHeaderContainer = (p: { children: ReactNode }) => (
         <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
     )
+
+    get indentChildren(): number {
+        return 1
+    }
+
+    get depth(): number {
+        if (this.parent == null) return 0
+        return this.parent.depth + this.parent.indentChildren
+    }
 
     // abstract readonly id: string
     asTreeElement(key: string): ITreeElement<{ widget: BaseField; key: string }> {
@@ -214,11 +237,55 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     }
 
     /**
-     * return a short string summary
-     * expected to be overriden in child classes
+     * return a short string summary that display the value in a simple way.
+     * This method is expected to be overriden in most child classes
      */
     get summary(): string {
         return JSON.stringify(this.value)
+    }
+
+    /**
+     * Retrive the config custom data.
+     * 🔶: NOT TO BE CONFUSED WITH `getFieldCustom`
+     * Config custom data is NOT persisted anywhere,
+     * You can set config.custom when defining your schema.
+     * This data is completely unused internally by CSuite.
+     * It is READONLY.
+     */
+    getConfigCustom<T = unknown>(): Readonly<T> {
+        return this.config.custom ?? {}
+    }
+
+    /**
+     * Retrive the field custom data.
+     * 🔶: NOT TO BE CONFUSED WITH `getConfigCustom`
+     * Field custom data are persisted in the serial.custom.
+     * This data is completely unused internally by CSuite.
+     * You can use them however you want provided you keep them serializable.
+     * It's just a quick/hacky place to store stuff
+     */
+    getFieldCustom<T = unknown>(): T {
+        return this.serial.custom
+    }
+
+    /**
+     * update
+     * You can either return a new value, or patch the initial value
+     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
+     */
+    updateFieldCustom<T = unknown>(fn: (x: Maybe<T>) => T): this {
+        const prev = this.value
+        const next = fn(prev) ?? prev
+        this.serial.custom = JSON.parse(JSON.stringify(next))
+        this.applySerialUpdateEffects()
+        return this
+    }
+
+    /** delete field custom data (delete this.serial.custom)  */
+    deleteFieldCustomData(): this {
+        delete this.serial.custom
+        this.applySerialUpdateEffects()
+        return this
     }
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
@@ -240,17 +307,26 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     }
 
     // BUMP ----------------------------------------------------
-    bumpSerial(this: BaseField): void {
-        this.form.serialChanged(this)
+    applySerialUpdateEffects(): void {
+        this.entity.applySerialUpdateEffects(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-    bumpValue(this: BaseField): void {
+    applyValueUpdateEffects(): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.form.valueChanged(this)
+        this.parent?.applyChildValueUpdateEffects(this)
+        this.entity.applyValueUpdateEffects(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
+        this.publishValue() // 🔴  should probably be a reaction rather than this
+    }
+
+    /** recursively walk upwards on any field change  */
+    private applyChildValueUpdateEffects(child: BaseField): void {
+        this.serial.lastUpdatedAt = Date.now() as Timestamp
+        this.parent?.applyChildValueUpdateEffects(child)
+        this.config.onValueChange?.(this.value, this /* TODO: add extra param here:, child  */)
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
@@ -278,9 +354,6 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
             at = at.parent
         }
     }
-
-    /** parent widget of this widget, if any */
-    abstract readonly parent: BaseField | null
 
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden
@@ -324,22 +397,19 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         // if the widget do NOT have a body => we do not show the border
         if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
-        return true
+        return 8
     }
-
-    /** root form this widget has benn registered to */
-    abstract readonly form: Model
 
     // FOLD ----------------------------------------------------
     setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
-        this.form.serialChanged(this)
+        this.entity.applySerialUpdateEffects(this)
     }
 
     toggleCollapsed(this: BaseField) {
         this.serial.collapsed = !this.serial.collapsed
-        this.form.serialChanged(this)
+        this.entity.applySerialUpdateEffects(this)
     }
 
     // UI ----------------------------------------------------
@@ -417,6 +487,10 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         return []
     }
 
+    get root(): BaseField {
+        return this.entity.root
+    }
+
     /** list of all subwidgets, without named keys */
     get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return []
@@ -455,7 +529,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
     }
 
     /** this function MUST be called at the end of every widget constructor */
-    init(mobxOverrides: any) {
+    init(mobxOverrides?: any) {
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
@@ -467,7 +541,7 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         // run the config.onCreation if needed
         if (config.onCreate) {
             const oldKey = serial._creationKey
-            const newKey = config.onCreate.evaluationKey ?? 'default'
+            const newKey = config.onCreateKey ?? 'default'
             if (oldKey !== newKey) {
                 config.onCreate(this)
                 serial._creationKey = newKey
@@ -480,15 +554,15 @@ export abstract class BaseField<K extends $FieldTypes = $FieldTypes> {
         }
 
         // register self into `form._allFormWidgets`
-        this.form._allFormWidgets.set(this.id, this)
+        this.entity._allFormWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgets
-        this.form.manager._allWidgets.set(this.id, this)
+        this.entity.repository._allWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.form.manager._allWidgetsByType.get(this.type)
+        const prev = this.entity.repository._allWidgetsByType.get(this.type)
         if (prev == null) {
-            this.form.manager._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
+            this.entity.repository._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }

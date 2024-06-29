@@ -65,11 +65,11 @@ app({
         // START IMAGE -------------------------------------------------------------------------
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
-            ? /* 🔴 */ await (async () => ({
-                  /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
-                  /* 🔴 */ height: imgCtx.height,
-                  /* 🔴 */ width: imgCtx.width,
-                  /* 🔴 */
+            ? /* 🔴 HACKY  */
+              await (async () => ({
+                  latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
+                  height: imgCtx.height,
+                  width: imgCtx.width,
               }))()
             : await run_latent_v3({ opts: ui.latent, vae })
 
@@ -138,7 +138,7 @@ app({
         // }
 
         // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
-        const HRF = ui.highResFix
+        const HRF = ui.upscaleV2.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
                 ckpt: run_model_modifiers(ui.model, ckptPos, true, HRF.scaleFactor),
@@ -205,7 +205,7 @@ app({
         else graph.SaveImage({ images: finalImage })
 
         // UPSCALE with upscale model ------------------------------------------------------------
-        if (ui.upscale) finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
+        if (ui.upscaleV2.upscaleWithModel) finalImage = run_upscaleWithModel(ui.upscaleV2.upscaleWithModel, { image: finalImage })
 
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })

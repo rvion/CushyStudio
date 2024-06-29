@@ -1,5 +1,5 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Builder } from '../../../src/controls/Builder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
@@ -7,7 +7,7 @@ export const ui_upscaleWithModel_v2 = () => {
     const allUpscaleModels = Array.from(cushy.managerRepository.knownModels.values()) //
         .filter((t) => t.type === 'upscale')
 
-    const ui: FormBuilder = getCurrentForm()
+    const ui: X.Builder = getCurrentForm()
     return ui.enums.Enum_UpscaleModelLoader_model_name({ label: 'Upscale via Model' }).addRequirements(
         allUpscaleModels //
             .map((t): Requirements => ({ type: 'modelInManager', modelName: t.name, optional: true })),

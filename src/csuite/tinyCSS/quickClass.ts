@@ -1,7 +1,7 @@
 import { type CSSProperties } from 'react'
 
 import { customAlphabet } from 'nanoid'
-import { hash } from 'spark-md5'
+import SparkMD5 from 'spark-md5'
 
 import { addRule } from './compileOrRetrieveClassName'
 
@@ -11,7 +11,7 @@ const cache: Record<string, string> = {}
 
 export const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
     const vals = JSON.stringify(appearance)
-    const uid = hash(vals)
+    const uid = SparkMD5.hash(vals)
     if (uid in cache) return cache[uid]!
 
     const className = 'box-' + mkClassName()

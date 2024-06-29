@@ -1,5 +1,5 @@
-import type { SchemaDict } from '../csuite/model/IBlueprint'
-import type { Model } from '../csuite/model/Model'
+import type { Entity } from '../csuite/model/Entity'
+import type { SchemaDict } from '../csuite/model/ISchema'
 import type { MediaImageL } from '../models/MediaImage'
 import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'
@@ -11,7 +11,7 @@ import type { CSSProperties, ReactNode } from 'react'
 /* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-/* shared */ export type GlobalGetCurrentForm = () => X.FormBuilder
+/* shared */ export type GlobalGetCurrentForm = () => X.Builder
 
 /* ⏰ */ export type ActionTagMethod = (arg0: string) => string
 /* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
@@ -47,10 +47,10 @@ export type DraftExecutionContext = {
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
-    ui: (form: X.FormBuilder) => FIELDS
+    ui: (form: X.Builder) => FIELDS
 
     /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (form: Model<X.XGroup<NoInfer<FIELDS>>, X.FormBuilder>) => void>
+    presets?: Record<string, (form: Entity<X.XGroup<NoInfer<FIELDS>>, X.Builder>) => void>
 
     /** app execution logic */
     run: (

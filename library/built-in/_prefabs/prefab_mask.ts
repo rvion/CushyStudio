@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Builder } from '../../../src/controls/Builder'
 import type { SchemaDict } from '../../../src/csuite'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
@@ -15,8 +15,8 @@ export type UI_Mask = X.XChoice<{
     }>
 }>
 
-export const ui_mask = (): UI_Mask => {
-    const form: FormBuilder = getCurrentForm()
+export function ui_mask(): UI_Mask {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
         icon: 'mdiDominoMask',
@@ -42,11 +42,11 @@ export const ui_mask = (): UI_Mask => {
     })
 }
 
-export const run_mask = async (
+export async function run_mask(
     //
-    x: UI_Mask['$Value'],
+    x: OutputFor<typeof ui_mask>,
     imageOverride?: Maybe<MediaImageL>,
-): Promise<HasSingle_MASK | null> => {
+): Promise<HasSingle_MASK | null> {
     const p = x.mask
     if (p == null) return null
 

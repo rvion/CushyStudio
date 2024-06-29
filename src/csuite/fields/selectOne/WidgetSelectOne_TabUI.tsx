@@ -3,6 +3,7 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
+import { getJustifyContent } from '../choices/TabPositionConfig'
 
 export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectOne<T>
@@ -11,11 +12,12 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
     const selected = widget.serial.val
     return (
         <div
+            style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
             tw={[
                 //
-                'flex',
+                'flex flex-1',
                 (widget.config.wrap ?? true) && 'flex-wrap',
-                'rounded ml-auto justify-end',
+                'rounded',
                 'select-none',
                 'gap-x-0.5 gap-y-0',
             ]}

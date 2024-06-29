@@ -1,7 +1,7 @@
+import type { Entity } from '../csuite/model/Entity'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
-import type { IBlueprint } from '../csuite/model/IBlueprint'
-import type { Model } from '../csuite/model/Model'
+import type { ISchema } from '../csuite/model/ISchema'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 
@@ -72,10 +72,10 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
     }
-    reset() {
+    reset(): void {
         // /!\ reset function need to go though the `set text()` setter
         // to ensure the UI is updated (code-mirror specificity here)
         this.text = this.config.default ?? ''
@@ -85,12 +85,12 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_prompt>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -112,7 +112,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
     setText_INTERNAL = (next: string) => {
         if (this.serial.val === next) return
         this.serial.val = next
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     set text(next: string) {
@@ -123,7 +123,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
         // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
         this._valueUpdatedViaAPIAt = Date.now() as Timestamp
         this.serial.val = next
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     // the raw unparsed text

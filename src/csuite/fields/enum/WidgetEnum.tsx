@@ -1,9 +1,9 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -53,8 +53,12 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     readonly type: 'enum' = 'enum'
 
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.value = this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+
+    reset(): void {
+        this.value = this.defaultValue
+    }
+
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }
@@ -66,12 +70,12 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     serial: Widget_enum_serial<O>
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_enum<O>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -88,17 +92,16 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
+
     get value(): Widget_enum_value<O> {
         return this.status.finalValue
     }
-    setValue(val: Widget_enum_value<O>) {
-        this.value = val
-    }
+
     set value(next: Widget_enum_value<O>) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

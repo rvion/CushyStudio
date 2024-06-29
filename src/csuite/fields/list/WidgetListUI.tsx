@@ -1,5 +1,5 @@
 import type { BaseField } from '../../model/BaseField'
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/ISchema'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -31,23 +31,24 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widge
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends IBlueprint>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
+            <SortableList onSortEnd={(s, e) => p.widget.moveItem(s, e)} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
                         const widgetHeader = subWidget.header()
                         const widgetBody = subWidget.body()
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
-                        const showBorder = subWidget.border
+                        const showBorder = subWidget.border != null
                         const isCollapsible: boolean = subWidget.isCollapsible
                         const boxBorder = showBorder ? 20 : 0
-                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
+                        const boxBase =
+                            subWidget.background != null && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
                                 <Frame border={boxBorder} tw={'flex flex-col'} base={boxBase}>

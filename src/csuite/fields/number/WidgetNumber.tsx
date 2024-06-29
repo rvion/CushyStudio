@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -55,9 +55,11 @@ export class Widget_number extends BaseField<Widget_number_types> {
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
-    readonly defaultValue: number = this.config.default ?? 0
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => {
+    get defaultValue(): number {
+        return this.config.default ?? 0
+    }
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+    reset(): void {
         if (this.serial.val === this.defaultValue) return
         this.value = this.defaultValue
     }
@@ -70,12 +72,12 @@ export class Widget_number extends BaseField<Widget_number_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_number>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_number>,
         serial?: Widget_number_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -93,18 +95,16 @@ export class Widget_number extends BaseField<Widget_number_types> {
         })
     }
 
-    setValue(val: Widget_number_value) {
-        this.value = val
+    get value(): Widget_number_value {
+        return this.serial.val
     }
+
     set value(next: Widget_number_value) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
-    }
-    get value(): Widget_number_value {
-        return this.serial.val
     }
 }
 

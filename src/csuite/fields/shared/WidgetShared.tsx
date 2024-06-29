@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -10,11 +10,11 @@ import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends IBlueprint = IBlueprint> = FieldConfig<
+export type Widget_shared_config<T extends ISchema = ISchema> = FieldConfig<
     {
         /** shared widgets must be registered in the form root group */
-        rootKey: string
-        widget: T['$Field']
+        // rootKey: string
+        widget: (parent: BaseField) => T['$Field']
     },
     Widget_shared_types<T>
 >
@@ -30,59 +30,49 @@ export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared
 })
 
 // VALUE
-export type Widget_shared_value<T extends IBlueprint = IBlueprint> = T['$Value']
+export type Widget_shared_value<T extends ISchema = ISchema> = T['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends IBlueprint = IBlueprint> = {
+export type Widget_shared_types<T extends ISchema = ISchema> = {
     $Type: 'shared'
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Field: IBlueprint['$Field']
+    $Field: ISchema['$Field']
 }
 
 // STATE
-export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<Widget_shared_types<T>> {
+export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget_shared_types<T>> {
     readonly id: string
-    get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
-    // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
-    $Field!: T['$Field']
-
     serial: Widget_shared_serial
 
-    get hasChanges() {
-        return this.config.widget.hasChanges
+    get hasChanges(): boolean {
+        return this.shared.hasChanges ?? false
     }
-    reset() {
-        return this.config.widget.reset()
+
+    reset(): void {
+        return this.shared.reset()
     }
 
     get shared(): T['$Field'] {
-        return this.config.widget
+        return this.config.widget(this.parent!)
     }
 
     get baseErrors(): Problem_Ext {
-        return null
-    }
-    // 🔴
-    hidden = () => {
-        const ctor = this.form.builder.SpecCtor
-        const config: Widget_shared_config<T> = { ...this.spec.config, hidden: true }
-        const spec2: IBlueprint<Widget_shared<T>> = new ctor('shared', config)
-        new Widget_shared<T>(this.form, null, spec2, this.serial)
+        return this.shared.baseErrors
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_shared<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
@@ -91,14 +81,11 @@ export class Widget_shared<T extends IBlueprint = IBlueprint> extends BaseField<
             DefaultBodyUI: false,
         })
     }
-    setValue(val: Widget_shared_value<T>) {
-        this.value = val
-    }
     set value(val: Widget_shared_value<T>) {
-        this.config.widget.setValue(val)
+        this.shared.value = val
     }
     get value(): Widget_shared_value<T> {
-        return this.config.widget.value
+        return this.shared.value
     }
 }
 

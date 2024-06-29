@@ -1,15 +1,15 @@
 import type { Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne'
-import type { IBlueprint } from '../csuite/model/IBlueprint'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Model } from '../csuite/model/Model'
-import type { FormBuilder } from './FormBuilder'
+import type { Entity } from '../csuite/model/Entity'
+import type { ISchema } from '../csuite/model/ISchema'
+import type { Builder } from './Builder'
 
-import { Blueprint } from './Blueprint'
+import { Schema } from './Schema'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
@@ -25,7 +25,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Model<IBlueprint, FormBuilder>) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -45,13 +45,13 @@ export class EnumBuilder {
                 const enumSchema = schema.knownEnumsByName.get(enumName)
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
-                    return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                    return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Blueprint('enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -59,7 +59,7 @@ export class EnumBuilder {
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
-    constructor(public form: Model<any, FormBuilder>) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -80,10 +80,10 @@ export class EnumBuilderOpt {
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
                     return (config: any = {}) =>
-                        form.builder.optional({
+                        domain.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            widget: new Blueprint('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
+                            widget: new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -91,10 +91,10 @@ export class EnumBuilderOpt {
 
                 // return the builder
                 return (config: any = {}) =>
-                    form.builder.optional({
+                    domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Blueprint('enum', /* form, */ { ...config, enumName }),
+                        widget: new Schema('enum', /* form, */ { ...config, enumName }),
                     })
             },
         })
@@ -109,7 +109,7 @@ export type IEnumListBuilder = {
 
 export interface EnumListBuilder extends IEnumListBuilder {}
 export class EnumListBuilder {
-    constructor(public form: Model<any, FormBuilder>) {
+    constructor(public domain: Builder) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -132,7 +132,7 @@ export class EnumListBuilder {
                 // return (config: any = {}) => form.builder.bool()
                 // return the builder
                 return (config: any = {}) =>
-                    form.builder.selectMany({
+                    domain.selectMany({
                         choices: enumSchema.values.map((v) => ({ id: v.toString(), label: v })),
                         appearance: 'tab',
                         ...config,

@@ -4,6 +4,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -22,16 +23,29 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.sizeHelper
 
+    const modelBtn = (model: ModelType) => (
+        <InputBoolToggleButtonUI //
+            tw='w-input'
+            value={uist.desiredModelType == model}
+            onValueChange={() => uist.setModelType(model)}
+            text={model}
+        />
+    )
+
     // const ratio = uist.width / uist.height
     // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
 
     return (
-        <div className='flex flex-1 flex-col gap-1'>
+        <div className='flex flex-1 flex-col gap-0.5'>
             <Frame //Joined container
                 border={{ contrast: 0.05 }}
                 tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
+                <div tw='flex'>
+                    {modelBtn('1.5')}
+                    {modelBtn('xl')}
+                </div>
                 <InputNumberUI
                     //
                     min={p.bounds?.min ?? 128}
@@ -78,15 +92,10 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
             icon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
             onMouseDown={(ev) => {
                 uist.isAspectRatioLocked = !uist.isAspectRatioLocked
-                if (!uist.isAspectRatioLocked) {
-                    return
-                }
+                if (!uist.isAspectRatioLocked) return
                 // Need to snap value if linked
-                if (uist.wasHeightAdjustedLast) {
-                    uist.setHeight(uist.height)
-                } else {
-                    uist.setWidth(uist.width)
-                }
+                if (uist.wasHeightAdjustedLast) uist.setHeight(uist.height)
+                else uist.setWidth(uist.width)
             }}
         />
     )
@@ -141,15 +150,6 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         />
     )
 
-    const modelBtn = (model: ModelType) => (
-        <InputBoolUI //
-            display='button'
-            value={uist.desiredModelType == model}
-            onValueChange={() => uist.setModelType(model)}
-            text={model}
-        />
-    )
-
     const portrait = uist.height / uist.width > 1.0
 
     return (
@@ -158,70 +158,65 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
         >
             <div tw='flex'>
-                <div tw='join mr-1.5'>
-                    {modelBtn('1.5')}
-                    {modelBtn('xl')}
-                </div>
-
                 {/* <div tw='btn btn-xs' onClick={() => uist.flip()}> */}
                 {/* <span className='material-symbols-outlined'>rotate_right</span> */}
                 {/* </div> */}
-                <div tw='ml-auto  flex flex-wrap items-center gap-1.5'>
+                <div tw='ml-auto flex flex-wrap items-center gap-1.5'>
                     <div tw='join'>{resoBtn('1:1')}</div>
                     {/* <div>|</div> */}
-                    <div tw='join'>
+                    <div tw='join flex flex-col'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
                     </div>
                     {/* <div>|</div> */}
-                    <div tw='join'>
+                    <div tw='join flex flex-col'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
                     </div>
                     {/* <div>|</div> */}
-                    <div tw='join'>
+                    <div tw='join flex flex-col'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
                     </div>
                     {p.sizeHelper.desiredModelType === 'xl' && (
                         <>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('16:15')}
                                 {resoBtn('15:16')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('17:15')}
                                 {resoBtn('15:17')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('9:7')}
                                 {resoBtn('7:9')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('18:13')}
                                 {resoBtn('13:18')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('19:13')}
                                 {resoBtn('13:19')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('7:4')}
                                 {resoBtn('4:7')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('21:11')}
                                 {resoBtn('11:21')}
                             </div>
                             {/* <div>|</div> */}
-                            <div tw='join'>
+                            <div tw='join flex flex-col'>
                                 {resoBtn('2:1')}
                                 {resoBtn('1:2')}
                             </div>

@@ -31,6 +31,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
         >
             <Button
                 size='input'
+                borderless
                 subtle
                 disabled={!canAdd}
                 square
@@ -43,6 +44,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 size='input'
+                borderless
                 subtle
                 disabled={!canClear}
                 square
@@ -55,6 +57,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 size='input'
+                borderless
                 subtle
                 square
                 icon='mdiUnfoldMoreHorizontal'
@@ -65,6 +68,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWi
             />
             <Button
                 size='input'
+                borderless
                 subtle
                 square
                 icon='mdiUnfoldLessHorizontal'

@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -67,13 +67,13 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
     get defaultElevation() {
         return this.config.default?.elevation ?? 0
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.value.azimuth !== this.defaultAzimuth) return true
         if (this.serial.value.elevation !== this.defaultElevation) return true
         return false
     }
     /** reset azimuth and elevation */
-    reset = () => {
+    reset(): void {
         this.serial.value.azimuth = this.defaultAzimuth
         this.serial.value.elevation = this.defaultElevation
     }
@@ -102,12 +102,12 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_orbit>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -136,21 +136,18 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
         this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
     }
 
-    setValue(val: Widget_orbit_value) {
-        this.value = val
-    }
-
-    set value(val: Widget_orbit_value) {
-        this.serial.value.azimuth = val.azimuth
-        this.serial.value.elevation = val.elevation
-        this.bumpValue()
-    }
     get value(): Widget_orbit_value {
         return {
             azimuth: this.serial.value.azimuth,
             elevation: this.serial.value.elevation,
             englishSummary: this.englishSummary,
         }
+    }
+
+    set value(val: Widget_orbit_value) {
+        this.serial.value.azimuth = val.azimuth
+        this.serial.value.elevation = val.elevation
+        this.applyValueUpdateEffects()
     }
 }
 

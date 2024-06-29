@@ -1,8 +1,8 @@
 import type { FrameAppearance } from '../../frame/FrameTemplates'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -65,12 +65,12 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_button<K>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (config.text) {
@@ -91,20 +91,17 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
     }
 
     get defaultValue(): boolean { return this.config.default ?? false } // prettier-ignore
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     get value(): Widget_button_value {
         return this.serial.val
     }
-    setValue(val: boolean) {
-        this.value = val
-    }
     set value(next: boolean) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

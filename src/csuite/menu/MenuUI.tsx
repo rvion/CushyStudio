@@ -1,8 +1,9 @@
 import type { MenuInstance } from './Menu'
 
-import { observer } from 'mobx-react-lite'
+import * as React from 'react'
 import { createElement, type MouseEvent } from 'react'
-import { Fragment } from 'react/jsx-runtime'
+
+import { observer } from 'mobx-react-lite'
 
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
@@ -12,6 +13,7 @@ import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { isCommand } from '../introspect/_isCommand'
 import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
+
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
@@ -144,7 +146,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 afterShortcut={<IkonOf name='mdiMenuRight' />}
                                 // onClick={() => entry.open()}
                                 label={
-                                    <Fragment>
+                                    <>
                                         {charIx != null ? (
                                             <div>
                                                 <span tw='font-bold'>{label.slice(0, charIx)}</span>
@@ -154,7 +156,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                         ) : (
                                             label
                                         )}
-                                    </Fragment>
+                                    </>
                                 }
                             />
                         </RevealUI>
@@ -162,7 +164,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                 } else if (isWidget(entry)) {
                     return entry.renderWithLabel()
                 } else {
-                    return <Fragment key={ix}>{createElement(entry)}</Fragment>
+                    return <React.Fragment key={ix}>{createElement(entry)}</React.Fragment>
                 }
             })}
         </div>

@@ -1,4 +1,4 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'
@@ -43,7 +43,7 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
     action: (image: MediaImageL) => menu_copyImageAs.open(image),
 })
 
-const form_foo = CushyFormManager.fields((ui) => ({
+const form_foo = cushyRepo.fields((ui) => ({
     quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
 }))
 

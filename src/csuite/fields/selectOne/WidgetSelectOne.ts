@@ -1,8 +1,9 @@
 import type { IconName } from '../../icons/icons'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
+import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -22,7 +23,7 @@ export type SelectOneSkin = 'select' | 'tab' | 'roll'
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
     {
-        default?: T
+        default?: NoInfer<T>
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic
@@ -42,7 +43,18 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
         appearance?: SelectOneSkin
+
+        /**
+         * @since 2024-06-24
+         * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+         */
         wrap?: boolean
+
+        /**
+         * @since 2024-06-24
+         * @deprecated use global csuite config instead
+         */
+        tabPosition?: TabPositionConfig
     },
     Widget_selectOne_types<T>
 >
@@ -93,38 +105,39 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
-        if (selected == null) return 'selected value not in choices'
+        if (selected == null && !this.config.disableLocalFiltering) return 'selected value not in choices'
         return
     }
 
     get defaultValue(): T {
         return this.config.default ?? this.choices[0] ?? FAILOVER_VALUE
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.serial.val.id !== this.defaultValue.id
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 
     get choices(): T[] {
         const _choices = this.config.choices
         if (typeof _choices === 'function') {
-            if (!this.form.ready) return []
-            if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
+            if (!this.entity.ready) return []
+            if (this.entity._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
             return _choices(this)
         }
         return _choices
     }
 
     constructor(
-        //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_selectOne<T>>,
+        // 2024-06-27 TODO: rename that
+        // |            VVVV
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         const choices = this.choices
@@ -142,20 +155,18 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         })
     }
 
-    setValue(val: Widget_selectOne_value<T>) {
-        this.value = val
+    get value(): Widget_selectOne_value<T> {
+        return this.serial.val
     }
+
     set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
         const nextHasSameID = this.serial.val.id === next.id
         runInAction(() => {
             this.serial.val = next
-            if (!nextHasSameID) this.bumpValue()
-            else this.bumpSerial()
+            if (!nextHasSameID) this.applyValueUpdateEffects()
+            else this.applySerialUpdateEffects()
         })
-    }
-    get value(): Widget_selectOne_value<T> {
-        return this.serial.val
     }
 }
 

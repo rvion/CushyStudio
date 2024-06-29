@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -59,14 +59,15 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.mode !== this.defaultMode) return true
         if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
         return false
     }
-    reset = () => {
+
+    reset(): void {
         this.setMode(this.defaultMode)
-        if (this.serial.mode !== 'randomize') this.setValue(this.defaultValue)
+        if (this.serial.mode !== 'randomize') this.value = this.defaultValue
     }
 
     get defaultMode(): SeedMode {
@@ -83,29 +84,29 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
     setMode = (mode: SeedMode) => {
         if (this.serial.mode === mode) return
         this.serial.mode = mode
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToFixed = (val?: number) => {
         this.serial.mode = 'fixed'
         if (val) this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToRandomize = () => {
         if (this.serial.mode === 'randomize') return
         this.serial.mode = 'randomize'
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_seed>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -120,18 +121,13 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         })
     }
 
-    setValue = (val: number) => {
-        this.serial.val = val
-        this.bumpValue()
-    }
-
     set value(val: number) {
         this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     get value(): Widget_seed_value {
-        const count = this.form.builder._cache.count
+        const count = this.entity.domain._cache.count
         return this.serial.mode === 'randomize' ? Math.floor(Math.random() * 9_999_999) : this.serial.val
     }
 }

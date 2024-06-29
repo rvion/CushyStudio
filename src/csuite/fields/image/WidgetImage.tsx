@@ -1,10 +1,10 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -67,21 +67,21 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get defaultValue(): MediaImageL {
         return this.config.default ?? cushy.defaultImage
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.value !== this.defaultValue
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_image>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_image>,
         serial?: Widget_image_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',
@@ -97,23 +97,22 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get animateResize() {
         return false
     }
+
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
     }
-    setValue(val: MediaImageL) {
-        this.value = val
-    }
+
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
         runInAction(() => {
             this.serial.imageID = next.id
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 
     set size(val: number) {
         this.serial.size = val
-        this.bumpSerial()
+        this.applySerialUpdateEffects()
     }
     get size() {
         return this.serial.size

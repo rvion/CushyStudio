@@ -293,7 +293,7 @@ section(`6. packing types together`)
 sectionTool('rollup + plugin-dts + plugin-visualizer')
 // const rollupRoot = `${cwd()}/src/scripts`
 const rollupBin = './src/scripts/node_modules/.bin/rollup'
-// /Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup -c /Users/loco/dev/CushyStudio/src/controls/FormBuilder.loco.rollup.config.mjs
+// /Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup -c /Users/loco/dev/CushyStudio/src/controls/Builder.loco.rollup.config.mjs
 //`'${rollupRoot}/node_modules/.bin/rollup'`
 console.log(` `)
 const rollupCmd = [rollupBin, `-c '${ROLLUP_CONFIG_ABSPATH}'`].join(' ')
@@ -331,8 +331,9 @@ for (const e of Object.entries(nodeMetas)) {
 }
 
 const whitelist: string[] = [
+    // 🔴 FIXME 👇
     'src/controls/FormSerial',
-    'src/controls/IFormBuilder',
+    'src/controls/IBuilder',
     'src/controls/ISpec',
     'src/controls/shared/CushyKit',
     'src/controls/fields/size/WidgetSizeTypes',

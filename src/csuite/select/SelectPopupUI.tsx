@@ -8,6 +8,8 @@ import { FixedSizeList, type ListChildComponentProps } from 'react-window'
 import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../frame/Frame'
 
+const trueMinWidth = '40rem'
+
 export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     //
     s: AutoCompleteSelectState<T>
@@ -15,19 +17,22 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     showValues: boolean
 }) {
     const s = p.s
-
     return createPortal(
         <Frame
             ref={s.popupRef}
             tw={[
                 'MENU-ROOT _SelectPopupUI flex',
-                'overflow-auto',
+                'overflow-auto flex-col',
                 s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
+            onMouseUp={() => s.closeIfShouldCloseAfterSelection()}
             style={{
-                minWidth: s.anchorRef.current?.clientWidth ?? '100%',
+                minWidth: s.anchorRef.current?.clientWidth
+                    ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
+                    : trueMinWidth,
                 maxWidth:
                     window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
+                maxHeight: `${s.tooltipMaxHeight}px`,
                 pointerEvents: 'initial',
                 position: 'absolute',
                 zIndex: 99999999,
@@ -35,7 +40,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                 bottom: s.tooltipPosition.bottom != null ? `${s.tooltipPosition.bottom}px` : 'unset',
                 left: s.tooltipPosition.left != null ? `${s.tooltipPosition.left}px` : 'unset',
                 right: s.tooltipPosition.right != null ? `${s.tooltipPosition.right}px` : 'unset',
-                maxHeight: `${s.tooltipMaxHeight}px`,
                 // Adjust positioning as needed
             }}
             // Prevent close when clicking the pop-up frame. There are also small gaps between the buttons where this becomes an issue.
@@ -47,34 +51,27 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                 if (s.isOpen) s.hasMouseEntered = true
             }}
         >
-            <ul className='max-h-96' tw='flex-col w-full'>
-                {(p.showValues ?? true) && (
-                    <div // list of all values
-                        tw={[
-                            //
-                            'overflow-au flex flex-wrap gap-0.5',
-                            'max-w-sm',
-                        ]}
-                    >
-                        {s.displayValue}
-                    </div>
-                )}
+            {(p.showValues ?? true) && (
+                <div // list of all values
+                    tw={['overflow-auto flex flex-wrap gap-0.5']} // 'max-w-sm',
+                >
+                    {s.displayValue}
+                </div>
+            )}
 
-                {/* No results */}
-                {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}
+            {/* No results */}
+            {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}
 
-                {/* Entries */}
-                <FixedSizeList<{ s: AutoCompleteSelectState<T> }>
-                    // tw='flex-col w-full'
-                    useIsScrolling={false}
-                    height={400}
-                    itemCount={s.filteredOptions.length}
-                    itemSize={30}
-                    width='100%'
-                    children={SelectOptionUI}
-                    itemData={{ s }}
-                />
-            </ul>
+            {/* Entries */}
+            <FixedSizeList<{ s: AutoCompleteSelectState<T> }>
+                useIsScrolling={false}
+                height={400}
+                itemCount={s.filteredOptions.length}
+                itemSize={30}
+                width='100%'
+                children={SelectOptionUI}
+                itemData={{ s }}
+            />
         </Frame>,
         document.getElementById('tooltip-root')!,
     )
@@ -96,7 +93,7 @@ export const SelectOptionUI = observer(function FooUI_<T>({
             mode={mode}
             preventDefault
             showToggleButtonBox
-            hovered={s.selectedIndex === index}
+            hovered={(b) => b || s.selectedIndex === index}
             value={isSelected}
             onValueChange={(value) => {
                 if (value != isSelected) s.selectOption(index)

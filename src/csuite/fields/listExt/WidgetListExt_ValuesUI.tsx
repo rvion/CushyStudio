@@ -1,4 +1,4 @@
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/ISchema'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../button/Button'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends IBlueprint>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISchema>(p: {
     //
     widget: Widget_listExt<T>
 }) {

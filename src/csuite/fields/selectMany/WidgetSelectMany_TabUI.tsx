@@ -4,6 +4,7 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
+import { getJustifyContent } from '../choices/TabPositionConfig'
 
 export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectMany<T>
@@ -11,14 +12,17 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
     const widget = p.widget
     return (
         <div>
-            <div tw='rounded select-none flex flex-wrap gap-x-0.5 gap-y-0'>
+            <div
+                tw='rounded select-none flex flex-wrap gap-x-0.5 gap-y-0'
+                style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
+            >
                 {widget.choices.map((c) => {
                     const isSelected = Boolean(widget.serial.values.find((item) => item.id === c.id))
                     return (
                         <InputBoolUI
                             value={isSelected}
                             display='button'
-                            text={c.label}
+                            text={c.label ?? c.id}
                             onValueChange={(value) => {
                                 if (value != isSelected) widget.toggleItem(c)
                             }}

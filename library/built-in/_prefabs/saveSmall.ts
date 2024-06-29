@@ -1,6 +1,19 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_customSave = () => {
+export type UI_customSave = X.XOptional<
+    X.XGroup<{
+        subfolder: X.XString
+        format: X.XSelectOne<
+            | { id: 'raw'; label: 'Raw' }
+            | { id: 'image/webp'; label: 'WebP' }
+            | { id: 'image/png'; label: 'PNG' }
+            | { id: 'image/jpeg'; label: 'JPG' }
+        >
+        quality: X.XNumber
+    }>
+>
+
+export function ui_customSave(): UI_customSave {
     const form = getCurrentForm()
     return form
         .group({

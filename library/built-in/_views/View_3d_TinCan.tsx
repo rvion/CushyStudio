@@ -6,7 +6,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useRef } from 'react'
 
-import { ModelSerial } from '../../../src/csuite/model/ModelSerial'
+import { EntitySerial } from '../../../src/csuite/model/ModelSerial'
 
 /** this custom view  */
 export const CustomView3dCan = view<{
@@ -29,7 +29,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
             ),
         {
             name: 'Playground Widget Showcase',
-            initialSerial: () => cushy.readJSON<ModelSerial>('settings/beer.json'),
+            initialSerial: () => cushy.readJSON<EntitySerial>('settings/beer.json'),
             onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.serial),
         },
     )

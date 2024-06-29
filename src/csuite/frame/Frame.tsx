@@ -23,7 +23,7 @@ export type FrameProps = {
     tooltipPlacement?: RevealPlacement
 
     /** allow to pretend the frame is hovered */
-    hovered?: boolean | undefined
+    hovered?: (reallyHovered: boolean) => boolean | undefined
 
     // logic --------------------------------------------------
     /** TODO: */
@@ -73,7 +73,7 @@ export const Frame = observer(
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
-            tooltip,
+            tooltip, tooltipPlacement,
 
             // remaining properties
             ...rest
@@ -84,7 +84,7 @@ export const Frame = observer(
         const prevCtx = useContext(CurrentStyleCtx)
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
-        const hovered = hovered__ ?? hovered_
+        const hovered = hovered__ ? hovered__(hovered_) : hovered_
         const variables: { [key: string]: string | number } = {}
 
         // 👉 2024-06-12 rvion: we should probably be able to
@@ -149,17 +149,18 @@ export const Frame = observer(
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent) => {
-            if (p.hover) setHovered(true)
+            // console.log(`[🤠] hover`, ev.currentTarget)
+            if (p.hover != null) setHovered(true)
             if (p.tooltip != null)
                 tooltipStuff.tooltip = {
                     ref: ev.currentTarget,
                     text: p.tooltip ?? 'test',
-                    placement: p.tooltipPlacement ?? 'bottom',
+                    placement: tooltipPlacement ?? 'bottom',
                 }
         }
 
         const _onMouseOut = (ev: MouseEvent) => {
-            if (p.hover) setHovered(false)
+            if (p.hover != null) setHovered(false)
             if (
                 p.tooltip != null && //
                 tooltipStuff.tooltip?.ref === ev.currentTarget

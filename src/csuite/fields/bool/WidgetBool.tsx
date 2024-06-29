@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable, runInAction } from 'mobx'
@@ -86,17 +86,17 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
     toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_bool>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -116,14 +116,11 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
     get value(): Widget_bool_value {
         return this.serial.active ?? false
     }
-    setValue(val: Widget_bool_value) {
-        this.value = val
-    }
     set value(next: Widget_bool_value) {
         if (this.serial.active === next) return
         runInAction(() => {
             this.serial.active = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
@@ -13,7 +13,7 @@ import { WidgetMardownUI } from './WidgetMarkdownUI'
 // CONFIG
 export type Widget_markdown_config = FieldConfig<
     {
-        markdown: string | ((form: Model) => string)
+        markdown: string | ((self: Widget_markdown) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -22,7 +22,6 @@ export type Widget_markdown_config = FieldConfig<
 // SERIAL
 export type Widget_markdown_serial = FieldSerial<{
     type: 'markdown'
-    active: true
 }>
 
 // VALUE
@@ -39,6 +38,10 @@ export type Widget_markdown_types = {
 
 // STATE
 export class Widget_markdown extends BaseField<Widget_markdown_types> {
+    readonly id: string
+    readonly type: 'markdown' = 'markdown'
+    readonly serial: Widget_markdown_serial
+
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -52,42 +55,40 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly id: string
-
-    readonly type: 'markdown' = 'markdown'
-    readonly serial: Widget_markdown_serial
 
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.form)
+        return md(this)
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_markdown>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
-        this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        this.init({})
+        this.serial = serial ?? {
+            type: 'markdown',
+            collapsed: config.startCollapsed,
+            id: this.id,
+        }
+        this.init()
     }
 
     /** always return false */
     hasChanges = false
 
     /** do nothing */
-    reset = () => {}
+    reset(): void {}
 
-    setValue(val: Widget_markdown_value) {
-        this.value = val
-    }
     set value(val: Widget_markdown_value) {
         // do nothing; markdown have no real value; only config
+        // this.value = val
     }
     get value(): Widget_markdown_value {
         return this.serial

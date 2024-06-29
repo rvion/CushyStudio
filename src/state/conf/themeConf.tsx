@@ -1,11 +1,43 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
-import { ui_tint } from '../../csuite/kolor/prefab_Tint'
+import type { BaseSelectEntry } from '../../csuite/fields/selectOne/WidgetSelectOne'
+import type { Entity } from '../../csuite/model/Entity'
+
+import { type Builder, cushyRepo } from '../../controls/Builder'
+import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const themeConf = CushyFormManager.form(
+export type ThemeConf = X.XGroup<{
+    labelLayout: X.XSelectOne_<'left' | 'right' | 'fluid'>
+    base: X.XString
+    appbar: X.XOptional<X.XString>
+    gap: X.XOptional<X.XNumber>
+    widgetWithLabel: X.XGroup<{
+        border: X.XOptional<X.XNumber>
+        contrast: X.XOptional<X.XNumber>
+        padding: X.XOptional<X.XNumber>
+    }>
+    fieldGroups: X.XGroup<{
+        border: X.XOptional<X.XNumber>
+        contrast: X.XOptional<X.XNumber>
+        padding: X.XOptional<X.XNumber>
+    }>
+    text: UI_Tint
+    textLabel: X.XOptional<UI_Tint>
+    border: X.XOptional<X.XNumber>
+}>
+
+export const themeConf: Entity<ThemeConf, Builder, {}> = cushyRepo.form(
     (ui) =>
         ui.fields(
             {
+                labelLayout: ui.selectOne<BaseSelectEntry<'left' | 'right' | 'fluid'>>({
+                    appearance: 'tab',
+                    choices: [
+                        { id: 'left', icon: 'mdiAlignHorizontalLeft' },
+                        { id: 'right', icon: 'mdiAlignHorizontalRight' },
+                        { id: 'fluid', icon: 'mdiFullscreenExit' },
+                    ],
+                    default: { id: 'left', icon: 'mdiAlignHorizontalRight' },
+                }),
                 // 1. colors
                 base: ui.colorV2({
                     default: '#F4F5FB',
@@ -37,13 +69,8 @@ export const themeConf = CushyFormManager.form(
                 ),
 
                 // 2. texts
-                text: ui_tint(ui, {
-                    contrast: 0.824,
-                }),
-                textLabel: ui_tint(ui, {
-                    contrast: 0.45,
-                    chroma: 0.045,
-                }).optional(true),
+                text: ui_tint(ui, { contrast: 0.824 }),
+                textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
 
                 // 3. misc
                 border: ui.percent({ default: 8 }).optional(true),

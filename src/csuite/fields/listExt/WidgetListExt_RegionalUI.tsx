@@ -1,4 +1,4 @@
-import type { IBlueprint } from '../../model/IBlueprint'
+import type { ISchema } from '../../model/ISchema'
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
@@ -9,7 +9,7 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends IBlueprint>(p: {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends ISchema>(p: {
     widget: Widget_listExt<T>
 }) {
     const widget = p.widget
@@ -54,7 +54,7 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                                 key={`rect-${widget.id}`}
                                 onChange={(p) => {
                                     Object.assign(shape, p)
-                                    widget.bumpValue()
+                                    widget.applyValueUpdateEffects()
                                 }}
                                 isSelected={shape.isSelected}
                                 shape={shape}

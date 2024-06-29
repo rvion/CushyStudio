@@ -37,26 +37,46 @@ const focusTree = (st: STATE, tree: Tree) =>
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const allLegacyCommands: Command<null>[] = [
-    globalValidInInput(KEYS.search, 'search string globally in window', () => {
-        if (cushy.search.active) cushy.search.active = false
-        else cushy.search.active = true
-        return Trigger.Success
-    }),
+    globalValidInInput(
+        KEYS.search,
+        'search string globally in window',
+        () => {
+            if (cushy.search.active) cushy.search.active = false
+            else cushy.search.active = true
+            return Trigger.Success
+        },
+        'mdiSelectSearch',
+    ),
 
-    globalValidInInput(KEYS.resizeWindowForVideoCapture, 'Resize Window for video capture', () => {
-        cushy.resizeWindowForVideoCapture()
-        return Trigger.Success
-    }),
-    globalValidInInput(KEYS.resizeWindowForLaptop, 'Resize Window for video capture', () => {
-        cushy.resizeWindowForLaptop()
-        return Trigger.Success
-    }),
-    globalValidInInput(KEYS.resetLayout, 'Reset layout', () => {
-        cushy.layout.resetCurrent()
-        // const lastDraft = cushy.db.drafts.last()
-        // if (lastDraft) cushy.layout.FOCUS_OR_CREATE('Draft', { draftID: lastDraft.id })
-        return Trigger.Success
-    }),
+    globalValidInInput(
+        KEYS.resizeWindowForVideoCapture,
+        'Resize Window for video capture',
+        () => {
+            cushy.resizeWindowForVideoCapture()
+            return Trigger.Success
+        },
+        'mdiMoveResize',
+    ),
+    globalValidInInput(
+        KEYS.resizeWindowForLaptop,
+        'Resize Window for video capture',
+        () => {
+            cushy.resizeWindowForLaptop()
+            return Trigger.Success
+        },
+        'mdiMoveResize',
+    ),
+    globalValidInInput(
+        KEYS.resetLayout,
+        'Reset layout',
+        () => {
+            cushy.layout.resetCurrent()
+            // const lastDraft = cushy.db.drafts.last()
+            // if (lastDraft) cushy.layout.FOCUS_OR_CREATE('Draft', { draftID: lastDraft.id })
+            return Trigger.Success
+        },
+        'mdiNewBox',
+    ),
 
     // tree navigation --------------------------------
     placeholderTree(KEYS.tree_moveUp, 'move up in tree'),

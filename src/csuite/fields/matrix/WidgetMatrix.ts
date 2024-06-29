@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -61,7 +61,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         if (def == null) return this.value.length != 0
         else {
@@ -72,7 +72,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
             return false
         }
     }
-    reset() {
+    reset(): void {
         this.setAll(false)
         for (const i of this.config.default ?? []) {
             this.setCell(i.row, i.col, true)
@@ -86,12 +86,12 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_matrix>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
@@ -120,8 +120,9 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         })
     }
 
-    setValue(val: Widget_matrix_value) {
-        this.value = val
+    get value(): Widget_matrix_value {
+        // if (!this.state.active) return undefined
+        return this.serial.selected
     }
 
     /** 🔶 this is inneficient */
@@ -140,11 +141,6 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         })
     }
 
-    get value(): Widget_matrix_value {
-        // if (!this.state.active) return undefined
-        return this.serial.selected
-    }
-
     private sep = ' &&& '
     private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
@@ -152,7 +148,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     UPDATE = () => {
         this.serial.selected = this.RESULT
-        this.bumpValue() // only place to call bumpValue
+        this.applyValueUpdateEffects() // only place to call bumpValue
     }
 
     /** list of all cells that are ON */

@@ -7,7 +7,7 @@ export type UI_model_sag = X.XGroup<{
     blur_sigma: X.XNumber
 }>
 
-export const ui_model_sag = (form: X.FormBuilder): UI_model_sag => {
+export const ui_model_sag = (form: X.Builder): UI_model_sag => {
     return form.fields(
         {
             include: form.choices({

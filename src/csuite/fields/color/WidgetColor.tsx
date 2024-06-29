@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -46,19 +46,19 @@ export class Widget_color extends BaseField<Widget_color_types> {
     }
 
     readonly defaultValue: string = this.config.default ?? '#000000'
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     serial: Widget_color_serial
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_color>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_color>,
         serial?: Widget_color_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -76,14 +76,11 @@ export class Widget_color extends BaseField<Widget_color_types> {
     get value(): Widget_color_value {
         return this.serial.value
     }
-    setValue(val: Widget_color_value) {
-        this.value = val
-    }
     set value(next: Widget_color_value) {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

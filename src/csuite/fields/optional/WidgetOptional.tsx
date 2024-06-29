@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable } from 'mobx'
@@ -11,7 +11,7 @@ import { BaseField } from '../../model/BaseField'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends IBlueprint = IBlueprint> = FieldConfig<
+export type Widget_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
         startActive?: boolean
         widget: T
@@ -20,17 +20,17 @@ export type Widget_optional_config<T extends IBlueprint = IBlueprint> = FieldCon
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = FieldSerial<{
+export type Widget_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends IBlueprint = IBlueprint> = Maybe<T['$Value']>
+export type Widget_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
+export type Widget_optional_types<T extends ISchema = ISchema> = {
     $Type: 'optional'
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -39,12 +39,12 @@ export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
 }
 
 // STATE
-export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseField<Widget_optional_types<T>> {
+export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
 
-    reset = () => {
+    reset(): void {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) this.setActive(true)
@@ -57,7 +57,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
             return
         }
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) return true
@@ -85,7 +85,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
     setActive = (value: boolean) => {
         if (this.serial.active === value) return
         this.serial.active = value
-        this.bumpValue()
+        this.applyValueUpdateEffects()
 
         // update child collapsed state if need be
         if (value) this.child.setCollapsed(false)
@@ -101,21 +101,21 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(this, spec, prevSerial)
+            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(this, spec, null)
+            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, null)
             this.serial.child = this.child.serial
         }
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_optional<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         const defaultActive = config.startActive
@@ -140,16 +140,22 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         })
     }
 
-    setValue(val: Widget_optional_value<T>) {
-        this.value = val
+    /** hack so optional fields do not increase nesting twice */
+    get indentChildren(): number {
+        return 0
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return this.serial.active ? [this.child] : []
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    }
+
+    get value(): Widget_optional_value<T> {
+        if (!this.serial.active) return null
+        return this.childOrThrow.value
     }
 
     set value(next: Widget_optional_value<T>) {
@@ -158,12 +164,8 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
             return
         } else {
             this.setActive(true)
-            this.child.setValue(next)
+            this.child.value = next
         }
-    }
-    get value(): Widget_optional_value<T> {
-        if (!this.serial.active) return null
-        return this.childOrThrow.value
     }
 }
 

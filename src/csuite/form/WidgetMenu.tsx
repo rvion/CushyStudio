@@ -17,7 +17,15 @@ import { toastInfo } from '../../csuite/utils/toasts'
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
     return (
         <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
-            <Button subtle icon='mdiDotsVertical' look='ghost' square size='input' />
+            <Button //
+                tooltip='Open field menu'
+                borderless
+                subtle
+                icon='mdiDotsVertical'
+                look='ghost'
+                square
+                size='input'
+            />
         </RevealUI>
     )
 })

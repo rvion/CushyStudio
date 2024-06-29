@@ -1,7 +1,8 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
+import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
 import { runInAction } from 'mobx'
@@ -37,8 +38,17 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
         appearance?: SelectManyAppearance
         getLabelUI?: (t: T) => React.ReactNode
 
-        //
+        /**
+         * @since 2024-06-24
+         * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+         */
         wrap?: boolean
+
+        /**
+         * @since 2024-06-24
+         * @deprecated use global csuite config instead
+         */
+        tabPosition?: TabPositionConfig
     },
     Widget_selectMany_types<T>
 >
@@ -84,14 +94,14 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
     get defaultValue(): Widget_selectMany_value<T> {
         return this.config.default ?? []
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.values.length !== this.defaultValue.length) return true
         for (const item of this.serial.values) {
             if (!this.defaultValue.find((i) => i.id === item.id)) return true
         }
         return false
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
     wrap = this.config.wrap ?? false
@@ -116,12 +126,12 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_selectMany<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
@@ -146,7 +156,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
         // remove it
         this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     /** select given item */
@@ -157,7 +167,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
 
         // insert & bump
         this.serial.values.push(item)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     /** select item if item was not selected, un-select if item was selected */
@@ -165,27 +175,23 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
         const i = this.serial.values.findIndex((i) => i.id === item.id)
         if (i < 0) {
             this.serial.values.push(item)
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         } else {
             this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         }
     }
 
-    setValue(val: Widget_selectMany_value<T>) {
-        this.value = val
+    get value(): Widget_selectMany_value<T> {
+        return this.serial.values
     }
 
     set value(next: Widget_selectMany_value<T>) {
         if (this.serial.values === next) return
         runInAction(() => {
             this.serial.values = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
-    }
-
-    get value(): Widget_selectMany_value<T> {
-        return this.serial.values
     }
 }
 

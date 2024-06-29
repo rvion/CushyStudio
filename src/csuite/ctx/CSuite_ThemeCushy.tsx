@@ -29,6 +29,14 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     get showToggleButtonBox() {
         return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
+    get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
+        const x = this.st.theme.value.labelLayout
+        if (x.id === 'fluid') return 'fluid'
+        if (x.id === 'left') return 'fixed-left'
+        if (x.id === 'right') return 'fixed-right'
+        return 'fixed-right'
+    }
+
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
     get inputHeight() {

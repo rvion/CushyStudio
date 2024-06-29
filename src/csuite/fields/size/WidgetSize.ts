@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
@@ -60,14 +60,14 @@ export class Widget_size extends BaseField<Widget_size_types> {
         const height = config.default?.height ?? parseInt(modelType.split(' ')[1]!)
         return { type: 'size', aspectRatio, modelType, height, width }
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.defaultValue
         if (this.serial.width !== def.width) return true
         if (this.serial.height !== def.height) return true
         if (this.serial.aspectRatio !== def.aspectRatio) return true
         return false
     }
-    reset() {
+    reset(): void {
         this.value = this.defaultValue
     }
 
@@ -77,14 +77,14 @@ export class Widget_size extends BaseField<Widget_size_types> {
         if (next === this.serial.width) return
         runInAction(() => {
             this.serial.width = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     set height(next: number) {
         if (next === this.serial.height) return
         runInAction(() => {
             this.serial.height = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get sizeHelper(): ResolutionState {
@@ -106,12 +106,12 @@ export class Widget_size extends BaseField<Widget_size_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_size>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_size>,
         serial?: Widget_size_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         if (serial) {
@@ -138,8 +138,8 @@ export class Widget_size extends BaseField<Widget_size_types> {
         })
     }
 
-    setValue(val: Widget_size_value) {
-        this.value = val
+    get value(): Widget_size_value {
+        return this.serial
     }
 
     set value(val: Widget_size_value) {
@@ -153,11 +153,8 @@ export class Widget_size extends BaseField<Widget_size_types> {
         }
         runInAction(() => {
             Object.assign(this.serial, val)
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
-    }
-    get value(): Widget_size_value {
-        return this.serial
     }
 }
 

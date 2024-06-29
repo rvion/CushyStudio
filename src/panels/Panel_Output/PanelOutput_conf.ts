@@ -1,7 +1,7 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PanelOutputConf = CushyFormManager.form(
+export const PanelOutputConf = cushyRepo.form(
     (ui) =>
         ui.fields(
             {

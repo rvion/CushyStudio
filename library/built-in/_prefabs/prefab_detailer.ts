@@ -1,5 +1,5 @@
 import { type OutputFor } from './_prefabs'
-import { ui_sampler } from './prefab_sampler'
+import { ui_sampler, type UI_Sampler } from './prefab_sampler'
 
 const facePositiveDefault = 'perfect face, beautiful, masterpiece, hightly detailed, sharp details'
 const faceNegativeDefault = 'bad face, bad anatomy, bad details'
@@ -8,7 +8,29 @@ const handNegativeDefault = 'bad hand, bad anatomy, bad details'
 const eyePositiveDefault = 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 const eyeNegativeDefault = 'bad eyes, bad anatomy, bad details'
 
-export const ui_refiners = () => {
+export type UI_Refiners = X.XGroup<{
+    refinerType: X.XChoices<{
+        faces: X.XGroup<{
+            prompt: X.XString
+            detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+        }>
+        hands: X.XGroup<{
+            prompt: X.XString
+            detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+        }>
+        eyes: X.XGroup<{ prompt: X.XString }>
+    }>
+    settings: X.XGroup<{
+        sampler: UI_Sampler
+        sam: X.XOptional<
+            X.XGroup<{
+                model_name: X.XEnum<Enum_SAMLoader_model_name>
+                device_mode: X.XEnum<Enum_BLIPCaption_device_mode>
+            }>
+        >
+    }>
+}>
+export function ui_refiners(): UI_Refiners {
     const form = getCurrentForm()
     return form.fields(
         {

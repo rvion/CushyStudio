@@ -2,9 +2,11 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { BaseField } from './BaseField'
 import type { Channel, ChannelId, Producer } from './Channel'
 
-export type SchemaDict = { [key: string]: IBlueprint }
+export type SchemaDict = {
+    [key: string]: ISchema | BaseField
+}
 
-export interface IBlueprint<out W extends BaseField = BaseField> {
+export interface ISchema<out W extends BaseField = BaseField> {
     // real fields
     type: W['type']
     config: W['$Config']
@@ -16,8 +18,7 @@ export interface IBlueprint<out W extends BaseField = BaseField> {
     $Serial: W['$Serial']
     $Value: W['$Value']
 
-    LabelExtraUI?: CovariantFC<{ widget: W }> /* 🧮 */
-    // Make<X extends IWidget>(type: X['type'], config: X['$Config']): ISpec<X>
+    LabelExtraUI?: CovariantFC<{ widget: W }>
 
     // -----------
     producers: Producer<any, any>[]

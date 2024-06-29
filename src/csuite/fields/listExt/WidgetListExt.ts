@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
 
@@ -17,7 +17,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends IBlueprint> = FieldConfig<
+export type Widget_listExt_config<T extends ISchema> = FieldConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -32,7 +32,7 @@ export type Widget_listExt_config<T extends IBlueprint> = FieldConfig<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends IBlueprint> = FieldSerial<{
+export type Widget_listExt_serial<T extends ISchema> = FieldSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -40,7 +40,7 @@ export type Widget_listExt_serial<T extends IBlueprint> = FieldSerial<{
 }>
 
 // VALUE
-export type Widget_listExt_value<T extends IBlueprint> = {
+export type Widget_listExt_value<T extends ISchema> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -48,7 +48,7 @@ export type Widget_listExt_value<T extends IBlueprint> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends IBlueprint> = {
+export type Widget_listExt_types<T extends ISchema> = {
     $Type: 'listExt'
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -57,7 +57,7 @@ export type Widget_listExt_types<T extends IBlueprint> = {
 }
 
 // STATE
-export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listExt_types<T>> {
+export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -68,13 +68,13 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
         if (this.items.length !== defaultLength) return true
         // check if any remaining item has changes
         return this.items.some((i) => i.hasChanges)
     }
-    reset = () => {
+    reset(): void {
         throw new Error('Method not implemented yet.')
     }
 
@@ -86,14 +86,14 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         if (next === this.serial.width) return
         runInAction(() => {
             this.serial.width = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     set height(next: number) {
         if (next === this.serial.height) return
         runInAction(() => {
             this.serial.height = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
     get sizeHelper(): ResolutionState {
@@ -119,12 +119,12 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_listExt<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
 
@@ -148,7 +148,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form.builder._HYDRATE(this, schema, subSerial)
+            const subWidget = entity.domain._HYDRATE(this.entity, this, schema, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -163,11 +163,11 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         })
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return this.items
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 
@@ -175,7 +175,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.form.builder, () => _schema({ ix, width: this.width, height: this.width }))
+                ? runWithGlobalForm(this.entity.domain, () => _schema({ ix, width: this.width, height: this.width }))
                 : _schema
         return schema
     }
@@ -194,11 +194,11 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
     addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const spec = this.schemaAt(this.length)
-        const element = this.form.builder._HYDRATE(this, spec, null)
+        const schema = this.schemaAt(this.length)
+        const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     // REMOVING ITEMS -------------------------------------------------
@@ -213,7 +213,7 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         // remove all items
         this.serial.entries = this.serial.entries.slice(0, minLen)
         this.entries = this.entries.slice(0, minLen)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     removeItem = (item: T['$Field']) => {
@@ -223,20 +223,20 @@ export class Widget_listExt<T extends IBlueprint> extends BaseField<Widget_listE
         // remove item
         this.serial.entries.splice(i, 1)
         this.entries.splice(i, 1)
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
-    setValue(xx: Widget_listExt_value<T>) {
+    set value(xx: Widget_listExt_value<T>) {
         const val = xx.items
         this.width = xx.width
         this.height = xx.height
         for (let i = 0; i < val.length; i++) {
             if (i < this.items.length) {
-                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.widget.value = val[i]!.value
                 this.entries[i]!.shape = val[i]!.position
             } else {
                 this.addItem({ skipBump: true })
-                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.widget.value = val[i]!.value
                 this.entries[i]!.shape = val[i]!.position
             }
         }

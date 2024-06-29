@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
@@ -18,7 +18,7 @@ export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./
 export type Widget_custom_config<T> = FieldConfig<
     {
         defaultValue: () => T
-        subTree?: () => IBlueprint
+        subTree?: () => ISchema
         Component: FC<CustomWidgetProps<T>>
     },
     Widget_custom_types<T>
@@ -56,17 +56,17 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     st = () => cushy
 
     get defaultValue(): T { return this.config.defaultValue() } // prettier-ignore
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.config.defaultValue())
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_custom<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.Component = config.Component
@@ -88,14 +88,12 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     get value(): Widget_custom_value<T> {
         return this.serial.value
     }
-    setValue(val: Widget_custom_value<T>) {
-        this.value = val
-    }
+
     set value(next: Widget_custom_value<T>) {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }

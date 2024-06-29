@@ -13,6 +13,8 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
     return (
         <Button
             subtle
+            tooltip='Reset to default values'
+            borderless
             className={p.className}
             onClick={() => widget?.reset()}
             disabled={!(widget?.hasChanges ?? false)}

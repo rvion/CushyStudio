@@ -36,7 +36,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                 step={1}
                 value={val}
                 mode='int'
-                onValueChange={(value) => widget.setValue(value)}
+                onValueChange={(value) => (widget.value = value)}
             />
             <Button // reset fixed value
                 size='input'

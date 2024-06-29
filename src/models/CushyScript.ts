@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { SchemaDict } from '../csuite/model/IBlueprint'
+import type { SchemaDict } from '../csuite/model/ISchema'
 import type { LiveInstance } from '../db/LiveInstance'
 
 import { statSync } from 'fs'

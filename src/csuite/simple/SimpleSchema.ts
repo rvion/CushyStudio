@@ -3,32 +3,35 @@ import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { IBlueprint } from '../model/IBlueprint'
-import type { SList, SOptional } from './SimpleSpecAliases'
+import type { ISchema } from '../model/ISchema'
+import type { SList, SOptional } from './SimpleAliases'
 
 import { makeObservable } from 'mobx'
 
 import { getCurrentForm_IMPL } from '../model/runWithGlobalForm'
+import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 // Simple Spec --------------------------------------------------------
 
-export class SimpleBlueprint<W extends BaseField = BaseField> implements IBlueprint<W> {
-    $Field!: W
-    $Type!: W['type']
-    $Config!: W['$Config']
-    $Serial!: W['$Serial']
-    $Value!: W['$Value']
+export class SimpleSchema<out Field extends BaseField = BaseField> implements ISchema<Field> {
+    $Field!: Field
+    $Type!: Field['type']
+    $Config!: Field['$Config']
+    $Serial!: Field['$Serial']
+    $Value!: Field['$Value']
 
-    LabelExtraUI = (p: {}) => null
+    LabelExtraUI() {
+        return null
+    }
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, W['$Field']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Field']) => T): this {
+    producers: Producer<any, Field['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Field']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -39,38 +42,41 @@ export class SimpleBlueprint<W extends BaseField = BaseField> implements IBluepr
     }
 
     reactions: {
-        expr: (self: W['$Field']) => any
-        effect: (arg: any, self: W['$Field']) => void
+        expr(self: Field['$Field']): any
+        effect(arg: any, self: Field['$Field']): void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: W['$Field']) => T,
-        effect: (arg: T, self: W['$Field']) => void,
+        expr: (self: Field['$Field']) => T,
+        effect: (arg: T, self: Field['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this
     }
 
     // -----------------------------------------------------
-    Make = <X extends BaseField>(type: X['type'], config: X['$Config']) => new SimpleBlueprint(type, config)
+    Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
+        return new SimpleSchema(type, config)
+    }
 
     constructor(
         //
-        public readonly type: W['type'],
-        public readonly config: W['$Config'],
+        public readonly type: Field['type'],
+        public readonly config: Field['$Config'],
     ) {
         makeObservable(this, { config: true })
     }
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> =>
-        new SimpleBlueprint<Widget_list<this>>('list', {
+    list(config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> {
+        return new SimpleSchema<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
+    }
 
-    optional = (startActive: boolean = false): SOptional<this> =>
-        new SimpleBlueprint<Widget_optional<this>>('optional', {
+    optional(startActive: boolean = false): SOptional<this> {
+        return new SimpleSchema<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -79,18 +85,20 @@ export class SimpleBlueprint<W extends BaseField = BaseField> implements IBluepr
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
-
-    shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
+    }
 
     /** clone the spec, and patch the cloned config */
-    withConfig = (config: Partial<W['$Config']>): SimpleBlueprint<W> => {
-        const mergedConfig = { ...this.config, ...config }
-        const cloned = new SimpleBlueprint<W>(this.type, mergedConfig)
+    withConfig(config: Partial<Field['$Config']>): SimpleSchema<Field> {
+        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
+        const cloned = new SimpleSchema<Field>(this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
         return cloned
     }
 
-    hidden = (): SimpleBlueprint<W> => this.withConfig({ hidden: true })
+    /** clone the spec, and patch the cloned config to make it hidden */
+    hidden(): SimpleSchema<Field> {
+        return this.withConfig({ hidden: true })
+    }
 }

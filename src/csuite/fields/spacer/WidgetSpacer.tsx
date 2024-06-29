@@ -1,7 +1,7 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { observable } from 'mobx'
@@ -50,16 +50,16 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
     serial: Widget_spacer_serial
 
     hasChanges = false
-    reset = () => {}
+    reset(): void {}
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_spacer>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -77,8 +77,9 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
     get value() {
         return false
     }
-    setValue(val: boolean) {}
-    set value(val) {}
+    set value(val) {
+        // do nothing
+    }
 }
 
 // DI

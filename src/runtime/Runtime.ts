@@ -1,6 +1,6 @@
 import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
-import type { SchemaDict } from '../csuite/model/IBlueprint'
+import type { SchemaDict } from '../csuite/model/ISchema'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
@@ -16,6 +16,7 @@ import * as path from 'pathe'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
+import { toJSONError } from '../csuite/errors/toJSONError'
 import { Widget_group } from '../csuite/fields/group/WidgetGroup'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
@@ -369,7 +370,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             // console.error('🌠', 'RUN FAILURE')
             this.Cushy.db.runtime_error.create({
                 message: error.message ?? 'no-message',
-                infos: error,
+                infos: toJSONError(error),
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
@@ -590,10 +591,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
     // 🐉     //
-    // 🐉     requestFn: (q: FormBuilder) => Req,
+    // 🐉     requestFn: (q: Builder) => Req,
     // 🐉     layout?: 0,
     // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    // 🐉     const reqBuilder = new FormBuilder()
+    // 🐉     const reqBuilder = new Builder()
     // 🐉     const request = requestFn(reqBuilder)
     // 🐉     const ask = new ScriptStep_ask(request)
     // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })

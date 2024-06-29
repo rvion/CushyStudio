@@ -1,8 +1,9 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
-import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
+import type { TabPositionConfig } from './TabPositionConfig'
 
 import { nanoid } from 'nanoid'
 
@@ -12,7 +13,6 @@ import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
 
-export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
@@ -99,6 +99,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         }))
     }
 
+    /** hack so optional fields do not increase nesting twice */
+    get indentChildren(): number {
+        return 0
+    }
+
     /** array of all active branch keys */
     get activeBranches(): (keyof T & string)[] {
         return Object.keys(this.serial.branches).filter((x) => this.serial.branches[x])
@@ -113,7 +118,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return this.children[this.firstActiveBranchName]
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
@@ -130,7 +135,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return false
     }
 
-    reset() {
+    reset(): void {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
@@ -146,17 +151,17 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
             const childAfter = this.children[branchName]
             if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_choices<T>>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         // ensure ID
@@ -215,11 +220,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         })
     }
 
-    get subWidgets() {
+    get subWidgets(): BaseField[] {
         return Object.values(this.children)
     }
 
-    get subWidgetsWithKeys() {
+    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
         return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
     }
 
@@ -240,7 +245,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         delete this.children[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
         this.serial.branches[branch] = false
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     enableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
@@ -260,20 +265,20 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
+            this.children[branch] = this.entity.domain._HYDRATE(this.entity, this, schema, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(this, schema, null)
+            this.children[branch] = this.entity.domain._HYDRATE(this.entity, this, schema, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 
         // set the active branch as active
         this.serial.branches[branch] = true
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
-    setValue(val: Widget_choices_value<T>) {
+    set value(val: Widget_choices_value<T>) {
         for (const branch of this.choices) {
             // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
             if (val[branch] == null) {
@@ -286,10 +291,10 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
                     this.enableBranch(branch)
                 }
                 // patch branch value to given value
-                this.children[branch]!.setValue(val[branch]!)
+                this.children[branch]!.value = val[branch]!
             }
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
     /** results, but only for active branches */
     get value(): Widget_choices_value<T> {

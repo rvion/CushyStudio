@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { cushyRepo } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
@@ -16,7 +16,7 @@ import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = CushyFormManager.form(
+const Header_Playground = cushyRepo.form(
     (ui) =>
         ui.choice({
             appearance: 'tab',

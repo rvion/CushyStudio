@@ -1,8 +1,8 @@
 import type { IconName } from '../../icons/icons'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -68,6 +68,9 @@ export class Widget_string extends BaseField<Widget_string_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
+
+    UITextarea = () => <WidgetString_TextareaBodyUI widget={this} />
+    UIInputText = () => <WidgetString_HeaderUI widget={this} />
     // readonly border = false
     readonly id: string
 
@@ -79,44 +82,48 @@ export class Widget_string extends BaseField<Widget_string_types> {
     // --------------
 
     serial: Widget_string_serial
-    readonly defaultValue: string = this.config.default ?? ''
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.value = this.defaultValue } // prettier-ignore
+    get defaultValue(): string {
+        return this.config.default ?? ''
+    }
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+
+    reset(): void {
+        this.value = this.defaultValue
+    }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_string>,
+        entity: Entity,
+        parent: BaseField | null,
+        spec: ISchema<Widget_string>,
         serial?: Widget_string_serial,
     ) {
-        super()
+        super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
         const config = spec.config
         this.serial = serial ?? {
             type: 'str',
-            val: this.config.default,
+            val: config.default,
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        this.init({})
+        this.init()
     }
     get animateResize() {
         if (this.config.textarea) return false
         return true
     }
-    setValue(val: Widget_string_value) {
-        this.value = val
+
+    get value(): Widget_string_value {
+        return this.serial.val ?? this.config.default ?? ''
     }
+
     set value(next: Widget_string_value) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
-    }
-    get value(): Widget_string_value {
-        return this.serial.val ?? this.config.default ?? ''
     }
 }
 

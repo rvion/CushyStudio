@@ -53,6 +53,17 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
 
             <div className='divider my-1'>FileSystem</div>
             <MenuItem
+                icon='mdiStarShooting'
+                iconClassName='[color:gold]'
+                disabled={!st.getConfigValue('favoriteLocalFolderPath') || st.getConfigValue('favoriteLocalFolderPath') === ''}
+                onClick={() => {
+                    if (!img || !st.getConfigValue('favoriteLocalFolderPath')) return
+                    return img.saveLocally(st.getConfigValue('favoriteLocalFolderPath') ?? '')
+                }}
+            >
+                {ImagePathUIString(st.getConfigValue('favoriteLocalFolderPath'))}
+            </MenuItem>
+            <MenuItem
                 icon={'mdiFolder'}
                 disabled={!img?.absPath}
                 onClick={() => {
@@ -87,6 +98,15 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
         </>
     )
 })
+
+const ImagePathUIString = (path: string | undefined): string => {
+    if (!path || path === '') {
+        return 'Define Settings > Config > Local folder to save favorites'
+    } else {
+        return `Save Copy to ${path.substring(0, 6)}...
+    ${path.substring(path.length - 11, path.length)}`
+    }
+}
 
 export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: MediaImageL }) {
     const st = useSt()

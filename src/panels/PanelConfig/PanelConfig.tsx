@@ -141,7 +141,7 @@ const LegacyOptions = observer(function LegacyOptions_() {
                 </FieldUI>
                 <FieldUI label='Set tags file'>
                     <input
-                        tw='cushy-basic-input w-full'
+                        tw='csuite-basic-input w-full'
                         name='tagFile'
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                         onChange={(ev) => {
@@ -150,10 +150,9 @@ const LegacyOptions = observer(function LegacyOptions_() {
                         }}
                     />
                 </FieldUI>
-
                 <FieldUI label='Your github username'>
                     <input //
-                        tw='cushy-basic-input w-full'
+                        tw='csuite-basic-input w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => {
                             config.update({ githubUsername: ev.target.value })
@@ -164,7 +163,7 @@ const LegacyOptions = observer(function LegacyOptions_() {
                 </FieldUI>
                 {/* <FieldUI label='Your Cushy CloudGPU api Key'>
         <input //
-            tw='cushy-basic-input w-full'
+            tw='csuite-basic-input w-full'
             value={config.value.cushyCloudGPUApiKey}
             onChange={(ev) => {
                 config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -202,7 +201,7 @@ const LegacyOptions = observer(function LegacyOptions_() {
                 </FieldUI>
                 <FieldUI label='Check update every X minutes'>
                     <input //
-                        tw='cushy-basic-input w-full'
+                        tw='csuite-basic-input w-full'
                         type='number'
                         placeholder='48'
                         name='galleryImageSize'
@@ -234,6 +233,13 @@ const LegacyOptions = observer(function LegacyOptions_() {
                         Open Hosts page
                         <ComboUI combo={KEYS.openPage_Hosts} />
                     </Button>
+                </FieldUI>
+                <FieldUI label='Local folder to save favorites:'>
+                    <InputStringUI
+                        icon='mdiFolderStar'
+                        getValue={() => config.value.favoriteLocalFolderPath ?? ''}
+                        setValue={(next) => config.update({ favoriteLocalFolderPath: next })}
+                    />
                 </FieldUI>
             </div>
         </div>
