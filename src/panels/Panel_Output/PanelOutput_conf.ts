@@ -13,7 +13,7 @@ export const PanelOutputConf = cushyRepo.entity(
         ),
     {
         name: 'panel-output',
-        initialSerial: () => readJSON('settings/panel-output-config.json'),
+        serial: () => readJSON('settings/panel-output-config.json'),
         onSerialChange: (form) => writeJSON('settings/panel-output-config.json', form.serial),
     },
 )

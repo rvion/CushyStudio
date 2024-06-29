@@ -118,7 +118,7 @@ export const interfaceConf = cushyRepo.entity(
         ),
     {
         name: 'Interface Config',
-        initialSerial: () => readJSON('settings/interface.json'),
+        serial: () => readJSON('settings/interface.json'),
         onSerialChange: (form) => writeJSON('settings/interface.json', form.serial),
     },
 )

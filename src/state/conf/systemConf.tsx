@@ -48,7 +48,7 @@ export const systemConf = cushyRepo.entity(
         ),
     {
         name: 'System Config',
-        initialSerial: () => readJSON('settings/system.json'),
+        serial: () => readJSON('settings/system.json'),
         onSerialChange: (form) => writeJSON('settings/system.json', form.serial),
     },
 )

@@ -431,7 +431,7 @@ export class STATE {
         }),
         {
             name: 'Graph Visualisation',
-            initialSerial: () => readJSON('settings/graph-visualization.json'),
+            serial: () => readJSON('settings/graph-visualization.json'),
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
@@ -454,7 +454,7 @@ export class STATE {
         }),
         {
             name: 'Civitai Conf',
-            initialSerial: () => readJSON('settings/civitai.json'),
+            serial: () => readJSON('settings/civitai.json'),
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
@@ -467,7 +467,7 @@ export class STATE {
         }),
         {
             name: 'SideBar Conf',
-            initialSerial: () => readJSON('settings/sidebar.json'),
+            serial: () => readJSON('settings/sidebar.json'),
             onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
@@ -501,7 +501,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialSerial: () => readJSON<EntitySerial>('settings/displacement.json'),
+            serial: () => readJSON<EntitySerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
@@ -521,7 +521,7 @@ export class STATE {
         {
             name: 'Gallery Conf',
             onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            initialSerial: () => readJSON('settings/gallery.json'),
+            serial: () => readJSON('settings/gallery.json'),
         },
     )
 

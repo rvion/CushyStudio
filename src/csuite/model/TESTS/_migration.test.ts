@@ -5,12 +5,15 @@ import { simpleRepo } from '../../index'
 // ------------------------------------------------------------------------------
 describe('can recover when field becoming list ', () => {
     it('works with string', () => {
-        const E = simpleRepo.entity((f) => f.int({ default: 3 }))
-        expect(E.serial).toMatchObject({
+        const E1 = simpleRepo.entity((f) => f.int({ default: 3 }))
+
+        expect(E1.serial).toMatchObject({
             root: {
                 val: 3,
             },
         })
+
+        const E2 = simpleRepo.entity((f) => f.int({ default: 3 }), { serial: () => E1.serial })
     })
 })
 

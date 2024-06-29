@@ -269,7 +269,7 @@ export class DraftL {
 
                 this._form = cushyRepo.fields(action.ui, {
                     name: this.name,
-                    initialSerial: () => this.data.formSerial,
+                    serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
                         this.update({ formSerial: form.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)

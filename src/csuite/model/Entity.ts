@@ -21,9 +21,10 @@ export type ModelConfig<
     DOMAIN extends IBuilder,
     CONTEXT,
 > = {
+    name?: string
+    serial?: (context: CONTEXT) => Maybe<EntitySerial>
     onValueChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
     onSerialChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
-    initialSerial?: (context: CONTEXT) => Maybe<EntitySerial>
 }
 
 export class Entity<
@@ -237,7 +238,7 @@ export class Entity<
 
         try {
             // retrieve the previous entity serial
-            let serial = this.config.initialSerial?.(this.context)
+            let serial = this.config.serial?.(this.context)
 
             // keep track of the prev uid, and set-it up so it's avaialable asap
             this._uid = serial?.uid ?? nanoid()

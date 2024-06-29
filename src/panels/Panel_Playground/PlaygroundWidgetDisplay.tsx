@@ -291,7 +291,7 @@ export const FORM_PlaygroundWidgetDisplay = cushyRepo.fields(
     },
     {
         name: 'Playground Widget Showcase',
-        initialSerial: () => readJSON('settings/playground_form_display.json'),
+        serial: () => readJSON('settings/playground_form_display.json'),
         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
     },
 )

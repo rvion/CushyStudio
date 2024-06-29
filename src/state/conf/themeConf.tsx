@@ -79,7 +79,7 @@ export const themeConf: Entity<ThemeConf, Builder, {}> = cushyRepo.entity(
         ),
     {
         name: 'theme config',
-        initialSerial: () => readJSON('settings/theme2.json'),
+        serial: () => readJSON('settings/theme2.json'),
         onSerialChange: (form) => writeJSON('settings/theme2.json', form.serial),
     },
 )

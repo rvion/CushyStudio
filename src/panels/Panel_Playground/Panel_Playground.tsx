@@ -36,7 +36,7 @@ const Header_Playground = cushyRepo.entity(
         }),
     {
         name: 'Playground Conf',
-        initialSerial: () => readJSON('settings/playground_config.json'),
+        serial: () => readJSON('settings/playground_config.json'),
         onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
     },
 )

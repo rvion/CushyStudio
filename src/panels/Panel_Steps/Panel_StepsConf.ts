@@ -37,7 +37,7 @@ export const PanelStepsConf = cushyRepo.entity(
         ),
     {
         name: 'panel-steps',
-        initialSerial: () => readJSON('settings/panel-steps-config.json'),
+        serial: () => readJSON('settings/panel-steps-config.json'),
         onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
     },
 )

@@ -29,7 +29,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
             ),
         {
             name: 'Playground Widget Showcase',
-            initialSerial: () => cushy.readJSON<EntitySerial>('settings/beer.json'),
+            serial: () => cushy.readJSON<EntitySerial>('settings/beer.json'),
             onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.serial),
         },
     )

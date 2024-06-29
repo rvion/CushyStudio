@@ -39,7 +39,7 @@ const HANDLE = registerCustomPanel(
                 }),
             {
                 name: 'myCustomPanel',
-                initialSerial: () => store.data,
+                serial: () => store.data,
                 onSerialChange: (form) => {
                     store.data = form.serial
                 },
