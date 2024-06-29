@@ -3,10 +3,12 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
+import { BadgeListUI } from '../csuite/badge/BadgeListUI'
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
+import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
@@ -112,7 +114,17 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
 
             <SpacerUI />
-
+            <InputStringUI
+                icon='mdiTagEdit'
+                getValue={() => img?.data.tags ?? ''}
+                setValue={(next) => {
+                    if (!img) return
+                    img.tags = next
+                }}
+            ></InputStringUI>
+            <div>
+                <BadgeListUI badges={img?.data.tags?.split(',')} onClick={(tag) => img?.removeTag(tag.toString())}></BadgeListUI>
+            </div>
             {/* Image Info Button */}
             <RevealUI
                 tw='hover:brightness-125 rounded text-shadow'
@@ -140,11 +152,11 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                         </>
                     ) : null}
                     {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}
-                    {img?.tags.map((t) => (
+                    {/* {img?.tags.map((t) => (
                         <div key={t} tw='italic'>
                             #{t}
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </RevealUI>
 
