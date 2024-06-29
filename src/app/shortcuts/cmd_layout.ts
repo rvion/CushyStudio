@@ -34,22 +34,24 @@ export const allLayoutCommands: Command<null>[] = [
         'mod+k mod+ArrowRight',
         'move tab to the right',
         () => cushy.layout.moveActiveTabToRight(),
+        'mdiGamepadCircleRight',
     ),
 
     // move active tab to the left
     globalValidInInput(
         //
         'mod+k mod+ArrowLeft',
-        'move tab to the right',
+        'move tab to the left',
         () => cushy.layout.moveActiveTabToLeft(),
+        'mdiGamepadCircleLeft',
     ),
 
-    globalValidInInput(
-        //
-        'mod+k mod+ArrowDown',
-        'move tab to the right',
-        () => cushy.layout.getTabsetSurroundings(),
-    ),
+    // globalValidInInput(
+    //     //
+    //     'mod+k mod+ArrowDown',
+    //     'move tab to the right',
+    //     () => cushy.layout.getTabsetSurroundings(),
+    // ),
 
     command({
         id: 'closeCurrentTab',
@@ -58,6 +60,7 @@ export const allLayoutCommands: Command<null>[] = [
         ctx: ctx_global,
         action: () => cushy.layout.closeCurrentTab(),
         label: 'Close current tab',
+        icon: 'mdiCloseBoxOutline',
     }),
 
     command({
@@ -67,6 +70,7 @@ export const allLayoutCommands: Command<null>[] = [
         validInInput: true,
         ctx: ctx_global,
         action: () => cushy.layout.closeAllTabs(),
+        icon: 'mdiCloseBoxMultipleOutline',
     }),
 
     command({
@@ -76,5 +80,6 @@ export const allLayoutCommands: Command<null>[] = [
         validInInput: true,
         ctx: ctx_global,
         action: () => cushy.layout.closeCurrentTabset(),
+        icon: 'mdiCloseOctagonOutline',
     }),
 ]

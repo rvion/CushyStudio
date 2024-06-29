@@ -1,3 +1,5 @@
+import type { IconName } from '../../csuite/icons/icons'
+
 import { ctx_global } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
 import { CushyShortcut } from '../../csuite/commands/CommandManager'
@@ -27,7 +29,13 @@ export const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: st
 //     action: always(action),
 //     info,
 // })
-export const globalValidInInput = (combo: CushyShortcut | CushyShortcut[], info: string, action: () => void): Command<null> =>
+export const globalValidInInput = (
+    //
+    combo: CushyShortcut | CushyShortcut[],
+    info: string,
+    action: () => void,
+    icon?: IconName,
+): Command<null> =>
     command({
         id: `simple_${info}`,
         combos: Array.isArray(combo) ? combo : [combo],
@@ -35,4 +43,5 @@ export const globalValidInInput = (combo: CushyShortcut | CushyShortcut[], info:
         action: always(action),
         validInInput: true,
         label: info,
+        icon,
     })
