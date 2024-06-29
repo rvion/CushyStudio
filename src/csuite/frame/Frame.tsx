@@ -73,7 +73,7 @@ export const Frame = observer(
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
-            tooltip,
+            tooltip, tooltipPlacement,
 
             // remaining properties
             ...rest
@@ -155,7 +155,7 @@ export const Frame = observer(
                 tooltipStuff.tooltip = {
                     ref: ev.currentTarget,
                     text: p.tooltip ?? 'test',
-                    placement: p.tooltipPlacement ?? 'bottom',
+                    placement: tooltipPlacement ?? 'bottom',
                 }
         }
 
