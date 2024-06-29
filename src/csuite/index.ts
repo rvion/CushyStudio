@@ -1,11 +1,11 @@
-import { Repository } from './model/EntityManager'
+import { Repository } from './model/Repository'
 import { SimpleBuilder } from './simple/SimpleBuilder'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
 export type { IBuilder as Builder } from './model/IBuilder'
-export type { EntitySerial as ModelSerial } from './model/ModelSerial'
+export type { EntitySerial as ModelSerial } from './model/EntitySerial'
 export type { ModelConfig } from './model/Entity'
 export type { SchemaDict, ISchema as ISchema } from './model/ISchema'
 export type { OpenRouter_Models } from './openrouter/OpenRouter_models'

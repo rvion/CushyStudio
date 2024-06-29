@@ -1,5 +1,5 @@
 import type { Status } from '../back/Status'
-import type { EntitySerial } from '../csuite/model/ModelSerial'
+import type { EntitySerial } from '../csuite/model/EntitySerial'
 import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'

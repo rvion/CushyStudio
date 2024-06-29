@@ -30,7 +30,7 @@ import { Widget_size, type Widget_size_config } from '../csuite/fields/size/Widg
 import { Widget_spacer, type Widget_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../csuite/fields/string/WidgetString'
 import { BaseField } from '../csuite/model/BaseField'
-import { Repository } from '../csuite/model/EntityManager'
+import { Repository } from '../csuite/model/Repository'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Widget_prompt, type Widget_prompt_config } from '../prompt/WidgetPrompt'

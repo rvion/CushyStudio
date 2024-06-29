@@ -1,4 +1,4 @@
-import type { EntitySerial } from '../../csuite/model/ModelSerial'
+import type { EntitySerial } from '../../csuite/model/EntitySerial'
 
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'

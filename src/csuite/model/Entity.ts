@@ -1,19 +1,19 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
-import type { CovariantFn, CovariantFn2 } from '../variance/BivariantHack'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { BaseField } from './BaseField'
-import type { Repository } from './EntityManager'
 import type { IBuilder } from './IBuilder'
 import type { ISchema } from './ISchema'
-import type { EntitySerial } from './ModelSerial'
+import type { Repository } from './Repository'
 
 import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
-import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
 import { isWidgetGroup } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
 import { debounce } from '../utils/debounce'
+import { type EntityId, mkNewEntityId } from './EntityId'
+import { type EntitySerial } from './EntitySerial'
 
 export type ModelConfig<
     //
@@ -226,8 +226,8 @@ export class Entity<
     ready = false
 
     /** only available once initialized */
-    private _uid!: Maybe<string>
-    get uid(): string {
+    private _uid!: Maybe<EntityId>
+    get uid(): EntityId {
         if (this._uid == null) throw new Error('🔴 uid not available before form is initialized')
         return this._uid
     }
@@ -241,7 +241,7 @@ export class Entity<
             let serial = this.config.serial?.(this.context)
 
             // keep track of the prev uid, and set-it up so it's avaialable asap
-            this._uid = serial?.uid ?? nanoid()
+            this._uid = serial?.uid ?? mkNewEntityId()
 
             // ensure form serial is observable, so we avoid working with soon to expire refs
             if (serial && !isObservable(serial)) {
@@ -297,7 +297,7 @@ function recoverFromLegacySerial(json: any): Maybe<EntitySerial> {
         }
         console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(json, null, 3).slice(0, 800))
         return {
-            uid: nanoid(),
+            uid: mkNewEntityId(),
             type: 'FormSerial',
             root: json,
         }

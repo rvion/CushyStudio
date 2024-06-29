@@ -17,7 +17,7 @@ import { Widget_selectMany, type Widget_selectMany_config } from '../fields/sele
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
 import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { Repository } from '../model/EntityManager'
+import { Repository } from '../model/Repository'
 import { SimpleSchema } from './SimpleSchema'
 
 // -------------------------------------------------------------------------------------------

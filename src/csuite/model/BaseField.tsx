@@ -557,12 +557,12 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
         this.entity._allFormWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgets
-        this.entity.repository._allWidgets.set(this.id, this)
+        this.entity.repository._allFields.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.entity.repository._allWidgetsByType.get(this.type)
+        const prev = this.entity.repository._allFieldsByType.get(this.type)
         if (prev == null) {
-            this.entity.repository._allWidgetsByType.set(this.type, new Map([[this.id, this]]))
+            this.entity.repository._allFieldsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }

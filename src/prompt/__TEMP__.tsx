@@ -20,7 +20,7 @@ type X = { id: string; label?: string }
 export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Widget_prompt['id'] }) {
     // 1. retrieve the widget to get the inital value
     // |  the widget won't be used afterwise unless we programmatically do stuff with it
-    const widget = cushy.forms.getWidgetByID(p.promptID) as Widget_prompt | undefined
+    const widget = cushy.forms.getFieldByID(p.promptID) as Widget_prompt | undefined
     const initialText = widget?.text ?? ''
 
     // 2. create a self-contained state to play with prompt-lang
@@ -141,7 +141,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                 value={() => ({ id: p.promptID, label: 'current' })}
                 getLabelText={(i) => i.label ?? i.id}
                 onChange={(i) => {
-                    const nextWidget = cushy.forms.getWidgetByID(i.id) as Widget_prompt
+                    const nextWidget = cushy.forms.getFieldByID(i.id) as Widget_prompt
                     if (!nextWidget) return toastError('widget not found')
                     if (nextWidget.type !== 'prompt') return toastError('widget is not a prompt')
                     uist.currentlyLinkedWidget = nextWidget
