@@ -25,7 +25,11 @@ export const BadgeListUI = observer(function BadgeListUI_({
     return (
         <BadgeContainerUI wrap={wrap}>
             {items.slice(0, 10).map((tag) => (
-                <BadgeUI autoHue={autoHue} key={tag} onClick={() => onClick && onClick(tag)}>
+                <BadgeUI //
+                    autoHue={autoHue}
+                    key={tag}
+                    onClick={onClick ? () => onClick(tag) : undefined}
+                >
                     {tag}
                 </BadgeUI>
             ))}
