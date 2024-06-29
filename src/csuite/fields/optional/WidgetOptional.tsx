@@ -101,9 +101,9 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, prevSerial)
+            this.child = this.entity.builder._HYDRATE(this.entity, this, spec, prevSerial)
         } else {
-            this.child = this.entity.domain._HYDRATE(this.entity, this, spec, null)
+            this.child = this.entity.builder._HYDRATE(this.entity, this, spec, null)
             this.serial.child = this.child.serial
         }
     }

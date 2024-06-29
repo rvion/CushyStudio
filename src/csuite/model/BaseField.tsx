@@ -64,7 +64,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
     ) {}
 
     get domain(): IBuilder {
-        return this.entity.domain
+        return this.entity.builder
     }
 
     /** unique ID; each node in the form tree has one; persisted in serial */

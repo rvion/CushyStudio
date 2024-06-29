@@ -138,7 +138,7 @@ export class Widget_list<T extends ISchema> //
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.entity.domain, () => _schema(ix))
+                ? runWithGlobalForm(this.entity.builder, () => _schema(ix))
                 : _schema
         return schema
     }
@@ -207,7 +207,7 @@ export class Widget_list<T extends ISchema> //
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = entity.domain._HYDRATE(this.entity, this, unmounted, subSerial)
+                const subWidget = entity.builder._HYDRATE(this.entity, this, unmounted, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -281,7 +281,7 @@ export class Widget_list<T extends ISchema> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
+        const element = this.entity.builder._HYDRATE(this.entity, this, schema, null)
 
         // set initial value
         if (p.value) {

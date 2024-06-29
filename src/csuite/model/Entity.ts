@@ -51,7 +51,7 @@ export class Entity<
         public config: ModelConfig<SCHEMA, BUILDER, CONTEXT>,
         public context: CONTEXT,
     ) {
-        this.domain = repository.domain
+        this.builder = repository.domain
 
         this._onSerialChange = this.config.onSerialChange //
             ? debounce(this.config.onSerialChange, 200)
@@ -218,7 +218,7 @@ export class Entity<
     }
 
     /** from builder, offering simple API for your project specifc widgets  */
-    domain: BUILDER
+    builder: BUILDER
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: SCHEMA['$Field']
@@ -234,7 +234,7 @@ export class Entity<
 
     private init(): SCHEMA['$Field'] {
         // console.log(`[🥐] Building form ${this.config.name}`)
-        const formBuilder = this.domain
+        const formBuilder = this.builder
 
         try {
             // retrieve the previous entity serial

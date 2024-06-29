@@ -175,7 +175,7 @@ export class DraftL {
             throw new Error('❌ form not loaded yet')
         }
         this.isDirty = false
-        this.form.domain._cache.count++
+        this.form.builder._cache.count++
         this.AWAKE()
 
         // update

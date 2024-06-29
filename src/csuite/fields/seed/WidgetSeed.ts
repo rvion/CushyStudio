@@ -127,7 +127,7 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
     }
 
     get value(): Widget_seed_value {
-        const count = this.entity.domain._cache.count
+        const count = this.entity.builder._cache.count
         return this.serial.mode === 'randomize' ? Math.floor(Math.random() * 9_999_999) : this.serial.val
     }
 }

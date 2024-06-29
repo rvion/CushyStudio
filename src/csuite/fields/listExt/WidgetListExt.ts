@@ -148,7 +148,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = entity.domain._HYDRATE(this.entity, this, schema, subSerial)
+            const subWidget = entity.builder._HYDRATE(this.entity, this, schema, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -175,7 +175,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.entity.domain, () => _schema({ ix, width: this.width, height: this.width }))
+                ? runWithGlobalForm(this.entity.builder, () => _schema({ ix, width: this.width, height: this.width }))
                 : _schema
         return schema
     }
@@ -195,7 +195,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const schema = this.schemaAt(this.length)
-        const element = this.entity.domain._HYDRATE(this.entity, this, schema, null)
+        const element = this.entity.builder._HYDRATE(this.entity, this, schema, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
         if (!p?.skipBump) this.applyValueUpdateEffects()
