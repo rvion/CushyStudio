@@ -1,3 +1,9 @@
+2024-06-29:
+    ☐ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min)
+    ☐ 2. recover from/to list when iterating on the schema (15min)
+    ☐ 3. config tab persitence (15min)
+    ☐ 4. debug icon to see panel data (15min)
+
 --------------
 ☐ make sure choices always show in the same order
 ☐ debug electron
