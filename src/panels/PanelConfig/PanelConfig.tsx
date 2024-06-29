@@ -242,6 +242,13 @@ const LegacyOptions = observer(function LegacyOptions_() {
                         <ComboUI combo={KEYS.openPage_Hosts} />
                     </Button>
                 </FieldUI>
+                <FieldUI label='Local folder to save favorites:'>
+                    <InputStringUI
+                        icon='mdiFolderStar'
+                        getValue={() => config.value.favoriteLocalFolderPath ?? ''}
+                        setValue={(next) => config.update({ favoriteLocalFolderPath: next })}
+                    />
+                </FieldUI>
             </div>
         </div>
     )

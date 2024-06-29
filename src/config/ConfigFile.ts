@@ -76,6 +76,8 @@ export type ConfigFile = {
     showPromptPluginLora?: boolean
     showPromptPluginAst?: boolean
     showPromptPluginShortcuts?: boolean
+
+    favoriteLocalFolderPath?: string
 }
 
 export type ReleaseChannels = 'stable' | 'dev'

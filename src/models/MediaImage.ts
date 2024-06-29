@@ -10,9 +10,10 @@ import type { DraftL } from './Draft'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
-import { existsSync, mkdirSync, readFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import Konva from 'konva'
 import { lookup } from 'mime-types'
+import { format, join, parse } from 'path'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
@@ -117,6 +118,25 @@ export class MediaImageL {
         const draft = draft_ ?? this.draft
         if (draft == null) return toastError(`no related draft found`)
         draft.update({ illustration: this.url })
+    }
+
+    saveLocally = (localAbsolutePath: string) => {
+        mkdirSync(localAbsolutePath, { recursive: true })
+        let absFilePath = join(localAbsolutePath, this.filename)
+
+        // Check if the file already exists and append a timestamp if it does
+        if (existsSync(absFilePath)) {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+            const parsedPath = parse(absFilePath)
+            absFilePath = format({
+                dir: parsedPath.dir,
+                name: `${parsedPath.name}-${timestamp}`,
+                ext: parsedPath.ext,
+            })
+        }
+
+        console.log(`Saving copy to: ${absFilePath}`)
+        writeFileSync(absFilePath, this.getArrayBuffer())
     }
 
     get relPath() {
