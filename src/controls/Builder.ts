@@ -221,27 +221,35 @@ export class Builder implements IBuilder {
     float = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
+
     number = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
+
     remSize = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
+
     custom = <T>(config: Widget_custom_config<T>): X.XCustom<T> => {
         return new Schema<Widget_custom<T>>(Widget_custom, 'custom', config)
     }
+
     list = <T extends ISchema>(config: Widget_list_config<T>): X.XList<T> => {
         return new Schema<Widget_list<T>>(Widget_list, 'list', config)
     }
+
     listExt = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', config)
     }
+
     timeline = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'timeline', ...config })
     }
+
     regional = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
         return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'regional', ...config })
     }
+
     selectOneV2 = <T extends string>(
         p: readonly T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
@@ -252,9 +260,11 @@ export class Builder implements IBuilder {
             ...config,
         })
     }
+
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
         return new Schema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
     }
+
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): X.XSelectMany<T> => {
         return new Schema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
     }
