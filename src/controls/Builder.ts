@@ -42,6 +42,7 @@ declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/ISchema').SchemaDict
         type Builder = import('./Builder').Builder
+        type Runtime = import('../runtime/Runtime').Runtime
 
         // field aliases
         type Shared<T extends ISchema> = Widget_shared<T>
