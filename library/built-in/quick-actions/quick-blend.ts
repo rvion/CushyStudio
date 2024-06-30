@@ -1,7 +1,7 @@
 app({
     metadata: {
         name: 'blend-modes',
-        description: 'my app description',
+        description: 'quickly test blend modes supported by sharp',
     },
     ui: (form) => ({
         img1: form.image({}),
@@ -14,15 +14,13 @@ app({
             'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion',
         ]),
     }),
-    run: async (_run, { img1, img2, blend }) => {
+    run: async (_, { img1, img2, blend }) => {
         for (const val of blend) {
             await img1.processWithSharp((i) =>
-                i
-                    .composite([
-                        { input: img2.absPath, blend: val.id },
-                        { input: { text: { text: val.id, font: 'Arial', dpi: 800 } }, gravity: 'north' },
-                    ])
-                    .rotate(45),
+                i.composite([
+                    { input: img2.absPath, blend: val.id },
+                    { input: { text: { text: val.id, font: 'Arial', dpi: 800 } }, gravity: 'north' },
+                ]),
             )
         }
     },
