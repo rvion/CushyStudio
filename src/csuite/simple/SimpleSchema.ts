@@ -3,7 +3,6 @@ import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
 import type { ISchema } from '../model/ISchema'
-import type { SList, SOptional } from './SimpleAliases'
 
 import { makeObservable } from 'mobx'
 
@@ -66,14 +65,14 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     }
 
     /** wrap widget spec to list stuff */
-    list(config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> {
+    list(config: Omit<Widget_list_config<this>, 'element'> = {}): S.SList<this> {
         return new SimpleSchema<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
     }
 
-    optional(startActive: boolean = false): SOptional<this> {
+    optional(startActive: boolean = false): S.SOptional<this> {
         return new SimpleSchema<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,

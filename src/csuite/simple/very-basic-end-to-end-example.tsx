@@ -33,54 +33,54 @@ export class BasicBuilder implements IBuilder {
         })
     }
 
-    email(config: Widget_string_config = {}): SS.SString {
+    email(config: Widget_string_config = {}): S.SString {
         return new SimpleSchema<Widget_string>('str', { inputType: 'email', ...config })
     }
 
-    string(config: Widget_string_config = {}): SS.SString {
+    string(config: Widget_string_config = {}): S.SString {
         return new SimpleSchema<Widget_string>('str', config)
     }
 
-    textarea(config: Widget_string_config = {}): SS.SString {
+    textarea(config: Widget_string_config = {}): S.SString {
         return new SimpleSchema<Widget_string>('str', { textarea: true, ...config })
     }
 
-    int(config: Omit<Widget_number_config, 'mode'> = {}): SS.SNumber {
+    int(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
         return new SimpleSchema<Widget_number>('number', { mode: 'int', ...config })
     }
 
-    boolean(config: Widget_bool_config = {}): SS.SBool {
+    boolean(config: Widget_bool_config = {}): S.SBool {
         return new SimpleSchema<Widget_bool>('bool', config)
     }
 
-    button<K>(config: Widget_button_config): SS.SButton<K> {
+    button<K>(config: Widget_button_config): S.SButton<K> {
         return new SimpleSchema<Widget_button<K>>('button', config)
     }
 
-    list<const T extends ISchema>(config: Widget_list_config<T>): SS.SList<T> {
+    list<const T extends ISchema>(config: Widget_list_config<T>): S.SList<T> {
         return new SimpleSchema<Widget_list<T>>('list', config)
     }
 
     selectOneV3<T extends string>(
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): SS.SSelectOne_<T> {
+    ): S.SSelectOne_<T> {
         return new SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
-    selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): SS.SSelectMany<T> {
+    selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): S.SSelectMany<T> {
         return new SimpleSchema<Widget_selectMany<T>>('selectMany', config)
     }
 
-    group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): SS.SGroup<T> {
+    group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): S.SGroup<T> {
         return new SimpleSchema<Widget_group<T>>('group', config)
     }
 
-    fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): SS.SGroup<T> {
+    fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): S.SGroup<T> {
         return new SimpleSchema<Widget_group<T>>('group', { items: fields, ...config })
     }
 
-    optional<const T extends ISchema>(p: Widget_optional_config<T>): SS.SOptional<T> {
+    optional<const T extends ISchema>(p: Widget_optional_config<T>): S.SOptional<T> {
         return new SimpleSchema<Widget_optional<T>>('optional', p)
     }
 

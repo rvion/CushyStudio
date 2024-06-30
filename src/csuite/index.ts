@@ -18,4 +18,5 @@ export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
 
 export type SimpleRepo = Repository<SimpleBuilder>
-export const simpleRepo: SimpleRepo = new Repository(new SimpleBuilder())
+export const simpleBuilder = new SimpleBuilder()
+export const simpleRepo: SimpleRepo = new Repository(simpleBuilder)
