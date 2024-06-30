@@ -22,7 +22,7 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_shared } from '../fields/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from '../fields/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
-import { BaseField } from '../model/BaseField'
+import { Field } from '../model/Field'
 import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleSchema } from './SimpleSchema'
 
@@ -188,11 +188,11 @@ export class SimpleBuilder implements IBuilder {
      * @since 2024-06-27
      * @stability unstable
      */
-    linkedV0 = <T extends BaseField>(fn: (parent: BaseField) => T): S.SShared<T> => {
+    linkedV0 = <T extends Field>(fn: (parent: Field) => T): S.SShared<T> => {
         return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: fn })
     }
 
-    linked = <T extends BaseField>(parent: T): S.SShared<T> => {
+    linked = <T extends Field>(parent: T): S.SShared<T> => {
         return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: () => parent })
     }
 

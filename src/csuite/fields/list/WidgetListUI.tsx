@@ -1,4 +1,4 @@
-import type { BaseField } from '../../model/BaseField'
+import type { Field } from '../../model/Field'
 import type { ISchema } from '../../model/ISchema'
 import type { Widget_list } from './WidgetList'
 
@@ -111,7 +111,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: BaseField }>((p, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: Field }>((p, ref) => {
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
         <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>

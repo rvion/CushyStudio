@@ -9,7 +9,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
@@ -45,7 +45,7 @@ export type Widget_enum_types<O> = {
 }
 
 // STATE
-export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
+export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -71,7 +71,7 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {

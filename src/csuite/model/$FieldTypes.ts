@@ -1,4 +1,4 @@
-import type { BaseField } from './BaseField'
+import type { Field } from './Field'
 import type { FieldConfig_CommonProperties } from './FieldConfig'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 
@@ -12,5 +12,5 @@ export type $FieldTypes = {
     $Config: FieldConfig_CommonProperties<any>
     $Serial: FieldSerial_CommonProperties
     $Value: any
-    $Field: BaseField
+    $Field: Field
 }

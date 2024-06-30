@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,7 +6,7 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 /** default error block */
-export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: BaseField }) {
+export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { widget: Field }) {
     const widget = p.widget
     if (widget.hasErrors === false) return null
     return (

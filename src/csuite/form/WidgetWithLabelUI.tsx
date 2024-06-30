@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { makeLabelFromFieldName } from '../../csuite/utils/makeLabelFromFieldName'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
-import { getIfWidgetNeedJustifiedLabel } from './getIfWidgetNeedAlignedLabel'
 import { WidgetDebugIDUI } from './WidgetDebugIDUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
@@ -20,11 +19,10 @@ import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetLabelUI } from './WidgetLabelUI'
 import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetToggleUI } from './WidgetToggleUI'
-import { WidgetTooltipUI } from './WidgetTooltipUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
 export type WidgetWithLabelProps = {
-    widget: BaseField
+    field: Field
     fieldName: string
     /**
      * override the label (false to force disable the label)
@@ -43,16 +41,16 @@ export type WidgetWithLabelProps = {
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
-    if (p.widget.isHidden) return null
-    const originalWidget = p.widget
-    const widget = getActualWidgetToDisplay(originalWidget)
-    const HeaderUI = widget.header()
-    const BodyUI = widget.body()
-    const extraClass = originalWidget.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
+    if (p.field.isHidden) return null
+    const originalField = p.field
+    const field = getActualWidgetToDisplay(originalField)
+    const HeaderUI = field.header()
+    const BodyUI = field.body()
+    const extraClass = originalField.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
     const csuite = useCSuite()
-    const labelText: string | false = p.label ?? widget.config.label ?? makeLabelFromFieldName(p.fieldName)
+    const labelText: string | false = p.label ?? field.config.label ?? makeLabelFromFieldName(p.fieldName)
 
-    const justifyOld = p.justifyLabel ?? getIfWidgetNeedJustifiedLabel(widget)
+    const justifyOld = p.justifyLabel ?? field.justifyLabel
     const labellayout = justifyOld ? csuite.labellayout : 'fixed-left'
     const justify = p.justifyLabel ?? (labellayout === 'fluid' ? false : true)
 
@@ -60,56 +58,57 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
         <Frame
             className={p.className}
             tw='WidgetWithLabelUI !border-l-0 !border-r-0 !border-b-0'
-            base={widget.background}
-            border={widget.border}
-            tooltip={widget.config.tooltip}
+            base={field.background}
+            border={field.border}
+            tooltip={field.config.tooltip}
             // border={8}
-            {...p.widget.config.box}
+            {...p.field.config.box}
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
             {!p.noHeader && (
-                <WidgetHeaderContainerUI widget={widget}>
+                <WidgetHeaderContainerUI widget={field}>
                     {/* HEADER LABEL */}
                     <WidgetLabelContainerUI //
-                        tooltip={widget.config.tooltip}
+                        tooltip={field.config.tooltip}
                         justify={justify}
                     >
+                        {/* {labellayout} */}
                         {labellayout === 'fixed-left' ? (
                             <>
-                                <WidgetIndentUI depth={originalWidget.depth} />
-                                <WidgetLabelCaretUI widget={widget} />
-                                <WidgetLabelIconUI tw='mr-1' widget={widget} />
-                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
+                                <WidgetIndentUI depth={originalField.depth} />
+                                <WidgetLabelCaretUI widget={field} />
+                                <WidgetLabelIconUI tw='mr-1' widget={field} />
+                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
+                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : labellayout === 'fixed-right' ? (
                             <>
-                                <WidgetIndentUI depth={widget.depth} />
-                                <WidgetLabelCaretUI tw='mr-auto' widget={widget} />
-                                {!p.widget.isCollapsed && !p.widget.isCollapsible && <div tw='mr-auto' />}
-                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
+                                <WidgetIndentUI depth={field.depth} />
+                                <WidgetLabelCaretUI tw='mr-auto' widget={field} />
+                                {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
+                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
-                                <WidgetLabelIconUI tw='mx-1' widget={widget} />
+                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
+                                <WidgetLabelIconUI tw='mx-1' widget={field} />
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : (
                             <>
-                                <WidgetLabelCaretUI widget={widget} />
-                                <WidgetToggleUI tw='mr-1' widget={originalWidget} />
-                                <WidgetLabelIconUI tw='mr-1' widget={widget} />
+                                <WidgetLabelCaretUI widget={field} />
+                                <WidgetToggleUI tw='mr-1' widget={originalField} />
+                                <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                <WidgetLabelUI widget={widget}>{labelText}</WidgetLabelUI>
-                                {widget.config.showID && <WidgetDebugIDUI widget={widget} />}
+                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
+                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
                             </>
                         )}
                         <div tw='w-1' /* margin between label and controls */ />
                     </WidgetLabelContainerUI>
 
                     {/* TOOGLE (when justified) */}
-                    {justify && <WidgetToggleUI /* tw='ml-1' */ widget={originalWidget} />}
+                    {justify && <WidgetToggleUI /* tw='ml-1' */ widget={originalField} />}
                     {/* HEADER CONTROLS */}
                     {HeaderUI && (
                         <WidgetHeaderControlsContainerUI className={extraClass}>
@@ -118,27 +117,27 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                     )}
 
                     {/* HEADER EXTRA prettier-ignore */}
-                    {(p.showWidgetExtra ?? csuite.showWidgetExtra) && widget.spec.LabelExtraUI && (
-                        <widget.spec.LabelExtraUI widget={widget} />
+                    {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.spec.LabelExtraUI && (
+                        <field.spec.LabelExtraUI widget={field} />
                     )}
-                    {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI widget={originalWidget} />}
-                    {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={widget} />}
+                    {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI widget={originalField} />}
+                    {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
                 </WidgetHeaderContainerUI>
             )}
 
             {/* BODY  ------------------------------------------------------------------------------ */}
-            {!p.noBody && BodyUI && !widget.isCollapsed && (
+            {!p.noBody && BodyUI && !field.isCollapsed && (
                 <ErrorBoundaryUI>
-                    <div className={extraClass} tw={[widget.isCollapsible && 'WIDGET-BLOCK']}>
+                    <div className={extraClass} tw={[field.isCollapsible && 'WIDGET-BLOCK']}>
                         {BodyUI}
                     </div>
                 </ErrorBoundaryUI>
             )}
 
             {/* ERRORS  ------------------------------------------------------------------------------ */}
-            {!p.noErrors && <WidgetErrorsUI widget={widget} />}
+            {!p.noErrors && <WidgetErrorsUI widget={field} />}
         </Frame>
     )
-    if (widget.animateResize && !p.noBody && BodyUI) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+    if (field.animateResize && !p.noBody && BodyUI) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
     return WUI
 })

@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -39,7 +39,7 @@ export type Widget_optional_types<T extends ISchema = ISchema> = {
 }
 
 // STATE
-export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widget_optional_types<T>> {
+export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
@@ -111,7 +111,7 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
@@ -145,11 +145,11 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
         return 0
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return this.serial.active ? [this.child] : []
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return this.serial.active ? [{ key: 'child', widget: this.child }] : []
     }
 

@@ -7,7 +7,7 @@ import type { TabPositionConfig } from './TabPositionConfig'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -54,7 +54,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField<Widget_choices_types<T>> {
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
     UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
@@ -157,7 +157,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -220,11 +220,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         })
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return Object.values(this.children)
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
     }
 

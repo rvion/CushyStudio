@@ -7,7 +7,7 @@
 | build to include those.
 
 */
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_link } from './link/WidgetLink'
 import type { Widget_list } from './list/WidgetList'
@@ -23,7 +23,7 @@ import type { Widget_string } from './string/WidgetString'
  * regardless of circular dependencies.
  * 2024-03-27 update: now that we support splitting parts of
  * */
-const WidgetDI: { [widgetName: string]: BaseField<any> } = {}
+const WidgetDI: { [widgetName: string]: Field<any> } = {}
 
 export const getFieldClass = <Type extends { $Type: string }>(widgetName: Type['$Type']): Type => {
     return WidgetDI[widgetName] as any

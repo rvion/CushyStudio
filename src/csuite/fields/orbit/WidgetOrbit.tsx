@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
@@ -51,7 +51,7 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export class Widget_orbit extends BaseField<Widget_orbit_types> {
+export class Widget_orbit extends Field<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -103,7 +103,7 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {

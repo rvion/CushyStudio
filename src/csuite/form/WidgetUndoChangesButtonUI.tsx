@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { Button } from '../../csuite/button/Button'
 export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: {
     //
     className?: string
-    widget: BaseField
+    widget: Field
 }) {
     const widget = p.widget
     return (

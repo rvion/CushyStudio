@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
@@ -37,7 +37,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export class Widget_markdown extends BaseField<Widget_markdown_types> {
+export class Widget_markdown extends Field<Widget_markdown_types> {
     readonly id: string
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
@@ -65,7 +65,7 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {

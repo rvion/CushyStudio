@@ -1,7 +1,7 @@
-import type { BaseField } from '../model/BaseField'
 import type { Channel, ChannelId, Producer } from '../model/Channel'
 import type { Entity } from '../model/Entity'
 import type { EntitySerial } from '../model/EntitySerial'
+import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
 import type { ISchema } from '../model/ISchema'
 import type { CovariantFn } from '../variance/BivariantHack'
@@ -14,14 +14,14 @@ import { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
 import { Widget_optional } from '../fields/optional/WidgetOptional'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
-export interface SimpleSchema<out Field extends BaseField = BaseField> {
-    $Field: Field
-    $Type: Field['type']
-    $Config: Field['$Config']
-    $Serial: Field['$Serial']
-    $Value: Field['$Value']
+export interface SimpleSchema<out FIELD extends Field = Field> {
+    $Field: FIELD
+    $Type: FIELD['type']
+    $Config: FIELD['$Config']
+    $Serial: FIELD['$Serial']
+    $Value: FIELD['$Value']
 }
-export class SimpleSchema<out Field extends BaseField = BaseField> implements ISchema<Field>, Instanciable<Field> {
+export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FIELD>, Instanciable<FIELD> {
     FieldClass_UNSAFE: any
 
     constructor(
@@ -29,13 +29,13 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
             new (
                 //
                 entity: Entity,
-                parent: BaseField | null,
-                spec: ISchema<Field>,
-                serial?: Field['$Serial'],
-            ): Field
+                parent: Field | null,
+                spec: ISchema<FIELD>,
+                serial?: FIELD['$Serial'],
+            ): FIELD
         },
-        public readonly type: Field['type'],
-        public readonly config: Field['$Config'],
+        public readonly type: FIELD['type'],
+        public readonly config: FIELD['$Config'],
     ) {
         this.FieldClass_UNSAFE = FieldClass
         makeObservable(this, { config: true })
@@ -48,7 +48,7 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     instanciate(
         //
         entity: Entity<any>,
-        parent: BaseField | null,
+        parent: Field | null,
         serial: any | null,
     ) {
         // ensure the serial is compatible
@@ -74,13 +74,13 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     }
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, Field['$Field']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this {
+    producers: Producer<any, FIELD['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -91,13 +91,13 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     }
 
     reactions: {
-        expr(self: Field['$Field']): any
-        effect(arg: any, self: Field['$Field']): void
+        expr(self: FIELD['$Field']): any
+        effect(arg: any, self: FIELD['$Field']): void
     }[] = []
     addReaction<T>(
         //
-        expr: (self: Field['$Field']) => T,
-        effect: (arg: T, self: Field['$Field']) => void,
+        expr: (self: FIELD['$Field']) => T,
+        effect: (arg: T, self: FIELD['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this
@@ -108,7 +108,7 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
      * @since 2024-06-30
      * TODO: WRITE MORE DOC
      */
-    useIn<BP extends ISchema>(fn: CovariantFn<[field: Field], BP>): S.SLink<this, BP> {
+    useIn<BP extends ISchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
         const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
         return new SimpleSchema(Widget_link, 'link', linkConf)
     }
@@ -139,9 +139,9 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     }
 
     /** clone the spec, and patch the cloned config */
-    withConfig(config: Partial<Field['$Config']>): SimpleSchema<Field> {
+    withConfig(config: Partial<FIELD['$Config']>): SimpleSchema<FIELD> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new SimpleSchema<Field>(this.FieldClass_UNSAFE, this.type, mergedConfig)
+        const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
@@ -149,7 +149,7 @@ export class SimpleSchema<out Field extends BaseField = BaseField> implements IS
     }
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden(): SimpleSchema<Field> {
+    hidden(): SimpleSchema<FIELD> {
         return this.withConfig({ hidden: true })
     }
 }

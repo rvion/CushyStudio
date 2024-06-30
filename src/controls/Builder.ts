@@ -28,7 +28,7 @@ import { Widget_shared } from '../csuite/fields/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from '../csuite/fields/size/WidgetSize'
 import { Widget_spacer, type Widget_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../csuite/fields/string/WidgetString'
-import { BaseField } from '../csuite/model/BaseField'
+import { Field } from '../csuite/model/Field'
 import { Repository } from '../csuite/model/Repository'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
@@ -298,11 +298,11 @@ export class Builder implements IBuilder {
      * @since 2024-06-27
      * @stability unstable
      */
-    linkedV0 = <T extends BaseField>(fn: (parent: BaseField) => T): X.XShared<T> => {
+    linkedV0 = <T extends Field>(fn: (parent: Field) => T): X.XShared<T> => {
         return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: fn })
     }
 
-    linked = <T extends BaseField>(parent: T): X.XShared<T> => {
+    linked = <T extends Field>(parent: T): X.XShared<T> => {
         return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: () => parent })
     }
 

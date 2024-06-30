@@ -1,7 +1,7 @@
-import type { BaseField } from './BaseField'
 import type { Entity } from './Entity'
+import type { Field } from './Field'
 
-export interface Instanciable<T extends BaseField = BaseField> {
+export interface Instanciable<T extends Field = Field> {
     $Type: T['$Type']
     $Config: T['$Config']
     $Serial: T['$Serial']
@@ -14,7 +14,7 @@ export interface Instanciable<T extends BaseField = BaseField> {
     instanciate(
         //
         entity: Entity<any>,
-        parent: BaseField | null,
+        parent: Field | null,
         serial: any | null,
     ): T
 }

@@ -1,8 +1,8 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-export const WidgetCollapseBtnUI = observer(function WidgetCollapseBtnUI_(p: { widget: BaseField }) {
+export const WidgetCollapseBtnUI = observer(function WidgetCollapseBtnUI_(p: { widget: Field }) {
     const widget = p.widget
     return (
         <span

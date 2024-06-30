@@ -8,7 +8,7 @@ import type { FC } from 'react'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
@@ -40,7 +40,7 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
+export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -62,7 +62,7 @@ export class Widget_custom<T> extends BaseField<Widget_custom_types<T>> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {

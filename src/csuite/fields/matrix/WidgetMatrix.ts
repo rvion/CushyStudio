@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
@@ -50,7 +50,7 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export class Widget_matrix extends BaseField<Widget_matrix_types> {
+export class Widget_matrix extends Field<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -87,7 +87,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {

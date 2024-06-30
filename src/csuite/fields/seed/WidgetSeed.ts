@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
@@ -49,7 +49,7 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export class Widget_seed extends BaseField<Widget_seed_types> {
+export class Widget_seed extends Field<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
 
@@ -102,7 +102,7 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {

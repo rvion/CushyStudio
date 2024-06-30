@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -14,7 +14,7 @@ export type Widget_shared_config<T extends ISchema = ISchema> = FieldConfig<
     {
         /** shared widgets must be registered in the form root group */
         // rootKey: string
-        widget: (parent: BaseField) => T['$Field']
+        widget: (parent: Field) => T['$Field']
     },
     Widget_shared_types<T>
 >
@@ -42,7 +42,7 @@ export type Widget_shared_types<T extends ISchema = ISchema> = {
 }
 
 // STATE
-export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget_shared_types<T>> {
+export class Widget_shared<T extends ISchema = ISchema> extends Field<Widget_shared_types<T>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
@@ -68,7 +68,7 @@ export class Widget_shared<T extends ISchema = ISchema> extends BaseField<Widget
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {

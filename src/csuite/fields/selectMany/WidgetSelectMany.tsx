@@ -8,7 +8,7 @@ import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
@@ -82,7 +82,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widget_selectMany_types<T>> {
+export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
 
@@ -127,7 +127,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseField<Widg
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {

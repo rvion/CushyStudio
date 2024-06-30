@@ -8,7 +8,7 @@ import type { CovariantFn } from '../../variance/BivariantHack'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -52,7 +52,7 @@ export type Widget_link_types<A extends ISchema, B extends ISchema> = {
 
 // STATE
 export class Widget_link<A extends ISchema, B extends ISchema> //
-    extends BaseField<Widget_link_types<A, B>>
+    extends Field<Widget_link_types<A, B>>
 {
     DefaultHeaderUI = () => <>🟢</>
     DefaultBodyUI = () => this.bField.renderWithLabel()
@@ -87,7 +87,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_link<A, B>>,
         serial?: Widget_link_serial<A, B>,
     ) {
@@ -113,7 +113,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         return [this.aField, this.bField]
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return [
             { key: 'a', widget: this.aField },
             { key: 'b', widget: this.bField },

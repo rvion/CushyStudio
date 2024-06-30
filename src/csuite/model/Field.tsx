@@ -38,7 +38,7 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
-export interface BaseField<K extends $FieldTypes = $FieldTypes> {
+export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -47,7 +47,7 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
 }
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
-export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
+export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
     // 👆 type only properties; do not use directly; used to make typings good and fast
     // 👆 $Type!: K['$Type'] /*     = 0 as any  */
     // 👆 $Config!: K['$Config'] /* = 0 as any  */
@@ -64,7 +64,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         /** root form this widget has benn registered to */
         public entity: Entity,
         /** parent widget of this widget, if any */
-        public parent: BaseField | null,
+        public parent: Field | null,
         /** spec used to instanciate this widget */
         public spec: ISchema<K['$Field']>,
     ) {}
@@ -113,13 +113,19 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         return 1
     }
 
+    get justifyLabel(): boolean {
+        if (this.config.justifyLabel != null) return this.config.justifyLabel
+        if (this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
+        return true
+    }
+
     get depth(): number {
         if (this.parent == null) return 0
         return this.parent.depth + this.parent.indentChildren
     }
 
     // abstract readonly id: string
-    asTreeElement(key: string): ITreeElement<{ widget: BaseField; key: string }> {
+    asTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
         return {
             key: (this as any).id,
             ctor: TreeEntry_Field as any,
@@ -228,7 +234,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
     // 🚴🏠 -> consume / pull / receive / fetch / ... ?
     consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
         const channelId = typeof chan === 'string' ? chan : chan.id
-        let at = this as any as BaseField | null
+        let at = this as any as Field | null
         while (at != null) {
             if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
             at = at.parent
@@ -296,13 +302,13 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const SELF = this as any as BaseField
+        const SELF = this as any as Field
         const baseErrors = normalizeProblem(SELF.baseErrors)
         return [...baseErrors, ...this.customErrors]
     }
 
     get customErrors(): Problem[] {
-        const SELF = this as any as BaseField
+        const SELF = this as any as Field
         if (SELF.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
@@ -329,7 +335,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
     }
 
     /** recursively walk upwards on any field change  */
-    private applyChildValueUpdateEffects(child: BaseField): void {
+    private applyChildValueUpdateEffects(child: Field): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.parent?.applyChildValueUpdateEffects(child)
         this.config.onValueChange?.(this.value, this /* TODO: add extra param here:, child  */)
@@ -343,7 +349,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
      *  - by defining a getter on the _advertisedValues object of all parents
      *  - by only setting this getter up once.
      * */
-    publishValue(this: BaseField) {
+    publishValue(this: Field) {
         const producers = this.spec.producers
         if (producers.length === 0) return
 
@@ -354,7 +360,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
             producedValues[channelId] = producer.produce(this)
         }
         // Assign values to every parent widget in the hierarchy
-        let at = this as any as BaseField | null
+        let at = this as any as Field | null
         while (at != null) {
             Object.assign(at._advertisedValues, producedValues)
             at = at.parent
@@ -413,18 +419,18 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         this.entity.applySerialUpdateEffects(this)
     }
 
-    toggleCollapsed(this: BaseField) {
+    toggleCollapsed(this: Field) {
         this.serial.collapsed = !this.serial.collapsed
         this.entity.applySerialUpdateEffects(this)
     }
 
     // UI ----------------------------------------------------
 
-    renderSimple(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
-                widget={this}
+                field={this}
                 showWidgetMenu={false}
                 showWidgetExtra={false}
                 showWidgetUndo={false}
@@ -435,7 +441,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         )
     }
 
-    renderSimpleAll(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderSimpleAll(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
             <CSuiteOverride
                 config={{
@@ -444,33 +450,33 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
                     showWidgetUndo: false,
                 }}
             >
-                <WidgetWithLabelUI key={this.id} widget={this} fieldName='_' {...p} />
+                <WidgetWithLabelUI key={this.id} field={this} fieldName='_' {...p} />
             </CSuiteOverride>
         )
     }
 
-    renderWithLabel(this: BaseField, p?: Omit<WidgetWithLabelProps, 'widget' | 'fieldName'>): JSX.Element {
+    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
-                widget={this}
+                field={this}
                 fieldName='_'
                 {...p}
             />
         )
     }
 
-    defaultHeader(this: BaseField): JSX.Element | undefined {
+    defaultHeader(this: Field): JSX.Element | undefined {
         if (this.DefaultHeaderUI == null) return
         return <this.DefaultHeaderUI widget={this} />
     }
 
-    defaultBody(this: BaseField): JSX.Element | undefined {
+    defaultBody(this: Field): JSX.Element | undefined {
         if (this.DefaultBodyUI == null) return
         return <this.DefaultBodyUI widget={this} />
     }
 
-    header(this: BaseField): JSX.Element | undefined {
+    header(this: Field): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
                 ? ensureObserver(this.config.header)
@@ -479,7 +485,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         return <HeaderUI widget={this} />
     }
 
-    body(this: BaseField): JSX.Element | undefined {
+    body(this: Field): JSX.Element | undefined {
         const BodyUI =
             'body' in this.config //
                 ? ensureObserver(this.config.body)
@@ -489,16 +495,16 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return []
     }
 
-    get root(): BaseField {
+    get root(): Field {
         return this.entity.root
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return []
     }
 
@@ -540,7 +546,7 @@ export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> impleme
         makeAutoObservableInheritance(this, mobxOverrides)
 
         // eslint-disable-next-line consistent-this
-        const self = this as any as BaseField
+        const self = this as any as Field
         const config = self.config
         const serial = self.serial
 

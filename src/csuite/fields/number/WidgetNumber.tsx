@@ -6,7 +6,7 @@ import type { ISchema } from '../../model/ISchema'
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
@@ -46,7 +46,7 @@ export type Widget_number_types = {
 }
 
 // STATE
-export class Widget_number extends BaseField<Widget_number_types> {
+export class Widget_number extends Field<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -73,7 +73,7 @@ export class Widget_number extends BaseField<Widget_number_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_number>,
         serial?: Widget_number_serial,
     ) {

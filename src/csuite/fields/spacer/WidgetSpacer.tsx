@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
 
@@ -38,7 +38,7 @@ export type Widget_spacer_types = {
 }
 
 // STATE
-export class Widget_spacer extends BaseField<Widget_spacer_types> {
+export class Widget_spacer extends Field<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {
@@ -55,7 +55,7 @@ export class Widget_spacer extends BaseField<Widget_spacer_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {

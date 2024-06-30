@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { IkonOf } from '../../csuite/icons/iconHelpers'
 export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: {
     //
     className?: string
-    widget: BaseField
+    widget: Field
 }) {
     const iconName = p.widget.icon
     if (iconName == null) return null

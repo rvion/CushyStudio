@@ -8,7 +8,7 @@ import type { Tree } from '@lezer/common'
 import { nanoid } from 'nanoid'
 
 import { registerWidgetClass } from '../csuite/fields/WidgetUI.DI'
-import { BaseField } from '../csuite/model/BaseField'
+import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
@@ -59,7 +59,7 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export class Widget_prompt extends BaseField<Widget_prompt_types> {
+export class Widget_prompt extends Field<Widget_prompt_types> {
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
@@ -86,7 +86,7 @@ export class Widget_prompt extends BaseField<Widget_prompt_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {

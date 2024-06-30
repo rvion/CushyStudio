@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
@@ -69,7 +69,7 @@ export type Widget_bool_types = {
 }
 
 // STATE
-export class Widget_bool extends BaseField<Widget_bool_types> {
+export class Widget_bool extends Field<Widget_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
     readonly id: string
@@ -92,7 +92,7 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {

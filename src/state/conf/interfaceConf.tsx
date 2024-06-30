@@ -91,25 +91,25 @@ export const interfaceConf = cushyRepo.entity(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' widget={f.toolBarIconSize} />
-                                <WidgetWithLabelUI fieldName='' widget={f.inputHeight} />
-                                <WidgetWithLabelUI fieldName='' widget={f.tooltipDelay} />
+                                <WidgetWithLabelUI fieldName='' field={f.toolBarIconSize} />
+                                <WidgetWithLabelUI fieldName='' field={f.inputHeight} />
+                                <WidgetWithLabelUI fieldName='' field={f.tooltipDelay} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' widget={f.tabSetEnableSingleTabStretch} label={false} />
-                                <WidgetWithLabelUI fieldName='' widget={f.useDefaultCursorEverywhere} label={false} />
+                                <WidgetWithLabelUI fieldName='' field={f.tabSetEnableSingleTabStretch} label={false} />
+                                <WidgetWithLabelUI fieldName='' field={f.useDefaultCursorEverywhere} label={false} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 {
                                     <WidgetWithLabelUI
                                         fieldName='// What does this even do lol, why is it mandatory?'
-                                        widget={f.showToggleButtonBox}
+                                        field={f.showToggleButtonBox}
                                         label='Show'
                                     />
                                 }
-                                {<WidgetWithLabelUI fieldName='' widget={f.showWidgetUndo} />}
-                                {<WidgetWithLabelUI fieldName='' widget={f.showWidgetMenu} />}
-                                {<WidgetWithLabelUI fieldName='' widget={f.showWidgetDiff} />}
+                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetUndo} />}
+                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetMenu} />}
+                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetDiff} />}
                             </div>
                         </div>
                     )

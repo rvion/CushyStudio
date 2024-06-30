@@ -38,7 +38,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                         justifyLabel={p.justify}
                         key={val.branch}
                         fieldName={val.branch}
-                        widget={subWidget}
+                        field={subWidget}
                         // label={widget.isSingle ? false : undefined}
                     />
                 )

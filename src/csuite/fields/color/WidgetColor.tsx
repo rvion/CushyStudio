@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
@@ -34,7 +34,7 @@ export type Widget_color_types = {
 }
 
 // STATE
-export class Widget_color extends BaseField<Widget_color_types> {
+export class Widget_color extends Field<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -54,7 +54,7 @@ export class Widget_color extends BaseField<Widget_color_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_color>,
         serial?: Widget_color_serial,
     ) {

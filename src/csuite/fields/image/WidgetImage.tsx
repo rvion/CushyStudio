@@ -10,7 +10,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
@@ -52,7 +52,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export class Widget_image extends BaseField<Widget_image_types> {
+export class Widget_image extends Field<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -77,7 +77,7 @@ export class Widget_image extends BaseField<Widget_image_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_image>,
         serial?: Widget_image_serial,
     ) {

@@ -1,5 +1,5 @@
 import type { CovariantFn1 } from '../variance/BivariantHack'
-import type { BaseField } from './BaseField'
+import type { Field } from './Field'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,10 +12,10 @@ export class Channel<T> {
     $type!: T
 
     get = () => {
-        return (self: BaseField): Maybe<T> => self.consume(this)
+        return (self: Field): Maybe<T> => self.consume(this)
     }
 
-    getOrThrow = (self: BaseField): T => bang(self.consume(this), 'Empty channel')
+    getOrThrow = (self: Field): T => bang(self.consume(this), 'Empty channel')
 
     constructor(public id: ChannelId = nanoid()) {
         makeAutoObservable(this)

@@ -8,7 +8,7 @@ import type { BoardPosition } from './WidgetListExtTypes'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { clampOpt } from '../../utils/clamp'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -56,7 +56,7 @@ export type Widget_listExt_types<T extends ISchema> = {
 }
 
 // STATE
-export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_types<T>> {
+export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -119,7 +119,7 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
@@ -162,11 +162,11 @@ export class Widget_listExt<T extends ISchema> extends BaseField<Widget_listExt_
         })
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return this.items
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 

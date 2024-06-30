@@ -8,7 +8,7 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
@@ -92,7 +92,7 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
 export class Widget_selectOne<T extends BaseSelectEntry> //
-    extends BaseField<Widget_selectOne_types<T>>
+    extends Field<Widget_selectOne_types<T>>
 {
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
@@ -132,7 +132,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         // 2024-06-27 TODO: rename that
         // |            VVVV
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {

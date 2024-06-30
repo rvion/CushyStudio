@@ -8,7 +8,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
@@ -56,7 +56,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export class Widget_string extends BaseField<Widget_string_types> {
+export class Widget_string extends Field<Widget_string_types> {
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
@@ -94,7 +94,7 @@ export class Widget_string extends BaseField<Widget_string_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_string>,
         serial?: Widget_string_serial,
     ) {

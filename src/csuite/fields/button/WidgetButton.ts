@@ -8,7 +8,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
 
@@ -51,7 +51,7 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
+export class Widget_button<K> extends Field<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -66,7 +66,7 @@ export class Widget_button<K> extends BaseField<Widget_button_types<K>> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {

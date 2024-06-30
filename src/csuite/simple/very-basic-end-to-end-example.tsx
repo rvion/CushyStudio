@@ -1,8 +1,8 @@
 // @ts-nocheck
 
 import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
-import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
+import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
 import type { ISchema, SchemaDict } from '../model/ISchema'
 import type * as SS from './SimpleAliases'
@@ -89,7 +89,7 @@ export class BasicBuilder implements IBuilder {
     _HYDRATE<T extends ISchema>(
         //
         model: Entity<any>,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: T,
         serial: any | null,
     ): T['$Field'] {
@@ -111,10 +111,10 @@ export class BasicBuilder implements IBuilder {
     private __HYDRATE<T extends ISchema>(
         //
         model: Entity<any>,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: T,
         serial: any | null,
-    ): BaseField<any> /* T['$Field'] */ {
+    ): Field<any> /* T['$Field'] */ {
         // ensure the serial is compatible
         if (serial != null && serial.type !== spec.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)

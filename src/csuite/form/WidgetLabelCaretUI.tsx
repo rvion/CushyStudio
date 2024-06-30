@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     //
     className?: string
-    widget: BaseField
+    widget: Field
 }) {
     if (!p.widget.isCollapsed && !p.widget.isCollapsible)
         return (

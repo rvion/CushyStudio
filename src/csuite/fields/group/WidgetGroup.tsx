@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
@@ -48,7 +48,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_types<T>> {
+export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -76,9 +76,17 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, BaseField][]
+        return Object.entries(this.fields) as [string, Field][]
     }
 
+    get numFields(): number {
+        return Object.keys(this.fields).length
+    }
+
+    get justifyLabel(): boolean {
+        if (this.numFields > 1) return false
+        return true
+    }
     at = <K extends keyof T>(key: K): T[K]['$Field'] => this.fields[key]
     get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
 
@@ -97,7 +105,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
     ) {
@@ -156,11 +164,11 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         })
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return Object.values(this.fields)
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
     }
 
@@ -182,13 +190,13 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseField = this.fields[prop]!
+            const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
         getOwnPropertyDescriptor: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseField = this.fields[prop]!
+            const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,

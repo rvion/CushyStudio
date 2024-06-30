@@ -1,6 +1,6 @@
 import type { CovariantFC, CovariantFn } from '../csuite'
-import type { BaseField } from '../csuite/model/BaseField'
 import type { Entity } from '../csuite/model/Entity'
+import type { Field } from '../csuite/model/Field'
 import type { ISchema } from '../csuite/model/ISchema'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
@@ -15,15 +15,15 @@ import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export interface Schema<out Field extends BaseField = BaseField> {
-    $Field: Field
-    $Type: Field['type']
-    $Config: Field['$Config']
-    $Serial: Field['$Serial']
-    $Value: Field['$Value']
+export interface Schema<out FIELD extends Field = Field> {
+    $Field: FIELD
+    $Type: FIELD['type']
+    $Config: FIELD['$Config']
+    $Serial: FIELD['$Serial']
+    $Value: FIELD['$Value']
 }
 
-export class Schema<out Field extends BaseField = BaseField> implements ISchema<Field> {
+export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     FieldClass_UNSAFE: any
 
     constructor(
@@ -31,13 +31,13 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
             new (
                 //
                 entity: Entity,
-                parent: BaseField | null,
-                spec: ISchema<Field>,
-                serial?: Field['$Serial'],
-            ): Field
+                parent: Field | null,
+                spec: ISchema<FIELD>,
+                serial?: FIELD['$Serial'],
+            ): FIELD
         },
-        public readonly type: Field['type'],
-        public readonly config: Field['$Config'],
+        public readonly type: FIELD['type'],
+        public readonly config: FIELD['$Config'],
     ) {
         this.FieldClass_UNSAFE = FieldClass
         // makeObservable(this, { config: true })
@@ -46,7 +46,7 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
     instanciate(
         //
         entity: Entity<any>,
-        parent: BaseField | null,
+        parent: Field | null,
         serial: any | null,
     ) {
         // ensure the serial is compatible
@@ -68,7 +68,7 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
     }
 
     _methods: any = {}
-    actions<T extends { [methodName: string]: (self: Field) => any }>(t: T): Schema<Field & T> {
+    actions<T extends { [methodName: string]: (self: FIELD) => any }>(t: T): Schema<FIELD & T> {
         Object.assign(this._methods, t)
         return this as any
     }
@@ -81,26 +81,26 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
                 /** simplified skin definition */
                 | { [key: string]: any }
                 /** full react field */
-                | ((p: { widget: Field }) => ReactNode)
+                | ((p: { widget: FIELD }) => ReactNode)
         },
-    >(t: T): Schema<Field & T /* & { skin: T } */> {
+    >(t: T): Schema<FIELD & T /* & { skin: T } */> {
         Object.assign(this._skins, t)
         return this as any
     }
 
-    LabelExtraUI: CovariantFC<{ widget: Field }> = (p: { widget: Field }) =>
+    LabelExtraUI: CovariantFC<{ widget: FIELD }> = (p: { widget: FIELD }) =>
         createElement(InstallRequirementsBtnUI, {
             active: isWidgetOptional(p.widget) ? p.widget.serial.active : true,
             requirements: this.requirements,
         })
 
-    producers: Producer<any, Field['$Field']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this {
+    producers: Producer<any, FIELD['$Field']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this {
         this.producers.push({ chan, produce })
         return this
     }
 
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this {
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
             (arg, self) => {
@@ -111,14 +111,14 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
     }
 
     reactions: {
-        expr(self: Field['$Field']): any
-        effect(arg: any, self: Field['$Field']): void
+        expr(self: FIELD['$Field']): any
+        effect(arg: any, self: FIELD['$Field']): void
     }[] = []
 
     addReaction<T>(
         //
-        expr: (self: Field['$Field']) => T,
-        effect: (arg: T, self: Field['$Field']) => void,
+        expr: (self: FIELD['$Field']) => T,
+        effect: (arg: T, self: FIELD['$Field']) => void,
     ): this {
         this.reactions.push({ expr, effect })
         return this
@@ -137,7 +137,7 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
 
     useIn<BP extends ISchema>(
         //
-        fn: CovariantFn<[field: Field], BP>,
+        fn: CovariantFn<[field: FIELD], BP>,
     ): X.XLink<this, BP> {
         const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
         return new Schema(Widget_link, 'link', linkConf)
@@ -155,9 +155,9 @@ export class Schema<out Field extends BaseField = BaseField> implements ISchema<
         })
 
     /** clone the spec, and patch the cloned config */
-    withConfig(config: Partial<Field['$Config']>): Schema<Field> {
+    withConfig(config: Partial<FIELD['$Config']>): Schema<FIELD> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new Schema<Field>(this.FieldClass_UNSAFE, this.type, mergedConfig)
+        const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, this.type, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions

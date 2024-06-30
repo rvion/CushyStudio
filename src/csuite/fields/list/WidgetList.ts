@@ -6,7 +6,7 @@ import type { ISchema } from '../../model/ISchema'
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -78,7 +78,7 @@ export type Widget_list_types<T extends ISchema> = {
 
 // STATE
 export class Widget_list<T extends ISchema> //
-    extends BaseField<Widget_list_types<T>>
+    extends Field<Widget_list_types<T>>
 {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
@@ -112,8 +112,8 @@ export class Widget_list<T extends ISchema> //
         for (const i of this.items) i.reset()
     }
 
-    findItemIndexContaining = (widget: BaseField): number | null => {
-        let at = widget as BaseField | null
+    findItemIndexContaining = (widget: Field): number | null => {
+        let at = widget as Field | null
         let child = at
         while (at != null) {
             at = at.parent
@@ -125,11 +125,11 @@ export class Widget_list<T extends ISchema> //
         return null
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return this.items
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: BaseField }[] {
+    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
         return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
     }
 
@@ -175,7 +175,7 @@ export class Widget_list<T extends ISchema> //
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {

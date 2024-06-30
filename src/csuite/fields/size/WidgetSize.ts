@@ -8,7 +8,7 @@ import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './Wi
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
@@ -45,7 +45,7 @@ export type Widget_size_types = {
 }
 
 // STATE
-export class Widget_size extends BaseField<Widget_size_types> {
+export class Widget_size extends Field<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
@@ -107,7 +107,7 @@ export class Widget_size extends BaseField<Widget_size_types> {
     constructor(
         //
         entity: Entity,
-        parent: BaseField | null,
+        parent: Field | null,
         spec: ISchema<Widget_size>,
         serial?: Widget_size_serial,
     ) {

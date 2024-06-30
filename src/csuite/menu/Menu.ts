@@ -1,7 +1,7 @@
 import type { Activity } from '../activity/Activity'
 import type { BoundCommand } from '../commands/Command'
 import type { IconName } from '../icons/icons'
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleMenuModal } from './SimpleMenuModal'
 
@@ -40,7 +40,7 @@ export type MenuEntryWithKey = {
 // prettier-ignore
 export type MenuEntry =
     /** inline subform  */
-    | BaseField
+    | Field
     /** custom component  */
     | FC<{}>
     /** a command */

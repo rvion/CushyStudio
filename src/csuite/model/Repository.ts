@@ -1,6 +1,6 @@
 import type { Widget_group } from '../fields/group/WidgetGroup'
-import type { BaseField } from './BaseField'
 import type { EntityId } from './EntityId'
+import type { Field } from './Field'
 import type { IBuilder } from './IBuilder'
 import type { ISchema, SchemaDict } from './ISchema'
 
@@ -16,14 +16,14 @@ import { Entity, ModelConfig } from './Entity'
 export class Repository<DOMAIN extends IBuilder> {
     //
     _allEntities: Map<EntityId, Entity> = new Map()
-    _allFields: Map<string, BaseField> = new Map()
-    _allFieldsByType: Map<string, Map<string, BaseField>> = new Map()
+    _allFields: Map<string, Field> = new Map()
+    _allFieldsByType: Map<string, Map<string, Field>> = new Map()
 
     getEntityByID = (entityId: EntityId): Maybe<Entity> => {
         return this._allEntities.get(entityId)
     }
 
-    getFieldByID = (fieldId: string): Maybe<BaseField> => {
+    getFieldByID = (fieldId: string): Maybe<Field> => {
         return this._allFields.get(fieldId)
     }
 
@@ -31,7 +31,7 @@ export class Repository<DOMAIN extends IBuilder> {
      * return all currently instanciated widgets
      * field of a given input type
      */
-    getWidgetsByType = <W extends BaseField = BaseField>(type: string): W[] => {
+    getWidgetsByType = <W extends Field = Field>(type: string): W[] => {
         const typeStore = this._allFieldsByType.get(type)
         if (!typeStore) return []
         return Array.from(typeStore.values()) as W[]

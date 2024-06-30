@@ -44,7 +44,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                     key={rootKey}
                     fieldName={rootKey}
                     justifyLabel={isHorizontal ? false : widget.config.justifyLabel}
-                    widget={bang(sub)}
+                    field={bang(sub)}
                 />
             ))}
         </ListOfFieldsContainerUI>

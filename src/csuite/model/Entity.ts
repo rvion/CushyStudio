@@ -1,6 +1,6 @@
 import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
 import type { CovariantFn } from '../variance/BivariantHack'
-import type { BaseField } from './BaseField'
+import type { Field } from './Field'
 import type { IBuilder } from './IBuilder'
 import type { ISchema } from './ISchema'
 import type { Repository } from './Repository'
@@ -63,7 +63,7 @@ export class Entity<
         this.root = this.init()
     }
 
-    get subWidgets(): BaseField[] {
+    get subWidgets(): Field[] {
         return this.root.subWidgets
     }
 
@@ -97,7 +97,7 @@ export class Entity<
      * shrot text summarizing changes from default
      */
     get diffSummaryFromDefault(): string {
-        return (this.root as BaseField).diffSummaryFromDefault
+        return (this.root as Field).diffSummaryFromDefault
     }
 
     /**
@@ -106,7 +106,7 @@ export class Entity<
      * shrot text summarizing changes from default
      * */
     get diffSummaryFromSnapshot(): string {
-        return (this.root as BaseField).diffSummaryFromDefault
+        return (this.root as Field).diffSummaryFromDefault
     }
 
     /** loading error  */
@@ -180,21 +180,21 @@ export class Entity<
     private _onValueChange: ((form: Entity<SCHEMA, any>) => void) | null
 
     /** every widget node must call this function once it's value change */
-    applyValueUpdateEffects = (widget: BaseField) => {
+    applyValueUpdateEffects = (widget: Field) => {
         this.valueLastUpdatedAt = Date.now()
         this.applySerialUpdateEffects(widget)
         this._onValueChange?.(this)
     }
 
-    _allFormWidgets: Map<string, BaseField> = new Map()
-    knownShared: Map<string, BaseField> = new Map()
+    _allFormWidgets: Map<string, Field> = new Map()
+    knownShared: Map<string, Field> = new Map()
 
-    getWidgetByID = (id: string): Maybe<BaseField> => {
+    getWidgetByID = (id: string): Maybe<Field> => {
         return this._allFormWidgets.get(id)
     }
 
     /** every widget node must call this function once it's serial changed */
-    applySerialUpdateEffects = (_widget: BaseField) => {
+    applySerialUpdateEffects = (_widget: Field) => {
         // bump serial last updated at
         this.serialLastUpdatedAt = Date.now()
         // call entity config onSerialChange

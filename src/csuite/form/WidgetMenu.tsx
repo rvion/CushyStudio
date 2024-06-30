@@ -1,5 +1,5 @@
 import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -14,7 +14,7 @@ import { TreeUI } from '../../csuite/tree/TreeUI'
 import { TreeView } from '../../csuite/tree/TreeView'
 import { toastInfo } from '../../csuite/utils/toasts'
 
-export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
+export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: Field }) {
     return (
         <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
             <Button //
@@ -30,9 +30,9 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
     )
 })
 
-export const menu_widgetActions: Menu<BaseField> = menuWithProps({
+export const menu_widgetActions: Menu<Field> = menuWithProps({
     title: 'widget actions',
-    entries: (field: BaseField) => {
+    entries: (field: Field) => {
         const out: MenuEntry[] = []
         // RESET
         out.push(
@@ -119,7 +119,7 @@ export const menu_widgetActions: Menu<BaseField> = menuWithProps({
     },
 })
 
-export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: BaseField }) {
+export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: Field }) {
     const tree = new Tree([p.widget.asTreeElement('root')])
     const treeView = new TreeView(tree, { selectable: true })
     return (
