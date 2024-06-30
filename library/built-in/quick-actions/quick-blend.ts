@@ -2,10 +2,13 @@ app({
     metadata: {
         name: 'blend-modes',
         description: 'quickly test blend modes supported by sharp',
+        author: 'rvion',
+        categories: ['quick actions', 'image', 'sharp'],
+        help: `see [https://sharp.pixelplumbing.com/api-composite](https://sharp.pixelplumbing.com/api-composite)`,
     },
     ui: (form) => ({
-        img1: form.image({}),
-        img2: form.image({}),
+        img1: form.image(),
+        img2: form.image(),
         // prettier-ignore
         blend: form.selectManyV2([
             'clear', 'source', 'over', 'in', 'out', 'atop', 'dest', 'dest-over', 'dest-in',
