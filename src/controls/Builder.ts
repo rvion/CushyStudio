@@ -259,6 +259,16 @@ export class Builder implements IBuilder {
         return new Schema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
     }
 
+    selectManyV2 = <T extends string>(
+        p: readonly T[],
+        config: Omit<Widget_selectMany_config<BaseSelectEntry<T>>, 'choices'> = {},
+    ): X.XSelectMany<BaseSelectEntry<T>> => {
+        return new Schema<Widget_selectMany<BaseSelectEntry<T>>>(Widget_selectMany, 'selectMany', {
+            choices: p.map((id) => ({ id, label: id })),
+            ...config,
+        })
+    }
+
     /**
      * Allow to instanciate a field early, so you can re-use it in multiple places
      * or access it's instance to dynamically change some other field schema.

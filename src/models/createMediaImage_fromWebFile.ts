@@ -19,7 +19,12 @@ export type ImageCreationOpts = {
     promptNodeID?: Maybe<ComfyNodeID>
 }
 
-export const createMediaImage_fromFileObject = async (st: STATE, file: File, subFolder?: string): Promise<MediaImageL> => {
+export const createMediaImage_fromFileObject = async (
+    //
+    st: STATE,
+    file: File,
+    subFolder?: string,
+): Promise<MediaImageL> => {
     console.log(`[🌠] createMediaImage_fromFileObject`)
     const relPath = `outputs/${subFolder ?? 'imported'}/${file.name}` as RelativePath
     return createMediaImage_fromBlobObject(st, file, relPath)
@@ -38,6 +43,18 @@ export const createMediaImage_fromBlobObject = async (
     const buff: Buffer = await blob.arrayBuffer().then((x) => Buffer.from(x))
     writeFileSync(relPath, buff)
     return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+}
+
+export const createMediaImage_fromBuffer = async (
+    buffer: Buffer,
+    relPath: string,
+    opts?: ImageCreationOpts,
+): Promise<MediaImageL> => {
+    console.log(`[🌠] createMediaImage_fromBlobObject`)
+    const dir = dirname(relPath)
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(relPath, buffer)
+    return _createMediaImage_fromLocalyAvailableImage(cushy, relPath, buffer, opts)
 }
 
 export const createMediaImage_fromDataURI = (
