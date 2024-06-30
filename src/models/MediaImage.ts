@@ -162,7 +162,10 @@ export class MediaImageL {
         return fname.slice(0, fname.lastIndexOf('.'))
     }
 
-    /** return file extension including dot */
+    /**
+     * return file extension including dot
+     * e.g. `.png`, or `.webp`
+     * */
     get extension() {
         const fname = this.baseName
         return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
@@ -217,9 +220,11 @@ export class MediaImageL {
         return img
     }
 
+    /** load an image as mask in a comfy workflow beeing created */
     loadInWorkflowAsMask = async (
-        //
+        /** "alpha" | "blue" | "green" | "red" */
         channel: Enum_LoadImageMask_channel,
+        /** workflow to load image as mask into (default to current workflow) */
         workflow_?: ComfyWorkflowL,
     ): Promise<LoadImageMask> => {
         const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
@@ -507,6 +512,11 @@ export class MediaImageL {
         }
     }
 
+    /**
+     * Modify the image directly (inplace) by passing it though a `Sharp` pipeline
+     * Sharp is a high performance image processing library.
+     *
+     */
     processWithSharp_inplace = async (
         /** processing function */
         fn: (sharp: sharp.Sharp) => sharp.Sharp,
@@ -517,12 +527,19 @@ export class MediaImageL {
         return this
     }
 
+    /**
+     * Allow to run an image though some `Sharp` pipeline to produce an other image.
+     * Sharp is a high performance image processing library.
+     * to modify the image directly (inplace), use `processWithSharp_inplace` instead.
+     */
     processWithSharp = async (
         /** processing function */
         fn: (sharp: sharp.Sharp) => sharp.Sharp,
         relPath: string = `outputs/sharp-${Date.now()}`,
+        tags?: string[],
     ): Promise<MediaImageL> => {
         const buff = await fn(sharp(this.absPath)).toBuffer()
+        const suffix = this.extension
         writeFileSync(relPath, buff)
         return _createMediaImage_fromLocalyAvailableImage(relPath, buff, this._imageCreationOpts)
     }
