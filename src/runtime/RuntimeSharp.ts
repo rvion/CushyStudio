@@ -12,6 +12,7 @@ export class RuntimeSharp {
     }
 
     sharp = sharp
+
     toMediaImage(buffer: Buffer): Promise<MediaImageL> {
         return createMediaImage_fromBuffer(buffer, `outputs/unknown-${Date.now()}.png`)
     }

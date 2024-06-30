@@ -14,20 +14,16 @@ app({
             'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion',
         ]),
     }),
-    run: async (run, ui) => {
-        const img1 = ui.img1
-        const img2 = ui.img2
-        for (const val of ui.blend) {
-            const res = await run.Sharp.sharp(img1.absPath) //
-                // .rotate()
-                .composite([
-                    {
-                        input: img2.absPath,
-                        blend: val.id,
-                    },
-                ])
-                .toBuffer()
-            await run.Sharp.toMediaImage(res)
+    run: async (_run, { img1, img2, blend }) => {
+        for (const val of blend) {
+            await img1.processWithSharp((i) =>
+                i
+                    .composite([
+                        { input: img2.absPath, blend: val.id },
+                        { input: { text: { text: val.id, font: 'Arial', dpi: 800 } }, gravity: 'north' },
+                    ])
+                    .rotate(45),
+            )
         }
     },
 })

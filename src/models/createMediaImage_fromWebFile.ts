@@ -42,7 +42,7 @@ export const createMediaImage_fromBlobObject = async (
     mkdirSync(dir, { recursive: true })
     const buff: Buffer = await blob.arrayBuffer().then((x) => Buffer.from(x))
     writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    return _createMediaImage_fromLocalyAvailableImage(relPath, buff, opts)
 }
 
 export const createMediaImage_fromBuffer = async (
@@ -54,7 +54,7 @@ export const createMediaImage_fromBuffer = async (
     const dir = dirname(relPath)
     mkdirSync(dir, { recursive: true })
     writeFileSync(relPath, buffer)
-    return _createMediaImage_fromLocalyAvailableImage(cushy, relPath, buffer, opts)
+    return _createMediaImage_fromLocalyAvailableImage(relPath, buffer, opts)
 }
 
 export const createMediaImage_fromDataURI = (
@@ -87,7 +87,7 @@ export const createMediaImage_fromDataURI = (
     const fName = hash + ext
     const relPath = `outputs/${subFolder}/${fName}` as RelativePath
     writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    return _createMediaImage_fromLocalyAvailableImage(relPath, buff, opts)
 }
 
 export const createMediaImage_fromPath = (
@@ -97,15 +97,15 @@ export const createMediaImage_fromPath = (
     opts?: ImageCreationOpts,
 ): MediaImageL => {
     const buff = readFileSync(relPath)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    return _createMediaImage_fromLocalyAvailableImage(relPath, buff, opts)
 }
 
 export const _createMediaImage_fromLocalyAvailableImage = (
-    st: STATE,
     relPath: string,
     preBuff?: Buffer | ArrayBuffer,
     opts?: ImageCreationOpts,
 ): MediaImageL => {
+    const st = cushy
     const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(relPath)
     const uint8arr = new Uint8Array(buff)
     const fileSize = uint8arr.byteLength

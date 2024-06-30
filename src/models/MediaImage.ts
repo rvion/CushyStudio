@@ -11,6 +11,7 @@ import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { imageMeta } from 'image-meta'
 import Konva from 'konva'
 import { lookup } from 'mime-types'
 import { format, join, parse } from 'path'
@@ -25,9 +26,14 @@ import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
-import { createMediaImage_fromDataURI, type ImageCreationOpts } from './createMediaImage_fromWebFile'
+import {
+    _createMediaImage_fromLocalyAvailableImage,
+    createMediaImage_fromDataURI,
+    type ImageCreationOpts,
+} from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
@@ -465,6 +471,60 @@ export class MediaImageL {
             },
             { format: p?.format, quality: p?.quality },
         )
+    }
+
+    recache(opts?: ImageCreationOpts, preBuff?: Buffer | ArrayBuffer) {
+        const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(this.absPath)
+        const uint8arr = new Uint8Array(buff)
+        const fileSize = uint8arr.byteLength
+        const meta = imageMeta(uint8arr)
+        if (meta.width == null) throw new Error(`❌ size.width is null`)
+        if (meta.height == null) throw new Error(`❌ size.height is null`)
+
+        const hash = hashArrayBuffer(uint8arr)
+        if (this.data.hash === hash) {
+            console.log(`[🏞️] exact same imamge; updating promptID and stepID`)
+            const fieldsToUpdate = {}
+            this.update({
+                promptID: opts?.promptID ?? this.data.promptID,
+                stepID: opts?.stepID ?? this.data.stepID,
+            })
+            return this
+        } else {
+            const relPath = this.relPath
+            console.log(`[🏞️] updating existing image (${relPath})`)
+            this.update({
+                orientation: meta.orientation,
+                type: meta.type,
+                fileSize: fileSize,
+                width: meta.width,
+                height: meta.height,
+                hash,
+                path: relPath,
+                promptID: opts?.promptID ?? this.data.promptID,
+                stepID: opts?.stepID ?? this.data.stepID,
+            })
+        }
+    }
+
+    processWithSharp_inplace = async (
+        /** processing function */
+        fn: (sharp: sharp.Sharp) => sharp.Sharp,
+    ): Promise<this> => {
+        const buff = await fn(sharp(this.absPath)).toBuffer()
+        writeFileSync(this.absPath, buff)
+        this.recache({}, buff)
+        return this
+    }
+
+    processWithSharp = async (
+        /** processing function */
+        fn: (sharp: sharp.Sharp) => sharp.Sharp,
+        relPath: string = `outputs/sharp-${Date.now()}`,
+    ): Promise<MediaImageL> => {
+        const buff = await fn(sharp(this.absPath)).toBuffer()
+        writeFileSync(relPath, buff)
+        return _createMediaImage_fromLocalyAvailableImage(relPath, buff, this._imageCreationOpts)
     }
 
     processWithKonva = async (
