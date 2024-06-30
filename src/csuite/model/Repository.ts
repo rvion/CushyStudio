@@ -8,8 +8,6 @@ import { type DependencyList, useMemo } from 'react'
 
 import { Entity, ModelConfig } from './Entity'
 
-export type NoContext = null
-
 /**
  * you need one, and only one (singleton) per project
  * allow to inject the proper form config for your specific project.
@@ -48,56 +46,47 @@ export class Repository<DOMAIN extends IBuilder> {
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
-        buildFn: (form: DOMAIN) => FIELDS,
-        modelConfig: ModelConfig<ISchema<Widget_group<FIELDS>>, DOMAIN, NoContext> = { name: 'unnamed' },
+        schemaExt: (form: DOMAIN) => FIELDS,
+        modelConfig: ModelConfig<ISchema<Widget_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
     ): Entity<ISchema<Widget_group<FIELDS>>, DOMAIN> => {
-        const FN = (domain: DOMAIN): ISchema<Widget_group<FIELDS>> => {
-            return domain.group({
-                label: false,
-                items: buildFn(domain as DOMAIN),
-                collapsed: false,
-            })
-        }
-        const form = new Entity<ISchema<Widget_group<FIELDS>>, DOMAIN, null>(this, FN, modelConfig, null)
+        const schema = this.domain.group({
+            label: false,
+            items: schemaExt(this.domain),
+            collapsed: false,
+        })
+        const form = new Entity<ISchema<Widget_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
         return form
+    }
+
+    /** eval schema if it's a function */
+    private evalSchema = <SCHEMA extends ISchema>(
+        //
+        buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA),
+    ): SCHEMA => {
+        if (typeof buildFn === 'function') {
+            return buildFn(this.domain as DOMAIN)
+        }
+        return buildFn
     }
 
     /** simple alias to create a new Form */
     entity<SCHEMA extends ISchema>(
-        buildFn: (form: DOMAIN) => SCHEMA,
-        modelConfig: ModelConfig<SCHEMA, DOMAIN, NoContext> = { name: 'unnamed' },
+        schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
+        modelConfig: ModelConfig<SCHEMA, DOMAIN> = {},
     ): Entity<SCHEMA, DOMAIN> {
-        return new Entity<SCHEMA, DOMAIN>(this, buildFn, modelConfig, null)
+        const schema = this.evalSchema(schemaExt)
+        return new Entity<SCHEMA, DOMAIN>(this, schema, modelConfig)
     }
 
     /** simple way to defined forms and in react components */
     use<SCHEMA extends ISchema>(
         ui: (form: DOMAIN) => SCHEMA,
-        formProperties: ModelConfig<SCHEMA, DOMAIN, NoContext> = { name: 'unnamed' },
+        formProperties: ModelConfig<SCHEMA, DOMAIN> = {},
         deps: DependencyList = [],
     ): Entity<SCHEMA, DOMAIN> {
         return useMemo(() => {
-            return new Entity<SCHEMA, DOMAIN>(this, ui, formProperties, null)
-        }, deps)
-    }
-
-    entityWithContext<ROOT extends ISchema, CONTEXT>(
-        buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
-        context: CONTEXT,
-        modelConfig: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
-    ): Entity<ROOT, DOMAIN> {
-        return new Entity<ROOT, DOMAIN, CONTEXT>(this, buildFn, modelConfig, context)
-    }
-
-    /** simple way to defined forms and in react components */
-    useWithContext<ROOT extends ISchema, CONTEXT>(
-        buildFn: (form: DOMAIN, context: CONTEXT) => ROOT,
-        context: CONTEXT,
-        formProperties: ModelConfig<ROOT, DOMAIN, CONTEXT> = { name: 'unnamed' },
-        deps: DependencyList = [],
-    ): Entity<ROOT, DOMAIN> {
-        return useMemo(() => {
-            return new Entity<ROOT, DOMAIN, CONTEXT>(this, buildFn, formProperties, context)
+            const schema = this.evalSchema(ui)
+            return new Entity<SCHEMA, DOMAIN>(this, schema, formProperties)
         }, deps)
     }
 }

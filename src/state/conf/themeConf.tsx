@@ -25,7 +25,7 @@ export type ThemeConf = X.XGroup<{
     border: X.XOptional<X.XNumber>
 }>
 
-export const themeConf: Entity<ThemeConf, Builder, {}> = cushyRepo.entity(
+export const themeConf: Entity<ThemeConf, Builder> = cushyRepo.entity(
     (ui) =>
         ui.fields(
             {

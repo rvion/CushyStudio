@@ -19,12 +19,11 @@ export type ModelConfig<
     //
     SCHEMA extends ISchema<any>,
     DOMAIN extends IBuilder,
-    CONTEXT,
 > = {
     name?: string
-    serial?: (context: CONTEXT) => Maybe<EntitySerial>
-    onValueChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
-    onSerialChange?: (form: Entity<SCHEMA, DOMAIN, CONTEXT>) => void
+    serial?: () => Maybe<EntitySerial>
+    onValueChange?: (form: Entity<SCHEMA, DOMAIN>) => void
+    onSerialChange?: (form: Entity<SCHEMA, DOMAIN>) => void
 }
 
 export class Entity<
@@ -37,19 +36,13 @@ export class Entity<
      * Cushy BUILDER is `Builder` in `src/controls/Builder.ts`
      */
     BUILDER extends IBuilder = IBuilder,
-    /**
-     * Custom context, accessible in every callback
-     * unused internally, forwared at the type-level for your convenience
-     */
-    CONTEXT = any,
 > {
     root: SCHEMA['$Field']
 
     constructor(
         public repository: Repository<BUILDER>,
-        public buildFn: CovariantFn<[builder: BUILDER, context: CONTEXT], SCHEMA>,
-        public config: ModelConfig<SCHEMA, BUILDER, CONTEXT>,
-        public context: CONTEXT,
+        public schema: SCHEMA,
+        public config: ModelConfig<SCHEMA, BUILDER>,
     ) {
         this.builder = repository.domain
 
@@ -174,15 +167,6 @@ export class Entity<
         throw new Error('🔴 root is not a group')
     }
 
-    // 🔴 👇 remove that
-    // get root(): SCHEMA['$Field'] {
-    //     const root = this.init()
-    //     Object.defineProperty(this, 'root', { value: root })
-    //     return root
-    // }
-
-    // Change tracking ------------------------------------
-
     /** timestamp at which form value was last updated, or 0 when form still pristine */
     valueLastUpdatedAt: Timestamp = 0
 
@@ -238,7 +222,7 @@ export class Entity<
 
         try {
             // retrieve the previous entity serial
-            let serial = this.config.serial?.(this.context)
+            let serial = this.config.serial?.()
 
             // keep track of the prev uid, and set-it up so it's avaialable asap
             this._uid = serial?.uid ?? mkNewEntityId()
@@ -266,8 +250,8 @@ export class Entity<
             this.serialLastUpdatedAt = serial?.serialLastUpdatedAt ?? 0
             this.snapshotLastUpdatedAt = serial?.snapshotLastUpdatedAt ?? 0
 
-            const schema: SCHEMA = this.buildFn?.(formBuilder, this.context)
-            const rootWidget: SCHEMA = formBuilder._HYDRATE(this, null, schema, serial?.root)
+            // const schema: SCHEMA = this.buildFn?.(formBuilder)
+            const rootWidget: SCHEMA = formBuilder._HYDRATE(this, null, this.schema, serial?.root)
             this.ready = true
             this.error = null
             return rootWidget
@@ -275,8 +259,7 @@ export class Entity<
             console.error(`[🔴] Building entity FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            const spec: SCHEMA = this.buildFn?.(formBuilder, this.context)
-            return formBuilder._HYDRATE(this, null, spec, null)
+            return formBuilder._HYDRATE(this, null, this.schema, null)
         }
     }
 }
