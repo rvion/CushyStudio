@@ -81,7 +81,7 @@ export const run_customSave = (ui: OutputFor<typeof ui_customSave>): ImageSaveFo
 // 💽
 // 💽     // 2. for every image generated
 // 💽     for (const img of run.generatedImages) {
-// 💽         // if (img.ComfyNodeMetadta?.tag !== 'final-image') {
+// 💽         // if (img.ComfyNodeMetadata?.tag !== 'final-image') {
 // 💽         //     console.log(`[💪] skipping file ${img.url} because it doesnt' have tag "final-image"`)
 // 💽         //     continue
 // 💽         // }

@@ -133,7 +133,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                         <div>Data</div>
                         <JsonViewUI value={img?.data}></JsonViewUI>
                         <div>meta</div>
-                        <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
+                        <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
                         <div>node</div>
                         <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                     </div>
@@ -151,7 +151,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                             <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
                         </>
                     ) : null}
-                    {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}
+                    {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>}
                     {/* {img?.tags.map((t) => (
                         <div key={t} tw='italic'>
                             #{t}
