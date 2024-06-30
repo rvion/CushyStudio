@@ -1,10 +1,9 @@
-import type { Entity } from '../csuite/model/Entity'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { ISchema, SchemaDict } from '../csuite/model/ISchema'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
-import { makeAutoObservable, reaction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { Widget_bool, type Widget_bool_config } from '../csuite/fields/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from '../csuite/fields/button/WidgetButton'
@@ -108,16 +107,6 @@ declare global {
 
 /** cushy studio form builder */
 export class Builder implements IBuilder {
-    SpecCtor = Schema
-
-    /**
-     * (@internal) don't call this yourself
-     *
-     * empty model/entity to build
-     * API is a bit weird; but since every project
-     * can have different widgets, we need all of those features
-     * to be moved in a dedicated file, outside of the model/entity file
-     */
     constructor() {
         // public model: Model<ISchema, Builder>,
         makeAutoObservable(this, {
@@ -126,70 +115,78 @@ export class Builder implements IBuilder {
             enum: false,
             enums: false,
             enumOpt: false,
-            SpecCtor: false,
         })
     }
 
-    time = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'time', ...config })
+    time(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'time', ...config })
     }
-    date = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'date', ...config })
+    date(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'date', ...config })
     }
-    datetime = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'datetime-local', ...config })
+    datetime(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'datetime-local', ...config })
     }
-    password = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'password', ...config })
+    password(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'password', ...config })
     }
-    email = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'email', ...config })
+    email(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'email', ...config })
     }
-    url = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'url', ...config })
+    url(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'url', ...config })
     }
-    string = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', config)
+    string(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', config)
     }
-    text = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', config)
+    text(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', config)
     }
-    textarea = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { textarea: true, ...config })
+    textarea(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { textarea: true, ...config })
     }
-    boolean = (config: Widget_bool_config = {}): X.XBool => {
-        return new Schema<Widget_bool>('bool', config)
+    boolean(config: Widget_bool_config = {}): X.XBool {
+        return new Schema<Widget_bool>(Widget_bool, 'bool', config)
     }
-    bool = (config: Widget_bool_config = {}): X.XBool => {
-        return new Schema<Widget_bool>('bool', config)
+    bool(config: Widget_bool_config = {}): X.XBool {
+        return new Schema<Widget_bool>(Widget_bool, 'bool', config)
     }
-    size = (config: Widget_size_config = {}): X.XSize => {
-        return new Schema<Widget_size>('size', config)
+    size(config: Widget_size_config = {}): X.XSize {
+        return new Schema<Widget_size>(Widget_size, 'size', config)
     }
-    spacer = (config: Widget_spacer_config = {}): X.XSpacer => {
-        return new Schema<Widget_spacer>('spacer', { justifyLabel: false, label: false, collapsed: false, border: false })
+    spacer(config: Widget_spacer_config = {}): X.XSpacer {
+        return new Schema<Widget_spacer>(Widget_spacer, 'spacer', {
+            justifyLabel: false,
+            label: false,
+            collapsed: false,
+            border: false,
+        })
     }
-    orbit = (config: Widget_orbit_config = {}): X.XOrbit => {
-        return new Schema<Widget_orbit>('orbit', config)
+    orbit(config: Widget_orbit_config = {}): X.XOrbit {
+        return new Schema<Widget_orbit>(Widget_orbit, 'orbit', config)
     }
-    seed = (config: Widget_seed_config = {}): X.XSeed => {
-        return new Schema<Widget_seed>('seed', config)
+    seed(config: Widget_seed_config = {}): X.XSeed {
+        return new Schema<Widget_seed>(Widget_seed, 'seed', config)
     }
-    color = (config: Widget_color_config = {}): X.XColor => {
-        return new Schema<Widget_color>('color', config)
+    color(config: Widget_color_config = {}): X.XColor {
+        return new Schema<Widget_color>(Widget_color, 'color', config)
     }
-    colorV2 = (config: Widget_string_config = {}): X.XString => {
-        return new Schema<Widget_string>('str', { inputType: 'color', ...config })
+    colorV2(config: Widget_string_config = {}): X.XString {
+        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'color', ...config })
     }
-    matrix = (config: Widget_matrix_config): X.XMatrix => {
-        return new Schema<Widget_matrix>('matrix', config)
+    matrix(config: Widget_matrix_config): X.XMatrix {
+        return new Schema<Widget_matrix>(Widget_matrix, 'matrix', config)
     }
     button = <K>(config: Widget_button_config<K>): X.XButton<K> => {
-        return new Schema<Widget_button<K>>('button', config)
+        return new Schema<Widget_button<K>>(Widget_button, 'button', config)
     }
     /** variants: `header` */
-    markdown = (config: Widget_markdown_config | string): X.XMarkdown => {
-        return new Schema<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+    markdown(config: Widget_markdown_config | string): X.XMarkdown {
+        return new Schema<Widget_markdown>(
+            Widget_markdown,
+            'markdown',
+            typeof config === 'string' ? { markdown: config } : config,
+        )
     }
     /** [markdown variant]: inline=true, label=false */
     header = (config: Widget_markdown_config | string): X.XMarkdown => {
@@ -197,20 +194,20 @@ export class Builder implements IBuilder {
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config }
-        return new Schema<Widget_markdown>('markdown', config_)
+        return new Schema<Widget_markdown>(Widget_markdown, 'markdown', config_)
     }
     image = (config: Widget_image_config = {}): X.XImage => {
-        return new Schema<Widget_image>('image', config)
+        return new Schema<Widget_image>(Widget_image, 'image', config)
     }
     prompt = (config: Widget_prompt_config = {}): X.XPrompt => {
-        return new Schema<Widget_prompt>('prompt', config)
+        return new Schema<Widget_prompt>(Widget_prompt, 'prompt', config)
     }
     int = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>('number', { mode: 'int', ...config })
+        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'int', ...config })
     }
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>('number', {
+        return new Schema<Widget_number>(Widget_number, 'number', {
             mode: 'int',
             default: 100,
             step: 10,
@@ -221,44 +218,44 @@ export class Builder implements IBuilder {
         })
     }
     float = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>('number', { mode: 'float', ...config })
+        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
     number = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>('number', { mode: 'float', ...config })
+        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
     remSize = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
         return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
     custom = <T>(config: Widget_custom_config<T>): X.XCustom<T> => {
-        return new Schema<Widget_custom<T>>('custom', config)
+        return new Schema<Widget_custom<T>>(Widget_custom, 'custom', config)
     }
     list = <T extends ISchema>(config: Widget_list_config<T>): X.XList<T> => {
-        return new Schema<Widget_list<T>>('list', config)
+        return new Schema<Widget_list<T>>(Widget_list, 'list', config)
     }
     listExt = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>('listExt', config)
+        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', config)
     }
     timeline = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
+        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'timeline', ...config })
     }
     regional = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
+        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'regional', ...config })
     }
     selectOneV2 = <T extends string>(
         p: readonly T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectOne_<T> => {
-        return new Schema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', {
+        return new Schema<Widget_selectOne<BaseSelectEntry<T>>>(Widget_selectOne, 'selectOne', {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
             ...config,
         })
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
-        return new Schema<Widget_selectOne<T>>('selectOne', config)
+        return new Schema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
     }
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): X.XSelectMany<T> => {
-        return new Schema<Widget_selectMany<T>>('selectMany', config)
+        return new Schema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
     }
 
     /**
@@ -273,7 +270,7 @@ export class Builder implements IBuilder {
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
     ): X.XLink<SCHEMA1, SCHEMA2> {
-        return new Schema<Widget_link<SCHEMA1, SCHEMA2>>('link', { share: injected, children })
+        return new Schema<Widget_link<SCHEMA1, SCHEMA2>>(Widget_link, 'link', { share: injected, children })
     }
 
     /**
@@ -281,57 +278,64 @@ export class Builder implements IBuilder {
      * @stability unstable
      */
     linkedV0 = <T extends BaseField>(fn: (parent: BaseField) => T): X.XShared<T> => {
-        return new Schema<Widget_shared<T>>('shared', { widget: fn })
+        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: fn })
     }
 
     linked = <T extends BaseField>(parent: T): X.XShared<T> => {
-        return new Schema<Widget_shared<T>>('shared', { widget: () => parent })
+        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: () => parent })
     }
 
     /** see also: `fields` for a more practical api */
     group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Schema<Widget_group<T>>('group', config)
+        return new Schema<Widget_group<T>>(Widget_group, 'group', config)
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
     column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Schema<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
+        return new Schema<Widget_group<T>>(Widget_group, 'group', { border: false, label: false, collapsed: false, ...config })
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
     row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
-        return new Schema<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
+        return new Schema<Widget_group<T>>(Widget_group, 'group', {
+            border: false,
+            label: false,
+            collapsed: false,
+            layout: 'H',
+            ...config,
+        })
     }
     /** simpler way to create `group` */
     fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): X.XGroup<T> => {
-        return new Schema<Widget_group<T>>('group', { items: fields, ...config })
+        return new Schema<Widget_group<T>>(Widget_group, 'group', { items: fields, ...config })
     }
     choice = <T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoice<T> => {
-        return new Schema<Widget_choices<T>>('choices', { multi: false, ...config })
+        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: false, ...config })
     }
     choiceV2 = <T extends { [key: string]: ISchema }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoice<T> => {
-        return new Schema<Widget_choices<T>>('choices', { multi: false, items, ...config })
+        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: false, items, ...config })
     }
     choices = <T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoices<T> => {
-        return new Schema<Widget_choices<T>>('choices', { multi: true, ...config })
+        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: true, ...config })
     }
     choicesV2 = <T extends { [key: string]: ISchema }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoices<T> => {
-        return new Schema<Widget_choices<T>>('choices', { items, multi: true, appearance: 'tab', ...config })
+        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { items, multi: true, appearance: 'tab', ...config })
     }
     empty = (config: Widget_group_config<NO_PROPS> = {}): X.XEmpty => {
-        return new Schema<Widget_group<NO_PROPS>>('group', config)
+        return new Schema<Widget_group<NO_PROPS>>(Widget_group, 'group', config)
     }
     /** simple choice alternative api */
     tabs = <T extends { [key: string]: ISchema }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ) => new Schema<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    ) => new Schema<Widget_choices<T>>(Widget_choices, 'choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
-    optional = <T extends ISchema>(p: Widget_optional_config<T>) => new Schema<Widget_optional<T>>('optional', p)
+    optional = <T extends ISchema>(p: Widget_optional_config<T>) => new Schema<Widget_optional<T>>(Widget_optional, 'optional', p)
+
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
@@ -367,104 +371,9 @@ export class Builder implements IBuilder {
 
     _FIX_INDENTATION = _FIX_INDENTATION
 
-    _HYDRATE = <T extends ISchema>( //
-        model: Entity<any>,
-        parent: BaseField | null,
-        spec: T,
-        serial: any | null,
-    ): T['$Field'] => {
-        // 1. instanciate the widget
-        const w = this.__HYDRATE(model, parent, spec, serial) as T['$Field']
-
-        // 2. start publish mechanism
-        w.publishValue()
-
-        // 3. start reactions & subscribe mechanism
-        // 🔴 TODO: Need to dispose later
-        for (const { expr, effect } of spec.reactions) {
-            reaction(
-                () => expr(w),
-                (arg) => effect(arg, w),
-                { fireImmediately: true },
-            )
-        }
-        return w
-    }
-
-    /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE = <T extends ISchema>( //
-        model: Entity<any>,
-        parent: BaseField | null,
-        spec: T,
-        serial: any | null,
-    ): BaseField<any> => {
-        // ensure the serial is compatible
-        if (serial != null && serial.type !== spec.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
-            serial = null
-        }
-        // if we've been given an already instanciated widget, we just return it
-        if (spec instanceof BaseField) return spec
-
-        // invalid schema => we just crash
-        if (!(spec instanceof Schema)) {
-            throw new Error(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
-        }
-
-        const type = spec.type
-        const spec2 = spec as any
-
-        if (type === 'group') return new Widget_group(model, parent, spec2, serial, model._ROOT ? undefined : (x) => { model._ROOT = x }) // prettier-ignore
-        if (type === 'shared') return new Widget_shared(model, parent, spec2, serial)
-        if (type === 'link') return new Widget_link(model, parent, spec2, serial)
-        if (type === 'optional') return new Widget_optional(model, parent, spec2, serial)
-        if (type === 'bool') return new Widget_bool(model, parent, spec2, serial)
-        if (type === 'str') return new Widget_string(model, parent, spec2, serial)
-        if (type === 'prompt') return new Widget_prompt(model, parent, spec2, serial)
-        if (type === 'choices') return new Widget_choices(model, parent, spec2, serial)
-        if (type === 'number') return new Widget_number(model, parent, spec2, serial)
-        if (type === 'color') return new Widget_color(model, parent, spec2, serial)
-        if (type === 'enum') return new Widget_enum(model, parent, spec2, serial)
-        if (type === 'list') return new Widget_list(model, parent, spec2, serial)
-        if (type === 'orbit') return new Widget_orbit(model, parent, spec2, serial)
-        if (type === 'listExt') return new Widget_listExt(model, parent, spec2, serial)
-        if (type === 'button') return new Widget_button(model, parent, spec2, serial)
-        if (type === 'seed') return new Widget_seed(model, parent, spec2, serial)
-        if (type === 'matrix') return new Widget_matrix(model, parent, spec2, serial)
-        if (type === 'image') return new Widget_image(model, parent, spec2, serial)
-        if (type === 'selectOne') return new Widget_selectOne(model, parent, spec2, serial)
-        if (type === 'selectMany') return new Widget_selectMany(model, parent, spec2, serial)
-        if (type === 'size') return new Widget_size(model, parent, spec2, serial)
-        if (type === 'spacer') return new Widget_spacer(model, parent, spec2, serial)
-        if (type === 'markdown') return new Widget_markdown(model, parent, spec2, serial)
-        if (type === 'custom') return new Widget_custom(model, parent, spec2, serial)
-
-        console.log(`🔴 unknown widget "${type}" in serial.`)
-
-        return new Widget_markdown(
-            model,
-            parent,
-            new Schema<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
-        )
-    }
-
     /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
 export const builder = new Builder()
 export type CushyRepo = Repository<Builder>
 export const cushyRepo: CushyRepo = new Repository<Builder>(builder)
-
-/**
- * Calling this function will mount and instanciate the subform right away
- * Subform will be register in the root form `group`, using `__${key}__` as the key
- * This is a core abstraction that enables features like
- *  - mountting a widget at several places in the form
- *  - recursive forms
- *  - dynamic widgets depending on other widgets values
- * */
-// shared = <W extends ISchema>(key: string, spec: W): Widget_shared<W> => {
-//     const field = this.model.hydrateSubtree(key, spec)
-//     const sharedSpec = new Schema<Widget_shared<W>>('shared', { rootKey: key, widget: field })
-//     return new Widget_shared<W>(this.model, null, sharedSpec) as any
-// }

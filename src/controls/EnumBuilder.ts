@@ -1,4 +1,3 @@
-import type { Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import type { Widget_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne'
 /**
@@ -9,6 +8,7 @@ import type { Entity } from '../csuite/model/Entity'
 import type { ISchema } from '../csuite/model/ISchema'
 import type { Builder } from './Builder'
 
+import { Widget_enum, type Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import { Schema } from './Schema'
 
 export type IEnumBuilder = {
@@ -45,13 +45,14 @@ export class EnumBuilder {
                 const enumSchema = schema.knownEnumsByName.get(enumName)
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
-                    return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                    return (config: any = {}) =>
+                        new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Schema('enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -83,7 +84,11 @@ export class EnumBuilderOpt {
                         domain.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            widget: new Schema('enum', /* form, */ { ...config, enumName: 'INVALID_null' }),
+                            widget: new Schema(
+                                Widget_enum<any /* 🔴 */>,
+                                'enum',
+                                /* form, */ { ...config, enumName: 'INVALID_null' },
+                            ),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -94,7 +99,7 @@ export class EnumBuilderOpt {
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Schema('enum', /* form, */ { ...config, enumName }),
+                        widget: new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName }),
                     })
             },
         })

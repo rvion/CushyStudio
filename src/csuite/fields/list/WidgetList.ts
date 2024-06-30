@@ -197,16 +197,16 @@ export class Widget_list<T extends ISchema> //
         }
         // 2. pre-existing serial => rehydrate items
         else {
-            const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
+            const schema = this.schemaAt(0) // TODO: evaluate schema in the form loop
             for (const subSerial of this.serial.items_) {
                 if (
                     subSerial == null || // ⁉️ when can this happen ?
-                    subSerial.type !== unmounted.type
+                    subSerial.type !== schema.type
                 ) {
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = entity.builder._HYDRATE(this.entity, this, unmounted, subSerial)
+                const subWidget = schema.instanciate(this.entity, this, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -280,7 +280,7 @@ export class Widget_list<T extends ISchema> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.entity.builder._HYDRATE(this.entity, this, schema, null)
+        const element = schema.instanciate(this.entity, this, null)
 
         // set initial value
         if (p.value) {

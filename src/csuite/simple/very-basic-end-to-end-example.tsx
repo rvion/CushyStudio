@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
 import type { BaseField } from '../model/BaseField'
 import type { Entity } from '../model/Entity'
@@ -34,7 +36,7 @@ export class BasicBuilder implements IBuilder {
     }
 
     email(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'email', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'email', ...config })
     }
 
     string(config: Widget_string_config = {}): S.SString {

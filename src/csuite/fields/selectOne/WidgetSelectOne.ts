@@ -123,7 +123,6 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         const _choices = this.config.choices
         if (typeof _choices === 'function') {
             if (!this.entity.ready) return []
-            if (this.entity._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
             return _choices(this)
         }
         return _choices

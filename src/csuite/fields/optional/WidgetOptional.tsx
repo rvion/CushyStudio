@@ -98,12 +98,12 @@ export class Widget_optional<T extends ISchema = ISchema> extends BaseField<Widg
      */
     private _ensureChildIsHydrated = () => {
         if (this.child) return
-        const spec = this.config.widget
+        const schema = this.config.widget
         const prevSerial = this.serial.child
-        if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.entity.builder._HYDRATE(this.entity, this, spec, prevSerial)
+        if (prevSerial && schema.type === prevSerial.type) {
+            this.child = schema.instanciate(this.entity, this, prevSerial)
         } else {
-            this.child = this.entity.builder._HYDRATE(this.entity, this, spec, null)
+            this.child = schema.instanciate(this.entity, this, null)
             this.serial.child = this.child.serial
         }
     }

@@ -1,30 +1,39 @@
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { BaseField } from './BaseField'
 import type { Channel, ChannelId, Producer } from './Channel'
+import type { Entity } from './Entity'
+import type { Instanciable } from './Instanciable'
 
 export type SchemaDict = {
-    [key: string]: ISchema | BaseField
+    [key: string]: Instanciable
 }
 
-export interface ISchema<out W extends BaseField = BaseField> {
+export interface ISchema<out Field extends BaseField = BaseField> {
     // real fields
-    type: W['type']
-    config: W['$Config']
+    type: Field['type']
+    config: Field['$Config']
 
     // type utils
-    $Field: W
-    $Type: W['type']
-    $Config: W['$Config']
-    $Serial: W['$Serial']
-    $Value: W['$Value']
+    $Field: Field
+    $Type: Field['type']
+    $Config: Field['$Config']
+    $Serial: Field['$Serial']
+    $Value: Field['$Value']
 
-    LabelExtraUI?: CovariantFC<{ widget: W }>
+    instanciate(
+        //
+        entity: Entity<any>,
+        parent: BaseField | null,
+        serial: any | null,
+    ): Field['$Field']
+
+    LabelExtraUI?: CovariantFC<{ widget: Field }>
 
     // -----------
     producers: Producer<any, any>[]
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Field']) => T): this
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Field']) => void): this
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: Field['$Field']) => T): this
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: Field['$Field']) => void): this
 
     reactions: { expr: (self: any) => any; effect: (arg: any, self: any) => void }[]
-    addReaction<T>(expr: (self: W['$Field']) => T, effect: (arg: T, self: W['$Field']) => void): this
+    addReaction<T>(expr: (self: Field['$Field']) => T, effect: (arg: T, self: Field['$Field']) => void): this
 }

@@ -204,9 +204,6 @@ export class Entity<
     /** from builder, offering simple API for your project specifc widgets  */
     builder: BUILDER
 
-    /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
-    _ROOT!: SCHEMA['$Field']
-
     ready = false
 
     /** only available once initialized */
@@ -251,7 +248,7 @@ export class Entity<
             this.snapshotLastUpdatedAt = serial?.snapshotLastUpdatedAt ?? 0
 
             // const schema: SCHEMA = this.buildFn?.(formBuilder)
-            const rootWidget: SCHEMA = formBuilder._HYDRATE(this, null, this.schema, serial?.root)
+            const rootWidget: SCHEMA = this.schema.instanciate(this, null, serial?.root)
             this.ready = true
             this.error = null
             return rootWidget
@@ -259,7 +256,7 @@ export class Entity<
             console.error(`[🔴] Building entity FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return formBuilder._HYDRATE(this, null, this.schema, null)
+            return this.schema.instanciate(this, null, null)
         }
     }
 }

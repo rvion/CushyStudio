@@ -3,6 +3,7 @@ import type { Widget_button } from '../fields/button/WidgetButton'
 import type { Widget_choices } from '../fields/choices/WidgetChoices'
 import type { Widget_color } from '../fields/color/WidgetColor'
 import type { Widget_group } from '../fields/group/WidgetGroup'
+import type { Widget_link } from '../fields/link/WidgetLink'
 import type { Widget_list } from '../fields/list/WidgetList'
 import type { Widget_markdown } from '../fields/markdown/WidgetMarkdown'
 import type { Widget_matrix } from '../fields/matrix/WidgetMatrix'
@@ -11,10 +12,12 @@ import type { Widget_optional } from '../fields/optional/WidgetOptional'
 import type { Widget_seed } from '../fields/seed/WidgetSeed'
 import type { Widget_selectMany } from '../fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry, Widget_selectOne } from '../fields/selectOne/WidgetSelectOne'
+import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { Widget_size } from '../fields/size/WidgetSize'
 import type { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import type { Widget_string } from '../fields/string/WidgetString'
 import type { ISchema } from '../model/ISchema'
+import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleSchema } from './SimpleSchema'
 
 declare global {
@@ -27,9 +30,12 @@ declare global {
         // ...
 
         // schema aliases
+        type SShared<T extends ISchema> = SimpleSchema<Widget_shared<T['$Field']>>
         type SGroup<T extends SchemaDict> = SimpleSchema<Widget_group<T>>
+        type SEmpty = SimpleSchema<Widget_group<NO_PROPS>>
         type SOptional<T extends ISchema> = SimpleSchema<Widget_optional<T>>
         type SBool = SimpleSchema<Widget_bool>
+        type SLink<A extends ISchema, B extends ISchema> = SimpleSchema<Widget_link<A, B>>
         type SString = SimpleSchema<Widget_string>
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Widget_choices<T>>
         type SNumber = SimpleSchema<Widget_number>

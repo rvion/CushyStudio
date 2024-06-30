@@ -100,10 +100,6 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         parent: BaseField | null,
         spec: ISchema<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
-        /**
-         * 🔴 🔴 REMOVE THAT CRAP
-         * used to register self as the root, before we start instanciating anything */
-        preHydrate?: (self: Widget_group<any>) => void,
     ) {
         super(entity, parent, spec)
         this.id = serial?.id ?? nanoid()
@@ -117,9 +113,6 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
         // /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
 
-        // allow to store ref to the object right away
-        preHydrate?.(this)
-
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
         const _newValues: SchemaDict =
@@ -130,24 +123,18 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         // this.childKeys = childKeys
         for (const key of childKeys) {
-            const unmounted = bang(_newValues[key])
+            const fieldSchema = bang(_newValues[key])
             const prevFieldSerial = prevFieldSerials[key]
-            if (prevFieldSerial && unmounted.type === prevFieldSerial.type) {
-                // if (newType === 'shared') {
-                //     // 🔴 BAD 🔴
-                //     this.fields[key] = newItem as any
-                // } else {
-                // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.entity.builder._HYDRATE(this.entity, this, unmounted, prevFieldSerial)
-                // }
+            if (prevFieldSerial && fieldSchema.type === prevFieldSerial.type) {
+                this.fields[key] = fieldSchema.instanciate(this.entity, this, prevFieldSerial)
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
                 if (prevFieldSerial != null)
                     console.log(
-                        `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
+                        `[🔶] invalid serial for "${key}": (${fieldSchema.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.entity.builder._HYDRATE(this.entity, this, unmounted, null)
+                this.fields[key] = fieldSchema.instanciate(this.entity, this, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }

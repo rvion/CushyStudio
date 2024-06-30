@@ -98,10 +98,12 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
                 ? serial
                 : this._defaultSerial()
 
-        this.aField = this.domain._HYDRATE(this.entity, this, this.config.share, this.serial.a)
+        const aSchema = this.config.share
+        this.aField = aSchema.instanciate(this.entity, this, this.serial.a)
         this.serial.a = this.aField.serial // hook a serial
 
-        this.bField = this.domain._HYDRATE(this.entity, this, this.config.children(this.aField), this.serial.b)
+        const bSchema = this.config.children(this.aField)
+        this.bField = bSchema.instanciate(this.entity, this, this.serial.b)
         this.serial.b = this.bField.serial // hook a serial
 
         this.init({})

@@ -1,16 +1,16 @@
-import type { BaseField } from '../model/BaseField'
-import type { Entity } from '../model/Entity'
 import type { IBuilder } from '../model/IBuilder'
 import type { ISchema, SchemaDict } from '../model/ISchema'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
+import type { NO_PROPS } from '../types/NO_PROPS'
 
-import { makeAutoObservable, reaction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { Widget_bool, type Widget_bool_config } from '../fields/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from '../fields/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from '../fields/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from '../fields/color/WidgetColor'
 import { Widget_group, type Widget_group_config } from '../fields/group/WidgetGroup'
+import { Widget_link } from '../fields/link/WidgetLink'
 import { Widget_list, type Widget_list_config } from '../fields/list/WidgetList'
 import { Widget_markdown, Widget_markdown_config } from '../fields/markdown/WidgetMarkdown'
 import { Widget_matrix, type Widget_matrix_config } from '../fields/matrix/WidgetMatrix'
@@ -21,99 +21,96 @@ import { Widget_selectMany, type Widget_selectMany_config } from '../fields/sele
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
 import { Widget_shared } from '../fields/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from '../fields/size/WidgetSize'
-import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
+import { BaseField } from '../model/BaseField'
 import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleSchema } from './SimpleSchema'
 
-// -------------------------------------------------------------------------------------------
 export class SimpleBuilder implements IBuilder {
-    /** (@internal) DO NOT USE YOURSELF */
-    SpecCtor = SimpleSchema
-
-    /** (@internal) don't call this yourself */
     constructor() {
-        // public model: Model<ISchema, SimpleBuilder>, //
-        makeAutoObservable(this, {
-            SpecCtor: false,
-        })
+        makeAutoObservable(this, {})
     }
 
     time(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'time', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'time', ...config })
     }
 
     date(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'date', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'date', ...config })
     }
 
     datetime(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'datetime-local', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'datetime-local', ...config })
     }
 
     password(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'password', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'password', ...config })
     }
 
     email(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'email', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'email', ...config })
     }
 
     url(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'url', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'url', ...config })
     }
 
     string(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', config)
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', config)
     }
 
     text(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', config)
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', config)
     }
 
     textarea(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { textarea: true, ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { textarea: true, ...config })
     }
 
     boolean(config: Widget_bool_config = {}): S.SBool {
-        return new SimpleSchema<Widget_bool>('bool', config)
+        return new SimpleSchema<Widget_bool>(Widget_bool, 'bool', config)
     }
 
     bool(config: Widget_bool_config = {}): S.SBool {
-        return new SimpleSchema<Widget_bool>('bool', config)
+        return new SimpleSchema<Widget_bool>(Widget_bool, 'bool', config)
     }
 
     size(config: Widget_size_config = {}): S.SSize {
-        return new SimpleSchema<Widget_size>('size', config)
+        return new SimpleSchema<Widget_size>(Widget_size, 'size', config)
     }
 
     seed(config: Widget_seed_config = {}): S.SSeed {
-        return new SimpleSchema<Widget_seed>('seed', config)
+        return new SimpleSchema<Widget_seed>(Widget_seed, 'seed', config)
     }
 
     color(config: Widget_color_config = {}): S.SColor {
-        return new SimpleSchema<Widget_color>('color', config)
+        return new SimpleSchema<Widget_color>(Widget_color, 'color', config)
     }
 
     colorV2(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { inputType: 'color', ...config })
+        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'color', ...config })
     }
 
     matrix(config: Widget_matrix_config): S.SMatrix {
-        return new SimpleSchema<Widget_matrix>('matrix', config)
+        return new SimpleSchema<Widget_matrix>(Widget_matrix, 'matrix', config)
     }
 
     button<K>(config: Widget_button_config): S.SButton<K> {
-        return new SimpleSchema<Widget_button<K>>('button', config)
+        return new SimpleSchema<Widget_button<K>>(Widget_button, 'button', config)
     }
 
     /** variants: `header` */
     markdown(config: Widget_markdown_config | string): S.SMarkdown {
-        return new SimpleSchema<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+        return new SimpleSchema<Widget_markdown>(
+            Widget_markdown,
+            'markdown',
+            typeof config === 'string' ? { markdown: config } : config,
+        )
     }
     /** [markdown variant]: inline=true, label=false */
     header(config: Widget_markdown_config | string): S.SMarkdown {
         return new SimpleSchema<Widget_markdown>(
+            Widget_markdown,
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
@@ -122,12 +119,12 @@ export class SimpleBuilder implements IBuilder {
     }
 
     int(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Widget_number>('number', { mode: 'int', ...config })
+        return new SimpleSchema<Widget_number>(Widget_number, 'number', { mode: 'int', ...config })
     }
 
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Widget_number>('number', {
+        return new SimpleSchema<Widget_number>(Widget_number, 'number', {
             mode: 'int',
             default: 100,
             step: 10,
@@ -139,23 +136,23 @@ export class SimpleBuilder implements IBuilder {
     }
 
     float(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Widget_number>('number', { mode: 'float', ...config })
+        return new SimpleSchema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
 
     number(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Widget_number>('number', { mode: 'float', ...config })
+        return new SimpleSchema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
     }
 
     list<const T extends ISchema>(config: Widget_list_config<T>): S.SList<T> {
-        return new SimpleSchema<Widget_list<T>>('list', config)
+        return new SimpleSchema<Widget_list<T>>(Widget_list, 'list', config)
     }
 
     selectOne<const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): S.SSelectOne<T> {
-        return new SimpleSchema<Widget_selectOne<T>>('selectOne', config)
+        return new SimpleSchema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
     }
 
     selectOneV2(p: string[]): S.SSelectOne<BaseSelectEntry> {
-        return new SimpleSchema<Widget_selectOne<BaseSelectEntry>>('selectOne', {
+        return new SimpleSchema<Widget_selectOne<BaseSelectEntry>>(Widget_selectOne, 'selectOne', {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
         })
@@ -165,45 +162,77 @@ export class SimpleBuilder implements IBuilder {
         p: T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): S.SSelectOne_<T> {
-        return new SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>>(Widget_selectOne, 'selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
     selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): S.SSelectMany<T> {
-        return new SimpleSchema<Widget_selectMany<T>>('selectMany', config)
+        return new SimpleSchema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
+    }
+
+    /**
+     * Allow to instanciate a field early, so you can re-use it in multiple places
+     * or access it's instance to dynamically change some other field schema.
+     *
+     * @since 2024-06-27
+     * @stability unstable
+     */
+    with<const SCHEMA1 extends ISchema, SCHEMA2 extends ISchema>(
+        /** the schema of the field you'll want to re-use the in second part */
+        injected: SCHEMA1,
+        children: (shared: SCHEMA1['$Field']) => SCHEMA2,
+    ): S.SLink<SCHEMA1, SCHEMA2> {
+        return new SimpleSchema<Widget_link<SCHEMA1, SCHEMA2>>(Widget_link, 'link', { share: injected, children })
+    }
+
+    /**
+     * @since 2024-06-27
+     * @stability unstable
+     */
+    linkedV0 = <T extends BaseField>(fn: (parent: BaseField) => T): S.SShared<T> => {
+        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: fn })
+    }
+
+    linked = <T extends BaseField>(parent: T): S.SShared<T> => {
+        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: () => parent })
     }
 
     /** see also: `fields` for a more practical api */
     group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): S.SGroup<T> {
-        return new SimpleSchema<Widget_group<T>>('group', config)
+        return new SimpleSchema<Widget_group<T>>(Widget_group, 'group', config)
     }
 
     fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): S.SGroup<T> {
-        return new SimpleSchema<Widget_group<T>>('group', { items: fields, ...config })
+        return new SimpleSchema<Widget_group<T>>(Widget_group, 'group', { items: fields, ...config })
     }
 
-    choice<const T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): S.SChoices<T> {
-        return new SimpleSchema<Widget_choices<T>>('choices', { multi: false, ...config })
+    choice<const T extends SchemaDict>(config: Omit<Widget_choices_config<T>, 'multi'>): S.SChoices<T> {
+        return new SimpleSchema<Widget_choices<T>>(Widget_choices<any>, 'choices', { multi: false, ...config })
     }
 
-    choices<const T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): S.SChoices<T> {
-        return new SimpleSchema<Widget_choices<T>>('choices', { multi: true, ...config })
+    choices<const T extends SchemaDict>(config: Omit<Widget_choices_config<T>, 'multi'>): S.SChoices<T> {
+        return new SimpleSchema<Widget_choices<T>>(Widget_choices<any>, 'choices', { multi: true, ...config })
     }
 
-    ok<const T extends SchemaDict>(config: Widget_group_config<T> = {}) {
-        return new SimpleSchema<Widget_group<T>>('group', config)
+    empty = (config: Widget_group_config<NO_PROPS> = {}): S.SEmpty => {
+        return new SimpleSchema<Widget_group<NO_PROPS>>(Widget_group, 'group', config)
     }
 
     /** simple choice alternative api */
-    tabs<const T extends { [key: string]: ISchema }>(
+    tabs<const T extends SchemaDict>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ) {
-        return new SimpleSchema<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+        return new SimpleSchema<Widget_choices<T>>(Widget_choices, 'choices', {
+            items,
+            multi: false,
+            ...config,
+            appearance: 'tab',
+        })
     }
 
     // optional wrappers
     optional<const T extends ISchema>(p: Widget_optional_config<T>): S.SOptional<T> {
-        return new SimpleSchema<Widget_optional<T>>('optional', p)
+        return new SimpleSchema<Widget_optional<T>>(Widget_optional, 'optional', p)
     }
 
     llmModel(p: { default?: OpenRouter_Models } = {}) {
@@ -212,96 +241,5 @@ export class SimpleBuilder implements IBuilder {
         return this.selectOne({ default: def, choices })
     }
 
-    _HYDRATE<T extends ISchema>(
-        //
-        model: Entity<any>,
-        parent: BaseField | null,
-        spec: T,
-        serial: any | null,
-    ): T['$Field'] {
-        const w = this.__HYDRATE(model, parent, spec, serial) as T['$Field']
-        w.publishValue()
-        for (const { expr, effect } of spec.reactions) {
-            // 🔴 Need to dispose later
-            reaction(
-                () => expr(w),
-                (arg) => effect(arg, w),
-                { fireImmediately: true },
-            )
-        }
-        return w
-    }
-
     /** (@internal); */ _cache: { count: number } = { count: 0 }
-    /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE<T extends ISchema>(
-        //
-        model: Entity<any>,
-        parent: BaseField | null,
-        spec: T,
-        serial: any | null,
-    ): BaseField<any> /* T['$Field'] */ {
-        // ensure the serial is compatible
-        if (serial != null && serial.type !== spec.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
-            serial = null
-        }
-
-        // handle shared widgets
-        if (spec instanceof Widget_shared) return spec
-
-        // ensure we receive a valid spec
-        if (!(spec instanceof SimpleSchema))
-            console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
-
-        const type = spec.type
-        const config = spec.config as any /* impossible to propagate union specification in the switch below */
-        const spec2 = spec as any
-
-        if (type === 'group')
-            return new Widget_group(
-                model,
-                parent,
-                spec2,
-                serial,
-                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-                model._ROOT
-                    ? undefined
-                    : (x) => {
-                          model._ROOT = x
-                      },
-            )
-        if (type === 'shared') {
-            // turns out we should only work with Widget_shared directly, so we should be safe
-            // to simply not support Spec<shared>
-            throw new Error(`[❌] For now, Shared_Widget have been design to bypass spec hydratation completely.`)
-            // option 1:
-            // ⏸️ return new Widget_shared    (this.form, config, serial)
-            // option 2:
-            // ⏸️ return config.widget
-        }
-        if (type === 'optional') return new Widget_optional(model, parent, spec2, serial)
-        if (type === 'bool') return new Widget_bool(model, parent, spec2, serial)
-        if (type === 'str') return new Widget_string(model, parent, spec2, serial)
-        if (type === 'choices') return new Widget_choices(model, parent, spec2, serial)
-        if (type === 'number') return new Widget_number(model, parent, spec2, serial)
-        if (type === 'color') return new Widget_color(model, parent, spec2, serial)
-        if (type === 'list') return new Widget_list(model, parent, spec2, serial)
-        if (type === 'button') return new Widget_button(model, parent, spec2, serial)
-        if (type === 'seed') return new Widget_seed(model, parent, spec2, serial)
-        if (type === 'matrix') return new Widget_matrix(model, parent, spec2, serial)
-        if (type === 'selectOne') return new Widget_selectOne(model, parent, spec2, serial)
-        if (type === 'selectMany') return new Widget_selectMany(model, parent, spec2, serial)
-        if (type === 'size') return new Widget_size(model, parent, spec2, serial)
-        if (type === 'spacer') return new Widget_spacer(model, parent, spec2, serial)
-        if (type === 'markdown') return new Widget_markdown(model, parent, spec2, serial)
-
-        console.log(`🔴 unknown widget "${type}" in serial.`)
-
-        return new Widget_markdown(
-            model,
-            parent,
-            new SimpleSchema<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
-        )
-    }
 }

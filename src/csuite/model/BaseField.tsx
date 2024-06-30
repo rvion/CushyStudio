@@ -8,6 +8,7 @@ import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { Entity } from './Entity'
 import type { IBuilder } from './IBuilder'
+import type { Instanciable } from './Instanciable'
 import type { ISchema } from './ISchema'
 import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
@@ -46,13 +47,18 @@ export interface BaseField<K extends $FieldTypes = $FieldTypes> {
 }
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
-export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> {
+export abstract class BaseField<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
     // 👆 type only properties; do not use directly; used to make typings good and fast
     // 👆 $Type!: K['$Type'] /*     = 0 as any  */
     // 👆 $Config!: K['$Config'] /* = 0 as any  */
     // 👆 $Serial!: K['$Serial'] /* = 0 as any  */
     // 👆 $Value!: K['$Value'] /*   = 0 as any  */
     // 👆 $Field!: K['$Field'] /*   = 0 as any  */
+
+    /** field is already instanciated => nothing todo */
+    instanciate() {
+        return this
+    }
 
     constructor(
         /** root form this widget has benn registered to */

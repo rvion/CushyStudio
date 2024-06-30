@@ -1,15 +1,22 @@
 import { describe, expect as expect_, it } from 'bun:test'
 
-import { simpleRepo } from '../../index'
+import { simpleBuilder as b } from '../../index'
 
 // ------------------------------------------------------------------------------
 describe('can recover when field becoming list ', () => {
     it('works with string', () => {
-        const E1 = simpleRepo.entity((f) => f.int({ default: 3 }))
-        E1.value = 4
-        expect(E1.serial).toMatchObject({ root: { val: 4 } })
+        const S1 = b.int()
+        const S2 = b.int().list()
 
-        const E2 = simpleRepo.entity((f) => f.int({ default: 3 }), { serial: () => E1.serial })
+        // E1 works
+        const E1 = S1.create()
+        expect(E1.value).toBe(0)
+        E1.value = 4
+        expect(E1.value).toBe(4)
+
+        // E2 recover from new serial
+        const E2 = S2.create(() => E1.serial)
+        expect(E2.value).toBe([4])
     })
 })
 
