@@ -26,17 +26,21 @@ export interface Schema<out FIELD extends Field = Field> {
 export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     FieldClass_UNSAFE: any
 
+    get type(): FIELD['$Type'] {
+        return this.FieldClass_UNSAFE.type
+    }
+
     constructor(
         FieldClass: {
+            readonly type: FIELD['$Type']
             new (
                 //
                 entity: Entity,
                 parent: Field | null,
-                spec: ISchema<FIELD>,
+                schema: ISchema<FIELD>,
                 serial?: FIELD['$Serial'],
             ): FIELD
         },
-        public readonly type: FIELD['type'],
         public readonly config: FIELD['$Config'],
     ) {
         this.FieldClass_UNSAFE = FieldClass
@@ -140,24 +144,24 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
         fn: CovariantFn<[field: FIELD], BP>,
     ): X.XLink<this, BP> {
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new Schema(Field_link, 'link', linkConf)
+        return new Schema(Field_link<any, any>, linkConf)
     }
 
     // Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
     //     return new Schema(type, config)
     // }
 
-    /** wrap widget spec to list stuff */
+    /** wrap widget schema to list stuff */
     list = (config: Omit<Field_list_config<any>, 'element'> = {}): X.XList<this> =>
-        new Schema<Field_list<this>>(Field_list, 'list', {
+        new Schema<Field_list<this>>(Field_list, {
             ...config,
             element: this,
         })
 
-    /** clone the spec, and patch the cloned config */
+    /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): Schema<FIELD> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, this.type, mergedConfig)
+        const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
@@ -165,7 +169,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
-        return new Schema<Field_optional<this>>(Field_optional, 'optional', {
+        return new Schema<Field_optional<this>>(Field_optional, {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -176,7 +180,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
         })
     }
 
-    /** clone the spec, and patch the cloned config to make it hidden */
+    /** clone the schema, and patch the cloned config to make it hidden */
     hidden() {
         return this.withConfig({ hidden: true })
     }

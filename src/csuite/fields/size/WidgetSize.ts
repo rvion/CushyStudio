@@ -53,7 +53,7 @@ export class Field_size extends Field<Field_size_types> {
     }
 
     get defaultValue(): Field_size_value {
-        const config = this.spec.config
+        const config = this.schema.config
         const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
         const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
         const width = config.default?.width ?? parseInt(modelType.split(' ')[1]!)

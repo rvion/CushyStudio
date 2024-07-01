@@ -102,8 +102,8 @@ export class Field_bool extends Field<Field_bool_types> {
         this.serial = serial ?? {
             id: this.id,
             type: 'bool',
-            active: this.spec.config.default ?? false,
-            collapsed: this.spec.config.startCollapsed,
+            active: this.schema.config.default ?? false,
+            collapsed: this.schema.config.startCollapsed,
         }
 
         this.init({

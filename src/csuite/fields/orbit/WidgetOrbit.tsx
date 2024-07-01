@@ -55,8 +55,9 @@ export class Field_orbit extends Field<Field_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
+    static readonly type: 'orbit' = 'orbit'
+    readonly type: 'orbit' = 'orbit'
 
-    type: 'orbit' = 'orbit'
     get baseErrors(): Problem_Ext {
         return null
     }

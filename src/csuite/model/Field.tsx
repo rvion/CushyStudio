@@ -70,8 +70,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         public entity: Entity,
         /** parent widget of this widget, if any */
         public parent: Field | null,
-        /** spec used to instanciate this widget */
-        public spec: ISchema<K['$Field']>,
+        /** schema used to instanciate this widget */
+        public schema: ISchema<K['$Field']>,
     ) {}
 
     get domain(): IBuilder {
@@ -138,9 +138,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
     }
 
-    /** shorthand access to spec.config */
+    /** shorthand access to schema.config */
     get config(): this['$Config'] {
-        return this.spec.config
+        return this.schema.config
     }
 
     get animateResize(): boolean {
@@ -222,7 +222,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * 🔶 some widget like `WidgetPrompt` would not work with such logic
      * 🔶 some widget like `Optional` have no simple way to retrieve the default value
      */
-    // abstract readonly defaultValue: this['spec']['$Value'] |
+    // abstract readonly defaultValue: this['schema']['$Value'] |
 
     $FieldSym: typeof $FieldSym = $FieldSym
 
@@ -355,7 +355,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *  - by only setting this getter up once.
      * */
     publishValue(this: Field) {
-        const producers = this.spec.producers
+        const producers = this.schema.producers
         if (producers.length === 0) return
 
         // Create and store values for every producer
@@ -518,29 +518,29 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // 🔶 the 5 getters bellow are temporary hacks to make shared keep working
     // until every shared usage has been migrated
 
-    /** getter that resolve to `this.spec.producers` */
+    /** getter that resolve to `this.schema.producers` */
     get producers() {
-        return this.spec.producers
+        return this.schema.producers
     }
-    /** getter that resolve to `this.spec.publish` */
+    /** getter that resolve to `this.schema.publish` */
     get publish() {
-        return this.spec.publish
+        return this.schema.publish
     }
-    /** getter that resolve to `this.spec.subscribe` */
+    /** getter that resolve to `this.schema.subscribe` */
     get subscribe() {
-        return this.spec.subscribe
+        return this.schema.subscribe
     }
-    /** getter that resolve to `this.spec.reactions` */
+    /** getter that resolve to `this.schema.reactions` */
     get reactions() {
-        return this.spec.reactions
+        return this.schema.reactions
     }
-    /** getter that resolve to `this.spec.addReaction` */
+    /** getter that resolve to `this.schema.addReaction` */
     get addReaction() {
-        return this.spec.addReaction
+        return this.schema.addReaction
     }
 
     get icon(): Maybe<IconName> {
-        const x = this.spec.config.icon as any // 🔴 TS BUG / PERF
+        const x = this.schema.config.icon as any // 🔴 TS BUG / PERF
         if (x == null) return null
         if (typeof x === 'string') return x as any // 🔴 TS BUG / PERF
         return x(this)

@@ -24,9 +24,13 @@ export interface SimpleSchema<out FIELD extends Field = Field> {
 export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FIELD>, Instanciable<FIELD> {
     FieldClass_UNSAFE: any
 
+    get type(): FIELD['$Type'] {
+        return this.FieldClass_UNSAFE.type
+    }
+
     constructor(
         FieldClass: {
-            readonly type: FIELD['type']
+            readonly type: FIELD['$Type']
             new (
                 //
                 entity: Entity,
@@ -35,7 +39,6 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
                 serial?: FIELD['$Serial'],
             ): FIELD
         },
-        public readonly type: FIELD['type'],
         public readonly config: FIELD['$Config'],
     ) {
         this.FieldClass_UNSAFE = FieldClass
@@ -111,7 +114,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
      */
     useIn<BP extends ISchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new SimpleSchema(Field_link, 'link', linkConf)
+        return new SimpleSchema(Field_link<any, any>, linkConf)
     }
 
     // -----------------------------------------------------
@@ -119,37 +122,36 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
     //     return new SimpleSchema(this.builder, type, config)
     // }
 
-    /** wrap widget spec to list stuff */
+    /** wrap widget schema to list stuff */
     list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
-        return new SimpleSchema<Field_list<this>>(Field_list, 'list', {
+        return new SimpleSchema<Field_list<this>>(Field_list, {
             ...config,
             element: this,
         })
     }
 
     optional(startActive: boolean = false): S.SOptional<this> {
-        return new SimpleSchema<Field_optional<this>>(Field_optional, 'optional', {
+        return new SimpleSchema<Field_optional<this>>(Field_optional, {
             widget: this,
             startActive: startActive,
             label: this.config.label,
-            // requirements: this.config.requirements,
             startCollapsed: this.config.startCollapsed,
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
     }
 
-    /** clone the spec, and patch the cloned config */
+    /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): SimpleSchema<FIELD> {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
-        const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, this.type, mergedConfig)
+        const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
         return cloned
     }
 
-    /** clone the spec, and patch the cloned config to make it hidden */
+    /** clone the schema, and patch the cloned config to make it hidden */
     hidden(): SimpleSchema<FIELD> {
         return this.withConfig({ hidden: true })
     }

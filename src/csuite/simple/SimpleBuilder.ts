@@ -32,86 +32,82 @@ export class SimpleBuilder implements IBuilder {
     }
 
     time(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'time', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'time', ...config })
     }
 
     date(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'date', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'date', ...config })
     }
 
     datetime(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'datetime-local', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
     }
 
     password(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'password', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'password', ...config })
     }
 
     email(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'email', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'email', ...config })
     }
 
     url(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'url', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'url', ...config })
     }
 
     string(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', config)
+        return new SimpleSchema<Field_string>(Field_string, config)
     }
 
     text(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', config)
+        return new SimpleSchema<Field_string>(Field_string, config)
     }
 
     textarea(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { textarea: true, ...config })
+        return new SimpleSchema<Field_string>(Field_string, { textarea: true, ...config })
     }
 
     boolean(config: Field_bool_config = {}): S.SBool {
-        return new SimpleSchema<Field_bool>(Field_bool, 'bool', config)
+        return new SimpleSchema<Field_bool>(Field_bool, config)
     }
 
     bool(config: Field_bool_config = {}): S.SBool {
-        return new SimpleSchema<Field_bool>(Field_bool, 'bool', config)
+        return new SimpleSchema<Field_bool>(Field_bool, config)
     }
 
     size(config: Field_size_config = {}): S.SSize {
-        return new SimpleSchema<Field_size>(Field_size, 'size', config)
+        return new SimpleSchema<Field_size>(Field_size, config)
     }
 
     seed(config: Field_seed_config = {}): S.SSeed {
-        return new SimpleSchema<Field_seed>(Field_seed, 'seed', config)
+        return new SimpleSchema<Field_seed>(Field_seed, config)
     }
 
     color(config: Field_color_config = {}): S.SColor {
-        return new SimpleSchema<Field_color>(Field_color, 'color', config)
+        return new SimpleSchema<Field_color>(Field_color, config)
     }
 
     colorV2(config: Field_string_config = {}): S.SString {
-        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'color', ...config })
+        return new SimpleSchema<Field_string>(Field_string, { inputType: 'color', ...config })
     }
 
     matrix(config: Field_matrix_config): S.SMatrix {
-        return new SimpleSchema<Field_matrix>(Field_matrix, 'matrix', config)
+        return new SimpleSchema<Field_matrix>(Field_matrix, config)
     }
 
     button<K>(config: Field_button_config): S.SButton<K> {
-        return new SimpleSchema<Field_button<K>>(Field_button, 'button', config)
+        return new SimpleSchema<Field_button<K>>(Field_button, config)
     }
 
     /** variants: `header` */
     markdown(config: Field_markdown_config | string): S.SMarkdown {
-        return new SimpleSchema<Field_markdown>(
-            Field_markdown,
-            'markdown',
-            typeof config === 'string' ? { markdown: config } : config,
-        )
+        return new SimpleSchema<Field_markdown>(Field_markdown, typeof config === 'string' ? { markdown: config } : config)
     }
+
     /** [markdown variant]: inline=true, label=false */
     header(config: Field_markdown_config | string): S.SMarkdown {
         return new SimpleSchema<Field_markdown>(
             Field_markdown,
-            'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config },
@@ -119,12 +115,12 @@ export class SimpleBuilder implements IBuilder {
     }
 
     int(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Field_number>(Field_number, 'number', { mode: 'int', ...config })
+        return new SimpleSchema<Field_number>(Field_number, { mode: 'int', ...config })
     }
 
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Field_number>(Field_number, 'number', {
+        return new SimpleSchema<Field_number>(Field_number, {
             mode: 'int',
             default: 100,
             step: 10,
@@ -136,23 +132,23 @@ export class SimpleBuilder implements IBuilder {
     }
 
     float(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Field_number>(Field_number, 'number', { mode: 'float', ...config })
+        return new SimpleSchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
     number(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Field_number>(Field_number, 'number', { mode: 'float', ...config })
+        return new SimpleSchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
     list<const T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
-        return new SimpleSchema<Field_list<T>>(Field_list, 'list', config)
+        return new SimpleSchema<Field_list<T>>(Field_list, config)
     }
 
     selectOne<const T extends BaseSelectEntry>(config: Field_selectOne_config<T>): S.SSelectOne<T> {
-        return new SimpleSchema<Field_selectOne<T>>(Field_selectOne, 'selectOne', config)
+        return new SimpleSchema<Field_selectOne<T>>(Field_selectOne, config)
     }
 
     selectOneV2(p: string[]): S.SSelectOne<BaseSelectEntry> {
-        return new SimpleSchema<Field_selectOne<BaseSelectEntry>>(Field_selectOne, 'selectOne', {
+        return new SimpleSchema<Field_selectOne<BaseSelectEntry>>(Field_selectOne, {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
         })
@@ -162,11 +158,15 @@ export class SimpleBuilder implements IBuilder {
         p: T[],
         config: Omit<Field_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): S.SSelectOne_<T> {
-        return new SimpleSchema<Field_selectOne<BaseSelectEntry<T>>>(Field_selectOne, 'selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new SimpleSchema<Field_selectOne<BaseSelectEntry<T>>>(Field_selectOne, {
+            choices: p.map((id) => ({ id, label: id })),
+            appearance: 'tab',
+            ...config,
+        })
     }
 
     selectMany<const T extends BaseSelectEntry>(config: Field_selectMany_config<T>): S.SSelectMany<T> {
-        return new SimpleSchema<Field_selectMany<T>>(Field_selectMany, 'selectMany', config)
+        return new SimpleSchema<Field_selectMany<T>>(Field_selectMany, config)
     }
 
     /**
@@ -181,32 +181,32 @@ export class SimpleBuilder implements IBuilder {
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
     ): S.SLink<SCHEMA1, SCHEMA2> {
-        return new SimpleSchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, 'link', { share: injected, children })
+        return new SimpleSchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
     }
 
     linked<T extends Field>(field: T): S.SShared<T> {
-        return new SimpleSchema<Field_shared<T>>(Field_shared<any>, 'shared', { field })
+        return new SimpleSchema<Field_shared<T>>(Field_shared<any>, { field })
     }
 
     /** see also: `fields` for a more practical api */
     group<const T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
-        return new SimpleSchema<Field_group<T>>(Field_group, 'group', config)
+        return new SimpleSchema<Field_group<T>>(Field_group, config)
     }
 
     fields<const T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): S.SGroup<T> {
-        return new SimpleSchema<Field_group<T>>(Field_group, 'group', { items: fields, ...config })
+        return new SimpleSchema<Field_group<T>>(Field_group, { items: fields, ...config })
     }
 
     choice<const T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
-        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, 'choices', { multi: false, ...config })
+        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: false, ...config })
     }
 
     choices<const T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
-        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, 'choices', { multi: true, ...config })
+        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, ...config })
     }
 
     empty = (config: Field_group_config<NO_PROPS> = {}): S.SEmpty => {
-        return new SimpleSchema<Field_group<NO_PROPS>>(Field_group, 'group', config)
+        return new SimpleSchema<Field_group<NO_PROPS>>(Field_group, config)
     }
 
     /** simple choice alternative api */
@@ -214,7 +214,7 @@ export class SimpleBuilder implements IBuilder {
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ) {
-        return new SimpleSchema<Field_choices<T>>(Field_choices, 'choices', {
+        return new SimpleSchema<Field_choices<T>>(Field_choices, {
             items,
             multi: false,
             ...config,
@@ -224,7 +224,7 @@ export class SimpleBuilder implements IBuilder {
 
     // optional wrappers
     optional<const T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
-        return new SimpleSchema<Field_optional<T>>(Field_optional, 'optional', p)
+        return new SimpleSchema<Field_optional<T>>(Field_optional, p)
     }
 
     llmModel(p: { default?: OpenRouter_Models } = {}) {

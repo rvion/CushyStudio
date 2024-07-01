@@ -90,12 +90,12 @@ export class BasicBuilder implements IBuilder {
         //
         model: Entity<any>,
         parent: Field | null,
-        spec: T,
+        schema: T,
         serial: any | null,
     ): T['$Field'] {
-        const w = this.__HYDRATE(model, parent, spec, serial) as T['$Field']
+        const w = this.__HYDRATE(model, parent, schema, serial) as T['$Field']
         w.publishValue()
-        for (const { expr, effect } of spec.reactions) {
+        for (const { expr, effect } of schema.reactions) {
             // 🔴 Need to dispose later
             reaction(
                 () => expr(w),
@@ -177,16 +177,16 @@ const basicEntity = BasicModelManager.entity((ui /* 👈🏻 BasicBuilder */) =>
 
 const serial = basicEntity.serial // EntitySerial (🕣 ModelSerial)
 const root = basicEntity.root // Field
-const rootSchema = root.spec
+const rootSchema = root.schema
 const value = basicEntity.value // FieldValue
 const fooField = root.fields.foo // Field
 const fooValue = value.foo // FieldValue ie. string
 const fooValue2 = root.fields.foo.value // FieldValue
-const fooSchema = fooField.spec // Schema<Field_string> (🕣 ISchema<Field_string>)
+const fooSchema = fooField.schema // Schema<Field_string> (🕣 ISchema<Field_string>)
 const nestedValue = value.nested // FieldValue
 const nestedValue2 = root.fields.nested.value // FieldValue
 const fooSerial = fooField.serial // FieldSerial (🕣 Field_string_serial)
 const fooUI = fooField.DefaultHeaderUI // WidgetStringUI
 const numField = root.fields.num // Field
 const numUI = numField.DefaultHeaderUI // WidgetNumberUI
-const numSchema = numField.spec // Schema<Field_number> (🕣 ISchema<Field_number>)
+const numSchema = numField.schema // Schema<Field_number> (🕣 ISchema<Field_number>)

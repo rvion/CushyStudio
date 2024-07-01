@@ -99,13 +99,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     get choicesWithLabels(): { key: keyof T & string; label: string; icon?: IconName }[] {
-        return Object.entries(this.config.items).map(([key, spec]) => ({
+        return Object.entries(this.config.items).map(([key, schema]) => ({
             key,
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
-            label: spec.config.label || makeLabelFromFieldName(key),
-            icon: spec.config.icon,
+            label: schema.config.label || makeLabelFromFieldName(key),
+            icon: schema.config.icon,
         }))
     }
 
