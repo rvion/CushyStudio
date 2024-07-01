@@ -62,8 +62,8 @@ describe('basic', () => {
         it('works', () => {
             const E = simpleRepo.entity((f) => f.fields({ md: f.markdown('ok') }))
             expect(E).toBeTruthy()
-            expect(E.subWidgets.length).toBe(1)
-            expect(E.subWidgets[0]!.type).toBe('markdown')
+            expect(E.subFields.length).toBe(1)
+            expect(E.subFields[0]!.type).toBe('markdown')
             expect(E.root.value.md).toMatchObject({
                 collapsed: undefined,
                 type: 'markdown',

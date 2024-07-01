@@ -72,7 +72,7 @@ export class Repository<DOMAIN extends IBuilder> {
         schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
         modelConfig: ModelConfig<SCHEMA, DOMAIN> = {},
     ): Entity<SCHEMA, DOMAIN> {
-        const schema = this.evalSchema(schemaExt)
+        const schema: SCHEMA = this.evalSchema(schemaExt)
         return new Entity<SCHEMA, DOMAIN>(this, schema, modelConfig)
     }
 

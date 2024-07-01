@@ -30,7 +30,7 @@ export class Entity<
     /**
      * shape of the form, to preserve type safety down to nested children
      */
-    SCHEMA extends ISchema<any /* 🔴 */> = ISchema<any /* 🔴 */>,
+    SCHEMA extends ISchema = ISchema,
     /**
      * project-specific builder, allowing to have modular form setups with different widgets
      * Cushy BUILDER is `Builder` in `src/controls/Builder.ts`
@@ -63,8 +63,9 @@ export class Entity<
         this.root = this.init()
     }
 
-    get subWidgets(): Field[] {
-        return this.root.subWidgets
+    /** shortcut to `root.subFields` */
+    get subFields(): Field[] {
+        return this.root.subFields
     }
 
     // get actions(){
@@ -248,10 +249,10 @@ export class Entity<
             this.snapshotLastUpdatedAt = serial?.snapshotLastUpdatedAt ?? 0
 
             // const schema: SCHEMA = this.buildFn?.(formBuilder)
-            const rootWidget: SCHEMA = this.schema.instanciate(this, null, serial?.root)
+            const root: SCHEMA['$Field'] = this.schema.instanciate(this, null, serial?.root)
             this.ready = true
             this.error = null
-            return rootWidget
+            return root
         } catch (e) {
             console.error(`[🔴] Building entity FAILED`, this)
             console.error(e)
