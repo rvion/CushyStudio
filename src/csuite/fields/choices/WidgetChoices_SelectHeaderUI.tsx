@@ -8,9 +8,9 @@ import { SelectUI } from '../../select/SelectUI'
 export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<T extends SchemaDict>(p: {
     field: Field_choices<T>
 }) {
-    const widget = p.field
+    const field = p.field
     type Entry = { key: string; label: string }
-    const choices: Entry[] = widget.choicesWithLabels
+    const choices: Entry[] = field.choicesWithLabels
     return (
         <div
             tw={[
@@ -27,7 +27,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 tw='flex-grow'
                 placeholder={p.field.config.placeholder}
                 value={() =>
-                    Object.entries(widget.serial.branches)
+                    Object.entries(field.serial.branches)
                         .filter(([_, value]) => value)
                         .map(([key, _]) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
                 }
@@ -51,10 +51,10 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                     </div>
                 )}
                 equalityCheck={(a, b) => a.key === b.key}
-                multiple={widget.config.multi ?? false}
+                multiple={field.config.multi ?? false}
                 // closeOnPick={false}
                 resetQueryOnPick={false}
-                onChange={(v) => widget.toggleBranch(v.key)}
+                onChange={(v) => field.toggleBranch(v.key)}
             />
         </div>
     )

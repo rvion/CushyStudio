@@ -6,23 +6,23 @@ import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 
 export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T extends BaseSelectEntry>(p: {
-    widget: Field_selectOne<T>
+    field: Field_selectOne<T>
 }) {
-    const widget = p.widget
-    const selected = widget.serial.val
+    const field = p.field
+    const selected = field.serial.val
     return (
         <div
-            style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
+            style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
             tw={[
                 //
                 'flex flex-1',
-                (widget.config.wrap ?? true) && 'flex-wrap',
+                (field.config.wrap ?? true) && 'flex-wrap',
                 'rounded',
                 'select-none',
                 'gap-x-0.5 gap-y-0',
             ]}
         >
-            {widget.choices.map((c) => {
+            {field.choices.map((c) => {
                 const isSelected = selected?.id === c.id
                 return (
                     <InputBoolUI
@@ -33,7 +33,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                         text={c.label ?? c.id}
                         onValueChange={(value) => {
                             if (value === isSelected) return
-                            widget.value = c
+                            field.value = c
                         }}
                     />
                 )

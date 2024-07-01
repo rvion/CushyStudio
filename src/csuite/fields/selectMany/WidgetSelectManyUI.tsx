@@ -13,8 +13,8 @@ export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extend
 }) {
     const field = p.field
     const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
-    if (appearance === 'tab') return <WidgetSelectMany_TabUI widget={field} />
-    if (appearance === 'select') return <WidgetSelectMany_SelectUI widget={field} />
+    if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
+    if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
     if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
     exhaust(appearance)
 })

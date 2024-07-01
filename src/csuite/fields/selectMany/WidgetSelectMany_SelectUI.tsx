@@ -7,31 +7,31 @@ import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
 
 export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {
-    widget: Field_selectMany<T>
+    field: Field_selectMany<T>
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <div tw='flex flex-1 gap-1'>
             <SelectUI<T>
                 multiple
-                wrap={widget.wrap}
-                tw={[widget.baseErrors && 'rsx-field-error']}
+                wrap={field.wrap}
+                tw={[field.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
-                getLabelUI={widget.config.getLabelUI}
-                getSearchQuery={() => widget.serial.query ?? ''}
-                setSearchQuery={(query) => (widget.serial.query = query)}
-                disableLocalFiltering={widget.config.disableLocalFiltering}
-                options={() => widget.choices}
-                value={() => widget.serial.values}
+                getLabelUI={field.config.getLabelUI}
+                getSearchQuery={() => field.serial.query ?? ''}
+                setSearchQuery={(query) => (field.serial.query = query)}
+                disableLocalFiltering={field.config.disableLocalFiltering}
+                options={() => field.choices}
+                value={() => field.serial.values}
                 equalityCheck={(a, b) => a.id === b.id}
-                onChange={(selectOption) => widget.toggleItem(selectOption)}
+                onChange={(selectOption) => field.toggleItem(selectOption)}
             />
             <InputBoolFlipButtonUI
                 tooltip='Wrap items'
                 tw='self-start'
-                icon={p.widget.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
-                value={p.widget.wrap}
-                onValueChange={(next) => (p.widget.wrap = next)}
+                icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
+                value={p.field.wrap}
+                onValueChange={(next) => (p.field.wrap = next)}
             />
         </div>
     )

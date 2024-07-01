@@ -19,14 +19,14 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
     justify?: boolean
     className?: string
 }) {
-    const widget = p.field
-    const activeSubwidgets = Object.entries(widget.children) //
+    const field = p.field
+    const activeSubwidgets = Object.entries(field.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
         <ListOfFieldsContainerUI //
-            layout={widget.config.layout}
-            tw={[widget.config.className, p.className]}
+            layout={field.config.layout}
+            tw={[field.config.className, p.className]}
         >
             {activeSubwidgets.map((val) => {
                 const subWidget = val.subWidget

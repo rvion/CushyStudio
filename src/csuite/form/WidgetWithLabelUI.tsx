@@ -66,7 +66,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
             {!p.noHeader && (
-                <WidgetHeaderContainerUI widget={field}>
+                <WidgetHeaderContainerUI field={field}>
                     {/* HEADER LABEL */}
                     <WidgetLabelContainerUI //
                         tooltip={field.config.tooltip}
@@ -97,7 +97,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         ) : (
                             <>
                                 <WidgetLabelCaretUI field={field} />
-                                <WidgetToggleUI tw='mr-1' widget={originalField} />
+                                <WidgetToggleUI tw='mr-1' field={originalField} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
@@ -108,7 +108,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                     </WidgetLabelContainerUI>
 
                     {/* TOOGLE (when justified) */}
-                    {justify && <WidgetToggleUI /* tw='ml-1' */ widget={originalField} />}
+                    {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
                     {/* HEADER CONTROLS */}
                     {HeaderUI && (
                         <WidgetHeaderControlsContainerUI className={extraClass}>
@@ -120,7 +120,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                     {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.spec.LabelExtraUI && (
                         <field.spec.LabelExtraUI field={field} />
                     )}
-                    {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI widget={originalField} />}
+                    {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI field={originalField} />}
                     {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
                 </WidgetHeaderContainerUI>
             )}

@@ -20,8 +20,8 @@ type X = { id: string; label?: string }
 export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['id'] }) {
     // 1. retrieve the widget to get the inital value
     // |  the widget won't be used afterwise unless we programmatically do stuff with it
-    const widget = cushy.forms.getFieldByID(p.promptID) as Field_prompt | undefined
-    const initialText = widget?.text ?? ''
+    const field = cushy.forms.getFieldByID(p.promptID) as Field_prompt | undefined
+    const initialText = field?.text ?? ''
 
     // 2. create a self-contained state to play with prompt-lang
     // | completely independent from the widget thing
@@ -107,7 +107,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                         mountRef: false,
                     })
                 }
-            })(widget),
+            })(field),
         [],
     )
 

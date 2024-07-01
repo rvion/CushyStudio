@@ -6,22 +6,22 @@ import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 
 export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<T extends BaseSelectEntry>(p: {
-    widget: Field_selectOne<T>
+    field: Field_selectOne<T>
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <div tw='flex-1'>
             <SelectUI<T>
-                key={widget.id}
-                tw={[widget.baseErrors && 'rsx-field-error']}
+                key={field.id}
+                tw={[field.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
-                getLabelUI={widget.config.getLabelUI}
-                getSearchQuery={() => widget.serial.query ?? ''}
-                setSearchQuery={(query) => (widget.serial.query = query)}
-                disableLocalFiltering={widget.config.disableLocalFiltering}
-                options={() => widget.choices}
+                getLabelUI={field.config.getLabelUI}
+                getSearchQuery={() => field.serial.query ?? ''}
+                setSearchQuery={(query) => (field.serial.query = query)}
+                disableLocalFiltering={field.config.disableLocalFiltering}
+                options={() => field.choices}
                 equalityCheck={(a, b) => a.id === b.id}
-                value={() => widget.serial.val}
+                value={() => field.serial.val}
                 onChange={(selectOption) => {
                     if (selectOption == null) {
                         // TODO?: hook into it's parent if parent is an option block ?
@@ -29,12 +29,12 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                         // ⏸️ widget.state.active = false
                         return
                     }
-                    const next = widget.choices.find((c) => c.id === selectOption.id)
+                    const next = field.choices.find((c) => c.id === selectOption.id)
                     if (next == null) {
                         console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                         return
                     }
-                    widget.value = next
+                    field.value = next
                 }}
             />
             {/* {widget.baseErrors && (

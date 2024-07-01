@@ -10,22 +10,22 @@ import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISchema>(p: { field: Field_listExt<T> }) {
-    const widget = p.field
+    const fied = p.field
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
             {/* <ListControlsUI widget={widget} /> */}
-            <WidgetSizeX_LineUI sizeHelper={widget.sizeHelper} bounds={widget.config} />
-            <WigetSizeXUI sizeHelper={widget.sizeHelper} bounds={widget.config} />
+            <WidgetSizeX_LineUI sizeHelper={fied.sizeHelper} bounds={fied.config} />
+            <WigetSizeXUI sizeHelper={fied.sizeHelper} bounds={fied.config} />
             {/* <WigetSizeXUI sizeHelper={widget.sizeHelper} bounds={widget.config} /> */}
             {p.field.config.mode === 'timeline' ? ( //
-                <WidgetListExt_TimelineUI widget={widget} />
+                <WidgetListExt_TimelineUI field={fied} />
             ) : (
-                <WidgetListExt_RegionalUI widget={widget} />
+                <WidgetListExt_RegionalUI field={fied} />
             )}
             {/* {p.widget.value.items.map((e) => (
                 <div tw='whitespace-pre-wrap w-96'>{JSON.stringify(e)}</div>
             ))} */}
-            <WidgetListExt_ValuesUI widget={widget} />
+            <WidgetListExt_ValuesUI field={fied} />
         </div>
     )
 })

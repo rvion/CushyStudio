@@ -30,20 +30,20 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     className?: string
     field: Field_group<T>
 }) {
-    const widget = p.field
-    const groupFields = Object.entries(widget.fields)
-    const isHorizontal = widget.config.layout === 'H'
+    const field = p.field
+    const groupFields = Object.entries(field.fields)
+    const isHorizontal = field.config.layout === 'H'
 
     return (
         <ListOfFieldsContainerUI //
             layout={p.field.config.layout}
-            tw={[widget.config.className, p.className]}
+            tw={[field.config.className, p.className]}
         >
             {groupFields.map(([rootKey, sub], ix) => (
                 <WidgetWithLabelUI //
                     key={rootKey}
                     fieldName={rootKey}
-                    justifyLabel={isHorizontal ? false : widget.config.justifyLabel}
+                    justifyLabel={isHorizontal ? false : field.config.justifyLabel}
                     field={bang(sub)}
                 />
             ))}

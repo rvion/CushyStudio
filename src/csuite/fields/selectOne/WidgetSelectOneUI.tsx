@@ -12,9 +12,9 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
 }) {
     const field = p.field
     const skin = field.config.appearance ?? 'select'
-    if (skin === 'tab') return <WidgetSelectOne_TabUI widget={field} />
-    if (skin === 'select') return <WidgetSelectOne_SelectUI widget={field} />
-    if (skin === 'roll') return <WidgetSelectOne_RollUI widget={field} />
+    if (skin === 'tab') return <WidgetSelectOne_TabUI field={field} />
+    if (skin === 'select') return <WidgetSelectOne_SelectUI field={field} />
+    if (skin === 'roll') return <WidgetSelectOne_RollUI field={field} />
     exhaust(skin)
     return <>❌ error</>
 })

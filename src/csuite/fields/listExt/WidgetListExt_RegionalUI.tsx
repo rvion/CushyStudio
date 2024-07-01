@@ -10,10 +10,10 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends ISchema>(p: {
-    widget: Field_listExt<T>
+    field: Field_listExt<T>
 }) {
-    const widget = p.widget
-    const entries = widget.entries
+    const field = p.field
+    const entries = field.entries
     const uist = useLocalObservable(() => ({ scale: 1 }))
     return (
         <>
@@ -29,16 +29,16 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
             <div
                 style={{
                     transform: `scale(${uist.scale})`,
-                    width: widget.serial.width * uist.scale,
-                    height: widget.serial.height * uist.scale,
+                    width: field.serial.width * uist.scale,
+                    height: field.serial.height * uist.scale,
                     transformOrigin: 'top left',
                     display: 'block',
                 }}
             >
                 <Stage
                     //
-                    width={widget.serial.width}
-                    height={widget.serial.height}
+                    width={field.serial.width}
+                    height={field.serial.height}
                     onContextMenu={(e) => {
                         e.evt.preventDefault()
                         console.log('context menu')

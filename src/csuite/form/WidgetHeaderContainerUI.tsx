@@ -13,10 +13,10 @@ const isDraggingListener = (ev: MouseEvent) => {
 }
 
 export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_(p: {
-    widget: Field
+    field: Field
     children?: React.ReactNode
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <div
             className='UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH'
@@ -27,17 +27,17 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
                 'items-start',
             ]}
             onMouseDown={(ev) => {
-                if (ev.button != 0 || !widget.isCollapsible) return
+                if (ev.button != 0 || !field.isCollapsible) return
                 const target = ev.target as HTMLElement
                 if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
                 isDragging = true
                 window.addEventListener('mouseup', isDraggingListener, true)
-                wasEnabled = !widget.serial.collapsed
-                widget.setCollapsed(wasEnabled)
+                wasEnabled = !field.serial.collapsed
+                field.setCollapsed(wasEnabled)
             }}
             onMouseMove={(ev) => {
-                if (!isDragging || !widget.isCollapsible) return
-                widget.setCollapsed(wasEnabled)
+                if (!isDragging || !field.isCollapsible) return
+                field.setCollapsed(wasEnabled)
             }}
         >
             {p.children}

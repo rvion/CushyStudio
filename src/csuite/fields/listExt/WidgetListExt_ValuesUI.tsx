@@ -8,13 +8,13 @@ import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISchema>(p: {
     //
-    widget: Field_listExt<T>
+    field: Field_listExt<T>
 }) {
-    const widget = p.widget
-    const values = widget.entries
+    const field = p.field
+    const values = field.entries
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
-    const min = widget.config.min
+    const min = field.config.min
     return (
         <div tw='flex flex-col gap-1'>
             {values.map((sub, ix) => {
@@ -35,9 +35,9 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         <WidgetWithLabelUI fieldName={subWidget.id} field={subWidget} />
                         <Button
                             look='subtle'
-                            disabled={min ? widget.entries.length <= min : undefined}
+                            disabled={min ? field.entries.length <= min : undefined}
                             tw='self-start'
-                            onClick={() => widget.removeItem(subWidget)}
+                            onClick={() => field.removeItem(subWidget)}
                             size='sm'
                         >
                             X

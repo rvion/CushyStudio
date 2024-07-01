@@ -105,13 +105,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
 
-    UIToggle = (p?: { className?: string }) => <WidgetToggleUI widget={this} {...p} />
+    UIToggle = (p?: { className?: string }) => <WidgetToggleUI field={this} {...p} />
     UIErrors = () => <WidgetErrorsUI field={this} />
     UILabelCaret = () => <WidgetLabelCaretUI field={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
     UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer = (p: { children: ReactNode }) => (
-        <WidgetHeaderContainerUI widget={this}>{p.children}</WidgetHeaderContainerUI>
+        <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
     )
 
     get indentChildren(): number {

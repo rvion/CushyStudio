@@ -16,11 +16,11 @@ export type IWidgetListLike = {
 } //Field_listExt<any> | Field_list<any>
 
 export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWidgetListLike }) {
-    const widget = p.field
-    const max = widget.config.max
-    const min = widget.config.min
-    const canAdd = max ? widget.items.length < max : true
-    const canClear = min ? widget.items.length > min : true
+    const field = p.field
+    const max = field.config.max
+    const min = field.config.min
+    const canAdd = max ? field.items.length < max : true
+    const canClear = min ? field.items.length > min : true
     return (
         <div
             tw='sticky flex gap-0.5 top-0 flex z-[50] w-full'
@@ -39,7 +39,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 onClick={(ev) => {
                     if (!canAdd) return
                     ev.stopPropagation()
-                    widget.addItem()
+                    field.addItem()
                 }}
             />
             <Button
@@ -52,7 +52,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 onClick={(ev) => {
                     if (!canClear) return
                     ev.stopPropagation()
-                    widget.removeAllItems()
+                    field.removeAllItems()
                 }}
             />
             <Button
@@ -63,7 +63,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 icon='mdiUnfoldMoreHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
-                    widget.expandAllItems()
+                    field.expandAllItems()
                 }}
             />
             <Button
@@ -74,7 +74,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 icon='mdiUnfoldLessHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
-                    widget.collapseAllItems()
+                    field.collapseAllItems()
                 }}
             />
             {/* <Button

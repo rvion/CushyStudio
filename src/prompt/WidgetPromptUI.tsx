@@ -21,16 +21,16 @@ import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
-    const widget = p.field
+    const field = p.field
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
-            {widget.serial.collapsed ? (
-                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
+            {field.serial.collapsed ? (
+                <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
                 <div /* spacer */ />
             )}
             <Button
-                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: widget.id })}
+                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
                 icon='mdiAbacus'
                 subtle
                 square
