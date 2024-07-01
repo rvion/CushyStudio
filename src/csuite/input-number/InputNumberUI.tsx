@@ -279,7 +279,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <Frame /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: p.hideSlider ? 0 : 0.1, chroma: 0.02 }}
+                base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 2 }}
                 tw={['z-10 absolute left-0 h-input']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
