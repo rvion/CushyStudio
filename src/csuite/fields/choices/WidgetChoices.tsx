@@ -99,10 +99,13 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         }))
     }
 
-    /** hack so optional fields do not increase nesting twice */
-    get indentChildren(): number {
-        return 0
-    }
+    // 💬 2024-07-01 rvion:
+    // hack so optional fields do not increase nesting twice
+    // But not sure this override is worth it.
+    // Consistency may be better than the extra line of code.
+    // | get indentChildren(): number {
+    // |     return 0
+    // | }
 
     /** array of all active branch keys */
     get activeBranches(): (keyof T & string)[] {
