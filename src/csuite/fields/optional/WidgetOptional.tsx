@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -112,12 +112,12 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_optional<T>>,
+        schema: ISchema<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         const defaultActive = config.startActive
         this.serial = serial ?? {
             id: this.id,
@@ -145,12 +145,12 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
         return 0
     }
 
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return this.serial.active ? [this.child] : []
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
-        return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    get subFieldsWithKeys(): KeyedField[] {
+        return this.serial.active ? [{ key: 'child', field: this.child }] : []
     }
 
     get value(): Widget_optional_value<T> {

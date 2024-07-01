@@ -103,12 +103,12 @@ export class Widget_seed extends Field<Widget_seed_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_seed>,
+        schema: ISchema<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'seed',
             id: this.id,

@@ -300,7 +300,7 @@ export class Builder implements IBuilder {
     }
 
     linked<T extends Field>(field: T): X.XShared<T> {
-        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: field })
+        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { field })
     }
 
     /** see also: `fields` for a more practical api */

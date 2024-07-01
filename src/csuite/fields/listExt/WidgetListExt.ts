@@ -8,7 +8,7 @@ import type { BoardPosition } from './WidgetListExtTypes'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { clampOpt } from '../../utils/clamp'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -120,12 +120,12 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_listExt<T>>,
+        schema: ISchema<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
 
         // serial
         this.serial = serial ?? {
@@ -140,14 +140,14 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
         if (this.serial.entries == null) this.serial.entries = []
 
         // reference to check children types
-        const schema = this.schemaAt(0)
+        const schemaI0 = this.schemaAt(0)
         for (const entry of this.serial.entries) {
             const subSerial = entry.serial
-            if (subSerial.type !== schema.type) {
+            if (subSerial.type !== schemaI0.type) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = schema.instanciate(this.entity, this, subSerial)
+            const subWidget = schemaI0.instanciate(this.entity, this, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -162,12 +162,12 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
         })
     }
 
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return this.items
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
-        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return this.items.map((field, ix) => ({ key: ix.toString(), field }))
     }
 
     schemaAt = (ix: number): T => {

@@ -4,6 +4,6 @@ import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from './SpacerUI'
 
-export const WidgetSpacerUI = observer(function WidgetSpacerUI_(p: { widget: Widget_spacer }) {
+export const WidgetSpacerUI = observer(function WidgetSpacerUI_(p: { field: Widget_spacer }) {
     return <SpacerUI />
 })

@@ -78,10 +78,10 @@ export class Widget_image extends Field<Widget_image_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_image>,
+        schema: ISchema<Widget_image>,
         serial?: Widget_image_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',

@@ -7,9 +7,15 @@ import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { JsonViewUI } from '../../json/JsonViewUI'
 
-export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { widget: Widget_custom<T> }) {
-    const widget = p.widget
-    return <widget.config.Component widget={widget} extra={_commonUIComponents} />
+export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { field: Widget_custom<T> }) {
+    const field = p.field
+    return (
+        <field.config.Component
+            //
+            field={field}
+            extra={_commonUIComponents}
+        />
+    )
 })
 
 // ------------------------------------------------------------------------

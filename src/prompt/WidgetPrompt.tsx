@@ -87,12 +87,12 @@ export class Widget_prompt extends Field<Widget_prompt_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_prompt>,
+        schema: ISchema<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'prompt',
             val: config.default,

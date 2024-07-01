@@ -7,9 +7,9 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     //
     className?: string
-    widget: Field
+    field: Field
 }) {
-    if (!p.widget.isCollapsed && !p.widget.isCollapsible)
+    if (!p.field.isCollapsed && !p.field.isCollapsible)
         return (
             <Ikon._
                 //
@@ -20,7 +20,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     return (
         <WidgetLabelCaretAlwaysUI //
             className={p.className}
-            isCollapsed={p.widget.isCollapsed}
+            isCollapsed={p.field.isCollapsed}
         />
     )
 })

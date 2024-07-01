@@ -8,11 +8,13 @@ import type { TabPositionConfig } from './TabPositionConfig'
 
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
+import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
@@ -57,8 +59,8 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Widget_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI field={this} />
-    UISelect = () => <WidgetChoices_HeaderUI widget={this} />
-    UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
+    UISelect = () => <WidgetChoices_SelectHeaderUI field={this} />
+    UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
     readonly id: string
@@ -168,12 +170,12 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_choices<T>>,
+        schema: ISchema<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         // ensure ID
         // TODO: investigate why this contructor is called so many times (5 times ???)
 
@@ -230,12 +232,12 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         })
     }
 
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return Object.values(this.children)
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
-        return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return Object.entries(this.children).map(([key, field]) => ({ key, field }))
     }
 
     toggleBranch(branch: keyof T & string) {

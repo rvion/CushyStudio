@@ -72,7 +72,7 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
                 submit: () => {
                     console.log(`[🤠] values`)
                 },
-                UI: (w) => <CreatePresetUI widget={field} />,
+                UI: (w) => <CreatePresetUI field={field} />,
             }),
         )
         // out.push(
@@ -119,8 +119,8 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
     },
 })
 
-export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: Field }) {
-    const tree = new Tree([p.widget.asTreeElement('root')])
+export const CreatePresetUI = observer(function CreatePresetUI_(p: { field: Field }) {
+    const tree = new Tree([p.field.asTreeElement('root')])
     const treeView = new TreeView(tree, { selectable: true })
     return (
         <TreeUI //

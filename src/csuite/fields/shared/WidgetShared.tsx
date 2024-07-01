@@ -11,9 +11,8 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_shared_config<F extends Field> = FieldConfig<
-    {
-        widget: F
-    },
+    //
+    { field: F },
     Widget_shared_types<F>
 >
 
@@ -52,12 +51,12 @@ export class Widget_shared<F extends Field = Field> extends Field<Widget_shared_
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_shared<F>>,
+        schema: ISchema<Widget_shared<F>>,
         serial?: Widget_shared_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         this.init({
             DefaultHeaderUI: false,
@@ -74,7 +73,7 @@ export class Widget_shared<F extends Field = Field> extends Field<Widget_shared_
     }
 
     get shared(): F {
-        return this.config.widget
+        return this.config.field
     }
 
     get baseErrors(): Problem_Ext {

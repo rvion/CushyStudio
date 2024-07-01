@@ -67,12 +67,12 @@ export class Widget_button<K> extends Field<Widget_button_types<K>> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_button<K>>,
+        schema: ISchema<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         if (config.text) {
             config.label = config.label ?? ` `
         }

@@ -185,7 +185,7 @@ export class SimpleBuilder implements IBuilder {
     }
 
     linked<T extends Field>(field: T): S.SShared<T> {
-        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: field })
+        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { field })
     }
 
     /** see also: `fields` for a more practical api */

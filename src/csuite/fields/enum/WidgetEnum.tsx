@@ -72,12 +72,12 @@ export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_enum<O>>,
+        schema: ISchema<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'enum',
             id: this.id,

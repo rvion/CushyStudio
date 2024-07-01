@@ -7,7 +7,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
@@ -63,7 +63,7 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
     reset(): void {
-        for (const sub of this.subWidgets) sub.reset()
+        for (const sub of this.subFields) sub.reset()
     }
 
     get summary(): string {
@@ -106,10 +106,10 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_group<T>>,
+        schema: ISchema<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
 
         this.serial =
@@ -164,12 +164,12 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         })
     }
 
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return Object.values(this.fields)
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
-        return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
     }
 
     get value() {

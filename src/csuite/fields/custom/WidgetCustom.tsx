@@ -12,7 +12,7 @@ import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
-export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
+export type CustomWidgetProps<T> = { field: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
 export type Widget_custom_config<T> = FieldConfig<
@@ -63,12 +63,12 @@ export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_custom<T>>,
+        schema: ISchema<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.Component = config.Component
         this.serial = serial ?? {
             type: 'custom',

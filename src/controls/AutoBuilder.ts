@@ -35,6 +35,7 @@ export function mkFormAutoBuilder(form: Builder): AutoBuilder {
             if (prop === 'isMobXComputedValue') return (target as any)[prop]
 
             // skip public form
+            // 🔴 ⁉️ REVIEW THIS LINE 👇
             if (prop === 'form') return (target as any)[prop]
 
             // known custom nodes

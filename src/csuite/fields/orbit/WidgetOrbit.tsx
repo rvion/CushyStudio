@@ -104,12 +104,12 @@ export class Widget_orbit extends Field<Widget_orbit_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_orbit>,
+        schema: ISchema<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'orbit',
             collapsed: config.startCollapsed,

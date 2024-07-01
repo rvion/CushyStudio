@@ -27,7 +27,7 @@ const ticket = cushy.forms.entity((ui) =>
                 baz: { foo: true },
             },
             UIDianeV2: (p) => {
-                const f = p.widget.fields
+                const f = p.field.fields
                 return (
                     <Frame>
                         <f.title.UIRougeEtGrass a={0} />

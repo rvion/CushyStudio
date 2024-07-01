@@ -15,8 +15,8 @@ export type IWidgetListLike = {
     }
 } //Widget_listExt<any> | Widget_list<any>
 
-export const ListControlsUI = observer(function ListControlsUI_(p: { widget: IWidgetListLike }) {
-    const widget = p.widget
+export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWidgetListLike }) {
+    const widget = p.field
     const max = widget.config.max
     const min = widget.config.min
     const canAdd = max ? widget.items.length < max : true

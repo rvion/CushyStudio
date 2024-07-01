@@ -8,8 +8,8 @@ import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
-    const widget = p.widget
+export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Widget_seed }) {
+    const widget = p.field
     const val = widget.serial.val
     const csuite = useCSuite()
     const border = csuite.inputBorder

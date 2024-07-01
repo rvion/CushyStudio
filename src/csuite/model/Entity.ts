@@ -120,8 +120,8 @@ export class Entity<
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render = (p: Omit<FormUIProps, 'form'> = {}): ReactNode => {
-        return createElement(FormUI, { form: this, ...p })
+    render = (p: Omit<FormUIProps, 'entity'> = {}): ReactNode => {
+        return createElement(FormUI, { entity: this, ...p })
     }
 
     /**

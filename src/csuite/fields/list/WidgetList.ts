@@ -6,7 +6,7 @@ import type { ISchema } from '../../model/ISchema'
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -125,12 +125,12 @@ export class Widget_list<T extends ISchema> //
         return null
     }
 
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return this.items
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
-        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return this.items.map((field, ix) => ({ key: ix.toString(), field }))
     }
 
     schemaAt = (ix: number): T => {
@@ -176,10 +176,10 @@ export class Widget_list<T extends ISchema> //
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_list<T>>,
+        schema: ISchema<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
 
         // serial

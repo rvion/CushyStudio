@@ -46,10 +46,10 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     onInit?: CovariantFn1<T['$Field'], void>
 
     /** allow to specify custom headers */
-    header?: null | CovariantFC<{ widget: T['$Field'] }>
+    header?: null | CovariantFC<{ field: T['$Field'] }>
 
     /** allow to specify custom body */
-    body?: null | CovariantFC<{ widget: T['$Field'] }>
+    body?: null | CovariantFC<{ field: T['$Field'] }>
 
     /** will be called when value changed */
     onValueChange?: CovariantFn<[val: T['$Value'], self: T['$Field']], void>

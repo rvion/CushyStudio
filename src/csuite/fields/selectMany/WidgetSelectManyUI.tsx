@@ -9,12 +9,12 @@ import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectMany<T>
+    field: Widget_selectMany<T>
 }) {
-    const widget = p.widget
-    const appearance: SelectManyAppearance = widget.config.appearance ?? 'tab'
-    if (appearance === 'tab') return <WidgetSelectMany_TabUI widget={widget} />
-    if (appearance === 'select') return <WidgetSelectMany_SelectUI widget={widget} />
-    if (appearance === 'list') return <WidgetSelectMany_ListUI widget={widget} />
+    const field = p.field
+    const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
+    if (appearance === 'tab') return <WidgetSelectMany_TabUI widget={field} />
+    if (appearance === 'select') return <WidgetSelectMany_SelectUI widget={field} />
+    if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
     exhaust(appearance)
 })

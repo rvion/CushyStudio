@@ -40,16 +40,16 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             page = <>Not implemented</>
             break
         case 'interface':
-            page = <FormUI tw='flex-1' form={cushy.preferences.interface} />
+            page = <FormUI tw='flex-1' entity={cushy.preferences.interface} />
             break
         case 'legacy':
             page = <LegacyOptions />
             break
         case 'system':
-            page = <FormUI tw='flex-1' form={cushy.preferences.system} />
+            page = <FormUI tw='flex-1' entity={cushy.preferences.system} />
             break
         case 'theme':
-            page = <FormUI tw='flex-1' form={cushy.theme} />
+            page = <FormUI tw='flex-1' entity={cushy.theme} />
             break
     }
 

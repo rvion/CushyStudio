@@ -66,12 +66,12 @@ export class Widget_markdown extends Field<Widget_markdown_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_markdown>,
+        schema: ISchema<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'markdown',
             collapsed: config.startCollapsed,

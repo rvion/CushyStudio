@@ -3,25 +3,23 @@ import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolUI } from '../../checkbox/InputBoolUI'
-import { useCSuite } from '../../ctx/useCSuite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
-import { SelectUI } from '../../select/SelectUI'
-import { getJustifyContent } from './TabPositionConfig'
+import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
+import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 
 // UI
-export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
-    if (p.widget.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI field={p.widget} />
-    else return <WidgetChoices_SelectHeaderUI widget={p.widget} />
+export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { field: Widget_choices<any> }) {
+    if (p.field.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI field={p.field} />
+    else return <WidgetChoices_SelectHeaderUI field={p.field} />
 })
 
 export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
-    widget: Widget_choices<T>
+    field: Widget_choices<T>
     justify?: boolean
     className?: string
 }) {
-    const widget = p.widget
+    const widget = p.field
     const activeSubwidgets = Object.entries(widget.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
@@ -44,96 +42,5 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                 )
             })}
         </ListOfFieldsContainerUI>
-    )
-})
-
-// ============================================================================================================
-
-export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
-    field: Widget_choices<T>
-}) {
-    const field = p.field
-    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
-    const csuite = useCSuite()
-    return (
-        <div
-            tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0.5'
-            style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
-        >
-            {choices.map((c) => {
-                const isSelected = field.serial.branches[c.key]
-                return (
-                    <InputBoolUI
-                        icon={c.icon}
-                        key={c.key}
-                        value={isSelected}
-                        display='button'
-                        mode={p.field.isMulti ? 'checkbox' : 'radio'}
-                        text={c.label}
-                        box={isSelected ? undefined : { text: csuite.labelText }}
-                        onValueChange={(value) => {
-                            if (value != isSelected) {
-                                field.toggleBranch(c.key)
-                            }
-                        }}
-                    />
-                )
-            })}
-        </div>
-    )
-})
-
-export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<T extends SchemaDict>(p: {
-    widget: Widget_choices<T>
-}) {
-    const widget = p.widget
-    type Entry = { key: string; label: string }
-    const choices: Entry[] = widget.choicesWithLabels
-    return (
-        <div
-            tw={[
-                //
-                'relative',
-                p.widget.expand || p.widget.config.justifyLabel ? 'w-full' : 'w-64',
-            ]}
-            onMouseDown={(ev) => {
-                ev.preventDefault()
-                ev.stopPropagation()
-            }}
-        >
-            <SelectUI<Entry>
-                tw='flex-grow'
-                placeholder={p.widget.config.placeholder}
-                value={() =>
-                    Object.entries(widget.serial.branches)
-                        .filter(([_, value]) => value)
-                        .map(([key, _]) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
-                }
-                options={() => choices}
-                getLabelText={(v) => v.label}
-                getLabelUI={(v) => (
-                    <div tw='flex flex-1 justify-between'>
-                        <div tw='flex-1'>{v.label}</div>
-                        {/* 👇 TODO: clean this */}
-                        {/* {v.key in widget.serial.values_ && (
-                            <div
-                                tw='btn btn-square btn-sm'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>delete</span>
-                            </div>
-                        )} */}
-                    </div>
-                )}
-                equalityCheck={(a, b) => a.key === b.key}
-                multiple={widget.config.multi ?? false}
-                // closeOnPick={false}
-                resetQueryOnPick={false}
-                onChange={(v) => widget.toggleBranch(v.key)}
-            />
-        </div>
     )
 })

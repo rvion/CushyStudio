@@ -22,9 +22,9 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
                     showWidgetMenu: false,
                 }}
             >
-                <FormUI form={FORM_PlaygroundWidgetDisplay} />
+                <FormUI entity={FORM_PlaygroundWidgetDisplay} />
             </CSuiteOverride>
-            <FormUI form={FORM_PlaygroundWidgetDisplay} />
+            <FormUI entity={FORM_PlaygroundWidgetDisplay} />
         </Fragment>
     )
 })

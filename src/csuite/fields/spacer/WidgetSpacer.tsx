@@ -56,10 +56,10 @@ export class Widget_spacer extends Field<Widget_spacer_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_spacer>,
+        schema: ISchema<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,

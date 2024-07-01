@@ -9,15 +9,15 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISchema>(p: { widget: Widget_listExt<T> }) {
-    const widget = p.widget
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISchema>(p: { field: Widget_listExt<T> }) {
+    const widget = p.field
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
             {/* <ListControlsUI widget={widget} /> */}
             <WidgetSizeX_LineUI sizeHelper={widget.sizeHelper} bounds={widget.config} />
             <WigetSizeXUI sizeHelper={widget.sizeHelper} bounds={widget.config} />
             {/* <WigetSizeXUI sizeHelper={widget.sizeHelper} bounds={widget.config} /> */}
-            {p.widget.config.mode === 'timeline' ? ( //
+            {p.field.config.mode === 'timeline' ? ( //
                 <WidgetListExt_TimelineUI widget={widget} />
             ) : (
                 <WidgetListExt_RegionalUI widget={widget} />
@@ -30,12 +30,12 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISch
     )
 })
 
-export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_listExt<any> }) {
+export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: { field: Widget_listExt<any> }) {
     return (
         <div tw='flex flex-1 items-center'>
-            <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
+            <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>
             <div tw='ml-auto'>
-                <ListControlsUI widget={p.widget} />
+                <ListControlsUI field={p.field} />
             </div>
         </div>
     )

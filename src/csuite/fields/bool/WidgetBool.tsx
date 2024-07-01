@@ -93,10 +93,10 @@ export class Widget_bool extends Field<Widget_bool_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_bool>,
+        schema: ISchema<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,

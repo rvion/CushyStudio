@@ -8,7 +8,7 @@ import type { CovariantFn } from '../../variance/BivariantHack'
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { Field } from '../../model/Field'
+import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -88,10 +88,10 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_link<A, B>>,
+        schema: ISchema<Widget_link<A, B>>,
         serial?: Widget_link_serial<A, B>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial =
             serial && serial.type === 'link' //
@@ -109,14 +109,14 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         this.init({})
     }
 
-    get subWidgets(): [A['$Field'], B['$Field']] {
+    get subFields(): [A['$Field'], B['$Field']] {
         return [this.aField, this.bField]
     }
 
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
+    get subFieldsWithKeys(): KeyedField[] {
         return [
-            { key: 'a', widget: this.aField },
-            { key: 'b', widget: this.bField },
+            { key: 'a', field: this.aField },
+            { key: 'b', field: this.bField },
         ]
     }
 

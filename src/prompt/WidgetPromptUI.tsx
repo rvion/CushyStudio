@@ -20,8 +20,8 @@ import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
-export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
-    const widget = p.widget
+export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Widget_prompt }) {
+    const widget = p.field
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? (
@@ -69,10 +69,10 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
     )
 })
 // UI
-export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
+export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Widget_prompt }) {
     const st = useSt()
-    const widget = p.widget
-    const uist = useMemo(() => new WidgetPromptUISt(widget), [])
+    const field = p.field
+    const uist = useMemo(() => new WidgetPromptUISt(field), [])
     useLayoutEffect(() => {
         if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
@@ -82,9 +82,9 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
     // To allow CodeMirror editor to react to external value changes, we need to use an effect
     // that track external changes, and update the editor.
     useEffect(() => {
-        if (widget._valueUpdatedViaAPIAt == null) return
-        uist.replaceTextBy(widget.text)
-    }, [widget._valueUpdatedViaAPIAt])
+        if (field._valueUpdatedViaAPIAt == null) return
+        uist.replaceTextBy(field.text)
+    }, [field._valueUpdatedViaAPIAt])
 
     const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (

@@ -18,26 +18,26 @@ const { default: SortableList, SortableItem, SortableKnob } = await import('reac
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { field: Widget_list<any> }) {
     return (
         <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
-            <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
-            {p.widget.isAuto ? null : (
+            <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>
+            {p.field.isAuto ? null : (
                 <div tw='ml-auto'>
-                    <ListControlsUI widget={p.widget} />
+                    <ListControlsUI field={p.field} />
                 </div>
             )}
         </div>
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { widget: Widget_list<T> }) {
-    const widget = p.widget
-    const subWidgets = widget.items
-    const min = widget.config.min
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { field: Widget_list<T> }) {
+    const field = p.field
+    const subWidgets = field.items
+    const min = field.config.min
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <SortableList onSortEnd={(s, e) => p.widget.moveItem(s, e)} className='list' draggedItemClassName='dragged'>
+            <SortableList onSortEnd={(s, e) => p.field.moveItem(s, e)} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
                         const widgetHeader = subWidget.header()
@@ -78,14 +78,14 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         )}
 
                                         {/* delete btn */}
-                                        {p.widget.isAuto ? null : (
+                                        {p.field.isAuto ? null : (
                                             <Button
-                                                disabled={min != null && widget.items.length <= min}
+                                                disabled={min != null && field.items.length <= min}
                                                 square
                                                 size='input'
                                                 subtle
                                                 icon='mdiDeleteOutline'
-                                                onClick={() => widget.removeItem(subWidget)}
+                                                onClick={() => field.removeItem(subWidget)}
                                             />
                                         )}
                                         {/* <div tw='w-2' /> */}

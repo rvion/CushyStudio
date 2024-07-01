@@ -12,20 +12,20 @@ import { SelectUI } from '../../select/SelectUI'
 
 // UI
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_enum<any> }) {
-    const widget = p.widget
-    const enumName = widget.config.enumName
+export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { field: Widget_enum<any> }) {
+    const field = p.field
+    const enumName = field.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
         <EnumSelectorUI
-            value={() => widget.status}
-            disabled={!widget.serial.active}
+            value={() => field.status}
+            disabled={!field.serial.active}
             isOptional={isOptional}
             enumName={enumName}
             // substituteValue={req.status}
             onChange={(e) => {
                 if (e == null) return // ❓
-                widget.value = e
+                field.value = e
             }}
         />
     )

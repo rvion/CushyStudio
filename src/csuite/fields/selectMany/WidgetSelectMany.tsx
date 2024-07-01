@@ -128,12 +128,12 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_s
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_selectMany<T>>,
+        schema: ISchema<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'selectMany',
             collapsed: config.startCollapsed,

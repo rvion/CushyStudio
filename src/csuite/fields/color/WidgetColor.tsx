@@ -55,12 +55,12 @@ export class Widget_color extends Field<Widget_color_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_color>,
+        schema: ISchema<Widget_color>,
         serial?: Widget_color_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'color',
             collapsed: config.startCollapsed,

@@ -76,32 +76,32 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         {labellayout === 'fixed-left' ? (
                             <>
                                 <WidgetIndentUI depth={originalField.depth} />
-                                <WidgetLabelCaretUI widget={field} />
+                                <WidgetLabelCaretUI field={field} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
+                                {field.config.showID && <WidgetDebugIDUI field={field} />}
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : labellayout === 'fixed-right' ? (
                             <>
                                 <WidgetIndentUI depth={field.depth} />
-                                <WidgetLabelCaretUI tw='mr-auto' widget={field} />
+                                <WidgetLabelCaretUI tw='mr-auto' field={field} />
                                 {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
+                                {field.config.showID && <WidgetDebugIDUI field={field} />}
                                 <WidgetLabelIconUI tw='mx-1' widget={field} />
                                 {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : (
                             <>
-                                <WidgetLabelCaretUI widget={field} />
+                                <WidgetLabelCaretUI field={field} />
                                 <WidgetToggleUI tw='mr-1' widget={originalField} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
-                                {field.config.showID && <WidgetDebugIDUI widget={field} />}
+                                {field.config.showID && <WidgetDebugIDUI field={field} />}
                             </>
                         )}
                         <div tw='w-1' /* margin between label and controls */ />
@@ -118,7 +118,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
 
                     {/* HEADER EXTRA prettier-ignore */}
                     {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.spec.LabelExtraUI && (
-                        <field.spec.LabelExtraUI widget={field} />
+                        <field.spec.LabelExtraUI field={field} />
                     )}
                     {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI widget={originalField} />}
                     {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
@@ -135,7 +135,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             )}
 
             {/* ERRORS  ------------------------------------------------------------------------------ */}
-            {!p.noErrors && <WidgetErrorsUI widget={field} />}
+            {!p.noErrors && <WidgetErrorsUI field={field} />}
         </Frame>
     )
     if (field.animateResize && !p.noBody && BodyUI) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>

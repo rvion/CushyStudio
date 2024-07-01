@@ -88,12 +88,12 @@ export class Widget_matrix extends Field<Widget_matrix_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_matrix>,
+        schema: ISchema<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 
         const rows = config.rows

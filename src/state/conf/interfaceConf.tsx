@@ -85,7 +85,7 @@ export const interfaceConf = cushyRepo.entity(
                 label: false,
                 collapsed: false,
                 body: (w) => {
-                    const f = w.widget.fields
+                    const f = w.field.fields
                     return (
                         <div
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.

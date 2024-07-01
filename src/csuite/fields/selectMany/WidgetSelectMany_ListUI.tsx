@@ -7,9 +7,9 @@ import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 
 export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectMany<T>
+    field: Widget_selectMany<T>
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <ResizableFrame
             header={
@@ -26,8 +26,8 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
             }
             tw='w-full'
         >
-            {widget.choices.slice(0, 100).map((c) => {
-                const isSelected = Boolean(widget.serial.values.find((item) => item.id === c.id))
+            {field.choices.slice(0, 100).map((c) => {
+                const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
                 return (
                     <InputBoolToggleButtonUI
                         value={isSelected}
@@ -36,7 +36,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
                         tw='w-full'
                         text={c.label}
                         onValueChange={(value) => {
-                            if (value != isSelected) widget.toggleItem(c)
+                            if (value != isSelected) field.toggleItem(c)
                         }}
                     />
                 )

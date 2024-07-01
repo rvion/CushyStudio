@@ -30,7 +30,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                         width: p.width,
                     }}
                 >
-                    {p.form && <FormUI form={p.form} />}
+                    {p.form && <FormUI entity={p.form} />}
                     {p.children}
                 </div>
             )}

@@ -20,6 +20,11 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
     return (
         <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999]'>
             <Frame base={30} border shadow tw='p-2'>
+                {/* <div>
+                    {tooltip.placement}
+                    {' => '}
+                    {tooltip.placement ?? 'bottom'}
+                </div> */}
                 {/* {isDelayed ? '🟢' : '❌'} */}
                 <div>{txt}</div>
             </Frame>

@@ -133,12 +133,12 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         // |            VVVV
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_selectOne<T>>,
+        schema: ISchema<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         const choices = this.choices
         this.serial = serial ?? {
             type: 'selectOne',

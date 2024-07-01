@@ -81,16 +81,16 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
                 /** simplified skin definition */
                 | { [key: string]: any }
                 /** full react field */
-                | ((p: { widget: FIELD }) => ReactNode)
+                | ((p: { field: FIELD }) => ReactNode)
         },
     >(t: T): Schema<FIELD & T /* & { skin: T } */> {
         Object.assign(this._skins, t)
         return this as any
     }
 
-    LabelExtraUI: CovariantFC<{ widget: FIELD }> = (p: { widget: FIELD }) =>
+    LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
         createElement(InstallRequirementsBtnUI, {
-            active: isWidgetOptional(p.widget) ? p.widget.serial.active : true,
+            active: isWidgetOptional(p.field) ? p.field.serial.active : true,
             requirements: this.requirements,
         })
 

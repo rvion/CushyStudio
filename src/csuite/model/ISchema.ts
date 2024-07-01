@@ -27,7 +27,7 @@ export interface ISchema<out FIELD extends Field = Field> {
         serial: any | null,
     ): FIELD['$Field']
 
-    LabelExtraUI?: CovariantFC<{ widget: FIELD }>
+    LabelExtraUI?: CovariantFC<{ field: FIELD }>
 
     // -----------
     producers: Producer<any, any>[]

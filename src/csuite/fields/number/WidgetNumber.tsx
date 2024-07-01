@@ -74,12 +74,12 @@ export class Widget_number extends Field<Widget_number_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_number>,
+        schema: ISchema<Widget_number>,
         serial?: Widget_number_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'number',
             collapsed: config.startCollapsed,

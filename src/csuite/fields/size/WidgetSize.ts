@@ -108,12 +108,12 @@ export class Widget_size extends Field<Widget_size_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_size>,
+        schema: ISchema<Widget_size>,
         serial?: Widget_size_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         if (serial) {
             this.serial = serial
         } else {

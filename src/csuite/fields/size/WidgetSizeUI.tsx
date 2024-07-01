@@ -9,12 +9,12 @@ import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
-    return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
+export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Widget_size }) {
+    return <WidgetSizeX_LineUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
 })
 
-export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
-    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
+export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Widget_size }) {
+    return <WigetSizeXUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {

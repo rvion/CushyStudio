@@ -6,9 +6,9 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
     //
-    widget: Widget_number
+    field: Widget_number
 }) {
-    const field = p.widget
+    const field = p.field
     const value = field.serial.val
     const mode = field.config.mode
     const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)

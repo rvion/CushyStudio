@@ -69,11 +69,10 @@ export class Widget_string extends Field<Widget_string_types> {
         return null
     }
 
-    UITextarea = () => <WidgetString_TextareaBodyUI widget={this} />
-    UIInputText = () => <WidgetString_HeaderUI widget={this} />
-    // readonly border = false
-    readonly id: string
+    UITextarea = () => <WidgetString_TextareaBodyUI field={this} />
+    UIInputText = () => <WidgetString_HeaderUI field={this} />
 
+    readonly id: string
     readonly type: 'str' = 'str'
 
     // --------------
@@ -95,12 +94,12 @@ export class Widget_string extends Field<Widget_string_types> {
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_string>,
+        schema: ISchema<Widget_string>,
         serial?: Widget_string_serial,
     ) {
-        super(entity, parent, spec)
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'str',
             val: config.default,

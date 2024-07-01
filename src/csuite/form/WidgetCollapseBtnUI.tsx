@@ -2,8 +2,8 @@ import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-export const WidgetCollapseBtnUI = observer(function WidgetCollapseBtnUI_(p: { widget: Field }) {
-    const widget = p.widget
+export const WidgetCollapseBtnUI = observer(function WidgetCollapseBtnUI_(p: { field: Field }) {
+    const field = p.field
     return (
         <span
             tw={'opacity-30 hover:opacity-100 cursor-pointer'}
@@ -12,11 +12,11 @@ export const WidgetCollapseBtnUI = observer(function WidgetCollapseBtnUI_(p: { w
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
-                if (widget.serial.collapsed) widget.setCollapsed(false)
-                else widget.setCollapsed(true)
+                if (field.serial.collapsed) field.setCollapsed(false)
+                else field.setCollapsed(true)
             }}
         >
-            {widget.serial.collapsed ? 'keyboard_arrow_right' : 'keyboard_arrow_down'}
+            {field.serial.collapsed ? 'keyboard_arrow_right' : 'keyboard_arrow_down'}
         </span>
     )
 })

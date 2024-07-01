@@ -39,6 +39,8 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
+export type KeyedField = { key: string; field: Field }
+
 export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -98,14 +100,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */
-    abstract readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Field'] }> | undefined
+    abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field'] }> | undefined
 
     /** default body UI */
-    abstract readonly DefaultBodyUI: CovariantFC<{ widget: K['$Field'] }> | undefined
+    abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
 
     UIToggle = (p?: { className?: string }) => <WidgetToggleUI widget={this} {...p} />
-    UIErrors = () => <WidgetErrorsUI widget={this} />
-    UILabelCaret = () => <WidgetLabelCaretUI widget={this} />
+    UIErrors = () => <WidgetErrorsUI field={this} />
+    UILabelCaret = () => <WidgetLabelCaretUI field={this} />
     UILabelIcon = () => <WidgetLabelIconUI widget={this} />
     UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer = (p: { children: ReactNode }) => (
@@ -150,7 +152,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * return flase when widget has one or more child
      * */
     get hasNoChild(): boolean {
-        return this.subWidgets.length === 0
+        return this.subFields.length === 0
     }
 
     get diffSummaryFromSnapshot(): string {
@@ -162,7 +164,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             this.hasChanges //
                 ? `${this.path}(${this.value?.toString?.() ?? '.'})`
                 : null,
-            ...this.subWidgets.map((w) => w.diffSummaryFromDefault),
+            ...this.subFields.map((w) => w.diffSummaryFromDefault),
         ]
             .filter(Boolean)
             .join('\n')
@@ -177,12 +179,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     get mountKey(): string {
         if (this.parent == null) return '$'
-        return this.parent.subWidgetsWithKeys.find(({ widget }) => widget === this)?.key ?? '<error>'
+        return this.parent.subFieldsWithKeys.find(({ field }) => field === this)?.key ?? '<error>'
     }
 
     /** collapse all children that can be collapsed */
     collapseAllChildren(): void {
-        for (const _item of this.subWidgets) {
+        for (const _item of this.subFields) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = getActualWidgetToDisplay(_item)
             if (item.serial.collapsed) continue
@@ -193,7 +195,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** expand all children that can are collapsed */
     expandAllChildren(): void {
-        for (const _item of this.subWidgets) {
+        for (const _item of this.subFields) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = getActualWidgetToDisplay(_item)
             item.setCollapsed(undefined)
@@ -472,12 +474,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     defaultHeader(this: Field): JSX.Element | undefined {
         if (this.DefaultHeaderUI == null) return
-        return <this.DefaultHeaderUI widget={this} />
+        return <this.DefaultHeaderUI field={this} />
     }
 
     defaultBody(this: Field): JSX.Element | undefined {
         if (this.DefaultBodyUI == null) return
-        return <this.DefaultBodyUI widget={this} />
+        return <this.DefaultBodyUI field={this} />
     }
 
     header(this: Field): JSX.Element | undefined {
@@ -486,7 +488,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 ? ensureObserver(this.config.header)
                 : this.DefaultHeaderUI
         if (HeaderUI == null) return
-        return <HeaderUI widget={this} />
+        return <HeaderUI field={this} />
     }
 
     body(this: Field): JSX.Element | undefined {
@@ -495,11 +497,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 ? ensureObserver(this.config.body)
                 : this.DefaultBodyUI
         if (BodyUI == null) return
-        return <BodyUI widget={this} />
+        return <BodyUI field={this} />
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgets(): Field[] {
+    get subFields(): Field[] {
         return []
     }
 
@@ -508,7 +510,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** list of all subwidgets, without named keys */
-    get subWidgetsWithKeys(): { key: string; widget: Field }[] {
+    get subFieldsWithKeys(): KeyedField[] {
         return []
     }
 
