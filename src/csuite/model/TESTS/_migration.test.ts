@@ -6,14 +6,26 @@ import { simpleBuilder as b } from '../../index'
 describe('can recover when field becoming list ', () => {
     it('works with string', () => {
         // E1 works
-        const S1: S.SNumber = b.int({ default: 4 })
+        const S1: S.SString = b.string({ default: '🔵' })
         const E1 = S1.create()
-        expect(E1.value).toBe(4)
+        expect(E1.value).toBe('🔵')
 
-        // E2 recover from new serial
-        const S2 = b.int().list()
+        // set E1 value to '🟢'
+        E1.value = '🟢'
+        expect(E1.value).toBe('🟢')
+        expect(E1.serial).toMatchObject({ root: { type: 'str', val: '🟢' } })
+
+        // E2 is able to PRESERVE the '🟢'
+        const S2 = b.string().list()
         const E2 = S2.create(() => E1.serial)
-        expect(E2.value).toBe([4])
+        expect(E2.value).toMatchObject(['🟢'])
+        expect(E2.serial).toMatchObject({ root: { type: 'list', items_: [{ type: 'str', val: '🟢' }] } })
+
+        // E1 should still have the same value
+        expect(E1.serial).toMatchObject({ root: { type: 'str', val: '🟢' } })
+
+        const E3 = S1.create(() => E2.serial)
+        expect(E3.serial).toMatchObject({ root: { type: 'str', val: '🟢' } })
     })
 })
 

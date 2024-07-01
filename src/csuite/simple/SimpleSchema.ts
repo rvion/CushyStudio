@@ -10,7 +10,7 @@ import { makeObservable, reaction } from 'mobx'
 
 import { simpleRepo } from '../'
 import { Field_link, type Field_link_config } from '../fields/link/WidgetLink'
-import { Field_list, Field_list_config } from '../fields/list/WidgetList'
+import { Field_list, Field_list_config, type Field_list_serial } from '../fields/list/WidgetList'
 import { Field_optional } from '../fields/optional/WidgetOptional'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
@@ -55,6 +55,25 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         parent: Field | null,
         serial: any | null,
     ) {
+        // recover phase
+        if (serial != null && serial.type !== this.type) {
+            // ADDING LIST
+            if (this.type === 'list') {
+                const prev: any = serial
+                const next: Field_list_serial<any> = {
+                    type: 'list',
+                    items_: [prev],
+                }
+                serial = next
+            }
+            // REMOVING LIST
+            else if (serial.type === 'list') {
+                const prev: Field_list_serial<any> = serial as any
+                const next: any = prev.items_[0] ?? null
+                serial = next
+            }
+        }
+
         // ensure the serial is compatible
         if (serial != null && serial.type !== this.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
