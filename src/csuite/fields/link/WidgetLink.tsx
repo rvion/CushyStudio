@@ -134,35 +134,3 @@ export class Field_link<A extends ISchema, B extends ISchema> //
 
 // DI
 registerWidgetClass('link', Field_link)
-
-//       Link<Number, { x: X.XInt, y: Linked<Number>, z: Linked<Number> }>
-//     Linked<{ x: X.XInt, y: Link<Number>, z: Link<Number> }, XNumber>
-//     Bound<{ x: X.XInt, y: Link<Number>, z: Link<Number> }, XNumber>
-//     Linked<{ x: X.XInt, y: Shared<Number>, z: Shared<Number> }, XNumber>
-//     ???<(: XNumber) => { x: X.XInt, y: Shared<Number>, z: Shared<Number> }>
-// WithShared<Number, { x: X.XInt, y: Shared<Number>, z: Shared<Number> }>
-//      Share<Number, { x: X.XInt, y: Shared<Number>, z: Shared<Number> }>
-//      Transmit<Number, { x: X.XInt, y: Receive<Number>, z: Receive<Number> }>
-
-//    Link<{
-//       to: { x: X.XInt, y: Receive<Number>, z: Receive<Number> }
-//       from: Number
-//    }>
-
-// ❌ Reference<Number, { x: X.XInt, y: Referenced<Number>, z: Referenced<Number> }>
-//       Bind<Number, { x: X.XInt, y: Bound<Number>, z: Bound<Number> }>
-//       Sync<Number, { x: X.XInt, y: Synced<Number>, z: Synced<Number> }>
-//    Connect<Number, { x: X.XInt, y: Connected<Number>, z: Connected<Number> }>
-// ❌       Tie<Number, { x: X.XInt, y: Tied<Number>, z: Tied<Number> }>
-//     Attach<Number, { x: X.XInt, y: Attached<Number>, z: Attached<Number> }>
-//      Relay<Number, { x: X.XInt, y: Relayed<Number>, z: Relayed<Number> }>
-// ❌   Latch<Number, { x: X.XInt, y: Latched<Number>, z: Latched<Number> }>
-// ❌       Map<Number, { x: X.XInt, y: Mapped<Number>, z: Mapped<Number> }>
-//      Embed<Number, { x: X.XInt, y: Embedded<Number>, z: Embedded<Number> }>
-
-//  Composite<{ x: X.XInt, y: Shared<Number>, z: Shared<Number> }, Number>
-//       Bind<{ x: X.XInt, y: Shared<Number>, z: Shared<Number> }, Number>
-// Composited<{ x: X.XInt, y: Shared<Number>, z: Shared<Number> }, Number>
-
-//       With<Number, { x: X.XInt, y: Shared<Number>, z: Shared<Number> }>
-//       With<{ x: X.XInt, y: Shared<Number>, z: Shared<Number> }, Number>
