@@ -3,8 +3,14 @@ import { describe, expect as expect_, it } from 'bun:test'
 import { simpleBuilder as b } from '../../index'
 
 // ------------------------------------------------------------------------------
-describe('can recover when field becoming list ', () => {
-    it('works with string', () => {
+describe('auto-migration ', () => {
+    it('can recover from/to links', () => {
+        expect(0).toBe(1)
+        // 2024-07-02: TODO with GUI
+        // see `src/csuite/simple/SimpleSchema.ts`, near the `AUTOMIGRATION` section
+    })
+
+    it('can recover from/to lists', () => {
         // E1 works
         const S1: S.SString = b.string({ default: '🔵' })
         const E1 = S1.create()

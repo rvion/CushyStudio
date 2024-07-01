@@ -55,15 +55,13 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         parent: Field | null,
         serial: any | null,
     ) {
+        // AUTOMIGRATION --------------------------------------------------------------------
         // recover phase
         if (serial != null && serial.type !== this.type) {
             // ADDING LIST
             if (this.type === 'list') {
                 const prev: any = serial
-                const next: Field_list_serial<any> = {
-                    type: 'list',
-                    items_: [prev],
-                }
+                const next: Field_list_serial<any> = { type: 'list', items_: [prev] }
                 serial = next
             }
             // REMOVING LIST
@@ -73,6 +71,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
                 serial = next
             }
         }
+        // ----------------------------------------------------------------------------------
 
         // ensure the serial is compatible
         if (serial != null && serial.type !== this.type) {
