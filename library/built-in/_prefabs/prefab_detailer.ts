@@ -121,6 +121,7 @@ export function ui_refiners(): UI_Refiners {
             ),
         },
         {
+            icon: 'mdiMagnifyExpand',
             summary: (ui) => {
                 return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
                     ui.refinerType.eyes ? 'EYES' : ''

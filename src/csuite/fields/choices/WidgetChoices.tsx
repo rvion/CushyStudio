@@ -1,3 +1,4 @@
+import type { IconName } from '../../icons/icons'
 import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
@@ -55,7 +56,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 
 // STATE
 export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Widget_choices_types<T>> {
-    UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
+    UITab = () => <WidgetChoices_TabHeaderUI field={this} />
     UISelect = () => <WidgetChoices_HeaderUI widget={this} />
     UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
@@ -89,13 +90,19 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         return Object.keys(this.config.items)
     }
 
-    get choicesWithLabels(): { key: keyof T & string; label: string }[] {
+    get isCollapsible() {
+        if (this.activeBranches.length === 0) return false
+        return super.isCollapsible
+    }
+
+    get choicesWithLabels(): { key: keyof T & string; label: string; icon?: IconName }[] {
         return Object.entries(this.config.items).map(([key, spec]) => ({
             key,
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
             label: spec.config.label || makeLabelFromFieldName(key),
+            icon: spec.config.icon,
         }))
     }
 

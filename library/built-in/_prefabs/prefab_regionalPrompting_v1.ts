@@ -18,6 +18,7 @@ export function ui_regionalPrompting_v1(): UI_regionalPrompting_v1 {
         }),
         height: 512,
         width: 512,
+        icon: 'mdiPictureInPictureTopRight',
         initialPosition: () => ({
             x: 0,
             y: 0,

@@ -12,7 +12,7 @@ import { getJustifyContent } from './TabPositionConfig'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
-    if (p.widget.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI widget={p.widget} />
+    if (p.widget.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI field={p.widget} />
     else return <WidgetChoices_SelectHeaderUI widget={p.widget} />
 })
 
@@ -50,29 +50,30 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
 // ============================================================================================================
 
 export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
-    widget: Widget_choices<T>
+    field: Widget_choices<T>
 }) {
-    const widget = p.widget
-    const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
+    const field = p.field
+    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
     const csuite = useCSuite()
     return (
         <div
             tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0.5'
-            style={{ justifyContent: getJustifyContent(widget.config.tabPosition) }}
+            style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
         >
             {choices.map((c) => {
-                const isSelected = widget.serial.branches[c.key]
+                const isSelected = field.serial.branches[c.key]
                 return (
                     <InputBoolUI
+                        icon={c.icon}
                         key={c.key}
                         value={isSelected}
                         display='button'
-                        mode={p.widget.isMulti ? 'checkbox' : 'radio'}
+                        mode={p.field.isMulti ? 'checkbox' : 'radio'}
                         text={c.label}
                         box={isSelected ? undefined : { text: csuite.labelText }}
                         onValueChange={(value) => {
                             if (value != isSelected) {
-                                widget.toggleBranch(c.key)
+                                field.toggleBranch(c.key)
                             }
                         }}
                     />

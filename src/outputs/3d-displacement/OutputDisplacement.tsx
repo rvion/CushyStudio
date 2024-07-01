@@ -27,10 +27,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const sizeStr = st.historySizeStr
     return (
         <div
-            tw={['bg-orange-500 text-black', 'text-center w-full font-bold']}
+            tw={['bg-orange-500 text-black', 'flex items-center justify-center h-full w-full']}
             style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
         >
-            3D
+            <div tw='font-bold text-xl'>3D</div>
         </div>
     )
 })

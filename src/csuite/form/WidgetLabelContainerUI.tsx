@@ -40,7 +40,8 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
 
 const justifiedStyle: CSSProperties = {
     minWidth: '8rem', // 🔴 move to theme options
-    maxWidth: '20rem', // 🔴 move to theme options
+    // maxWidth: '20rem', // 🔴 move to theme options
+    maxWidth: '15rem', // 🔴 move to theme options
     width: '35%', // 🔴 move to theme options
     justifyContent: 'flex-start',
 }
