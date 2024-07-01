@@ -53,7 +53,7 @@ export function ui_LatentShapeGenerator(
     return ui.fields(
         {
             batchSize: batchSize ?? ui.int({ step: 1, default: 1, min: 1, max: 15 }),
-            size: size ?? ui.size({ label: false, collapsed: false, border: false, default: { modelType: 'SDXL 1024' }, step: 8 }), // prettier-ignore
+            size: size ?? ui.size({ default: { modelType: 'SDXL 1024' }, step: 8 }), // prettier-ignore
             amountCircle: ui.int({ step: 1, default: 0, min: 0, softMax: 15 }),
             amountRect: ui.int({ step: 1, default: 0, min: 0, softMax: 15 }),
             amountStar: ui.int({ step: 1, default: 0, min: 0, softMax: 15 }),
@@ -67,7 +67,6 @@ export function ui_LatentShapeGenerator(
         },
         {
             collapsed: false,
-            border: false,
             presets: [
                 {
                     label: 'default',

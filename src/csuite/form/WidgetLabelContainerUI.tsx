@@ -1,3 +1,4 @@
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -24,13 +25,10 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             hover
             expand
             tw={[
-                'UI-WidgetLabelContainer',
+                'UI-WidgetLabelContainer', //
                 'COLLAPSE-PASSTHROUGH',
-                'minh-input',
-                // 'self-stretch',
-                'flex', // gap-0.5
+                'flex items-center',
                 'flex-none shrink-0',
-                'items-center',
             ]}
             style={p.justify ? justifiedStyle : undefined}
             text={csuite.labelText}

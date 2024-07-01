@@ -19,6 +19,7 @@ export function ui_customSave(): UI_customSave {
         .group({
             label: 'Save As...',
             icon: 'mdiContentSaveCogOutline',
+            tooltip: 'Save Folder and file format',
             items: {
                 subfolder: form.string({
                     label: 'Subfolder',

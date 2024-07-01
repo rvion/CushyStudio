@@ -11,6 +11,7 @@ export const WidgetToggleUI = observer(function WidgetToggleUI_(p: { className?:
     const widget = p.widget as Widget_optional
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget
+            tw='UI-WidgetToggle self-stretch items-center'
             className={p.className}
             value={widget.serial.active}
             expand={false}
