@@ -11,6 +11,7 @@ export type WidgetLabelContainerProps = {
     className?: string
     children: React.ReactNode
     tooltip?: string
+    tooltipPlacement?: RevealPlacement
 }
 
 export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(p: WidgetLabelContainerProps) {
@@ -18,7 +19,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     return (
         <Frame
             tooltip={p.tooltip}
-            tooltipPlacement='right'
+            tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
             className={p.className}
             hover
             expand
