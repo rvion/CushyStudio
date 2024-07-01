@@ -12,7 +12,7 @@ import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_link_config<
+export type Field_link_config<
     //
     A extends ISchema,
     B extends ISchema,
@@ -24,35 +24,35 @@ export type Widget_link_config<
         // into
         children: CovariantFn<[child: A['$Field']], B>
     },
-    Widget_link_types<A, B>
+    Field_link_types<A, B>
 >
 
 // SERIAL
-export type Widget_link_serial<A extends ISchema, B extends ISchema> = FieldSerial<{
+export type Field_link_serial<A extends ISchema, B extends ISchema> = FieldSerial<{
     type: 'link'
     a?: A['$Serial']
     b?: B['$Serial']
 }>
 
 // VALUE
-export type Widget_link_value<
+export type Field_link_value<
     //
     A extends ISchema,
     B extends ISchema,
 > = B['$Value']
 
 // TYPES
-export type Widget_link_types<A extends ISchema, B extends ISchema> = {
+export type Field_link_types<A extends ISchema, B extends ISchema> = {
     $Type: 'link'
-    $Config: Widget_link_config<A, B>
-    $Serial: Widget_link_serial<A, B>
-    $Value: Widget_link_value<A, B>
-    $Field: Widget_link<A, B>
+    $Config: Field_link_config<A, B>
+    $Serial: Field_link_serial<A, B>
+    $Value: Field_link_value<A, B>
+    $Field: Field_link<A, B>
 }
 
 // STATE
-export class Widget_link<A extends ISchema, B extends ISchema> //
-    extends Field<Widget_link_types<A, B>>
+export class Field_link<A extends ISchema, B extends ISchema> //
+    extends Field<Field_link_types<A, B>>
 {
     DefaultHeaderUI = () => <>🟢</>
     DefaultBodyUI = () => this.bField.renderWithLabel()
@@ -77,9 +77,9 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
     /** the dict of all child widgets */
     aField!: A['$Field']
     bField!: B['$Field']
-    serial: Widget_link_serial<A, B> = {} as any
+    serial: Field_link_serial<A, B> = {} as any
 
-    private _defaultSerial = (): Widget_link_serial<A, B> => {
+    private _defaultSerial = (): Field_link_serial<A, B> => {
         return {
             type: 'link',
         }
@@ -88,8 +88,8 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_link<A, B>>,
-        serial?: Widget_link_serial<A, B>,
+        schema: ISchema<Field_link<A, B>>,
+        serial?: Field_link_serial<A, B>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -120,7 +120,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
         ]
     }
 
-    set value(val: Widget_link_value<A, B>) {
+    set value(val: Field_link_value<A, B>) {
         runInAction(() => {
             this.bField.value = val
             this.applyValueUpdateEffects()
@@ -133,7 +133,7 @@ export class Widget_link<A extends ISchema, B extends ISchema> //
 }
 
 // DI
-registerWidgetClass('link', Widget_link)
+registerWidgetClass('link', Field_link)
 
 //       Link<Number, { x: X.XInt, y: Linked<Number>, z: Linked<Number> }>
 //     Linked<{ x: X.XInt, y: Link<Number>, z: Link<Number> }, XNumber>

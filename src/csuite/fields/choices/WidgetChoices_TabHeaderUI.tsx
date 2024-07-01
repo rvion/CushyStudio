@@ -1,5 +1,5 @@
 import type { SchemaDict } from '../../model/ISchema'
-import type { Widget_choices } from './WidgetChoices'
+import type { Field_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
@@ -10,7 +10,7 @@ import { getJustifyContent } from './TabPositionConfig'
 // ============================================================================================================
 
 export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
-    field: Widget_choices<T>
+    field: Field_choices<T>
 }) {
     const field = p.field
     const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))

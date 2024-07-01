@@ -1,4 +1,4 @@
-import type { Widget_string } from './WidgetString'
+import type { Field_string } from './WidgetString'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,7 +6,7 @@ import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
 // Textarea HEADER
-export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { field: Widget_string }) {
+export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { field: Field_string }) {
     const field = p.field
     if (!field.config.textarea) return null
     if (!p.field.serial.collapsed) return null
@@ -14,7 +14,7 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
 })
 
 // Textarea BODY
-export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { field: Widget_string }) {
+export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { field: Field_string }) {
     const field = p.field
     if (!field.config.textarea) return null
     const val = field.value
@@ -39,7 +39,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 })
 
 // string HEADER
-export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Widget_string }) {
+export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_string }) {
     const field = p.field
     const config = field.config
     return (

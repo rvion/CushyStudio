@@ -81,7 +81,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {field.config.showID && <WidgetDebugIDUI field={field} />}
-                                {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                                {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : labellayout === 'fixed-right' ? (
                             <>
@@ -92,7 +92,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {field.config.showID && <WidgetDebugIDUI field={field} />}
                                 <WidgetLabelIconUI tw='mx-1' widget={field} />
-                                {/* <Widget_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                                {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                             </>
                         ) : (
                             <>

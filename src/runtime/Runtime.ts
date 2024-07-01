@@ -17,7 +17,7 @@ import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
 import { toJSONError } from '../csuite/errors/toJSONError'
-import { Widget_group } from '../csuite/fields/group/WidgetGroup'
+import { Field_group } from '../csuite/fields/group/WidgetGroup'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
 import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
@@ -237,7 +237,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * 🔶 it is NOT json: it's a complex object
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
-    formInstance!: Widget_group<FIELDS>
+    formInstance!: Field_group<FIELDS>
     // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any) => {
@@ -337,7 +337,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      */
     _EXECUTE = async (p: {
         //
-        formInstance: Widget_group<any>
+        formInstance: Field_group<any>
         context: DraftExecutionContext
         // imageToStartFrom?: Maybe<MediaImageL>
     }): Promise<RuntimeExecutionResult> => {

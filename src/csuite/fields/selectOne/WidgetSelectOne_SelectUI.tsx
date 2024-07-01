@@ -1,4 +1,4 @@
-import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
+import type { BaseSelectEntry, Field_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,7 +6,7 @@ import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 
 export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectOne<T>
+    widget: Field_selectOne<T>
 }) {
     const widget = p.widget
     return (

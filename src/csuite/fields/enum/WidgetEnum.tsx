@@ -15,37 +15,37 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
-export type Widget_enum_config<O> = FieldConfig<
+export type Field_enum_config<O> = FieldConfig<
     {
         enumName: string
         default?: O //Requirable[T] | EnumDefault<T>
         extraDefaults?: string[]
         filter?: (v: EnumValue) => boolean
     },
-    Widget_enum_types<O>
+    Field_enum_types<O>
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = FieldSerial<{
+export type Field_enum_serial<O> = FieldSerial<{
     type: 'enum'
     active: true
     val: O
 }>
 
 // VALUE
-export type Widget_enum_value<O> = O // Requirable[T]
+export type Field_enum_value<O> = O // Requirable[T]
 
 // TYPES
-export type Widget_enum_types<O> = {
+export type Field_enum_types<O> = {
     $Type: 'enum'
-    $Config: Widget_enum_config<O>
-    $Serial: Widget_enum_serial<O>
-    $Value: Widget_enum_value<O>
-    $Field: Widget_enum<O>
+    $Config: Field_enum_config<O>
+    $Serial: Field_enum_serial<O>
+    $Value: Field_enum_value<O>
+    $Field: Field_enum<O>
 }
 
 // STATE
-export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
+export class Field_enum<O> extends Field<Field_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -67,13 +67,13 @@ export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
         return null
     }
 
-    serial: Widget_enum_serial<O>
+    serial: Field_enum_serial<O>
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_enum<O>>,
-        serial?: Widget_enum_serial<O>,
+        schema: ISchema<Field_enum<O>>,
+        serial?: Field_enum_serial<O>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -93,11 +93,11 @@ export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
 
-    get value(): Widget_enum_value<O> {
+    get value(): Field_enum_value<O> {
         return this.status.finalValue
     }
 
-    set value(next: Widget_enum_value<O>) {
+    set value(next: Field_enum_value<O>) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
@@ -107,4 +107,4 @@ export class Widget_enum<O> extends Field<Widget_enum_types<O>> {
 }
 
 // DI
-registerWidgetClass('enum', Widget_enum)
+registerWidgetClass('enum', Field_enum)

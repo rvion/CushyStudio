@@ -8,14 +8,14 @@
 
 */
 import type { Field } from '../model/Field'
-import type { Widget_group } from './group/WidgetGroup'
-import type { Widget_link } from './link/WidgetLink'
-import type { Widget_list } from './list/WidgetList'
-import type { Widget_number } from './number/WidgetNumber'
-import type { Widget_optional } from './optional/WidgetOptional'
-import type { Widget_selectOne } from './selectOne/WidgetSelectOne'
-import type { Widget_shared } from './shared/WidgetShared'
-import type { Widget_string } from './string/WidgetString'
+import type { Field_group } from './group/WidgetGroup'
+import type { Field_link } from './link/WidgetLink'
+import type { Field_list } from './list/WidgetList'
+import type { Field_number } from './number/WidgetNumber'
+import type { Field_optional } from './optional/WidgetOptional'
+import type { Field_selectOne } from './selectOne/WidgetSelectOne'
+import type { Field_shared } from './shared/WidgetShared'
+import type { Field_string } from './string/WidgetString'
 
 /**
  * DI (Dependency Injection)
@@ -37,14 +37,14 @@ export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'
 
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
-export const isWidgetOptional = _isWidget<Widget_optional>('optional')
-export const isWidgetLink = _isWidget<Widget_link<any, any>>('link')
-export const isWidgetShared = _isWidget<Widget_shared>('shared')
-export const isWidgetGroup = _isWidget<Widget_group<any>>('group')
-export const isWidgetString = _isWidget<Widget_string>('str')
-export const isWidgetNumber = _isWidget<Widget_number>('number')
-export const isWidgetList = _isWidget<Widget_list<any>>('list')
-export const isWidgetSelectOne = _isWidget<Widget_selectOne<any>>('selectOne')
+export const isWidgetOptional = _isWidget<Field_optional>('optional')
+export const isWidgetLink = _isWidget<Field_link<any, any>>('link')
+export const isWidgetShared = _isWidget<Field_shared>('shared')
+export const isWidgetGroup = _isWidget<Field_group<any>>('group')
+export const isWidgetString = _isWidget<Field_string>('str')
+export const isWidgetNumber = _isWidget<Field_number>('number')
+export const isWidgetList = _isWidget<Field_list<any>>('list')
+export const isWidgetSelectOne = _isWidget<Field_selectOne<any>>('selectOne')
 
 function _isWidget<W extends { $Type: string }>(type: W['$Type']): (widget: any) => widget is W {
     return (widget): widget is W => widget.type === type

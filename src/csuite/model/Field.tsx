@@ -1,4 +1,4 @@
-import type { Widget_shared } from '../fields/shared/WidgetShared'
+import type { Field_shared } from '../fields/shared/WidgetShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'
@@ -61,7 +61,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** field is already instanciated => probably used as a linked */
     instanciate(entity: Entity<any>, parent: Field | null, serial: any | null) {
         const builder = this.entity.repository.domain
-        const schema: ISchema<Widget_shared<this>> = builder.linked(this)
+        const schema: ISchema<Field_shared<this>> = builder.linked(this)
         return schema.instanciate(entity, parent, serial)
     }
 

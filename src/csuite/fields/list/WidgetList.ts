@@ -25,7 +25,7 @@ interface AutoBehaviour<out T extends ISchema> {
 }
 
 // CONFIG
-export interface Widget_list_config<out T extends ISchema>
+export interface Field_list_config<out T extends ISchema>
     extends FieldConfig<
         {
             element: ((ix: number) => T) | T
@@ -55,30 +55,30 @@ export interface Widget_list_config<out T extends ISchema>
 
             defaultLength?: number
         },
-        Widget_list_types<T>
+        Field_list_types<T>
     > {}
 
 // SERIAL
-export type Widget_list_serial<T extends ISchema> = FieldSerial<{
+export type Field_list_serial<T extends ISchema> = FieldSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // VALUE
-export type Widget_list_value<T extends ISchema> = T['$Value'][]
+export type Field_list_value<T extends ISchema> = T['$Value'][]
 
 // TYPES
-export type Widget_list_types<T extends ISchema> = {
+export type Field_list_types<T extends ISchema> = {
     $Type: 'list'
-    $Config: Widget_list_config<T>
-    $Serial: Widget_list_serial<T>
-    $Value: Widget_list_value<T>
-    $Field: Widget_list<T>
+    $Config: Field_list_config<T>
+    $Serial: Field_list_serial<T>
+    $Value: Field_list_value<T>
+    $Field: Field_list<T>
 }
 
 // STATE
-export class Widget_list<T extends ISchema> //
-    extends Field<Widget_list_types<T>>
+export class Field_list<T extends ISchema> //
+    extends Field<Field_list_types<T>>
 {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
@@ -89,7 +89,7 @@ export class Widget_list<T extends ISchema> //
 
     get length() { return this.items.length } // prettier-ignore
     items: T['$Field'][]
-    serial: Widget_list_serial<T>
+    serial: Field_list_serial<T>
 
     get hasChanges(): boolean {
         // in auto mode, length is managed, so we must not take it into account
@@ -176,8 +176,8 @@ export class Widget_list<T extends ISchema> //
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_list<T>>,
-        serial?: Widget_list_serial<T>,
+        schema: ISchema<Field_list<T>>,
+        serial?: Field_list_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -222,11 +222,11 @@ export class Widget_list<T extends ISchema> //
         this.startAutoBehaviour()
     }
 
-    get value(): Widget_list_value<T> {
+    get value(): Field_list_value<T> {
         return this.items.map((i) => i.value)
     }
 
-    set value(val: Widget_list_value<T>) {
+    set value(val: Field_list_value<T>) {
         for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
             if (i < this.items.length) {
@@ -343,4 +343,4 @@ export class Widget_list<T extends ISchema> //
 }
 
 // DI
-registerWidgetClass('list', Widget_list)
+registerWidgetClass('list', Field_list)

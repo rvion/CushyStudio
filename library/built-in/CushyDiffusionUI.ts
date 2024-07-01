@@ -1,5 +1,5 @@
 import type { Schema } from '../../src/controls/Schema'
-import type { Widget_group } from '../../src/csuite/fields/group/WidgetGroup'
+import type { Field_group } from '../../src/csuite/fields/group/WidgetGroup'
 
 import { ui_cnet, type UI_cnet } from './_controlNet/prefab_cnet'
 import { ui_IPAdapterV2, type UI_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
@@ -29,7 +29,7 @@ export type CushyDiffusionUI_ = {
     upscaleV2: X.XChoices<{
         highResFix: UI_HighResFix
         upscaleWithModel: Schema<
-            Widget_group<{
+            Field_group<{
                 model: X.XEnum<Enum_UpscaleModelLoader_model_name>
             }>
         >

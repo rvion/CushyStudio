@@ -1,5 +1,5 @@
 import type { ResolutionState } from './ResolutionState'
-import type { Widget_size } from './WidgetSize'
+import type { Field_size } from './WidgetSize'
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
@@ -9,11 +9,11 @@ import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Widget_size }) {
+export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
     return <WidgetSizeX_LineUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
 })
 
-export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Widget_size }) {
+export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
     return <WigetSizeXUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
 })
 

@@ -1,4 +1,4 @@
-import type { Widget_image } from './WidgetImage'
+import type { Field_image } from './WidgetImage'
 
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import { SpacerUI } from '../spacer/SpacerUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     //
-    field: Widget_image
+    field: Field_image
 }) {
     const field = p.field
     const st = useSt()

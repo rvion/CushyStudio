@@ -1,4 +1,4 @@
-import type { Widget_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
+import type { Field_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne'
 /**
  * this module is here to allow performant type-level apis for enums.
@@ -8,18 +8,18 @@ import type { Entity } from '../csuite/model/Entity'
 import type { ISchema } from '../csuite/model/ISchema'
 import type { Builder } from './Builder'
 
-import { Widget_enum, type Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
+import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/WidgetEnum'
 import { Schema } from './Schema'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
-        config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
+        config?: Omit<Field_enum_config<Requirable[K]['$Value']>, 'enumName'>,
     ) => X.XEnum<Requirable[K]['$Value']>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
-        config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
+        config?: Omit<Field_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
     ) => X.XOptional<X.XEnum<Requirable[K]['$Value']>>
 }
 
@@ -46,13 +46,13 @@ export class EnumBuilder {
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
                     return (config: any = {}) =>
-                        new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName: 'INVALID_null' })
+                        new Schema(Field_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Schema(Field_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -85,7 +85,7 @@ export class EnumBuilderOpt {
                             label: config.label,
                             startActive: config.startActive,
                             widget: new Schema(
-                                Widget_enum<any /* 🔴 */>,
+                                Field_enum<any /* 🔴 */>,
                                 'enum',
                                 /* form, */ { ...config, enumName: 'INVALID_null' },
                             ),
@@ -99,7 +99,7 @@ export class EnumBuilderOpt {
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Schema(Widget_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName }),
+                        widget: new Schema(Field_enum<any /* 🔴 */>, 'enum', /* form, */ { ...config, enumName }),
                     })
             },
         })
@@ -108,7 +108,7 @@ export class EnumBuilderOpt {
 
 export type IEnumListBuilder = {
     [K in keyof Requirable]: (
-        config?: Omit<Widget_selectMany_config<BaseSelectEntry<Requirable[K]['$Value'] & string>>, 'choices'>,
+        config?: Omit<Field_selectMany_config<BaseSelectEntry<Requirable[K]['$Value'] & string>>, 'choices'>,
     ) => X.XSelectMany<BaseSelectEntry<Requirable[K]['$Value'] & string>>
 }
 

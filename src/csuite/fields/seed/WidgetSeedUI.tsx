@@ -1,4 +1,4 @@
-import type { Widget_seed } from './WidgetSeed'
+import type { Field_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Widget_seed }) {
+export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
     const widget = p.field
     const val = widget.serial.val
     const csuite = useCSuite()

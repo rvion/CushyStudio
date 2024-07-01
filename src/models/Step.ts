@@ -5,7 +5,7 @@ import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 
 import { Status } from '../back/Status'
-import { Widget_group } from '../csuite/fields/group/WidgetGroup'
+import { Field_group } from '../csuite/fields/group/WidgetGroup'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { LiveRef } from '../db/LiveRef'
@@ -38,7 +38,7 @@ export class StepL {
          * this will be made available to the runtime so the runtime can access
          * the live form
          * */
-        formInstance: Widget_group<any>
+        formInstance: Field_group<any>
         context: DraftExecutionContext
     }) => {
         // ensure we have an executable

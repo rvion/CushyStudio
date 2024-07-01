@@ -1,5 +1,5 @@
 import type { SchemaDict } from '../../model/ISchema'
-import type { Widget_group } from './WidgetGroup'
+import type { Field_group } from './WidgetGroup'
 
 import { observer } from 'mobx-react-lite'
 
@@ -12,7 +12,7 @@ import { bang } from '../../utils/bang'
 // HEADER
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     //
-    field: Widget_group<any>
+    field: Field_group<any>
 }) {
     if (!p.field.serial.collapsed) {
         return (
@@ -28,7 +28,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {
     //
     className?: string
-    field: Widget_group<T>
+    field: Field_group<T>
 }) {
     const widget = p.field
     const groupFields = Object.entries(widget.fields)

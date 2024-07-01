@@ -11,7 +11,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
-export type Widget_number_config = FieldConfig<
+export type Field_number_config = FieldConfig<
     {
         mode: 'int' | 'float'
         default?: number
@@ -27,26 +27,26 @@ export type Widget_number_config = FieldConfig<
         /** used as suffix */
         unit?: string
     },
-    Widget_number_types
+    Field_number_types
 >
 
 // SERIAL
-export type Widget_number_serial = FieldSerial<{ type: 'number'; val: number }>
+export type Field_number_serial = FieldSerial<{ type: 'number'; val: number }>
 
 // VALUE
-export type Widget_number_value = number
+export type Field_number_value = number
 
 // TYPES
-export type Widget_number_types = {
+export type Field_number_types = {
     $Type: 'number'
-    $Config: Widget_number_config
-    $Serial: Widget_number_serial
-    $Value: Widget_number_value
-    $Field: Widget_number
+    $Config: Field_number_config
+    $Serial: Field_number_serial
+    $Value: Field_number_value
+    $Field: Field_number
 }
 
 // STATE
-export class Widget_number extends Field<Widget_number_types> {
+export class Field_number extends Field<Field_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -54,7 +54,7 @@ export class Widget_number extends Field<Widget_number_types> {
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
-    serial: Widget_number_serial
+    serial: Field_number_serial
     get defaultValue(): number {
         return this.config.default ?? 0
     }
@@ -74,8 +74,8 @@ export class Widget_number extends Field<Widget_number_types> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_number>,
-        serial?: Widget_number_serial,
+        schema: ISchema<Field_number>,
+        serial?: Field_number_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -95,11 +95,11 @@ export class Widget_number extends Field<Widget_number_types> {
         })
     }
 
-    get value(): Widget_number_value {
+    get value(): Field_number_value {
         return this.serial.val
     }
 
-    set value(next: Widget_number_value) {
+    set value(next: Field_number_value) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
@@ -109,4 +109,4 @@ export class Widget_number extends Field<Widget_number_types> {
 }
 
 // DI
-registerWidgetClass('number', Widget_number)
+registerWidgetClass('number', Field_number)

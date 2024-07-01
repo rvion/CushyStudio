@@ -19,7 +19,7 @@ import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
+export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
     {
         expand?: boolean
         items: T
@@ -31,11 +31,11 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = FieldConf
         appearance?: 'select' | 'tab'
         tabPosition?: TabPositionConfig
     },
-    Widget_choices_types<T>
+    Field_choices_types<T>
 >
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
+export type Field_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
     type: 'choices'
     active: true
     branches: DefaultBranches<T>
@@ -43,21 +43,21 @@ export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = FieldSeri
 }>
 
 // VALUE
-export type Widget_choices_value<T extends SchemaDict = SchemaDict> = {
+export type Field_choices_value<T extends SchemaDict = SchemaDict> = {
     [k in keyof T]?: T[k]['$Value']
 }
 
 // TYPES
-export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
+export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
-    $Config: Widget_choices_config<T>
-    $Serial: Widget_choices_serial<T>
-    $Value: Widget_choices_value<T>
-    $Field: Widget_choices<T>
+    $Config: Field_choices_config<T>
+    $Serial: Field_choices_serial<T>
+    $Value: Field_choices_value<T>
+    $Field: Field_choices<T>
 }
 
 // STATE
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Widget_choices_types<T>> {
+export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Field_choices_types<T>> {
     UITab = () => <WidgetChoices_TabHeaderUI field={this} />
     UISelect = () => <WidgetChoices_SelectHeaderUI field={this} />
     UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
@@ -82,7 +82,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
 
     children: { [k in keyof T]?: T[k]['$Field'] } = {}
 
-    serial: Widget_choices_serial<T>
+    serial: Field_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
         return this.choices[0]
@@ -170,8 +170,8 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_choices<T>>,
-        serial?: Widget_choices_serial<T>,
+        schema: ISchema<Field_choices<T>>,
+        serial?: Field_choices_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -290,7 +290,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
-    set value(val: Widget_choices_value<T>) {
+    set value(val: Field_choices_value<T>) {
         for (const branch of this.choices) {
             // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
             if (val[branch] == null) {
@@ -309,7 +309,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
         this.applyValueUpdateEffects()
     }
     /** results, but only for active branches */
-    get value(): Widget_choices_value<T> {
+    get value(): Field_choices_value<T> {
         const out: { [key: string]: any } = {}
         for (const branch in this.children) {
             // if (this.state.branches[key] !== true) continue
@@ -320,4 +320,4 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends Field<Wid
 }
 
 // DI
-registerWidgetClass('choices', Widget_choices)
+registerWidgetClass('choices', Field_choices)

@@ -1,5 +1,5 @@
 import type { ISchema } from '../../model/ISchema'
-import type { Widget_listExt } from './WidgetListExt'
+import type { Field_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends ISchema>(p: {
     //
-    widget: Widget_listExt<T>
+    widget: Field_listExt<T>
 }) {
     const widget = p.widget
     const values = widget.entries

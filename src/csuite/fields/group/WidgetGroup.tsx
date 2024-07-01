@@ -13,7 +13,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = FieldConfig<
+export type Field_group_config<T extends SchemaDict> = FieldConfig<
     {
         /**
          * Lambda function is deprecated, prefer passing the items as an object
@@ -24,31 +24,31 @@ export type Widget_group_config<T extends SchemaDict> = FieldConfig<
         /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
     },
-    Widget_group_types<T>
+    Field_group_types<T>
 >
 
 // SERIAL
-export type Widget_group_serial<T extends SchemaDict> = FieldSerial<{
+export type Field_group_serial<T extends SchemaDict> = FieldSerial<{
     type: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // VALUE
-export type Widget_group_value<T extends SchemaDict> = {
+export type Field_group_value<T extends SchemaDict> = {
     [k in keyof T]: T[k]['$Value']
 }
 
 // TYPES
-export type Widget_group_types<T extends SchemaDict> = {
+export type Field_group_types<T extends SchemaDict> = {
     $Type: 'group'
-    $Config: Widget_group_config<T>
-    $Serial: Widget_group_serial<T>
-    $Value: Widget_group_value<T>
-    $Field: Widget_group<T>
+    $Config: Field_group_config<T>
+    $Serial: Field_group_serial<T>
+    $Value: Field_group_value<T>
+    $Field: Field_group<T>
 }
 
 // STATE
-export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types<T>> {
+export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -92,9 +92,9 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
-    serial: Widget_group_serial<T> = {} as any
+    serial: Field_group_serial<T> = {} as any
 
-    private _defaultSerial = (): Widget_group_serial<T> => {
+    private _defaultSerial = (): Field_group_serial<T> => {
         return {
             type: 'group',
             id: this.id,
@@ -106,8 +106,8 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_group<T>>,
-        serial?: Widget_group_serial<T>,
+        schema: ISchema<Field_group<T>>,
+        serial?: Field_group_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -157,7 +157,7 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         })
     }
 
-    setPartialValue(val: Partial<Widget_group_value<T>>) {
+    setPartialValue(val: Partial<Field_group_value<T>>) {
         runInAction(() => {
             for (const key in val) this.fields[key].value = val[key]
             this.applyValueUpdateEffects()
@@ -176,7 +176,7 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
         return this.__value
     }
 
-    set value(val: Widget_group_value<T>) {
+    set value(val: Field_group_value<T>) {
         runInAction(() => {
             for (const key in val) this.fields[key].value = val[key]
             this.applyValueUpdateEffects()
@@ -212,7 +212,7 @@ export class Widget_group<T extends SchemaDict> extends Field<Widget_group_types
 }
 
 // DI
-registerWidgetClass('group', Widget_group)
+registerWidgetClass('group', Field_group)
 
 /* --------------------------------------------------------------------------------
 // to make a proxy look the way you want:

@@ -10,49 +10,49 @@ import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<F extends Field> = FieldConfig<
+export type Field_shared_config<F extends Field> = FieldConfig<
     //
     { field: F },
-    Widget_shared_types<F>
+    Field_shared_types<F>
 >
 
 // SERIAL
-export type Widget_shared_serial = FieldSerial<{
+export type Field_shared_serial = FieldSerial<{
     type: 'shared'
     // NO VALUE HERE; otherwise, we would store the data twice
 }>
 
 // SERIAL FROM VALUE
-export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared_serial => ({
+export const Field_shared_fromValue = (val: Field_shared_value): Field_shared_serial => ({
     type: 'shared',
 })
 
 // VALUE
-export type Widget_shared_value<F extends Field = Field> = F['$Value']
+export type Field_shared_value<F extends Field = Field> = F['$Value']
 
 // TYPES
-export type Widget_shared_types<F extends Field = Field> = {
+export type Field_shared_types<F extends Field = Field> = {
     $Type: 'shared'
-    $Config: Widget_shared_config<F>
-    $Serial: Widget_shared_serial
-    $Value: Widget_shared_value<F>
-    $Field: Widget_shared<F>
+    $Config: Field_shared_config<F>
+    $Serial: Field_shared_serial
+    $Value: Field_shared_value<F>
+    $Field: Field_shared<F>
 }
 
 // STATE
-export class Widget_shared<F extends Field = Field> extends Field<Widget_shared_types<F>> {
+export class Field_shared<F extends Field = Field> extends Field<Field_shared_types<F>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
-    serial: Widget_shared_serial
+    serial: Field_shared_serial
 
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_shared<F>>,
-        serial?: Widget_shared_serial,
+        schema: ISchema<Field_shared<F>>,
+        serial?: Field_shared_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -80,14 +80,14 @@ export class Widget_shared<F extends Field = Field> extends Field<Widget_shared_
         return this.shared.baseErrors
     }
 
-    get value(): Widget_shared_value<F> {
+    get value(): Field_shared_value<F> {
         return this.shared.value
     }
 
-    set value(val: Widget_shared_value<F>) {
+    set value(val: Field_shared_value<F>) {
         this.shared.value = val
     }
 }
 
 // DI
-registerWidgetClass('shared', Widget_shared)
+registerWidgetClass('shared', Field_shared)

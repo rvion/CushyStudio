@@ -11,35 +11,35 @@ import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends ISchema = ISchema> = FieldConfig<
+export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
         startActive?: boolean
         widget: T
     },
-    Widget_optional_types<T>
+    Field_optional_types<T>
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
+export type Field_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
+export type Field_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends ISchema = ISchema> = {
+export type Field_optional_types<T extends ISchema = ISchema> = {
     $Type: 'optional'
-    $Config: Widget_optional_config<T>
-    $Serial: Widget_optional_serial<T>
-    $Value: Widget_optional_value<T>
-    $Field: Widget_optional<T>
+    $Config: Field_optional_config<T>
+    $Serial: Field_optional_serial<T>
+    $Value: Field_optional_value<T>
+    $Field: Field_optional<T>
 }
 
 // STATE
-export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_optional_types<T>> {
+export class Field_optional<T extends ISchema = ISchema> extends Field<Field_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
@@ -74,7 +74,7 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
     get baseErrors(): Problem_Ext {
         return null
     }
-    serial: Widget_optional_serial<T>
+    serial: Field_optional_serial<T>
     child!: T['$Field']
 
     get childOrThrow(): T['$Field'] {
@@ -112,8 +112,8 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_optional<T>>,
-        serial?: Widget_optional_serial<T>,
+        schema: ISchema<Field_optional<T>>,
+        serial?: Field_optional_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -153,12 +153,12 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
         return this.serial.active ? [{ key: 'child', field: this.child }] : []
     }
 
-    get value(): Widget_optional_value<T> {
+    get value(): Field_optional_value<T> {
         if (!this.serial.active) return null
         return this.childOrThrow.value
     }
 
-    set value(next: Widget_optional_value<T>) {
+    set value(next: Field_optional_value<T>) {
         if (next == null) {
             this.setActive(false)
             return
@@ -170,4 +170,4 @@ export class Widget_optional<T extends ISchema = ISchema> extends Field<Widget_o
 }
 
 // DI
-registerWidgetClass('optional', Widget_optional)
+registerWidgetClass('optional', Field_optional)

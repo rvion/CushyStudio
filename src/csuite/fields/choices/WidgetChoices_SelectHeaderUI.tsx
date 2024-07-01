@@ -1,12 +1,12 @@
 import type { SchemaDict } from '../../model/ISchema'
-import type { Widget_choices } from './WidgetChoices'
+import type { Field_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
 import { SelectUI } from '../../select/SelectUI'
 
 export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<T extends SchemaDict>(p: {
-    field: Widget_choices<T>
+    field: Field_choices<T>
 }) {
     const widget = p.field
     type Entry = { key: string; label: string }

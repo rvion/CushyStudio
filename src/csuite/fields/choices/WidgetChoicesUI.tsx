@@ -1,5 +1,5 @@
 import type { SchemaDict } from '../../model/ISchema'
-import type { Widget_choices } from './WidgetChoices'
+import type { Field_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,13 +9,13 @@ import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 
 // UI
-export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { field: Widget_choices<any> }) {
+export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { field: Field_choices<any> }) {
     if (p.field.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI field={p.field} />
     else return <WidgetChoices_SelectHeaderUI field={p.field} />
 })
 
 export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
-    field: Widget_choices<T>
+    field: Field_choices<T>
     justify?: boolean
     className?: string
 }) {

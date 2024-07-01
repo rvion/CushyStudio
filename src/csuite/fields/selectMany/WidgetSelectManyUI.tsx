@@ -1,5 +1,5 @@
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { SelectManyAppearance, Widget_selectMany } from './WidgetSelectMany'
+import type { Field_selectMany, SelectManyAppearance } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,7 +9,7 @@ import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
-    field: Widget_selectMany<T>
+    field: Field_selectMany<T>
 }) {
     const field = p.field
     const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'

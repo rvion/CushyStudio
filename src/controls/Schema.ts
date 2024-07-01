@@ -7,9 +7,9 @@ import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import { reaction } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
-import { Widget_link, type Widget_link_config } from '../csuite/fields/link/WidgetLink'
-import { Widget_list, Widget_list_config } from '../csuite/fields/list/WidgetList'
-import { Widget_optional } from '../csuite/fields/optional/WidgetOptional'
+import { Field_link, type Field_link_config } from '../csuite/fields/link/WidgetLink'
+import { Field_list, Field_list_config } from '../csuite/fields/list/WidgetList'
+import { Field_optional } from '../csuite/fields/optional/WidgetOptional'
 import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
@@ -139,8 +139,8 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
         //
         fn: CovariantFn<[field: FIELD], BP>,
     ): X.XLink<this, BP> {
-        const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
-        return new Schema(Widget_link, 'link', linkConf)
+        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
+        return new Schema(Field_link, 'link', linkConf)
     }
 
     // Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
@@ -148,8 +148,8 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     // }
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): X.XList<this> =>
-        new Schema<Widget_list<this>>(Widget_list, 'list', {
+    list = (config: Omit<Field_list_config<any>, 'element'> = {}): X.XList<this> =>
+        new Schema<Field_list<this>>(Field_list, 'list', {
             ...config,
             element: this,
         })
@@ -165,7 +165,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
-        return new Schema<Widget_optional<this>>(Widget_optional, 'optional', {
+        return new Schema<Field_optional<this>>(Field_optional, 'optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,

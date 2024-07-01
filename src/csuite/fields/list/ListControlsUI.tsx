@@ -13,7 +13,7 @@ export type IWidgetListLike = {
         max?: number
         min?: number
     }
-} //Widget_listExt<any> | Widget_list<any>
+} //Field_listExt<any> | Field_list<any>
 
 export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWidgetListLike }) {
     const widget = p.field

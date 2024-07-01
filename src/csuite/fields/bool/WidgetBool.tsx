@@ -15,7 +15,7 @@ import { WidgetBoolUI } from './WidgetBoolUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = FieldConfig<
+export type Field_bool_config = FieldConfig<
     {
         /**
          * default value; true or false
@@ -50,26 +50,26 @@ export type Widget_bool_config = FieldConfig<
          */
         expand?: boolean
     },
-    Widget_bool_types
+    Field_bool_types
 >
 
 // SERIAL
-export type Widget_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
+export type Field_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
 
 // VALUE
-export type Widget_bool_value = boolean
+export type Field_bool_value = boolean
 
 // TYPES
-export type Widget_bool_types = {
+export type Field_bool_types = {
     $Type: 'bool'
-    $Config: Widget_bool_config
-    $Serial: Widget_bool_serial
-    $Value: Widget_bool_value
-    $Field: Widget_bool
+    $Config: Field_bool_config
+    $Serial: Field_bool_serial
+    $Value: Field_bool_value
+    $Field: Field_bool
 }
 
 // STATE
-export class Widget_bool extends Field<Widget_bool_types> {
+export class Field_bool extends Field<Field_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
     readonly id: string
@@ -79,7 +79,7 @@ export class Widget_bool extends Field<Widget_bool_types> {
         return null
     }
 
-    serial: Widget_bool_serial
+    serial: Field_bool_serial
 
     setOn = () => (this.value = true)
     setOff = () => (this.value = false)
@@ -93,8 +93,8 @@ export class Widget_bool extends Field<Widget_bool_types> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_bool>,
-        serial?: Widget_bool_serial,
+        schema: ISchema<Field_bool>,
+        serial?: Field_bool_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -113,10 +113,10 @@ export class Widget_bool extends Field<Widget_bool_types> {
         })
     }
 
-    get value(): Widget_bool_value {
+    get value(): Field_bool_value {
         return this.serial.active ?? false
     }
-    set value(next: Widget_bool_value) {
+    set value(next: Field_bool_value) {
         if (this.serial.active === next) return
         runInAction(() => {
             this.serial.active = next
@@ -126,4 +126,4 @@ export class Widget_bool extends Field<Widget_bool_types> {
 }
 
 // DI
-registerWidgetClass('bool', Widget_bool)
+registerWidgetClass('bool', Field_bool)

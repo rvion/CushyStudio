@@ -1,4 +1,4 @@
-import type { Widget_group } from '../fields/group/WidgetGroup'
+import type { Field_group } from '../fields/group/WidgetGroup'
 import type { EntityId } from './EntityId'
 import type { Field } from './Field'
 import type { IBuilder } from './IBuilder'
@@ -45,14 +45,14 @@ export class Repository<DOMAIN extends IBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
-        modelConfig: ModelConfig<ISchema<Widget_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
-    ): Entity<ISchema<Widget_group<FIELDS>>, DOMAIN> => {
+        modelConfig: ModelConfig<ISchema<Field_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
+    ): Entity<ISchema<Field_group<FIELDS>>, DOMAIN> => {
         const schema = this.domain.group({
             label: false,
             items: schemaExt(this.domain),
             collapsed: false,
         })
-        const form = new Entity<ISchema<Widget_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
+        const form = new Entity<ISchema<Field_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
         return form
     }
 

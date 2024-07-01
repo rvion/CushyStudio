@@ -11,36 +11,36 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = FieldConfig<
+export type Field_markdown_config = FieldConfig<
     {
-        markdown: string | ((self: Widget_markdown) => string)
+        markdown: string | ((self: Field_markdown) => string)
         inHeader?: boolean
     },
-    Widget_markdown_types
+    Field_markdown_types
 >
 
 // SERIAL
-export type Widget_markdown_serial = FieldSerial<{
+export type Field_markdown_serial = FieldSerial<{
     type: 'markdown'
 }>
 
 // VALUE
-export type Widget_markdown_value = { type: 'markdown' }
+export type Field_markdown_value = { type: 'markdown' }
 
 // TYPES
-export type Widget_markdown_types = {
+export type Field_markdown_types = {
     $Type: 'markdown'
-    $Config: Widget_markdown_config
-    $Serial: Widget_markdown_serial
-    $Value: Widget_markdown_value
-    $Field: Widget_markdown
+    $Config: Field_markdown_config
+    $Serial: Field_markdown_serial
+    $Value: Field_markdown_value
+    $Field: Field_markdown
 }
 
 // STATE
-export class Widget_markdown extends Field<Widget_markdown_types> {
+export class Field_markdown extends Field<Field_markdown_types> {
     readonly id: string
     readonly type: 'markdown' = 'markdown'
-    readonly serial: Widget_markdown_serial
+    readonly serial: Field_markdown_serial
 
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
@@ -66,8 +66,8 @@ export class Widget_markdown extends Field<Widget_markdown_types> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_markdown>,
-        serial?: Widget_markdown_serial,
+        schema: ISchema<Field_markdown>,
+        serial?: Field_markdown_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -86,14 +86,14 @@ export class Widget_markdown extends Field<Widget_markdown_types> {
     /** do nothing */
     reset(): void {}
 
-    set value(val: Widget_markdown_value) {
+    set value(val: Field_markdown_value) {
         // do nothing; markdown have no real value; only config
         // this.value = val
     }
-    get value(): Widget_markdown_value {
+    get value(): Field_markdown_value {
         return this.serial
     }
 }
 
 // DI
-registerWidgetClass('markdown', Widget_markdown)
+registerWidgetClass('markdown', Field_markdown)

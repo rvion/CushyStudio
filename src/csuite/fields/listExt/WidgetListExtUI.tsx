@@ -1,5 +1,5 @@
 import type { ISchema } from '../../model/ISchema'
-import type { Widget_listExt } from './WidgetListExt'
+import type { Field_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,7 +9,7 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISchema>(p: { field: Widget_listExt<T> }) {
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISchema>(p: { field: Field_listExt<T> }) {
     const widget = p.field
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
@@ -30,7 +30,7 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISch
     )
 })
 
-export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: { field: Widget_listExt<any> }) {
+export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: { field: Field_listExt<any> }) {
     return (
         <div tw='flex flex-1 items-center'>
             <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>

@@ -1,8 +1,8 @@
-import type { Widget_matrix } from './WidgetMatrix'
+import type { Field_matrix } from './WidgetMatrix'
 
 import { observer } from 'mobx-react-lite'
 
-export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Widget_matrix }) {
+export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_matrix }) {
     const field = p.field
     const cols = field.cols
     const rows = field.rows

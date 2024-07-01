@@ -1,5 +1,5 @@
 import type { PropsOf } from '../../../router/Layout'
-import type { Widget_custom } from './WidgetCustom'
+import type { Field_custom } from './WidgetCustom'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { JsonViewUI } from '../../json/JsonViewUI'
 
-export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { field: Widget_custom<T> }) {
+export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { field: Field_custom<T> }) {
     const field = p.field
     return (
         <field.config.Component

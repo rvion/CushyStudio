@@ -9,9 +9,9 @@ import type { CovariantFn } from '../variance/BivariantHack'
 import { makeObservable, reaction } from 'mobx'
 
 import { simpleRepo } from '../'
-import { Widget_link, type Widget_link_config } from '../fields/link/WidgetLink'
-import { Widget_list, Widget_list_config } from '../fields/list/WidgetList'
-import { Widget_optional } from '../fields/optional/WidgetOptional'
+import { Field_link, type Field_link_config } from '../fields/link/WidgetLink'
+import { Field_list, Field_list_config } from '../fields/list/WidgetList'
+import { Field_optional } from '../fields/optional/WidgetOptional'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 
 export interface SimpleSchema<out FIELD extends Field = Field> {
@@ -109,8 +109,8 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
      * TODO: WRITE MORE DOC
      */
     useIn<BP extends ISchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
-        const linkConf: Widget_link_config<this, BP> = { share: this, children: fn }
-        return new SimpleSchema(Widget_link, 'link', linkConf)
+        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
+        return new SimpleSchema(Field_link, 'link', linkConf)
     }
 
     // -----------------------------------------------------
@@ -119,15 +119,15 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
     // }
 
     /** wrap widget spec to list stuff */
-    list(config: Omit<Widget_list_config<this>, 'element'> = {}): S.SList<this> {
-        return new SimpleSchema<Widget_list<this>>(Widget_list, 'list', {
+    list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
+        return new SimpleSchema<Field_list<this>>(Field_list, 'list', {
             ...config,
             element: this,
         })
     }
 
     optional(startActive: boolean = false): S.SOptional<this> {
-        return new SimpleSchema<Widget_optional<this>>(Widget_optional, 'optional', {
+        return new SimpleSchema<Field_optional<this>>(Field_optional, 'optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,

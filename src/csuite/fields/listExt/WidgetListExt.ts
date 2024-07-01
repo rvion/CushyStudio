@@ -16,7 +16,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends ISchema> = FieldConfig<
+export type Field_listExt_config<T extends ISchema> = FieldConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -27,11 +27,11 @@ export type Widget_listExt_config<T extends ISchema> = FieldConfig<
         width: number /** default: 100 */
         height: number /** default: 100 */
     },
-    Widget_listExt_types<T>
+    Field_listExt_types<T>
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends ISchema> = FieldSerial<{
+export type Field_listExt_serial<T extends ISchema> = FieldSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -39,7 +39,7 @@ export type Widget_listExt_serial<T extends ISchema> = FieldSerial<{
 }>
 
 // VALUE
-export type Widget_listExt_value<T extends ISchema> = {
+export type Field_listExt_value<T extends ISchema> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -47,16 +47,16 @@ export type Widget_listExt_value<T extends ISchema> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends ISchema> = {
+export type Field_listExt_types<T extends ISchema> = {
     $Type: 'listExt'
-    $Config: Widget_listExt_config<T>
-    $Serial: Widget_listExt_serial<T>
-    $Value: Widget_listExt_value<T>
-    $Field: Widget_listExt<T>
+    $Config: Field_listExt_config<T>
+    $Serial: Field_listExt_serial<T>
+    $Value: Field_listExt_value<T>
+    $Field: Field_listExt<T>
 }
 
 // STATE
-export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_types<T>> {
+export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -103,9 +103,9 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
 
     entries: { widget: T['$Field']; shape: BoardPosition }[] = []
 
-    serial: Widget_listExt_serial<T>
+    serial: Field_listExt_serial<T>
 
-    // for compatibility with Widget_list
+    // for compatibility with Field_list
     get items(): T['$Field'][] {
         return this.entries.map((i) => i.widget)
     }
@@ -120,8 +120,8 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_listExt<T>>,
-        serial?: Widget_listExt_serial<T>,
+        schema: ISchema<Field_listExt<T>>,
+        serial?: Field_listExt_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -225,7 +225,7 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
         this.applyValueUpdateEffects()
     }
 
-    set value(xx: Widget_listExt_value<T>) {
+    set value(xx: Field_listExt_value<T>) {
         const val = xx.items
         this.width = xx.width
         this.height = xx.height
@@ -240,7 +240,7 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
             }
         }
     }
-    get value(): Widget_listExt_value<T> {
+    get value(): Field_listExt_value<T> {
         const items = this.entries.map((i) => ({
             position: i.shape,
             value: i.widget.value,
@@ -255,4 +255,4 @@ export class Widget_listExt<T extends ISchema> extends Field<Widget_listExt_type
 }
 
 // DI
-registerWidgetClass('listExt', Widget_listExt)
+registerWidgetClass('listExt', Field_listExt)

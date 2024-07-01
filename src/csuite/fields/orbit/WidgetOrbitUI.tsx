@@ -1,4 +1,4 @@
-import type { Widget_orbit } from './WidgetOrbit'
+import type { Field_orbit } from './WidgetOrbit'
 import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 
 import { OrbitControls } from '@react-three/drei'
@@ -8,7 +8,7 @@ import { useRef } from 'react'
 
 import { Cube } from './Cube3D'
 
-export const WidgetOrbitUI = observer((p: { field: Widget_orbit }) => {
+export const WidgetOrbitUI = observer((p: { field: Field_orbit }) => {
     const ref = useRef<any>(null)
     return (
         <div>

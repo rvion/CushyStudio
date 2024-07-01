@@ -461,7 +461,7 @@ export class CushyLayoutManager {
         panelProps: PropsOf<Panels[PanelName]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
-        this.prettyPrintLayoutModel()
+        // this.prettyPrintLayoutModel()
         // if (where === 'full') {
         //     this.TOGGLE_FULL(panelName, panelProps)
         //     return null

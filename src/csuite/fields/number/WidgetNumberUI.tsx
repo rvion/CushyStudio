@@ -1,4 +1,4 @@
-import type { Widget_number } from './WidgetNumber'
+import type { Field_number } from './WidgetNumber'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,7 +6,7 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
     //
-    field: Widget_number
+    field: Field_number
 }) {
     const field = p.field
     const value = field.serial.val

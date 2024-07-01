@@ -1,6 +1,6 @@
 import type { EnumName, EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
-import type { Widget_enum } from './WidgetEnum'
+import type { Field_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
@@ -12,7 +12,7 @@ import { SelectUI } from '../../select/SelectUI'
 
 // UI
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { field: Widget_enum<any> }) {
+export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { field: Field_enum<any> }) {
     const field = p.field
     const enumName = field.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state

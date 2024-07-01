@@ -15,17 +15,17 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
-export type Widget_image_config = FieldConfig<
+export type Field_image_config = FieldConfig<
     {
         default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>
         assetSuggested?: RelativePath | RelativePath[]
     },
-    Widget_image_types
+    Field_image_types
 >
 
 // SERIAL
-export type Widget_image_serial = FieldSerial<{
+export type Field_image_serial = FieldSerial<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
 
@@ -40,25 +40,25 @@ export type Widget_image_serial = FieldSerial<{
 }>
 
 // VALUE
-export type Widget_image_value = MediaImageL
+export type Field_image_value = MediaImageL
 
 // TYPES
-export type Widget_image_types = {
+export type Field_image_types = {
     $Type: 'image'
-    $Config: Widget_image_config
-    $Serial: Widget_image_serial
-    $Value: Widget_image_value
-    $Field: Widget_image
+    $Config: Field_image_config
+    $Serial: Field_image_serial
+    $Value: Field_image_value
+    $Field: Field_image
 }
 
 // STATE
-export class Widget_image extends Field<Widget_image_types> {
+export class Field_image extends Field<Field_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
 
     readonly type: 'image' = 'image'
-    readonly serial: Widget_image_serial
+    readonly serial: Field_image_serial
     // size: number = 192
     get baseErrors(): Problem_Ext {
         return null
@@ -78,8 +78,8 @@ export class Widget_image extends Field<Widget_image_types> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_image>,
-        serial?: Widget_image_serial,
+        schema: ISchema<Field_image>,
+        serial?: Field_image_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -120,4 +120,4 @@ export class Widget_image extends Field<Widget_image_types> {
 }
 
 // DI
-registerWidgetClass('image', Widget_image)
+registerWidgetClass('image', Field_image)

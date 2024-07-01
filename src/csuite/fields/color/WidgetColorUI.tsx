@@ -1,8 +1,8 @@
-import type { Widget_color } from './WidgetColor'
+import type { Field_color } from './WidgetColor'
 
 import { observer } from 'mobx-react-lite'
 
-export const WidgetColorUI = observer(function WidgetColorUI_(p: { field: Widget_color }) {
+export const WidgetColorUI = observer(function WidgetColorUI_(p: { field: Field_color }) {
     const field = p.field
     return (
         <input //

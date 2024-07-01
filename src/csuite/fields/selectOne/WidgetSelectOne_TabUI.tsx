@@ -1,4 +1,4 @@
-import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
+import type { BaseSelectEntry, Field_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,7 +6,7 @@ import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 
 export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectOne<T>
+    widget: Field_selectOne<T>
 }) {
     const widget = p.widget
     const selected = widget.serial.val

@@ -21,7 +21,7 @@ export type BaseSelectEntry<T = string> = {
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
+export type Field_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
     {
         default?: NoInfer<T>
         /**
@@ -38,7 +38,7 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices: T[] | ((self: Widget_selectOne<T>) => T[])
+        choices: T[] | ((self: Field_selectOne<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
@@ -56,43 +56,43 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
          */
         tabPosition?: TabPositionConfig
     },
-    Widget_selectOne_types<T>
+    Field_selectOne_types<T>
 >
 
 // SERIAL FROM VALUE
-export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
-    val: Widget_selectOne_value<T>,
-): Widget_selectOne_serial<T> => ({
+export const Field_selectOne_fromValue = <T extends BaseSelectEntry>(
+    val: Field_selectOne_value<T>,
+): Field_selectOne_serial<T> => ({
     type: 'selectOne',
     query: '',
     val,
 })
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
+export type Field_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectOne'
     query: string
     val: T
 }>
 
 // VALUE
-export type Widget_selectOne_value<T extends BaseSelectEntry> = T
+export type Field_selectOne_value<T extends BaseSelectEntry> = T
 
 // TYPES
-export type Widget_selectOne_types<T extends BaseSelectEntry> = {
+export type Field_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
-    $Config: Widget_selectOne_config<T>
-    $Serial: Widget_selectOne_serial<T>
-    $Value: Widget_selectOne_value<T>
-    $Field: Widget_selectOne<T>
+    $Config: Field_selectOne_config<T>
+    $Serial: Field_selectOne_serial<T>
+    $Value: Field_selectOne_value<T>
+    $Field: Field_selectOne<T>
 }
 
 // STATE
 
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
-export class Widget_selectOne<T extends BaseSelectEntry> //
-    extends Field<Widget_selectOne_types<T>>
+export class Field_selectOne<T extends BaseSelectEntry> //
+    extends Field<Field_selectOne_types<T>>
 {
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
@@ -100,7 +100,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
     readonly id: string
 
     readonly type: 'selectOne' = 'selectOne'
-    readonly serial: Widget_selectOne_serial<T>
+    readonly serial: Field_selectOne_serial<T>
 
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
@@ -133,8 +133,8 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         // |            VVVV
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_selectOne<T>>,
-        serial?: Widget_selectOne_serial<T>,
+        schema: ISchema<Field_selectOne<T>>,
+        serial?: Field_selectOne_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -154,11 +154,11 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         })
     }
 
-    get value(): Widget_selectOne_value<T> {
+    get value(): Field_selectOne_value<T> {
         return this.serial.val
     }
 
-    set value(next: Widget_selectOne_value<T>) {
+    set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
         const nextHasSameID = this.serial.val.id === next.id
         runInAction(() => {
@@ -170,4 +170,4 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
 }
 
 // DI
-registerWidgetClass('selectOne', Widget_selectOne)
+registerWidgetClass('selectOne', Field_selectOne)

@@ -15,7 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
-export type Widget_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
+export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
     {
         default?: T[]
         /**
@@ -32,7 +32,7 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices: T[] | ((self: Widget_selectMany<T>) => T[])
+        choices: T[] | ((self: Field_selectMany<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         appearance?: SelectManyAppearance
@@ -50,48 +50,48 @@ export type Widget_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
          */
         tabPosition?: TabPositionConfig
     },
-    Widget_selectMany_types<T>
+    Field_selectMany_types<T>
 >
 
 // SERIAL
-export type Widget_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
+export type Field_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectMany'
     query: string
     values: T[]
 }>
 
 // SERIAL FROM VALUE
-export const Widget_selectMany_fromValue = <T extends BaseSelectEntry>(
-    values: Widget_selectMany_value<T>,
-): Widget_selectMany_serial<T> => ({
+export const Field_selectMany_fromValue = <T extends BaseSelectEntry>(
+    values: Field_selectMany_value<T>,
+): Field_selectMany_serial<T> => ({
     type: 'selectMany',
     query: '',
     values,
 })
 
 // VALUE
-export type Widget_selectMany_value<T extends BaseSelectEntry> = T[]
+export type Field_selectMany_value<T extends BaseSelectEntry> = T[]
 
 // TYPES
-export type Widget_selectMany_types<T extends BaseSelectEntry> = {
+export type Field_selectMany_types<T extends BaseSelectEntry> = {
     $Type: 'selectMany'
-    $Config: Widget_selectMany_config<T>
-    $Serial: Widget_selectMany_serial<T>
-    $Value: Widget_selectMany_value<T>
-    $Field: Widget_selectMany<T>
+    $Config: Field_selectMany_config<T>
+    $Serial: Field_selectMany_serial<T>
+    $Value: Field_selectMany_value<T>
+    $Field: Field_selectMany<T>
 }
 
 // STATE
-export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_selectMany_types<T>> {
+export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
 
     readonly id: string
 
     readonly type: 'selectMany' = 'selectMany'
-    readonly serial: Widget_selectMany_serial<T>
+    readonly serial: Field_selectMany_serial<T>
 
-    get defaultValue(): Widget_selectMany_value<T> {
+    get defaultValue(): Field_selectMany_value<T> {
         return this.config.default ?? []
     }
     get hasChanges(): boolean {
@@ -128,8 +128,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_s
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_selectMany<T>>,
-        serial?: Widget_selectMany_serial<T>,
+        schema: ISchema<Field_selectMany<T>>,
+        serial?: Field_selectMany_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -182,11 +182,11 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_s
         }
     }
 
-    get value(): Widget_selectMany_value<T> {
+    get value(): Field_selectMany_value<T> {
         return this.serial.values
     }
 
-    set value(next: Widget_selectMany_value<T>) {
+    set value(next: Field_selectMany_value<T>) {
         if (this.serial.values === next) return
         runInAction(() => {
             this.serial.values = next
@@ -196,4 +196,4 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends Field<Widget_s
 }
 
 // DI
-registerWidgetClass('selectMany', Widget_selectMany)
+registerWidgetClass('selectMany', Field_selectMany)

@@ -1,5 +1,5 @@
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { Widget_selectMany } from './WidgetSelectMany'
+import type { Field_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
 
 export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectMany<T>
+    widget: Field_selectMany<T>
 }) {
     const widget = p.widget
     return (

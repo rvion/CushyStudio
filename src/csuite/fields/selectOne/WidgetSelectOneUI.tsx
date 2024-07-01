@@ -1,4 +1,4 @@
-import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
+import type { BaseSelectEntry, Field_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { WidgetSelectOne_SelectUI } from './WidgetSelectOne_SelectUI'
 import { WidgetSelectOne_TabUI } from './WidgetSelectOne_TabUI'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {
-    field: Widget_selectOne<T>
+    field: Field_selectOne<T>
 }) {
     const field = p.field
     const skin = field.config.appearance ?? 'select'

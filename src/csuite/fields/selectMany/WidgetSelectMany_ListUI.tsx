@@ -1,5 +1,5 @@
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { Widget_selectMany } from './WidgetSelectMany'
+import type { Field_selectMany } from './WidgetSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 
 export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {
-    field: Widget_selectMany<T>
+    field: Field_selectMany<T>
 }) {
     const field = p.field
     return (

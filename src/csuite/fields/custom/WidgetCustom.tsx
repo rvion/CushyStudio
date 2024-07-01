@@ -12,35 +12,35 @@ import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
-export type CustomWidgetProps<T> = { field: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
+export type CustomWidgetProps<T> = { field: Field_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = FieldConfig<
+export type Field_custom_config<T> = FieldConfig<
     {
         defaultValue: () => T
         subTree?: () => ISchema
         Component: FC<CustomWidgetProps<T>>
     },
-    Widget_custom_types<T>
+    Field_custom_types<T>
 >
 
 // SERIAL
-export type Widget_custom_serial<T> = FieldSerial<{ type: 'custom'; active: true; value: T }>
+export type Field_custom_serial<T> = FieldSerial<{ type: 'custom'; active: true; value: T }>
 
 // VALUE
-export type Widget_custom_value<T> = T
+export type Field_custom_value<T> = T
 
 // TYPES
-export type Widget_custom_types<T> = {
+export type Field_custom_types<T> = {
     $Type: 'custom'
-    $Config: Widget_custom_config<T>
-    $Serial: Widget_custom_serial<T>
-    $Value: Widget_custom_value<T>
-    $Field: Widget_custom<T>
+    $Config: Field_custom_config<T>
+    $Serial: Field_custom_serial<T>
+    $Value: Field_custom_value<T>
+    $Field: Field_custom<T>
 }
 
 // STATE
-export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
+export class Field_custom<T> extends Field<Field_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -51,8 +51,8 @@ export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
         return null
     }
 
-    serial: Widget_custom_serial<T>
-    Component: Widget_custom_config<T>['Component']
+    serial: Field_custom_serial<T>
+    Component: Field_custom_config<T>['Component']
     st = () => cushy
 
     get defaultValue(): T { return this.config.defaultValue() } // prettier-ignore
@@ -63,8 +63,8 @@ export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_custom<T>>,
-        serial?: Widget_custom_serial<T>,
+        schema: ISchema<Field_custom<T>>,
+        serial?: Field_custom_serial<T>,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -85,11 +85,11 @@ export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
     }
 
     /** never mutate this field manually, only access to .state */
-    get value(): Widget_custom_value<T> {
+    get value(): Field_custom_value<T> {
         return this.serial.value
     }
 
-    set value(next: Widget_custom_value<T>) {
+    set value(next: Field_custom_value<T>) {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
@@ -98,4 +98,4 @@ export class Widget_custom<T> extends Field<Widget_custom_types<T>> {
     }
 }
 
-registerWidgetClass('custom', Widget_custom)
+registerWidgetClass('custom', Field_custom)

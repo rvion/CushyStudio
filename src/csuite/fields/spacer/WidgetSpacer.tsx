@@ -15,30 +15,30 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = FieldConfig<{}, Widget_spacer_types>
+export type Field_spacer_config = FieldConfig<{}, Field_spacer_types>
 
 // SERIAL
-export type Widget_spacer_serial = FieldSerial<{ type: 'spacer' }>
+export type Field_spacer_serial = FieldSerial<{ type: 'spacer' }>
 
 // SERIAL FROM VALUE
-export const Widget_spacer_fromValue = (val: Widget_spacer_value): Widget_spacer_serial => ({
+export const Field_spacer_fromValue = (val: Field_spacer_value): Field_spacer_serial => ({
     type: 'spacer',
 })
 
 // VALUE
-export type Widget_spacer_value = boolean
+export type Field_spacer_value = boolean
 
 // TYPES
-export type Widget_spacer_types = {
+export type Field_spacer_types = {
     $Type: 'spacer'
-    $Config: Widget_spacer_config
-    $Serial: Widget_spacer_serial
-    $Value: Widget_spacer_value
-    $Field: Widget_spacer
+    $Config: Field_spacer_config
+    $Serial: Field_spacer_serial
+    $Value: Field_spacer_value
+    $Field: Field_spacer
 }
 
 // STATE
-export class Widget_spacer extends Field<Widget_spacer_types> {
+export class Field_spacer extends Field<Field_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {
@@ -47,7 +47,7 @@ export class Widget_spacer extends Field<Widget_spacer_types> {
     readonly id: string
 
     readonly type: 'spacer' = 'spacer'
-    serial: Widget_spacer_serial
+    serial: Field_spacer_serial
 
     hasChanges = false
     reset(): void {}
@@ -56,8 +56,8 @@ export class Widget_spacer extends Field<Widget_spacer_types> {
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_spacer>,
-        serial?: Widget_spacer_serial,
+        schema: ISchema<Field_spacer>,
+        serial?: Field_spacer_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -83,4 +83,4 @@ export class Widget_spacer extends Field<Widget_spacer_types> {
 }
 
 // DI
-registerWidgetClass('spacer', Widget_spacer)
+registerWidgetClass('spacer', Field_spacer)

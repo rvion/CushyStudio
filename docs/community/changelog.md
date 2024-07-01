@@ -22,8 +22,8 @@
 
 #### Misc. Changes
 - Moves logic to \<InputBoolUI\> so that it's easily re-usable as a checkbox for other widgets
-- Adds a deprecation warning for label2 on Widget_BoolUI, it should be replaced with the new text option
-- Dragging to make checkbox share a similar state when you drag over them should work with more areas now that more things will use the same underlying widget instead of duplicated code. (Only WidgetBoolUI, Widget_ToggleUI, and SelectUI (search enum, choices) with this PR)
+- Adds a deprecation warning for label2 on Field_BoolUI, it should be replaced with the new text option
+- Dragging to make checkbox share a similar state when you drag over them should work with more areas now that more things will use the same underlying widget instead of duplicated code. (Only WidgetBoolUI, Field_ToggleUI, and SelectUI (search enum, choices) with this PR)
 
 #### InputBoolUI
 - `expand` Makes the widget use as much space as possible (horizontally)

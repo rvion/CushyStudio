@@ -5,34 +5,34 @@ import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Widget_bool, type Widget_bool_config } from '../csuite/fields/bool/WidgetBool'
-import { Widget_button, type Widget_button_config } from '../csuite/fields/button/WidgetButton'
-import { Widget_choices, type Widget_choices_config } from '../csuite/fields/choices/WidgetChoices'
-import { Widget_color, type Widget_color_config } from '../csuite/fields/color/WidgetColor'
-import { Widget_custom, type Widget_custom_config } from '../csuite/fields/custom/WidgetCustom'
-import { Widget_enum } from '../csuite/fields/enum/WidgetEnum'
-import { Widget_group, type Widget_group_config } from '../csuite/fields/group/WidgetGroup'
-import { Widget_image, type Widget_image_config } from '../csuite/fields/image/WidgetImage'
-import { Widget_link } from '../csuite/fields/link/WidgetLink'
-import { Widget_list, type Widget_list_config } from '../csuite/fields/list/WidgetList'
-import { Widget_listExt, type Widget_listExt_config } from '../csuite/fields/listExt/WidgetListExt'
-import { Widget_markdown, Widget_markdown_config } from '../csuite/fields/markdown/WidgetMarkdown'
-import { Widget_matrix, type Widget_matrix_config } from '../csuite/fields/matrix/WidgetMatrix'
-import { Widget_number, type Widget_number_config } from '../csuite/fields/number/WidgetNumber'
-import { Widget_optional, type Widget_optional_config } from '../csuite/fields/optional/WidgetOptional'
-import { Widget_orbit, type Widget_orbit_config } from '../csuite/fields/orbit/WidgetOrbit'
-import { Widget_seed, type Widget_seed_config } from '../csuite/fields/seed/WidgetSeed'
-import { Widget_selectMany, type Widget_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
-import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../csuite/fields/selectOne/WidgetSelectOne'
-import { Widget_shared } from '../csuite/fields/shared/WidgetShared'
-import { Widget_size, type Widget_size_config } from '../csuite/fields/size/WidgetSize'
-import { Widget_spacer, type Widget_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
-import { Widget_string, type Widget_string_config } from '../csuite/fields/string/WidgetString'
+import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/WidgetBool'
+import { Field_button, type Field_button_config } from '../csuite/fields/button/WidgetButton'
+import { Field_choices, type Field_choices_config } from '../csuite/fields/choices/WidgetChoices'
+import { Field_color, type Field_color_config } from '../csuite/fields/color/WidgetColor'
+import { Field_custom, type Field_custom_config } from '../csuite/fields/custom/WidgetCustom'
+import { Field_enum } from '../csuite/fields/enum/WidgetEnum'
+import { Field_group, type Field_group_config } from '../csuite/fields/group/WidgetGroup'
+import { Field_image, type Field_image_config } from '../csuite/fields/image/WidgetImage'
+import { Field_link } from '../csuite/fields/link/WidgetLink'
+import { Field_list, type Field_list_config } from '../csuite/fields/list/WidgetList'
+import { Field_listExt, type Field_listExt_config } from '../csuite/fields/listExt/WidgetListExt'
+import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/WidgetMarkdown'
+import { Field_matrix, type Field_matrix_config } from '../csuite/fields/matrix/WidgetMatrix'
+import { Field_number, type Field_number_config } from '../csuite/fields/number/WidgetNumber'
+import { Field_optional, type Field_optional_config } from '../csuite/fields/optional/WidgetOptional'
+import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/WidgetOrbit'
+import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/WidgetSeed'
+import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
+import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/WidgetSelectOne'
+import { Field_shared } from '../csuite/fields/shared/WidgetShared'
+import { Field_size, type Field_size_config } from '../csuite/fields/size/WidgetSize'
+import { Field_spacer, type Field_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
+import { Field_string, type Field_string_config } from '../csuite/fields/string/WidgetString'
 import { Field } from '../csuite/model/Field'
 import { Repository } from '../csuite/model/Repository'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
-import { Widget_prompt, type Widget_prompt_config } from '../prompt/WidgetPrompt'
+import { Field_prompt, type Field_prompt_config } from '../prompt/WidgetPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
 import { Schema } from './Schema'
@@ -46,64 +46,64 @@ declare global {
         type Runtime = import('../runtime/Runtime').Runtime
 
         // field aliases
-        type Shared<T extends Field> = Widget_shared<T>
-        type Group<T extends SchemaDict> = Widget_group<T>
-        type Empty = Widget_group<NO_PROPS>
-        type Optional<T extends ISchema> = Widget_optional<T>
-        type Bool = Widget_bool
-        type Link<A extends ISchema, B extends ISchema> = Widget_link<A, B>
-        type String = Widget_string
-        type Prompt = Widget_prompt
-        type Choices<T extends SchemaDict = SchemaDict> = Widget_choices<T>
-        type Choice<T extends SchemaDict = SchemaDict> = Widget_choices<T>
-        type Number = Widget_number
-        type Color = Widget_color
-        type Enum<T> = Widget_enum<T>
-        type List<T extends ISchema> = Widget_list<T>
-        type Orbit = Widget_orbit
-        type ListExt<T extends ISchema> = Widget_listExt<T>
-        type Button<T> = Widget_button<T>
-        type Seed = Widget_seed
-        type Matrix = Widget_matrix
-        type Image = Widget_image
-        type SelectOne<T extends BaseSelectEntry> = Widget_selectOne<T>
-        type SelectMany<T extends BaseSelectEntry> = Widget_selectMany<T>
-        type SelectOne_<T extends string> = Widget_selectOne<BaseSelectEntry<T>> // variant that may be shorter to read
-        type SelectMany_<T extends string> = Widget_selectMany<BaseSelectEntry<T>> // variant that may be shorter to read
-        type Size = Widget_size
-        type Spacer = Widget_spacer
-        type Markdown = Widget_markdown
-        type Custom<T> = Widget_custom<T>
+        type Shared<T extends Field> = Field_shared<T>
+        type Group<T extends SchemaDict> = Field_group<T>
+        type Empty = Field_group<NO_PROPS>
+        type Optional<T extends ISchema> = Field_optional<T>
+        type Bool = Field_bool
+        type Link<A extends ISchema, B extends ISchema> = Field_link<A, B>
+        type String = Field_string
+        type Prompt = Field_prompt
+        type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
+        type Choice<T extends SchemaDict = SchemaDict> = Field_choices<T>
+        type Number = Field_number
+        type Color = Field_color
+        type Enum<T> = Field_enum<T>
+        type List<T extends ISchema> = Field_list<T>
+        type Orbit = Field_orbit
+        type ListExt<T extends ISchema> = Field_listExt<T>
+        type Button<T> = Field_button<T>
+        type Seed = Field_seed
+        type Matrix = Field_matrix
+        type Image = Field_image
+        type SelectOne<T extends BaseSelectEntry> = Field_selectOne<T>
+        type SelectMany<T extends BaseSelectEntry> = Field_selectMany<T>
+        type SelectOne_<T extends string> = Field_selectOne<BaseSelectEntry<T>> // variant that may be shorter to read
+        type SelectMany_<T extends string> = Field_selectMany<BaseSelectEntry<T>> // variant that may be shorter to read
+        type Size = Field_size
+        type Spacer = Field_spacer
+        type Markdown = Field_markdown
+        type Custom<T> = Field_custom<T>
 
         // schema aliases
-        type XShared<T extends ISchema> = Schema<Widget_shared<T['$Field']>>
-        type XGroup<T extends SchemaDict> = Schema<Widget_group<T>>
-        type XEmpty = Schema<Widget_group<NO_PROPS>>
-        type XOptional<T extends ISchema> = Schema<Widget_optional<T>>
-        type XBool = Schema<Widget_bool>
-        type XLink<A extends ISchema, B extends ISchema> = Schema<Widget_link<A, B>>
-        type XString = Schema<Widget_string>
-        type XPrompt = Schema<Widget_prompt>
-        type XChoices<T extends SchemaDict = SchemaDict> = Schema<Widget_choices<T>>
-        type XChoice<T extends SchemaDict = SchemaDict> = Schema<Widget_choices<T>>
-        type XNumber = Schema<Widget_number>
-        type XColor = Schema<Widget_color>
-        type XEnum<T> = Schema<Widget_enum<T>>
-        type XList<T extends ISchema> = Schema<Widget_list<T>>
-        type XOrbit = Schema<Widget_orbit>
-        type XListExt<T extends ISchema> = Schema<Widget_listExt<T>>
-        type XButton<T> = Schema<Widget_button<T>>
-        type XSeed = Schema<Widget_seed>
-        type XMatrix = Schema<Widget_matrix>
-        type XImage = Schema<Widget_image>
-        type XSelectOne<T extends BaseSelectEntry> = Schema<Widget_selectOne<T>>
-        type XSelectMany<T extends BaseSelectEntry> = Schema<Widget_selectMany<T>>
-        type XSelectOne_<T extends string> = Schema<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type XSelectMany_<T extends string> = Schema<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type XSize = Schema<Widget_size>
-        type XSpacer = Schema<Widget_spacer>
-        type XMarkdown = Schema<Widget_markdown>
-        type XCustom<T> = Schema<Widget_custom<T>>
+        type XShared<T extends ISchema> = Schema<Field_shared<T['$Field']>>
+        type XGroup<T extends SchemaDict> = Schema<Field_group<T>>
+        type XEmpty = Schema<Field_group<NO_PROPS>>
+        type XOptional<T extends ISchema> = Schema<Field_optional<T>>
+        type XBool = Schema<Field_bool>
+        type XLink<A extends ISchema, B extends ISchema> = Schema<Field_link<A, B>>
+        type XString = Schema<Field_string>
+        type XPrompt = Schema<Field_prompt>
+        type XChoices<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
+        type XChoice<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
+        type XNumber = Schema<Field_number>
+        type XColor = Schema<Field_color>
+        type XEnum<T> = Schema<Field_enum<T>>
+        type XList<T extends ISchema> = Schema<Field_list<T>>
+        type XOrbit = Schema<Field_orbit>
+        type XListExt<T extends ISchema> = Schema<Field_listExt<T>>
+        type XButton<T> = Schema<Field_button<T>>
+        type XSeed = Schema<Field_seed>
+        type XMatrix = Schema<Field_matrix>
+        type XImage = Schema<Field_image>
+        type XSelectOne<T extends BaseSelectEntry> = Schema<Field_selectOne<T>>
+        type XSelectMany<T extends BaseSelectEntry> = Schema<Field_selectMany<T>>
+        type XSelectOne_<T extends string> = Schema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSelectMany_<T extends string> = Schema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSize = Schema<Field_size>
+        type XSpacer = Schema<Field_spacer>
+        type XMarkdown = Schema<Field_markdown>
+        type XCustom<T> = Schema<Field_custom<T>>
     }
 }
 
@@ -120,96 +120,92 @@ export class Builder implements IBuilder {
         })
     }
 
-    time(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'time', ...config })
+    time(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'time', ...config })
     }
-    date(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'date', ...config })
+    date(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'date', ...config })
     }
-    datetime(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'datetime-local', ...config })
+    datetime(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'datetime-local', ...config })
     }
-    password(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'password', ...config })
+    password(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'password', ...config })
     }
-    email(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'email', ...config })
+    email(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'email', ...config })
     }
-    url(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'url', ...config })
+    url(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'url', ...config })
     }
-    string(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', config)
+    string(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', config)
     }
-    text(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', config)
+    text(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', config)
     }
-    textarea(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { textarea: true, ...config })
+    textarea(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { textarea: true, ...config })
     }
-    boolean(config: Widget_bool_config = {}): X.XBool {
-        return new Schema<Widget_bool>(Widget_bool, 'bool', config)
+    boolean(config: Field_bool_config = {}): X.XBool {
+        return new Schema<Field_bool>(Field_bool, 'bool', config)
     }
-    bool(config: Widget_bool_config = {}): X.XBool {
-        return new Schema<Widget_bool>(Widget_bool, 'bool', config)
+    bool(config: Field_bool_config = {}): X.XBool {
+        return new Schema<Field_bool>(Field_bool, 'bool', config)
     }
-    size(config: Widget_size_config = {}): X.XSize {
-        return new Schema<Widget_size>(Widget_size, 'size', config)
+    size(config: Field_size_config = {}): X.XSize {
+        return new Schema<Field_size>(Field_size, 'size', config)
     }
-    spacer(config: Widget_spacer_config = {}): X.XSpacer {
-        return new Schema<Widget_spacer>(Widget_spacer, 'spacer', {
+    spacer(config: Field_spacer_config = {}): X.XSpacer {
+        return new Schema<Field_spacer>(Field_spacer, 'spacer', {
             justifyLabel: false,
             label: false,
             collapsed: false,
             border: false,
         })
     }
-    orbit(config: Widget_orbit_config = {}): X.XOrbit {
-        return new Schema<Widget_orbit>(Widget_orbit, 'orbit', config)
+    orbit(config: Field_orbit_config = {}): X.XOrbit {
+        return new Schema<Field_orbit>(Field_orbit, 'orbit', config)
     }
-    seed(config: Widget_seed_config = {}): X.XSeed {
-        return new Schema<Widget_seed>(Widget_seed, 'seed', config)
+    seed(config: Field_seed_config = {}): X.XSeed {
+        return new Schema<Field_seed>(Field_seed, 'seed', config)
     }
-    color(config: Widget_color_config = {}): X.XColor {
-        return new Schema<Widget_color>(Widget_color, 'color', config)
+    color(config: Field_color_config = {}): X.XColor {
+        return new Schema<Field_color>(Field_color, 'color', config)
     }
-    colorV2(config: Widget_string_config = {}): X.XString {
-        return new Schema<Widget_string>(Widget_string, 'str', { inputType: 'color', ...config })
+    colorV2(config: Field_string_config = {}): X.XString {
+        return new Schema<Field_string>(Field_string, 'str', { inputType: 'color', ...config })
     }
-    matrix(config: Widget_matrix_config): X.XMatrix {
-        return new Schema<Widget_matrix>(Widget_matrix, 'matrix', config)
+    matrix(config: Field_matrix_config): X.XMatrix {
+        return new Schema<Field_matrix>(Field_matrix, 'matrix', config)
     }
-    button = <K>(config: Widget_button_config<K>): X.XButton<K> => {
-        return new Schema<Widget_button<K>>(Widget_button, 'button', config)
+    button = <K>(config: Field_button_config<K>): X.XButton<K> => {
+        return new Schema<Field_button<K>>(Field_button, 'button', config)
     }
     /** variants: `header` */
-    markdown(config: Widget_markdown_config | string): X.XMarkdown {
-        return new Schema<Widget_markdown>(
-            Widget_markdown,
-            'markdown',
-            typeof config === 'string' ? { markdown: config } : config,
-        )
+    markdown(config: Field_markdown_config | string): X.XMarkdown {
+        return new Schema<Field_markdown>(Field_markdown, 'markdown', typeof config === 'string' ? { markdown: config } : config)
     }
     /** [markdown variant]: inline=true, label=false */
-    header = (config: Widget_markdown_config | string): X.XMarkdown => {
-        const config_: Widget_markdown_config =
+    header = (config: Field_markdown_config | string): X.XMarkdown => {
+        const config_: Field_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config }
-        return new Schema<Widget_markdown>(Widget_markdown, 'markdown', config_)
+        return new Schema<Field_markdown>(Field_markdown, 'markdown', config_)
     }
-    image = (config: Widget_image_config = {}): X.XImage => {
-        return new Schema<Widget_image>(Widget_image, 'image', config)
+    image = (config: Field_image_config = {}): X.XImage => {
+        return new Schema<Field_image>(Field_image, 'image', config)
     }
-    prompt = (config: Widget_prompt_config = {}): X.XPrompt => {
-        return new Schema<Widget_prompt>(Widget_prompt, 'prompt', config)
+    prompt = (config: Field_prompt_config = {}): X.XPrompt => {
+        return new Schema<Field_prompt>(Field_prompt, 'prompt', config)
     }
-    int = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'int', ...config })
+    int = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+        return new Schema<Field_number>(Field_number, 'number', { mode: 'int', ...config })
     }
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>(Widget_number, 'number', {
+    percent = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+        return new Schema<Field_number>(Field_number, 'number', {
             mode: 'int',
             default: 100,
             step: 10,
@@ -219,49 +215,49 @@ export class Builder implements IBuilder {
             ...config,
         })
     }
-    float = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
+    float = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+        return new Schema<Field_number>(Field_number, 'number', { mode: 'float', ...config })
     }
 
-    number = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
-        return new Schema<Widget_number>(Widget_number, 'number', { mode: 'float', ...config })
+    number = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+        return new Schema<Field_number>(Field_number, 'number', { mode: 'float', ...config })
     }
 
-    remSize = (config: Omit<Widget_number_config, 'mode'> = {}): X.XNumber => {
+    remSize = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
         return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
 
-    custom = <T>(config: Widget_custom_config<T>): X.XCustom<T> => {
-        return new Schema<Widget_custom<T>>(Widget_custom, 'custom', config)
+    custom = <T>(config: Field_custom_config<T>): X.XCustom<T> => {
+        return new Schema<Field_custom<T>>(Field_custom, 'custom', config)
     }
 
-    list = <T extends ISchema>(config: Widget_list_config<T>): X.XList<T> => {
-        return new Schema<Widget_list<T>>(Widget_list, 'list', config)
+    list = <T extends ISchema>(config: Field_list_config<T>): X.XList<T> => {
+        return new Schema<Field_list<T>>(Field_list, 'list', config)
     }
 
-    listExt = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', config)
+    listExt = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+        return new Schema<Field_listExt<T>>(Field_listExt, 'listExt', config)
     }
 
-    timeline = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'timeline', ...config })
+    timeline = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+        return new Schema<Field_listExt<T>>(Field_listExt, 'listExt', { mode: 'timeline', ...config })
     }
 
-    regional = <T extends ISchema>(config: Widget_listExt_config<T>): X.XListExt<T> => {
-        return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'regional', ...config })
+    regional = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+        return new Schema<Field_listExt<T>>(Field_listExt, 'listExt', { mode: 'regional', ...config })
     }
 
     // SELECT ONE ------------------------------------------------------------------------------------
 
-    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
-        return new Schema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
+    selectOne = <const T extends BaseSelectEntry>(config: Field_selectOne_config<T>): X.XSelectOne<T> => {
+        return new Schema<Field_selectOne<T>>(Field_selectOne, 'selectOne', config)
     }
 
     selectOneV2 = <T extends string>(
         p: readonly T[],
-        config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
+        config: Omit<Field_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectOne_<T> => {
-        return new Schema<Widget_selectOne<BaseSelectEntry<T>>>(Widget_selectOne, 'selectOne', {
+        return new Schema<Field_selectOne<BaseSelectEntry<T>>>(Field_selectOne, 'selectOne', {
             choices: p.map((id) => ({ id, label: id })),
             appearance: 'tab',
             ...config,
@@ -270,15 +266,15 @@ export class Builder implements IBuilder {
 
     // SELECT MANY ------------------------------------------------------------------------------------
 
-    selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): X.XSelectMany<T> => {
-        return new Schema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
+    selectMany = <const T extends BaseSelectEntry>(config: Field_selectMany_config<T>): X.XSelectMany<T> => {
+        return new Schema<Field_selectMany<T>>(Field_selectMany, 'selectMany', config)
     }
 
     selectManyV2 = <T extends string>(
         p: readonly T[],
-        config: Omit<Widget_selectMany_config<BaseSelectEntry<T>>, 'choices'> = {},
+        config: Omit<Field_selectMany_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): X.XSelectMany<BaseSelectEntry<T>> => {
-        return new Schema<Widget_selectMany<BaseSelectEntry<T>>>(Widget_selectMany, 'selectMany', {
+        return new Schema<Field_selectMany<BaseSelectEntry<T>>>(Field_selectMany, 'selectMany', {
             choices: p.map((id) => ({ id, label: id })),
             ...config,
         })
@@ -296,26 +292,26 @@ export class Builder implements IBuilder {
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
     ): X.XLink<SCHEMA1, SCHEMA2> {
-        return new Schema<Widget_link<SCHEMA1, SCHEMA2>>(Widget_link, 'link', { share: injected, children })
+        return new Schema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, 'link', { share: injected, children })
     }
 
     linked<T extends Field>(field: T): X.XShared<T> {
-        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { field })
+        return new Schema<Field_shared<T>>(Field_shared<any /* 🔴 */>, 'shared', { field })
     }
 
     /** see also: `fields` for a more practical api */
-    group<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Widget_group<T>>(Widget_group, 'group', config)
+    group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+        return new Schema<Field_group<T>>(Field_group, 'group', config)
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Widget_group<T>>(Widget_group, 'group', { border: false, label: false, collapsed: false, ...config })
+    column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+        return new Schema<Field_group<T>>(Field_group, 'group', { border: false, label: false, collapsed: false, ...config })
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Widget_group<T>>(Widget_group, 'group', {
+    row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+        return new Schema<Field_group<T>>(Field_group, 'group', {
             border: false,
             label: false,
             collapsed: false,
@@ -324,37 +320,37 @@ export class Builder implements IBuilder {
         })
     }
     /** simpler way to create `group` */
-    fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): X.XGroup<T> => {
-        return new Schema<Widget_group<T>>(Widget_group, 'group', { items: fields, ...config })
+    fields = <T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> => {
+        return new Schema<Field_group<T>>(Field_group, 'group', { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoice<T> => {
-        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: false, ...config })
+    choice = <T extends { [key: string]: ISchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> => {
+        return new Schema<Field_choices<T>>(Field_choices, 'choices', { multi: false, ...config })
     }
     choiceV2 = <T extends { [key: string]: ISchema }>(
-        items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoice<T> => {
-        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: false, items, ...config })
+        return new Schema<Field_choices<T>>(Field_choices, 'choices', { multi: false, items, ...config })
     }
-    choices = <T extends { [key: string]: ISchema }>(config: Omit<Widget_choices_config<T>, 'multi'>): X.XChoices<T> => {
-        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { multi: true, ...config })
+    choices = <T extends { [key: string]: ISchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> => {
+        return new Schema<Field_choices<T>>(Field_choices, 'choices', { multi: true, ...config })
     }
     choicesV2 = <T extends { [key: string]: ISchema }>(
-        items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoices<T> => {
-        return new Schema<Widget_choices<T>>(Widget_choices, 'choices', { items, multi: true, appearance: 'tab', ...config })
+        return new Schema<Field_choices<T>>(Field_choices, 'choices', { items, multi: true, appearance: 'tab', ...config })
     }
-    empty = (config: Widget_group_config<NO_PROPS> = {}): X.XEmpty => {
-        return new Schema<Widget_group<NO_PROPS>>(Widget_group, 'group', config)
+    empty = (config: Field_group_config<NO_PROPS> = {}): X.XEmpty => {
+        return new Schema<Field_group<NO_PROPS>>(Field_group, 'group', config)
     }
     /** simple choice alternative api */
     tabs = <T extends { [key: string]: ISchema }>(
-        items: Widget_choices_config<T>['items'],
-        config: Omit<Widget_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ) => new Schema<Widget_choices<T>>(Widget_choices, 'choices', { items, multi: false, ...config, appearance: 'tab' })
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
+    ) => new Schema<Field_choices<T>>(Field_choices, 'choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
-    optional = <T extends ISchema>(p: Widget_optional_config<T>) => new Schema<Widget_optional<T>>(Widget_optional, 'optional', p)
+    optional = <T extends ISchema>(p: Field_optional_config<T>) => new Schema<Field_optional<T>>(Field_optional, 'optional', p)
 
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
@@ -362,7 +358,7 @@ export class Builder implements IBuilder {
         return this.selectOne({ default: def, choices })
     }
 
-    // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this.form, config)
+    // enum = /*<const T extends KnownEnumNames>*/ (config: Field_enum_config<any, any>) => new Field_enum(this.form, config)
     get auto(): AutoBuilder {
         const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'auto', { value: _ })

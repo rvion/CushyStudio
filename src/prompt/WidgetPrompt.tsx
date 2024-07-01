@@ -26,40 +26,40 @@ export type CompiledPrompt = {
 }
 
 // CONFIG
-export type Widget_prompt_config = FieldConfig<
+export type Field_prompt_config = FieldConfig<
     {
         default?: string
         placeHolder?: string
     },
-    Widget_prompt_types
+    Field_prompt_types
 >
 
 // SERIAL FROM VALUE
-export const Widget_prompt_fromValue = (val: Widget_prompt_value): Widget_prompt_serial => ({
+export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_serial => ({
     type: 'prompt',
     val: val.text,
 })
 
 // SERIAL
-export type Widget_prompt_serial = FieldSerial<{
+export type Field_prompt_serial = FieldSerial<{
     type: 'prompt'
     val?: string
 }>
 
 // VALUE
-export type Widget_prompt_value = Widget_prompt // { text: string; tree: Tree }
+export type Field_prompt_value = Field_prompt // { text: string; tree: Tree }
 
 // TYPES
-export type Widget_prompt_types = {
+export type Field_prompt_types = {
     $Type: 'prompt'
-    $Config: Widget_prompt_config
-    $Serial: Widget_prompt_serial
-    $Value: Widget_prompt_value
-    $Field: Widget_prompt
+    $Config: Field_prompt_config
+    $Serial: Field_prompt_serial
+    $Value: Field_prompt_value
+    $Field: Field_prompt
 }
 
 // STATE
-export class Widget_prompt extends Field<Widget_prompt_types> {
+export class Field_prompt extends Field<Field_prompt_types> {
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
@@ -81,14 +81,14 @@ export class Widget_prompt extends Field<Widget_prompt_types> {
         this.text = this.config.default ?? ''
     }
 
-    serial: Widget_prompt_serial
+    serial: Field_prompt_serial
 
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_prompt>,
-        serial?: Widget_prompt_serial,
+        schema: ISchema<Field_prompt>,
+        serial?: Field_prompt_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -139,14 +139,14 @@ export class Widget_prompt extends Field<Widget_prompt_types> {
     get ast_generic(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
-    setValue(val: Widget_prompt_value) {
+    setValue(val: Field_prompt_value) {
         this.value = val
     }
-    set value(next: Widget_prompt_value) {
+    set value(next: Field_prompt_value) {
         if (next !== this) throw new Error('not implemented')
         // do nothing, value it the instance itself
     }
-    get value(): Widget_prompt_value {
+    get value(): Field_prompt_value {
         return this
         // return {
         //     text: this.serial.val ?? this.config.default ?? '',
@@ -178,4 +178,4 @@ export class Widget_prompt extends Field<Widget_prompt_types> {
 }
 
 // DI
-registerWidgetClass('prompt', Widget_prompt)
+registerWidgetClass('prompt', Field_prompt)

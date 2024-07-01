@@ -1,6 +1,6 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
+import type { Field_group } from '../csuite/fields/group/WidgetGroup'
 import type { Entity } from '../csuite/model/Entity'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
@@ -199,7 +199,7 @@ export class DraftL {
                   builder: { _cache: { count: 0 } },
                   result: p.formValueOverride,
                   serial: {},
-              } as any as Widget_group<any>)
+              } as any as Field_group<any>)
             : this.form.root
 
         if (widget == null) throw new Error('invalid req')

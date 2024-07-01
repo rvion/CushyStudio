@@ -1,6 +1,6 @@
 import type { Field } from '../../model/Field'
 import type { ISchema } from '../../model/ISchema'
-import type { Widget_list } from './WidgetList'
+import type { Field_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
@@ -18,7 +18,7 @@ const { default: SortableList, SortableItem, SortableKnob } = await import('reac
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { field: Widget_list<any> }) {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { field: Field_list<any> }) {
     return (
         <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
             <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>
@@ -31,7 +31,7 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { field
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { field: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { field: Field_list<T> }) {
     const field = p.field
     const subWidgets = field.items
     const min = field.config.min

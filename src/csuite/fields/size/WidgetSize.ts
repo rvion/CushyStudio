@@ -14,45 +14,45 @@ import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
-export type Widget_size_config = FieldConfig<
+export type Field_size_config = FieldConfig<
     {
         default?: CushySizeByRatio
         min?: number
         max?: number
         step?: number
     },
-    Widget_size_types
+    Field_size_types
 >
 
 // SERIAL
-export type Widget_size_serial = FieldSerial<CushySize>
+export type Field_size_serial = FieldSerial<CushySize>
 
 // SERIAL FROM VALUE
-export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
+export const Field_size_fromValue = (val: Field_size_value): Field_size_serial => ({
     ...val,
 })
 
 // VALUE
-export type Widget_size_value = CushySize // prettier-ignore
+export type Field_size_value = CushySize // prettier-ignore
 
 // TYPES
-export type Widget_size_types = {
+export type Field_size_types = {
     $Type: 'size'
-    $Config: Widget_size_config
-    $Serial: Widget_size_serial
-    $Value: Widget_size_value
-    $Field: Widget_size
+    $Config: Field_size_config
+    $Serial: Field_size_serial
+    $Value: Field_size_value
+    $Field: Field_size
 }
 
 // STATE
-export class Widget_size extends Field<Widget_size_types> {
+export class Field_size extends Field<Field_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    get defaultValue(): Widget_size_value {
+    get defaultValue(): Field_size_value {
         const config = this.spec.config
         const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
         const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
@@ -102,14 +102,14 @@ export class Widget_size extends Field<Widget_size_types> {
     readonly id: string
 
     readonly type: 'size' = 'size'
-    readonly serial: Widget_size_serial
+    readonly serial: Field_size_serial
 
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_size>,
-        serial?: Widget_size_serial,
+        schema: ISchema<Field_size>,
+        serial?: Field_size_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -138,11 +138,11 @@ export class Widget_size extends Field<Widget_size_types> {
         })
     }
 
-    get value(): Widget_size_value {
+    get value(): Field_size_value {
         return this.serial
     }
 
-    set value(val: Widget_size_value) {
+    set value(val: Field_size_value) {
         // ugly code;
         if (
             val.width === this.serial.width && //
@@ -159,4 +159,4 @@ export class Widget_size extends Field<Widget_size_types> {
 }
 
 // DI
-registerWidgetClass('size', Widget_size)
+registerWidgetClass('size', Field_size)

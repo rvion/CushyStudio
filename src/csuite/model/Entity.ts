@@ -1,4 +1,4 @@
-import type { Widget_group, Widget_group_serial } from '../fields/group/WidgetGroup'
+import type { Field_group, Field_group_serial } from '../fields/group/WidgetGroup'
 import type { CovariantFn } from '../variance/BivariantHack'
 import type { Field } from './Field'
 import type { IBuilder } from './IBuilder'
@@ -162,8 +162,8 @@ export class Entity<
         }
     }
 
-    /** @deprecated ; only work when root is a Widget_group */
-    get fields(): SCHEMA extends ISchema<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
+    /** @deprecated ; only work when root is a Field_group */
+    get fields(): SCHEMA extends ISchema<Field_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Field'] } : never {
         if (isWidgetGroup(this.root)) return this.root.fields as any
         throw new Error('🔴 root is not a group')
     }
@@ -270,7 +270,7 @@ function recoverFromLegacySerial(json: any): Maybe<EntitySerial> {
     // BACKWARD COMPAT -----------------------------------------------------------------
     if ('values_' in json) {
         console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(json))
-        const oldSerial: Widget_group_serial<any> = json as any
+        const oldSerial: Field_group_serial<any> = json as any
         for (const [k, v] of Object.entries(oldSerial.values_)) {
             if (k.startsWith('__')) {
                 delete oldSerial.values_[k]

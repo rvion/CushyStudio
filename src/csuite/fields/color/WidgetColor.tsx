@@ -12,29 +12,29 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Widget_color_config = FieldConfig<{ default?: string }, Widget_color_types>
+export type Field_color_config = FieldConfig<{ default?: string }, Field_color_types>
 
 // SERIAL
-export type Widget_color_serial = FieldSerial<{
+export type Field_color_serial = FieldSerial<{
     type: 'color'
     /** color, stored as string */
     value: string
 }>
 
 // VALUE
-export type Widget_color_value = string
+export type Field_color_value = string
 
 // TYPES
-export type Widget_color_types = {
+export type Field_color_types = {
     $Type: 'color'
-    $Config: Widget_color_config
-    $Serial: Widget_color_serial
-    $Value: Widget_color_value
-    $Field: Widget_color
+    $Config: Field_color_config
+    $Serial: Field_color_serial
+    $Value: Field_color_value
+    $Field: Field_color
 }
 
 // STATE
-export class Widget_color extends Field<Widget_color_types> {
+export class Field_color extends Field<Field_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -49,14 +49,14 @@ export class Widget_color extends Field<Widget_color_types> {
     get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
-    serial: Widget_color_serial
+    serial: Field_color_serial
 
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        schema: ISchema<Widget_color>,
-        serial?: Widget_color_serial,
+        schema: ISchema<Field_color>,
+        serial?: Field_color_serial,
     ) {
         super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
@@ -73,10 +73,10 @@ export class Widget_color extends Field<Widget_color_types> {
         })
     }
 
-    get value(): Widget_color_value {
+    get value(): Field_color_value {
         return this.serial.value
     }
-    set value(next: Widget_color_value) {
+    set value(next: Field_color_value) {
         if (this.serial.value === next) return
         runInAction(() => {
             this.serial.value = next
@@ -86,4 +86,4 @@ export class Widget_color extends Field<Widget_color_types> {
 }
 
 // DI
-registerWidgetClass('color', Widget_color)
+registerWidgetClass('color', Field_color)

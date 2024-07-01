@@ -1,11 +1,11 @@
 import type { ISchema } from '../../model/ISchema'
-import type { Widget_listExt } from './WidgetListExt'
+import type { Field_listExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends ISchema>(p: {
     //
-    widget: Widget_listExt<T>
+    widget: Field_listExt<T>
 }) {
     //
     const scale = 20

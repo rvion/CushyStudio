@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import type { Widget_number, Widget_number_config } from '../fields/number/WidgetNumber'
+import type { Field_number, Field_number_config } from '../fields/number/WidgetNumber'
 import type { Entity } from '../model/Entity'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
@@ -9,16 +9,16 @@ import type * as SS from './SimpleAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { Widget_bool, type Widget_bool_config } from '../fields/bool/WidgetBool'
-import { Widget_button, type Widget_button_config } from '../fields/button/WidgetButton'
-import { Widget_group, type Widget_group_config } from '../fields/group/WidgetGroup'
-import { Widget_list, type Widget_list_config } from '../fields/list/WidgetList'
-import { Widget_markdown } from '../fields/markdown/WidgetMarkdown'
-import { Widget_optional, type Widget_optional_config } from '../fields/optional/WidgetOptional'
-import { Widget_selectMany, type Widget_selectMany_config } from '../fields/selectMany/WidgetSelectMany'
-import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
-import { Widget_spacer } from '../fields/spacer/WidgetSpacer'
-import { Widget_string, type Widget_string_config } from '../fields/string/WidgetString'
+import { Field_bool, type Field_bool_config } from '../fields/bool/WidgetBool'
+import { Field_button, type Field_button_config } from '../fields/button/WidgetButton'
+import { Field_group, type Field_group_config } from '../fields/group/WidgetGroup'
+import { Field_list, type Field_list_config } from '../fields/list/WidgetList'
+import { Field_markdown } from '../fields/markdown/WidgetMarkdown'
+import { Field_optional, type Field_optional_config } from '../fields/optional/WidgetOptional'
+import { Field_selectMany, type Field_selectMany_config } from '../fields/selectMany/WidgetSelectMany'
+import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../fields/selectOne/WidgetSelectOne'
+import { Field_spacer } from '../fields/spacer/WidgetSpacer'
+import { Field_string, type Field_string_config } from '../fields/string/WidgetString'
 import { Repository } from '../model/Repository'
 import { SimpleSchema } from './SimpleSchema'
 
@@ -35,55 +35,55 @@ export class BasicBuilder implements IBuilder {
         })
     }
 
-    email(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>(Widget_string, 'str', { inputType: 'email', ...config })
+    email(config: Field_string_config = {}): S.SString {
+        return new SimpleSchema<Field_string>(Field_string, 'str', { inputType: 'email', ...config })
     }
 
-    string(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', config)
+    string(config: Field_string_config = {}): S.SString {
+        return new SimpleSchema<Field_string>('str', config)
     }
 
-    textarea(config: Widget_string_config = {}): S.SString {
-        return new SimpleSchema<Widget_string>('str', { textarea: true, ...config })
+    textarea(config: Field_string_config = {}): S.SString {
+        return new SimpleSchema<Field_string>('str', { textarea: true, ...config })
     }
 
-    int(config: Omit<Widget_number_config, 'mode'> = {}): S.SNumber {
-        return new SimpleSchema<Widget_number>('number', { mode: 'int', ...config })
+    int(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
+        return new SimpleSchema<Field_number>('number', { mode: 'int', ...config })
     }
 
-    boolean(config: Widget_bool_config = {}): S.SBool {
-        return new SimpleSchema<Widget_bool>('bool', config)
+    boolean(config: Field_bool_config = {}): S.SBool {
+        return new SimpleSchema<Field_bool>('bool', config)
     }
 
-    button<K>(config: Widget_button_config): S.SButton<K> {
-        return new SimpleSchema<Widget_button<K>>('button', config)
+    button<K>(config: Field_button_config): S.SButton<K> {
+        return new SimpleSchema<Field_button<K>>('button', config)
     }
 
-    list<const T extends ISchema>(config: Widget_list_config<T>): S.SList<T> {
-        return new SimpleSchema<Widget_list<T>>('list', config)
+    list<const T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
+        return new SimpleSchema<Field_list<T>>('list', config)
     }
 
     selectOneV3<T extends string>(
         p: T[],
-        config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
+        config: Omit<Field_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
     ): S.SSelectOne_<T> {
-        return new SimpleSchema<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        return new SimpleSchema<Field_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
 
-    selectMany<const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): S.SSelectMany<T> {
-        return new SimpleSchema<Widget_selectMany<T>>('selectMany', config)
+    selectMany<const T extends BaseSelectEntry>(config: Field_selectMany_config<T>): S.SSelectMany<T> {
+        return new SimpleSchema<Field_selectMany<T>>('selectMany', config)
     }
 
-    group<const T extends SchemaDict>(config: Widget_group_config<T> = {}): S.SGroup<T> {
-        return new SimpleSchema<Widget_group<T>>('group', config)
+    group<const T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
+        return new SimpleSchema<Field_group<T>>('group', config)
     }
 
-    fields<const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): S.SGroup<T> {
-        return new SimpleSchema<Widget_group<T>>('group', { items: fields, ...config })
+    fields<const T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): S.SGroup<T> {
+        return new SimpleSchema<Field_group<T>>('group', { items: fields, ...config })
     }
 
-    optional<const T extends ISchema>(p: Widget_optional_config<T>): S.SOptional<T> {
-        return new SimpleSchema<Widget_optional<T>>('optional', p)
+    optional<const T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
+        return new SimpleSchema<Field_optional<T>>('optional', p)
     }
 
     _HYDRATE<T extends ISchema>(
@@ -130,23 +130,23 @@ export class BasicBuilder implements IBuilder {
         const spec2 = spec as any
 
         // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        if (type === 'group') return new Widget_group( model, parent, spec2, serial, model._ROOT ? undefined : (x) => { model._ROOT = x }, ) // prettier-ignore
-        if (type === 'optional') return new Widget_optional(model, parent, spec2, serial)
-        if (type === 'bool') return new Widget_bool(model, parent, spec2, serial)
-        if (type === 'str') return new Widget_string(model, parent, spec2, serial)
-        if (type === 'list') return new Widget_list(model, parent, spec2, serial)
-        if (type === 'button') return new Widget_button(model, parent, spec2, serial)
-        if (type === 'selectOne') return new Widget_selectOne(model, parent, spec2, serial)
-        if (type === 'selectMany') return new Widget_selectMany(model, parent, spec2, serial)
-        if (type === 'spacer') return new Widget_spacer(model, parent, spec2, serial)
-        if (type === 'markdown') return new Widget_markdown(model, parent, spec2, serial)
+        if (type === 'group') return new Field_group( model, parent, spec2, serial, model._ROOT ? undefined : (x) => { model._ROOT = x }, ) // prettier-ignore
+        if (type === 'optional') return new Field_optional(model, parent, spec2, serial)
+        if (type === 'bool') return new Field_bool(model, parent, spec2, serial)
+        if (type === 'str') return new Field_string(model, parent, spec2, serial)
+        if (type === 'list') return new Field_list(model, parent, spec2, serial)
+        if (type === 'button') return new Field_button(model, parent, spec2, serial)
+        if (type === 'selectOne') return new Field_selectOne(model, parent, spec2, serial)
+        if (type === 'selectMany') return new Field_selectMany(model, parent, spec2, serial)
+        if (type === 'spacer') return new Field_spacer(model, parent, spec2, serial)
+        if (type === 'markdown') return new Field_markdown(model, parent, spec2, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
 
-        return new Widget_markdown(
+        return new Field_markdown(
             model,
             parent,
-            new SimpleSchema<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
+            new SimpleSchema<Field_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
     }
 }
@@ -155,7 +155,7 @@ export const BasicModelManager: Repository<BasicBuilder> = new Repository(new Ba
 
 // Entity
 const basicEntity = BasicModelManager.entity((ui /* 👈🏻 BasicBuilder */) => {
-    const z = ui.int() // Schema<Field_number>  (🕣 SimpleSchema<Widget_number>)
+    const z = ui.int() // Schema<Field_number>  (🕣 SimpleSchema<Field_number>)
 
     return ui.fields({
         foo: ui.string(),
@@ -182,11 +182,11 @@ const value = basicEntity.value // FieldValue
 const fooField = root.fields.foo // Field
 const fooValue = value.foo // FieldValue ie. string
 const fooValue2 = root.fields.foo.value // FieldValue
-const fooSchema = fooField.spec // Schema<Field_string> (🕣 ISchema<Widget_string>)
+const fooSchema = fooField.spec // Schema<Field_string> (🕣 ISchema<Field_string>)
 const nestedValue = value.nested // FieldValue
 const nestedValue2 = root.fields.nested.value // FieldValue
-const fooSerial = fooField.serial // FieldSerial (🕣 Widget_string_serial)
+const fooSerial = fooField.serial // FieldSerial (🕣 Field_string_serial)
 const fooUI = fooField.DefaultHeaderUI // WidgetStringUI
 const numField = root.fields.num // Field
 const numUI = numField.DefaultHeaderUI // WidgetNumberUI
-const numSchema = numField.spec // Schema<Field_number> (🕣 ISchema<Widget_number>)
+const numSchema = numField.spec // Schema<Field_number> (🕣 ISchema<Field_number>)

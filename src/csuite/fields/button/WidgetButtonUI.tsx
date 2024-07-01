@@ -1,13 +1,13 @@
-import type { Widget_button, Widget_button_context } from './WidgetButton'
+import type { Field_button, Field_button_context } from './WidgetButton'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_<K extends any>(p: { field: Widget_button<K> }) {
+export const WidgetButtonUI = observer(function WidgetButtonUI_<K extends any>(p: { field: Field_button<K> }) {
     const extra = p.field.config.useContext?.() as K
-    const context: Widget_button_context<K> = { widget: p.field, context: extra }
+    const context: Field_button_context<K> = { widget: p.field, context: extra }
     // const icon = p.widget.config.icon?.(context)
     return (
         <Button

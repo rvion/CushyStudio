@@ -1,4 +1,4 @@
-import type { Widget_prompt } from './WidgetPrompt'
+import type { Field_prompt } from './WidgetPrompt'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
@@ -20,7 +20,7 @@ import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
-export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Widget_prompt }) {
+export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
     const widget = p.field
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
@@ -69,7 +69,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
     )
 })
 // UI
-export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Widget_prompt }) {
+export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
     const st = useSt()
     const field = p.field
     const uist = useMemo(() => new WidgetPromptUISt(field), [])
