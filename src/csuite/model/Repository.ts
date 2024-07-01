@@ -42,8 +42,6 @@ export class Repository<DOMAIN extends IBuilder> {
         this.domain = domain
     }
 
-    _builders = new WeakMap<Entity, DOMAIN>()
-
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,

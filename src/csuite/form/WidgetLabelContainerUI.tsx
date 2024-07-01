@@ -21,7 +21,9 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             tooltipPlacement='right'
             className={p.className}
             hover
+            expand
             tw={[
+                'UI-WidgetLabelContainer',
                 'COLLAPSE-PASSTHROUGH',
                 'minh-input',
                 // 'self-stretch',

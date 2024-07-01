@@ -15,13 +15,7 @@ export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI
             base={theme.fieldGroups.contrast}
             border={theme.fieldGroups.border}
             className={p.className}
-            tw={[
-                //
-                isHorizontal ? `flex flex-wrap` : `flex flex-col`,
-                'w-full',
-                // 'w-full overflow-auto',
-                p.className,
-            ]}
+            tw={[isHorizontal ? `flex flex-wrap` : `flex flex-col`, 'w-full', p.className]}
         >
             {p.children}
         </Frame>

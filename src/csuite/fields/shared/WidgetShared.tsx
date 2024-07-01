@@ -10,18 +10,17 @@ import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends ISchema = ISchema> = FieldConfig<
+export type Widget_shared_config<F extends Field> = FieldConfig<
     {
-        /** shared widgets must be registered in the form root group */
-        // rootKey: string
-        widget: (parent: Field) => T['$Field']
+        widget: F
     },
-    Widget_shared_types<T>
+    Widget_shared_types<F>
 >
 
 // SERIAL
 export type Widget_shared_serial = FieldSerial<{
     type: 'shared'
+    // NO VALUE HERE; otherwise, we would store the data twice
 }>
 
 // SERIAL FROM VALUE
@@ -30,46 +29,30 @@ export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared
 })
 
 // VALUE
-export type Widget_shared_value<T extends ISchema = ISchema> = T['$Value']
+export type Widget_shared_value<F extends Field = Field> = F['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends ISchema = ISchema> = {
+export type Widget_shared_types<F extends Field = Field> = {
     $Type: 'shared'
-    $Config: Widget_shared_config<T>
+    $Config: Widget_shared_config<F>
     $Serial: Widget_shared_serial
-    $Value: Widget_shared_value<T>
-    $Field: ISchema['$Field']
+    $Value: Widget_shared_value<F>
+    $Field: Widget_shared<F>
 }
 
 // STATE
-export class Widget_shared<T extends ISchema = ISchema> extends Field<Widget_shared_types<T>> {
+export class Widget_shared<F extends Field = Field> extends Field<Widget_shared_types<F>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
     serial: Widget_shared_serial
 
-    get hasChanges(): boolean {
-        return this.shared.hasChanges ?? false
-    }
-
-    reset(): void {
-        return this.shared.reset()
-    }
-
-    get shared(): T['$Field'] {
-        return this.config.widget(this.parent!)
-    }
-
-    get baseErrors(): Problem_Ext {
-        return this.shared.baseErrors
-    }
-
     constructor(
         //
         entity: Entity,
         parent: Field | null,
-        spec: ISchema<Widget_shared<T>>,
+        spec: ISchema<Widget_shared<F>>,
         serial?: Widget_shared_serial,
     ) {
         super(entity, parent, spec)
@@ -81,11 +64,29 @@ export class Widget_shared<T extends ISchema = ISchema> extends Field<Widget_sha
             DefaultBodyUI: false,
         })
     }
-    set value(val: Widget_shared_value<T>) {
-        this.shared.value = val
+
+    get hasChanges(): boolean {
+        return this.shared.hasChanges ?? false
     }
-    get value(): Widget_shared_value<T> {
+
+    reset(): void {
+        return this.shared.reset()
+    }
+
+    get shared(): F {
+        return this.config.widget
+    }
+
+    get baseErrors(): Problem_Ext {
+        return this.shared.baseErrors
+    }
+
+    get value(): Widget_shared_value<F> {
         return this.shared.value
+    }
+
+    set value(val: Widget_shared_value<F>) {
+        this.shared.value = val
     }
 }
 

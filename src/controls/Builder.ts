@@ -37,15 +37,16 @@ import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
 import { Schema } from './Schema'
 
-// export type { SchemaDict } from './ISpec'
 declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/ISchema').SchemaDict
         type Builder = import('./Builder').Builder
+        type Field = import('../csuite/model/Field').Field
+
         type Runtime = import('../runtime/Runtime').Runtime
 
         // field aliases
-        type Shared<T extends ISchema> = Widget_shared<T>
+        type Shared<T extends Field> = Widget_shared<T>
         type Group<T extends SchemaDict> = Widget_group<T>
         type Empty = Widget_group<NO_PROPS>
         type Optional<T extends ISchema> = Widget_optional<T>
@@ -250,6 +251,12 @@ export class Builder implements IBuilder {
         return new Schema<Widget_listExt<T>>(Widget_listExt, 'listExt', { mode: 'regional', ...config })
     }
 
+    // SELECT ONE ------------------------------------------------------------------------------------
+
+    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
+        return new Schema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
+    }
+
     selectOneV2 = <T extends string>(
         p: readonly T[],
         config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
@@ -261,9 +268,7 @@ export class Builder implements IBuilder {
         })
     }
 
-    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>): X.XSelectOne<T> => {
-        return new Schema<Widget_selectOne<T>>(Widget_selectOne, 'selectOne', config)
-    }
+    // SELECT MANY ------------------------------------------------------------------------------------
 
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>): X.XSelectMany<T> => {
         return new Schema<Widget_selectMany<T>>(Widget_selectMany, 'selectMany', config)
@@ -294,28 +299,22 @@ export class Builder implements IBuilder {
         return new Schema<Widget_link<SCHEMA1, SCHEMA2>>(Widget_link, 'link', { share: injected, children })
     }
 
-    /**
-     * @since 2024-06-27
-     * @stability unstable
-     */
-    linkedV0 = <T extends Field>(fn: (parent: Field) => T): X.XShared<T> => {
-        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: fn })
-    }
-
-    linked = <T extends Field>(parent: T): X.XShared<T> => {
-        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: () => parent })
+    linked<T extends Field>(field: T): X.XShared<T> {
+        return new Schema<Widget_shared<T>>(Widget_shared<any /* 🔴 */>, 'shared', { widget: field })
     }
 
     /** see also: `fields` for a more practical api */
-    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
+    group<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
         return new Schema<Widget_group<T>>(Widget_group, 'group', config)
     }
+
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
+    column<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
         return new Schema<Widget_group<T>>(Widget_group, 'group', { border: false, label: false, collapsed: false, ...config })
     }
+
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> => {
+    row<T extends SchemaDict>(config: Widget_group_config<T> = {}): X.XGroup<T> {
         return new Schema<Widget_group<T>>(Widget_group, 'group', {
             border: false,
             label: false,

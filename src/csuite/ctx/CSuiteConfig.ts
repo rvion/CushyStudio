@@ -28,7 +28,7 @@ export interface CSuiteConfig {
     // ------------------------------------------------------------
     // [size]
     inputHeight: number
-
+    widgetGap: number
     // ------------------------------------------------------------
     // [theme]
     base: Kolor

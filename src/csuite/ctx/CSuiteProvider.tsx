@@ -1,11 +1,9 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
+import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../frame/Frame'
-
 import { CSuiteCtx } from './CSuiteCtx'
 
 /**
@@ -32,6 +30,7 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
+                    '--widget-gap': `${config.widgetGap}rem`,
                     // '--KLRH': config.baseStr,
                     // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,

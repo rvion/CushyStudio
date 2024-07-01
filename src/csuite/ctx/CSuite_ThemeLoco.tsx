@@ -12,6 +12,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     // form behaviour
     clickAndSlideMultiplicator = 1
     showWidgetUndo = true
+    widgetGap: number = 0.5
     showWidgetMenu = true
     showWidgetDiff = true
     showToggleButtonBox = false

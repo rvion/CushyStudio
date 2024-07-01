@@ -1,3 +1,4 @@
+import type { Widget_shared } from '../fields/shared/WidgetShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'
@@ -55,9 +56,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // 👆 $Value!: K['$Value'] /*   = 0 as any  */
     // 👆 $Field!: K['$Field'] /*   = 0 as any  */
 
-    /** field is already instanciated => nothing todo */
-    instanciate() {
-        return this
+    /** field is already instanciated => probably used as a linked */
+    instanciate(entity: Entity<any>, parent: Field | null, serial: any | null) {
+        const builder = this.entity.repository.domain
+        const schema: ISchema<Widget_shared<this>> = builder.linked(this)
+        return schema.instanciate(entity, parent, serial)
     }
 
     constructor(

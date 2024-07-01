@@ -19,7 +19,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
     const widget = p.widget
     return (
         <div
-            className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
+            className='UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH'
             tw={[
                 'flex gap-0.5 select-none',
                 // 2024-06-03 rvion, changing 'items-center' to 'items-start'

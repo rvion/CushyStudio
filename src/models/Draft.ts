@@ -5,7 +5,6 @@ import type { Entity } from '../csuite/model/Entity'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
-import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
 import { reaction } from 'mobx'

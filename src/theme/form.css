@@ -1,9 +1,17 @@
-/* Btn Utils ------------------------------------------------------------------------------------- */
+/* global vars ------------------------------------------------------------------------------------ */
 :root {
     --input-height: 1.6rem;
     --input-icon-height: 1.4rem;
 }
 
+/* padding utils --------------------------------------------------------------------------------- */
+/* .UI-WidgetHeaderContainer  */
+.UI-WidgetLabelContainer
+{
+    padding: var(--widget-gap) 0;
+}
+
+/* Box Utils ------------------------------------------------------------------------------------- */
 /* box sizes */
 .box.box-square {
     display: flex;
@@ -17,6 +25,7 @@
     min-height: var(--input-height);
     @apply text-sm;
 }
+
 .box.box-square.box-xs { @apply w-6  h-6; }
 .box.box-square.box-sm { @apply w-8  h-8; }
 .box.box-square.box-md { @apply w-10 h-10; }
@@ -28,6 +37,7 @@
     min-height: var(--input-height);
     @apply text-sm;
 }
+
 .box.box-xs { @apply text-xs px-0.5 py-0.5; }
 .box.box-sm { @apply text-sm px-1   py-1  ; }
 .box.box-md { @apply         px-2   py-1  ; }

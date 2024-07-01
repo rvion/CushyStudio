@@ -23,7 +23,7 @@ export interface ISchema<out FIELD extends Field = Field> {
     instanciate(
         //
         entity: Entity<any>,
-        parent: FIELD | null,
+        parent: Field | null,
         serial: any | null,
     ): FIELD['$Field']
 

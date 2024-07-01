@@ -52,7 +52,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form.root == null) return <MessageErrorUI markdown='form.root is null' />
     const submitAction = p.submitAction
     return (
-        <Frame {...p.theme} className={p.className} style={p.style}>
+        <Frame tw='UI-Form' {...p.theme} className={p.className} style={p.style}>
             {form.root.renderWithLabel() /* FORM */}
 
             {p.submitButton ??

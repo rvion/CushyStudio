@@ -7,11 +7,11 @@ export type UI_LatentV3 = X.XLink<
     X.XNumber,
     X.XChoice<{
         emptyLatent: X.XGroup<{
-            batchSize: X.Number
+            batchSize: X.XShared<X.XNumber>
             size: X.XSize
         }>
         image: X.XGroup<{
-            batchSize: X.Number
+            batchSize: X.XShared<X.XNumber>
             image: X.XImage
             resize: X.XOptional<
                 X.XGroup<{
@@ -30,8 +30,8 @@ export type UI_LatentV3 = X.XLink<
 
 export function ui_latent_v3() {
     const form: X.Builder = getCurrentForm()
-    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize) => {
-        // const batchSize = form.linked(chan)
+    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
+        const batchSize = form.linked(batchSize_)
         return form.choice({
             icon: 'mdiStarThreePoints',
             appearance: 'tab',
@@ -42,7 +42,7 @@ export function ui_latent_v3() {
                 emptyLatent: form.group({
                     items: {
                         batchSize,
-                        size: form.size({ border: false }),
+                        size: form.size({}),
                     },
                 }),
                 // cas 2

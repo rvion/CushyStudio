@@ -184,16 +184,8 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Widget_link<SCHEMA1, SCHEMA2>>(Widget_link, 'link', { share: injected, children })
     }
 
-    /**
-     * @since 2024-06-27
-     * @stability unstable
-     */
-    linkedV0 = <T extends Field>(fn: (parent: Field) => T): S.SShared<T> => {
-        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: fn })
-    }
-
-    linked = <T extends Field>(parent: T): S.SShared<T> => {
-        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: () => parent })
+    linked<T extends Field>(field: T): S.SShared<T> {
+        return new SimpleSchema<Widget_shared<T>>(Widget_shared<any>, 'shared', { widget: field })
     }
 
     /** see also: `fields` for a more practical api */

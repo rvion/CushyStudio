@@ -25,12 +25,13 @@ declare global {
         // core utils
         type SchemaDict = import('../../csuite/model/ISchema').SchemaDict
         type Builder = import('./SimpleBuilder').SimpleBuilder
+        type Field = import('../model/Field').Field
 
         // field aliases
         // ...
 
         // schema aliases
-        type SShared<T extends ISchema> = SimpleSchema<Widget_shared<T['$Field']>>
+        type SShared<T extends Field> = SimpleSchema<Widget_shared<T>>
         type SGroup<T extends SchemaDict> = SimpleSchema<Widget_group<T>>
         type SEmpty = SimpleSchema<Widget_group<NO_PROPS>>
         type SOptional<T extends ISchema> = SimpleSchema<Widget_optional<T>>
