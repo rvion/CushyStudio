@@ -66,6 +66,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
     DefaultBodyUI = WidgetPromptUI
     readonly id: string
 
+    static readonly type: 'prompt' = 'prompt'
     readonly type: 'prompt' = 'prompt'
 
     get baseErrors(): Problem_Ext {

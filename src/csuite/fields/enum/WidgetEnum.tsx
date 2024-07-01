@@ -50,6 +50,7 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'enum' = 'enum'
     readonly type: 'enum' = 'enum'
 
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore

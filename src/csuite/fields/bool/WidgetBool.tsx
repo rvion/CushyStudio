@@ -73,6 +73,7 @@ export class Field_bool extends Field<Field_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
     readonly id: string
+    static readonly type: 'bool' = 'bool'
     readonly type: 'bool' = 'bool'
 
     get baseErrors(): Problem_Ext {

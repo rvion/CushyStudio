@@ -39,6 +39,7 @@ export class Field_color extends Field<Field_color_types> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'color' = 'color'
     readonly type: 'color' = 'color'
 
     get baseErrors(): Problem_Ext {

@@ -46,6 +46,7 @@ export class Field_spacer extends Field<Field_spacer_types> {
     }
     readonly id: string
 
+    static readonly type: 'spacer' = 'spacer'
     readonly type: 'spacer' = 'spacer'
     serial: Field_spacer_serial
 

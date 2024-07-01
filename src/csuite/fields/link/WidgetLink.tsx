@@ -72,6 +72,7 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         return this.bField.summary
     }
     readonly id: string
+    static readonly type: 'link' = 'link'
     readonly type: 'link' = 'link'
 
     /** the dict of all child widgets */

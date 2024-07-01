@@ -62,6 +62,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
 
     readonly id: string
 
+    static readonly type: 'listExt' = 'listExt'
     readonly type: 'listExt' = 'listExt'
     get baseErrors(): Problem_Ext {
         return null

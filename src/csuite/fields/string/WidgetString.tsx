@@ -73,6 +73,7 @@ export class Field_string extends Field<Field_string_types> {
     UIInputText = () => <WidgetString_HeaderUI field={this} />
 
     readonly id: string
+    static readonly type: 'str' = 'str'
     readonly type: 'str' = 'str'
 
     // --------------

@@ -26,6 +26,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
 
     constructor(
         FieldClass: {
+            readonly type: FIELD['type']
             new (
                 //
                 entity: Entity,

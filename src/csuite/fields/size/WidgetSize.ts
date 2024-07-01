@@ -101,6 +101,7 @@ export class Field_size extends Field<Field_size_types> {
 
     readonly id: string
 
+    static readonly type: 'size' = 'size'
     readonly type: 'size' = 'size'
     readonly serial: Field_size_serial
 

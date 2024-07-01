@@ -57,6 +57,7 @@ export class Field_image extends Field<Field_image_types> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'image' = 'image'
     readonly type: 'image' = 'image'
     readonly serial: Field_image_serial
     // size: number = 192

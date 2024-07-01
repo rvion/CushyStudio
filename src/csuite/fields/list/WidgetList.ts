@@ -85,6 +85,7 @@ export class Field_list<T extends ISchema> //
 
     readonly id: string
 
+    static readonly type: 'list' = 'list'
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore

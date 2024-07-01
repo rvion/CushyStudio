@@ -88,6 +88,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     readonly id: string
 
+    static readonly type: 'selectMany' = 'selectMany'
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Field_selectMany_serial<T>
 

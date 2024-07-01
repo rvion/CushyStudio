@@ -65,6 +65,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     DefaultBodyUI = WidgetChoices_BodyUI
     readonly id: string
 
+    static readonly type: 'choices' = 'choices'
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 

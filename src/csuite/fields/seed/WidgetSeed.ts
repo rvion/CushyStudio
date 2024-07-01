@@ -78,6 +78,7 @@ export class Field_seed extends Field<Field_seed_types> {
         return this.config.default ?? 0
     }
 
+    static readonly type: 'seed' = 'seed'
     readonly type: 'seed' = 'seed'
     readonly serial: Field_seed_serial
 

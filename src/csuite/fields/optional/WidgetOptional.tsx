@@ -70,6 +70,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         }
     }
 
+    static readonly type: 'optional' = 'optional'
     readonly type: 'optional' = 'optional'
     get baseErrors(): Problem_Ext {
         return null

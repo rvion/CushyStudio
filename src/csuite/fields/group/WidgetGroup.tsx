@@ -72,6 +72,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
     readonly id: string
 
+    static readonly type: 'group' = 'group'
     readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */

@@ -56,6 +56,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'button' = 'button'
     readonly type: 'button' = 'button'
     readonly serial: Field_button_serial
 

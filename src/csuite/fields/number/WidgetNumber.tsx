@@ -51,6 +51,7 @@ export class Field_number extends Field<Field_number_types> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'number' = 'number'
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 

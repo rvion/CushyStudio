@@ -45,6 +45,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'custom' = 'custom'
     readonly type: 'custom' = 'custom'
 
     get baseErrors(): Problem_Ext {

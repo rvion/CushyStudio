@@ -55,6 +55,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'matrix' = 'matrix'
     readonly type: 'matrix' = 'matrix'
     readonly serial: Field_matrix_serial
     get baseErrors(): Problem_Ext {

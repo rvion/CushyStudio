@@ -99,6 +99,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
 
     readonly id: string
 
+    static readonly type: 'selectOne' = 'selectOne'
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Field_selectOne_serial<T>
 
