@@ -13,8 +13,8 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         makeAutoObservable(this)
     }
 
-    get widgetGap(): number {
-        return this.st.theme.value.gap ?? 0
+    get widgetHeight(): number {
+        return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }
 
     get clickAndSlideMultiplicator() {

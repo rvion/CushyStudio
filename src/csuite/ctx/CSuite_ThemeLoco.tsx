@@ -12,7 +12,6 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     // form behaviour
     clickAndSlideMultiplicator = 1
     showWidgetUndo = true
-    widgetGap: number = 0.5
     showWidgetMenu = true
     showWidgetDiff = true
     showToggleButtonBox = false
@@ -29,6 +28,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
 
     inputBorder = 0.08
     labelText = { contrast: 0.48, chroma: 0.035 }
+    widgetHeight: number = 1.8
     inputHeight: number = 1.6
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false

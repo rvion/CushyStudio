@@ -40,6 +40,17 @@ export const interfaceConf = cushyRepo.entity(
                     default: 48,
                     suffix: 'px',
                 }),
+                widgetHeight: ui.number({
+                    // label: false,
+                    // justifyLabel: false,
+                    text: 'Widget Height',
+                    tooltip: 'Height of the Widget line',
+                    min: 1.4,
+                    max: 3,
+                    default: 1.8,
+                    unit: 'rem',
+                    suffix: 'rem',
+                }),
                 inputHeight: ui.number({
                     label: false,
                     justifyLabel: false,
@@ -92,6 +103,7 @@ export const interfaceConf = cushyRepo.entity(
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 <WidgetWithLabelUI fieldName='' field={f.toolBarIconSize} />
+                                <WidgetWithLabelUI fieldName='' field={f.widgetHeight} />
                                 <WidgetWithLabelUI fieldName='' field={f.inputHeight} />
                                 <WidgetWithLabelUI fieldName='' field={f.tooltipDelay} />
                             </div>

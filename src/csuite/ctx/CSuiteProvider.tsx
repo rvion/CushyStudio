@@ -30,11 +30,11 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
-                    '--widget-gap': `${config.widgetGap}rem`,
                     // '--KLRH': config.baseStr,
                     // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
+                    '--widget-height': `${config.widgetHeight}rem`,
                     '--input-height': `${config.inputHeight}rem`,
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
                 }}
