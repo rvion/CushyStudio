@@ -5,13 +5,9 @@ import { simpleBuilder as b } from '../../index'
 // ------------------------------------------------------------------------------
 describe('can recover when field becoming list ', () => {
     it('works with string', () => {
-        const S1: S.SNumber = b.int()
-
         // E1 works
+        const S1: S.SNumber = b.int({ default: 4 })
         const E1 = S1.create()
-        expect(E1.value).toBe(0)
-
-        E1.value = 4
         expect(E1.value).toBe(4)
 
         // E2 recover from new serial
