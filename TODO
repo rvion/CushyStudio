@@ -1,9 +1,11 @@
-☐ setSerial
-☐ info mapping
+2024-07-01:
+    ☐ test about link auto-migration
+    ☐ setSerial
+    ☐ info mapping via custom schema mapping
 
 2024-06-29:
-    ☐ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min)
-    ☐ 2. recover from/to list when iterating on the schema (15min)
+    ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
+    ✔ 2. recover from/to list when iterating on the schema (15min) @done(24-07-01 22:33)
     ☐ 3. config tab persitence (15min)
     ☐ 4. debug icon to see panel data (15min)
 
