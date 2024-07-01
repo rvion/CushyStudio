@@ -412,7 +412,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // if the widget do NOT have a body => we do not show the border
         if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
-        return 8
+        return false
+        // return 8
     }
 
     // FOLD ----------------------------------------------------
