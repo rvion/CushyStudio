@@ -45,7 +45,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
         <Ikon.mdiChevronDown
             //
             className={className}
-            tw='COLLAPSE-PASSTHROUGH shrink-0'
+            tw='COLLAPSE-PASSTHROUGH shrink-0 opacity-35'
         />
     )
     // return (
