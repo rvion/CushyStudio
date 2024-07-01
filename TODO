@@ -1,7 +1,8 @@
 2024-07-01:
-    ☐ test about link auto-migration
-    ☐ setSerial
-    ☐ info mapping via custom schema mapping
+    ☐ test about link auto-migration.
+    ☐ setSerial.
+    ☐ info mapping via custom schema mapping.
+    ☐ setting value on value by addming more proxies.
 
 2024-06-29:
     ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
