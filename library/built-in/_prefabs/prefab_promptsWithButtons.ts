@@ -30,6 +30,7 @@ export function ui_advancedPrompt(): UI_advancedPrompt {
     return form.list({
         min: 1,
         layout: 'H',
+        icon: 'mdiBookAlphabet',
         element: () =>
             form.choice({
                 appearance: 'tab',

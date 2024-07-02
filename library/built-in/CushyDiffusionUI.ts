@@ -110,11 +110,11 @@ function extra(ui: X.Builder): UI_extra {
             summary: ui.empty({ icon: 'mdiLanguageMarkdown' }),
             gaussianSplat: ui.empty({ icon: 'mdiDotsHexagon' }),
             promtPlus: ui_advancedPrompt(),
-            displayAsBeerCan: ui.empty(),
-            displayAsSpriteSheet: ui.empty(),
+            displayAsBeerCan: ui.empty({ icon: 'mdiBeerOutline' }),
+            displayAsSpriteSheet: ui.empty({ icon: 'mdiMovie' }),
             recursiveImgToImg: ui_recursive(),
             watermark: ui_watermark_v1(),
-            fancyWatermark: ui.empty(),
+            fancyWatermark: ui.empty({ icon: 'mdiWatermark' }),
         },
     })
 }
