@@ -223,8 +223,44 @@ export class Field_list<T extends ISchema> //
         this.startAutoBehaviour()
     }
 
-    get value(): Field_list_value<T> {
+    get valueArr(): Field_list_value<T> {
         return this.items.map((i) => i.value)
+    }
+
+    /**
+     * code below is very wtf, and surprisingly simple for what it achieve
+     * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
+     */
+    get value(): Field_list_value<T> {
+        return new Proxy(this.items as any, {
+            get: (target, prop: any) => {
+                // console.log(`[🤠] GET`, prop)
+                if (typeof prop === 'symbol') return target[prop]
+
+                // ONLY BECAUSE OF MOBX ----------------------------------------------------
+                if (prop === 'toJSON') return () => this.valueArr
+                if (prop === 'pop') return () => this.pop()
+                if (prop === 'shift') return () => this.shift()
+                if (prop === 'push') return (...args: any[]) => this.push(...args)
+                if (prop === 'slice') return (start: any, end: any) => this.valueArr.slice(start, end)
+                // ONLY BECAUSE OF MOBX ----------------------------------------------------
+
+                if (parseInt(prop, 10) === +prop) return target[+prop]?.value
+                return target[prop]
+            },
+            set: (target, prop: any, value) => {
+                // console.log(`[SET]`, prop, value)
+                if (typeof prop === 'symbol') return false
+                if (parseInt(prop, 10) === +prop) {
+                    if (this.items[prop]) {
+                        this.items[prop]!.value = value
+                        return true
+                    }
+                }
+
+                return false
+            },
+        })
     }
 
     set value(val: Field_list_value<T>) {
@@ -269,8 +305,22 @@ export class Field_list<T extends ISchema> //
         return out
     }
 
+    push(...value: T['$Value'][]) {
+        for (const v of value) this.addItem({ value: v, skipBump: true })
+        this.applyValueUpdateEffects()
+    }
+
     // ADDING ITEMS -------------------------------------------------
-    addItem(p: { skipBump?: true; at?: number; value?: T['$Value'] } = {} /* 🔴 Annoying special case in the list's ctor */) {
+    addItem(
+        p: {
+            skipBump?: true
+            at?: number
+            value?: T['$Value']
+        } = {} /*
+            2024-??-?? - rvion: 🔴 Annoying special case in the list's ctor
+            2024-07-02 - rvion: wtf did I just mean by that? 🤔
+         */,
+    ) {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
@@ -316,10 +366,22 @@ export class Field_list<T extends ISchema> //
         // ensure item is in the list
         const i = this.items.indexOf(item)
         if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
+        this.removeItemAt(i)
+    }
+
+    removeItemAt(i: number) {
         // remove item
         this.serial.items_.splice(i, 1)
         this.items.splice(i, 1)
         this.applyValueUpdateEffects()
+    }
+
+    pop() {
+        this.removeItemAt(this.items.length - 1)
+    }
+
+    shift() {
+        this.removeItemAt(0)
     }
 
     // MOVING ITEMS ---------------------------------------------------
