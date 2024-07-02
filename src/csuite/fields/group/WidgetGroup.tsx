@@ -189,6 +189,13 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
+        set: (target, prop, value) => {
+            if (typeof prop !== 'string') return false
+            const subWidget: Field = this.fields[prop]!
+            if (subWidget == null) return false
+            subWidget.value = value
+            return true
+        },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
             const subWidget: Field = this.fields[prop]!
