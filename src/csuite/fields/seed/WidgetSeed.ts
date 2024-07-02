@@ -1,55 +1,55 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 // CONFIG
-export type Widget_seed_config = FieldConfig<
+export type Field_seed_config = FieldConfig<
     {
         default?: number
         defaultMode?: SeedMode
         min?: number
         max?: number
     },
-    Widget_seed_types
+    Field_seed_types
 >
 
 // SERIAL
-export type Widget_seed_serial = FieldSerial<{
+export type Field_seed_serial = FieldSerial<{
     type: 'seed'
     val: number
     mode: SeedMode
 }>
 
 // SERIAL FROM VALUE
-export const Widget_seed_fromValue = (value: Widget_seed_value): Widget_seed_serial => ({
+export const Field_seed_fromValue = (value: Field_seed_value): Field_seed_serial => ({
     type: 'seed',
     mode: 'fixed',
     val: value,
 })
 
 // VALUE
-export type Widget_seed_value = number
+export type Field_seed_value = number
 
 // TYPES
-export type Widget_seed_types = {
+export type Field_seed_types = {
     $Type: 'seed'
-    $Config: Widget_seed_config
-    $Serial: Widget_seed_serial
-    $Value: Widget_seed_value
-    $Field: Widget_seed
+    $Config: Field_seed_config
+    $Serial: Field_seed_serial
+    $Value: Field_seed_value
+    $Field: Field_seed
 }
 
 // STATE
-export class Widget_seed extends BaseField<Widget_seed_types> {
+export class Field_seed extends Field<Field_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
 
@@ -59,14 +59,15 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.mode !== this.defaultMode) return true
         if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
         return false
     }
-    reset = () => {
+
+    reset(): void {
         this.setMode(this.defaultMode)
-        if (this.serial.mode !== 'randomize') this.setValue(this.defaultValue)
+        if (this.serial.mode !== 'randomize') this.value = this.defaultValue
     }
 
     get defaultMode(): SeedMode {
@@ -77,37 +78,38 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         return this.config.default ?? 0
     }
 
+    static readonly type: 'seed' = 'seed'
     readonly type: 'seed' = 'seed'
-    readonly serial: Widget_seed_serial
+    readonly serial: Field_seed_serial
 
     setMode = (mode: SeedMode) => {
         if (this.serial.mode === mode) return
         this.serial.mode = mode
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToFixed = (val?: number) => {
         this.serial.mode = 'fixed'
         if (val) this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     setToRandomize = () => {
         if (this.serial.mode === 'randomize') return
         this.serial.mode = 'randomize'
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_seed>,
-        serial?: Widget_seed_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_seed>,
+        serial?: Field_seed_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'seed',
             id: this.id,
@@ -120,20 +122,15 @@ export class Widget_seed extends BaseField<Widget_seed_types> {
         })
     }
 
-    setValue = (val: number) => {
-        this.serial.val = val
-        this.bumpValue()
-    }
-
     set value(val: number) {
         this.serial.val = val
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
-    get value(): Widget_seed_value {
-        const count = this.form.builder._cache.count
+    get value(): Field_seed_value {
+        const count = this.entity.builder._cache.count
         return this.serial.mode === 'randomize' ? Math.floor(Math.random() * 9_999_999) : this.serial.val
     }
 }
 
-registerWidgetClass('seed', Widget_seed)
+registerWidgetClass('seed', Field_seed)

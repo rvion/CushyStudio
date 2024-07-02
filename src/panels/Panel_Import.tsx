@@ -30,7 +30,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                         <div tw='card-title'>Imported file</div>
                         <div tw='italic text-sm'>"{file.name}"</div>
                         <ul>
-                            <li tw='virtualBorder'>
+                            <li>
                                 as workflow:
                                 <ImportedFileUI key={file.name} file={file} />
                             </li>
@@ -50,7 +50,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
             ) : (
                 <></>
             )}
-            {/* <div tw='relative w-96 h-96 virtualBorder'>
+            {/* <div tw='relative w-96 h-96'>
                 <TargetBox />
             </div> */}
         </div>

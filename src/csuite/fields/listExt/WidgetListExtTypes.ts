@@ -1,4 +1,4 @@
-import type { BaseField } from '../../model/BaseField'
+import type { Field } from '../../model/Field'
 
 export type BoardSize = {
     width: number
@@ -44,7 +44,7 @@ export const boardDefaultItemShape: BoardPosition = {
     depth: 0,
 }
 
-export type WithPosition<T extends BaseField> = {
+export type WithPosition<T extends Field> = {
     widget: T
     position: BoardPosition
 }

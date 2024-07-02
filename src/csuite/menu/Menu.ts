@@ -1,16 +1,17 @@
 import type { Activity } from '../activity/Activity'
 import type { BoundCommand } from '../commands/Command'
-import type { BaseField } from '../model/BaseField'
-import type { Trigger } from '../trigger/Trigger'
+import type { IconName } from '../icons/icons'
+import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleMenuModal } from './SimpleMenuModal'
 
 import { nanoid } from 'nanoid'
-import { createElement, type FC, useMemo } from 'react'
+import { createElement, type FC, type UIEvent, useMemo } from 'react'
 
 import { activityManager } from '../activity/ActivityManager'
 import { Command } from '../commands/Command'
 import { BoundMenuSym } from '../introspect/_isBoundMenu'
+import { Trigger } from '../trigger/Trigger'
 import { MenuRootUI, MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
@@ -25,12 +26,21 @@ const menuManager = new MenuManager()
 
 // ------------------------------------------------------------------------------------------
 // ACTIVITY STACK
-export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: number }
+export type MenuEntryWithKey = {
+    entry: MenuEntry
+    /** local key bound to that menu entry */
+    char?: string
+    /**
+     * char index within the string;
+     * (value kept around to speed up later processing to add underline at the right position)
+     * */
+    charIx?: number
+}
 
 // prettier-ignore
 export type MenuEntry =
     /** inline subform  */
-    | BaseField
+    | Field
     /** custom component  */
     | FC<{}>
     /** a command */
@@ -49,6 +59,7 @@ export type MenuDef<Props> = {
      */
     id?: string
     title: string
+    icon?: Maybe<IconName>
     entries: (props: Props) => MenuEntry[]
 }
 
@@ -70,7 +81,8 @@ export class Menu<Props> {
     /** push the menu to current activity */
     open(props: Props): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, props)
-        return activityManager.startActivity(instance)
+        activityManager.start(instance)
+        return Trigger.Success
     }
 }
 
@@ -91,7 +103,8 @@ export class MenuWithoutProps {
     /** push the menu to current activity */
     open(): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, {})
-        return activityManager.startActivity(instance)
+        activityManager.start(instance)
+        return Trigger.Success
     }
 }
 
@@ -99,8 +112,8 @@ export class MenuInstance<Props> implements Activity {
     onStart = (): void => {}
 
     UI = () => createElement(MenuUI, { menu: this })
-    onEvent = (event: Event): Trigger | null => {
-        event.stopImmediatePropagation()
+    onEvent = (event: UIEvent): Trigger | null => {
+        // event.stopImmediatePropagation()
         event.stopPropagation()
         event.preventDefault()
         return null
@@ -132,16 +145,19 @@ export class MenuInstance<Props> implements Activity {
         for (const entry of this.entries) {
             if (entry instanceof SimpleMenuAction) {
                 const res = this.findSuitableKeys(entry.opts.label, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // 2024-06-22 rvion: we don't want to skip entries,
+                // | we want to show them with no key if we can't find letter
+                // | for them
+                // | ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else if (entry instanceof Command) {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else if (entry instanceof BoundMenu) {
                 const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
-                if (res == null) continue
-                out.push({ entry, char: res.char, charIx: res.pos })
+                // ⏸️ if (res == null) continue
+                out.push({ entry, char: res?.char, charIx: res?.pos })
             } else {
                 out.push({ entry })
             }
@@ -165,7 +181,7 @@ export class MenuInstance<Props> implements Activity {
         }
     }
 }
-export const menu = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
+export const menuWithProps = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
 export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => new MenuWithoutProps(def)
 
 // ------------------------------------------------------------------------------------------
@@ -174,8 +190,11 @@ export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => ne
 export type BoundMenuOpts = { title?: string }
 export class BoundMenu<Ctx = any, Props = any> {
     $SYM = BoundMenuSym
-    get title() {
+    get title(): string {
         return this.ui?.title ?? this.menu.title
+    }
+    get icon(): Maybe<IconName> {
+        return this.menu.def.icon
     }
     constructor(
         //

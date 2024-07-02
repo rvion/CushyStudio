@@ -21,10 +21,12 @@ export const BadgeUI = observer(function BadgeUI_({
     children?: ReactNode
     className?: string
 } & FrameProps) {
+    const hasAction = Boolean(rest.onClick)
     return (
         <Frame
             // [line-height:1.1rem]
-            tw='rounded px-2 whitespace-nowrap'
+            tw={['rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer']}
+            hover={hasAction}
             base={{
                 //
                 hue:

@@ -60,7 +60,7 @@ async function buildJS() {
         // external:
         // external: ['three'],
         // jsx: 'react',
-        jsxImportSource: 'src/utils/custom-jsx',
+        jsxImportSource: 'src/csuite/custom-jsx',
         alias: {
             // -----------------------------------------------------------------------
             mobx: './src/syms/mobx.js',

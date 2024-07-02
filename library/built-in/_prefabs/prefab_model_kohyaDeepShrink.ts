@@ -14,7 +14,7 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
     }>
 }>
 
-export function ui_model_kohyaDeepShrink(form: X.FormBuilder): UI_model_kohyaDeepShrink {
+export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShrink {
     return form.fields(
         {
             include: form.choices({

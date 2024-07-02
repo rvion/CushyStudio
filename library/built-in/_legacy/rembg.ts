@@ -12,7 +12,7 @@ app({
         models: ui_rembg_v1(),
     }),
 
-    run: async (run, form, img) => {
+    run: async (run, form, { image: img }) => {
         const graph = run.nodes
 
         const image = await (() => {

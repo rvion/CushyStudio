@@ -2,17 +2,20 @@ import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
-import type { KonvaEventObject } from 'konva/lib/Node'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 import Konva from 'konva'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
 import { toastError } from '../../../csuite/utils/toasts'
-import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
-import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
-import { setupStageForPainting } from '../behaviours/setupStageForPainting'
+import { setupStage } from '../events/setupStage'
+import { ToolGenerate } from '../tools/ToolGenerate'
+import { ToolMask } from '../tools/ToolMask'
+import { ToolMove } from '../tools/ToolMove'
+import { ToolPaint } from '../tools/ToolPaint'
+import { ToolStamp } from '../tools/ToolStamp'
 import { KonvaGrid } from './KonvaGrid1'
 import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
@@ -23,15 +26,65 @@ import { UnifiedStep } from './UnifiedStep'
 export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
+    usePenPressure = true
+    enableOverlay = true
+    toolShelf = {
+        visible: true,
+        size: cushy.preferences.interface.value.toolBarIconSize,
+    }
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
-    // ---------------------------------------------------
+
+    // tools V2 ----------------------------------------------------------------
+    toolGenerate = new ToolGenerate(this)
+    toolPaint = new ToolPaint(this)
+    toolMove = new ToolMove(this)
+    toolMask = new ToolMask(this)
+    toolStamp = new ToolStamp(this)
+    allTools = [
+        //
+        this.toolGenerate,
+        this.toolPaint,
+        this.toolMove,
+        this.toolMask,
+        this.toolStamp,
+    ]
+    private _currentTool: ICanvasTool = this.toolMove
+    get currentTool(): ICanvasTool {
+        return this._currentTool
+    }
+    set currentTool(tool: ICanvasTool) {
+        this._currentTool.onDeselect?.()
+        this._currentTool = tool
+        this._currentTool.onSelect?.()
+    }
+
+    // UNDO SYSTEM ---------------------------------------------------
+    redo = () => {
+        const last = this._redoBuffer.pop()
+        if (last == null) return toastError('Nothing to redo')
+        last()
+        // this._undoBuffer.push(last)
+    }
+
     undo = () => {
-        const last = this.undoBuffer.pop()
+        const last = this._undoBuffer.pop()
         if (last == null) return toastError('Nothing to undo')
         last()
+        // this._redoBuffer.push(last)
     }
-    undoBuffer: (() => void)[] = []
+
+    _undoBuffer: (() => void)[] = []
+    _redoBuffer: (() => void)[] = []
+
+    get canUndo() { return this._undoBuffer.length > 0 } // prettier-ignore
+    get canRedo() { return this._redoBuffer.length > 0 } // prettier-ignore
+
+    addToUndo = (fn: () => void) => {
+        this._undoBuffer.push(fn)
+        this._redoBuffer = []
+    }
+
     // ---------------------------------------------------
 
     activeSelection: UnifiedSelection
@@ -45,9 +98,9 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
+    // ----------------------------------------------------------------------
     tool: UnifiedCanvasTool = 'none'
     brushMode: UnifiedCanvasBrushMode = 'paint'
-    maskToolSize: number = 32
     maskColor = 'red'
     maskOpacity = 0.5
 
@@ -71,10 +124,8 @@ export class UnifiedCanvas {
         isDown: false,
     }
 
-    onWheel = (e: any) => {
-        //
-    }
-
+    // BRUSH -------------------------------------------------
+    maskToolSize: number = 32
     brush = new Konva.Circle({
         fill: this.brushMode === 'paint' ? 'black' : 'white',
         stroke: 'black',
@@ -82,62 +133,11 @@ export class UnifiedCanvas {
         radius: this.maskToolSize / 2,
         opacity: this.maskOpacity,
     })
-
-    enable_none = () => {
-        this.tool = 'none'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_move()
+    setBrushSize = (size: number) => {
+        this.maskToolSize = size
+        this.brush.radius(size / 2)
     }
-    disable_none = () => {}
-    enable_generate = () => {
-        this.tool = 'generate'
-        this.activeSelection.show()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_generate = () => {
-        this.activeSelection.hide()
-    }
-    enable_mask = () => {
-        this.tool = 'mask'
-        this.disable_generate()
-        this.disable_paint()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_mask = () => {}
-    enable_paint = () => {
-        this.tool = 'paint'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_move()
-        this.disable_none()
-    }
-    disable_paint = () => {}
-    enable_move = () => {
-        this.tool = 'move'
-        this.disable_generate()
-        this.disable_mask()
-        this.disable_paint()
-        this.disable_none()
-    }
-    disable_move = () => {}
-
-    onKeyDown = (e: any) => {
-        if (e.key === '0') { this.enable_none(); return } // prettier-ignore
-        if (e.key === '1') { this.enable_generate(); return } // prettier-ignore
-        if (e.key === '2') { this.enable_mask(); return } // prettier-ignore
-        if (e.key === '3') { this.enable_paint(); return } // prettier-ignore
-        if (e.key === '4') { this.enable_move(); return } // prettier-ignore
-        if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-            this.undo()
-        }
-        e.preventDefault()
-    }
+    // -------------------------------------------------
 
     // immutable base for calculations
     readonly base = Object.freeze({ width: 512, height: 512 })
@@ -167,39 +167,39 @@ export class UnifiedCanvas {
     tempLayer: Konva.Layer // to hold the line currently being drawn
     imageLayer: Konva.Layer
 
-    /** used as container id for potential Portals to display html overlays */
+    /** used as container id for potential Portals to display html over122ays */
     uid = nanoid()
 
     constructor(
         public st: STATE,
         baseImage: MediaImageL,
     ) {
-        // core layers
         this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
+
+        // basic core layers
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
         this.imageLayer = new Konva.Layer()
         this.tempLayer = new Konva.Layer()
         this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer)
-
-        // ------------------------------
         this.grid = new KonvaGrid(this)
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
-
         this.images = [new UnifiedImage(this, baseImage)]
-        this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
-        this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
 
         // ------------------------------
 
         const selection = this.addSelection()
         this.activeSelection = selection
+
         const mask = this.addMask()
         this._activeMask = mask
         // this.activeMask = mask
 
-        makeAutoObservable(this)
-        setupStageForPainting(this)
+        makeAutoObservable(this, {
+            _undoBuffer: observable.shallow,
+            _redoBuffer: observable.shallow,
+        })
+        setupStage(this)
     }
 
     addImage = (img: MediaImageL, position?: { x: number; y: number }) => {

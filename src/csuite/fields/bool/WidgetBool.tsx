@@ -1,13 +1,13 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
@@ -15,7 +15,7 @@ import { WidgetBoolUI } from './WidgetBoolUI'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = FieldConfig<
+export type Field_bool_config = FieldConfig<
     {
         /**
          * default value; true or false
@@ -50,59 +50,60 @@ export type Widget_bool_config = FieldConfig<
          */
         expand?: boolean
     },
-    Widget_bool_types
+    Field_bool_types
 >
 
 // SERIAL
-export type Widget_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
+export type Field_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
 
 // VALUE
-export type Widget_bool_value = boolean
+export type Field_bool_value = boolean
 
 // TYPES
-export type Widget_bool_types = {
+export type Field_bool_types = {
     $Type: 'bool'
-    $Config: Widget_bool_config
-    $Serial: Widget_bool_serial
-    $Value: Widget_bool_value
-    $Field: Widget_bool
+    $Config: Field_bool_config
+    $Serial: Field_bool_serial
+    $Value: Field_bool_value
+    $Field: Field_bool
 }
 
 // STATE
-export class Widget_bool extends BaseField<Widget_bool_types> {
+export class Field_bool extends Field<Field_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
     readonly id: string
+    static readonly type: 'bool' = 'bool'
     readonly type: 'bool' = 'bool'
 
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    serial: Widget_bool_serial
+    serial: Field_bool_serial
 
     setOn = () => (this.value = true)
     setOff = () => (this.value = false)
     toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get hasChanges() { return this.value !== this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_bool>,
-        serial?: Widget_bool_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_bool>,
+        serial?: Field_bool_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
             type: 'bool',
-            active: this.spec.config.default ?? false,
-            collapsed: this.spec.config.startCollapsed,
+            active: this.schema.config.default ?? false,
+            collapsed: this.schema.config.startCollapsed,
         }
 
         this.init({
@@ -113,20 +114,17 @@ export class Widget_bool extends BaseField<Widget_bool_types> {
         })
     }
 
-    get value(): Widget_bool_value {
+    get value(): Field_bool_value {
         return this.serial.active ?? false
     }
-    setValue(val: Widget_bool_value) {
-        this.value = val
-    }
-    set value(next: Widget_bool_value) {
+    set value(next: Field_bool_value) {
         if (this.serial.active === next) return
         runInAction(() => {
             this.serial.active = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }
 
 // DI
-registerWidgetClass('bool', Widget_bool)
+registerWidgetClass('bool', Field_bool)

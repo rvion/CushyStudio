@@ -1,20 +1,19 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
-import { runWithGlobalForm } from '../../model/runWithGlobalForm'
+import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = FieldConfig<
+export type Field_group_config<T extends SchemaDict> = FieldConfig<
     {
         /**
          * Lambda function is deprecated, prefer passing the items as an object
@@ -25,31 +24,31 @@ export type Widget_group_config<T extends SchemaDict> = FieldConfig<
         /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
     },
-    Widget_group_types<T>
+    Field_group_types<T>
 >
 
 // SERIAL
-export type Widget_group_serial<T extends SchemaDict> = FieldSerial<{
+export type Field_group_serial<T extends SchemaDict> = FieldSerial<{
     type: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // VALUE
-export type Widget_group_value<T extends SchemaDict> = {
+export type Field_group_value<T extends SchemaDict> = {
     [k in keyof T]: T[k]['$Value']
 }
 
 // TYPES
-export type Widget_group_types<T extends SchemaDict> = {
+export type Field_group_types<T extends SchemaDict> = {
     $Type: 'group'
-    $Config: Widget_group_config<T>
-    $Serial: Widget_group_serial<T>
-    $Value: Widget_group_value<T>
-    $Field: Widget_group<T>
+    $Config: Field_group_config<T>
+    $Serial: Field_group_serial<T>
+    $Value: Field_group_value<T>
+    $Field: Field_group<T>
 }
 
 // STATE
-export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_types<T>> {
+export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -60,11 +59,11 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
-    reset = () => {
-        for (const sub of this.subWidgets) sub.reset()
+    reset(): void {
+        for (const sub of this.subFields) sub.reset()
     }
 
     get summary(): string {
@@ -73,21 +72,30 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     }
     readonly id: string
 
+    static readonly type: 'group' = 'group'
     readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, BaseField][]
+        return Object.entries(this.fields) as [string, Field][]
     }
 
+    get numFields(): number {
+        return Object.keys(this.fields).length
+    }
+
+    get justifyLabel(): boolean {
+        if (this.numFields > 1) return false
+        return true
+    }
     at = <K extends keyof T>(key: K): T[K]['$Field'] => this.fields[key]
     get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
-    serial: Widget_group_serial<T> = {} as any
+    serial: Field_group_serial<T> = {} as any
 
-    private _defaultSerial = (): Widget_group_serial<T> => {
+    private _defaultSerial = (): Field_group_serial<T> => {
         return {
             type: 'group',
             id: this.id,
@@ -97,14 +105,12 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
     }
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_group<T>>,
-        serial?: Widget_group_serial<T>,
-        /** used to register self as the root, before we start instanciating anything */
-        preHydrate?: (self: Widget_group<any>) => void,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_group<T>>,
+        serial?: Field_group_serial<T>,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
 
         this.serial =
@@ -116,37 +122,28 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
         // /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
 
-        // allow to store ref to the object right away
-        preHydrate?.(this)
-
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
         const _newValues: SchemaDict =
             typeof itemsDef === 'function' //
-                ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
+                ? itemsDef() ?? {}
                 : itemsDef ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         // this.childKeys = childKeys
         for (const key of childKeys) {
-            const unmounted = bang(_newValues[key])
+            const fieldSchema = bang(_newValues[key])
             const prevFieldSerial = prevFieldSerials[key]
-            if (prevFieldSerial && unmounted.type === prevFieldSerial.type) {
-                // if (newType === 'shared') {
-                //     // 🔴 BAD 🔴
-                //     this.fields[key] = newItem as any
-                // } else {
-                // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, prevFieldSerial)
-                // }
+            if (prevFieldSerial && fieldSchema.type === prevFieldSerial.type) {
+                this.fields[key] = fieldSchema.instanciate(this.entity, this, prevFieldSerial)
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
                 if (prevFieldSerial != null)
                     console.log(
-                        `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
+                        `[🔶] invalid serial for "${key}": (${fieldSchema.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, null)
+                this.fields[key] = fieldSchema.instanciate(this.entity, this, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }
@@ -161,33 +158,30 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         })
     }
 
-    setValue(val: Widget_group_value<T>) {
-        this.value = val
-    }
-
-    setPartialValue(val: Partial<Widget_group_value<T>>) {
+    setPartialValue(val: Partial<Field_group_value<T>>) {
         runInAction(() => {
-            for (const key in val) this.fields[key].setValue(val[key])
-            this.bumpValue()
+            for (const key in val) this.fields[key].value = val[key]
+            this.applyValueUpdateEffects()
         })
     }
 
-    get subWidgets() {
+    get subFields(): Field[] {
         return Object.values(this.fields)
     }
 
-    get subWidgetsWithKeys() {
-        return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
     }
 
-    set value(val: Widget_group_value<T>) {
-        runInAction(() => {
-            for (const key in val) this.fields[key].setValue(val[key])
-            this.bumpValue()
-        })
-    }
     get value() {
         return this.__value
+    }
+
+    set value(val: Field_group_value<T>) {
+        runInAction(() => {
+            for (const key in val) this.fields[key].value = val[key]
+            this.applyValueUpdateEffects()
+        })
     }
 
     // @internal
@@ -195,15 +189,22 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
+        set: (target, prop, value) => {
+            if (typeof prop !== 'string') return false
+            const subWidget: Field = this.fields[prop]!
+            if (subWidget == null) return false
+            subWidget.value = value
+            return true
+        },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseField = this.fields[prop]!
+            const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
         getOwnPropertyDescriptor: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: BaseField = this.fields[prop]!
+            const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,
@@ -219,7 +220,7 @@ export class Widget_group<T extends SchemaDict> extends BaseField<Widget_group_t
 }
 
 // DI
-registerWidgetClass('group', Widget_group)
+registerWidgetClass('group', Field_group)
 
 /* --------------------------------------------------------------------------------
 // to make a proxy look the way you want:

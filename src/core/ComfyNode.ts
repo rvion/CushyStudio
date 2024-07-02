@@ -18,6 +18,7 @@ configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
+
 export type NodePort = {
     id: string
     label: string
@@ -27,6 +28,7 @@ export type NodePort = {
     x: number
     y: number
 }
+
 /** ComfyNode
  * - correspond to a signal in the graph
  * - belongs to a script
@@ -36,17 +38,17 @@ export class ComfyNode<
     ComfyNode_input extends object,
     ComfyNode_output extends object = {},
 > {
-    storeAs = (storeName: string) => {
+    storeAs(storeName: string): this {
         this.meta.storeAs = storeName
         return this
     }
 
-    tag = (tagName: string) => {
-        this.meta.tag = tagName
+    tag(tagName: string) {
+        this.addTag(tagName)
         return this
     }
 
-    addTag = (tag: string) => {
+    addTag(tag: string) {
         if (this.meta.tags == null) this.meta.tags = [tag]
         else this.meta.tags.push(tag)
         return this

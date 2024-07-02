@@ -1,44 +1,48 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = FieldConfig<
+export type Field_markdown_config = FieldConfig<
     {
-        markdown: string | ((form: Model) => string)
+        markdown: string | ((self: Field_markdown) => string)
         inHeader?: boolean
     },
-    Widget_markdown_types
+    Field_markdown_types
 >
 
 // SERIAL
-export type Widget_markdown_serial = FieldSerial<{
+export type Field_markdown_serial = FieldSerial<{
     type: 'markdown'
-    active: true
 }>
 
 // VALUE
-export type Widget_markdown_value = { type: 'markdown' }
+export type Field_markdown_value = { type: 'markdown' }
 
 // TYPES
-export type Widget_markdown_types = {
+export type Field_markdown_types = {
     $Type: 'markdown'
-    $Config: Widget_markdown_config
-    $Serial: Widget_markdown_serial
-    $Value: Widget_markdown_value
-    $Field: Widget_markdown
+    $Config: Field_markdown_config
+    $Serial: Field_markdown_serial
+    $Value: Field_markdown_value
+    $Field: Field_markdown
 }
 
 // STATE
-export class Widget_markdown extends BaseField<Widget_markdown_types> {
+export class Field_markdown extends Field<Field_markdown_types> {
+    readonly id: string
+    static readonly type: 'markdown' = 'markdown'
+    readonly type: 'markdown' = 'markdown'
+    readonly serial: Field_markdown_serial
+
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -52,47 +56,45 @@ export class Widget_markdown extends BaseField<Widget_markdown_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly id: string
-
-    readonly type: 'markdown' = 'markdown'
-    readonly serial: Widget_markdown_serial
 
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.form)
+        return md(this)
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_markdown>,
-        serial?: Widget_markdown_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_markdown>,
+        serial?: Field_markdown_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
-        this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        this.init({})
+        const config = schema.config
+        this.serial = serial ?? {
+            type: 'markdown',
+            collapsed: config.startCollapsed,
+            id: this.id,
+        }
+        this.init()
     }
 
     /** always return false */
     hasChanges = false
 
     /** do nothing */
-    reset = () => {}
+    reset(): void {}
 
-    setValue(val: Widget_markdown_value) {
-        this.value = val
-    }
-    set value(val: Widget_markdown_value) {
+    set value(val: Field_markdown_value) {
         // do nothing; markdown have no real value; only config
+        // this.value = val
     }
-    get value(): Widget_markdown_value {
+    get value(): Field_markdown_value {
         return this.serial
     }
 }
 
 // DI
-registerWidgetClass('markdown', Widget_markdown)
+registerWidgetClass('markdown', Field_markdown)

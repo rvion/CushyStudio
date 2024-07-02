@@ -1,10 +1,22 @@
-import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Normal FORM ===================================================
-export const ui_subform_Normal = () => {
+export type UI_subform_Normal = X.XGroup<{
+    preprocessor: UI_subform_Normal_Preprocessor
+    models: X.XGroup<{
+        cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    }>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+export function ui_subform_Normal(): UI_subform_Normal {
     const form = getCurrentForm()
     return form
         .group({
@@ -32,15 +44,22 @@ export const ui_subform_Normal = () => {
         ])
 }
 
-export const ui_subform_Normal_Preprocessor = () => {
-    const form: FormBuilder = getCurrentForm()
+// ================================================================================================
+type UI_subform_Normal_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    Midas: UI_subform_Normal_Midas
+    BAE: UI_subform_Normal_bae
+}>
+
+function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Normal Preprocessor',
         startCollapsed: true,
         default: 'Midas',
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             Midas: ui_subform_Normal_Midas(),
             BAE: ui_subform_Normal_bae(),
             // TODO: Add support for auto-modifying the resolution based on other form selections
@@ -49,7 +68,14 @@ export const ui_subform_Normal_Preprocessor = () => {
     })
 }
 
-export const ui_subform_Normal_Midas = () => {
+// ==========================================================================================
+type UI_subform_Normal_Midas = X.XGroup<{
+    a_value: X.XNumber
+    bg_threshold: X.XNumber
+    saveProcessedImage: X.XBool
+}>
+
+function ui_subform_Normal_Midas(): UI_subform_Normal_Midas {
     const form = getCurrentForm()
     return form.group({
         label: 'Settings',
@@ -62,7 +88,12 @@ export const ui_subform_Normal_Midas = () => {
     })
 }
 
-export const ui_subform_Normal_bae = () => {
+// ==========================================================================================
+type UI_subform_Normal_bae = X.XGroup<{
+    saveProcessedImage: X.XBool
+}>
+
+function ui_subform_Normal_bae(): UI_subform_Normal_bae {
     const form = getCurrentForm()
     return form.group({
         label: 'Settings',

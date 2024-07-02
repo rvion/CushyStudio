@@ -12,7 +12,8 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
         preventDefault?: boolean
         showToggleButtonBox?: boolean
         /** emulate beeing hovered, passed down to frame as-is */
-        hovered?: boolean | undefined
+        hovered?: (reallyHovered: boolean) => boolean | undefined
+        iconSize?: string
     },
 ) {
     const isActive = p.value ?? false
@@ -25,10 +26,12 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             tw='InputBoolToggleButtonUI minh-input !select-none cursor-pointer justify-center px-1 text-sm flex items-center'
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
+            tooltip={p.tooltip}
+            tooltipPlacement={p.tooltipPlacement}
             look='default'
             base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
             border={10 /* isActive ? 10 : 20 */}
-            iconSize='1.5em'
+            iconSize={p.iconSize ?? '1.5em'}
             hover={!p.disabled}
             expand={expand}
             style={p.style}

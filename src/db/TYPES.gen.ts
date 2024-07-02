@@ -1277,7 +1277,26 @@ export const schemas = {
     host                 : TABLE_host,
     media_custom         : TABLE_media_custom,
 }
-export type TableName = keyof typeof schemas
+export type TableName =
+    | 'comfy_workflow'
+    | 'draft'
+    | 'project'
+    | 'step'
+    | 'comfy_prompt'
+    | 'comfy_schema'
+    | 'media_text'
+    | 'media_video'
+    | 'media_image'
+    | 'media_3d_displacement'
+    | 'runtime_error'
+    | 'media_splat'
+    | 'custom_data'
+    | 'cushy_script'
+    | 'cushy_app'
+    | 'auth'
+    | 'tree_entry'
+    | 'host'
+    | 'media_custom'
 
 export type KyselyTables = {
     comfy_workflow: ComfyWorkflowTable

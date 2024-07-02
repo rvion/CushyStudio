@@ -1,13 +1,14 @@
 import type { IconName } from '../../icons/icons'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
+import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
@@ -20,9 +21,9 @@ export type BaseSelectEntry<T = string> = {
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
+export type Field_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
     {
-        default?: T
+        default?: NoInfer<T>
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic
@@ -37,96 +38,108 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices: T[] | ((self: Widget_selectOne<T>) => T[])
+        choices: T[] | ((self: Field_selectOne<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
         appearance?: SelectOneSkin
+
+        /**
+         * @since 2024-06-24
+         * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+         */
         wrap?: boolean
+
+        /**
+         * @since 2024-06-24
+         * @deprecated use global csuite config instead
+         */
+        tabPosition?: TabPositionConfig
     },
-    Widget_selectOne_types<T>
+    Field_selectOne_types<T>
 >
 
 // SERIAL FROM VALUE
-export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
-    val: Widget_selectOne_value<T>,
-): Widget_selectOne_serial<T> => ({
+export const Field_selectOne_fromValue = <T extends BaseSelectEntry>(
+    val: Field_selectOne_value<T>,
+): Field_selectOne_serial<T> => ({
     type: 'selectOne',
     query: '',
     val,
 })
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
+export type Field_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectOne'
     query: string
     val: T
 }>
 
 // VALUE
-export type Widget_selectOne_value<T extends BaseSelectEntry> = T
+export type Field_selectOne_value<T extends BaseSelectEntry> = T
 
 // TYPES
-export type Widget_selectOne_types<T extends BaseSelectEntry> = {
+export type Field_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
-    $Config: Widget_selectOne_config<T>
-    $Serial: Widget_selectOne_serial<T>
-    $Value: Widget_selectOne_value<T>
-    $Field: Widget_selectOne<T>
+    $Config: Field_selectOne_config<T>
+    $Serial: Field_selectOne_serial<T>
+    $Value: Field_selectOne_value<T>
+    $Field: Field_selectOne<T>
 }
 
 // STATE
 
 const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 
-export class Widget_selectOne<T extends BaseSelectEntry> //
-    extends BaseField<Widget_selectOne_types<T>>
+export class Field_selectOne<T extends BaseSelectEntry> //
+    extends Field<Field_selectOne_types<T>>
 {
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
 
     readonly id: string
 
+    static readonly type: 'selectOne' = 'selectOne'
     readonly type: 'selectOne' = 'selectOne'
-    readonly serial: Widget_selectOne_serial<T>
+    readonly serial: Field_selectOne_serial<T>
 
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
-        if (selected == null) return 'selected value not in choices'
+        if (selected == null && !this.config.disableLocalFiltering) return 'selected value not in choices'
         return
     }
 
     get defaultValue(): T {
         return this.config.default ?? this.choices[0] ?? FAILOVER_VALUE
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.serial.val.id !== this.defaultValue.id
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 
     get choices(): T[] {
         const _choices = this.config.choices
         if (typeof _choices === 'function') {
-            if (!this.form.ready) return []
-            if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
+            if (!this.entity.ready) return []
             return _choices(this)
         }
         return _choices
     }
 
     constructor(
-        //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_selectOne<T>>,
-        serial?: Widget_selectOne_serial<T>,
+        // 2024-06-27 TODO: rename that
+        // |            VVVV
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_selectOne<T>>,
+        serial?: Field_selectOne_serial<T>,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         const choices = this.choices
         this.serial = serial ?? {
             type: 'selectOne',
@@ -142,22 +155,20 @@ export class Widget_selectOne<T extends BaseSelectEntry> //
         })
     }
 
-    setValue(val: Widget_selectOne_value<T>) {
-        this.value = val
+    get value(): Field_selectOne_value<T> {
+        return this.serial.val
     }
-    set value(next: Widget_selectOne_value<T>) {
+
+    set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
         const nextHasSameID = this.serial.val.id === next.id
         runInAction(() => {
             this.serial.val = next
-            if (!nextHasSameID) this.bumpValue()
-            else this.bumpSerial()
+            if (!nextHasSameID) this.applyValueUpdateEffects()
+            else this.applySerialUpdateEffects()
         })
-    }
-    get value(): Widget_selectOne_value<T> {
-        return this.serial.val
     }
 }
 
 // DI
-registerWidgetClass('selectOne', Widget_selectOne)
+registerWidgetClass('selectOne', Field_selectOne)

@@ -9,7 +9,7 @@ export const Plugin_DebugAST = observer(function Plugin_DebugAST_(p: {
     const uist = p.uist
     return (
         <div>
-            <pre tw='virtualBorder whitespace-pre-wrap text-xs'>{uist.debugView}</pre>
+            <pre tw='whitespace-pre-wrap text-xs'>{uist.debugView}</pre>
         </div>
     )
 })

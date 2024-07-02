@@ -1,4 +1,4 @@
-import type { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
+import type { CompiledPrompt, Field_prompt } from './WidgetPrompt'
 
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
@@ -20,7 +20,7 @@ export class WidgetPromptUISt {
             changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
         })
     }
-    constructor(public widget: Widget_prompt) {
+    constructor(public widget: Field_prompt) {
         this.editorState = EditorState.create({
             doc: this.text,
             extensions: [

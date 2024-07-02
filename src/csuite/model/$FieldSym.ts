@@ -1,8 +1,8 @@
-import type { BaseField } from './BaseField'
+import type { Field } from './Field'
 
 export const $FieldSym = Symbol('Widget')
 
-export const isWidget = (x: any): x is BaseField => {
+export const isWidget = (x: any): x is Field => {
     return (
         x != null && //
         typeof x === 'object' &&

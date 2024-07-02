@@ -1,24 +1,24 @@
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Widget_listExt } from './WidgetListExt'
+import type { ISchema } from '../../model/ISchema'
+import type { Field_listExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends IBlueprint>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends ISchema>(p: {
     //
-    widget: Widget_listExt<T>
+    field: Field_listExt<T>
 }) {
     //
     const scale = 20
-    const widget = p.widget
-    const serial = widget.serial
+    const field = p.field
+    const serial = field.serial
     const uiSt = useLocalObservable(() => ({
         ix: 0,
     }))
     return (
-        <div tw='overflow-auto virtualBorder'>
+        <div tw='overflow-auto'>
             <div tw='flex flex-col gap-1' style={{ width: serial.width * scale }}>
                 <div style={{ minHeight: '1rem', width: serial.width * scale }} tw='timeline-item w-full relative'></div>
-                {widget.entries.map(({ shape: position, widget }, ix) => {
+                {field.entries.map(({ shape: position, widget }, ix) => {
                     return (
                         <div
                             key={widget.id}

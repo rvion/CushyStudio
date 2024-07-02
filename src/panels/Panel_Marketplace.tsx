@@ -9,7 +9,7 @@ export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
     const st = useSt()
     // const form = useMemo(
     //     () =>
-    //         CushyFormManager.form(
+    //         CushyRepository.form(
     //             (ui) => ({
     //                 query: ui.string(),
     //                 installed: ui.bool(),

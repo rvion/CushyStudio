@@ -72,11 +72,17 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                 />
                 <div tw='flex flex-col gap-2'>
                     <DraftMenuDataBlockUI draft={draft} title='Drafts' />
-                    <InputStringUI
-                        getValue={() => draft.data.canvasToolCategory ?? ''}
-                        setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
-                        placeholder='Unified Canvas Category'
-                    />
+                    <div tw='flex items-center'>
+                        <InputStringUI
+                            getValue={() => draft.data.canvasToolCategory ?? ''}
+                            setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
+                            placeholder='Unified Canvas Category'
+                        />
+                        {/* [TEMPORARY HACK 2024-06-24 START] */}
+                        {cushy.theme.root.fields.labelLayout.renderSimple({ label: 'Label' })}
+                        {/* {p.children} */}
+                        {/* [TEMPORARY HACK 2024-06-24 END] */}
+                    </div>
                 </div>
                 <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
             </Frame>

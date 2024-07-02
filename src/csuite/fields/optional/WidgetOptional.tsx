@@ -1,50 +1,50 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends IBlueprint = IBlueprint> = FieldConfig<
+export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
         startActive?: boolean
         widget: T
     },
-    Widget_optional_types<T>
+    Field_optional_types<T>
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends IBlueprint = IBlueprint> = FieldSerial<{
+export type Field_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends IBlueprint = IBlueprint> = Maybe<T['$Value']>
+export type Field_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends IBlueprint = IBlueprint> = {
+export type Field_optional_types<T extends ISchema = ISchema> = {
     $Type: 'optional'
-    $Config: Widget_optional_config<T>
-    $Serial: Widget_optional_serial<T>
-    $Value: Widget_optional_value<T>
-    $Field: Widget_optional<T>
+    $Config: Field_optional_config<T>
+    $Serial: Field_optional_serial<T>
+    $Value: Field_optional_value<T>
+    $Field: Field_optional<T>
 }
 
 // STATE
-export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseField<Widget_optional_types<T>> {
+export class Field_optional<T extends ISchema = ISchema> extends Field<Field_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
 
-    reset = () => {
+    reset(): void {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) this.setActive(true)
@@ -57,7 +57,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
             return
         }
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) return true
@@ -70,11 +70,12 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         }
     }
 
+    static readonly type: 'optional' = 'optional'
     readonly type: 'optional' = 'optional'
     get baseErrors(): Problem_Ext {
         return null
     }
-    serial: Widget_optional_serial<T>
+    serial: Field_optional_serial<T>
     child!: T['$Field']
 
     get childOrThrow(): T['$Field'] {
@@ -85,7 +86,7 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
     setActive = (value: boolean) => {
         if (this.serial.active === value) return
         this.serial.active = value
-        this.bumpValue()
+        this.applyValueUpdateEffects()
 
         // update child collapsed state if need be
         if (value) this.child.setCollapsed(false)
@@ -98,26 +99,26 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
      */
     private _ensureChildIsHydrated = () => {
         if (this.child) return
-        const spec = this.config.widget
+        const schema = this.config.widget
         const prevSerial = this.serial.child
-        if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(this, spec, prevSerial)
+        if (prevSerial && schema.type === prevSerial.type) {
+            this.child = schema.instanciate(this.entity, this, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(this, spec, null)
+            this.child = schema.instanciate(this.entity, this, null)
             this.serial.child = this.child.serial
         }
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_optional<T>>,
-        serial?: Widget_optional_serial<T>,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_optional<T>>,
+        serial?: Field_optional_serial<T>,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         const defaultActive = config.startActive
         this.serial = serial ?? {
             id: this.id,
@@ -140,32 +141,34 @@ export class Widget_optional<T extends IBlueprint = IBlueprint> extends BaseFiel
         })
     }
 
-    setValue(val: Widget_optional_value<T>) {
-        this.value = val
+    /** hack so optional fields do not increase nesting twice */
+    get indentChildren(): number {
+        return 0
     }
 
-    get subWidgets() {
+    get subFields(): Field[] {
         return this.serial.active ? [this.child] : []
     }
 
-    get subWidgetsWithKeys() {
-        return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    get subFieldsWithKeys(): KeyedField[] {
+        return this.serial.active ? [{ key: 'child', field: this.child }] : []
     }
 
-    set value(next: Widget_optional_value<T>) {
+    get value(): Field_optional_value<T> {
+        if (!this.serial.active) return null
+        return this.childOrThrow.value
+    }
+
+    set value(next: Field_optional_value<T>) {
         if (next == null) {
             this.setActive(false)
             return
         } else {
             this.setActive(true)
-            this.child.setValue(next)
+            this.child.value = next
         }
-    }
-    get value(): Widget_optional_value<T> {
-        if (!this.serial.active) return null
-        return this.childOrThrow.value
     }
 }
 
 // DI
-registerWidgetClass('optional', Widget_optional)
+registerWidgetClass('optional', Field_optional)

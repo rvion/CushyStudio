@@ -20,5 +20,11 @@
         "@typescript-eslint/no-this-alias": "off", // sometimes, we need to preserve this.
         "consistent-this": [2, "self", "that"] // as a paliative solution to above permissive rule
     },
-    "ignorePatterns": ["out", "dist", "**/*.d.ts"]
+    "ignorePatterns": [
+        //
+        "out",
+        "dist",
+        "release",
+        "**/*.d.ts"
+    ]
 }

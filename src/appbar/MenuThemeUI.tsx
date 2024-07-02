@@ -9,7 +9,7 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
         <Dropdown
             // startIcon={<span className='material-symbols-outlined'>color_lens</span>}
             title='Theme'
-            content={() => <>{cushy.theme.render()}</>}
+            content={() => <div tw='[width:38rem]'>{cushy.theme.render()}</div>}
         />
     )
 })

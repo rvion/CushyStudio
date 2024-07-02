@@ -34,7 +34,7 @@ export const howManyWidgetValuesForThisSchemaType = (input: NodeInputExt): numbe
 
 /**
  * then a litegraph node has an input entry, some convoluted logic seems to be necessary
- * to determine how many widget_values need to be consumed for this input
+ * to determine how many Field_values need to be consumed for this input
  */
 export const howManyWidgetValuesForThisInputType = (type: string, nameInComfy: string): number => {
     if (type === 'INT') {
@@ -48,7 +48,7 @@ export const howManyWidgetValuesForThisInputType = (type: string, nameInComfy: s
     if (type === 'INT:seed') return 2
     if (type === 'INT:noise_seed') return 2
 
-    // not a primitive, no widget_values
+    // not a primitive, no Field_values
     return 0
 }
 /*

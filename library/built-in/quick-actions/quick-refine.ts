@@ -13,9 +13,9 @@ app({
         refiners: ui_refiners(),
     }),
     //                  👇👇👇👇👇
-    run: async (run, ui, startImg) => {
-        if (startImg == null) throw new Error('no image provided')
-        let img: _IMAGE = await startImg.loadInWorkflow()
+    run: async (run, ui, { image }) => {
+        if (image == null) throw new Error('no image provided')
+        let img: _IMAGE = await image.loadInWorkflow()
         run_model(ui.model)
         img = run_refiners_fromImage(ui.refiners, img)
         run.add_previewImage(img)

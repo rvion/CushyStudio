@@ -1,10 +1,12 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
-import { isWidgetOptional, isWidgetShared } from '../fields/WidgetUI.DI'
+import { isWidgetLink, isWidgetOptional, isWidgetShared } from '../fields/WidgetUI.DI'
 
 /** allow to handle shared and optionals */
-export function getActualWidgetToDisplay(originalWidget: BaseField): BaseField {
+export function getActualWidgetToDisplay(originalWidget: Field): Field {
     if (isWidgetOptional(originalWidget)) return getActualWidgetToDisplay(originalWidget.child)
-    if (isWidgetShared(originalWidget)) return getActualWidgetToDisplay(originalWidget.shared)
+    if (isWidgetLink(originalWidget)) return originalWidget.bField
+    if (isWidgetShared(originalWidget))
+        return originalWidget.shared ? getActualWidgetToDisplay(originalWidget.shared) : originalWidget
     return originalWidget
 }

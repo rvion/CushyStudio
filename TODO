@@ -1,3 +1,23 @@
+2024-07-01:
+    ☐ test about link auto-migration.
+    ☐ setSerial.
+    ☐ info mapping via custom schema mapping.
+    ☐ setting value on value by addming more proxies.
+
+2024-06-29:
+    ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
+    ✔ 2. recover from/to list when iterating on the schema (15min) @done(24-07-01 22:33)
+    ☐ 3. config tab persitence (15min)
+    ☐ 4. debug icon to see panel data (15min)
+
+--------------
+☐ make sure choices always show in the same order
+☐ debug electron
+    - https://github.com/nodejs/node/blob/main/doc/abi_version_registry.json
+    - https://www.electronjs.org/blog/electron-31-0
+
+--------------
+
 ☐ post to pictogrammers
 ☐ form context
 ☐ previous value

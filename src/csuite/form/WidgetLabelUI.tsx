@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -7,7 +7,7 @@ import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 export const WidgetLabelUI = observer(function WidgetLabelUI_(p: {
     //
-    widget: BaseField
+    widget: Field
     className?: string
     children: ReactNode
 }) {

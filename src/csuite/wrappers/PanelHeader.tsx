@@ -5,7 +5,8 @@ import { ReactNode } from 'react'
 
 import { Frame } from '../frame/Frame'
 
-/** Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
+/**
+ * Re-usable Dock-Panel Header, gives a full width bar and a horizontal flex to put widgets in.
  *
  * `NOTE`: It will automatically set the height of any child widgets.
  *

@@ -1,17 +1,17 @@
+import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
-import type { Model } from '../csuite/model/Model'
+import type { Field_group } from '../csuite/fields/group/WidgetGroup'
+import type { Entity } from '../csuite/model/Entity'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
-import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
 import { reaction } from 'mobx'
 
 // import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { type Builder, cushyRepo } from '../controls/Builder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { LiveRef } from '../db/LiveRef'
@@ -165,7 +165,7 @@ export class DraftL {
     start = (p: {
         //
         formValueOverride?: Maybe<any>
-        imageToStartFrom?: MediaImageL
+        context?: DraftExecutionContext
         httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
@@ -199,7 +199,7 @@ export class DraftL {
                   builder: { _cache: { count: 0 } },
                   result: p.formValueOverride,
                   serial: {},
-              } as any as Widget_group<any>)
+              } as any as Field_group<any>)
             : this.form.root
 
         if (widget == null) throw new Error('invalid req')
@@ -232,7 +232,7 @@ export class DraftL {
         // start step without waiting
         void step.start({
             formInstance: widget,
-            imageToStartFrom: p.imageToStartFrom,
+            context: p.context ?? {},
         })
         this.lastStarted = step
         void step.finished.then(() => {
@@ -245,7 +245,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Model<any, FormBuilder>> = null
+    _form: Maybe<Entity<any, Builder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -266,9 +266,9 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = CushyFormManager.fields(action.ui, {
+                this._form = cushyRepo.fields(action.ui, {
                     name: this.name,
-                    initialSerial: () => this.data.formSerial,
+                    serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
                         this.update({ formSerial: form.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)

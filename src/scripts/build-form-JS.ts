@@ -24,7 +24,7 @@ export async function buildJS(p: {
             'process.env.NODE_ENV': '"production"',
         },
         // entryPoints: ['src/app/main.tsx'],
-        entryPoints, //: ['src/controls/FormBuilder.loco.ts'],
+        entryPoints, //: ['src/controls/Builder.loco.ts'],
         plugins: [
             // {
             //     name: 'debug all stuff',

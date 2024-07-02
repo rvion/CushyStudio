@@ -1,18 +1,18 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 
-export type Widget_matrix_cell = {
+export type Field_matrix_cell = {
     x: number
     y: number
     row: string
@@ -21,47 +21,48 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = FieldConfig<
+export type Field_matrix_config = FieldConfig<
     {
         default?: { row: string; col: string }[]
         rows: string[]
         cols: string[]
     },
-    Widget_matrix_types
+    Field_matrix_types
 >
 
 // SERIAL
-export type Widget_matrix_serial = FieldSerial<{
+export type Field_matrix_serial = FieldSerial<{
     type: 'matrix'
     active: true
-    selected: Widget_matrix_cell[]
+    selected: Field_matrix_cell[]
 }>
 
 // VALUE
-export type Widget_matrix_value = Widget_matrix_cell[]
+export type Field_matrix_value = Field_matrix_cell[]
 
 // TYPES
-export type Widget_matrix_types = {
+export type Field_matrix_types = {
     $Type: 'matrix'
-    $Config: Widget_matrix_config
-    $Serial: Widget_matrix_serial
-    $Value: Widget_matrix_value
-    $Field: Widget_matrix
+    $Config: Field_matrix_config
+    $Serial: Field_matrix_serial
+    $Value: Field_matrix_value
+    $Field: Field_matrix
 }
 
 // STATE
-export class Widget_matrix extends BaseField<Widget_matrix_types> {
+export class Field_matrix extends Field<Field_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'matrix' = 'matrix'
     readonly type: 'matrix' = 'matrix'
-    readonly serial: Widget_matrix_serial
+    readonly serial: Field_matrix_serial
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         if (def == null) return this.value.length != 0
         else {
@@ -72,7 +73,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
             return false
         }
     }
-    reset() {
+    reset(): void {
         this.setAll(false)
         for (const i of this.config.default ?? []) {
             this.setCell(i.row, i.col, true)
@@ -86,14 +87,14 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_matrix>,
-        serial?: Widget_matrix_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_matrix>,
+        serial?: Field_matrix_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 
         const rows = config.rows
@@ -120,12 +121,13 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         })
     }
 
-    setValue(val: Widget_matrix_value) {
-        this.value = val
+    get value(): Field_matrix_value {
+        // if (!this.state.active) return undefined
+        return this.serial.selected
     }
 
     /** 🔶 this is inneficient */
-    set value(val: Widget_matrix_value) {
+    set value(val: Field_matrix_value) {
         runInAction(() => {
             // 1. reset all cells to false
             for (const c of this.allCells) {
@@ -140,23 +142,18 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
         })
     }
 
-    get value(): Widget_matrix_value {
-        // if (!this.state.active) return undefined
-        return this.serial.selected
-    }
-
     private sep = ' &&& '
-    private store = new Map<string, Widget_matrix_cell>()
+    private store = new Map<string, Field_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
     get allCells() { return Array.from(this.store.values()) } // prettier-ignore
 
     UPDATE = () => {
         this.serial.selected = this.RESULT
-        this.bumpValue() // only place to call bumpValue
+        this.applyValueUpdateEffects() // only place to call bumpValue
     }
 
     /** list of all cells that are ON */
-    get RESULT(): Widget_matrix_cell[] {
+    get RESULT(): Field_matrix_cell[] {
         return this.allCells.filter((v) => v.value)
     }
 
@@ -188,7 +185,7 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
     }
 
     /** get cell at {rol x col} */
-    getCell = (row: string, col: string): Widget_matrix_cell => {
+    getCell = (row: string, col: string): Field_matrix_cell => {
         return bang(this.store.get(this.key(row, col)))
     }
 
@@ -201,4 +198,4 @@ export class Widget_matrix extends BaseField<Widget_matrix_types> {
 }
 
 // DI
-registerWidgetClass('matrix', Widget_matrix)
+registerWidgetClass('matrix', Field_matrix)

@@ -1,22 +1,25 @@
+import type { IconName } from '../../icons/icons'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
-import type { IBlueprint, SchemaDict } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
+import type { TabPositionConfig } from './TabPositionConfig'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field, type KeyedField } from '../../model/Field'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI, WidgetChoices_TabHeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
+import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
-export type TabPositionConfig = 'start' | 'center' | 'end'
 type DefaultBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
+export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
     {
         expand?: boolean
         items: T
@@ -28,11 +31,11 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = FieldConf
         appearance?: 'select' | 'tab'
         tabPosition?: TabPositionConfig
     },
-    Widget_choices_types<T>
+    Field_choices_types<T>
 >
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
+export type Field_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
     type: 'choices'
     active: true
     branches: DefaultBranches<T>
@@ -40,28 +43,29 @@ export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = FieldSeri
 }>
 
 // VALUE
-export type Widget_choices_value<T extends SchemaDict = SchemaDict> = {
+export type Field_choices_value<T extends SchemaDict = SchemaDict> = {
     [k in keyof T]?: T[k]['$Value']
 }
 
 // TYPES
-export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
+export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
-    $Config: Widget_choices_config<T>
-    $Serial: Widget_choices_serial<T>
-    $Value: Widget_choices_value<T>
-    $Field: Widget_choices<T>
+    $Config: Field_choices_config<T>
+    $Serial: Field_choices_serial<T>
+    $Value: Field_choices_value<T>
+    $Field: Field_choices<T>
 }
 
 // STATE
-export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField<Widget_choices_types<T>> {
-    UITab = () => <WidgetChoices_TabHeaderUI widget={this} />
-    UISelect = () => <WidgetChoices_HeaderUI widget={this} />
-    UIChildren = () => <WidgetChoices_BodyUI widget={this} justify={false} />
+export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Field_choices_types<T>> {
+    UITab = () => <WidgetChoices_TabHeaderUI field={this} />
+    UISelect = () => <WidgetChoices_SelectHeaderUI field={this} />
+    UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
     readonly id: string
 
+    static readonly type: 'choices' = 'choices'
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
@@ -79,7 +83,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
 
     children: { [k in keyof T]?: T[k]['$Field'] } = {}
 
-    serial: Widget_choices_serial<T>
+    serial: Field_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
         return this.choices[0]
@@ -89,15 +93,29 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return Object.keys(this.config.items)
     }
 
-    get choicesWithLabels(): { key: keyof T & string; label: string }[] {
-        return Object.entries(this.config.items).map(([key, spec]) => ({
+    get isCollapsible() {
+        if (this.activeBranches.length === 0) return false
+        return super.isCollapsible
+    }
+
+    get choicesWithLabels(): { key: keyof T & string; label: string; icon?: IconName }[] {
+        return Object.entries(this.config.items).map(([key, schema]) => ({
             key,
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
-            label: spec.config.label || makeLabelFromFieldName(key),
+            label: schema.config.label || makeLabelFromFieldName(key),
+            icon: schema.config.icon,
         }))
     }
+
+    // 💬 2024-07-01 rvion:
+    // hack so optional fields do not increase nesting twice
+    // But not sure this override is worth it.
+    // Consistency may be better than the extra line of code.
+    // | get indentChildren(): number {
+    // |     return 0
+    // | }
 
     /** array of all active branch keys */
     get activeBranches(): (keyof T & string)[] {
@@ -113,7 +131,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return this.children[this.firstActiveBranchName]
     }
 
-    get hasChanges() {
+    get hasChanges(): boolean {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
@@ -130,7 +148,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         return false
     }
 
-    reset() {
+    reset(): void {
         const def = this.config.default
         for (const branchName of this.choices) {
             const shouldBeActive =
@@ -146,19 +164,19 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
             const childAfter = this.children[branchName]
             if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_choices<T>>,
-        serial?: Widget_choices_serial<T>,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_choices<T>>,
+        serial?: Field_choices_serial<T>,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         // ensure ID
         // TODO: investigate why this contructor is called so many times (5 times ???)
 
@@ -215,12 +233,12 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         })
     }
 
-    get subWidgets() {
+    get subFields(): Field[] {
         return Object.values(this.children)
     }
 
-    get subWidgetsWithKeys() {
-        return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
+    get subFieldsWithKeys(): KeyedField[] {
+        return Object.entries(this.children).map(([key, field]) => ({ key, field }))
     }
 
     toggleBranch(branch: keyof T & string) {
@@ -240,7 +258,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         delete this.children[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
         this.serial.branches[branch] = false
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
     enableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
@@ -260,20 +278,20 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
+            this.children[branch] = schema.instanciate(this.entity, this, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(this, schema, null)
+            this.children[branch] = schema.instanciate(this.entity, this, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 
         // set the active branch as active
         this.serial.branches[branch] = true
-        if (!p?.skipBump) this.bumpValue()
+        if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
-    setValue(val: Widget_choices_value<T>) {
+    set value(val: Field_choices_value<T>) {
         for (const branch of this.choices) {
             // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
             if (val[branch] == null) {
@@ -286,13 +304,13 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
                     this.enableBranch(branch)
                 }
                 // patch branch value to given value
-                this.children[branch]!.setValue(val[branch]!)
+                this.children[branch]!.value = val[branch]!
             }
         }
-        this.bumpValue()
+        this.applyValueUpdateEffects()
     }
     /** results, but only for active branches */
-    get value(): Widget_choices_value<T> {
+    get value(): Field_choices_value<T> {
         const out: { [key: string]: any } = {}
         for (const branch in this.children) {
             // if (this.state.branches[key] !== true) continue
@@ -303,4 +321,4 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseField
 }
 
 // DI
-registerWidgetClass('choices', Widget_choices)
+registerWidgetClass('choices', Field_choices)

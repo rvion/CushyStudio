@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
@@ -52,6 +51,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             <Button
                 // tw='h-input'
                 look='success'
+                tooltip='Run the current draft. (create a step)'
                 // size='xs'
                 expand
                 className='self-start'
@@ -66,6 +66,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             </Button>
             <Button // TODO(bird_d): Need a button that can be tied to an command, and will pull the relevant info from it. Like a label for the- label, and a description for the tooltip.
                 icon='mdiAnimationPlay'
+                tooltip='Auto-start (restart when idle if change happened)'
                 look='success'
                 // size='xs'
                 // tw='h-input'

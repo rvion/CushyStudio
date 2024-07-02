@@ -23,6 +23,9 @@ export class RegionMonitor {
     hoveredRegion: Maybe<HoveredRegion> = null
     hoveredPanel: Maybe<string> = null
 
+    mouseX = 0
+    mouseY = 0
+
     get hoveredCtx(): Maybe<HoveredCtx> {
         const id = this.hoveredRegion?.id
         if (id == null) return null
@@ -68,6 +71,9 @@ export const useRegionMonitor = () => {
                 // console.log(`[❌] mouse event target is not HTMLElement`)
                 return
             }
+
+            regionMonitor.mouseX = event.clientX
+            regionMonitor.mouseY = event.clientY
 
             // 1. find region ============================================================
             // walk upwards from the target until we find a region

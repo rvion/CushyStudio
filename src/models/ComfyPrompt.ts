@@ -250,7 +250,7 @@ export class ComfyPromptL {
             const buff = await response.arrayBuffer()
             const uint8arr = new Uint8Array(buff)
             writeFileSync(absPath, uint8arr)
-            imgL = _createMediaImage_fromLocalyAvailableImage(this.st, outputRelPath, buff, imgCreationOpts)
+            imgL = _createMediaImage_fromLocalyAvailableImage(outputRelPath, buff, imgCreationOpts)
         }
 
         // apply tags --------------------------------------------------------------------------------

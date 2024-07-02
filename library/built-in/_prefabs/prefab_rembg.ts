@@ -1,6 +1,17 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_rembg_v1 = () => {
+export type UI_rembg_v1 = X.XChoices<{
+    RemBG: X.XEmpty
+    isnetAnime: X.XEmpty
+    isnetGeneralUse: X.XEmpty
+    silueta: X.XEmpty
+    u2net: X.XEmpty
+    u2net_human_seg: X.XEmpty
+    u2netp: X.XEmpty
+    RemBGV1_4: X.XEmpty
+}>
+
+export function ui_rembg_v1(): UI_rembg_v1 {
     const form = getCurrentForm()
     return form
         .choices({
@@ -10,15 +21,15 @@ export const ui_rembg_v1 = () => {
             // prettier-ignore
             icon:'mdiTargetAccount',
             items: {
-                RemBG: form.group(),
-                // ABG:             form.group(),
-                isnetAnime: form.group(),
-                isnetGeneralUse: form.group(),
-                silueta: form.group(),
-                u2net: form.group(),
-                u2net_human_seg: form.group(),
-                u2netp: form.group(),
-                RemBGV1_4: form.group(),
+                RemBG: form.empty(),
+                // ABG:             form.ok(),
+                isnetAnime: form.empty(),
+                isnetGeneralUse: form.empty(),
+                silueta: form.empty(),
+                u2net: form.empty(),
+                u2net_human_seg: form.empty(),
+                u2netp: form.empty(),
+                RemBGV1_4: form.empty(),
             },
         })
         .addRequirements([

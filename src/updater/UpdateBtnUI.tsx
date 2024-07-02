@@ -85,7 +85,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
             </div>
             <UpdaterErrorUI updater={updater} />
 
-            <div tw='virtualBorder'>
+            <div>
                 {updater.lastFetchAt ? (
                     <div>
                         <div>

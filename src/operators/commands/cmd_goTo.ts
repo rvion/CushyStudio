@@ -1,9 +1,9 @@
 // ---------------------------------------------------------------------
 
+import { ctx_global } from '../../csuite/command-topic/ctx_global'
 import { command } from '../../csuite/commands/Command'
 import { menuWithoutProps, type MenuWithoutProps } from '../../csuite/menu/Menu'
 import { Trigger } from '../../csuite/trigger/Trigger'
-import { ctx_global } from '../contexts/ctx_global'
 
 export const menu_utils: MenuWithoutProps = menuWithoutProps({
     title: 'Utils',

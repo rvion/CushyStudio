@@ -2,10 +2,13 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
+import type { Activity } from '../csuite/activity/Activity'
+import type { CSuiteConfig } from '../csuite/ctx/CSuiteConfig'
 import type { Tint } from '../csuite/kolor/Tint'
-import type { ModelSerial } from '../csuite/model/ModelSerial'
+import type { EntitySerial } from '../csuite/model/EntitySerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { MediaImageL } from '../models/MediaImage'
+import type { ConfigMode } from '../panels/PanelConfig/PanelConfig'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
@@ -26,8 +29,9 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { CushyFormManager } from '../controls/FormBuilder'
+import { builder, cushyRepo, type CushyRepo } from '../controls/Builder'
 import { JsonFile } from '../core/JsonFile'
+import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
@@ -72,6 +76,8 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
+import { interfaceConf } from './conf/interfaceConf'
+import { systemConf } from './conf/systemConf'
 import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
@@ -79,6 +85,8 @@ import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 
 export class STATE {
+    Channel = Channel // WIP remove me 2024-06-25 🔴
+
     // LEAVE THIS AT THE TOP OF THIS CLASS
     __INJECTION__ = (() => {
         //  globally register the state as this
@@ -112,14 +120,11 @@ export class STATE {
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
-    forms: CushyFormManager = CushyFormManager
+    forms: CushyRepo = cushyRepo
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
+    builder = builder
 
-    get showWidgetUndo() { return this.theme.value.showWidgetUndo } // prettier-ignore
-    get showWidgetMenu() { return this.theme.value.showWidgetMenu } // prettier-ignore
-    get showWidgetDiff() { return this.theme.value.showWidgetDiff } // prettier-ignore
-    get showToggleButtonBox() { return this.theme.value.showToggleButtonBox } // prettier-ignore
     _updateTime = () => {
         const now = Date.now()
         // console.log(`time is now ${now}`)
@@ -241,6 +246,7 @@ export class STATE {
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
+    configMode: ConfigMode = 'legacy'
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
@@ -311,20 +317,8 @@ export class STATE {
 
     droppedFiles: File[] = []
 
-    // _allPublishedApps: Maybe<> = null
-
-    // showCardPicker: boolean = false
-    closeFullLibrary = () => (this.layout.fullPageComp = null)
-    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' })
     toggleFullLibrary = () => {
-        if (
-            this.layout.fullPageComp == null || //
-            this.layout.fullPageComp.panel !== 'FullScreenLibrary'
-        ) {
-            this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' }
-        } else {
-            this.layout.fullPageComp = null
-        }
+        this.layout.FOCUS_OR_CREATE('FullScreenLibrary', {})
     }
 
     // 🔴 this is not the right way to go cause it will cause the action to stay
@@ -429,7 +423,7 @@ export class STATE {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
     }
-    graphConf = CushyFormManager.fields(
+    graphConf = cushyRepo.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -437,14 +431,20 @@ export class STATE {
         }),
         {
             name: 'Graph Visualisation',
-            initialSerial: () => readJSON('settings/graph-visualization.json'),
+            serial: () => readJSON('settings/graph-visualization.json'),
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
+
+    /** practical shortcut to start activity */
+    startActivity(activity: Activity) {
+        activityManager.start(activity)
+    }
+
     get activityManager() {
         return activityManager
     }
-    civitaiConf = CushyFormManager.fields(
+    civitaiConf = cushyRepo.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -454,11 +454,11 @@ export class STATE {
         }),
         {
             name: 'Civitai Conf',
-            initialSerial: () => readJSON('settings/civitai.json'),
+            serial: () => readJSON('settings/civitai.json'),
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = CushyFormManager.fields(
+    favbar = cushyRepo.fields(
         (f) => ({
             size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
@@ -467,7 +467,7 @@ export class STATE {
         }),
         {
             name: 'SideBar Conf',
-            initialSerial: () => readJSON('settings/sidebar.json'),
+            serial: () => readJSON('settings/sidebar.json'),
             onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
@@ -476,7 +476,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = CushyFormManager.fields(
+    displacementConf = cushyRepo.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -501,12 +501,12 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialSerial: () => readJSON<ModelSerial>('settings/displacement.json'),
+            serial: () => readJSON<EntitySerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
 
-    galleryConf = CushyFormManager.fields(
+    galleryConf = cushyRepo.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },
@@ -521,7 +521,7 @@ export class STATE {
         {
             name: 'Gallery Conf',
             onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            initialSerial: () => readJSON('settings/gallery.json'),
+            serial: () => readJSON('settings/gallery.json'),
         },
     )
 
@@ -601,6 +601,7 @@ export class STATE {
                 return
             },
         })
+
         this.tree2 = new Tree(
             [
                 // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
@@ -623,6 +624,7 @@ export class STATE {
         makeAutoObservable(this, {
             comfyUIIframeRef: false,
             wildcards: false,
+            Channel: false, // WIP remove me 2024-06-25 🔴
         })
         void this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
@@ -938,7 +940,12 @@ export class STATE {
     }
 
     theme = themeConf
-    csuite = new CSuite_ThemeCushy(this)
+    preferences = {
+        interface: interfaceConf,
+        system: systemConf,
+    }
+
+    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)
 
     get themeText(): Tint {
         return run_tint(this.theme.value.text)

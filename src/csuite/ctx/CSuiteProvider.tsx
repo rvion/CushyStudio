@@ -1,11 +1,9 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
+import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../frame/Frame'
-
 import { CSuiteCtx } from './CSuiteCtx'
 
 /**
@@ -36,6 +34,7 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
                     // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
+                    '--widget-height': `${config.widgetHeight}rem`,
                     '--input-height': `${config.inputHeight}rem`,
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
                 }}

@@ -4,6 +4,8 @@ import type { MediaCustomL } from '../../models/MediaCustom'
 // import * as fiber from '@react-three/fiber'
 import { observer } from 'mobx-react-lite'
 
+// @ts-ignore
+import { jsx, jsxs } from '../../csuite/custom-jsx/jsx-runtime'
 // import * as react from 'react'
 // import { createElement } from 'react'
 // import { Fragment } from 'react/jsx-runtime'
@@ -13,8 +15,6 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { StepL } from '../../models/Step'
-// @ts-ignore
-import { jsx, jsxs } from '../../utils/custom-jsx/jsx-runtime'
 
 export const Output3dScenePreviewUI = observer(function Output3dScenePreviewUI_(p: {
     step?: Maybe<StepL>

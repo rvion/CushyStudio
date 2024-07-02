@@ -2384,7 +2384,7 @@ export type KnownCustomNode_CushyName =
     | "FERandomPrompt"
     | "FERerouteWithName"
     | "FESaveEncryptImage"
-    | "Fetch_widget_value"
+    | "Fetch_Field_value"
     | "FetchRemote"
     | "FETextCombine"
     | "FETextCombine2Any"
@@ -7451,5 +7451,3 @@ export type KnownCustomNode_CushyName =
     | "ZSuite$4_Prompter"
     | "ZSuite$4_RF_Noise"
     | "ZSuite$4_SeedMod"
-
-

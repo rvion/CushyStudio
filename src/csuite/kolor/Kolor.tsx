@@ -92,6 +92,8 @@ export class Kolor implements Tint {
 
     tintBg = (b: Maybe<Tint>, dir?: TintDir): Kolor => this.tint(b, 'Bg', dir)
     tintFg = (b: Maybe<Tint>, dir?: TintDir): Kolor => this.tint(b, 'Fg', dir)
+    tintBorder = (b: Maybe<Tint>, dir?: TintDir): Kolor => this.tint(b, 'Bg', dir)
+
     tint = (
         //
         b: Maybe<Tint>,

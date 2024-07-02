@@ -39,7 +39,7 @@ src/db/cushy*.db-wal
 
 CONFIG.json
 global.d.ts
-!src/utils/custom-jsx/global.d.ts
+!src/utils/global.d.ts
 tsconfig.custom.json
 
 library/local/*

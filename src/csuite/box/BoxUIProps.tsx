@@ -12,6 +12,7 @@ export type BoxUIProps = Box & {
     // mouse
     onClick?: (ev: React.MouseEvent<HTMLDivElement>) => unknown
     onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    onMouseUp?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onMouseLeave?: (ev: React.MouseEvent<HTMLDivElement>) => void
     onContextMenu?: (ev: React.MouseEvent<HTMLDivElement>) => void

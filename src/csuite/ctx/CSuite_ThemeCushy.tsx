@@ -13,46 +13,62 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         makeAutoObservable(this)
     }
 
-    // form behaviour
+    get widgetHeight(): number {
+        return this.st.preferences.interface.value.widgetHeight ?? 1.8
+    }
+
     get clickAndSlideMultiplicator() {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
+
     get showWidgetUndo() {
-        return this.st.theme.value.showWidgetUndo ?? true
+        return this.st.preferences.interface.value.showWidgetUndo ?? true
     }
+
     get showWidgetMenu() {
-        return this.st.theme.value.showWidgetMenu ?? true
+        return this.st.preferences.interface.value.showWidgetMenu ?? true
     }
+
     get showWidgetDiff() {
-        return this.st.theme.value.showWidgetDiff ?? true
+        return this.st.preferences.interface.value.showWidgetDiff ?? true
     }
+
     get showToggleButtonBox() {
-        return this.st.theme.value.showToggleButtonBox ?? false
+        return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
+
+    get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
+        const x = this.st.theme.value.labelLayout
+        if (x.id === 'fluid') return 'fluid'
+        if (x.id === 'left') return 'fixed-left'
+        if (x.id === 'right') return 'fixed-right'
+        return 'fixed-right'
+    }
+
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
     get inputHeight() {
-        return this.st.theme.value.inputHeight ?? 1.6
+        return this.st.preferences.interface.value.inputHeight ?? 1.6
     }
     // theme
+
     get baseStr() {
         return this.st.theme.root.value.base
     }
+
     get base(): Kolor {
         return Kolor.fromString(this.baseStr)
     }
+
     get shiftDirection() {
         return this.base.lightness > 0.5 ? -1 : 1
     }
+
     get text(): Tint {
         return run_tint(this.st.theme.value.text)
     }
 
-    inputBorder = new NumberVar(
-        //
-        'input-border',
-        () => (this.st.theme.value.border ?? 20) / 100,
-    )
+    inputBorder = new NumberVar('input-border', () => (this.st.theme.value.border ?? 20) / 100)
 
     get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel
@@ -60,9 +76,10 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return run_tint(raw)
     }
 
-    // get value(): THEME {
-    //     return {
-    //         ...defaultDarkTheme,
-    //     }
-    // }
+    get fieldGroups() {
+        return {
+            border: this.st.theme.value.fieldGroups?.border,
+            contrast: this.st.theme.value.fieldGroups?.contrast,
+        }
+    }
 }

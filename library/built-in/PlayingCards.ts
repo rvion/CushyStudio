@@ -1,4 +1,3 @@
-import type { FormBuilder } from '../../src/controls/FormBuilder'
 import type { ImageAndMask } from '../../src/CUSHY'
 
 import { toJS } from 'mobx'
@@ -16,7 +15,7 @@ app({
         illustration: 'library/built-in/_illustrations/poker-card-generator.jpg',
         description: 'Allow you to generate illustrated deck of cards',
     },
-    ui: (ui: FormBuilder) => ({
+    ui: (ui: X.Builder) => ({
         // [UI] CARD ---------------------------------------
         // _2: form.markdown({ markdown: `### Cards`, label: false }),
         cards: ui.matrix({

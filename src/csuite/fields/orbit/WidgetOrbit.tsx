@@ -1,12 +1,12 @@
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
@@ -17,16 +17,16 @@ export type OrbitData = {
 }
 
 // CONFIG
-export type Widget_orbit_config = FieldConfig<{ default?: Partial<OrbitData> }, Widget_orbit_types>
+export type Field_orbit_config = FieldConfig<{ default?: Partial<OrbitData> }, Field_orbit_types>
 
 // SERIAL
-export type Widget_orbit_serial = FieldSerial<{
+export type Field_orbit_serial = FieldSerial<{
     type: 'orbit'
     value: OrbitData
 }>
 
 // SERIAL FROM VALUE
-export const Widget_orbit_fromValue = (value: Widget_orbit_value): Widget_orbit_serial => ({
+export const Field_orbit_fromValue = (value: Field_orbit_value): Field_orbit_serial => ({
     type: 'orbit',
     value: {
         azimuth: value.azimuth,
@@ -35,28 +35,29 @@ export const Widget_orbit_fromValue = (value: Widget_orbit_value): Widget_orbit_
 })
 
 // VALUE
-export type Widget_orbit_value = {
+export type Field_orbit_value = {
     azimuth: number
     elevation: number
     englishSummary: string
 }
 
 // TYPES
-export type Widget_orbit_types = {
+export type Field_orbit_types = {
     $Type: 'orbit'
-    $Config: Widget_orbit_config
-    $Serial: Widget_orbit_serial
-    $Value: Widget_orbit_value
-    $Field: Widget_orbit
+    $Config: Field_orbit_config
+    $Serial: Field_orbit_serial
+    $Value: Field_orbit_value
+    $Field: Field_orbit
 }
 
 // STATE
-export class Widget_orbit extends BaseField<Widget_orbit_types> {
+export class Field_orbit extends Field<Field_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
+    static readonly type: 'orbit' = 'orbit'
+    readonly type: 'orbit' = 'orbit'
 
-    type: 'orbit' = 'orbit'
     get baseErrors(): Problem_Ext {
         return null
     }
@@ -67,13 +68,13 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
     get defaultElevation() {
         return this.config.default?.elevation ?? 0
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         if (this.serial.value.azimuth !== this.defaultAzimuth) return true
         if (this.serial.value.elevation !== this.defaultElevation) return true
         return false
     }
     /** reset azimuth and elevation */
-    reset = () => {
+    reset(): void {
         this.serial.value.azimuth = this.defaultAzimuth
         this.serial.value.elevation = this.defaultElevation
     }
@@ -98,18 +99,18 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
         return { x: y, y: z, z: -x }
     }
 
-    serial: Widget_orbit_serial
+    serial: Field_orbit_serial
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_orbit>,
-        serial?: Widget_orbit_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_orbit>,
+        serial?: Field_orbit_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'orbit',
             collapsed: config.startCollapsed,
@@ -136,23 +137,20 @@ export class Widget_orbit extends BaseField<Widget_orbit_types> {
         this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
     }
 
-    setValue(val: Widget_orbit_value) {
-        this.value = val
-    }
-
-    set value(val: Widget_orbit_value) {
-        this.serial.value.azimuth = val.azimuth
-        this.serial.value.elevation = val.elevation
-        this.bumpValue()
-    }
-    get value(): Widget_orbit_value {
+    get value(): Field_orbit_value {
         return {
             azimuth: this.serial.value.azimuth,
             elevation: this.serial.value.elevation,
             englishSummary: this.englishSummary,
         }
     }
+
+    set value(val: Field_orbit_value) {
+        this.serial.value.azimuth = val.azimuth
+        this.serial.value.elevation = val.elevation
+        this.applyValueUpdateEffects()
+    }
 }
 
 // DI
-registerWidgetClass<Widget_orbit>('orbit', Widget_orbit)
+registerWidgetClass<Field_orbit>('orbit', Field_orbit)

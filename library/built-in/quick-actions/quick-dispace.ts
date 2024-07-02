@@ -10,11 +10,11 @@ app({
     ui: () => ({
         displacementConfig: ui_3dDisplacement(),
     }),
-    run: async (run, ui, startImg) => {
-        if (startImg == null) throw new Error('no image provided')
-        const img = await startImg.loadInWorkflow()
+    run: async (run, ui, { image }) => {
+        if (image == null) throw new Error('no image provided')
+        const img = await image.loadInWorkflow()
         run_Dispacement1(ui.displacementConfig, img)
         await run.PROMPT()
-        run_Dispacement2(startImg)
+        run_Dispacement2(image)
     },
 })

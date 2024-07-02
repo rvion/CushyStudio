@@ -59,14 +59,14 @@ Name=CushyStudio (dev)
 Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start-dev.sh\"'
 " > "$LSHARE/applications/cushystudio-shell.desktop"
 
-        
+
         ;;
     *)
         echo "Unsupported operating system: $OS"; exit 1 ;;
 esac
 echo "Node.js architecture: $NODE_ARCH"
 
-NODE_VERSION="v18.19.0"
+NODE_VERSION="v20.14.0"
 echo "Node.js version: $NODE_VERSION"
 
 # Define the download URL ------------------------------------------------------------

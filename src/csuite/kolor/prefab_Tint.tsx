@@ -21,7 +21,7 @@ export type UI_Tint = X.XChoices<{
 
 export const ui_tint = (
     //
-    ui: X.FormBuilder,
+    ui: X.Builder,
     def?: Tint,
 ): UI_Tint => {
     return ui.choicesV2(
@@ -156,7 +156,7 @@ export const ui_tint = (
             ],
             // tabPosition: 'start',
             body: (p) => {
-                const { l, c, h } = p.widget.children
+                const { l, c, h } = p.field.children
                 return (
                     <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
                         {/* ------------------ */}

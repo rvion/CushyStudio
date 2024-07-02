@@ -236,22 +236,29 @@ export class AutoCompleteSelectState<T> {
     }
 
     // click means focus change => means need to refocus the input
-    onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
-        ev.preventDefault()
-        ev.stopPropagation()
-        this.selectOption(index)
-        this.inputRef.current?.focus()
-    }
+    // ⏸️ onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
+    // ⏸️     ev.preventDefault()
+    // ⏸️     ev.stopPropagation()
+    // ⏸️     this.selectOption(index)
+    // ⏸️     this.inputRef.current?.focus()
+    // ⏸️ }
 
     selectOption(index: number) {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption != null) {
             this.p.onChange?.(selectedOption, this)
+            // reset the query
             const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
-            const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
             if (shouldResetQuery) this.searchQuery = ''
-            if (shouldCloseMenu) this.closeMenu()
+            // close the menu
+            // this.closeIfShouldCloseAfterSelection()
         }
+    }
+
+    closeIfShouldCloseAfterSelection() {
+        // close the menu
+        const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
+        if (shouldCloseMenu) this.closeMenu()
     }
 
     navigateSelection(direction: 'up' | 'down') {
@@ -307,14 +314,17 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onBlur = (_ev: FocusEvent<HTMLDivElement, Element>) => {
+    onBlur(_ev: FocusEvent<HTMLDivElement, Element>) {
         this.closeMenu()
     }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent) => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
-        else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) this.selectOption(this.selectedIndex)
+        else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
+            this.selectOption(this.selectedIndex)
+            this.closeIfShouldCloseAfterSelection()
+        }
     }
 
     onRealInputKeyUp = (ev: React.KeyboardEvent) => {

@@ -1,17 +1,22 @@
-import { ModelManager } from './model/ModelManager'
-import { SimpleDomain } from './simple/SimpleDomain'
+import { Repository } from './model/Repository'
+import { SimpleBuilder } from './simple/SimpleBuilder'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
-export type { Domain } from './model/IDomain'
-export type { ModelSerial } from './model/ModelSerial'
-export type { ModelConfig } from './model/Model'
-export type { SchemaDict, IBlueprint } from './model/IBlueprint'
+export type { IBuilder as Builder } from './model/IBuilder'
+export type { EntitySerial as ModelSerial } from './model/EntitySerial'
+export type { ModelConfig } from './model/Entity'
+export type { SchemaDict, ISchema as ISchema } from './model/ISchema'
 export type { OpenRouter_Models } from './openrouter/OpenRouter_models'
-export type * from './simple/SimpleSpecAliases'
+export type { CovariantFC } from './variance/CovariantFC'
+export type * from './variance/BivariantHack'
+export type * from './simple/SimpleAliases'
 
 export { Channel } from './model/Channel'
-export { ActivityContainerUI, ActivityStackUI } from './activity/ActivityUI'
+export { ActivityContainerUI } from './activity/ActivityContainerUI'
+export { ActivityStackUI } from './activity/ActivityStackUI'
 
-export const SimpleModelManager: ModelManager<SimpleDomain> = new ModelManager(SimpleDomain)
+export type SimpleRepo = Repository<SimpleBuilder>
+export const simpleBuilder = new SimpleBuilder()
+export const simpleRepo: SimpleRepo = new Repository(simpleBuilder)

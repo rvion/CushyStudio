@@ -16,6 +16,8 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             style={p.style}
             className={p.className}
             disabled={p.disabled}
+            tooltip={p.tooltip}
+            tooltipPlacement={p.tooltipPlacement}
             hover
             triggerOnPress={{ startingState: isActive }}
             expand={p.expand}

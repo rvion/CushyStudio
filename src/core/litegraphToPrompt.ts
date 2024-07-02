@@ -70,7 +70,6 @@ export const convertLiteGraphToPrompt = (
             }
 
             const inputs: ComfyNodeJSON['inputs'] = {}
-            // const widgets = node.widgets
 
             const fieldNamesWithLinks = new Set((node?.inputs ?? []).map((i) => i.name))
             const nodeTypeName = node.type

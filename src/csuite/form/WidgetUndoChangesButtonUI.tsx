@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,15 +7,17 @@ import { Button } from '../../csuite/button/Button'
 export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: {
     //
     className?: string
-    widget: BaseField
+    field: Field
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <Button
             subtle
+            tooltip='Reset to default values'
+            borderless
             className={p.className}
-            onClick={() => widget?.reset()}
-            disabled={!(widget?.hasChanges ?? false)}
+            onClick={() => field?.reset()}
+            disabled={!(field?.hasChanges ?? false)}
             icon='mdiUndoVariant'
             look='ghost'
             size='input'

@@ -14,7 +14,6 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
@@ -131,7 +130,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
-                <FormUI tw='pb-10' key={draft.id} form={draft.form} />
+                <FormUI tw='pb-10' key={draft.id} entity={draft.form} />
                 <RevealUI
                     content={() => (
                         <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>

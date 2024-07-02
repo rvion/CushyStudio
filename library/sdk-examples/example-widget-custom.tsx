@@ -14,10 +14,10 @@ const MyCustomComponent = observer(function (
         image?: MediaImageID
     }>,
 ) {
-    const value = p.widget.serial.value
+    const value = p.field.serial.value
     const img = value.image ?? cushy.db.media_image.last()
     return (
-        <div className='flex flex-col gap-2 virtualBorder p-2'>
+        <div className='flex flex-col gap-2 p-2'>
             {/* Text Input -------------------------------------------------------- */}
             type "reset" in the field here and press play to reset the state
             <input

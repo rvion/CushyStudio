@@ -1,6 +1,12 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_regionalPrompting_v1 = () => {
+export type UI_regionalPrompting_v1 = X.XListExt<
+    X.XGroup<{
+        prompt: X.XPrompt
+        strength: X.XNumber
+    }>
+>
+export function ui_regionalPrompting_v1(): UI_regionalPrompting_v1 {
     const form = getCurrentForm()
     return form.regional({
         element: form.group({
@@ -12,6 +18,7 @@ export const ui_regionalPrompting_v1 = () => {
         }),
         height: 512,
         width: 512,
+        icon: 'mdiPictureInPictureTopRight',
         initialPosition: () => ({
             x: 0,
             y: 0,

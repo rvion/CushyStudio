@@ -32,21 +32,20 @@ export function ui_model(): UI_Model {
                 label: 'withPopup',
                 icon: 'mdiTrain',
                 apply: (w) => {
-                    const form = cushy.forms.form((ui) =>
+                    const form = cushy.forms.entity((ui) =>
                         ui.fields({
                             a: ui.string({ label: 'A' }),
                             b: ui.int({ label: 'B' }),
                         }),
                     )
-                    cushy.activityManager.startActivity({
-                        uid: 'test',
+                    cushy.activityManager.start({
                         title: 'Multi-Step preset Demo',
                         shell: 'popup-lg',
                         UI: (p) =>
                             form.render({
                                 submitAction: () => {
                                     console.log('submit')
-                                    cushy.activityManager.stopActivity(p.activity) // 🔴
+                                    cushy.activityManager.stop(p.routine) // 🔴
                                 },
                             }),
                     })
@@ -98,7 +97,7 @@ export function ui_model(): UI_Model {
             checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
             extra: form.choices({
                 border: false,
-                label: false,
+                // label: false,
                 appearance: 'tab',
                 items: {
                     rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),

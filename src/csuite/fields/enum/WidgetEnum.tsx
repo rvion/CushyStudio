@@ -1,60 +1,65 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
-export type Widget_enum_config<O> = FieldConfig<
+export type Field_enum_config<O> = FieldConfig<
     {
         enumName: string
         default?: O //Requirable[T] | EnumDefault<T>
         extraDefaults?: string[]
         filter?: (v: EnumValue) => boolean
     },
-    Widget_enum_types<O>
+    Field_enum_types<O>
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = FieldSerial<{
+export type Field_enum_serial<O> = FieldSerial<{
     type: 'enum'
     active: true
     val: O
 }>
 
 // VALUE
-export type Widget_enum_value<O> = O // Requirable[T]
+export type Field_enum_value<O> = O // Requirable[T]
 
 // TYPES
-export type Widget_enum_types<O> = {
+export type Field_enum_types<O> = {
     $Type: 'enum'
-    $Config: Widget_enum_config<O>
-    $Serial: Widget_enum_serial<O>
-    $Value: Widget_enum_value<O>
-    $Field: Widget_enum<O>
+    $Config: Field_enum_config<O>
+    $Serial: Field_enum_serial<O>
+    $Value: Field_enum_value<O>
+    $Field: Field_enum<O>
 }
 
 // STATE
-export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
+export class Field_enum<O> extends Field<Field_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'enum' = 'enum'
     readonly type: 'enum' = 'enum'
 
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    get hasChanges() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.value = this.defaultValue } // prettier-ignore
+    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+
+    reset(): void {
+        this.value = this.defaultValue
+    }
+
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }
@@ -63,17 +68,17 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
         return null
     }
 
-    serial: Widget_enum_serial<O>
+    serial: Field_enum_serial<O>
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_enum<O>>,
-        serial?: Widget_enum_serial<O>,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_enum<O>>,
+        serial?: Field_enum_serial<O>,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
-        const config = spec.config
+        const config = schema.config
         this.serial = serial ?? {
             type: 'enum',
             id: this.id,
@@ -88,20 +93,19 @@ export class Widget_enum<O> extends BaseField<Widget_enum_types<O>> {
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
-    get value(): Widget_enum_value<O> {
+
+    get value(): Field_enum_value<O> {
         return this.status.finalValue
     }
-    setValue(val: Widget_enum_value<O>) {
-        this.value = val
-    }
-    set value(next: Widget_enum_value<O>) {
+
+    set value(next: Field_enum_value<O>) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 }
 
 // DI
-registerWidgetClass('enum', Widget_enum)
+registerWidgetClass('enum', Field_enum)

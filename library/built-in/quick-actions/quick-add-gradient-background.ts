@@ -7,9 +7,9 @@ app({
         from: form.image({ justifyLabel: false }),
     }),
     canStartFromImage: true,
-    run: async (run, ui, ctximg) => {
+    run: async (run, ui, { image }) => {
         const size = 1024
-        const startImage = ctximg ?? ui.from
+        const startImage = image ?? ui.from
         const { Konva, Colors, Images, ComfyUI } = run
         const layer = Konva.createStageWithLayer({ width: size, height: size })
         Konva.addGradientToLayer(layer, [0, Colors.randomHexColor(), 1, Colors.randomHexColor()])

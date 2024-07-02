@@ -1,11 +1,11 @@
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../tree/TreeEntry'
 import type { TreeNode } from '../tree/TreeNode'
-import type { BaseField } from './BaseField'
+import type { Field } from './Field'
 
 import { makeAutoObservable } from 'mobx'
 
 export class TreeEntry_Field implements ITreeEntry {
-    constructor(public widgetWithKey: { widget: BaseField; key: string }) {
+    constructor(public widgetWithKey: { widget: Field; key: string }) {
         makeAutoObservable(this)
     }
 
@@ -24,7 +24,7 @@ export class TreeEntry_Field implements ITreeEntry {
     }
 
     get isFolder() {
-        return this.widget.subWidgets.length > 0
+        return this.widget.subFields.length > 0
     }
 
     /** packed with a bunch of sane default for now; we'll see if this is ever */
@@ -69,7 +69,7 @@ export class TreeEntry_Field implements ITreeEntry {
     }
 
     children = (): ITreeElement<any>[] => {
-        return this.widget.subWidgetsWithKeys.map((w) => w.widget.asTreeElement(w.key))
+        return this.widget.subFieldsWithKeys.map((w) => w.field.asTreeElement(w.key))
     }
 
     // extra = () => (

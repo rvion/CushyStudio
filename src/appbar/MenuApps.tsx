@@ -4,7 +4,7 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
-import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
@@ -12,21 +12,19 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            // text-green-400
-            // startIcon={<span className='material-symbols-outlined '>apps</span>}
+            expand
             title='Apps'
             content={() => (
                 <>
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
-                        icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                        shortcut={KEYS.openPage_Marketplace}
+                        icon='mdiCloudDownload'
+                        localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     />
-                    <hr />
-                    <div className='divider'>10 last ran Drafts</div>
+                    <MenuDivider>Recently Used Drafts</MenuDivider>
                     <RecentDrafMenuEntriesUI />
-                    <div className='divider'>5 last ran Apps</div>
+                    <MenuDivider>Recently Used Apps</MenuDivider>
                     <RecentAppMenuEntriesUI />
                 </>
             )}
@@ -40,12 +38,8 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
             {cushy.db.draft
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
                 .map((draft) => (
-                    <MenuItem
-                        key={draft.id}
-                        onClick={() => draft.openOrFocusTab()}
-                        icon={<DraftIllustrationUI draft={draft} size='2rem' />}
-                        // label={draft.name}
-                    >
+                    <MenuItem key={draft.id} onClick={() => draft.openOrFocusTab()}>
+                        <DraftIllustrationUI draft={draft} size='2rem' />
                         <div tw='text' style={{ lineHeight: '1rem' }}>
                             <div>{draft.name}</div>
                             <div tw='italic text-sm text-gray-500 flex gap-1'>
@@ -65,11 +59,8 @@ export const RecentAppMenuEntriesUI = observer(function RecentAppMenuEntriesUI_(
             {cushy.db.cushy_app
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(5))
                 .map((app) => (
-                    <MenuItem
-                        onClick={() => app.openLastOrCreateDraft()}
-                        icon={<AppIllustrationUI app={app} size='1.5rem' />}
-                        // label={app.name}
-                    >
+                    <MenuItem onClick={() => app.openLastOrCreateDraft()}>
+                        <AppIllustrationUI app={app} size='1.5rem' />
                         <div tw='flex items-center'>{app.name}</div>
                         <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(app.data.lastRunAt)}</div>
                     </MenuItem>

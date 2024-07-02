@@ -1,9 +1,20 @@
 import { toast, ToastPosition } from 'react-toastify'
 
+import { Trigger } from '../trigger/Trigger'
+
 const position: ToastPosition = 'bottom-right'
-export const toastSuccess = (msg: string) => void toast(msg, { type: 'success', position })
-export const toastInfo = (msg: string) => void toast(msg, { type: 'info', position })
-export const toastError = (msg: string) => void toast(msg, { type: 'error', position })
+export const toastSuccess = (msg: string) => {
+    toast(msg, { type: 'success', position })
+    return Trigger.UNMATCHED
+}
+export const toastInfo = (msg: string) => {
+    toast(msg, { type: 'info', position })
+    return Trigger.UNMATCHED
+}
+export const toastError = (msg: string) => {
+    toast(msg, { type: 'error', position })
+    return Trigger.UNMATCHED
+}
 
 // Function to show toast with an image
 export const toastImage = (imageSrc: string | Buffer, message: string) => {

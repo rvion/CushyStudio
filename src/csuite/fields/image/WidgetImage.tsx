@@ -1,31 +1,31 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
+import type { Entity } from '../../model/Entity'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Model } from '../../model/Model'
+import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { BaseField } from '../../model/BaseField'
+import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
-export type Widget_image_config = FieldConfig<
+export type Field_image_config = FieldConfig<
     {
         default?: MediaImageL
         suggestionWhere?: SQLWhere<MediaImageT>
         assetSuggested?: RelativePath | RelativePath[]
     },
-    Widget_image_types
+    Field_image_types
 >
 
 // SERIAL
-export type Widget_image_serial = FieldSerial<{
+export type Field_image_serial = FieldSerial<{
     type: 'image'
     imageID?: Maybe<MediaImageID>
 
@@ -40,25 +40,26 @@ export type Widget_image_serial = FieldSerial<{
 }>
 
 // VALUE
-export type Widget_image_value = MediaImageL
+export type Field_image_value = MediaImageL
 
 // TYPES
-export type Widget_image_types = {
+export type Field_image_types = {
     $Type: 'image'
-    $Config: Widget_image_config
-    $Serial: Widget_image_serial
-    $Value: Widget_image_value
-    $Field: Widget_image
+    $Config: Field_image_config
+    $Serial: Field_image_serial
+    $Value: Field_image_value
+    $Field: Field_image
 }
 
 // STATE
-export class Widget_image extends BaseField<Widget_image_types> {
+export class Field_image extends Field<Field_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
 
+    static readonly type: 'image' = 'image'
     readonly type: 'image' = 'image'
-    readonly serial: Widget_image_serial
+    readonly serial: Field_image_serial
     // size: number = 192
     get baseErrors(): Problem_Ext {
         return null
@@ -67,21 +68,21 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get defaultValue(): MediaImageL {
         return this.config.default ?? cushy.defaultImage
     }
-    get hasChanges() {
+    get hasChanges(): boolean {
         return this.value !== this.defaultValue
     }
-    reset = () => {
+    reset(): void {
         this.value = this.defaultValue
     }
 
     constructor(
         //
-        public readonly form: Model,
-        public readonly parent: BaseField | null,
-        public readonly spec: IBlueprint<Widget_image>,
-        serial?: Widget_image_serial,
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_image>,
+        serial?: Field_image_serial,
     ) {
-        super()
+        super(entity, parent, schema)
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',
@@ -97,23 +98,22 @@ export class Widget_image extends BaseField<Widget_image_types> {
     get animateResize() {
         return false
     }
+
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
     }
-    setValue(val: MediaImageL) {
-        this.value = val
-    }
+
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
         runInAction(() => {
             this.serial.imageID = next.id
-            this.bumpValue()
+            this.applyValueUpdateEffects()
         })
     }
 
     set size(val: number) {
         this.serial.size = val
-        this.bumpSerial()
+        this.applySerialUpdateEffects()
     }
     get size() {
         return this.serial.size
@@ -121,4 +121,4 @@ export class Widget_image extends BaseField<Widget_image_types> {
 }
 
 // DI
-registerWidgetClass('image', Widget_image)
+registerWidgetClass('image', Field_image)

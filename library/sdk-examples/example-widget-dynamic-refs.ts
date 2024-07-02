@@ -5,51 +5,53 @@ app({
     ui: (ui) => {
         // 🔶 if you want to use a form dynamically,
         // for now, you need to form.shared first aroudn it
-        const listOfStuff = ui.shared(
-            'test1',
-            ui.list({
-                label: 'Sampler',
-                defaultLength: 2,
-                // min: 1,
-                element: (i: number) => ui.string({ default: `hello ${i}` }),
-            }),
-        )
 
         return {
-            _1: ui.header({ markdown: `#### Define values:`, label: false, border: false }),
-            listOfStuff,
-            _2: ui.header({ markdown: `#### Reference values (select):`, label: false, border: false }),
-            listOfRefs: ui.list({
-                defaultLength: 1,
-                element: ui.selectOne({
-                    label: 'dynamic-test',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
-                }),
-            }),
-            listOfRefs2: ui.list({
-                defaultLength: 1,
-                element: ui.selectMany({
-                    label: 'dynamic-test',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
-                }),
-            }),
-            _3: ui.header({ markdown: `#### Reference values (tabs):`, label: false, border: false }),
-            refs4: ui.list({
-                defaultLength: 1,
-                element: ui.selectOne({
-                    label: 'dynamic-test',
-                    appearance: 'tab',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
-                }),
-            }),
-            refs5: ui.list({
-                defaultLength: 1,
-                element: ui.selectMany({
-                    label: 'dynamic-test',
-                    appearance: 'tab',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
-                }),
-            }),
+            root: ui
+                .list({
+                    label: 'Sampler',
+                    defaultLength: 2,
+                    // min: 1,
+                    element: (i: number) => ui.string({ default: `hello ${i}` }),
+                })
+                .useIn((listOfStuff) =>
+                    ui.fields({
+                        _1: ui.header({ markdown: `#### Define values:`, label: false, border: false }),
+                        listOfStuff,
+                        _2: ui.header({ markdown: `#### Reference values (select):`, label: false, border: false }),
+                        listOfRefs: ui.list({
+                            defaultLength: 1,
+                            element: ui.selectOne({
+                                label: 'dynamic-test',
+                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                            }),
+                        }),
+                        listOfRefs2: ui.list({
+                            defaultLength: 1,
+                            element: ui.selectMany({
+                                label: 'dynamic-test',
+                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                            }),
+                        }),
+                        _3: ui.header({ markdown: `#### Reference values (tabs):`, label: false, border: false }),
+                        refs4: ui.list({
+                            defaultLength: 1,
+                            element: ui.selectOne({
+                                label: 'dynamic-test',
+                                appearance: 'tab',
+                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                            }),
+                        }),
+                        refs5: ui.list({
+                            defaultLength: 1,
+                            element: ui.selectMany({
+                                label: 'dynamic-test',
+                                appearance: 'tab',
+                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                            }),
+                        }),
+                    }),
+                ),
         }
     },
     run(run, ui) {

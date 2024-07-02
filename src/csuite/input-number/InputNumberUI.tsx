@@ -4,9 +4,9 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
+import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
-import { Ikon } from '../icons/iconHelpers'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -279,24 +279,20 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <Frame /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: p.hideSlider ? 0 : 0.1, chroma: 0.02 }}
+                base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 2 }}
                 tw={['z-10 absolute left-0 h-input']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <Frame /* Left Button */
+                <Button /* Left Button */
                     className='control'
-                    // hover={-0.1}
-                    // base={5}
-                    border
-                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
+                    borderless
+                    tw='rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.decrement}
-                >
-                    <Ikon.mdiChevronLeft />
-                </Frame>
-
+                    icon='mdiChevronLeft'
+                />
                 <div /* Text Container */
                     tw={[
                         //
@@ -416,17 +412,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <Frame /* Right Button */
+                <Button /* Right Button */
                     className='control'
-                    // hover={-0.1}
-                    // base={5}
-                    border
-                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
+                    borderless
+                    tw='rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.increment}
-                >
-                    <Ikon.mdiChevronRight />
-                </Frame>
+                    icon='mdiChevronRight'
+                />
             </div>
         </Frame>
     )
