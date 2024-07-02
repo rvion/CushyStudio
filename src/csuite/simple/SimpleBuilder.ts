@@ -139,11 +139,11 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
-    list<const T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
+    list<T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
         return new SimpleSchema<Field_list<T>>(Field_list, config)
     }
 
-    selectOne<const T extends BaseSelectEntry>(config: Field_selectOne_config<T>): S.SSelectOne<T> {
+    selectOne<T extends BaseSelectEntry>(config: Field_selectOne_config<T>): S.SSelectOne<T> {
         return new SimpleSchema<Field_selectOne<T>>(Field_selectOne, config)
     }
 
@@ -165,7 +165,7 @@ export class SimpleBuilder implements IBuilder {
         })
     }
 
-    selectMany<const T extends BaseSelectEntry>(config: Field_selectMany_config<T>): S.SSelectMany<T> {
+    selectMany<T extends BaseSelectEntry>(config: Field_selectMany_config<T>): S.SSelectMany<T> {
         return new SimpleSchema<Field_selectMany<T>>(Field_selectMany, config)
     }
 
@@ -189,19 +189,19 @@ export class SimpleBuilder implements IBuilder {
     }
 
     /** see also: `fields` for a more practical api */
-    group<const T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
+    group<T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
         return new SimpleSchema<Field_group<T>>(Field_group, config)
     }
 
-    fields<const T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): S.SGroup<T> {
+    fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): S.SGroup<T> {
         return new SimpleSchema<Field_group<T>>(Field_group, { items: fields, ...config })
     }
 
-    choice<const T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
+    choice<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
         return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: false, ...config })
     }
 
-    choices<const T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
+    choices<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
         return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, ...config })
     }
 
@@ -210,7 +210,7 @@ export class SimpleBuilder implements IBuilder {
     }
 
     /** simple choice alternative api */
-    tabs<const T extends SchemaDict>(
+    tabs<T extends SchemaDict>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ) {
@@ -223,7 +223,7 @@ export class SimpleBuilder implements IBuilder {
     }
 
     // optional wrappers
-    optional<const T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
+    optional<T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
         return new SimpleSchema<Field_optional<T>>(Field_optional, p)
     }
 
