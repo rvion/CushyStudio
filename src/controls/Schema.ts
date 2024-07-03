@@ -1,5 +1,4 @@
 import type { CovariantFC, CovariantFn } from '../csuite'
-import type { Entity } from '../csuite/model/Entity'
 import type { Field } from '../csuite/model/Field'
 import type { ISchema } from '../csuite/model/ISchema'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
@@ -35,7 +34,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
             readonly type: FIELD['$Type']
             new (
                 //
-                entity: Entity,
+                entity: Field,
                 parent: Field | null,
                 schema: ISchema<FIELD>,
                 serial?: FIELD['$Serial'],
@@ -49,7 +48,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
 
     instanciate(
         //
-        entity: Entity<any>,
+        entity: Field<any>,
         parent: Field | null,
         serial: any | null,
     ) {

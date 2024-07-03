@@ -1,12 +1,12 @@
 import type { Field_group } from '../fields/group/WidgetGroup'
+import type { EntityConfig } from './Entity'
 import type { EntityId } from './EntityId'
-import type { Field } from './Field'
 import type { IBuilder } from './IBuilder'
 import type { ISchema, SchemaDict } from './ISchema'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { Entity, EntityConfig } from './Entity'
+import { Field } from './Field'
 
 /**
  * you need one, and only one (singleton) per project
@@ -15,11 +15,11 @@ import { Entity, EntityConfig } from './Entity'
  */
 export class Repository<DOMAIN extends IBuilder> {
     //
-    _allEntities: Map<EntityId, Entity> = new Map()
+    _allEntities: Map<EntityId, Field> = new Map()
     _allFields: Map<string, Field> = new Map()
     _allFieldsByType: Map<string, Map<string, Field>> = new Map()
 
-    getEntityByID = (entityId: EntityId): Maybe<Entity> => {
+    getEntityByID = (entityId: EntityId): Maybe<Field> => {
         return this._allEntities.get(entityId)
     }
 
@@ -46,14 +46,32 @@ export class Repository<DOMAIN extends IBuilder> {
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
         modelConfig: EntityConfig<ISchema<Field_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
-    ): Entity<ISchema<Field_group<FIELDS>>, DOMAIN> => {
+    ): Field<ISchema<Field_group<FIELDS>>, DOMAIN> => {
         const schema = this.domain.group({
             label: false,
             items: schemaExt(this.domain),
             collapsed: false,
         })
-        const form = new Entity<ISchema<Field_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
+        const form = new Field<ISchema<Field_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
         return form
+    }
+
+    /** simple alias to create a new Form */
+    entity<SCHEMA extends ISchema>(
+        schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
+        modelConfig: EntityConfig<SCHEMA> = {},
+    ): SCHEMA['$Field'] {
+        const schema: SCHEMA = this.evalSchema(schemaExt)
+        return schema.instanciate(null, null, modelConfig.serial?.())
+    }
+
+    /** simple way to defined forms and in react components */
+    use<SCHEMA extends ISchema>(
+        schemaExt: (form: DOMAIN) => SCHEMA,
+        modelConfig: EntityConfig<SCHEMA> = {},
+        deps: DependencyList = [],
+    ): SCHEMA['$Field'] {
+        return useMemo(() => this.entity(schemaExt, modelConfig), deps)
     }
 
     /** eval schema if it's a function */
@@ -61,30 +79,7 @@ export class Repository<DOMAIN extends IBuilder> {
         //
         buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA),
     ): SCHEMA => {
-        if (typeof buildFn === 'function') {
-            return buildFn(this.domain as DOMAIN)
-        }
+        if (typeof buildFn === 'function') return buildFn(this.domain as DOMAIN)
         return buildFn
-    }
-
-    /** simple alias to create a new Form */
-    entity<SCHEMA extends ISchema>(
-        schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
-        modelConfig: EntityConfig<SCHEMA, DOMAIN> = {},
-    ): Entity<SCHEMA, DOMAIN> {
-        const schema: SCHEMA = this.evalSchema(schemaExt)
-        return new Entity<SCHEMA, DOMAIN>(this, schema, modelConfig)
-    }
-
-    /** simple way to defined forms and in react components */
-    use<SCHEMA extends ISchema>(
-        ui: (form: DOMAIN) => SCHEMA,
-        formProperties: EntityConfig<SCHEMA, DOMAIN> = {},
-        deps: DependencyList = [],
-    ): Entity<SCHEMA, DOMAIN> {
-        return useMemo(() => {
-            const schema = this.evalSchema(ui)
-            return new Entity<SCHEMA, DOMAIN>(this, schema, formProperties)
-        }, deps)
     }
 }

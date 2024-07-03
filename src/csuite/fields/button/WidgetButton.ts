@@ -1,5 +1,5 @@
 import type { FrameAppearance } from '../../frame/FrameTemplates'
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -54,12 +54,12 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_button<K>>,
         serial?: Field_button_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         if (config.text) config.label = config.label ?? ` `
         this.initSerial(serial)

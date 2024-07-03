@@ -1,5 +1,5 @@
 import type { IconName } from '../../icons/icons'
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -112,7 +112,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     get choices(): T[] {
         const _choices = this.config.choices
         if (typeof _choices === 'function') {
-            if (!this.entity.ready) return []
+            if (!this.root.ready) return []
             return _choices(this)
         }
         return _choices
@@ -121,12 +121,12 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     constructor(
         // 2024-06-27 TODO: rename that
         // |            VVVV
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_selectOne<T>>,
         serial?: Field_selectOne_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         const choices = this.choices
         this.serial = serial ?? {

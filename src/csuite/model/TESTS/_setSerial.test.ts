@@ -7,7 +7,7 @@ describe('setSerial ', () => {
     it('works with valid serial', () => {
         const S1 = b.string({ default: '🔵A' })
         const E1 = S1.create()
-        E1.setRootSerial({
+        E1.updateSerial({
             type: 'str',
             val: '🟢B',
         })
@@ -24,7 +24,7 @@ describe('setSerial ', () => {
             }),
         })
         const E1 = S1.create()
-        E1.setRootSerial({
+        E1.updateSerial({
             type: 'group',
             values_: {
                 a: {

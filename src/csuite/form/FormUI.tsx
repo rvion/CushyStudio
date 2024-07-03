@@ -1,7 +1,7 @@
 import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
-import type { Entity } from '../model/Entity'
+import type { Field } from '../model/Field'
 import type { ISchema } from '../model/ISchema'
 import type { CSSProperties, ReactNode } from 'react'
 
@@ -13,7 +13,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
     // form ---------------------------------------------------------
-    entity: Maybe<Entity<ISchema>>
+    entity: Maybe<Field>
 
     // root wrapper
     label?: string | false
@@ -40,9 +40,9 @@ export type FormUIProps = {
     /**
      * override default ac
      */
-    submitAction?: CovariantFn1<Entity, void> | 'confetti'
+    submitAction?: CovariantFn1<Field, void> | 'confetti'
     /** if provided, submitLabel and submitActinod will not be used */
-    submitButton?: CovariantFC<{ form: Entity }>
+    submitButton?: CovariantFC<{ form: Field }>
 }
 
 export const FormUI = observer(function FormUI_(p: FormUIProps) {

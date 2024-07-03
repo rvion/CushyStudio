@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -56,12 +56,12 @@ export class Field_color extends Field<Field_color_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_color>,
         serial?: Field_color_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,

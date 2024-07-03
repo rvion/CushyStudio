@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -54,12 +54,12 @@ export class Field_matrix extends Field<Field_matrix_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_matrix>,
         serial?: Field_matrix_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,

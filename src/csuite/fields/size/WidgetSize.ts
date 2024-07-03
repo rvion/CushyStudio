@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -96,12 +96,12 @@ export class Field_size extends Field<Field_size_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_size>,
         serial?: Field_size_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         if (serial) {
             this.serial = serial

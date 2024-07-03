@@ -22,6 +22,8 @@ export type FieldSerial_CommonProperties = {
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
 
+    // 🔴
+    snapshot?: any
     // ⏸️ /**
     // ⏸️  * when a field has enableVersionning set to number | true
     // ⏸️  * every changes will be recorded up to number | 10 versions

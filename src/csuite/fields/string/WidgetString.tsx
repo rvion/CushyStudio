@@ -1,5 +1,5 @@
 import type { IconName } from '../../icons/icons'
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -90,12 +90,12 @@ export class Field_string extends Field<Field_string_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_string>,
         serial?: Field_string_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.initSerial(serial)
         this.init()
     }

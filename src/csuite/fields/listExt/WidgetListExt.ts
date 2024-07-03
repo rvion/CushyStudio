@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -114,12 +114,12 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_listExt<T>>,
         serial?: Field_listExt_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
 
         // serial
@@ -142,7 +142,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = schemaI0.instanciate(this.entity, this, subSerial)
+            const subWidget = schemaI0.instanciate(this.root, this, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -189,7 +189,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const schema = this.schemaAt(this.length)
-        const element = schema.instanciate(this.entity, this, null)
+        const element = schema.instanciate(this.root, this, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
         if (!p?.skipBump) this.applyValueUpdateEffects()

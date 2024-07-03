@@ -1,7 +1,6 @@
 // @ts-nocheck
 
 import type { Field_number, Field_number_config } from '../fields/number/WidgetNumber'
-import type { Entity } from '../model/Entity'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
 import type { ISchema, SchemaDict } from '../model/ISchema'
@@ -88,7 +87,7 @@ export class BasicBuilder implements IBuilder {
 
     _HYDRATE<T extends ISchema>(
         //
-        model: Entity<any>,
+        model: Field<any>,
         parent: Field | null,
         schema: T,
         serial: any | null,
@@ -110,7 +109,7 @@ export class BasicBuilder implements IBuilder {
     /** (@internal) advanced way to restore form state. used internally */
     private __HYDRATE<T extends ISchema>(
         //
-        model: Entity<any>,
+        model: Field<any>,
         parent: Field | null,
         spec: T,
         serial: any | null,

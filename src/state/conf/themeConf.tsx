@@ -1,5 +1,5 @@
 import type { BaseSelectEntry } from '../../csuite/fields/selectOne/WidgetSelectOne'
-import type { Entity } from '../../csuite/model/Entity'
+import type { Field } from '../../csuite/model/Field'
 
 import { type Builder, cushyRepo } from '../../controls/Builder'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
@@ -25,7 +25,7 @@ export type ThemeConf = X.XGroup<{
     border: X.XOptional<X.XNumber>
 }>
 
-export const themeConf: Entity<ThemeConf, Builder> = cushyRepo.entity(
+export const themeConf: Field<ThemeConf, Builder> = cushyRepo.entity(
     (ui) =>
         ui.fields(
             {

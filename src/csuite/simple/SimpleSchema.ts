@@ -1,7 +1,6 @@
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { Entity, EntityConfig } from '../model/Entity'
 import type { EntitySerial } from '../model/EntitySerial'
-import type { Field } from '../model/Field'
+import type { EntityConfig, Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
 import type { ISchema } from '../model/ISchema'
 import type { CovariantFn } from '../variance/BivariantHack'
@@ -33,7 +32,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
             readonly type: FIELD['$Type']
             new (
                 //
-                entity: Entity,
+                entity: Field,
                 parent: Field | null,
                 spec: ISchema<FIELD>,
                 serial?: FIELD['$Serial'],
@@ -45,16 +44,13 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         makeObservable(this, { config: true })
     }
 
-    create(
-        //
-        modelConfig: EntityConfig<this> = {},
-    ) {
+    create(modelConfig: EntityConfig<this> = {}) {
         return simpleRepo.entity(this, { serial })
     }
 
     instanciate(
         //
-        entity: Entity<any>,
+        entity: Field<any>,
         parent: Field | null,
         serial: any | null,
     ) {
@@ -71,6 +67,13 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
             else if (serial.type === 'list') {
                 const prev: Field_list_serial<any> = serial as any
                 const next: any = prev.items_[0] ?? null
+                serial = next
+            }
+
+            // RECOVER FROM EntitySerial
+            if (serial.type === 'FormSerial') {
+                const prev: any = serial
+                const next: any = prev.root
                 serial = next
             }
         }

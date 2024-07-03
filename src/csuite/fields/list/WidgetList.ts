@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -170,12 +170,12 @@ export class Field_list<T extends ISchema> //
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_list<T>>,
         serial?: Field_list_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         // serial
         this.serial = serial ?? observable({ type: 'list', id: this.id, active: true, items_: [] })
 
@@ -200,7 +200,7 @@ export class Field_list<T extends ISchema> //
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = schema.instanciate(this.entity, this, subSerial)
+                const subWidget = schema.instanciate(this.root, this, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -329,7 +329,7 @@ export class Field_list<T extends ISchema> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = schema.instanciate(this.entity, this, null)
+        const element = schema.instanciate(this.root, this, null)
 
         // set initial value
         if (p.value) {

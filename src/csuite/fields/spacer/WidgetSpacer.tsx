@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -53,12 +53,12 @@ export class Field_spacer extends Field<Field_spacer_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_spacer>,
         serial?: Field_spacer_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.initSerial(serial)
         this.init({
             serial: observable,

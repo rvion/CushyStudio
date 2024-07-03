@@ -1,7 +1,7 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -73,12 +73,12 @@ export class Field_image extends Field<Field_image_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_image>,
         serial?: Field_image_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.serial = serial ?? {
             type: 'image',
             id: this.id,

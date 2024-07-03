@@ -1,4 +1,3 @@
-import type { Entity } from './Entity'
 import type { Field } from './Field'
 
 export interface Instanciable<T extends Field = Field> {
@@ -13,7 +12,7 @@ export interface Instanciable<T extends Field = Field> {
 
     instanciate(
         //
-        entity: Entity<any>,
+        entity: Field<any>,
         parent: Field | null,
         serial: any | null,
     ): T

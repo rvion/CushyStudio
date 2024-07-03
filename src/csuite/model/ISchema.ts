@@ -1,6 +1,5 @@
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'
-import type { Entity } from './Entity'
 import type { Field } from './Field'
 import type { Instanciable } from './Instanciable'
 
@@ -22,7 +21,7 @@ export interface ISchema<out FIELD extends Field = Field> {
 
     instanciate(
         //
-        entity: Entity<any>,
+        entity: Field | null,
         parent: Field | null,
         serial: any | null,
     ): FIELD['$Field']

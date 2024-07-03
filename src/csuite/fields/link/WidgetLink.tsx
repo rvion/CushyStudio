@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -84,23 +84,23 @@ export class Field_link<A extends ISchema, B extends ISchema> //
     }
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_link<A, B>>,
         serial?: Field_link_serial<A, B>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.serial =
             serial && serial.type === 'link' //
                 ? serial
                 : this._defaultSerial()
 
         const aSchema = this.config.share
-        this.aField = aSchema.instanciate(this.entity, this, this.serial.a)
+        this.aField = aSchema.instanciate(this.root, this, this.serial.a)
         this.serial.a = this.aField.serial // hook a serial
 
         const bSchema = this.config.children(this.aField)
-        this.bField = bSchema.instanciate(this.entity, this, this.serial.b)
+        this.bField = bSchema.instanciate(this.root, this, this.serial.b)
         this.serial.b = this.bField.serial // hook a serial
 
         this.init({})

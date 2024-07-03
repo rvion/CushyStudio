@@ -1,5 +1,5 @@
 import type { IconName } from '../../icons/icons'
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
@@ -181,12 +181,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_choices<T>>,
         serial?: Field_choices_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         // ensure ID
         // TODO: investigate why this contructor is called so many times (5 times ???)
@@ -251,7 +251,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             if (field != null) {
                 field.updateSerial(serial?.values_?.[fName])
             } else {
-                field = fSchema.instanciate(this.entity, this, serial?.values_?.[fName])
+                field = fSchema.instanciate(this.root, this, serial?.values_?.[fName])
                 this.fields[fName] = field
                 this.serial.values_[fName] = field.serial
             }
@@ -303,11 +303,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = schema.instanciate(this.entity, this, prevBranchSerial)
+            this.children[branch] = schema.instanciate(this.root, this, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = schema.instanciate(this.entity, this, null)
+            this.children[branch] = schema.instanciate(this.root, this, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 

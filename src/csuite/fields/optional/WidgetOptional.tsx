@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -106,9 +106,9 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
             const schema = this.config.schema
             const prevSerial = childSerial
             if (prevSerial && schema.type === prevSerial.type) {
-                this.child = schema.instanciate(this.entity, this, prevSerial)
+                this.child = schema.instanciate(this.root, this, prevSerial)
             } else {
-                this.child = schema.instanciate(this.entity, this, null)
+                this.child = schema.instanciate(this.root, this, null)
                 this.serial.child = this.child.serial
             }
         }
@@ -116,12 +116,12 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_optional<T>>,
         serial?: Field_optional_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         const defaultActive = config.startActive
         this.serial = serial ?? {

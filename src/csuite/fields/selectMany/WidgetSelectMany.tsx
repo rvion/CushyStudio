@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
@@ -121,12 +121,12 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_selectMany<T>>,
         serial?: Field_selectMany_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         this.serial = serial ?? {
             type: 'selectMany',

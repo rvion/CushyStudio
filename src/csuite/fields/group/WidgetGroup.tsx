@@ -1,4 +1,4 @@
-import type { Entity } from '../../model/Entity'
+import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
@@ -92,12 +92,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_group<T>>,
         serial?: Field_group_serial<T>,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         this.initSerial(serial)
         this.init({
             value: false,
@@ -124,7 +124,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             if (field != null) {
                 field.updateSerial(serial?.values_?.[fName])
             } else {
-                field = fSchema.instanciate(this.entity, this, serial?.values_?.[fName])
+                field = fSchema.instanciate(this.root, this, serial?.values_?.[fName])
                 this.fields[fName] = field
                 this.serial.values_[fName] = field.serial
             }

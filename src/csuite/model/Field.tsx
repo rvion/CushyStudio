@@ -7,19 +7,18 @@ import type { ITreeElement } from '../tree/TreeEntry'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
-import type { Entity } from './Entity'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
-import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
 import type { ISchema } from './ISchema'
 import type { Problem, Problem_Ext } from './Validation'
-import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
+import { createElement, type FC, type ReactNode } from 'react'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
+import { FormUI, type FormUIProps } from '../form/FormUI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
@@ -61,8 +60,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // 👆 $Field!: K['$Field'] /*   = 0 as any  */
 
     /** field is already instanciated => probably used as a linked */
-    instanciate(entity: Entity<any>, parent: Field | null, serial: any | null) {
-        const builder = this.entity.repository.domain
+    instanciate(entity: Field<any>, parent: Field | null, serial: any | null) {
+        const builder = this.root.repository.domain
         const schema: ISchema<Field_shared<this>> = builder.linked(this)
         return schema.instanciate(entity, parent, serial)
     }
@@ -79,15 +78,17 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // abstract readonly serial: K['$Serial']
     readonly serial: K['$Serial']
 
+    root: Field
     constructor(
-        /** root form this widget has benn registered to */
-        public entity: Entity,
-        /** parent widget of this widget, if any */
+        /** root of the field tree */
+        root: Field | null,
+        /** parent field, (null when root) */
         public parent: Field | null,
         /** schema used to instanciate this widget */
         public schema: ISchema<K['$Field']>,
     ) {
         this.id = nanoid(8)
+        this.root = root ?? this
         this.serial = { type: (this.constructor as any).type }
     }
 
@@ -224,10 +225,21 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.subFields.length === 0
     }
 
+    /**
+     * @status NOT IMPLEMENTED
+     * @deprecated
+     * return a short summary of changes from last snapshot
+     * */
+
     get diffSummaryFromSnapshot(): string {
         throw new Error('❌ not implemented')
     }
 
+    /**
+     * @since 2024-06-20
+     * @status broken
+     * return a short summary of changes from default
+     */
     get diffSummaryFromDefault(): string {
         return [
             this.hasChanges //
@@ -394,7 +406,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // BUMP ----------------------------------------------------
     applySerialUpdateEffects(): void {
-        this.entity.applySerialUpdateEffects(this)
+        this.root.applySerialUpdateEffects(this)
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
@@ -402,7 +414,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     applyValueUpdateEffects(): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.parent?.applyChildValueUpdateEffects(this)
-        this.entity.applyValueUpdateEffects(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
         this.publishValue() // 🔴  should probably be a reaction rather than this
@@ -491,15 +502,40 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
-        this.entity.applySerialUpdateEffects(this)
+        this.root.applySerialUpdateEffects(this)
     }
 
     toggleCollapsed(this: Field) {
         this.serial.collapsed = !this.serial.collapsed
-        this.entity.applySerialUpdateEffects(this)
+        this.root.applySerialUpdateEffects(this)
     }
 
     // UI ----------------------------------------------------
+
+    /**
+     * allow to quickly render the model as a react form
+     * without having to import any component; usage:
+     * | <div>{x.render()}</div>
+     */
+    render = (p: Omit<FormUIProps, 'entity'> = {}): ReactNode => {
+        return createElement(FormUI, { entity: this, ...p })
+    }
+
+    /**
+     * allow to quickly render the form in a dropdown button
+     * without having to import any component; usage:
+     * | <div>{x.renderAsConfigBtn()}</div>
+     */
+    renderAsConfigBtn = (p?: {
+        // 1. anchor option
+        // ...TODO
+        // 2. popup options
+        title?: string
+        className?: string
+        maxWidth?: string
+        minWidth?: string
+        width?: string
+    }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
     renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
@@ -574,10 +610,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return []
     }
 
-    get root(): Field {
-        return this.entity.root
-    }
-
     /** list of all subwidgets, without named keys */
     get subFieldsWithKeys(): KeyedField[] {
         return []
@@ -641,17 +673,29 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
 
         // register self into `form._allFormWidgets`
-        this.entity._allFormWidgets.set(this.id, this)
+        this.root._allFormWidgets.set(this.id, this)
 
         // register self in  `manager._allWidgets
-        this.entity.repository._allFields.set(this.id, this)
+        this.root.repository._allFields.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.entity.repository._allFieldsByType.get(this.type)
+        const prev = this.root.repository._allFieldsByType.get(this.type)
         if (prev == null) {
-            this.entity.repository._allFieldsByType.set(this.type, new Map([[this.id, this]]))
+            this.root.repository._allFieldsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }
+    }
+
+    /** update current field snapshot */
+    saveSnapshot() {
+        this.serial.snapshot = JSON.parse(JSON.stringify(this.serial))
+        this.applySerialUpdateEffects()
+    }
+
+    /** rever to the last snapshot */
+    revertToSnapshot() {
+        if (this.serial.snapshot == null) return this.reset()
+        this.updateSerial(this.serial.snapshot)
     }
 }

@@ -1,4 +1,4 @@
-import type { Entity } from '../csuite/model/Entity'
+import type { Field } from '../csuite/model/Field'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
 import type { ISchema } from '../csuite/model/ISchema'
@@ -82,12 +82,12 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     constructor(
         //
-        entity: Entity,
+        root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_prompt>,
         serial?: Field_prompt_serial,
     ) {
-        super(entity, parent, schema)
+        super(root, parent, schema)
         const config = schema.config
         this.serial = serial ?? {
             type: 'prompt',
