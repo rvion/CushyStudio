@@ -1,5 +1,5 @@
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { Entity } from '../model/Entity'
+import type { Entity, EntityConfig } from '../model/Entity'
 import type { EntitySerial } from '../model/EntitySerial'
 import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
@@ -45,7 +45,10 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         makeObservable(this, { config: true })
     }
 
-    create(serial?: () => Maybe<EntitySerial>) {
+    create(
+        //
+        modelConfig: EntityConfig<this> = {},
+    ) {
         return simpleRepo.entity(this, { serial })
     }
 

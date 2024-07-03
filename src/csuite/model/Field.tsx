@@ -99,9 +99,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return (this.constructor as any).type
     }
 
-    get domain(): IBuilder {
-        return this.entity.builder
-    }
+    // 🌶️ get domain(): IBuilder {
+    // 🌶️     return this.entity.builder
+    // 🌶️ }
 
     /** wiget value is the simple/easy-to-use representation of that widget  */
     abstract value: K['$Value']
@@ -111,6 +111,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /**
      * RULES:
+     *
+     * /!\ THIS METHOD MUST BE IDEMPOTENT /!\
+     *
      * 0. MUST NEVER USE THE serial object provided by default
      *      FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
      *      | always create a new 0

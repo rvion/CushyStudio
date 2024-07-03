@@ -123,39 +123,51 @@ export class Builder implements IBuilder {
     time(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'time', ...config })
     }
+
     date(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'date', ...config })
     }
+
     datetime(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
     }
+
     password(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'password', ...config })
     }
+
     email(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'email', ...config })
     }
+
     url(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'url', ...config })
     }
+
     string(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, config)
     }
+
     text(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, config)
     }
+
     textarea(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { textarea: true, ...config })
     }
+
     boolean(config: Field_bool_config = {}): X.XBool {
         return new Schema<Field_bool>(Field_bool, config)
     }
+
     bool(config: Field_bool_config = {}): X.XBool {
         return new Schema<Field_bool>(Field_bool, config)
     }
+
     size(config: Field_size_config = {}): X.XSize {
         return new Schema<Field_size>(Field_size, config)
     }
+
     spacer(config: Field_spacer_config = {}): X.XSpacer {
         return new Schema<Field_spacer>(Field_spacer, {
             justifyLabel: false,
@@ -164,12 +176,15 @@ export class Builder implements IBuilder {
             border: false,
         })
     }
+
     orbit(config: Field_orbit_config = {}): X.XOrbit {
         return new Schema<Field_orbit>(Field_orbit, config)
     }
+
     seed(config: Field_seed_config = {}): X.XSeed {
         return new Schema<Field_seed>(Field_seed, config)
     }
+
     color(config: Field_color_config = {}): X.XColor {
         return new Schema<Field_color>(Field_color, config)
     }

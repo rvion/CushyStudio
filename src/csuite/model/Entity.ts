@@ -15,7 +15,7 @@ import { debounce } from '../utils/debounce'
 import { type EntityId, mkNewEntityId } from './EntityId'
 import { type EntitySerial } from './EntitySerial'
 
-export type ModelConfig<
+export type EntityConfig<
     //
     SCHEMA extends ISchema<any>,
     DOMAIN extends IBuilder,
@@ -42,7 +42,7 @@ export class Entity<
     constructor(
         public repository: Repository<BUILDER>,
         public schema: SCHEMA,
-        public config: ModelConfig<SCHEMA, BUILDER>,
+        public config: EntityConfig<SCHEMA, BUILDER>,
     ) {
         this.builder = repository.domain
 
@@ -230,8 +230,6 @@ export class Entity<
 
     private init(): SCHEMA['$Field'] {
         // console.log(`[🥐] Building form ${this.config.name}`)
-        const formBuilder = this.builder
-
         try {
             // retrieve the previous entity serial
             let serial = this.config.serial?.()

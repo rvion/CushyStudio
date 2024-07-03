@@ -3,6 +3,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
+import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -38,12 +39,26 @@ export type Field_markdown_types = {
 export class Field_markdown extends Field<Field_markdown_types> {
     static readonly type: 'markdown' = 'markdown'
 
-    get DefaultHeaderUI() {
+    constructor(
+        //
+        entity: Entity,
+        parent: Field | null,
+        schema: ISchema<Field_markdown>,
+        serial?: Field_markdown_serial,
+    ) {
+        super(entity, parent, schema)
+        this.initSerial(serial)
+        this.init()
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_markdown_serial>): void {}
+
+    get DefaultHeaderUI(): FC<{ field: Field_markdown }> | undefined {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
     }
 
-    get DefaultBodyUI() {
+    get DefaultBodyUI(): FC<{ field: Field_markdown }> | undefined {
         if (this.config.inHeader) return undefined
         return WidgetMardownUI
     }
@@ -58,33 +73,20 @@ export class Field_markdown extends Field<Field_markdown_types> {
         return md(this)
     }
 
-    constructor(
-        //
-        entity: Entity,
-        parent: Field | null,
-        schema: ISchema<Field_markdown>,
-        serial?: Field_markdown_serial,
-    ) {
-        super(entity, parent, schema)
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'markdown',
-            collapsed: config.startCollapsed,
-            id: this.id,
-        }
-        this.init()
+    /**
+     * always return false, because the text isn't part of the serial, it's part of the config
+     * markdown fields have NO value
+     */
+    get hasChanges(): boolean {
+        return false
     }
 
-    /** always return false */
-    hasChanges = false
-
-    /** do nothing */
+    /** do nothing, see coment on the hasChange getter */
     reset(): void {}
 
-    set value(val: Field_markdown_value) {
-        // do nothing; markdown have no real value; only config
-        // this.value = val
-    }
+    /** do nothing, see coment on the hasChange getter */
+    set value(_: Field_markdown_value) {}
+
     get value(): Field_markdown_value {
         return this.serial
     }

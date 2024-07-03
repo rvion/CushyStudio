@@ -6,7 +6,7 @@ import type { ISchema, SchemaDict } from './ISchema'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { Entity, ModelConfig } from './Entity'
+import { Entity, EntityConfig } from './Entity'
 
 /**
  * you need one, and only one (singleton) per project
@@ -45,7 +45,7 @@ export class Repository<DOMAIN extends IBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
-        modelConfig: ModelConfig<ISchema<Field_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
+        modelConfig: EntityConfig<ISchema<Field_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
     ): Entity<ISchema<Field_group<FIELDS>>, DOMAIN> => {
         const schema = this.domain.group({
             label: false,
@@ -70,7 +70,7 @@ export class Repository<DOMAIN extends IBuilder> {
     /** simple alias to create a new Form */
     entity<SCHEMA extends ISchema>(
         schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
-        modelConfig: ModelConfig<SCHEMA, DOMAIN> = {},
+        modelConfig: EntityConfig<SCHEMA, DOMAIN> = {},
     ): Entity<SCHEMA, DOMAIN> {
         const schema: SCHEMA = this.evalSchema(schemaExt)
         return new Entity<SCHEMA, DOMAIN>(this, schema, modelConfig)
@@ -79,7 +79,7 @@ export class Repository<DOMAIN extends IBuilder> {
     /** simple way to defined forms and in react components */
     use<SCHEMA extends ISchema>(
         ui: (form: DOMAIN) => SCHEMA,
-        formProperties: ModelConfig<SCHEMA, DOMAIN> = {},
+        formProperties: EntityConfig<SCHEMA, DOMAIN> = {},
         deps: DependencyList = [],
     ): Entity<SCHEMA, DOMAIN> {
         return useMemo(() => {

@@ -18,22 +18,25 @@ import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
 const Header_Playground = cushyRepo.entity(
     (ui) =>
-        ui.choice({
-            appearance: 'tab',
-            default: 'scratchPad',
-            tabPosition: 'start',
-            items: {
-                customPanels: ui.group(),
-                requirements: ui.group(),
-                registeredForms: ui.group(),
-                widgetShowcase: ui.group(),
-                scratchPad: ui.group(),
-                graph: ui.group(),
-                comfyImport: ui.group(),
-                messages: ui.group(),
-                select: ui.group(),
+        ui.choice(
+            {
+                appearance: 'tab',
+                default: 'scratchPad',
+                tabPosition: 'start',
+                items: {
+                    customPanels: ui.group(),
+                    requirements: ui.group(),
+                    registeredForms: ui.group(),
+                    widgetShowcase: ui.group(),
+                    scratchPad: ui.group(),
+                    graph: ui.group(),
+                    comfyImport: ui.group(),
+                    messages: ui.group(),
+                    select: ui.group(),
+                },
             },
-        }),
+            {},
+        ),
     {
         name: 'Playground Conf',
         serial: () => readJSON('settings/playground_config.json'),
