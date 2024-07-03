@@ -3,9 +3,6 @@ export type FieldSerial<X> = X & FieldSerial_CommonProperties
 
 /** common properties we expect to see in a widget serial */
 export type FieldSerial_CommonProperties = {
-    /** unique field serial */
-    id?: string
-
     /** name of the widget, so we can later re-instanciate a widget from this */
     type: string
 

@@ -70,10 +70,8 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return this.config.summary?.(this.value) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
-    readonly id: string
 
     static readonly type: 'group' = 'group'
-    readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */
     get entries() {
@@ -93,16 +91,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
-    serial: Field_group_serial<T> = {} as any
 
-    private _defaultSerial = (): Field_group_serial<T> => {
-        return {
-            type: 'group',
-            id: this.id,
-            collapsed: this.config.startCollapsed,
-            values_: {} as any,
-        }
-    }
     constructor(
         //
         entity: Entity,
@@ -111,51 +100,37 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         serial?: Field_group_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-
-        this.serial =
-            serial && serial.type === 'group' //
-                ? serial
-                : this._defaultSerial()
-
-        // safety nets
-        /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        // /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
-
-        const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
-        const itemsDef = this.config.items
-        const _newValues: SchemaDict =
-            typeof itemsDef === 'function' //
-                ? itemsDef() ?? {}
-                : itemsDef ?? {}
-
-        const childKeys = Object.keys(_newValues) as (keyof T & string)[]
-        // this.childKeys = childKeys
-        for (const key of childKeys) {
-            const fieldSchema = bang(_newValues[key])
-            const prevFieldSerial = prevFieldSerials[key]
-            if (prevFieldSerial && fieldSchema.type === prevFieldSerial.type) {
-                this.fields[key] = fieldSchema.instanciate(this.entity, this, prevFieldSerial)
-            } else {
-                // console.log(`[🟢] invalid serial for "${key}"`)
-                if (prevFieldSerial != null)
-                    console.log(
-                        `[🔶] invalid serial for "${key}": (${fieldSchema.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
-                        prevFieldSerials,
-                    )
-                this.fields[key] = fieldSchema.instanciate(this.entity, this, null)
-                this.serial.values_[key] = this.fields[key].serial
-            }
-        }
-        // we only iterate on the new values => we DON'T WANT to remove the old ones.
-        // we keep the old values in case those are just temporarilly removed, or in case
-        // those will be lazily added later though global usage
-
+        this.initSerial(serial)
         this.init({
             value: false,
             __value: false,
             DefaultHeaderUI: false,
         })
+    }
+
+    /** just here to normalize fieldSchema definitions, since it used to be a lambda */
+    private get _fieldSchemas(): [keyof T, ISchema<any>][] {
+        const itemsDef = this.config.items
+        const fieldSchemas: SchemaDict = typeof itemsDef === 'function' ? itemsDef() ?? {} : itemsDef ?? {}
+        return Object.entries(fieldSchemas) as [keyof T, ISchema<any>][]
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>) {
+        if (this.serial.values_ == null) this.serial.values_ = {}
+
+        // we only iterate on the new values => we DON'T WANT to remove the old ones.
+        // we keep the old values in case those are just temporarilly removed, or in case
+        // those will be lazily added later though global usage
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            let field = this.fields[fName]
+            if (field != null) {
+                field.updateSerial(serial?.values_?.[fName])
+            } else {
+                field = fSchema.instanciate(this.entity, this, serial?.values_?.[fName])
+                this.fields[fName] = field
+                this.serial.values_[fName] = field.serial
+            }
+        }
     }
 
     setPartialValue(val: Partial<Field_group_value<T>>) {
@@ -179,7 +154,9 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     set value(val: Field_group_value<T>) {
         runInAction(() => {
-            for (const key in val) this.fields[key].value = val[key]
+            for (const key in val) {
+                this.fields[key].value = val[key]
+            }
             this.applyValueUpdateEffects()
         })
     }

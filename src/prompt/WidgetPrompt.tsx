@@ -64,10 +64,8 @@ export class Field_prompt extends Field<Field_prompt_types> {
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
-    readonly id: string
 
     static readonly type: 'prompt' = 'prompt'
-    readonly type: 'prompt' = 'prompt'
 
     get baseErrors(): Problem_Ext {
         return null
@@ -82,8 +80,6 @@ export class Field_prompt extends Field<Field_prompt_types> {
         this.text = this.config.default ?? ''
     }
 
-    serial: Field_prompt_serial
-
     constructor(
         //
         entity: Entity,
@@ -92,7 +88,6 @@ export class Field_prompt extends Field<Field_prompt_types> {
         serial?: Field_prompt_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? {
             type: 'prompt',

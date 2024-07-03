@@ -82,7 +82,7 @@ export class EnumBuilderOpt {
                         domain.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            widget: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName: 'INVALID_null' }),
+                            schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName: 'INVALID_null' }),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -93,7 +93,7 @@ export class EnumBuilderOpt {
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
+                        schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
                     })
             },
         })

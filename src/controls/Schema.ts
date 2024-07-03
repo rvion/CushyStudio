@@ -170,7 +170,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
 
     optional(startActive: boolean = false): X.XOptional<this> {
         return new Schema<Field_optional<this>>(Field_optional, {
-            widget: this,
+            schema: this,
             startActive: startActive,
             label: this.config.label,
             // requirements: this.config.requirements,

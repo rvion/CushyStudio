@@ -60,10 +60,8 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
-    readonly id: string
-
     static readonly type: 'listExt' = 'listExt'
-    readonly type: 'listExt' = 'listExt'
+
     get baseErrors(): Problem_Ext {
         return null
     }
@@ -104,8 +102,6 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
 
     entries: { widget: T['$Field']; shape: BoardPosition }[] = []
 
-    serial: Field_listExt_serial<T>
-
     // for compatibility with Field_list
     get items(): T['$Field'][] {
         return this.entries.map((i) => i.widget)
@@ -125,7 +121,6 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         serial?: Field_listExt_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
 
         // serial

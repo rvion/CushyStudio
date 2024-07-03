@@ -5,7 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable, runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -54,7 +53,10 @@ export type Field_bool_config = FieldConfig<
 >
 
 // SERIAL
-export type Field_bool_serial = FieldSerial<{ type: 'bool'; active: boolean }>
+export type Field_bool_serial = FieldSerial<{
+    type: 'bool'
+    active?: boolean
+}>
 
 // VALUE
 export type Field_bool_value = boolean
@@ -72,15 +74,12 @@ export type Field_bool_types = {
 export class Field_bool extends Field<Field_bool_types> {
     readonly DefaultHeaderUI = WidgetBoolUI
     readonly DefaultBodyUI = undefined
-    readonly id: string
+
     static readonly type: 'bool' = 'bool'
-    readonly type: 'bool' = 'bool'
 
     get baseErrors(): Problem_Ext {
         return null
     }
-
-    serial: Field_bool_serial
 
     setOn = () => (this.value = true)
     setOff = () => (this.value = false)
@@ -98,14 +97,7 @@ export class Field_bool extends Field<Field_bool_types> {
         serial?: Field_bool_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
-            id: this.id,
-            type: 'bool',
-            active: this.schema.config.default ?? false,
-            collapsed: this.schema.config.startCollapsed,
-        }
-
+        this.initSerial(serial)
         this.init({
             serial: observable,
             value: computed,
@@ -114,9 +106,15 @@ export class Field_bool extends Field<Field_bool_types> {
         })
     }
 
-    get value(): Field_bool_value {
-        return this.serial.active ?? false
+    protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
+        if (serial == null) return void delete this.serial.active
+        if (serial.active != null) this.serial.active = serial.active
     }
+
+    get value(): Field_bool_value {
+        return this.serial.active ?? this.config.default ?? false
+    }
+
     set value(next: Field_bool_value) {
         if (this.serial.active === next) return
         runInAction(() => {

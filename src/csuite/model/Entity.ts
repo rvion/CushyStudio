@@ -141,6 +141,20 @@ export class Entity<
         width?: string
     }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
 
+    // -------------------------------------------------------
+    get rootSerial() {
+        return this.root.serial
+    }
+
+    set rootSerial(serial: SCHEMA['$Serial']) {
+        this.root.setSerial(serial)
+    }
+
+    setRootSerial(serial: SCHEMA['$Serial']) {
+        this.root.setSerial(serial)
+    }
+    // -------------------------------------------------------
+
     get value(): SCHEMA['$Value'] {
         return this.root.value
     }

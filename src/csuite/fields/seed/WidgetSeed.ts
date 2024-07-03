@@ -4,8 +4,6 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { nanoid } from 'nanoid'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
@@ -25,8 +23,8 @@ export type Field_seed_config = FieldConfig<
 // SERIAL
 export type Field_seed_serial = FieldSerial<{
     type: 'seed'
-    val: number
-    mode: SeedMode
+    val?: number
+    mode?: SeedMode
 }>
 
 // SERIAL FROM VALUE
@@ -50,10 +48,9 @@ export type Field_seed_types = {
 
 // STATE
 export class Field_seed extends Field<Field_seed_types> {
+    static readonly type: 'seed' = 'seed'
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
-
-    readonly id: string
 
     get baseErrors(): Problem_Ext {
         return null
@@ -77,10 +74,6 @@ export class Field_seed extends Field<Field_seed_types> {
     get defaultValue(): number {
         return this.config.default ?? 0
     }
-
-    static readonly type: 'seed' = 'seed'
-    readonly type: 'seed' = 'seed'
-    readonly serial: Field_seed_serial
 
     setMode = (mode: SeedMode) => {
         if (this.serial.mode === mode) return
@@ -108,28 +101,34 @@ export class Field_seed extends Field<Field_seed_types> {
         serial?: Field_seed_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'seed',
-            id: this.id,
-            val: this.defaultValue,
-            mode: this.defaultMode,
-        }
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    set value(val: number) {
-        this.serial.val = val
-        this.applyValueUpdateEffects()
+    protected setOwnSerial(serial: Maybe<Field_seed_serial>) {
+        if (serial == null) {
+            void delete this.serial.val
+            void delete this.serial.mode
+            return
+        }
+        if (serial.val != null) this.serial.val = serial.val
+        if (serial.mode != null) this.serial.mode = serial.mode
     }
 
     get value(): Field_seed_value {
         const count = this.entity.builder._cache.count
-        return this.serial.mode === 'randomize' ? Math.floor(Math.random() * 9_999_999) : this.serial.val
+        const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
+        return mode === 'randomize' //
+            ? Math.floor(Math.random() * 9_999_999)
+            : this.serial.val ?? this.config.default ?? 0
+    }
+
+    set value(val: number) {
+        this.serial.val = val
+        this.applyValueUpdateEffects()
     }
 }
 

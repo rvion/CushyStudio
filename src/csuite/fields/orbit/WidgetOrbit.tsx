@@ -3,8 +3,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
-
-import { nanoid } from 'nanoid'
+import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -22,16 +21,15 @@ export type Field_orbit_config = FieldConfig<{ default?: Partial<OrbitData> }, F
 // SERIAL
 export type Field_orbit_serial = FieldSerial<{
     type: 'orbit'
-    value: OrbitData
+    azimuth?: number
+    elevation?: number
 }>
 
 // SERIAL FROM VALUE
 export const Field_orbit_fromValue = (value: Field_orbit_value): Field_orbit_serial => ({
     type: 'orbit',
-    value: {
-        azimuth: value.azimuth,
-        elevation: value.elevation,
-    },
+    azimuth: value.azimuth,
+    elevation: value.elevation,
 })
 
 // VALUE
@@ -52,54 +50,40 @@ export type Field_orbit_types = {
 
 // STATE
 export class Field_orbit extends Field<Field_orbit_types> {
-    DefaultHeaderUI = WidgetOrbitUI
-    DefaultBodyUI = undefined
-    readonly id: string
     static readonly type: 'orbit' = 'orbit'
-    readonly type: 'orbit' = 'orbit'
+    DefaultHeaderUI: FC<{ field: Field_orbit }> = WidgetOrbitUI
+    DefaultBodyUI: undefined = undefined
 
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    get defaultAzimuth() {
-        return this.config.default?.azimuth ?? 0
-    }
-    get defaultElevation() {
-        return this.config.default?.elevation ?? 0
-    }
-    get hasChanges(): boolean {
-        if (this.serial.value.azimuth !== this.defaultAzimuth) return true
-        if (this.serial.value.elevation !== this.defaultElevation) return true
-        return false
-    }
     /** reset azimuth and elevation */
     reset(): void {
-        this.serial.value.azimuth = this.defaultAzimuth
-        this.serial.value.elevation = this.defaultElevation
+        delete this.serial.elevation
+        delete this.serial.azimuth
     }
 
     /** practical to add to your textual prompt */
-    get englishSummary() {
+    get englishSummary(): string {
         return mkEnglishSummary(
             //
-            this.serial.value.azimuth,
-            this.serial.value.elevation,
+            this.azimuth,
+            this.elevation,
         )
     }
 
-    get euler() {
+    /** euler position; e.g. for camera rendering */
+    get euler(): { x: number; y: number; z: number } {
         const radius = 5
-        const azimuthRad = this.serial.value.azimuth * (Math.PI / 180)
-        const elevationRad = this.serial.value.elevation * (Math.PI / 180)
+        const azimuthRad = this.azimuth * (Math.PI / 180)
+        const elevationRad = this.elevation * (Math.PI / 180)
         const x = radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
         const y = radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
         const z = radius * Math.sin(elevationRad)
         // const cameraPosition =[x,y,z] as const
         return { x: y, y: z, z: -x }
     }
-
-    serial: Field_orbit_serial
 
     constructor(
         //
@@ -109,46 +93,78 @@ export class Field_orbit extends Field<Field_orbit_types> {
         serial?: Field_orbit_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'orbit',
-            collapsed: config.startCollapsed,
-            value: {
-                azimuth: config.default?.azimuth ?? 0,
-                elevation: config.default?.elevation ?? 0,
-            },
-            id: this.id,
-        }
-
-        /* 💊 BACKWARD COMPAT */
-        /* 💊 */ const serialAny = this.serial as any
-        /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
-
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    // x: Partial<number> = 0
-    setForZero123 = (p: { azimuth_rad: number; elevation_rad: number }) => {
-        this.serial.value.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
-        this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
+    protected setOwnSerial(serial: Maybe<Field_orbit_serial>) {
+        if (serial == null) {
+            delete this.serial.azimuth
+            delete this.serial.elevation
+            return
+        }
+        this.serial.elevation = serial.elevation
+        this.serial.azimuth = serial.azimuth
     }
 
+    // x: Partial<number> = 0
+    setForZero123(p: { azimuth_rad: number; elevation_rad: number }) {
+        this.serial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
+        this.serial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
+        // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
+    }
+
+    // Value --------------------------------------------
     get value(): Field_orbit_value {
         return {
-            azimuth: this.serial.value.azimuth,
-            elevation: this.serial.value.elevation,
+            azimuth: this.azimuth,
+            elevation: this.elevation,
             englishSummary: this.englishSummary,
         }
     }
 
     set value(val: Field_orbit_value) {
-        this.serial.value.azimuth = val.azimuth
-        this.serial.value.elevation = val.elevation
+        this.azimuth = val.azimuth
+        this.elevation = val.elevation
+    }
+
+    get hasChanges(): boolean {
+        if (this.azimuth !== this.defaultAzimuth) return true
+        if (this.elevation !== this.defaultElevation) return true
+        return false
+    }
+
+    // Azimuth --------------------------------------------
+    get azimuth(): number {
+        return this.serial.azimuth ?? this.defaultAzimuth
+    }
+
+    set azimuth(val: number) {
+        if (this.azimuth === val) return
+        this.serial.azimuth = val
         this.applyValueUpdateEffects()
+    }
+
+    get defaultAzimuth(): number {
+        return this.config.default?.azimuth ?? 0
+    }
+
+    // Elevation --------------------------------------------
+    get elevation(): number {
+        return this.serial.elevation ?? this.defaultElevation
+    }
+
+    set elevation(val: number) {
+        if (this.elevation === val) return
+        this.serial.elevation = val
+        this.applyValueUpdateEffects()
+    }
+
+    get defaultElevation(): number {
+        return this.config.default?.elevation ?? 0
     }
 }
 

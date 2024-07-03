@@ -19,7 +19,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { field: Field_en
     return (
         <EnumSelectorUI
             value={() => field.status}
-            disabled={!field.serial.active}
+            // disabled={!field.serial.active}
             isOptional={isOptional}
             enumName={enumName}
             // substituteValue={req.status}

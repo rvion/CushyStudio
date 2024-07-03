@@ -6,7 +6,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -35,8 +34,14 @@ export type Field_string_config = FieldConfig<
 >
 
 // SERIAL
-export type Field_string_serial = FieldSerial<{ type: 'str'; val?: string }>
+export type Field_string_serial = FieldSerial<{
+    type: 'str'
+    val?: string
+}>
 
+// {type:"str",val:"coucou",id:"dsafasdfsdafas"}
+// {T:"str",val:"coucou",id:"dsafasdfsdafas"}
+// ["str","dsafasdfsdafas","coucou"],
 // SERIAL FROM VALUE
 export const Field_string_fromValue = (val: string): Field_string_serial => ({
     type: 'str',
@@ -57,39 +62,31 @@ export type Field_string_types = {
 
 // STATE
 export class Field_string extends Field<Field_string_types> {
+    static readonly type: 'str' = 'str'
+    UITextarea = () => <WidgetString_TextareaBodyUI field={this} />
+    UIInputText = () => <WidgetString_HeaderUI field={this} />
+
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
     }
+
     get DefaultBodyUI() {
         if (this.config.textarea) return WidgetString_TextareaBodyUI
         return undefined
     }
+
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    UITextarea = () => <WidgetString_TextareaBodyUI field={this} />
-    UIInputText = () => <WidgetString_HeaderUI field={this} />
-
-    readonly id: string
-    static readonly type: 'str' = 'str'
-    readonly type: 'str' = 'str'
-
     // --------------
     temporaryValue: string | null = null
-    setTemporaryValue = (next: string | null) => (this.temporaryValue = next)
+
+    setTemporaryValue = (next: string | null) => {
+        this.temporaryValue = next
+    }
     // --------------
-
-    serial: Field_string_serial
-    get defaultValue(): string {
-        return this.config.default ?? ''
-    }
-    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
-
-    reset(): void {
-        this.value = this.defaultValue
-    }
 
     constructor(
         //
@@ -99,19 +96,30 @@ export class Field_string extends Field<Field_string_types> {
         serial?: Field_string_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'str',
-            val: config.default,
-            collapsed: config.startCollapsed,
-            id: this.id,
-        }
+        this.initSerial(serial)
         this.init()
     }
+
     get animateResize() {
         if (this.config.textarea) return false
         return true
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_string_serial>) {
+        if (serial == null) return void delete this.serial.val
+        if (serial.val != null) this.serial.val = serial.val
+    }
+
+    reset(): void {
+        this.value = this.defaultValue
+    }
+
+    get defaultValue(): string {
+        return this.config.default ?? ''
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
     }
 
     get value(): Field_string_value {

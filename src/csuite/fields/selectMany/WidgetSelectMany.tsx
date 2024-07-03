@@ -83,14 +83,9 @@ export type Field_selectMany_types<T extends BaseSelectEntry> = {
 
 // STATE
 export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_selectMany_types<T>> {
+    static readonly type: 'selectMany' = 'selectMany'
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = WidgetSelectMany_ListUI
-
-    readonly id: string
-
-    static readonly type: 'selectMany' = 'selectMany'
-    readonly type: 'selectMany' = 'selectMany'
-    readonly serial: Field_selectMany_serial<T>
 
     get defaultValue(): Field_selectMany_value<T> {
         return this.config.default ?? []
@@ -133,7 +128,6 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         serial?: Field_selectMany_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? {
             type: 'selectMany',

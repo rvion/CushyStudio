@@ -150,7 +150,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
 
     optional(startActive: boolean = false): S.SOptional<this> {
         return new SimpleSchema<Field_optional<this>>(Field_optional, {
-            widget: this,
+            schema: this,
             startActive: startActive,
             label: this.config.label,
             startCollapsed: this.config.startCollapsed,

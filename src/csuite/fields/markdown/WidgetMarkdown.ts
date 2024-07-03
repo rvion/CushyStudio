@@ -38,10 +38,7 @@ export type Field_markdown_types = {
 
 // STATE
 export class Field_markdown extends Field<Field_markdown_types> {
-    readonly id: string
     static readonly type: 'markdown' = 'markdown'
-    readonly type: 'markdown' = 'markdown'
-    readonly serial: Field_markdown_serial
 
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
@@ -71,7 +68,6 @@ export class Field_markdown extends Field<Field_markdown_types> {
         serial?: Field_markdown_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? {
             type: 'markdown',

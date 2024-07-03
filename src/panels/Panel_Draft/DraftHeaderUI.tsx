@@ -8,6 +8,7 @@ import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { formatSize } from '../../db/getDBStats'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
@@ -34,8 +35,9 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     <DraftMenuLooksUI draft={draft} title={app.name} />
                     <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
                 </div>
+                {/* ({formatSize(JSON.stringify(draft.data.formSerial).length)})  */}
+                {/* ({formatSize(JSON.stringify(draft.data.formSerial, null, 3).length)}) */}
                 {/* <SpacerUI /> */}
-
                 <div tw='flex justify-center'>
                     <Frame
                         // TODO(bird_d): We need a better way to "join" items together automatically. Possibly just move the tailwind from this? But with better handling of the inbetween borders.

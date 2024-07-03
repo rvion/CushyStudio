@@ -8,6 +8,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { Entity } from './Entity'
+import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
 import type { ISchema } from './ISchema'
@@ -15,6 +16,7 @@ import type { Problem, Problem_Ext } from './Validation'
 import type { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
@@ -65,6 +67,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return schema.instanciate(entity, parent, serial)
     }
 
+    /**
+     * unique Field instance ID;
+     * each node in the form tree has one;
+     * NOT persisted in serial.
+     * change every time the field is instanciated
+     */
+    readonly id: string
+
+    /** wiget serial is the full serialized representation of that widget  */
+    // abstract readonly serial: K['$Serial']
+    readonly serial: K['$Serial']
+
     constructor(
         /** root form this widget has benn registered to */
         public entity: Entity,
@@ -72,27 +86,79 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         public parent: Field | null,
         /** schema used to instanciate this widget */
         public schema: ISchema<K['$Field']>,
-    ) {}
+    ) {
+        this.id = nanoid(8)
+        this.serial = { type: (this.constructor as any).type }
+    }
+
+    static get type(): Field['$Type'] {
+        throw new Error('This method should be overridden in subclass')
+    }
+
+    get type(): Field['$Type'] {
+        return (this.constructor as any).type
+    }
 
     get domain(): IBuilder {
         return this.entity.builder
     }
 
-    /** unique ID; each node in the form tree has one; persisted in serial */
-    abstract readonly id: string
-
-    /** widget type; can be used instead of `instanceof` to known which wiget it is */
-    abstract readonly type: K['$Type']
-
     /** wiget value is the simple/easy-to-use representation of that widget  */
     abstract value: K['$Value']
-
-    /** wiget serial is the full serialized representation of that widget  */
-    abstract readonly serial: K['$Serial']
 
     /** base validation errors specific to this widget; */
     abstract readonly baseErrors: Problem_Ext
 
+    /**
+     * RULES:
+     * 0. MUST NEVER USE THE serial object provided by default
+     *      FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
+     *      | always create a new 0
+     *
+     * 1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
+     *      | goal: make sure we never have stale references
+     *      | => allow to abort early if same ref equality check successfull
+     *      | => do not replace your serial object, only assign to it
+     *      | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
+     *      | object
+     *
+     * ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
+     * ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
+     * ❌      | => please. be kind. don't
+     *
+     * 3. MUST ONLY CHANGE own-data, not data belonging to child
+     *      | => setSerial should call setSerial on already instanciated children
+     *
+     * ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
+     * ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
+     *
+     * 5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
+     *
+     * if you override setSerial, make sure rules above are respected.
+     * ideally, add checkmarks near
+     */
+    protected abstract setOwnSerial(serial: Maybe<K['$Serial']>): void
+
+    /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
+    initSerial(serial: Maybe<K['$Serial']>) {
+        this.setOwnSerial(serial)
+        this.copyCommonSerialFiels(serial)
+    }
+
+    /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
+    updateSerial(serial: Maybe<K['$Serial']>) {
+        this.setOwnSerial(serial)
+        this.copyCommonSerialFiels(serial)
+        this.applySerialUpdateEffects()
+    }
+
+    private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
+        if (s == null) return
+        if (s._creationKey) this.serial._creationKey = s._creationKey
+        if (s.collapsed) this.serial.collapsed = s.collapsed
+        if (s.custom) this.serial.custom = s.custom
+        if (s.lastUpdatedAt) this.serial.lastUpdatedAt = s.lastUpdatedAt
+    }
     /** unified api to allow setting serial from value */
     setValue(val: K['$Value']) {
         this.value = val

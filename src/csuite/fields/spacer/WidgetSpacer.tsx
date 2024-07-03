@@ -18,7 +18,9 @@ import { WidgetSpacerUI } from './WidgetSpacerUI'
 export type Field_spacer_config = FieldConfig<{}, Field_spacer_types>
 
 // SERIAL
-export type Field_spacer_serial = FieldSerial<{ type: 'spacer' }>
+export type Field_spacer_serial = FieldSerial<{
+    type: 'spacer'
+}>
 
 // SERIAL FROM VALUE
 export const Field_spacer_fromValue = (val: Field_spacer_value): Field_spacer_serial => ({
@@ -44,11 +46,8 @@ export class Field_spacer extends Field<Field_spacer_types> {
     get baseErrors(): Problem_Ext {
         return null
     }
-    readonly id: string
 
     static readonly type: 'spacer' = 'spacer'
-    readonly type: 'spacer' = 'spacer'
-    serial: Field_spacer_serial
 
     hasChanges = false
     reset(): void {}
@@ -61,19 +60,15 @@ export class Field_spacer extends Field<Field_spacer_types> {
         serial?: Field_spacer_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
-            id: this.id,
-            type: 'spacer',
-            collapsed: false,
-        }
-
+        this.initSerial(serial)
         this.init({
             serial: observable,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
+
+    protected setOwnSerial(serial: Maybe<Field_spacer_serial>): void {}
 
     get value() {
         return false

@@ -53,13 +53,10 @@ export type Field_image_types = {
 
 // STATE
 export class Field_image extends Field<Field_image_types> {
+    static readonly type: 'image' = 'image'
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
-    readonly id: string
 
-    static readonly type: 'image' = 'image'
-    readonly type: 'image' = 'image'
-    readonly serial: Field_image_serial
     // size: number = 192
     get baseErrors(): Problem_Ext {
         return null
@@ -83,7 +80,6 @@ export class Field_image extends Field<Field_image_types> {
         serial?: Field_image_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',
             id: this.id,

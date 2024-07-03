@@ -7,7 +7,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -28,7 +27,6 @@ export type Field_enum_config<O> = FieldConfig<
 // SERIAL
 export type Field_enum_serial<O> = FieldSerial<{
     type: 'enum'
-    active: true
     val: O
 }>
 
@@ -48,10 +46,8 @@ export type Field_enum_types<O> = {
 export class Field_enum<O> extends Field<Field_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
-    readonly id: string
 
     static readonly type: 'enum' = 'enum'
-    readonly type: 'enum' = 'enum'
 
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
     get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
@@ -68,7 +64,6 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         return null
     }
 
-    serial: Field_enum_serial<O>
     constructor(
         //
         entity: Entity,
@@ -77,12 +72,10 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         serial?: Field_enum_serial<O>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? {
             type: 'enum',
             id: this.id,
-            active: true,
             val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
         }
         this.init({

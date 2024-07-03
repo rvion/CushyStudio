@@ -14,7 +14,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
         startActive?: boolean
-        widget: T
+        schema: T
     },
     Field_optional_types<T>
 >
@@ -42,7 +42,6 @@ export type Field_optional_types<T extends ISchema = ISchema> = {
 export class Field_optional<T extends ISchema = ISchema> extends Field<Field_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
-    readonly id: string
 
     reset(): void {
         // active by default
@@ -71,11 +70,10 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
     }
 
     static readonly type: 'optional' = 'optional'
-    readonly type: 'optional' = 'optional'
+
     get baseErrors(): Problem_Ext {
         return null
     }
-    serial: Field_optional_serial<T>
     child!: T['$Field']
 
     get childOrThrow(): T['$Field'] {
@@ -97,15 +95,23 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
      * as of 2024-03-14, this is only called in the constructor
      * TODO: inline ?
      */
-    private _ensureChildIsHydrated = () => {
-        if (this.child) return
-        const schema = this.config.widget
-        const prevSerial = this.serial.child
-        if (prevSerial && schema.type === prevSerial.type) {
-            this.child = schema.instanciate(this.entity, this, prevSerial)
+    private _ensureChildIsHydrated() {
+        const childSerial = this.serial.child
+        if (this.child) {
+            if (childSerial) {
+                this.child.setSerial(childSerial)
+                return
+            }
+            // else this.child.reset()
         } else {
-            this.child = schema.instanciate(this.entity, this, null)
-            this.serial.child = this.child.serial
+            const schema = this.config.schema
+            const prevSerial = childSerial
+            if (prevSerial && schema.type === prevSerial.type) {
+                this.child = schema.instanciate(this.entity, this, prevSerial)
+            } else {
+                this.child = schema.instanciate(this.entity, this, null)
+                this.serial.child = this.child.serial
+            }
         }
     }
 
@@ -117,7 +123,6 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         serial?: Field_optional_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         const defaultActive = config.startActive
         this.serial = serial ?? {
@@ -131,7 +136,6 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         const isActive = serial?.active ?? defaultActive
         if (isActive) this.serial.active = true
 
-        // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
         this.init({
             serial: observable,

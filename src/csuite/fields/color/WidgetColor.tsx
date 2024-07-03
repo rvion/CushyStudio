@@ -37,10 +37,8 @@ export type Field_color_types = {
 export class Field_color extends Field<Field_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
-    readonly id: string
 
     static readonly type: 'color' = 'color'
-    readonly type: 'color' = 'color'
 
     get baseErrors(): Problem_Ext {
         return null
@@ -50,8 +48,6 @@ export class Field_color extends Field<Field_color_types> {
     get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
 
-    serial: Field_color_serial
-
     constructor(
         //
         entity: Entity,
@@ -60,7 +56,6 @@ export class Field_color extends Field<Field_color_types> {
         serial?: Field_color_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? {
             type: 'color',

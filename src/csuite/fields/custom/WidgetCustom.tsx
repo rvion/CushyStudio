@@ -43,16 +43,13 @@ export type Field_custom_types<T> = {
 export class Field_custom<T> extends Field<Field_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
-    readonly id: string
 
     static readonly type: 'custom' = 'custom'
-    readonly type: 'custom' = 'custom'
 
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    serial: Field_custom_serial<T>
     Component: Field_custom_config<T>['Component']
     st = () => cushy
 
@@ -68,7 +65,6 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         serial?: Field_custom_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.Component = config.Component
         this.serial = serial ?? {

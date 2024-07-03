@@ -62,17 +62,13 @@ export type Field_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
 // SERIAL FROM VALUE
 export const Field_selectOne_fromValue = <T extends BaseSelectEntry>(
     val: Field_selectOne_value<T>,
-): Field_selectOne_serial<T> => ({
-    type: 'selectOne',
-    query: '',
-    val,
-})
+): Field_selectOne_serial<T> => ({ type: 'selectOne', val })
 
 // SERIAL
 export type Field_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
     type: 'selectOne'
-    query: string
-    val: T
+    query?: string
+    val?: T
 }>
 
 // VALUE
@@ -94,15 +90,9 @@ const FAILOVER_VALUE: any = Object.freeze({ id: '❌', label: '❌' })
 export class Field_selectOne<T extends BaseSelectEntry> //
     extends Field<Field_selectOne_types<T>>
 {
+    static readonly type: 'selectOne' = 'selectOne'
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
-
-    readonly id: string
-
-    static readonly type: 'selectOne' = 'selectOne'
-    readonly type: 'selectOne' = 'selectOne'
-    readonly serial: Field_selectOne_serial<T>
-
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
@@ -138,14 +128,11 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         serial?: Field_selectOne_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         const choices = this.choices
         this.serial = serial ?? {
             type: 'selectOne',
             collapsed: config.startCollapsed,
-            id: this.id,
-            query: '',
             val: config.default ?? choices[0] ?? FAILOVER_VALUE,
         }
         if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0] ?? FAILOVER_VALUE
@@ -156,12 +143,17 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     }
 
     get value(): Field_selectOne_value<T> {
-        return this.serial.val
+        return (
+            this.serial.val ?? //
+            this.config.default ??
+            this.choices[0] ??
+            FAILOVER_VALUE
+        )
     }
 
     set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
-        const nextHasSameID = this.serial.val.id === next.id
+        const nextHasSameID = this.value.id === next.id
         runInAction(() => {
             this.serial.val = next
             if (!nextHasSameID) this.applyValueUpdateEffects()

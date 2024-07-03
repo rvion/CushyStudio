@@ -37,7 +37,6 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
 // SERIAL
 export type Field_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
     type: 'choices'
-    active: true
     branches: DefaultBranches<T>
     values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
@@ -63,10 +62,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
-    readonly id: string
 
     static readonly type: 'choices' = 'choices'
-    readonly type: 'choices' = 'choices'
+
     readonly expand: boolean = this.config.expand ?? false
 
     get baseErrors(): Problem_Ext {
@@ -82,8 +80,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     children: { [k in keyof T]?: T[k]['$Field'] } = {}
-
-    serial: Field_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
         return this.choices[0]
@@ -175,7 +171,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         serial?: Field_choices_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         // ensure ID
         // TODO: investigate why this contructor is called so many times (5 times ???)
@@ -190,7 +185,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         this.serial = serial ?? {
             type: 'choices',
             id: this.id,
-            active: true,
             values_: {},
             branches: {},
         }

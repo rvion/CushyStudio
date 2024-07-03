@@ -5,7 +5,9 @@ import { simpleBuilder as b } from '../../index'
 // ------------------------------------------------------------------------------
 describe('assign to value object', () => {
     it('assign to Group.value separate fields', () => {
-        const S1 = b.fields({ str1: b.string({ default: '🔵' }) })
+        const S1 = b.fields({
+            str1: b.string({ default: '🔵' }),
+        })
         const E1 = S1.create()
         expect(E1.value.str1).toBe('🔵')
         expect(E1.root.fields.str1.value).toBe('🔵')
@@ -22,6 +24,16 @@ describe('assign to value object', () => {
 
         E1.value[1] = '🟡'
         expect(E1.value).toEqual(['🔵', '🟡', '🔵'])
+        expect(E1.serial).toMatchObject({
+            root: {
+                type: 'list',
+                items_: [
+                    { type: 'str', val: '🔵' },
+                    { type: 'str', val: '🟡' },
+                    { type: 'str', val: '🔵' },
+                ],
+            },
+        })
     })
 })
 

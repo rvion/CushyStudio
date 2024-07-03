@@ -71,14 +71,12 @@ export class Field_link<A extends ISchema, B extends ISchema> //
     get summary(): string {
         return this.bField.summary
     }
-    readonly id: string
+
     static readonly type: 'link' = 'link'
-    readonly type: 'link' = 'link'
 
     /** the dict of all child widgets */
     aField!: A['$Field']
     bField!: B['$Field']
-    serial: Field_link_serial<A, B> = {} as any
 
     private _defaultSerial = (): Field_link_serial<A, B> => {
         return {
@@ -93,7 +91,6 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         serial?: Field_link_serial<A, B>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         this.serial =
             serial && serial.type === 'link' //
                 ? serial

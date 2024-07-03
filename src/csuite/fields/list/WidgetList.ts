@@ -83,14 +83,10 @@ export class Field_list<T extends ISchema> //
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
 
-    readonly id: string
-
     static readonly type: 'list' = 'list'
-    readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
     items: T['$Field'][]
-    serial: Field_list_serial<T>
 
     get hasChanges(): boolean {
         // in auto mode, length is managed, so we must not take it into account
@@ -181,8 +177,6 @@ export class Field_list<T extends ISchema> //
         serial?: Field_list_serial<T>,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-
         // serial
         this.serial = serial ?? observable({ type: 'list', id: this.id, active: true, items_: [] })
 
@@ -303,6 +297,11 @@ export class Field_list<T extends ISchema> //
             out.push(`List is too long`)
         }
         return out
+    }
+
+    duplicateItemAtIndex(ix: number): void {
+        const item = this.items[ix]!
+        this.addItem({ at: ix, value: item.value })
     }
 
     push(...value: T['$Value'][]) {

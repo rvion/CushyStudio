@@ -33,11 +33,11 @@ describe('auto-migration ', () => {
         expect(E3.serial).toMatchObject({ root: { type: 'str', val: '🟢' } })
     })
 
-    it('can recover from/to links', () => {
-        expect(0).toBe(1)
-        // 2024-07-02: TODO with GUI
-        // see `src/csuite/simple/SimpleSchema.ts`, near the `AUTOMIGRATION` section
-    })
+    // it('can recover from/to links', () => {
+    //     expect(0).toBe(1)
+    //     // 2024-07-02: TODO with GUI
+    //     // see `src/csuite/simple/SimpleSchema.ts`, near the `AUTOMIGRATION` section
+    // })
 
     it('can recover from/to lists + TEST PROXY SETTERS 🔥 ', () => {
         // E1 works

@@ -41,12 +41,10 @@ export type Field_shared_types<F extends Field = Field> = {
 
 // STATE
 export class Field_shared<F extends Field = Field> extends Field<Field_shared_types<F>> {
-    readonly id: string
     static readonly type: 'shared' = 'shared'
-    readonly type: 'shared' = 'shared'
+
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
-    serial: Field_shared_serial
 
     constructor(
         //
@@ -56,7 +54,6 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         serial?: Field_shared_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         this.init({

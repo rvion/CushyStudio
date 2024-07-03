@@ -52,13 +52,9 @@ export type Field_button_types<K> = {
 
 // STATE
 export class Field_button<K> extends Field<Field_button_types<K>> {
+    static readonly type: 'button' = 'button'
     DefaultHeaderUI = WidgetButtonUI
     DefaultBodyUI = undefined
-    readonly id: string
-
-    static readonly type: 'button' = 'button'
-    readonly type: 'button' = 'button'
-    readonly serial: Field_button_serial
 
     get baseErrors(): Problem_Ext {
         return null
@@ -72,7 +68,6 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         serial?: Field_button_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         if (config.text) {
             config.label = config.label ?? ` `

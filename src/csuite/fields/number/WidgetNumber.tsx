@@ -31,7 +31,10 @@ export type Field_number_config = FieldConfig<
 >
 
 // SERIAL
-export type Field_number_serial = FieldSerial<{ type: 'number'; val: number }>
+export type Field_number_serial = FieldSerial<{
+    type: 'number'
+    val?: number
+}>
 
 // VALUE
 export type Field_number_value = number
@@ -47,19 +50,20 @@ export type Field_number_types = {
 
 // STATE
 export class Field_number extends Field<Field_number_types> {
+    static readonly type: 'number' = 'number'
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
-    readonly id: string
 
-    static readonly type: 'number' = 'number'
-    readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
-    serial: Field_number_serial
     get defaultValue(): number {
         return this.config.default ?? 0
     }
-    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+
+    get hasChanges(): boolean {
+        return this.serial.val !== this.defaultValue
+    }
+
     reset(): void {
         if (this.serial.val === this.defaultValue) return
         this.value = this.defaultValue
@@ -79,15 +83,7 @@ export class Field_number extends Field<Field_number_types> {
         serial?: Field_number_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'number',
-            collapsed: config.startCollapsed,
-            id: this.id,
-            val: config.default ?? 0,
-        }
-
+        this.initSerial(serial)
         this.init({
             serial: observable,
             value: computed,
@@ -96,8 +92,13 @@ export class Field_number extends Field<Field_number_types> {
         })
     }
 
+    protected setOwnSerial(serial: Maybe<Field_number_serial>) {
+        if (serial == null) return void delete this.serial.val
+        if (serial.val != null) this.serial.val = serial.val
+    }
+
     get value(): Field_number_value {
-        return this.serial.val
+        return this.serial.val ?? this.config.default ?? 0
     }
 
     set value(next: Field_number_value) {

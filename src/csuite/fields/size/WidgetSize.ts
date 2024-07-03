@@ -46,6 +46,7 @@ export type Field_size_types = {
 
 // STATE
 export class Field_size extends Field<Field_size_types> {
+    readonly serial: Field_size_serial
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {
@@ -94,17 +95,6 @@ export class Field_size extends Field<Field_size_types> {
         return state
     }
 
-    // ⏸️ get hasBody() {
-    // ⏸️     if (this.sizeHelper.isAspectRatioLocked) return true
-    // ⏸️     return false
-    // ⏸️ }
-
-    readonly id: string
-
-    static readonly type: 'size' = 'size'
-    readonly type: 'size' = 'size'
-    readonly serial: Field_size_serial
-
     constructor(
         //
         entity: Entity,
@@ -113,7 +103,6 @@ export class Field_size extends Field<Field_size_types> {
         serial?: Field_size_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
         if (serial) {
             this.serial = serial

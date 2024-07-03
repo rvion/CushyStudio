@@ -33,7 +33,6 @@ export type Field_matrix_config = FieldConfig<
 // SERIAL
 export type Field_matrix_serial = FieldSerial<{
     type: 'matrix'
-    active: true
     selected: Field_matrix_cell[]
 }>
 
@@ -51,13 +50,10 @@ export type Field_matrix_types = {
 
 // STATE
 export class Field_matrix extends Field<Field_matrix_types> {
+    static readonly type: 'matrix' = 'matrix'
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
-    readonly id: string
 
-    static readonly type: 'matrix' = 'matrix'
-    readonly type: 'matrix' = 'matrix'
-    readonly serial: Field_matrix_serial
     get baseErrors(): Problem_Ext {
         return null
     }
@@ -93,9 +89,8 @@ export class Field_matrix extends Field<Field_matrix_types> {
         serial?: Field_matrix_serial,
     ) {
         super(entity, parent, schema)
-        this.id = serial?.id ?? nanoid()
         const config = schema.config
-        this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
+        this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, selected: [] }
 
         const rows = config.rows
         const cols = config.cols
@@ -122,7 +117,6 @@ export class Field_matrix extends Field<Field_matrix_types> {
     }
 
     get value(): Field_matrix_value {
-        // if (!this.state.active) return undefined
         return this.serial.selected
     }
 
