@@ -5,10 +5,8 @@ import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField } from '../../model/Field'
-import { bang } from '../../utils/bang'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
@@ -148,7 +146,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
     }
 
-    get value() {
+    get value(): Field_group_value<T> {
         return this.__value
     }
 

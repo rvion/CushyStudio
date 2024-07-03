@@ -6,8 +6,6 @@ import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 import type { TabPositionConfig } from './TabPositionConfig'
 
-import { nanoid } from 'nanoid'
-
 import { Field, type KeyedField } from '../../model/Field'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
@@ -21,15 +19,34 @@ type DefaultBranches<T> = { [key in keyof T]?: boolean }
 // CONFIG
 export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
     {
-        expand?: boolean
+        /** schema for  all possible branches */
         items: T
+
+        /**
+         * true  => 0, 1 or more values can be selected
+         * false => one and only one value can be selected (not 0, not 2)
+         */
         multi: boolean
-        /** either a branch name if only one branch is active, or a Dict<boolean> if multiple */
+
+        /**
+         * either a branch name if only one branch is active,
+         * or a Dict<boolean> if multiple
+         * // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
+         */
         default?: DefaultBranches<T> | keyof T
-        // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
+
+        // UI stuff----------------------
+        /** placeholder to display in widget that support placeholders */
         placeholder?: string
+
+        /** preffered widget to use for value selection */
         appearance?: 'select' | 'tab'
+
+        /** if the widget use tabs, where to place tabs */
         tabPosition?: TabPositionConfig
+
+        /** UI stuff */
+        expand?: boolean
     },
     Field_choices_types<T>
 >
@@ -57,13 +74,12 @@ export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
 
 // STATE
 export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Field_choices_types<T>> {
+    static readonly type: 'choices' = 'choices'
     UITab = () => <WidgetChoices_TabHeaderUI field={this} />
     UISelect = () => <WidgetChoices_SelectHeaderUI field={this} />
     UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
-
-    static readonly type: 'choices' = 'choices'
 
     readonly expand: boolean = this.config.expand ?? false
 
@@ -106,9 +122,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     // 💬 2024-07-01 rvion:
-    // hack so optional fields do not increase nesting twice
-    // But not sure this override is worth it.
-    // Consistency may be better than the extra line of code.
+    // 💬 hack so optional fields do not increase nesting twice
+    // 💬 But not sure this override is worth it.
+    // 💬 Consistency may be better than the extra line of code.
     // | get indentChildren(): number {
     // |     return 0
     // | }
@@ -178,16 +194,15 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         // basic sanity check because of the recent breaking change
         if (typeof config.items === 'function') {
             toastError('🔴 ChoicesWidget "items" property should now be an object, not a function')
-            debugger
         }
 
         // ensure serial present and valid
-        this.serial = serial ?? {
-            type: 'choices',
-            id: this.id,
-            values_: {},
-            branches: {},
-        }
+        // this.serial = serial ?? {
+        //     type: 'choices',
+        //     id: this.id,
+        //     values_: {},
+        //     branches: {},
+        // }
 
         // find all active branches
         const allBranches = Object.keys(config.items) as (keyof T & string)[]
@@ -225,6 +240,22 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
+    }
+
+    protected setOwnSerial(): void {
+        if (this.serial.values_ == null) this.serial.values_ = {}
+        if (this.serial.branches == null) this.serial.branches = {}
+        //
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            let field = this.fields[fName]
+            if (field != null) {
+                field.updateSerial(serial?.values_?.[fName])
+            } else {
+                field = fSchema.instanciate(this.entity, this, serial?.values_?.[fName])
+                this.fields[fName] = field
+                this.serial.values_[fName] = field.serial
+            }
+        }
     }
 
     get subFields(): Field[] {

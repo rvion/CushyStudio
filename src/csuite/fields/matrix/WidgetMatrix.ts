@@ -5,7 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'

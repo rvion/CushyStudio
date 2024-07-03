@@ -72,22 +72,7 @@ export type Field_bool_types = {
 
 // STATE
 export class Field_bool extends Field<Field_bool_types> {
-    readonly DefaultHeaderUI = WidgetBoolUI
-    readonly DefaultBodyUI = undefined
-
     static readonly type: 'bool' = 'bool'
-
-    get baseErrors(): Problem_Ext {
-        return null
-    }
-
-    setOn = () => (this.value = true)
-    setOff = () => (this.value = false)
-    toggle = () => (this.value = !this.value)
-
-    readonly defaultValue: boolean = this.config.default ?? false
-    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
-    reset = () => (this.value = this.defaultValue)
 
     constructor(
         //
@@ -106,13 +91,47 @@ export class Field_bool extends Field<Field_bool_types> {
         })
     }
 
+    readonly DefaultHeaderUI = WidgetBoolUI
+    readonly DefaultBodyUI = undefined
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
+    /** set the value to true */
+    setOn() {
+        return (this.value = true)
+    }
+
+    /** set the value to false */
+    setOff() {
+        return (this.value = false)
+    }
+
+    /** set value to true if false, and to false if true */
+    toggle() {
+        return (this.value = !this.value)
+    }
+
     protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
         if (serial == null) return void delete this.serial.active
         if (serial.active != null) this.serial.active = serial.active
     }
 
+    get defaultValue(): boolean {
+        return this.config.default ?? false
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
+    }
+
+    reset() {
+        return (this.value = this.defaultValue)
+    }
+
     get value(): Field_bool_value {
-        return this.serial.active ?? this.config.default ?? false
+        return this.serial.active ?? this.defaultValue
     }
 
     set value(next: Field_bool_value) {

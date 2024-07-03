@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'

@@ -5,7 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'

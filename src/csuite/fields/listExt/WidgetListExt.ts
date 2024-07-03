@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { clampOpt } from '../../utils/clamp'

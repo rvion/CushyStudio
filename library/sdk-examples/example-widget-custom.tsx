@@ -62,6 +62,6 @@ app({
         run.output_text(`You have clicked it ${clickCount ?? 0} times (before resetting)`)
 
         /** 📝 programmatically reset the state from the UI */
-        if (ui.demo.text === 'reset') run.formInstance.fields.demo.reset()
+        if (ui.demo.text === 'reset') run.form.fields.demo.reset()
     },
 })

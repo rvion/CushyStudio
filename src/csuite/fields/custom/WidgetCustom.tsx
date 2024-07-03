@@ -6,7 +6,6 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'

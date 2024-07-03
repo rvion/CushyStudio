@@ -39,7 +39,7 @@ app({
         button: ui.button({ onClick: () => void cushy.showConfettiAndBringFun() }),
     }),
     run: async (run, ui) => {
-        const regional = run.formInstance.fields.regionalPrompt
+        const regional = run.form.fields.regionalPrompt
         regional.addItem()
         regional.entries[0]!.shape.width = 256
         regional.entries[0]!.shape.height = 256

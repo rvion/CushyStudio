@@ -147,11 +147,11 @@ export class Entity<
     }
 
     set rootSerial(serial: SCHEMA['$Serial']) {
-        this.root.setSerial(serial)
+        this.root.updateSerial(serial)
     }
 
     setRootSerial(serial: SCHEMA['$Serial']) {
-        this.root.setSerial(serial)
+        this.root.updateSerial(serial)
     }
     // -------------------------------------------------------
 

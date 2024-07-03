@@ -4,7 +4,6 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 
 import { observable, reaction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'

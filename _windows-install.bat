@@ -75,19 +75,6 @@ if not "%ERRORLEVEL%" == "0" (
     exit /B 1
 )
 
-echo [===================================================]
-echo Fixing tsconfig.custom.json...
-
-rem Define the path to tsconfig.custom.json
-set "tsconfigPath=.\tsconfig.custom.json"
-
-rem JSON content to write if the file does not exist.
-set defaultTsconfigJSON={ "include": ["src", "schema/global.d.ts"], "exclude": [] }
-
-rem Check if the file exists
-if not exist "%tsconfigPath%" (
-    echo %defaultTsconfigJSON%" > "%tsconfigPath%
-)
 
 echo [===================================================]
 echo PATCHING electron binary with cushy icon...

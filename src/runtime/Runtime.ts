@@ -237,7 +237,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * 🔶 it is NOT json: it's a complex object
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
-    formInstance!: Field_group<FIELDS>
+    form!: Field_group<FIELDS>
     // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any) => {
@@ -348,7 +348,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = formResult as any
         this.formSerial = appFormSerial
-        this.formInstance = p.formInstance
+        this.form = p.formInstance
         this.context = p.context
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)

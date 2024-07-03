@@ -5,7 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -18,7 +17,7 @@ export type Field_color_config = FieldConfig<{ default?: string }, Field_color_t
 export type Field_color_serial = FieldSerial<{
     type: 'color'
     /** color, stored as string */
-    value: string
+    value?: string
 }>
 
 // VALUE
@@ -35,18 +34,25 @@ export type Field_color_types = {
 
 // STATE
 export class Field_color extends Field<Field_color_types> {
+    static readonly type: 'color' = 'color'
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
-
-    static readonly type: 'color' = 'color'
 
     get baseErrors(): Problem_Ext {
         return null
     }
 
-    readonly defaultValue: string = this.config.default ?? '#000000'
-    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
-    reset = () => (this.value = this.defaultValue)
+    get defaultValue(): string {
+        return this.config.default ?? '#000000'
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
+    }
+
+    reset(): void {
+        this.value = this.defaultValue
+    }
 
     constructor(
         //
@@ -56,22 +62,22 @@ export class Field_color extends Field<Field_color_types> {
         serial?: Field_color_serial,
     ) {
         super(entity, parent, schema)
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'color',
-            collapsed: config.startCollapsed,
-            id: this.id,
-            value: config.default ?? '#000000',
-        }
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    get value(): Field_color_value {
-        return this.serial.value
+    protected setOwnSerial(serial: Maybe<Field_color_serial>) {
+        if (serial == null) return void delete this.serial.value
+        if (serial.value != null) this.serial.value = serial.value
     }
+
+    get value(): Field_color_value {
+        return this.serial.value ?? this.config.default ?? ''
+    }
+
     set value(next: Field_color_value) {
         if (this.serial.value === next) return
         runInAction(() => {

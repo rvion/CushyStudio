@@ -74,7 +74,6 @@ import { openInVSCode } from '../utils/electron/openInVsCode'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
-import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { interfaceConf } from './conf/interfaceConf'
 import { systemConf } from './conf/systemConf'
@@ -194,7 +193,6 @@ export class STATE {
 
     fullReset_eraseConfigAndSchemaFilesAndDB = () => {
         this.configFile.erase()
-        this.typecheckingConfig.erase()
         this.db.erase()
         this.reloadCushyMainWindow()
     }
@@ -210,7 +208,6 @@ export class STATE {
 
     partialReset_eraseConfigAndSchemaFiles = () => {
         this.configFile.erase()
-        this.typecheckingConfig.erase()
         this.reloadCushyMainWindow()
     }
 
@@ -255,7 +252,6 @@ export class STATE {
     userTags = UserTags.build()
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
-    typecheckingConfig: JsonFile<TsConfigCustom>
     // themeManager: CushyThemeManager
 
     // showPreviewInFullScreen
@@ -399,26 +395,6 @@ export class STATE {
         confetti()
     }
 
-    updateTsConfig = () => {
-        console.log(`[🍻] FIXUP TSConfig`)
-        const mandatory = mandatoryTSConfigIncludes
-        if (this.configFile.value.enableTypeCheckingBuiltInApps) {
-            mandatory.push('library/built-in')
-            mandatory.push('library/sdk-examples')
-        }
-        const startTSConfig = this.typecheckingConfig.value
-        const hasAllMandatoryIncludes = mandatory.every((mandatory) => startTSConfig.include.includes(mandatory))
-        if (hasAllMandatoryIncludes) return // console.log(startTSConfig.include, mandatory)
-        this.typecheckingConfig.update((x) => {
-            const current = x.include
-            for (const inc of mandatory) {
-                if (current.includes(inc)) continue
-                console.log(`[👙] adding`, inc)
-                current.push(inc)
-            }
-        })
-    }
-
     get autolayoutOpts() {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
@@ -541,9 +517,7 @@ export class STATE {
         this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
 
         // config files
-        this.typecheckingConfig = mkTypescriptConfig()
         this.configFile = mkConfigFile()
-        this.updateTsConfig()
 
         // core instances
         this.db = new LiveDB(this)

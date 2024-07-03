@@ -6,7 +6,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -26,7 +25,6 @@ export type Field_button_config<K = any> = FieldConfig<
         look?: FrameAppearance
         expand?: boolean
         useContext?: () => K
-        // icon?: (ctx: Field_button_context<K>) => string
         onClick?: (ctx: Field_button_context<K>) => void
     },
     Field_button_types<K>
@@ -35,7 +33,7 @@ export type Field_button_config<K = any> = FieldConfig<
 // SERIAL
 export type Field_button_serial = FieldSerial<{
     type: 'button'
-    val: boolean
+    val?: boolean
 }>
 
 // VALUE
@@ -53,12 +51,6 @@ export type Field_button_types<K> = {
 // STATE
 export class Field_button<K> extends Field<Field_button_types<K>> {
     static readonly type: 'button' = 'button'
-    DefaultHeaderUI = WidgetButtonUI
-    DefaultBodyUI = undefined
-
-    get baseErrors(): Problem_Ext {
-        return null
-    }
 
     constructor(
         //
@@ -69,30 +61,57 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
     ) {
         super(entity, parent, schema)
         const config = schema.config
-        if (config.text) {
-            config.label = config.label ?? ` `
-        }
-
-        this.serial = serial ?? {
-            type: 'button',
-            collapsed: config.startCollapsed,
-            id: this.id,
-            val: config.default ?? false,
-        }
-
+        if (config.text) config.label = config.label ?? ` `
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    get defaultValue(): boolean { return this.config.default ?? false } // prettier-ignore
-    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => (this.value = this.defaultValue)
+    readonly DefaultHeaderUI = WidgetButtonUI
+    readonly DefaultBodyUI = undefined
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
+    /** set the value to true */
+    setOn() {
+        return (this.value = true)
+    }
+
+    /** set the value to false */
+    setOff() {
+        return (this.value = false)
+    }
+
+    /** set value to true if false, and to false if true */
+    toggle() {
+        return (this.value = !this.value)
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_button_serial>): void {
+        if (serial == null) return void delete this.serial.val
+        if (serial.val != null) this.serial.val = serial.val
+    }
+
+    get defaultValue(): boolean {
+        return this.config.default ?? false
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
+    }
+
+    reset() {
+        return (this.value = this.defaultValue)
+    }
 
     get value(): Field_button_value {
-        return this.serial.val
+        return this.serial.val ?? this.defaultValue
     }
+
     set value(next: boolean) {
         if (this.serial.val === next) return
         runInAction(() => {

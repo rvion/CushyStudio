@@ -40,7 +40,6 @@ src/db/cushy*.db-wal
 CONFIG.json
 global.d.ts
 !src/utils/global.d.ts
-tsconfig.custom.json
 
 library/local/*
 !library/local/.gitkeep
