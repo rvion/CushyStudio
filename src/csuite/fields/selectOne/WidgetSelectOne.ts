@@ -1,8 +1,8 @@
 import type { IconName } from '../../icons/icons'
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { runInAction } from 'mobx'
@@ -121,12 +121,13 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     constructor(
         // 2024-06-27 TODO: rename that
         // |            VVVV
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_selectOne<T>>,
         serial?: Field_selectOne_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         const choices = this.choices
         this.serial = serial ?? {

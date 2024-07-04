@@ -1,4 +1,5 @@
 import type { Field } from './Field'
+import type { Repository } from './Repository'
 
 export interface Instanciable<T extends Field = Field> {
     $Type: T['$Type']
@@ -12,7 +13,8 @@ export interface Instanciable<T extends Field = Field> {
 
     instanciate(
         //
-        entity: Field<any>,
+        repo: Repository,
+        root: Field<any> | null,
         parent: Field | null,
         serial: any | null,
     ): T

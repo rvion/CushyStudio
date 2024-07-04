@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { observable } from 'mobx'
@@ -53,12 +53,13 @@ export class Field_spacer extends Field<Field_spacer_types> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_spacer>,
         serial?: Field_spacer_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.initSerial(serial)
         this.init({
             serial: observable,

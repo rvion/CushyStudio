@@ -1,8 +1,8 @@
 import type { IconName } from '../../icons/icons'
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { TabPositionConfig } from './TabPositionConfig'
 
@@ -181,12 +181,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_choices<T>>,
         serial?: Field_choices_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         // ensure ID
         // TODO: investigate why this contructor is called so many times (5 times ???)

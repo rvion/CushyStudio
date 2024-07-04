@@ -13,17 +13,21 @@ import { Field } from './Field'
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class Repository<DOMAIN extends IBuilder> {
-    //
+export class Repository<DOMAIN extends IBuilder = IBuilder> {
+    /** only root fields */
     _allEntities: Map<EntityId, Field> = new Map()
+
+    /** all fiels, root or not */
     _allFields: Map<string, Field> = new Map()
+
+    /** all fields by given type */
     _allFieldsByType: Map<string, Map<string, Field>> = new Map()
 
-    getEntityByID = (entityId: EntityId): Maybe<Field> => {
+    getEntityByID(entityId: EntityId): Maybe<Field> {
         return this._allEntities.get(entityId)
     }
 
-    getFieldByID = (fieldId: string): Maybe<Field> => {
+    getFieldByID(fieldId: string): Maybe<Field> {
         return this._allFields.get(fieldId)
     }
 
@@ -45,33 +49,39 @@ export class Repository<DOMAIN extends IBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
-        modelConfig: EntityConfig<ISchema<Field_group<FIELDS>>, DOMAIN> = { name: 'unnamed' },
-    ): Field<ISchema<Field_group<FIELDS>>, DOMAIN> => {
+        entityConfig: EntityConfig<ISchema<Field_group<NoInfer<FIELDS>>>, DOMAIN> = { name: 'unnamed' },
+    ): Field_group<FIELDS> => {
         const schema = this.domain.group({
             label: false,
             items: schemaExt(this.domain),
             collapsed: false,
+            onSerialChange: entityConfig.onSerialChange,
+            onValueChange: entityConfig.onValueChange,
         })
-        const form = new Field<ISchema<Field_group<FIELDS>>, DOMAIN>(this, schema, modelConfig)
-        return form
+        return schema.instanciate(this, null, null, entityConfig.serial?.())
     }
 
     /** simple alias to create a new Form */
     entity<SCHEMA extends ISchema>(
         schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
-        modelConfig: EntityConfig<SCHEMA> = {},
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
     ): SCHEMA['$Field'] {
-        const schema: SCHEMA = this.evalSchema(schemaExt)
-        return schema.instanciate(null, null, modelConfig.serial?.())
+        let schema: SCHEMA = this.evalSchema(schemaExt)
+        if (entityConfig.onSerialChange || entityConfig.onValueChange)
+            schema = schema.withConfig({
+                onSerialChange: entityConfig.onSerialChange,
+                onValueChange: entityConfig.onValueChange,
+            })
+        return schema.instanciate(this, null, null, entityConfig.serial?.())
     }
 
     /** simple way to defined forms and in react components */
     use<SCHEMA extends ISchema>(
         schemaExt: (form: DOMAIN) => SCHEMA,
-        modelConfig: EntityConfig<SCHEMA> = {},
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
-        return useMemo(() => this.entity(schemaExt, modelConfig), deps)
+        return useMemo(() => this.entity(schemaExt, entityConfig), deps)
     }
 
     /** eval schema if it's a function */

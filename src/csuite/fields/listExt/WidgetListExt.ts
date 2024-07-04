@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
 
@@ -114,12 +114,13 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_listExt<T>>,
         serial?: Field_listExt_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
 
         // serial

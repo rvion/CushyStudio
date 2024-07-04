@@ -10,6 +10,7 @@ import type { Channel, ChannelId } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Instanciable } from './Instanciable'
 import type { ISchema } from './ISchema'
+import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
 import { observer } from 'mobx-react-lite'
@@ -60,10 +61,16 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // 👆 $Field!: K['$Field'] /*   = 0 as any  */
 
     /** field is already instanciated => probably used as a linked */
-    instanciate(entity: Field<any>, parent: Field | null, serial: any | null) {
-        const builder = this.root.repository.domain
+    instanciate(
+        //
+        repo: Repository,
+        root: Field<any>,
+        parent: Field | null,
+        serial: any | null,
+    ) {
+        const builder = repo.domain
         const schema: ISchema<Field_shared<this>> = builder.linked(this)
-        return schema.instanciate(entity, parent, serial)
+        return schema.instanciate(repo, root, parent, serial)
     }
 
     /**
@@ -75,12 +82,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     readonly id: string
 
     /** wiget serial is the full serialized representation of that widget  */
-    // abstract readonly serial: K['$Serial']
     readonly serial: K['$Serial']
 
+    repo: Repository
     root: Field
     constructor(
-        /** root of the field tree */
+        /**
+         * singleton repository for the project
+         * allow access to global domain, as well as any other live field
+         * and other shared resource
+         */
+        repo: Repository,
+        /** root of the field tree this field belongs to */
         root: Field | null,
         /** parent field, (null when root) */
         public parent: Field | null,
@@ -88,6 +101,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         public schema: ISchema<K['$Field']>,
     ) {
         this.id = nanoid(8)
+        this.repo = repo
         this.root = root ?? this
         this.serial = { type: (this.constructor as any).type }
     }
@@ -413,16 +427,16 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     applyValueUpdateEffects(): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.parent?.applyChildValueUpdateEffects(this)
+        this.parent?.applyValueUpdateEffects_OF_CHILD(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
     /** recursively walk upwards on any field change  */
-    private applyChildValueUpdateEffects(child: Field): void {
+    private applyValueUpdateEffects_OF_CHILD(child: Field): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.parent?.applyChildValueUpdateEffects(child)
+        this.parent?.applyValueUpdateEffects_OF_CHILD(child)
         this.config.onValueChange?.(this.value, this /* TODO: add extra param here:, child  */)
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
@@ -672,16 +686,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             config.onInit(this)
         }
 
-        // register self into `form._allFormWidgets`
-        this.root._allFormWidgets.set(this.id, this)
-
         // register self in  `manager._allWidgets
-        this.root.repository._allFields.set(this.id, this)
+        this.repo._allFields.set(this.id, this)
 
         // register self in  `manager._allWidgetsByType(<type>)
-        const prev = this.root.repository._allFieldsByType.get(this.type)
+        const prev = this.repo._allFieldsByType.get(this.type)
         if (prev == null) {
-            this.root.repository._allFieldsByType.set(this.type, new Map([[this.id, this]]))
+            this.repo._allFieldsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }

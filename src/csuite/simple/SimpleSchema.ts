@@ -1,8 +1,9 @@
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { EntitySerial } from '../model/EntitySerial'
-import type { EntityConfig, Field } from '../model/Field'
+import type { EntityConfig } from '../model/Entity'
+import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
 import type { ISchema } from '../model/ISchema'
+import type { Repository } from '../model/Repository'
 import type { CovariantFn } from '../variance/BivariantHack'
 
 import { makeObservable, reaction } from 'mobx'
@@ -32,7 +33,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
             readonly type: FIELD['$Type']
             new (
                 //
-                entity: Field,
+                root: Field,
                 parent: Field | null,
                 spec: ISchema<FIELD>,
                 serial?: FIELD['$Serial'],
@@ -41,16 +42,20 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         public readonly config: FIELD['$Config'],
     ) {
         this.FieldClass_UNSAFE = FieldClass
-        makeObservable(this, { config: true })
+        makeObservable(this, {
+            config: true,
+            FieldClass_UNSAFE: false,
+        })
     }
 
-    create(modelConfig: EntityConfig<this> = {}) {
-        return simpleRepo.entity(this, { serial })
+    create(entityConfig?: EntityConfig<this>) {
+        return simpleRepo.entity(this, entityConfig)
     }
 
     instanciate(
         //
-        entity: Field<any>,
+        repo: Repository,
+        root: Field<any>,
         parent: Field | null,
         serial: any | null,
     ) {
@@ -84,7 +89,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
             console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
             serial = null
         }
-        const field = new this.FieldClass_UNSAFE(entity, parent, this, serial)
+        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
         field.publishValue()
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later
@@ -166,13 +171,13 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
     }
 
     /** clone the schema, and patch the cloned config */
-    withConfig(config: Partial<FIELD['$Config']>): SimpleSchema<FIELD> {
+    withConfig(config: Partial<FIELD['$Config']>): this {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
         const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
-        return cloned
+        return cloned as this
     }
 
     /** clone the schema, and patch the cloned config to make it hidden */

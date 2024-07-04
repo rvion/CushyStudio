@@ -1,4 +1,3 @@
-import type { Field } from '../../model/Field'
 import type { ISchema } from '../../model/ISchema'
 import type { Field_list } from './WidgetList'
 

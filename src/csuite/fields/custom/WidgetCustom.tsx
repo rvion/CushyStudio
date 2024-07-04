@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
@@ -58,12 +58,13 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_custom<T>>,
         serial?: Field_custom_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         this.Component = config.Component
         this.serial = serial ?? {

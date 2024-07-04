@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
@@ -46,12 +46,13 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_shared<F>>,
         serial?: Field_shared_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         this.init({

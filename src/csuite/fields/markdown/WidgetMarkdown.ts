@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
@@ -41,12 +41,13 @@ export class Field_markdown extends Field<Field_markdown_types> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_markdown>,
         serial?: Field_markdown_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.initSerial(serial)
         this.init()
     }

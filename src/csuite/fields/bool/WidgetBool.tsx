@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { computed, observable, runInAction } from 'mobx'
@@ -76,12 +76,13 @@ export class Field_bool extends Field<Field_bool_types> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_bool>,
         serial?: Field_bool_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.initSerial(serial)
         this.init({
             serial: observable,

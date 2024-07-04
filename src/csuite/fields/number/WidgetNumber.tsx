@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 
 import { computed, observable, runInAction } from 'mobx'
 
@@ -76,12 +76,13 @@ export class Field_number extends Field<Field_number_types> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_number>,
         serial?: Field_number_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.initSerial(serial)
         this.init({
             serial: observable,

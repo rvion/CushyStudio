@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 
 import { observable, reaction } from 'mobx'
 
@@ -170,12 +170,13 @@ export class Field_list<T extends ISchema> //
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_list<T>>,
         serial?: Field_list_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         // serial
         this.serial = serial ?? observable({ type: 'list', id: this.id, active: true, items_: [] })
 

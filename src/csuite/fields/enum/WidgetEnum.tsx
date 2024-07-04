@@ -1,9 +1,9 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -66,12 +66,13 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_enum<O>>,
         serial?: Field_enum_serial<O>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         this.serial = serial ?? {
             type: 'enum',

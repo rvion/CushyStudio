@@ -82,12 +82,13 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_prompt>,
         serial?: Field_prompt_serial,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         this.serial = serial ?? {
             type: 'prompt',

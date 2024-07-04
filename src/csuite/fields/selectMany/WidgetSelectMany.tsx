@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
@@ -121,12 +121,13 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_selectMany<T>>,
         serial?: Field_selectMany_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         const config = schema.config
         this.serial = serial ?? {
             type: 'selectMany',

@@ -2,6 +2,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { Field } from './Field'
 import type { Instanciable } from './Instanciable'
+import type { Repository } from './Repository'
 
 export type SchemaDict = {
     [key: string]: Instanciable
@@ -21,7 +22,8 @@ export interface ISchema<out FIELD extends Field = Field> {
 
     instanciate(
         //
-        entity: Field | null,
+        repo: Repository,
+        root: Field | null,
         parent: Field | null,
         serial: any | null,
     ): FIELD['$Field']
@@ -35,4 +37,6 @@ export interface ISchema<out FIELD extends Field = Field> {
 
     reactions: { expr: (self: any) => any; effect: (arg: any, self: any) => void }[]
     addReaction<T>(expr: (self: FIELD['$Field']) => T, effect: (arg: T, self: FIELD['$Field']) => void): this
+
+    withConfig(config: Partial<FIELD['$Config']>): this
 }

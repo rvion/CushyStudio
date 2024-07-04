@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
 
@@ -84,12 +84,13 @@ export class Field_link<A extends ISchema, B extends ISchema> //
     }
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_link<A, B>>,
         serial?: Field_link_serial<A, B>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.serial =
             serial && serial.type === 'link' //
                 ? serial

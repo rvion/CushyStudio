@@ -1,7 +1,7 @@
-import type { Field } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { runInAction } from 'mobx'
@@ -92,12 +92,13 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     constructor(
         //
+        repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: ISchema<Field_group<T>>,
         serial?: Field_group_serial<T>,
     ) {
-        super(root, parent, schema)
+        super(repo, root, parent, schema)
         this.initSerial(serial)
         this.init({
             value: false,
