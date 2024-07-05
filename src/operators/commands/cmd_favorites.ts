@@ -8,7 +8,7 @@ export const cmd_fav_toggleFavBar = command({
     combos: 'mod+b',
     ctx: ctx_global,
     action: () => {
-        cushy.favbar.root.fields.visible.toggle()
+        cushy.favbar.fields.visible.toggle()
         return Trigger.Success
     },
 })

@@ -1,7 +1,6 @@
 import type { BaseSelectEntry } from '../../csuite/fields/selectOne/WidgetSelectOne'
-import type { Field } from '../../csuite/model/Field'
 
-import { type Builder, cushyRepo } from '../../controls/Builder'
+import { cushyRepo } from '../../controls/Builder'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
@@ -25,7 +24,7 @@ export type ThemeConf = X.XGroup<{
     border: X.XOptional<X.XNumber>
 }>
 
-export const themeConf: Field<ThemeConf, Builder> = cushyRepo.entity(
+export const themeConf: ThemeConf['$Field'] = cushyRepo.entity(
     (ui) =>
         ui.fields(
             {

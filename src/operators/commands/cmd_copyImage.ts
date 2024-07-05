@@ -18,8 +18,7 @@ export const cmd_copyImage: Command<MediaImageL> = command({
     label: 'Copy Image',
     ctx: ctx_image,
     combos: 'mod+c',
-    action: (image) =>
-        image.copyToClipboard_viaCanvas(/* { format: image.format, quality: form_foo.root.fields.quality.value } */),
+    action: (image) => image.copyToClipboard_viaCanvas(/* { format: image.format, quality: form_foo.fields.quality.value } */),
 })
 
 export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
@@ -28,7 +27,7 @@ export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
         label: 'Copy Image',
         ctx: ctx_image,
         combos: 'mod+c',
-        action: (image) => image.copyToClipboard_viaCanvas({ format: format, quality: form_foo.root.fields.quality.value }),
+        action: (image) => image.copyToClipboard_viaCanvas({ format: format, quality: form_foo.fields.quality.value }),
     })
 
 export const cmd_copyImage_as_PNG = cmd_copyImage_as('PNG')
@@ -62,6 +61,6 @@ export const menu_copyImageAs: Menu<MediaImageL> = menuWithProps({
         cmd_copyImage_as_PNG.bind(image),
         cmd_copyImage_as_WEBP.bind(image),
         cmd_copyImage_as_JPG.bind(image),
-        form_foo.root.fields.quality,
+        form_foo.fields.quality,
     ],
 })

@@ -81,7 +81,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                             placeholder='Unified Canvas Category'
                         />
                         {/* [TEMPORARY HACK 2024-06-24 START] */}
-                        {cushy.theme.root.fields.labelLayout.renderSimple({ label: 'Label' })}
+                        {cushy.theme.fields.labelLayout.renderSimple({ label: 'Label' })}
                         {/* {p.children} */}
                         {/* [TEMPORARY HACK 2024-06-24 END] */}
                     </div>
