@@ -6,6 +6,6 @@ import { type EntitySerial } from './EntitySerial'
 export type EntityConfig<SCHEMA extends ISchema<any>> = {
     name?: string
     serial?: () => Maybe<EntitySerial>
-    onValueChange?: (form: Field<SCHEMA>) => void
-    onSerialChange?: (form: Field<SCHEMA>) => void
+    onValueChange?: (field: Field<SCHEMA>) => void
+    onSerialChange?: (field: Field<SCHEMA>) => void
 }

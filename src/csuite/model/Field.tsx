@@ -511,7 +511,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * persistance will usually be done at the root field reacting to this event.
      */
     applySerialUpdateEffects(): void {
-        this.config.onSerialChange?.(this.serial, this)
+        this.config.onSerialChange?.(this)
         this.parent?.applySerialUpdateEffects()
     }
 
