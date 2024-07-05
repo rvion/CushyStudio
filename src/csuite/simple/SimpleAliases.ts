@@ -1,4 +1,4 @@
-import type { Field_bool } from '../fields/bool/WidgetBool'
+import type { Field_bool } from '../fields/bool/FieldBool'
 import type { Field_button } from '../fields/button/WidgetButton'
 import type { Field_choices } from '../fields/choices/WidgetChoices'
 import type { Field_color } from '../fields/color/WidgetColor'

@@ -1,4 +1,4 @@
-import type { Field_bool } from './WidgetBool'
+import type { Field_bool } from './FieldBool'
 
 import { observer } from 'mobx-react-lite'
 

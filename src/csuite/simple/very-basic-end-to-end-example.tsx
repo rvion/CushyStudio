@@ -8,7 +8,7 @@ import type * as SS from './SimpleAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'
 
-import { Field_bool, type Field_bool_config } from '../fields/bool/WidgetBool'
+import { Field_bool, type Field_bool_config } from '../fields/bool/FieldBool'
 import { Field_button, type Field_button_config } from '../fields/button/WidgetButton'
 import { Field_group, type Field_group_config } from '../fields/group/WidgetGroup'
 import { Field_list, type Field_list_config } from '../fields/list/WidgetList'

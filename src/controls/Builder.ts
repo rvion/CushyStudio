@@ -5,7 +5,7 @@ import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/WidgetBool'
+import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/FieldBool'
 import { Field_button, type Field_button_config } from '../csuite/fields/button/WidgetButton'
 import { Field_choices, type Field_choices_config } from '../csuite/fields/choices/WidgetChoices'
 import { Field_color, type Field_color_config } from '../csuite/fields/color/WidgetColor'
