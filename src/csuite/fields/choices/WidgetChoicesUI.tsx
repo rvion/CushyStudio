@@ -20,7 +20,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
     className?: string
 }) {
     const field = p.field
-    const activeSubwidgets = Object.entries(field.children) //
+    const activeSubwidgets = Object.entries(field.enabledBranches) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (

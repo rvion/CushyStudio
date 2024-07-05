@@ -156,7 +156,7 @@ export const ui_tint = (
             ],
             // tabPosition: 'start',
             body: (p) => {
-                const { l, c, h } = p.field.children
+                const { l, c, h } = p.field.enabledBranches
                 return (
                     <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
                         {/* ------------------ */}

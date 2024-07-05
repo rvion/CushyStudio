@@ -95,18 +95,18 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return !this.config.multi
     }
 
-    children: { [k in keyof T]?: T[k]['$Field'] } = {}
+    enabledBranches: { [k in keyof T]?: T[k]['$Field'] } = {}
 
-    get firstChoice(): (keyof T & string) | undefined {
-        return this.choices[0]
+    get firstPossibleChoice(): (keyof T & string) | undefined {
+        return this.allPossibleChoices[0]
     }
 
-    get choices(): (keyof T & string)[] {
+    get allPossibleChoices(): (keyof T & string)[] {
         return Object.keys(this.config.items)
     }
 
-    get isCollapsible() {
-        if (this.activeBranches.length === 0) return false
+    get isCollapsible(): boolean {
+        if (this.activeBranchNames.length === 0) return false
         return super.isCollapsible
     }
 
@@ -121,38 +121,26 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         }))
     }
 
-    // 💬 2024-07-01 rvion:
-    // 💬 hack so optional fields do not increase nesting twice
-    // 💬 But not sure this override is worth it.
-    // 💬 Consistency may be better than the extra line of code.
-    // | get indentChildren(): number {
-    // |     return 0
-    // | }
-
     /** array of all active branch keys */
-    get activeBranches(): (keyof T & string)[] {
-        return Object.keys(this.serial.branches).filter((x) => this.serial.branches[x])
+    get activeBranchNames(): (keyof T & string)[] {
+        return Object.keys(this.serial.branches) //
+            .filter((x) => this.serial.branches[x])
     }
 
     get firstActiveBranchName(): (keyof T & string) | undefined {
-        return this.activeBranches[0]
+        return this.activeBranchNames[0]
     }
 
-    get firstActiveBranchWidget(): T[keyof T]['$Field'] | undefined {
+    get firstActiveBranchField(): T[keyof T]['$Field'] | undefined {
         if (this.firstActiveBranchName == null) return undefined
-        return this.children[this.firstActiveBranchName]
+        return this.enabledBranches[this.firstActiveBranchName]
     }
 
     get hasChanges(): boolean {
         const def = this.config.default
-        for (const branchName of this.choices) {
-            const shouldBeActive =
-                def == null //
-                    ? false
-                    : typeof def === 'string'
-                      ? branchName === def
-                      : (def as DefaultBranches<T>)[branchName]
-            const child = this.children[branchName]
+        for (const branchName of this.allPossibleChoices) {
+            const shouldBeActive = this.isBranchActiveByDefault(branchName)
+            const child = this.enabledBranches[branchName]
             if (child && !shouldBeActive) return true
             if (!child && shouldBeActive) return true
             if (child && shouldBeActive && child.hasChanges) return true
@@ -160,20 +148,26 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return false
     }
 
+    isBranchActiveByDefault(branchName: keyof T & string): boolean {
+        const def = this.config.default
+        const shouldBeActive: boolean =
+            def == null //
+                ? false
+                : typeof def === 'string'
+                  ? branchName === def
+                  : Boolean((def as DefaultBranches<T>)[branchName])
+        return shouldBeActive
+    }
+
     reset(): void {
         const def = this.config.default
-        for (const branchName of this.choices) {
-            const shouldBeActive =
-                def == null //
-                    ? false
-                    : typeof def === 'string'
-                      ? branchName === def
-                      : (def as DefaultBranches<T>)[branchName]
-            const child = this.children[branchName]
+        for (const branchName of this.allPossibleChoices) {
+            const shouldBeActive = this.isBranchActiveByDefault(branchName)
+            const child = this.enabledBranches[branchName]
             if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
             if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
             // re-check if child is now enabled
-            const childAfter = this.children[branchName]
+            const childAfter = this.enabledBranches[branchName]
             if (childAfter && childAfter.hasChanges) childAfter.reset()
         }
         this.applyValueUpdateEffects()
@@ -189,21 +183,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     ) {
         super(repo, root, parent, schema)
         const config = schema.config
-        // ensure ID
-        // TODO: investigate why this contructor is called so many times (5 times ???)
-
-        // basic sanity check because of the recent breaking change
         if (typeof config.items === 'function') {
             toastError('🔴 ChoicesWidget "items" property should now be an object, not a function')
         }
-
-        // ensure serial present and valid
-        // this.serial = serial ?? {
-        //     type: 'choices',
-        //     id: this.id,
-        //     values_: {},
-        //     branches: {},
-        // }
 
         // find all active branches
         const allBranches = Object.keys(config.items) as (keyof T & string)[]
@@ -260,28 +242,30 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     get subFields(): Field[] {
-        return Object.values(this.children)
+        return Object.values(this.enabledBranches)
     }
 
     get subFieldsWithKeys(): KeyedField[] {
-        return Object.entries(this.children).map(([key, field]) => ({ key, field }))
+        return Object.entries(this.enabledBranches).map(([key, field]) => ({ key, field }))
     }
 
     toggleBranch(branch: keyof T & string) {
         // 💬 2024-03-15 rvion: no need to bumpValue in this function;
         // | it's handled by enableBranch and disableBranch themselves.
-        if (this.children[branch]) {
+        if (this.enabledBranches[branch]) {
             if (this.isMulti) this.disableBranch(branch)
         } else this.enableBranch(branch)
     }
 
     isBranchDisabled = (branch: keyof T & string): boolean => !this.serial.branches[branch]
+    isBranchEnabled = (branch: keyof T & string): boolean => Boolean(this.serial.branches[branch])
+
     disableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
         // ensure branch to disable is active
-        if (!this.children[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
+        if (!this.enabledBranches[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
 
         // remove children
-        delete this.children[branch]
+        delete this.enabledBranches[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
         this.serial.branches[branch] = false
         if (!p?.skipBump) this.applyValueUpdateEffects()
@@ -289,11 +273,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     enableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
         if (!this.config.multi) {
-            for (const key in this.children) {
+            for (const key in this.enabledBranches) {
                 this.disableBranch(key)
             }
         }
-        if (this.children[branch]) throw new Error(`❌ Branch "${branch}" already enabled`)
+        if (this.enabledBranches[branch]) throw new Error(`❌ Branch "${branch}" already enabled`)
         // first: quick safety net to check against schema changes
         // a. re-create an empty item to check it's schema
         let schema = this.config.items[branch]
@@ -304,12 +288,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = schema.instanciate(this.repo, this.root, this, prevBranchSerial)
+            this.enabledBranches[branch] = schema.instanciate(this.repo, this.root, this, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = schema.instanciate(this.repo, this.root, this, null)
-            this.serial.values_[branch] = this.children[branch]?.serial
+            this.enabledBranches[branch] = schema.instanciate(this.repo, this.root, this, null)
+            this.serial.values_[branch] = this.enabledBranches[branch]?.serial
         }
 
         // set the active branch as active
@@ -317,33 +301,40 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
+    /** results, but only for active branches */
+    get value(): Field_choices_value<T> {
+        const out: { [key: string]: any } = {}
+        for (const branch in this.enabledBranches) {
+            out[branch] = this.enabledBranches[branch]!.value
+        }
+        return out as any
+    }
+
     set value(val: Field_choices_value<T>) {
-        for (const branch of this.choices) {
-            // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
+        for (const branch of this.allPossibleChoices) {
+            // case 1. branch should be DISABLED
             if (val[branch] == null) {
-                if (!this.isBranchDisabled(branch)) {
-                    this.disableBranch(branch)
-                }
-            } else {
-                if (this.isBranchDisabled(branch)) {
-                    // enable branch
-                    this.enableBranch(branch)
-                }
-                // patch branch value to given value
-                this.children[branch]!.value = val[branch]!
+                // disable branch
+                if (this.isBranchEnabled(branch)) this.disableBranch(branch)
+            }
+            // case 2. branch should be ENABLED
+            else {
+                // 2.1. enable branch if disabled
+                if (this.isBranchDisabled(branch)) this.enableBranch(branch)
+                // 2.2 then patch branch value to given value
+                this.enabledBranches[branch]!.value = val[branch]!
             }
         }
         this.applyValueUpdateEffects()
     }
-    /** results, but only for active branches */
-    get value(): Field_choices_value<T> {
-        const out: { [key: string]: any } = {}
-        for (const branch in this.children) {
-            // if (this.state.branches[key] !== true) continue
-            out[branch] = this.children[branch]!.value
-        }
-        return out as any
-    }
+
+    // 💬 2024-07-01 rvion:
+    // 💬 hack so optional fields do not increase nesting twice
+    // 💬 But not sure this override is worth it.
+    // 💬 Consistency may be better than the extra line of code.
+    // | get indentChildren(): number {
+    // |     return 0
+    // | }
 }
 
 // DI

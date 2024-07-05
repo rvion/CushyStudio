@@ -170,6 +170,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     ): void
 
     /**
+     * list of all functions to run at dispose time
+     * allow for instance to register mobx disposers from reactions
+     * and other similar stuff that may need to be cleaned up to
+     * avoid memory leak.
+     */
+    protected disposeFns: (() => void)[] = []
+
+    /**
      * lifecycle method, is called
      * TODO: 🔴
      * @since 2024-07-05
@@ -180,10 +188,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // disable all publish
         // disable all reactions
         // mark as DELETED;  => makes most function throw an error if used
+        for (const disposeFn of this.disposeFns) {
+            disposeFn()
+        }
         for (const sub of this.subFields) {
             sub.dispose()
         }
-        this.parent = null
     }
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */

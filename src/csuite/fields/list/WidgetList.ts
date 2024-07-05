@@ -3,7 +3,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 
-import { observable, reaction } from 'mobx'
+import { reaction } from 'mobx'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
@@ -27,7 +27,12 @@ interface AutoBehaviour<out T extends ISchema> {
 export interface Field_list_config<out T extends ISchema>
     extends FieldConfig<
         {
+            /**
+             * item schema;
+             * function notation to support tuples
+             */
             element: ((ix: number) => T) | T
+
             /**
              * when specified, the list will work in some AUTOMATIC mode
              *  - disable the "add" button
@@ -84,11 +89,19 @@ export class Field_list<T extends ISchema> //
 
     static readonly type: 'list' = 'list'
 
-    get length() { return this.items.length } // prettier-ignore
-    items: T['$Field'][]
+    get length() {
+        return this.items.length
+    }
+
+    items!: T['$Field'][]
 
     get hasChanges(): boolean {
-        // in auto mode, length is managed, so we must not take it into account
+        // 2024-06-?? rvion:
+        //  | in auto mode, length is managed,
+        //  | so we must not take it into account
+        // 2024-07-05 rvion:
+        //   | ^^^ 🤔< NOT SURE about my previous opinion here
+        //   |         I'll add some '🔴' for future review
         if (!this.config.auto) {
             const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
             if (this.items.length !== defaultLength) return true
@@ -96,6 +109,7 @@ export class Field_list<T extends ISchema> //
         // check if any remaining item has changes
         return this.items.some((i) => i.hasChanges)
     }
+
     reset(): void {
         // fix size
         if (!this.config.auto) {
@@ -108,7 +122,7 @@ export class Field_list<T extends ISchema> //
         for (const i of this.items) i.reset()
     }
 
-    findItemIndexContaining = (widget: Field): number | null => {
+    findItemIndexContaining(widget: Field): number | null {
         let at = widget as Field | null
         let child = at
         while (at != null) {
@@ -129,7 +143,7 @@ export class Field_list<T extends ISchema> //
         return this.items.map((field, ix) => ({ key: ix.toString(), field }))
     }
 
-    schemaAt = (ix: number): T => {
+    private schemaAt(ix: number): T {
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
@@ -141,20 +155,29 @@ export class Field_list<T extends ISchema> //
     get isAuto(): boolean {
         return this.config.auto != null
     }
-    // probably slow and clunky; TODO: rewrite this piece of crap
-    startAutoBehaviour = () => {
+
+    // probably slow and clunky;
+    // TODO: rewrite this piece of crap
+    private startAutoBehaviour() {
         const auto = this.config.auto
         if (auto == null) return
-        reaction(
+        const disposeFn = reaction(
             () => auto.keys(this),
             (keys: string[]) => {
-                const currentKeys = this.items.map((i, ix) => auto.getKey(i, ix))
-                const missingKeys = keys.filter((k) => !currentKeys.includes(k))
                 let needBump = false
+
+                // 1. Add missing entries
+                const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
+                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                 for (const k of missingKeys) {
-                    this.addItem({ value: auto.init(k), skipBump: true })
+                    this.addItem({
+                        value: auto.init(k),
+                        skipBump: true,
+                    })
                     needBump = true
                 }
+
+                // 2. delete items that must be removed.
                 let ix = 0
                 for (const item of this.items.slice()) {
                     const isExtra = !keys.includes(auto.getKey(item, ix++))
@@ -166,6 +189,7 @@ export class Field_list<T extends ISchema> //
             },
             { fireImmediately: true },
         )
+        this.disposeFns.push(disposeFn)
     }
 
     constructor(
@@ -177,9 +201,19 @@ export class Field_list<T extends ISchema> //
         serial?: Field_list_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        // serial
-        this.serial = serial ?? observable({ type: 'list', id: this.id, active: true, items_: [] })
+        this.setSerial(serial, false)
+        this.init({
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
+        this.startAutoBehaviour()
+    }
 
+    get valueArr(): Field_list_value<T> {
+        return this.items.map((i) => i.value)
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>) {
         // minor safety net since all those internal changes
         if (this.serial.items_ == null) this.serial.items_ = []
 
@@ -188,8 +222,11 @@ export class Field_list<T extends ISchema> //
 
         // 1. add default item (only when serial was null)
         if (serial == null && this.config.defaultLength != null) {
-            for (let i = 0; i < this.config.defaultLength; i++) this.addItem({ skipBump: true })
+            for (let i = 0; i < this.config.defaultLength; i++) {
+                this.addItem({ skipBump: true })
+            }
         }
+
         // 2. pre-existing serial => rehydrate items
         else {
             const schema = this.schemaAt(0) // TODO: evaluate schema in the form loop
@@ -208,17 +245,9 @@ export class Field_list<T extends ISchema> //
 
         // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
-        for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
-
-        this.init({
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-        this.startAutoBehaviour()
-    }
-
-    get valueArr(): Field_list_value<T> {
-        return this.items.map((i) => i.value)
+        for (let i = 0; i < missingItems; i++) {
+            this.addItem({ skipBump: true })
+        }
     }
 
     /**
@@ -228,22 +257,27 @@ export class Field_list<T extends ISchema> //
     get value(): Field_list_value<T> {
         return new Proxy(this.items as any, {
             get: (target, prop: any) => {
-                // console.log(`[🤠] GET`, prop)
+                // ⏸️ console.log(`[GET]`, prop)
                 if (typeof prop === 'symbol') return target[prop]
 
-                // ONLY BECAUSE OF MOBX ----------------------------------------------------
+                // MOBX HACK ----------------------------------------------------
                 if (prop === 'toJSON') return () => this.valueArr
                 if (prop === 'pop') return () => this.pop()
                 if (prop === 'shift') return () => this.shift()
                 if (prop === 'push') return (...args: any[]) => this.push(...args)
                 if (prop === 'slice') return (start: any, end: any) => this.valueArr.slice(start, end)
-                // ONLY BECAUSE OF MOBX ----------------------------------------------------
+                // MOBX HACK ----------------------------------------------------
 
-                if (parseInt(prop, 10) === +prop) return target[+prop]?.value
+                // handle numbers (1) and number-like ('1')
+                if (parseInt(prop, 10) === +prop) {
+                    return target[+prop]?.value
+                }
+
+                // defer to target for other props
                 return target[prop]
             },
             set: (target, prop: any, value) => {
-                // console.log(`[SET]`, prop, value)
+                // ⏸️ console.log(`[SET]`, prop, value)
                 if (typeof prop === 'symbol') return false
                 if (parseInt(prop, 10) === +prop) {
                     if (this.items[prop]) {

@@ -43,7 +43,7 @@ app({
                                     // 🔶 probably useless check now
                                     if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
 
-                                    const _selectOne = choiceWidget.firstActiveBranchWidget
+                                    const _selectOne = choiceWidget.firstActiveBranchField
                                     // 🔶 probably useless check now (bis)
                                     if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
 
