@@ -83,7 +83,7 @@ export class Field_markdown extends Field<Field_markdown_types> {
     }
 
     /** do nothing, see coment on the hasChange getter */
-    reset(): void {}
+    // ⏸️ reset(): void {}
 
     /** do nothing, see coment on the hasChange getter */
     set value(_: Field_markdown_value) {}

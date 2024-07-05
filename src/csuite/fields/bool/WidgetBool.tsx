@@ -129,9 +129,9 @@ export class Field_bool extends Field<Field_bool_types> {
         return this.value !== this.defaultValue
     }
 
-    reset(): void {
-        return void (this.value = this.defaultValue)
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     return void (this.value = this.defaultValue)
+    // ⏸️ }
 
     get value(): Field_bool_value {
         return this.serial.active ?? this.defaultValue

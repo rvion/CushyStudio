@@ -264,7 +264,7 @@ export class STATE {
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
-    get gallerySize() { return this.galleryConf.root.get(`gallerySize`) ?? 48 } // prettier-ignore
+    get gallerySize() { return this.galleryConf.value.gallerySize ?? 48 } // prettier-ignore
 
     get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
     set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore

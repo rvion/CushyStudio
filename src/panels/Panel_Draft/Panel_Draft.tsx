@@ -71,18 +71,18 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             </ErrorPanelUI>
         )
 
-    if (guiR.error)
-        return (
-            <>
-                <DraftHeaderUI draft={draft} children={justify.render()} />
-                <ErrorPanelUI>
-                    <RecompileUI always app={draft.app} />
-                    <b>App failed to load</b>
-                    <div>❌ {guiR.error}</div>
-                    <div>{stringifyUnknown(guiR.error)}</div>
-                </ErrorPanelUI>
-            </>
-        )
+    // ⏸️ if (guiR.error)
+    // ⏸️     return (
+    // ⏸️         <>
+    // ⏸️             <DraftHeaderUI draft={draft} children={justify.render()} />
+    // ⏸️             <ErrorPanelUI>
+    // ⏸️                 <RecompileUI always app={draft.app} />
+    // ⏸️                 <b>App failed to load</b>
+    // ⏸️                 <div>❌ {guiR.error}</div>
+    // ⏸️                 <div>{stringifyUnknown(guiR.error)}</div>
+    // ⏸️             </ErrorPanelUI>
+    // ⏸️         </>
+    // ⏸️     )
 
     // 5. render form
     const { containerClassName, containerStyle } = compiledApp.def ?? {}

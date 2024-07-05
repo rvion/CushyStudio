@@ -77,5 +77,3 @@ describe('auto-migration ', () => {
 function expect(a: any) {
     return expect_(JSON.parse(JSON.stringify(a)))
 }
-
-export const x = 0

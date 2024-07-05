@@ -92,19 +92,18 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     static readonly type: 'selectOne' = 'selectOne'
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
+
     get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
-        const selected = this.choices.find((c) => c.id === this.serial.val.id)
+        const selected = this.choices.find((c) => c.id === this.serial.val?.id)
         if (selected == null && !this.config.disableLocalFiltering) return 'selected value not in choices'
         return
     }
 
-    get defaultValue(): T {
-        return this.config.default ?? this.choices[0] ?? FAILOVER_VALUE
-    }
     get hasChanges(): boolean {
-        return this.serial.val.id !== this.defaultValue.id
+        return this.serial.val?.id !== this.defaultValue.id
     }
+
     reset(): void {
         this.value = this.defaultValue
     }
@@ -128,32 +127,38 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         serial?: Field_selectOne_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        const config = schema.config
-        const choices = this.choices
-        this.serial = serial ?? {
-            type: 'selectOne',
-            collapsed: config.startCollapsed,
-            val: config.default ?? choices[0] ?? FAILOVER_VALUE,
-        }
-        if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0] ?? FAILOVER_VALUE
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    get value(): Field_selectOne_value<T> {
+    get defaultValue(): T {
         return (
-            this.serial.val ?? //
-            this.config.default ??
+            this.config.default ?? //
             this.choices[0] ??
             FAILOVER_VALUE
         )
     }
 
+    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<T>>) {
+        this.serial.val = serial?.val ?? this.defaultValue
+        this.serial.query = serial?.query
+    }
+
+    get value(): Field_selectOne_value<T> {
+        // 🔴 si pas de serial.val "ma valeur par défaut" s'affiche dans l'UI
+        // mais n'est pas saved dans le serial?
+        // (en fait non l'UI utilise serial.val, mais quand même, confusing que JSON(field.value) != JSON(field.serial)) non?
+        return this.serial.val ?? this.defaultValue
+    }
+
     set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
         const nextHasSameID = this.value.id === next.id
+
+        // 🔴 REVIEW THIS
         runInAction(() => {
             this.serial.val = next
             if (!nextHasSameID) this.applyValueUpdateEffects()

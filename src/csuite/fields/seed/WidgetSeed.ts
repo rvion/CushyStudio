@@ -62,10 +62,10 @@ export class Field_seed extends Field<Field_seed_types> {
         return false
     }
 
-    reset(): void {
-        this.setMode(this.defaultMode)
-        if (this.serial.mode !== 'randomize') this.value = this.defaultValue
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     this.setMode(this.defaultMode)
+    // ⏸️     if (this.serial.mode !== 'randomize') this.value = this.defaultValue
+    // ⏸️ }
 
     get defaultMode(): SeedMode {
         return this.config.defaultMode ?? 'randomize'

@@ -126,6 +126,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     abstract readonly baseErrors: Problem_Ext
 
     /**
+     * TODO later: make abstract to make sure we
+     * have that on every single field + add field config option
+     * to customize that. useful for tests.
+     */
+    randomize(): void {}
+
+    /**
      * RULES:
      *
      * A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
@@ -164,8 +171,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *
      */
     protected abstract setOwnSerial(
-        //
         serial: Maybe<K['$Serial']>,
+        /**
+         * this is passed as param.
+         * Do not do anything with this variable except pass it to reconcile
+         */
         applyEffects: boolean,
     ): void
 
@@ -196,11 +206,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
     }
 
+    /**
+     * will be set to true after the first initialization
+     * TODO: also use that to wait for whole tree to be patched before applying effects
+     * */
+    ready = false
+
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-    setSerial(serial: Maybe<K['$Serial']>, applyEffects: boolean) {
+    setSerial(serial: Maybe<K['$Serial']>, applyEffects: boolean = true) {
         this.setOwnSerial(serial, applyEffects)
         this.copyCommonSerialFiels(serial)
         if (applyEffects) this.applySerialUpdateEffects()
+        this.ready = true
     }
 
     private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
@@ -215,8 +232,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.value = val
     }
 
-    // what if the bField yields a different schema (different type)
-    // we need to make sure the bField can properly be reused first
     RECONCILE<SCHEMA extends ISchema>(p: {
         existingChild: Maybe<Field>
         correctChildSchema: SCHEMA
@@ -361,15 +376,24 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // change management ------------------------------------------------
     /**
-     * every component should be able to be restet and must implement
-     * the reset function
+     *
+     * RULES:
+     * - every component should be able to be restet and must implement
+     *   the reset function
+     * - Reset MUST NEVER be called fromt the constructor
+     * - RESET WILL TRIGGER VALUE/SERIAL update events.
+     *
      * 2024-05-24 rvion: we could have some generic reset function that
      * | simply do a this.setValue(this.defaultValue)
      * | but it feels like a wrong implementation 🤔
      * | it's simpler  though
      * 🔶 some widget like `WidgetPrompt` would not work with such logic
      * */
-    abstract reset(): void
+    reset(): void {
+        this.setSerial(null, true)
+    }
+
+    /**  */
     abstract readonly hasChanges: boolean
 
     /**
@@ -499,6 +523,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
         this.publishValue() // 🔴  should probably be a reaction rather than this
+        // TODO: -----------------------------------------------
+        this.applySerialUpdateEffects()
     }
 
     /** recursively walk upwards on any field change  */

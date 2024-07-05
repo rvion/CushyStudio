@@ -63,11 +63,6 @@ export class Field_number extends Field<Field_number_types> {
         return this.serial.val !== this.defaultValue
     }
 
-    reset(): void {
-        if (this.serial.val === this.defaultValue) return
-        this.value = this.defaultValue
-    }
-
     get baseErrors() {
         if (this.config.min !== undefined && this.value < this.config.min) return `Value is less than ${this.config.min}`
         if (this.config.max !== undefined && this.value > this.config.max) return `Value is greater than ${this.config.max}`
@@ -94,6 +89,18 @@ export class Field_number extends Field<Field_number_types> {
 
     protected setOwnSerial(serial: Maybe<Field_number_serial>) {
         this.serial.val = serial?.val ?? this.defaultValue
+    }
+
+    /** randomize respect (soft)Min and (soft)max */
+    randomize(): void {
+        const min = this.config.softMin ?? this.config.min ?? 0
+        const max = this.config.softMax ?? this.config.max ?? 100
+        this.value = Math.floor(Math.random() * (max - min + 1))
+    }
+
+    reset(): void {
+        if (this.serial.val === this.defaultValue) return
+        this.value = this.defaultValue
     }
 
     get value(): Field_number_value {

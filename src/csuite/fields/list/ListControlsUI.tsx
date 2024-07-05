@@ -5,8 +5,8 @@ import { Button } from '../../button/Button'
 export type IWidgetListLike = {
     addItem(): void
     removeAllItems(): void
-    expandAllItems(): void
-    collapseAllItems(): void
+    expandAllChildren(): void
+    collapseAllChildren(): void
     items: unknown[]
     readonly length: number
     config: {
@@ -63,7 +63,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 icon='mdiUnfoldMoreHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
-                    field.expandAllItems()
+                    field.expandAllChildren()
                 }}
             />
             <Button
@@ -74,7 +74,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
                 icon='mdiUnfoldLessHorizontal'
                 onClick={(ev) => {
                     ev.stopPropagation()
-                    field.collapseAllItems()
+                    field.collapseAllChildren()
                 }}
             />
             {/* <Button

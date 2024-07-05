@@ -110,9 +110,9 @@ export class Field_string extends Field<Field_string_types> {
         this.serial.val = serial?.val ?? this.defaultValue
     }
 
-    reset(): void {
-        this.value = this.defaultValue
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     this.value = this.defaultValue
+    // ⏸️ }
 
     get defaultValue(): string {
         return this.config.default ?? ''
@@ -129,10 +129,17 @@ export class Field_string extends Field<Field_string_types> {
     set value(next: Field_string_value) {
         if (this.serial.val === next) return
         runInAction(() => {
-            this.serial.val = next
+            this.serial.val =
+                typeof next === 'string' //
+                    ? next
+                    : convertToString(next)
             this.applyValueUpdateEffects()
         })
     }
+}
+
+function convertToString(x: unknown) {
+    return JSON.stringify(x)
 }
 
 // DI

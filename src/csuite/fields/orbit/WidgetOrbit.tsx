@@ -59,10 +59,10 @@ export class Field_orbit extends Field<Field_orbit_types> {
     }
 
     /** reset azimuth and elevation */
-    reset(): void {
-        delete this.serial.elevation
-        delete this.serial.azimuth
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     delete this.serial.elevation
+    // ⏸️     delete this.serial.azimuth
+    // ⏸️ }
 
     /** practical to add to your textual prompt */
     get englishSummary(): string {
@@ -102,13 +102,8 @@ export class Field_orbit extends Field<Field_orbit_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_orbit_serial>) {
-        if (serial == null) {
-            delete this.serial.azimuth
-            delete this.serial.elevation
-            return
-        }
-        this.serial.elevation = serial.elevation
-        this.serial.azimuth = serial.azimuth
+        this.serial.elevation = serial?.elevation ?? this.defaultElevation
+        this.serial.azimuth = serial?.azimuth ?? this.defaultAzimuth
     }
 
     // x: Partial<number> = 0

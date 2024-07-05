@@ -115,11 +115,14 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     protected setOwnSerial(serial: Maybe<Field_group_serial<T>>, applyEffects: boolean) {
+        // make sure this is propery initialized
         if (this.serial.values_ == null) this.serial.values_ = {}
 
-        // we only iterate on the new values => we DON'T WANT to remove the old ones.
-        // we keep the old values in case those are just temporarilly removed, or in case
-        // those will be lazily added later though global usage
+        // 🔴 PLUS APPLICABLE / a remettre sous une autre forme.
+        // | we only iterate on the current schema fields => we DON'T WANT to remove the old ones.
+        // | we keep the old values in case those are just temporarilly removed, or in case
+        // | those will be lazily added later though global usage
+
         for (const [fName, fSchema] of this._fieldSchemas) {
             this.RECONCILE({
                 existingChild: this.fields[fName],

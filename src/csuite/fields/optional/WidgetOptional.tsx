@@ -55,8 +55,6 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         super(repo, root, parent, schema)
         this.setSerial(serial, false)
         this.init({
-            serial: observable,
-            value: computed,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -71,7 +69,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         this.RECONCILE({
             existingChild: this.child,
             correctChildSchema: this.config.schema,
-            applyEffects: applyEffects,
+            applyEffects,
             targetChildSerial: serial?.child,
             attach: (child) => {
                 this.child = child
@@ -80,7 +78,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         })
     }
 
-    setActive = (value: boolean) => {
+    setActive(value: boolean) {
         if (this.serial.active === value) return
         this.serial.active = value
         this.applyValueUpdateEffects()
@@ -90,7 +88,13 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         else this.child.setCollapsed(true)
     }
 
-    reset(): void {
+    /**
+     * similar to reset,
+     * except when unactive by default => only reset the active property
+     * 👉 the base reset() will always reset the child
+     * 👉 this resetFast will only reset the child is active.
+     */
+    resetFast(): void {
         // active by default
         if (this.config.startActive) {
             if (!this.serial.active) this.setActive(true)
@@ -131,7 +135,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         return this.child
     }
 
-    /** hack so optional fields do not increase nesting twice */
+    /** so optional fields do not increase nesting twice */
     get indentChildren(): number {
         return 0
     }

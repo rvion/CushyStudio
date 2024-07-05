@@ -1,8 +1,9 @@
+import type { Field } from '../../model/Field'
 import type { ISchema } from '../../model/ISchema'
 import type { Field_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef } from 'react'
+import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
 import { ErrorBoundaryUI } from '../../errors/ErrorBoundaryUI'
@@ -17,7 +18,9 @@ const { default: SortableList, SortableItem, SortableKnob } = await import('reac
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { field: Field_list<any> }) {
+export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(function WidgetList_LineUI_(p: {
+    field: Field_list<any>
+}) {
     return (
         <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
             <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>
@@ -89,7 +92,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         )}
                                         {/* <div tw='w-2' /> */}
                                         <SortableKnob>
-                                            <ListDragHandleUI widget={subWidget} ix={ix} />
+                                            <ListDragHandleUI field={subWidget} ix={ix} />
                                         </SortableKnob>
                                         <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
                                             <Button icon='mdiDotsVertical' subtle square size='input' />
@@ -110,10 +113,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: Field }>((p, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; field: Field }>((p, ref) => {
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
-        <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
+        <div ref={ref} onClick={() => p.field.toggleCollapsed()}>
             <Button size='input' subtle square icon='mdiDragHorizontalVariant' />
         </div>
     )

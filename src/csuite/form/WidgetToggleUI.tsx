@@ -6,7 +6,11 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../checkbox/InputBoolUI'
 import { isWidgetOptional } from '../fields/WidgetUI.DI'
 
-export const WidgetToggleUI = observer(function WidgetToggleUI_(p: { className?: string; field: Field }) {
+export const WidgetToggleUI = observer(function WidgetToggleUI_(p: {
+    //
+    className?: string
+    field: Field
+}) {
     if (!isWidgetOptional(p.field)) return null
     const field = p.field as Field_optional
     return (

@@ -89,6 +89,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     get defaultValue(): Field_selectMany_value<T> {
         return this.config.default ?? []
     }
+
     get hasChanges(): boolean {
         if (this.serial.values.length !== this.defaultValue.length) return true
         for (const item of this.serial.values) {
@@ -96,10 +97,13 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         }
         return false
     }
+
     reset(): void {
         this.value = this.defaultValue
     }
+
     wrap = this.config.wrap ?? false
+
     get choices(): T[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //
@@ -129,13 +133,6 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     ) {
         super(repo, root, parent, schema)
         const config = schema.config
-        this.serial = serial ?? {
-            type: 'selectMany',
-            collapsed: config.startCollapsed,
-            id: this.id,
-            query: '',
-            values: config.default ?? [],
-        }
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
         this.init({
             DefaultHeaderUI: false,
@@ -143,8 +140,14 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         })
     }
 
+    protected setOwnSerial(serial: Maybe<Field_selectMany_serial<T>>) {
+        if (serial == null) return
+        this.serial.query = serial.query
+        this.serial.values = serial.values
+    }
+
     /** un-select given item */
-    removeItem = (item: T): void => {
+    removeItem(item: T): void {
         // ensure item was selected
         const indexOf = this.serial.values.findIndex((i) => i.id === item.id)
         if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
@@ -155,7 +158,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     }
 
     /** select given item */
-    addItem = (item: T): void => {
+    addItem(item: T): void {
         // ensure item is not selected yet
         const i = this.serial.values.indexOf(item)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
@@ -166,7 +169,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     }
 
     /** select item if item was not selected, un-select if item was selected */
-    toggleItem = (item: T): void => {
+    toggleItem(item: T): void {
         const i = this.serial.values.findIndex((i) => i.id === item.id)
         if (i < 0) {
             this.serial.values.push(item)

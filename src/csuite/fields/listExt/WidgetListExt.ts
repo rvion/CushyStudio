@@ -178,11 +178,13 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
     // HELPERS =======================================================
     // FOLDING -------------------------------------------------------
     collapseAllItems = (): void => {
-        for (const i of this.entries) i.widget.setCollapsed(true)
+        this.collapseAllChildren()
+        // for (const i of this.entries) i.widget.setCollapsed(true)
     }
 
     expandAllItems = (): void => {
-        for (const i of this.entries) i.widget.setCollapsed(false)
+        this.expandAllChildren()
+        // for (const i of this.entries) i.widget.setCollapsed(false)
     }
 
     // ADDING ITEMS -------------------------------------------------

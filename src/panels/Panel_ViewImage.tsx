@@ -27,7 +27,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_image.get(p.imageID)
         : st.db.media_image.last()
     const url = img?.url
-    const background = st.galleryConf.root.get('galleryBgColor') ?? undefined
+    const background = st.galleryConf.value.galleryBgColor ?? undefined
 
     const shouldFilter = st.project.filterNSFW
     const safety =

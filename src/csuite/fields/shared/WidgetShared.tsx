@@ -53,21 +53,22 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         serial?: Field_shared_serial,
     ) {
         super(repo, root, parent, schema)
-        const config = schema.config
-        this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
+    protected setOwnSerial(_serial: Maybe<Field_shared_serial>) {}
+
     get hasChanges(): boolean {
         return this.shared.hasChanges ?? false
     }
 
-    reset(): void {
-        return this.shared.reset()
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     return this.shared.reset()
+    // ⏸️ }
 
     get shared(): F {
         return this.config.field

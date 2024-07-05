@@ -89,7 +89,7 @@ export class Field_list<T extends ISchema> //
 
     static readonly type: 'list' = 'list'
 
-    get length() {
+    get length(): number {
         return this.items.length
     }
 
@@ -110,17 +110,17 @@ export class Field_list<T extends ISchema> //
         return this.items.some((i) => i.hasChanges)
     }
 
-    reset(): void {
-        // fix size
-        if (!this.config.auto) {
-            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
-            for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
-            for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
-        }
+    // resetSmart(): void {
+    //     // fix size
+    //     if (!this.config.auto) {
+    //         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+    //         for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
+    //         for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
+    //     }
 
-        // reset all remaining values
-        for (const i of this.items) i.reset()
-    }
+    //     // reset all remaining values
+    //     for (const i of this.items) i.reset()
+    // }
 
     findItemIndexContaining(widget: Field): number | null {
         let at = widget as Field | null
@@ -158,7 +158,7 @@ export class Field_list<T extends ISchema> //
 
     // probably slow and clunky;
     // TODO: rewrite this piece of crap
-    private startAutoBehaviour() {
+    private startAutoBehaviour(): void {
         const auto = this.config.auto
         if (auto == null) return
         const disposeFn = reaction(
@@ -209,38 +209,56 @@ export class Field_list<T extends ISchema> //
         this.startAutoBehaviour()
     }
 
+    at(ix: number): T['$Field'] | undefined {
+        return this.items[ix]
+    }
+
     get valueArr(): Field_list_value<T> {
         return this.items.map((i) => i.value)
     }
 
-    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>) {
+    protected setOwnSerial(
+        //
+        serial: Maybe<Field_list_serial<T>>,
+        applyEffects: boolean,
+    ) {
         // minor safety net since all those internal changes
         if (this.serial.items_ == null) this.serial.items_ = []
 
-        // hydrate items
-        this.items = []
-
-        // 1. add default item (only when serial was null)
-        if (serial == null && this.config.defaultLength != null) {
-            for (let i = 0; i < this.config.defaultLength; i++) {
-                this.addItem({ skipBump: true })
+        // pseudo-reset 🔴
+        if (this.items != null)
+            for (const item of this.items) {
+                item.dispose()
             }
+        this.items = []
+        this.serial.items_ = []
+
+        // when NO-serial, NO-auto
+        if (serial == null) {
+            if (!this.config.auto) {
+                const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+                for (let i = this.items.length; i < defaultLength; i++) {
+                    this.addItem({ skipBump: true })
+                }
+            }
+            return
         }
 
-        // 2. pre-existing serial => rehydrate items
-        else {
-            const schema = this.schemaAt(0) // TODO: evaluate schema in the form loop
-            for (const subSerial of this.serial.items_) {
-                if (
-                    subSerial == null || // ⁉️ when can this happen ?
-                    subSerial.type !== schema.type
-                ) {
-                    console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
-                    continue
-                }
-                const subWidget = schema.instanciate(this.repo, this.root, this, subSerial)
-                this.items.push(subWidget)
-            }
+        for (const [ix, subSerial] of serial.items_.entries()) {
+            const schema = this.schemaAt(ix)
+            this.RECONCILE({
+                correctChildSchema: schema,
+                existingChild: null,
+                targetChildSerial: subSerial,
+                applyEffects,
+                attach: (sub) => {
+                    // push instead of doing [ix]= ... since we're re-creating them in order
+                    this.items.push(sub)
+                    this.serial.items_.push(sub.serial)
+                },
+            })
+            // const subWidget = schema.instanciate(this.repo, this.root, this, subSerial)
+            // this.items.push(subWidget)
         }
 
         // 3. add missing items if min specified
@@ -264,6 +282,7 @@ export class Field_list<T extends ISchema> //
                 if (prop === 'toJSON') return () => this.valueArr
                 if (prop === 'pop') return () => this.pop()
                 if (prop === 'shift') return () => this.shift()
+                if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
                 if (prop === 'push') return (...args: any[]) => this.push(...args)
                 if (prop === 'slice') return (start: any, end: any) => this.valueArr.slice(start, end)
                 // MOBX HACK ----------------------------------------------------
@@ -280,7 +299,11 @@ export class Field_list<T extends ISchema> //
                 // ⏸️ console.log(`[SET]`, prop, value)
                 if (typeof prop === 'symbol') return false
                 if (parseInt(prop, 10) === +prop) {
-                    if (this.items[prop]) {
+                    const index = +prop
+                    if (index === this.items.length) {
+                        this.addItem({ value })
+                        return true
+                    } else if (this.items[prop]) {
                         this.items[prop]!.value = value
                         return true
                     }
@@ -311,16 +334,6 @@ export class Field_list<T extends ISchema> //
         this.applyValueUpdateEffects()
     }
 
-    // HELPERS =======================================================
-    // FOLDING -------------------------------------------------------
-    collapseAllItems = () => {
-        for (const i of this.items) i.setCollapsed(true)
-    }
-
-    expandAllItems = () => {
-        for (const i of this.items) i.setCollapsed(false)
-    }
-
     // ERRORS --------------------------------------------------------
     get baseErrors(): string[] {
         const out: string[] = []
@@ -333,17 +346,35 @@ export class Field_list<T extends ISchema> //
         return out
     }
 
+    // ADDING ITEMS -------------------------------------------------
     duplicateItemAtIndex(ix: number): void {
         const item = this.items[ix]!
         this.addItem({ at: ix, value: item.value })
     }
 
-    push(...value: T['$Value'][]) {
-        for (const v of value) this.addItem({ value: v, skipBump: true })
+    push(...value: T['$Value'][]): void {
+        // we skip bump durin the for loop,
+        // to only call applyValueUpdateEffects at the end once
+        for (const v of value) {
+            this.addItem({
+                value: v,
+                skipBump: true,
+            })
+        }
+        // should be called once per mutable action
         this.applyValueUpdateEffects()
     }
 
-    // ADDING ITEMS -------------------------------------------------
+    unshift(...value: T['$Value'][]): void {
+        // we skip bump durin the for loop,
+        // to only call applyValueUpdateEffects at the end once
+        for (const v of value) {
+            this.addItem({ value: v, skipBump: true, at: 0 })
+        }
+        // should be called once per mutable action
+        this.applyValueUpdateEffects()
+    }
+
     addItem(
         p: {
             skipBump?: true
@@ -382,41 +413,6 @@ export class Field_list<T extends ISchema> //
         if (!p?.skipBump) this.applyValueUpdateEffects()
     }
 
-    // REMOVING ITEMS ------------------------------------------------
-    removeAllItems = () => {
-        // ensure list is not empty
-        if (this.length === 0) return console.log(`[🔶] list.removeAllItems: list is already empty`)
-        // ensure list is not at min len already
-        const minLen = this.config.min ?? 0
-        if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
-        // remove all items
-        this.serial.items_ = this.serial.items_.slice(0, minLen)
-        this.items = this.items.slice(0, minLen)
-        this.applyValueUpdateEffects()
-    }
-
-    removeItem(item: T['$Field']) {
-        // ensure item is in the list
-        const i = this.items.indexOf(item)
-        if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
-        this.removeItemAt(i)
-    }
-
-    removeItemAt(i: number) {
-        // remove item
-        this.serial.items_.splice(i, 1)
-        this.items.splice(i, 1)
-        this.applyValueUpdateEffects()
-    }
-
-    pop() {
-        this.removeItemAt(this.items.length - 1)
-    }
-
-    shift() {
-        this.removeItemAt(0)
-    }
-
     // MOVING ITEMS ---------------------------------------------------
     moveItem(
         //
@@ -435,6 +431,41 @@ export class Field_list<T extends ISchema> //
         const instances = this.items
         instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
         this.applyValueUpdateEffects()
+    }
+
+    // REMOVING ITEMS ------------------------------------------------
+    removeAllItems(): void {
+        // ensure list is not empty
+        if (this.length === 0) return console.log(`[🔶] list.removeAllItems: list is already empty`)
+        // ensure list is not at min len already
+        const minLen = this.config.min ?? 0
+        if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
+        // remove all items
+        this.serial.items_ = this.serial.items_.slice(0, minLen)
+        this.items = this.items.slice(0, minLen)
+        this.applyValueUpdateEffects()
+    }
+
+    removeItem(item: T['$Field']): void {
+        // ensure item is in the list
+        const i = this.items.indexOf(item)
+        if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
+        this.removeItemAt(i)
+    }
+
+    removeItemAt(i: number): void {
+        // remove item
+        this.serial.items_.splice(i, 1)
+        this.items.splice(i, 1)
+        this.applyValueUpdateEffects()
+    }
+
+    pop(): void {
+        this.removeItemAt(this.items.length - 1)
+    }
+
+    shift(): void {
+        this.removeItemAt(0)
     }
 }
 
