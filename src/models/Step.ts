@@ -1,5 +1,6 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { StepOutput } from '../types/StepOutput'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
@@ -10,7 +11,6 @@ import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { type TABLES } from '../db/TYPES.gen'
 import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
 import { CushyAppL } from './CushyApp'
 import { DraftL } from './Draft'
@@ -38,7 +38,7 @@ export class StepL {
          * this will be made available to the runtime so the runtime can access
          * the live form
          * */
-        formInstance: Field_group<any>
+        formInstance: Field_group<any> // Field_group<any>
         context: DraftExecutionContext
     }) => {
         // ensure we have an executable

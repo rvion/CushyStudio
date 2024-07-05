@@ -85,7 +85,6 @@ export class Field_bool extends Field<Field_bool_types> {
         super(repo, root, parent, schema)
         this.setSerial(serial, false)
         this.init({
-            serial: observable,
             value: computed,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
@@ -128,10 +127,6 @@ export class Field_bool extends Field<Field_bool_types> {
     get hasChanges(): boolean {
         return this.value !== this.defaultValue
     }
-
-    // ⏸️ reset(): void {
-    // ⏸️     return void (this.value = this.defaultValue)
-    // ⏸️ }
 
     get value(): Field_bool_value {
         return this.serial.active ?? this.defaultValue

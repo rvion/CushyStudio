@@ -9,6 +9,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
+
 // CONFIG
 export type Field_seed_config = FieldConfig<
     {
@@ -62,11 +63,6 @@ export class Field_seed extends Field<Field_seed_types> {
         return false
     }
 
-    // ⏸️ reset(): void {
-    // ⏸️     this.setMode(this.defaultMode)
-    // ⏸️     if (this.serial.mode !== 'randomize') this.value = this.defaultValue
-    // ⏸️ }
-
     get defaultMode(): SeedMode {
         return this.config.defaultMode ?? 'randomize'
     }
@@ -110,13 +106,8 @@ export class Field_seed extends Field<Field_seed_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_seed_serial>) {
-        if (serial == null) {
-            void delete this.serial.val
-            void delete this.serial.mode
-            return
-        }
-        if (serial.val != null) this.serial.val = serial.val
-        if (serial.mode != null) this.serial.mode = serial.mode
+        this.serial.val = serial?.val ?? this.defaultValue
+        this.serial.mode = serial?.mode ?? this.defaultMode
     }
 
     get value(): Field_seed_value {

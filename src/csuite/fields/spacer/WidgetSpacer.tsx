@@ -62,7 +62,6 @@ export class Field_spacer extends Field<Field_spacer_types> {
         super(repo, root, parent, schema)
         this.setSerial(serial, false)
         this.init({
-            serial: observable,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -73,9 +72,7 @@ export class Field_spacer extends Field<Field_spacer_types> {
     get value() {
         return false
     }
-    set value(val) {
-        // do nothing
-    }
+    set value(val) {}
 }
 
 // DI
