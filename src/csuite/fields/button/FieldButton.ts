@@ -5,8 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetButtonUI } from './WidgetButtonUI'
@@ -51,6 +49,8 @@ export type Field_button_types<K> = {
 // STATE
 export class Field_button<K> extends Field<Field_button_types<K>> {
     static readonly type: 'button' = 'button'
+    readonly DefaultHeaderUI = WidgetButtonUI
+    readonly DefaultBodyUI = undefined
 
     constructor(
         //
@@ -63,17 +63,26 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         super(repo, root, parent, schema)
         const config = schema.config
         if (config.text) config.label = config.label ?? ` `
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    readonly DefaultHeaderUI = WidgetButtonUI
-    readonly DefaultBodyUI = undefined
+    protected setOwnSerial(serial: Maybe<Field_button_serial>): void {
+        this.serial.val = serial?.val ?? this.defaultValue
+    }
 
-    get baseErrors(): Problem_Ext {
+    get value(): Field_button_value {
+        return this.serial.val ?? this.defaultValue
+    }
+
+    set value(next: boolean) {
+        if (this.serial.val === next) return
+        this.VALMUT(() => (this.serial.val = next))
+    }
+
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -92,25 +101,12 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         return (this.value = !this.value)
     }
 
-    protected setOwnSerial(serial: Maybe<Field_button_serial>): void {
-        this.serial.val = serial?.val ?? this.defaultValue
-    }
-
     get defaultValue(): boolean {
         return this.config.default ?? false
     }
 
     get hasChanges(): boolean {
         return this.value !== this.defaultValue
-    }
-
-    get value(): Field_button_value {
-        return this.serial.val ?? this.defaultValue
-    }
-
-    set value(next: boolean) {
-        if (this.serial.val === next) return
-        this.VALMUT(() => (this.serial.val = next))
     }
 }
 

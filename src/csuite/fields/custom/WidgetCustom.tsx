@@ -43,12 +43,33 @@ export type Field_custom_types<T> = {
 
 // STATE
 export class Field_custom<T> extends Field<Field_custom_types<T>> {
+    constructor(
+        //
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: ISchema<Field_custom<T>>,
+        serial?: Field_custom_serial<T>,
+    ) {
+        super(repo, root, parent, schema)
+        this.init(serial, {
+            Component: false,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_custom_serial<T>>): void {
+        this.serial.value = serial?.value ?? this.defaultValue
+    }
+
     DefaultHeaderUI = WidgetCustom_HeaderUI
+
     DefaultBodyUI = undefined
 
     static readonly type: 'custom' = 'custom'
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -62,31 +83,6 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
     get hasChanges(): boolean {
         return this.value !== this.defaultValue
-    }
-
-    reset(): void {
-        this.value = this.config.defaultValue()
-    }
-
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: ISchema<Field_custom<T>>,
-        serial?: Field_custom_serial<T>,
-    ) {
-        super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
-            Component: false,
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-    }
-
-    protected setOwnSerial(serial: Maybe<Field_custom_serial<T>>): void {
-        this.serial.value = serial?.value ?? this.defaultValue
     }
 
     /** never mutate this field manually, only access to .state */

@@ -83,7 +83,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     readonly expand: boolean = this.config.expand ?? false
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -218,8 +218,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
             else this.enableBranch(activeBranch, { skipBump: true })
         }
-
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

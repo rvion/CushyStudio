@@ -74,7 +74,7 @@ export class Field_string extends Field<Field_string_types> {
         return undefined
     }
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -95,8 +95,7 @@ export class Field_string extends Field<Field_string_types> {
         serial?: Field_string_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init()
+        this.init(serial)
     }
 
     get animateResize() {
@@ -107,10 +106,6 @@ export class Field_string extends Field<Field_string_types> {
     protected setOwnSerial(serial: Maybe<Field_string_serial>) {
         this.serial.val = serial?.val ?? this.defaultValue
     }
-
-    // ⏸️ reset(): void {
-    // ⏸️     this.value = this.defaultValue
-    // ⏸️ }
 
     get defaultValue(): string {
         return this.config.default ?? ''

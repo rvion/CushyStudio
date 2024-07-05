@@ -61,8 +61,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
         serial?: Field_matrix_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -95,39 +94,6 @@ export class Field_matrix extends Field<Field_matrix_types> {
         this.serial.selected = this.activeCells
     }
 
-    /** list of all possible row keys */
-    get rows(): string[] {
-        return this.config.rows
-    }
-
-    /** list of all possible colum keys */
-    get cols(): string[] {
-        return this.config.cols
-    }
-
-    get baseErrors(): Problem_Ext {
-        return null
-    }
-
-    get hasChanges(): boolean {
-        const def = this.config.default
-        if (def == null) return this.value.length != 0
-        else {
-            if (def.length != this.value.length) return true
-            for (const v of this.value) {
-                if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
-            }
-            return false
-        }
-    }
-
-    reset(): void {
-        this.setAll(false)
-        for (const i of this.config.default ?? []) {
-            this.setCell(i.row, i.col, true)
-        }
-    }
-
     /** list of all active cells */
     get value(): Field_matrix_value {
         return this.serial.selected
@@ -147,6 +113,32 @@ export class Field_matrix extends Field<Field_matrix_types> {
             // 3. update
             this.UPDATE()
         })
+    }
+
+    /** list of all possible row keys */
+    get rows(): string[] {
+        return this.config.rows
+    }
+
+    /** list of all possible colum keys */
+    get cols(): string[] {
+        return this.config.cols
+    }
+
+    get ownProblems(): Problem_Ext {
+        return null
+    }
+
+    get hasChanges(): boolean {
+        const def = this.config.default
+        if (def == null) return this.value.length != 0
+        else {
+            if (def.length != this.value.length) return true
+            for (const v of this.value) {
+                if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
+            }
+            return false
+        }
     }
 
     /** store of all active cells */

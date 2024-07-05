@@ -52,6 +52,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Channel, ChannelId } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
 import type { ISchema } from './ISchema'
 import type { Repository } from './Repository'
@@ -98,12 +99,85 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
 export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
-    // 👆 type only properties; do not use directly; used to make typings good and fast
-    // 👆 $Type!: K['$Type'] /*     = 0 as any  */
-    // 👆 $Config!: K['$Config'] /* = 0 as any  */
-    // 👆 $Serial!: K['$Serial'] /* = 0 as any  */
-    // 👆 $Value!: K['$Value'] /*   = 0 as any  */
-    // 👆 $Field!: K['$Field'] /*   = 0 as any  */
+    /**
+     * unique Field instance ID;
+     * each node in the form tree has one;
+     * NOT persisted in serial.
+     * change every time the field is instanciated
+     */
+    readonly id: string
+
+    /** wiget serial is the full serialized representation of that widget  */
+    readonly serial: K['$Serial']
+
+    /**
+     * singleton repository for the project
+     * allow access to global domain, as well as any other live field
+     * and other shared resource
+     */
+    repo: Repository
+
+    /** root of the field tree this field belongs to */
+    root: Field
+
+    /** parent field, (null when root) */
+    parent: Field | null
+
+    /** schema used to instanciate this widget */
+    schema: ISchema<K['$Field']>
+
+    constructor(
+        /**
+         * singleton repository for the project
+         * allow access to global domain, as well as any other live field
+         * and other shared resource
+         */
+        repo: Repository,
+        /** root of the field tree this field belongs to */
+        root: Field | null,
+        /** parent field, (null when root) */
+        parent: Field | null,
+        /** schema used to instanciate this widget */
+        schema: ISchema<K['$Field']>,
+        // serial?: K['$Serial'],
+    ) {
+        this.id = nanoid(8)
+        this.repo = repo
+        this.root = root ?? this
+        this.parent = parent
+        this.schema = schema
+        this.serial = { type: (this.constructor as any).type }
+    }
+
+    static get mobxOverrideds() {
+        throw new Error('`mobxOverrideds` should be overridden in subclass')
+    }
+
+    static get type(): Field['$Type'] {
+        throw new Error('This method should be overridden in subclass')
+    }
+
+    get type(): Field['$Type'] {
+        return (this.constructor as any).type
+    }
+
+    /** shorthand access to some builder */
+    get domain(): IBuilder {
+        return this.repo.domain
+    }
+
+    /** wiget value is the simple/easy-to-use representation of that widget  */
+    abstract value: K['$Value']
+
+    /** own errors specific to this widget; must NOT include child errors */
+    abstract readonly ownProblems: Problem_Ext
+
+    /**
+     * TODO later: make abstract to make sure we
+     * have that on every single field + add field config option
+     * to customize that. useful for tests.
+     */
+    randomize(): void {}
 
     /** field is already instanciated => probably used as a linked */
     instanciate(
@@ -118,72 +192,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return schema.instanciate(repo, root, parent, serial)
     }
 
-    /**
-     * unique Field instance ID;
-     * each node in the form tree has one;
-     * NOT persisted in serial.
-     * change every time the field is instanciated
-     */
-    readonly id: string
-
-    /** wiget serial is the full serialized representation of that widget  */
-    readonly serial: K['$Serial']
-
-    repo: Repository
-    root: Field
-    constructor(
-        /**
-         * singleton repository for the project
-         * allow access to global domain, as well as any other live field
-         * and other shared resource
-         */
-        repo: Repository,
-        /** root of the field tree this field belongs to */
-        root: Field | null,
-        /** parent field, (null when root) */
-        public parent: Field | null,
-        /** schema used to instanciate this widget */
-        public schema: ISchema<K['$Field']>,
-    ) {
-        this.id = nanoid(8)
-        this.repo = repo
-        this.root = root ?? this
-        this.serial = { type: (this.constructor as any).type }
-    }
-
-    static get type(): Field['$Type'] {
-        throw new Error('This method should be overridden in subclass')
-    }
-
-    get type(): Field['$Type'] {
-        return (this.constructor as any).type
-    }
-
-    // 🌶️ get domain(): IBuilder {
-    // 🌶️     return this.entity.builder
-    // 🌶️ }
-
-    /** wiget value is the simple/easy-to-use representation of that widget  */
-    abstract value: K['$Value']
-
-    /** base validation errors specific to this widget; */
-    abstract readonly baseErrors: Problem_Ext
-
-    /**
-     * TODO later: make abstract to make sure we
-     * have that on every single field + add field config option
-     * to customize that. useful for tests.
-     */
-    randomize(): void {}
-
-    protected abstract setOwnSerial(
-        serial: Maybe<K['$Serial']>,
-        /**
-         * this is passed as param.
-         * Do not do anything with this variable except pass it to reconcile
-         */
-        applyEffects: boolean,
-    ): void
+    protected abstract setOwnSerial(serial: Maybe<K['$Serial']>): void
 
     /**
      * list of all functions to run at dispose time
@@ -219,11 +228,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     ready = false
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-    setSerial(serial: Maybe<K['$Serial']>, applyEffects: boolean = true) {
-        this.setOwnSerial(serial, applyEffects)
-        this.copyCommonSerialFiels(serial)
-        if (applyEffects) this.applySerialUpdateEffects()
-        this.ready = true
+    setSerial(serial: Maybe<K['$Serial']>) {
+        this.VALMUT(() => {
+            this.copyCommonSerialFiels(serial)
+            this.setOwnSerial(serial)
+        })
     }
 
     private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
@@ -247,11 +256,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
          *  - child into parent where it belongs
          *  - child.serial into parent.serial where it belongs  */
         attach(child: SCHEMA['$Field']): void
-        applyEffects: boolean
     }) {
         let child = p.existingChild
         if (child != null && child.type === p.correctChildSchema.type) {
-            child.setSerial(p.targetChildSerial, p.applyEffects)
+            child.setSerial(p.targetChildSerial)
         } else {
             if (child) child.dispose()
             child = p.correctChildSchema.instanciate(
@@ -396,7 +404,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * 🔶 some widget like `WidgetPrompt` would not work with such logic
      * */
     reset(): void {
-        this.setSerial(null, true)
+        this.setSerial(null)
     }
 
     /**  */
@@ -494,18 +502,16 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const SELF = this as any as Field
-        const baseErrors = normalizeProblem(SELF.baseErrors)
+        const baseErrors = normalizeProblem(this.ownProblems)
         return [...baseErrors, ...this.customErrors]
     }
 
     get customErrors(): Problem[] {
-        const SELF = this as any as Field
-        if (SELF.config.check == null)
+        if (this.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
             ]
-        const res = SELF.config.check(this)
+        const res = this.config.check(this)
         return normalizeProblem(res)
         // return [...normalizeProblem(res), { message: 'foo' }]
     }
@@ -772,14 +778,16 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** this function MUST be called at the end of every widget constructor */
-    init(mobxOverrides?: any) {
+    init(serial_?: K['$Serial'], mobxOverrides?: any) {
+        this.copyCommonSerialFiels(serial_)
+        this.setOwnSerial(serial_)
+
         // make the object deeply observable including this base class
         makeAutoObservableInheritance(this, mobxOverrides)
 
         // eslint-disable-next-line consistent-this
-        const self = this as any as Field
-        const config = self.config
-        const serial = self.serial
+        const config = this.config
+        const serial = this.serial
 
         // run the config.onCreation if needed
         if (config.onCreate) {
@@ -799,13 +807,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // register self in  `manager._allWidgets
         this.repo._allFields.set(this.id, this)
 
-        // register self in  `manager._allWidgetsByType(<type>)
+        // register self in `manager._allWidgetsByType(<type>)
         const prev = this.repo._allFieldsByType.get(this.type)
         if (prev == null) {
             this.repo._allFieldsByType.set(this.type, new Map([[this.id, this]]))
         } else {
             prev.set(this.id, this)
         }
+
+        this.ready = true
     }
 
     /** update current field snapshot */
@@ -815,8 +825,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** rever to the last snapshot */
-    revertToSnapshot(applyEffects: boolean) {
+    revertToSnapshot() {
         if (this.serial.snapshot == null) return this.reset()
-        this.setSerial(this.serial.snapshot, applyEffects)
+        this.setSerial(this.serial.snapshot)
     }
 }

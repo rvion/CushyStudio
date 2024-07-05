@@ -53,7 +53,7 @@ export class Field_seed extends Field<Field_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -98,8 +98,7 @@ export class Field_seed extends Field<Field_seed_types> {
         serial?: Field_seed_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

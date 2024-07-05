@@ -68,19 +68,13 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         serial?: Field_link_serial<A, B>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({})
+        this.init(serial, {})
     }
 
-    protected setOwnSerial(
-        //
-        serial: Maybe<Field_link_serial<A, B>>,
-        applyEffects: boolean,
-    ) {
+    protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>) {
         let aField: A['$Field'] = this.aField
         this.RECONCILE({
             existingChild: this.aField,
-            applyEffects,
             correctChildSchema: this.config.share,
             targetChildSerial: serial?.a,
             attach: (child) => {
@@ -91,7 +85,6 @@ export class Field_link<A extends ISchema, B extends ISchema> //
 
         this.RECONCILE({
             existingChild: this.bField,
-            applyEffects,
             correctChildSchema: this.config.children(aField),
             targetChildSerial: serial?.b,
             attach: (child) => {
@@ -105,7 +98,7 @@ export class Field_link<A extends ISchema, B extends ISchema> //
 
     DefaultBodyUI = () => this.bField.renderWithLabel()
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return this.bField.hasErrors
     }
 

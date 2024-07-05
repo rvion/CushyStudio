@@ -33,20 +33,8 @@ export type Field_color_types = {
 // STATE
 export class Field_color extends Field<Field_color_types> {
     static readonly type: 'color' = 'color'
-    DefaultHeaderUI = WidgetColorUI
-    DefaultBodyUI = undefined
-
-    get baseErrors(): Problem_Ext {
-        return null
-    }
-
-    get defaultValue(): string {
-        return this.config.default ?? '#000000'
-    }
-
-    get hasChanges(): boolean {
-        return this.value !== this.defaultValue
-    }
+    readonly DefaultHeaderUI = WidgetColorUI
+    readonly DefaultBodyUI = undefined
 
     constructor(
         //
@@ -57,8 +45,7 @@ export class Field_color extends Field<Field_color_types> {
         serial?: Field_color_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -75,6 +62,18 @@ export class Field_color extends Field<Field_color_types> {
     set value(next: Field_color_value) {
         if (this.serial.value === next) return
         this.VALMUT(() => (this.serial.value = next))
+    }
+
+    get ownProblems(): Problem_Ext {
+        return null
+    }
+
+    get defaultValue(): string {
+        return this.config.default ?? '#000000'
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
     }
 }
 

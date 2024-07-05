@@ -63,8 +63,7 @@ export class Field_image extends Field<Field_image_types> {
         serial?: Field_image_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -79,7 +78,7 @@ export class Field_image extends Field<Field_image_types> {
 
     DefaultBodyUI = undefined
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 

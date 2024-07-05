@@ -93,7 +93,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
 
-    get baseErrors(): Maybe<string> {
+    get ownProblems(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val?.id)
         if (selected == null && !this.config.disableLocalFiltering) return 'selected value not in choices'
@@ -127,8 +127,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         serial?: Field_selectOne_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

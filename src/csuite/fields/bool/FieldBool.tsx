@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
-import { computed, observable, runInAction } from 'mobx'
+import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -71,6 +71,8 @@ export type Field_bool_types = {
 // STATE
 export class Field_bool extends Field<Field_bool_types> {
     static readonly type: 'bool' = 'bool'
+    readonly DefaultHeaderUI: FC<{ field: Field_bool }> = WidgetBoolUI
+    readonly DefaultBodyUI: undefined = undefined
 
     constructor(
         repo: Repository,
@@ -80,18 +82,30 @@ export class Field_bool extends Field<Field_bool_types> {
         serial?: Field_bool_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             value: computed,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    readonly DefaultHeaderUI: FC<{ field: Field_bool }> = WidgetBoolUI
-    readonly DefaultBodyUI: undefined = undefined
+    protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
+        this.serial.value =
+            (serial as any)?.active ?? // ⏱️ backward compat
+            serial?.value ??
+            this.defaultValue
+    }
 
-    get baseErrors(): Problem_Ext {
+    get value(): Field_bool_value {
+        return this.serial.value ?? this.defaultValue
+    }
+
+    set value(next: Field_bool_value) {
+        if (this.serial.value === next) return
+        this.VALMUT(() => (this.serial.value = next))
+    }
+
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -113,28 +127,12 @@ export class Field_bool extends Field<Field_bool_types> {
         this.value = !this.value
     }
 
-    protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
-        this.serial.value =
-            (serial as any)?.active ?? // ⏱️ backward compat
-            serial?.value ??
-            this.defaultValue
-    }
-
     get defaultValue(): boolean {
         return this.config.default ?? false
     }
 
     get hasChanges(): boolean {
         return this.value !== this.defaultValue
-    }
-
-    get value(): Field_bool_value {
-        return this.serial.value ?? this.defaultValue
-    }
-
-    set value(next: Field_bool_value) {
-        if (this.serial.value === next) return
-        this.VALMUT(() => (this.serial.value = next))
     }
 }
 

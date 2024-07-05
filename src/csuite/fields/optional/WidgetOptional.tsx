@@ -51,23 +51,17 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         serial?: Field_optional_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    protected setOwnSerial(
-        //
-        serial: Maybe<Field_optional_serial<T>>,
-        applyEffects: boolean,
-    ) {
+    protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>) {
         this.serial.active = serial?.active ?? this.config.startActive ?? false
         this.RECONCILE({
             existingChild: this.child,
             correctChildSchema: this.config.schema,
-            applyEffects,
             targetChildSerial: serial?.child,
             attach: (child) => {
                 this.child = child
@@ -122,7 +116,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
 
     static readonly type: 'optional' = 'optional'
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 

@@ -54,7 +54,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
     DefaultHeaderUI: FC<{ field: Field_orbit }> = WidgetOrbitUI
     DefaultBodyUI: undefined = undefined
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -94,8 +94,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
         serial?: Field_orbit_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

@@ -53,7 +53,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return WidgetGroup_BlockUI
     }
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -96,8 +96,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         serial?: Field_group_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             value: false,
             __value: false,
             DefaultHeaderUI: false,
@@ -111,7 +110,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return Object.entries(fieldSchemas) as [keyof T, ISchema<any>][]
     }
 
-    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>, applyEffects: boolean) {
+    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>) {
         // make sure this is propery initialized
         if (this.serial.values_ == null) this.serial.values_ = {}
 
@@ -124,7 +123,6 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             this.RECONCILE({
                 existingChild: this.fields[fName],
                 correctChildSchema: fSchema,
-                applyEffects: applyEffects,
                 targetChildSerial: serial?.values_?.[fName],
                 attach: (child) => {
                     this.fields[fName] = child

@@ -53,8 +53,7 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         serial?: Field_shared_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -74,8 +73,8 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         return this.config.field
     }
 
-    get baseErrors(): Problem_Ext {
-        return this.shared.baseErrors
+    get ownProblems(): Problem_Ext {
+        return this.shared.ownProblems
     }
 
     get value(): Field_shared_value<F> {

@@ -13,7 +13,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
         <div tw='flex-1'>
             <SelectUI<T>
                 key={field.id}
-                tw={[field.baseErrors && 'rsx-field-error']}
+                tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
                 getLabelUI={field.config.getLabelUI}
                 getSearchQuery={() => field.serial.query ?? ''}

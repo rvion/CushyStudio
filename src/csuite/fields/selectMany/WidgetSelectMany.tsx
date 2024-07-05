@@ -111,7 +111,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
             : _choices
     }
 
-    get baseErrors(): Maybe<string[]> {
+    get ownProblems(): Maybe<string[]> {
         if (this.serial.values == null) return null
         const errors: string[] = []
         for (const value of this.serial.values) {
@@ -134,7 +134,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         super(repo, root, parent, schema)
         const config = schema.config
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

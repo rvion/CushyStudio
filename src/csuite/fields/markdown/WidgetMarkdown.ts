@@ -48,8 +48,7 @@ export class Field_markdown extends Field<Field_markdown_types> {
         serial?: Field_markdown_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init()
+        this.init(serial)
     }
 
     protected setOwnSerial(serial: Maybe<Field_markdown_serial>): void {}
@@ -64,7 +63,7 @@ export class Field_markdown extends Field<Field_markdown_types> {
         return WidgetMardownUI
     }
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 

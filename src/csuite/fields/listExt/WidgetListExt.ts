@@ -61,7 +61,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
 
     static readonly type: 'listExt' = 'listExt'
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -150,8 +150,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         // add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
-
-        this.init({
+        this.init(serial, {
             sizeHelper: false,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

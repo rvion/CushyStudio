@@ -67,17 +67,12 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     static readonly type: 'prompt' = 'prompt'
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
     get hasChanges(): boolean {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
-    }
-    reset(): void {
-        // /!\ reset function need to go though the `set text()` setter
-        // to ensure the UI is updated (code-mirror specificity here)
-        this.text = this.config.default ?? ''
     }
 
     constructor(
@@ -89,8 +84,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
         serial?: Field_prompt_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultBodyUI: false,
             DefaultHeaderUI: false,
         })

@@ -65,8 +65,7 @@ export class Field_size extends Field<Field_size_types> {
         serial?: Field_size_serial,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             sizeHelper: false,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
@@ -81,7 +80,7 @@ export class Field_size extends Field<Field_size_types> {
         this.serial.height = serial?.height ?? config.default?.height ?? parseInt(this.serial.modelType.split(' ')[1]!)
     }
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 

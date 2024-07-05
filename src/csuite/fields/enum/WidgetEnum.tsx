@@ -60,7 +60,7 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }
 
-    get baseErrors(): Problem_Ext {
+    get ownProblems(): Problem_Ext {
         return null
     }
 
@@ -73,8 +73,7 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         serial?: Field_enum_serial<O>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

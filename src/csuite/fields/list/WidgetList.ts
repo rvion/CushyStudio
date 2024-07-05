@@ -201,8 +201,7 @@ export class Field_list<T extends ISchema> //
         serial?: Field_list_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.setSerial(serial, false)
-        this.init({
+        this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
@@ -217,11 +216,7 @@ export class Field_list<T extends ISchema> //
         return this.items.map((i) => i.value)
     }
 
-    protected setOwnSerial(
-        //
-        serial: Maybe<Field_list_serial<T>>,
-        applyEffects: boolean,
-    ) {
+    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>) {
         // minor safety net since all those internal changes
         if (this.serial.items_ == null) this.serial.items_ = []
 
@@ -250,7 +245,6 @@ export class Field_list<T extends ISchema> //
                 correctChildSchema: schema,
                 existingChild: null,
                 targetChildSerial: subSerial,
-                applyEffects,
                 attach: (sub) => {
                     // push instead of doing [ix]= ... since we're re-creating them in order
                     this.items.push(sub)
@@ -336,7 +330,7 @@ export class Field_list<T extends ISchema> //
     }
 
     // ERRORS --------------------------------------------------------
-    get baseErrors(): string[] {
+    get ownProblems(): string[] {
         const out: string[] = []
         if (this.config.min != null && this.length < this.config.min) {
             out.push(`List is too short`)
