@@ -51,7 +51,7 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
     instanciate(
         //
         repo: Repository,
-        root: Field<any>,
+        root: Field<any> | null,
         parent: Field | null,
         serial: any | null,
     ) {
@@ -60,7 +60,8 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
             console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
             serial = null
         }
-        const field = new this.FieldClass_UNSAFE(entity, parent, this, serial)
+        /* 🔴🔴🔴🔴42 */
+        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
         field.publishValue()
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later
@@ -161,13 +162,13 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
         })
 
     /** clone the schema, and patch the cloned config */
-    withConfig(config: Partial<FIELD['$Config']>): Schema<FIELD> {
+    withConfig(config: Partial<FIELD['$Config']>): this {
         const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
         const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
         // 🔴 Keep producers and reactions -> could probably be part of the ctor
         cloned.producers = this.producers
         cloned.reactions = this.reactions
-        return cloned
+        return cloned as this
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {

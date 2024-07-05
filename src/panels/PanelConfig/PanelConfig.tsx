@@ -40,16 +40,16 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             page = <>Not implemented</>
             break
         case 'interface':
-            page = <FormUI tw='flex-1' entity={cushy.preferences.interface} />
+            page = <FormUI tw='flex-1' field={cushy.preferences.interface} />
             break
         case 'legacy':
             page = <LegacyOptions />
             break
         case 'system':
-            page = <FormUI tw='flex-1' entity={cushy.preferences.system} />
+            page = <FormUI tw='flex-1' field={cushy.preferences.system} />
             break
         case 'theme':
-            page = <FormUI tw='flex-1' entity={cushy.theme} />
+            page = <FormUI tw='flex-1' field={cushy.theme} />
             break
     }
 
@@ -144,44 +144,17 @@ const LegacyOptions = observer(function LegacyOptions_() {
                         tw='csuite-basic-input w-full'
                         name='tagFile'
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
-                        onChange={(ev) => {
-                            config.update({ tagFile: ev.target.value })
-                            st.updateTsConfig()
-                        }}
+                        onChange={(ev) => config.update({ tagFile: ev.target.value })}
                     />
                 </FieldUI>
                 <FieldUI label='Your github username'>
                     <input //
                         tw='csuite-basic-input w-full'
                         value={config.value.githubUsername}
-                        onChange={(ev) => {
-                            config.update({ githubUsername: ev.target.value })
-                            st.updateTsConfig()
-                        }}
+                        onChange={(ev) => config.update({ githubUsername: ev.target.value })}
                         name='githubUsername'
                     />
                 </FieldUI>
-                {/* <FieldUI label='Your Cushy CloudGPU api Key'>
-        <input //
-            tw='csuite-basic-input w-full'
-            value={config.value.cushyCloudGPUApiKey}
-            onChange={(ev) => {
-                config.update({ cushyCloudGPUApiKey: ev.target.value })
-                st.updateTsConfig()
-            }}
-            name='githubUsername'
-        />
-    </FieldUI> */}
-                {/* <FieldUI label='Gallery Image Size (px)'>
-        <InputNumberUI //
-            placeholder='48'
-            min={16}
-            max={256}
-            value={config.value.galleryImageSize ?? 48}
-            mode='int'
-            onValueChange={(val) => config.update({ galleryImageSize: val })}
-        />
-    </FieldUI> */}
                 <FieldUI label='Number slider speed multiplier'>
                     <InputNumberUI //
                         placeholder='Number slider speed multiplier'

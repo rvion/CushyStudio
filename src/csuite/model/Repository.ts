@@ -42,6 +42,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     domain: DOMAIN
+
     constructor(domain: DOMAIN) {
         this.domain = domain
     }
@@ -49,7 +50,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields = <FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
-        entityConfig: EntityConfig<ISchema<Field_group<NoInfer<FIELDS>>>, DOMAIN> = { name: 'unnamed' },
+        entityConfig: EntityConfig<ISchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
     ): Field_group<FIELDS> => {
         const schema = this.domain.group({
             label: false,

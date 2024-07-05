@@ -58,7 +58,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                         base: uist.base,
                         text: { contrast: 1, chromaBlend: 10, hueShift: 145 },
                     }}
-                    entity={cushy.forms.use((ui) =>
+                    field={cushy.forms.use((ui) =>
                         ui.fields({
                             col: ui.colorV2({ onValueChange: (v) => (uist.base = v) }),
                             foo: ui.string(),

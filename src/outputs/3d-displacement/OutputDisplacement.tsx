@@ -72,12 +72,12 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
             {menuConf.right ? (
                 <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI entity={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
             ) : st.displacementConf.root.get('menu').left ? (
                 <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI entity={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
             ) : (
                 <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>

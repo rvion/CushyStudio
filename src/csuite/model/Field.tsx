@@ -19,6 +19,7 @@ import { createElement, type FC, type ReactNode } from 'react'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
+import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
@@ -127,7 +128,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /**
      * RULES:
      *
-     * /!\ THIS METHOD MUST BE IDEMPOTENT /!\
+     * A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
+     *
+     * B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
      *
      * 0. MUST NEVER USE THE serial object provided by default
      *      FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
@@ -419,8 +422,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // BUMP ----------------------------------------------------
+    /** this function is called recursivelu upwards */
     applySerialUpdateEffects(): void {
-        this.root.applySerialUpdateEffects(this)
+        this.config.onSerialChange?.(this.serial, this)
+        this.parent?.applySerialUpdateEffects()
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
@@ -516,12 +521,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     setCollapsed(val?: boolean) {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
-        this.root.applySerialUpdateEffects(this)
+        this.applySerialUpdateEffects()
     }
 
     toggleCollapsed(this: Field) {
         this.serial.collapsed = !this.serial.collapsed
-        this.root.applySerialUpdateEffects(this)
+        this.applySerialUpdateEffects()
     }
 
     // UI ----------------------------------------------------
@@ -531,8 +536,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render = (p: Omit<FormUIProps, 'entity'> = {}): ReactNode => {
-        return createElement(FormUI, { entity: this, ...p })
+    render(p: Omit<FormUIProps, 'field'> = {}): ReactNode {
+        return createElement(FormUI, { field: this, ...p })
     }
 
     /**
@@ -540,7 +545,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * without having to import any component; usage:
      * | <div>{x.renderAsConfigBtn()}</div>
      */
-    renderAsConfigBtn = (p?: {
+    renderAsConfigBtn(p?: {
         // 1. anchor option
         // ...TODO
         // 2. popup options
@@ -549,7 +554,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         maxWidth?: string
         minWidth?: string
         width?: string
-    }): ReactNode => createElement(FormAsDropdownConfigUI, { form: this, ...p })
+    }): ReactNode {
+        return createElement(FormAsDropdownConfigUI, { form: this, ...p })
+    }
 
     renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (

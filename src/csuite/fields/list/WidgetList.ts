@@ -201,7 +201,7 @@ export class Field_list<T extends ISchema> //
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = schema.instanciate(this.root, this, subSerial)
+                const subWidget = schema.instanciate(this.repo, this.root, this, subSerial)
                 this.items.push(subWidget)
             }
         }
@@ -330,7 +330,7 @@ export class Field_list<T extends ISchema> //
 
         // create new item
         const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = schema.instanciate(this.root, this, null)
+        const element = schema.instanciate(this.repo, this.root, this, null)
 
         // set initial value
         if (p.value) {

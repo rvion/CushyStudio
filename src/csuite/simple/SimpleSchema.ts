@@ -33,6 +33,7 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
             readonly type: FIELD['$Type']
             new (
                 //
+                repo: Repository,
                 root: Field,
                 parent: Field | null,
                 spec: ISchema<FIELD>,
@@ -48,16 +49,17 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         })
     }
 
-    create(entityConfig?: EntityConfig<this>) {
-        return simpleRepo.entity(this, entityConfig)
+    create(serial?: FIELD['$Serial']): FIELD['$Field'] {
+        return this.instanciate(simpleRepo, null, null, serial)
+        // return simpleRepo.entity(this, entityConfig)
     }
 
     instanciate(
         //
         repo: Repository,
-        root: Field<any>,
+        root: Field<any> | null,
         parent: Field | null,
-        serial: any | null,
+        serial?: any | null,
     ) {
         // AUTOMIGRATION --------------------------------------------------------------------
         // recover phase

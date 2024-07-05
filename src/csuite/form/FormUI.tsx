@@ -13,7 +13,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
     // form ---------------------------------------------------------
-    entity: Maybe<Field>
+    field: Maybe<Field>
 
     // root wrapper
     label?: string | false
@@ -46,10 +46,9 @@ export type FormUIProps = {
 }
 
 export const FormUI = observer(function FormUI_(p: FormUIProps) {
-    const form = p.entity
+    const form = p.field
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
-    if (form.error) return <MessageErrorUI markdown={form.error} />
-    if (form.root == null) return <MessageErrorUI markdown='form.root is null' />
+    // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
     return (
         <Frame tw='UI-Form' {...p.theme} className={p.className} style={p.style}>

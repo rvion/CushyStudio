@@ -125,7 +125,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             if (field != null) {
                 field.updateSerial(serial?.values_?.[fName])
             } else {
-                field = fSchema.instanciate(this.root, this, serial?.values_?.[fName])
+                field = fSchema.instanciate(this.repo, this.root, this, serial?.values_?.[fName])
                 this.fields[fName] = field
                 this.serial.values_[fName] = field.serial
             }
@@ -191,43 +191,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             }
         },
     })
-
-    // 💬 2024-03-13 rvion: no setter for groups; groups can not be set; only their child can
 }
 
 // DI
 registerWidgetClass('group', Field_group)
-
-/* --------------------------------------------------------------------------------
-// to make a proxy look the way you want:
-// 1. Define ownKeys handler: This will define which keys the proxy pretends to own, similar to what you have already.
-// 2. Define get handler: This will return the value for each property, which you are currently setting to return the property name.
-// 3. Define getOwnPropertyDescriptor handler: This is necessary because when you stringify an object or otherwise try to serialize or iterate over its properties, JavaScript checks if the properties actually exist and are enumerable. By providing a descriptor with enumerable: true, you enable this behavior.
-
-// tip: practical way to dive into js & proxies inner workings: `bun -w <path.ts>`
-
-
-const x = new Proxy(
-    {},
-    {
-        ownKeys: (target) => {
-            return ['a', 'b']
-        },
-        get: (target, prop) => {
-            if (typeof prop !== 'string') return
-            return prop
-        },
-        getOwnPropertyDescriptor: (target, prop) => {
-            return {
-                enumerable: true,
-                configurable: true,
-                value: prop,
-            }
-        },
-
-    },
-)
-
-console.log(`[🤠] `, JSON.stringify(x))
-
--------------------------------------------------------------------------------- */

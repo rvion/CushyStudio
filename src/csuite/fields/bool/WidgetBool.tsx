@@ -3,6 +3,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { FC } from 'react'
 
 import { computed, observable, runInAction } from 'mobx'
 
@@ -75,7 +76,6 @@ export class Field_bool extends Field<Field_bool_types> {
     static readonly type: 'bool' = 'bool'
 
     constructor(
-        //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
@@ -92,31 +92,33 @@ export class Field_bool extends Field<Field_bool_types> {
         })
     }
 
-    readonly DefaultHeaderUI = WidgetBoolUI
-    readonly DefaultBodyUI = undefined
+    readonly DefaultHeaderUI: FC<{ field: Field_bool }> = WidgetBoolUI
+    readonly DefaultBodyUI: undefined = undefined
 
     get baseErrors(): Problem_Ext {
         return null
     }
 
     /** set the value to true */
-    setOn() {
+    setOn(): true {
         return (this.value = true)
     }
 
     /** set the value to false */
-    setOff() {
+    setOff(): false {
         return (this.value = false)
     }
 
-    /** set value to true if false, and to false if true */
-    toggle() {
+    /**
+     * set value to true if false, and to false if true
+     * return new value
+     */
+    toggle(): boolean {
         return (this.value = !this.value)
     }
 
     protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
-        if (serial == null) return void delete this.serial.active
-        if (serial.active != null) this.serial.active = serial.active
+        this.serial.active = serial?.active ?? this.defaultValue
     }
 
     get defaultValue(): boolean {
@@ -127,8 +129,8 @@ export class Field_bool extends Field<Field_bool_types> {
         return this.value !== this.defaultValue
     }
 
-    reset() {
-        return (this.value = this.defaultValue)
+    reset(): void {
+        return void (this.value = this.defaultValue)
     }
 
     get value(): Field_bool_value {

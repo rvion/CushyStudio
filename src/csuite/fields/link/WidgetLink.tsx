@@ -35,7 +35,7 @@ export type Field_link_serial<A extends ISchema, B extends ISchema> = FieldSeria
 
 // VALUE
 export type Field_link_value<
-    //
+    /** A value is NOT used; it may be part of B */
     A extends ISchema,
     B extends ISchema,
 > = B['$Value']
@@ -91,20 +91,36 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         serial?: Field_link_serial<A, B>,
     ) {
         super(repo, root, parent, schema)
-        this.serial =
-            serial && serial.type === 'link' //
-                ? serial
-                : this._defaultSerial()
-
-        const aSchema = this.config.share
-        this.aField = aSchema.instanciate(this.root, this, this.serial.a)
-        this.serial.a = this.aField.serial // hook a serial
-
-        const bSchema = this.config.children(this.aField)
-        this.bField = bSchema.instanciate(this.root, this, this.serial.b)
-        this.serial.b = this.bField.serial // hook a serial
-
+        this.initSerial(serial)
         this.init({})
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>) {
+        let aField: A['$Field'] = this.aField
+        if (aField != null) {
+            aField.updateSerial(serial?.a)
+        } else {
+            const aSchema: A = this.config.share
+            aField = aSchema.instanciate(this.repo, this.root, this, this.serial.a)
+            this.aField = aField
+            this.serial.a = aField.serial
+        }
+
+        // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+        // 🔴 ARGH ARGH ARGH
+        // what if the bField yields a different schema (different type)
+        // we need to make sure the bField can properly be reused first
+        const bSchema: B = this.config.children(aField)
+
+        let bField: B['$Field'] = this.bField
+        if (bField != null && bField.type === bSchema.type) {
+            // 🔴 que se passe t'il si meme racine mais sous-champ différent
+            bField.updateSerial(serial?.a)
+        } else {
+            bField = bSchema.instanciate(this.repo, this.root, this, this.serial.a)
+            this.bField = bField
+            this.serial.a = bField.serial
+        }
     }
 
     get subFields(): [A['$Field'], B['$Field']] {

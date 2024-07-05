@@ -93,8 +93,7 @@ export class Field_number extends Field<Field_number_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_number_serial>) {
-        if (serial == null) return void delete this.serial.val
-        if (serial.val != null) this.serial.val = serial.val
+        this.serial.val = serial?.val ?? this.defaultValue
     }
 
     get value(): Field_number_value {

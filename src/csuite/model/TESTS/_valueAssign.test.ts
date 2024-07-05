@@ -10,14 +10,14 @@ describe('assign to value object', () => {
         })
         const E1 = S1.create()
         expect(E1.value.str1).toBe('🔵')
-        expect(E1.root.fields.str1.value).toBe('🔵')
+        expect(E1.fields.str1.value).toBe('🔵')
 
         E1.value.str1 = '🟡'
         expect(E1.value.str1).toBe('🟡')
-        expect(E1.root.fields.str1.value).toBe('🟡')
+        expect(E1.fields.str1.value).toBe('🟡')
     })
 
-    it('assign to List.value separate ietms', () => {
+    it('assign to List.value separate items (string)', () => {
         const S1 = b.string({ default: '🔵' }).list({ min: 3 })
         const E1 = S1.create()
         expect(E1.value).toEqual(['🔵', '🔵', '🔵'])
@@ -25,14 +25,12 @@ describe('assign to value object', () => {
         E1.value[1] = '🟡'
         expect(E1.value).toEqual(['🔵', '🟡', '🔵'])
         expect(E1.serial).toMatchObject({
-            root: {
-                type: 'list',
-                items_: [
-                    { type: 'str', val: '🔵' },
-                    { type: 'str', val: '🟡' },
-                    { type: 'str', val: '🔵' },
-                ],
-            },
+            type: 'list',
+            items_: [
+                { type: 'str', val: '🔵' },
+                { type: 'str', val: '🟡' },
+                { type: 'str', val: '🔵' },
+            ],
         })
     })
 })

@@ -120,7 +120,7 @@ export class Field_seed extends Field<Field_seed_types> {
     }
 
     get value(): Field_seed_value {
-        const count = this.root.builder._cache.count
+        const count = this.repo.domain._cache.count
         const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
         return mode === 'randomize' //
             ? Math.floor(Math.random() * 9_999_999)

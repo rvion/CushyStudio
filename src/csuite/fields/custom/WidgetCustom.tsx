@@ -24,7 +24,10 @@ export type Field_custom_config<T> = FieldConfig<
 >
 
 // SERIAL
-export type Field_custom_serial<T> = FieldSerial<{ type: 'custom'; active: true; value: T }>
+export type Field_custom_serial<T> = FieldSerial<{
+    type: 'custom'
+    value?: T
+}>
 
 // VALUE
 export type Field_custom_value<T> = T
@@ -49,12 +52,21 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         return null
     }
 
-    Component: Field_custom_config<T>['Component']
-    st = () => cushy
+    get Component(): Field_custom_config<T>['Component'] {
+        return this.config.Component
+    }
 
-    get defaultValue(): T { return this.config.defaultValue() } // prettier-ignore
-    get hasChanges(): boolean { return this.value !== this.defaultValue } // prettier-ignore
-    reset = () => (this.value = this.config.defaultValue())
+    get defaultValue(): T {
+        return this.config.defaultValue()
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
+    }
+
+    reset(): void {
+        this.value = this.config.defaultValue()
+    }
 
     constructor(
         //
@@ -65,15 +77,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         serial?: Field_custom_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        const config = schema.config
-        this.Component = config.Component
-        this.serial = serial ?? {
-            type: 'custom',
-            active: true,
-            id: this.id,
-            value: this.config.defaultValue(),
-        }
-
+        this.initSerial(serial)
         this.init({
             Component: false,
             DefaultHeaderUI: false,
@@ -81,9 +85,13 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         })
     }
 
+    setOwnSerial(serial: Maybe<Field_custom_serial<T>>): void {
+        this.serial.value = serial?.value ?? this.defaultValue
+    }
+
     /** never mutate this field manually, only access to .state */
     get value(): Field_custom_value<T> {
-        return this.serial.value
+        return this.serial.value ?? this.defaultValue
     }
 
     set value(next: Field_custom_value<T>) {

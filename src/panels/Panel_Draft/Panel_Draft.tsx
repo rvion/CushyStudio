@@ -130,7 +130,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
-                <FormUI tw='pb-10' key={draft.id} entity={draft.form} />
+                <FormUI tw='pb-10' key={draft.id} field={draft.form} />
                 <RevealUI
                     content={() => (
                         <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>

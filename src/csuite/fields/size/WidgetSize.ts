@@ -45,7 +45,7 @@ export type Field_size_types = {
 
 // STATE
 export class Field_size extends Field<Field_size_types> {
-    readonly serial: Field_size_serial
+    static readonly type: 'size' = 'size'
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
     get baseErrors(): Problem_Ext {

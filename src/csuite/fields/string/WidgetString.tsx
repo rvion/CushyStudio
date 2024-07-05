@@ -107,8 +107,7 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_string_serial>) {
-        if (serial == null) return void delete this.serial.val
-        if (serial.val != null) this.serial.val = serial.val
+        this.serial.val = serial?.val ?? this.defaultValue
     }
 
     reset(): void {

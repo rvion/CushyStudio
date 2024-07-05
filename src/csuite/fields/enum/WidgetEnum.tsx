@@ -27,7 +27,7 @@ export type Field_enum_config<O> = FieldConfig<
 // SERIAL
 export type Field_enum_serial<O> = FieldSerial<{
     type: 'enum'
-    val: O
+    val?: O
 }>
 
 // VALUE
@@ -73,17 +73,20 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         serial?: Field_enum_serial<O>,
     ) {
         super(repo, root, parent, schema)
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'enum',
-            id: this.id,
-            val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
-        }
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
+
+    protected setOwnSerial(serial: Maybe<Field_enum_serial<O>>): void {
+        this.serial.val =
+            serial?.val ?? //
+            _extractDefaultValue(this.config) ??
+            (this.possibleValues[0] as any)
+    }
+
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }

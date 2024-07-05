@@ -1,3 +1,5 @@
+import type { Field } from '../../model/Field'
+
 export type BoardSize = {
     width: number
     height: number

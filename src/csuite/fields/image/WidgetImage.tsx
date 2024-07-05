@@ -80,17 +80,26 @@ export class Field_image extends Field<Field_image_types> {
         serial?: Field_image_serial,
     ) {
         super(repo, root, parent, schema)
-        this.serial = serial ?? {
-            type: 'image',
-            id: this.id,
-            imageID: this.config.default?.id ?? cushy.defaultImage.id,
-            size: 128,
-        }
+        this.initSerial(serial)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
+
+    private _defaultImageID(): MediaImageID {
+        return this.config.default?.id ?? cushy.defaultImage.id
+    }
+
+    private _defaultPreviewSize(): number {
+        return 128
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_image_serial>) {
+        this.serial.size = serial?.size ?? this._defaultPreviewSize()
+        this.serial.imageID = serial?.imageID ?? this._defaultImageID()
+    }
+
     get animateResize() {
         return false
     }
@@ -111,6 +120,7 @@ export class Field_image extends Field<Field_image_types> {
         this.serial.size = val
         this.applySerialUpdateEffects()
     }
+
     get size() {
         return this.serial.size
     }

@@ -42,52 +42,27 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
 
-    reset(): void {
-        // active by default
-        if (this.config.startActive) {
-            if (!this.serial.active) this.setActive(true)
-            if (this.child.hasChanges) this.child.reset()
-            return
-        }
-        // unactive by default
-        else {
-            if (this.serial.active) this.setActive(false)
-            return
-        }
-    }
-    get hasChanges(): boolean {
-        // active by default
-        if (this.config.startActive) {
-            if (!this.serial.active) return true
-            return this.child.hasChanges
-        }
-        // unactive by default
-        else {
-            if (!this.serial.active) return false
-            return true
-        }
+    constructor(
+        //
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: ISchema<Field_optional<T>>,
+        serial?: Field_optional_serial<T>,
+    ) {
+        super(repo, root, parent, schema)
+        this.initSerial(serial)
+        this.init({
+            serial: observable,
+            value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
 
-    static readonly type: 'optional' = 'optional'
-
-    get baseErrors(): Problem_Ext {
-        return null
-    }
-    child!: T['$Field']
-
-    get childOrThrow(): T['$Field'] {
-        if (this.child == null) throw new Error('❌ optional active but child is null')
-        return this.child
-    }
-
-    setActive = (value: boolean) => {
-        if (this.serial.active === value) return
-        this.serial.active = value
-        this.applyValueUpdateEffects()
-
-        // update child collapsed state if need be
-        if (value) this.child.setCollapsed(false)
-        else this.child.setCollapsed(true)
+    protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>) {
+        this.serial.active = serial?.active ?? this.config.startActive ?? false
+        this._ensureChildIsHydrated()
     }
 
     /**
@@ -106,43 +81,63 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
             const schema = this.config.schema
             const prevSerial = childSerial
             if (prevSerial && schema.type === prevSerial.type) {
-                this.child = schema.instanciate(this.root, this, prevSerial)
+                this.child = schema.instanciate(this.repo, this.root, this, prevSerial)
             } else {
-                this.child = schema.instanciate(this.root, this, null)
+                this.child = schema.instanciate(this.repo, this.root, this, null)
                 this.serial.child = this.child.serial
             }
         }
     }
 
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: ISchema<Field_optional<T>>,
-        serial?: Field_optional_serial<T>,
-    ) {
-        super(repo, root, parent, schema)
-        const config = schema.config
-        const defaultActive = config.startActive
-        this.serial = serial ?? {
-            id: this.id,
-            type: 'optional',
-            active: defaultActive ?? false,
-            collapsed: config.startCollapsed,
+    setActive = (value: boolean) => {
+        if (this.serial.active === value) return
+        this.serial.active = value
+        this.applyValueUpdateEffects()
+
+        // update child collapsed state if need be
+        if (value) this.child.setCollapsed(false)
+        else this.child.setCollapsed(true)
+    }
+
+    reset(): void {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) this.setActive(true)
+            if (this.child.hasChanges) this.child.reset()
+            return
+        }
+        // unactive by default
+        else {
+            if (this.serial.active) this.setActive(false)
+            return
+        }
+    }
+
+    get hasChanges(): boolean {
+        // active by default
+        if (this.config.startActive) {
+            if (!this.serial.active) return true
+            return this.child.hasChanges
         }
 
-        // meh
-        const isActive = serial?.active ?? defaultActive
-        if (isActive) this.serial.active = true
+        // unactive by default
+        else {
+            if (!this.serial.active) return false
+            return true
+        }
+    }
 
-        this._ensureChildIsHydrated()
-        this.init({
-            serial: observable,
-            value: computed,
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
+    static readonly type: 'optional' = 'optional'
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
+    child!: T['$Field']
+
+    get childOrThrow(): T['$Field'] {
+        if (this.child == null) throw new Error('❌ optional active but child is null')
+        return this.child
     }
 
     /** hack so optional fields do not increase nesting twice */

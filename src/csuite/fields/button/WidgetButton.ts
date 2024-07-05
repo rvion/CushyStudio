@@ -78,23 +78,22 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
     }
 
     /** set the value to true */
-    setOn() {
+    setOn(): true {
         return (this.value = true)
     }
 
     /** set the value to false */
-    setOff() {
+    setOff(): false {
         return (this.value = false)
     }
 
     /** set value to true if false, and to false if true */
-    toggle() {
+    toggle(): boolean {
         return (this.value = !this.value)
     }
 
     protected setOwnSerial(serial: Maybe<Field_button_serial>): void {
-        if (serial == null) return void delete this.serial.val
-        if (serial.val != null) this.serial.val = serial.val
+        this.serial.val = serial?.val ?? this.defaultValue
     }
 
     get defaultValue(): boolean {
@@ -105,8 +104,8 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         return this.value !== this.defaultValue
     }
 
-    reset() {
-        return (this.value = this.defaultValue)
+    reset(): void {
+        return void (this.value = this.defaultValue)
     }
 
     get value(): Field_button_value {

@@ -76,7 +76,7 @@ declare global {
         type Custom<T> = Field_custom<T>
 
         // schema aliases
-        type XShared<T extends ISchema> = Schema<Field_shared<T['$Field']>>
+        type XShared<T extends Field> = Schema<Field_shared<T>>
         type XGroup<T extends SchemaDict> = Schema<Field_group<T>>
         type XEmpty = Schema<Field_group<NO_PROPS>>
         type XOptional<T extends ISchema> = Schema<Field_optional<T>>
@@ -380,21 +380,25 @@ export class Builder implements IBuilder {
         Object.defineProperty(this, 'auto', { value: _ })
         return _
     }
+
     get autoField(): AutoBuilder {
         const _ = mkFormAutoBuilder(this)
         Object.defineProperty(this, 'autoField', { value: _ })
         return _
     }
+
     get enum(): EnumBuilder {
         const _ = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enum', { value: _ })
         return _
     }
+
     get enums(): EnumListBuilder {
         const _ = new EnumListBuilder(this) /*<const T extends KnownEnumNames>*/
         Object.defineProperty(this, 'enums', { value: _ })
         return _
     }
+
     get enumOpt() {
         const _ = new EnumBuilderOpt(this)
         Object.defineProperty(this, 'enumOpt', { value: _ })

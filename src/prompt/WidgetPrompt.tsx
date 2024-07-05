@@ -1,7 +1,7 @@
-import type { Field } from '../csuite/model/Field'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
 import type { ISchema } from '../csuite/model/ISchema'
+import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 
@@ -89,17 +89,15 @@ export class Field_prompt extends Field<Field_prompt_types> {
         serial?: Field_prompt_serial,
     ) {
         super(repo, root, parent, schema)
-        const config = schema.config
-        this.serial = serial ?? {
-            type: 'prompt',
-            val: config.default,
-            collapsed: config.startCollapsed,
-            id: this.id,
-        }
+        this.initSerial(serial)
         this.init({
             DefaultBodyUI: false,
             DefaultHeaderUI: false,
         })
+    }
+
+    protected setOwnSerial(serial: Maybe<Field_prompt_serial>) {
+        this.serial.val = serial?.val ?? this.defaultValue
     }
 
     // sentinel value so we know when to trigger update effect in the UI to update
@@ -136,19 +134,26 @@ export class Field_prompt extends Field<Field_prompt_types> {
     get ast_generic(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
+
     setValue(val: Field_prompt_value) {
         this.value = val
     }
-    set value(next: Field_prompt_value) {
-        if (next !== this) throw new Error('not implemented')
-        // do nothing, value it the instance itself
+
+    get defaultValue(): string {
+        return this.config.default ?? ''
     }
+
     get value(): Field_prompt_value {
         return this
         // return {
         //     text: this.serial.val ?? this.config.default ?? '',
         //     tree: this.ast,
         // }
+    }
+
+    set value(next: Field_prompt_value) {
+        if (next !== this) throw new Error('not implemented')
+        // do nothing, value it the instance itself
     }
 
     get animateResize() {

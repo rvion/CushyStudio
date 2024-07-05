@@ -143,7 +143,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = schemaI0.instanciate(this.root, this, subSerial)
+            const subWidget = schemaI0.instanciate(this.repo, this.root, this, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
@@ -190,7 +190,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const schema = this.schemaAt(this.length)
-        const element = schema.instanciate(this.root, this, null)
+        const element = schema.instanciate(this.repo, this.root, this, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
         if (!p?.skipBump) this.applyValueUpdateEffects()

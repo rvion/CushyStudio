@@ -252,7 +252,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             if (field != null) {
                 field.updateSerial(serial?.values_?.[fName])
             } else {
-                field = fSchema.instanciate(this.root, this, serial?.values_?.[fName])
+                field = fSchema.instanciate(this.repo, this.root, this, serial?.values_?.[fName])
                 this.fields[fName] = field
                 this.serial.values_[fName] = field.serial
             }
@@ -304,11 +304,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = schema.instanciate(this.root, this, prevBranchSerial)
+            this.children[branch] = schema.instanciate(this.repo, this.root, this, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = schema.instanciate(this.root, this, null)
+            this.children[branch] = schema.instanciate(this.repo, this.root, this, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 
