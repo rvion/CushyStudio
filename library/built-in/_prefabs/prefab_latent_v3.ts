@@ -7,11 +7,11 @@ export type UI_LatentV3 = X.XLink<
     X.XNumber,
     X.XChoice<{
         emptyLatent: X.XGroup<{
-            batchSize: X.XShared<X.XNumber>
+            batchSize: X.XShared<X.Number>
             size: X.XSize
         }>
         image: X.XGroup<{
-            batchSize: X.XShared<X.XNumber>
+            batchSize: X.XShared<X.Number>
             image: X.XImage
             resize: X.XOptional<
                 X.XGroup<{
@@ -28,7 +28,7 @@ export type UI_LatentV3 = X.XLink<
     }>
 >
 
-export function ui_latent_v3() {
+export function ui_latent_v3(): UI_LatentV3 {
     const form: X.Builder = getCurrentForm()
     return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
         const batchSize = form.linked(batchSize_)

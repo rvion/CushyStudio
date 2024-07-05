@@ -1,5 +1,5 @@
 import type { Status } from '../back/Status'
-import type { EntitySerial } from '../csuite/model/EntitySerial'
+import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
 import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
@@ -37,7 +37,7 @@ export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), T
 export type Media3dScene_params = Record<string, any>
 export const Media3dScene_params_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Draft_formSerial = EntitySerial
+export type Draft_formSerial = AnyFieldSerial
 export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())
 
 export type CustomData_json = any

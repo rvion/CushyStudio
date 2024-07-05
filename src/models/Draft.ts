@@ -193,7 +193,7 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const widget = p.formValueOverride
+        const field = p.formValueOverride
             ? // case of sub-drafts created/started from within a draft
               ({
                   builder: { _cache: { count: 0 } },
@@ -202,7 +202,7 @@ export class DraftL {
               } as any as Field_group<any>)
             : this.form.root
 
-        if (widget == null) throw new Error('invalid req')
+        if (field == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
         const startGraph = this.st.project.rootGraph.item
@@ -222,7 +222,7 @@ export class DraftL {
             name: this.data.title,
             appID: this.data.appID,
             draftID: this.data.id,
-            formSerial: widget.serial,
+            formSerial: field.serial,
             outputGraphID: graph.id,
             isExpanded: SQLITE_true,
             status: Status.New,
@@ -231,7 +231,7 @@ export class DraftL {
 
         // start step without waiting
         void step.start({
-            formInstance: widget,
+            formInstance: field,
             context: p.context ?? {},
         })
         this.lastStarted = step
