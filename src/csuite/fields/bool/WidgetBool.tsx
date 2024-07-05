@@ -56,7 +56,7 @@ export type Field_bool_config = FieldConfig<
 // SERIAL
 export type Field_bool_serial = FieldSerial<{
     type: 'bool'
-    active?: boolean
+    value?: boolean
 }>
 
 // VALUE
@@ -117,7 +117,10 @@ export class Field_bool extends Field<Field_bool_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
-        this.serial.active = serial?.active ?? this.defaultValue
+        this.serial.value =
+            (serial as any)?.active ?? // ⏱️ backward compat
+            serial?.value ??
+            this.defaultValue
     }
 
     get defaultValue(): boolean {
@@ -129,13 +132,13 @@ export class Field_bool extends Field<Field_bool_types> {
     }
 
     get value(): Field_bool_value {
-        return this.serial.active ?? this.defaultValue
+        return this.serial.value ?? this.defaultValue
     }
 
     set value(next: Field_bool_value) {
-        if (this.serial.active === next) return
+        if (this.serial.value === next) return
         runInAction(() => {
-            this.serial.active = next
+            this.serial.value = next
             this.applyValueUpdateEffects()
         })
     }
