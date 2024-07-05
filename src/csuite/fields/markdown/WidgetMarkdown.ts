@@ -48,7 +48,7 @@ export class Field_markdown extends Field<Field_markdown_types> {
         serial?: Field_markdown_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init()
     }
 

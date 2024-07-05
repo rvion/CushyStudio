@@ -83,7 +83,7 @@ export class Field_number extends Field<Field_number_types> {
         serial?: Field_number_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             serial: observable,
             value: computed,

@@ -63,7 +63,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         super(repo, root, parent, schema)
         const config = schema.config
         if (config.text) config.label = config.label ?? ` `
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

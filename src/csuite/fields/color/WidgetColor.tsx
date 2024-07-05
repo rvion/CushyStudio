@@ -63,7 +63,7 @@ export class Field_color extends Field<Field_color_types> {
         serial?: Field_color_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
@@ -71,8 +71,7 @@ export class Field_color extends Field<Field_color_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_color_serial>) {
-        if (serial == null) return void delete this.serial.value
-        if (serial.value != null) this.serial.value = serial.value
+        this.serial.value = serial?.value ?? this.defaultValue
     }
 
     get value(): Field_color_value {

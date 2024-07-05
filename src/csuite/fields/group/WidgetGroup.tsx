@@ -99,7 +99,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         serial?: Field_group_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             value: false,
             __value: false,
@@ -114,21 +114,23 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return Object.entries(fieldSchemas) as [keyof T, ISchema<any>][]
     }
 
-    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>, applyEffects: boolean) {
         if (this.serial.values_ == null) this.serial.values_ = {}
 
         // we only iterate on the new values => we DON'T WANT to remove the old ones.
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
         for (const [fName, fSchema] of this._fieldSchemas) {
-            let field = this.fields[fName]
-            if (field != null) {
-                field.updateSerial(serial?.values_?.[fName])
-            } else {
-                field = fSchema.instanciate(this.repo, this.root, this, serial?.values_?.[fName])
-                this.fields[fName] = field
-                this.serial.values_[fName] = field.serial
-            }
+            this.RECONCILE({
+                existingChild: this.fields[fName],
+                correctChildSchema: fSchema,
+                applyEffects: applyEffects,
+                targetChildSerial: serial?.values_?.[fName],
+                attach: (child) => {
+                    this.fields[fName] = child
+                    this.serial.values_[fName] = child.serial
+                },
+            })
         }
     }
 

@@ -97,7 +97,7 @@ export class Field_string extends Field<Field_string_types> {
         serial?: Field_string_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init()
     }
 

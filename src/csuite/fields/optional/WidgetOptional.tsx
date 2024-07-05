@@ -12,7 +12,9 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 // CONFIG
 export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
     {
+        /** if true, child field will be instanciated by default */
         startActive?: boolean
+        /** child schema; schema you want  to make optional */
         schema: T
     },
     Field_optional_types<T>
@@ -51,7 +53,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         serial?: Field_optional_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             serial: observable,
             value: computed,
@@ -60,33 +62,22 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>) {
+    protected setOwnSerial(
+        //
+        serial: Maybe<Field_optional_serial<T>>,
+        applyEffects: boolean,
+    ) {
         this.serial.active = serial?.active ?? this.config.startActive ?? false
-        this._ensureChildIsHydrated()
-    }
-
-    /**
-     * as of 2024-03-14, this is only called in the constructor
-     * TODO: inline ?
-     */
-    private _ensureChildIsHydrated() {
-        const childSerial = this.serial.child
-        if (this.child) {
-            if (childSerial) {
-                this.child.setSerial(childSerial)
-                return
-            }
-            // else this.child.reset()
-        } else {
-            const schema = this.config.schema
-            const prevSerial = childSerial
-            if (prevSerial && schema.type === prevSerial.type) {
-                this.child = schema.instanciate(this.repo, this.root, this, prevSerial)
-            } else {
-                this.child = schema.instanciate(this.repo, this.root, this, null)
-                this.serial.child = this.child.serial
-            }
-        }
+        this.RECONCILE({
+            existingChild: this.child,
+            correctChildSchema: this.config.schema,
+            applyEffects: applyEffects,
+            targetChildSerial: serial?.child,
+            attach: (child) => {
+                this.child = child
+                this.serial.child = child.serial
+            },
+        })
     }
 
     setActive = (value: boolean) => {

@@ -80,7 +80,7 @@ export class Field_image extends Field<Field_image_types> {
         serial?: Field_image_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

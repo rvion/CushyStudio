@@ -102,7 +102,7 @@ export class Field_seed extends Field<Field_seed_types> {
         serial?: Field_seed_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

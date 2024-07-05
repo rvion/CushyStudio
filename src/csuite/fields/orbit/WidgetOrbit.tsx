@@ -94,7 +94,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
         serial?: Field_orbit_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

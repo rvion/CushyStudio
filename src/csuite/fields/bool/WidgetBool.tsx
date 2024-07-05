@@ -83,7 +83,7 @@ export class Field_bool extends Field<Field_bool_types> {
         serial?: Field_bool_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             serial: observable,
             value: computed,

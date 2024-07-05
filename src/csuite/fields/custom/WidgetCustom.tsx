@@ -77,7 +77,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         serial?: Field_custom_serial<T>,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             Component: false,
             DefaultHeaderUI: false,

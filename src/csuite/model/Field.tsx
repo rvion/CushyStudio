@@ -157,20 +157,40 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *
      * if you override setSerial, make sure rules above are respected.
      * ideally, add checkmarks near
+     *
+     * 2024-07-05 precision to document:
+     *         | setOwnSerial is expected to somewhat call setSerial
+     *         | of every of it's children, and forward the applyEffects flag
+     *
      */
-    protected abstract setOwnSerial(serial: Maybe<K['$Serial']>): void
+    protected abstract setOwnSerial(
+        //
+        serial: Maybe<K['$Serial']>,
+        applyEffects: boolean,
+    ): void
 
-    /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-    initSerial(serial: Maybe<K['$Serial']>) {
-        this.setOwnSerial(serial)
-        this.copyCommonSerialFiels(serial)
+    /**
+     * lifecycle method, is called
+     * TODO: 🔴
+     * @since 2024-07-05
+     * @status NOT IMPLEMENTED
+     */
+    dispose() {
+        // TODO:
+        // disable all publish
+        // disable all reactions
+        // mark as DELETED;  => makes most function throw an error if used
+        for (const sub of this.subFields) {
+            sub.dispose()
+        }
+        this.parent = null
     }
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-    updateSerial(serial: Maybe<K['$Serial']>) {
-        this.setOwnSerial(serial)
+    setSerial(serial: Maybe<K['$Serial']>, applyEffects: boolean) {
+        this.setOwnSerial(serial, applyEffects)
         this.copyCommonSerialFiels(serial)
-        this.applySerialUpdateEffects()
+        if (applyEffects) this.applySerialUpdateEffects()
     }
 
     private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
@@ -183,6 +203,36 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** unified api to allow setting serial from value */
     setValue(val: K['$Value']) {
         this.value = val
+    }
+
+    // what if the bField yields a different schema (different type)
+    // we need to make sure the bField can properly be reused first
+    RECONCILE<SCHEMA extends ISchema>(p: {
+        existingChild: Maybe<Field>
+        correctChildSchema: SCHEMA
+        /** the target child to clone/apply into child */
+        targetChildSerial: Maybe<SCHEMA['$Serial']>
+        /** must attach/register both
+         *  - child into parent where it belongs
+         *  - child.serial into parent.serial where it belongs  */
+        attach(child: SCHEMA['$Field']): void
+        applyEffects: boolean
+    }) {
+        let child = p.existingChild
+        if (child != null && child.type === p.correctChildSchema.type) {
+            child.setSerial(p.targetChildSerial, p.applyEffects)
+        } else {
+            if (child) child.dispose()
+            child = p.correctChildSchema.instanciate(
+                //
+                this.repo,
+                this.root,
+                this,
+                p.targetChildSerial,
+            )
+            // attach child to current serial
+            p.attach(child)
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------
@@ -247,7 +297,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @deprecated
      * return a short summary of changes from last snapshot
      * */
-
     get diffSummaryFromSnapshot(): string {
         throw new Error('❌ not implemented')
     }
@@ -422,7 +471,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // BUMP ----------------------------------------------------
-    /** this function is called recursivelu upwards */
+    /**
+     * everytime a field serial is udpated, we should call this function.
+     * this function is called recursivelu upwards.
+     * persistance will usually be done at the root field reacting to this event.
+     */
     applySerialUpdateEffects(): void {
         this.config.onSerialChange?.(this.serial, this)
         this.parent?.applySerialUpdateEffects()
@@ -712,8 +765,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** rever to the last snapshot */
-    revertToSnapshot() {
+    revertToSnapshot(applyEffects: boolean) {
         if (this.serial.snapshot == null) return this.reset()
-        this.updateSerial(this.serial.snapshot)
+        this.setSerial(this.serial.snapshot, applyEffects)
     }
 }

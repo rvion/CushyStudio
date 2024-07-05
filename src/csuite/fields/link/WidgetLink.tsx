@@ -91,36 +91,37 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         serial?: Field_link_serial<A, B>,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({})
     }
 
-    protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>) {
+    protected setOwnSerial(
+        //
+        serial: Maybe<Field_link_serial<A, B>>,
+        applyEffects: boolean,
+    ) {
         let aField: A['$Field'] = this.aField
-        if (aField != null) {
-            aField.updateSerial(serial?.a)
-        } else {
-            const aSchema: A = this.config.share
-            aField = aSchema.instanciate(this.repo, this.root, this, this.serial.a)
-            this.aField = aField
-            this.serial.a = aField.serial
-        }
+        this.RECONCILE({
+            existingChild: this.aField,
+            applyEffects,
+            correctChildSchema: this.config.share,
+            targetChildSerial: serial?.a,
+            attach: (child) => {
+                this.aField = child
+                this.serial.a = child.serial
+            },
+        })
 
-        // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-        // 🔴 ARGH ARGH ARGH
-        // what if the bField yields a different schema (different type)
-        // we need to make sure the bField can properly be reused first
-        const bSchema: B = this.config.children(aField)
-
-        let bField: B['$Field'] = this.bField
-        if (bField != null && bField.type === bSchema.type) {
-            // 🔴 que se passe t'il si meme racine mais sous-champ différent
-            bField.updateSerial(serial?.a)
-        } else {
-            bField = bSchema.instanciate(this.repo, this.root, this, this.serial.a)
-            this.bField = bField
-            this.serial.a = bField.serial
-        }
+        this.RECONCILE({
+            existingChild: this.bField,
+            applyEffects,
+            correctChildSchema: this.config.children(aField),
+            targetChildSerial: serial?.b,
+            attach: (child) => {
+                this.bField = child
+                this.serial.b = child.serial
+            },
+        })
     }
 
     get subFields(): [A['$Field'], B['$Field']] {

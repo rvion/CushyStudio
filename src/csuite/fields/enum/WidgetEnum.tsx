@@ -73,7 +73,7 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
         serial?: Field_enum_serial<O>,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

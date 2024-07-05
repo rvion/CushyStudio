@@ -60,7 +60,7 @@ export class Field_spacer extends Field<Field_spacer_types> {
         serial?: Field_spacer_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             serial: observable,
             DefaultHeaderUI: false,

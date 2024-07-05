@@ -61,7 +61,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
         serial?: Field_matrix_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultHeaderUI: false,
             DefaultBodyUI: false,

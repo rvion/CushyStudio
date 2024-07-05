@@ -89,7 +89,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
         serial?: Field_prompt_serial,
     ) {
         super(repo, root, parent, schema)
-        this.initSerial(serial)
+        this.setSerial(serial, false)
         this.init({
             DefaultBodyUI: false,
             DefaultHeaderUI: false,
