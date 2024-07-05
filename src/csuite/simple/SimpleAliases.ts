@@ -1,7 +1,7 @@
 import type { Field_bool } from '../fields/bool/FieldBool'
-import type { Field_button } from '../fields/button/WidgetButton'
+import type { Field_button } from '../fields/button/FieldButton'
 import type { Field_choices } from '../fields/choices/WidgetChoices'
-import type { Field_color } from '../fields/color/WidgetColor'
+import type { Field_color } from '../fields/color/FieldColor'
 import type { Field_group } from '../fields/group/WidgetGroup'
 import type { Field_link } from '../fields/link/WidgetLink'
 import type { Field_list } from '../fields/list/WidgetList'
@@ -14,7 +14,6 @@ import type { Field_selectMany } from '../fields/selectMany/WidgetSelectMany'
 import type { BaseSelectEntry, Field_selectOne } from '../fields/selectOne/WidgetSelectOne'
 import type { Field_shared } from '../fields/shared/WidgetShared'
 import type { Field_size } from '../fields/size/WidgetSize'
-import type { Field_spacer } from '../fields/spacer/WidgetSpacer'
 import type { Field_string } from '../fields/string/WidgetString'
 import type { ISchema } from '../model/ISchema'
 import type { NO_PROPS } from '../types/NO_PROPS'
@@ -50,7 +49,6 @@ declare global {
         type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
         type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
         type SSize = SimpleSchema<Field_size>
-        type SSpacer = SimpleSchema<Field_spacer>
         type SMarkdown = SimpleSchema<Field_markdown>
     }
 }

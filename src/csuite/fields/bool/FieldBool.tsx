@@ -11,10 +11,7 @@ import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
-/**
- * Bool Config
- * @property {string} label2 - test
- */
+// CONFIG
 export type Field_bool_config = FieldConfig<
     {
         /**
@@ -99,21 +96,21 @@ export class Field_bool extends Field<Field_bool_types> {
     }
 
     /** set the value to true */
-    setOn(): true {
-        return (this.value = true)
+    setOn(): void {
+        this.value = true
     }
 
     /** set the value to false */
-    setOff(): false {
-        return (this.value = false)
+    setOff(): void {
+        this.value = false
     }
 
     /**
      * set value to true if false, and to false if true
      * return new value
      */
-    toggle(): boolean {
-        return (this.value = !this.value)
+    toggle(): void {
+        this.value = !this.value
     }
 
     protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
@@ -137,10 +134,7 @@ export class Field_bool extends Field<Field_bool_types> {
 
     set value(next: Field_bool_value) {
         if (this.serial.value === next) return
-        runInAction(() => {
-            this.serial.value = next
-            this.applyValueUpdateEffects()
-        })
+        this.VALMUT(() => (this.serial.value = next))
     }
 }
 

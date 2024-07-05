@@ -52,7 +52,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     body?: null | CovariantFC<{ field: T['$Field'] }>
 
     /** will be called when value changed */
-    onValueChange?: CovariantFn<[val: T['$Value'], self: T['$Field']], void>
+    onValueChange?: CovariantFn<[field: T['$Field']], void>
 
     /** will be called when serial changed */
     onSerialChange?: CovariantFn<[self: T['$Field']], void>

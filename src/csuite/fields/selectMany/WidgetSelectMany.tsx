@@ -170,14 +170,15 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     /** select item if item was not selected, un-select if item was selected */
     toggleItem(item: T): void {
-        const i = this.serial.values.findIndex((i) => i.id === item.id)
-        if (i < 0) {
-            this.serial.values.push(item)
-            this.applyValueUpdateEffects()
-        } else {
-            this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-            this.applyValueUpdateEffects()
-        }
+        this.VALMUT(() => {
+            const i = this.serial.values.findIndex((i) => i.id === item.id)
+            if (i < 0) {
+                this.serial.values.push(item)
+            } else {
+                this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+            }
+        })
+        this.applyValueUpdateEffects()
     }
 
     get value(): Field_selectMany_value<T> {

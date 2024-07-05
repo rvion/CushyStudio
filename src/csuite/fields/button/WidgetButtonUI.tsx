@@ -1,4 +1,4 @@
-import type { Field_button, Field_button_context } from './WidgetButton'
+import type { Field_button, Field_button_context } from './FieldButton'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'

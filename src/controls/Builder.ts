@@ -6,9 +6,9 @@ import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 import { makeAutoObservable } from 'mobx'
 
 import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/FieldBool'
-import { Field_button, type Field_button_config } from '../csuite/fields/button/WidgetButton'
+import { Field_button, type Field_button_config } from '../csuite/fields/button/FieldButton'
 import { Field_choices, type Field_choices_config } from '../csuite/fields/choices/WidgetChoices'
-import { Field_color, type Field_color_config } from '../csuite/fields/color/WidgetColor'
+import { Field_color, type Field_color_config } from '../csuite/fields/color/FieldColor'
 import { Field_custom, type Field_custom_config } from '../csuite/fields/custom/WidgetCustom'
 import { Field_enum } from '../csuite/fields/enum/WidgetEnum'
 import { Field_group, type Field_group_config } from '../csuite/fields/group/WidgetGroup'
@@ -26,7 +26,7 @@ import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields
 import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/WidgetSelectOne'
 import { Field_shared } from '../csuite/fields/shared/WidgetShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/WidgetSize'
-import { Field_spacer, type Field_spacer_config } from '../csuite/fields/spacer/WidgetSpacer'
+import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/WidgetString'
 import { Field } from '../csuite/model/Field'
 import { Repository } from '../csuite/model/Repository'
@@ -71,7 +71,6 @@ declare global {
         type SelectOne_<T extends string> = Field_selectOne<BaseSelectEntry<T>> // variant that may be shorter to read
         type SelectMany_<T extends string> = Field_selectMany<BaseSelectEntry<T>> // variant that may be shorter to read
         type Size = Field_size
-        type Spacer = Field_spacer
         type Markdown = Field_markdown
         type Custom<T> = Field_custom<T>
 
@@ -101,7 +100,6 @@ declare global {
         type XSelectOne_<T extends string> = Schema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
         type XSelectMany_<T extends string> = Schema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
         type XSize = Schema<Field_size>
-        type XSpacer = Schema<Field_spacer>
         type XMarkdown = Schema<Field_markdown>
         type XCustom<T> = Schema<Field_custom<T>>
     }
@@ -168,13 +166,8 @@ export class Builder implements IBuilder {
         return new Schema<Field_size>(Field_size, config)
     }
 
-    spacer(config: Field_spacer_config = {}): X.XSpacer {
-        return new Schema<Field_spacer>(Field_spacer, {
-            justifyLabel: false,
-            label: false,
-            collapsed: false,
-            border: false,
-        })
+    spacer(): X.XBool {
+        return this.bool({ header: SpacerUI, justifyLabel: false, label: false, collapsed: false, border: false })
     }
 
     orbit(config: Field_orbit_config = {}): X.XOrbit {

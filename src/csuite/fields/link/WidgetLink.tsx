@@ -53,35 +53,12 @@ export type Field_link_types<A extends ISchema, B extends ISchema> = {
 export class Field_link<A extends ISchema, B extends ISchema> //
     extends Field<Field_link_types<A, B>>
 {
-    DefaultHeaderUI = () => <>🟢</>
-    DefaultBodyUI = () => this.bField.renderWithLabel()
-
-    get baseErrors(): Problem_Ext { return this.bField.hasErrors } // prettier-ignore
-    get hasChanges(): boolean { return this.bField.hasChanges } // prettier-ignore
-
-    reset(): void {
-        this.bField.reset()
-    }
-
-    get indentChildren(): number {
-        return 0
-    }
-
-    get summary(): string {
-        return this.bField.summary
-    }
-
     static readonly type: 'link' = 'link'
 
     /** the dict of all child widgets */
     aField!: A['$Field']
     bField!: B['$Field']
 
-    private _defaultSerial = (): Field_link_serial<A, B> => {
-        return {
-            type: 'link',
-        }
-    }
     constructor(
         //
         repo: Repository,
@@ -124,6 +101,30 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         })
     }
 
+    DefaultHeaderUI = () => <>🟢</>
+
+    DefaultBodyUI = () => this.bField.renderWithLabel()
+
+    get baseErrors(): Problem_Ext {
+        return this.bField.hasErrors
+    }
+
+    get hasChanges(): boolean {
+        return this.bField.hasChanges
+    }
+
+    reset(): void {
+        this.bField.reset()
+    }
+
+    get indentChildren(): number {
+        return 0
+    }
+
+    get summary(): string {
+        return this.bField.summary
+    }
+
     get subFields(): [A['$Field'], B['$Field']] {
         return [this.aField, this.bField]
     }
@@ -135,15 +136,15 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         ]
     }
 
+    get value() {
+        return this.bField.value
+    }
+
     set value(val: Field_link_value<A, B>) {
         runInAction(() => {
             this.bField.value = val
             this.applyValueUpdateEffects()
         })
-    }
-
-    get value() {
-        return this.bField.value
     }
 }
 

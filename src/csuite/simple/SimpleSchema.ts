@@ -1,5 +1,4 @@
 import type { Channel, ChannelId, Producer } from '../model/Channel'
-import type { EntityConfig } from '../model/Entity'
 import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
 import type { ISchema } from '../model/ISchema'

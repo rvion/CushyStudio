@@ -315,23 +315,24 @@ export class Field_list<T extends ISchema> //
     }
 
     set value(val: Field_list_value<T>) {
-        for (let i = 0; i < val.length; i++) {
-            // 1. replace existing items
-            if (i < this.items.length) {
-                this.items[i]!.value = val[i]
+        this.VALMUT(() => {
+            for (let i = 0; i < val.length; i++) {
+                // 1. replace existing items
+                if (i < this.items.length) {
+                    this.items[i]!.value = val[i]
+                }
+                // 2. add missing items
+                else {
+                    this.addItem({ skipBump: true })
+                    this.items[i]!.value = val[i]
+                }
             }
-            // 2. add missing items
-            else {
-                this.addItem({ skipBump: true })
-                this.items[i]!.value = val[i]
-            }
-        }
-        // 3. remove extra items
-        this.serial.items_.splice(val.length)
-        this.items.splice(val.length)
-
-        // 4. apply update effects
-        this.applyValueUpdateEffects()
+            // 3. remove extra items
+            this.serial.items_.splice(val.length)
+            this.items.splice(val.length)
+        })
+        // // 4. apply update effects
+        // this.applyValueUpdateEffects()
     }
 
     // ERRORS --------------------------------------------------------
@@ -441,9 +442,11 @@ export class Field_list<T extends ISchema> //
         const minLen = this.config.min ?? 0
         if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
         // remove all items
-        this.serial.items_ = this.serial.items_.slice(0, minLen)
-        this.items = this.items.slice(0, minLen)
-        this.applyValueUpdateEffects()
+        this.VALMUT(() => {
+            this.serial.items_ = this.serial.items_.slice(0, minLen)
+            this.items = this.items.slice(0, minLen)
+            this.applyValueUpdateEffects()
+        })
     }
 
     removeItem(item: T['$Field']): void {
@@ -453,19 +456,19 @@ export class Field_list<T extends ISchema> //
         this.removeItemAt(i)
     }
 
-    removeItemAt(i: number): void {
-        // remove item
-        this.serial.items_.splice(i, 1)
-        this.items.splice(i, 1)
-        this.applyValueUpdateEffects()
-    }
-
     pop(): void {
         this.removeItemAt(this.items.length - 1)
     }
 
     shift(): void {
         this.removeItemAt(0)
+    }
+
+    removeItemAt(i: number): void {
+        this.VALMUT(() => {
+            this.serial.items_.splice(i, 1)
+            this.items.splice(i, 1)
+        })
     }
 }
 

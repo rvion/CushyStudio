@@ -4,9 +4,11 @@ import type { EntityId } from './EntityId'
 import type { IBuilder } from './IBuilder'
 import type { ISchema, SchemaDict } from './ISchema'
 
+import { action, makeObservable } from 'mobx'
 import { type DependencyList, useMemo } from 'react'
 
 import { Field } from './Field'
+import { Transaction } from './Transaction'
 
 /**
  * you need one, and only one (singleton) per project
@@ -45,13 +47,47 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
     constructor(domain: DOMAIN) {
         this.domain = domain
+        makeObservable(this, {
+            VALMUT: action,
+        })
+    }
+
+    private tct: Maybe<Transaction> = null
+    VALMUT(
+        /** mutation to run */
+        fn: (transaction: Transaction) => any,
+
+        /**
+         * field the mutation is scoped to
+         * it is expected the mutation will only touch this field and its children
+         * it can't touch anything upward in the tree
+         */
+        field: Field,
+
+        /** we maintain 3 representation: field/serial/value */
+        mode: 'value' | 'serial' | 'none',
+    ) {
+        // case 1. already in a transaction
+        if (this.tct) {
+            if (mode === 'value') this.tct.track(field, mode)
+            return void fn(this.tct)
+        }
+        // case 2. new transaction
+        else {
+            this.tct = new Transaction(this)
+            this.tct.track(field, mode)
+            fn(this.tct)
+            this.tct.commit() // <--- apply the callback once every update is done
+            this.tct = null
+            return
+        }
     }
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
-    fields = <FIELDS extends SchemaDict>(
+    fields<FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
         entityConfig: EntityConfig<ISchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
-    ): Field_group<FIELDS> => {
+    ): Field_group<FIELDS> {
         const schema = this.domain.group({
             label: false,
             items: schemaExt(this.domain),
@@ -86,10 +122,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     /** eval schema if it's a function */
-    private evalSchema = <SCHEMA extends ISchema>(
-        //
-        buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA),
-    ): SCHEMA => {
+    private evalSchema<SCHEMA extends ISchema>(buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA)): SCHEMA {
         if (typeof buildFn === 'function') return buildFn(this.domain as DOMAIN)
         return buildFn
     }

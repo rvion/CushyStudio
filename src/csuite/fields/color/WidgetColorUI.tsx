@@ -1,4 +1,4 @@
-import type { Field_color } from './WidgetColor'
+import type { Field_color } from './FieldColor'
 
 import { observer } from 'mobx-react-lite'
 

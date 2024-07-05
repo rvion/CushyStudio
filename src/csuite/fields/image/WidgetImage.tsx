@@ -53,23 +53,6 @@ export type Field_image_types = {
 // STATE
 export class Field_image extends Field<Field_image_types> {
     static readonly type: 'image' = 'image'
-    DefaultHeaderUI = WidgetSelectImageUI
-    DefaultBodyUI = undefined
-
-    // size: number = 192
-    get baseErrors(): Problem_Ext {
-        return null
-    }
-
-    get defaultValue(): MediaImageL {
-        return this.config.default ?? cushy.defaultImage
-    }
-    get hasChanges(): boolean {
-        return this.value !== this.defaultValue
-    }
-    reset(): void {
-        this.value = this.defaultValue
-    }
 
     constructor(
         //
@@ -87,17 +70,33 @@ export class Field_image extends Field<Field_image_types> {
         })
     }
 
+    protected setOwnSerial(serial: Maybe<Field_image_serial>) {
+        this.serial.size = serial?.size ?? this._defaultPreviewSize()
+        this.serial.imageID = serial?.imageID ?? this._defaultImageID()
+    }
+
+    DefaultHeaderUI = WidgetSelectImageUI
+
+    DefaultBodyUI = undefined
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
+    get defaultValue(): MediaImageL {
+        return this.config.default ?? cushy.defaultImage
+    }
+
+    get hasChanges(): boolean {
+        return this.value !== this.defaultValue
+    }
+
     private _defaultImageID(): MediaImageID {
         return this.config.default?.id ?? cushy.defaultImage.id
     }
 
     private _defaultPreviewSize(): number {
         return 128
-    }
-
-    protected setOwnSerial(serial: Maybe<Field_image_serial>) {
-        this.serial.size = serial?.size ?? this._defaultPreviewSize()
-        this.serial.imageID = serial?.imageID ?? this._defaultImageID()
     }
 
     get animateResize() {

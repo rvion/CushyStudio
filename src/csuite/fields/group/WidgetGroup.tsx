@@ -60,9 +60,6 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     get hasChanges(): boolean {
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
-    reset(): void {
-        for (const sub of this.subFields) sub.reset()
-    }
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''
@@ -157,11 +154,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     set value(val: Field_group_value<T>) {
-        runInAction(() => {
+        this.VALMUT(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }
-            this.applyValueUpdateEffects()
         })
     }
 

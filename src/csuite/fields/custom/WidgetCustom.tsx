@@ -85,7 +85,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
         })
     }
 
-    setOwnSerial(serial: Maybe<Field_custom_serial<T>>): void {
+    protected setOwnSerial(serial: Maybe<Field_custom_serial<T>>): void {
         this.serial.value = serial?.value ?? this.defaultValue
     }
 

@@ -158,7 +158,6 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         if (this.serial.val === next) return
         const nextHasSameID = this.value.id === next.id
 
-        // 🔴 REVIEW THIS
         runInAction(() => {
             this.serial.val = next
             if (!nextHasSameID) this.applyValueUpdateEffects()

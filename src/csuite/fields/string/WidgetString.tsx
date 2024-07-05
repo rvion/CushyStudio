@@ -5,8 +5,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
@@ -127,14 +125,9 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     set value(next: Field_string_value) {
-        if (this.serial.val === next) return
-        runInAction(() => {
-            this.serial.val =
-                typeof next === 'string' //
-                    ? next
-                    : convertToString(next)
-            this.applyValueUpdateEffects()
-        })
+        const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
+        if (this.serial.val === nextStrVal) return
+        this.VALMUT(() => (this.serial.val = nextStrVal))
     }
 }
 

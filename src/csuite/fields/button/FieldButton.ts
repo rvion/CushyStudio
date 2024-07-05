@@ -104,20 +104,13 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         return this.value !== this.defaultValue
     }
 
-    reset(): void {
-        return void (this.value = this.defaultValue)
-    }
-
     get value(): Field_button_value {
         return this.serial.val ?? this.defaultValue
     }
 
     set value(next: boolean) {
         if (this.serial.val === next) return
-        runInAction(() => {
-            this.serial.val = next
-            this.applyValueUpdateEffects()
-        })
+        this.VALMUT(() => (this.serial.val = next))
     }
 }
 

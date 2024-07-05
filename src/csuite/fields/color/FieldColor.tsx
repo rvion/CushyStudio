@@ -4,8 +4,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
@@ -50,10 +48,6 @@ export class Field_color extends Field<Field_color_types> {
         return this.value !== this.defaultValue
     }
 
-    reset(): void {
-        this.value = this.defaultValue
-    }
-
     constructor(
         //
         repo: Repository,
@@ -80,10 +74,7 @@ export class Field_color extends Field<Field_color_types> {
 
     set value(next: Field_color_value) {
         if (this.serial.value === next) return
-        runInAction(() => {
-            this.serial.value = next
-            this.applyValueUpdateEffects()
-        })
+        this.VALMUT(() => (this.serial.value = next))
     }
 }
 

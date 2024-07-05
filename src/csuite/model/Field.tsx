@@ -1,3 +1,47 @@
+/**
+ * RULES:
+ *
+ * any serial modification function must go through
+ *  - this.SERMUT(() => { ... }) if not modifying the value
+ *  - this.VALMUT(() => { ... }) if modifying the value
+ *
+ * setOwnSerial:
+ *       A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
+ *
+ *       B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
+ *
+ *       0. MUST NEVER USE THE serial object provided by default
+ *            FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
+ *            | always create a new 0
+ *
+ *       1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
+ *            | goal: make sure we never have stale references
+ *            | => allow to abort early if same ref equality check successfull
+ *            | => do not replace your serial object, only assign to it
+ *            | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
+ *            | object
+ *
+ *       ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
+ *       ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
+ *       ❌      | => please. be kind. don't
+ *
+ *       3. MUST ONLY CHANGE own-data, not data belonging to child
+ *            | => setSerial should call setSerial on already instanciated children
+ *
+ *       ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
+ *       ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
+ *
+ *       5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
+ *
+ *       if you override setSerial, make sure rules above are respected.
+ *       ideally, add checkmarks near
+ *
+ *       2024-07-05 precision to document:
+ *               | setOwnSerial is expected to somewhat call setSerial
+ *               | of every of it's children, and forward the applyEffects flag
+ *
+ */
+
 import type { Field_shared } from '../fields/shared/WidgetShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
@@ -132,44 +176,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      */
     randomize(): void {}
 
-    /**
-     * RULES:
-     *
-     * A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
-     *
-     * B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
-     *
-     * 0. MUST NEVER USE THE serial object provided by default
-     *      FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
-     *      | always create a new 0
-     *
-     * 1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
-     *      | goal: make sure we never have stale references
-     *      | => allow to abort early if same ref equality check successfull
-     *      | => do not replace your serial object, only assign to it
-     *      | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
-     *      | object
-     *
-     * ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
-     * ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
-     * ❌      | => please. be kind. don't
-     *
-     * 3. MUST ONLY CHANGE own-data, not data belonging to child
-     *      | => setSerial should call setSerial on already instanciated children
-     *
-     * ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
-     * ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
-     *
-     * 5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
-     *
-     * if you override setSerial, make sure rules above are respected.
-     * ideally, add checkmarks near
-     *
-     * 2024-07-05 precision to document:
-     *         | setOwnSerial is expected to somewhat call setSerial
-     *         | of every of it's children, and forward the applyEffects flag
-     *
-     */
     protected abstract setOwnSerial(
         serial: Maybe<K['$Serial']>,
         /**
@@ -521,7 +527,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.parent?.applyValueUpdateEffects_OF_CHILD(this)
         /** in case the widget config contains a custom callback, call this one too */
-        this.config.onValueChange?.(this.value, this)
+        this.config.onValueChange?.(this)
         this.publishValue() // 🔴  should probably be a reaction rather than this
         // TODO: -----------------------------------------------
         this.applySerialUpdateEffects()
@@ -531,7 +537,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     private applyValueUpdateEffects_OF_CHILD(child: Field): void {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.parent?.applyValueUpdateEffects_OF_CHILD(child)
-        this.config.onValueChange?.(this.value, this /* TODO: add extra param here:, child  */)
+        this.config.onValueChange?.(this /* TODO: add extra param here:, child  */)
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
@@ -723,6 +729,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** list of all subwidgets, without named keys */
     get subFieldsWithKeys(): KeyedField[] {
         return []
+    }
+
+    /**
+     * proxy this.repo.action
+     * defined to shorted call and allow per-field override
+     */
+    VALMUT(fn: () => any, mode: 'value' | 'serial' = 'value') {
+        return this.repo.VALMUT(fn, this, mode)
     }
 
     // --------------------------------------------------------------------------------

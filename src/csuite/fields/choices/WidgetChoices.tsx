@@ -159,19 +159,19 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return shouldBeActive
     }
 
-    reset(): void {
-        const def = this.config.default
-        for (const branchName of this.allPossibleChoices) {
-            const shouldBeActive = this.isBranchActiveByDefault(branchName)
-            const child = this.enabledBranches[branchName]
-            if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
-            if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
-            // re-check if child is now enabled
-            const childAfter = this.enabledBranches[branchName]
-            if (childAfter && childAfter.hasChanges) childAfter.reset()
-        }
-        this.applyValueUpdateEffects()
-    }
+    // ⏸️ reset(): void {
+    // ⏸️     const def = this.config.default
+    // ⏸️     for (const branchName of this.allPossibleChoices) {
+    // ⏸️         const shouldBeActive = this.isBranchActiveByDefault(branchName)
+    // ⏸️         const child = this.enabledBranches[branchName]
+    // ⏸️         if (child && !shouldBeActive) this.disableBranch(branchName, { skipBump: true })
+    // ⏸️         if (!child && shouldBeActive) this.enableBranch(branchName, { skipBump: true })
+    // ⏸️         // re-check if child is now enabled
+    // ⏸️         const childAfter = this.enabledBranches[branchName]
+    // ⏸️         if (childAfter && childAfter.hasChanges) childAfter.reset()
+    // ⏸️     }
+    // ⏸️     this.applyValueUpdateEffects()
+    // ⏸️ }
 
     constructor(
         //
