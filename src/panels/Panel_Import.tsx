@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../csuite/components/SpacerUI'
 import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
 import { TargetBox } from '../importers/TargetBox'

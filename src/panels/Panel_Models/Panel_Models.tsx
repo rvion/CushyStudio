@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { FormHelpTextUI } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'

@@ -76,6 +76,7 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
+import { type FieldId, mkNewFieldId } from './FieldId'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 
@@ -105,7 +106,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * NOT persisted in serial.
      * change every time the field is instanciated
      */
-    readonly id: string
+    readonly id: FieldId
 
     /** wiget serial is the full serialized representation of that widget  */
     readonly serial: K['$Serial']
@@ -141,7 +142,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         schema: ISchema<K['$Field']>,
         // serial?: K['$Serial'],
     ) {
-        this.id = nanoid(8)
+        this.id = mkNewFieldId()
         this.repo = repo
         this.root = root ?? this
         this.parent = parent
@@ -411,6 +412,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * */
     reset(): void {
         this.setSerial(null)
+    }
+
+    /** get a detached non-observable JSON object of the value  */
+    toValueJSON() {
+        return JSON.parse(JSON.stringify(this.value))
     }
 
     /**  */
@@ -763,18 +769,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     get producers() {
         return this.schema.producers
     }
+
     /** getter that resolve to `this.schema.publish` */
     get publish() {
         return this.schema.publish
     }
+
     /** getter that resolve to `this.schema.subscribe` */
     get subscribe() {
         return this.schema.subscribe
     }
+
     /** getter that resolve to `this.schema.reactions` */
     get reactions() {
         return this.schema.reactions
     }
+
     /** getter that resolve to `this.schema.addReaction` */
     get addReaction() {
         return this.schema.addReaction

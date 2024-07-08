@@ -1,6 +1,6 @@
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 
-import { EntityId } from './EntityId'
+import { FieldId } from './FieldId'
 
 /** quick type alias used for unknown serial; for now, default to shared fields */
 export type AnyFieldSerial = FieldSerial_CommonProperties
@@ -14,7 +14,7 @@ export type EntitySerial = {
     type: 'FormSerial'
 
     /** unique entity serial */
-    uid: EntityId
+    uid: FieldId
 
     /** live value */
     root: AnyFieldSerial

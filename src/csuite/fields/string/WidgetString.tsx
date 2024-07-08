@@ -10,7 +10,20 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
+
 type CssProprtyResize = CssProprtyGlobals | 'block' | 'both' | 'horizontal' | 'inline' | 'none' | 'vertical'
+
+// prettier-ignore
+export type FieldStringInputType =
+    | 'text'
+    | 'password'
+    | 'email'
+    | 'tel'
+    | 'url'
+    | 'time'
+    | 'date'
+    | 'datetime-local'
+    | 'color'
 
 // CONFIG
 export type Field_string_config = FieldConfig<
@@ -19,7 +32,7 @@ export type Field_string_config = FieldConfig<
         textarea?: boolean
         placeHolder?: string
         pattern?: string
-        inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
+        inputType?: FieldStringInputType
         resize?: CssProprtyResize
         /**
          * if set to true, widget will commit values on enter; not before.
@@ -78,13 +91,11 @@ export class Field_string extends Field<Field_string_types> {
         return null
     }
 
-    // --------------
     temporaryValue: string | null = null
 
     setTemporaryValue = (next: string | null) => {
         this.temporaryValue = next
     }
-    // --------------
 
     constructor(
         //
@@ -124,10 +135,6 @@ export class Field_string extends Field<Field_string_types> {
         if (this.serial.val === nextStrVal) return
         this.MUTVALUE(() => (this.serial.val = nextStrVal))
     }
-}
-
-function convertToString(x: unknown) {
-    return JSON.stringify(x)
 }
 
 // DI

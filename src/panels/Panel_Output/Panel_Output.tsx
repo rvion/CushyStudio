@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Status } from '../../back/Status'
 import { Button } from '../../csuite/button/Button'
-import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { OutputUI } from '../../outputs/OutputUI'

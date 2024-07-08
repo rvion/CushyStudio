@@ -9,9 +9,9 @@ import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
+import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
-import { SpacerUI } from '../spacer/SpacerUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     //

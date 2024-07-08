@@ -1,8 +1,14 @@
+2024-07-08:
+    ☐ updateSnapshot only called once
+    ☐ choices widget
+    ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
+    ☐ valmut partout
+
 2024-07-01:
-    ☐ test about link auto-migration.
-    ☐ setSerial.
-    ☐ info mapping via custom schema mapping.
-    ☐ setting value on value by addming more proxies.
+    ✔ test about link auto-migration. @done(24-07-08 10:16)
+    ✔ setSerial. @done(24-07-08 10:16)
+    ✔ setting value on value by addming more proxies. @done(24-07-08 10:16)
+    ✘ info mapping via custom schema mapping. @cancelled(24-07-08 10:16)
 
 2024-06-29:
     ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)

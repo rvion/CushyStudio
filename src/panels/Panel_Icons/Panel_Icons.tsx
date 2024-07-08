@@ -7,7 +7,7 @@ import { FixedSizeGrid } from 'react-window'
 
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
-import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { getAllIcons } from '../../csuite/icons/getAllIcons'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'

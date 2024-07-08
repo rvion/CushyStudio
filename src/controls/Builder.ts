@@ -5,6 +5,7 @@ import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
 
+import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/FieldBool'
 import { Field_button, type Field_button_config } from '../csuite/fields/button/FieldButton'
 import { Field_choices, type Field_choices_config } from '../csuite/fields/choices/WidgetChoices'
@@ -26,7 +27,6 @@ import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields
 import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/WidgetSelectOne'
 import { Field_shared } from '../csuite/fields/shared/WidgetShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/WidgetSize'
-import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/WidgetString'
 import { Field } from '../csuite/model/Field'
 import { Repository } from '../csuite/model/Repository'

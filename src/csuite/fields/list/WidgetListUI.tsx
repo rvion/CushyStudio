@@ -6,12 +6,12 @@ import { observer } from 'mobx-react-lite'
 import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
+import { SpacerUI } from '../../components/SpacerUI'
 import { ErrorBoundaryUI } from '../../errors/ErrorBoundaryUI'
 import { menu_widgetActions } from '../../form/WidgetMenu'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { Frame } from '../../frame/Frame'
 import { RevealUI } from '../../reveal/RevealUI'
-import { SpacerUI } from '../spacer/SpacerUI'
 import { ListControlsUI } from './ListControlsUI'
 
 const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')

@@ -1,6 +1,6 @@
 import type { Field_group } from '../fields/group/WidgetGroup'
 import type { EntityConfig } from './Entity'
-import type { EntityId } from './EntityId'
+import type { FieldId } from './FieldId'
 import type { IBuilder } from './IBuilder'
 import type { ISchema, SchemaDict } from './ISchema'
 
@@ -17,21 +17,24 @@ import { Transaction } from './Transaction'
  */
 export class Repository<DOMAIN extends IBuilder = IBuilder> {
     /** only root fields */
-    _allEntities: Map<EntityId, Field> = new Map()
+    _allEntities: Map<FieldId, Field> = new Map()
 
     /** all fiels, root or not */
-    _allFields: Map<string, Field> = new Map()
+    _allFields: Map<FieldId, Field> = new Map()
 
     /** all fields by given type */
     _allFieldsByType: Map<string, Map<string, Field>> = new Map()
 
-    getEntityByID(entityId: EntityId): Maybe<Field> {
+    getEntityByID(entityId: FieldId): Maybe<Field> {
         return this._allEntities.get(entityId)
     }
 
-    getFieldByID(fieldId: string): Maybe<Field> {
+    getFieldByID(fieldId: FieldId): Maybe<Field> {
         return this._allFields.get(fieldId)
     }
+
+    /** how many transactions have been executed on that repo */
+    tctCount = 0
 
     /**
      * return all currently instanciated widgets
@@ -45,7 +48,10 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
     domain: DOMAIN
 
-    constructor(domain: DOMAIN) {
+    constructor(
+        // VVV 🔴 TODO: remove that
+        domain: DOMAIN,
+    ) {
         this.domain = domain
         makeObservable(this, {
             VALMUT: action,
@@ -59,6 +65,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     _unregisterField(field: Field) {
         // unregister field in `this._allWidgets`
         this._allFields.delete(field.id)
+        this._allEntities.delete(field.id)
 
         // unregister field in `this._allWidgetsByType(<type>)`
         const typeStore = this._allFieldsByType.get(field.type)
@@ -68,6 +75,10 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     _registerField(field: Field) {
         if (this._allFields.has(field.id)) {
             throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
+        }
+
+        if (field.root == null) {
+            this._allEntities.set(field.id, field)
         }
 
         // register field in `this._allWidgets

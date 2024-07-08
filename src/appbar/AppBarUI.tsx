@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
-import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'

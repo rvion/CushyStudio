@@ -5,7 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { BadgeListUI } from '../csuite/badge/BadgeListUI'
 import { Button } from '../csuite/button/Button'
-import { SpacerUI } from '../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
 import { InputStringUI } from '../csuite/input-string/InputStringUI'
