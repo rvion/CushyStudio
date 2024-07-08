@@ -16,32 +16,34 @@ import { Transaction } from './Transaction'
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
 export class Repository<DOMAIN extends IBuilder = IBuilder> {
-    /** only root fields */
-    _allEntities: Map<FieldId, Field> = new Map()
+    /** all root fields (previously called entities) */
+    allRoots: Map<FieldId, Field> = new Map()
 
     /** all fiels, root or not */
-    _allFields: Map<FieldId, Field> = new Map()
+    allFields: Map<FieldId, Field> = new Map()
 
     /** all fields by given type */
-    _allFieldsByType: Map<string, Map<string, Field>> = new Map()
+    allFieldsByType: Map<string, Map<string, Field>> = new Map()
 
     getEntityByID(entityId: FieldId): Maybe<Field> {
-        return this._allEntities.get(entityId)
+        return this.allRoots.get(entityId)
     }
 
     getFieldByID(fieldId: FieldId): Maybe<Field> {
-        return this._allFields.get(fieldId)
+        return this.allFields.get(fieldId)
     }
 
     /** how many transactions have been executed on that repo */
-    tctCount = 0
+    transactionCount = 0
+    valueTouched = 0
+    serialTouched = 0
 
     /**
      * return all currently instanciated widgets
      * field of a given input type
      */
     getWidgetsByType = <W extends Field = Field>(type: string): W[] => {
-        const typeStore = this._allFieldsByType.get(type)
+        const typeStore = this.allFieldsByType.get(type)
         if (!typeStore) return []
         return Array.from(typeStore.values()) as W[]
     }
@@ -64,30 +66,30 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
      */
     _unregisterField(field: Field) {
         // unregister field in `this._allWidgets`
-        this._allFields.delete(field.id)
-        this._allEntities.delete(field.id)
+        this.allFields.delete(field.id)
+        this.allRoots.delete(field.id)
 
         // unregister field in `this._allWidgetsByType(<type>)`
-        const typeStore = this._allFieldsByType.get(field.type)
+        const typeStore = this.allFieldsByType.get(field.type)
         if (typeStore) typeStore.delete(field.id)
     }
 
     _registerField(field: Field) {
-        if (this._allFields.has(field.id)) {
+        if (this.allFields.has(field.id)) {
             throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
         }
 
-        if (field.root == null) {
-            this._allEntities.set(field.id, field)
+        if (field.root == field) {
+            this.allRoots.set(field.id, field)
         }
 
         // register field in `this._allWidgets
-        this._allFields.set(field.id, field)
+        this.allFields.set(field.id, field)
 
         // register field in `this._allWidgetsByType(<type>)
-        const prev = this._allFieldsByType.get(field.type)
+        const prev = this.allFieldsByType.get(field.type)
         if (prev == null) {
-            this._allFieldsByType.set(field.type, new Map([[field.id, field]]))
+            this.allFieldsByType.set(field.type, new Map([[field.id, field]]))
         } else {
             prev.set(field.id, field)
         }

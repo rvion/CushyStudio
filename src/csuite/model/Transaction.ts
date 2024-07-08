@@ -17,7 +17,10 @@ export class Transaction {
     }
 
     commit() {
-        this.repo.tctCount++
+        this.repo.transactionCount++
+        this.repo.valueTouched += this.valueTouched.size
+        this.repo.serialTouched += this.serialTouched.size
+
         for (const field of this.valueTouched) {
             field.applyValueUpdateEffects()
         }

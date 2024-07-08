@@ -108,10 +108,7 @@ export class Field_number extends Field<Field_number_types> {
 
     set value(next: Field_number_value) {
         if (this.serial.val === next) return
-        runInAction(() => {
-            this.serial.val = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.val = next))
     }
 }
 
