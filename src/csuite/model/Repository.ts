@@ -16,6 +16,7 @@ import { type FieldTouchMode, Transaction, type TransactionMode } from './Transa
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
 export class Repository<DOMAIN extends IBuilder = IBuilder> {
+    /* STORE ------------------------------------------------------------ */
     /** all root fields (previously called entities) */
     allRoots: Map<FieldId, Field> = new Map()
     get allRootSize(): number {
@@ -39,26 +40,56 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         return this.allFields.get(fieldId)
     }
 
+    /* 🔴 FULL-CLEAR ---------------------------------------------------- */
+    /**
+     * fully clear the entity-map + reset stats
+     * @since 2024-07-08
+     * @stability unstable
+     */
+    reset(): void {
+        this.resetStats()
+        this.resetEntities()
+    }
+
+    resetEntities() {
+        for (const root of this.allRoots.values()) {
+            root.disposeTree()
+        }
+        if (this.allFields.size !== 0) throw new Error(`[🔴] INVARIANT VIOLATION: allFields should be empty`)
+        if (this.allRoots.size !== 0) throw new Error(`[🔴] INVARIANT VIOLATION: allRoots should be empty`)
+    }
+
+    /* 🔴 STATS --------------------------------------------------------- */
     /** how many transactions have been executed on that repo */
     transactionCount = 0
     totalValueTouched = 0
     totalSerialTouched = 0
     totalCreations = 0
+    resetStats() {
+        this.transactionCount = 0
+        this.totalValueTouched = 0
+        this.totalSerialTouched = 0
+        this.totalCreations = 0
+    }
 
-    /* 🔴 TEMP ------------------------------ */
+    /* 🔴 TEMP ---------------------------------------------------------- */
     private logs: string[] = []
-    debugStart(): void {
+    startRecording(): void {
         this.logs.splice(0, this.logs.length)
     }
     debugLog(msg: string): void {
         this.logs.push(msg)
     }
-    debugEnd(): string[] {
-        console.log(`[🤠] `, this.logs.join('\n'))
+    endRecording(): string[] {
+        // console.log(this.logs.join('\n'))
+        return this.logs.slice()
+    }
+    endRecordingAndLog(): string[] {
+        console.log(this.logs.join('\n'))
         return this.logs.slice()
     }
 
-    /* -------------------------------------- */
+    /* ------------------------------------------------------------------ */
     /**
      * return all currently instanciated widgets
      * field of a given input type
@@ -101,11 +132,9 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
             throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
         }
 
-        // creations
+        // 🔴 🔴 creations
         if (this.tct) {
             this.tct.track(field, 'create')
-        } else {
-            this.totalCreations++
         }
 
         if (field.root == field) {
@@ -141,47 +170,27 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         touchMode: FieldTouchMode,
         tctMode: TransactionMode,
     ) {
-        // case 1. already in a transaction
-        if (this.tct) {
-            // AAA ----------------------------------------------------------------------
-            if (touchMode === 'auto') {
-                const prevValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
-                const prevSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
-                void fn(this.tct)
-                const nextValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
-                const nextSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
-                if (prevValue !== nextValue) this.tct.track(field, 'value')
-                else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
-                else this.tct.track(field, 'none')
-            } else {
-                void fn(this.tct)
-                this.tct.track(field, touchMode)
-            }
-            // AAA ----------------------------------------------------------------------
+        let isRoot = this.tct == null
+        this.tct ??= new Transaction(this /* tctMode */)
+
+        if (touchMode === 'auto') {
+            const prevValue = this.tct.bump.create + this.tct.bump.value
+            const prevSerial = prevValue + this.tct.bump.serial
+            void fn(this.tct)
+            const nextValue = this.tct.bump.create + this.tct.bump.value
+            const nextSerial = nextValue + this.tct.bump.serial
+
+            if (prevValue !== nextValue) this.tct.track(field, 'value')
+            else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
+        } else {
+            void fn(this.tct)
+            this.tct.track(field, touchMode)
         }
-        // case 2. new transaction
-        else {
-            this.tct = new Transaction(this, tctMode)
 
-            // AAA ----------------------------------------------------------------------
-            if (touchMode === 'auto') {
-                const prevValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
-                const prevSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
-                void fn(this.tct)
-                const nextValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
-                const nextSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
-                if (prevValue !== nextValue) this.tct.track(field, 'value')
-                else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
-                else this.tct.track(field, 'none')
-            } else {
-                void fn(this.tct)
-                this.tct.track(field, touchMode)
-            }
-            // AAA ----------------------------------------------------------------------
-
+        // ONLY COMMIT THE ROOT TRANSACTION
+        if (isRoot) {
             this.tct.commit() // <--- apply the callback once every update is done
             this.tct = null
-            return
         }
     }
 

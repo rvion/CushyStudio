@@ -9,15 +9,15 @@ export type FieldSerial_CommonProperties = {
     /** if true, widget should be displayed folded when it make sense in given context */
     collapsed?: boolean
 
-    /** timestap this widget was last updated */
+    /** timestap this widget was last updated, is used */
     lastUpdatedAt?: number
 
     /**
      * DO NOT MANUALLY SET THIS VALUE;
      * this value will be set by the init() function (BaseWidget class)
-     * use to know if the onCreate function should be re-run or not
+     * use to know if the beforeInit function should be re-run or not
      * */
-    _creationKey?: string
+    _version?: string
 
     /** unused internally, here so you can add whatever you want inside */
     custom?: any

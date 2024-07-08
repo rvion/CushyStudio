@@ -208,7 +208,16 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * TODO: 🔴
      * @since 2024-07-05
      */
-    dispose() {
+    disposeTree() {
+        this.disposeSelf()
+
+        // dispose all children
+        for (const sub of this.subFields) {
+            sub.disposeTree()
+        }
+    }
+
+    private disposeSelf() {
         // TODO:
         // - disable all publish
         // - disable all reactions
@@ -220,11 +229,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // dispose all reactions/other long-running stuff
         for (const disposeFn of this.disposeFns) {
             disposeFn()
-        }
-
-        // dispose all children
-        for (const sub of this.subFields) {
-            sub.dispose()
         }
     }
 
@@ -244,7 +248,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
         if (s == null) return
-        if (s._creationKey) this.serial._creationKey = s._creationKey
+        if (s._version) this.serial._version = s._version
         if (s.collapsed) this.serial.collapsed = s.collapsed
         if (s.custom) this.serial.custom = s.custom
         if (s.lastUpdatedAt) this.serial.lastUpdatedAt = s.lastUpdatedAt
@@ -268,7 +272,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         if (child != null && child.type === p.correctChildSchema.type) {
             child.setSerial(p.targetChildSerial)
         } else {
-            if (child) child.dispose()
+            if (child) child.disposeTree()
             child = p.correctChildSchema.instanciate(
                 //
                 this.repo,
@@ -310,6 +314,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     get depth(): number {
         if (this.parent == null) return 0
         return this.parent.depth + this.parent.indentChildren
+    }
+
+    /** DO NOT OVERRIDE; used internally to properly schedule events */
+    get trueDepth(): number {
+        if (this.parent == null) return 0
+        return this.parent.trueDepth + 1
     }
 
     // abstract readonly id: string
@@ -414,7 +424,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.setSerial(null)
     }
 
-    /** get a detached non-observable JSON object of the value  */
     toValueJSON() {
         return JSON.parse(JSON.stringify(this.value))
     }
@@ -518,6 +527,35 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return [...baseErrors, ...this.customErrors]
     }
 
+    /**
+     * returns the list of all ancestors, NOT including self
+     * @since 2024-07-08
+     */
+    get ancestors(): Field[] {
+        let result: Field[] = []
+        let current: Maybe<Field> = this.parent
+        while (current) {
+            result.push(current)
+            current = current.parent
+        }
+        return result
+    }
+
+    /**
+     * returns the list of all ancestors, including self
+     * @since 2024-07-08
+     */
+    get ancestorsIncludingSelf(): Field[] {
+        let result: Field[] = []
+        // eslint-disable-next-line consistent-this
+        let current: Maybe<Field> = this
+        while (current) {
+            result.push(current)
+            current = current.parent
+        }
+        return result
+    }
+
     get customErrors(): Problem[] {
         if (this.config.check == null)
             return [
@@ -536,28 +574,23 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      */
     applySerialUpdateEffects(): void {
         this.config.onSerialChange?.(this)
-        this.parent?.applySerialUpdateEffects()
+        // this.parent?.applySerialUpdateEffects()
     }
 
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     applyValueUpdateEffects(): void {
-        this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.parent?.applyValueUpdateEffects_OF_CHILD(this)
-        /** in case the widget config contains a custom callback, call this one too */
+        // ⏸️ this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.config.onValueChange?.(this)
-        this.publishValue() // 🔴  should probably be a reaction rather than this
-        // TODO: -----------------------------------------------
-        this.applySerialUpdateEffects()
     }
 
     /** recursively walk upwards on any field change  */
-    private applyValueUpdateEffects_OF_CHILD(child: Field): void {
-        this.serial.lastUpdatedAt = Date.now() as Timestamp
-        this.parent?.applyValueUpdateEffects_OF_CHILD(child)
-        this.config.onValueChange?.(this /* TODO: add extra param here:, child  */)
-        this.publishValue() // 🔴  should probably be a reaction rather than this
-    }
+    // private applyValueUpdateEffects_OF_CHILD(child: Field): void {
+    //     this.serial.lastUpdatedAt = Date.now() as Timestamp
+    //     this.parent?.applyValueUpdateEffects_OF_CHILD(child)
+    //     this.config.onValueChange?.(this /* TODO: add extra param here:, child  */)
+    //     this.publishValue() // 🔴  should probably be a reaction rather than this
+    // }
 
     /**
      * this method can be heavilly optimized
@@ -766,7 +799,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     private MUTINIT(fn: () => any) {
-        return this.repo.TRANSACT(fn, this, 'none', 'NO_EFFECT')
+        return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
     }
 
     // --------------------------------------------------------------------------------
@@ -809,6 +842,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     init(serial_?: K['$Serial'], mobxOverrides?: any) {
         this.MUTINIT(() => {
             this.copyCommonSerialFiels(serial_)
+
+            //   VVVVVVVVVVVV this is where we hydrate children
             this.setOwnSerial(serial_)
 
             // make the object deeply observable including this base class
@@ -819,12 +854,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             const serial = this.serial
 
             // run the config.onCreation if needed
-            if (config.onCreate) {
-                const oldKey = serial._creationKey
-                const newKey = config.onCreateKey ?? 'default'
+            if (config.beforeInit) {
+                const oldKey = serial._version
+                const newKey = config.version ?? 'default'
                 if (oldKey !== newKey) {
-                    config.onCreate(this)
-                    serial._creationKey = newKey
+                    config.beforeInit(this)
+                    serial._version = newKey
                 }
             }
 

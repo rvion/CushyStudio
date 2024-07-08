@@ -29,14 +29,20 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     box?: Box
 
+    /** allow to specify custom headers */
+    header?: null | CovariantFC<{ field: T['$Field'] }>
+
+    /** allow to specify custom body */
+    body?: null | CovariantFC<{ field: T['$Field'] }>
+
     /**
      * @since 2024-05-14
      * @stability beta
-     * This function will be executed either on first creation, or when the
-     * evaluationKey changes. The evaluationKey is stored in the group serial.
+     * This function will be executed before every widget instanciation.
+     * if the beforeCreateKey is not the samed as store in the serial
      */
-    onCreate?: CovariantFn1<T['$Field'], void> // & { evaluationKey?: string }
-    onCreateKey?: string
+    beforeInit?: CovariantFn1<T['$Serial'], T['$Serial']>
+    version?: string
 
     /**
      * @since 2024-05-14
@@ -45,18 +51,14 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     onInit?: CovariantFn1<T['$Field'], void>
 
-    /** allow to specify custom headers */
-    header?: null | CovariantFC<{ field: T['$Field'] }>
-
-    /** allow to specify custom body */
-    body?: null | CovariantFC<{ field: T['$Field'] }>
-
     /** will be called when value changed */
     onValueChange?: CovariantFn<[field: T['$Field']], void>
 
     /** will be called when serial changed */
     onSerialChange?: CovariantFn<[self: T['$Field']], void>
-    // onSerialChange?: CovariantFn<[val: T['$Serial'], self: T['$Field']], void>
+
+    /** will be called before disposing the tree */
+    onDispose?: CovariantFn1<T['$Field'], void>
 
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]

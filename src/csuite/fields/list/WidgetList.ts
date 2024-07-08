@@ -221,7 +221,7 @@ export class Field_list<T extends ISchema> //
         if (this.serial.items_ == null) this.serial.items_ = []
 
         // pseudo-reset 🔴
-        if (this.items != null) for (const item of this.items) item.dispose()
+        if (this.items != null) for (const item of this.items) item.disposeTree()
         this.items = []
         this.serial.items_ = []
 

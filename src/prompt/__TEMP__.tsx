@@ -1,3 +1,4 @@
+import type { FieldId } from '../csuite/model/FieldId'
 import type { Prompt_Lora } from './grammar/grammar.practical'
 import type { Field_prompt } from './WidgetPrompt'
 
@@ -15,7 +16,7 @@ import { toastError } from '../csuite/utils/toasts'
 import { PromptLang } from './cm-lang/LANG'
 import { PromptAST } from './grammar/grammar.practical'
 
-type X = { id: string; label?: string }
+type X = { id: FieldId; label?: string }
 
 export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['id'] }) {
     // 1. retrieve the widget to get the inital value
