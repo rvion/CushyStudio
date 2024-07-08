@@ -31,16 +31,22 @@ describe('model links', () => {
         expect(e.repo).toBe(r)
         expect(e.repo.allRoots.size).toBe(1)
         expect(e.repo.allFields.size).toBe(8)
+
+        // RIEN NE CHANGE CAR JUST HYDRATATION
+        expect(r.transactionCount).toBe(0)
         expect(r.valueTouched).toBe(0)
         expect(r.serialTouched).toBe(0)
 
         // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-        expect(r.transactionCount).toBe(0) // ❓
 
         e.value.int = 5
         e.value.int = 6
 
         expect(r.transactionCount).toBe(2)
+        expect(r.valueTouched).toBe(2)
+        expect(r.serialTouched).toBe(0)
+
+        ////////////////
 
         e.MUTVALUE(() => {
             e.value.int = 5
@@ -48,7 +54,10 @@ describe('model links', () => {
         })
 
         expect(r.transactionCount).toBe(3)
+        expect(r.valueTouched).toBe(4)
+        expect(r.serialTouched).toBe(0)
 
+        r.debugStart()
         // same value
         e.value = {
             int: 6,
@@ -56,7 +65,10 @@ describe('model links', () => {
             bool: false,
             list: [0, 0, 0],
         }
+        r.debugEnd()
         expect(r.transactionCount).toBe(4)
+        expect(r.valueTouched).toBe(4)
+        expect(r.serialTouched).toBe(0)
 
         // different value
         e.value = {
@@ -67,6 +79,8 @@ describe('model links', () => {
         }
 
         expect(r.transactionCount).toBe(5)
+        expect(r.valueTouched).toBe(13)
+        expect(r.serialTouched).toBe(0)
 
         expect()
     })

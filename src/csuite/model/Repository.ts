@@ -38,6 +38,19 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     valueTouched = 0
     serialTouched = 0
 
+    /* 🔴 TEMP */
+    private logs: string[] = []
+    debugStart() {
+        this.logs.splice(0, this.logs.length)
+    }
+    debugLog(msg: string) {
+        this.logs.push(msg)
+    }
+    debugEnd(): string[] {
+        console.log(`[🤠] `, this.logs.join('\n'))
+        return this.logs.slice()
+    }
+
     /**
      * return all currently instanciated widgets
      * field of a given input type

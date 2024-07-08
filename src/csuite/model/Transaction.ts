@@ -22,6 +22,7 @@ export class Transaction {
         this.repo.serialTouched += this.serialTouched.size
 
         for (const field of this.valueTouched) {
+            this.repo.debugLog(`[🟢] ${field.path} touched`)
             field.applyValueUpdateEffects()
         }
         for (const field of this.serialTouched) {
