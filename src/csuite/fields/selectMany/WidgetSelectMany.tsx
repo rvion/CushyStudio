@@ -5,8 +5,6 @@ import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
@@ -151,10 +149,10 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         // ensure item was selected
         const indexOf = this.serial.values.findIndex((i) => i.id === item.id)
         if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
-
         // remove it
-        this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+        })
     }
 
     /** select given item */
@@ -162,10 +160,8 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         // ensure item is not selected yet
         const i = this.serial.values.indexOf(item)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
-
-        // insert & bump
-        this.serial.values.push(item)
-        this.applyValueUpdateEffects()
+        // insert it
+        this.MUTVALUE(() => this.serial.values.push(item))
     }
 
     /** select item if item was not selected, un-select if item was selected */
@@ -178,7 +174,6 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
                 this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
             }
         })
-        this.applyValueUpdateEffects()
     }
 
     get value(): Field_selectMany_value<T> {
@@ -187,10 +182,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     set value(next: Field_selectMany_value<T>) {
         if (this.serial.values === next) return
-        runInAction(() => {
-            this.serial.values = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.values = next))
     }
 }
 

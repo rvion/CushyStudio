@@ -161,34 +161,32 @@ export class Field_list<T extends ISchema> //
     private startAutoBehaviour(): void {
         const auto = this.config.auto
         if (auto == null) return
+
         const disposeFn = reaction(
             () => auto.keys(this),
             (keys: string[]) => {
-                let needBump = false
+                this.MUTAUTO(() => {
+                    // 1. Add missing entries
+                    const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
+                    const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
+                    for (const k of missingKeys) {
+                        this.addItem({
+                            value: auto.init(k),
+                        })
+                    }
 
-                // 1. Add missing entries
-                const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
-                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
-                for (const k of missingKeys) {
-                    this.addItem({
-                        value: auto.init(k),
-                        skipBump: true,
-                    })
-                    needBump = true
-                }
-
-                // 2. delete items that must be removed.
-                let ix = 0
-                for (const item of this.items.slice()) {
-                    const isExtra = !keys.includes(auto.getKey(item, ix++))
-                    if (!isExtra) continue
-                    this.removeItem(item)
-                    needBump = true
-                }
-                if (needBump) this.applyValueUpdateEffects()
+                    // 2. delete items that must be removed.
+                    let ix = 0
+                    for (const item of this.items.slice()) {
+                        const isExtra = !keys.includes(auto.getKey(item, ix++))
+                        if (!isExtra) continue
+                        this.removeItem(item)
+                    }
+                })
             },
             { fireImmediately: true },
         )
+
         this.disposeFns.push(disposeFn)
     }
 
@@ -230,7 +228,7 @@ export class Field_list<T extends ISchema> //
             if (!this.config.auto) {
                 const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
                 for (let i = this.items.length; i < defaultLength; i++) {
-                    this.addItem({ skipBump: true })
+                    this.addItem()
                 }
             }
             return
@@ -255,7 +253,7 @@ export class Field_list<T extends ISchema> //
         // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) {
-            this.addItem({ skipBump: true })
+            this.addItem()
         }
     }
 
@@ -316,7 +314,7 @@ export class Field_list<T extends ISchema> //
                 }
                 // 2. add missing items
                 else {
-                    this.addItem({ skipBump: true })
+                    this.addItem()
                     this.items[i]!.value = val[i]
                 }
             }
@@ -344,40 +342,35 @@ export class Field_list<T extends ISchema> //
         this.addItem({ at: ix, value: item.value })
     }
 
-    push(...value: T['$Value'][]): void {
-        if (value.length === 0) return
+    /**
+     * Appends new elements to the end of an array,
+     * and returns the new length of the array.
+     */
+    push(...values: T['$Value'][]): number {
+        if (values.length === 0) return this.length
         this.MUTVALUE(() => {
-            // we skip bump durin the for loop,
-            // to only call applyValueUpdateEffects at the end once
-            for (const v of value) {
-                this.addItem({
-                    value: v,
-                    skipBump: true,
-                })
+            for (const v of values) {
+                this.addItem({ value: v })
             }
         })
+        return this.length
     }
 
-    unshift(...value: T['$Value'][]): void {
-        // we skip bump durin the for loop,
-        // to only call applyValueUpdateEffects at the end once
-        for (const v of value) {
-            this.addItem({ value: v, skipBump: true, at: 0 })
-        }
-        // should be called once per mutable action
-        this.applyValueUpdateEffects()
+    /**
+     * Inserts new elements at the start of an array,
+     * and returns the new length of the array.
+     */
+    unshift(...values: T['$Value'][]): number {
+        if (values.length === 0) return this.length
+        this.MUTVALUE(() => {
+            for (const v of values) {
+                this.addItem({ value: v, at: 0 })
+            }
+        })
+        return this.length
     }
 
-    addItem(
-        p: {
-            skipBump?: true
-            at?: number
-            value?: T['$Value']
-        } = {} /*
-            2024-??-?? - rvion: 🔴 Annoying special case in the list's ctor
-            2024-07-02 - rvion: wtf did I just mean by that? 🤔
-         */,
-    ) {
+    addItem(p: { at?: number; value?: T['$Value'] } = {}) {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
@@ -386,24 +379,25 @@ export class Field_list<T extends ISchema> //
         if (p.at != null && p.at < 0) return console.log(`[🔶] list.addItem: at is negative`)
         if (p.at != null && p.at > this.items.length) return console.log(`[🔶] list.addItem: at is out of bounds`)
 
-        // create new item
-        const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = schema.instanciate(this.repo, this.root, this, null)
+        this.MUTVALUE(() => {
+            // create new item
+            const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
+            const element = schema.instanciate(this.repo, this.root, this, null)
 
-        // set initial value
-        if (p.value) {
-            element.value = p.value
-        }
+            // set initial value
+            if (p.value) {
+                element.value = p.value
+            }
 
-        // insert item
-        if (p.at == null) {
-            this.items.push(element)
-            this.serial.items_.push(element.serial)
-        } else {
-            this.items.splice(p.at, 0, element)
-            this.serial.items_.splice(p.at, 0, element.serial)
-        }
-        if (!p?.skipBump) this.applyValueUpdateEffects()
+            // insert item
+            if (p.at == null) {
+                this.items.push(element)
+                this.serial.items_.push(element.serial)
+            } else {
+                this.items.splice(p.at, 0, element)
+                this.serial.items_.splice(p.at, 0, element.serial)
+            }
+        })
     }
 
     // MOVING ITEMS ---------------------------------------------------
@@ -416,14 +410,15 @@ export class Field_list<T extends ISchema> //
         if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
         if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
 
-        // serials
-        const serials = this.serial.items_
-        serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
+        this.MUTVALUE(() => {
+            // serials
+            const serials = this.serial.items_
+            serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
 
-        // instances
-        const instances = this.items
-        instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
-        this.applyValueUpdateEffects()
+            // instances
+            const instances = this.items
+            instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
+        })
     }
 
     // REMOVING ITEMS ------------------------------------------------
@@ -437,7 +432,6 @@ export class Field_list<T extends ISchema> //
         this.MUTVALUE(() => {
             this.serial.items_ = this.serial.items_.slice(0, minLen)
             this.items = this.items.slice(0, minLen)
-            this.applyValueUpdateEffects()
         })
     }
 

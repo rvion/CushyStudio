@@ -149,7 +149,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     get value(): Field_selectOne_value<T> {
         // 🔴 si pas de serial.val "ma valeur par défaut" s'affiche dans l'UI
         // mais n'est pas saved dans le serial?
-        // (en fait non l'UI utilise serial.val, mais quand même, confusing que JSON(field.value) != JSON(field.serial)) non?
+        // (en fait non l'UI utilise serial.val, mais quand même, confusing que JSON(field.value) != JSON(field.serial).value) non?
         return this.serial.val ?? this.defaultValue
     }
 

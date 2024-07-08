@@ -143,9 +143,8 @@ export class Field_size extends Field<Field_size_types> {
         ) {
             return
         }
-        runInAction(() => {
+        this.MUTVALUE(() => {
             Object.assign(this.serial, val)
-            this.applyValueUpdateEffects()
         })
     }
 }

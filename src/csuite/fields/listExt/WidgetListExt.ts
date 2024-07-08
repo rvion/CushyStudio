@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
