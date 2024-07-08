@@ -155,12 +155,19 @@ export class Field_selectOne<T extends BaseSelectEntry> //
 
     set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
-        const nextHasSameID = this.value.id === next.id
 
-        runInAction(() => {
+        this.MUTVALUE(() => {
             this.serial.val = next
-            if (!nextHasSameID) this.applyValueUpdateEffects()
-            else this.applySerialUpdateEffects()
+
+            // 2024-07-08 rvion:
+            // | when setting a value with equal id, we may be actually changing the SelectEntry
+            // | (cached name could be different, etc.)
+            // | since it's a bit complicated, let's not care today. if this cause a bug, let's improve
+            // | that later
+
+            // ⏸️ const nextHasSameID = this.value.id === next.id
+            // ⏸️ if (!nextHasSameID) this.applyValueUpdateEffects()
+            // ⏸️ else this.applySerialUpdateEffects()
         })
     }
 }

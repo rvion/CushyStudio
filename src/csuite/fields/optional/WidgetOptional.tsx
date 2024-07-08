@@ -72,12 +72,13 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
 
     setActive(value: boolean) {
         if (this.serial.active === value) return
-        this.serial.active = value
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            this.serial.active = value
 
-        // update child collapsed state if need be
-        if (value) this.child.setCollapsed(false)
-        else this.child.setCollapsed(true)
+            // update child collapsed state if need be
+            if (value) this.child.setCollapsed(false)
+            else this.child.setCollapsed(true)
+        })
     }
 
     /**

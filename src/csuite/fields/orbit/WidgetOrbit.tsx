@@ -139,8 +139,9 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
     set azimuth(val: number) {
         if (this.azimuth === val) return
-        this.serial.azimuth = val
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            this.serial.azimuth = val
+        })
     }
 
     get defaultAzimuth(): number {
@@ -154,8 +155,9 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
     set elevation(val: number) {
         if (this.elevation === val) return
-        this.serial.elevation = val
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            this.serial.elevation = val
+        })
     }
 
     get defaultElevation(): number {

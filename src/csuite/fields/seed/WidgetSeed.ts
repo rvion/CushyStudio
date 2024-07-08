@@ -117,8 +117,11 @@ export class Field_seed extends Field<Field_seed_types> {
     }
 
     set value(val: number) {
-        this.serial.val = val
-        this.applyValueUpdateEffects()
+        if (this.serial.mode === 'fixed' && this.serial.val === val) return
+        // 🔴 a moitié faux
+        this.MUTVALUE(() => {
+            this.serial.val = val
+        })
     }
 }
 

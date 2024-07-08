@@ -134,9 +134,8 @@ export class Field_link<A extends ISchema, B extends ISchema> //
     }
 
     set value(val: Field_link_value<A, B>) {
-        runInAction(() => {
+        this.MUTAUTO(() => {
             this.bField.value = val
-            this.applyValueUpdateEffects()
         })
     }
 }
