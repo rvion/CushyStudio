@@ -21,9 +21,9 @@ describe('assign to value object', () => {
                 int3: { val: 3 },
                 strEmpty: { val: '' },
                 strCoucou: { val: 'coucou' },
-                bool: { active: false },
-                boolTrue: { active: true },
-                boolFalse: { active: false },
+                bool: { value: false },
+                boolTrue: { value: true },
+                boolFalse: { value: false },
             },
         })
     })

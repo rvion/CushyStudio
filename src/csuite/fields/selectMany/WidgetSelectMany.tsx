@@ -170,7 +170,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     /** select item if item was not selected, un-select if item was selected */
     toggleItem(item: T): void {
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             const i = this.serial.values.findIndex((i) => i.id === item.id)
             if (i < 0) {
                 this.serial.values.push(item)

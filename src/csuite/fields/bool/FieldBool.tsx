@@ -102,7 +102,7 @@ export class Field_bool extends Field<Field_bool_types> {
 
     set value(next: Field_bool_value) {
         if (this.serial.value === next) return
-        this.VALMUT(() => (this.serial.value = next))
+        this.MUTVALUE(() => (this.serial.value = next))
     }
 
     get ownProblems(): Problem_Ext {

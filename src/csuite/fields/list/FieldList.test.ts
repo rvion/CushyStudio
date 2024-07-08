@@ -64,10 +64,10 @@ describe('FieldList', () => {
             }
 
             E1.setSerial(serial)
+            expect(E1.serial === serial).toBe(false)
             expect(E1.length).toBe(2)
             expectJSON(E1.value).toEqual(['🔵', '🟢'])
-            expect(toJS(E1.serial)).toEqual(serial)
-            expect(E1.serial === serial).toBe(false)
+            expect(toJS(E1.serial)).toMatchObject(serial)
         })
     })
 

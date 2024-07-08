@@ -6,8 +6,6 @@ import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
@@ -96,10 +94,7 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
 
     set value(next: Field_enum_value<O>) {
         if (this.serial.val === next) return
-        runInAction(() => {
-            this.serial.val = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.val = next))
     }
 }
 

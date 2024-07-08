@@ -79,7 +79,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
     set value(next: boolean) {
         if (this.serial.val === next) return
-        this.VALMUT(() => (this.serial.val = next))
+        this.MUTVALUE(() => (this.serial.val = next))
     }
 
     get ownProblems(): Problem_Ext {

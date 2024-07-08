@@ -73,20 +73,19 @@ export class Field_seed extends Field<Field_seed_types> {
 
     setMode = (mode: SeedMode) => {
         if (this.serial.mode === mode) return
-        this.serial.mode = mode
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => (this.serial.mode = mode))
     }
 
     setToFixed = (val?: number) => {
-        this.serial.mode = 'fixed'
-        if (val) this.serial.val = val
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            this.serial.mode = 'fixed'
+            if (val) this.serial.val = val
+        })
     }
 
     setToRandomize = () => {
         if (this.serial.mode === 'randomize') return
-        this.serial.mode = 'randomize'
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => (this.serial.mode = 'randomize'))
     }
 
     constructor(

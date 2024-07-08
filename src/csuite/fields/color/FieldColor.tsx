@@ -61,7 +61,7 @@ export class Field_color extends Field<Field_color_types> {
 
     set value(next: Field_color_value) {
         if (this.serial.value === next) return
-        this.VALMUT(() => (this.serial.value = next))
+        this.MUTVALUE(() => (this.serial.value = next))
     }
 
     get ownProblems(): Problem_Ext {

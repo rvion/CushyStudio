@@ -200,7 +200,7 @@ export class DraftL {
                   result: p.formValueOverride,
                   serial: {},
               } as any as Field_group<any>)
-            : this.form.root
+            : this.form
 
         if (field == null) throw new Error('invalid req')
 
@@ -245,7 +245,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Field> = null
+    _form: Maybe<Field_group<any>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)

@@ -98,21 +98,22 @@ export class Field_prompt extends Field<Field_prompt_types> {
     // codemirror uncontrolled component
     _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
 
+    /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
     setText_INTERNAL = (next: string) => {
         if (this.serial.val === next) return
-        this.serial.val = next
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => (this.serial.val = next))
     }
 
     set text(next: string) {
         if (this.serial.val === next) return
-        // widget prompt uses codemirror, and codemirror manage its internal state itsef.
-        // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
-        // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
-        // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
-        this._valueUpdatedViaAPIAt = Date.now() as Timestamp
-        this.serial.val = next
-        this.applyValueUpdateEffects()
+        this.MUTSERIAL(() => {
+            // widget prompt uses codemirror, and codemirror manage its internal state itsef.
+            // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
+            // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
+            // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
+            this._valueUpdatedViaAPIAt = Date.now() as Timestamp
+            this.serial.val = next
+        })
     }
 
     // the raw unparsed text

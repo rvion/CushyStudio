@@ -229,7 +229,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
     setSerial(serial: Maybe<K['$Serial']>) {
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             this.copyCommonSerialFiels(serial)
             this.setOwnSerial(serial)
         })
@@ -741,8 +741,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * proxy this.repo.action
      * defined to shorted call and allow per-field override
      */
-    VALMUT(fn: () => any, mode: 'value' | 'serial' = 'value') {
-        return this.repo.VALMUT(fn, this, mode)
+    MUTVALUE(fn: () => any) {
+        return this.repo.VALMUT(fn, this, 'value')
+    }
+
+    MUTSERIAL(fn: () => any) {
+        return this.repo.VALMUT(fn, this, 'serial')
     }
 
     // --------------------------------------------------------------------------------

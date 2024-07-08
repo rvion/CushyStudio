@@ -122,7 +122,7 @@ export class Field_string extends Field<Field_string_types> {
     set value(next: Field_string_value) {
         const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
         if (this.serial.val === nextStrVal) return
-        this.VALMUT(() => (this.serial.val = nextStrVal))
+        this.MUTVALUE(() => (this.serial.val = nextStrVal))
     }
 }
 

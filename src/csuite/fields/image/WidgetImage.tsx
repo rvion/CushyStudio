@@ -108,15 +108,11 @@ export class Field_image extends Field<Field_image_types> {
 
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
-        runInAction(() => {
-            this.serial.imageID = next.id
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.imageID = next.id))
     }
 
     set size(val: number) {
-        this.serial.size = val
-        this.applySerialUpdateEffects()
+        this.MUTSERIAL(() => (this.serial.size = val))
     }
 
     get size() {

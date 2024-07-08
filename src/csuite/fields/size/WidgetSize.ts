@@ -115,18 +115,12 @@ export class Field_size extends Field<Field_size_types> {
 
     set width(next: number) {
         if (next === this.serial.width) return
-        runInAction(() => {
-            this.serial.width = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.width = next))
     }
 
     set height(next: number) {
         if (next === this.serial.height) return
-        runInAction(() => {
-            this.serial.height = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.height = next))
     }
 
     get sizeHelper(): ResolutionState {

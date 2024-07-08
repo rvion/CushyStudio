@@ -56,10 +56,10 @@ export type Field_listExt_types<T extends ISchema> = {
 
 // STATE
 export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<T>> {
+    static readonly type: 'listExt' = 'listExt'
+
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
-
-    static readonly type: 'listExt' = 'listExt'
 
     get ownProblems(): Problem_Ext {
         return null
@@ -71,28 +71,25 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         // check if any remaining item has changes
         return this.items.some((i) => i.hasChanges)
     }
-    reset(): void {
-        throw new Error('Method not implemented yet.')
+
+    get width(): number {
+        return this.serial.width ?? this.config.width ?? 100
     }
 
-    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
-    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
-    // get width() { return this.serial.width } // prettier-ignore
-    // get height() { return this.serial.height } // prettier-ignore
+    get height(): number {
+        return this.serial.height ?? this.config.height ?? 100
+    }
+
     set width(next: number) {
         if (next === this.serial.width) return
-        runInAction(() => {
-            this.serial.width = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.width = next))
     }
+
     set height(next: number) {
         if (next === this.serial.height) return
-        runInAction(() => {
-            this.serial.height = next
-            this.applyValueUpdateEffects()
-        })
+        this.MUTVALUE(() => (this.serial.height = next))
     }
+
     get sizeHelper(): ResolutionState {
         const state = new ResolutionState(this) // should only be executed once
         Object.defineProperty(this, 'sizeHelper', { value: state })

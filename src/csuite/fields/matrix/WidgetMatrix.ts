@@ -159,9 +159,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
      * every setter should update this
      */
     private UPDATE() {
-        this.serial.selected = this.activeCells
-        // only place to call bumpValue
-        this.applyValueUpdateEffects()
+        this.MUTVALUE(() => (this.serial.selected = this.activeCells))
     }
 
     /** list of all cells that are active/on */

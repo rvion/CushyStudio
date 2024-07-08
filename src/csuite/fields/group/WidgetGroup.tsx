@@ -133,9 +133,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     setPartialValue(val: Partial<Field_group_value<T>>) {
-        runInAction(() => {
-            for (const key in val) this.fields[key].value = val[key]
-            this.applyValueUpdateEffects()
+        this.MUTVALUE(() => {
+            for (const key in val) {
+                this.fields[key].value = val[key]
+            }
         })
     }
 
@@ -152,7 +153,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     set value(val: Field_group_value<T>) {
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }

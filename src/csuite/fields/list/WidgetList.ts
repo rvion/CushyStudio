@@ -221,10 +221,7 @@ export class Field_list<T extends ISchema> //
         if (this.serial.items_ == null) this.serial.items_ = []
 
         // pseudo-reset 🔴
-        if (this.items != null)
-            for (const item of this.items) {
-                item.dispose()
-            }
+        if (this.items != null) for (const item of this.items) item.dispose()
         this.items = []
         this.serial.items_ = []
 
@@ -309,7 +306,7 @@ export class Field_list<T extends ISchema> //
     }
 
     set value(val: Field_list_value<T>) {
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             for (let i = 0; i < val.length; i++) {
                 // 1. replace existing items
                 if (i < this.items.length) {
@@ -325,8 +322,6 @@ export class Field_list<T extends ISchema> //
             this.serial.items_.splice(val.length)
             this.items.splice(val.length)
         })
-        // // 4. apply update effects
-        // this.applyValueUpdateEffects()
     }
 
     // ERRORS --------------------------------------------------------
@@ -436,7 +431,7 @@ export class Field_list<T extends ISchema> //
         const minLen = this.config.min ?? 0
         if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
         // remove all items
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             this.serial.items_ = this.serial.items_.slice(0, minLen)
             this.items = this.items.slice(0, minLen)
             this.applyValueUpdateEffects()
@@ -459,7 +454,7 @@ export class Field_list<T extends ISchema> //
     }
 
     removeItemAt(i: number): void {
-        this.VALMUT(() => {
+        this.MUTVALUE(() => {
             this.serial.items_.splice(i, 1)
             this.items.splice(i, 1)
         })

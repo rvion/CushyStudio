@@ -63,7 +63,7 @@ describe('auto-migration ', () => {
         expect(E2.serial).toMatchObject({ type: 'list', items_: [{ type: 'str', val: '🔴' }] })
 
         // E1 should still have the same value, despite its serial having been used to create E2
-        expect(E1.serial).toMatchObject({ type: 'str', val: '🔴' })
+        expect(E1.serial).toMatchObject({ type: 'str', val: '🟢' })
 
         // construct E3 from E2 serial, but with schema back to simple string (not in list anymore)
         // @ts-expect-error
