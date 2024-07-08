@@ -246,10 +246,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             // throw new Error(`❌ Branch "${branch}" not enabled`)
         }
 
-        // remove children
-        delete this.enabledBranches[branch]
-        // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
-        this.serial.branches[branch] = false
+        this.MUTVALUE(() => {
+            // remove children
+            delete this.enabledBranches[branch]
+            // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
+            this.serial.branches[branch] = false
+        })
     }
 
     enableBranch(branch: keyof T & string) {

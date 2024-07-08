@@ -52,6 +52,36 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         })
     }
 
+    /**
+     * un-register field
+     * should ONLY be called by `field.dispose()`
+     */
+    _unregisterField(field: Field) {
+        // unregister field in `this._allWidgets`
+        this._allFields.delete(field.id)
+
+        // unregister field in `this._allWidgetsByType(<type>)`
+        const typeStore = this._allFieldsByType.get(field.type)
+        if (typeStore) typeStore.delete(field.id)
+    }
+
+    _registerField(field: Field) {
+        if (this._allFields.has(field.id)) {
+            throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
+        }
+
+        // register field in `this._allWidgets
+        this._allFields.set(field.id, field)
+
+        // register field in `this._allWidgetsByType(<type>)
+        const prev = this._allFieldsByType.get(field.type)
+        if (prev == null) {
+            this._allFieldsByType.set(field.type, new Map([[field.id, field]]))
+        } else {
+            prev.set(field.id, field)
+        }
+    }
+
     private tct: Maybe<Transaction> = null
     VALMUT(
         /** mutation to run */

@@ -206,16 +206,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * lifecycle method, is called
      * TODO: 🔴
      * @since 2024-07-05
-     * @status NOT IMPLEMENTED
      */
     dispose() {
         // TODO:
-        // disable all publish
-        // disable all reactions
-        // mark as DELETED;  => makes most function throw an error if used
+        // - disable all publish
+        // - disable all reactions
+        // - mark as DELETED;  => makes most function throw an error if used
+
+        // unregister from repo
+        this.repo._unregisterField(this)
+
+        // dispose all reactions/other long-running stuff
         for (const disposeFn of this.disposeFns) {
             disposeFn()
         }
+
+        // dispose all children
         for (const sub of this.subFields) {
             sub.dispose()
         }
@@ -808,17 +814,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             config.onInit(this)
         }
 
-        // register self in  `manager._allWidgets
-        this.repo._allFields.set(this.id, this)
-
-        // register self in `manager._allWidgetsByType(<type>)
-        const prev = this.repo._allFieldsByType.get(this.type)
-        if (prev == null) {
-            this.repo._allFieldsByType.set(this.type, new Map([[this.id, this]]))
-        } else {
-            prev.set(this.id, this)
-        }
-
+        this.repo._registerField(this)
         this.ready = true
     }
 
