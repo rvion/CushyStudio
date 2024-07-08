@@ -7,8 +7,9 @@ describe('model links', () => {
         expect(r.transactionCount).toBe(0)
         expect(r.allRoots.size).toBe(0)
         expect(r.allFields.size).toBe(0)
-        expect(r.valueTouched).toBe(0)
-        expect(r.serialTouched).toBe(0)
+        expect(r.totalValueTouched).toBe(0)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(0)
 
         // new schema
         const S = b.fields({
@@ -20,6 +21,7 @@ describe('model links', () => {
 
         // create entity
         const e = S.create()
+        expect(e.repo).toBe(r)
         expect(e.toValueJSON()).toMatchObject({
             int: 0,
             str: '',
@@ -28,23 +30,22 @@ describe('model links', () => {
         })
 
         // entity map
-        expect(e.repo).toBe(r)
+        expect(r.transactionCount).toBe(1)
         expect(e.repo.allRoots.size).toBe(1)
         expect(e.repo.allFields.size).toBe(8)
 
         // RIEN NE CHANGE CAR JUST HYDRATATION
-        expect(r.transactionCount).toBe(0)
-        expect(r.valueTouched).toBe(0)
-        expect(r.serialTouched).toBe(0)
-
-        // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        expect(r.totalValueTouched).toBe(0)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(8)
 
         e.value.int = 5
         e.value.int = 6
 
-        expect(r.transactionCount).toBe(2)
-        expect(r.valueTouched).toBe(2)
-        expect(r.serialTouched).toBe(0)
+        expect(r.transactionCount).toBe(3)
+        expect(r.totalValueTouched).toBe(2)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(8)
 
         ////////////////
 
@@ -53,9 +54,10 @@ describe('model links', () => {
             e.value.int = 6
         })
 
-        expect(r.transactionCount).toBe(3)
-        expect(r.valueTouched).toBe(4)
-        expect(r.serialTouched).toBe(0)
+        expect(r.transactionCount).toBe(4)
+        expect(r.totalValueTouched).toBe(4)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(8)
 
         r.debugStart()
         // same value
@@ -66,9 +68,10 @@ describe('model links', () => {
             list: [0, 0, 0],
         }
         r.debugEnd()
-        expect(r.transactionCount).toBe(4)
-        expect(r.valueTouched).toBe(4)
-        expect(r.serialTouched).toBe(0)
+        expect(r.transactionCount).toBe(5)
+        expect(r.totalValueTouched).toBe(4)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(8)
 
         // different value
         e.value = {
@@ -78,9 +81,10 @@ describe('model links', () => {
             list: [1, 2, 3, 4],
         }
 
-        expect(r.transactionCount).toBe(5)
-        expect(r.valueTouched).toBe(13)
-        expect(r.serialTouched).toBe(0)
+        expect(r.transactionCount).toBe(6)
+        expect(r.totalValueTouched).toBe(13)
+        expect(r.totalSerialTouched).toBe(0)
+        expect(r.totalCreations).toBe(9)
 
         expect()
     })

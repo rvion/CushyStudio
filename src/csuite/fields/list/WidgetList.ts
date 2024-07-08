@@ -306,6 +306,8 @@ export class Field_list<T extends ISchema> //
     }
 
     set value(val: Field_list_value<T>) {
+        // if (this.items.length === val.length && this.items.every((i, ix) => i.toValueJSON() == val[ix])) return
+
         this.MUTVALUE(() => {
             for (let i = 0; i < val.length; i++) {
                 // 1. replace existing items

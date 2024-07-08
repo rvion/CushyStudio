@@ -754,11 +754,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * defined to shorted call and allow per-field override
      */
     MUTVALUE(fn: () => any) {
-        return this.repo.VALMUT(fn, this, 'value')
+        return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
     }
 
     MUTSERIAL(fn: () => any) {
-        return this.repo.VALMUT(fn, this, 'serial')
+        return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
+    }
+
+    private MUTINIT(fn: () => any) {
+        return this.repo.TRANSACT(fn, this, 'none', 'NO_EFFECT')
     }
 
     // --------------------------------------------------------------------------------
@@ -799,33 +803,35 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** this function MUST be called at the end of every widget constructor */
     init(serial_?: K['$Serial'], mobxOverrides?: any) {
-        this.copyCommonSerialFiels(serial_)
-        this.setOwnSerial(serial_)
+        this.MUTINIT(() => {
+            this.copyCommonSerialFiels(serial_)
+            this.setOwnSerial(serial_)
 
-        // make the object deeply observable including this base class
-        makeAutoObservableInheritance(this, mobxOverrides)
+            // make the object deeply observable including this base class
+            makeAutoObservableInheritance(this, mobxOverrides)
 
-        // eslint-disable-next-line consistent-this
-        const config = this.config
-        const serial = this.serial
+            // eslint-disable-next-line consistent-this
+            const config = this.config
+            const serial = this.serial
 
-        // run the config.onCreation if needed
-        if (config.onCreate) {
-            const oldKey = serial._creationKey
-            const newKey = config.onCreateKey ?? 'default'
-            if (oldKey !== newKey) {
-                config.onCreate(this)
-                serial._creationKey = newKey
+            // run the config.onCreation if needed
+            if (config.onCreate) {
+                const oldKey = serial._creationKey
+                const newKey = config.onCreateKey ?? 'default'
+                if (oldKey !== newKey) {
+                    config.onCreate(this)
+                    serial._creationKey = newKey
+                }
             }
-        }
 
-        // run the config.onInit if needed
-        if (config.onInit) {
-            config.onInit(this)
-        }
+            // run the config.onInit if needed
+            if (config.onInit) {
+                config.onInit(this)
+            }
 
-        this.repo._registerField(this)
-        this.ready = true
+            this.repo._registerField(this)
+            this.ready = true
+        })
     }
 
     /** update current field snapshot */

@@ -8,7 +8,7 @@ import { action, makeObservable } from 'mobx'
 import { type DependencyList, useMemo } from 'react'
 
 import { Field } from './Field'
-import { Transaction } from './Transaction'
+import { type FieldTouchMode, Transaction, type TransactionMode } from './Transaction'
 
 /**
  * you need one, and only one (singleton) per project
@@ -35,8 +35,9 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
     /** how many transactions have been executed on that repo */
     transactionCount = 0
-    valueTouched = 0
-    serialTouched = 0
+    totalValueTouched = 0
+    totalSerialTouched = 0
+    totalCreations = 0
 
     /* 🔴 TEMP */
     private logs: string[] = []
@@ -69,7 +70,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     ) {
         this.domain = domain
         makeObservable(this, {
-            VALMUT: action,
+            TRANSACT: action,
         })
     }
 
@@ -88,8 +89,16 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     _registerField(field: Field) {
+        // creations
         if (this.allFields.has(field.id)) {
             throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
+        }
+
+        // creations
+        if (this.tct) {
+            this.tct.track(field, 'create')
+        } else {
+            this.totalCreations++
         }
 
         if (field.root == field) {
@@ -109,7 +118,8 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     private tct: Maybe<Transaction> = null
-    VALMUT(
+
+    TRANSACT(
         /** mutation to run */
         fn: (transaction: Transaction) => any,
 
@@ -121,17 +131,18 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         field: Field,
 
         /** we maintain 3 representation: field/serial/value */
-        mode: 'value' | 'serial' | 'none',
+        touchMode: FieldTouchMode,
+        tctMode: TransactionMode,
     ) {
         // case 1. already in a transaction
         if (this.tct) {
-            if (mode === 'value') this.tct.track(field, mode)
+            this.tct.track(field, touchMode)
             return void fn(this.tct)
         }
         // case 2. new transaction
         else {
-            this.tct = new Transaction(this)
-            this.tct.track(field, mode)
+            this.tct = new Transaction(this, tctMode)
+            this.tct.track(field, touchMode)
             fn(this.tct)
             this.tct.commit() // <--- apply the callback once every update is done
             this.tct = null
