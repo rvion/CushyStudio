@@ -1,62 +1,52 @@
-"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __export = (target, all) => {
+  __markAsModule(target);
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+var __reExport = (target, module2, desc) => {
+  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
+    for (let key of __getOwnPropNames(module2))
+      if (!__hasOwnProp.call(target, key) && key !== "default")
+        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
   }
-  return to;
+  return target;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toModule = (module2) => {
+  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", module2 && module2.__esModule && "default" in module2 ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
+};
 
 // extension.ts
-var extension_exports = {};
-__export(extension_exports, {
+__export(exports, {
   activate: () => activate,
   deactivate: () => deactivate
 });
-module.exports = __toCommonJS(extension_exports);
-var vscode = __toESM(require("vscode"));
+var vscode = __toModule(require("vscode"));
 
 // ../../../src/csuite/icons/icons.ts
-var icons3 = __toESM(require("@mdi/js"), 1);
+var icons3 = __toModule(require("@mdi/js"));
 
 // ../../../src/csuite/icons/iconsCDI.ts
-var icons = __toESM(require("@mdi/js"), 1);
+var icons = __toModule(require("@mdi/js"));
 var _CushyIcons = {
-  /* Inherited Icons */
   cdiDraft: icons.mdiPencil,
   cdiApp: icons.mdiAbacus,
   cdiStep: icons.mdiAccessPoint,
   cdiPreset: icons.mdiAccessPoint,
   cdiExternalCivitai: icons.mdiCityVariant,
   cdiExternalSquoosh: icons.mdiCigar,
-  /* Custom Icons */
   cdiTest: "M 2.40,7.20 A 20,20 0,0,1 12.00,7.20 A 20,20 0,0,1 21.60,7.20 Q 21.60,14.40 12.00,21.60 Q 2.40,14.40 2.40,7.20 z",
   cdiNodes: "M 16,5 C 16,3.89 15.1,3 14,3 H 8 C 6.8954305,3 6,3.8954305 6,5 v 3 c 0,1 1,2 2,2 V 7 6 h 6 V 8 H 8 v 2 h 6 c 1,0 2,-1 2,-2 V 5 h 1 c 1,0 1,1 1,1 h 2 c 1,0 1,1 1,1 v 10 c 0,0 0,1 -1,1 h -5 c 0,0 0,1 -1,1 v -3 h -1 v 3 c 0,0 0,2 -2,2 V 19 17 H 5 v 2 h 6 v 2 H 5 C 3,21 3,19 3,19 v -3 c 0,0 0,-2 2,-2 h 6 c 2,0 2,2 2,2 h 1 c 1,0 1,1 1,1 h 5 V 16 7 h -2 c 0,1 -1,1 -1,1 V 5 Z"
 };
 
 // ../../../src/csuite/icons/iconsLDI.ts
 var _IconsLDI = {
-  // locomotive ---------------------------------------------------------------------
   ldiRegularStar: "M11.049 2.92664C11.3483 2.00537 12.6517 2.00538 12.951 2.92664L14.4699 7.60055C14.6038 8.01254 14.9877 8.29148 15.4209 8.29149L20.3354 8.29168C21.3041 8.29172 21.7068 9.53127 20.9232 10.1007L16.9474 12.9895C16.5969 13.2441 16.4503 13.6955 16.5841 14.1075L18.1026 18.7815C18.4019 19.7028 17.3475 20.4689 16.5638 19.8995L12.5878 17.011C12.2373 16.7564 11.7627 16.7564 11.4122 17.011L7.43622 19.8995C6.65252 20.4689 5.5981 19.7028 5.8974 18.7815L7.41589 14.1075C7.54974 13.6955 7.40309 13.2441 7.05263 12.9895L3.07683 10.1007C2.29317 9.53127 2.69592 8.29172 3.66461 8.29168L8.57911 8.29149C9.01231 8.29148 9.39623 8.01254 9.53011 7.60055L11.049 2.92664Z",
   ldiRegularStatusOnline: "M5.63604 18.3646C2.12132 14.8499 2.12132 9.15144 5.63604 5.63672M18.364 5.63672C21.8787 9.15144 21.8787 14.8499 18.364 18.3646M8.46447 15.5362C6.51184 13.5836 6.51184 10.4178 8.46447 8.46515M15.5355 8.46515C17.4882 10.4178 17.4882 13.5836 15.5355 15.5362M13 12.0007C13 12.553 12.5523 13.0007 12 13.0007C11.4477 13.0007 11 12.553 11 12.0007C11 11.4484 11.4477 11.0007 12 11.0007C12.5523 11.0007 13 11.4484 13 12.0007Z",
   ldiRegularUser: "M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z",
@@ -75,34 +65,27 @@ var _IconsLDI = {
 };
 
 // ../../../src/csuite/icons/iconsXDI.ts
-var icons2 = __toESM(require("@mdi/js"), 1);
+var icons2 = __toModule(require("@mdi/js"));
 var _IconsXDI = {
-  // semantic stuff ----------------------------------------------------------------
   _missedCall: icons2.mdiPhoneMissed,
   _transferredCall: icons2.mdiPhoneInTalk,
   _close: icons2.mdiClose,
   _clear: icons2.mdiClose,
   _check: icons2.mdiCheck,
   _edit: icons2.mdiPencil,
-  // grid
   _gridFilter: icons2.mdiFilterOutline,
   _gridSortedAsc: icons2.mdiArrowUp,
   _gridSortedDesc: icons2.mdiArrowDown,
   _gridGroupBy: icons2.mdiViewGrid,
-  // features
   _webchat: icons2.mdiChatProcessing
 };
 
 // ../../../src/csuite/icons/icons.ts
 var allIcons = {
   _: "M 0,0 z",
-  // made by pictogrammers, for all
   ...icons3,
-  // made by/for ???
   ..._IconsXDI,
-  // made by/for locomotive
   ..._IconsLDI,
-  // made by/for cushy
   ..._CushyIcons
 };
 
@@ -112,12 +95,6 @@ function activate(context) {
   let timeout = void 0;
   const channel = vscode.window.createOutputChannel("cushy");
   const iconDecorationType = vscode.window.createTextEditorDecorationType({
-    // borderWidth: '1px',
-    // borderStyle: 'solid',
-    // overviewRulerColor: 'blue',
-    // overviewRulerLane: vscode.OverviewRulerLane.Right,
-    // light: { borderColor: 'darkblue' },
-    // dark: { borderColor: 'lightblue' },
     before: {
       width: "1em",
       height: "1em"
@@ -125,8 +102,6 @@ function activate(context) {
   });
   const userDecorationType = vscode.window.createTextEditorDecorationType({
     cursor: "crosshair",
-    // use a themable color. See package.json for the declaration and default values.
-    // backgroundColor: { id: 'myextension.largeNumberBackground' },
     before: {
       width: "21px",
       height: "21px"
@@ -152,7 +127,8 @@ function activate(context) {
     vscode.window.showInformationMessage("rescale100To24: done");
   });
   function updateDecorations() {
-    if (!activeEditor) return;
+    if (!activeEditor)
+      return;
     function getDecorationIcon(path, iconColor = "white", size = 24) {
       const origin = `${size / 2} ${size / 2}`;
       return [
@@ -176,12 +152,8 @@ function activate(context) {
         range: new vscode.Range(startPos, endPos),
         hoverMessage: "Number **" + match[0] + "**",
         renderOptions: {
-          // prettier-ignore
           before: {
-            // contentText: `👍<${match[0]}>`,
             contentIconPath: vscode.Uri.parse(uriTxt)
-            // color: { id: 'myextension.largeNumberBackground' },
-            // margin: '0 0.5em',
           }
         }
       };
@@ -189,7 +161,7 @@ function activate(context) {
     }
     const contrDecoration = [];
     activeEditor.setDecorations(iconDecorationType, iconDecoration);
-    const regEx2 = /@(globi|rvion|taha|gui|birdddev)/g;
+    const regEx2 = /@(globi|rvion|taha|gui|birdddev|ghusse|domi)/g;
     while (match = regEx2.exec(text)) {
       const iconName = match[0];
       const iconPath = allIcons[iconName];
@@ -202,14 +174,8 @@ function activate(context) {
         range: new vscode.Range(startPos, endPos),
         hoverMessage: "Number **" + match[0] + "**",
         renderOptions: {
-          // prettier-ignore
           before: {
-            // contentText: `👍<${match[0]}>`,
             contentIconPath: uriForLocalFile
-            // width: '1em',
-            // height: '1em',
-            // color: { id: 'myextension.largeNumberBackground' },
-            // margin: '0 0.5em',
           }
         }
       };
@@ -222,27 +188,23 @@ function activate(context) {
       clearTimeout(timeout);
       timeout = void 0;
     }
-    if (throttle) timeout = setTimeout(updateDecorations, 500);
-    else updateDecorations();
+    if (throttle)
+      timeout = setTimeout(updateDecorations, 500);
+    else
+      updateDecorations();
   }
-  if (activeEditor) triggerUpdateDecorations();
-  vscode.window.onDidChangeActiveTextEditor(
-    (editor) => {
-      activeEditor = editor;
-      if (editor) triggerUpdateDecorations();
-    },
-    null,
-    context.subscriptions
-  );
-  vscode.workspace.onDidChangeTextDocument(
-    (event) => {
-      if (activeEditor && event.document === activeEditor.document) {
-        triggerUpdateDecorations(true);
-      }
-    },
-    null,
-    context.subscriptions
-  );
+  if (activeEditor)
+    triggerUpdateDecorations();
+  vscode.window.onDidChangeActiveTextEditor((editor) => {
+    activeEditor = editor;
+    if (editor)
+      triggerUpdateDecorations();
+  }, null, context.subscriptions);
+  vscode.workspace.onDidChangeTextDocument((event) => {
+    if (activeEditor && event.document === activeEditor.document) {
+      triggerUpdateDecorations(true);
+    }
+  }, null, context.subscriptions);
 }
 function deactivate() {
   console.log("decorator sample is deactivated");
