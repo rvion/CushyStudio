@@ -757,6 +757,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
     }
 
+    MUTAUTO(fn: () => any) {
+        return this.repo.TRANSACT(fn, this, 'auto', 'WITH_EFFECT')
+    }
+
     MUTSERIAL(fn: () => any) {
         return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
     }

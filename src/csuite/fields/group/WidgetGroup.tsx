@@ -153,9 +153,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     set value(val: Field_group_value<T>) {
-        // if (Object.keys(this.fields).every((k) => this.fields[k]?.toValueJSON() == val[k])) return
-
-        this.MUTVALUE(() => {
+        this.MUTAUTO(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }

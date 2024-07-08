@@ -18,9 +18,15 @@ import { type FieldTouchMode, Transaction, type TransactionMode } from './Transa
 export class Repository<DOMAIN extends IBuilder = IBuilder> {
     /** all root fields (previously called entities) */
     allRoots: Map<FieldId, Field> = new Map()
+    get allRootSize(): number {
+        return this.allRoots.size
+    }
 
     /** all fiels, root or not */
     allFields: Map<FieldId, Field> = new Map()
+    get allFieldSize(): number {
+        return this.allFields.size
+    }
 
     /** all fields by given type */
     allFieldsByType: Map<string, Map<string, Field>> = new Map()
@@ -39,12 +45,12 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     totalSerialTouched = 0
     totalCreations = 0
 
-    /* 🔴 TEMP */
+    /* 🔴 TEMP ------------------------------ */
     private logs: string[] = []
-    debugStart() {
+    debugStart(): void {
         this.logs.splice(0, this.logs.length)
     }
-    debugLog(msg: string) {
+    debugLog(msg: string): void {
         this.logs.push(msg)
     }
     debugEnd(): string[] {
@@ -52,6 +58,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         return this.logs.slice()
     }
 
+    /* -------------------------------------- */
     /**
      * return all currently instanciated widgets
      * field of a given input type
@@ -136,14 +143,42 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     ) {
         // case 1. already in a transaction
         if (this.tct) {
-            this.tct.track(field, touchMode)
-            return void fn(this.tct)
+            // AAA ----------------------------------------------------------------------
+            if (touchMode === 'auto') {
+                const prevValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
+                const prevSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
+                void fn(this.tct)
+                const nextValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
+                const nextSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
+                if (prevValue !== nextValue) this.tct.track(field, 'value')
+                else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
+                else this.tct.track(field, 'none')
+            } else {
+                void fn(this.tct)
+                this.tct.track(field, touchMode)
+            }
+            // AAA ----------------------------------------------------------------------
         }
         // case 2. new transaction
         else {
             this.tct = new Transaction(this, tctMode)
-            this.tct.track(field, touchMode)
-            fn(this.tct)
+
+            // AAA ----------------------------------------------------------------------
+            if (touchMode === 'auto') {
+                const prevValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
+                const prevSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
+                void fn(this.tct)
+                const nextValue = this.tct.valueTouched.size + this.tct.fieldCreated.size
+                const nextSerial = this.tct.valueTouched.size + this.tct.serialTouched.size + this.tct.fieldCreated.size
+                if (prevValue !== nextValue) this.tct.track(field, 'value')
+                else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
+                else this.tct.track(field, 'none')
+            } else {
+                void fn(this.tct)
+                this.tct.track(field, touchMode)
+            }
+            // AAA ----------------------------------------------------------------------
+
             this.tct.commit() // <--- apply the callback once every update is done
             this.tct = null
             return
@@ -192,5 +227,16 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     private evalSchema<SCHEMA extends ISchema>(buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA)): SCHEMA {
         if (typeof buildFn === 'function') return buildFn(this.domain as DOMAIN)
         return buildFn
+    }
+
+    get tracked() {
+        return {
+            transactionCount: this.transactionCount,
+            allRootSize: this.allRootSize,
+            allFieldSize: this.allFieldSize,
+            totalValueTouched: this.totalValueTouched,
+            totalSerialTouched: this.totalSerialTouched,
+            totalCreations: this.totalCreations,
+        }
     }
 }

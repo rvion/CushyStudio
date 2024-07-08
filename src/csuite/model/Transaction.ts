@@ -1,7 +1,14 @@
 import type { Field } from './Field'
 import type { Repository } from './Repository'
 
-export type FieldTouchMode = 'value' | 'serial' | 'none' | 'create'
+// prettier-ignore
+export type FieldTouchMode =
+    | 'value'
+    | 'serial'
+    | 'none'
+    | 'create'
+    | 'auto'
+
 export type TransactionMode = 'WITH_EFFECT' | 'NO_EFFECT'
 
 export class Transaction {
@@ -12,19 +19,19 @@ export class Transaction {
     ) {}
 
     /** fields that have been created during the transaction */
-    private fieldCreated: Set<Field<any>> = new Set()
+    fieldCreated: Set<Field<any>> = new Set()
 
     /**
      * fields that were previously existing that had their serial change
      * in a value-altering way
      */
-    private valueTouched: Set<Field<any>> = new Set()
+    valueTouched: Set<Field<any>> = new Set()
 
     /**
      * fields that were previously existing that had their serial change
      * in a NON-value-altering way
      */
-    private serialTouched: Set<Field<any>> = new Set()
+    serialTouched: Set<Field<any>> = new Set()
 
     /**
      *

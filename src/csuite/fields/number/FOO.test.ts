@@ -1,23 +1,34 @@
-import { describe, expect, it, mock } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b, simpleRepo as r } from '../../index'
 
 describe('model links', () => {
     it('work', () => {
-        expect(r.transactionCount).toBe(0)
-        expect(r.allRoots.size).toBe(0)
-        expect(r.allFields.size).toBe(0)
-        expect(r.totalValueTouched).toBe(0)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(0)
+        // initial repo condition
+        expect(r.tracked).toMatchObject({
+            transactionCount: 0,
+            allRootSize: 0,
+            allFieldSize: 0,
+            totalValueTouched: 0,
+            totalSerialTouched: 0,
+            totalCreations: 0,
+        })
 
         // new schema
-        const S = b.fields({
-            int: b.int(),
-            str: b.string(),
-            bool: b.bool(),
-            list: b.int().list({ min: 3 }),
-        })
+        let totalRootSnapshotChanged = 0
+        let totalRootValueChanged = 0
+        const S = b.fields(
+            {
+                int: b.int(),
+                str: b.string(),
+                bool: b.bool(),
+                list: b.int().list({ min: 3 }),
+            },
+            {
+                onSerialChange: (x) => totalRootSnapshotChanged++,
+                onValueChange: (x) => totalRootValueChanged++,
+            },
+        )
 
         // create entity
         const e = S.create()
@@ -30,22 +41,27 @@ describe('model links', () => {
         })
 
         // entity map
-        expect(r.transactionCount).toBe(1)
-        expect(e.repo.allRoots.size).toBe(1)
-        expect(e.repo.allFields.size).toBe(8)
-
-        // RIEN NE CHANGE CAR JUST HYDRATATION
-        expect(r.totalValueTouched).toBe(0)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(8)
+        expect(r.tracked).toMatchObject({
+            transactionCount: 1,
+            allRootSize: 1,
+            allFieldSize: 8,
+            totalValueTouched: 0,
+            totalSerialTouched: 0,
+            totalCreations: 8,
+        })
+        // --------------------------------------------------------------
 
         e.value.int = 5
         e.value.int = 6
 
-        expect(r.transactionCount).toBe(3)
-        expect(r.totalValueTouched).toBe(2)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(8)
+        expect(r.tracked).toMatchObject({
+            transactionCount: 3,
+            allRootSize: 1,
+            allFieldSize: 8,
+            totalValueTouched: 2,
+            totalSerialTouched: 0,
+            totalCreations: 8,
+        })
 
         ////////////////
 
@@ -54,10 +70,12 @@ describe('model links', () => {
             e.value.int = 6
         })
 
-        expect(r.transactionCount).toBe(4)
-        expect(r.totalValueTouched).toBe(4)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(8)
+        expect(r.tracked).toMatchObject({
+            transactionCount: 4,
+            totalValueTouched: 4,
+            totalSerialTouched: 0,
+            totalCreations: 8,
+        })
 
         r.debugStart()
         // same value
@@ -68,10 +86,12 @@ describe('model links', () => {
             list: [0, 0, 0],
         }
         r.debugEnd()
-        expect(r.transactionCount).toBe(5)
-        expect(r.totalValueTouched).toBe(4)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(8)
+        expect(r.tracked).toMatchObject({
+            transactionCount: 5,
+            totalValueTouched: 4,
+            totalSerialTouched: 0,
+            totalCreations: 8,
+        })
 
         // different value
         e.value = {
@@ -81,12 +101,12 @@ describe('model links', () => {
             list: [1, 2, 3, 4],
         }
 
-        expect(r.transactionCount).toBe(6)
-        expect(r.totalValueTouched).toBe(13)
-        expect(r.totalSerialTouched).toBe(0)
-        expect(r.totalCreations).toBe(9)
-
-        expect()
+        expect(r.tracked).toMatchObject({
+            transactionCount: 6,
+            totalValueTouched: 12,
+            totalSerialTouched: 0,
+            totalCreations: 9,
+        })
     })
 })
 
