@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import type { Field_number, Field_number_config } from '../fields/number/WidgetNumber'
+import type { Field_number, Field_number_config } from '../fields/number/FieldNumber'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
 import type { ISchema, SchemaDict } from '../model/ISchema'

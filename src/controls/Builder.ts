@@ -19,7 +19,7 @@ import { Field_list, type Field_list_config } from '../csuite/fields/list/Widget
 import { Field_listExt, type Field_listExt_config } from '../csuite/fields/listExt/WidgetListExt'
 import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/WidgetMarkdown'
 import { Field_matrix, type Field_matrix_config } from '../csuite/fields/matrix/WidgetMatrix'
-import { Field_number, type Field_number_config } from '../csuite/fields/number/WidgetNumber'
+import { Field_number, type Field_number_config } from '../csuite/fields/number/FieldNumber'
 import { Field_optional, type Field_optional_config } from '../csuite/fields/optional/WidgetOptional'
 import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/WidgetOrbit'
 import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/WidgetSeed'

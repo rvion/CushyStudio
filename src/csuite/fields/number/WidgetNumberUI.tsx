@@ -1,4 +1,4 @@
-import type { Field_number } from './WidgetNumber'
+import type { Field_number } from './FieldNumber'
 
 import { observer } from 'mobx-react-lite'
 

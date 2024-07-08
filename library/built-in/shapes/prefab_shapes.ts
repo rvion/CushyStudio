@@ -7,7 +7,7 @@
  *  3. the main helper funtion that print stuff on canvas
  */
 
-import type { Field_number } from '../../../src/csuite/fields/number/WidgetNumber'
+import type { Field_number } from '../../../src/csuite/fields/number/FieldNumber'
 import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------

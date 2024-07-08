@@ -3,7 +3,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 
-import { computed, observable, runInAction } from 'mobx'
+import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
