@@ -50,12 +50,15 @@ export class Transaction {
         this.repo.totalSerialTouched += this.serialTouched.size
         this.repo.totalCreations += this.fieldCreated.size
 
+        // compute all nodes from leaves that need to call effects
+        // call them in order, non recursively.
+
         for (const field of this.valueTouched) {
             this.repo.debugLog(`[🟢] ${field.path} touched`)
             field.applyValueUpdateEffects()
         }
         for (const field of this.serialTouched) {
-            field.applyValueUpdateEffects()
+            field.applySerialUpdateEffects()
         }
     }
 }

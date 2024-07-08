@@ -345,16 +345,17 @@ export class Field_list<T extends ISchema> //
     }
 
     push(...value: T['$Value'][]): void {
-        // we skip bump durin the for loop,
-        // to only call applyValueUpdateEffects at the end once
-        for (const v of value) {
-            this.addItem({
-                value: v,
-                skipBump: true,
-            })
-        }
-        // should be called once per mutable action
-        this.applyValueUpdateEffects()
+        if (value.length === 0) return
+        this.MUTVALUE(() => {
+            // we skip bump durin the for loop,
+            // to only call applyValueUpdateEffects at the end once
+            for (const v of value) {
+                this.addItem({
+                    value: v,
+                    skipBump: true,
+                })
+            }
+        })
     }
 
     unshift(...value: T['$Value'][]): void {

@@ -30,9 +30,12 @@ describe('model links', () => {
             },
         )
 
+        expect(totalRootSnapshotChanged).toBe(0)
+
         // create entity
         const e = S.create()
         expect(e.repo).toBe(r)
+        expect(totalRootSnapshotChanged).toBe(0)
         expect(e.toValueJSON()).toMatchObject({
             int: 0,
             str: '',
@@ -54,6 +57,7 @@ describe('model links', () => {
         e.value.int = 5
         e.value.int = 6
 
+        expect(totalRootSnapshotChanged).toBe(2)
         expect(r.tracked).toMatchObject({
             transactionCount: 3,
             allRootSize: 1,
@@ -65,17 +69,21 @@ describe('model links', () => {
 
         ////////////////
 
-        e.MUTVALUE(() => {
+        r.debugStart()
+        e.MUTAUTO(() => {
             e.value.int = 5
+            e.value.int = 7
             e.value.int = 6
         })
+        r.debugEnd()
 
         expect(r.tracked).toMatchObject({
             transactionCount: 4,
-            totalValueTouched: 4,
+            totalValueTouched: 4, // +2 (root + int)
             totalSerialTouched: 0,
             totalCreations: 8,
         })
+        expect(totalRootSnapshotChanged).toBe(3) // 🔴
 
         r.debugStart()
         // same value
