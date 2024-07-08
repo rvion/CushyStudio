@@ -168,7 +168,8 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
         /** we maintain 3 representation: field/serial/value */
         touchMode: FieldTouchMode,
-        tctMode: TransactionMode,
+        /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
+        _tctMode: TransactionMode,
     ) {
         let isRoot = this.tct == null
         this.tct ??= new Transaction(this /* tctMode */)
@@ -189,8 +190,20 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
         // ONLY COMMIT THE ROOT TRANSACTION
         if (isRoot) {
-            this.tct.commit() // <--- apply the callback once every update is done
+            // ALTERNATIVE A:
+            // | execute the Commit callbacks outside of the transaction
+            // | if a callback triggers a change, it will be executed in
+            // | new transaction (and trigger onValueChange)
+            const tct = this.tct
             this.tct = null
+            //  VVV  apply the callback once every update is done, OUTSIDE of the transaction
+            tct.commit()
+
+            // ALTERNATIVE B:
+            // | execute the Commit callbacks within the transaction
+            // ⏸️          VVV apply the callback once every update is done, INSIDE the transaction
+            // ⏸️ this.tct.commit()
+            // ⏸️ this.tct = null
         }
     }
 

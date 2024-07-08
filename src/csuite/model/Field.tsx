@@ -849,25 +849,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             // make the object deeply observable including this base class
             makeAutoObservableInheritance(this, mobxOverrides)
 
-            // eslint-disable-next-line consistent-this
-            const config = this.config
-            const serial = this.serial
-
-            // run the config.onCreation if needed
-            if (config.beforeInit) {
-                const oldKey = serial._version
-                const newKey = config.version ?? 'default'
-                if (oldKey !== newKey) {
-                    config.beforeInit(this)
-                    serial._version = newKey
-                }
-            }
-
-            // run the config.onInit if needed
-            if (config.onInit) {
-                config.onInit(this)
-            }
-
             this.repo._registerField(this)
             this.ready = true
         })

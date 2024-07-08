@@ -39,9 +39,9 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * @since 2024-05-14
      * @stability beta
      * This function will be executed before every widget instanciation.
-     * if the beforeCreateKey is not the samed as store in the serial
+     * if the version is not the samed as store in the serial
      */
-    beforeInit?: CovariantFn1<T['$Serial'], T['$Serial']>
+    beforeInit?: CovariantFn<[serial: unknown /* T['$Serial'] */], T['$Serial']>
     version?: string
 
     /**

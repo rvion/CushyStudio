@@ -85,6 +85,16 @@ export class SimpleSchema<out FIELD extends Field = Field> implements ISchema<FI
         }
         // ----------------------------------------------------------------------------------
 
+        // run the config.onCreation if needed
+        if (this.config.beforeInit) {
+            const oldVersion = serial._version ?? 'default'
+            const newVersion = this.config.version ?? 'default'
+            if (oldVersion !== newVersion) {
+                serial = this.config.beforeInit(serial)
+                serial._version = newVersion
+            }
+        }
+
         // ensure the serial is compatible
         if (serial != null && serial.type !== this.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
