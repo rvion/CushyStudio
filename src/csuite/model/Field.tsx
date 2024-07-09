@@ -48,9 +48,10 @@ import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
+import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
-import type { Channel, ChannelId } from './Channel'
+import type { Channel, ChannelId, Producer } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
@@ -187,7 +188,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         root: Field<any>,
         parent: Field | null,
         serial: any | null,
-    ) {
+    ): Field_shared<this> {
         const builder = repo.domain
         const schema: ISchema<Field_shared<this>> = builder.linked(this)
         return schema.instanciate(repo, root, parent, serial)
@@ -208,7 +209,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * TODO: 🔴
      * @since 2024-07-05
      */
-    disposeTree() {
+    disposeTree(): void {
         this.disposeSelf()
 
         // dispose all children
@@ -217,7 +218,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
     }
 
-    private disposeSelf() {
+    private disposeSelf(): void {
         // TODO:
         // - disable all publish
         // - disable all reactions
@@ -239,14 +240,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     ready = false
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-    setSerial(serial: Maybe<K['$Serial']>) {
+    setSerial(serial: Maybe<K['$Serial']>): void {
         this.MUTVALUE(() => {
             this.copyCommonSerialFiels(serial)
             this.setOwnSerial(serial)
         })
     }
 
-    private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>) {
+    private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>): void {
         if (s == null) return
         if (s._version) this.serial._version = s._version
         if (s.collapsed) this.serial.collapsed = s.collapsed
@@ -254,7 +255,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         if (s.lastUpdatedAt) this.serial.lastUpdatedAt = s.lastUpdatedAt
     }
     /** unified api to allow setting serial from value */
-    setValue(val: K['$Value']) {
+    setValue(val: K['$Value']): void {
         this.value = val
     }
 
@@ -267,7 +268,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
          *  - child into parent where it belongs
          *  - child.serial into parent.serial where it belongs  */
         attach(child: SCHEMA['$Field']): void
-    }) {
+    }): void {
         let child = p.existingChild
         if (child != null && child.type === p.correctChildSchema.type) {
             child.setSerial(p.targetChildSerial)
@@ -293,9 +294,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
 
     UIToggle = (p?: { className?: string }) => <WidgetToggleUI field={this} {...p} />
-    UIErrors = () => <WidgetErrorsUI field={this} />
-    UILabelCaret = () => <WidgetLabelCaretUI field={this} />
-    UILabelIcon = () => <WidgetLabelIconUI widget={this} />
+    UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
+    UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
+    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI widget={this} />
     UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer = (p: { children: ReactNode }) => (
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
@@ -790,19 +791,19 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * proxy this.repo.action
      * defined to shorted call and allow per-field override
      */
-    MUTVALUE(fn: () => any) {
+    MUTVALUE(fn: () => any): void {
         return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
     }
 
-    MUTAUTO(fn: () => any) {
+    MUTAUTO(fn: () => any): void {
         return this.repo.TRANSACT(fn, this, 'auto', 'WITH_EFFECT')
     }
 
-    MUTSERIAL(fn: () => any) {
+    MUTSERIAL(fn: () => any): void {
         return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
     }
 
-    private MUTINIT(fn: () => any) {
+    private MUTINIT(fn: () => any): void {
         return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
     }
 
@@ -811,7 +812,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // until every shared usage has been migrated
 
     /** getter that resolve to `this.schema.producers` */
-    get producers() {
+    get producers(): Producer<any, any>[] {
         return this.schema.producers
     }
 

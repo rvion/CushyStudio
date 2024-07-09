@@ -1,4 +1,5 @@
 import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { CushyScriptL } from '../../../../models/CushyScript'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
@@ -12,7 +13,7 @@ import { TreeApp } from './TreeApp'
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
-    onExpand = async () => {
+    async onExpand(): Promise<void> {
         await this.file.extractScriptFromFileAndUpdateApps()
     }
 
@@ -22,10 +23,10 @@ export class TreeFile implements ITreeEntry {
     }
 
     /** 🔶 'isFolder' for the tree widget, not on the filesystem */
-    isFolder = true
+    isFolder: boolean = true
 
     /** icon to display in the treeview */
-    get icon() {
+    get icon(): string | JSX.Element {
         if (this.path.endsWith('.ts')) return assets.typescript_512_png
         if (this.path.endsWith('.tsx')) return assets.typescript_512_png
         if (this.path.endsWith('.png')) return `file://${cwd()}/${this.path}`
@@ -37,12 +38,13 @@ export class TreeFile implements ITreeEntry {
         // return <span className='material-symbols-outlined'>home</span>
     }
 
-    get script() {
+    get script(): Maybe<CushyScriptL> {
         return this.file.script
     }
 
-    // get index(){return `path#${this.path}`} //prettier-ignore
-    get name() { return basename(this.path) } // prettier-ignore
+    get name(): string {
+        return basename(this.path)
+    }
 
     actions: TreeEntryAction[] = [
         {
@@ -61,7 +63,7 @@ export class TreeFile implements ITreeEntry {
         return this.file.extractScriptFromFile()
     }
 
-    onPrimaryAction = (n: TreeNode) => {
+    onPrimaryAction(n: TreeNode): void {
         void this.file.extractScriptFromFile()
         if (!n.isOpen) {
             n.open()
@@ -79,7 +81,7 @@ export class TreeFile implements ITreeEntry {
         const apps = this.script.apps
         // console.log(`[👙] 🔴 ${this.path} => ${apps.length}`)
         if (apps.length === 0) {
-            console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
+            // console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []
         }
 

@@ -1,6 +1,7 @@
-import { describe, expect as expect_, it } from 'bun:test'
+import { describe, it } from 'bun:test'
 
 import { simpleBuilder as b } from '../../index'
+import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------
 describe('assign to value object', () => {
@@ -9,22 +10,22 @@ describe('assign to value object', () => {
             str1: b.string({ default: '🔵' }),
         })
         const E1 = S1.create()
-        expect(E1.value.str1).toBe('🔵')
-        expect(E1.fields.str1.value).toBe('🔵')
+        expectJSON(E1.value.str1).toBe('🔵')
+        expectJSON(E1.fields.str1.value).toBe('🔵')
 
         E1.value.str1 = '🟡'
-        expect(E1.value.str1).toBe('🟡')
-        expect(E1.fields.str1.value).toBe('🟡')
+        expectJSON(E1.value.str1).toBe('🟡')
+        expectJSON(E1.fields.str1.value).toBe('🟡')
     })
 
     it('assign to List.value separate items (string)', () => {
         const S1 = b.string({ default: '🔵' }).list({ min: 3 })
         const E1 = S1.create()
-        expect(E1.value).toEqual(['🔵', '🔵', '🔵'])
+        expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
 
         E1.value[1] = '🟡'
-        expect(E1.value).toEqual(['🔵', '🟡', '🔵'])
-        expect(E1.serial).toMatchObject({
+        expectJSON(E1.value).toEqual(['🔵', '🟡', '🔵'])
+        expectJSON(E1.serial).toMatchObject({
             type: 'list',
             items_: [
                 { type: 'str', value: '🔵' },
@@ -34,7 +35,3 @@ describe('assign to value object', () => {
         })
     })
 })
-
-function expect(a: any) {
-    return expect_(JSON.parse(JSON.stringify(a)))
-}

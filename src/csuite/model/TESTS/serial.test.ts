@@ -1,6 +1,7 @@
-import { describe, expect as expect_, it } from 'bun:test'
+import { describe, it } from 'bun:test'
 
 import { simpleBuilder as b } from '../../index'
+import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------
 describe('assign to value object', () => {
@@ -25,7 +26,7 @@ describe('assign to value object', () => {
         const E1 = S1.create()
 
         // VALUE
-        expect({
+        expectJSON({
             bool: false,
             boolFalse: false,
             boolTrue: true,
@@ -42,7 +43,7 @@ describe('assign to value object', () => {
         }).toMatchObject(E1.toValueJSON())
 
         // SERIAL
-        expect({
+        expectJSON({
             type: 'group',
             values_: {
                 int0: { type: 'number', value: 0 },
@@ -77,7 +78,3 @@ describe('assign to value object', () => {
         }).toMatchObject(E1.toSerialJSON())
     })
 })
-
-function expect(a: any) {
-    return expect_(JSON.parse(JSON.stringify(a)))
-}

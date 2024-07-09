@@ -1,4 +1,4 @@
-import { describe, expect as expect_, it } from 'bun:test'
+import { describe, expect as expect_, it, type Matchers } from 'bun:test'
 import { toJS } from 'mobx'
 
 import { simpleRepo } from '../../index'
@@ -57,6 +57,6 @@ describe('basic', () => {
     })
 })
 
-function expect(a: any) {
+function expect<T>(a: T): Matchers<any> {
     return expect_(toJS(a))
 }

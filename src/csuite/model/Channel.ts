@@ -11,11 +11,13 @@ export type ChannelId = string
 export class Channel<T> {
     $type!: T
 
-    get = () => {
-        return (self: Field): Maybe<T> => self.consume(this)
+    get() {
+        return (field: Field): Maybe<T> => field.consume(this)
     }
 
-    getOrThrow = (self: Field): T => bang(self.consume(this), 'Empty channel')
+    getOrThrow(field: Field): T {
+        return bang(field.consume(this), 'Empty channel')
+    }
 
     constructor(public id: ChannelId = nanoid()) {
         makeAutoObservable(this)

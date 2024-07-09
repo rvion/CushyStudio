@@ -51,7 +51,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         this.resetEntities()
     }
 
-    resetEntities() {
+    resetEntities(): void {
         for (const root of this.allRoots.values()) {
             root.disposeTree()
         }
@@ -61,11 +61,11 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
     /* 🔴 STATS --------------------------------------------------------- */
     /** how many transactions have been executed on that repo */
-    transactionCount = 0
-    totalValueTouched = 0
-    totalSerialTouched = 0
-    totalCreations = 0
-    resetStats() {
+    transactionCount: number = 0
+    totalValueTouched: number = 0
+    totalSerialTouched: number = 0
+    totalCreations: number = 0
+    resetStats(): void {
         this.transactionCount = 0
         this.totalValueTouched = 0
         this.totalSerialTouched = 0
@@ -77,13 +77,16 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     startRecording(): void {
         this.logs.splice(0, this.logs.length)
     }
+
     debugLog(msg: string): void {
         this.logs.push(msg)
     }
+
     endRecording(): string[] {
         // console.log(this.logs.join('\n'))
         return this.logs.slice()
     }
+
     endRecordingAndLog(): string[] {
         console.log(this.logs.join('\n'))
         return this.logs.slice()
@@ -116,7 +119,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
      * un-register field
      * should ONLY be called by `field.dispose()`
      */
-    _unregisterField(field: Field) {
+    _unregisterField(field: Field): void {
         // unregister field in `this._allWidgets`
         this.allFields.delete(field.id)
         this.allRoots.delete(field.id)
@@ -126,7 +129,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         if (typeStore) typeStore.delete(field.id)
     }
 
-    _registerField(field: Field) {
+    _registerField(field: Field): void {
         // creations
         if (this.allFields.has(field.id)) {
             throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
@@ -170,7 +173,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         touchMode: FieldTouchMode,
         /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
         _tctMode: TransactionMode,
-    ) {
+    ): void {
         let isRoot = this.tct == null
         this.tct ??= new Transaction(this /* tctMode */)
 
@@ -253,7 +256,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         return buildFn
     }
 
-    get tracked() {
+    get tracked(): RepositoryStats {
         return {
             transactionCount: this.transactionCount,
             allRootSize: this.allRootSize,
@@ -263,4 +266,13 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
             totalCreations: this.totalCreations,
         }
     }
+}
+
+export type RepositoryStats = {
+    transactionCount: number
+    allRootSize: number
+    allFieldSize: number
+    totalValueTouched: number
+    totalSerialTouched: number
+    totalCreations: number
 }

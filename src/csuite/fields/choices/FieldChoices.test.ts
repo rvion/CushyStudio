@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { toJS } from 'mobx'
 
 import { simpleBuilder as b } from '../../index'
+import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('FieldChoices', () => {
     const Multi = b
@@ -152,64 +153,4 @@ describe('FieldChoices', () => {
     it.skip('doesnt apply serial effect nor value effect on instanciation ', () => {
         // 🔴 TODO
     })
-
-    describe.skip('value proxy', () => {
-        it('is mutable', () => {
-            const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
-            const a = S2.create()
-            expect(a.length).toBe(1)
-            expectJSON(a.value).toEqual([3])
-
-            a.value[0] = 8
-
-            expect(a.length).toBe(1)
-            expectJSON(a.value).toEqual([8])
-        })
-
-        it('can ADD items at the end', () => {
-            const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
-            const a = S2.create()
-            expectJSON(a.value).toEqual([3])
-
-            a.value[1] = 8
-            expectJSON(a.value).toEqual([3, 8])
-
-            a.value.push(9)
-            expectJSON(a.value).toEqual([3, 8, 9])
-
-            a.value.pop()
-            expectJSON(a.value).toEqual([3, 8])
-
-            a.value.unshift(4)
-            expectJSON(a.value).toEqual([4, 3, 8])
-
-            a.value.shift()
-            expectJSON(a.value).toEqual([3, 8])
-        })
-    })
-
-    // RESET ---------------------------
-    it.skip('field.reset() should always yield same serial as schema.create(null) except for updatedAt', () => {
-        const S2 = b.int({ default: 3 }).list({ min: 3 })
-        const a1 = S2.create()
-        expect(a1.length).toBe(3)
-
-        // set value then reset
-        const a2 = S2.create()
-        a2.value[3] = 8
-        expectJSON(a2.value).toEqual([3, 3, 3, 8])
-        expect(a2.length).toBe(4)
-
-        // reset
-        a2.reset()
-        expect(a2.length).toBe(3)
-
-        // should be same serial since we reset
-        expect(toJS(a2.serial)).toMatchObject(toJS(a1.serial))
-        // expect(toJS(a1.serial)).toEqual(toJS(a2.serial))
-    })
 })
-
-function expectJSON(a: any) {
-    return expect(JSON.parse(JSON.stringify(a)))
-}

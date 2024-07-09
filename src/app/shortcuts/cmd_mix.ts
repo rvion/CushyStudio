@@ -11,14 +11,14 @@ import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
 import { globalValidInInput, placeholderTree } from './simpleValidInInput'
 
-const focusTree = (st: STATE, tree: Tree) =>
-    runInAction(() => {
-        const focusTreeRootIfMounted = () => {
+function focusTree(tree: Tree): void {
+    return runInAction(() => {
+        function focusTreeRootIfMounted(): void {
             const item = window.document.getElementById(tree.KeyboardNavigableDomNodeID)
             if (item == null) return console.log(`[🌲] dom node #${tree.KeyboardNavigableDomNodeID} not found`)
             item.focus()
         }
-        if (cushy.layout.isVisible('TreeExplorer')) {
+        if (cushy.layout.isPanelVisible('TreeExplorer')) {
             const currentFocous = window.document.activeElement
             const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
             if (treeAlreadySelected)
@@ -33,7 +33,7 @@ const focusTree = (st: STATE, tree: Tree) =>
             })
         }
     })
-
+}
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const allLegacyCommands: Command<null>[] = [
@@ -91,8 +91,8 @@ export const allLegacyCommands: Command<null>[] = [
     // placeholderTree('/', 'focus tree filter (not implemented for now)'),
 
     // tree -----------------------------------------
-    globalValidInInput(KEYS.focusAppAndDraftTree, 'focus app tree', () => focusTree(cushy, cushy.tree1)),
-    globalValidInInput(KEYS.focusFileExplorerTree, 'focus file explorer (tree)', () => focusTree(cushy, cushy.tree2)),
+    globalValidInInput(KEYS.focusAppAndDraftTree, 'focus app tree', () => focusTree(cushy.tree1)),
+    globalValidInInput(KEYS.focusFileExplorerTree, 'focus file explorer (tree)', () => focusTree(cushy.tree2)),
     globalValidInInput(KEYS.collapseAllTree, 'collapse all tree', () => {
         cushy.tree1View.resetCaretPos()
         cushy.tree2View.resetCaretPos()

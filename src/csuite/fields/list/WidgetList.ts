@@ -214,7 +214,7 @@ export class Field_list<T extends ISchema> //
         return this.items.map((i) => i.value)
     }
 
-    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>): void {
         // minor safety net since all those internal changes
         if (this.serial.items_ == null) this.serial.items_ = []
 
@@ -263,7 +263,7 @@ export class Field_list<T extends ISchema> //
      */
     get value(): Field_list_value<T> {
         return new Proxy(this.items as any, {
-            get: (target, prop: any) => {
+            get: (target, prop: any): any => {
                 // ⏸️ console.log(`[GET]`, prop)
                 if (typeof prop === 'symbol') return target[prop]
 
@@ -284,7 +284,7 @@ export class Field_list<T extends ISchema> //
                 // defer to target for other props
                 return target[prop]
             },
-            set: (target, prop: any, value) => {
+            set: (target, prop: any, value): boolean => {
                 // ⏸️ console.log(`[SET]`, prop, value)
                 if (typeof prop === 'symbol') return false
                 if (parseInt(prop, 10) === +prop) {
@@ -370,7 +370,7 @@ export class Field_list<T extends ISchema> //
         return this.length
     }
 
-    addItem(p: { at?: number; value?: T['$Value'] } = {}) {
+    addItem(p: { at?: number; value?: T['$Value'] } = {}): void {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
@@ -402,10 +402,11 @@ export class Field_list<T extends ISchema> //
 
     // MOVING ITEMS ---------------------------------------------------
     moveItem(
-        //
+        /** previous item index in the list */
         oldIndex: number,
+        /** new index in the list to move the item to */
         newIndex: number,
-    ) {
+    ): void {
         if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
         if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
         if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)

@@ -105,11 +105,11 @@ export class Field_size extends Field<Field_size_types> {
         this.value = this.defaultValue
     }
 
-    get width() {
+    get width(): number {
         return this.serial.width
     }
 
-    get height() {
+    get height(): number {
         return this.serial.height
     }
 

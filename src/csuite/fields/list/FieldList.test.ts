@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { toJS } from 'mobx'
 
 import { simpleBuilder as b } from '../../index'
+import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('FieldList', () => {
     const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
@@ -183,7 +184,3 @@ describe('FieldList', () => {
         // expect(toJS(a1.serial)).toEqual(toJS(a2.serial))
     })
 })
-
-function expectJSON(a: any) {
-    return expect(JSON.parse(JSON.stringify(a)))
-}

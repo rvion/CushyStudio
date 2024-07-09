@@ -51,7 +51,7 @@ export class Field_color extends Field<Field_color_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_color_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_color_serial>): void {
         this.serial.value = serial?.value ?? this.defaultValue
     }
 

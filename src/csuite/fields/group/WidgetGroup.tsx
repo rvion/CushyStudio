@@ -3,6 +3,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -46,7 +47,7 @@ export type Field_group_types<T extends SchemaDict> = {
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
-    get DefaultBodyUI() {
+    get DefaultBodyUI(): CovariantFC<{ field: Field_group<any> }> | undefined {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }
@@ -67,7 +68,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     static readonly type: 'group' = 'group'
 
     /** all [key,value] pairs */
-    get entries() {
+    get entries(): [string, Field][] {
         return Object.entries(this.fields) as [string, Field][]
     }
 
@@ -79,8 +80,16 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         if (this.numFields > 1) return false
         return true
     }
-    at = <K extends keyof T>(key: K): T[K]['$Field'] => this.fields[key]
-    get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
+
+    /** return item at give key */
+    at<K extends keyof T>(key: K): T[K]['$Field'] {
+        return this.fields[key]
+    }
+
+    /** return item.value at give key */
+    get<K extends keyof T>(key: K): T[K]['$Value'] {
+        return this.fields[key].value
+    }
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
@@ -108,7 +117,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return Object.entries(fieldSchemas) as [keyof T, ISchema<any>][]
     }
 
-    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>): void {
         // make sure this is propery initialized
         if (this.serial.values_ == null) this.serial.values_ = {}
 
@@ -130,7 +139,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
-    setPartialValue(val: Partial<Field_group_value<T>>) {
+    setPartialValue(val: Partial<Field_group_value<T>>): void {
         this.MUTVALUE(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
@@ -160,30 +169,30 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     // @internal
     __value: { [k in keyof T]: T[k]['$Value'] } = new Proxy({} as any, {
-        ownKeys: (target) => {
+        ownKeys: (_target): string[] => {
             return Object.keys(this.fields)
         },
-        set: (target, prop, value) => {
+        set: (_target, prop, value): boolean => {
             if (typeof prop !== 'string') return false
             const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return false
             subWidget.value = value
             return true
         },
-        get: (target, prop) => {
+        get: (_target, prop): any => {
             if (typeof prop !== 'string') return
             const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },
-        getOwnPropertyDescriptor: (target, prop) => {
+        getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
             if (typeof prop !== 'string') return
             const subWidget: Field = this.fields[prop]!
             if (subWidget == null) return
             return {
                 enumerable: true,
                 configurable: true,
-                get() {
+                get(): any {
                     return subWidget.value
                 },
             }

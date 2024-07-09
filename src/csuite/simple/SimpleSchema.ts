@@ -47,7 +47,7 @@ export class SimpleSchema<out FIELD extends Field = Field>
         })
     }
 
-    LabelExtraUI() {
+    LabelExtraUI(): null {
         return null
     }
 

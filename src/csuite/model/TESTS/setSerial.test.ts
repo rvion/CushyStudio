@@ -51,9 +51,3 @@ describe('setSerial ', () => {
         expect(E1.value.a.b.d).toEqual(2)
     })
 })
-
-function expectJSON(a: any) {
-    return expect(JSON.parse(JSON.stringify(a)))
-}
-
-export const x = 0

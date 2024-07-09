@@ -20,6 +20,11 @@ export interface ISchema<out FIELD extends Field = Field> {
     $Serial: FIELD['$Serial']
     $Value: FIELD['$Value']
 
+    // ------------------------------------------------------------
+    LabelExtraUI?: CovariantFC<{ field: FIELD }>
+
+    // ------------------------------------------------------------
+    // Instanciation
     instanciate(
         //
         repo: Repository,
@@ -28,15 +33,26 @@ export interface ISchema<out FIELD extends Field = Field> {
         serial: any | null,
     ): FIELD['$Field']
 
-    LabelExtraUI?: CovariantFC<{ field: FIELD }>
+    // ------------------------------------------------------------
+    // Clone/Fork
+    withConfig(config: Partial<FIELD['$Config']>): this
 
-    // -----------
+    // ------------------------------------------------------------
+    // Context system
     producers: Producer<any, any>[]
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this
+    publish<T>(
+        //
+        chan: Channel<T> | ChannelId,
+        produce: (self: FIELD['$Field']) => T,
+    ): this
+    subscribe<T>(
+        //
+        chan: Channel<T> | ChannelId,
+        effect: (arg: T, self: FIELD['$Field']) => void,
+    ): this
 
+    // ------------------------------------------------------------
+    // Reaction system
     reactions: { expr: (self: any) => any; effect: (arg: any, self: any) => void }[]
     addReaction<T>(expr: (self: FIELD['$Field']) => T, effect: (arg: T, self: FIELD['$Field']) => void): this
-
-    withConfig(config: Partial<FIELD['$Config']>): this
 }

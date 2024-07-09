@@ -116,7 +116,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (v1)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.9 },
                             c: { chromaBlend: 1 },
@@ -127,7 +127,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (colored)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.7 },
                             c: { chroma: 0.3 },
@@ -138,7 +138,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (subtle)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.3 },
                         })
@@ -147,7 +147,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiSquareCircle',
                     label: 'base 100',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.05 },
                         })

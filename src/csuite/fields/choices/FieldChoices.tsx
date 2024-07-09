@@ -4,7 +4,10 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { NO_PROPS } from '../../types/NO_PROPS'
+import type { ProplessFC } from '../../types/ReactUtils'
 import type { TabPositionConfig } from './TabPositionConfig'
+import type { FC } from 'react'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
@@ -75,9 +78,9 @@ export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Field_choices_types<T>> {
     static readonly type: 'choices' = 'choices'
-    UITab = () => <WidgetChoices_TabHeaderUI field={this} />
-    UISelect = () => <WidgetChoices_SelectHeaderUI field={this} />
-    UIChildren = () => <WidgetChoices_BodyUI field={this} justify={false} />
+    UITab: ProplessFC = () => <WidgetChoices_TabHeaderUI field={this} />
+    UISelect: ProplessFC = () => <WidgetChoices_SelectHeaderUI field={this} />
+    UIChildren: ProplessFC = () => <WidgetChoices_BodyUI field={this} justify={false} />
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
 
@@ -210,7 +213,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return Object.entries(this.enabledBranches).map(([key, field]) => ({ key, field }))
     }
 
-    toggleBranch(branch: keyof T & string) {
+    toggleBranch(branch: keyof T & string): void {
         // 💬 2024-03-15 rvion: no need to bumpValue in this function;
         // | it's handled by enableBranch and disableBranch themselves.
         if (this.enabledBranches[branch]) {
@@ -226,9 +229,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return Boolean(this.serial.branches[branch])
     }
 
-    disableBranch(branch: keyof T & string) {
+    disableBranch(branch: keyof T & string): void {
         // ensure branch to disable is enabled
-        if (!this.enabledBranches[branch]) return console.info(`❌ Branch "${branch}" not enabled`)
+        if (!this.enabledBranches[branch]) {
+            return // console.info(`❌ Branch "${branch}" not enabled`)
+        }
         this.MUTVALUE(() => {
             // remove children
             delete this.enabledBranches[branch]
@@ -237,7 +242,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    enableBranch(branch: keyof T & string) {
+    enableBranch(branch: keyof T & string): void {
         // ensure branch to enable is disabled
         const existingChild = this.enabledBranches[branch]
         if (this.enabledBranches[branch]) {
@@ -272,7 +277,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    enableBranch_viaSetOwnSerial(branch: keyof T & string) {
+    enableBranch_viaSetOwnSerial(branch: keyof T & string): void {
         // ensure branch to enable is disabled
         const existingChild = this.enabledBranches[branch]
         if (this.enabledBranches[branch]) {
