@@ -425,15 +425,17 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.setSerial(null)
     }
 
-    toValueJSON() {
+    /** return a cloned/detached value object you can use anywhere without care */
+    toValueJSON(): K['$Value'] {
         return JSON.parse(JSON.stringify(this.value))
     }
 
-    toSerialJSON() {
+    /** return a clone/detached serial object you can use anywhere without care */
+    toSerialJSON(): K['$Serial'] {
         return JSON.parse(JSON.stringify(this.serial))
     }
 
-    /**  */
+    /** every child class must implement change detection from its default  */
     abstract readonly hasChanges: boolean
 
     /**
@@ -454,10 +456,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     _advertisedValues: Record<ChannelId, any> = {}
 
     /**
-     * when consuming an advertised value, walk upward the parent chain, and look for
+     * when consuming an advertised value,
+     * walk upward the parent chain, and look for
      * a value stored in the advsertised values
      */
-    // 🚴🏠 -> consume / pull / receive / fetch / ... ?
     consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
         const channelId = typeof chan === 'string' ? chan : chan.id
         let at = this as any as Field | null
