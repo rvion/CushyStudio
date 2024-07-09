@@ -1,5 +1,6 @@
 import type { IBuilder } from '../model/IBuilder'
-import type { ISchema, SchemaDict } from '../model/ISchema'
+import type { ISchema } from '../model/ISchema'
+import type { SchemaDict } from '../model/SchemaDict'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../types/NO_PROPS'
 

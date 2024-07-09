@@ -1,7 +1,8 @@
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema, SchemaDict } from '../../model/ISchema'
+import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
+import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFC } from '../../variance/CovariantFC'
 

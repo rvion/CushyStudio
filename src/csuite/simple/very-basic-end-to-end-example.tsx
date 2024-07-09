@@ -3,7 +3,8 @@
 import type { Field_number, Field_number_config } from '../fields/number/FieldNumber'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
-import type { ISchema, SchemaDict } from '../model/ISchema'
+import type { ISchema } from '../model/ISchema'
+import type { SchemaDict } from '../model/SchemaDict'
 import type * as SS from './SimpleAliases'
 
 import { makeAutoObservable, reaction } from 'mobx'

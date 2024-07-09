@@ -1,4 +1,4 @@
-import type { SchemaDict } from '../../model/ISchema'
+import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'

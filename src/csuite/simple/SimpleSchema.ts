@@ -1,4 +1,3 @@
-import type { Channel, ChannelId, Producer } from '../model/Channel'
 import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
 import type { ISchema } from '../model/ISchema'
@@ -11,13 +10,10 @@ import { simpleRepo } from '../'
 import { Field_link, type Field_link_config } from '../fields/link/WidgetLink'
 import { Field_list, Field_list_config } from '../fields/list/WidgetList'
 import { Field_optional } from '../fields/optional/WidgetOptional'
+import { BaseSchema } from '../model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
-import { BaseSchema } from './BaseSchema'
 
-export class SimpleSchema<out FIELD extends Field = Field>
-    extends BaseSchema<FIELD>
-    implements ISchema<FIELD>, Instanciable<FIELD>
-{
+export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements Instanciable<FIELD> {
     FieldClass_UNSAFE: any
     repository = simpleRepo
 
@@ -47,26 +43,6 @@ export class SimpleSchema<out FIELD extends Field = Field>
         })
     }
 
-    LabelExtraUI(): null {
-        return null
-    }
-
-    // PubSub -----------------------------------------------------
-    producers: Producer<any, FIELD['$Field']>[] = []
-    publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this {
-        this.producers.push({ chan, produce })
-        return this
-    }
-
-    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this {
-        return this.addReaction(
-            (self) => self.consume(chan),
-            (arg, self) => {
-                if (arg == null) return
-                effect(arg, self)
-            },
-        )
-    }
     /**
      * chain construction
      * @since 2024-06-30
@@ -109,10 +85,5 @@ export class SimpleSchema<out FIELD extends Field = Field>
         cloned.producers = this.producers
         cloned.reactions = this.reactions
         return cloned as this
-    }
-
-    /** clone the schema, and patch the cloned config to make it hidden */
-    hidden(): SimpleSchema<FIELD> {
-        return this.withConfig({ hidden: true })
     }
 }

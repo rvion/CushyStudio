@@ -1,6 +1,6 @@
 import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
-import type { SchemaDict } from '../csuite/model/ISchema'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'

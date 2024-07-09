@@ -22,7 +22,7 @@ import type { SimpleSchema } from './SimpleSchema'
 declare global {
     namespace S {
         // core utils
-        type SchemaDict = import('../../csuite/model/ISchema').SchemaDict
+        type SchemaDict = import('../model/SchemaDict').SchemaDict
         type Builder = import('./SimpleBuilder').SimpleBuilder
         type Field = import('../model/Field').Field
 

@@ -1,5 +1,5 @@
 import type { Field } from '../csuite/model/Field'
-import type { SchemaDict } from '../csuite/model/ISchema'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
 import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'

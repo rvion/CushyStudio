@@ -51,6 +51,7 @@ import type { ITreeElement } from '../tree/TreeEntry'
 import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
+import type { BaseSchema } from './BaseSchema'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { IBuilder } from './IBuilder'
@@ -293,12 +294,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
 
-    UIToggle = (p?: { className?: string }) => <WidgetToggleUI field={this} {...p} />
+    UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
     UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
     UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
     UILabelIcon: ProplessFC = () => <WidgetLabelIconUI widget={this} />
-    UILabelContainer = (p: WidgetLabelContainerProps) => <WidgetLabelContainerUI {...p} />
-    UIHeaderContainer = (p: { children: ReactNode }) => (
+    UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
+    UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
     )
 
@@ -601,12 +602,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /**
      * this method can be heavilly optimized
+     * ping @globi
      * todo:
      *  - by storing the published value locally
      *  - by defining a getter on the _advertisedValues object of all parents
      *  - by only setting this getter up once.
      * */
-    publishValue(this: Field) {
+    publishValue(this: Field): void {
         const producers = this.schema.producers
         if (producers.length === 0) return
 
@@ -671,13 +673,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // FOLD ----------------------------------------------------
-    setCollapsed(val?: boolean) {
+    setCollapsed(val?: boolean): void {
         if (this.serial.collapsed === val) return
         this.serial.collapsed = val
         this.applySerialUpdateEffects()
     }
 
-    toggleCollapsed(this: Field) {
+    toggleCollapsed(this: Field): void {
         this.serial.collapsed = !this.serial.collapsed
         this.applySerialUpdateEffects()
     }
@@ -819,22 +821,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** getter that resolve to `this.schema.publish` */
-    get publish() {
+    get publish(): BaseSchema['publish'] {
         return this.schema.publish
     }
 
     /** getter that resolve to `this.schema.subscribe` */
-    get subscribe() {
+    get subscribe(): BaseSchema['subscribe'] {
         return this.schema.subscribe
     }
 
     /** getter that resolve to `this.schema.reactions` */
-    get reactions() {
+    get reactions(): BaseSchema['reactions'] {
         return this.schema.reactions
     }
 
     /** getter that resolve to `this.schema.addReaction` */
-    get addReaction() {
+    get addReaction(): BaseSchema['addReaction'] {
         return this.schema.addReaction
     }
 
@@ -846,7 +848,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** this function MUST be called at the end of every widget constructor */
-    init(serial_?: K['$Serial'], mobxOverrides?: any) {
+    init(serial_?: K['$Serial'], mobxOverrides?: any): void {
         this.MUTINIT(() => {
             this.copyCommonSerialFiels(serial_)
 
@@ -862,13 +864,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** update current field snapshot */
-    saveSnapshot() {
+    saveSnapshot(): void {
         this.serial.snapshot = JSON.parse(JSON.stringify(this.serial))
         this.applySerialUpdateEffects()
     }
 
     /** rever to the last snapshot */
-    revertToSnapshot() {
+    revertToSnapshot(): void {
         if (this.serial.snapshot == null) return this.reset()
         this.setSerial(this.serial.snapshot)
     }

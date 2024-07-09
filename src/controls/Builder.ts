@@ -1,5 +1,6 @@
 import type { IBuilder } from '../csuite/model/IBuilder'
-import type { ISchema, SchemaDict } from '../csuite/model/ISchema'
+import type { ISchema } from '../csuite/model/ISchema'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
@@ -39,7 +40,7 @@ import { Schema } from './Schema'
 
 declare global {
     namespace X {
-        type SchemaDict = import('../csuite/model/ISchema').SchemaDict
+        type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
         type Builder = import('./Builder').Builder
         type Field = import('../csuite/model/Field').Field
 
