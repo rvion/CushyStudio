@@ -9,7 +9,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
     field: Field_number
 }) {
     const field = p.field
-    const value = field.serial.val
+    const value = field.serial.value
     const mode = field.config.mode
     const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)
 

@@ -52,8 +52,8 @@ export function ui_model(): UI_Model {
                 },
             },
             {
-                icon: 'mdiStairsBox',
-                label: 'test1',
+                icon: 'mdiStar',
+                label: '(XL) albedobase21',
                 apply: (w) => {
                     w.value = {
                         checkpointConfig: undefined,
@@ -63,8 +63,8 @@ export function ui_model(): UI_Model {
                 },
             },
             {
-                icon: 'mdiAccountMusic',
-                label: 'test2',
+                icon: 'mdiStar',
+                label: '(1.5) revAnimated122',
                 apply: (w) => {
                     w.setValue({
                         checkpointConfig: undefined,

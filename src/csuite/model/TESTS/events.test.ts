@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b, simpleRepo as r } from '../../index'
 
@@ -140,5 +140,15 @@ describe('model links', () => {
             totalSerialTouched: 0,
             totalCreations: 9,
         })
+
+        // only change the value in `$.list[1]` ----------------> VV
+        e.value = { bool: false, int: 0, str: 'coucou', list: [1, 22, 3, 4] }
+        const tct = r.lastTransaction
+        const pathsTouched = [...tct!.touchedFields.entries()].map(([field, mode]) => ({ path: field.path, mode }))
+        expect(pathsTouched).toMatchObject([
+            { path: '$.list.1', mode: 'value' },
+            { path: '$.list', mode: 'value' },
+            { path: '$', mode: 'value' },
+        ])
     })
 })

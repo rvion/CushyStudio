@@ -3,47 +3,65 @@ import { toJS } from 'mobx'
 
 import { simpleBuilder as b } from '../../index'
 
-describe('FieldList', () => {
-    const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
-    const S123 = b.string({ default: '🔵' }).list()
-
-    describe('tupples', () => {
-        it('works', () => {
-            // S.SList<S.SString | S.SNumber>
-            const S2 = b.list({
-                min: 2,
-                element: (x) => {
-                    if (x % 2 === 0) return b.int()
-                    return b.string()
-                },
-            })
-            const a = S2.create()
-            expect(a.length).toBe(2)
-            expectJSON(a.value).toEqual([0, ''])
-
-            a.setValue([1, 2])
-            expectJSON(a.value).toEqual([1, '2'])
+describe('FieldChoices', () => {
+    const Multi = b
+        .choices({
+            foo: b.string({ default: 'yo' }),
+            bar: b.int().list({ defaultLength: 3 }),
+            baz: b.string(),
         })
-    })
+        .withConfig({ default: 'baz' })
+
+    const Single = b.choice(
+        {
+            foo: b.string({ default: 'yo' }),
+            bar: b.int().list({ defaultLength: 3 }),
+            baz: b.string(),
+        },
+        { default: 'baz' },
+    )
 
     // INSTANCIATION -------------------
     describe('instanciation', () => {
-        it('works without default', () => {
-            //
-            const E1 = S123.create()
-            expectJSON(E1.value).toEqual([])
+        it('works without default - Multi', () => {
+            const MultiNoDefault = b.choices({
+                foo: b.string({ default: 'yo' }),
+                bar: b.int().list({ defaultLength: 3 }),
+                baz: b.string(),
+            })
+            const E2 = MultiNoDefault.create()
+            expectJSON(E2.value).toEqual({})
+        })
+        it('works without default - Single', () => {
+            const SingleNoDefault = b.choice({
+                foo: b.string({ default: 'yo' }),
+                bar: b.int().list({ defaultLength: 3 }),
+                baz: b.string(),
+            })
+
+            const E1 = SingleNoDefault.create()
+            expectJSON(E1.value).toEqual({ foo: 'yo' })
         })
 
-        it('works WITH default', () => {
-            const E1 = S1.create()
-            expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
-            expectJSON(E1.serial).toMatchObject({
+        it('works WITH default - Multi', () => {
+            const E1 = Multi.create()
+            expect(E1.toValueJSON()).toEqual({ baz: '' })
+            expect(toJS(E1.serial)).toMatchObject({
                 // prettier-ignore
-                items_: [
-                    { value: '🔵' },
-                    { value: '🔵' },
-                    { value: '🔵' },
-                ],
+                values_: {
+              baz: { value: '' },
+            },
+            })
+        })
+
+        it('works WITH default - Single', () => {
+            const E2 = Single.create()
+            expect(E2.toValueJSON()).toEqual({ baz: '' })
+            expect(toJS(E2.serial)).toMatchObject({
+                // prettier-ignore
+                values_: {
+                    baz: { value: '' },
+                },
             })
         })
     })
@@ -51,29 +69,37 @@ describe('FieldList', () => {
     // SET SERIAL ----------------------
     describe('setSerial', () => {
         it('works', () => {
-            const E1 = S1.create()
-            expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
-            expect(E1.length).toBe(3)
+            const E1 = Multi.create()
+            expectJSON(E1.value).toEqual({ baz: '' })
 
             const serial = {
-                type: 'list' as const,
-                items_: [
-                    { type: 'str' as const, value: '🔵' },
-                    { type: 'str' as const, value: '🟢' },
-                ],
+                type: 'choices' as const,
+                branches: { baz: true, foo: true, bar: true },
+                values_: {
+                    baz: { type: 'str' as const, value: '🔵' },
+                    foo: { type: 'str' as const, value: '🟢' },
+                    bar: {
+                        type: 'list' as const,
+                        items_: [
+                            { type: 'number' as const, value: 1 },
+                            { type: 'number' as const, value: 2 },
+                            { type: 'number' as const, value: 3 },
+                        ],
+                    },
+                },
             }
 
             E1.setSerial(serial)
             expect(E1.serial === serial).toBe(false)
-            expect(E1.length).toBe(2)
-            expectJSON(E1.value).toEqual(['🔵', '🟢'])
+            // expect(E1.value).toBe(2)
+            expectJSON(E1.value).toEqual({ foo: '🟢', bar: [1, 2, 3], baz: '🔵' })
             expect(toJS(E1.serial)).toMatchObject(serial)
         })
     })
 
-    describe('setValue', () => {
+    describe.skip('setValue', () => {
         it('works', () => {
-            const E1 = S1.create()
+            const E1 = Multi.create()
             expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
             expect(E1.length).toBe(3)
 
@@ -90,7 +116,7 @@ describe('FieldList', () => {
         })
 
         it('updates the serial without creating a new one', () => {
-            const E1 = S1.create()
+            const E1 = Multi.create()
             const oldSerial = E1.serial
             expect(oldSerial.items_.length).toBe(3)
 
@@ -108,9 +134,9 @@ describe('FieldList', () => {
     })
 
     // STRUCTURAL SHARING --------------
-    it('generate a new serial for each field', () => {
-        const E1 = S1.create()
-        const E2 = S1.create(E1.serial)
+    it.skip('generate a new serial for each field', () => {
+        const E1 = Multi.create()
+        const E2 = Multi.create(E1.serial)
 
         // same shape
         expect(E1.items.length).toBe(3)
@@ -123,11 +149,11 @@ describe('FieldList', () => {
     })
 
     // EFFECTS -------------------------
-    it('doesnt apply serial effect nor value effect on instanciation ', () => {
+    it.skip('doesnt apply serial effect nor value effect on instanciation ', () => {
         // 🔴 TODO
     })
 
-    describe('value proxy', () => {
+    describe.skip('value proxy', () => {
         it('is mutable', () => {
             const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
             const a = S2.create()
@@ -163,7 +189,7 @@ describe('FieldList', () => {
     })
 
     // RESET ---------------------------
-    it('field.reset() should always yield same serial as schema.create(null) except for updatedAt', () => {
+    it.skip('field.reset() should always yield same serial as schema.create(null) except for updatedAt', () => {
         const S2 = b.int({ default: 3 }).list({ min: 3 })
         const a1 = S2.create()
         expect(a1.length).toBe(3)

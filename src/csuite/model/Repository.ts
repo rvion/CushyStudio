@@ -198,6 +198,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
             this.tct = null
             //  VVV  apply the callback once every update is done, OUTSIDE of the transaction
             tct.commit()
+            this.lastTransaction = tct
 
             // ALTERNATIVE B:
             // | execute the Commit callbacks within the transaction
@@ -207,6 +208,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         }
     }
 
+    lastTransaction: Maybe<Transaction> = null
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields<FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,

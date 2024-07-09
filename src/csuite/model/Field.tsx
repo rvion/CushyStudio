@@ -150,13 +150,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.serial = { type: (this.constructor as any).type }
     }
 
-    static get mobxOverrideds() {
-        throw new Error('`mobxOverrideds` should be overridden in subclass')
-    }
+    // static get mobxOverrideds() {
+    //     throw new Error('`mobxOverrideds` should be overridden in subclass')
+    // }
 
-    static get type(): Field['$Type'] {
-        throw new Error('This method should be overridden in subclass')
-    }
+    // static get type(): Field['$Type'] {
+    //     throw new Error('This method should be overridden in subclass')
+    // }
 
     get type(): Field['$Type'] {
         return (this.constructor as any).type
@@ -258,7 +258,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.value = val
     }
 
-    RECONCILE<SCHEMA extends ISchema>(p: {
+    RECONCILE<SCHEMA extends Instanciable>(p: {
         existingChild: Maybe<Field>
         correctChildSchema: SCHEMA
         /** the target child to clone/apply into child */
@@ -426,6 +426,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     toValueJSON() {
         return JSON.parse(JSON.stringify(this.value))
+    }
+
+    toSerialJSON() {
+        return JSON.parse(JSON.stringify(this.serial))
     }
 
     /**  */

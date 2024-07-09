@@ -13,7 +13,7 @@ describe('auto-migration ', () => {
         // set E1 value to '🟢'
         E1.value = '🟢'
         expect(E1.value).toBe('🟢')
-        expect(E1.serial).toMatchObject({ type: 'str', val: '🟢' })
+        expect(E1.serial).toMatchObject({ type: 'str', value: '🟢' })
 
         // construct E2 from E1 serial, but with schema wrapped into list
         const S2 = b.string().list()
@@ -22,17 +22,17 @@ describe('auto-migration ', () => {
 
         // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
         expect(E2.value).toMatchObject(['🟢'])
-        expect(E2.serial).toMatchObject({ type: 'list', items_: [{ type: 'str', val: '🟢' }] })
+        expect(E2.serial).toMatchObject({ type: 'list', items_: [{ type: 'str', value: '🟢' }] })
 
         // E1 should still have the same value, despite its serial having been used to create E2
-        expect(E1.serial).toMatchObject({ type: 'str', val: '🟢' })
+        expect(E1.serial).toMatchObject({ type: 'str', value: '🟢' })
 
         // construct E3 from E2 serial, but with schema back to simple string (not in list anymore)
         // @ts-expect-error
         const E3 = S1.create(E2.serial)
 
         // E3 is able to PRESERVE the '🟢' when schema has been stripped from list
-        expect(E3.serial).toMatchObject({ type: 'str', val: '🟢' })
+        expect(E3.serial).toMatchObject({ type: 'str', value: '🟢' })
     })
 
     // it('can recover from/to links', () => {
@@ -50,7 +50,7 @@ describe('auto-migration ', () => {
         // set E1 value to '🟢'
         E1.value = '🟢'
         expect(E1.value).toBe('🟢')
-        expect(E1.serial).toMatchObject({ type: 'str', val: '🟢' })
+        expect(E1.serial).toMatchObject({ type: 'str', value: '🟢' })
 
         // construct E2 from E1 serial, but with schema wrapped into list
         const S2 = b.string().list()
@@ -60,17 +60,17 @@ describe('auto-migration ', () => {
         // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
         expect(E2.value).toMatchObject(['🟢'])
         E2.value[0] = '🔴'
-        expect(E2.serial).toMatchObject({ type: 'list', items_: [{ type: 'str', val: '🔴' }] })
+        expect(E2.serial).toMatchObject({ type: 'list', items_: [{ type: 'str', value: '🔴' }] })
 
         // E1 should still have the same value, despite its serial having been used to create E2
-        expect(E1.serial).toMatchObject({ type: 'str', val: '🟢' })
+        expect(E1.serial).toMatchObject({ type: 'str', value: '🟢' })
 
         // construct E3 from E2 serial, but with schema back to simple string (not in list anymore)
         // @ts-expect-error
         const E3 = S1.create(E2.serial)
 
         // E3 is able to PRESERVE the '🔴' when schema has been stripped from list
-        expect(E3.serial).toMatchObject({ type: 'str', val: '🔴' })
+        expect(E3.serial).toMatchObject({ type: 'str', value: '🔴' })
     })
 })
 

@@ -34,25 +34,25 @@ export class Transaction {
         value: 0,
     }
 
-    status = new Map<Field, FieldTouchReal>()
+    touchedFields = new Map<Field, FieldTouchReal>()
     track(field: Field, mode: FieldTouchReal): void {
-        const prev = this.status.get(field)
+        const prev = this.touchedFields.get(field)
 
         // if this is true, we should have already propagated
         // upwards with all the correct values...
         if (prev === mode) return
 
         if (prev == null) {
-            this.status.set(field, mode)
+            this.touchedFields.set(field, mode)
             this.bump[mode]++
         } else if (prev === 'serial' && mode === 'value') {
             this.bump.serial--
             this.bump.value++
-            this.status.set(field, 'value')
+            this.touchedFields.set(field, 'value')
         } else if (prev === 'value' && mode === 'create') {
             this.bump.value--
             this.bump.create++
-            this.status.set(field, 'create')
+            this.touchedFields.set(field, 'create')
         }
 
         // propagate to parents
@@ -71,7 +71,7 @@ export class Transaction {
 
         // compute all nodes from leaves that need to call effects
         // call them in order, non recursively.
-        const entries = Array.from(this.status.entries())
+        const entries = Array.from(this.touchedFields.entries())
             .map(([field, mode]) => ({ field, mode, depth: field.trueDepth }))
             .sort((a, b) => b.depth - a.depth)
 

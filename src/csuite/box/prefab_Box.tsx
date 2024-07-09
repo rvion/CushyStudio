@@ -1,5 +1,5 @@
 import type { Builder } from '../../CUSHY'
-import type { Field_choices_config } from '../fields/choices/WidgetChoices'
+import type { Field_choices_config } from '../fields/choices/FieldChoices'
 import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'

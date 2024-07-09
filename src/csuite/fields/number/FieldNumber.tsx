@@ -32,7 +32,7 @@ export type Field_number_config = FieldConfig<
 // SERIAL
 export type Field_number_serial = FieldSerial<{
     type: 'number'
-    val?: number
+    value?: number
 }>
 
 // VALUE
@@ -60,7 +60,7 @@ export class Field_number extends Field<Field_number_types> {
     }
 
     get hasChanges(): boolean {
-        return this.serial.val !== this.defaultValue
+        return this.serial.value !== this.defaultValue
     }
 
     get ownProblems() {
@@ -92,7 +92,7 @@ export class Field_number extends Field<Field_number_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_number_serial>) {
-        this.serial.val = serial?.val ?? this.defaultValue
+        this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
     }
 
     /** randomize respect (soft)Min and (soft)max */
@@ -103,12 +103,12 @@ export class Field_number extends Field<Field_number_types> {
     }
 
     get value(): Field_number_value {
-        return this.serial.val ?? this.config.default ?? 0
+        return this.serial.value ?? this.config.default ?? 0
     }
 
     set value(next: Field_number_value) {
-        if (this.serial.val === next) return
-        this.MUTVALUE(() => (this.serial.val = next))
+        if (this.serial.value === next) return
+        this.MUTVALUE(() => (this.serial.value = next))
     }
 }
 

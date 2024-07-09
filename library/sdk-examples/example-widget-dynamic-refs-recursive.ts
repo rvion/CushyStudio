@@ -1,5 +1,5 @@
 import type { Schema } from '../../src/controls/Schema'
-import type { Field_choices } from '../../src/csuite/fields/choices/WidgetChoices'
+import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/WidgetGroup'
 import type { Field_image } from '../../src/csuite/fields/image/WidgetImage'
 import type { Field_list } from '../../src/csuite/fields/list/WidgetList'

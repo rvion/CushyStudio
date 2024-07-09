@@ -47,7 +47,7 @@ export type Field_string_config = FieldConfig<
 // SERIAL
 export type Field_string_serial = FieldSerial<{
     type: 'str'
-    val?: string
+    value?: string
 }>
 
 // {type:"str",val:"coucou",id:"dsafasdfsdafas"}
@@ -56,7 +56,7 @@ export type Field_string_serial = FieldSerial<{
 // SERIAL FROM VALUE
 export const Field_string_fromValue = (val: string): Field_string_serial => ({
     type: 'str',
-    val,
+    value: val,
 })
 
 // VALUE
@@ -115,7 +115,7 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     protected setOwnSerial(serial: Maybe<Field_string_serial>) {
-        this.serial.val = serial?.val ?? this.defaultValue
+        this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
     }
 
     get defaultValue(): string {
@@ -127,13 +127,13 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     get value(): Field_string_value {
-        return this.serial.val ?? this.config.default ?? ''
+        return this.serial.value ?? this.config.default ?? ''
     }
 
     set value(next: Field_string_value) {
         const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
-        if (this.serial.val === nextStrVal) return
-        this.MUTVALUE(() => (this.serial.val = nextStrVal))
+        if (this.serial.value === nextStrVal) return
+        this.MUTVALUE(() => (this.serial.value = nextStrVal))
     }
 }
 

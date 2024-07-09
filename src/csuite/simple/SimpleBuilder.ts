@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 
 import { Field_bool, type Field_bool_config } from '../fields/bool/FieldBool'
 import { Field_button, type Field_button_config } from '../fields/button/FieldButton'
-import { Field_choices, type Field_choices_config } from '../fields/choices/WidgetChoices'
+import { Field_choices, type Field_choices_config } from '../fields/choices/FieldChoices'
 import { Field_color, type Field_color_config } from '../fields/color/FieldColor'
 import { Field_group, type Field_group_config } from '../fields/group/WidgetGroup'
 import { Field_link } from '../fields/link/WidgetLink'
@@ -197,12 +197,27 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_group<T>>(Field_group, { items: fields, ...config })
     }
 
-    choice<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
+    choice_v0<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
         return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: false, ...config })
     }
 
-    choices<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
+    choices_v0<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
         return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, ...config })
+    }
+
+    choice<T extends SchemaDict>(
+        //
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
+    ): S.SChoices<T> {
+        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: false, items, ...config })
+    }
+
+    choices<T extends SchemaDict>(
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
+    ): S.SChoices<T> {
+        return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, items, ...config })
     }
 
     empty = (config: Field_group_config<NO_PROPS> = {}): S.SEmpty => {

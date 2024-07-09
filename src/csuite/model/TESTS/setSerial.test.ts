@@ -9,7 +9,7 @@ describe('setSerial ', () => {
         const E1 = S1.create()
         E1.setSerial({
             type: 'str',
-            val: '🟢B',
+            value: '🟢B',
         })
         expect(E1.value).toEqual('🟢B')
     })
@@ -35,11 +35,11 @@ describe('setSerial ', () => {
                             values_: {
                                 c: {
                                     type: 'str',
-                                    val: '🟢',
+                                    value: '🟢',
                                 },
                                 d: {
                                     type: 'number',
-                                    val: 2,
+                                    value: 2,
                                 },
                             },
                         },

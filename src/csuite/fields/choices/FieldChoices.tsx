@@ -1,6 +1,6 @@
 import type { IconName } from '../../icons/icons'
 import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial, FieldSerial_CommonProperties } from '../../model/FieldSerial'
+import type { FieldSerial } from '../../model/FieldSerial'
 import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -87,14 +87,22 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return null
     }
 
+    /**
+     * true if the choice widget multiple values (0+)
+     */
     get isMulti(): boolean {
         return this.config.multi
     }
 
+    /**
+     * true if the choice widget accept ONE and only ONE value
+     * (not 0, not 2+)
+     */
     get isSingle(): boolean {
         return !this.config.multi
     }
 
+    /** dictionary of enabled children branches */
     enabledBranches: { [k in keyof T]?: T[k]['$Field'] } = {}
 
     get firstPossibleChoice(): (keyof T & string) | undefined {
@@ -150,12 +158,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     isBranchActiveByDefault(branchName: keyof T & string): boolean {
         const def = this.config.default
+
+        if (def == null) {
+            if (this.isMulti) return false
+            return this.allPossibleChoices[0] === branchName
+        }
         const shouldBeActive: boolean =
-            def == null //
-                ? false
-                : typeof def === 'string'
-                  ? branchName === def
-                  : Boolean((def as DefaultBranches<T>)[branchName])
+            typeof def === 'string' ? branchName === def : Boolean((def as DefaultBranches<T>)[branchName])
         return shouldBeActive
     }
 
@@ -173,46 +182,24 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    protected setOwnSerial(): void {
-        if (this.serial.values_ == null) this.serial.values_ = {}
-        if (this.serial.branches == null) this.serial.branches = {}
-        //
+    protected setOwnSerial(serial_: Maybe<this['$Serial']>): void {
+        if (this.serial.values_ == null) this.serial.values_ = {} // 💊
+        if (this.serial.branches == null) this.serial.branches = {} // 💊
+
         const config = this.config
         if (typeof config.items === 'function') {
             toastError('🔴 ChoicesWidget "items" property should now be an object, not a function')
         }
 
         // find all active branches
-        const allBranches = Object.keys(config.items) as (keyof T & string)[]
-        const def = this.config.default
-        const isMulti = this.config.multi
 
-        if (isMulti) {
-            for (const branch of allBranches) {
-                const isActive =
-                    this.serial.branches[branch] ??
-                    (typeof def === 'string' //
-                        ? branch === def
-                        : typeof def === 'object'
-                          ? def?.[branch] ?? false
-                          : null)
+        for (const branch of this.allPossibleChoices) {
+            const shouldBeActive = serial_?.branches[branch] ?? this.isBranchActiveByDefault(branch)
 
-                if (isActive) this.enableBranch(branch)
-            }
-        } else {
-            const allBranches = Object.keys(this.config.items)
-            const activeBranch =
-                allBranches.find((x) => this.serial.branches[x]) ??
-                (def == null
-                    ? allBranches[0]
-                    : typeof def === 'string' //
-                      ? def
-                      : typeof def === 'object'
-                        ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
-                        : allBranches[0])
-            if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
-            else this.enableBranch(activeBranch)
+            if (shouldBeActive) this.enableBranch(branch)
+            else this.disableBranch(branch)
         }
+        // if (this.isSingle && activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
     }
 
     get subFields(): Field[] {
@@ -241,11 +228,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     disableBranch(branch: keyof T & string) {
         // ensure branch to disable is enabled
-        if (!this.enabledBranches[branch]) {
-            return
-            // throw new Error(`❌ Branch "${branch}" not enabled`)
-        }
-
+        if (!this.enabledBranches[branch]) return console.info(`❌ Branch "${branch}" not enabled`)
         this.MUTVALUE(() => {
             // remove children
             delete this.enabledBranches[branch]
@@ -256,36 +239,72 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     enableBranch(branch: keyof T & string) {
         // ensure branch to enable is disabled
+        const existingChild = this.enabledBranches[branch]
         if (this.enabledBranches[branch]) {
-            return
-            // throw new Error(`❌ Branch "${branch}" already enabled`)
+            return console.info(`❌ Branch "${branch}" already enabled`)
         }
 
-        if (!this.config.multi) {
-            for (const key in this.enabledBranches) {
-                this.disableBranch(key)
+        this.MUTVALUE(() => {
+            if (!this.config.multi) {
+                for (const key in this.enabledBranches) {
+                    this.disableBranch(key)
+                }
             }
-        }
-        // first: quick safety net to check against schema changes
-        // a. re-create an empty item to check it's schema
-        let schema = this.config.items[branch]
-        /* 💊 */ if (typeof schema === 'function') schema = (schema as any)() // temporary backward compat
 
-        if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
+            // first: quick safety net to check against schema changes
+            // a. re-create an empty item to check it's schema
+            let schema = this.config.items[branch]
+            if (typeof schema === 'function') schema = (schema as any)() // 💊 temporary backward compat
+            if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
-        // prev serial seems compmatible => we use it
-        const prevBranchSerial: Maybe<FieldSerial_CommonProperties> = this.serial.values_?.[branch]
-        if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.enabledBranches[branch] = schema.instanciate(this.repo, this.root, this, prevBranchSerial)
-        }
-        // prev serial is not compatible => we use the fresh one instead
-        else {
-            this.enabledBranches[branch] = schema.instanciate(this.repo, this.root, this, null)
-            this.serial.values_[branch] = this.enabledBranches[branch]?.serial
+            this.RECONCILE({
+                correctChildSchema: schema,
+                existingChild: this.enabledBranches[branch],
+                targetChildSerial: this.serial.values_?.[branch],
+                attach: (child) => {
+                    this.enabledBranches[branch] = child
+                    this.serial.values_[branch] = child.serial
+                },
+            })
+
+            // set the active branch as active
+            this.serial.branches[branch] = true
+        })
+    }
+
+    enableBranch_viaSetOwnSerial(branch: keyof T & string) {
+        // ensure branch to enable is disabled
+        const existingChild = this.enabledBranches[branch]
+        if (this.enabledBranches[branch]) {
+            return console.info(`❌ Branch "${branch}" already enabled`)
         }
 
-        // set the active branch as active
-        this.serial.branches[branch] = true
+        this.MUTVALUE(() => {
+            if (!this.config.multi) {
+                for (const key in this.enabledBranches) {
+                    this.disableBranch(key)
+                }
+            }
+
+            // first: quick safety net to check against schema changes
+            // a. re-create an empty item to check it's schema
+            let schema = this.config.items[branch]
+            if (typeof schema === 'function') schema = (schema as any)() // 💊 temporary backward compat
+            if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
+
+            this.RECONCILE({
+                correctChildSchema: schema,
+                existingChild: this.enabledBranches[branch],
+                targetChildSerial: this.serial.values_?.[branch],
+                attach: (child) => {
+                    this.enabledBranches[branch] = child
+                    this.serial.values_[branch] = child.serial
+                },
+            })
+
+            // set the active branch as active
+            this.serial.branches[branch] = true
+        })
     }
 
     /** results, but only for active branches */
@@ -319,24 +338,3 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
 // DI
 registerWidgetClass('choices', Field_choices)
-
-// 💬 2024-07-01 rvion:
-// 💬 hack so optional fields do not increase nesting twice
-// 💬 But not sure this override is worth it.
-// 💬 Consistency may be better than the extra line of code.
-// | get indentChildren(): number {
-// |     return 0
-// | }
-
-// ⏸️ reset(): void {
-// ⏸️     const def = this.config.default
-// ⏸️     for (const branchName of this.allPossibleChoices) {
-// ⏸️         const shouldBeActive = this.isBranchActiveByDefault(branchName)
-// ⏸️         const child = this.enabledBranches[branchName]
-// ⏸️         if (child && !shouldBeActive) this.disableBranch(branchName)
-// ⏸️         if (!child && shouldBeActive) this.enableBranch(branchName)
-// ⏸️         // re-check if child is now enabled
-// ⏸️         const childAfter = this.enabledBranches[branchName]
-// ⏸️         if (childAfter && childAfter.hasChanges) childAfter.reset()
-// ⏸️     }
-// ⏸️ }

@@ -41,8 +41,9 @@ export const themeConf: ThemeConf['$Field'] = cushyRepo.entity(
                 base: ui.colorV2({
                     default: '#F4F5FB',
                     presets: [
-                        { icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B'), label: 'Dark' },
-                        { icon: 'mdiLightSwitch', apply: (w) => (w.value = '#F4F5FB'), label: 'Light' },
+                        { label: 'Dark', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B') },
+                        { label: 'Light', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#F4F5FB') },
+                        { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                     ],
                 }),
                 appbar: ui.colorV2({ default: '#313338' }).optional(true),

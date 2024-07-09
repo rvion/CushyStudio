@@ -24,11 +24,11 @@ describe('migration manual', () => {
                     values_: {
                         a: {
                             type: 'number' as const,
-                            val: x.valA,
+                            value: x.valA,
                         },
                         b: {
                             type: 'number' as const,
-                            val: x.valB,
+                            value: x.valB,
                         },
                     },
                 }),

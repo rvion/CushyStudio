@@ -8,12 +8,38 @@ export const WidgetIndentUI = observer(function WidgetIndentUI_(p: { depth: numb
         <div
             className='UI-WidgetIndent'
             style={{
-                width: `${(depth - 1) * 1}rem`,
-                marginRight: '.2rem',
-                flexShrink: 0,
+                // background: 'linear-gradient(90deg, red 0%, blue 100%)',
+                // marginLeft: '.5rem',
+                // marginRight: '.2rem',
+                display: 'flex',
                 alignSelf: 'stretch',
-                borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h)',
+                flexShrink: 0,
             }}
-        />
+        >
+            {new Array(depth - 1).fill(0).map((_, i) => (
+                <div
+                    className='UI-WidgetIndent'
+                    style={{
+                        width: `${0.7}rem`,
+                        // marginRight: '.2rem',
+                        flexShrink: 0,
+                        alignSelf: 'stretch',
+                        borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)',
+                    }}
+                />
+            ))}
+        </div>
     )
+    // return (
+    //     <div
+    //         className='UI-WidgetIndent'
+    //         style={{
+    //             width: `${(depth - 1) * 1}rem`,
+    //             marginRight: '.2rem',
+    //             flexShrink: 0,
+    //             alignSelf: 'stretch',
+    //             borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h)',
+    //         }}
+    //     />
+    // )
 })

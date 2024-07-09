@@ -72,7 +72,6 @@ export class Field_link<A extends ISchema, B extends ISchema> //
     }
 
     protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>) {
-        let aField: A['$Field'] = this.aField
         this.RECONCILE({
             existingChild: this.aField,
             correctChildSchema: this.config.share,
@@ -85,7 +84,7 @@ export class Field_link<A extends ISchema, B extends ISchema> //
 
         this.RECONCILE({
             existingChild: this.bField,
-            correctChildSchema: this.config.children(aField),
+            correctChildSchema: this.config.children(this.aField),
             targetChildSerial: serial?.b,
             attach: (child) => {
                 this.bField = child

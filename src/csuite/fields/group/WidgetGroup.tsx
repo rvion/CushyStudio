@@ -4,8 +4,6 @@ import type { ISchema, SchemaDict } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'

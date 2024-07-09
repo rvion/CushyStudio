@@ -27,9 +27,9 @@ describe('assign to value object', () => {
         expect(E1.serial).toMatchObject({
             type: 'list',
             items_: [
-                { type: 'str', val: '🔵' },
-                { type: 'str', val: '🟡' },
-                { type: 'str', val: '🔵' },
+                { type: 'str', value: '🔵' },
+                { type: 'str', value: '🟡' },
+                { type: 'str', value: '🔵' },
             ],
         })
     })

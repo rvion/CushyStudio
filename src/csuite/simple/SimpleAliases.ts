@@ -1,6 +1,6 @@
 import type { Field_bool } from '../fields/bool/FieldBool'
 import type { Field_button } from '../fields/button/FieldButton'
-import type { Field_choices } from '../fields/choices/WidgetChoices'
+import type { Field_choices } from '../fields/choices/FieldChoices'
 import type { Field_color } from '../fields/color/FieldColor'
 import type { Field_group } from '../fields/group/WidgetGroup'
 import type { Field_link } from '../fields/link/WidgetLink'

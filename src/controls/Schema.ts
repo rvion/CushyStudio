@@ -1,10 +1,9 @@
-import type { CovariantFC, CovariantFn } from '../csuite'
+import type { Builder, CovariantFC, CovariantFn } from '../csuite'
 import type { Field } from '../csuite/model/Field'
 import type { ISchema } from '../csuite/model/ISchema'
 import type { Repository } from '../csuite/model/Repository'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
-import { reaction } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
 import { Field_link, type Field_link_config } from '../csuite/fields/link/WidgetLink'
@@ -12,24 +11,18 @@ import { Field_list, Field_list_config } from '../csuite/fields/list/WidgetList'
 import { Field_optional } from '../csuite/fields/optional/WidgetOptional'
 import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
 import { Channel, type ChannelId, Producer } from '../csuite/model/Channel'
+import { BaseSchema } from '../csuite/simple/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { cushyRepo } from './Builder'
 
-export interface Schema<out FIELD extends Field = Field> {
-    $Field: FIELD
-    $Type: FIELD['type']
-    $Config: FIELD['$Config']
-    $Serial: FIELD['$Serial']
-    $Value: FIELD['$Value']
-}
-
-export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
+export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements ISchema<FIELD> {
     FieldClass_UNSAFE: any
 
     get type(): FIELD['$Type'] {
         return this.FieldClass_UNSAFE.type
     }
-
+    repository: Repository<Builder> = cushyRepo
     constructor(
         FieldClass: {
             readonly type: FIELD['$Type']
@@ -44,34 +37,12 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
         },
         public readonly config: FIELD['$Config'],
     ) {
+        super()
         this.FieldClass_UNSAFE = FieldClass
-        // makeObservable(this, { config: true })
-    }
-
-    instanciate(
-        //
-        repo: Repository,
-        root: Field<any> | null,
-        parent: Field | null,
-        serial: any | null,
-    ) {
-        // ensure the serial is compatible
-        if (serial != null && serial.type !== this.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
-            serial = null
-        }
-        /* 🔴🔴🔴🔴42 */
-        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
-        field.publishValue()
-        for (const { expr, effect } of this.reactions) {
-            // 🔴 Need to dispose later
-            reaction(
-                () => expr(field),
-                (arg) => effect(arg, field),
-                { fireImmediately: true },
-            )
-        }
-        return field
+        // makeObservable(this, {
+        //     config: true,
+        //     FieldClass_UNSAFE: false,
+        // })
     }
 
     _methods: any = {}
@@ -115,20 +86,6 @@ export class Schema<out FIELD extends Field = Field> implements ISchema<FIELD> {
                 effect(arg, self)
             },
         )
-    }
-
-    reactions: {
-        expr(self: FIELD['$Field']): any
-        effect(arg: any, self: FIELD['$Field']): void
-    }[] = []
-
-    addReaction<T>(
-        //
-        expr: (self: FIELD['$Field']) => T,
-        effect: (arg: T, self: FIELD['$Field']) => void,
-    ): this {
-        this.reactions.push({ expr, effect })
-        return this
     }
 
     // Requirements (CushySpecifc)
