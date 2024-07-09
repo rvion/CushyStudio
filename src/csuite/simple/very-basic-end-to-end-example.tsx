@@ -1,9 +1,9 @@
 // @ts-nocheck
 
 import type { Field_number, Field_number_config } from '../fields/number/FieldNumber'
+import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
-import type { ISchema } from '../model/ISchema'
 import type { SchemaDict } from '../model/SchemaDict'
 import type * as SS from './SimpleAliases'
 
@@ -29,7 +29,7 @@ export class BasicBuilder implements IBuilder {
 
     /** (@internal) don't call this yourself */
     constructor() {
-        // public model: Model<ISchema, BasicBuilder>, //
+        // public model: Model<BaseSchema, BasicBuilder>, //
         makeAutoObservable(this, {
             SpecCtor: false,
         })
@@ -59,7 +59,7 @@ export class BasicBuilder implements IBuilder {
         return new SimpleSchema<Field_button<K>>('button', config)
     }
 
-    list<const T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
+    list<const T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
         return new SimpleSchema<Field_list<T>>('list', config)
     }
 
@@ -82,11 +82,11 @@ export class BasicBuilder implements IBuilder {
         return new SimpleSchema<Field_group<T>>('group', { items: fields, ...config })
     }
 
-    optional<const T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
+    optional<const T extends BaseSchema>(p: Field_optional_config<T>): S.SOptional<T> {
         return new SimpleSchema<Field_optional<T>>('optional', p)
     }
 
-    _HYDRATE<T extends ISchema>(
+    _HYDRATE<T extends BaseSchema>(
         //
         model: Field<any>,
         parent: Field | null,
@@ -108,7 +108,7 @@ export class BasicBuilder implements IBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    private __HYDRATE<T extends ISchema>(
+    private __HYDRATE<T extends BaseSchema>(
         //
         model: Field<any>,
         parent: Field | null,
@@ -182,11 +182,11 @@ const value = basicEntity.value // FieldValue
 const fooField = root.fields.foo // Field
 const fooValue = value.foo // FieldValue ie. string
 const fooValue2 = root.fields.foo.value // FieldValue
-const fooSchema = fooField.schema // Schema<Field_string> (🕣 ISchema<Field_string>)
+const fooSchema = fooField.schema // Schema<Field_string> (🕣 BaseSchema<Field_string>)
 const nestedValue = value.nested // FieldValue
 const nestedValue2 = root.fields.nested.value // FieldValue
 const fooSerial = fooField.serial // FieldSerial (🕣 Field_string_serial)
 const fooUI = fooField.DefaultHeaderUI // WidgetStringUI
 const numField = root.fields.num // Field
 const numUI = numField.DefaultHeaderUI // WidgetNumberUI
-const numSchema = numField.schema // Schema<Field_number> (🕣 ISchema<Field_number>)
+const numSchema = numField.schema // Schema<Field_number> (🕣 BaseSchema<Field_number>)

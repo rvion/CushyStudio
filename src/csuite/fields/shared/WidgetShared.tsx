@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -49,7 +49,7 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_shared<F>>,
+        schema: BaseSchema<Field_shared<F>>,
         serial?: Field_shared_serial,
     ) {
         super(repo, root, parent, schema)

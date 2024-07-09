@@ -1,8 +1,8 @@
 import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
+import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
-import type { ISchema } from '../model/ISchema'
 import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'

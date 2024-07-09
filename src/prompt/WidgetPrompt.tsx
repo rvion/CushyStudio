@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
-import type { ISchema } from '../csuite/model/ISchema'
 import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
@@ -80,7 +80,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_prompt>,
+        schema: BaseSchema<Field_prompt>,
         serial?: Field_prompt_serial,
     ) {
         super(repo, root, parent, schema)

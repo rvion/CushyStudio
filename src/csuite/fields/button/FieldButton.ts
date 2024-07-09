@@ -1,7 +1,7 @@
 import type { FrameAppearance } from '../../frame/FrameTemplates'
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -57,7 +57,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_button<K>>,
+        schema: BaseSchema<Field_button<K>>,
         serial?: Field_button_serial,
     ) {
         super(repo, root, parent, schema)

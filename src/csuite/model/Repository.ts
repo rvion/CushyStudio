@@ -1,8 +1,8 @@
 import type { Field_group } from '../fields/group/WidgetGroup'
+import type { BaseSchema } from './BaseSchema'
 import type { EntityConfig } from './Entity'
 import type { FieldId } from './FieldId'
 import type { IBuilder } from './IBuilder'
-import type { ISchema } from './ISchema'
 import type { SchemaDict } from './SchemaDict'
 
 import { action, makeObservable } from 'mobx'
@@ -216,7 +216,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields<FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,
-        entityConfig: EntityConfig<ISchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
+        entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
     ): Field_group<FIELDS> {
         const schema = this.domain.group({
             label: false,
@@ -229,7 +229,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     /** simple alias to create a new Form */
-    entity<SCHEMA extends ISchema>(
+    entity<SCHEMA extends BaseSchema>(
         schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
     ): SCHEMA['$Field'] {
@@ -243,7 +243,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     /** simple way to defined forms and in react components */
-    use<SCHEMA extends ISchema>(
+    use<SCHEMA extends BaseSchema>(
         schemaExt: (form: DOMAIN) => SCHEMA,
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
         deps: DependencyList = [],
@@ -252,7 +252,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
     }
 
     /** eval schema if it's a function */
-    private evalSchema<SCHEMA extends ISchema>(buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA)): SCHEMA {
+    private evalSchema<SCHEMA extends BaseSchema>(buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA)): SCHEMA {
         if (typeof buildFn === 'function') return buildFn(this.domain as DOMAIN)
         return buildFn
     }

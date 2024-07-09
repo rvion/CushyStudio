@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
@@ -100,7 +100,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_group<T>>,
+        schema: BaseSchema<Field_group<T>>,
         serial?: Field_group_serial<T>,
     ) {
         super(repo, root, parent, schema)
@@ -112,10 +112,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     /** just here to normalize fieldSchema definitions, since it used to be a lambda */
-    private get _fieldSchemas(): [keyof T, ISchema<any>][] {
+    private get _fieldSchemas(): [keyof T, BaseSchema<any>][] {
         const itemsDef = this.config.items
         const fieldSchemas: SchemaDict = typeof itemsDef === 'function' ? itemsDef() ?? {} : itemsDef ?? {}
-        return Object.entries(fieldSchemas) as [keyof T, ISchema<any>][]
+        return Object.entries(fieldSchemas) as [keyof T, BaseSchema<any>][]
     }
 
     protected setOwnSerial(serial: Maybe<Field_group_serial<T>>): void {

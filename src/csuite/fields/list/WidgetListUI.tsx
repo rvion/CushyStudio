@@ -1,5 +1,5 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field } from '../../model/Field'
-import type { ISchema } from '../../model/ISchema'
 import type { Field_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -33,7 +33,7 @@ export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(functi
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISchema>(p: { field: Field_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: { field: Field_list<T> }) {
     const field = p.field
     const subWidgets = field.items
     const min = field.config.min

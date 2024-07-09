@@ -56,7 +56,6 @@ import type { Channel, ChannelId, Producer } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
-import type { ISchema } from './ISchema'
 import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
@@ -127,7 +126,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     parent: Field | null
 
     /** schema used to instanciate this widget */
-    schema: ISchema<K['$Field']>
+    schema: BaseSchema<K['$Field']>
 
     constructor(
         /**
@@ -141,7 +140,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         /** parent field, (null when root) */
         parent: Field | null,
         /** schema used to instanciate this widget */
-        schema: ISchema<K['$Field']>,
+        schema: BaseSchema<K['$Field']>,
         // serial?: K['$Serial'],
     ) {
         this.id = mkNewFieldId()
@@ -191,7 +190,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         serial: any | null,
     ): Field_shared<this> {
         const builder = repo.domain
-        const schema: ISchema<Field_shared<this>> = builder.linked(this)
+        const schema: BaseSchema<Field_shared<this>> = builder.linked(this)
         return schema.instanciate(repo, root, parent, serial)
     }
 

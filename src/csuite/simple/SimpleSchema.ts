@@ -1,6 +1,5 @@
 import type { Field } from '../model/Field'
 import type { Instanciable } from '../model/Instanciable'
-import type { ISchema } from '../model/ISchema'
 import type { Repository } from '../model/Repository'
 import type { CovariantFn } from '../variance/BivariantHack'
 
@@ -29,7 +28,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
                 repo: Repository,
                 root: Field,
                 parent: Field | null,
-                spec: ISchema<FIELD>,
+                spec: BaseSchema<FIELD>,
                 serial?: FIELD['$Serial'],
             ): FIELD
         },
@@ -48,7 +47,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
      * @since 2024-06-30
      * TODO: WRITE MORE DOC
      */
-    useIn<BP extends ISchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
+    useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
         return new SimpleSchema(Field_link<any, any>, linkConf)
     }

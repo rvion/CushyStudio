@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
@@ -90,7 +90,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_orbit>,
+        schema: BaseSchema<Field_orbit>,
         serial?: Field_orbit_serial,
     ) {
         super(repo, root, parent, schema)

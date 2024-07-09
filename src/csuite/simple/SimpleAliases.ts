@@ -15,7 +15,7 @@ import type { BaseSelectEntry, Field_selectOne } from '../fields/selectOne/Widge
 import type { Field_shared } from '../fields/shared/WidgetShared'
 import type { Field_size } from '../fields/size/WidgetSize'
 import type { Field_string } from '../fields/string/WidgetString'
-import type { ISchema } from '../model/ISchema'
+import type { BaseSchema } from '../model/BaseSchema'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleSchema } from './SimpleSchema'
 
@@ -33,14 +33,14 @@ declare global {
         type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
         type SGroup<T extends SchemaDict> = SimpleSchema<Field_group<T>>
         type SEmpty = SimpleSchema<Field_group<NO_PROPS>>
-        type SOptional<T extends ISchema> = SimpleSchema<Field_optional<T>>
+        type SOptional<T extends BaseSchema> = SimpleSchema<Field_optional<T>>
         type SBool = SimpleSchema<Field_bool>
-        type SLink<A extends ISchema, B extends ISchema> = SimpleSchema<Field_link<A, B>>
+        type SLink<A extends BaseSchema, B extends BaseSchema> = SimpleSchema<Field_link<A, B>>
         type SString = SimpleSchema<Field_string>
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
         type SNumber = SimpleSchema<Field_number>
         type SColor = SimpleSchema<Field_color>
-        type SList<T extends ISchema> = SimpleSchema<Field_list<T>>
+        type SList<T extends BaseSchema> = SimpleSchema<Field_list<T>>
         type SButton<T> = SimpleSchema<Field_button<T>>
         type SSeed = SimpleSchema<Field_seed>
         type SMatrix = SimpleSchema<Field_matrix>

@@ -1,5 +1,5 @@
+import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
-import type { ISchema } from '../csuite/model/ISchema'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
@@ -50,9 +50,9 @@ declare global {
         type Shared<T extends Field> = Field_shared<T>
         type Group<T extends SchemaDict> = Field_group<T>
         type Empty = Field_group<NO_PROPS>
-        type Optional<T extends ISchema> = Field_optional<T>
+        type Optional<T extends BaseSchema> = Field_optional<T>
         type Bool = Field_bool
-        type Link<A extends ISchema, B extends ISchema> = Field_link<A, B>
+        type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
         type String = Field_string
         type Prompt = Field_prompt
         type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
@@ -60,9 +60,9 @@ declare global {
         type Number = Field_number
         type Color = Field_color
         type Enum<T> = Field_enum<T>
-        type List<T extends ISchema> = Field_list<T>
+        type List<T extends BaseSchema> = Field_list<T>
         type Orbit = Field_orbit
-        type ListExt<T extends ISchema> = Field_listExt<T>
+        type ListExt<T extends BaseSchema> = Field_listExt<T>
         type Button<T> = Field_button<T>
         type Seed = Field_seed
         type Matrix = Field_matrix
@@ -79,9 +79,9 @@ declare global {
         type XShared<T extends Field> = Schema<Field_shared<T>>
         type XGroup<T extends SchemaDict> = Schema<Field_group<T>>
         type XEmpty = Schema<Field_group<NO_PROPS>>
-        type XOptional<T extends ISchema> = Schema<Field_optional<T>>
+        type XOptional<T extends BaseSchema> = Schema<Field_optional<T>>
         type XBool = Schema<Field_bool>
-        type XLink<A extends ISchema, B extends ISchema> = Schema<Field_link<A, B>>
+        type XLink<A extends BaseSchema, B extends BaseSchema> = Schema<Field_link<A, B>>
         type XString = Schema<Field_string>
         type XPrompt = Schema<Field_prompt>
         type XChoices<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
@@ -89,9 +89,9 @@ declare global {
         type XNumber = Schema<Field_number>
         type XColor = Schema<Field_color>
         type XEnum<T> = Schema<Field_enum<T>>
-        type XList<T extends ISchema> = Schema<Field_list<T>>
+        type XList<T extends BaseSchema> = Schema<Field_list<T>>
         type XOrbit = Schema<Field_orbit>
-        type XListExt<T extends ISchema> = Schema<Field_listExt<T>>
+        type XListExt<T extends BaseSchema> = Schema<Field_listExt<T>>
         type XButton<T> = Schema<Field_button<T>>
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
@@ -109,7 +109,7 @@ declare global {
 /** cushy studio form builder */
 export class Builder implements IBuilder {
     constructor() {
-        // public model: Model<ISchema, Builder>,
+        // public model: Model<BaseSchema, Builder>,
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
@@ -182,38 +182,47 @@ export class Builder implements IBuilder {
     color(config: Field_color_config = {}): X.XColor {
         return new Schema<Field_color>(Field_color, config)
     }
+
     colorV2(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, { inputType: 'color', ...config })
     }
+
     matrix(config: Field_matrix_config): X.XMatrix {
         return new Schema<Field_matrix>(Field_matrix, config)
     }
-    button = <K>(config: Field_button_config<K>): X.XButton<K> => {
+
+    button<K>(config: Field_button_config<K>): X.XButton<K> {
         return new Schema<Field_button<K>>(Field_button, config)
     }
+
     /** variants: `header` */
     markdown(config: Field_markdown_config | string): X.XMarkdown {
         return new Schema<Field_markdown>(Field_markdown, typeof config === 'string' ? { markdown: config } : config)
     }
+
     /** [markdown variant]: inline=true, label=false */
-    header = (config: Field_markdown_config | string): X.XMarkdown => {
+    header(config: Field_markdown_config | string): X.XMarkdown {
         const config_: Field_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config }
         return new Schema<Field_markdown>(Field_markdown, config_)
     }
-    image = (config: Field_image_config = {}): X.XImage => {
+
+    image(config: Field_image_config = {}): X.XImage {
         return new Schema<Field_image>(Field_image, config)
     }
-    prompt = (config: Field_prompt_config = {}): X.XPrompt => {
+
+    prompt(config: Field_prompt_config = {}): X.XPrompt {
         return new Schema<Field_prompt>(Field_prompt, config)
     }
-    int = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+
+    int(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return new Schema<Field_number>(Field_number, { mode: 'int', ...config })
     }
+
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+    percent(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return new Schema<Field_number>(Field_number, {
             mode: 'int',
             default: 100,
@@ -224,35 +233,36 @@ export class Builder implements IBuilder {
             ...config,
         })
     }
-    float = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+
+    float(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return new Schema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
-    number = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+    number(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return new Schema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
-    remSize = (config: Omit<Field_number_config, 'mode'> = {}): X.XNumber => {
+    remSize(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
     }
 
-    custom = <T>(config: Field_custom_config<T>): X.XCustom<T> => {
+    custom<T>(config: Field_custom_config<T>): X.XCustom<T> {
         return new Schema<Field_custom<T>>(Field_custom, config)
     }
 
-    list = <T extends ISchema>(config: Field_list_config<T>): X.XList<T> => {
+    list<T extends BaseSchema>(config: Field_list_config<T>): X.XList<T> {
         return new Schema<Field_list<T>>(Field_list, config)
     }
 
-    listExt = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+    listExt<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
         return new Schema<Field_listExt<T>>(Field_listExt, config)
     }
 
-    timeline = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+    timeline<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
         return new Schema<Field_listExt<T>>(Field_listExt, { mode: 'timeline', ...config })
     }
 
-    regional = <T extends ISchema>(config: Field_listExt_config<T>): X.XListExt<T> => {
+    regional<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
         return new Schema<Field_listExt<T>>(Field_listExt, { mode: 'regional', ...config })
     }
 
@@ -296,7 +306,7 @@ export class Builder implements IBuilder {
      * @since 2024-06-27
      * @stability unstable
      */
-    with<const SCHEMA1 extends ISchema, SCHEMA2 extends ISchema>(
+    with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
         /** the schema of the field you'll want to re-use the in second part */
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
@@ -329,41 +339,53 @@ export class Builder implements IBuilder {
         })
     }
     /** simpler way to create `group` */
-    fields = <T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> => {
+    fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
         return new Schema<Field_group<T>>(Field_group, { items: fields, ...config })
     }
-    choice = <T extends { [key: string]: ISchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> => {
+
+    choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
         return new Schema<Field_choices<T>>(Field_choices, { multi: false, ...config })
     }
-    choiceV2 = <T extends { [key: string]: ISchema }>(
-        items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-    ): X.XChoice<T> => {
-        return new Schema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
-    }
-    choices = <T extends { [key: string]: ISchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> => {
+
+    choices<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
         return new Schema<Field_choices<T>>(Field_choices, { multi: true, ...config })
     }
-    choicesV2 = <T extends { [key: string]: ISchema }>(
+
+    choiceV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-    ): X.XChoices<T> => {
+    ): X.XChoice<T> {
+        return new Schema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
+    }
+
+    choicesV2<T extends { [key: string]: BaseSchema }>(
+        items: Field_choices_config<T>['items'],
+        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
+    ): X.XChoices<T> {
         return new Schema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
     }
-    empty = (config: Field_group_config<NO_PROPS> = {}): X.XEmpty => {
-        return new Schema<Field_group<NO_PROPS>>(Field_group, config)
-    }
+
     /** simple choice alternative api */
-    tabs = <T extends { [key: string]: ISchema }>(
+    tabs<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ) => new Schema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
+    ): X.XChoices<T> {
+        return new Schema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
+    }
+
+    empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
+        return new Schema<Field_group<NO_PROPS>>(Field_group, config)
+    }
 
     // optional wrappers
-    optional = <T extends ISchema>(p: Field_optional_config<T>) => new Schema<Field_optional<T>>(Field_optional, p)
+    optional<T extends BaseSchema>(p: Field_optional_config<T>): X.XOptional<T> {
+        return new Schema<Field_optional<T>>(Field_optional, p)
+    }
 
-    llmModel = (p: { default?: OpenRouter_Models } = {}) => {
-        const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
+    llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<BaseSelectEntry<OpenRouter_Models>> {
+        const choices = Object.entries(openRouterInfos).map(
+            ([id, info]): BaseSelectEntry<OpenRouter_Models> => ({ id: id as OpenRouter_Models, label: info.name }),
+        )
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
     }
@@ -393,7 +415,7 @@ export class Builder implements IBuilder {
         return _
     }
 
-    get enumOpt() {
+    get enumOpt(): EnumBuilderOpt {
         const _ = new EnumBuilderOpt(this)
         Object.defineProperty(this, 'enumOpt', { value: _ })
         return _

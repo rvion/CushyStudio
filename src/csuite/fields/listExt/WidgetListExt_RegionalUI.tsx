@@ -1,4 +1,4 @@
-import type { ISchema } from '../../model/ISchema'
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
@@ -9,7 +9,7 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends ISchema>(p: {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends BaseSchema>(p: {
     field: Field_listExt<T>
 }) {
     const field = p.field

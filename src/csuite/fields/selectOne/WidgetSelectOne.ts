@@ -1,7 +1,7 @@
 import type { IconName } from '../../icons/icons'
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
@@ -123,7 +123,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_selectOne<T>>,
+        schema: BaseSchema<Field_selectOne<T>>,
         serial?: Field_selectOne_serial<T>,
     ) {
         super(repo, root, parent, schema)

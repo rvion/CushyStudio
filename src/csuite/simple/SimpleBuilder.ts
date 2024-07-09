@@ -1,5 +1,5 @@
+import type { BaseSchema } from '../model/BaseSchema'
 import type { IBuilder } from '../model/IBuilder'
-import type { ISchema } from '../model/ISchema'
 import type { SchemaDict } from '../model/SchemaDict'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../types/NO_PROPS'
@@ -140,7 +140,7 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
-    list<T extends ISchema>(config: Field_list_config<T>): S.SList<T> {
+    list<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
         return new SimpleSchema<Field_list<T>>(Field_list, config)
     }
 
@@ -177,7 +177,7 @@ export class SimpleBuilder implements IBuilder {
      * @since 2024-06-27
      * @stability unstable
      */
-    with<const SCHEMA1 extends ISchema, SCHEMA2 extends ISchema>(
+    with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
         /** the schema of the field you'll want to re-use the in second part */
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
@@ -239,7 +239,7 @@ export class SimpleBuilder implements IBuilder {
     }
 
     // optional wrappers
-    optional<T extends ISchema>(p: Field_optional_config<T>): S.SOptional<T> {
+    optional<T extends BaseSchema>(p: Field_optional_config<T>): S.SOptional<T> {
         return new SimpleSchema<Field_optional<T>>(Field_optional, p)
     }
 

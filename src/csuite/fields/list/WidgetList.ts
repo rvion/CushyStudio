@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 
 import { reaction } from 'mobx'
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
-interface AutoBehaviour<out T extends ISchema> {
+interface AutoBehaviour<out T extends BaseSchema> {
     /** list of keys that must be present */
     keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
 
@@ -24,7 +24,7 @@ interface AutoBehaviour<out T extends ISchema> {
 }
 
 // CONFIG
-export interface Field_list_config<out T extends ISchema>
+export interface Field_list_config<out T extends BaseSchema>
     extends FieldConfig<
         {
             /**
@@ -63,16 +63,16 @@ export interface Field_list_config<out T extends ISchema>
     > {}
 
 // SERIAL
-export type Field_list_serial<T extends ISchema> = FieldSerial<{
+export type Field_list_serial<T extends BaseSchema> = FieldSerial<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // VALUE
-export type Field_list_value<T extends ISchema> = T['$Value'][]
+export type Field_list_value<T extends BaseSchema> = T['$Value'][]
 
 // TYPES
-export type Field_list_types<T extends ISchema> = {
+export type Field_list_types<T extends BaseSchema> = {
     $Type: 'list'
     $Config: Field_list_config<T>
     $Serial: Field_list_serial<T>
@@ -81,7 +81,7 @@ export type Field_list_types<T extends ISchema> = {
 }
 
 // STATE
-export class Field_list<T extends ISchema> //
+export class Field_list<T extends BaseSchema> //
     extends Field<Field_list_types<T>>
 {
     DefaultHeaderUI = WidgetList_LineUI
@@ -195,7 +195,7 @@ export class Field_list<T extends ISchema> //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_list<T>>,
+        schema: BaseSchema<Field_list<T>>,
         serial?: Field_list_serial<T>,
     ) {
         super(repo, root, parent, schema)

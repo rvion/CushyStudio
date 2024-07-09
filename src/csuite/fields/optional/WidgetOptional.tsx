@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -8,7 +8,7 @@ import { Field, type KeyedField } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
+export type Field_optional_config<T extends BaseSchema = BaseSchema> = FieldConfig<
     {
         /** if true, child field will be instanciated by default */
         startActive?: boolean
@@ -19,17 +19,17 @@ export type Field_optional_config<T extends ISchema = ISchema> = FieldConfig<
 >
 
 // SERIAL
-export type Field_optional_serial<T extends ISchema = ISchema> = FieldSerial<{
+export type Field_optional_serial<T extends BaseSchema = BaseSchema> = FieldSerial<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Field_optional_value<T extends ISchema = ISchema> = Maybe<T['$Value']>
+export type Field_optional_value<T extends BaseSchema = BaseSchema> = Maybe<T['$Value']>
 
 // TYPES
-export type Field_optional_types<T extends ISchema = ISchema> = {
+export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
     $Type: 'optional'
     $Config: Field_optional_config<T>
     $Serial: Field_optional_serial<T>
@@ -38,7 +38,7 @@ export type Field_optional_types<T extends ISchema = ISchema> = {
 }
 
 // STATE
-export class Field_optional<T extends ISchema = ISchema> extends Field<Field_optional_types<T>> {
+export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
 
@@ -47,7 +47,7 @@ export class Field_optional<T extends ISchema = ISchema> extends Field<Field_opt
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_optional<T>>,
+        schema: BaseSchema<Field_optional<T>>,
         serial?: Field_optional_serial<T>,
     ) {
         super(repo, root, parent, schema)

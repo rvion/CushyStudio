@@ -1,12 +1,16 @@
 // @ts-nocheck
+// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+// 🔴                                                      🔴
+// 🔴                THIS  FILE  IS  BROKEN                🔴
+// 🔴                                                      🔴
+// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
-
-import { runInAction } from 'mobx'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { clampOpt } from '../../utils/clamp'
@@ -16,7 +20,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Field_listExt_config<T extends ISchema> = FieldConfig<
+export type Field_listExt_config<T extends BaseSchema> = FieldConfig<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -31,7 +35,7 @@ export type Field_listExt_config<T extends ISchema> = FieldConfig<
 >
 
 // SERIAL
-export type Field_listExt_serial<T extends ISchema> = FieldSerial<{
+export type Field_listExt_serial<T extends BaseSchema> = FieldSerial<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -39,7 +43,7 @@ export type Field_listExt_serial<T extends ISchema> = FieldSerial<{
 }>
 
 // VALUE
-export type Field_listExt_value<T extends ISchema> = {
+export type Field_listExt_value<T extends BaseSchema> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -47,7 +51,7 @@ export type Field_listExt_value<T extends ISchema> = {
 }
 
 // TYPES
-export type Field_listExt_types<T extends ISchema> = {
+export type Field_listExt_types<T extends BaseSchema> = {
     $Type: 'listExt'
     $Config: Field_listExt_config<T>
     $Serial: Field_listExt_serial<T>
@@ -56,7 +60,7 @@ export type Field_listExt_types<T extends ISchema> = {
 }
 
 // STATE
-export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<T>> {
+export class Field_listExt<T extends BaseSchema> extends Field<Field_listExt_types<T>> {
     static readonly type: 'listExt' = 'listExt'
 
     DefaultHeaderUI = WidgetListExt_LineUI
@@ -115,7 +119,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_listExt<T>>,
+        schema: BaseSchema<Field_listExt<T>>,
         serial?: Field_listExt_serial<T>,
     ) {
         super(repo, root, parent, schema)
@@ -185,7 +189,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
     }
 
     // ADDING ITEMS -------------------------------------------------
-    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
+    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */): void {
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const schema = this.schemaAt(this.length)
@@ -196,7 +200,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
     }
 
     // REMOVING ITEMS -------------------------------------------------
-    removeAllItems = () => {
+    removeAllItems(): void {
         // ensure list is not empty
         if (this.length === 0) return console.log(`[🔶] listExt.removeAllItems: list is already empty`)
 
@@ -210,7 +214,7 @@ export class Field_listExt<T extends ISchema> extends Field<Field_listExt_types<
         this.applyValueUpdateEffects()
     }
 
-    removeItem = (item: T['$Field']) => {
+    removeItem(item: T['$Field']): void {
         // ensure item is in the list
         const i = this.entries.findIndex((i) => i.widget === item)
         if (i < 0) return console.log(`[🔶] listExt.removeItem: item not found`)

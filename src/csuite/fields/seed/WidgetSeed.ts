@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -93,7 +93,7 @@ export class Field_seed extends Field<Field_seed_types> {
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_seed>,
+        schema: BaseSchema<Field_seed>,
         serial?: Field_seed_serial,
     ) {
         super(repo, root, parent, schema)

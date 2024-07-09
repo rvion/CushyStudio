@@ -1,9 +1,9 @@
-import type { ISchema } from '../../model/ISchema'
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_listExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends ISchema>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends BaseSchema>(p: {
     //
     field: Field_listExt<T>
 }) {

@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
@@ -13,8 +13,8 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 // CONFIG
 export type Field_link_config<
     //
-    A extends ISchema,
-    B extends ISchema,
+    A extends BaseSchema,
+    B extends BaseSchema,
 > = FieldConfig<
     {
         // injected
@@ -27,7 +27,7 @@ export type Field_link_config<
 >
 
 // SERIAL
-export type Field_link_serial<A extends ISchema, B extends ISchema> = FieldSerial<{
+export type Field_link_serial<A extends BaseSchema, B extends BaseSchema> = FieldSerial<{
     type: 'link'
     a?: A['$Serial']
     b?: B['$Serial']
@@ -36,12 +36,12 @@ export type Field_link_serial<A extends ISchema, B extends ISchema> = FieldSeria
 // VALUE
 export type Field_link_value<
     /** A value is NOT used; it may be part of B */
-    A extends ISchema,
-    B extends ISchema,
+    A extends BaseSchema,
+    B extends BaseSchema,
 > = B['$Value']
 
 // TYPES
-export type Field_link_types<A extends ISchema, B extends ISchema> = {
+export type Field_link_types<A extends BaseSchema, B extends BaseSchema> = {
     $Type: 'link'
     $Config: Field_link_config<A, B>
     $Serial: Field_link_serial<A, B>
@@ -50,7 +50,7 @@ export type Field_link_types<A extends ISchema, B extends ISchema> = {
 }
 
 // STATE
-export class Field_link<A extends ISchema, B extends ISchema> //
+export class Field_link<A extends BaseSchema, B extends BaseSchema> //
     extends Field<Field_link_types<A, B>>
 {
     static readonly type: 'link' = 'link'
@@ -64,7 +64,7 @@ export class Field_link<A extends ISchema, B extends ISchema> //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_link<A, B>>,
+        schema: BaseSchema<Field_link<A, B>>,
         serial?: Field_link_serial<A, B>,
     ) {
         super(repo, root, parent, schema)

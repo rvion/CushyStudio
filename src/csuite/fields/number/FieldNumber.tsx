@@ -1,6 +1,6 @@
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 
 import { computed } from 'mobx'
@@ -80,7 +80,7 @@ export class Field_number extends Field<Field_number_types> {
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_number>,
+        schema: BaseSchema<Field_number>,
         serial?: Field_number_serial,
     ) {
         super(repo, root, parent, schema)

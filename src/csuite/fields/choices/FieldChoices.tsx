@@ -1,7 +1,7 @@
 import type { IconName } from '../../icons/icons'
+import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { ISchema } from '../../model/ISchema'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
@@ -176,7 +176,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: ISchema<Field_choices<T>>,
+        schema: BaseSchema<Field_choices<T>>,
         serial?: Field_choices_serial<T>,
     ) {
         super(repo, root, parent, schema)
