@@ -18,6 +18,7 @@
         // https://typescript-eslint.io/rules/no-floating-promises
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-this-alias": "off", // sometimes, we need to preserve this.
+        "@typescript-eslint/explicit-function-return-type": "error",
         "consistent-this": [2, "self", "that"] // as a paliative solution to above permissive rule
     },
     "ignorePatterns": [
