@@ -1,4 +1,5 @@
 import type { BaseSchema } from '../model/BaseSchema'
+import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
 import type { SchemaDict } from '../model/SchemaDict'
 import type { OpenRouter_Models } from '../openrouter/OpenRouter_models'
@@ -23,7 +24,6 @@ import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } fr
 import { Field_shared } from '../fields/shared/WidgetShared'
 import { Field_size, type Field_size_config } from '../fields/size/WidgetSize'
 import { Field_string, type Field_string_config } from '../fields/string/WidgetString'
-import { Field } from '../model/Field'
 import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleSchema } from './SimpleSchema'
 

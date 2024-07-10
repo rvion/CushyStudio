@@ -1,6 +1,7 @@
 import type { Field_group } from '../fields/group/WidgetGroup'
 import type { BaseSchema } from './BaseSchema'
 import type { EntityConfig } from './Entity'
+import type { Field } from './Field'
 import type { FieldId } from './FieldId'
 import type { IBuilder } from './IBuilder'
 import type { SchemaDict } from './SchemaDict'
@@ -8,7 +9,6 @@ import type { SchemaDict } from './SchemaDict'
 import { action, makeObservable } from 'mobx'
 import { type DependencyList, useMemo } from 'react'
 
-import { Field } from './Field'
 import { type FieldTouchMode, Transaction, type TransactionMode } from './Transaction'
 
 /**

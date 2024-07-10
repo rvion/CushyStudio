@@ -1,4 +1,5 @@
 import type { Field_list_serial } from '../fields/list/WidgetList'
+import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { Field } from './Field'
@@ -15,6 +16,11 @@ export interface BaseSchema<out FIELD extends Field = Field> {
 }
 
 export abstract class BaseSchema<out FIELD extends Field = Field> {
+    createForm(x: keyof { [key in keyof FIELD as FIELD[key] extends ProplessFC ? key : never]: FIELD[key] }): void {
+        //
+        return
+    }
+
     // ------------------------------------------------------------
     private _exts: any[] = []
     applyExts(field: FIELD): void {
