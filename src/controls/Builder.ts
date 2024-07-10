@@ -362,7 +362,7 @@ export class Builder implements IBuilder {
 
     choicesV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
+        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoices<T> {
         return new Schema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
     }

@@ -221,7 +221,7 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, items, ...config })
     }
 
-    empty = (config: Field_group_config<NO_PROPS> = {}): S.SEmpty => {
+    empty(config: Field_group_config<NO_PROPS> = {}): S.SEmpty {
         return new SimpleSchema<Field_group<NO_PROPS>>(Field_group, config)
     }
 
@@ -229,7 +229,7 @@ export class SimpleBuilder implements IBuilder {
     tabs<T extends SchemaDict>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-    ) {
+    ): S.SChoices<T> {
         return new SimpleSchema<Field_choices<T>>(Field_choices, {
             items,
             multi: false,
@@ -243,7 +243,10 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_optional<T>>(Field_optional, p)
     }
 
-    llmModel(p: { default?: OpenRouter_Models } = {}) {
+    llmModel(p: { default?: OpenRouter_Models } = {}): S.SSelectOne<{
+        id: OpenRouter_Models
+        label: string
+    }> {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = p.default ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
