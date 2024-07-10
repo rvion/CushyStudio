@@ -18,6 +18,7 @@ import { MenuDebugUI } from './MenuDebugUI'
 import { MenuEditUI } from './MenuEditUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
+import { MenuUtilsUI } from './MenuUtilsUI'
 import { MenuPanelsUI } from './MenuWindowUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
@@ -39,6 +40,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
                 />
                 {/* <MenuWindowUI /> */}
+                <MenuUtilsUI />
                 <MenuAboutUI />
                 <MenuDebugUI />
 

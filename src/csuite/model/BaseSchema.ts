@@ -15,6 +15,23 @@ export interface BaseSchema<out FIELD extends Field = Field> {
 }
 
 export abstract class BaseSchema<out FIELD extends Field = Field> {
+    // ------------------------------------------------------------
+    private _exts: any[] = []
+    applyExts(field: FIELD): void {
+        for (const ext of this._exts) {
+            const xxx = ext(field)
+            Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
+        }
+    }
+    extend<EXTS extends (self: FIELD) => { [methodName: string]: any }>(
+        //
+        extensions: EXTS,
+    ): BaseSchema<ReturnType<EXTS> & FIELD> {
+        this._exts.push(extensions)
+        return this as any
+    }
+    // ------------------------------------------------------------
+
     /** constructor/class of the field to instanciate */
     abstract FieldClass_UNSAFE: any
 
@@ -74,7 +91,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     // ------------------------------------------------------------
     // Instanciation
 
-    create(serial?: FIELD['$Serial']): FIELD['$Field'] {
+    create(serial?: FIELD['$Serial']): FIELD {
         return this.instanciate(this.repository, null, null, serial)
     }
 

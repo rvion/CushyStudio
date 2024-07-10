@@ -521,11 +521,11 @@ export class CushyLayoutManager {
     }
 
     // CREATION --------------------------------------------------------
-    FOCUS_OR_CREATE<const PanelName extends PanelNames>(
+    FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
         panelName: PanelName,
         panelProps: PropsOf<Panels[PanelName]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
-    ): Maybe<FL.Node> {
+    ): Maybe<FL.Node> => {
         console.log(`[🤠] `, panelName, panelProps)
         // this.prettyPrintLayoutModel()
         // if (where === 'full') {
@@ -541,7 +541,7 @@ export class CushyLayoutManager {
         const tabID = `/${panelName}/${hashJSONObjectToNumber(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-        console.log(`[🤠] `, { prevTab }, prevTab.getRect())
+        // console.log(`[🤠] `, { prevTab }, prevTab.getRect())
         // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type

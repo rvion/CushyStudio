@@ -43,6 +43,7 @@ declare global {
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
         type Builder = import('./Builder').Builder
         type Field = import('../csuite/model/Field').Field
+        type BaseSchema<out FIELD extends Field = Field> = import('../csuite/model/BaseSchema').BaseSchema<FIELD>
 
         type Runtime = import('../runtime/Runtime').Runtime
 

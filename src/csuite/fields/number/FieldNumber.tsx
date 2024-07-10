@@ -63,7 +63,7 @@ export class Field_number extends Field<Field_number_types> {
         return this.serial.value !== this.defaultValue
     }
 
-    get ownProblems() {
+    get ownProblems(): Maybe<string> {
         // < MIN
         if (this.config.min !== undefined && this.value < this.config.min) {
             return `Value is less than ${this.config.min}`
@@ -91,7 +91,7 @@ export class Field_number extends Field<Field_number_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_number_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_number_serial>): void {
         this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
     }
 

@@ -846,8 +846,21 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return x(this)
     }
 
+    private _hasBeenInitialized: boolean = false
+
     /** this function MUST be called at the end of every widget constructor */
     init(serial_?: K['$Serial'], mobxOverrides?: any): void {
+        // 1. ensure field hasn't been initialized yet
+        if (this._hasBeenInitialized) {
+            console.error(`[🔶] Field.init has already been called => ABORTING`)
+            return
+        }
+        this._hasBeenInitialized = true
+
+        // 2. apply extensiosn
+        this.schema.applyExts(this)
+
+        // 3. ...
         this.MUTINIT(() => {
             this.copyCommonSerialFiels(serial_)
 

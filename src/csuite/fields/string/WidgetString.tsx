@@ -4,6 +4,8 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { CovariantFC } from '../../variance/CovariantFC'
+import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -74,15 +76,15 @@ export type Field_string_types = {
 // STATE
 export class Field_string extends Field<Field_string_types> {
     static readonly type: 'str' = 'str'
-    UITextarea = () => <WidgetString_TextareaBodyUI field={this} />
-    UIInputText = () => <WidgetString_HeaderUI field={this} />
+    UITextarea: FC = () => <WidgetString_TextareaBodyUI field={this} />
+    UIInputText: FC = () => <WidgetString_HeaderUI field={this} />
 
-    get DefaultHeaderUI() {
+    get DefaultHeaderUI(): FC<{ field: Field_string }> {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
     }
 
-    get DefaultBodyUI() {
+    get DefaultBodyUI(): CovariantFC<{ field: Field_string }> | undefined {
         if (this.config.textarea) return WidgetString_TextareaBodyUI
         return undefined
     }
@@ -93,7 +95,7 @@ export class Field_string extends Field<Field_string_types> {
 
     temporaryValue: string | null = null
 
-    setTemporaryValue = (next: string | null) => {
+    setTemporaryValue(next: string | null): void {
         this.temporaryValue = next
     }
 
@@ -109,12 +111,12 @@ export class Field_string extends Field<Field_string_types> {
         this.init(serial)
     }
 
-    get animateResize() {
+    get animateResize(): boolean {
         if (this.config.textarea) return false
         return true
     }
 
-    protected setOwnSerial(serial: Maybe<Field_string_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_string_serial>): void {
         this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
     }
 

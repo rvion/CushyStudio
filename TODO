@@ -1,10 +1,15 @@
+
 2024-07-08:
     ☐ updateSnapshot only called once
     ☐ choices widget
     ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
     ☐ valmut partout
-    ☐ onInit
+    ✔ onInit @done(24-07-10 13:55)
     ☐ onCreate
+    ☐ extends
+        ☐ customMethods
+        ☐ customForms
+
 
 2024-07-01:
     ✔ test about link auto-migration. @done(24-07-08 10:16)
