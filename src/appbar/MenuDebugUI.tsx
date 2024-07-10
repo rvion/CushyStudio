@@ -21,9 +21,16 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiAutoFix'
-                        onClick={st.layout.resetCurrent}
+                        onClick={() => st.layout.resetCurrent()}
                         localShortcut={KEYS.resetLayout}
-                        label='Fix Layout'
+                        label='Reset Layout'
+                    />
+                    <MenuItem
+                        iconClassName='text-green-500'
+                        icon='mdiAutoFix'
+                        onClick={() => st.layout.fixTabsWithNegativeArea()}
+                        localShortcut={KEYS.resetLayout}
+                        label='Fix Tabs with negative size'
                     />
                     <MenuItem
                         iconClassName='text-green-500'

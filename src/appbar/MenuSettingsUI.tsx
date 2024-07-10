@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
-import { useSt } from '../state/stateContext'
 import { Ikon } from '../csuite/icons/iconHelpers'
+import { useSt } from '../state/stateContext'
 import { MenuDebugUI } from './MenuDebugUI'
 
 export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {

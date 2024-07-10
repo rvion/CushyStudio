@@ -16,6 +16,7 @@ import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
+import { type FlexlayoutNodeWithType, knownLayoutNodeType, type TraverseFn, traverseLayoutNode } from './Traverse'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -201,9 +202,15 @@ export class CushyLayoutManager {
         })
     }
 
-    resetCurrent = (): void => this.reset(this.currentPerspectiveName)
-    resetDefault = (): void => this.reset('default')
-    reset = (perspectiveName: string): void => {
+    resetCurrent(): void {
+        this.reset(this.currentPerspectiveName)
+    }
+
+    resetDefault(): void {
+        this.reset('default')
+    }
+
+    reset(perspectiveName: string): void {
         this.st.configFile.update((t) => {
             t.layouts_v12 ??= {}
             delete t.layouts_v12[perspectiveName]
@@ -480,11 +487,37 @@ export class CushyLayoutManager {
         })
     }
     // TRAVERSAL CAPABILITIES --------------------------------------------------------
-    /* 🔴 TODO */
-    _traverseRow(row: FL.RowNode, fns: any): void {}
-    /* 🔴 TODO */
+
+    /** traverse layout tree from the root */
+    traverse(fns: TraverseFn): void {
+        const root: FL.RowNode = this.model.getRoot()
+        traverseLayoutNode(root, fns)
+    }
+
+    /** traverse layout tree from a specific node */
+    traverseLayoutNode(node: FL.Node, fns: TraverseFn): void {
+        return traverseLayoutNode(node, fns)
+    }
+
+    /** fix all tabs that have negative size */
     fixTabsWithNegativeArea(): void {
         const root: FL.RowNode = this.model.getRoot()
+        const minHeight = 100
+        const minWidth = 100
+        traverseLayoutNode(root, {
+            onNode1: (node): undefined => {
+                // console.log(`[🤠] `, node.getId(), node.getType(), node.getRect())
+                const rect = node.getRect()
+                if (rect.width < minWidth) {
+                    console.log(`[🔴] invalid ${node.getType()} width`, JSON.stringify(node.toJson(), null, 4))
+                    // this._doAction(Actions.)
+                }
+                if (rect.height < minHeight) {
+                    console.log(`[🔴] invalid ${node.getType()} height`, JSON.stringify(node.toJson(), null, 4))
+                }
+                return
+            },
+        })
     }
 
     // CREATION --------------------------------------------------------

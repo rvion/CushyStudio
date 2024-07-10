@@ -11,6 +11,7 @@ import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
 // import { MenuHelpUI } from './MenuHelpUI'
 import { MenuAboutUI } from './MenuAboutUI'
+import { MenuDebugUI } from './MenuDebugUI'
 // import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
 // import { MenuAuthUI } from './MenuAuthUI'
 // import { MenuWindowUI } from './MenuWindowUI'
@@ -39,6 +40,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 />
                 {/* <MenuWindowUI /> */}
                 <MenuAboutUI />
+                <MenuDebugUI />
 
                 <SpacerUI />
                 <HostWebsocketIndicatorUI host={mainHost} />
