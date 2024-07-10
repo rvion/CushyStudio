@@ -8,6 +8,7 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
+import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
@@ -23,6 +24,7 @@ const Header_Playground = cushyRepo.entity(
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
+                forms: ui.group(),
                 customPanels: ui.group(),
                 requirements: ui.group(),
                 registeredForms: ui.group(),
@@ -71,6 +73,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
             {/* {mode.requirements && <PlaygroundRequirementsHeader />} */}
             <ErrorBoundaryUI>
                 {/* 👇 PLAYGROUND HERE */}
+                {mode.forms && <PlaygroundForms />}
                 {mode.requirements && <PlaygroundRequirements />}
                 {mode.registeredForms && <PlaygroundRegisteredForms />}
                 {mode.widgetShowcase && <PlaygroundWidgetDisplay />}

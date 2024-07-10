@@ -52,7 +52,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     const submitAction = p.submitAction
     return (
         <Frame tw='UI-Form' {...p.theme} className={p.className} style={p.style}>
-            {form.root.renderWithLabel() /* FORM */}
+            {form.renderWithLabel() /* FORM */}
 
             {p.submitButton ??
                 (submitAction == null ? null : submitAction === 'confetti' ? (
