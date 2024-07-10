@@ -19,11 +19,7 @@ export type UI_Tint = X.XChoices<{
     }>
 }>
 
-export const ui_tint = (
-    //
-    ui: X.Builder,
-    def?: Tint,
-): UI_Tint => {
+export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
     return ui.choicesV2(
         {
             l: ui.choiceV2(

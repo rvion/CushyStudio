@@ -16,10 +16,10 @@ export interface BaseSchema<out FIELD extends Field = Field> {
 }
 
 export abstract class BaseSchema<out FIELD extends Field = Field> {
-    createForm(x: keyof { [key in keyof FIELD as FIELD[key] extends ProplessFC ? key : never]: FIELD[key] }): void {
-        //
-        return
-    }
+    // ⏸️ createForm(x: keyof { [key in keyof FIELD as FIELD[key] extends ProplessFC ? key : never]: FIELD[key] }): void {
+    // ⏸️     //
+    // ⏸️     return
+    // ⏸️ }
 
     // ------------------------------------------------------------
     private _exts: any[] = []

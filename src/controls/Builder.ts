@@ -339,6 +339,7 @@ export class Builder implements IBuilder {
             ...config,
         })
     }
+
     /** simpler way to create `group` */
     fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
         return new Schema<Field_group<T>>(Field_group, { items: fields, ...config })
@@ -354,14 +355,14 @@ export class Builder implements IBuilder {
 
     choiceV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
+        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): X.XChoice<T> {
         return new Schema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
     }
 
     choicesV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
+        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): X.XChoices<T> {
         return new Schema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
     }

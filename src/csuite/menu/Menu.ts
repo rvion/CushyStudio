@@ -19,8 +19,8 @@ import { SimpleMenuAction } from './SimpleMenuAction'
 // COMMAND MANAGER Centralize every single command
 class MenuManager {
     operators: Menu<any>[] = []
-    registerMenu = (menu: Menu<any>) => this.operators.push(menu)
-    getMenuById = (id: string) => this.operators.find((op) => op.def.id === id)
+    registerMenu = (menu: Menu<any>): number => this.operators.push(menu)
+    getMenuById = (id: string): Menu<any> | undefined => this.operators.find((op) => op.def.id === id)
 }
 const menuManager = new MenuManager()
 
