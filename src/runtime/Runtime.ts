@@ -5,7 +5,7 @@ import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
-import type { CompiledPrompt } from '../prompt/WidgetPrompt'
+import type { CompiledPrompt } from '../prompt/FieldPrompt'
 import type { STATE } from '../state/state'
 
 import child_process, { execSync } from 'child_process'

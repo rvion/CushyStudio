@@ -1,4 +1,4 @@
-import type { CompiledPrompt, Field_prompt } from './WidgetPrompt'
+import type { CompiledPrompt, Field_prompt } from './FieldPrompt'
 
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'

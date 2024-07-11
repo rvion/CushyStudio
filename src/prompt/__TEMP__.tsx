@@ -1,6 +1,6 @@
 import type { FieldId } from '../csuite/model/FieldId'
+import type { Field_prompt } from './FieldPrompt'
 import type { Prompt_Lora } from './grammar/grammar.practical'
-import type { Field_prompt } from './WidgetPrompt'
 
 import { EditorState } from '@codemirror/state'
 import { basicSetup, EditorView } from 'codemirror'

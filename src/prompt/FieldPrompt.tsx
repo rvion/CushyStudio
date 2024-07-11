@@ -104,6 +104,9 @@ export class Field_prompt extends Field<Field_prompt_types> {
         this.MUTVALUE(() => (this.serial.val = next))
     }
 
+    setText(next: string): void {
+        this.text = next
+    }
     set text(next: string) {
         if (this.serial.val === next) return
         this.MUTSERIAL(() => {

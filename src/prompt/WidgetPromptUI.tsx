@@ -1,4 +1,4 @@
-import type { Field_prompt } from './WidgetPrompt'
+import type { Field_prompt } from './FieldPrompt'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
