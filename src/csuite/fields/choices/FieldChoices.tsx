@@ -108,6 +108,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     /** dictionary of enabled children branches */
     enabledBranches: { [k in keyof T]?: T[k]['$Field'] } = {}
 
+    /** alias for enabledBranches */
+    get branches(): { [k in keyof T]?: T[k]['$Field'] } {
+        return this.enabledBranches
+    }
+
     get firstPossibleChoice(): (keyof T & string) | undefined {
         return this.allPossibleChoices[0]
     }
