@@ -253,7 +253,7 @@ export class DraftL {
 
     isInitialized = false
 
-    AWAKE = () => {
+    AWAKE = (): Maybe<() => void> => {
         // if (this.isInitializing) return
         if (this.isInitialized) return
         // this.isInitializing = true

@@ -26,11 +26,11 @@ describe('assign to value object', () => {
         E1.value[1] = '🟡'
         expectJSON(E1.value).toEqual(['🔵', '🟡', '🔵'])
         expectJSON(E1.serial).toMatchObject({
-            type: 'list',
+            $: 'list',
             items_: [
-                { type: 'str', value: '🔵' },
-                { type: 'str', value: '🟡' },
-                { type: 'str', value: '🔵' },
+                { $: 'str', value: '🔵' },
+                { $: 'str', value: '🟡' },
+                { $: 'str', value: '🔵' },
             ],
         })
     })

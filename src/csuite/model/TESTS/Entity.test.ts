@@ -19,7 +19,7 @@ describe('basic', () => {
             expect(E).toBeTruthy()
             expect(E.subFields.length).toBe(1)
             expect(E.subFields[0]!.type).toBe('markdown')
-            expect(E.root.value.md).toEqual({ type: 'markdown' })
+            expect(E.root.value.md).toEqual({ $: 'markdown' })
         })
     })
 
@@ -48,7 +48,7 @@ describe('basic', () => {
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
             expect(ent.value.size).toMatchObject({
-                type: 'size',
+                $: 'size',
                 width: 512,
                 height: 512,
                 aspectRatio: '1:1',

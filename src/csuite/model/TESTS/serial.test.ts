@@ -44,33 +44,33 @@ describe('assign to value object', () => {
 
         // SERIAL
         expectJSON({
-            type: 'group',
+            $: 'group',
             values_: {
-                int0: { type: 'number', value: 0 },
-                int3: { type: 'number', value: 4 },
-                strEmpty: { type: 'str', value: '' },
-                strCoucou: { type: 'str', value: 'coucou' },
-                bool: { type: 'bool', value: false },
-                boolTrue: { type: 'bool', value: true },
-                boolFalse: { type: 'bool', value: false },
+                int0: { $: 'number', value: 0 },
+                int3: { $: 'number', value: 4 },
+                strEmpty: { $: 'str', value: '' },
+                strCoucou: { $: 'str', value: 'coucou' },
+                bool: { $: 'bool', value: false },
+                boolTrue: { $: 'bool', value: true },
+                boolFalse: { $: 'bool', value: false },
                 intOpt: {
-                    type: 'optional',
+                    $: 'optional',
                     active: false,
-                    child: { type: 'number', value: 5 },
+                    child: { $: 'number', value: 5 },
                 },
                 intOpt2: {
-                    type: 'optional',
+                    $: 'optional',
                     active: true,
-                    child: { type: 'number', value: 8 },
+                    child: { $: 'number', value: 8 },
                 },
                 with: {
-                    type: 'link',
-                    a: { type: 'bool', value: false },
+                    $: 'link',
+                    a: { $: 'bool', value: false },
                     b: {
-                        type: 'group',
+                        $: 'group',
                         values_: {
-                            b1: { type: 'shared' },
-                            b2: { type: 'shared' },
+                            b1: { $: 'shared' },
+                            b2: { $: 'shared' },
                         },
                     },
                 },

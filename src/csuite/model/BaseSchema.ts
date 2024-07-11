@@ -1,11 +1,13 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
-import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { Field } from './Field'
+import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Repository } from './Repository'
 
 import { reaction } from 'mobx'
+
+import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 
 export interface BaseSchema<out FIELD extends Field = Field> {
     $Field: FIELD
@@ -106,11 +108,12 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         repo: Repository,
         root: Field<any> | null,
         parent: Field | null,
-        serial?: any | null,
+        serial?: FieldSerial_CommonProperties | null,
     ): FIELD {
         // AUTOMIGRATION --------------------------------------------------------------------
         // recover phase
-        if (serial != null && serial.type !== this.type) {
+        autofixSerial_20240711(serial)
+        if (serial != null && serial.$ !== this.type) {
             // ADDING LIST
             if (this.type === 'list') {
                 const prev: any = serial
@@ -118,14 +121,14 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
                 serial = next
             }
             // REMOVING LIST
-            else if (serial.type === 'list') {
+            else if (serial.$ === 'list') {
                 const prev: Field_list_serial<any> = serial as any
                 const next: any = prev.items_[0] ?? null
                 serial = next
             }
 
             // RECOVER FROM EntitySerial
-            if (serial.type === 'FormSerial') {
+            if (serial?.$ === 'FormSerial') {
                 const prev: any = serial
                 const next: any = prev.root
                 serial = next
@@ -135,17 +138,18 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
 
         // run the config.onCreation if needed
         if (this.config.beforeInit) {
-            const oldVersion = serial._version ?? 'default'
+            const oldVersion = serial?._version ?? 'default'
             const newVersion = this.config.version ?? 'default'
             if (oldVersion !== newVersion) {
                 serial = this.config.beforeInit(serial)
-                serial._version = newVersion
+                serial!._version = newVersion
             }
         }
 
         // ensure the serial is compatible
-        if (serial != null && serial.type !== this.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.type})`)
+        if (serial != null && serial.$ !== this.type) {
+            console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
+            console.log(`[🔶] INVALID SERIAL:`, serial)
             serial = null
         }
         const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
