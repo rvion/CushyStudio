@@ -314,11 +314,16 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    enableBranch(branch: keyof T & string, p: { forceSubtree?: boolean } = {}): void {
+    enableBranch<K extends keyof T & string>(
+        //
+        branch: K,
+        // 🔴 VVV what is that ?
+        p: { forceSubtree?: boolean } = {},
+    ): Maybe<T[K]['$Field']> {
         // ensure branch to enable is disabled
         const existingChild = this.enabledBranches[branch]
         if (this.enabledBranches[branch]) {
-            return console.info(`❌ Branch "${branch}" already enabled`)
+            return void console.info(`❌ Branch "${branch}" already enabled`)
         }
 
         this.MUTVALUE(() => {
@@ -347,6 +352,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             // set the active branch as active
             this.serial.branches[branch] = true
         })
+
+        return this.enabledBranches[branch]
     }
 
     /** results, but only for active branches */
