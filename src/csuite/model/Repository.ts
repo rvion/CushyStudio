@@ -159,9 +159,9 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
 
     private tct: Maybe<Transaction> = null
 
-    TRANSACT(
+    TRANSACT<T>(
         /** mutation to run */
-        fn: (transaction: Transaction) => any,
+        fn: (transaction: Transaction) => T,
 
         /**
          * field the mutation is scoped to
@@ -174,21 +174,22 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         touchMode: FieldTouchMode,
         /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
         _tctMode: TransactionMode,
-    ): void {
+    ): T {
         let isRoot = this.tct == null
+        let OUT: T
         this.tct ??= new Transaction(this /* tctMode */)
 
         if (touchMode === 'auto') {
             const prevValue = this.tct.bump.create + this.tct.bump.value
             const prevSerial = prevValue + this.tct.bump.serial
-            void fn(this.tct)
+            OUT = fn(this.tct)
             const nextValue = this.tct.bump.create + this.tct.bump.value
             const nextSerial = nextValue + this.tct.bump.serial
 
             if (prevValue !== nextValue) this.tct.track(field, 'value')
             else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
         } else {
-            void fn(this.tct)
+            OUT = fn(this.tct)
             this.tct.track(field, touchMode)
         }
 
@@ -210,6 +211,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
             // ⏸️ this.tct.commit()
             // ⏸️ this.tct = null
         }
+        return OUT
     }
 
     lastTransaction: Maybe<Transaction> = null
