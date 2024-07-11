@@ -9,6 +9,7 @@ import type { ProplessFC } from '../../types/ReactUtils'
 import type { TabPositionConfig } from './TabPositionConfig'
 
 import { Field, type KeyedField } from '../../model/Field'
+import { bang } from '../../utils/bang'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -16,7 +17,7 @@ import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
-type DefaultBranches<T> = { [key in keyof T]?: boolean }
+type ActiveBranches<T> = { [key in keyof T]?: boolean }
 
 // CONFIG
 export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
@@ -35,7 +36,7 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
          * or a Dict<boolean> if multiple
          * // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
          */
-        default?: DefaultBranches<T> | keyof T
+        default?: ActiveBranches<T> | keyof T
 
         // UI stuff----------------------
         /** placeholder to display in widget that support placeholders */
@@ -56,8 +57,8 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
 // SERIAL
 export type Field_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
     type: 'choices'
-    branches: DefaultBranches<T>
-    values_: { [k in keyof T]?: T[k]['$Serial'] }
+    branches: ActiveBranches<T>
+    values: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
 // VALUE
@@ -166,7 +167,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             return this.allPossibleChoices[0] === branchName
         }
         const shouldBeActive: boolean =
-            typeof def === 'string' ? branchName === def : Boolean((def as DefaultBranches<T>)[branchName])
+            typeof def === 'string' ? branchName === def : Boolean((def as ActiveBranches<T>)[branchName])
         return shouldBeActive
     }
 
@@ -177,31 +178,15 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         schema: BaseSchema<Field_choices<T>>,
         serial?: Field_choices_serial<T>,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, {
+            type: 'choices',
+            branches: {},
+            values: {},
+        })
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
-    }
-
-    protected setOwnSerial(serial_: Maybe<this['$Serial']>): void {
-        if (this.serial.values_ == null) this.serial.values_ = {} // 💊
-        if (this.serial.branches == null) this.serial.branches = {} // 💊
-
-        const config = this.config
-        if (typeof config.items === 'function') {
-            toastError('🔴 ChoicesWidget "items" property should now be an object, not a function')
-        }
-
-        // find all active branches
-
-        for (const branch of this.allPossibleChoices) {
-            const shouldBeActive = serial_?.branches[branch] ?? this.isBranchActiveByDefault(branch)
-
-            if (shouldBeActive) this.enableBranch(branch)
-            else this.disableBranch(branch)
-        }
-        // if (this.isSingle && activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
     }
 
     get subFields(): Field[] {
@@ -228,6 +213,83 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return Boolean(this.serial.branches[branch])
     }
 
+    protected setOwnSerial(serial__: Maybe<this['$Serial']>): void {
+        const serial_: Maybe<this['$Serial']> =
+            serial__ == null
+                ? null
+                : // 🔶 deep clone is required because serial for this field is handled deeply
+                  // here instead of children when branch is disabled but we have a value
+                  JSON.parse(
+                      JSON.stringify({
+                          type: 'choices', //
+                          branches: serial__.branches,
+                          values: serial__.values ?? (serial__ as any).values_,
+                      }),
+                  )
+        const config = this.config
+        if (typeof config.items === 'function') {
+            toastError('🔴 ChoicesWidget "items" property should now be an object, not a function')
+        }
+
+        if (this.isSingle) {
+            const getActiveBranches = (x: ActiveBranches<T>): (keyof T)[] =>
+                Object.entries(x)
+                    .filter(([k, active]) => active && this.allPossibleChoices.includes(k))
+                    .map(([k]) => k)
+
+            if (typeof config.default === 'object' && getActiveBranches(config.default).length > 1) {
+                toastError('🔴 ChoicesWidget is single but default sets multiple branches')
+            }
+
+            const activeBranches = serial_?.branches && getActiveBranches(serial_?.branches)
+            if (activeBranches && activeBranches?.length > 1) {
+                toastError(
+                    '🔴 ChoicesWidget is single but incoming serial sets multiple branches (recovering by picking the first one)',
+                )
+                serial_.branches = { [bang(activeBranches[0])]: true } as ActiveBranches<T>
+            }
+        }
+
+        this.MUTVALUE(() => {
+            for (const branch of this.allPossibleChoices) {
+                const shouldBeActive = serial_?.branches[branch] ?? this.isBranchActiveByDefault(branch)
+
+                // first: quick safety net to check against schema changes
+                // a. re-create an empty item to check it's schema
+                let schema = this.config.items[branch]
+                if (typeof schema === 'function') schema = (schema as any)() // 💊 temporary backward compat
+                if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
+
+                if (shouldBeActive) {
+                    this.RECONCILE({
+                        correctChildSchema: schema,
+                        existingChild: this.enabledBranches[branch],
+                        targetChildSerial: serial_?.values?.[branch],
+                        attach: (child) => {
+                            this.enabledBranches[branch] = child
+                            this.serial.values[branch] = child.serial
+                        },
+                    })
+                } else {
+                    this.serial.values[branch] = serial_?.values?.[branch]
+
+                    // remove children
+                    const prevChild = this.enabledBranches[branch]
+                    if (prevChild) prevChild.disposeTree()
+                    delete this.enabledBranches[branch]
+
+                    // WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
+                    // we could make this opt-in via a config flag and persist in memory only via enableBranch
+                    // delete this.serial.values_[branch]
+                }
+
+                // set the active branch as active
+                this.serial.branches[branch] = shouldBeActive
+            }
+        })
+        // if (this.isSingle && activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
+    }
+
     disableBranch(branch: keyof T & string): void {
         // ensure branch to disable is enabled
         if (!this.enabledBranches[branch]) {
@@ -235,13 +297,19 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         }
         this.MUTVALUE(() => {
             // remove children
+            const prevChild = this.enabledBranches[branch]
+            if (prevChild) prevChild.disposeTree()
             delete this.enabledBranches[branch]
-            // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
+
+            // WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
+            // we could make this opt-in via a config flag and persist in memory only via enableBranch
+            // delete this.serial.values_[branch]
+
             this.serial.branches[branch] = false
         })
     }
 
-    enableBranch(branch: keyof T & string): void {
+    enableBranch(branch: keyof T & string, p: { forceSubtree?: boolean } = {}): void {
         // ensure branch to enable is disabled
         const existingChild = this.enabledBranches[branch]
         if (this.enabledBranches[branch]) {
@@ -264,45 +332,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             this.RECONCILE({
                 correctChildSchema: schema,
                 existingChild: this.enabledBranches[branch],
-                targetChildSerial: this.serial.values_?.[branch],
+                targetChildSerial: this.serial.values?.[branch],
                 attach: (child) => {
                     this.enabledBranches[branch] = child
-                    this.serial.values_[branch] = child.serial
-                },
-            })
-
-            // set the active branch as active
-            this.serial.branches[branch] = true
-        })
-    }
-
-    enableBranch_viaSetOwnSerial(branch: keyof T & string): void {
-        // ensure branch to enable is disabled
-        const existingChild = this.enabledBranches[branch]
-        if (this.enabledBranches[branch]) {
-            return console.info(`❌ Branch "${branch}" already enabled`)
-        }
-
-        this.MUTVALUE(() => {
-            if (!this.config.multi) {
-                for (const key in this.enabledBranches) {
-                    this.disableBranch(key)
-                }
-            }
-
-            // first: quick safety net to check against schema changes
-            // a. re-create an empty item to check it's schema
-            let schema = this.config.items[branch]
-            if (typeof schema === 'function') schema = (schema as any)() // 💊 temporary backward compat
-            if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
-
-            this.RECONCILE({
-                correctChildSchema: schema,
-                existingChild: this.enabledBranches[branch],
-                targetChildSerial: this.serial.values_?.[branch],
-                attach: (child) => {
-                    this.enabledBranches[branch] = child
-                    this.serial.values_[branch] = child.serial
+                    this.serial.values[branch] = child.serial
                 },
             })
 

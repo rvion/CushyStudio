@@ -140,14 +140,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         parent: Field | null,
         /** schema used to instanciate this widget */
         schema: BaseSchema<K['$Field']>,
-        // serial?: K['$Serial'],
+        serial?: K['$Serial'],
     ) {
         this.id = mkNewFieldId()
         this.repo = repo
         this.root = root ?? this
         this.parent = parent
         this.schema = schema
-        this.serial = { type: (this.constructor as any).type }
+        this.serial = serial ?? { type: (this.constructor as any).type }
     }
 
     // static get mobxOverrideds() {
