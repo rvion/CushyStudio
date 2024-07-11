@@ -23,14 +23,14 @@ export type Field_seed_config = FieldConfig<
 
 // SERIAL
 export type Field_seed_serial = FieldSerial<{
-    type: 'seed'
+    $: 'seed'
     val?: number
     mode?: SeedMode
 }>
 
 // SERIAL FROM VALUE
 export const Field_seed_fromValue = (value: Field_seed_value): Field_seed_serial => ({
-    type: 'seed',
+    $: 'seed',
     mode: 'fixed',
     val: value,
 })

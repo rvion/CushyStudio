@@ -13,7 +13,7 @@ export type Field_color_config = FieldConfig<{ default?: string }, Field_color_t
 
 // SERIAL
 export type Field_color_serial = FieldSerial<{
-    type: 'color'
+    $: 'color'
     /** color, stored as string */
     value?: string
 }>

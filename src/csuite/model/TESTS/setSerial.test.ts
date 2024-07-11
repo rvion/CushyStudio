@@ -7,10 +7,7 @@ describe('setSerial ', () => {
     it('works with valid serial', () => {
         const S1 = b.string({ default: '🔵A' })
         const E1 = S1.create()
-        E1.setSerial({
-            type: 'str',
-            value: '🟢B',
-        })
+        E1.setSerial({ $: 'str', value: '🟢B' })
         expect(E1.value).toEqual('🟢B')
     })
 
@@ -25,20 +22,20 @@ describe('setSerial ', () => {
         })
         const E1 = S1.create()
         E1.setSerial({
-            type: 'group',
+            $: 'group',
             values_: {
                 a: {
-                    type: 'group',
+                    $: 'group',
                     values_: {
                         b: {
-                            type: 'group',
+                            $: 'group',
                             values_: {
                                 c: {
-                                    type: 'str',
+                                    $: 'str',
                                     value: '🟢',
                                 },
                                 d: {
-                                    type: 'number',
+                                    $: 'number',
                                     value: 2,
                                 },
                             },

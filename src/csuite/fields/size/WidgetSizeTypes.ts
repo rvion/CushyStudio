@@ -14,7 +14,7 @@ export type CushySizeByRatio = {
 }
 
 export type CushySize = {
-    type: 'size'
+    $: 'size'
     width: number
     height: number
     modelType: SDModelType

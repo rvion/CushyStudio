@@ -56,7 +56,7 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
 
 // SERIAL
 export type Field_choices_serial<T extends SchemaDict = SchemaDict> = FieldSerial<{
-    type: 'choices'
+    $: 'choices'
     branches: ActiveBranches<T>
     values: { [k in keyof T]?: T[k]['$Serial'] }
 }>
@@ -179,7 +179,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         serial?: Field_choices_serial<T>,
     ) {
         super(repo, root, parent, schema, {
-            type: 'choices',
+            $: 'choices',
             branches: {},
             values: {},
         })
@@ -221,7 +221,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
                   // here instead of children when branch is disabled but we have a value
                   JSON.parse(
                       JSON.stringify({
-                          type: 'choices', //
+                          $: 'choices', //
                           branches: serial__.branches,
                           values: serial__.values ?? (serial__ as any).values_,
                       }),

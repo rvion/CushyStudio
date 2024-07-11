@@ -29,7 +29,7 @@ export type Field_link_config<
 
 // SERIAL
 export type Field_link_serial<A extends BaseSchema, B extends BaseSchema> = FieldSerial<{
-    type: 'link'
+    $: 'link'
     a?: A['$Serial']
     b?: B['$Serial']
 }>

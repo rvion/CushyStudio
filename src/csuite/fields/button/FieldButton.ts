@@ -30,7 +30,7 @@ export type Field_button_config<K = any> = FieldConfig<
 
 // SERIAL
 export type Field_button_serial = FieldSerial<{
-    type: 'button'
+    $: 'button'
     val?: boolean
 }>
 

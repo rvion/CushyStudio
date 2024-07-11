@@ -15,7 +15,7 @@ export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
     return (
         <>
-            <pre>{JSON.stringify(p.field.serial, null, 3)}</pre>
+            {/* <pre>{JSON.stringify(p.field.serial, null, 3)}</pre> */}
             <WigetSizeXUI size={p.field} bounds={p.field.config} />
         </>
     )

@@ -4,7 +4,7 @@ export type FieldSerial<X> = X & FieldSerial_CommonProperties
 /** common properties we expect to see in a widget serial */
 export type FieldSerial_CommonProperties = {
     /** name of the widget, so we can later re-instanciate a widget from this */
-    type: string
+    $: string
 
     /** if true, widget should be displayed folded when it make sense in given context */
     collapsed?: boolean

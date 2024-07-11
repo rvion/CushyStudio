@@ -1,7 +1,7 @@
-import { afterEach, beforeAll, describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
 import { observable, toJS } from 'mobx'
 
-import { simpleBuilder as b, simpleRepo } from '../../index'
+import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('FieldChoices', () => {
@@ -74,17 +74,17 @@ describe('FieldChoices', () => {
             expectJSON(E1.value).toEqual({ baz: '' })
 
             const serial = {
-                type: 'choices' as const,
+                $: 'choices' as const,
                 branches: { baz: true, foo: true, bar: true },
                 values: {
-                    baz: { type: 'str' as const, value: '🔵' },
-                    foo: { type: 'str' as const, value: '🟢' },
+                    baz: { $: 'str' as const, value: '🔵' },
+                    foo: { $: 'str' as const, value: '🟢' },
                     bar: {
-                        type: 'list' as const,
+                        $: 'list' as const,
                         items_: [
-                            { type: 'number' as const, value: 1 },
-                            { type: 'number' as const, value: 2 },
-                            { type: 'number' as const, value: 3 },
+                            { $: 'number' as const, value: 1 },
+                            { $: 'number' as const, value: 2 },
+                            { $: 'number' as const, value: 3 },
                         ],
                     },
                 },
@@ -102,10 +102,10 @@ describe('FieldChoices', () => {
             expectJSON(E1.value).toEqual({ baz: '' })
 
             const serial = {
-                type: 'choices' as const,
+                $: 'choices' as const,
                 branches: { baz: true },
                 values_: {
-                    baz: { type: 'str' as const, value: '🔵' },
+                    baz: { $: 'str' as const, value: '🔵' },
                 },
             } as any
 
@@ -114,10 +114,10 @@ describe('FieldChoices', () => {
             // expect(E1.value).toBe(2)
             expectJSON(E1.value).toEqual({ baz: '🔵' })
             expect(toJS(E1.serial)).toMatchObject({
-                type: 'choices' as const,
+                $: 'choices' as const,
                 branches: { baz: true },
                 values: {
-                    baz: { type: 'str' as const, value: '🔵' },
+                    baz: { $: 'str' as const, value: '🔵' },
                 },
             })
         })
@@ -126,10 +126,10 @@ describe('FieldChoices', () => {
             const E1 = Multi.create()
 
             const serial = {
-                type: 'choices' as const,
+                $: 'choices' as const,
                 branches: { baz: true },
                 values: {
-                    baz: { type: 'str' as const, value: '🔵' },
+                    baz: { $: 'str' as const, value: '🔵' },
                 },
             } satisfies (typeof Multi)['$Serial']
 
@@ -149,10 +149,10 @@ describe('FieldChoices', () => {
             //🔶 observable prevents implicit cloning by mobx on assignation
             // that could make us think the serial is deeply cloned when it's not
             const serial = observable({
-                type: 'choices' as const,
+                $: 'choices' as const,
                 branches: { baz: false },
                 values: {
-                    baz: { type: 'str' as const, value: '🔵' },
+                    baz: { $: 'str' as const, value: '🔵' },
                 },
             }) // satisfies (typeof E1)['$Serial']
 
@@ -193,18 +193,18 @@ describe('FieldChoices', () => {
                 const E1 = MultiNoDefault.create()
 
                 const activeSerial = {
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: true },
                     values: {
-                        baz: { type: 'str' as const, value: '🔵' },
+                        baz: { $: 'str' as const, value: '🔵' },
                     },
                 }
 
                 const unactiveSerial = {
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: false },
                     values: {
-                        baz: { type: 'str' as const, value: '🟢' },
+                        baz: { $: 'str' as const, value: '🟢' },
                     },
                 }
 
@@ -220,15 +220,15 @@ describe('FieldChoices', () => {
                 const E1 = MultiNoDefault.create()
 
                 const activeSerial = {
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: true },
                     values: {
-                        baz: { type: 'str' as const, value: '🔵' },
+                        baz: { $: 'str' as const, value: '🔵' },
                     },
                 }
 
                 const unactiveSerial = {
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: false },
                     values: {},
                 }
@@ -252,8 +252,8 @@ describe('FieldChoices', () => {
                 expect(toJS(E1.serial)).toMatchObject({
                     branches: { foo: true, bar: false, baz: true },
                     values: {
-                        foo: { type: 'str' as const, value: 'yo' },
-                        baz: { type: 'str' as const, value: '' },
+                        foo: { $: 'str' as const, value: 'yo' },
+                        baz: { $: 'str' as const, value: '' },
                     },
                 })
                 expect(E1.subFields).toHaveLength(2)
@@ -269,8 +269,8 @@ describe('FieldChoices', () => {
                 expect(toJS(E1.serial)).toMatchObject({
                     branches: { foo: true, bar: false, baz: false },
                     values: {
-                        foo: { type: 'str' as const, value: 'yo' },
-                        baz: { type: 'str' as const, value: '' },
+                        foo: { $: 'str' as const, value: 'yo' },
+                        baz: { $: 'str' as const, value: '' },
                     },
                 })
                 expect(E1.subFields).toHaveLength(1)
@@ -284,10 +284,10 @@ describe('FieldChoices', () => {
                 const E1 = Multi.create()
 
                 E1.setSerial({
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: true },
                     values: {
-                        baz: { type: 'str' as const, value: '🔵' },
+                        baz: { $: 'str' as const, value: '🔵' },
                     },
                 })
 
@@ -296,7 +296,7 @@ describe('FieldChoices', () => {
                 expect(toJS(E1.serial)).toMatchObject({
                     branches: { baz: false },
                     values: {
-                        baz: { type: 'str' as const, value: '🔵' },
+                        baz: { $: 'str' as const, value: '🔵' },
                     },
                 })
             })
@@ -305,10 +305,10 @@ describe('FieldChoices', () => {
                 const E1 = Multi.create()
 
                 E1.setSerial({
-                    type: 'choices' as const,
+                    $: 'choices' as const,
                     branches: { baz: true },
                     values: {
-                        baz: { type: 'str' as const, value: '🔵' },
+                        baz: { $: 'str' as const, value: '🔵' },
                     },
                 })
 
@@ -328,10 +328,10 @@ describe('FieldChoices', () => {
         //     expect(E1.length).toBe(2)
         //     expectJSON(E1.value).toEqual(['🔵', '🟢'])
         //     expect(toJS(E1.serial)).toMatchObject({
-        //         type: 'list' as const,
+        //         $: 'list' as const,
         //         items_: [
-        //             { type: 'str' as const, value: '🔵' },
-        //             { type: 'str' as const, value: '🟢' },
+        //             { $: 'str' as const, value: '🔵' },
+        //             { $: 'str' as const, value: '🟢' },
         //         ],
         //     })
         // })
@@ -342,10 +342,10 @@ describe('FieldChoices', () => {
         //     E1.value = ['🔵', '🟢']
         //     expect(oldSerial.items_.length).toBe(2)
         //     expect(toJS(oldSerial)).toMatchObject({
-        //         type: 'list' as const,
+        //         $: 'list' as const,
         //         items_: [
-        //             { type: 'str' as const, value: '🔵' },
-        //             { type: 'str' as const, value: '🟢' },
+        //             { $: 'str' as const, value: '🔵' },
+        //             { $: 'str' as const, value: '🟢' },
         //         ],
         //     })
         // })

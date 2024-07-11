@@ -70,12 +70,8 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
                 <div>
                     Logs:
                     <div className='join'>
-                        <div onClick={() => host.enableServerLogs()} className='btn btn-sm'>
-                            On
-                        </div>
-                        <div onClick={() => host.enableServerLogs()} className='btn btn-sm'>
-                            Off
-                        </div>
+                        <Button onClick={() => host.enableServerLogs()}>On</Button>
+                        <Button onClick={() => host.enableServerLogs()}>Off</Button>
                     </div>
                 </div>
                 {p.host.serverLogs.toReversed().map((l) => {

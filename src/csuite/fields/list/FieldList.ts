@@ -64,7 +64,7 @@ export interface Field_list_config<out T extends BaseSchema>
 
 // SERIAL
 export type Field_list_serial<T extends BaseSchema> = FieldSerial<{
-    type: 'list'
+    $: 'list'
     items_: T['$Serial'][]
 }>
 

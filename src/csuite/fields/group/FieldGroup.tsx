@@ -27,7 +27,7 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
 
 // SERIAL
 export type Field_group_serial<T extends SchemaDict> = FieldSerial<{
-    type: 'group'
+    $: 'group'
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 

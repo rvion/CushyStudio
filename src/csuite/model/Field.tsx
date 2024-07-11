@@ -76,6 +76,7 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { $FieldSym } from './$FieldSym'
+import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -147,7 +148,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.root = root ?? this
         this.parent = parent
         this.schema = schema
-        this.serial = serial ?? { type: (this.constructor as any).type }
+        this.serial = serial ?? { $: (this.constructor as any).type }
     }
 
     // static get mobxOverrideds() {
@@ -240,6 +241,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
     setSerial(serial: Maybe<K['$Serial']>): void {
+        autofixSerial_20240711(serial)
         this.MUTVALUE(() => {
             this.copyCommonSerialFiels(serial)
             this.setOwnSerial(serial)
@@ -849,7 +851,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     private _hasBeenInitialized: boolean = false
 
     /** this function MUST be called at the end of every widget constructor */
-    init(serial_?: K['$Serial'], mobxOverrides?: any): void {
+    protected init(serial?: K['$Serial'], mobxOverrides?: any): void {
+        autofixSerial_20240711(serial)
+
         // 1. ensure field hasn't been initialized yet
         if (this._hasBeenInitialized) {
             console.error(`[🔶] Field.init has already been called => ABORTING`)
@@ -862,10 +866,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
         // 3. ...
         this.MUTINIT(() => {
-            this.copyCommonSerialFiels(serial_)
+            this.copyCommonSerialFiels(serial)
 
             //   VVVVVVVVVVVV this is where we hydrate children
-            this.setOwnSerial(serial_)
+            this.setOwnSerial(serial)
 
             // make the object deeply observable including this base class
             makeAutoObservableInheritance(this, mobxOverrides)

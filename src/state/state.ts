@@ -1,12 +1,15 @@
 // VERY IMPORTANT: Dependency Injection for runtime
 import '../models/asyncRuntimeStorage'
 
+import type { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import type { ActionTagMethodList } from '../cards/App'
 import type { Activity } from '../csuite/activity/Activity'
 import type { CSuiteConfig } from '../csuite/ctx/CSuiteConfig'
 import type { Tint } from '../csuite/kolor/Tint'
-import type { EntitySerial } from '../csuite/model/EntitySerial'
+import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
 import type { TreeNode } from '../csuite/tree/TreeNode'
+import type { Timestamp } from '../csuite/types/Timestamp'
+import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ConfigMode } from '../panels/PanelConfig/PanelConfig'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
@@ -32,7 +35,7 @@ import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyRepo, type CushyRepo } from '../controls/Builder'
 import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
-import { activityManager } from '../csuite/activity/ActivityManager'
+import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
 import { run_tint } from '../csuite/kolor/prefab_Tint'
@@ -84,32 +87,14 @@ import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 
 export class STATE {
-    Channel = Channel // WIP remove me 2024-06-25 🔴
-
     // LEAVE THIS AT THE TOP OF THIS CLASS
-    __INJECTION__ = (() => {
-        //  globally register the state as this
-        if ((window as any).CushyObservableCache == null) {
-            ;(window as any).CushyObservableCache = observable({ st: this })
-            ;(window as any).st = this // <- remove this once window.st usage has been cleend
-        } else {
-            ;(window as any).CushyObservableCache.st = this
-            ;(window as any).st = this // <- remove this once window.st usage has been cleend
-        }
-        if ((window as any).cushy == null) {
-            console.log(`[🛋️] window.cushy now defined`)
-            Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
-        }
-        if ((window as any).toJS == null) {
-            ;(window as any).toJS = toJS
-        }
-    })()
+    __INJECTION__ = INJECT_CUSHY_GLOBALLY(this)
 
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
     //file utils that need to be setup first because
-    resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
+    Channel = Channel // WIP remove me 2024-06-25 🔴
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
@@ -123,37 +108,53 @@ export class STATE {
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
     builder = builder
+    tree1: Tree
+    tree1View: TreeView
+    tree2: Tree
+    tree2View: TreeView
+    libraryFolderPathAbs: AbsolutePath
+    libraryFolderPathRel: RelativePath
+    outputFolderPath: AbsolutePath
+    status: ComfyStatus | null = null
+    graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
+    sid: Maybe<string> = null
+    comfyStatus: Maybe<ComfyStatus> = null
+    configFile: JsonFile<ConfigFile>
+    configMode: ConfigMode = 'legacy'
+    updater: GitManagedFolder
+    hovered: Maybe<StepOutput> = null
+    electronUtils: ElectronUtils
+    library: Library
+    danbooru: DanbooruTags
+    userTags = UserTags.build()
+    actionTags: ActionTagMethodList = []
+    importer: ComfyImporter
 
-    _updateTime = () => {
+    _updateTime(): void {
         const now = Date.now()
         // console.log(`time is now ${now}`)
         this.liveTime = Math.round(now / 1000)
     }
 
     /** mobx hack to make things refresh every few seconds */
-    liveTime: number = (() => {
+    liveTime: number = ((): Timestamp => {
         const store = this.hotReloadPersistentCache
         if (store.liveTimeInterval != null) clearInterval(store.liveTimeInterval)
         store.liveTimeInterval = setInterval(() => this._updateTime, 1000)
-        return Date.now()
+        return Date.now() as Timestamp
     })()
-
-    tree1: Tree
-    tree1View: TreeView
-    tree2: Tree
-    tree2View: TreeView
 
     get clickAndSlideMultiplicator(): number {
         return cushy.configFile.get('numberSliderSpeed') ?? 1
     }
 
-    startupFileIndexing = async () => {
+    startupFileIndexing = async (): Promise<void> => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
         console.log(`[🚧] startupFileIndexing: found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFile()
     }
 
-    forceRefreshAllApps = async () => {
+    forceRefreshAllApps = async (): Promise<void> => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
         console.log(`[🚧] forceRefreshAllApps: found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFileAndUpdateApps({ force: true })
@@ -183,30 +184,35 @@ export class STATE {
         return def[0]
     }
 
-    openInVSCode = (filePathWithinWorkspace: RelativePath) => openInVSCode(this, filePathWithinWorkspace)
+    openInVSCode(filePathWithinWorkspace: RelativePath): Promise<void> {
+        return openInVSCode(this, filePathWithinWorkspace)
+    }
 
-    getKnownCheckpoints = () => this.managerRepository.getKnownCheckpoints()
+    getKnownCheckpoints(): ModelInfo[] {
+        return this.managerRepository.getKnownCheckpoints()
+    }
 
-    reloadCushyMainWindow = () => {
+    reloadCushyMainWindow(): void {
         window.location.reload()
     }
 
-    fullReset_eraseConfigAndSchemaFilesAndDB = () => {
+    fullReset_eraseConfigAndSchemaFilesAndDB(): void {
         this.configFile.erase()
         this.db.erase()
         this.reloadCushyMainWindow()
     }
 
-    resizeWindowForVideoCapture = () => {
+    resizeWindowForVideoCapture(): void {
         const ipcRenderer = window.require('electron').ipcRenderer
         ipcRenderer.send('resize-for-video-capture')
     }
-    resizeWindowForLaptop = () => {
+
+    resizeWindowForLaptop(): void {
         const ipcRenderer = window.require('electron').ipcRenderer
         ipcRenderer.send('resize-for-laptop')
     }
 
-    partialReset_eraseConfigAndSchemaFiles = () => {
+    partialReset_eraseConfigAndSchemaFiles(): void {
         this.configFile.erase()
         this.reloadCushyMainWindow()
     }
@@ -234,59 +240,74 @@ export class STATE {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
-    libraryFolderPathAbs: AbsolutePath
-    libraryFolderPathRel: RelativePath
-
-    outputFolderPath: AbsolutePath
-    status: ComfyStatus | null = null
-    graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
-    sid: Maybe<string> = null
-    comfyStatus: Maybe<ComfyStatus> = null
-    configFile: JsonFile<ConfigFile>
-    configMode: ConfigMode = 'legacy'
-    updater: GitManagedFolder
-    hovered: Maybe<StepOutput> = null
-    electronUtils: ElectronUtils
-    library: Library
-    danbooru: DanbooruTags
-    userTags = UserTags.build()
-    actionTags: ActionTagMethodList = []
-    importer: ComfyImporter
-    // themeManager: CushyThemeManager
-
-    // showPreviewInFullScreen
-    // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
-    // set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
-
-    // get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
-    // set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
-
     // gallery size
-    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
-    set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
-    get gallerySize() { return this.galleryConf.value.gallerySize ?? 48 } // prettier-ignore
+    get gallerySizeStr(): string {
+        return `${this.gallerySize}px`
+    }
 
-    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
-    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
+    set gallerySize(v: number) {
+        this.galleryConf.fields.gallerySize.value = v
+    }
+
+    get gallerySize(): number {
+        return this.galleryConf.value.gallerySize ?? 48
+    }
+
+    get preferedFormLayout(): Maybe<PreferedFormLayout> {
+        return this.configFile.value.preferedFormLayout ?? 'auto'
+    }
+
+    set preferedFormLayout(v: PreferedFormLayout) {
+        this.configFile.update({ preferedFormLayout: v })
+    }
 
     // history app size
-    get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
-    set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
-    get historySize() { return this.configFile.value.historyAppSize ?? 32 } // prettier-ignore
+    get historySizeStr(): string {
+        return `${this.historySize}px`
+    }
 
+    set historySize(v: number) {
+        this.configFile.update({ historyAppSize: v })
+    }
+
+    get historySize(): number {
+        return this.configFile.value.historyAppSize ?? 32
+    }
+
+    // 🔴 MOVE THAT IN FIELD
     // latent size pct
-    get latentSizeStr() { return `${this.latentSize}%` } // prettier-ignore
-    set latentSize(v: number) { this.configFile.update({ latentPreviewSize: v }) } // prettier-ignore
-    get latentSize() { return this.configFile.value.latentPreviewSize ?? 25 } // prettier-ignore
+    get latentSizeStr(): string {
+        return `${this.latentSize}%`
+    }
+
+    // 🔴 MOVE THAT IN FIELD
+    set latentSize(v: number) {
+        this.configFile.update({ latentPreviewSize: v })
+    }
+
+    // 🔴 MOVE THAT IN FIELD
+    get latentSize(): number {
+        return this.configFile.value.latentPreviewSize ?? 25
+    }
 
     //
-    get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
+    get githubUsername(): Maybe<GithubUserName> {
+        return this.configFile.value.githubUsername as Maybe<GithubUserName>
+    }
 
-    // ---------------------------------------------------
-    get favoriteApps(): CushyAppL[] { return this.db.cushy_app.select((q) => q.where('isFavorite', '=', SQLITE_true), ['cushy_app.isFavorite']) } // prettier-ignore
-    get favoriteDrafts(): DraftL[] { return this.db.draft.select((q) => q.where('isFavorite', '=', SQLITE_true), ['draft.isFavorite']) } // prettier-ignore
-    get canvasTools(): DraftL[] { return this.db.draft.select((q) => q.where('canvasToolCategory', '!=', 'null'), ['draft.canvasToolCategory']) } // prettier-ignore
-    getCanvasToolsInCategory = (category: string) =>
+    get favoriteApps(): CushyAppL[] {
+        return this.db.cushy_app.select((q) => q.where('isFavorite', '=', SQLITE_true), ['cushy_app.isFavorite'])
+    }
+
+    get favoriteDrafts(): DraftL[] {
+        return this.db.draft.select((q) => q.where('isFavorite', '=', SQLITE_true), ['draft.isFavorite'])
+    }
+
+    get canvasTools(): DraftL[] {
+        return this.db.draft.select((q) => q.where('canvasToolCategory', '!=', 'null'), ['draft.canvasToolCategory'])
+    }
+
+    getCanvasToolsInCategory = (category: string): DraftL[] =>
         this.db.draft.select((q) => q.where('canvasToolCategory', '=', category), ['draft.canvasToolCategory'])
     /** list of all unified canvas tool categories */
     get canvasCategories(): string[] {
@@ -304,22 +325,42 @@ export class STATE {
     // ---------------------------------------------------
     // --------------------------------------------------
 
-    getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
-    setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
-    isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+    /** @deprecated */
+    getConfigValue<K extends keyof ConfigFile>(k: K): ConfigFile[K] {
+        return this.configFile.value[k]
+    }
 
-    get showPreviewInPanel() { return this.configFile.value.showPreviewInPanel ?? true } // prettier-ignore
-    set showPreviewInPanel(v: boolean) { this.configFile.update({ showPreviewInPanel: v }) } // prettier-ignore
+    /** @deprecated */
+    setConfigValue<K extends keyof ConfigFile>(k: K, v: ConfigFile[K]): void {
+        return this.configFile.update({ [k]: v })
+    }
+
+    /** @deprecated */
+    isConfigValueEq<K extends keyof ConfigFile>(k: K, val: ConfigFile[K]): boolean {
+        return this.configFile.value[k] === val
+    }
+
+    // ---------------------------------------------------
+    // --------------------------------------------------
+    get showPreviewInPanel(): boolean {
+        return this.configFile.value.showPreviewInPanel ?? true
+    }
+
+    set showPreviewInPanel(v: boolean) {
+        this.configFile.update({ showPreviewInPanel: v })
+    }
 
     droppedFiles: File[] = []
 
-    toggleFullLibrary = () => {
+    toggleFullLibrary(): void {
         this.layout.FOCUS_OR_CREATE('FullScreenLibrary', {})
     }
 
-    // 🔴 this is not the right way to go cause it will cause the action to stay
-    // pending in the background: fix that LATER™️
-    stopCurrentPrompt = async () => {
+    /**
+     * 🔴 this is not the right way to go cause it will cause the action to stay
+     * pending in the background: fix that LATER™️
+     */
+    async stopCurrentPrompt(): Promise<void> {
         const promptEndpoint = `${this.getServerHostHTTP()}/interrupt`
         const res = await fetch(promptEndpoint, { method: 'POST' })
         console.log('🔥 INTERRUPTED.')
@@ -390,14 +431,20 @@ export class STATE {
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
 
-    showConfettiAndBringFun = async () => {
+    showConfettiAndBringFun = async (): Promise<void> => {
         const confetti = (await import('https://cdn.skypack.dev/canvas-confetti' as any)).default
         confetti()
     }
 
-    get autolayoutOpts() {
+    get autolayoutOpts(): {
+        node_hsep: number
+        node_vsep: number
+    } {
         const fv = this.graphConf.value
-        return { node_hsep: fv.hsep, node_vsep: fv.vsep }
+        return {
+            node_hsep: fv.hsep,
+            node_vsep: fv.vsep,
+        }
     }
     graphConf = cushyRepo.fields(
         (ui) => ({
@@ -413,13 +460,14 @@ export class STATE {
     )
 
     /** practical shortcut to start activity */
-    startActivity(activity: Activity) {
+    startActivity(activity: Activity): void {
         activityManager.start(activity)
     }
 
-    get activityManager() {
+    get activityManager(): ActivityManager {
         return activityManager
     }
+
     civitaiConf = cushyRepo.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
@@ -477,7 +525,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            serial: () => readJSON<EntitySerial>('settings/displacement.json'),
+            serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
@@ -567,7 +615,7 @@ export class STATE {
             treeAdapter,
         )
         this.tree1View = new TreeView(this.tree1, {
-            onFocusChange: (node?: TreeNode) => {
+            onFocusChange: (node?: TreeNode): void => {
                 if (node == null) return
                 console.log(`[🌲] TreeView 1 selection changed to:`, node.path_v2)
                 if (node.data instanceof TreeApp) return node.data.app?.revealInFileExplorer()
@@ -592,7 +640,7 @@ export class STATE {
             treeAdapter,
         )
         this.tree2View = new TreeView(this.tree2, {
-            onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
+            onFocusChange: (node): void => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })
 
         makeAutoObservable(this, {
@@ -650,7 +698,7 @@ export class STATE {
         })
     }
     // ------------------------------------------------------------
-    wipeOuputTopLevelImages = () => {
+    wipeOuputTopLevelImages = (): void => {
         const outputFolderPath = this.outputFolderPath
         const files = readdirSync(outputFolderPath)
         const confirm = window.confirm(`Are you sure you want to delete ${files.length} files in ${outputFolderPath}?`)
@@ -668,11 +716,11 @@ export class STATE {
      * main host websocket
      * (exposed here for legacy reasons)
      * */
-    get ws() {
+    get ws(): Maybe<ResilientWebSocketClient> {
         return this.mainHost.ws
     }
 
-    get hosts() {
+    get hosts(): HostL[] {
         return this.db.host.select()
     }
 
@@ -692,9 +740,11 @@ export class STATE {
         return this.mainHost.getServerHostHTTP()
     }
 
+    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 ------------------------------
+    // 🔴 THIS MUST BE MOVED TO HOSTS ?
     _pendingMsgs = new Map<PromptID, PromptRelated_WsMsg[]>()
     private activePromptID: PromptID | null = null
-    temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
+    temporize(prompt_id: PromptID, msg: PromptRelated_WsMsg): void {
         this.activePromptID = prompt_id
         const prompt = this.db.comfy_prompt.get(prompt_id)
 
@@ -716,7 +766,7 @@ export class STATE {
         url: string
     }> = null
 
-    onMessage = (e: MessageEvent, host: HostL) => {
+    onMessage(e: MessageEvent, host: HostL): void {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
@@ -740,7 +790,7 @@ export class STATE {
                     this.latentPreview = {
                         blob: imageBlob,
                         url: imagePreview,
-                        receivedAt: Date.now(),
+                        receivedAt: Date.now() as Timestamp,
                         promtID: this.activePromptID,
                     }
                     break
@@ -799,7 +849,7 @@ export class STATE {
     }
 
     /** attempt to convert an url to a Blob */
-    getUrlAsBlob = async (url: string) => {
+    async getUrlAsBlob(url: string): Promise<Blob> {
         const response = await fetch(url, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
@@ -825,7 +875,7 @@ export class STATE {
 
     schemaRetrievalLogs: string[] = []
 
-    get schemaStatusEmoji() {
+    get schemaStatusEmoji(): string {
         if (this.schema.nodes.length > 10) return '🟢'
         return '🔴'
     }
@@ -848,7 +898,7 @@ export class STATE {
     galleryFilterPath: Maybe<string> = null
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
-    get imageToDisplay() {
+    get imageToDisplay(): MediaImageL[] {
         const conf = this.galleryConf.value
         return this.db.media_image.select(
             (query) => {
@@ -875,7 +925,7 @@ export class STATE {
 
     // FILESYSTEM UTILS --------------------------------------------------------------------
     /** write a binary file to given absPath */
-    writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
+    writeBinaryFile(absPath: AbsolutePath, content: Buffer): void {
         // ensure folder exists
         const folder = join(absPath, '..')
         mkdirSync(folder, { recursive: true })
@@ -906,7 +956,7 @@ export class STATE {
         return str
     }
 
-    writeTextFile(absPath: AbsolutePath, content: string) {
+    writeTextFile(absPath: AbsolutePath, content: string): void {
         // ensure folder exists
         const folder = join(absPath, '..')
         mkdirSync(folder, { recursive: true })
@@ -923,5 +973,31 @@ export class STATE {
 
     get themeText(): Tint {
         return run_tint(this.theme.value.text)
+    }
+
+    resolveFromRoot(relativePath: RelativePath): AbsolutePath {
+        return asAbsolutePath(join(this.rootPath, relativePath))
+    }
+}
+
+function INJECT_CUSHY_GLOBALLY(CUSHY: STATE): void {
+    //  globally register the state as this
+    if ((window as any).CushyObservableCache == null) {
+        ;(window as any).CushyObservableCache = observable({ st: CUSHY })
+        ;(window as any).st = CUSHY // <- remove this once window.st usage has been cleend
+    } else {
+        ;(window as any).CushyObservableCache.st = CUSHY
+        ;(window as any).st = CUSHY // <- remove this once window.st usage has been cleend
+    }
+    if ((window as any).cushy == null) {
+        console.log(`[🛋️] window.cushy now defined`)
+        Object.defineProperty(window, 'cushy', {
+            get() {
+                return (window as any).CushyObservableCache.st
+            },
+        })
+    }
+    if ((window as any).toJS == null) {
+        ;(window as any).toJS = toJS
     }
 }

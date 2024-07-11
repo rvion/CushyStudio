@@ -96,7 +96,7 @@ export class Field_size extends Field<Field_size_types> {
         const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
         const width = config.default?.width ?? parseInt(modelType.split(' ')[1]!)
         const height = config.default?.height ?? parseInt(modelType.split(' ')[1]!)
-        return { type: 'size', aspectRatio, modelType, height, width }
+        return { $: 'size', aspectRatio, modelType, height, width }
     }
 
     get hasChanges(): boolean {

@@ -114,7 +114,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             // ADDING LIST
             if (this.type === 'list') {
                 const prev: any = serial
-                const next: Field_list_serial<any> = { type: 'list', items_: [prev] }
+                const next: Field_list_serial<any> = { $: 'list', items_: [prev] }
                 serial = next
             }
             // REMOVING LIST

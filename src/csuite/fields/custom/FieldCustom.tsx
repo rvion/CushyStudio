@@ -25,7 +25,7 @@ export type Field_custom_config<T> = FieldConfig<
 
 // SERIAL
 export type Field_custom_serial<T> = FieldSerial<{
-    type: 'custom'
+    $: 'custom'
     value: T
 }>
 

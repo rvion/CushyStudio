@@ -20,11 +20,11 @@ export type Field_markdown_config = FieldConfig<
 
 // SERIAL
 export type Field_markdown_serial = FieldSerial<{
-    type: 'markdown'
+    $: 'markdown'
 }>
 
 // VALUE
-export type Field_markdown_value = { type: 'markdown' }
+export type Field_markdown_value = { $: 'markdown' }
 
 // TYPES
 export type Field_markdown_types = {

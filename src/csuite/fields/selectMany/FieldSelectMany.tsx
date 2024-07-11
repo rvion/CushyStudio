@@ -52,7 +52,7 @@ export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
 
 // SERIAL
 export type Field_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
-    type: 'selectMany'
+    $: 'selectMany'
     query: string
     values: T[]
 }>
@@ -61,7 +61,7 @@ export type Field_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
 export const Field_selectMany_fromValue = <T extends BaseSelectEntry>(
     values: Field_selectMany_value<T>,
 ): Field_selectMany_serial<T> => ({
-    type: 'selectMany',
+    $: 'selectMany',
     query: '',
     values,
 })

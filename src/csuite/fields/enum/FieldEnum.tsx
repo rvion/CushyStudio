@@ -24,7 +24,7 @@ export type Field_enum_config<O> = FieldConfig<
 
 // SERIAL
 export type Field_enum_serial<O> = FieldSerial<{
-    type: 'enum'
+    $: 'enum'
     val?: O
 }>
 

@@ -52,7 +52,7 @@ export type Field_bool_config = FieldConfig<
 
 // SERIAL
 export type Field_bool_serial = FieldSerial<{
-    type: 'bool'
+    $: 'bool'
     value?: boolean
 }>
 

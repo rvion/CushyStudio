@@ -20,14 +20,14 @@ export type Field_orbit_config = FieldConfig<{ default?: Partial<OrbitData> }, F
 
 // SERIAL
 export type Field_orbit_serial = FieldSerial<{
-    type: 'orbit'
+    $: 'orbit'
     azimuth?: number
     elevation?: number
 }>
 
 // SERIAL FROM VALUE
 export const Field_orbit_fromValue = (value: Field_orbit_value): Field_orbit_serial => ({
-    type: 'orbit',
+    $: 'orbit',
     azimuth: value.azimuth,
     elevation: value.elevation,
 })

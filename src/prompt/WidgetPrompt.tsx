@@ -36,13 +36,13 @@ export type Field_prompt_config = FieldConfig<
 
 // SERIAL FROM VALUE
 export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_serial => ({
-    type: 'prompt',
+    $: 'prompt',
     val: val.text,
 })
 
 // SERIAL
 export type Field_prompt_serial = FieldSerial<{
-    type: 'prompt'
+    $: 'prompt'
     val?: string
 }>
 

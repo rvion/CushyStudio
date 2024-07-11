@@ -48,7 +48,7 @@ export type Field_string_config = FieldConfig<
 
 // SERIAL
 export type Field_string_serial = FieldSerial<{
-    type: 'str'
+    $: 'str'
     value?: string
 }>
 
@@ -57,7 +57,7 @@ export type Field_string_serial = FieldSerial<{
 // ["str","dsafasdfsdafas","coucou"],
 // SERIAL FROM VALUE
 export const Field_string_fromValue = (val: string): Field_string_serial => ({
-    type: 'str',
+    $: 'str',
     value: val,
 })
 

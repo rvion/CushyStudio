@@ -57,10 +57,10 @@ describe('FieldList', () => {
             expect(E1.length).toBe(3)
 
             const serial = {
-                type: 'list' as const,
+                $: 'list' as const,
                 items_: [
-                    { type: 'str' as const, value: '🔵' },
-                    { type: 'str' as const, value: '🟢' },
+                    { $: 'str' as const, value: '🔵' },
+                    { $: 'str' as const, value: '🟢' },
                 ],
             }
 
@@ -83,10 +83,10 @@ describe('FieldList', () => {
 
             expectJSON(E1.value).toEqual(['🔵', '🟢'])
             expect(toJS(E1.serial)).toMatchObject({
-                type: 'list' as const,
+                $: 'list' as const,
                 items_: [
-                    { type: 'str' as const, value: '🔵' },
-                    { type: 'str' as const, value: '🟢' },
+                    { $: 'str' as const, value: '🔵' },
+                    { $: 'str' as const, value: '🟢' },
                 ],
             })
         })
@@ -100,10 +100,10 @@ describe('FieldList', () => {
 
             expect(oldSerial.items_.length).toBe(2)
             expect(toJS(oldSerial)).toMatchObject({
-                type: 'list' as const,
+                $: 'list' as const,
                 items_: [
-                    { type: 'str' as const, value: '🔵' },
-                    { type: 'str' as const, value: '🟢' },
+                    { $: 'str' as const, value: '🔵' },
+                    { $: 'str' as const, value: '🟢' },
                 ],
             })
         })

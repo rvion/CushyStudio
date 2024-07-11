@@ -35,14 +35,14 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiVideo'
-                        onClick={st.resizeWindowForVideoCapture}
+                        onClick={() => st.resizeWindowForVideoCapture()}
                         localShortcut={KEYS.resizeWindowForVideoCapture}
                         label='set screen size to 1920 x 1080'
                     />
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiLaptop'
-                        onClick={st.resizeWindowForLaptop}
+                        onClick={() => st.resizeWindowForLaptop()}
                         localShortcut={KEYS.resizeWindowForLaptop}
                         label='set screen size to 1280 x 720'
                     />
@@ -61,7 +61,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem
                         iconClassName='text-orange-500'
                         icon='mdiSync'
-                        onClick={st.reloadCushyMainWindow}
+                        onClick={() => st.reloadCushyMainWindow()}
                         localShortcut='mod+R'
                         label='Reload'
                     />
@@ -118,7 +118,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem
                         iconClassName='text-red-500'
                         icon='mdiSync'
-                        onClick={st.fullReset_eraseConfigAndSchemaFilesAndDB}
+                        onClick={() => st.fullReset_eraseConfigAndSchemaFilesAndDB()}
                         label='Full Reset'
                     />
                     <MenuDividerUI_ />

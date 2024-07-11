@@ -20,7 +20,7 @@ export type Field_optional_config<T extends BaseSchema = BaseSchema> = FieldConf
 
 // SERIAL
 export type Field_optional_serial<T extends BaseSchema = BaseSchema> = FieldSerial<{
-    type: 'optional'
+    $: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>

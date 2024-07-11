@@ -31,7 +31,7 @@ export type Field_matrix_config = FieldConfig<
 
 // SERIAL
 export type Field_matrix_serial = FieldSerial<{
-    type: 'matrix'
+    $: 'matrix'
     /** only contains cells that are ONs */
     selected: Field_matrix_cell[]
 }>

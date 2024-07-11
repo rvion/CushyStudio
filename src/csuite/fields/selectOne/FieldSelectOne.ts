@@ -59,11 +59,11 @@ export type Field_selectOne_config<T extends BaseSelectEntry> = FieldConfig<
 // SERIAL FROM VALUE
 export const Field_selectOne_fromValue = <T extends BaseSelectEntry>(
     val: Field_selectOne_value<T>,
-): Field_selectOne_serial<T> => ({ type: 'selectOne', val })
+): Field_selectOne_serial<T> => ({ $: 'selectOne', val })
 
 // SERIAL
 export type Field_selectOne_serial<T extends BaseSelectEntry> = FieldSerial<{
-    type: 'selectOne'
+    $: 'selectOne'
     query?: string
     val?: T
 }>

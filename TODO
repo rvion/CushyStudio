@@ -1,3 +1,5 @@
+2024-07-11:
+    only a single schema class
 
 2024-07-08:
     ☐ updateSnapshot only called once

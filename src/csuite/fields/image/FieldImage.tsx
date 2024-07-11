@@ -25,7 +25,7 @@ export type Field_image_config = FieldConfig<
 
 // SERIAL
 export type Field_image_serial = FieldSerial<{
-    type: 'image'
+    $: 'image'
     imageID?: Maybe<MediaImageID>
 
     /** for form expiration */

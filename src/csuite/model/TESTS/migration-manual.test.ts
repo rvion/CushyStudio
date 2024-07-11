@@ -20,14 +20,14 @@ describe('migration manual', () => {
                     x.value.b += 2
                 },
                 beforeInit: (x: BUGGYSerial) => ({
-                    type: 'group',
+                    $: 'group',
                     values_: {
                         a: {
-                            type: 'number' as const,
+                            $: 'number' as const,
                             value: x.valA,
                         },
                         b: {
-                            type: 'number' as const,
+                            $: 'number' as const,
                             value: x.valB,
                         },
                     },

@@ -31,7 +31,7 @@ export type Field_number_config = FieldConfig<
 
 // SERIAL
 export type Field_number_serial = FieldSerial<{
-    type: 'number'
+    $: 'number'
     value?: number
 }>
 

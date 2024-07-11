@@ -16,13 +16,13 @@ export type Field_shared_config<F extends Field> = FieldConfig<
 
 // SERIAL
 export type Field_shared_serial = FieldSerial<{
-    type: 'shared'
+    $: 'shared'
     // NO VALUE HERE; otherwise, we would store the data twice
 }>
 
 // SERIAL FROM VALUE
 export const Field_shared_fromValue = (val: Field_shared_value): Field_shared_serial => ({
-    type: 'shared',
+    $: 'shared',
 })
 
 // VALUE

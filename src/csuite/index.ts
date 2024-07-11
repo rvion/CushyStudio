@@ -5,7 +5,7 @@ export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
 export type { IBuilder as Builder } from './model/IBuilder'
-export type { EntitySerial as ModelSerial } from './model/EntitySerial'
+export type { AnyFieldSerial } from './model/EntitySerial'
 export type { SchemaDict } from './model/SchemaDict'
 export type { BaseSchema } from './model/BaseSchema'
 export type { EntityConfig } from './model/Entity'
