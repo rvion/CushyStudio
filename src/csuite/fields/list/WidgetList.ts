@@ -370,7 +370,13 @@ export class Field_list<T extends BaseSchema> //
         return this.length
     }
 
-    addItem(p: { at?: number; value?: T['$Value'] } = {}): void {
+    addItem(
+        p: {
+            at?: number
+            value?: T['$Value']
+            serial?: T['$Serial']
+        } = {},
+    ): void {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
@@ -382,7 +388,7 @@ export class Field_list<T extends BaseSchema> //
         this.MUTVALUE(() => {
             // create new item
             const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-            const element = schema.instanciate(this.repo, this.root, this, null)
+            const element = schema.instanciate(this.repo, this.root, this, p.serial ?? null)
 
             // set initial value
             if (p.value) {
