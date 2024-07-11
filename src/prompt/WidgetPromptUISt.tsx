@@ -15,7 +15,7 @@ export class WidgetPromptUISt {
     editorView: Maybe<EditorView> = null
     editorState: EditorState
 
-    replaceTextBy = (nextText: string) => {
+    replaceTextBy(nextText: string): void {
         this.editorView?.dispatch({
             changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
         })
@@ -49,16 +49,32 @@ export class WidgetPromptUISt {
     }
 
     // get/set
-    get text() { return this.widget.serial.val ?? ''; } // prettier-ignore
-    set text(val: string) { this.widget.setText_INTERNAL(val); } // prettier-ignore
+    get text(): string {
+        return this.widget.serial.val ?? ''
+    }
+
+    set text(val: string) {
+        this.widget.setText_INTERNAL(val)
+    }
 
     // computed
-    get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
-    get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
-    get debugView() { return this.ast.toString() } // prettier-ignore
-    get compiled(): CompiledPrompt { return this.widget.compile({ onLora: (lora) => {} }) } // prettier-ignore
+    get ast(): PromptAST {
+        return new PromptAST(this.text, this.editorView)
+    }
 
-    mount = (domNode: HTMLDivElement) => {
+    get loras(): Prompt_Lora[] {
+        return this.ast.findAll('Lora')
+    }
+
+    get debugView(): string {
+        return this.ast.toString()
+    }
+
+    get compiled(): CompiledPrompt {
+        return this.widget.compile({ onLora: (lora) => {} })
+    }
+
+    mount(domNode: HTMLDivElement): void {
         domNode.innerHTML = ''
         let view = new EditorView({
             state: this.editorState,

@@ -135,7 +135,7 @@ export class Field_list<T extends BaseSchema> //
         return null
     }
 
-    get subFields(): Field[] {
+    get subFields(): T['$Field'][] {
         return this.items
     }
 

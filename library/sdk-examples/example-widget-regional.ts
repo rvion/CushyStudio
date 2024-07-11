@@ -41,7 +41,7 @@ app({
         })
         let negative: _CONDITIONING = run_prompt({ prompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).conditioning
 
-        for (const { position: x, value: item } of form.demo.items) {
+        for (const { shape: x, value: item } of form.demo.items) {
             const y = run_prompt({ prompt: item.prompt, clip: ckpt, ckpt: ckpt })
             const localConditionning = graph.ConditioningSetArea({
                 conditioning: y.conditioning,
@@ -76,8 +76,8 @@ app({
                     negative: negative,
                     latent_image: graph.EmptyLatentImage({
                         batch_size: 1,
-                        width: form.demo.width,
-                        height: form.demo.height,
+                        width: form.demo.area.width,
+                        height: form.demo.area.height,
                     }),
                 }),
             }),

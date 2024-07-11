@@ -28,7 +28,7 @@ app({
                 y: Math.round(Math.random() * h),
                 z: 1,
             }),
-            element: ({ width: w, height: h }) =>
+            element: () =>
                 ui.fields({
                     prompt: ui.prompt({}),
                     mode: ui.selectOne({
@@ -40,11 +40,11 @@ app({
     }),
     run: async (run, ui) => {
         const regional = run.form.fields.regionalPrompt
-        regional.addItem()
-        regional.entries[0]!.shape.width = 256
-        regional.entries[0]!.shape.height = 256
-        regional.entries[0]!.shape.x = 0
-        regional.entries[0]!.shape.y = 128
-        regional.entries[0]!.widget.fields.prompt.text = `Set to dynamic prompt at ${Date.now()}`
+        const newItem = regional.fields.items.addItem()!
+        newItem.value.shape.width = 256
+        newItem.value.shape.height = 256
+        newItem.value.shape.x = 0
+        newItem.value.shape.y = 128
+        newItem.fields.value.fields.prompt.text = `Set to dynamic prompt at ${Date.now()}`
     },
 })

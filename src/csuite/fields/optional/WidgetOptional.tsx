@@ -26,7 +26,7 @@ export type Field_optional_serial<T extends BaseSchema = BaseSchema> = FieldSeri
 }>
 
 // VALUE
-export type Field_optional_value<T extends BaseSchema = BaseSchema> = Maybe<T['$Value']>
+export type Field_optional_value<T extends BaseSchema = BaseSchema> = T['$Value'] | undefined
 
 // TYPES
 export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
@@ -57,7 +57,7 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>): void {
         this.serial.active = serial?.active ?? this.config.startActive ?? false
         this.RECONCILE({
             existingChild: this.child,
@@ -70,7 +70,7 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
         })
     }
 
-    setActive(value: boolean) {
+    setActive(value: boolean): void {
         if (this.serial.active === value) return
         this.MUTVALUE(() => {
             this.serial.active = value

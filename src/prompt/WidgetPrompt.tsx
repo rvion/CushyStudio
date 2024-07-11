@@ -90,7 +90,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_prompt_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_prompt_serial>): void {
         this.serial.val = serial?.val ?? this.defaultValue
     }
 
@@ -99,7 +99,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
     _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
 
     /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
-    setText_INTERNAL = (next: string) => {
+    setText_INTERNAL(next: string): void {
         if (this.serial.val === next) return
         this.MUTVALUE(() => (this.serial.val = next))
     }
@@ -117,7 +117,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
     }
 
     // the raw unparsed text
-    get text() {
+    get text(): string {
         return this.serial.val ?? ''
     }
 
@@ -128,10 +128,6 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     get ast_generic(): Tree {
         return parser.parse(this.serial.val ?? '')
-    }
-
-    setValue(val: Field_prompt_value) {
-        this.value = val
     }
 
     get defaultValue(): string {
@@ -151,7 +147,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
         // do nothing, value it the instance itself
     }
 
-    get animateResize() {
+    get animateResize(): false {
         // codemirror resize automatically every time a line is added
         // the animation is just annoying there.
         return false

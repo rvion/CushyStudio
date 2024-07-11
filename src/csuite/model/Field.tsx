@@ -60,7 +60,6 @@ import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
 import { observer } from 'mobx-react-lite'
-import { nanoid } from 'nanoid'
 import { createElement, type FC, type ReactNode } from 'react'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
@@ -254,6 +253,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         if (s.custom) this.serial.custom = s.custom
         if (s.lastUpdatedAt) this.serial.lastUpdatedAt = s.lastUpdatedAt
     }
+
     /** unified api to allow setting serial from value */
     setValue(val: K['$Value']): void {
         this.value = val

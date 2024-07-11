@@ -18,6 +18,7 @@ export const WidgetIndentUI = observer(function WidgetIndentUI_(p: { depth: numb
         >
             {new Array(depth - 1).fill(0).map((_, i) => (
                 <div
+                    key={i}
                     className='UI-WidgetIndent'
                     style={{
                         width: `${0.7}rem`,

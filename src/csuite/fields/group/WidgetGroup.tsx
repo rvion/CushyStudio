@@ -92,8 +92,11 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return this.fields[key].value
     }
 
-    /** the dict of all child widgets */
-    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any // will be filled during constructor
+    /**
+     * The dict of all child widgets
+     * will be filled during constructor
+     */
+    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any
 
     constructor(
         //

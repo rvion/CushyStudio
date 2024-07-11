@@ -94,11 +94,12 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     }
 
     /** wrap widget schema to list stuff */
-    list = (config: Omit<Field_list_config<any>, 'element'> = {}): X.XList<this> =>
-        new Schema<Field_list<this>>(Field_list, {
+    list(config: Omit<Field_list_config<any>, 'element'> = {}): X.XList<this> {
+        return new Schema<Field_list<this>>(Field_list, {
             ...config,
             element: this,
         })
+    }
 
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this {

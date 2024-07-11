@@ -5,7 +5,9 @@ import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
+import { createElement } from 'react'
 
+import { simpleBuilder } from '../csuite'
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/FieldBool'
 import { Field_button, type Field_button_config } from '../csuite/fields/button/FieldButton'
@@ -17,7 +19,11 @@ import { Field_group, type Field_group_config } from '../csuite/fields/group/Wid
 import { Field_image, type Field_image_config } from '../csuite/fields/image/WidgetImage'
 import { Field_link } from '../csuite/fields/link/WidgetLink'
 import { Field_list, type Field_list_config } from '../csuite/fields/list/WidgetList'
-import { Field_listExt, type Field_listExt_config } from '../csuite/fields/listExt/WidgetListExt'
+import { mkShapeSchema, type ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
+import { type Field_listExt_config, listExt, type SListExt } from '../csuite/fields/listExt/WidgetListExt'
+import { WidgetListExt_RegionalUI } from '../csuite/fields/listExt/WidgetListExt_RegionalUI'
+import { WidgetListExt_TimelineUI } from '../csuite/fields/listExt/WidgetListExt_TimelineUI'
+import { WidgetListExtUI, WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/listExt/WidgetListExtUI'
 import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/WidgetMarkdown'
 import { Field_matrix, type Field_matrix_config } from '../csuite/fields/matrix/WidgetMatrix'
 import { Field_number, type Field_number_config } from '../csuite/fields/number/FieldNumber'
@@ -27,7 +33,7 @@ import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/Widget
 import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
 import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/WidgetSelectOne'
 import { Field_shared } from '../csuite/fields/shared/WidgetShared'
-import { Field_size, type Field_size_config } from '../csuite/fields/size/WidgetSize'
+import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/WidgetString'
 import { Field } from '../csuite/model/Field'
 import { Repository } from '../csuite/model/Repository'
@@ -63,7 +69,7 @@ declare global {
         type Enum<T> = Field_enum<T>
         type List<T extends BaseSchema> = Field_list<T>
         type Orbit = Field_orbit
-        type ListExt<T extends BaseSchema> = Field_listExt<T>
+        // type ListExt<T extends BaseSchema> = Field_listExt<T>
         type Button<T> = Field_button<T>
         type Seed = Field_seed
         type Matrix = Field_matrix
@@ -92,7 +98,7 @@ declare global {
         type XEnum<T> = Schema<Field_enum<T>>
         type XList<T extends BaseSchema> = Schema<Field_list<T>>
         type XOrbit = Schema<Field_orbit>
-        type XListExt<T extends BaseSchema> = Schema<Field_listExt<T>>
+        type XListExt<T extends BaseSchema> = SListExt<T>
         type XButton<T> = Schema<Field_button<T>>
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
@@ -255,16 +261,20 @@ export class Builder implements IBuilder {
         return new Schema<Field_list<T>>(Field_list, config)
     }
 
-    listExt<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
-        return new Schema<Field_listExt<T>>(Field_listExt, config)
+    cube(): ShapeSchema {
+        return mkShapeSchema(simpleBuilder)
     }
 
-    timeline<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
-        return new Schema<Field_listExt<T>>(Field_listExt, { mode: 'timeline', ...config })
+    timeline<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
+        return listExt(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Timeline })
     }
 
-    regional<T extends BaseSchema>(config: Field_listExt_config<T>): X.XListExt<T> {
-        return new Schema<Field_listExt<T>>(Field_listExt, { mode: 'regional', ...config })
+    regional<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
+        return listExt(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
+    }
+
+    listExt<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
+        return listExt(simpleBuilder, sub)
     }
 
     // SELECT ONE ------------------------------------------------------------------------------------

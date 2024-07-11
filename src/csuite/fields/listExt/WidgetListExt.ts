@@ -1,257 +1,317 @@
-// @ts-nocheck
-// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-// 🔴                                                      🔴
-// 🔴                THIS  FILE  IS  BROKEN                🔴
-// 🔴                                                      🔴
-// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-
+import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
-import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from '../../model/Validation'
-import type { BoardPosition } from './WidgetListExtTypes'
+import type { SimpleBuilder } from '../../simple/SimpleBuilder'
+import type { SimpleShape } from './WidgetListExtTypes'
 
-import { Field, type KeyedField } from '../../model/Field'
-import { clampOpt } from '../../utils/clamp'
-import { ResolutionState } from '../size/ResolutionState'
-import { registerWidgetClass } from '../WidgetUI.DI'
-import { boardDefaultItemShape } from './WidgetListExtTypes'
-import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
+import { mkShapeSchema, ShapeSchema } from './ShapeSchema'
 
-// CONFIG
-export type Field_listExt_config<T extends BaseSchema> = FieldConfig<
+// CUBE ------------------------------------------------
+export type SListExt<SCHEMA extends BaseSchema> = BaseSchema<
     {
-        element: T | ((p: { ix: number; width: number; height: number }) => T)
-        min?: number
-        max?: number
-        defaultLength?: number
-        initialPosition: (size: { ix: number; width: number; height: number }) => Partial<BoardPosition>
-        mode?: 'regional' | 'timeline'
-        width: number /** default: 100 */
-        height: number /** default: 100 */
-    },
-    Field_listExt_types<T>
+        min: number | undefined
+        max: number | undefined
+        step: number | undefined
+        readonly width: number
+        readonly height: number
+    } & X.Group<{
+        area: S.SSize
+        items: S.SList<
+            S.SGroup<{
+                shape: ShapeSchema
+                value: SCHEMA
+            }>
+        >
+    }>
 >
 
-// SERIAL
-export type Field_listExt_serial<T extends BaseSchema> = FieldSerial<{
-    type: 'listExt'
-    entries: { serial: T['$Serial']; shape: BoardPosition }[]
-    width: number
-    height: number
-}>
+export type Field_listExt<SCHEMA extends BaseSchema> = SListExt<SCHEMA>['$Field']
 
-// VALUE
-export type Field_listExt_value<T extends BaseSchema> = {
-    items: { value: T['$Value']; position: BoardPosition }[]
-    // -----------------------
-    width: number
-    height: number
-}
-
-// TYPES
-export type Field_listExt_types<T extends BaseSchema> = {
-    $Type: 'listExt'
-    $Config: Field_listExt_config<T>
-    $Serial: Field_listExt_serial<T>
-    $Value: Field_listExt_value<T>
-    $Field: Field_listExt<T>
-}
-
-// STATE
-export class Field_listExt<T extends BaseSchema> extends Field<Field_listExt_types<T>> {
-    static readonly type: 'listExt' = 'listExt'
-
-    DefaultHeaderUI = WidgetListExt_LineUI
-    DefaultBodyUI = WidgetListExtUI
-
-    get ownProblems(): Problem_Ext {
-        return null
-    }
-
-    get hasChanges(): boolean {
-        const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
-        if (this.items.length !== defaultLength) return true
-        // check if any remaining item has changes
-        return this.items.some((i) => i.hasChanges)
-    }
-
-    get width(): number {
-        return this.serial.width ?? this.config.width ?? 100
-    }
-
-    get height(): number {
-        return this.serial.height ?? this.config.height ?? 100
-    }
-
-    set width(next: number) {
-        if (next === this.serial.width) return
-        this.MUTVALUE(() => (this.serial.width = next))
-    }
-
-    set height(next: number) {
-        if (next === this.serial.height) return
-        this.MUTVALUE(() => (this.serial.height = next))
-    }
-
-    get sizeHelper(): ResolutionState {
-        const state = new ResolutionState(this) // should only be executed once
-        Object.defineProperty(this, 'sizeHelper', { value: state })
-        return state
-    }
-
-    entries: { widget: T['$Field']; shape: BoardPosition }[] = []
-
-    // for compatibility with Field_list
-    get items(): T['$Field'][] {
-        return this.entries.map((i) => i.widget)
-    }
-
-    get length(): number {
-        return this.entries.length
-    }
-
-    // INIT -----------------------------------------------------------------------------
-
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_listExt<T>>,
-        serial?: Field_listExt_serial<T>,
-    ) {
-        super(repo, root, parent, schema)
-        const config = schema.config
-
-        // serial
-        this.serial = serial ?? {
-            type: 'listExt',
-            id: this.id,
-            entries: [],
-            width: config.width ?? 100,
-            height: config.height ?? 100,
-        }
-
-        // minor safety net since all those internal changes
-        if (this.serial.entries == null) this.serial.entries = []
-
-        // reference to check children types
-        const schemaI0 = this.schemaAt(0)
-        for (const entry of this.serial.entries) {
-            const subSerial = entry.serial
-            if (subSerial.type !== schemaI0.type) {
-                console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
-                continue
-            }
-            const subWidget = schemaI0.instanciate(this.repo, this.root, this, subSerial)
-            this.entries.push({ widget: subWidget, shape: entry.shape })
-        }
-
-        // add missing items if min specified
-        const missingItems = (this.config.min ?? 0) - this.entries.length
-        for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
-        this.init(serial, {
-            sizeHelper: false,
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-    }
-
-    get subFields(): Field[] {
-        return this.items
-    }
-
-    get subFieldsWithKeys(): KeyedField[] {
-        return this.items.map((field, ix) => ({ key: ix.toString(), field }))
-    }
-
-    schemaAt = (ix: number): T => {
-        const _schema = this.config.element
-        const schema: T =
-            typeof _schema === 'function' //
-                ? _schema({ ix, width: this.width, height: this.width })
-                : _schema
-        return schema
-    }
-
-    // HELPERS =======================================================
-    // FOLDING -------------------------------------------------------
-    collapseAllItems = (): void => {
-        this.collapseAllChildren()
-        // for (const i of this.entries) i.widget.setCollapsed(true)
-    }
-
-    expandAllItems = (): void => {
-        this.expandAllChildren()
-        // for (const i of this.entries) i.widget.setCollapsed(false)
-    }
-
-    // ADDING ITEMS -------------------------------------------------
-    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */): void {
-        const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
-        const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const schema = this.schemaAt(this.length)
-        const element = schema.instanciate(this.repo, this.root, this, null)
-        this.entries.push({ widget: element, shape: shape })
-        this.serial.entries.push({ serial: element.serial, shape: shape })
-        if (!p?.skipBump) this.applyValueUpdateEffects()
-    }
-
-    // REMOVING ITEMS -------------------------------------------------
-    removeAllItems(): void {
-        // ensure list is not empty
-        if (this.length === 0) return console.log(`[🔶] listExt.removeAllItems: list is already empty`)
-
-        // ensure list is not at min len already
-        const minLen = this.config.min ?? 0
-        if (this.length <= minLen) return console.log(`[🔶] listExt.removeAllItems: list is already at min lenght`)
-
-        // remove all items
-        this.serial.entries = this.serial.entries.slice(0, minLen)
-        this.entries = this.entries.slice(0, minLen)
-        this.applyValueUpdateEffects()
-    }
-
-    removeItem(item: T['$Field']): void {
-        // ensure item is in the list
-        const i = this.entries.findIndex((i) => i.widget === item)
-        if (i < 0) return console.log(`[🔶] listExt.removeItem: item not found`)
-        // remove item
-        this.serial.entries.splice(i, 1)
-        this.entries.splice(i, 1)
-        this.applyValueUpdateEffects()
-    }
-
-    set value(xx: Field_listExt_value<T>) {
-        const val = xx.items
-        this.width = xx.width
-        this.height = xx.height
-        for (let i = 0; i < val.length; i++) {
-            if (i < this.items.length) {
-                this.entries[i]!.widget.value = val[i]!.value
-                this.entries[i]!.shape = val[i]!.position
-            } else {
-                this.addItem({ skipBump: true })
-                this.entries[i]!.widget.value = val[i]!.value
-                this.entries[i]!.shape = val[i]!.position
-            }
-        }
-    }
-    get value(): Field_listExt_value<T> {
-        const items = this.entries.map((i) => ({
-            position: i.shape,
-            value: i.widget.value,
+export function listExt<SCHEMA extends BaseSchema>(
+    //
+    b: SimpleBuilder,
+    opts: Field_listExt_config<SCHEMA>,
+): SListExt<SCHEMA> {
+    const { width, height } = opts
+    return b
+        .fields(
+            {
+                area: b.size({ default: { width, height } }),
+                items: b.list({
+                    element: (ix: number) => {
+                        const pos = opts.initialPosition({ ix, width, height })
+                        return b.fields({
+                            shape: mkShapeSchema(b),
+                            value:
+                                typeof opts.element === 'function' //
+                                    ? opts.element({
+                                          ix,
+                                          height: pos.height ?? 100,
+                                          width: pos.width ?? 100,
+                                      })
+                                    : opts.element,
+                        })
+                    },
+                    min: opts.defaultLength,
+                }),
+            },
+            { icon: opts.icon },
+        )
+        .extend((self) => ({
+            min: opts.min,
+            max: opts.max,
+            step: opts.step,
+            get width(): number {
+                return self.fields.area.width
+            },
+            get height(): number {
+                return self.fields.area.width
+            },
         }))
-        console.log(`[🤠] `, items)
-        return {
-            items: items,
-            width: this.serial.width,
-            height: this.serial.width,
-        }
-    }
 }
 
-// DI
-registerWidgetClass('listExt', Field_listExt)
+// CONFIG
+export type Field_listExt_config<T extends BaseSchema> =
+    /* FieldConfig< */
+    {
+        // container size
+        width: number /** default: 100 */
+        height: number /** default: 100 */
+        min?: number
+        max?: number
+        step?: number
+
+        // conatained item
+        element: T | ((p: { ix: number; width: number; height: number }) => T)
+        defaultLength?: number
+
+        // item metadat
+        initialPosition: (size: { ix: number; width: number; height: number }) => Partial<SimpleShape>
+
+        // misc
+        icon?: IconName
+        // mode?: 'regional' | 'timeline'
+    } /* ,
+    T
+> */
+
+// // SERIAL
+// export type Field_listExt_serial<T extends BaseSchema> = FieldSerial<{
+//     type: 'listExt'
+//     entries: { serial: T['$Serial']; shape: BoardPosition }[]
+//     width: number
+//     height: number
+// }>
+
+// // VALUE
+// export type Field_listExt_value<T extends BaseSchema> = {
+//     items: { value: T['$Value']; position: BoardPosition }[]
+//     // -----------------------
+//     width: number
+//     height: number
+// }
+
+// // TYPES
+// export type Field_listExt_types<T extends BaseSchema> = {
+//     $Type: 'listExt'
+//     $Config: Field_listExt_config<T>
+//     $Serial: Field_listExt_serial<T>
+//     $Value: Field_listExt_value<T>
+//     $Field: Field_listExt<T>
+// }
+
+// // STATE
+// export class Field_listExt<T extends BaseSchema> extends Field<Field_listExt_types<T>> {
+//     static readonly type: 'listExt' = 'listExt'
+
+//     DefaultHeaderUI = WidgetListExt_LineUI
+//     DefaultBodyUI = WidgetListExtUI
+
+//     get ownProblems(): Problem_Ext {
+//         return null
+//     }
+
+//     get hasChanges(): boolean {
+//         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+//         if (this.items.length !== defaultLength) return true
+//         // check if any remaining item has changes
+//         return this.items.some((i) => i.hasChanges)
+//     }
+
+//     get width(): number {
+//         return this.serial.width ?? this.config.width ?? 100
+//     }
+
+//     get height(): number {
+//         return this.serial.height ?? this.config.height ?? 100
+//     }
+
+//     set width(next: number) {
+//         if (next === this.serial.width) return
+//         this.MUTVALUE(() => (this.serial.width = next))
+//     }
+
+//     set height(next: number) {
+//         if (next === this.serial.height) return
+//         this.MUTVALUE(() => (this.serial.height = next))
+//     }
+
+//     get sizeHelper(): ResolutionState {
+//         const state = new ResolutionState(this) // should only be executed once
+//         Object.defineProperty(this, 'sizeHelper', { value: state })
+//         return state
+//     }
+
+//     entries: { widget: T['$Field']; shape: BoardPosition }[] = []
+
+//     // for compatibility with Field_list
+//     get items(): T['$Field'][] {
+//         return this.entries.map((i) => i.widget)
+//     }
+
+//     get length(): number {
+//         return this.entries.length
+//     }
+
+//     // INIT -----------------------------------------------------------------------------
+
+//     constructor(
+//         //
+//         repo: Repository,
+//         root: Field | null,
+//         parent: Field | null,
+//         schema: BaseSchema<Field_listExt<T>>,
+//         serial?: Field_listExt_serial<T>,
+//     ) {
+//         super(repo, root, parent, schema)
+//         const config = schema.config
+
+//         // serial
+//         this.serial = serial ?? {
+//             type: 'listExt',
+//             id: this.id,
+//             entries: [],
+//             width: config.width ?? 100,
+//             height: config.height ?? 100,
+//         }
+
+//         // minor safety net since all those internal changes
+//         if (this.serial.entries == null) this.serial.entries = []
+
+//         // reference to check children types
+//         const schemaI0 = this.schemaAt(0)
+//         for (const entry of this.serial.entries) {
+//             const subSerial = entry.serial
+//             if (subSerial.type !== schemaI0.type) {
+//                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
+//                 continue
+//             }
+//             const subWidget = schemaI0.instanciate(this.repo, this.root, this, subSerial)
+//             this.entries.push({ widget: subWidget, shape: entry.shape })
+//         }
+
+//         // add missing items if min specified
+//         const missingItems = (this.config.min ?? 0) - this.entries.length
+//         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
+//         this.init(serial, {
+//             sizeHelper: false,
+//             DefaultHeaderUI: false,
+//             DefaultBodyUI: false,
+//         })
+//     }
+
+//     get subFields(): Field[] {
+//         return this.items
+//     }
+
+//     get subFieldsWithKeys(): KeyedField[] {
+//         return this.items.map((field, ix) => ({ key: ix.toString(), field }))
+//     }
+
+//     schemaAt = (ix: number): T => {
+//         const _schema = this.config.element
+//         const schema: T =
+//             typeof _schema === 'function' //
+//                 ? _schema({ ix, width: this.width, height: this.width })
+//                 : _schema
+//         return schema
+//     }
+
+//     // HELPERS =======================================================
+//     // FOLDING -------------------------------------------------------
+//     collapseAllItems = (): void => {
+//         this.collapseAllChildren()
+//         // for (const i of this.entries) i.widget.setCollapsed(true)
+//     }
+
+//     expandAllItems = (): void => {
+//         this.expandAllChildren()
+//         // for (const i of this.entries) i.widget.setCollapsed(false)
+//     }
+
+//     // ADDING ITEMS -------------------------------------------------
+//     addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */): void {
+//         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
+//         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
+//         const schema = this.schemaAt(this.length)
+//         const element = schema.instanciate(this.repo, this.root, this, null)
+//         this.entries.push({ widget: element, shape: shape })
+//         this.serial.entries.push({ serial: element.serial, shape: shape })
+//         if (!p?.skipBump) this.applyValueUpdateEffects()
+//     }
+
+//     // REMOVING ITEMS -------------------------------------------------
+//     removeAllItems(): void {
+//         // ensure list is not empty
+//         if (this.length === 0) return console.log(`[🔶] listExt.removeAllItems: list is already empty`)
+
+//         // ensure list is not at min len already
+//         const minLen = this.config.min ?? 0
+//         if (this.length <= minLen) return console.log(`[🔶] listExt.removeAllItems: list is already at min lenght`)
+
+//         // remove all items
+//         this.serial.entries = this.serial.entries.slice(0, minLen)
+//         this.entries = this.entries.slice(0, minLen)
+//         this.applyValueUpdateEffects()
+//     }
+
+//     removeItem(item: T['$Field']): void {
+//         // ensure item is in the list
+//         const i = this.entries.findIndex((i) => i.widget === item)
+//         if (i < 0) return console.log(`[🔶] listExt.removeItem: item not found`)
+//         // remove item
+//         this.serial.entries.splice(i, 1)
+//         this.entries.splice(i, 1)
+//         this.applyValueUpdateEffects()
+//     }
+
+//     set value(xx: Field_listExt_value<T>) {
+//         const val = xx.items
+//         this.width = xx.width
+//         this.height = xx.height
+//         for (let i = 0; i < val.length; i++) {
+//             if (i < this.items.length) {
+//                 this.entries[i]!.widget.value = val[i]!.value
+//                 this.entries[i]!.shape = val[i]!.position
+//             } else {
+//                 this.addItem({ skipBump: true })
+//                 this.entries[i]!.widget.value = val[i]!.value
+//                 this.entries[i]!.shape = val[i]!.position
+//             }
+//         }
+//     }
+//     get value(): Field_listExt_value<T> {
+//         const items = this.entries.map((i) => ({
+//             position: i.shape,
+//             value: i.widget.value,
+//         }))
+//         console.log(`[🤠] `, items)
+//         return {
+//             items: items,
+//             width: this.serial.width,
+//             height: this.serial.width,
+//         }
+//     }
+// }
+
+// // DI
+// registerWidgetClass('listExt', Field_listExt)

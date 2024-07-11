@@ -16,7 +16,7 @@ import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
-import { type FlexlayoutNodeWithType, knownLayoutNodeType, type TraverseFn, traverseLayoutNode } from './Traverse'
+import { type TraverseFn, traverseLayoutNode } from './Traverse'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -24,9 +24,6 @@ type PerspectiveDataForSelect = {
     label: string
     value: string
 }
-
-type MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
-const MENU_PANE_TABSET_ID: MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
 
 type LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
 const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'

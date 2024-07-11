@@ -1,5 +1,4 @@
-import type { ResolutionState } from './ResolutionState'
-import type { Field_size } from './WidgetSize'
+import type { Field_size } from './FieldSize'
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
@@ -10,20 +9,25 @@ import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
-    return <WidgetSizeX_LineUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
+    return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
 })
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
-    return <WigetSizeXUI sizeHelper={p.field.sizeHelper} bounds={p.field.config} />
+    return (
+        <>
+            <pre>{JSON.stringify(p.field.serial, null, 3)}</pre>
+            <WigetSizeXUI size={p.field} bounds={p.field.config} />
+        </>
+    )
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
-    sizeHelper: ResolutionState
+    size: Field_size
     bounds?: { min?: number; max?: number; step?: number }
 }) {
-    const uist = p.sizeHelper
+    const uist = p.size
 
-    const modelBtn = (model: ModelType) => (
+    const modelBtn = (model: ModelType): JSX.Element => (
         <InputBoolToggleButtonUI //
             tw='w-input'
             value={uist.desiredModelType == model}
@@ -83,7 +87,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     )
 })
 
-export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: ResolutionState }) {
+export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
     const uist = p.sizeHelper
     return (
         <Frame // Aspect Lock button
@@ -101,7 +105,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
     )
 })
 
-export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { sizeHelper: ResolutionState }) {
+export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
     const uist = p.sizeHelper
     const ratioDisplaySize = 26
     return (
@@ -111,7 +115,7 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
             border={10}
             tw={['flex', 'overflow-clip', 'items-center justify-center', 'cursor-pointer']}
             style={{ borderRadius: '0px' }}
-            onClick={uist.flip}
+            onClick={() => uist.flip()}
             hover
         >
             <Frame
@@ -135,13 +139,11 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
 })
 
 export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
-    // size: SizeAble
-    sizeHelper: ResolutionState
+    size: Field_size
     bounds?: { min?: number; max?: number; step?: number }
 }) {
-    const uist = p.sizeHelper
-    // if (!uist.isAspectRatioLocked) return null
-    const resoBtn = (ar: AspectRatio) => (
+    const uist: Field_size = p.size
+    const resoBtn = (ar: AspectRatio): JSX.Element => (
         <InputBoolUI //
             display='button'
             value={uist.desiredAspectRatio == ar}
@@ -178,7 +180,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
                     </div>
-                    {p.sizeHelper.desiredModelType === 'xl' && (
+                    {p.size.desiredModelType === 'xl' && (
                         <>
                             {/* <div>|</div> */}
                             <div tw='join flex flex-col'>

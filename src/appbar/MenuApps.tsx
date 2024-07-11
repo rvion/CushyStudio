@@ -5,11 +5,9 @@ import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
-import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
-    const st = useSt()
     return (
         <Dropdown
             expand
@@ -17,7 +15,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
             content={() => (
                 <>
                     <MenuItem
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
+                        onClick={() => cushy.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
                         icon='mdiCloudDownload'
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'

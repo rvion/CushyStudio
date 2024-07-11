@@ -11,9 +11,17 @@ import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
+/** free structure */
+export class Form {
+    constructor(public props: FormUIProps) {}
+}
+
+type SimplifiedFormDef = any // <---------- TODO
+
 export type FormUIProps = {
     // form ---------------------------------------------------------
     field: Maybe<Field>
+    layout?: SimplifiedFormDef
 
     // root wrapper
     label?: string | false
