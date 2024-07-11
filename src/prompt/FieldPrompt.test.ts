@@ -18,16 +18,19 @@ describe('FieldPrompt', () => {
             presets: [
                 {
                     label: 'test',
-                    apply(field): void {
-                        field.fields.c.enableBranch('bar')
-                        field.fields.c.enabledBranches.bar?.setText('new prompt')
+                    apply({ fields }): void {
+                        // V1
+                        fields.c.enableBranch('bar')
+                        fields.c.branches.bar?.setText('new prompt A')
+                        // V2
+                        fields.c.enableBranch('bar')?.setText('new prompt B')
                     },
                 },
             ],
         },
     )
 
-    describe('tupples', () => {
+    describe('works', () => {
         it('works', () => {
             const E1 = S1.create()
             expect(E1.value.c.foo).toBe('')
@@ -39,6 +42,18 @@ describe('FieldPrompt', () => {
             expect(E1.value.c.bar?.text).toBe('coucou')
 
             E1.fields.c.enabledBranches.bar?.setText('new prompt')
+
+            expect(E1.value.c.bar?.text).toBe('new prompt')
+        })
+    })
+
+    describe('works too', () => {
+        it('works', () => {
+            const E1 = S1.create()
+            expect(E1.value.c.foo).toBe('')
+            expect(E1.value.c.bar).toBeNil()
+
+            E1.fields.c.enableBranch('bar')?.setText('new prompt')
 
             expect(E1.value.c.bar?.text).toBe('new prompt')
         })
