@@ -128,7 +128,7 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         ]
     }
 
-    get value() {
+    get value(): Field_link_value<A, B> {
         return this.bField.value
     }
 

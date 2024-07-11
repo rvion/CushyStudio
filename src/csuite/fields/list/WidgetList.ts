@@ -318,9 +318,7 @@ export class Field_list<T extends BaseSchema> //
                     this.items[i]!.value = val[i]
                 }
             }
-            // 3. remove extra items
-            this.serial.items_.splice(val.length)
-            this.items.splice(val.length)
+            this.splice(val.length)
         })
     }
 
@@ -431,39 +429,79 @@ export class Field_list<T extends BaseSchema> //
     }
 
     // REMOVING ITEMS ------------------------------------------------
-    removeAllItems(): void {
-        // ensure list is not empty
-        if (this.length === 0) return console.log(`[🔶] list.removeAllItems: list is already empty`)
-        // ensure list is not at min len already
-        const minLen = this.config.min ?? 0
-        if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
-        // remove all items
-        this.MUTVALUE(() => {
-            this.serial.items_ = this.serial.items_.slice(0, minLen)
-            this.items = this.items.slice(0, minLen)
+
+    /**
+     * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+     * @returns An array containing the elements that were deleted.
+     */
+    splice(
+        /**  The zero-based location in the array from which to start removing elements. */
+        start: number,
+        /** The number of elements to remove. */
+        deleteCount: number = Infinity,
+    ): T['$Field'][] {
+        if (deleteCount === 0) return []
+        if (start >= this.length) return []
+        return this.MUTVALUE(() => {
+            // console.log(`[🤠] `, this.length, start, deleteCount)
+            this.serial.items_.splice(start, deleteCount)
+            const deleted = this.items.splice(start, deleteCount)
+            // console.log('🚀 ~ deleted:', deleted)
+            for (const x of deleted) x.disposeTree()
+            return deleted
         })
     }
 
-    removeItem(item: T['$Field']): void {
+    /**
+     * Removes all elements from the array and
+     * @returns An array containing the elements that were deleted.
+     */
+    removeAllItems(): T['$Field'][] {
+        // ensure list is not empty
+        if (this.length === 0) {
+            console.log(`[🔶] list.removeAllItems: list is already empty`)
+            return []
+        }
+        // ensure list is not at min len already
+        const minLen = this.config.min ?? 0
+        if (this.length <= minLen) {
+            console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
+            return []
+        }
+        // remove all items
+        return this.splice(minLen)
+        // this.MUTVALUE(() => {
+        //     this.serial.items_ = this.serial.items_.slice(0, minLen)
+        //     this.items = this.items.slice(0, minLen)
+        // })
+    }
+
+    removeItem(item: T['$Field']): Maybe<T['$Field']> {
         // ensure item is in the list
         const i = this.items.indexOf(item)
-        if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
+        if (i === -1) {
+            // 2024-07-11 rvion: should we throw
+            return void console.log(`[🔶] list.removeItem: item not found`)
+        }
         this.removeItemAt(i)
+        return item
     }
 
     pop(): void {
         this.removeItemAt(this.items.length - 1)
     }
 
-    shift(): void {
-        this.removeItemAt(0)
+    /**
+     * Removes the first element from an array and returns it.
+     * If the array is empty, undefined is returned and the array is not modified.
+     */
+    shift(): Maybe<T['$Field']> {
+        return this.removeItemAt(0)
     }
 
-    removeItemAt(i: number): void {
-        this.MUTVALUE(() => {
-            this.serial.items_.splice(i, 1)
-            this.items.splice(i, 1)
-        })
+    removeItemAt(i: number): Maybe<T['$Field']> {
+        if (this.length < i) return null
+        return this.splice(i, 1)[0]
     }
 }
 

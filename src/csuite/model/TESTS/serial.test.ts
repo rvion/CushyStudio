@@ -8,8 +8,8 @@ describe('assign to value object', () => {
     it('properly ensure value is properly set for every field', () => {
         const S1 = b.fields({
             int0: b.int(),
-            int3: b.int({ default: 3 }),
-            intOpt: b.int({ default: 3 }).optional(),
+            int3: b.int({ default: 4 }),
+            intOpt: b.int({ default: 5 }).optional(),
             intOpt2: b.int({ default: 8 }).optional(true),
             strEmpty: b.string(),
             strCoucou: b.string({ default: 'coucou' }),
@@ -31,7 +31,7 @@ describe('assign to value object', () => {
             boolFalse: false,
             boolTrue: true,
             int0: 0,
-            int3: 3,
+            int3: 4,
             intOpt: null,
             intOpt2: 8,
             strCoucou: 'coucou',
@@ -47,7 +47,7 @@ describe('assign to value object', () => {
             type: 'group',
             values_: {
                 int0: { type: 'number', value: 0 },
-                int3: { type: 'number', value: 3 },
+                int3: { type: 'number', value: 4 },
                 strEmpty: { type: 'str', value: '' },
                 strCoucou: { type: 'str', value: 'coucou' },
                 bool: { type: 'bool', value: false },
@@ -56,7 +56,7 @@ describe('assign to value object', () => {
                 intOpt: {
                     type: 'optional',
                     active: false,
-                    child: { type: 'number', value: 3 },
+                    child: { type: 'number', value: 5 },
                 },
                 intOpt2: {
                     type: 'optional',

@@ -134,7 +134,15 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
     }
 
     get subFields(): Field[] {
-        return this.serial.active ? [this.child] : []
+        // V0.
+        // return this.serial.active ? [this.child] : []
+
+        // V1.
+        // in V1, we always return the optional child, since it's actually instanciated
+        // it's a bit strange to make the optional widget instanciate it's children, but it has been done this way for a while
+        // so we can display the child in the UI grayed out, even if it's not active.
+        // since it's mounted in the tree, it needs to be returned, so it can  be properly disposed when the tree is unmounted.
+        return [this.child]
     }
 
     get subFieldsWithKeys(): KeyedField[] {

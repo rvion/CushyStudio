@@ -84,8 +84,12 @@ describe('model links', () => {
         })
         r.endRecording()
         expect(totalRootSnapshotChanged).toBe(3)
-
+        expect(e.value.list.length).toBe(3)
+        expect(e.toValueJSON().list).toMatchObject([0, 0, 0])
         // SAME VALUE: should NOT trigger any snapshot
+        e.value.list = [0, 0, 0]
+        expect(totalRootSnapshotChanged).toBe(3)
+
         e.value = {
             int: 6,
             str: '',
@@ -95,7 +99,7 @@ describe('model links', () => {
 
         expect(totalRootSnapshotChanged).toBe(3)
         expect(r.tracked).toMatchObject({
-            transactionCount: 5,
+            transactionCount: 6,
             totalValueTouched: 6,
             totalSerialTouched: 0,
             totalCreations: 8,
@@ -135,7 +139,7 @@ describe('model links', () => {
         ])
 
         expect(r.tracked).toMatchObject({
-            transactionCount: 6,
+            transactionCount: 7,
             totalValueTouched: 13, // the last item of list does not count: it is created, not touched
             totalSerialTouched: 0,
             totalCreations: 9,

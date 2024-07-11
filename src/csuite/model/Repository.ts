@@ -56,8 +56,15 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         for (const root of this.allRoots.values()) {
             root.disposeTree()
         }
-        if (this.allFields.size !== 0) throw new Error(`[🔴] INVARIANT VIOLATION: allFields should be empty`)
-        if (this.allRoots.size !== 0) throw new Error(`[🔴] INVARIANT VIOLATION: allRoots should be empty`)
+        if (this.allFields.size !== 0) {
+            throw new Error(
+                `[🔴] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[...this.allFields.values()].map((i) => [i.type, i.summary])})`,
+            )
+        }
+        if (this.allRoots.size !== 0)
+            throw new Error(
+                `[🔴] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[...this.allRoots.values()].map((i) => [i.type, i.summary])})`,
+            )
     }
 
     /* 🔴 STATS --------------------------------------------------------- */

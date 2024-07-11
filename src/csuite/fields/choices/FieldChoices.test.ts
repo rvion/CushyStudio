@@ -5,12 +5,8 @@ import { simpleBuilder as b, simpleRepo } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('FieldChoices', () => {
-    beforeAll(() => {
-        simpleRepo.reset()
-    })
-    afterEach(() => {
-        simpleRepo.reset()
-    })
+    // VVVVV should not be needed since we have some after each that is globally injected via preload.
+    // afterEach(() => simpleRepo.reset())
     const Multi = b
         .choices({
             foo: b.string({ default: 'yo' }),

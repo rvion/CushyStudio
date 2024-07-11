@@ -57,7 +57,12 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /** will be called when serial changed */
     onSerialChange?: CovariantFn<[self: T['$Field']], void>
 
-    /** will be called before disposing the tree */
+    /**
+     * will be called before disposing the tree
+     * @since 2024-07-11
+     * @status NOT IMPLEMENTED
+     * @experimental
+     */
     onDispose?: CovariantFn1<T['$Field'], void>
 
     /** allow to set custom actions on your widgets */

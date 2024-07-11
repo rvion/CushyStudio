@@ -80,6 +80,7 @@ describe('FieldList', () => {
 
             E1.value = ['🔵', '🟢']
             expect(E1.length).toBe(2)
+
             expectJSON(E1.value).toEqual(['🔵', '🟢'])
             expect(toJS(E1.serial)).toMatchObject({
                 type: 'list' as const,
@@ -141,7 +142,7 @@ describe('FieldList', () => {
             expectJSON(a.value).toEqual([8])
         })
 
-        it('can ADD items at the end', () => {
+        it('can ADD/PUSH/POP/SPLICE/... items at the end/start/middle/...', () => {
             const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
             const a = S2.create()
             expectJSON(a.value).toEqual([3])
@@ -160,6 +161,19 @@ describe('FieldList', () => {
 
             a.value.shift()
             expectJSON(a.value).toEqual([3, 8])
+        })
+
+        it('can .removeAllItems()', () => {
+            const S2 = b.int({ default: 3 }).list({ min: 3 })
+            const a = S2.create()
+            expectJSON(a.value).toEqual([3, 3, 3])
+
+            a.value.push(8)
+            a.value.push(8)
+            expectJSON(a.value).toEqual([3, 3, 3, 8, 8])
+
+            a.removeAllItems()
+            expectJSON(a.value).toEqual([3, 3, 3])
         })
     })
 
