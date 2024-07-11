@@ -793,19 +793,19 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * proxy this.repo.action
      * defined to shorted call and allow per-field override
      */
-    MUTVALUE(fn: () => any): void {
+    MUTVALUE<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
     }
 
-    MUTAUTO(fn: () => any): void {
+    MUTAUTO<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'auto', 'WITH_EFFECT')
     }
 
-    MUTSERIAL(fn: () => any): void {
+    MUTSERIAL<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
     }
 
-    private MUTINIT(fn: () => any): void {
+    private MUTINIT<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
     }
 
