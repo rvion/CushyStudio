@@ -1,4 +1,4 @@
-import type { Field_list_serial } from '../fields/list/WidgetList'
+import type { Field_list_serial } from '../fields/list/FieldList'
 import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'

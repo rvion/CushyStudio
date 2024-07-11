@@ -1,12 +1,12 @@
-import type { Field_selectMany_config } from '../csuite/fields/selectMany/WidgetSelectMany'
-import type { BaseSelectEntry } from '../csuite/fields/selectOne/WidgetSelectOne'
+import type { Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
+import type { BaseSelectEntry } from '../csuite/fields/selectOne/FieldSelectOne'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Builder } from './Builder'
 
-import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/WidgetEnum'
+import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { Schema } from './Schema'
 
 export type IEnumBuilder = {

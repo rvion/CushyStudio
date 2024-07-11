@@ -1,4 +1,4 @@
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/WidgetSelectOne'
+import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
 
 import { cushyRepo } from '../../controls/Builder'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'

@@ -1,4 +1,4 @@
-import type { Field_markdown } from './WidgetMarkdown'
+import type { Field_markdown } from './FieldMarkdown'
 
 import { observer } from 'mobx-react-lite'
 

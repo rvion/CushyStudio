@@ -1,4 +1,4 @@
-import type { Field_seed } from './WidgetSeed'
+import type { Field_seed } from './FieldSeed'
 
 import { observer } from 'mobx-react-lite'
 

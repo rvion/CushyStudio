@@ -5,8 +5,6 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
@@ -141,7 +139,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         )
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<T>>): void {
         this.serial.val = serial?.val ?? this.defaultValue
         this.serial.query = serial?.query
     }

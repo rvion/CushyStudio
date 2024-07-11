@@ -1,4 +1,4 @@
-import type { Field_enum_config } from '../csuite/fields/enum/WidgetEnum'
+import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { Builder } from './Builder'
 

@@ -1,5 +1,5 @@
 import type { EnumValue } from '../../../models/ComfySchema'
-import type { Field_enum_config } from './WidgetEnum'
+import type { Field_enum_config } from './FieldEnum'
 
 // ⁉️
 export const _extractDefaultValue = (input: Field_enum_config<any>): Maybe<EnumValue> => {

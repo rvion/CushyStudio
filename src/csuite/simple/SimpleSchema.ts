@@ -6,9 +6,9 @@ import type { CovariantFn } from '../variance/BivariantHack'
 import { makeObservable } from 'mobx'
 
 import { simpleRepo } from '../'
-import { Field_link, type Field_link_config } from '../fields/link/WidgetLink'
-import { Field_list, Field_list_config } from '../fields/list/WidgetList'
-import { Field_optional } from '../fields/optional/WidgetOptional'
+import { Field_link, type Field_link_config } from '../fields/link/FieldLink'
+import { Field_list, Field_list_config } from '../fields/list/FieldList'
+import { Field_optional } from '../fields/optional/FieldOptional'
 import { BaseSchema } from '../model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 

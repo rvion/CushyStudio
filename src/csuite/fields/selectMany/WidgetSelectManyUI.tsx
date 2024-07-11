@@ -1,5 +1,5 @@
-import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { Field_selectMany, SelectManyAppearance } from './WidgetSelectMany'
+import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
+import type { Field_selectMany, SelectManyAppearance } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
 

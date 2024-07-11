@@ -71,7 +71,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
     DefaultBodyUI = undefined
 
     /** this method must be idem-potent */
-    protected setOwnSerial(serial: Maybe<Field_matrix_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_matrix_serial>): void {
         const { rows, cols, default: defs } = this.config
 
         // 1. create a set with all cellKeys that should be ON
@@ -158,7 +158,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
      * Internal method to update serial from the live list of active cells
      * every setter should update this
      */
-    private UPDATE() {
+    private UPDATE(): void {
         this.MUTVALUE(() => (this.serial.selected = this.activeCells))
     }
 

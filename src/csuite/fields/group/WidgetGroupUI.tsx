@@ -1,5 +1,5 @@
 import type { SchemaDict } from '../../model/SchemaDict'
-import type { Field_group } from './WidgetGroup'
+import type { Field_group } from './FieldGroup'
 
 import { observer } from 'mobx-react-lite'
 

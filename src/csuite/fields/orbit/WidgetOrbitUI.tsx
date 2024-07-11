@@ -1,4 +1,4 @@
-import type { Field_orbit } from './WidgetOrbit'
+import type { Field_orbit } from './FieldOrbit'
 import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 
 import { OrbitControls } from '@react-three/drei'

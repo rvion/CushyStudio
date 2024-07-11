@@ -47,8 +47,13 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
 
     static readonly type: 'enum' = 'enum'
 
-    get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    get hasChanges(): boolean { return this.serial.val !== this.defaultValue } // prettier-ignore
+    get defaultValue(): Field_enum_value<O> {
+        return this.config.default ?? (this.possibleValues[0] as any)
+    }
+
+    get hasChanges(): boolean {
+        return this.serial.val !== this.defaultValue
+    }
 
     reset(): void {
         this.value = this.defaultValue

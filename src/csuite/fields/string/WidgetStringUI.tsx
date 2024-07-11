@@ -1,4 +1,4 @@
-import type { Field_string } from './WidgetString'
+import type { Field_string } from './FieldString'
 
 import { observer } from 'mobx-react-lite'
 
@@ -53,8 +53,8 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { fiel
             buffered={
                 field.config.buffered
                     ? {
-                          getTemporaryValue: () => field.temporaryValue,
-                          setTemporaryValue: (value) => (field.temporaryValue = value),
+                          getTemporaryValue: (): string | null => field.temporaryValue,
+                          setTemporaryValue: (value): void => void (field.temporaryValue = value),
                       }
                     : undefined
             }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b, simpleRepo as r } from '../'
-import { Field_string } from '../fields/string/WidgetString'
+import { Field_string } from '../fields/string/FieldString'
 
 describe('field customizations', () => {
     it('works', () => {

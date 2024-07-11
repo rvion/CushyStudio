@@ -42,7 +42,7 @@
  *
  */
 
-import type { Field_shared } from '../fields/shared/WidgetShared'
+import type { Field_shared } from '../fields/shared/FieldShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'

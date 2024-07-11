@@ -5,9 +5,9 @@ import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement, type ReactNode } from 'react'
 
-import { Field_link, type Field_link_config } from '../csuite/fields/link/WidgetLink'
-import { Field_list, Field_list_config } from '../csuite/fields/list/WidgetList'
-import { Field_optional } from '../csuite/fields/optional/WidgetOptional'
+import { Field_link, type Field_link_config } from '../csuite/fields/link/FieldLink'
+import { Field_list, Field_list_config } from '../csuite/fields/list/FieldList'
+import { Field_optional } from '../csuite/fields/optional/FieldOptional'
 import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'

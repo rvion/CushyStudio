@@ -1,4 +1,4 @@
-import type { Field_string_config } from '../fields/string/WidgetString'
+import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/icons'
 import type { CSSProperties } from 'react'
 

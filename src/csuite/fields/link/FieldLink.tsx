@@ -4,6 +4,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
+import type { FC } from 'react'
 
 import { runInAction } from 'mobx'
 
@@ -71,7 +72,7 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         this.init(serial, {})
     }
 
-    protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>) {
+    protected setOwnSerial(serial: Maybe<Field_link_serial<A, B>>): void {
         this.RECONCILE({
             existingChild: this.aField,
             correctChildSchema: this.config.share,
@@ -93,9 +94,9 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         })
     }
 
-    DefaultHeaderUI = () => <>🟢</>
+    DefaultHeaderUI: FC<{}> = () => <>🟢</>
 
-    DefaultBodyUI = () => this.bField.renderWithLabel()
+    DefaultBodyUI: FC<{}> = () => this.bField.renderWithLabel()
 
     get ownProblems(): Problem_Ext {
         return this.bField.hasErrors

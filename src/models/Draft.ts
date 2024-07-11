@@ -1,6 +1,6 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { Field_group } from '../csuite/fields/group/WidgetGroup'
+import type { Field_group } from '../csuite/fields/group/FieldGroup'
 import type { Field } from '../csuite/model/Field'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'

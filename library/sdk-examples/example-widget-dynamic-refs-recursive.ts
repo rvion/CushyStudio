@@ -1,9 +1,9 @@
 import type { Schema } from '../../src/controls/Schema'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
-import type { Field_group } from '../../src/csuite/fields/group/WidgetGroup'
-import type { Field_image } from '../../src/csuite/fields/image/WidgetImage'
-import type { Field_list } from '../../src/csuite/fields/list/WidgetList'
-import type { Field_selectOne } from '../../src/csuite/fields/selectOne/WidgetSelectOne'
+import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
+import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
+import type { Field_list } from '../../src/csuite/fields/list/FieldList'
+import type { Field_selectOne } from '../../src/csuite/fields/selectOne/FieldSelectOne'
 
 app({
     ui: (form) => ({

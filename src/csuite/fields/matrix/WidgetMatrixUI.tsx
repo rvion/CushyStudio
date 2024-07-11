@@ -1,4 +1,4 @@
-import type { Field_matrix } from './WidgetMatrix'
+import type { Field_matrix } from './FieldMatrix'
 
 import { observer } from 'mobx-react-lite'
 

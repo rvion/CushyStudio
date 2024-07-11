@@ -1,6 +1,6 @@
 import type { EnumName, EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
-import type { Field_enum } from './WidgetEnum'
+import type { Field_enum } from './FieldEnum'
 
 import { observer } from 'mobx-react-lite'
 

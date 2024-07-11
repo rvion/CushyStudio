@@ -69,7 +69,7 @@ export class Field_image extends Field<Field_image_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_image_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_image_serial>): void {
         this.serial.size = serial?.size ?? this._defaultPreviewSize()
         this.serial.imageID = serial?.imageID ?? this._defaultImageID()
     }
@@ -98,7 +98,7 @@ export class Field_image extends Field<Field_image_types> {
         return 128
     }
 
-    get animateResize() {
+    get animateResize(): boolean {
         return false
     }
 
@@ -115,7 +115,8 @@ export class Field_image extends Field<Field_image_types> {
         this.MUTSERIAL(() => (this.serial.size = val))
     }
 
-    get size() {
+    /** size of the preview */
+    get size(): number {
         return this.serial.size
     }
 }

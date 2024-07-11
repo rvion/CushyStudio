@@ -59,7 +59,7 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         })
     }
 
-    protected setOwnSerial(_serial: Maybe<Field_shared_serial>) {}
+    protected setOwnSerial(_serial: Maybe<Field_shared_serial>): void {}
 
     get hasChanges(): boolean {
         return this.shared.hasChanges ?? false

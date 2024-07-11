@@ -1,6 +1,6 @@
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field } from '../../model/Field'
-import type { Field_list } from './WidgetList'
+import type { Field_list } from './FieldList'
 
 import { observer } from 'mobx-react-lite'
 import { type FC, forwardRef } from 'react'

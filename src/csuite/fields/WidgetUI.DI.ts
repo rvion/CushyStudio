@@ -8,14 +8,14 @@
 
 */
 import type { Field } from '../model/Field'
-import type { Field_group } from './group/WidgetGroup'
-import type { Field_link } from './link/WidgetLink'
-import type { Field_list } from './list/WidgetList'
+import type { Field_group } from './group/FieldGroup'
+import type { Field_link } from './link/FieldLink'
+import type { Field_list } from './list/FieldList'
 import type { Field_number } from './number/FieldNumber'
-import type { Field_optional } from './optional/WidgetOptional'
-import type { Field_selectOne } from './selectOne/WidgetSelectOne'
-import type { Field_shared } from './shared/WidgetShared'
-import type { Field_string } from './string/WidgetString'
+import type { Field_optional } from './optional/FieldOptional'
+import type { Field_selectOne } from './selectOne/FieldSelectOne'
+import type { Field_shared } from './shared/FieldShared'
+import type { Field_string } from './string/FieldString'
 
 /**
  * DI (Dependency Injection)

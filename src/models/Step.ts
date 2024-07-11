@@ -6,7 +6,7 @@ import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 
 import { Status } from '../back/Status'
-import { Field_group } from '../csuite/fields/group/WidgetGroup'
+import { Field_group } from '../csuite/fields/group/FieldGroup'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { LiveRef } from '../db/LiveRef'

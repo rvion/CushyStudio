@@ -3,7 +3,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
-import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
+import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
 
 import { Field } from '../../model/Field'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -138,7 +138,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectMany_serial<T>>) {
+    protected setOwnSerial(serial: Maybe<Field_selectMany_serial<T>>): void {
         if (serial == null) return
         this.serial.query = serial.query
         this.serial.values = serial.values

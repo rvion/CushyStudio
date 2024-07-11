@@ -1,4 +1,4 @@
-import type { BaseSelectEntry, Field_selectOne } from './WidgetSelectOne'
+import type { BaseSelectEntry, Field_selectOne } from './FieldSelectOne'
 
 import { observer } from 'mobx-react-lite'
 

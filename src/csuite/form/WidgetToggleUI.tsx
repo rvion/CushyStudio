@@ -1,4 +1,4 @@
-import type { Field_optional } from '../fields/optional/WidgetOptional'
+import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'

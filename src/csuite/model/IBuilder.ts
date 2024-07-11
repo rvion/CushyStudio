@@ -1,4 +1,4 @@
-import type { Field_group, Field_group_config } from '../fields/group/WidgetGroup'
+import type { Field_group, Field_group_config } from '../fields/group/FieldGroup'
 import type { BaseSchema } from './BaseSchema'
 import type { Field } from './Field'
 

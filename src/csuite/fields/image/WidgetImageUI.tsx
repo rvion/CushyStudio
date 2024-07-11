@@ -1,4 +1,4 @@
-import type { Field_image } from './WidgetImage'
+import type { Field_image } from './FieldImage'
 
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
