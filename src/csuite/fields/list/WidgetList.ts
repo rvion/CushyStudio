@@ -376,16 +376,16 @@ export class Field_list<T extends BaseSchema> //
             value?: T['$Value']
             serial?: T['$Serial']
         } = {},
-    ): void {
+    ): Maybe<T['$Field']> {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
-            return console.log(`[🔶] list.addItem: list is already at max length`)
+            return void console.log(`[🔶] list.addItem: list is already at max length`)
 
         // ensure index we're adding this at is valid
-        if (p.at != null && p.at < 0) return console.log(`[🔶] list.addItem: at is negative`)
-        if (p.at != null && p.at > this.items.length) return console.log(`[🔶] list.addItem: at is out of bounds`)
+        if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
+        if (p.at != null && p.at > this.items.length) return void console.log(`[🔶] list.addItem: at is out of bounds`)
 
-        this.MUTVALUE(() => {
+        return this.MUTVALUE(() => {
             // create new item
             const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
             const element = schema.instanciate(this.repo, this.root, this, p.serial ?? null)
@@ -403,6 +403,8 @@ export class Field_list<T extends BaseSchema> //
                 this.items.splice(p.at, 0, element)
                 this.serial.items_.splice(p.at, 0, element.serial)
             }
+
+            return element
         })
     }
 
