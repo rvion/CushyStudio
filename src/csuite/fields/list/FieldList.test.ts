@@ -175,6 +175,17 @@ describe('FieldList', () => {
             a.removeAllItems()
             expectJSON(a.value).toEqual([3, 3, 3])
         })
+
+        describe('map', () => {
+            it('should map items', () => {
+                const S2 = b.int({ default: 3 }).list({ min: 3 })
+                const a = S2.create()
+                expectJSON(a.value).toEqual([3, 3, 3])
+                const r = a.value.map((x) => x + 1)
+
+                expect(r).toEqual([4, 4, 4])
+            })
+        })
     })
 
     // RESET ---------------------------

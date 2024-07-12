@@ -268,12 +268,12 @@ export class Field_list<T extends BaseSchema> //
                 if (typeof prop === 'symbol') return target[prop]
 
                 // MOBX HACK ----------------------------------------------------
+                // Handle mutations
                 if (prop === 'toJSON') return () => this.valueArr
                 if (prop === 'pop') return () => this.pop()
                 if (prop === 'shift') return () => this.shift()
                 if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
                 if (prop === 'push') return (...args: any[]) => this.push(...args)
-                if (prop === 'slice') return (start: any, end: any) => this.valueArr.slice(start, end)
                 // MOBX HACK ----------------------------------------------------
 
                 // handle numbers (1) and number-like ('1')
@@ -281,8 +281,8 @@ export class Field_list<T extends BaseSchema> //
                     return target[+prop]?.value
                 }
 
-                // defer to target for other props
-                return target[prop]
+                // defer to valueArr for other props
+                return this.valueArr[prop]
             },
             set: (target, prop: any, value): boolean => {
                 // ⏸️ console.log(`[SET]`, prop, value)
