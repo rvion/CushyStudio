@@ -191,11 +191,11 @@ export class SimpleBuilder implements IBuilder {
 
     /** see also: `fields` for a more practical api */
     group<T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
-        return new SimpleSchema<Field_group<T>>(Field_group, config)
+        return new SimpleSchema<Field_group<T>>(Field_group, config) as S.SGroup<T>
     }
 
     fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): S.SGroup<T> {
-        return new SimpleSchema<Field_group<T>>(Field_group, { items: fields, ...config })
+        return new SimpleSchema<Field_group<T>>(Field_group, { items: fields, ...config }) as S.SGroup<T>
     }
 
     choice_v0<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {

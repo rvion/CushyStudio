@@ -7,17 +7,15 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { Field, type KeyedField } from '../../model/Field'
+import { capitalize } from '../../utils/capitalize'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
 export type Field_group_config<T extends SchemaDict> = FieldConfig<
     {
-        /**
-         * Lambda function is deprecated, prefer passing the items as an object
-         * directly
-         */
-        items?: T | (() => T)
+        /** fields */
+        items?: T
 
         /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
@@ -44,6 +42,12 @@ export type Field_group_types<T extends SchemaDict> = {
     $Value: Field_group_value<T>
     $Field: Field_group<T>
 }
+
+export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
+    [K in keyof T as Capitalize<K & string>]: T[K]['$Field']
+}
+
+export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
@@ -107,6 +111,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         serial?: Field_group_serial<T>,
     ) {
         super(repo, root, parent, schema)
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            Object.defineProperty(this, capitalize(fName), {
+                get: () => this.fields[fName],
+                configurable: true,
+            })
+        }
         this.init(serial, {
             value: false,
             __value: false,
@@ -115,10 +125,13 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     /** just here to normalize fieldSchema definitions, since it used to be a lambda */
-    private get _fieldSchemas(): [keyof T, BaseSchema<any>][] {
+    private get _fieldSchemas(): [keyof T & string, BaseSchema<any>][] {
         const itemsDef = this.config.items
-        const fieldSchemas: SchemaDict = typeof itemsDef === 'function' ? itemsDef() ?? {} : itemsDef ?? {}
-        return Object.entries(fieldSchemas) as [keyof T, BaseSchema<any>][]
+        const fieldSchemas: SchemaDict =
+            typeof itemsDef === 'function' //
+                ? (itemsDef as any)() ?? {} // <-- LEGACY SUPPORT
+                : itemsDef ?? {}
+        return Object.entries(fieldSchemas) as [keyof T & string, BaseSchema<any>][]
     }
 
     protected setOwnSerial(serial: Maybe<Field_group_serial<T>>): void {
