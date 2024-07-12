@@ -27,7 +27,29 @@ declare global {
         type Field = import('../model/Field').Field
 
         // field aliases
-        // ...
+        type Group<T extends SchemaDict> = Field_group<T>
+        type List<T extends BaseSchema> = Field_list<T>
+        type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
+        type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
+        type Optional<T extends BaseSchema> = Field_optional<T>
+        //
+        type Shared<T extends Field> = Field_shared<T>
+        //
+        type SelectOne<T extends BaseSelectEntry> = Field_selectOne<T>
+        type SelectMany<T extends BaseSelectEntry> = Field_selectMany<T>
+        type SelectOne_<T extends string> = Field_selectOne<BaseSelectEntry<T>>
+        type SelectMany_<T extends string> = Field_selectMany<BaseSelectEntry<T>>
+        type Button<T> = Field_button<T>
+        //
+        type Empty = Field_group<NO_PROPS>
+        type Bool = Field_bool
+        type String = Field_string
+        type Number = Field_number
+        type Color = Field_color
+        type Seed = Field_seed
+        type Matrix = Field_matrix
+        type Size = Field_size
+        type Markdown = Field_markdown
 
         // schema aliases
         type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
