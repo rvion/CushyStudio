@@ -358,11 +358,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     /** results, but only for active branches */
     get value(): Field_choices_value<T> {
-        const out: { [key: string]: any } = {}
+        const out: Field_choices_value<T> = {}
         for (const branch in this.enabledBranches) {
             out[branch] = this.enabledBranches[branch]!.value
         }
-        return out as any
+        return out
     }
 
     set value(val: Field_choices_value<T>) {
