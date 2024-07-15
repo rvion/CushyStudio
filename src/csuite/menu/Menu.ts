@@ -1,17 +1,16 @@
 import type { Activity } from '../activity/Activity'
-import type { BoundCommand } from '../commands/Command'
 import type { IconName } from '../icons/icons'
-import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { SimpleMenuModal } from './SimpleMenuModal'
 
 import { nanoid } from 'nanoid'
-import { createElement, type FC, type UIEvent, useMemo } from 'react'
+import { createElement, type UIEvent, useMemo } from 'react'
 
 import { activityManager } from '../activity/ActivityManager'
 import { Command } from '../commands/Command'
 import { BoundMenuSym } from '../introspect/_isBoundMenu'
 import { Trigger } from '../trigger/Trigger'
+import { menuBuilder, type MenuBuilder } from './MenuBuilder'
+import { MenuEntry } from './MenuEntry'
 import { MenuRootUI, MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
@@ -37,20 +36,6 @@ export type MenuEntryWithKey = {
     charIx?: number
 }
 
-// prettier-ignore
-export type MenuEntry =
-    /** inline subform  */
-    | Field
-    /** custom component  */
-    | FC<{}>
-    /** a command */
-    | Command /* command may be passed unbound: in that case, they retrieve their context from their provider */
-    | BoundCommand
-    | BoundMenu
-    /** simple MenuEntry */
-    | SimpleMenuAction
-    | SimpleMenuModal
-
 /** supplied menu definition */
 export type MenuDef<Props> = {
     title: string
@@ -60,7 +45,7 @@ export type MenuDef<Props> = {
      */
     id?: string
     icon?: Maybe<IconName>
-    entries: (props: Props) => MenuEntry[]
+    entries: (props: Props, builder: MenuBuilder<any>) => MenuEntry[]
 }
 
 export type MenuID = Tagged<string, 'MenuID'>
@@ -138,7 +123,7 @@ export class MenuInstance<Props> implements Activity {
     ) {}
 
     get entries(): MenuEntry[] {
-        return this.menu.def.entries(this.props)
+        return this.menu.def.entries(this.props, menuBuilder)
     }
 
     get entriesWithKb(): MenuEntryWithKey[] {

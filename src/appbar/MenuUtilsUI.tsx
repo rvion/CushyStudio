@@ -5,6 +5,15 @@ import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
+// const cmd_posemy = new Command({
+//
+// })
+// const MenuUtilsV2 = new Menu({
+//     title: 'Utils',
+//     icon: 'mdiPuzzle',
+//     entries: () => [],
+// })
+
 export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
     const st = useSt()
     return (
@@ -46,6 +55,17 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                         icon='mdiBrush'
                         localShortcut={KEYS.openPage_Paint}
                         label='Minipaint'
+                    />
+                    <MenuItem
+                        onClick={() =>
+                            st.layout.FOCUS_OR_CREATE('IFrame', {
+                                url: 'https://www.photopea.com/',
+                            })
+                        }
+                        iconClassName='text-red-400'
+                        icon='mdiBrush'
+                        localShortcut={KEYS.openPage_Paint}
+                        label='Photopea'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })}

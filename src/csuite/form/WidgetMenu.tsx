@@ -1,4 +1,5 @@
-import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
+import type { Menu } from '../../csuite/menu/Menu'
+import type { MenuEntry } from '../menu/MenuEntry'
 import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'

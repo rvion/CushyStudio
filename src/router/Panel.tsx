@@ -1,6 +1,6 @@
 import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
-import type { MenuEntry } from '../csuite/menu/Menu'
+import type { MenuEntry } from '../csuite/menu/MenuEntry'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'
 import { command } from '../csuite/commands/Command'
@@ -8,7 +8,10 @@ import { menuWithoutProps } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
 import { Trigger } from '../csuite/trigger/Trigger'
 
+export type PanelHeader = { title: string }
+
 export class Panel<Props> {
+    $PanelHeader!: PanelHeader
     $Props!: Props
 
     /** default command to open the panel with default props */
@@ -19,7 +22,7 @@ export class Panel<Props> {
             //
             name: string
             widget: () => React.FC<Props>
-            header: (p: NoInfer<Props>) => { title: string }
+            header: (p: NoInfer<Props>) => PanelHeader
             icon?: IconName
             def: () => NoInfer<Props>
             presets?: { [name: string]: () => NoInfer<Props> }

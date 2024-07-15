@@ -8,7 +8,7 @@ import { Panel_TreeExplorer } from '../panels/Panel_FileExplorer/Panel_TreeExplo
 import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
 import { PanelGallery } from '../panels/Panel_Gallery/Panel_Gallery'
 import { PanelIcon } from '../panels/Panel_Icons/Panel_Icons'
-import { Panel_Iframe } from '../panels/Panel_IFrame'
+import { PanelIframe } from '../panels/Panel_IFrame'
 import { Panel_Import } from '../panels/Panel_Import'
 import { Panel_LastGraph } from '../panels/Panel_LastGraph'
 import { Panel_LastStep } from '../panels/Panel_LastStep/Panel_LastStep'
@@ -198,14 +198,7 @@ export const panels = {
         def: () => ({}),
         icon: undefined,
     }),
-    IFrame: new Panel({
-        name: 'IFrame',
-        widget: () => Panel_Iframe,
-        header: (p) => ({ title: 'IFrame' }),
-        def: () => ({ url: 'https://app.posemy.art/' }),
-        icon: undefined,
-    }),
-
+    IFrame: PanelIframe,
     // config
     Config: PanelConfig,
     Models: new Panel({

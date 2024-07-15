@@ -41,7 +41,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         return this.allFields.get(fieldId)
     }
 
-    /* 🔴 FULL-CLEAR ---------------------------------------------------- */
+    /* 📌 FULL-CLEAR ---------------------------------------------------- */
     /**
      * fully clear the entity-map + reset stats
      * @since 2024-07-08
@@ -58,21 +58,22 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         }
         if (this.allFields.size !== 0) {
             throw new Error(
-                `[🔴] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[...this.allFields.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[...this.allFields.values()].map((i) => [i.type, i.summary])})`,
             )
         }
         if (this.allRoots.size !== 0)
             throw new Error(
-                `[🔴] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[...this.allRoots.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[...this.allRoots.values()].map((i) => [i.type, i.summary])})`,
             )
     }
 
-    /* 🔴 STATS --------------------------------------------------------- */
+    /* 📌 STATS --------------------------------------------------------- */
     /** how many transactions have been executed on that repo */
     transactionCount: number = 0
     totalValueTouched: number = 0
     totalSerialTouched: number = 0
     totalCreations: number = 0
+
     resetStats(): void {
         this.transactionCount = 0
         this.totalValueTouched = 0
@@ -80,7 +81,7 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         this.totalCreations = 0
     }
 
-    /* 🔴 TEMP ---------------------------------------------------------- */
+    /* 📌 TEMP ---------------------------------------------------------- */
     private logs: string[] = []
     startRecording(): void {
         this.logs.splice(0, this.logs.length)
@@ -221,7 +222,12 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         return OUT
     }
 
+    /**
+     * last known transactions;
+     * added to help with testing
+     */
     lastTransaction: Maybe<Transaction> = null
+
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     fields<FIELDS extends SchemaDict>(
         schemaExt: (form: DOMAIN) => FIELDS,

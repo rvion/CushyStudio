@@ -1,5 +1,14 @@
+2024-07-12:
+    ☐ repository not as property of other classes, but as param with defulat from DI mechanism
+    ☐ csuite expect globalRepo to exist/be available via DI
+    ☐ csuite expect globalDomain to exist/be available via DI
+    ☐ Builder and Schema do not know the repository that will host the instances
+    ☐ schema must NOT know its builder (it's irrelevant)
+    ☐ basebuilder MUST take the schema class as ctor so we can re-use it.
+    ☐ BASE schema must be able to change it's ctor.
+
 2024-07-11:
-    only a single schema class
+    ✘ only a single schema class @cancelled(24-07-12 16:15)
 
 2024-07-08:
     ☐ updateSnapshot only called once

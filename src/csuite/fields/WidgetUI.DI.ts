@@ -31,7 +31,7 @@ export const getFieldClass = <Type extends { $Type: string }>(widgetName: Type['
 
 /* TODO: rename to `registerFieldClass` */
 //           VVVVVVVVVVVVVVVVVVV
-export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'], kls: { new (...args: any[]): T }) => {
+export const registerWidgetClass = <T extends { $Type: string }>(type: T['$Type'], kls: { new (...args: any[]): T }): void => {
     WidgetDI[type] = kls as any
 }
 

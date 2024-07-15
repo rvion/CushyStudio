@@ -52,11 +52,6 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
         return new SimpleSchema(Field_link<any, any>, linkConf)
     }
 
-    // -----------------------------------------------------
-    // Make<X extends BaseField>(type: X['type'], config: X['$Config']) {
-    //     return new SimpleSchema(this.builder, type, config)
-    // }
-
     /** wrap widget schema to list stuff */
     list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
         return new SimpleSchema<Field_list<this>>(Field_list, {

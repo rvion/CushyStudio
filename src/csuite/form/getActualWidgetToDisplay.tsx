@@ -3,10 +3,10 @@ import type { Field } from '../model/Field'
 import { isWidgetLink, isWidgetOptional, isWidgetShared } from '../fields/WidgetUI.DI'
 
 /** allow to handle shared and optionals */
-export function getActualWidgetToDisplay(originalWidget: Field): Field {
-    if (isWidgetOptional(originalWidget)) return getActualWidgetToDisplay(originalWidget.child)
-    if (isWidgetLink(originalWidget)) return originalWidget.bField
-    if (isWidgetShared(originalWidget))
-        return originalWidget.shared ? getActualWidgetToDisplay(originalWidget.shared) : originalWidget
-    return originalWidget
+export function getActualWidgetToDisplay(originalField: Field): Field {
+    if (isWidgetOptional(originalField)) return getActualWidgetToDisplay(originalField.child)
+    if (isWidgetLink(originalField)) return originalField.bField
+    if (isWidgetShared(originalField))
+        return originalField.shared ? getActualWidgetToDisplay(originalField.shared) : originalField
+    return originalField
 }
