@@ -9,7 +9,12 @@ import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
+
+import {
+   WidgetString_HeaderUI,
+   WidgetString_TextareaBodyUI,
+   WidgetString_TextareaHeaderUI,
+} from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
 
@@ -44,7 +49,6 @@ export type Field_string_config = FieldConfig<
         default?: string | (() => string)
         textarea?: boolean
         placeHolder?: string
-        pattern?: string
         inputType?: FieldStringInputType
         resize?: CssProprtyResize
         /**
@@ -53,6 +57,11 @@ export type Field_string_config = FieldConfig<
          * */
         buffered?: boolean
         innerIcon?: IconName
+
+        // validation
+        pattern?: string
+        minLength?: number
+        maxLength?: number
     },
     Field_string_types
 >
@@ -101,6 +110,18 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     get ownProblems(): Problem_Ext {
+        const min = this.config.minLength
+        if (min != null && this.value.length < min) 
+            return `Value is too short (must be at least ${min} chars)`
+        const max = this.config.maxLength
+        if (max != null && this.value.length > max)
+            return `Value is too long (must be at most ${max} chars)`
+        // 
+        const pattern = this.config.pattern
+        if (pattern != null) {
+          const reg = new RegExp(pattern).test(this.value)
+          if (!reg) return `Value does not match pattern`
+        } 
         return null
     }
 
@@ -133,9 +154,9 @@ export class Field_string extends Field<Field_string_types> {
 
     private evalDefaultValue(): string {
         const d = this.config.default
-        if (d == null) return ''
-        if (typeof d === 'function') return d()
-        if (typeof d === 'string') return d
+        if (d==null) return ''
+        if (typeof d ==='function') return d()
+        if (typeof d ==='string')return d
         return JSON.stringify(d) // failsafe
     }
 
