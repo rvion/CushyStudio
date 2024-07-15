@@ -37,6 +37,9 @@ export type FormUIProps = {
     children?: ReactNode
 
     // submit -------------------------------------------------------
+    /** @default false */
+    allowSubmitWhenErrors?: boolean
+    
     /**
      * override default label.
      * @default 'Submit'
@@ -58,6 +61,11 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
+    const canSubmit = 
+        p.allowSubmitWhenErrors || //
+        p.field == null || //
+        p.field.allErrorsIncludingChildrenErros.length === 0
+
     return (
         <Frame tw='UI-Form' {...p.theme} className={p.className} style={p.style}>
             {form.renderWithLabel() /* FORM */}
@@ -68,7 +76,9 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
                         <Button
                             look='primary'
                             tw='ml-auto'
+                            disabled={!canSubmit}
                             onClick={async () => {
+                                if (!canSubmit) return
                                 // @ts-ignore
                                 const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
                                 fire({ zIndex: 100000, particleCount: 100, spread: 70 })
@@ -79,7 +89,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
                     </div>
                 ) : (
                     <div tw='flex'>
-                        <Button look='primary' tw='ml-auto' onClick={() => submitAction(form)}>
+                        <Button look='primary' tw='ml-auto' disabled={!canSubmit} onClick={() => submitAction(form)}>
                             {p.submitLabel ?? 'Submit'}
                         </Button>
                     </div>
