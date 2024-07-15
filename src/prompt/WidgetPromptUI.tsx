@@ -68,6 +68,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
         </div>
     )
 })
+
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
     const st = useSt()
@@ -89,7 +90,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
     const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
         <div
-            tw='flex flex-col'
+            tw='flex flex-1 flex-col'
             onKeyDownCapture={(ev) => {
                 // Prevent new-line when using the run shortcut
                 // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
