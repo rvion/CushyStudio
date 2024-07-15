@@ -30,7 +30,18 @@ export type FieldStringInputType =
 // CONFIG
 export type Field_string_config = FieldConfig<
     {
-        default?: string
+        /**
+         * used:
+         *  - when checking if field has changes
+         *  - when resetting (.reset())
+         *  - when value is undefined
+         *
+         * note:
+         *  | if you enable field diff / change tracking,
+         *  | default will ALWAYS be evaluated, so you need to be
+         *  | careful with functions that have side effects
+         */
+        default?: string | (() => string)
         textarea?: boolean
         placeHolder?: string
         pattern?: string
@@ -120,8 +131,16 @@ export class Field_string extends Field<Field_string_types> {
         this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
     }
 
+    private evalDefaultValue(): string {
+        const d = this.config.default
+        if (d == null) return ''
+        if (typeof d === 'function') return d()
+        if (typeof d === 'string') return d
+        return JSON.stringify(d) // failsafe
+    }
+
     get defaultValue(): string {
-        return this.config.default ?? ''
+        return this.evalDefaultValue() ?? ''
     }
 
     get hasChanges(): boolean {
@@ -129,7 +148,7 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     get value(): Field_string_value {
-        return this.serial.value ?? this.config.default ?? ''
+        return this.serial.value ?? this.defaultValue
     }
 
     set value(next: Field_string_value) {

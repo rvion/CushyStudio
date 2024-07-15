@@ -1,6 +1,7 @@
 import type { Activity } from '../activity/Activity'
 import type { IconName } from '../icons/icons'
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { MenuEntry } from './MenuEntry'
 
 import { nanoid } from 'nanoid'
 import { createElement, type UIEvent, useMemo } from 'react'
@@ -10,7 +11,6 @@ import { Command } from '../commands/Command'
 import { BoundMenuSym } from '../introspect/_isBoundMenu'
 import { Trigger } from '../trigger/Trigger'
 import { menuBuilder, type MenuBuilder } from './MenuBuilder'
-import { MenuEntry } from './MenuEntry'
 import { MenuRootUI, MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 

@@ -3,7 +3,6 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { SizeAble } from './ResolutionState'
 
 import { Field } from '../../model/Field'
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
@@ -17,6 +16,11 @@ import {
     type SDModelType,
 } from './WidgetSizeTypes'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
+
+type SizeAble = {
+    width: number
+    height: number
+}
 
 // CONFIG
 export type Field_size_config = FieldConfig<

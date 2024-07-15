@@ -247,7 +247,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         if (s._version) this.serial._version = s._version
         if (s.collapsed) this.serial.collapsed = s.collapsed
         if (s.custom) this.serial.custom = s.custom
-        if (s.lastUpdatedAt) this.serial.lastUpdatedAt = s.lastUpdatedAt
+        if (s.lastUpdatedAt != undefined) this.serial.lastUpdatedAt = s.lastUpdatedAt
     }
 
     /** unified api to allow setting serial from value */
@@ -539,7 +539,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @since 2024-07-08
      */
     get ancestors(): Field[] {
-        let result: Field[] = []
+        const result: Field[] = []
         let current: Maybe<Field> = this.parent
         while (current) {
             result.push(current)
@@ -553,7 +553,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @since 2024-07-08
      */
     get ancestorsIncludingSelf(): Field[] {
-        let result: Field[] = []
+        const result: Field[] = []
         // eslint-disable-next-line consistent-this
         let current: Maybe<Field> = this
         while (current) {
