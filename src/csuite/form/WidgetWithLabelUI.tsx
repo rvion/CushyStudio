@@ -1,4 +1,5 @@
 import type { Field } from '../model/Field'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -37,6 +38,10 @@ export type WidgetWithLabelProps = {
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
     className?: string
+
+    slotA?: ReactNode
+    slotB?: ReactNode
+    slotC?: ReactNode
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
@@ -67,6 +72,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             {!p.noHeader && (
                 <WidgetHeaderContainerUI field={field}>
                     {/* HEADER LABEL */}
+
                     <WidgetLabelContainerUI //
                         tooltip={field.config.tooltip}
                         justify={justify}
@@ -75,6 +81,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         {labellayout === 'fixed-left' ? (
                             <>
                                 <WidgetIndentUI depth={originalField.depth} />
+                                {p.slotB}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
@@ -114,6 +121,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                         </WidgetHeaderControlsContainerUI>
                     )}
+
+                    {p.slotA}
 
                     {/* HEADER EXTRA prettier-ignore */}
                     {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.schema.LabelExtraUI && (
