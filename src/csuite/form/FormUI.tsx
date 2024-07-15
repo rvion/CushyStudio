@@ -14,8 +14,10 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 /** free structure */
 export class Form {
     constructor(public props: FormUIProps) {}
+    render(){
+        return <FormUI {...this.props} />
+    }
 }
-
 type SimplifiedFormDef = any // <---------- TODO
 
 export type FormUIProps = {
