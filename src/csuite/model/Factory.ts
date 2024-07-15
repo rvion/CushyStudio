@@ -79,11 +79,12 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
     /** simple way to defined forms and in react components */
     use<SCHEMA extends BaseSchema>(
-        schemaExt: (form: BUILDER) => SCHEMA,
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
-        return useMemo(() => this.entity(schemaExt, entityConfig), deps)
+        const schema: SCHEMA = this.evalSchema(schemaExt)
+        return useMemo(() => this.entity(schema, entityConfig), deps)
     }
 
     /** eval schema if it's a function */
