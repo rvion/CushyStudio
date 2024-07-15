@@ -22,7 +22,11 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
         items?: T
 
         /** if provided, will be used in the header when fields are folded */
-        summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
+        summary?: (
+            //
+            items: { [k in keyof T]: T[k]['$Value'] },
+            self: Field_group<T>,
+        ) => string
     },
     Field_group_types<T>
 >
@@ -95,7 +99,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     get summary(): string {
-        return this.config.summary?.(this.value) ?? ''
+        return this.config.summary?.(this.value, this) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
 
