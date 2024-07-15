@@ -10,6 +10,7 @@ import {
     createMediaImage_fromDataURI,
     createMediaImage_fromPath,
 } from '../models/createMediaImage_fromWebFile'
+import { type FilepathExt, FPath } from '../models/PathObj'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {
@@ -51,7 +52,7 @@ export class RuntimeImages {
         const filename = url.split('/').pop() ?? 'unknown' // 🔴 bad code here
         const blob: Blob = await fetch(url).then((x) => x.blob())
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromBlobObject(cushy, blob, `outputs/imported/${filename}`, { stepID })
+        return createMediaImage_fromBlobObject(blob, new FPath(`outputs/imported/${filename}`), { stepID })
     }
 
     createFromDataURL = (
@@ -64,11 +65,11 @@ export class RuntimeImages {
     }
 
     createFromPath = (
-        //
+        /** string path */
         path: string,
         p: { promptID?: PromptID } = {},
     ): MediaImageL => {
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromPath(path, { promptID: p.promptID, stepID })
+        return createMediaImage_fromPath(new FPath(path), { promptID: p.promptID, stepID })
     }
 }

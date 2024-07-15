@@ -66,7 +66,7 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
                 console.log('[🗳️] drop box: image path is', imageFile?.path ?? '❌')
                 if (imageFile) {
                     console.log(`[🌠] importing native file...`)
-                    void createMediaImage_fromFileObject(st, imageFile).then(fn)
+                    void createMediaImage_fromFileObject(imageFile).then(fn)
                 } else {
                     console.log('Dropped non-image file')
                     return

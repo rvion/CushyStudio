@@ -13,6 +13,7 @@ import { toastError } from '../../csuite/utils/toasts'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
+import { FPath } from '../../models/PathObj'
 import { StepL } from '../../models/Step'
 import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
@@ -101,7 +102,7 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     mkdirSync(dirname(absPath), { recursive: true })
     canvas.toBlob(async (blob) => {
         if (blob == null) return toastError('❌ canvas.toBlob returned null')
-        return createMediaImage_fromBlobObject(cushy, blob, absPath)
+        return createMediaImage_fromBlobObject(blob, new FPath(absPath))
     })
 }
 

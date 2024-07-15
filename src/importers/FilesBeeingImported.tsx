@@ -42,7 +42,7 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
                 tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
                 onClick={async () => {
                     if (!uiSt.validImage) return
-                    await createMediaImage_fromFileObject(st, file)
+                    await createMediaImage_fromFileObject(file)
                 }}
             >
                 import as image

@@ -35,11 +35,12 @@ import {
     type ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
+import { FPath } from './PathObj'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
     /** return the image filename */
-    get filename() {
+    get filename(): string {
         return basename(this.data.path)
     }
 
@@ -535,13 +536,14 @@ export class MediaImageL {
     processWithSharp = async (
         /** processing function */
         fn: (sharp: sharp.Sharp) => sharp.Sharp,
-        relPath: string = `outputs/sharp-${Date.now()}`,
+        path: string = `outputs/sharp-${Date.now()}`,
         tags?: string[],
     ): Promise<MediaImageL> => {
         const buff = await fn(sharp(this.absPath)).toBuffer()
+        const fpath = new FPath(path)
         const suffix = this.extension
-        writeFileSync(relPath, buff)
-        return _createMediaImage_fromLocalyAvailableImage(relPath, buff, this._imageCreationOpts)
+        fpath.write(buff)
+        return _createMediaImage_fromLocalyAvailableImage(fpath, buff, this._imageCreationOpts)
     }
 
     processWithKonva = async (

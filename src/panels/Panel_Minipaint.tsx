@@ -9,6 +9,7 @@ import { useLayoutEffect, useMemo } from 'react'
 import { Button } from '../csuite/button/Button'
 import { knownOKLCHHues } from '../csuite/tinyCSS/knownHues'
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
+import { FPath } from '../models/PathObj'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 
@@ -93,8 +94,8 @@ class MinipaintState {
         console.log(`${data.length} bytes`)
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
-            const relPath = `outputs/minipaint/${this.fileNameWithExt}`
-            void createMediaImage_fromBlobObject(this.st, blob, relPath)
+            const fpath = new FPath(`outputs/minipaint/${this.fileNameWithExt}`)
+            void createMediaImage_fromBlobObject(blob, fpath)
         })
     }
 }
