@@ -1,9 +1,9 @@
 import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
-import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
-import type { CSSProperties, ReactNode } from 'react'
+import type { NO_PROPS } from '../types/NO_PROPS'
+import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -18,12 +18,12 @@ export class Form {
         return <FormUI {...this.props} />
     }
 }
-type SimplifiedFormDef = any // <---------- TODO
 
 export type FormUIProps = {
     // form ---------------------------------------------------------
     field: Maybe<Field>
-    layout?: SimplifiedFormDef
+    component?: FC<NO_PROPS>
+    // layout?: SimplifiedFormDef
 
     // root wrapper
     label?: string | false
@@ -63,6 +63,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
+    const component = p.component ?? (() => form.renderWithLabel()) /* FORM */
     const canSubmit = 
         p.allowSubmitWhenErrors || //
         p.field == null || //
@@ -70,7 +71,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
 
     return (
         <Frame tw='UI-Form' {...p.theme} className={p.className} style={p.style}>
-            {form.renderWithLabel() /* FORM */}
+            {component({}) /* FORM */}
 
             {p.submitButton ??
                 (submitAction == null ? null : submitAction === 'confetti' ? (
