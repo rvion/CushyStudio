@@ -128,6 +128,10 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
         return this.child
     }
 
+    get actualWidgetToDisplay(): Field {
+        return this.child.actualWidgetToDisplay
+    }
+
     /** so optional fields do not increase nesting twice */
     get indentChildren(): number {
         return 0

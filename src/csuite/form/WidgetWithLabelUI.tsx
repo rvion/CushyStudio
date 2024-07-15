@@ -7,7 +7,6 @@ import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { makeLabelFromFieldName } from '../../csuite/utils/makeLabelFromFieldName'
-import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { WidgetDebugIDUI } from './WidgetDebugIDUI'
 import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
@@ -43,7 +42,7 @@ export type WidgetWithLabelProps = {
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
     if (p.field.isHidden) return null
     const originalField = p.field
-    const field = getActualWidgetToDisplay(originalField)
+    const field = originalField.actualWidgetToDisplay
     const HeaderUI = field.header()
     const BodyUI = field.body()
     const extraClass = originalField.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined

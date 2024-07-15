@@ -43,7 +43,8 @@ export class DraftL {
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
-    openOrFocusTab = () => {
+    openOrFocusTab(): void {
+        if (!(this instanceof DraftL)) throw new Error('❌')
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
         // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }

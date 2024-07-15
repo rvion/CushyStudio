@@ -65,7 +65,6 @@ import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
-import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
@@ -299,6 +298,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
     )
 
+    get actualWidgetToDisplay(): Field {
+        return this
+    }
+
     get indentChildren(): number {
         return 1
     }
@@ -387,7 +390,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     collapseAllChildren(): void {
         for (const _item of this.subFields) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = getActualWidgetToDisplay(_item)
+            const item = _item.actualWidgetToDisplay
             if (item.serial.collapsed) continue
             const isCollapsible = item.isCollapsible
             if (isCollapsible) item.setCollapsed(true)
@@ -398,7 +401,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     expandAllChildren(): void {
         for (const _item of this.subFields) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = getActualWidgetToDisplay(_item)
+            const item = _item.actualWidgetToDisplay
             item.setCollapsed(undefined)
         }
     }

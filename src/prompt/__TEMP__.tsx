@@ -121,7 +121,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
         <div tw='p-2 flex flex-col gap-1'>
             <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI>
             <div className='flex flex-wrap'>
-                {cushy.forms.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
+                {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
                     <InputBoolToggleButtonUI //
                         key={widget.id}
                         text={widget.text.slice(0, 10) + '...'}
@@ -142,7 +142,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                 value={() => ({ id: p.promptID, label: 'current' })}
                 getLabelText={(i) => i.label ?? i.id}
                 onChange={(i) => {
-                    const nextWidget = cushy.forms.getFieldByID(i.id) as Field_prompt
+                    const nextWidget = cushy.repository.getFieldByID(i.id) as Field_prompt
                     if (!nextWidget) return toastError('widget not found')
                     if (nextWidget.type !== 'prompt') return toastError('widget is not a prompt')
                     uist.currentlyLinkedWidget = nextWidget
@@ -151,7 +151,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                     // cushy.layout.addCustomV2(PromptEditorUI, { promptID: i.id })
                 }}
                 options={(): X[] => {
-                    const allPrompts = cushy.forms.getWidgetsByType<Field_prompt>('prompt')
+                    const allPrompts = cushy.repository.getWidgetsByType<Field_prompt>('prompt')
                     return allPrompts.map((i) => ({ id: i.id, label: i.text ?? '' }))
                 }}
             />

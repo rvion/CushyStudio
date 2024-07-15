@@ -65,9 +65,9 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         return this.shared.hasChanges ?? false
     }
 
-    // ⏸️ reset(): void {
-    // ⏸️     return this.shared.reset()
-    // ⏸️ }
+    get actualWidgetToDisplay(): Field {
+        return this.shared.actualWidgetToDisplay
+    }
 
     get shared(): F {
         return this.config.field

@@ -92,6 +92,10 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         })
     }
 
+    get actualWidgetToDisplay(): Field {
+        return this.bField.actualWidgetToDisplay
+    }
+
     DefaultHeaderUI: FC<{}> = () => <>🟢</>
 
     DefaultBodyUI: FC<{}> = () => this.bField.renderWithLabel()
