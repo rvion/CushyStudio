@@ -7,6 +7,7 @@ import type { FieldSerial_CommonProperties } from './FieldSerial'
 
 import { reaction } from 'mobx'
 
+import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { getGlobalRepository, type Repository } from './Repository'
 
@@ -110,6 +111,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     ): FIELD {
         // AUTOMIGRATION --------------------------------------------------------------------
         // recover phase
+        serial = autofixSerial_20240703(serial)
         autofixSerial_20240711(serial)
         if (serial != null && serial.$ !== this.type) {
             // ADDING LIST
@@ -122,13 +124,6 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             else if (serial.$ === 'list') {
                 const prev: Field_list_serial<any> = serial as any
                 const next: any = prev.items_[0] ?? null
-                serial = next
-            }
-
-            // RECOVER FROM EntitySerial
-            if (serial?.$ === 'FormSerial') {
-                const prev: any = serial
-                const next: any = prev.root
                 serial = next
             }
         }
