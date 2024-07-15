@@ -63,8 +63,12 @@ export class RuntimeImages {
         return createMediaImage_fromDataURI(this.rt.Cushy, dataURL, undefined, { promptID: p.promptID, stepID })
     }
 
-    createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
+    createFromPath = (
+        //
+        path: string,
+        p: { promptID?: PromptID } = {},
+    ): MediaImageL => {
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromPath(this.rt.Cushy, relPath, { promptID: p.promptID, stepID })
+        return createMediaImage_fromPath(path, { promptID: p.promptID, stepID })
     }
 }

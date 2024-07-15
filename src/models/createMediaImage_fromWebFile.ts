@@ -92,7 +92,6 @@ export const createMediaImage_fromDataURI = (
 
 export const createMediaImage_fromPath = (
     //
-    st: STATE,
     relPath: string,
     opts?: ImageCreationOpts,
 ): MediaImageL => {

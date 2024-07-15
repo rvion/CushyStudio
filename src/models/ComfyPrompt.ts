@@ -242,7 +242,7 @@ export class ComfyPromptL {
             //     throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
             // let base64Data = dataUrl.slice(prefixToSlice.length)
             // writeFileSync(outputRelPath, base64Data, 'base64')
-            imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
+            imgL = createMediaImage_fromPath(outputRelPath, imgCreationOpts)
         }
         // SAVE RAW ------------------------------------------------------------------------------------------
         else {
