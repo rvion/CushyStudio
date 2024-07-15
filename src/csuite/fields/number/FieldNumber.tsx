@@ -65,11 +65,11 @@ export class Field_number extends Field<Field_number_types> {
 
     get ownProblems(): Maybe<string> {
         // < MIN
-        if (this.config.min !== undefined && this.value < this.config.min) {
+        if (this.config.min != null && this.value < this.config.min) {
             return `Value is less than ${this.config.min}`
         }
         // > MAX
-        if (this.config.max !== undefined && this.value > this.config.max) {
+        if (this.config.max != null && this.value > this.config.max) {
             return `Value is greater than ${this.config.max}`
         }
         return null
