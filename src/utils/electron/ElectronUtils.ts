@@ -66,7 +66,7 @@ export class ElectronUtils {
         })
     }
 
-    toggleDevTools = () => {
+    toggleDevTools(): void {
         try {
             const prevPref = Boolean(this.st.configFile.value.preferDevToolsOpen)
             this.st.configFile.update({ preferDevToolsOpen: !prevPref })
