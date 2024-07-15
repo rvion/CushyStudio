@@ -4,8 +4,12 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
+import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFC } from '../../variance/CovariantFC'
 
+import { type FC, Fragment } from 'react'
+
+import { Form, FormUIProps } from '../../form/FormUI'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
@@ -49,9 +53,34 @@ export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
 
 export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
+type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
+
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
+
+    formFields(fields: (keyof T | Accessor<this>)[]): FC<NO_PROPS> {
+        return () => (
+            <Fragment>
+                {fields.map((f) => {
+                    if (typeof f === 'function') {
+                        const res = f(this)
+                        return res({})
+                    }
+                    return this.fields[f]!.renderWithLabel()
+                })}
+            </Fragment>
+        )
+    }
+
+    form(fields: (keyof T | Accessor<this>)[], props: Omit<FormUIProps, 'field' | 'layout'>): Form {
+        return new Form({
+            ...props,
+            field: this,
+            component: this.formFields(fields),
+        })
+    }
+
     get DefaultBodyUI(): CovariantFC<{ field: Field_group<any> }> | undefined {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
