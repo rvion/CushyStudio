@@ -440,7 +440,7 @@ export class MediaImageL {
         ctx.drawImage(img, 0, 0)
         p(ctx)
         const newDataURL = canvas.toDataURL(conf?.format, conf?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 
@@ -456,7 +456,7 @@ export class MediaImageL {
         ctx.fillStyle = p?.color ?? 'white'
         ctx.fillText(text, p?.x ?? 0, p?.y ?? 0)
         const newDataURL = canvas.toDataURL(p?.format, p?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 
@@ -562,7 +562,7 @@ export class MediaImageL {
         stage.add(layer)
         fn({ stage, layer, image: konvaImg })
         const newDataURL = stage.toCanvas().toDataURL(imageOpts?.format, imageOpts?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 

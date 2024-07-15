@@ -59,7 +59,6 @@ export const createMediaImage_fromBuffer = async (
 
 export const createMediaImage_fromDataURI = (
     //
-    st: STATE,
     dataURI: string,
     subFolder?: string,
     opts?: ImageCreationOpts,

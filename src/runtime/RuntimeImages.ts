@@ -41,10 +41,10 @@ export class RuntimeImages {
     // ----------------------------------------------------------------------------------------
     // utils to create CushyStudio `MediaImagesL` without using them directly
 
-    createFromDataURLOrPath = (relPathOrDataURL: string): MediaImageL => {
-        return relPathOrDataURL.startsWith('data:') //
-            ? this.createFromDataURL(relPathOrDataURL)
-            : this.createFromPath(relPathOrDataURL)
+    createFromDataURLOrPath = (pathOrDataURL: string): MediaImageL => {
+        return pathOrDataURL.startsWith('data:') //
+            ? this.createFromDataURL(pathOrDataURL)
+            : this.createFromPath(pathOrDataURL)
     }
 
     createFromURL = async (url: string): Promise<MediaImageL> => {
@@ -60,7 +60,7 @@ export class RuntimeImages {
         p: { promptID?: PromptID } = {},
     ): MediaImageL => {
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL, undefined, { promptID: p.promptID, stepID })
+        return createMediaImage_fromDataURI(dataURL, undefined, { promptID: p.promptID, stepID })
     }
 
     createFromPath = (

@@ -1,3 +1,4 @@
+import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
@@ -104,6 +105,11 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     })
 }
 
-export const saveDataUriAsImage = async (dataURI: string, st: STATE, subfolder?: string) => {
-    return createMediaImage_fromDataURI(st, dataURI, subfolder)
+export const saveDataUriAsImage = async (
+    //
+    dataURI: string,
+    st: STATE,
+    subfolder?: string,
+): Promise<MediaImageL> => {
+    return createMediaImage_fromDataURI(dataURI, subfolder)
 }
