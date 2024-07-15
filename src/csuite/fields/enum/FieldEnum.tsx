@@ -7,7 +7,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
@@ -99,9 +99,9 @@ export class Field_enum<O> extends Field<Field_enum_types<O>> {
 
     set value(next: Field_enum_value<O>) {
         if (this.serial.val === next) return
-        this.MUTVALUE(() => (this.serial.val = next))
+        this.runInValueTransaction(() => (this.serial.val = next))
     }
 }
 
 // DI
-registerWidgetClass('enum', Field_enum)
+registerFieldClass('enum', Field_enum)

@@ -8,7 +8,7 @@ import type { CovariantFC } from '../../variance/CovariantFC'
 import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
@@ -135,9 +135,9 @@ export class Field_string extends Field<Field_string_types> {
     set value(next: Field_string_value) {
         const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
         if (this.serial.value === nextStrVal) return
-        this.MUTVALUE(() => (this.serial.value = nextStrVal))
+        this.runInValueTransaction(() => (this.serial.value = nextStrVal))
     }
 }
 
 // DI
-registerWidgetClass('str', Field_string)
+registerFieldClass('str', Field_string)

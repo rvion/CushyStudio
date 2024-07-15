@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
@@ -93,4 +93,4 @@ export class Field_markdown extends Field<Field_markdown_types> {
 }
 
 // DI
-registerWidgetClass('markdown', Field_markdown)
+registerFieldClass('markdown', Field_markdown)

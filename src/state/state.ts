@@ -32,13 +32,14 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
 import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { builder, cushyRepo, type CushyRepo } from '../controls/Builder'
+import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
 import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
 import { run_tint } from '../csuite/kolor/prefab_Tint'
+import { getGlobalRepository } from '../csuite/model/Repository'
 import { regionMonitor, RegionMonitor } from '../csuite/regions/RegionMonitor'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { Tree, type TreeStorageConfig } from '../csuite/tree/Tree'
@@ -104,7 +105,8 @@ export class STATE {
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
-    forms: CushyRepo = cushyRepo
+    forms: CushyFactory = cushyFactory
+    repository = getGlobalRepository()
     commands: CommandManager = commandManager
     region: RegionMonitor = regionMonitor
     builder = builder
@@ -446,7 +448,7 @@ export class STATE {
             node_vsep: fv.vsep,
         }
     }
-    graphConf = cushyRepo.fields(
+    graphConf = cushyFactory.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -468,7 +470,7 @@ export class STATE {
         return activityManager
     }
 
-    civitaiConf = cushyRepo.fields(
+    civitaiConf = cushyFactory.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -482,7 +484,7 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = cushyRepo.fields(
+    favbar = cushyFactory.fields(
         (f) => ({
             size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
@@ -500,7 +502,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = cushyRepo.fields(
+    displacementConf = cushyFactory.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -530,7 +532,7 @@ export class STATE {
         },
     )
 
-    galleryConf = cushyRepo.fields(
+    galleryConf = cushyFactory.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },

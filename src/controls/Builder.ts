@@ -32,8 +32,8 @@ import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } fr
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
+import { Factory } from '../csuite/model/Factory'
 import { Field } from '../csuite/model/Field'
-import { Repository } from '../csuite/model/Repository'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
@@ -431,10 +431,8 @@ export class Builder implements IBuilder {
     }
 
     _FIX_INDENTATION = _FIX_INDENTATION
-
-    /** (@internal); */ _cache: { count: number } = { count: 0 }
 }
 
 export const builder = new Builder()
-export type CushyRepo = Repository<Builder>
-export const cushyRepo: CushyRepo = new Repository<Builder>(builder)
+export type CushyFactory = Factory<Builder>
+export const cushyFactory: CushyFactory = new Factory<Builder>(builder)

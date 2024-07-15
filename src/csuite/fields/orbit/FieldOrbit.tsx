@@ -6,7 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
 
@@ -100,15 +100,17 @@ export class Field_orbit extends Field<Field_orbit_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_orbit_serial>) {
+    protected setOwnSerial(serial: Maybe<Field_orbit_serial>): void {
         this.serial.elevation = serial?.elevation ?? this.defaultElevation
         this.serial.azimuth = serial?.azimuth ?? this.defaultAzimuth
     }
 
     // x: Partial<number> = 0
-    setForZero123(p: { azimuth_rad: number; elevation_rad: number }) {
-        this.serial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
-        this.serial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
+    setForZero123(p: { azimuth_rad: number; elevation_rad: number }): void {
+        this.runInValueTransaction(() => {
+            this.serial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
+            this.serial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
+        })
         // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
     }
 
@@ -139,7 +141,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
     set azimuth(val: number) {
         if (this.azimuth === val) return
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.azimuth = val
         })
     }
@@ -155,7 +157,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
     set elevation(val: number) {
         if (this.elevation === val) return
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.elevation = val
         })
     }
@@ -166,4 +168,4 @@ export class Field_orbit extends Field<Field_orbit_types> {
 }
 
 // DI
-registerWidgetClass<Field_orbit>('orbit', Field_orbit)
+registerFieldClass<Field_orbit>('orbit', Field_orbit)

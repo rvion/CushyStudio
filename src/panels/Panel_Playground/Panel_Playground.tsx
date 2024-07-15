@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { cushyRepo } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
@@ -17,7 +17,7 @@ import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = cushyRepo.entity(
+const Header_Playground = cushyFactory.entity(
     (ui) =>
         ui.choice({
             appearance: 'tab',

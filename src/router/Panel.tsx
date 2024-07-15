@@ -50,7 +50,7 @@ export class Panel<Props> {
         return this.p.widget()
     }
 
-    get header() {
+    get header(): (p: NoInfer<Props>) => PanelHeader {
         return this.p.header
     }
 
@@ -77,7 +77,7 @@ export class Panel<Props> {
                 return new SimpleMenuAction({
                     label: name,
                     icon: this.p.icon,
-                    onPick: () => {
+                    onPick: (): void => {
                         const props: Props = preset()
                         cushy.layout.FOCUS_OR_CREATE(this.name as any, props, 'LEFT_PANE_TABSET')
                     },

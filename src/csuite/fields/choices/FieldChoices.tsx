@@ -12,7 +12,7 @@ import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 import { toastError } from '../../utils/toasts'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
@@ -255,7 +255,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             }
         }
 
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             for (const branch of this.allPossibleChoices) {
                 const shouldBeActive = serial_?.branches[branch] ?? this.isBranchActiveByDefault(branch)
 
@@ -300,7 +300,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         if (!this.enabledBranches[branch]) {
             return // console.info(`❌ Branch "${branch}" not enabled`)
         }
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             // remove children
             const prevChild = this.enabledBranches[branch]
             if (prevChild) prevChild.disposeTree()
@@ -326,7 +326,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             return void console.info(`❌ Branch "${branch}" already enabled`)
         }
 
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             if (!this.config.multi) {
                 for (const key in this.enabledBranches) {
                     this.disableBranch(key)
@@ -366,7 +366,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     set value(val: Field_choices_value<T>) {
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             for (const branch of this.allPossibleChoices) {
                 // case 1. branch should be DISABLED
                 if (val[branch] == null) {
@@ -386,4 +386,4 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 }
 
 // DI
-registerWidgetClass('choices', Field_choices)
+registerFieldClass('choices', Field_choices)

@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
@@ -61,7 +61,7 @@ export class Field_color extends Field<Field_color_types> {
 
     set value(next: Field_color_value) {
         if (this.serial.value === next) return
-        this.MUTVALUE(() => (this.serial.value = next))
+        this.runInValueTransaction(() => (this.serial.value = next))
     }
 
     get ownProblems(): Problem_Ext {
@@ -78,4 +78,4 @@ export class Field_color extends Field<Field_color_types> {
 }
 
 // DI
-registerWidgetClass('color', Field_color)
+registerFieldClass('color', Field_color)

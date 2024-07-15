@@ -6,7 +6,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetButtonUI } from './WidgetButtonUI'
 
 export type Field_button_context<K> = {
@@ -79,7 +79,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
     set value(next: boolean) {
         if (this.serial.val === next) return
-        this.MUTVALUE(() => (this.serial.val = next))
+        this.runInValueTransaction(() => (this.serial.val = next))
     }
 
     get ownProblems(): Problem_Ext {
@@ -111,4 +111,4 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 }
 
 // DI
-registerWidgetClass('button', Field_button)
+registerFieldClass('button', Field_button)

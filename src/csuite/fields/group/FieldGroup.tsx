@@ -8,7 +8,7 @@ import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
@@ -157,7 +157,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     setPartialValue(val: Partial<Field_group_value<T>>): void {
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }
@@ -177,7 +177,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     set value(val: Field_group_value<T>) {
-        this.MUTAUTO(() => {
+        this.runInAutoTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }
@@ -218,4 +218,4 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 }
 
 // DI
-registerWidgetClass('group', Field_group)
+registerFieldClass('group', Field_group)

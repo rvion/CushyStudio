@@ -4,14 +4,14 @@ import type { Field } from '../model/Field'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../checkbox/InputBoolUI'
-import { isWidgetOptional } from '../fields/WidgetUI.DI'
+import { isFieldOptional } from '../fields/WidgetUI.DI'
 
 export const WidgetToggleUI = observer(function WidgetToggleUI_(p: {
     //
     className?: string
     field: Field
 }) {
-    if (!isWidgetOptional(p.field)) return null
+    if (!isFieldOptional(p.field)) return null
     const field = p.field as Field_optional
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget

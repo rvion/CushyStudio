@@ -1,8 +1,8 @@
-import { cushyRepo } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/Builder'
 import { WidgetWithLabelUI } from '../../csuite/form/WidgetWithLabelUI'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const interfaceConf = cushyRepo.entity(
+export const interfaceConf = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {

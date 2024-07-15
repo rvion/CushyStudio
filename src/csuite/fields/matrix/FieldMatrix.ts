@@ -8,7 +8,7 @@ import { runInAction } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 
 export type Field_matrix_cell = {
@@ -159,7 +159,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
      * every setter should update this
      */
     private UPDATE(): void {
-        this.MUTVALUE(() => (this.serial.selected = this.activeCells))
+        this.runInValueTransaction(() => (this.serial.selected = this.activeCells))
     }
 
     /** list of all cells that are active/on */
@@ -211,4 +211,4 @@ export class Field_matrix extends Field<Field_matrix_types> {
 }
 
 // DI
-registerWidgetClass('matrix', Field_matrix)
+registerFieldClass('matrix', Field_matrix)

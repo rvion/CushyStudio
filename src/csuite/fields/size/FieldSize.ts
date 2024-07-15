@@ -7,7 +7,7 @@ import type { SizeAble } from './ResolutionState'
 
 import { Field } from '../../model/Field'
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import {
     type AspectRatio,
     aspectRatioMap,
@@ -121,12 +121,12 @@ export class Field_size extends Field<Field_size_types> {
 
     set width(next: number) {
         if (next === this.serial.width) return
-        this.MUTVALUE(() => (this.serial.width = next))
+        this.runInValueTransaction(() => (this.serial.width = next))
     }
 
     set height(next: number) {
         if (next === this.serial.height) return
-        this.MUTVALUE(() => (this.serial.height = next))
+        this.runInValueTransaction(() => (this.serial.height = next))
     }
 
     setWidth(width: number): void {
@@ -158,7 +158,7 @@ export class Field_size extends Field<Field_size_types> {
         ) {
             return
         }
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             Object.assign(this.serial, val)
         })
     }
@@ -175,7 +175,7 @@ export class Field_size extends Field<Field_size_types> {
     /** flip width and height */
     flip(): void {
         if (this.width === this.height) return
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             const prevWidth = this.width
             this.width = this.height
             this.height = prevWidth
@@ -252,4 +252,4 @@ export class Field_size extends Field<Field_size_types> {
 }
 
 // DI
-registerWidgetClass('size', Field_size)
+registerFieldClass('size', Field_size)

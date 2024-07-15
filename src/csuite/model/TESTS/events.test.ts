@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b, simpleRepo as r } from '../../index'
+import { simpleBuilder as b, simpleFactory } from '../../index'
+
+const r = simpleFactory.repository
 
 describe('model links', () => {
     beforeEach(() => r.reset())
@@ -70,7 +72,7 @@ describe('model links', () => {
             totalCreations: /*     */ 8, // same
         })
 
-        e.MUTAUTO(() => {
+        e.runInAutoTransaction(() => {
             e.value.int = 5
             e.value.int = 7
             e.value.int = 6

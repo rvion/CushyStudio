@@ -1,14 +1,7 @@
-import type { Field_group } from '../fields/group/FieldGroup'
-import type { BaseSchema } from './BaseSchema'
-import type { EntityConfig } from './Entity'
 import type { Field } from './Field'
 import type { FieldId } from './FieldId'
-import type { IBuilder } from './IBuilder'
-import type { SchemaDict } from './SchemaDict'
 
-import { action, makeObservable } from 'mobx'
-import { type DependencyList, useMemo } from 'react'
-
+import { bang } from '../utils/bang'
 import { type FieldTouchMode, Transaction, type TransactionMode } from './Transaction'
 
 /**
@@ -16,7 +9,8 @@ import { type FieldTouchMode, Transaction, type TransactionMode } from './Transa
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class Repository<DOMAIN extends IBuilder = IBuilder> {
+export class Repository {
+    constructor() {}
     /* STORE ------------------------------------------------------------ */
     /** all root fields (previously called entities) */
     allRoots: Map<FieldId, Field> = new Map()
@@ -110,18 +104,6 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
         const typeStore = this.allFieldsByType.get(type)
         if (!typeStore) return []
         return Array.from(typeStore.values()) as W[]
-    }
-
-    domain: DOMAIN
-
-    constructor(
-        // VVV 🔴 TODO: remove that
-        domain: DOMAIN,
-    ) {
-        this.domain = domain
-        makeObservable(this, {
-            TRANSACT: action,
-        })
     }
 
     /**
@@ -228,50 +210,6 @@ export class Repository<DOMAIN extends IBuilder = IBuilder> {
      */
     lastTransaction: Maybe<Transaction> = null
 
-    /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
-    fields<FIELDS extends SchemaDict>(
-        schemaExt: (form: DOMAIN) => FIELDS,
-        entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
-    ): Field_group<FIELDS> {
-        const schema = this.domain.group({
-            label: false,
-            items: schemaExt(this.domain),
-            collapsed: false,
-            onSerialChange: entityConfig.onSerialChange,
-            onValueChange: entityConfig.onValueChange,
-        })
-        return schema.instanciate(this, null, null, entityConfig.serial?.())
-    }
-
-    /** simple alias to create a new Form */
-    entity<SCHEMA extends BaseSchema>(
-        schemaExt: SCHEMA | ((form: DOMAIN) => SCHEMA),
-        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-    ): SCHEMA['$Field'] {
-        let schema: SCHEMA = this.evalSchema(schemaExt)
-        if (entityConfig.onSerialChange || entityConfig.onValueChange)
-            schema = schema.withConfig({
-                onSerialChange: entityConfig.onSerialChange,
-                onValueChange: entityConfig.onValueChange,
-            })
-        return schema.instanciate(this, null, null, entityConfig.serial?.())
-    }
-
-    /** simple way to defined forms and in react components */
-    use<SCHEMA extends BaseSchema>(
-        schemaExt: (form: DOMAIN) => SCHEMA,
-        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-        deps: DependencyList = [],
-    ): SCHEMA['$Field'] {
-        return useMemo(() => this.entity(schemaExt, entityConfig), deps)
-    }
-
-    /** eval schema if it's a function */
-    private evalSchema<SCHEMA extends BaseSchema>(buildFn: SCHEMA | ((form: DOMAIN) => SCHEMA)): SCHEMA {
-        if (typeof buildFn === 'function') return buildFn(this.domain as DOMAIN)
-        return buildFn
-    }
-
     get tracked(): RepositoryStats {
         return {
             transactionCount: this.transactionCount,
@@ -291,4 +229,21 @@ export type RepositoryStats = {
     totalValueTouched: number
     totalSerialTouched: number
     totalCreations: number
+}
+
+// REPOSITORY DI -------------------------------------------------------------------------
+let globalRepository: Maybe<Repository> = null
+
+// export function registerRepository(repository: Repository): void {
+//     // RepositoryDI[name] = repository
+//     if (globalRepository == null) {
+//         globalRepository = repository
+//     } else {
+//         throw new Error('Repository already registered')
+//     }
+// }
+
+export function getGlobalRepository(): Repository {
+    globalRepository = globalRepository ||= new Repository()
+    return bang(globalRepository)
 }

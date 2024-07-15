@@ -1,8 +1,7 @@
-import { afterEach, expect } from 'bun:test'
+import { afterEach } from 'bun:test'
 
-import { simpleRepo } from '../../index'
+import { getGlobalRepository } from '../../model/Repository'
 
 afterEach(() => {
-    simpleRepo.reset()
-    expect(true).toBe(true)
+    getGlobalRepository().reset()
 })

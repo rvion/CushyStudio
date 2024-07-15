@@ -8,7 +8,7 @@ import { reaction } from 'mobx'
 import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
@@ -165,7 +165,7 @@ export class Field_list<T extends BaseSchema> //
         const disposeFn = reaction(
             () => auto.keys(this),
             (keys: string[]) => {
-                this.MUTAUTO(() => {
+                this.runInAutoTransaction(() => {
                     // 1. Add missing entries
                     const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
                     const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
@@ -306,7 +306,7 @@ export class Field_list<T extends BaseSchema> //
     set value(val: Field_list_value<T>) {
         // if (this.items.length === val.length && this.items.every((i, ix) => i.toValueJSON() == val[ix])) return
 
-        this.MUTAUTO(() => {
+        this.runInAutoTransaction(() => {
             for (let i = 0; i < val.length; i++) {
                 // 1. replace existing items
                 if (i < this.items.length) {
@@ -346,7 +346,7 @@ export class Field_list<T extends BaseSchema> //
      */
     push(...values: T['$Value'][]): number {
         if (values.length === 0) return this.length
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             for (const v of values) {
                 this.addItem({ value: v })
             }
@@ -360,7 +360,7 @@ export class Field_list<T extends BaseSchema> //
      */
     unshift(...values: T['$Value'][]): number {
         if (values.length === 0) return this.length
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             for (const v of values) {
                 this.addItem({ value: v, at: 0 })
             }
@@ -383,7 +383,7 @@ export class Field_list<T extends BaseSchema> //
         if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
         if (p.at != null && p.at > this.items.length) return void console.log(`[🔶] list.addItem: at is out of bounds`)
 
-        return this.MUTVALUE(() => {
+        return this.runInValueTransaction(() => {
             // create new item
             const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
             const element = schema.instanciate(this.repo, this.root, this, p.serial ?? null)
@@ -417,7 +417,7 @@ export class Field_list<T extends BaseSchema> //
         if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
         if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
 
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             // serials
             const serials = this.serial.items_
             serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
@@ -442,7 +442,7 @@ export class Field_list<T extends BaseSchema> //
     ): T['$Field'][] {
         if (deleteCount === 0) return []
         if (start >= this.length) return []
-        return this.MUTVALUE(() => {
+        return this.runInValueTransaction(() => {
             // console.log(`[🤠] `, this.length, start, deleteCount)
             this.serial.items_.splice(start, deleteCount)
             const deleted = this.items.splice(start, deleteCount)
@@ -506,4 +506,4 @@ export class Field_list<T extends BaseSchema> //
 }
 
 // DI
-registerWidgetClass('list', Field_list)
+registerFieldClass('list', Field_list)

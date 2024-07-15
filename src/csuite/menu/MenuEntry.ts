@@ -1,12 +1,9 @@
-import type { BoundCommand } from '../commands/Command'
+import type { BoundCommand, Command } from '../commands/Command'
 import type { Field } from '../model/Field'
+import type { BoundMenu } from './Menu'
+import type { SimpleMenuAction } from './SimpleMenuAction'
 import type { SimpleMenuModal } from './SimpleMenuModal'
-
-import { type FC } from 'react'
-
-import { Command } from '../commands/Command'
-import { BoundMenu } from './Menu'
-import { SimpleMenuAction } from './SimpleMenuAction'
+import type { FC } from 'react'
 
 // prettier-ignore
 export type MenuEntry =

@@ -6,10 +6,8 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
 import type { FC } from 'react'
 
-import { runInAction } from 'mobx'
-
 import { Field, type KeyedField } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Field_link_config<
@@ -134,11 +132,11 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
     }
 
     set value(val: Field_link_value<A, B>) {
-        this.MUTAUTO(() => {
+        this.runInAutoTransaction(() => {
             this.bField.value = val
         })
     }
 }
 
 // DI
-registerWidgetClass('link', Field_link)
+registerFieldClass('link', Field_link)

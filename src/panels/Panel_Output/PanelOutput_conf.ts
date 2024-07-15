@@ -1,7 +1,7 @@
-import { cushyRepo } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PanelOutputConf = cushyRepo.entity(
+export const PanelOutputConf = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {

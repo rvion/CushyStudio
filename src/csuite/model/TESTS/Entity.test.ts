@@ -1,13 +1,13 @@
 import { describe, expect as expect_, it, type Matchers } from 'bun:test'
 import { toJS } from 'mobx'
 
-import { simpleRepo } from '../../index'
+import { simpleFactory } from '../../index'
 
 // ------------------------------------------------------------------------------
 describe('basic', () => {
     describe('group', () => {
         it('works', () => {
-            const ent = simpleRepo.entity((f) => f.fields({}))
+            const ent = simpleFactory.entity((f) => f.fields({}))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
         })
@@ -15,7 +15,7 @@ describe('basic', () => {
 
     describe('markdown', () => {
         it('works', () => {
-            const E = simpleRepo.entity((f) => f.fields({ md: f.markdown('ok') }))
+            const E = simpleFactory.entity((f) => f.fields({ md: f.markdown('ok') }))
             expect(E).toBeTruthy()
             expect(E.subFields.length).toBe(1)
             expect(E.subFields[0]!.type).toBe('markdown')
@@ -25,7 +25,7 @@ describe('basic', () => {
 
     describe('string', () => {
         it('works', () => {
-            const E = simpleRepo.entity((f) => f.string())
+            const E = simpleFactory.entity((f) => f.string())
             expect(E.value).toBe('')
 
             // set root value through entity.value setter
@@ -37,14 +37,14 @@ describe('basic', () => {
             expect(E.value).toBe('super2')
             expect(E.root.value).toBe('super2')
 
-            const E2 = simpleRepo.entity((f) => f.string({ default: 'ok' }))
+            const E2 = simpleFactory.entity((f) => f.string({ default: 'ok' }))
             expect(E2.value).toBe('ok')
         })
     })
 
     describe('Size', () => {
         it('works', () => {
-            const ent = simpleRepo.entity((f) => f.fields({ size: f.size() }))
+            const ent = simpleFactory.entity((f) => f.fields({ size: f.size() }))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
             expect(ent.value.size).toMatchObject({

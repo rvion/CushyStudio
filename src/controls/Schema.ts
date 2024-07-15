@@ -1,18 +1,17 @@
-import type { Builder, CovariantFC, CovariantFn } from '../csuite'
+import type { CovariantFC, CovariantFn } from '../csuite'
+import type { Field_link_config } from '../csuite/fields/link/FieldLink'
 import type { Field } from '../csuite/model/Field'
 import type { Repository } from '../csuite/model/Repository'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement, type ReactNode } from 'react'
 
-import { Field_link, type Field_link_config } from '../csuite/fields/link/FieldLink'
 import { Field_list, Field_list_config } from '../csuite/fields/list/FieldList'
 import { Field_optional } from '../csuite/fields/optional/FieldOptional'
-import { isWidgetOptional } from '../csuite/fields/WidgetUI.DI'
+import { getFieldLinkClass, isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { cushyRepo } from './Builder'
 
 export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     FieldClass_UNSAFE: any
@@ -20,8 +19,6 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     get type(): FIELD['$Type'] {
         return this.FieldClass_UNSAFE.type
     }
-
-    repository: Repository<Builder> = cushyRepo
 
     constructor(
         FieldClass: {
@@ -68,7 +65,7 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
 
     LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
         createElement(InstallRequirementsBtnUI, {
-            active: isWidgetOptional(p.field) ? p.field.serial.active : true,
+            active: isFieldOptional(p.field) ? p.field.serial.active : true,
             requirements: this.requirements,
         })
 
@@ -89,8 +86,9 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
          */
         fn: CovariantFn<[field: FIELD], BP>,
     ): X.XLink<this, BP> {
+        const FieldLink = getFieldLinkClass()
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new Schema(Field_link<any, any>, linkConf)
+        return new Schema(FieldLink, linkConf)
     }
 
     /** wrap widget schema to list stuff */

@@ -1,4 +1,5 @@
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { Factory } from '../../model/Factory'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -6,7 +7,7 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
@@ -150,7 +151,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         const indexOf = this.serial.values.findIndex((i) => i.id === item.id)
         if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
         // remove it
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
         })
     }
@@ -161,12 +162,12 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         const i = this.serial.values.indexOf(item)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
         // insert it
-        this.MUTVALUE(() => this.serial.values.push(item))
+        this.runInValueTransaction(() => this.serial.values.push(item))
     }
 
     /** select item if item was not selected, un-select if item was selected */
     toggleItem(item: T): void {
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             const i = this.serial.values.findIndex((i) => i.id === item.id)
             if (i < 0) {
                 this.serial.values.push(item)
@@ -182,9 +183,9 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     set value(next: Field_selectMany_value<T>) {
         if (this.serial.values === next) return
-        this.MUTVALUE(() => (this.serial.values = next))
+        this.runInValueTransaction(() => (this.serial.values = next))
     }
 }
 
 // DI
-registerWidgetClass('selectMany', Field_selectMany)
+registerFieldClass('selectMany', Field_selectMany)

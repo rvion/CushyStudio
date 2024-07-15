@@ -6,7 +6,7 @@ import type { Repository } from '../../model/Repository'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type BaseSelectEntry<T = string> = {
@@ -116,8 +116,6 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     }
 
     constructor(
-        // 2024-06-27 TODO: rename that
-        // |            VVVV
         repo: Repository,
         root: Field | null,
         parent: Field | null,
@@ -154,7 +152,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     set value(next: Field_selectOne_value<T>) {
         if (this.serial.val === next) return
 
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.val = next
 
             // 2024-07-08 rvion:
@@ -171,4 +169,4 @@ export class Field_selectOne<T extends BaseSelectEntry> //
 }
 
 // DI
-registerWidgetClass('selectOne', Field_selectOne)
+registerFieldClass('selectOne', Field_selectOne)

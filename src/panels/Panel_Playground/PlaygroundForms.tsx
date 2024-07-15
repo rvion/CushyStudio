@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { simpleRepo } from '../../csuite'
+import { simpleFactory } from '../../csuite'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 
@@ -8,7 +8,7 @@ import { Frame } from '../../csuite/frame/Frame'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {}) {
-    const field = simpleRepo.use((b) =>
+    const field = simpleFactory.use((b) =>
         b
             .fields({
                 a: b.percent({ suffix: '% of banana' }),

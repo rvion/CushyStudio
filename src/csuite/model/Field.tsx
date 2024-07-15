@@ -54,7 +54,6 @@ import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { Channel, ChannelId, Producer } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
-import type { IBuilder } from './IBuilder'
 import type { Instanciable } from './Instanciable'
 import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
@@ -63,7 +62,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode } from 'react'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
-import { isWidgetGroup, isWidgetOptional } from '../fields/WidgetUI.DI'
+import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
 import { getActualWidgetToDisplay } from '../form/getActualWidgetToDisplay'
@@ -75,6 +74,7 @@ import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
+import { SimpleSchema } from '../simple/SimpleSchema'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
@@ -163,11 +163,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return (this.constructor as any).type
     }
 
-    /** shorthand access to some builder */
-    get domain(): IBuilder {
-        return this.repo.domain
-    }
-
     /** wiget value is the simple/easy-to-use representation of that widget  */
     abstract value: K['$Value']
 
@@ -189,8 +184,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         parent: Field | null,
         serial: any | null,
     ): Field_shared<this> {
-        const builder = repo.domain
-        const schema: BaseSchema<Field_shared<this>> = builder.linked(this)
+        const FieldSharedClass = getFieldSharedClass()
+        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
         return schema.instanciate(repo, root, parent, serial)
     }
 
@@ -242,7 +237,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
     setSerial(serial: Maybe<K['$Serial']>): void {
         autofixSerial_20240711(serial)
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.copyCommonSerialFiels(serial)
             this.setOwnSerial(serial)
         })
@@ -629,13 +624,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     get isHidden(): boolean {
         if (this.config.hidden != null) return this.config.hidden
-        if (isWidgetGroup(this) && Object.keys(this.fields).length === 0) return true
+        if (isFieldGroup(this) && Object.keys(this.fields).length === 0) return true
         return false
     }
 
     /** whether the widget should be considered inactive */
     get isDisabled(): boolean {
-        return isWidgetOptional(this) && !this.serial.active
+        return isFieldOptional(this) && !this.serial.active
     }
 
     get isCollapsed(): boolean {
@@ -796,19 +791,19 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * proxy this.repo.action
      * defined to shorted call and allow per-field override
      */
-    MUTVALUE<T>(fn: () => T): T {
+    runInValueTransaction<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
     }
 
-    MUTAUTO<T>(fn: () => T): T {
+    runInAutoTransaction<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'auto', 'WITH_EFFECT')
     }
 
-    MUTSERIAL<T>(fn: () => T): T {
+    runInSerialTransaction<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
     }
 
-    private MUTINIT<T>(fn: () => T): T {
+    private runInCreateTransaction<T>(fn: () => T): T {
         return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
     }
 
@@ -865,7 +860,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         this.schema.applyExts(this)
 
         // 3. ...
-        this.MUTINIT(() => {
+        this.runInCreateTransaction(() => {
             this.copyCommonSerialFiels(serial)
 
             //   VVVVVVVVVVVV this is where we hydrate children

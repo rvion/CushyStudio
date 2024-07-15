@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b, simpleRepo as r } from '../'
-import { Field_string } from '../fields/string/FieldString'
+import { simpleBuilder as b, simpleFactory as f } from '../'
+
+const r = f.repository
 
 describe('field customizations', () => {
     it('works', () => {
@@ -53,7 +54,7 @@ describe('field customizations', () => {
                     bang: (): void => {
                         // TODO: this should be done implicitly
                         // not critical
-                        self.MUTVALUE(() => {
+                        self.runInValueTransaction(() => {
                             self.fields.b.value += '!'
                             self.value.a1 += 11
                             self.value.a2 += 11

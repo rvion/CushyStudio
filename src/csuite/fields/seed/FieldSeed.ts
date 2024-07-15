@@ -1,11 +1,13 @@
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { Factory } from '../../model/Factory'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
+import { getGlobalSeeder, type Seeder } from './Seeder'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
@@ -17,6 +19,7 @@ export type Field_seed_config = FieldConfig<
         defaultMode?: SeedMode
         min?: number
         max?: number
+        seeder?: Seeder
     },
     Field_seed_types
 >
@@ -73,11 +76,11 @@ export class Field_seed extends Field<Field_seed_types> {
 
     setMode = (mode: SeedMode): void => {
         if (this.serial.mode === mode) return
-        this.MUTVALUE(() => (this.serial.mode = mode))
+        this.runInValueTransaction(() => (this.serial.mode = mode))
     }
 
     setToFixed = (val?: number): void => {
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.mode = 'fixed'
             if (val) this.serial.val = val
         })
@@ -85,7 +88,7 @@ export class Field_seed extends Field<Field_seed_types> {
 
     setToRandomize(): void {
         if (this.serial.mode === 'randomize') return
-        this.MUTVALUE(() => (this.serial.mode = 'randomize'))
+        this.runInValueTransaction(() => (this.serial.mode = 'randomize'))
     }
 
     constructor(
@@ -109,7 +112,8 @@ export class Field_seed extends Field<Field_seed_types> {
     }
 
     get value(): Field_seed_value {
-        const count = this.repo.domain._cache.count
+        const seeder = this.config.seeder ?? getGlobalSeeder()
+        const count = seeder.count
         const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
         return mode === 'randomize' //
             ? Math.floor(Math.random() * 9_999_999)
@@ -119,10 +123,10 @@ export class Field_seed extends Field<Field_seed_types> {
     set value(val: number) {
         if (this.serial.mode === 'fixed' && this.serial.val === val) return
         // 🔴 a moitié faux
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.val = val
         })
     }
 }
 
-registerWidgetClass('seed', Field_seed)
+registerFieldClass('seed', Field_seed)

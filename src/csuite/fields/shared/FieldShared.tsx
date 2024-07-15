@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Field_shared_config<F extends Field> = FieldConfig<
@@ -87,4 +87,4 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
 }
 
 // DI
-registerWidgetClass('shared', Field_shared)
+registerFieldClass('shared', Field_shared)

@@ -11,7 +11,8 @@ import { reaction } from 'mobx'
 
 // import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { type Builder, cushyRepo } from '../controls/Builder'
+import { type Builder, cushyFactory } from '../controls/Builder'
+import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { LiveRef } from '../db/LiveRef'
@@ -25,10 +26,14 @@ export class DraftL {
     shouldAutoStart = false
 
     /** collapse all top-level form entryes */
-    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllChildren()
+    collapseTopLevelFormEntries(): void {
+        return this.form?.root?.collapseAllChildren()
+    }
 
     /** expand all top-level form entries */
-    expandTopLevelFormEntries = () => this.form?.root?.expandAllChildren()
+    expandTopLevelFormEntries(): void {
+        return this.form?.root?.expandAllChildren()
+    }
 
     // TODO: rename
     // get illustrationFilePathAbs(): AbsolutePath | null {
@@ -174,7 +179,8 @@ export class DraftL {
             throw new Error('❌ form not loaded yet')
         }
         this.isDirty = false
-        this.form.repo.domain._cache.count++
+        const seeder = getGlobalSeeder()
+        seeder.count++
         this.AWAKE()
 
         // update
@@ -196,6 +202,7 @@ export class DraftL {
         const field = p.formValueOverride
             ? // case of sub-drafts created/started from within a draft
               ({
+                  // 🔴
                   builder: { _cache: { count: 0 } },
                   result: p.formValueOverride,
                   serial: {},
@@ -266,7 +273,7 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = cushyRepo.fields(action.ui, {
+                this._form = cushyFactory.fields(action.ui, {
                     name: this.name,
                     serial: () => this.data.formSerial,
                     onSerialChange: (form) => {

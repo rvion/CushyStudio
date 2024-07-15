@@ -6,7 +6,7 @@ import type { Repository } from '../../model/Repository'
 import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
@@ -108,9 +108,9 @@ export class Field_number extends Field<Field_number_types> {
 
     set value(next: Field_number_value) {
         if (this.serial.value === next) return
-        this.MUTVALUE(() => (this.serial.value = next))
+        this.runInValueTransaction(() => (this.serial.value = next))
     }
 }
 
 // DI
-registerWidgetClass('number', Field_number)
+registerFieldClass('number', Field_number)

@@ -251,6 +251,4 @@ export class SimpleBuilder implements IBuilder {
         const def = p.default ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
     }
-
-    /** (@internal); */ _cache: { count: number } = { count: 0 }
 }

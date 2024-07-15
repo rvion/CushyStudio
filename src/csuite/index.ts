@@ -1,4 +1,4 @@
-import { Repository } from './model/Repository'
+import { Factory } from './model/Factory'
 import { SimpleBuilder } from './simple/SimpleBuilder'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
@@ -19,6 +19,6 @@ export { Channel } from './model/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
 
-export type SimpleRepo = Repository<SimpleBuilder>
+export type SimpleFactory = Factory<SimpleBuilder>
 export const simpleBuilder = new SimpleBuilder()
-export const simpleRepo: SimpleRepo = new Repository(simpleBuilder)
+export const simpleFactory: SimpleFactory = new Factory(simpleBuilder)

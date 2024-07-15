@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { Field, type KeyedField } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Field_optional_config<T extends BaseSchema = BaseSchema> = FieldConfig<
@@ -72,7 +72,7 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
 
     setActive(value: boolean): void {
         if (this.serial.active === value) return
-        this.MUTVALUE(() => {
+        this.runInValueTransaction(() => {
             this.serial.active = value
 
             // update child collapsed state if need be
@@ -166,4 +166,4 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
 }
 
 // DI
-registerWidgetClass('optional', Field_optional)
+registerFieldClass('optional', Field_optional)

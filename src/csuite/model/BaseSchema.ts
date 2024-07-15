@@ -1,13 +1,14 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Channel, ChannelId, Producer } from './Channel'
+import type { Factory } from './Factory'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
-import type { Repository } from './Repository'
 
 import { reaction } from 'mobx'
 
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
+import { getGlobalRepository, type Repository } from './Repository'
 
 export interface BaseSchema<out FIELD extends Field = Field> {
     $Field: FIELD
@@ -48,9 +49,6 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
 
     /** config of the field to instanciate */
     abstract config: FIELD['$Config']
-
-    /** repository this schema belongs to */
-    abstract repository: Repository
 
     // ------------------------------------------------------------
     LabelExtraUI?: CovariantFC<{ field: FIELD }>
@@ -99,8 +97,8 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     // ------------------------------------------------------------
     // Instanciation
 
-    create(serial?: FIELD['$Serial']): FIELD {
-        return this.instanciate(this.repository, null, null, serial)
+    create(serial?: FIELD['$Serial'], repository?: Repository): FIELD {
+        return this.instanciate(repository ?? getGlobalRepository(), null, null, serial)
     }
 
     instanciate(

@@ -1,9 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b, simpleRepo as r } from '../../index'
+import { simpleBuilder as b, simpleFactory as f } from '../../index'
+
+const r = f.repository
 
 describe('migration manual', () => {
-    beforeEach(() => r.reset())
+    // beforeEach(() => r.repository.reset())
     it('work', () => {
         type BUGGYSerial = { valA: number; valB: number }
 

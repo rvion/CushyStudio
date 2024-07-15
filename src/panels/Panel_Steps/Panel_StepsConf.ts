@@ -1,8 +1,8 @@
-import { type Builder, cushyRepo } from '../../controls/Builder'
+import { type Builder, cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = cushyRepo.entity(
+export const PanelStepsConf = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {

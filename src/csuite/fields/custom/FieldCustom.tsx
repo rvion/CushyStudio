@@ -5,10 +5,8 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
 export type CustomWidgetProps<T> = { field: Field_custom<T>; extra: import('./WidgetCustomUI').UIKit }
@@ -92,8 +90,8 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
     set value(next: Field_custom_value<T>) {
         if (this.serial.value === next) return
-        this.MUTVALUE(() => (this.serial.value = next))
+        this.runInValueTransaction(() => (this.serial.value = next))
     }
 }
 
-registerWidgetClass('custom', Field_custom)
+registerFieldClass('custom', Field_custom)

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
-import { cushyRepo } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/Builder'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
@@ -29,7 +29,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     )
 })
 
-export const FORM_PlaygroundWidgetDisplay = cushyRepo.fields(
+export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
     (ui) => {
         const booleanForm = {
             check: ui.bool({}),

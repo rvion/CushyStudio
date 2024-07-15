@@ -8,7 +8,7 @@ import type { FC } from 'react'
 import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
 // CONFIG
@@ -102,7 +102,7 @@ export class Field_bool extends Field<Field_bool_types> {
 
     set value(next: Field_bool_value) {
         if (this.serial.value === next) return
-        this.MUTVALUE(() => (this.serial.value = next))
+        this.runInValueTransaction(() => (this.serial.value = next))
     }
 
     get ownProblems(): Problem_Ext {
@@ -137,4 +137,4 @@ export class Field_bool extends Field<Field_bool_types> {
 }
 
 // DI
-registerWidgetClass('bool', Field_bool)
+registerFieldClass('bool', Field_bool)

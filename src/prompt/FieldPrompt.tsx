@@ -5,9 +5,7 @@ import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 
-import { nanoid } from 'nanoid'
-
-import { registerWidgetClass } from '../csuite/fields/WidgetUI.DI'
+import { registerFieldClass } from '../csuite/fields/WidgetUI.DI'
 import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
@@ -101,7 +99,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
     /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
     setText_INTERNAL(next: string): void {
         if (this.serial.val === next) return
-        this.MUTVALUE(() => (this.serial.val = next))
+        this.runInValueTransaction(() => (this.serial.val = next))
     }
 
     setText(next: string): void {
@@ -109,7 +107,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
     }
     set text(next: string) {
         if (this.serial.val === next) return
-        this.MUTSERIAL(() => {
+        this.runInSerialTransaction(() => {
             // widget prompt uses codemirror, and codemirror manage its internal state itsef.
             // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
             // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
@@ -174,4 +172,4 @@ export class Field_prompt extends Field<Field_prompt_types> {
 }
 
 // DI
-registerWidgetClass('prompt', Field_prompt)
+registerFieldClass('prompt', Field_prompt)

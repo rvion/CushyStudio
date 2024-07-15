@@ -7,10 +7,8 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { runInAction } from 'mobx'
-
 import { Field } from '../../model/Field'
-import { registerWidgetClass } from '../WidgetUI.DI'
+import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
@@ -108,11 +106,11 @@ export class Field_image extends Field<Field_image_types> {
 
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
-        this.MUTVALUE(() => (this.serial.imageID = next.id))
+        this.runInValueTransaction(() => (this.serial.imageID = next.id))
     }
 
     set size(val: number) {
-        this.MUTSERIAL(() => (this.serial.size = val))
+        this.runInSerialTransaction(() => (this.serial.size = val))
     }
 
     /** size of the preview */
@@ -122,4 +120,4 @@ export class Field_image extends Field<Field_image_types> {
 }
 
 // DI
-registerWidgetClass('image', Field_image)
+registerFieldClass('image', Field_image)
