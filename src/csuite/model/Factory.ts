@@ -51,6 +51,13 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     }
 
     /** simple alias to create a new Form */
+    define<SCHEMA extends BaseSchema>(
+        schemaFn: ((form: BUILDER) => SCHEMA),
+    ):SCHEMA{
+        return schemaFn(this.builder)   
+    }
+    
+    /** simple alias to create a new Form */
     entity<SCHEMA extends BaseSchema>(
         schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
