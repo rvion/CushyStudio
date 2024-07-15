@@ -1,3 +1,7 @@
+2024-07-15:
+    ☐ list identation
+    ☐ list sub-items boxes not taken into account
+
 2024-07-12:
     ☐ repository not as property of other classes, but as param with defulat from DI mechanism
     ☐ csuite expect globalRepo to exist/be available via DI
