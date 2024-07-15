@@ -1,53 +1,56 @@
-import type { BaseField } from '../../model/BaseField'
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Widget_list } from './WidgetList'
+import type { BaseSchema } from '../../model/BaseSchema'
+import type { Field } from '../../model/Field'
+import type { Field_list } from './FieldList'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef } from 'react'
+import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
+import { SpacerUI } from '../../components/SpacerUI'
 import { ErrorBoundaryUI } from '../../errors/ErrorBoundaryUI'
 import { menu_widgetActions } from '../../form/WidgetMenu'
 // import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { Frame } from '../../frame/Frame'
 import { RevealUI } from '../../reveal/RevealUI'
-import { SpacerUI } from '../spacer/SpacerUI'
 import { ListControlsUI } from './ListControlsUI'
 
 const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
+export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(function WidgetList_LineUI_(p: {
+    field: Field_list<any>
+}) {
     return (
         <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
-            <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
-            {p.widget.isAuto ? null : (
+            <div tw='text-sm text-gray-500 italic'>{p.field.length} items</div>
+            {p.field.isAuto ? null : (
                 <div tw='ml-auto'>
-                    <ListControlsUI widget={p.widget} />
+                    <ListControlsUI field={p.field} />
                 </div>
             )}
         </div>
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends IBlueprint>(p: { widget: Widget_list<T> }) {
-    const widget = p.widget
-    const subWidgets = widget.items
-    const min = widget.config.min
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: { field: Field_list<T> }) {
+    const field = p.field
+    const subWidgets = field.items
+    const min = field.config.min
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
+            <SortableList onSortEnd={(s, e) => p.field.moveItem(s, e)} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
                         const widgetHeader = subWidget.header()
                         const widgetBody = subWidget.body()
                         // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
-                        const showBorder = subWidget.border
+                        const showBorder = subWidget.border != null
                         const isCollapsible: boolean = subWidget.isCollapsible
                         const boxBorder = showBorder ? 20 : 0
-                        const boxBase = subWidget.background && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
+                        const boxBase =
+                            subWidget.background != null && (isCollapsible || showBorder) ? { contrast: 0.03 } : undefined
                         return (
                             <SortableItem key={subWidget.id}>
                                 <Frame border={boxBorder} tw={'flex flex-col'} base={boxBase}>
@@ -77,19 +80,19 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         )}
 
                                         {/* delete btn */}
-                                        {p.widget.isAuto ? null : (
+                                        {p.field.isAuto ? null : (
                                             <Button
-                                                disabled={min != null && widget.items.length <= min}
+                                                disabled={min != null && field.items.length <= min}
                                                 square
                                                 size='input'
                                                 subtle
                                                 icon='mdiDeleteOutline'
-                                                onClick={() => widget.removeItem(subWidget)}
+                                                onClick={() => field.removeItem(subWidget)}
                                             />
                                         )}
                                         {/* <div tw='w-2' /> */}
                                         <SortableKnob>
-                                            <ListDragHandleUI widget={subWidget} ix={ix} />
+                                            <ListDragHandleUI field={subWidget} ix={ix} />
                                         </SortableKnob>
                                         <RevealUI content={() => <menu_widgetActions.UI props={subWidget} />}>
                                             <Button icon='mdiDotsVertical' subtle square size='input' />
@@ -110,10 +113,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: BaseField }>((p, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; field: Field }>((p, ref) => {
     return (
         //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
-        <div ref={ref} onClick={() => p.widget.toggleCollapsed()}>
+        <div ref={ref} onClick={() => p.field.toggleCollapsed()}>
             <Button size='input' subtle square icon='mdiDragHorizontalVariant' />
         </div>
     )

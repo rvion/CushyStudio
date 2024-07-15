@@ -27,10 +27,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const sizeStr = st.historySizeStr
     return (
         <div
-            tw={['bg-orange-500 text-black', 'text-center w-full font-bold']}
+            tw={['bg-orange-500 text-black', 'flex items-center justify-center h-full w-full']}
             style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
         >
-            3D
+            <div tw='font-bold text-xl'>3D</div>
         </div>
     )
 })
@@ -72,12 +72,12 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
             {menuConf.right ? (
                 <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI form={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
-            ) : st.displacementConf.root.get('menu').left ? (
+            ) : menuConf.left ? (
                 <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI form={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
             ) : (
                 <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>

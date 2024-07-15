@@ -1,4 +1,4 @@
-import type { Model } from '../model/Model'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { RevealUI } from '../reveal/RevealUI'
 import { FormUI } from './FormUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-    form?: Model<any>
+    form?: Field<any>
     children?: React.ReactNode
     title?: string
     className?: string
@@ -30,7 +30,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                         width: p.width,
                     }}
                 >
-                    {p.form && <FormUI form={p.form} />}
+                    {p.form && <FormUI field={p.form} />}
                     {p.children}
                 </div>
             )}

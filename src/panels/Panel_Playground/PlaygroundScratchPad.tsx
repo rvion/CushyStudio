@@ -7,8 +7,6 @@ import { FrameBase } from '../../csuite/wrappers/FrameBase'
 import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
 import { FrameTitle } from '../../csuite/wrappers/FrameTitle'
 
-// import { ThemeForm } from '../../theme/colorEngine/CushyTheming'
-
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
     return (
@@ -18,34 +16,10 @@ export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {
     )
 })
 
-// FUCKING MAGICAL PROPERTIES: minimal direction reversal across the page
-//
-// -------------------
-// starting with a "buffer" of 9/10 "auto" shifts to the darker color
-// NOTES for self: Oscilating poitn should be .75 or something
-// and .25 in the other direction
-// => in means that the Context should track which direction we're moving
-// -------------------
-// background should string | Relative
-// string means absolute
-// and we convert strings to oklch to extract the components
-// that's a way way better API for box
-// -------------------
-// 🟢 accent bleed (chroma blend) to rename (saturation multiplication?) should go past 1
-// ---------------------
-// relative colors
-// 🟢 add chroma bonus (applied beofre contrast)
-
 export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
-    // const theme = cushy.themeManager
-
-    const uist = useLocalObservable(() => ({
-        // base: 'oklch(.1,.2,200)',
-        base: 'oklch(.3 0.05 0)',
-    }))
+    const uist = useLocalObservable(() => ({ base: 'oklch(.3 0.05 0)' }))
     return (
         <div tw='w-full h-full p-1'>
-            {/* <Box tw='p-1 m-1 bd' background={{ contrast: -1 }}> */}
             <Frame
                 //
                 tw='p-1 m-1'
@@ -58,9 +32,9 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                         base: uist.base,
                         text: { contrast: 1, chromaBlend: 10, hueShift: 145 },
                     }}
-                    form={cushy.forms.use((ui) =>
+                    field={cushy.forms.use((ui) =>
                         ui.fields({
-                            col: ui.colorV2({ onValueChange: (v) => (uist.base = v) }),
+                            col: ui.colorV2({ onValueChange: (v) => (uist.base = v.value) }),
                             foo: ui.string(),
                             bar: ui.int().list({ min: 3 }),
                             baz: ui.fields({
@@ -115,7 +89,6 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                     </Frame>
                 </Frame>
             </Frame>
-            {/* <FormUI form={ThemeForm} /> */}
         </div>
     )
 })

@@ -104,12 +104,12 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     ]
     return (
         <Surface className={p.className} tw='overflow-auto virtua'>
-            <Field k='name' v={file.name} />
-            <Field k='size' v={file.size} />
-            <Field k='name' v={file.type} />
+            <LegacyFieldUI k='name' v={file.name} />
+            <LegacyFieldUI k='size' v={file.size} />
+            <LegacyFieldUI k='name' v={file.type} />
             {/* ${file.name}' of size '${file.size}' and type '${file.type}'<div>metadata:</div> */}
-            <Field k='metadata' v={metadata} />
-            <Field k='workflowJSON' v={workflowJSON} />
+            <LegacyFieldUI k='metadata' v={metadata} />
+            <LegacyFieldUI k='workflowJSON' v={workflowJSON} />
             {/* <div>workfow:</div> */}
             {/* <pre>{JSON.stringify(workflowJSON)}</pre> */}
 
@@ -166,7 +166,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     )
 })
 
-const Field = observer(function Field_(p: { k: string; v: string | number | object }) {
+const LegacyFieldUI = observer(function LegacyFieldUI_(p: { k: string; v: string | number | object }) {
     return (
         <div className='flex items-start gap-1'>
             <div className='text-neutral-content italic'>{p.k}:</div>

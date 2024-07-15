@@ -65,7 +65,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                         />
                     </div>
                 </div>
-                <div tw='virtualBorder p-2'>
+                <div tw='p-2'>
                     <MessageInfoUI markdown={` This file will be created as  \`${uist.relPath}\``} />
                     <TypescriptHighlightedCodeUI
                         tabIndex={-1}

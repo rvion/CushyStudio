@@ -9,9 +9,9 @@ app({
         testA: ui.fields(
             { a: ui.int(), b: ui.string(), c: ui.string() },
             {
-                header: ({ widget }) => (
+                header: ({ field }) => (
                     <div tw='flex'>
-                        👉 {widget.fields.a.header()} ({widget.fields.b.header()}) ({widget.fields.a.header()}) 👈
+                        👉 {field.fields.a.header()} ({field.fields.b.header()}) ({field.fields.a.header()}) 👈
                     </div>
                 ),
             },
@@ -28,7 +28,7 @@ app({
 
         c: ui.header('Custom boolean header wrapping the default:'),
         testC: ui.bool({
-            header: ({ widget }) => (
+            header: ({ field: widget }) => (
                 <div tw='flex-1 flex whitespace-nowrap'>
                     <div
                         tw='px-1 cursor-pointer'
@@ -44,7 +44,7 @@ app({
 
         d: ui.header('Custom string body:'),
         testD: ui.string({
-            body: ({ widget }) => <div>the string is {widget.value.length} char long.</div>,
+            body: ({ field: widget }) => <div>the string is {widget.value.length} char long.</div>,
         }),
     }),
     run: (ctx) => {},

@@ -3,14 +3,11 @@ import type { UnifiedImage } from '../states/UnifiedImage'
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 
-import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
-import { ComboUI } from '../../../csuite/accelerators/ComboUI'
-import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
-import { RevealUI } from '../../../csuite/reveal/RevealUI'
+import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
-import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const canvas = useUnifiedCanvas()
@@ -18,28 +15,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <>
-            <div tw='flex flex-col gap-1 w-80 absolute right-2 top-2 z-50'>
-                <div>
-                    <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
-                        Undo (stack.size={canvas.undoBuffer.length})
-                    </div>
-                </div>
-                {/* GRID SIZE */}
-                <div tw='bd1 p-1 flex gap-1 items-center'>
-                    {/*  */}
-                    <input checked tw='checkbox' type='checkbox' />
-                    grid snap:
-                    <InputNumberUI
-                        mode='int'
-                        min={32}
-                        step={4}
-                        onValueChange={(next) => (canvas.snapSize = next)}
-                        suffix='px'
-                        value={canvas.snapSize}
-                    />
-                    {/* x */}
-                    {/* <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> */}
-                </div>
+            <BasicShelfUI anchor='right' floating>
                 {/* TOP LEVEL BUTTON */}
                 <div tw='bd1'>
                     Layers
@@ -61,81 +37,6 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                             )
                         })}
                     </SortableList>
-                </div>
-                {/*  */}
-                {/* TOP LEVEL BUTTON */}
-                {/* <div tw='bd1'>
-                Virtual images for your form
-                <div tw='m-1 flex gap-1'>
-                    <div tw='btn btn-square bd1'>Image</div>
-                    <div tw='btn btn-square bd1'>Mask</div>
-                </div>
-            </div> */}
-                {/* <div tw='bd'>
-                <div
-                    tw='btn btn-primary'
-                    onClick={() => {
-                        // create
-                        // canvas.activeMask?.saveMask()
-                        const res = canvas.activeSelection.saveImage()
-                        if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
-                        const { image, mask } = res
-
-                        // quick check
-                        if (image == null) return toastError('❌ image is null')
-                        if (mask == null) return toastError('❌ mask is null')
-
-                        // showcase
-                        const draft = st.db.drafts.get('HU3BR0X9yd6qB3rWTH3Dd')
-                        if (draft == null) return toastError('❌ draft(id=HU3BR0X9yd6qB3rWTH3Dd) not found')
-                        draft.start({ imageToStartFrom: image })
-                    }}
-                >
-                    AMAZE YOURSEF
-                </div>
-            </div> */}
-                <div tw='bd1 p-1'>
-                    {/* <div tw='flex items-center gap-2'>
-                    Mode:
-                    <div
-                        onClick={() => (canvas.tool = 'move')}
-                        tw={['btn btn-sm', canvas.tool === 'move' ? 'btn-primary' : null]}
-                    >
-                        Move
-                    </div>
-                    <div
-                        onClick={() => (canvas.tool = 'mask')}
-                        tw={['btn btn-sm', canvas.tool === 'mask' ? 'btn-primary' : null]}
-                    >
-                        Mask
-                    </div>
-                </div> */}
-                    Brush
-                    <div tw='flex items-center gap-2'>
-                        size:
-                        <InputNumberUI //
-                            mode='int'
-                            value={canvas.maskToolSize}
-                            onValueChange={(next) => (canvas.maskToolSize = next)}
-                            min={1}
-                            max={1000}
-                        />
-                        px
-                    </div>
-                    {/*
-                <div tw='flex items-center gap-2'>
-                    <ComboUI combo={'mod+m'} /> toggle mode
-                </div>
-                <div tw='flex items-center gap-2'>
-                    <ComboUI combo={'mod+t'} /> toggle tools
-                </div>
-                <div tw='flex items-center gap-2'>
-                    <ComboUI combo={'mod+shift+x'} /> increase tool weight
-                </div>
-                <div tw='flex items-center gap-2'>
-                    <ComboUI combo={'mod+shift+y'} /> decrease tool weight
-                </div>
-                1*/}
                 </div>
 
                 {/* SELECTIONS */}
@@ -261,108 +162,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 {/* <div className='w-96'>
                 <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
             </div> */}
-            </div>
+            </BasicShelfUI>
         </>
-    )
-})
-
-export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
-    const canvas = useUnifiedCanvas()
-    return (
-        <div /* tw='absolute top-0 z-50 [left:50%]' */>
-            <div tw='flex flex-col p-2 gap-1'>
-                <div // NONE ----------------------------------------------------------------
-                    onClick={() => canvas.enable_none()}
-                    tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}
-                >
-                    none
-                    <Ikon.mdiSetNone />
-                    <ComboUI combo='0' />
-                </div>
-
-                <RevealUI // GENERATE -------------------------------------------------------
-                    trigger='hover'
-                    placement='right'
-                    content={() => (
-                        <div tw='flex gap-1'>
-                            Generate <ComboUI combo='1' />
-                        </div>
-                    )}
-                >
-                    <div
-                        onClick={() => canvas.enable_generate()}
-                        tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
-                    >
-                        <Ikon.mdiPlay />
-                    </div>
-                </RevealUI>
-                <div // MASK --------------------------------
-                    onClick={() => canvas.enable_mask()}
-                    tw={['btn btn-square', canvas.tool === 'mask' ? 'btn-primary' : null]}
-                >
-                    Mask
-                    <Ikon.mdiTransitionMasked />
-                    <ComboUI combo='2' />
-                </div>
-                <div
-                    onClick={() => canvas.enable_paint()}
-                    tw={['btn btn-square', canvas.tool === 'paint' ? 'btn-primary' : null]}
-                >
-                    Paint
-                    <ComboUI combo='2' />
-                </div>
-                <div
-                    onClick={() => canvas.enable_move()}
-                    tw={['btn btn-lg btn-square', canvas.tool === 'move' ? 'btn-primary' : null]}
-                >
-                    Move
-                    <ComboUI combo='4' />
-                </div>
-            </div>
-            <hr />
-            <CanvasToolCategoriesUI />
-            {/* <CanvasToolsUI /> */}
-        </div>
-    )
-})
-
-export const CanvasToolCategoriesUI = observer(function CanvasToolCategoriesUI_(p: {}) {
-    const categories = cushy.canvasCategories
-    return (
-        <div>
-            {categories.map((category) => {
-                return (
-                    <div tw='flex'>
-                        <div>{category}</div>
-                        <div>
-                            <CanvasToolsUI category={category} />{' '}
-                        </div>
-                    </div>
-                )
-            })}
-        </div>
-    )
-})
-export const CanvasToolsUI = observer(function CanvasToolsUI_(p: { category?: string }) {
-    const canvasTools = p.category ? cushy.getCanvasToolsInCategory(p.category) : cushy.canvasTools
-    const canvas = useUnifiedCanvas()
-    return (
-        <div tw='flex'>
-            {
-                /* canvas.tool === 'generate' && */
-                canvasTools.map((draft) => (
-                    <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
-                        <DraftIllustrationUI
-                            onClick={() => {
-                                draft.openOrFocusTab()
-                                canvas.currentDraft = draft
-                            }}
-                            draft={draft}
-                            size='3rem'
-                        />
-                    </div>
-                ))
-            }
-        </div>
     )
 })

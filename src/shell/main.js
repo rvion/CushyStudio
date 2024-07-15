@@ -2,7 +2,7 @@ const { mkdirSync } = require('fs')
 const { cwd } = require('process')
 const { clipboard } = require('electron')
 
-START()
+void START()
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
@@ -298,23 +298,23 @@ async function START() {
         } while (!serverStarted)
 
         // load cushy
-        mainWindow.loadURL(`http://localhost:${UI_PORT}`, { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
+        void mainWindow.loadURL(`http://localhost:${UI_PORT}`, { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
         // Open DevTools (optional)
         // mainWindow.webContents.openDevTools();
     }
 
-    app.whenReady().then(() => {
-        session.defaultSession.clearStorageData(null, (error) => {
+    void app.whenReady().then(() => {
+        void session.defaultSession.clearStorageData(null, (error) => {
             if (error) console.log(error)
             // in our case we need to restart the application
             // app.relaunch();
             // app.exit();
         })
 
-        createWindow()
+        void createWindow()
         app.on('activate', function () {
-            if (BrowserWindow.getAllWindows().length === 0) createWindow()
+            if (BrowserWindow.getAllWindows().length === 0) void createWindow()
         })
     })
 

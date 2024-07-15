@@ -1,17 +1,18 @@
+import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
-import type { Model } from '../csuite/model/Model'
+import type { Field_group } from '../csuite/fields/group/FieldGroup'
+import type { Field } from '../csuite/model/Field'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
-import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
 import { reaction } from 'mobx'
 
 // import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { type Builder, cushyFactory } from '../controls/Builder'
+import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { LiveRef } from '../db/LiveRef'
@@ -25,10 +26,14 @@ export class DraftL {
     shouldAutoStart = false
 
     /** collapse all top-level form entryes */
-    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllChildren()
+    collapseTopLevelFormEntries(): void {
+        return this.form?.root?.collapseAllChildren()
+    }
 
     /** expand all top-level form entries */
-    expandTopLevelFormEntries = () => this.form?.root?.expandAllChildren()
+    expandTopLevelFormEntries(): void {
+        return this.form?.root?.expandAllChildren()
+    }
 
     // TODO: rename
     // get illustrationFilePathAbs(): AbsolutePath | null {
@@ -38,7 +43,8 @@ export class DraftL {
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
-    openOrFocusTab = () => {
+    openOrFocusTab(): void {
+        if (!(this instanceof DraftL)) throw new Error('❌')
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
         // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
@@ -165,7 +171,7 @@ export class DraftL {
     start = (p: {
         //
         formValueOverride?: Maybe<any>
-        imageToStartFrom?: MediaImageL
+        context?: DraftExecutionContext
         httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
@@ -174,7 +180,8 @@ export class DraftL {
             throw new Error('❌ form not loaded yet')
         }
         this.isDirty = false
-        this.form.builder._cache.count++
+        const seeder = getGlobalSeeder()
+        seeder.count++
         this.AWAKE()
 
         // update
@@ -193,16 +200,17 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const widget = p.formValueOverride
+        const field = p.formValueOverride
             ? // case of sub-drafts created/started from within a draft
               ({
+                  // 🔴
                   builder: { _cache: { count: 0 } },
                   result: p.formValueOverride,
                   serial: {},
-              } as any as Widget_group<any>)
-            : this.form.root
+              } as any as Field_group<any>)
+            : this.form
 
-        if (widget == null) throw new Error('invalid req')
+        if (field == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
         const startGraph = this.st.project.rootGraph.item
@@ -222,7 +230,7 @@ export class DraftL {
             name: this.data.title,
             appID: this.data.appID,
             draftID: this.data.id,
-            formSerial: widget.serial,
+            formSerial: field.serial,
             outputGraphID: graph.id,
             isExpanded: SQLITE_true,
             status: Status.New,
@@ -231,8 +239,8 @@ export class DraftL {
 
         // start step without waiting
         void step.start({
-            formInstance: widget,
-            imageToStartFrom: p.imageToStartFrom,
+            formInstance: field,
+            context: p.context ?? {},
         })
         this.lastStarted = step
         void step.finished.then(() => {
@@ -245,7 +253,7 @@ export class DraftL {
         this.AWAKE()
         return this._form
     }
-    _form: Maybe<Model<any, FormBuilder>> = null
+    _form: Maybe<Field_group<any>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -253,7 +261,7 @@ export class DraftL {
 
     isInitialized = false
 
-    AWAKE = () => {
+    AWAKE = (): Maybe<() => void> => {
         // if (this.isInitializing) return
         if (this.isInitialized) return
         // this.isInitializing = true
@@ -266,9 +274,9 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = CushyFormManager.fields(action.ui, {
+                this._form = cushyFactory.fields(action.ui, {
                     name: this.name,
-                    initialSerial: () => this.data.formSerial,
+                    serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
                         this.update({ formSerial: form.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)

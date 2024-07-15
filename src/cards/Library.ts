@@ -78,14 +78,8 @@ export class Library {
         public st: STATE,
     ) {
         // Watching a single path
-        const included = st.typecheckingConfig.value.include
-        const includedCards = included.filter(
-            (x) =>
-                x.startsWith('library/') && //
-                x.endsWith('/**/*'),
-        )
-        const expanded = includedCards.map((x) => x.slice(8, -5))
-        this.expanded = new Set(expanded)
+        // ⏸️ const expanded = includedCards.map((x) => x.slice(8, -5))
+        // ⏸️ this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
             ;(cache.watcher as Watcher).close()
@@ -201,22 +195,10 @@ export class Library {
     }
 
     // expand mechanism -------------------------------------------------
-    private expanded: Set<string>
-    get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
-
-    isExpanded = (path: string): boolean => this.expanded.has(path)
-
-    expand = (path: string): void => {
-        this.expanded.add(path)
-    }
-
-    collapse = (path: string): void => {
-        this.expanded.delete(path)
-        const jsonF = this.st.typecheckingConfig
-        const prevInclude = jsonF.value.include
-        const nextInclude = prevInclude.filter((x) => !x.startsWith(`library/${path}`))
-        jsonF.update({ include: nextInclude })
-    }
+    // ⏸️ private expanded: Set<string>
+    // ⏸️ get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
+    // ⏸️ isExpanded = (path: string): boolean => this.expanded.has(path)
+    // ⏸️ expand = (path: string): void => this.expanded.add(path)
 }
 
 // FAVORITE MANAGEMENT ------------------------------------------------

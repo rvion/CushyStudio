@@ -1,36 +1,28 @@
-import type { Widget_bool } from '../csuite/fields/bool/WidgetBool'
-import type { Widget_enum, Widget_enum_config } from '../csuite/fields/enum/WidgetEnum'
-import type { Widget_group } from '../csuite/fields/group/WidgetGroup'
-import type { Widget_number } from '../csuite/fields/number/WidgetNumber'
-import type { Widget_string } from '../csuite/fields/string/WidgetString'
+import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { Widget_prompt } from '../prompt/WidgetPrompt'
-import type { Blueprint } from './Blueprint'
-import type { FormBuilder } from './FormBuilder'
+import type { Builder } from './Builder'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
-        ? Blueprint<Widget_number>
+        ? X.XNumber
         : T['kind'] extends 'string'
-          ? Blueprint<Widget_string>
+          ? X.XString
           : T['kind'] extends 'boolean'
-            ? Blueprint<Widget_bool>
+            ? X.XBool
             : T['kind'] extends 'prompt'
-              ? Blueprint<Widget_prompt>
+              ? X.XPrompt
               : T['kind'] extends 'enum'
-                ? Blueprint<Widget_enum<X>>
+                ? X.XEnum<X>
                 : any
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Blueprint<
-        Widget_group<{
-            [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
-        }>
-    >
+    [K in keyof FormHelper]: () => X.XGroup<{
+        [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
+    }>
 }
 
-export const mkFormAutoBuilder = (form: FormBuilder) => {
+export function mkFormAutoBuilder(form: Builder): AutoBuilder {
     const autoBuilder = new AutoBuilder(form)
     return new Proxy(autoBuilder, {
         get(target, prop, receiver) {
@@ -43,6 +35,7 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
             if (prop === 'isMobXComputedValue') return (target as any)[prop]
 
             // skip public form
+            // 🔴 ⁉️ REVIEW THIS LINE 👇
             if (prop === 'form') return (target as any)[prop]
 
             // known custom nodes
@@ -70,7 +63,7 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
 
 export interface AutoBuilder extends IAutoBuilder {}
 export class AutoBuilder {
-    constructor(public formBuilder: FormBuilder) {
+    constructor(public formBuilder: Builder) {
         const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
@@ -186,7 +179,7 @@ export class AutoBuilder {
                         // ENUMS ------------------------------------------
                         else if (field.isEnum) {
                             // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
-                            const enumFn: Maybe<(p: Widget_enum_config<any>) => void> = (formBuilder.enum as any)[field.type]
+                            const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[field.type]
                             if (enumFn == null) {
                                 console.log(`[👗] ❌ Unknown enum: ${field.type}`)
                                 continue
@@ -216,32 +209,3 @@ export class AutoBuilder {
         }
     }
 }
-
-// --------------------------------------------------------------------------
-// const x: IAutoBuilder = 0 as any
-// const y = x.ADE$_AdjustPEFullStretch()
-// const z = x.LoraLoader()
-
-// // --------------------------------------------------------------------------
-// export type IAutoBuilderOpt = {
-//     [K in keyof Requirable]: (
-//         config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-//     ) => Widget_enum<Requirable[K]['$Value']>
-// }
-
-// export interface AutoBuilderOpt extends IAutoBuilderOpt {}
-// export class AutoBuilderOpt {
-//     constructor(public form: FormBuilder) {
-//         const schema = cushy.schema
-//         for (const enumName of schema.knownEnumsByName.keys()) {
-//             Object.defineProperty(this, enumName, {
-//                 value: (config: any) =>
-//                     form.optional({
-//                         label: config.label,
-//                         startActive: config.startActive,
-//                         widget: () => new Widget_enum(form, { ...config, enumName }),
-//                     }),
-//             })
-//         }
-//     }
-// }

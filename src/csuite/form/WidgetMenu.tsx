@@ -1,11 +1,12 @@
-import type { Menu, MenuEntry } from '../../csuite/menu/Menu'
-import type { BaseField } from '../model/BaseField'
+import type { Menu } from '../../csuite/menu/Menu'
+import type { MenuEntry } from '../menu/MenuEntry'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
-import { menu } from '../../csuite/menu/Menu'
+import { menuWithProps } from '../../csuite/menu/Menu'
 import { SimpleMenuAction } from '../../csuite/menu/SimpleMenuAction'
 import { SimpleMenuModal } from '../../csuite/menu/SimpleMenuModal'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -14,17 +15,25 @@ import { TreeUI } from '../../csuite/tree/TreeUI'
 import { TreeView } from '../../csuite/tree/TreeView'
 import { toastInfo } from '../../csuite/utils/toasts'
 
-export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: BaseField }) {
+export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: Field }) {
     return (
         <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
-            <Button subtle icon='mdiDotsVertical' look='ghost' square size='input' />
+            <Button //
+                tooltip='Open field menu'
+                borderless
+                subtle
+                icon='mdiDotsVertical'
+                look='ghost'
+                square
+                size='input'
+            />
         </RevealUI>
     )
 })
 
-export const menu_widgetActions: Menu<BaseField> = menu({
+export const menu_widgetActions: Menu<Field> = menuWithProps({
     title: 'widget actions',
-    entries: (field: BaseField) => {
+    entries: (field: Field) => {
         const out: MenuEntry[] = []
         // RESET
         out.push(
@@ -64,7 +73,7 @@ export const menu_widgetActions: Menu<BaseField> = menu({
                 submit: () => {
                     console.log(`[🤠] values`)
                 },
-                UI: (w) => <CreatePresetUI widget={field} />,
+                UI: (w) => <CreatePresetUI field={field} />,
             }),
         )
         // out.push(
@@ -111,8 +120,8 @@ export const menu_widgetActions: Menu<BaseField> = menu({
     },
 })
 
-export const CreatePresetUI = observer(function CreatePresetUI_(p: { widget: BaseField }) {
-    const tree = new Tree([p.widget.asTreeElement('root')])
+export const CreatePresetUI = observer(function CreatePresetUI_(p: { field: Field }) {
+    const tree = new Tree([p.field.asTreeElement('root')])
     const treeView = new TreeView(tree, { selectable: true })
     return (
         <TreeUI //

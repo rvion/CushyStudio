@@ -7,7 +7,45 @@ import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAd
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter FaceID ===================================================
-export const ui_IPAdapterFaceID = () => {
+export type UI_IPAdapterFaceID = X.XGroup<{
+    reinforce: X.XOptional<
+        X.XGroup<{
+            strength: X.XNumber
+            settings: X.XGroup<{
+                extra: X.XList<X.XImage>
+                crop: X.XBool
+                startAtStepPercent: X.XNumber
+                endAtStepPercent: X.XNumber
+                weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+                embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+                noise: X.XNumber
+                unfold_batch: X.XBool
+            }>
+            cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+            help: X.XMarkdown
+        }>
+    >
+    strength: X.XNumber
+    settings: X.XGroup<{
+        extra: X.XList<X.XImage>
+        crop: X.XBool
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+        embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+        noise: X.XNumber
+        unfold_batch: X.XBool
+    }>
+    help: X.XMarkdown
+    models: X.XGroup<{
+        lora: X.XEnum<Enum_LoraLoader_lora_name>
+        cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+        clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+    }>
+    lora_strength: X.XNumber
+}>
+
+export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
     const form = getCurrentForm()
     return form
         .group({

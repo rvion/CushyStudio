@@ -1,23 +1,23 @@
 import { observer } from 'mobx-react-lite'
 
-export const WidgetsContainerUI = observer(function WidgetsContainerUI_(p: {
+import { useCSuite } from '../ctx/useCSuite'
+import { Frame } from '../frame/Frame'
+
+export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI_(p: {
     layout?: 'H' | 'V'
     className?: string
     children?: React.ReactNode
 }) {
     const isHorizontal = p.layout === 'H'
-
+    const theme = useCSuite()
     return (
-        <div
+        <Frame
+            base={theme.fieldGroups.contrast}
+            border={theme.fieldGroups.border}
             className={p.className}
-            tw={[
-                //
-                isHorizontal ? `flex gap-1 flex-wrap` : `flex gap-1 flex-col`,
-                'w-full overflow-auto',
-                p.className,
-            ]}
+            tw={[isHorizontal ? `flex flex-wrap` : `flex flex-col`, 'w-full', p.className]}
         >
             {p.children}
-        </div>
+        </Frame>
     )
 })

@@ -1,4 +1,4 @@
-import type { Widget_seed } from './WidgetSeed'
+import type { Field_seed } from './FieldSeed'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,9 +8,9 @@ import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
-    const widget = p.widget
-    const val = widget.serial.val
+export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
+    const field = p.field
+    const val = field.serial.val
     const csuite = useCSuite()
     const border = csuite.inputBorder
 
@@ -18,30 +18,30 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
         <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>
             <InputBoolToggleButtonUI // Random
                 icon='mdiAutoFix'
-                value={widget.serial.mode === 'randomize'}
-                onValueChange={() => widget.setToRandomize()}
+                value={field.serial.mode === 'randomize'}
+                onValueChange={() => field.setToRandomize()}
                 // text='Random'
             />
             <InputBoolToggleButtonUI // Fixed
                 icon='mdiNumeric1CircleOutline'
-                value={widget.serial.mode === 'fixed'}
-                onValueChange={() => widget.setToFixed()}
+                value={field.serial.mode === 'fixed'}
+                onValueChange={() => field.setToFixed()}
                 // text='Fixed'
             />
             <InputNumberUI // Fixed value
-                disabled={widget.serial.mode === 'randomize'}
+                disabled={field.serial.mode === 'randomize'}
                 tw={['!border-none flex-1']}
-                min={widget.config.min}
-                max={widget.config.max}
+                min={field.config.min}
+                max={field.config.max}
                 step={1}
                 value={val}
                 mode='int'
-                onValueChange={(value) => widget.setValue(value)}
+                onValueChange={(value) => (field.value = value)}
             />
             <Button // reset fixed value
                 size='input'
                 tw='!border-l !border-r-0'
-                onClick={() => widget.setToFixed(Math.floor(Math.random() * 100000000))}
+                onClick={() => field.setToFixed(Math.floor(Math.random() * 100000000))}
                 icon='mdiAutorenew'
                 square
             />

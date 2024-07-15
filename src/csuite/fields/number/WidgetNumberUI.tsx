@@ -1,29 +1,32 @@
-import type { Widget_number } from './WidgetNumber'
+import type { Field_number } from './FieldNumber'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {
-    const widget = p.widget
-    const value = widget.serial.val
-    const mode = widget.config.mode
-    const step = widget.config.step ?? (mode === 'int' ? 1 : 0.1)
+export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
+    //
+    field: Field_number
+}) {
+    const field = p.field
+    const value = field.serial.value
+    const mode = field.config.mode
+    const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)
 
     return (
         <InputNumberUI
             mode={mode}
             value={value}
-            hideSlider={widget.config.hideSlider}
-            max={widget.config.max}
-            min={widget.config.min}
-            softMin={widget.config.softMin}
-            softMax={widget.config.softMax}
+            hideSlider={field.config.hideSlider}
+            max={field.config.max}
+            min={field.config.min}
+            softMin={field.config.softMin}
+            softMax={field.config.softMax}
             step={step}
-            suffix={widget.config.suffix}
-            text={widget.config.text}
-            onValueChange={(next) => (widget.value = next)}
-            forceSnap={widget.config.forceSnap}
+            suffix={field.config.suffix}
+            text={field.config.text}
+            onValueChange={(next) => (field.value = next)}
+            forceSnap={field.config.forceSnap}
         />
     )
 })

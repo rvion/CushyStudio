@@ -1,4 +1,4 @@
-import type { CompiledPrompt } from './WidgetPrompt'
+import type { CompiledPrompt } from './FieldPrompt'
 
 import { chooseRandomly } from '../csuite/rnd/chooseRnadomly'
 import { Prompt_Node, PromptAST } from './grammar/grammar.practical'

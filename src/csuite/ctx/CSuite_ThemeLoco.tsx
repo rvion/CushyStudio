@@ -15,6 +15,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetMenu = true
     showWidgetDiff = true
     showToggleButtonBox = false
+    labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
     get baseStr() {
@@ -27,7 +28,9 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
 
     inputBorder = 0.08
     labelText = { contrast: 0.48, chroma: 0.035 }
+    widgetHeight: number = 1.8
     inputHeight: number = 1.6
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
+    fieldGroups = {}
 }

@@ -6,6 +6,8 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
         "skipLibCheck": false,
+        // https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
+        // "noErrorTruncation": true,
         "incremental": true,
         "noImplicitAny": true,
         "esModuleInterop": true,
@@ -40,9 +42,6 @@
         /* specific to base */ "noEmit": true
     },
 
-    // this file will be created by CushyStudio itself
-    // when it runs for the first time
-    // it will allow to only see errors in decks you either
-    // MAINTAIN or are CURRENTLY WORKING ON
-    "extends": "./tsconfig.custom.json"
+    "include": ["src", "schema/global.d.ts", "library"],
+    "exclude": []
 }

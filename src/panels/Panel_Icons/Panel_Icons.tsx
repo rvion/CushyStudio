@@ -7,7 +7,7 @@ import { FixedSizeGrid } from 'react-window'
 
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
-import { SpacerUI } from '../../csuite/fields/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { getAllIcons } from '../../csuite/icons/getAllIcons'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
@@ -15,6 +15,15 @@ import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
 import { searchMatches } from '../../csuite/utils/searchMatches'
 import { toastError, toastInfo } from '../../csuite/utils/toasts'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { Panel } from '../../router/Panel'
+
+export const PanelIcon = new Panel({
+    name: 'Icons',
+    widget: () => PanelIconUI,
+    header: (p) => ({ title: 'Icons' }),
+    def: () => ({}),
+    icon: undefined,
+})
 
 class IconPanelStableState {
     constructor() {
@@ -66,7 +75,7 @@ const CopyButton = observer(function CopyButton_(p: {
     )
 })
 
-export const Panel_Icons = observer(function Panel_Icons_(p: {}) {
+export const PanelIconUI = observer(function PanelIconUI_(p: {}) {
     const { ref: refFn, size } = useSizeOf()
     const uist = useMemo(() => new IconPanelStableState(), [])
     const form = cushy.forms.use((ui) =>

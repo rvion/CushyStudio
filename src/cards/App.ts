@@ -1,6 +1,7 @@
-import type { SchemaDict } from '../csuite/model/IBlueprint'
-import type { Model } from '../csuite/model/Model'
+import type { Field } from '../csuite/model/Field'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
+import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties, ReactNode } from 'react'
@@ -10,7 +11,7 @@ import type { CSSProperties, ReactNode } from 'react'
 /* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-/* shared */ export type GlobalGetCurrentForm = () => X.FormBuilder
+/* shared */ export type GlobalGetCurrentForm = () => X.Builder
 
 /* ⏰ */ export type ActionTagMethod = (arg0: string) => string
 /* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
@@ -38,19 +39,25 @@ export type CustomView<T = any> = {
     render: (t: T) => ReactNode
 }
 
+export type DraftExecutionContext = {
+    image?: Maybe<MediaImageL>
+    mask?: Maybe<MediaImageL>
+    canvas?: Maybe<UnifiedCanvas>
+}
+
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
-    ui: (form: X.FormBuilder) => FIELDS
+    ui: (form: X.Builder) => FIELDS
 
     /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (form: Model<X.XGroup<NoInfer<FIELDS>>, X.FormBuilder>) => void>
+    presets?: Record<string, (form: X.XGroup<NoInfer<FIELDS>>) => void>
 
     /** app execution logic */
     run: (
         //
         runtime: Runtime<NoInfer<FIELDS>>,
         formResult: { [k in keyof NoInfer<FIELDS>]: NoInfer<FIELDS>[k]['$Value'] },
-        starImage?: Maybe<MediaImageL>,
+        context: DraftExecutionContext,
     ) => void | Promise<void>
 
     /** if set to true, will register drafts to quick action in image context menu */

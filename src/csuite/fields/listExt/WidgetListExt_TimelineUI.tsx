@@ -1,28 +1,30 @@
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Widget_listExt } from './WidgetListExt'
+import type { BaseSchema } from '../../model/BaseSchema'
+import type { SListExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends IBlueprint>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends BaseSchema>(p: {
     //
-    widget: Widget_listExt<T>
+    field: SListExt<any>['$Field']
 }) {
     //
     const scale = 20
-    const widget = p.widget
-    const serial = widget.serial
+    const TL = p.field
+    const value = TL.value
+    const entries = TL.fields.items.subFields.map((i) => i.fields)
     const uiSt = useLocalObservable(() => ({
         ix: 0,
     }))
     return (
-        <div tw='overflow-auto virtualBorder'>
-            <div tw='flex flex-col gap-1' style={{ width: serial.width * scale }}>
-                <div style={{ minHeight: '1rem', width: serial.width * scale }} tw='timeline-item w-full relative'></div>
-                {widget.entries.map(({ shape: position, widget }, ix) => {
+        <div tw='overflow-auto'>
+            <div tw='flex flex-col gap-1' style={{ width: value.area.width * scale }}>
+                <div style={{ minHeight: '1rem', width: value.area.width * scale }} tw='timeline-item w-full relative'></div>
+                {entries.map(({ shape, value: widget }, ix) => {
+                    const { width, x } = shape.value
                     return (
                         <div
                             key={widget.id}
-                            style={{ minHeight: '2rem', width: serial.width * scale }}
+                            style={{ minHeight: '2rem', width: value.area.width * scale }}
                             tw='timeline-item w-full relative'
                         >
                             <div
@@ -35,11 +37,11 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
                                 style={{
                                     height: '100%',
                                     position: 'absolute',
-                                    width: position.width * scale,
-                                    left: position.x * scale,
+                                    width: width * scale,
+                                    left: x * scale,
                                 }}
                             >
-                                {JSON.stringify({ duration: position.width, startAt: position.x })}
+                                {JSON.stringify({ duration: width, startAt: x })}
                             </div>
                         </div>
                     )

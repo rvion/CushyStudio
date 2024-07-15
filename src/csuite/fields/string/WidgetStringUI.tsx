@@ -1,4 +1,4 @@
-import type { Widget_string } from './WidgetString'
+import type { Field_string } from './FieldString'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,32 +6,32 @@ import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
 // Textarea HEADER
-export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
-    const widget = p.widget
-    if (!widget.config.textarea) return null
-    if (!p.widget.serial.collapsed) return null
-    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.value}</div>
+export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { field: Field_string }) {
+    const field = p.field
+    if (!field.config.textarea) return null
+    if (!p.field.serial.collapsed) return null
+    return <div tw='line-clamp-1 italic opacity-50'>{p.field.value}</div>
 })
 
 // Textarea BODY
-export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { widget: Widget_string }) {
-    const widget = p.widget
-    if (!widget.config.textarea) return null
-    const val = widget.value
+export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { field: Field_string }) {
+    const field = p.field
+    if (!field.config.textarea) return null
+    const val = field.value
     return (
         <Frame base={5}>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */
                     lineHeight: '1.3rem',
-                    resize: p.widget.config.resize ?? 'both',
+                    resize: p.field.config.resize ?? 'both',
                 }}
                 tw='csuite-basic-input w-full p-2'
-                placeholder={widget.config.placeHolder}
+                placeholder={field.config.placeHolder}
                 rows={3}
                 value={val}
                 onChange={(ev) => {
-                    widget.value = ev.target.value
+                    field.value = ev.target.value
                 }}
             />
         </Frame>
@@ -39,22 +39,22 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 })
 
 // string HEADER
-export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
-    const widget = p.widget
-    const config = widget.config
+export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_string }) {
+    const field = p.field
+    const config = field.config
     return (
         <InputStringUI
-            icon={p.widget.config.innerIcon}
+            icon={p.field.config.innerIcon}
             type={config.inputType}
             pattern={config.pattern}
             className={config.className}
-            getValue={() => widget.value}
-            setValue={(value) => (widget.value = value)}
+            getValue={() => field.value}
+            setValue={(value) => (field.value = value)}
             buffered={
-                widget.config.buffered
+                field.config.buffered
                     ? {
-                          getTemporaryValue: () => widget.temporaryValue,
-                          setTemporaryValue: (value) => (widget.temporaryValue = value),
+                          getTemporaryValue: (): string | null => field.temporaryValue,
+                          setTemporaryValue: (value): void => void (field.temporaryValue = value),
                       }
                     : undefined
             }

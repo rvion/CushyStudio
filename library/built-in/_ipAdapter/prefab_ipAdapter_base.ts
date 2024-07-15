@@ -3,11 +3,22 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
 import { ipAdapterModelList } from './_ipAdapterModelList'
-import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'
+import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common, type UI_subform_IPAdapter_common } from './_ipAdapterUtils'
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter Basic ===================================================
-export const ui_subform_IPAdapter = () => {
+
+export type UI_subform_IPAdapter = X.XGroup<
+    {
+        models: X.XGroup<{
+            cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+            clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+        }>
+        help: X.XMarkdown
+    } & UI_subform_IPAdapter_common
+>
+
+export function ui_subform_IPAdapter(): UI_subform_IPAdapter {
     const form = getCurrentForm()
     return form
         .group({
@@ -17,7 +28,6 @@ export const ui_subform_IPAdapter = () => {
                 ...ui_subform_IPAdapter_common(form),
                 models: form.group({
                     label: 'Select or Download Models',
-                    // startCollapsed: true,
                     items: {
                         ...ui_ipadapter_CLIPSelection(form),
                         ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),
@@ -29,13 +39,11 @@ export const ui_subform_IPAdapter = () => {
 }
 
 // 🅿️ IPAdapter RUN ===================================================
-export const run_cnet_IPAdapter = (
+export function run_cnet_IPAdapter(
     IPAdapter: OutputFor<typeof ui_subform_IPAdapter>,
     cnet_args: Cnet_args,
     image: _IMAGE,
-): {
-    ip_adapted_model: _MODEL
-} => {
+): { ip_adapted_model: _MODEL } {
     const run = getCurrentRun()
     const graph = run.nodes
     const ip = IPAdapter

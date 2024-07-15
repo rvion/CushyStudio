@@ -1,17 +1,24 @@
-import { ModelManager } from './model/ModelManager'
-import { SimpleDomain } from './simple/SimpleDomain'
+import { Factory } from './model/Factory'
+import { SimpleBuilder } from './simple/SimpleBuilder'
 
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 
-export type { Domain } from './model/IDomain'
-export type { ModelSerial } from './model/ModelSerial'
-export type { ModelConfig } from './model/Model'
-export type { SchemaDict, IBlueprint } from './model/IBlueprint'
+export type { IBuilder as Builder } from './model/IBuilder'
+export type { AnyFieldSerial } from './model/EntitySerial'
+export type { SchemaDict } from './model/SchemaDict'
+export type { BaseSchema } from './model/BaseSchema'
+export type { EntityConfig } from './model/Entity'
+
 export type { OpenRouter_Models } from './openrouter/OpenRouter_models'
-export type * from './simple/SimpleSpecAliases'
+export type { CovariantFC } from './variance/CovariantFC'
+export type * from './variance/BivariantHack'
+export type * from './simple/SimpleAliases'
 
 export { Channel } from './model/Channel'
-export { ActivityContainerUI, ActivityStackUI } from './activity/ActivityUI'
+export { ActivityContainerUI } from './activity/ActivityContainerUI'
+export { ActivityStackUI } from './activity/ActivityStackUI'
 
-export const SimpleModelManager: ModelManager<SimpleDomain> = new ModelManager(SimpleDomain)
+export type SimpleFactory = Factory<SimpleBuilder>
+export const simpleBuilder = new SimpleBuilder()
+export const simpleFactory: SimpleFactory = new Factory(simpleBuilder)

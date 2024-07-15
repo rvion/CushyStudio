@@ -1,29 +1,36 @@
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Widget_listExt } from './WidgetListExt'
+import type { BaseSchema } from '../../model/BaseSchema'
+import type { Field_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends IBlueprint>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
     //
-    widget: Widget_listExt<T>
+    field: Field_listExt<T>
 }) {
-    const widget = p.widget
-    const values = widget.entries
+    const listExt = p.field
+    const { items } = listExt.fields
+    const values = listExt.fields.items.subFields
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
-    const min = widget.config.min
+    const min = items.config.min
     return (
         <div tw='flex flex-col gap-1'>
-            {values.map((sub, ix) => {
-                const subWidget = sub.widget
-                const proj = sub.shape
+            {values.map((sub2, ix) => {
+                const sub = sub2.fields
+                const subWidget = sub.value
+                const shape = sub.shape
                 return (
                     <div key={subWidget.id} tw='flex items-start'>
                         <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
-                        <input value={proj.fill} onChange={(ev) => (proj.fill = ev.target.value)} type='color' tw='w-7'></input>
+                        <input
+                            value={shape.value.fill}
+                            onChange={(ev) => (shape.value.fill = ev.target.value)}
+                            type='color'
+                            tw='w-7'
+                        ></input>
                         <Button
                             style={{ width: `${indexWidth}rem` }}
                             look='subtle'
@@ -32,12 +39,12 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         >
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetWithLabelUI fieldName={subWidget.id} widget={subWidget} />
+                        <WidgetWithLabelUI fieldName={subWidget.id} field={subWidget} />
                         <Button
                             look='subtle'
-                            disabled={min ? widget.entries.length <= min : undefined}
+                            disabled={min ? items.length <= min : undefined}
                             tw='self-start'
-                            onClick={() => widget.removeItem(subWidget)}
+                            onClick={() => items.removeItem(sub2)}
                             size='sm'
                         >
                             X

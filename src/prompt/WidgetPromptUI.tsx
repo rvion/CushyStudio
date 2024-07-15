@@ -1,4 +1,4 @@
-import type { Widget_prompt } from './WidgetPrompt'
+import type { Field_prompt } from './FieldPrompt'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
@@ -20,22 +20,21 @@ import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
-export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
-    const widget = p.widget
+export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
+    const field = p.field
     return (
         <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
-            <Button
-                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: widget.id })}
-                icon='mdiAbacus'
-                borderless
-                subtle
-                square
-            />
-            {widget.serial.collapsed ? (
-                <WidgetSingleLineSummaryUI>{widget.serial.val}</WidgetSingleLineSummaryUI>
+            {field.serial.collapsed ? (
+                <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
             ) : (
                 <div /* spacer */ />
             )}
+            <Button
+                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
+                icon='mdiAbacus'
+                subtle
+                square
+            />
         </div>
     )
 })
@@ -70,10 +69,10 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
     )
 })
 // UI
-export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
+export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
     const st = useSt()
-    const widget = p.widget
-    const uist = useMemo(() => new WidgetPromptUISt(widget), [])
+    const field = p.field
+    const uist = useMemo(() => new WidgetPromptUISt(field), [])
     useLayoutEffect(() => {
         if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
@@ -83,9 +82,9 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
     // To allow CodeMirror editor to react to external value changes, we need to use an effect
     // that track external changes, and update the editor.
     useEffect(() => {
-        if (widget._valueUpdatedViaAPIAt == null) return
-        uist.replaceTextBy(widget.text)
-    }, [widget._valueUpdatedViaAPIAt])
+        if (field._valueUpdatedViaAPIAt == null) return
+        uist.replaceTextBy(field.text)
+    }, [field._valueUpdatedViaAPIAt])
 
     const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (

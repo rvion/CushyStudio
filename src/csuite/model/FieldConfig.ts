@@ -1,13 +1,14 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
-import type { CovariantFn } from '../variance/BivariantHack'
+import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
+import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { Problem_Ext } from './Validation'
 
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
 
-export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
+export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /**
      * @since 2024-05-20
      * @stability beta
@@ -17,10 +18,9 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
      *   - "ldi..." for Locomotive design icons
      */
     icon?: IconName
-
     // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
     // ❌ CHOKE typescript typechecking performances.
-    // icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
+    // ❌ | icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
 
     /**
      * @since 2024-05-19
@@ -29,29 +29,41 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
      */
     box?: Box
 
+    /** allow to specify custom headers */
+    header?: null | CovariantFC<{ field: T['$Field'] }>
+
+    /** allow to specify custom body */
+    body?: null | CovariantFC<{ field: T['$Field'] }>
+
     /**
      * @since 2024-05-14
      * @stability beta
-     * This function will be executed either on first creation, or when the
-     * evaluationKey changes. The evaluationKey is stored in the group serial.
+     * This function will be executed before every widget instanciation.
+     * if the version is not the samed as store in the serial
      */
-    onCreate?: CovariantFn<T['$Field'], void> & { evaluationKey?: string }
+    beforeInit?: CovariantFn<[serial: unknown /* T['$Serial'] */], T['$Serial']>
+    version?: string
 
     /**
      * @since 2024-05-14
      * @stability beta
      * This function will be executed either on every widget instanciation.
      */
-    onInit?: CovariantFn<T['$Field'], void>
-
-    /** allow to specify custom headers */
-    header?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
-
-    /** allow to specify custom body */
-    body?: null | ((p: { widget: T['$Field'] }) => JSX.Element)
+    onInit?: CovariantFn1<T['$Field'], void>
 
     /** will be called when value changed */
-    onValueChange?: (val: T['$Value'], self: T['$Field']) => void
+    onValueChange?: CovariantFn<[field: T['$Field']], void>
+
+    /** will be called when serial changed */
+    onSerialChange?: CovariantFn<[self: T['$Field']], void>
+
+    /**
+     * will be called before disposing the tree
+     * @since 2024-07-11
+     * @status NOT IMPLEMENTED
+     * @experimental
+     */
+    onDispose?: CovariantFn1<T['$Field'], void>
 
     /** allow to set custom actions on your widgets */
     presets?: WidgetMenuAction<T>[]
@@ -65,7 +77,7 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
      *  - ["errMsg", ...]
      *  - "errMsg"
      * */
-    check?: (val: T['$Field']) => Problem_Ext
+    check?: CovariantFn<[val: T['$Field']], Problem_Ext>
 
     /**
      * The label to display.
@@ -119,9 +131,9 @@ export type FieldConfig_CommonProperties<T extends $FieldTypes> = {
     custom?: any
 }
 
-export type WidgetMenuAction<T extends $FieldTypes> = {
+export interface WidgetMenuAction<out T extends $FieldTypes> {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName
-    apply: (form: T['$Field']) => void
+    apply(form: T['$Field']): void
 }

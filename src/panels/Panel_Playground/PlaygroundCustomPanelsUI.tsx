@@ -1,4 +1,4 @@
-import type { ModelSerial } from '../../csuite/model/ModelSerial'
+import type { AnyFieldSerial } from '../../csuite/model/EntitySerial'
 
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -25,7 +25,7 @@ export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanels
 const HANDLE = registerCustomPanel(
     'myCustomPanel',
     observer((p: { name: string }) => {
-        const store = usePanelTemporaryData((): { data: Maybe<ModelSerial> } =>
+        const store = usePanelTemporaryData((): { data: Maybe<AnyFieldSerial> } =>
             observable({
                 data: null,
             }),
@@ -39,7 +39,7 @@ const HANDLE = registerCustomPanel(
                 }),
             {
                 name: 'myCustomPanel',
-                initialSerial: () => store.data,
+                serial: () => store.data,
                 onSerialChange: (form) => {
                     store.data = form.serial
                 },

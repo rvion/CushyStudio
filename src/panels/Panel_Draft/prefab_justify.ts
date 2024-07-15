@@ -1,7 +1,8 @@
-import type { FormBuilder } from '../../controls/FormBuilder'
+import type { Builder } from '../../controls/Builder'
 
-export const ui_justify = (ui: FormBuilder) =>
+export const ui_justify = (ui: Builder) =>
     ui.selectOne({
+        // appearance: 'tab',
         appearance: 'roll',
         wrap: false,
         choices: [

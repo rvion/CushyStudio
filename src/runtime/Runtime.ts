@@ -1,11 +1,11 @@
-import type { CustomViewRef } from '../cards/App'
+import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
-import type { SchemaDict } from '../csuite/model/IBlueprint'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
-import type { CompiledPrompt } from '../prompt/WidgetPrompt'
+import type { CompiledPrompt } from '../prompt/FieldPrompt'
 import type { STATE } from '../state/state'
 
 import child_process, { execSync } from 'child_process'
@@ -16,7 +16,8 @@ import * as path from 'pathe'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
-import { Widget_group } from '../csuite/fields/group/WidgetGroup'
+import { toJSONError } from '../csuite/errors/toJSONError'
+import { Field_group } from '../csuite/fields/group/FieldGroup'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
 import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
@@ -236,7 +237,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * 🔶 it is NOT json: it's a complex object
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
-    formInstance!: Widget_group<FIELDS>
+    form!: Field_group<FIELDS>
     // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any) => {
@@ -326,7 +327,9 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
-    imageToStartFrom: Maybe<MediaImageL> = null
+    // imageToStartFrom: Maybe<MediaImageL> = null
+    /** execution context (image, canvas, mask, ...) */
+    context: Maybe<DraftExecutionContext> = null
 
     /**
      * @internal
@@ -334,8 +337,9 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      */
     _EXECUTE = async (p: {
         //
-        formInstance: Widget_group<any>
-        imageToStartFrom?: Maybe<MediaImageL>
+        formInstance: Field_group<any>
+        context: DraftExecutionContext
+        // imageToStartFrom?: Maybe<MediaImageL>
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
@@ -344,8 +348,8 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = formResult as any
         this.formSerial = appFormSerial
-        this.formInstance = p.formInstance
-        this.imageToStartFrom = p.imageToStartFrom
+        this.form = p.formInstance
+        this.context = p.context
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
@@ -354,7 +358,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, formResult, p.imageToStartFrom)
+            await executable.run(this, formResult, this.context)
             // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -366,7 +370,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             // console.error('🌠', 'RUN FAILURE')
             this.Cushy.db.runtime_error.create({
                 message: error.message ?? 'no-message',
-                infos: error,
+                infos: toJSONError(error),
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
@@ -587,10 +591,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
     // 🐉     //
-    // 🐉     requestFn: (q: FormBuilder) => Req,
+    // 🐉     requestFn: (q: Builder) => Req,
     // 🐉     layout?: 0,
     // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    // 🐉     const reqBuilder = new FormBuilder()
+    // 🐉     const reqBuilder = new Builder()
     // 🐉     const request = requestFn(reqBuilder)
     // 🐉     const ask = new ScriptStep_ask(request)
     // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })

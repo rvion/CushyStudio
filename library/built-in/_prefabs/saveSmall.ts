@@ -1,11 +1,25 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_customSave = () => {
+export type UI_customSave = X.XOptional<
+    X.XGroup<{
+        subfolder: X.XString
+        format: X.XSelectOne<
+            | { id: 'raw'; label: 'Raw' }
+            | { id: 'image/webp'; label: 'WebP' }
+            | { id: 'image/png'; label: 'PNG' }
+            | { id: 'image/jpeg'; label: 'JPG' }
+        >
+        quality: X.XNumber
+    }>
+>
+
+export function ui_customSave(): UI_customSave {
     const form = getCurrentForm()
     return form
         .group({
             label: 'Save As...',
             icon: 'mdiContentSaveCogOutline',
+            tooltip: 'Save Folder and file format',
             items: {
                 subfolder: form.string({
                     label: 'Subfolder',
@@ -68,7 +82,7 @@ export const run_customSave = (ui: OutputFor<typeof ui_customSave>): ImageSaveFo
 // 💽
 // 💽     // 2. for every image generated
 // 💽     for (const img of run.generatedImages) {
-// 💽         // if (img.ComfyNodeMetadta?.tag !== 'final-image') {
+// 💽         // if (img.ComfyNodeMetadata?.tag !== 'final-image') {
 // 💽         //     console.log(`[💪] skipping file ${img.url} because it doesnt' have tag "final-image"`)
 // 💽         //     continue
 // 💽         // }

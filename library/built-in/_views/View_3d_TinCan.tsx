@@ -1,3 +1,4 @@
+import type { AnyFieldSerial } from '../../../src/csuite/model/EntitySerial'
 import type { GroupProps } from '@react-three/fiber'
 import type { Group } from 'three'
 
@@ -5,8 +6,6 @@ import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } fro
 import { Canvas, useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useRef } from 'react'
-
-import { ModelSerial } from '../../../src/csuite/model/ModelSerial'
 
 /** this custom view  */
 export const CustomView3dCan = view<{
@@ -29,7 +28,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
             ),
         {
             name: 'Playground Widget Showcase',
-            initialSerial: () => cushy.readJSON<ModelSerial>('settings/beer.json'),
+            serial: () => cushy.readJSON<AnyFieldSerial>('settings/beer.json'),
             onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.serial),
         },
     )
@@ -66,7 +65,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
     )
 })
 
-const useGLTFProxy = (url: string) => {}
+const useGLTFProxy = (url: string): void => {}
 
 const Can3 = observer(
     function Can3_(props: GroupProps & { _textureURL?: string }) {

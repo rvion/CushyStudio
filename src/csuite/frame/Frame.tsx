@@ -1,11 +1,12 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
 import type { Kolor } from '../kolor/Kolor'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, useContext, useState } from 'react'
+import { forwardRef, type MouseEvent, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
@@ -15,12 +16,14 @@ import { overrideTint } from '../kolor/overrideTint'
 import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { frameTemplates } from './FrameTemplates'
+import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
     tooltip?: string
+    tooltipPlacement?: RevealPlacement
 
     /** allow to pretend the frame is hovered */
-    hovered?: boolean | undefined
+    hovered?: (reallyHovered: boolean) => boolean | undefined
 
     // logic --------------------------------------------------
     /** TODO: */
@@ -44,16 +47,6 @@ export type FrameProps = {
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
-
-// ----------------------------------------------------------------------
-// 2024-06-10 rvion:
-// TODO:
-//  ❌ we can't compile hover with the same name as non hover sadly;
-//  🟢 but we can add both classes directly
-//  🟢 we could also probably debounce class compilation
-//  🟢 and auto-clean classes
-//  🟢 and have some better caching mechanism so we don't have to normalize colors
-//     nor do anything extra when the input does change
 
 // ------------------------------------------------------------------
 // quick and dirty way to configure frame to use either style or className
@@ -80,7 +73,7 @@ export const Frame = observer(
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
-            tooltip,
+            tooltip, tooltipPlacement,
 
             // remaining properties
             ...rest
@@ -91,7 +84,7 @@ export const Frame = observer(
         const prevCtx = useContext(CurrentStyleCtx)
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
-        const hovered = hovered__ ?? hovered_
+        const hovered = hovered__ ? hovered__(hovered_) : hovered_
         const variables: { [key: string]: string | number } = {}
 
         // 👉 2024-06-12 rvion: we should probably be able to
@@ -152,21 +145,38 @@ export const Frame = observer(
         if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
         // BORDER
-        if (box.border) variables.border = `1px solid ${KBase.tintFg(box.border).toOKLCH()}`
+        if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 
         // ===================================================================
-        let _onMouseOver: any = undefined
-        let _onMouseOut: any = undefined
-        if (p.hover != null) {
-            _onMouseOver = () => setHovered(true)
-            _onMouseOut = () => setHovered(false)
+        const _onMouseOver = (ev: MouseEvent) => {
+            // console.log(`[🤠] hover`, ev.currentTarget)
+            if (p.hover != null) setHovered(true)
+            if (p.tooltip != null)
+                tooltipStuff.tooltip = {
+                    ref: ev.currentTarget,
+                    text: p.tooltip ?? 'test',
+                    placement: tooltipPlacement ?? 'bottom',
+                }
+        }
+
+        const _onMouseOut = (ev: MouseEvent) => {
+            if (p.hover != null) setHovered(false)
+            if (
+                p.tooltip != null && //
+                tooltipStuff.tooltip?.ref === ev.currentTarget
+            ) {
+                tooltipStuff.tooltip = null
+            }
         }
 
         // ===================================================================
         return (
             <div //
                 ref={ref}
-                title={tooltip}
+                // 📋 tooltip is now handled by csuite directly
+                // | no need to rely on the browser's default tooltip
+                // | // title={tooltip}
+
                 onMouseOver={_onMouseOver}
                 onMouseOut={_onMouseOut}
                 tw={[

@@ -1,6 +1,6 @@
-import type { IBlueprint } from '../../model/IBlueprint'
-import type { Widget_listExt } from './WidgetListExt'
-import type { BoardPosition } from './WidgetListExtTypes'
+import type { BaseSchema } from '../../model/BaseSchema'
+import type { SListExt } from './WidgetListExt'
+import type { SimpleShape } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -9,11 +9,11 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends IBlueprint>(p: {
-    widget: Widget_listExt<T>
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends BaseSchema>(p: {
+    field: SListExt<any>['$Field']
 }) {
-    const widget = p.widget
-    const entries = widget.entries
+    const RG = p.field
+    const entries = RG.fields.items.subFields.map((i) => i.fields)
     const uist = useLocalObservable(() => ({ scale: 1 }))
     return (
         <>
@@ -29,16 +29,16 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
             <div
                 style={{
                     transform: `scale(${uist.scale})`,
-                    width: widget.serial.width * uist.scale,
-                    height: widget.serial.height * uist.scale,
+                    width: RG.fields.area.width * uist.scale,
+                    height: RG.fields.area.height * uist.scale,
                     transformOrigin: 'top left',
                     display: 'block',
                 }}
             >
                 <Stage
                     //
-                    width={widget.serial.width}
-                    height={widget.serial.height}
+                    width={RG.fields.area.width}
+                    height={RG.fields.area.height}
                     onContextMenu={(e) => {
                         e.evt.preventDefault()
                         console.log('context menu')
@@ -49,15 +49,15 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                 >
                     <Layer>
                         {/* <Text text='Try to drag a star' /> */}
-                        {entries.map(({ shape, widget }) => (
+                        {entries.map(({ shape, value }) => (
                             <RectangleUI
-                                key={`rect-${widget.id}`}
+                                key={`rect-${value.id}`}
                                 onChange={(p) => {
                                     Object.assign(shape, p)
-                                    widget.bumpValue()
+                                    value.applyValueUpdateEffects()
                                 }}
-                                isSelected={shape.isSelected}
-                                shape={shape}
+                                isSelected={shape.value.isSelected}
+                                shape={shape.value}
                             />
                         ))}
                     </Layer>
@@ -69,9 +69,9 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
 
 export const RectangleUI = observer(function RectangleUI_(p: {
     //
-    shape: BoardPosition
+    shape: SimpleShape
     isSelected?: boolean
-    onChange: (p: Partial<BoardPosition>) => void
+    onChange: (p: Partial<SimpleShape>) => void
 }) {
     const shapeRef = React.useRef<any>()
     const trRef = React.useRef<any>()

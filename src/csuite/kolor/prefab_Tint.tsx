@@ -19,11 +19,7 @@ export type UI_Tint = X.XChoices<{
     }>
 }>
 
-export const ui_tint = (
-    //
-    ui: X.FormBuilder,
-    def?: Tint,
-): UI_Tint => {
+export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
     return ui.choicesV2(
         {
             l: ui.choiceV2(
@@ -116,7 +112,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (v1)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.9 },
                             c: { chromaBlend: 1 },
@@ -127,7 +123,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (colored)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.7 },
                             c: { chroma: 0.3 },
@@ -138,7 +134,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiText',
                     label: 'Text (subtle)',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.3 },
                         })
@@ -147,7 +143,7 @@ export const ui_tint = (
                 {
                     icon: 'mdiSquareCircle',
                     label: 'base 100',
-                    apply: (w) => {
+                    apply(w): void {
                         w.setValue({
                             l: { contrast: 0.05 },
                         })
@@ -156,7 +152,7 @@ export const ui_tint = (
             ],
             // tabPosition: 'start',
             body: (p) => {
-                const { l, c, h } = p.widget.children
+                const { l, c, h } = p.field.enabledBranches
                 return (
                     <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
                         {/* ------------------ */}

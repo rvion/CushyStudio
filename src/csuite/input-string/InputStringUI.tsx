@@ -1,4 +1,4 @@
-import type { Widget_string_config } from '../fields/string/WidgetString'
+import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/icons'
 import type { CSSProperties } from 'react'
 
@@ -29,10 +29,10 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
     }>
 
     /** default to text */
-    type?: Widget_string_config['inputType']
+    type?: Field_string_config['inputType']
 
     /** text pattern */
-    pattern?: Widget_string_config['pattern']
+    pattern?: Field_string_config['pattern']
 
     autofocus?: boolean
 

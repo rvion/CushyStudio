@@ -14,7 +14,7 @@ export const PlaygroundRegisteredForms = observer(function PlaygroundRequirement
                 </div>
                 <div tw='w-full my-1 rounded bg-neutral-content' style={{ height: '1px', minHeight: '1px' }} />
                 {/* TODO: Should get a registered form by id and display it. */}
-                <FormUI form={st.favbar} />
+                <FormUI field={st.favbar} />
             </div>
         </div>
     )

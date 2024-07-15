@@ -1,4 +1,4 @@
-import type { BaseField } from '../model/BaseField'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
@@ -13,13 +13,13 @@ const isDraggingListener = (ev: MouseEvent) => {
 }
 
 export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_(p: {
-    widget: BaseField
+    field: Field
     children?: React.ReactNode
 }) {
-    const widget = p.widget
+    const field = p.field
     return (
         <div
-            className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
+            className='UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH'
             tw={[
                 'flex gap-0.5 select-none',
                 // 2024-06-03 rvion, changing 'items-center' to 'items-start'
@@ -27,17 +27,17 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
                 'items-start',
             ]}
             onMouseDown={(ev) => {
-                if (ev.button != 0 || !widget.isCollapsible) return
+                if (ev.button != 0 || !field.isCollapsible) return
                 const target = ev.target as HTMLElement
                 if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
                 isDragging = true
                 window.addEventListener('mouseup', isDraggingListener, true)
-                wasEnabled = !widget.serial.collapsed
-                widget.setCollapsed(wasEnabled)
+                wasEnabled = !field.serial.collapsed
+                field.setCollapsed(wasEnabled)
             }}
             onMouseMove={(ev) => {
-                if (!isDragging || !widget.isCollapsible) return
-                widget.setCollapsed(wasEnabled)
+                if (!isDragging || !field.isCollapsible) return
+                field.setCollapsed(wasEnabled)
             }}
         >
             {p.children}

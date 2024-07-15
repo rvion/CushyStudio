@@ -17,7 +17,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
     const modelStatus = host.manager.getModelStatus(p.modelInfo.name)
     const isInstalled = modelStatus === 'installed'
     return (
-        <div tw={['flex virtualBorder  rounded', isInstalled ? 'bg-success-1' : null]}>
+        <div tw={['flex rounded', isInstalled ? 'bg-success-1' : null]}>
             {/* Button ------------------------------------ */}
             <div tw='w-16 text-sm'>
                 {isInstalled ? (

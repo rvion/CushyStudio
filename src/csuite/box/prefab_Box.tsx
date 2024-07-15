@@ -1,5 +1,5 @@
-import type { FormBuilder } from '../../CUSHY'
-import type { Widget_choices_config } from '../fields/choices/WidgetChoices'
+import type { Builder } from '../../CUSHY'
+import type { Field_choices_config } from '../fields/choices/FieldChoices'
 import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'
@@ -15,8 +15,8 @@ export type UI_Box = X.XChoices<{
 
 export const ui_Box = (
     //
-    ui: FormBuilder,
-    config?: Omit<Widget_choices_config<any>, 'multi' | 'items'>,
+    ui: Builder,
+    config?: Omit<Field_choices_config<any>, 'multi' | 'items'>,
 ): UI_Box => {
     return ui.choicesV2(
         {

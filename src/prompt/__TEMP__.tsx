@@ -1,3 +1,7 @@
+import type { FieldId } from '../csuite/model/FieldId'
+import type { Field_prompt } from './FieldPrompt'
+import type { Prompt_Lora } from './grammar/grammar.practical'
+
 import { EditorState } from '@codemirror/state'
 import { basicSetup, EditorView } from 'codemirror'
 import { makeAutoObservable, observable, reaction } from 'mobx'
@@ -10,16 +14,15 @@ import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../csuite/select/SelectUI'
 import { toastError } from '../csuite/utils/toasts'
 import { PromptLang } from './cm-lang/LANG'
-import { type Prompt_Lora, PromptAST } from './grammar/grammar.practical'
-import { Widget_prompt } from './WidgetPrompt'
+import { PromptAST } from './grammar/grammar.practical'
 
-type X = { id: string; label?: string }
+type X = { id: FieldId; label?: string }
 
-export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Widget_prompt['id'] }) {
+export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['id'] }) {
     // 1. retrieve the widget to get the inital value
     // |  the widget won't be used afterwise unless we programmatically do stuff with it
-    const widget = cushy.forms.getWidgetByID(p.promptID) as Widget_prompt | undefined
-    const initialText = widget?.text ?? ''
+    const field = cushy.repository.getFieldByID(p.promptID) as Field_prompt | undefined
+    const initialText = field?.text ?? ''
 
     // 2. create a self-contained state to play with prompt-lang
     // | completely independent from the widget thing
@@ -31,7 +34,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                 internalText: string = ''
 
                 /** remote text value */
-                get linkedText() {
+                get linkedText(): string {
                     return this.currentlyLinkedWidget?.text ?? ''
                 }
 
@@ -50,7 +53,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
 
                 // ------------------------------------------------------------------
                 get currentlyLinkedWidget() { return this._currentlyLinkedWidget } // prettier-ignore
-                set currentlyLinkedWidget(v: Widget_prompt | undefined) {
+                set currentlyLinkedWidget(v: Field_prompt | undefined) {
                     if (v === this._currentlyLinkedWidget) return
                     if (v == null) return
 
@@ -72,7 +75,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                     this.editorView = view
                 }
 
-                constructor(private _currentlyLinkedWidget?: Widget_prompt) {
+                constructor(private _currentlyLinkedWidget?: Field_prompt) {
                     this.editorState = EditorState.create({
                         doc: this.linkedText,
                         extensions: [
@@ -105,7 +108,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                         mountRef: false,
                     })
                 }
-            })(widget),
+            })(field),
         [],
     )
 
@@ -118,7 +121,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
         <div tw='p-2 flex flex-col gap-1'>
             <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI>
             <div className='flex flex-wrap'>
-                {cushy.forms.getWidgetsByType<Widget_prompt>('prompt').map((widget) => (
+                {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
                     <InputBoolToggleButtonUI //
                         key={widget.id}
                         text={widget.text.slice(0, 10) + '...'}
@@ -139,7 +142,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                 value={() => ({ id: p.promptID, label: 'current' })}
                 getLabelText={(i) => i.label ?? i.id}
                 onChange={(i) => {
-                    const nextWidget = cushy.forms.getWidgetByID(i.id) as Widget_prompt
+                    const nextWidget = cushy.repository.getFieldByID(i.id) as Field_prompt
                     if (!nextWidget) return toastError('widget not found')
                     if (nextWidget.type !== 'prompt') return toastError('widget is not a prompt')
                     uist.currentlyLinkedWidget = nextWidget
@@ -148,7 +151,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: W
                     // cushy.layout.addCustomV2(PromptEditorUI, { promptID: i.id })
                 }}
                 options={(): X[] => {
-                    const allPrompts = cushy.forms.getWidgetsByType<Widget_prompt>('prompt')
+                    const allPrompts = cushy.repository.getWidgetsByType<Field_prompt>('prompt')
                     return allPrompts.map((i) => ({ id: i.id, label: i.text ?? '' }))
                 }}
             />

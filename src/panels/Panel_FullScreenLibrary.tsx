@@ -19,7 +19,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
             <Frame base tw='p-4 flex flex-wrap items-center'>
                 <div tw='text-2xl'>Library</div>
                 <div tw='flex gap-1 items-center'>
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         <div tw='flex items-center px-2 join-item'>
                             <span className='material-symbols-outlined'>search</span>
                         </div>
@@ -36,7 +36,6 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
                                     app.openLastOrCreateDraft()
-                                    st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
                                 } else if (e.key === 'ArrowUp') {

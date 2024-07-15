@@ -1,10 +1,14 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Builder } from '../../../src/controls/Builder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
-export const ui_upscaleWithModel = () => {
-    const ui: FormBuilder = getCurrentForm()
+export type UI_upscaleWithModel = X.XGroup<{
+    model: X.XEnum<Enum_UpscaleModelLoader_model_name>
+}>
+
+export function ui_upscaleWithModel(): UI_upscaleWithModel {
+    const ui: X.Builder = getCurrentForm()
     return ui
         .group({
             label: 'Upscale via Model',

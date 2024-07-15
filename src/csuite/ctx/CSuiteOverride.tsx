@@ -1,7 +1,8 @@
 import type { CSuiteConfig } from './CSuiteConfig'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
 import { CSuiteCtx } from './CSuiteCtx'
@@ -30,17 +31,16 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
         <CSuiteCtx.Provider value={config}>
             <Frame //
                 className={p.className}
-                base={cushy.theme.value.base}
-                text={cushy.themeText}
+                // base={cushy.theme.value.base} // 🔴
+                // text={cushy.themeText} // 🔴
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
-                    // '--KLRH': config.baseStr,
-                    // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
                     '--input-height': `${config.inputHeight}rem`,
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
+                    // '--input-border': getNum(config.inputBorder) / 100,
                 }}
             >
                 {p.children}

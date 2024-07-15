@@ -1,17 +1,17 @@
-import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
+import type { BaseSelectEntry, Field_selectOne } from './FieldSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
 export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<T extends BaseSelectEntry>(p: {
-    widget: Widget_selectOne<T>
+    field: Field_selectOne<T>
 }) {
-    const widget = p.widget
-    const selected = widget.serial.val
-    const idx = widget.choices.findIndex((c) => c.id === selected?.id)
-    const curr = widget.value
-    const next = widget.choices[(idx + 1) % widget.choices.length]
+    const field = p.field
+    const selected = field.serial.val
+    const idx = field.choices.findIndex((c) => c.id === selected?.id)
+    const curr = field.value
+    const next = field.choices[(idx + 1) % field.choices.length]
 
     return (
         <>
@@ -20,7 +20,7 @@ export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<
                 subtle
                 icon={curr.icon}
                 disabled={next == null}
-                onClick={() => (widget.value = next!)}
+                onClick={() => (field.value = next!)}
             >
                 {curr.label}
             </Button>

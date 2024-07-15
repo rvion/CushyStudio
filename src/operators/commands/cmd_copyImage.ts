@@ -1,6 +1,6 @@
-import { CushyFormManager } from '../../controls/FormBuilder'
+import { cushyFactory } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
-import { menu, type Menu } from '../../csuite/menu/Menu'
+import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'
 import { ctx_image } from '../contexts/ctx_image'
 
@@ -18,8 +18,7 @@ export const cmd_copyImage: Command<MediaImageL> = command({
     label: 'Copy Image',
     ctx: ctx_image,
     combos: 'mod+c',
-    action: (image) =>
-        image.copyToClipboard_viaCanvas(/* { format: image.format, quality: form_foo.root.fields.quality.value } */),
+    action: (image) => image.copyToClipboard_viaCanvas(/* { format: image.format, quality: form_foo.fields.quality.value } */),
 })
 
 export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
@@ -28,7 +27,7 @@ export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
         label: 'Copy Image',
         ctx: ctx_image,
         combos: 'mod+c',
-        action: (image) => image.copyToClipboard_viaCanvas({ format: format, quality: form_foo.root.fields.quality.value }),
+        action: (image) => image.copyToClipboard_viaCanvas({ format: format, quality: form_foo.fields.quality.value }),
     })
 
 export const cmd_copyImage_as_PNG = cmd_copyImage_as('PNG')
@@ -43,11 +42,11 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
     action: (image: MediaImageL) => menu_copyImageAs.open(image),
 })
 
-const form_foo = CushyFormManager.fields((ui) => ({
+const form_foo = cushyFactory.fields((ui) => ({
     quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
 }))
 
-export const menu_imageActions: Menu<MediaImageL> = menu({
+export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
     title: 'image actions',
     entries: (image: MediaImageL) => [
         //
@@ -56,12 +55,12 @@ export const menu_imageActions: Menu<MediaImageL> = menu({
     ],
 })
 
-export const menu_copyImageAs: Menu<MediaImageL> = menu({
+export const menu_copyImageAs: Menu<MediaImageL> = menuWithProps({
     title: 'Save image as',
     entries: (image: MediaImageL) => [
         cmd_copyImage_as_PNG.bind(image),
         cmd_copyImage_as_WEBP.bind(image),
         cmd_copyImage_as_JPG.bind(image),
-        form_foo.root.fields.quality,
+        form_foo.fields.quality,
     ],
 })

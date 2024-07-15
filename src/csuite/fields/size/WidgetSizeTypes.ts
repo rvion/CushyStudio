@@ -14,7 +14,7 @@ export type CushySizeByRatio = {
 }
 
 export type CushySize = {
-    type: 'size'
+    $: 'size'
     width: number
     height: number
     modelType: SDModelType
@@ -49,7 +49,7 @@ export type AspectRatio =
     | '21:11'
     | '2:1'
 
-export const aspectRatioMap: { [key: string]: { width: number; height: number } } = {
+export const aspectRatioMap: { [ar in AspectRatio]: { width: number; height: number } } = {
     '15:16': { width: 960, height: 1024 },
     '16:15': { width: 1024, height: 960 },
 
@@ -79,4 +79,15 @@ export const aspectRatioMap: { [key: string]: { width: number; height: number } 
 
     '1:2': { width: 704, height: 1408 },
     '2:1': { width: 1408, height: 704 },
+
+    '16:9': { width: 1024, height: 576 },
+    '9:16': { width: 576, height: 1024 },
+
+    '4:3': { width: 1024, height: 768 },
+    '3:4': { width: 768, height: 1024 },
+
+    '3:2': { width: 1024, height: 683 },
+    '2:3': { width: 683, height: 1024 },
+
+    '1:1': { width: 1024, height: 1024 },
 }
