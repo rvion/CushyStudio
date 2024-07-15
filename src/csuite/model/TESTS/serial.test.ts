@@ -82,10 +82,10 @@ describe('assign to value object', () => {
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
-        E.setValue([{ id: 'a' }])
+        E.value = [{ id: 'a' }]
         E.saveSnapshot() // 💾 1
 
-        E.setValue([{ id: 'b' }])
+        E.value = [{ id: 'b' }]
         E.revertToSnapshot() // ↩️
         expectJSON(E.value).toMatchObject([{ id: 'a' }])
 
@@ -104,7 +104,7 @@ describe('assign to value object', () => {
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
-        E.setValue([{ id: 'a' }])
+        E.value = [{ id: 'a' }]
         E.saveSnapshot() // 💾 1
 
         E.value.push({ id: 'b' })
@@ -140,13 +140,14 @@ describe('assign to value object', () => {
     it('snapshots correctly v3', () => {
         // 🦀 And actually, when rewriting the original example with a value
         // override instead of a `push`, then it works
+        // So probabyl something
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
-        E.setValue([{ id: 'a' }])
+        E.value = [{ id: 'a' }]
         E.saveSnapshot() // 💾 1
 
-        E.setValue([{ id: 'b' }])
+        E.value = [{ id: 'b' }]
         E.revertToSnapshot()
         expectJSON(E.value).toMatchObject([{ id: 'a' }])
 
