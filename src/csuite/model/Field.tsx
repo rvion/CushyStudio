@@ -528,10 +528,17 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this
     }
 
-    /** all errors: base (built-in widget) + custom (user-defined in config) */
+    /**
+     * all own errors:
+     *  + base/default (built-in field, e.g. minLength for string)
+     *  + custom       (user-defined in config) */
     get errors(): Problem[] {
-        const baseErrors = normalizeProblem(this.ownProblems)
-        return [...baseErrors, ...this.customErrors]
+        const ownProblems = normalizeProblem(this.ownProblems)
+        return [...ownProblems, ...this.customOwnProblems]
+    }
+
+    get allErrorsIncludingChildrenErros(): Problem[] {
+        return this.errors.concat(this.subFields.flatMap((f) => f.allErrorsIncludingChildrenErros))
     }
 
     /**
@@ -563,7 +570,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return result
     }
 
-    get customErrors(): Problem[] {
+    get customOwnProblems(): Problem[] {
         if (this.config.check == null)
             return [
                 /* { message: 'No check function provided' } */

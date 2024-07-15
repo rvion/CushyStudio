@@ -7,12 +7,15 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
+
+import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type BaseSelectEntry<T = string> = {
     id: T
     label?: string
     icon?: IconName
+    hue?: number
 }
 
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
@@ -90,6 +93,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
     static readonly type: 'selectOne' = 'selectOne'
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
+    DefaultCellUI = WidgetSelectOne_CellUI
 
     get ownProblems(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
@@ -165,6 +169,10 @@ export class Field_selectOne<T extends BaseSelectEntry> //
             // ⏸️ if (!nextHasSameID) this.applyValueUpdateEffects()
             // ⏸️ else this.applySerialUpdateEffects()
         })
+    }
+
+    renderAsCell(this: Field_selectOne<T>, p?: { reveal?: boolean }): JSX.Element {
+        return <this.DefaultCellUI field={this} opts={p} {...p} />
     }
 }
 
