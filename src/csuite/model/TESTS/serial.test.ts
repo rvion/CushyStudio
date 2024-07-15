@@ -138,8 +138,8 @@ describe('assign to value object', () => {
     })
 
     it('snapshots correctly v3', () => {
-        // 🦀 And actually, if we do the same as the original snapshot,
-        // but instead of `push`ing a value, override it, then it works
+        // 🦀 And actually, when rewriting the original example with a value
+        // override instead of a `push`, then it works
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
@@ -150,7 +150,7 @@ describe('assign to value object', () => {
         E.revertToSnapshot()
         expectJSON(E.value).toMatchObject([{ id: 'a' }])
 
-        E.value = [{ id: 'a' }, { id: 'c' }] // 👈 only thing changes
+        E.value = [{ id: 'a' }, { id: 'c' }] // 👈 only change -> was a `.push({ id: 'c'})`
         expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
 
         E.revertToSnapshot() // Revert to 💾 1 as expected
