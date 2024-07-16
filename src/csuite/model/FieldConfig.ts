@@ -4,6 +4,8 @@ import type { TintExt } from '../kolor/Tint'
 import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
+import type { BaseSchema } from './BaseSchema'
+import type { Field } from './Field'
 import type { Problem_Ext } from './Validation'
 
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
@@ -129,6 +131,12 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
 
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
+
+    /** mixin system for the schema */
+    customSchemaProperties?: SchemaExtension<any>[]
+
+    /** mixin system for the field */
+    customFieldProperties?: FieldExtension<any>[]
 }
 
 export interface WidgetMenuAction<out T extends $FieldTypes> {
@@ -137,3 +145,6 @@ export interface WidgetMenuAction<out T extends $FieldTypes> {
     icon?: IconName
     apply(form: T['$Field']): void
 }
+
+export type SchemaExtension<T extends BaseSchema<any>> = (schema: T) => object
+export type FieldExtension<T extends Field> = (field: T) => object

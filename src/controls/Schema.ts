@@ -36,6 +36,7 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     ) {
         super()
         this.FieldClass_UNSAFE = FieldClass
+        this.applySchemaExtensions()
         // makeObservable(this, {
         //     config: true,
         //     FieldClass_UNSAFE: false,

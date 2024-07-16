@@ -20,23 +20,26 @@ export interface BaseSchema<out FIELD extends Field = Field> {
 }
 
 export abstract class BaseSchema<out FIELD extends Field = Field> {
-    // ⏸️ createForm(x: keyof { [key in keyof FIELD as FIELD[key] extends ProplessFC ? key : never]: FIELD[key] }): void {
-    // ⏸️     //
-    // ⏸️     return
-    // ⏸️ }
-
     // ------------------------------------------------------------
-    private _exts: any[] = []
     applyExts(field: FIELD): void {
-        for (const ext of this._exts) {
+        for (const ext of this.config.customFieldProperties ?? []) {
             const xxx = ext(field)
             Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
         }
     }
 
     extend<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
-        this._exts.push(extensions)
-        return this as any
+        const x: BaseSchema<FIELD> = this.withConfig({
+            customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
+        })
+        return x as any as BaseSchema<EXTS & FIELD>
+    }
+
+    applySchemaExtensions(): void {
+        for (const ext of this.config.customSchemaProperties ?? []) {
+            const xxx = ext(this)
+            Object.defineProperties(this, Object.getOwnPropertyDescriptors(xxx))
+        }
     }
     // ------------------------------------------------------------
 
@@ -96,7 +99,11 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     // ------------------------------------------------------------
     // Instanciation
 
-    create(serial?: FIELD['$Serial'], repository?: Repository): FIELD {
+    create(
+        //
+        serial?: FIELD['$Serial'],
+        repository?: Repository,
+    ): FIELD {
         return this.instanciate(repository ?? getGlobalRepository(), null, null, serial)
     }
 
