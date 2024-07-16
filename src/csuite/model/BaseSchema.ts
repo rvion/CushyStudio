@@ -33,10 +33,8 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
         }
     }
-    extend<EXTS extends (self: FIELD) => { [methodName: string]: any }>(
-        //
-        extensions: EXTS,
-    ): BaseSchema<ReturnType<EXTS> & FIELD> {
+
+    extend<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
         this._exts.push(extensions)
         return this as any
     }
