@@ -16,7 +16,11 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
             <Ikon._
                 //
                 className={p.className}
-                tw='COLLAPSE-PASSTHROUGH shrink-0'
+                tw={[
+                    //
+                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                    'COLLAPSE-PASSTHROUGH shrink-0',
+                ]}
             />
         )
     return (
@@ -35,12 +39,26 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
     isCollapsed: boolean
 }) {
     // 🔴 TODO: caret
-    if (isCollapsed) return <Ikon.mdiChevronRight className={className} tw='COLLAPSE-PASSTHROUGH shrink-0' />
+    if (isCollapsed)
+        return (
+            <Ikon.mdiChevronRight //
+                className={className}
+                tw={[
+                    //
+                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                    'COLLAPSE-PASSTHROUGH shrink-0',
+                ]}
+            />
+        )
     return (
         <Ikon.mdiChevronDown
             //
             className={className}
-            tw='COLLAPSE-PASSTHROUGH shrink-0 opacity-35'
+            tw={[
+                //
+                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                'COLLAPSE-PASSTHROUGH shrink-0 opacity-35',
+            ]}
         />
     )
     // return (

@@ -28,7 +28,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             tw={[
                 'UI-WidgetLabelContainer', //
                 'COLLAPSE-PASSTHROUGH',
-                'flex items-center',
+                'flex items-center self-stretch',
                 'flex-none shrink-0',
             ]}
             style={p.justify ? justifiedStyle : undefined}

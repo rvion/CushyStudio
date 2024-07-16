@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { useCSuite } from '../ctx/useCSuite'
 
-export const WidgetLabelUI = observer(function WidgetLabelUI_(p: {
+export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: {
     //
     widget: Field
     className?: string
@@ -15,6 +15,7 @@ export const WidgetLabelUI = observer(function WidgetLabelUI_(p: {
     return (
         <span
             tw={[
+                'UI-WidgetLabel self-start minh-widget lh-widget ABDDE',
                 // 1. indicate we can click on the label
                 p.widget.isCollapsed || p.widget.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
 
