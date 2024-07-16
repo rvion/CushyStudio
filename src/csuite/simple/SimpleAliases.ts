@@ -20,6 +20,7 @@ import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleSchema } from './SimpleSchema'
 
 declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace S {
         //  ====== core ==============================================================
         type SchemaDict = import('../model/SchemaDict').SchemaDict
