@@ -140,6 +140,8 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                         items: {
                             stringLive: ui.string({}),
                             stringBuffered: ui.string({ buffered: true }),
+                            stringLiveTextarea: ui.textarea({}),
+                            stringBufferedTextarea: ui.textarea({ buffered: true }),
                         },
                     }),
                 },
