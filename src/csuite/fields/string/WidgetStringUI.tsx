@@ -19,14 +19,14 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     if (!field.config.textarea) return null
     const val = field.value
     return (
-        <Frame base={5}>
+        <Frame base={5} expand>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */
                     lineHeight: '1.3rem',
                     resize: p.field.config.resize ?? 'both',
                 }}
-                tw='csuite-basic-input w-full p-2'
+                tw='csuite-input w-full p-2'
                 placeholder={field.config.placeHolder}
                 rows={3}
                 value={val}
