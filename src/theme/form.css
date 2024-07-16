@@ -48,14 +48,14 @@
 .box.box-xl { @apply text-xl px-8   py-8  ; }
 
 /* ------------------------------------------------------------------------------------------------------- */
-.WIDGET-BLOCK {
+/* .WIDGET-BLOCK { */
     /* margin-left: .6rem; */
     /* margin-top: .1rem; */
     /* margin-right: .4rem; */
     /* padding: .4rem; */
     /* padding-top: .8rem;  */
     /* padding-bottom: .8rem; */
-}
+/* } */
 
 .animated {
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
