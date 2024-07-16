@@ -19,7 +19,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
     const csuite = useCSuite()
     return (
         <Frame
-            base={3}
+            base={csuite.labelBackground}
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
             className={p.className}

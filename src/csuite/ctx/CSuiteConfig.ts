@@ -1,5 +1,5 @@
 import type { Kolor } from '../kolor/Kolor'
-import type { Tint } from '../kolor/Tint'
+import type { Tint, TintExt } from '../kolor/Tint'
 
 import { NumberVar } from '../tinyCSS/CSSVar'
 
@@ -29,6 +29,7 @@ export interface CSuiteConfig {
     // [size]
     widgetHeight: number
     inputHeight: number
+
     // ------------------------------------------------------------
     // [theme]
     base: Kolor
@@ -36,6 +37,7 @@ export interface CSuiteConfig {
     text: Tint
     inputBorder: number | NumberVar<'input-border'>
     labelText?: Tint
+    labelBackground?: TintExt
     shiftDirection?: 1 | -1 /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
     fieldGroups: {
         border?: Maybe<number>
