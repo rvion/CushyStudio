@@ -52,7 +52,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                 //
                                 fieldName={ix.toString()}
                                 field={subField}
-                                slotA={
+                                slotDelete={
                                     field.isAuto ? null : (
                                         <Button
                                             disabled={min != null && field.items.length <= min}
@@ -64,7 +64,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         />
                                     )
                                 }
-                                slotB={
+                                slotDragKnob={
                                     <SortableKnob>
                                         <ListDragHandleUI field={subField} ix={ix} />
                                     </SortableKnob>

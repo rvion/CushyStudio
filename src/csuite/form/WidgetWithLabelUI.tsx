@@ -39,9 +39,8 @@ export type WidgetWithLabelProps = {
     showWidgetMenu?: boolean
     className?: string
 
-    slotA?: ReactNode
-    slotB?: ReactNode
-    slotC?: ReactNode
+    slotDelete?: ReactNode
+    slotDragKnob?: ReactNode
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
@@ -81,7 +80,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         {labellayout === 'fixed-left' ? (
                             <>
                                 <WidgetIndentUI depth={originalField.depth} />
-                                {p.slotB}
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
@@ -92,6 +91,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         ) : labellayout === 'fixed-right' ? (
                             <>
                                 <WidgetIndentUI depth={field.depth} />
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI tw='mr-auto' field={field} />
                                 {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
                                 <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
@@ -102,6 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             </>
                         ) : (
                             <>
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetToggleUI tw='mr-1' field={originalField} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
@@ -122,7 +123,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         </WidgetHeaderControlsContainerUI>
                     )}
 
-                    {p.slotA}
+                    {p.slotDelete}
 
                     {/* HEADER EXTRA prettier-ignore */}
                     {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.schema.LabelExtraUI && (
