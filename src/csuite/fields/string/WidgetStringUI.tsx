@@ -10,7 +10,7 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
     const field = p.field
     if (!field.config.textarea) return null
     if (!p.field.serial.collapsed) return null
-    return <div tw='line-clamp-1 italic opacity-50'>{p.field.value}</div>
+    return <div tw='line-clamp-1 italic opacity-50'>{JSON.stringify(p.field.value)}</div>
 })
 
 // Textarea BODY
