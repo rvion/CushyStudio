@@ -18,7 +18,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
-    labelBackground?: Maybe<TintExt> = undefined
+    labelBackground?: Maybe<TintExt> = 3
     get baseStr(): string {
         return this.base.toOKLCH()
     }

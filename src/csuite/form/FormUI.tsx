@@ -1,6 +1,7 @@
 import type { Box } from '../../csuite/box/Box'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
+import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { IconName } from '../icons/icons'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
@@ -21,13 +22,21 @@ export class Form {
         return <FormUI {...this.props} {...p} />
     }
 
-    asModal(p?: { label?: string; icon?: IconName; title?: string; shouldClose?: boolean }): JSX.Element {
+    asModal(p?: {
+        label?: string;
+        icon?: IconName;
+        title?: string;
+        shouldClose?: boolean
+        look?: FrameAppearance
+    }): JSX.Element {
         return (
             <RevealUI
                 placement='popup-lg'
+                title={p?.title}
                 content={({ close }) => {
                     // 🔶 todo: add modal title via p.title
                     return this.render({
+                        className:'min-w-[600px]',
                         ...p,
                         submitAction: async (x) => {
                             if (this.props.submitAction == null) return
@@ -42,7 +51,7 @@ export class Form {
                     })
                 }}
             >
-                <Button icon={p?.icon}>{p?.label ?? 'Cliquez ici 🔶'}</Button>
+                <Button look={p?.look} icon={p?.icon}>{p?.label ?? 'Cliquez ici 🔶'}</Button>
             </RevealUI>
         )
     }

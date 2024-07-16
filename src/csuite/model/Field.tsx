@@ -58,8 +58,9 @@ import type { Instanciable } from './Instanciable'
 import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
-import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode } from 'react'
+
+import { observer } from 'mobx-react-lite'
 
 import { CSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
@@ -74,6 +75,7 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { SimpleSchema } from '../simple/SimpleSchema'
+
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
@@ -643,11 +645,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return isFieldOptional(this) && !this.serial.active
     }
 
+    get isCollapsedByDefault():boolean {
+        return false
+    }
+
     get isCollapsed(): boolean {
         if (!this.isCollapsible) return false
         if (this.serial.collapsed != null) return this.serial.collapsed
         if (this.parent?.isDisabled) return true
-        return false
+        return this.isCollapsedByDefault ?? false
     }
 
     /** if specified, override the default algorithm to decide if the widget should have borders */

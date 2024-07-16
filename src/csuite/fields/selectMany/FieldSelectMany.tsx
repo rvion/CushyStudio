@@ -8,6 +8,7 @@ import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
+
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
@@ -83,7 +84,17 @@ export type Field_selectMany_types<T extends BaseSelectEntry> = {
 export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_selectMany_types<T>> {
     static readonly type: 'selectMany' = 'selectMany'
     DefaultHeaderUI = WidgetSelectManyUI
-    DefaultBodyUI = WidgetSelectMany_ListUI
+    // DefaultBodyUI = WidgetSelectMany_ListUI
+    DefaultBodyUI = undefined
+
+
+    get isCollapsedByDefault(){
+        return true
+    }
+
+    get isCollapsible(){
+        return true
+    }
 
     get defaultValue(): Field_selectMany_value<T> {
         return this.config.default ?? []
