@@ -30,6 +30,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
                 const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
                 return (
                     <InputBoolToggleButtonUI
+                        key={c.id}
                         value={isSelected}
                         mode='checkbox'
                         showToggleButtonBox
