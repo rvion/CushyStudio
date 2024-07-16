@@ -67,7 +67,7 @@ export class RevealState {
         public parents: RevealState[],
     ) {
         // see comment above
-        this.contentFn = () => p.content(this)
+        this.contentFn = (): ReactNode => p.content(this)
 
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
@@ -85,7 +85,9 @@ export class RevealState {
     inChildren = new Set<number>()
 
     /** how deep in the reveal stack we are */
-    get ix() { return this.parents.length } // prettier-ignore
+    get ix(): number {
+        return this.parents.length
+    }
 
     get debugColor(): CSSProperties {
         return {
@@ -96,12 +98,12 @@ export class RevealState {
     }
 
     /** toolip is visible if either inAnchor or inTooltip */
-    get visible() {
+    get visible(): boolean {
         if (this._lock) return true
         return this.inAnchor || this.inTooltip || this.inChildren.size > 0
     }
 
-    close() {
+    close(): void {
         this._resetAllAnchorTimouts()
         this._resetAllTooltipTimouts()
         this.inAnchor = false
@@ -109,7 +111,7 @@ export class RevealState {
         this.inChildren.clear()
     }
 
-    get triggerOnClick() {
+    get triggerOnClick(): boolean {
         return (
             this.p.trigger == null ||
             this.p.trigger == 'click' || //
