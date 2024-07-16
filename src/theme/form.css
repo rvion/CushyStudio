@@ -95,21 +95,26 @@
 
 /* ------------------------------------------------------------------------------------------- */
 /* make sure cushy default inputs look like custom inputs */
+.csuite-input:focus,
 .csuite-basic-input:focus {
     outline: none;
     border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
+.csuite-input:hover,
 .csuite-basic-input:hover {
     background: oklch(from var(--KLR) calc(l + 0.06 * var(--DIR)) c h);
 }
+.csuite-input,
 .csuite-basic-input {
     /* 🔴 FINISH ME */
-    height: var(--input-height);
     min-height: var(--input-height);
     background: oklch(from var(--KLR) calc(l + 0.03 * var(--DIR)) c h);
     border: 1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h);
     border-radius: .2rem;
     padding: 0 .3rem;
+}
+.csuite-basic-input {
+    height: var(--input-height);
 }
 
 /* Form Utils ------------------------------------------------------------------------------------- */
