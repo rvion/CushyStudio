@@ -189,12 +189,13 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
-    setPartialValue(val: Partial<Field_group_value<T>>): void {
+    setPartialValue(val: Partial<Field_group_value<T>>): this {
         this.runInValueTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }
         })
+        return this
     }
 
     get subFields(): Field[] {
