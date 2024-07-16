@@ -14,8 +14,13 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 /** free structure */
 export class Form {
     constructor(public props: FormUIProps) {}
-    render(){
+
+    render(): JSX.Element {
         return <FormUI {...this.props} />
+    }
+
+    asModal(arg0?: { label?: string; icon?: string; title?: string }): JSX.Element {
+        return <>🔴 NOT IMPLEMENTED</>
     }
 }
 
@@ -41,7 +46,7 @@ export type FormUIProps = {
     // submit -------------------------------------------------------
     /** @default false */
     allowSubmitWhenErrors?: boolean
-    
+
     /**
      * override default label.
      * @default 'Submit'
@@ -64,7 +69,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
     const component = p.component ?? (() => form.renderWithLabel()) /* FORM */
-    const canSubmit = 
+    const canSubmit =
         p.allowSubmitWhenErrors || //
         p.field == null || //
         p.field.allErrorsIncludingChildrenErros.length === 0
