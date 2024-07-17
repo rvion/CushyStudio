@@ -43,27 +43,6 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
         // })
     }
 
-    _methods: any = {}
-    actions<T extends { [methodName: string]: (self: FIELD) => any }>(t: T): Schema<FIELD & T> {
-        Object.assign(this._methods, t)
-        return this as any
-    }
-
-    _skins: any = {}
-    skins<
-        T extends {
-            // prettier-ignore
-            [methodName: string]:
-                /** simplified skin definition */
-                | { [key: string]: any }
-                /** full react field */
-                | ((p: { field: FIELD }) => ReactNode)
-        },
-    >(t: T): Schema<FIELD & T /* & { skin: T } */> {
-        Object.assign(this._skins, t)
-        return this as any
-    }
-
     LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
         createElement(InstallRequirementsBtnUI, {
             active: isFieldOptional(p.field) ? p.field.serial.active : true,
