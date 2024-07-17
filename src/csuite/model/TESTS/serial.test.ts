@@ -83,7 +83,10 @@ describe('assign to value object', () => {
         const E = S.create()
 
         E.value = [{ id: 'a' }]
-        E.saveSnapshot() // 💾 1
+        const snap1 = E.saveSnapshot() // 💾 1
+        expect(snap1 === E.serial).toBeFalsy()
+        const { snapshot, ...serial } = E.serial
+        expectJSON(snap1).toEqual(serial)
 
         E.value = [{ id: 'b' }]
         E.revertToSnapshot() // ↩️
@@ -92,15 +95,14 @@ describe('assign to value object', () => {
         E.value.push({ id: 'c' })
         expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
 
-        E.revertToSnapshot() // ↩️ 🦀 I expected this to revert to 💾 1
-        expectJSON(E.value).toMatchObject([{ id: 'a' }]) // 👈 But it doesn't
+        E.value.push({ id: 'c' })
+        expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
 
-        // 📝 Swapping the .selectMany(...) for a .string().list() seems to work as intended
+        E.revertToSnapshot()
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
     })
 
     it('snapshots correctly v2', () => {
-        // 🦀 Let's assume I had the wrong intuition in the previous test, and
-        // that we needed to re-snaphot the value after the first revert
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
@@ -115,15 +117,13 @@ describe('assign to value object', () => {
         E.value.push({ id: 'c' })
         expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
 
-        E.revertToSnapshot() // ↩️ Now works -> reset to 💾 2
+        E.revertToSnapshot() // ↩️ reset to 💾 2
         expectJSON(E.value).toMatchObject([{ id: 'a' }])
 
-        // 🦀 Except now the snapshot has a snapshot ???
-        expectJSON(E.serial.snapshot?.snapshot).toBeUndefined()
+        expect(E.serial.snapshot?.snapshot).toBeUndefined()
     })
 
-    it('🔴 Nests snapshot ? Is this intended ?', () => {
-        // building on the above surprise, this actually nests snapshots
+    it('Does not nest snapshots', () => {
         const S = b.int()
         const E = S.create()
 
@@ -133,14 +133,10 @@ describe('assign to value object', () => {
             E.revertToSnapshot()
         }
 
-        // 🦀 10 nested snapshots 👇
-        expectJSON(E.serial.snapshot).toBeUndefined()
+        expect(E.serial.snapshot?.snapshot).toBeUndefined()
     })
 
     it('snapshots correctly v3', () => {
-        // 🦀 And actually, when rewriting the original example with a value
-        // override instead of a `push`, then it works
-        // So probabyl something
         const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
         const E = S.create()
 
@@ -151,7 +147,7 @@ describe('assign to value object', () => {
         E.revertToSnapshot()
         expectJSON(E.value).toMatchObject([{ id: 'a' }])
 
-        E.value = [{ id: 'a' }, { id: 'c' }] // 👈 only change -> was a `.push({ id: 'c'})`
+        E.value = [{ id: 'a' }, { id: 'c' }]
         expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
 
         E.revertToSnapshot() // Revert to 💾 1 as expected

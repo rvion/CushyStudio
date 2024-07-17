@@ -6,6 +6,7 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
 
 import { Field } from '../../model/Field'
+import { naiveDeepClone } from '../../utils/naiveDeepClone'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
@@ -148,7 +149,8 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
 
     protected setOwnSerial(serial: Maybe<Field_selectMany_serial<T>>): void {
         this.serial.query = serial?.query ?? ''
-        this.serial.values = serial?.values ?? this.defaultValue
+        const finalVal = serial?.values ?? this.defaultValue
+        this.serial.values = [...finalVal]
     }
 
     /** un-select given item */
@@ -165,7 +167,7 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     /** select given item */
     addItem(item: T): void {
         // ensure item is not selected yet
-        const i = this.serial.values.indexOf(item)
+        const i = this.serial.values.findIndex((i) => i.id === item.id)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
         // insert it
         this.runInValueTransaction(() => this.serial.values.push(item))
@@ -184,11 +186,42 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     }
 
     get value(): Field_selectMany_value<T> {
-        return this.serial.values
+        // return naiveDeepCloneViaJsonStringifyAndParse(this.serial.values)
+        const cloned = naiveDeepClone(this.serial.values)
+        // return cloned
+        return new Proxy(cloned as any, {
+            get: (target, prop): any => {
+                // ⏸️ console.log(`[GET]`, prop)
+                if (typeof prop === 'symbol') return target[prop]
+
+                if (prop === 'push') return this.addItem.bind(this)
+                if (prop === 'slice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+                if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+
+                // handle numbers (1) and number-like ('1')
+                if (parseInt(prop, 10) === +prop) {
+                    return target[+prop]
+                }
+
+                return target[prop]
+            },
+            set: (target, prop, value): boolean => {
+                const msg = `[🔶] Field_selectMany.value: use .addItem() or .removeItem() instead`
+
+                // alt 1. either we throw
+                throw new Error(msg)
+
+                // alt 2. either we warn and return false
+                // console.warn(msg)
+                // return false
+            },
+        })
     }
 
     set value(next: Field_selectMany_value<T>) {
         if (this.serial.values === next) return
+        // we should NOT allow fields to share structure with stuff from elsewhere
+        // oterwise, we may experience subtle bugs due to users manipulating the value
         this.runInValueTransaction(() => (this.serial.values = next))
     }
 }
