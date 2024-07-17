@@ -5,7 +5,7 @@
  * SEMANTIC:
  *
  *  0 CUSTOM-clone
- *      - anything that has a `potatoClone` method
+ *      - anything that has a `potatoClone` method or [Symbol.for('🥔')] method
  *
  *  1. TRUE DEEP-clone
  *      - JSON-like objects
@@ -26,6 +26,7 @@
  *      - will remove mobx proxies (unless within a class, see 3. classes will be sent back as-is)
  *
  **/
+export const potatoSymbol = Symbol.for('🥔')
 
 export function potatoClone<T extends any>(obj: T): T {
     // 1. primitives and null/undefined
@@ -34,6 +35,7 @@ export function potatoClone<T extends any>(obj: T): T {
     // special case if we have a better way to clone
     // or just a way
     if ('potatoClone' in obj) return (obj as any).potatoClone()
+    if (potatoSymbol in obj) return (obj as any)[potatoSymbol]()
 
     // 2. regular objects
     if (obj.constructor === Object) {

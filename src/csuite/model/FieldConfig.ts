@@ -6,6 +6,8 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { Field } from './Field'
+import type { FieldReaction } from './pubsub/FieldReaction'
+import type { Producer } from './pubsub/Producer'
 import type { Problem_Ext } from './Validation'
 
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
@@ -137,6 +139,20 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
 
     /** mixin system for the field */
     customFieldProperties?: FieldExtension<any>[]
+
+    /**
+     * you probably DON'T want to specify this manually.
+     * you can use the <schema>.publish(...) method instead
+     *                          ^^^^^^^^^^^^
+     */
+    producers?: Producer<any, T['$Field']>[]
+
+    /**
+     * you probably DON'T want to specify this manually.
+     * you can use the <schema>.addReaction(...) method instead
+     *                          ^^^^^^^^^^^^^^^^
+     */
+    reactions?: FieldReaction<T>[]
 }
 
 export interface WidgetMenuAction<out T extends $FieldTypes> {

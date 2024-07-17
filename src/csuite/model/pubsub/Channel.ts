@@ -1,10 +1,9 @@
-import type { CovariantFn1 } from '../variance/BivariantHack'
-import type { Field } from './Field'
+import type { Field } from '../Field'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { bang } from '../utils/bang'
+import { bang } from '../../utils/bang'
 
 export type ChannelId = string
 
@@ -22,9 +21,9 @@ export class Channel<T> {
     constructor(public id: ChannelId = nanoid()) {
         makeAutoObservable(this)
     }
-}
 
-export interface Producer<T, W> {
-    chan: Channel<T> | ChannelId
-    produce: CovariantFn1<W, T>
+    // see src/csuite/utils/potatoClone.ts
+    [Symbol.for('🥔')](): this {
+        return this
+    }
 }

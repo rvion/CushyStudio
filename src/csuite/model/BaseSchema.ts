@@ -1,9 +1,11 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Channel, ChannelId, Producer } from './Channel'
 import type { Factory } from './Factory'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { Channel, ChannelId } from './pubsub/Channel'
+import type { FieldReaction } from './pubsub/FieldReaction'
+import type { Producer } from './pubsub/Producer'
 
 import { reaction } from 'mobx'
 
@@ -65,10 +67,10 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     }
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, FIELD['$Field']>[] = []
     publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this {
-        this.producers.push({ chan, produce })
-        return this
+        return this.withConfig({
+            producers: [...(this.config.producers ?? []), { chan, produce }],
+        })
     }
 
     subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this {
@@ -80,20 +82,23 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             },
         )
     }
-    // ------------------------------------------------------------
-    // Reaction system
-    reactions: {
-        expr(self: FIELD['$Field']): any
-        effect(arg: any, self: FIELD['$Field']): void
-    }[] = []
+
+    get reactions(): FieldReaction<FIELD>[] {
+        return this.config.reactions ?? []
+    }
+
+    get producers(): Producer<any, FIELD>[] {
+        return this.config.producers ?? []
+    }
 
     addReaction<T>(
         //
         expr: (self: FIELD['$Field']) => T,
         effect: (arg: T, self: FIELD['$Field']) => void,
     ): this {
-        this.reactions.push({ expr, effect })
-        return this
+        return this.withConfig({
+            reactions: [...(this.config.reactions ?? []), { expr, effect }],
+        })
     }
 
     // ------------------------------------------------------------

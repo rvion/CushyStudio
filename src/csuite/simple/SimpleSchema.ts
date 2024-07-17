@@ -11,6 +11,7 @@ import { makeObservable } from 'mobx'
 import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
 import { BaseSchema } from '../model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
+import { potatoClone } from '../utils/potatoClone'
 
 export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements Instanciable<FIELD> {
     FieldClass_UNSAFE: any
@@ -77,11 +78,8 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
 
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this {
-        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
+        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
         const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
-        // 🔴 Keep producers and reactions -> could probably be part of the ctor
-        cloned.producers = this.producers
-        cloned.reactions = this.reactions
         return cloned as this
     }
 }

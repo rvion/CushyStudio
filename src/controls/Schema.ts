@@ -11,6 +11,7 @@ import { Field_optional } from '../csuite/fields/optional/FieldOptional'
 import { getFieldLinkClass, isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
+import { potatoClone } from '../csuite/utils/potatoClone'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
@@ -81,12 +82,11 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
 
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this {
-        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
+        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
         const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
-        // 🔴 Keep producers and reactions -> could probably be part of the ctor
-        cloned.producers = this.producers
-        cloned.reactions = this.reactions
         return cloned as this
+
+        // 2024-07-17YOLO🦀🦊 dont' rewrite this here
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
