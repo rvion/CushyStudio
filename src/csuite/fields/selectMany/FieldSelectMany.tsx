@@ -6,7 +6,7 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
 
 import { Field } from '../../model/Field'
-import { naiveDeepClone } from '../../utils/naiveDeepClone'
+import { potatoClone } from '../../utils/potatoClone'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
@@ -186,8 +186,9 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     }
 
     get value(): Field_selectMany_value<T> {
-        // return naiveDeepCloneViaJsonStringifyAndParse(this.serial.values)
-        const cloned = naiveDeepClone(this.serial.values)
+        // return naiveDeepClone(this.serial.values)
+        const cloned = potatoClone(this.serial.values)
+
         // return cloned
         return new Proxy(cloned as any, {
             get: (target, prop): any => {

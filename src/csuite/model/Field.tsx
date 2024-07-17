@@ -30,7 +30,7 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { SimpleSchema } from '../simple/SimpleSchema'
-import { naiveDeepClone } from '../utils/naiveDeepClone'
+import { potatoClone } from '../utils/potatoClone'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
@@ -847,7 +847,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** update current field snapshot */
     saveSnapshot(): this['$Serial'] {
-        const snapshot = naiveDeepClone(this.serial)
+        const snapshot = potatoClone(this.serial)
 
         // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
         // but it's wrong. we don't want snapshotception.
