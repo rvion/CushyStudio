@@ -36,6 +36,7 @@ export interface CSuiteConfig {
     baseStr: string
     text: Tint
     inputBorder: number | NumberVar<'input-border'>
+    inputContrast?: number
     labelText?: Tint
     labelBackground?: TintExt
     shiftDirection?: 1 | -1 /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */

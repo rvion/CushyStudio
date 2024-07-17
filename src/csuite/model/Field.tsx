@@ -710,12 +710,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         )
     }
 
-    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
                 field={this}
-                fieldName='_'
+                fieldName={p?.fieldName ?? '_'}
                 {...p}
             />
         )

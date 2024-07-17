@@ -2,6 +2,7 @@ import type { Field_string } from './FieldString'
 
 import { observer } from 'mobx-react-lite'
 
+import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
@@ -18,8 +19,10 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const field = p.field
     if (!field.config.textarea) return null
     const val = field.value
+    const csuite = useCSuite()
+
     return (
-        <Frame base={5} expand>
+        <Frame base={{ contrast: csuite.inputContrast ?? 0.05 }} expand>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */

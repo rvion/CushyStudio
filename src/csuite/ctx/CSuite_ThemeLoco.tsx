@@ -11,14 +11,14 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     }
     // form behaviour
     clickAndSlideMultiplicator = 1
-    showWidgetUndo = true
-    showWidgetMenu = true
-    showWidgetDiff = true
+    showWidgetUndo = false
+    showWidgetMenu = false
+    showWidgetDiff = false
     showToggleButtonBox = false
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
-    labelBackground?: Maybe<TintExt> = 3
+    labelBackground?: Maybe<TintExt> = undefined
     get baseStr(): string {
         return this.base.toOKLCH()
     }
@@ -28,6 +28,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     text: Tint = { contrast: 0.824 }
 
     inputBorder = 0.08
+    inputContrast = 0
     labelText = { contrast: 0.48, chroma: 0.035 }
     widgetHeight: number = 1.8
     inputHeight: number = 1.6

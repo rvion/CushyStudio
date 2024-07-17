@@ -72,7 +72,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: {
     const csuite = useCSuite()
     return (
         <Frame
-            base={5}
+            base={{ contrast: csuite.inputContrast ?? 0.05 }}
             text={{ contrast: 1, chromaBlend: 1 }}
             hover
             border={

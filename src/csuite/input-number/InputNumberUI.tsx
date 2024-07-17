@@ -250,7 +250,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     return (
         <Frame /* Root */
             style={p.style}
-            base={5}
+            base={{ contrast: csuite.inputContrast ?? 0.05 }}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border={{ contrast: border }}
             hover={{ contrast: 0.03 }}

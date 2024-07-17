@@ -9,6 +9,7 @@ import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { type FC, Fragment } from 'react'
 
+import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form, FormUIProps } from '../../form/FormUI'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
@@ -63,7 +64,8 @@ type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
-    formFields(fields: (keyof T | Accessor<this>)[]): FC<NO_PROPS> {
+    formFields(fields: (keyof T | Accessor<this>)[], props?: { showMore?: (keyof T)[] | false }): FC<NO_PROPS> {
+        const sm = props?.showMore
         return () => (
             <Fragment>
                 {fields.map((f) => {
@@ -71,17 +73,28 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                         const res = f(this)
                         return res({})
                     }
-                    return this.fields[f]!.renderWithLabel()
+                    return this.fields[f]!.renderWithLabel({ fieldName: f as string })
                 })}
+                {sm !== false && (
+                    <CollapsibleUI
+                        content={() => {
+                            const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
+                            return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
+                        }}
+                    />
+                )}
             </Fragment>
         )
     }
 
-    form(fields: (keyof T | Accessor<this>)[], props: Omit<FormUIProps, 'field' | 'layout'>): Form {
+    form(
+        fields: (keyof T | Accessor<this>)[],
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false },
+    ): Form {
         return new Form({
             ...props,
             field: this,
-            component: this.formFields(fields),
+            component: this.formFields(fields, { showMore: props.showMore }),
         })
     }
 
