@@ -47,7 +47,13 @@ describe('default values', () => {
                 choices: [{ id: 'a' }, { id: 'b' }, { id: 'c ' }],
                 default: def,
             }),
-        [[], [{ id: 'a' }], [{ id: 'b' }, { id: 'c' }], [{ id: 'c' }, { id: 'a' }]],
+        [
+            //
+            [],
+            [{ id: 'a' }],
+            [{ id: 'b' }, { id: 'c' }],
+            [{ id: 'c' }, { id: 'a' }],
+        ],
     )
 
     itDefaults(
@@ -70,7 +76,12 @@ describe('default values', () => {
     )
 })
 
-function itDefaults<const T>(name: string, schema: (x: T) => any, defaults: { seed: T; expect: any }[]): void {
+function itDefaults<const T>(
+    //
+    name: string,
+    schema: (x: T) => any,
+    defaults: { seed: T; expect: any }[],
+): void {
     it(`works with ${name}`, () => {
         for (const def of defaults) {
             const S = schema(def.seed)
@@ -81,7 +92,12 @@ function itDefaults<const T>(name: string, schema: (x: T) => any, defaults: { se
     })
 }
 
-function itDefaultsSimple<T>(name: string, schema: (x: T) => any, defaults: T[]): void {
+function itDefaultsSimple<T>(
+    //
+    name: string,
+    schema: (x: T) => any,
+    defaults: T[],
+): void {
     itDefaults(
         name,
         schema,
