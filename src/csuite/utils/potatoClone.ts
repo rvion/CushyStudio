@@ -68,7 +68,6 @@ export function potatoClone<T extends any>(obj: T): T {
 
     // exotic stuff => let's do the minimum viable clone possible
     if (obj instanceof ArrayBuffer) return obj.slice(0) as T
-    if (obj instanceof SharedArrayBuffer) return obj.slice(0) as T
     if (obj instanceof DataView) return new DataView(obj.buffer.slice(0)) as T
     if (obj instanceof Float32Array) return new Float32Array(obj) as T
     if (obj instanceof Float64Array) return new Float64Array(obj) as T
@@ -81,7 +80,6 @@ export function potatoClone<T extends any>(obj: T): T {
     if (obj instanceof Uint32Array) return new Uint32Array(obj) as T
     if (obj instanceof BigInt64Array) return new BigInt64Array(obj) as T
     if (obj instanceof BigUint64Array) return new BigUint64Array(obj) as T
-    if (obj instanceof SharedArrayBuffer) return obj.slice(0) as T
 
     // stuff we're not sure about
     // | okay, the ocean is full of fish, we can't know them all, and it's okay.
