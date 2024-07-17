@@ -846,6 +846,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         })
     }
 
+    get hasSnapshot(): boolean {
+        return this.serial.snapshot != null
+    }
+
+    deleteSnapshot(): void {
+        delete this.serial.snapshot
+        this.applySerialUpdateEffects()
+    }
+
     /** update current field snapshot */
     saveSnapshot(): this['$Serial'] {
         const snapshot = potatoClone(this.serial)
