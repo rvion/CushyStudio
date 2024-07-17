@@ -25,12 +25,12 @@ export const useDelay = (
     useEffect(() => {
         if (_timeout != null) clearTimeout(_timeout)
         if (delayMs == null) return
-        _timeout = setTimeout(() => {
-            console.log('delayed')
+        _timeout = setTimeout((): void => {
+            // console.log('delayed')
             setDelayed(false)
         }, delayMs)
 
-        return () => {
+        return (): void => {
             setDelayed(defVal)
             if (_timeout != null) clearTimeout(_timeout)
         }
