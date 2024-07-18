@@ -4,12 +4,12 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
+import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
-import { Ikon } from '../icons/iconHelpers'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
-const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
+const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
 
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
 let startValue = 0
@@ -51,39 +51,39 @@ class InputNumberStableState {
         makeAutoObservable(this)
     }
 
-    get value() {
+    get value(): number {
         return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity)
     }
 
-    get mode() {
+    get mode(): 'int' | 'float' {
         return this.props.mode
     }
 
-    get step() {
+    get step(): number {
         return this.props.step ?? (this.mode === 'int' ? 1 : 0.1)
     }
 
-    get rounding() {
+    get rounding(): number {
         return Math.ceil(-Math.log10(this.step * 0.01))
     }
 
-    get forceSnap() {
+    get forceSnap(): boolean {
         return this.props.forceSnap ?? false
     }
 
-    get rangeMin() {
+    get rangeMin(): number {
         return this.props.softMin ?? this.props.min ?? -Infinity
     }
 
-    get rangeMax() {
+    get rangeMax(): number {
         return this.props.softMax ?? this.props.max ?? Infinity
     }
 
-    get numberSliderSpeed() {
+    get numberSliderSpeed(): number {
         return this.kit?.clickAndSlideMultiplicator ?? 1
     }
 
-    get isInteger() {
+    get isInteger(): boolean {
         return this.mode === 'int'
     }
 
@@ -99,7 +99,7 @@ class InputNumberStableState {
         //
         value: number | string,
         opts: { soft?: boolean; roundingModifier?: number; skipRounding?: boolean } = {},
-    ) => {
+    ): number | undefined => {
         const soft = opts.soft ?? false
         const roundingModifier = opts.roundingModifier ?? 1
         const skipRounding = opts.skipRounding ?? false
@@ -145,19 +145,19 @@ class InputNumberStableState {
         this.inputValue = num.toString()
     }
 
-    increment = () => {
+    increment = (): void => {
         startValue = this.value
         let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
-    decrement = () => {
+    decrement = (): void => {
         startValue = this.value
         let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
-    mouseMoveListener = (e: MouseEvent) => {
+    mouseMoveListener = (e: MouseEvent): void => {
         // reset origin if change shift or control key while drag (to let already applied changes remain)
         if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
             lastValue = this.value
@@ -191,7 +191,7 @@ class InputNumberStableState {
         this.syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
-    cancelListener = (e: MouseEvent) => {
+    cancelListener = (e: MouseEvent): void => {
         // Right click
         if (e.button == 2) {
             activeSlider = null
@@ -199,7 +199,7 @@ class InputNumberStableState {
         }
     }
 
-    onPointerUpListener = (/* e: MouseEvent */) => {
+    onPointerUpListener = (/* e: MouseEvent */): void => {
         if (activeSlider && !dragged) {
             this.inputRef.current?.focus()
         } else {
@@ -216,7 +216,7 @@ class InputNumberStableState {
         document.exitPointerLock()
     }
 
-    onPointerLockChange = (e: Event) => {
+    onPointerLockChange = (e: Event): void => {
         const isPointerLocked = document.pointerLockElement === activeSlider
 
         if (!(activeSlider && isPointerLocked)) {
@@ -250,7 +250,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     return (
         <Frame /* Root */
             style={p.style}
-            base={5}
+            base={{ contrast: csuite.inputContrast ?? 0.05 }}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             border={{ contrast: border }}
             hover={{ contrast: 0.03 }}
@@ -279,24 +279,20 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <Frame /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: p.hideSlider ? 0 : 0.1, chroma: 0.02 }}
+                base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 2 }}
                 tw={['z-10 absolute left-0 h-input']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
             <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
-                <Frame /* Left Button */
+                <Button /* Left Button */
                     className='control'
-                    // hover={-0.1}
-                    // base={5}
-                    border
-                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
+                    borderless
+                    tw='rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.decrement}
-                >
-                    <Ikon.mdiChevronLeft />
-                </Frame>
-
+                    icon='mdiChevronLeft'
+                />
                 <div /* Text Container */
                     tw={[
                         //
@@ -416,17 +412,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     )}
                 </div>
 
-                <Frame /* Right Button */
+                <Button /* Right Button */
                     className='control'
-                    // hover={-0.1}
-                    // base={5}
-                    border
-                    tw={['h-full flex rounded-none text-center justify-center items-center z-20', `opacity-0`]}
+                    borderless
+                    tw='rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.increment}
-                >
-                    <Ikon.mdiChevronRight />
-                </Frame>
+                    icon='mdiChevronRight'
+                />
             </div>
         </Frame>
     )

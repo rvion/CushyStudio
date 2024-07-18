@@ -1,10 +1,23 @@
-import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Tile FORM ===================================================
-export const ui_subform_Tile = () => {
+export type UI_subform_Tile = X.XGroup<{
+    preprocessor: UI_subform_Tile_Preprocessor
+    models: X.XGroup<{
+        cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    }>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+
+export function ui_subform_Tile(): UI_subform_Tile {
     const form = getCurrentForm()
     return form
         .group({
@@ -34,15 +47,22 @@ export const ui_subform_Tile = () => {
         ])
 }
 
-export const ui_subform_Tile_Preprocessor = () => {
-    const form: FormBuilder = getCurrentForm()
+export type UI_subform_Tile_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    Pyrup: X.XGroup<{
+        pyrup: X.XNumber
+        saveProcessedImage: X.XBool
+    }>
+}>
+export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
         startCollapsed: true,
         default: 'Pyrup',
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             Pyrup: form.group({
                 label: 'Settings',
                 startCollapsed: true,

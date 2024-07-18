@@ -1,5 +1,3 @@
-import type { FormBuilder } from '../../../src/CUSHY'
-
 export type UI_model_pag = X.XGroup<{
     include: X.XChoices<{
         base: X.XGroup<{}>
@@ -9,14 +7,20 @@ export type UI_model_pag = X.XGroup<{
     adaptiveScale: X.XNumber
 }>
 
-export const ui_model_pag = (form: FormBuilder): UI_model_pag => {
+export const ui_model_pag = (form: X.Builder): UI_model_pag => {
     return form
         .fields(
             {
                 include: form.choices({
                     items: { base: form.fields({}), hiRes: form.fields({}) },
-                    appearance: 'tab',
                     default: { base: true, hiRes: false },
+                    // -----------------------------
+                    appearance: 'tab',
+                    tabPosition: 'start',
+                    border: false,
+                    collapsed: false,
+                    justifyLabel: true,
+                    // --------------------------
                 }),
                 scale: form.float({
                     default: 3,
@@ -40,7 +44,7 @@ export const ui_model_pag = (form: FormBuilder): UI_model_pag => {
                 startCollapsed: true,
                 tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
                 summary: (ui) => {
-                    return `scale:${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} scale:${ui.scale} dampening:${ui.adaptiveScale}`
+                    return `scale:${ui.include.base ? 'Base ' : ''}${ui.include.hiRes ? 'HiRes ' : ''} scale:${ui.scale} dampening:${ui.adaptiveScale}`
                 },
             },
         )

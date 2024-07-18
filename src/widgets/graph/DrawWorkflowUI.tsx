@@ -5,7 +5,7 @@ import { Fragment, useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
-import { ProgressLine } from '../../csuite/shims'
+import { ProgressLine } from '../../csuite/inputs/shims'
 import { bang } from '../../csuite/utils/bang'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/Panel_Canvas/utils/randomColor'

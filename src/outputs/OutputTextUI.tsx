@@ -2,8 +2,8 @@ import type { MediaTextL } from '../models/MediaText'
 
 import { observer } from 'mobx-react-lite'
 
+import { Surface } from '../csuite/inputs/shims'
 import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
-import { Surface } from '../csuite/shims'
 import { TabUI } from '../csuite/tabs/TabUI'
 import { StepL } from '../models/Step'
 

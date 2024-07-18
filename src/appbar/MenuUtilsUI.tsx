@@ -4,7 +4,15 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
-import { assets } from '../utils/assets/assets'
+
+// const cmd_posemy = new Command({
+//
+// })
+// const MenuUtilsV2 = new Menu({
+//     title: 'Utils',
+//     icon: 'mdiPuzzle',
+//     entries: () => [],
+// })
 
 export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
     const st = useSt()
@@ -17,40 +25,53 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                 <>
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Models', {})}
-                        icon={<img style={{ width: '1em', height: '1em' }} src={assets.CivitaiLogo_png}></img>}
-                        shortcut={KEYS.openPage_Models}
+                        icon='cdiExternalCivitai'
+                        localShortcut={KEYS.openPage_Models}
                         label='Civitai (fast and clean)'
                     />
-
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Civitai', {})}
-                        icon={<img style={{ width: '1em', height: '1em' }} src={assets.CivitaiLogo_png}></img>}
-                        shortcut={KEYS.openPage_Civitai}
+                        icon='cdiExternalCivitai'
+                        localShortcut={KEYS.openPage_Civitai}
                         label='Civitai (iframe)'
                     />
 
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Squoosh', {})}
-                        icon={<img style={{ width: '1em', height: '1em' }} src={assets.logos_squoosh_png}></img>}
-                        shortcut={KEYS.openPage_Squoosh}
+                        icon={'cdiExternalSquoosh'}
+                        localShortcut={KEYS.openPage_Squoosh}
                         label='Squoosh'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })}
-                        icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
-                        shortcut={KEYS.openPage_Posemy}
+                        iconClassName='text-red-400'
+                        icon='mdiBrush'
+                        localShortcut={KEYS.openPage_Posemy}
                         label='3d Poser (posemy.art)'
                     />
                     <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
-                        icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
-                        shortcut={KEYS.openPage_Paint}
+                        iconClassName='text-red-400'
+                        icon='mdiBrush'
+                        localShortcut={KEYS.openPage_Paint}
                         label='Minipaint'
                     />
                     <MenuItem
+                        onClick={() =>
+                            st.layout.FOCUS_OR_CREATE('IFrame', {
+                                url: 'https://www.photopea.com/',
+                            })
+                        }
+                        iconClassName='text-red-400'
+                        icon='mdiBrush'
+                        localShortcut={KEYS.openPage_Paint}
+                        label='Photopea'
+                    />
+                    <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })}
-                        icon={<span className='material-symbols-outlined text-purple-400'>image_search</span>}
-                        shortcut={KEYS.openPage_Unsplash}
+                        iconClassName='text-purple-400'
+                        icon='mdiImageSearch'
+                        localShortcut={KEYS.openPage_Unsplash}
                         label='Unsplash - Free images'
                     />
                 </>

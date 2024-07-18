@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
-import { CushyFormManager } from '../../controls/FormBuilder'
-import { FormUI } from '../../controls/FormUI'
+import { cushyFactory } from '../../controls/Builder'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
 import { getIconName } from '../../csuite/icons/getAllIcons'
 import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
@@ -22,14 +22,14 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
                     showWidgetMenu: false,
                 }}
             >
-                <FormUI form={FORM_PlaygroundWidgetDisplay} />
+                <FormUI field={FORM_PlaygroundWidgetDisplay} />
             </CSuiteOverride>
-            <FormUI form={FORM_PlaygroundWidgetDisplay} />
+            <FormUI field={FORM_PlaygroundWidgetDisplay} />
         </Fragment>
     )
 })
 
-export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
+export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
     (ui) => {
         const booleanForm = {
             check: ui.bool({}),
@@ -140,6 +140,8 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
                         items: {
                             stringLive: ui.string({}),
                             stringBuffered: ui.string({ buffered: true }),
+                            stringLiveTextarea: ui.textarea({}),
+                            stringBufferedTextarea: ui.textarea({ buffered: true }),
                         },
                     }),
                 },
@@ -291,7 +293,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
     },
     {
         name: 'Playground Widget Showcase',
-        initialSerial: () => readJSON('settings/playground_form_display.json'),
+        serial: () => readJSON('settings/playground_form_display.json'),
         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
     },
 )

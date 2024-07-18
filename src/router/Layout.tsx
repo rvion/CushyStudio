@@ -1,20 +1,22 @@
 import type { STATE } from '../state/state'
 
 import * as FL from 'flexlayout-react'
-import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
+import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
 import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { createElement, createRef, FC } from 'react'
+import { createElement, createRef, FC, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
+import { getIconAsDataSVG } from '../csuite/icons/iconStr'
+import { Message } from '../csuite/inputs/shims'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
-import { Message } from '../csuite/shims'
 import { Trigger } from '../csuite/trigger/Trigger'
-import { Panel_FullScreenLibrary } from '../panels/Panel_FullScreenLibrary'
+import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
+import { type TraverseFn, traverseLayoutNode } from './Traverse'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -22,9 +24,6 @@ type PerspectiveDataForSelect = {
     label: string
     value: string
 }
-
-type MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
-const MENU_PANE_TABSET_ID: MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
 
 type LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
 const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
@@ -43,28 +42,105 @@ export const uniqueIDByMemoryRef = (x: object): string => {
 }
 
 export class CushyLayoutManager {
-    /** maximize the active(=selected; with focus) tabset */
-    maximizeActiveTabset = (): Trigger => {
-        const tabset = this.model.getActiveTabset()
-        if (tabset == null) {
-            console.log(`[❌] maximizeActiveTabset: tabset is null`)
-            return Trigger.UNMATCHED
+    /** the current Flexlayout Model, holding the position of all panels */
+    model!: FlexLayoutModel
+
+    /**
+     * Useful to properly force react component to refresh when switching
+     * between different perspectives
+     */
+    private modelKey = 0
+    private setModel(model: FlexLayoutModel): void {
+        this.model = model
+        this.modelKey++
+    }
+
+    constructor(public st: STATE) {
+        const prevLayout = st.configFile.value.layouts_v12?.default
+        const json = prevLayout ?? this.makeDefaultLayout()
+        try {
+            this.setModel(FlexLayoutModel.fromJson(json))
+        } catch (e) {
+            console.log('[💠] Layout: ❌ error loading layout', e)
+            this.setModel(FlexLayoutModel.fromJson(this.makeDefaultLayout()))
         }
-        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        makeAutoObservable(this, {
+            layoutRef: false,
+            FOCUS_OR_CREATE: action,
+        })
+    }
+
+    /** pretty print model layout as json  */
+    prettyPrintLayoutModel(): void {
+        console.log(`[💠] model:`, JSON.stringify(this.model.toJson(), null, 4))
+    }
+
+    /** quick method to maximize a tabset */
+    _maximizeToggle(tabsetNodeID: string): Trigger {
+        return this._doAction(Actions.maximizeToggle(tabsetNodeID))
+    }
+
+    /** wrap model.doAction, and return Trigger.Success */
+    _doAction(action: FL.Action): Trigger {
+        this.model.doAction(action)
         return Trigger.Success
     }
 
-    /** maximize the tabset under the mouse */
-    maximizHoveredTabset = (): Trigger => {
-        const tabset = this.hoveredTabset
+    /** utility to apply a function on the active tabset */
+    _withActiveTabset<Ret extends any>(fn: (tabset: FL.TabSetNode) => Ret): Ret | Trigger {
+        const tabset: FL.TabSetNode | undefined = this.getActiveOrFirstTabset_orThrow()
+        return fn(tabset)
+    }
+
+    /** utility to apply a function on the hovered tabset */
+    _withHoveredTabset<Ret extends any>(fn: (tabset: FL.TabSetNode) => Ret): Ret | Trigger {
+        const tabset: Maybe<FL.TabSetNode> = this.hoveredTabset
         if (tabset == null) {
             console.log(`[❌] maximizHoveredTabset: tabset is null`)
             return Trigger.UNMATCHED
         }
-        this.model.doAction(Actions.maximizeToggle(tabset.getId()))
+        return fn(tabset)
+    }
+
+    /** utility to apply a function on the whole layout */
+    _withLayout<Ret extends any>(fn: (layout: Layout) => Ret): Ret | Trigger {
+        const layout: FL.Layout | null = this.layoutRef.current
+        if (layout == null) {
+            console.log(`[❌] _withLayout: layout is null`)
+            return Trigger.UNMATCHED
+        }
+        return fn(layout)
+    }
+
+    /** close all tabs currently open */
+    closeAllTabs(): Trigger {
+        let tabset = this.getActiveOrFirstTabset_orNull()
+        if (tabset == null) return Trigger.UNMATCHED
+        while (tabset != null) {
+            this._doAction(Actions.deleteTabset(tabset.getId()))
+            tabset = this.getActiveOrFirstTabset_orNull()
+        }
         return Trigger.Success
     }
 
+    closeCurrentTabset(): Trigger {
+        let tabset = this.getActiveOrFirstTabset_orNull()
+        if (tabset == null) return Trigger.UNMATCHED
+        this._doAction(Actions.deleteTabset(tabset.getId()))
+        return Trigger.Success
+    }
+
+    /** maximize the active(=selected; with focus) tabset */
+    maximizeActiveTabset(): Trigger {
+        return this._withActiveTabset((tabset) => this._maximizeToggle(tabset.getId()))
+    }
+
+    /** maximize the tabset under the mouse */
+    maximizHoveredTabset = (): Trigger => {
+        return this._withHoveredTabset((tabset) => this._maximizeToggle(tabset.getId()))
+    }
+
+    /** access hovered tabset */
     get hoveredTabset(): Maybe<FL.TabSetNode> {
         // get hovered tab
         const hoveredTab = this.hoveredTab
@@ -81,6 +157,7 @@ export class CushyLayoutManager {
         return tabSet as FL.TabSetNode
     }
 
+    /** access hovered tab */
     get hoveredTab(): Maybe<FL.TabNode> {
         const tabNodeID = cushy.region.hoveredPanel
         if (tabNodeID == null) return null
@@ -90,22 +167,31 @@ export class CushyLayoutManager {
         return tabNode as FL.TabNode
     }
 
-    model!: Model
-    private modelKey = 0
-    setModel = (model: Model) => {
-        this.model = model
-        this.modelKey++
-    }
+    // PERSPECTIVE SYSTEM --------------------------------------------------------------
+    /**
+     * currently active perspective name
+     * DO NOT UPDATE THAT MANUALLY
+     */
     currentPerspectiveName = 'default'
+
     allPerspectives: PerspectiveDataForSelect[] = [
-        //
         { label: 'default', value: 'default' },
         { label: 'test', value: 'test' },
     ]
 
-    saveCurrent = () => this.saveCurrentAs(this.currentPerspectiveName)
-    saveCurrentAsDefault = () => this.saveCurrentAs('default')
-    saveCurrentAs = (perspectiveName: string) => {
+    /**
+     * update the currently selected perspective to the current layout
+     * allow to easilly revert to this specific set of panels later
+     */
+    saveCurrentPerspective(): void {
+        return this.saveCurrentPerspectiveAs(this.currentPerspectiveName)
+    }
+
+    saveCurrentPerspectiveAsDefault(): void {
+        return this.saveCurrentPerspectiveAs('default')
+    }
+
+    saveCurrentPerspectiveAs(perspectiveName: string): void {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
             t.layouts_v12 ??= {}
@@ -113,42 +199,33 @@ export class CushyLayoutManager {
         })
     }
 
-    resetCurrent = (): void => this.reset(this.currentPerspectiveName)
-    resetDefault = (): void => this.reset('default')
-    reset = (perspectiveName: string): void => {
+    resetCurrent(): void {
+        this.reset(this.currentPerspectiveName)
+    }
+
+    resetDefault(): void {
+        this.reset('default')
+    }
+
+    reset(perspectiveName: string): void {
         this.st.configFile.update((t) => {
             t.layouts_v12 ??= {}
             delete t.layouts_v12[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
-            this.setModel(Model.fromJson(this.build()))
+            this.setModel(FlexLayoutModel.fromJson(this.makeDefaultLayout()))
         }
     }
 
-    constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v12?.default
-        const json = prevLayout ?? this.build()
-        try {
-            this.setModel(Model.fromJson(json))
-        } catch (e) {
-            console.log('[💠] Layout: ❌ error loading layout', e)
-            // ⏸️ console.log('[💠] Layout: ❌ resetting layout')
-            // ⏸️ this.st.configFile.update((t) => (t.perspectives = {}))
-            this.setModel(Model.fromJson(this.build()))
-            // this.setModel(Model.fromJson({ layout: { type: 'row', children: [] } }))
-        }
-        makeAutoObservable(this, { layoutRef: false, FOCUS_OR_CREATE: action })
-    }
-
-    layoutRef = createRef<Layout>()
-    updateCurrentTab = (p: Partial<FL.TabNode>) => {
+    layoutRef: RefObject<FL.Layout> = createRef<Layout>()
+    updateCurrentTab(p: Partial<FL.TabNode>): void {
         const tab = this.currentTab
         if (tab == null) return
         this.model.doAction(Actions.updateNodeAttributes(tab.getId(), p))
     }
 
-    isVisible = (component: PanelNames): boolean => {
-        const node = this.findTabsFor(component)
+    isPanelVisible(panelName: PanelNames): boolean {
+        const node = this.findTabsFor(panelName)
         const tab = node[0]
         if (tab == null) return false
         return tab.tabNode.isVisible()
@@ -157,10 +234,106 @@ export class CushyLayoutManager {
     currentTabSet: Maybe<FL.TabSetNode> = null
     currentTab: Maybe<FL.Node> = null
     currentTabID: Maybe<string> = null
+
+    private _isTabset(node: FL.Node): node is FL.TabSetNode {
+        return node.getType() === 'tabset'
+    }
+
+    moveActiveTabToRight = (): Trigger => {
+        // 1. get tabset
+        const surroundings = this.getTabsetSurroundings()
+        if (surroundings == null) return Trigger.UNMATCHED
+        const tabset = surroundings.curr
+
+        // 2. get tab
+        const tabIx = tabset.getSelected()
+        if (tabIx == null) return toastError('No active tab')
+        const tab = tabset.getChildren()[tabIx]
+        if (tab == null) return toastError('No active tab')
+        const tabID = tab.getId()
+
+        if (surroundings.next == null) {
+            // 3. move tab into split
+            this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.RIGHT, -1))
+            this.prettyPrintLayoutModel()
+            return Trigger.Success
+        } else {
+            // 3. move tab to right tabset
+            this.model.doAction(Actions.moveNode(tabID, surroundings.next.getId(), FL.DockLocation.CENTER, -1))
+            this.prettyPrintLayoutModel()
+            return Trigger.Success
+        }
+    }
+
+    moveActiveTabToLeft = (): Trigger => {
+        // 1. get tabset
+        const surroundings = this.getTabsetSurroundings()
+        if (surroundings == null) return Trigger.UNMATCHED
+        const tabset = surroundings.curr
+
+        // 2. get tab
+        const tabIx = tabset.getSelected()
+        if (tabIx == null) return toastError('No active tab')
+        const tab = tabset.getChildren()[tabIx]
+        if (tab == null) return toastError('No active tab')
+        const tabID = tab.getId()
+
+        if (surroundings.prev == null) {
+            // 3. move tab into split
+            this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.LEFT, -1))
+            this.prettyPrintLayoutModel()
+            return Trigger.Success
+        } else {
+            // 3. move tab to left split
+            this.model.doAction(Actions.moveNode(tabID, surroundings.prev.getId(), FL.DockLocation.CENTER, -1))
+            this.prettyPrintLayoutModel()
+            return Trigger.Success
+        }
+    }
+
+    getTabsetSurroundings = (): Maybe<{
+        row: FL.RowNode
+        curr: FL.TabSetNode
+        prev: Maybe<FL.TabSetNode>
+        next: Maybe<FL.TabSetNode>
+    }> => {
+        const tabset = this.getActiveOrFirstTabset_orThrow()
+
+        const parent = tabset.getParent()
+        if (parent == null) return void toastError('tabset has no parent')
+        if (parent.getType() !== 'row') return void toastError(`parent is a '${parent.getType()}', not a tabset`)
+
+        const children = parent.getChildren()
+        const selfX = children.indexOf(tabset)
+        console.log(`[🤠] children`, `${selfX + 1} / ${children.length}`)
+
+        return {
+            row: parent as FL.RowNode,
+            curr: tabset,
+            prev: children[selfX - 1] as Maybe<FL.TabSetNode>,
+            next: children[selfX + 1] as Maybe<FL.TabSetNode>,
+        }
+        // let next = children[selfX + 1]
+        // if (next == null) {
+        //     console.log(`[🤠] last tabset`)
+        //     this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.LEFT, -1))
+        // } else {
+        //     this.model.doAction(Actions.selectTab(next.getId()))
+        // }
+
+        // return parent as FL.TabSetNode
+    }
+
     UI = observer(() => {
         console.log('[💠] Rendering Layout')
         return (
             <Layout //
+                ref={this.layoutRef}
+                model={this.model}
+                factory={this.factory}
+                /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
+                 * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
+                realtimeResize
                 onAuxMouseClick={(node, event) => {
                     // Middle Mouse to close tab
                     if (event.button == 1 && node instanceof FL.TabNode) {
@@ -169,35 +342,52 @@ export class CushyLayoutManager {
                         }
                     }
                 }}
-                /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
-                 * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
-                realtimeResize
                 onModelChange={(model) => {
                     runInAction(() => {
-                        this.currentTabSet = model.getActiveTabset()
-                        this.currentTab = this.currentTabSet?.getSelectedNode()
+                        const tabset = this.getActiveOrFirstTabset_orThrow()
+                        this.currentTabSet = tabset
+                        this.currentTab = tabset?.getSelectedNode()
                         this.currentTabID = this.currentTab?.getId()
                     })
-                    this.saveCurrentAsDefault()
+                    this.saveCurrentPerspectiveAsDefault()
                 }}
-                ref={this.layoutRef}
-                model={this.model}
-                factory={this.factory}
             />
         )
     })
 
-    nextPaintIDx = 0
-
-    renameTab = (tabID: string, newName: string) => {
+    /** rename tab by ID */
+    renameTab(tabID: string, newName: string): void {
         const tab = this.model.getNodeById(tabID)
         if (tab == null) return
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
+    private _assertTabsetNode_orThrow = (node: FL.Node): FL.TabSetNode => {
+        if (node.getType() !== 'tabset') throw new Error(`[❌] node is not a tabset`)
+        return node as FL.TabSetNode
+    }
+
+    private _assertTabsetNode_orNull = (node: FL.Node): Maybe<FL.TabSetNode> => {
+        if (node.getType() !== 'tabset') return null
+        return node as FL.TabSetNode
+    }
+
+    getActiveOrFirstTabset_orThrow = (): FL.TabSetNode => {
+        return (
+            this.model.getActiveTabset() ?? //
+            this._assertTabsetNode_orThrow(this.model.getFirstTabSet())
+        )
+    }
+
+    getActiveOrFirstTabset_orNull = (): Maybe<FL.TabSetNode> => {
+        return (
+            this.model.getActiveTabset() ?? //
+            this._assertTabsetNode_orNull(this.model.getFirstTabSet())
+        )
+    }
     /** quickly rename the current tab */
-    renameCurrentTab = (newName: string) => {
-        const tabset = this.model.getActiveTabset()
+    renameCurrentTab(newName: string): void {
+        const tabset = this.getActiveOrFirstTabset_orThrow()
         if (tabset == null) return
         const tab = tabset.getSelectedNode()
         if (tab == null) return
@@ -205,49 +395,38 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab = (): Trigger => {
-        if (this.fullPageComp != null) {
-            this.fullPageComp = null
-            return Trigger.Success
-        }
+    closeCurrentTab(): Trigger {
         // 1. find tabset
-        const tabset = this.model.getActiveTabset()
+        const tabset = this.getActiveOrFirstTabset_orThrow()
         if (tabset == null) return Trigger.UNMATCHED
+
         // 2. find active tab
         const tab = tabset.getSelectedNode()
         if (tab == null) return Trigger.UNMATCHED
+
         // 3. close tab
         const tabID = tab.getId()
         this.model.doAction(Actions.deleteTab(tabID))
+
         // 4. focus preview tab in the tabset if it exists
         const prevTab = tabset.getSelectedNode()
         if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
+
         // 5. mark action as success
         return Trigger.Success
     }
 
-    closeTab = (tabID: string) => {
+    closeTab(tabID: string): Trigger {
         const shouldRefocusAfter = this.currentTabID === tabID
         this.model.doAction(Actions.deleteTab(tabID))
         return Trigger.Success
     }
 
-    TOGGLE_FULL = <const K extends PanelNames>(component: K, props: PropsOf<Panels[K]['widget']>) => {
-        if (
-            this.fullPageComp == null || //
-            this.fullPageComp.panel !== component
-        ) {
-            this.fullPageComp = { props: props, panel: component }
-        } else {
-            this.fullPageComp = null
-        }
-    }
-
-    currentHoveredTabIs = <K extends PanelNames>(component: K) => {
+    currentHoveredTabIs<K extends PanelNames>(component: K): boolean {
         return regionMonitor.hoveredRegion?.type === component
     }
 
-    currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {
+    currentTabIs<K extends PanelNames>(component: K): Maybe<Panels[K]['$Props']> {
         const tabPrefix = `/${component}/`
         const current = this.currentTab
         if (current == null) {
@@ -272,7 +451,7 @@ export class CushyLayoutManager {
     ): {
         //
         tabNode: FL.TabNode
-        config: PropsOf<Panels[K]['widget']>
+        config: Panels[K]['$Props']
     }[] => {
         const tabPrefix = `/${component}/`
         const tabs: FL.TabNode[] = []
@@ -291,29 +470,65 @@ export class CushyLayoutManager {
     }
 
     /** practical way to keep a tab properly named (synced with it's content) */
-    syncTabTitle = <const K extends PanelNames>(
+    syncTabTitle<const K extends PanelNames>(
         //
-        component: K,
+        panelName: K,
         props: PropsOf<Panels[K]['widget']>,
         title: string,
-    ) => {
-        const tabID = `/${component}/${hashJSONObjectToNumber(props ?? {})}`
+    ): void {
+        const tabID = `/${panelName}/${hashJSONObjectToNumber(props ?? {})}`
         const tab = this.model.getNodeById(tabID)
         if (tab == null) return
         runInAction(() => {
-            this.model.doAction(Actions.renameTab(tabID, title || component))
+            this.model.doAction(Actions.renameTab(tabID, title || panelName))
+        })
+    }
+    // TRAVERSAL CAPABILITIES --------------------------------------------------------
+
+    /** traverse layout tree from the root */
+    traverse(fns: TraverseFn): void {
+        const root: FL.RowNode = this.model.getRoot()
+        traverseLayoutNode(root, fns)
+    }
+
+    /** traverse layout tree from a specific node */
+    traverseLayoutNode(node: FL.Node, fns: TraverseFn): void {
+        return traverseLayoutNode(node, fns)
+    }
+
+    /** fix all tabs that have negative size */
+    fixTabsWithNegativeArea(): void {
+        const root: FL.RowNode = this.model.getRoot()
+        const minHeight = 100
+        const minWidth = 100
+        traverseLayoutNode(root, {
+            onNode1: (node): undefined => {
+                // console.log(`[🤠] `, node.getId(), node.getType(), node.getRect())
+                const rect = node.getRect()
+                if (rect.width < minWidth) {
+                    console.log(`[🔴] invalid ${node.getType()} width`, JSON.stringify(node.toJson(), null, 4))
+                    // this._doAction(Actions.)
+                }
+                if (rect.height < minHeight) {
+                    console.log(`[🔴] invalid ${node.getType()} height`, JSON.stringify(node.toJson(), null, 4))
+                }
+                return
+            },
         })
     }
 
+    // CREATION --------------------------------------------------------
     FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
         panelName: PanelName,
         panelProps: PropsOf<Panels[PanelName]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
-        if (where === 'full') {
-            this.TOGGLE_FULL(panelName, panelProps)
-            return null
-        }
+        console.log(`[🤠] `, panelName, panelProps)
+        // this.prettyPrintLayoutModel()
+        // if (where === 'full') {
+        //     this.TOGGLE_FULL(panelName, panelProps)
+        //     return null
+        // }
 
         // 1. ensure layout is present
         const currentLayout = this.layoutRef.current
@@ -323,25 +538,26 @@ export class CushyLayoutManager {
         const tabID = `/${panelName}/${hashJSONObjectToNumber(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
+        // console.log(`[🤠] `, { prevTab }, prevTab.getRect())
         // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type
-        const { icon, title } = panels[panelName].header(panelProps as any)
+        const panel = panels[panelName]
+        const { title } = panel.header(panelProps as any)
+        const icon = panel.icon
         if (prevTab == null) {
-            const tabsetIDToAddThePanelTo =
-                where === 'current' //
-                    ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID
-                    : where
+            const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset_orThrow().getId()
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
                 id: tabID,
-                icon: icon,
+                icon: getIconAsDataSVG(icon),
                 name: title,
                 config: panelProps,
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
                 console.log(`[👙] addition:`, addition, { component: panelName, tabID, icon, title, props: panelProps })
+                this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }
         } else {
@@ -355,31 +571,31 @@ export class CushyLayoutManager {
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private _add = <const K extends PanelNames>(p: {
-        //
-        panel: K
-        props: PropsOf<Panels[K]['widget']>
+    private add_<const PN extends PanelNames>(p: {
+        panelName: PN
+        props: PropsOf<Panels[PN]['widget']>
         width?: number
-        minWidth?: number
         canClose?: boolean
-    }): FL.IJsonTabNode => {
-        const { panel, props } = p
-        const id = `/${panel}/${hashJSONObjectToNumber(props ?? {})}`
-        const { icon, title } = panels[panel].header(props as any)
+    }): FL.IJsonTabNode {
+        const { panelName, props } = p
+        const id = `/${panelName}/${hashJSONObjectToNumber(props ?? {})}`
+        const panel = panels[panelName]
+        const { title } = panel.header(props as any)
+        const icon = panel.icon
         return {
             id: id,
             type: 'tab',
             name: title,
             config: props,
-            component: p.panel,
+            component: p.panelName,
             enableClose: p.canClose ?? true,
             enableRename: false,
             enableFloat: false,
-            icon: icon,
+            icon: getIconAsDataSVG(icon),
         }
     }
 
-    build = (): IJsonModel => {
+    makeDefaultLayout = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
                 tabEnableFloat: false,
@@ -393,73 +609,78 @@ export class CushyLayoutManager {
                 //
                 // tabSetEnableSingleTabStretch: true,
             },
-            borders: [
-                // LEFT BORDER
-                // {
-                //     type: 'border',
-                //     // size: 350,
-                //     location: 'left',
-                //     // selected: 0,
-                //     show: true,
-                //     children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
-                //     size: 300,
-                // },
-                // RIGHT BORDER
-                {
-                    type: 'border',
-                    location: 'right',
-                    show: true,
-                    selected: 0,
-                    size: 150,
-                    children: [
-                        //
-                        this._add({ panel: 'Gallery', props: {} }),
-                        this._add({ panel: 'Steps', props: {}, canClose: false }),
-                    ],
-                },
-            ],
+            // borders: [
+            //     // LEFT BORDER
+            //     // {
+            //     //     type: 'border',
+            //     //     // size: 350,
+            //     //     location: 'left',
+            //     //     // selected: 0,
+            //     //     show: true,
+            //     //     children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
+            //     //     size: 300,
+            //     // },
+            //     // RIGHT BORDER
+            //     {
+            //         type: 'border',
+            //         location: 'right',
+            //         show: true,
+            //         selected: 0,
+            //         size: 150,
+            //         children: [
+            //             //
+            //             this._add({ panel: 'Gallery', props: {} }),
+            //             this._add({ panel: 'Steps', props: {}, canClose: false }),
+            //         ],
+            //     },
+            // ],
             layout: {
                 id: 'rootRow',
                 type: 'row',
                 children: [
+                    // {
+                    //     id: 'leftPane',
+                    //     type: 'row',
+                    //     width: 512,
+                    //     children: [
                     {
-                        id: 'leftPane',
-                        type: 'row',
-                        width: 512,
+                        type: 'tabset',
+                        id: LEFT_PANE_TABSET_ID,
+                        minWidth: 150,
+                        minHeight: 150,
+                        // width: 512,
+                        // enableClose: false,
+                        // enableDeleteWhenEmpty: false,
                         children: [
-                            {
-                                type: 'tabset',
-                                id: LEFT_PANE_TABSET_ID,
-                                minWidth: 150,
-                                minHeight: 150,
-                                width: 512,
-                                enableClose: false,
-                                enableDeleteWhenEmpty: false,
-                                children: [this._add({ panel: 'Welcome', props: {}, width: 512 })],
-                                // enableSingleTabStretch: true,
-                            },
+                            //
+                            this.add_({ panelName: 'Welcome', props: {}, width: 512 }),
+                            this.add_({ panelName: 'FullScreenLibrary', props: {}, width: 512 }),
+                            this.add_({ panelName: 'TreeExplorer', props: {}, width: 512 }),
+                        ],
+                        // enableSingleTabStretch: true,
+                    },
+                    //     ],
+                    // },
+                    // {
+                    //     id: 'rightPane',
+                    //     type: 'row',
+                    //     weight: 100,
+                    //     children: [
+                    {
+                        type: 'tabset',
+                        id: RIGHT_PANE_TABSET_ID,
+                        // enableClose: false,
+                        // enableDeleteWhenEmpty: false,
+                        minWidth: 100,
+                        minHeight: 100,
+                        selected: 1,
+                        children: [
+                            this.add_({ panelName: 'Output', props: {}, canClose: false }),
+                            // this._add({ panel: 'Hosts', props: {}, canClose: false }),
                         ],
                     },
-                    {
-                        id: 'rightPane',
-                        type: 'row',
-                        weight: 100,
-                        children: [
-                            {
-                                type: 'tabset',
-                                id: RIGHT_PANE_TABSET_ID,
-                                enableClose: false,
-                                enableDeleteWhenEmpty: false,
-                                minWidth: 100,
-                                minHeight: 100,
-                                selected: 1,
-                                children: [
-                                    this._add({ panel: 'Output', props: {}, canClose: false }),
-                                    // this._add({ panel: 'Hosts', props: {}, canClose: false }),
-                                ],
-                            },
-                        ],
-                    },
+                    //     ],
+                    // },
                 ],
             },
         }
@@ -467,13 +688,11 @@ export class CushyLayoutManager {
         return out
     }
 
-    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_FullScreenLibrary> }> = null
-
     /**
      * @experimental
      * @unstable
      */
-    addCustom = <T extends any>(panel: CustomPanelRef<any, T>, props: T) => {
+    addCustom<T extends any>(panel: CustomPanelRef<any, T>, props: T): void {
         this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
     }
 
@@ -481,13 +700,13 @@ export class CushyLayoutManager {
      * @experimental
      * @unstable
      */
-    addCustomV2 = <T extends any>(fn: FC<T>, props: T) => {
+    addCustomV2<T extends any>(fn: FC<T>, props: T): void {
         const uid = uniqueIDByMemoryRef(fn)
         const panel = registerCustomPanel(uid, fn)
         this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
     }
 
-    factory = (node: FL.TabNode): React.ReactNode => {
+    factory(node: FL.TabNode): React.ReactNode {
         // 1. get panel name
         const panel = node.getComponent() as Maybe<PanelNames>
         if (panel == null)

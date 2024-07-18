@@ -3,17 +3,19 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { BadgeListUI } from '../csuite/badge/BadgeListUI'
 import { Button } from '../csuite/button/Button'
+import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Ikon } from '../csuite/icons/iconHelpers'
+import { InputStringUI } from '../csuite/input-string/InputStringUI'
+import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { formatSize } from '../db/getDBStats'
 import { useSt } from '../state/stateContext'
 import { assets } from '../utils/assets/assets'
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { ImageDropdownUI } from './ImageDropdownUI'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -25,7 +27,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_image.get(p.imageID)
         : st.db.media_image.last()
     const url = img?.url
-    const background = st.galleryConf.root.get('galleryBgColor') ?? undefined
+    const background = st.galleryConf.value.galleryBgColor ?? undefined
 
     const shouldFilter = st.project.filterNSFW
     const safety =
@@ -112,7 +114,17 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
 
             <SpacerUI />
-
+            <InputStringUI
+                icon='mdiTagEdit'
+                getValue={() => img?.data.tags ?? ''}
+                setValue={(next) => {
+                    if (!img) return
+                    img.tags = next
+                }}
+            ></InputStringUI>
+            <div>
+                <BadgeListUI badges={img?.data.tags?.split(',')} onClick={(tag) => img?.removeTag(tag.toString())}></BadgeListUI>
+            </div>
             {/* Image Info Button */}
             <RevealUI
                 tw='hover:brightness-125 rounded text-shadow'
@@ -121,7 +133,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                         <div>Data</div>
                         <JsonViewUI value={img?.data}></JsonViewUI>
                         <div>meta</div>
-                        <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
+                        <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
                         <div>node</div>
                         <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                     </div>
@@ -139,12 +151,12 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                             <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
                         </>
                     ) : null}
-                    {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}
-                    {img?.tags.map((t) => (
+                    {/* {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>} */}
+                    {/* {img?.tags.map((t) => (
                         <div key={t} tw='italic'>
                             #{t}
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </RevealUI>
 

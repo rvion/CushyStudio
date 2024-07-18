@@ -1,10 +1,10 @@
+import type { ITreeElement, ITreeEntry } from '../../../../csuite/tree/TreeEntry'
 import type { DraftL } from '../../../../models/Draft'
 import type { STATE } from '../../../../state/state'
-import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 
+import { TreeNode } from '../../../../csuite/tree/TreeNode'
+import { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
 import { CushyAppL } from '../../../../models/CushyApp'
-import { VirtualFolder } from '../../VirtualHierarchy'
-import { TreeNode } from '../xxx/TreeNode'
 import { TreeApp } from './TreeApp'
 import { TreeAppFolder } from './TreeAppFolders'
 import { TreeDraft } from './TreeDraft'

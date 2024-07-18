@@ -1,4 +1,4 @@
-import type { ITreeEntry } from '../TreeEntry'
+import type { ITreeEntry } from '../../../../csuite/tree/TreeEntry'
 
 import { nanoid } from 'nanoid'
 

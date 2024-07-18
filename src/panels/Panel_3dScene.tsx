@@ -3,7 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
-import { Slider, Toggle } from '../csuite/shims'
+import { InputSliderUI_legacy } from '../csuite/input-slider/Slider'
+import { Toggle } from '../csuite/inputs/shims'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 

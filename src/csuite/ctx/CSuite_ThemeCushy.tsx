@@ -1,12 +1,11 @@
 import type { STATE } from '../../state/state'
-import type { Kolor } from '../kolor/Kolor'
-import type { OKLCH } from '../kolor/OKLCH'
+import type { Tint, TintExt } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
 
-import { getLCHFromString } from '../kolor/getLCHFromString'
-import { run_Kolor } from '../kolor/prefab_Kolor'
+import { Kolor } from '../kolor/Kolor'
+import { run_tint } from '../kolor/prefab_Tint'
 import { NumberVar } from '../tinyCSS/CSSVar'
 
 export class CSuite_ThemeCushy implements CSuiteConfig {
@@ -14,56 +13,79 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         makeAutoObservable(this)
     }
 
-    // form behaviour
-    get clickAndSlideMultiplicator() {
+    get widgetHeight(): number {
+        return this.st.preferences.interface.value.widgetHeight ?? 1.8
+    }
+
+    get clickAndSlideMultiplicator(): number {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
-    get showWidgetUndo() {
-        return this.st.theme.value.showWidgetUndo ?? true
+
+    get showWidgetUndo(): boolean {
+        return this.st.preferences.interface.value.showWidgetUndo ?? true
     }
-    get showWidgetMenu() {
-        return this.st.theme.value.showWidgetMenu ?? true
+
+    get showWidgetMenu(): boolean {
+        return this.st.preferences.interface.value.showWidgetMenu ?? true
     }
-    get showWidgetDiff() {
-        return this.st.theme.value.showWidgetDiff ?? true
+
+    get showWidgetDiff(): boolean {
+        return this.st.preferences.interface.value.showWidgetDiff ?? true
     }
-    get showToggleButtonBox() {
-        return this.st.theme.value.showToggleButtonBox ?? false
+
+    get showToggleButtonBox(): boolean {
+        return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
+
+    get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
+        const x = this.st.theme.value.labelLayout
+        if (x.id === 'fluid') return 'fluid'
+        if (x.id === 'left') return 'fixed-left'
+        if (x.id === 'right') return 'fixed-right'
+        return 'fixed-right'
+    }
+
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
-    get inputHeight() {
-        return this.st.theme.value.inputHeight ?? 1.6
+
+    get inputHeight(): number {
+        return this.st.preferences.interface.value.inputHeight ?? 1.6
     }
     // theme
-    get baseStr() {
+
+    get baseStr(): string {
         return this.st.theme.root.value.base
     }
-    get base(): OKLCH {
-        return getLCHFromString(this.baseStr)
+
+    get base(): Kolor {
+        return Kolor.fromString(this.baseStr)
     }
-    get shiftDirection() {
+
+    get shiftDirection(): 1 | -1 {
         return this.base.lightness > 0.5 ? -1 : 1
     }
-    get text(): Kolor {
-        return run_Kolor(this.st.theme.value.text)
+
+    labelBackground: TintExt = 3 // {}
+
+    get text(): Tint {
+        return run_tint(this.st.theme.value.text)
     }
 
-    inputBorder = new NumberVar(
-        //
-        'input-border',
-        () => (this.st.theme.value.border ?? 20) / 100,
-    )
+    inputBorder = new NumberVar('input-border', () => (this.st.theme.value.border ?? 20) / 100)
 
-    get labelText(): Kolor | undefined {
+    get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel
         if (raw == null) return undefined
-        return run_Kolor(raw)
+        return run_tint(raw)
     }
 
-    // get value(): THEME {
-    //     return {
-    //         ...defaultDarkTheme,
-    //     }
-    // }
+    get fieldGroups(): {
+        border: Maybe<number>
+        contrast: Maybe<number>
+    } {
+        return {
+            border: this.st.theme.value.fieldGroups?.border,
+            contrast: this.st.theme.value.fieldGroups?.contrast,
+        }
+    }
 }

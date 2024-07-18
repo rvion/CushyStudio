@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { FormUI } from '../../controls/FormUI'
-import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { FormUI } from '../../csuite/form/FormUI'
+import { FormHelpTextUI } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { FormHelpTextUI } from '../../csuite/shims'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
-import { PanelHeaderUI } from '../PanelHeader'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
 

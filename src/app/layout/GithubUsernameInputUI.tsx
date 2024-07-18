@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { Tag, Whisper } from '../../csuite/shims'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { Tag, Whisper } from '../../csuite/inputs/shims'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 
@@ -13,7 +14,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const st = useSt()
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
-        <div tw='w-auto join virtualBorder'>
+        <div tw='w-auto join'>
             <div tw='flex items-center px-2 join-item'>
                 <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <Whisper
@@ -33,14 +34,12 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                     <div>your github:</div>
                 </Whisper>
             </div>
-            <input
-                tw='cushy-basic-input'
-                value={githubUsername}
+            <InputStringUI
+                tw='csuite-basic-input'
+                icon='mdiGithub'
                 placeholder='your github username'
-                onChange={(ev) => {
-                    st.configFile.update({ githubUsername: ev.target.value })
-                    st.updateTsConfig()
-                }}
+                getValue={() => githubUsername}
+                setValue={(next) => void st.configFile.update({ githubUsername: next })}
             />
         </div>
     )

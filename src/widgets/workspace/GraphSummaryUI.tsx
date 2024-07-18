@@ -2,8 +2,8 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
+import { ProgressLine, Surface } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { ProgressLine, Surface } from '../../csuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'

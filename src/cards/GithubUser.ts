@@ -13,7 +13,7 @@ export type GithubUserData = {
     }
 }
 export type GithubUserName = Branded<string, { GithubUserName: true }>
-export const asGithubUserName = (s: string) => s as GithubUserName
+export const asGithubUserName = (s: string): GithubUserName => s as GithubUserName
 
 export class GithubUser {
     static cache = new Map<string, GithubUser>()
@@ -61,15 +61,17 @@ export class GithubUser {
 
     // --------------------------------------------------------------------------------
     private githubUserAvatarRelPath = `.cushy/github/${this.username}/avatar.png`
-    get localAvatarURL() {
+    get localAvatarURL(): string {
         return `file://${this.st.resolveFromRoot(asRelativePath(this.githubUserAvatarRelPath))}`
     }
-    get avatarURL() {
+    get avatarURL(): string | undefined {
         return this.data?.json.avatar_url
     }
 
     private _downloadImageRequested = false
-    downloadImage = async () => {
+
+    /** download github avatar image */
+    private async downloadImage(): Promise<void> {
         if (this.isFake) return
         if (this._downloadImageRequested) return
         this._downloadImageRequested = true

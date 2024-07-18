@@ -9,6 +9,7 @@ import { useLayoutEffect, useMemo } from 'react'
 import { Button } from '../csuite/button/Button'
 import { knownOKLCHHues } from '../csuite/tinyCSS/knownHues'
 import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
+import { FPath } from '../models/PathObj'
 import { CUSHY_PORT } from '../state/PORT'
 import { useSt } from '../state/stateContext'
 
@@ -93,8 +94,8 @@ class MinipaintState {
         console.log(`${data.length} bytes`)
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
-            const relPath = `outputs/minipaint/${this.fileNameWithExt}`
-            void createMediaImage_fromBlobObject(this.st, blob, relPath)
+            const fpath = new FPath(`outputs/minipaint/${this.fileNameWithExt}`)
+            void createMediaImage_fromBlobObject(blob, fpath)
         })
     }
 }
@@ -126,7 +127,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         Save
                     </Button>
                     <Button
-                        tw={['btn btn-sm virtualBorder self-start', uist.autoSave ? 'btn-active' : null]}
+                        tw={['btn btn-sm self-start', uist.autoSave ? 'btn-active' : null]}
                         icon='mdiRepeat'
                         loading={Boolean(uist.autoSave)}
                         onClick={() => uist.toggleAutoSave()}
@@ -138,7 +139,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                         <input
                             onChange={(ev) => (uist.fileName = ev.target.value)}
                             value={uist.fileName}
-                            tw='cushy-basic-input'
+                            tw='csuite-basic-input'
                             type='text'
                         />
                         .png

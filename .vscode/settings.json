@@ -17,7 +17,7 @@
 
     // lint options
     "css.lint.unknownAtRules": "ignore",
-    "tailwindCSS.classAttributes": ["class", "className", "tw"],
+    "tailwindCSS.classAttributes": ["class", "className", "tw", "iconClassName"],
 
     // // Custom colors
     // "peacock.color": "#0b4867",
@@ -88,7 +88,7 @@
 
     // perf
     "typescript.tsserver.maxTsServerMemory": 8000
-    // "typescript.tsserver.nodePath": ".cushy/node/v18.19.0-darwin-arm64/bin/node",
+    // "typescript.tsserver.nodePath": ".cushy/node/v20.14.0-darwin-arm64/bin/node",
     // "editor.inlayHints.enabled": "off"
     // "editor.semanticHighlighting.enabled": false,
 

@@ -16,8 +16,6 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const border = csuite.inputBorder
     return (
         <Frame /* Container/Root */
-            base={{ contrast: 0.05 }}
-            hover
             tabIndex={-1}
             tw={['SelectUI minh-input', 'flex flex-1 items-center relative']}
             border={{ contrast: border }}
@@ -32,9 +30,14 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     s.openMenu()
                 }
             }}
-            onBlur={s.onBlur}
+            onBlur={(ev) => s.onBlur(ev)}
         >
-            <div className='flex-1 h-full '>
+            <Frame
+                //
+                base={{ contrast: csuite.inputContrast ?? 0.05 }}
+                hover
+                className='flex-1 h-full '
+            >
                 <div // ANCHOR
                     tabIndex={-1}
                     tw={[
@@ -77,15 +80,14 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         ref={s.inputRef}
                         onChange={s.handleInputChange}
                         style={{ opacity: s.isOpen ? 1 : 0 }}
-                        tw={['cushy-basic-input', 'w-full h-full !outline-none']}
+                        tw={['csuite-basic-input', 'w-full h-full !outline-none']}
                         type='text'
                         value={s.searchQuery}
                     />
                 </div>
-
-                {/* TOOLTIP */}
-                {s.isOpen && <SelectPopupUI showValues={!p.wrap} s={s} />}
-            </div>
+            </Frame>
+            {/* TOOLTIP */}
+            {(s.isOpen || false) && <SelectPopupUI showValues={!p.wrap} s={s} />}
         </Frame>
     )
 })

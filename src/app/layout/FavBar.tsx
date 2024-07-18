@@ -7,11 +7,11 @@ import { fileURLToPath } from 'url'
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
-import { CachedResizedImage } from '../../csuite/CachedResizedImageUI'
 import { Frame } from '../../csuite/frame/Frame'
+import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
-import { PanelHeaderUI } from '../../panels/PanelHeader'
 import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?
@@ -228,7 +228,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         tw='flex rounded pb-2'
                     >
                         <input
-                            tw='cushy-basic-input w-full rounded-r-none'
+                            tw='csuite-basic-input w-full rounded-r-none'
                             value={filterText}
                             onChange={(ev) => setFilterText(ev.currentTarget.value)}
                             placeholder='Filter Drafts'

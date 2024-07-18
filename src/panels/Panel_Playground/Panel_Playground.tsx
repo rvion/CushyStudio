@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { CushyFormManager } from '../../controls/FormBuilder'
-import { FormUI } from '../../controls/FormUI'
+import { cushyFactory } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { FormUI } from '../../csuite/form/FormUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
+import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
@@ -16,13 +17,14 @@ import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = CushyFormManager.form(
+const Header_Playground = cushyFactory.entity(
     (ui) =>
         ui.choice({
             appearance: 'tab',
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
+                forms: ui.group(),
                 customPanels: ui.group(),
                 requirements: ui.group(),
                 registeredForms: ui.group(),
@@ -36,7 +38,7 @@ const Header_Playground = CushyFormManager.form(
         }),
     {
         name: 'Playground Conf',
-        initialSerial: () => readJSON('settings/playground_config.json'),
+        serial: () => readJSON('settings/playground_config.json'),
         onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
     },
 )
@@ -71,6 +73,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
             {/* {mode.requirements && <PlaygroundRequirementsHeader />} */}
             <ErrorBoundaryUI>
                 {/* 👇 PLAYGROUND HERE */}
+                {mode.forms && <PlaygroundForms />}
                 {mode.requirements && <PlaygroundRequirements />}
                 {mode.registeredForms && <PlaygroundRegisteredForms />}
                 {mode.widgetShowcase && <PlaygroundWidgetDisplay />}

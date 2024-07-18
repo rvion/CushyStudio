@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { SpacerUI } from '../csuite/components/SpacerUI'
+import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
 import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
 import { TargetBox } from '../importers/TargetBox'
 import { useSt } from '../state/stateContext'
-import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {
     const st = useSt()
@@ -30,7 +30,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                         <div tw='card-title'>Imported file</div>
                         <div tw='italic text-sm'>"{file.name}"</div>
                         <ul>
-                            <li tw='virtualBorder'>
+                            <li>
                                 as workflow:
                                 <ImportedFileUI key={file.name} file={file} />
                             </li>
@@ -50,7 +50,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
             ) : (
                 <></>
             )}
-            {/* <div tw='relative w-96 h-96 virtualBorder'>
+            {/* <div tw='relative w-96 h-96'>
                 <TargetBox />
             </div> */}
         </div>

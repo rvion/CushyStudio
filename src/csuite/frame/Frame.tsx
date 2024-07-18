@@ -1,42 +1,29 @@
-// HIGH LEVEL THEME-DEFINED BOX STYLES
-// everything is boxes,
-// but lot of boxes have similar styles
-// and lot of behaviours (beeing pressed, beeing active)
-// need to slightly ajust those styles
-// frame offer a semantic vocabulary to define look and feel of
-// any surface at a higher level than the Box API.
-// you can always specify BOX api directly if you need more control
-// the frame will merge the low level api on top of the compiled style from
-// the high level api
-
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
+import type { Kolor } from '../kolor/Kolor'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, useContext, useState } from 'react'
+import { forwardRef, type MouseEvent, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
-import { applyKolorToOKLCH } from '../kolor/applyRelative'
-import { formatOKLCH } from '../kolor/formatOKLCH'
-import { isSameOKLCH, type OKLCH } from '../kolor/OKLCH'
-import { overrideKolor } from '../kolor/overrideKolor'
-import { overrideKolorsV2 } from '../kolor/overrideKolorsV2'
+import { overrideTint } from '../kolor/overrideTint'
+import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
-// import { hashKolor } from '../box/compileBoxClassName'
-// import { compileKolorToCSSExpression } from '../kolor/compileKolorToCSSExpression'
-// import { addRule, hasRule } from '../tinyCSS/compileOrRetrieveClassName'
 import { frameTemplates } from './FrameTemplates'
+import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
     tooltip?: string
+    tooltipPlacement?: RevealPlacement
 
     /** allow to pretend the frame is hovered */
-    hovered?: boolean | undefined
+    hovered?: (reallyHovered: boolean) => boolean | undefined
 
     // logic --------------------------------------------------
     /** TODO: */
@@ -60,16 +47,6 @@ export type FrameProps = {
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
-
-// ----------------------------------------------------------------------
-// 2024-06-10 rvion:
-// TODO:
-//  ❌ we can't compile hover with the same name as non hover sadly;
-//  🟢 but we can add both classes directly
-//  🟢 we could also probably debounce class compilation
-//  🟢 and auto-clean classes
-//  🟢 and have some better caching mechanism so we don't have to normalize colors
-//     nor do anything extra when the input does change
 
 // ------------------------------------------------------------------
 // quick and dirty way to configure frame to use either style or className
@@ -96,7 +73,7 @@ export const Frame = observer(
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
-            tooltip,
+            tooltip, tooltipPlacement,
 
             // remaining properties
             ...rest
@@ -107,7 +84,7 @@ export const Frame = observer(
         const prevCtx = useContext(CurrentStyleCtx)
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
-        const hovered = hovered__ ?? hovered_
+        const hovered = hovered__ ? hovered__(hovered_) : hovered_
         const variables: { [key: string]: string | number } = {}
 
         // 👉 2024-06-12 rvion: we should probably be able to
@@ -118,18 +95,13 @@ export const Frame = observer(
         // | + hovered
         // | + look
 
+        const dir = prevCtx.dir
         const template = look != null ? frameTemplates[look] : undefined
-        let KBase: OKLCH = applyKolorToOKLCH(
-            prevCtx.base,
-            overrideKolorsV2(
-                //
-                template?.base,
-                box.base,
-                disabled && { lightness: prevCtx.base.lightness },
-            ),
-        )
+        const baseTint = overrideTintV2(template?.base, box.base, disabled && { lightness: prevCtx.base.lightness })
+        let KBase: Kolor = prevCtx.base.tintBg(baseTint, dir)
         if (hovered && !disabled && box.hover) {
-            KBase = applyKolorToOKLCH(KBase, box.hover)
+            // console.log(`[🤠] box.hover`, box.hover, { contrast: 0.08 })
+            KBase = KBase.tintBg(/* { contrast: 0.06 } */ box.hover, dir)
         }
 
         // ===================================================================
@@ -137,8 +109,8 @@ export const Frame = observer(
         if (look != null) {
             const template = frameTemplates[look]
             // 🔶 if (template.base) realBase = overrideKolor(template.base, realBase)
-            if (template.border) box.border = overrideKolor(template.border, box.border)
-            if (template.text) box.text = overrideKolor(template.text, box.text)
+            if (template.border) box.border = overrideTint(template.border, box.border)
+            if (template.text) box.text = overrideTint(template.text, box.text)
         }
 
         // MODIFIERS
@@ -154,41 +126,57 @@ export const Frame = observer(
 
         // ===================================================================
         // DIR
-        const nextLightness = KBase.lightness
-        const _goingTooDark = prevCtx.dir === 1 && nextLightness > 0.7
-        const _goingTooLight = prevCtx.dir === -1 && nextLightness < 0.45
+        const _goingTooDark = prevCtx.dir === 1 && KBase.lightness > 0.7
+        const _goingTooLight = prevCtx.dir === -1 && KBase.lightness < 0.45
         const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
         if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
         // BACKGROUND
-        if (!isSameOKLCH(prevCtx.base, KBase)) variables['--KLR'] = formatOKLCH(KBase)
-        if (box.shock) variables.background = formatOKLCH(applyKolorToOKLCH(KBase, box.shock))
-        else variables.background = formatOKLCH(KBase)
+        if (!prevCtx.base.isSame(KBase)) variables['--KLR'] = KBase.toOKLCH()
+        if (box.shock) variables.background = KBase.tintBg(box.shock, dir).toOKLCH()
+        else variables.background = KBase.toOKLCH()
 
         // TEXT
-        const nextext = overrideKolor(prevCtx.text, box.text)!
+        const nextext = overrideTint(prevCtx.text, box.text)!
         const boxText = box.text ?? prevCtx.text
-        if (boxText != null) variables.color = formatOKLCH(applyKolorToOKLCH(KBase, boxText))
+        if (boxText != null) variables.color = KBase.tintFg(boxText).toOKLCH()
 
         // TEXT-SHADOW
-        if (box.textShadow) variables.textShadow = `0px 0px 2px ${formatOKLCH(applyKolorToOKLCH(KBase, box.textShadow))}`
+        if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
         // BORDER
-        if (box.border) variables.border = `1px solid ${formatOKLCH(applyKolorToOKLCH(KBase, box.border))}`
+        if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 
         // ===================================================================
-        let _onMouseOver: any = undefined
-        let _onMouseOut: any = undefined
-        if (p.hover != null) {
-            _onMouseOver = () => setHovered(true)
-            _onMouseOut = () => setHovered(false)
+        const _onMouseOver = (ev: MouseEvent) => {
+            // console.log(`[🤠] hover`, ev.currentTarget)
+            if (p.hover != null) setHovered(true)
+            if (p.tooltip != null)
+                tooltipStuff.tooltip = {
+                    ref: ev.currentTarget,
+                    text: p.tooltip ?? 'test',
+                    placement: tooltipPlacement ?? 'bottom',
+                }
+        }
+
+        const _onMouseOut = (ev: MouseEvent) => {
+            if (p.hover != null) setHovered(false)
+            if (
+                p.tooltip != null && //
+                tooltipStuff.tooltip?.ref === ev.currentTarget
+            ) {
+                tooltipStuff.tooltip = null
+            }
         }
 
         // ===================================================================
         return (
             <div //
                 ref={ref}
-                title={tooltip}
+                // 📋 tooltip is now handled by csuite directly
+                // | no need to rely on the browser's default tooltip
+                // | // title={tooltip}
+
                 onMouseOver={_onMouseOver}
                 onMouseOut={_onMouseOut}
                 tw={[

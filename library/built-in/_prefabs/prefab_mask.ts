@@ -1,10 +1,25 @@
-import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Builder } from '../../../src/controls/Builder'
+import type { SchemaDict } from '../../../src/csuite'
+import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
-export const ui_mask = () => {
-    const form: FormBuilder = getCurrentForm()
+export type UI_Mask = X.XChoice<{
+    noMask: X.XGroup<SchemaDict>
+    mask: X.XGroup<{
+        image: X.XImage
+        mode: X.XEnum<Enum_LoadImageMask_channel>
+        invert: X.XBool
+        grow: X.XNumber
+        feather: X.XNumber
+        preview: X.XBool
+    }>
+}>
+
+export function ui_mask(): UI_Mask {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
+        icon: 'mdiDominoMask',
         label: 'Mask',
         default: 'noMask',
         // box: { base: { hue: 20, chroma: 0.03 } },
@@ -27,12 +42,18 @@ export const ui_mask = () => {
     })
 }
 
-export const run_mask = async (x: OutputFor<typeof ui_mask>): Promise<HasSingle_MASK | null> => {
+export async function run_mask(
+    //
+    x: OutputFor<typeof ui_mask>,
+    imageOverride?: Maybe<MediaImageL>,
+): Promise<HasSingle_MASK | null> {
     const p = x.mask
     if (p == null) return null
 
     const graph = getCurrentRun().nodes
-    let mask: _MASK = await p.image.loadInWorkflowAsMask(p.mode)
+
+    let mask: _MASK = await (imageOverride ?? p.image).loadInWorkflowAsMask(p.mode)
+
     if (p.invert) mask = graph.InvertMask({ mask: mask })
     if (p.grow) mask = graph.GrowMask({ mask: mask, expand: p.grow })
     if (p.feather)

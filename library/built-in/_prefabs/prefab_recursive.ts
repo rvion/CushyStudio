@@ -1,5 +1,15 @@
 // UI -----------------------------------------------------------
-export const ui_recursive = () => {
+
+export type UI_recursive = X.XOptional<
+    X.XGroup<{
+        cfg: X.XNumber
+        loops: X.XNumber
+        denoise: X.XNumber
+        steps: X.XNumber
+    }>
+>
+
+export function ui_recursive(): UI_recursive {
     const form = getCurrentForm()
     return form
         .fields({

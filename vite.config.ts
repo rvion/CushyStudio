@@ -24,7 +24,7 @@ export default defineConfig({
     // publicDir: 'library',
     plugins: [
         // dynamicModulePlugin(),
-        react({ jsxImportSource: 'src/utils/custom-jsx' }),
+        react({ jsxImportSource: 'src/csuite/custom-jsx' }),
         // viteSingleFile(),
     ],
     build: {
@@ -42,7 +42,6 @@ export default defineConfig({
                 //
                 '**/library/**/*.ts',
                 '**/library/**/*.tsx',
-                '**/tsconfig.custom.json',
                 '**/tsconfig.json',
 
                 // find which one to keep later

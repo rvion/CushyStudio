@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
-import { useSt } from '../../state/stateContext'
 import { Ikon } from '../../csuite/icons/iconHelpers'
+import { useSt } from '../../state/stateContext'
 
 export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
@@ -20,18 +20,11 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
             title={'View'} //`${layout}`}
             content={() => (
                 <>
-                    <MenuItem
-                        onClick={draft.collapseTopLevelFormEntries}
-                        // icon={<span className='material-symbols-outlined'>unfold_less</span>}
-                    >
+                    <MenuItem icon='mdiArrowCollapseVertical' onClick={() => draft.collapseTopLevelFormEntries()}>
                         <Ikon.mdiArrowCollapseVertical />
                         Collapse top level entries
                     </MenuItem>
-                    <MenuItem
-                        onClick={draft.expandTopLevelFormEntries}
-                        // icon={<span className='material-symbols-outlined'>unfold_more</span>}
-                    >
-                        <Ikon.mdiArrowExpandVertical />
+                    <MenuItem icon='mdiArrowExpandVertical' onClick={() => draft.expandTopLevelFormEntries()}>
                         Expand top level entries
                     </MenuItem>
                     <MenuDividerUI_ />

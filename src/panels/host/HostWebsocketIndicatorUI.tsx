@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
+import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { Message } from '../../csuite/shims'
 import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
@@ -70,12 +70,8 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
                 <div>
                     Logs:
                     <div className='join'>
-                        <div onClick={() => host.enableServerLogs()} className='btn btn-sm'>
-                            On
-                        </div>
-                        <div onClick={() => host.enableServerLogs()} className='btn btn-sm'>
-                            Off
-                        </div>
+                        <Button onClick={() => host.enableServerLogs()}>On</Button>
+                        <Button onClick={() => host.enableServerLogs()}>Off</Button>
                     </div>
                 </div>
                 {p.host.serverLogs.toReversed().map((l) => {

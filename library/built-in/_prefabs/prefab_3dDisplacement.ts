@@ -3,10 +3,21 @@ import type { OutputFor } from './_prefabs'
 
 import { exhaust } from '../../../src/csuite/utils/exhaust'
 
-export const ui_3dDisplacement = () => {
+export type UI_3dDisplacement = X.XGroup<{
+    normal: X.XSelectOne<{ id: 'MiDaS' } | { id: 'BAE' } | { id: 'None' }>
+    depth: X.XChoice<{
+        MiDaS: X.XEmpty
+        Zoe: X.XEmpty
+        LeReS: X.XEmpty
+        Marigold: ReturnType<X.Builder['auto']['MarigoldDepthEstimation']>
+    }>
+}>
+
+export function ui_3dDisplacement(): UI_3dDisplacement {
     const form = getCurrentForm()
     return form
         .group({
+            icon: 'mdiRotate3d',
             items: {
                 normal: form.selectOne({
                     tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
@@ -17,9 +28,9 @@ export const ui_3dDisplacement = () => {
                     default: 'Marigold',
                     appearance: 'tab',
                     items: {
-                        MiDaS: form.group(),
-                        Zoe: form.group(),
-                        LeReS: form.group(),
+                        MiDaS: form.empty(),
+                        Zoe: form.empty(),
+                        LeReS: form.empty(),
                         Marigold: form.auto.MarigoldDepthEstimation(),
                     },
                 }),
@@ -33,17 +44,17 @@ export const ui_3dDisplacement = () => {
 }
 
 /** to output a 3d displacement map, once images are all ready */
-export const run_Dispacement2 = (startImg: string | MediaImageL) => {
+export function run_Dispacement2(startImg: string | MediaImageL): void {
     const run = getCurrentRun()
     run.output_3dImage({ image: startImg, depth: 'depth', normal: 'normal' })
 }
 
 /** to add subgraph that will produce a depth and normal map */
-export const run_Dispacement1 = (
+export function run_Dispacement1(
     //
     show3d: OutputFor<typeof ui_3dDisplacement>,
     finalImage: _IMAGE,
-) => {
+): void {
     const run = getCurrentRun()
     const graph = run.nodes
     run.add_previewImage(finalImage).storeAs('base')

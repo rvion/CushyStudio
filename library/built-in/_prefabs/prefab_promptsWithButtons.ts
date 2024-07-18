@@ -1,7 +1,7 @@
 /** by @Vinsi (slightly adapted) */
 
-import type { SchemaDict } from '../../../src/controls/ISpec'
-import type { OutputFor } from '../../local/pony/_prefab_PonyDiffusion'
+import type { SchemaDict } from '../../../src/csuite/model/SchemaDict'
+import type { OutputFor } from '../../local/pony-old/_prefab_PonyDiffusion'
 
 // 📝 2024-06-14 rvion: explicitly adding types is optional;
 // I tend to prefer adding them in built-in prefabs to help
@@ -25,11 +25,12 @@ export type UI_advancedPrompt = X.XList<
     }>
 >
 
-export const ui_advancedPrompt = (): UI_advancedPrompt => {
+export function ui_advancedPrompt(): UI_advancedPrompt {
     const form = getCurrentForm()
     return form.list({
         min: 1,
         layout: 'H',
+        icon: 'mdiBookAlphabet',
         element: () =>
             form.choice({
                 appearance: 'tab',
@@ -88,20 +89,20 @@ export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): str
 
 // Custom function
 
-function camelCaseToReadable(text: string) {
+function camelCaseToReadable(text: string): string {
     return text
         .replace(/([A-Z])/g, ' $1') // insert a space before all capital letters
         .replace(/^./, (str) => str.toUpperCase()) // capitalize the first letter
 }
 
-function getCharacterText(characters: any) {
+function getCharacterText(characters: any): string {
     return Object.entries(CHARACTER_GROUPS)
         .filter(([group]) => characters[group])
         .flatMap(([group, groupCharacters]) => groupCharacters.filter((character) => characters[group]?.[character]))
         .join(' ')
 }
 
-function getStyleText(styles: any) {
+function getStyleText(styles: any): string {
     return Object.entries(STYLE_GROUPS)
         .filter(([group]) => styles[group])
         .flatMap(([group, subgroups]) =>

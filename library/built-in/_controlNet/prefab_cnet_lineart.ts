@@ -1,11 +1,24 @@
-import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Lineart FORM ===================================================
-export const ui_subform_Lineart = () => {
-    const ui: FormBuilder = getCurrentForm()
+export type UI_subform_Lineart = X.XGroup<{
+    preprocessor: UI_subform_Lineart_Preprocessor
+    models: X.XGroup<{
+        cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+    }>
+    strength: X.XNumber
+    advanced: X.XGroup<{
+        startAtStepPercent: X.XNumber
+        endAtStepPercent: X.XNumber
+        crop: X.XEnum<Enum_LatentUpscale_crop>
+        upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+    }>
+}>
+
+export function ui_subform_Lineart(): UI_subform_Lineart {
+    const ui: X.Builder = getCurrentForm()
     return ui
         .group({
             label: 'Lineart',
@@ -33,15 +46,22 @@ export const ui_subform_Lineart = () => {
         ])
 }
 
-export const ui_subform_Lineart_Preprocessor = () => {
-    const form: FormBuilder = getCurrentForm()
+// ====================================================================================================
+export type UI_subform_Lineart_Preprocessor = X.XChoice<{
+    None: X.XEmpty
+    Realistic: UI_subform_Lineart_realistic
+    Anime: UI_subform_Lineart_Anime
+    Manga: UI_subform_Lineart_Manga
+}>
+export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         label: 'Lineart Preprocessor',
         startCollapsed: true,
         default: 'Realistic',
         appearance: 'tab',
         items: {
-            None: form.group(),
+            None: form.empty(),
             Realistic: ui_subform_Lineart_realistic(),
             Anime: ui_subform_Lineart_Anime(),
             Manga: ui_subform_Lineart_Manga(),
@@ -49,8 +69,13 @@ export const ui_subform_Lineart_Preprocessor = () => {
     })
 }
 
-export const ui_subform_Lineart_realistic = () => {
-    const form: FormBuilder = getCurrentForm()
+// ====================================================================================================
+export type UI_subform_Lineart_realistic = X.XGroup<{
+    coarse: X.XBool
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -61,8 +86,12 @@ export const ui_subform_Lineart_realistic = () => {
     })
 }
 
-export const ui_subform_Lineart_Anime = () => {
-    const form: FormBuilder = getCurrentForm()
+// ========================================================================
+export type UI_subform_Lineart_Anime = X.XGroup<{
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
@@ -72,8 +101,12 @@ export const ui_subform_Lineart_Anime = () => {
     })
 }
 
-export const ui_subform_Lineart_Manga = () => {
-    const form: FormBuilder = getCurrentForm()
+// ========================================================================
+export type UI_subform_Lineart_Manga = X.XGroup<{
+    saveProcessedImage: X.XBool
+}>
+export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
+    const form: X.Builder = getCurrentForm()
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,

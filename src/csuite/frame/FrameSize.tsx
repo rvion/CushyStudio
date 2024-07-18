@@ -1,4 +1,4 @@
-import type { RSSize } from '../RsuiteTypes'
+import type { RSSize } from '../types/RsuiteTypes'
 
 import { exhaust } from '../utils/exhaust'
 

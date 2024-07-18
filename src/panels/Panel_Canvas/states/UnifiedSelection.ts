@@ -136,7 +136,7 @@ export class UnifiedSelection {
         // 🟢 SAVE IMAGE (4️⃣)
         const fullCanvas1 = stage.toCanvas()
         const dataURL1 = fullCanvas1.toDataURL()
-        const image = createMediaImage_fromDataURI(this.st, dataURL1!, `outputs/canvas/${nanoid()}.png`)
+        const image = createMediaImage_fromDataURI(dataURL1!, `outputs/canvas/${nanoid()}.png`)
 
         // hide images, keep mask
         /* + 3️⃣ */ C.activeMask.show()
@@ -162,7 +162,7 @@ export class UnifiedSelection {
 
         const fullCanvas2 = stage.toCanvas()
         const dataURL2 = fullCanvas2.toDataURL()
-        const mask = createMediaImage_fromDataURI(this.st, dataURL2!, `outputs/canvas/${nanoid()}-mask.png`)
+        const mask = createMediaImage_fromDataURI(dataURL2!, `outputs/canvas/${nanoid()}-mask.png`)
 
         C.activeMask.layer.children.forEach((c) => {
             ;(c as any).stroke(C.activeMask.color)

@@ -59,14 +59,14 @@ Name=CushyStudio (dev)
 Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start-dev.sh\"'
 " > "$LSHARE/applications/cushystudio-shell.desktop"
 
-        
+
         ;;
     *)
         echo "Unsupported operating system: $OS"; exit 1 ;;
 esac
 echo "Node.js architecture: $NODE_ARCH"
 
-NODE_VERSION="v18.19.0"
+NODE_VERSION="v20.14.0"
 echo "Node.js version: $NODE_VERSION"
 
 # Define the download URL ------------------------------------------------------------
@@ -150,18 +150,6 @@ $NPM_BIN_PATH install --legacy-peer-deps=false
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps
-
-# Define the path to tsconfig.custom.json
-tsconfigPath="./tsconfig.custom.json"
-
-# JSON content to write if the file does not exist
-defaultTsconfigJSON='{ "include": ["src", "schema/global.d.ts"], "exclude": [] }'
-
-# Check if the file exists
-if [ ! -f "$tsconfigPath" ]; then
-    # Write the JSON content to the file without formatting
-    echo "$defaultTsconfigJSON" > "$tsconfigPath"
-fi
 
 # Build the release folder
 ./node_modules/.bin/electron -i src/shell/build.js js css

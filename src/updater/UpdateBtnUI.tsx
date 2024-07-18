@@ -5,9 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
+import { Loader, Message } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
-import { Loader, Message } from '../csuite/shims'
 import { exhaust } from '../csuite/utils/exhaust'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { GitInstallUI } from './GitInstallUI'
@@ -85,7 +85,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
             </div>
             <UpdaterErrorUI updater={updater} />
 
-            <div tw='virtualBorder'>
+            <div>
                 {updater.lastFetchAt ? (
                     <div>
                         <div>

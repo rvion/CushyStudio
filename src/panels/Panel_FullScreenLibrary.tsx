@@ -5,7 +5,8 @@ import { Button } from '../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../csuite/frame/Frame'
 import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
-import { Slider, Toggle } from '../csuite/shims'
+import { InputSliderUI_legacy } from '../csuite/input-slider/Slider'
+import { Toggle } from '../csuite/inputs/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
@@ -18,12 +19,12 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
             <Frame base tw='p-4 flex flex-wrap items-center'>
                 <div tw='text-2xl'>Library</div>
                 <div tw='flex gap-1 items-center'>
-                    <div tw='join virtualBorder'>
+                    <div tw='join'>
                         <div tw='flex items-center px-2 join-item'>
                             <span className='material-symbols-outlined'>search</span>
                         </div>
                         <input
-                            tw='cushy-basic-input'
+                            tw='csuite-basic-input'
                             type='string'
                             value={library.query}
                             onChange={(ev) => {
@@ -35,7 +36,6 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
                                     app.openLastOrCreateDraft()
-                                    st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
                                 } else if (e.key === 'ArrowUp') {

@@ -10,9 +10,9 @@ import sharp, { type FormatEnum } from 'sharp'
 
 import { openFolderInOS } from '../app/layout/openExternal'
 import { Status } from '../back/Status'
+import { SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
 import { LiveRef } from '../db/LiveRef'
-import { SQLITE_true } from '../db/SQLITE_boolean'
 import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { asRelativePath } from '../utils/fs/pathUtils'
@@ -22,6 +22,7 @@ import {
     createMediaImage_fromPath,
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
+import { FPath } from './PathObj'
 
 export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {
@@ -242,7 +243,7 @@ export class ComfyPromptL {
             //     throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
             // let base64Data = dataUrl.slice(prefixToSlice.length)
             // writeFileSync(outputRelPath, base64Data, 'base64')
-            imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
+            imgL = createMediaImage_fromPath(new FPath(outputRelPath), imgCreationOpts)
         }
         // SAVE RAW ------------------------------------------------------------------------------------------
         else {
@@ -250,7 +251,7 @@ export class ComfyPromptL {
             const buff = await response.arrayBuffer()
             const uint8arr = new Uint8Array(buff)
             writeFileSync(absPath, uint8arr)
-            imgL = _createMediaImage_fromLocalyAvailableImage(this.st, outputRelPath, buff, imgCreationOpts)
+            imgL = _createMediaImage_fromLocalyAvailableImage(new FPath(outputRelPath), buff, imgCreationOpts)
         }
 
         // apply tags --------------------------------------------------------------------------------

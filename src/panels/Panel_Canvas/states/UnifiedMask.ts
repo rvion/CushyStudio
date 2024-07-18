@@ -13,8 +13,8 @@ import { createMediaImage_fromDataURI } from '../../../models/createMediaImage_f
 import { randomColor } from '../utils/randomColor'
 
 export class UnifiedMask {
-    hide = () => this.layer.hide()
-    show = () => this.layer.show()
+    hide = (): Konva.Layer => this.layer.hide()
+    show = (): Konva.Layer => this.layer.show()
     readonly st: STATE
     readonly layer: Layer
     readonly uid = nanoid(4)
@@ -22,9 +22,9 @@ export class UnifiedMask {
     color = randomColor()
     image: Maybe<Image> = null
 
-    saveMask = () => {
+    saveMask = (): MediaImageL => {
         const dataURL = this.layer.toDataURL()
-        const img = createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/mask-${this.uid}.png`)
+        const img = createMediaImage_fromDataURI(dataURL!, `outputs/canvas/mask-${this.uid}.png`)
         return img
     }
 

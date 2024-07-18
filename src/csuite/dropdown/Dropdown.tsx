@@ -1,5 +1,5 @@
 import type { IconName } from '../icons/icons'
-import type { Kolor } from '../kolor/Kolor'
+import type { Tint } from '../kolor/Tint'
 
 import { ReactNode } from 'react'
 
@@ -12,14 +12,15 @@ export const Dropdown = (p: {
     className?: string
     startIcon?: Maybe<IconName>
     title: ReactNode
-    theme?: Kolor
+    theme?: Tint
     content?: () => ReactNode
     button?: ReactNode
+    expand?: boolean
 }) => (
     <RevealUI
         tw={[p.className]}
         content={() => (
-            <Frame tabIndex={0} tw='z-[1]'>
+            <Frame tabIndex={0} tw='flex flex-col z-[1]'>
                 {p.content?.()}
             </Frame>
         )}
@@ -32,6 +33,7 @@ export const Dropdown = (p: {
                 subtle
                 icon={p.startIcon}
                 tabIndex={0}
+                expand={p.expand}
             >
                 {p.title}
             </Button>

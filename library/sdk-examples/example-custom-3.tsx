@@ -15,7 +15,7 @@ app({
             defaultValue: () => ({ foo: 1, bar: 'test' }),
             // subTree
             Component: observer((p) => {
-                const uist = p.widget.serial.value
+                const uist = p.field.value
                 return (
                     <div tw='flex'>
                         <div tw='loading loading-spinner'></div>

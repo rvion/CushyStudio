@@ -1,5 +1,62 @@
-☐ post to pictogrammers
+2024-07-17:
+    ☐ multiple withConfig / rank-1 types
+    ☐ // 2024-07-17YOLO🦀🦊
 
+2024-07-15:
+    ☐ list identation
+    ☐ list sub-items boxes not taken into account
+
+2024-07-12:
+    ☐ repository not as property of other classes, but as param with defulat from DI mechanism
+    ☐ csuite expect globalRepo to exist/be available via DI
+    ☐ csuite expect globalDomain to exist/be available via DI
+    ☐ Builder and Schema do not know the repository that will host the instances
+    ☐ schema must NOT know its builder (it's irrelevant)
+    ☐ basebuilder MUST take the schema class as ctor so we can re-use it.
+    ☐ BASE schema must be able to change it's ctor.
+
+2024-07-11:
+    ✘ only a single schema class @cancelled(24-07-12 16:15)
+
+2024-07-08:
+    ☐ updateSnapshot only called once
+    ✔ 'type' => '$' @done(24-07-17 16:23)
+    ✔ choices widget @done(24-07-17 16:23)
+    ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
+    ✔ size @done(24-07-17 16:23)
+    ☐ Field_Dyanmic
+    ✔ valmut partout @done(24-07-17 16:23)
+    ✔ onInit @done(24-07-10 13:55)
+    ☐ onCreate
+    ✔ extends @done(24-07-17 16:23)
+        ✔ customMethods @done(24-07-17 16:23)
+        ✔ customForms @done(24-07-17 16:23)
+
+
+2024-07-01:
+    ✔ test about link auto-migration. @done(24-07-08 10:16)
+    ✔ setSerial. @done(24-07-08 10:16)
+    ✔ setting value on value by addming more proxies. @done(24-07-08 10:16)
+    ✘ info mapping via custom schema mapping. @cancelled(24-07-08 10:16)
+
+2024-06-29:
+    ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
+    ✔ 2. recover from/to list when iterating on the schema (15min) @done(24-07-01 22:33)
+    ☐ 3. config tab persitence (15min)
+    ☐ 4. debug icon to see panel data (15min)
+
+--------------
+☐ make sure choices always show in the same order
+☐ debug electron
+    - https://github.com/nodejs/node/blob/main/doc/abi_version_registry.json
+    - https://www.electronjs.org/blog/electron-31-0
+
+--------------
+
+☐ post to pictogrammers
+☐ form context
+☐ previous value
+☐ router api (copy from loco)
 
 ☐ compile classes so it's instant
 ☐ rename frame hight-level apperance names ('headless' 'subtle' 'default' 'ghost' 'primary' 'secondary')

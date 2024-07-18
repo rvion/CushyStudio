@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useSizeOf } from '../../../src/controls/utils/useSizeOf'
+import { useSizeOf } from '../../../src/csuite/smooth-size/useSizeOf'
 
 export const View_DeckOfCards = view<{
     images: MediaImageID[]

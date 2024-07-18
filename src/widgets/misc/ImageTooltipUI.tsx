@@ -2,7 +2,7 @@ import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
-import { JsonViewUI } from '../workspace/JsonViewUI'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 
 export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: MediaImageL }) {
     return (

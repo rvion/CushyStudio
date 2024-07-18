@@ -61,7 +61,7 @@ export class HostL {
 
     // Rotating srever logs --------------------------------------------
     private wantLog: boolean = true
-    enableServerLogs = () => {
+    enableServerLogs(): Promise<any> {
         this.wantLog = true
         return this.manager.configureLogging(this.wantLog)
     }
@@ -256,13 +256,13 @@ export class HostL {
      * */
     ws: Maybe<ResilientWebSocketClient> = null
 
-    initWebsocket = () => {
+    private initWebsocket(): ResilientWebSocketClient {
         console.log(`[👢] WEBSOCKET: starting client to ComfyUI host ${this.data.name}`)
         this.ws = new ResilientWebSocketClient({
-            onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
-            onMessage: (e: MessageEvent) => this.st.onMessage(e, this),
+            onConnectOrReconnect: (): Promise<void> => this.fetchAndUpdateSchema(),
+            onMessage: (e: MessageEvent): void => this.st.onMessage(e, this),
             url: this.getWSUrl,
-            onClose: () => {},
+            onClose: (): void => {},
         })
         return this.ws
     }

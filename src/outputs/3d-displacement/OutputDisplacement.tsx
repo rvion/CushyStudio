@@ -1,3 +1,4 @@
+import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
@@ -6,13 +7,14 @@ import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
-import { FormUI } from '../../controls/FormUI'
+import { FormUI } from '../../csuite/form/FormUI'
 import { bang } from '../../csuite/utils/bang'
 import { toastError } from '../../csuite/utils/toasts'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
+import { FPath } from '../../models/PathObj'
 import { StepL } from '../../models/Step'
-import { PanelHeaderUI } from '../../panels/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { DisplacementState } from './DisplacementState'
@@ -27,10 +29,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const sizeStr = st.historySizeStr
     return (
         <div
-            tw={['bg-orange-500 text-black', 'text-center w-full font-bold']}
+            tw={['bg-orange-500 text-black', 'flex items-center justify-center h-full w-full']}
             style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
         >
-            3D
+            <div tw='font-bold text-xl'>3D</div>
         </div>
     )
 })
@@ -72,12 +74,12 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
             {menuConf.right ? (
                 <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI form={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
-            ) : st.displacementConf.root.get('menu').left ? (
+            ) : menuConf.left ? (
                 <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
                     {saveImgBtn}
-                    <FormUI form={st.displacementConf} />
+                    <FormUI field={st.displacementConf} />
                 </div>
             ) : (
                 <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
@@ -100,10 +102,15 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     mkdirSync(dirname(absPath), { recursive: true })
     canvas.toBlob(async (blob) => {
         if (blob == null) return toastError('❌ canvas.toBlob returned null')
-        return createMediaImage_fromBlobObject(cushy, blob, absPath)
+        return createMediaImage_fromBlobObject(blob, new FPath(absPath))
     })
 }
 
-export const saveDataUriAsImage = async (dataURI: string, st: STATE, subfolder?: string) => {
-    return createMediaImage_fromDataURI(st, dataURI, subfolder)
+export const saveDataUriAsImage = async (
+    //
+    dataURI: string,
+    st: STATE,
+    subfolder?: string,
+): Promise<MediaImageL> => {
+    return createMediaImage_fromDataURI(dataURI, subfolder)
 }

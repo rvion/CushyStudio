@@ -1,4 +1,4 @@
-import type { KolorExt } from '../kolor/Kolor'
+import type { TintExt } from '../kolor/Tint'
 
 export type Box = {
     // 1. BASE ------------------------------------------------------------
@@ -11,10 +11,10 @@ export type Box = {
      *   - string : absolute color
      *   - number : contrast: x / 100, chromaBlend: 1, hueShift: 0
      */
-    base?: KolorExt
+    base?: TintExt
 
     /** slightly different from base; allow to change the background without affecting the base */
-    shock?: KolorExt
+    shock?: TintExt
 
     /**
      * BASE when hovered (relative to its parent's BASE)
@@ -25,23 +25,23 @@ export type Box = {
      *   - string : absolute color
      *   - number: contrast: x / 100 from non hovered base
      */
-    hover?: KolorExt
+    hover?: TintExt
 
     // 2. RELATIVE TO BASE ------------------------------------------------------------
     /**
      * relative to BASE
      * e.g. { contrast: 1, chromaBlend: 1, hueShift: 0}
      * relative to base; when relative, carry to children as default strategy */
-    text?: KolorExt
+    text?: TintExt
 
     // 2.2 NOT INHERITED -----------------------------------------------------
     /**
      * NOT INHERITED
      */
-    textShadow?: KolorExt
+    textShadow?: TintExt
 
     /** Box shadow (external) */
-    shadow?: KolorExt
+    shadow?: TintExt
 
     /**
      * - string: absolute color
@@ -50,5 +50,5 @@ export type Box = {
      * - boolean: = relative({ contrast: 0.2 })
      * - null: inherit parent's background
      * */
-    border?: KolorExt
+    border?: TintExt
 }

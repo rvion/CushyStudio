@@ -1,10 +1,17 @@
-import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
-import { ui_ipadapter_advancedSettings } from './prefab_ipAdapter_baseV2'
+import { ui_ipadapter_advancedSettings, type UI_ipadapter_advancedSettings } from './prefab_ipAdapter_baseV2'
 
-export const ui_FaceIDImageInput = (form: FormBuilder) => {
+// ======================================================================================================
+export type UI_FaceIDImageInput = X.XGroup<{
+    image: X.XImage
+    advanced: X.XGroup<{
+        sharpening: X.XNumber
+        crop_position: X.XEnum<Enum_PrepImageForClipVision_crop_position>
+    }>
+}>
+export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
     return form.fields(
         {
             image: form.image({ label: 'Image' }),
@@ -31,8 +38,34 @@ export const ui_FaceIDImageInput = (form: FormBuilder) => {
     )
 }
 
-// 🅿️ IPAdapter Basic ===================================================
-export const ui_IPAdapterFaceIDV2 = () => {
+// ======================================================================================================
+// 🅿️ IPAdapter Basic
+export type UI_IPAdapterFaceIDV2 = X.XGroup<{
+    baseImage: UI_FaceIDImageInput
+    settings: X.XGroup<{
+        weight: X.XNumber
+        weight_faceidv2: X.XNumber
+        models: X.XGroup<{
+            type: X.XEnum<Enum_IPAdapterUnifiedLoaderFaceID_preset>
+        }>
+        extra: X.XList<UI_FaceIDImageInput>
+        advancedSettings: X.XGroup<{
+            extraIPAdapter: X.XOptional<UI_extraIpAdapter>
+            startAtStepPercent: X.XNumber
+            endAtStepPercent: X.XNumber
+            lora_strength: X.XNumber
+            embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
+            weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+            embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+            noise: X.XNumber
+            unfold_batch: X.XBool
+            adapterAttentionMask: X.XOptional<X.XImage>
+        }>
+    }>
+    help: X.XMarkdown
+}>
+
+export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
     const form = getCurrentForm()
     return form
         .fields(
@@ -43,15 +76,8 @@ export const ui_IPAdapterFaceIDV2 = () => {
                         weight: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
                         weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
                         models: form.fields(
-                            {
-                                type: form.enum.Enum_IPAdapterUnifiedLoaderFaceID_preset({ default: 'FACEID PLUS V2' }),
-                            },
-                            {
-                                startCollapsed: true,
-                                summary: (ui) => {
-                                    return `model:${ui.type}`
-                                },
-                            },
+                            { type: form.enum.Enum_IPAdapterUnifiedLoaderFaceID_preset({ default: 'FACEID PLUS V2' }) },
+                            { startCollapsed: true, summary: (ui) => `model:${ui.type}` },
                         ),
                         extra: form.list({
                             label: 'Extra Images',
@@ -59,22 +85,7 @@ export const ui_IPAdapterFaceIDV2 = () => {
                         }),
                         advancedSettings: form.fields(
                             {
-                                extraIPAdapter: form
-                                    .fields(
-                                        {
-                                            weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
-                                            embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
-                                                default: 'average',
-                                            }),
-                                            ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
-                                        },
-                                        {
-                                            summary: (ui) => {
-                                                return `weight:${ui.weight} | ${ui.ipAdapterSettings.weight_type} | combo:${ui.embedding_combination} | from:${ui.ipAdapterSettings.startAtStepPercent}=>${ui.ipAdapterSettings.endAtStepPercent}`
-                                            },
-                                        },
-                                    )
-                                    .optional(),
+                                extraIPAdapter: ui_extraIpAdapter(form).optional(),
                                 startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
                                 endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
                                 lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
@@ -111,6 +122,8 @@ export const ui_IPAdapterFaceIDV2 = () => {
             },
             {
                 label: 'FaceID',
+                icon: 'mdiStarFace',
+                box: { base: { hue: 50, chroma: 0.1 } },
                 summary: (ui) => {
                     return `images:${1 + ui.settings.extra.length} | weight:${ui.settings.weight} | weightV2:${
                         ui.settings.weight_faceidv2
@@ -121,7 +134,31 @@ export const ui_IPAdapterFaceIDV2 = () => {
         .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
-// 🅿️ FaceID RUN ===================================================
+// ======================================================================================================
+export type UI_extraIpAdapter = X.XGroup<{
+    weight: X.XNumber
+    embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
+    ipAdapterSettings: UI_ipadapter_advancedSettings
+}>
+function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
+    return form.fields(
+        {
+            weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
+            embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
+                default: 'average',
+            }),
+            ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
+        },
+        {
+            summary: (ui) => {
+                return `weight:${ui.weight} | ${ui.ipAdapterSettings.weight_type} | combo:${ui.embedding_combination} | from:${ui.ipAdapterSettings.startAtStepPercent}=>${ui.ipAdapterSettings.endAtStepPercent}`
+            },
+        },
+    )
+}
+
+// ======================================================================================================
+// 🅿️ FaceID RUN
 export const run_FaceIDV2 = async (
     ui: OutputFor<typeof ui_IPAdapterFaceIDV2>,
     ckpt: _MODEL,

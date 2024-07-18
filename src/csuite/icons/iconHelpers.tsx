@@ -13,8 +13,8 @@ type MyIconProps = Omit<RawIconProps, 'path'>
  * Automagical component you can use like that
  * <Ikon.mdiCancel />
  * <Ikon.mdiAlert size=' />
- *
  */
+
 export const Ikon: {
     [key in keyof typeof allIcons]: FC<MyIconProps>
 } = new Proxy({} as any, {

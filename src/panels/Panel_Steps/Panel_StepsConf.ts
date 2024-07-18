@@ -1,8 +1,8 @@
-import { CushyFormManager, type FormBuilder } from '../../controls/FormBuilder'
+import { type Builder, cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = CushyFormManager.form(
+export const PanelStepsConf = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {
@@ -12,13 +12,13 @@ export const PanelStepsConf = CushyFormManager.form(
                 // outputSize: ui.remSize(),
                 show: ui.choicesV2(
                     {
-                        title: ui.ok(),
-                        app: ui.ok({ label: 'App illustration' }),
-                        draft: ui.ok({ label: 'Draft illustration' }),
-                        status: ui.ok(),
+                        title: ui.empty(),
+                        app: ui.empty({ label: 'App illustration' }),
+                        draft: ui.empty({ label: 'Draft illustration' }),
+                        status: ui.empty(),
                         outputs: ui_outputFilter(ui),
-                        executionTime: ui.ok(),
-                        date: ui.ok(),
+                        executionTime: ui.empty(),
+                        date: ui.empty(),
                     },
                     {
                         default: {
@@ -37,24 +37,24 @@ export const PanelStepsConf = CushyFormManager.form(
         ),
     {
         name: 'panel-steps',
-        initialSerial: () => readJSON('settings/panel-steps-config.json'),
+        serial: () => readJSON('settings/panel-steps-config.json'),
         onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
     },
 )
 
-function ui_outputFilter(ui: FormBuilder) {
+function ui_outputFilter(ui: Builder) {
     return ui.choicesV2(
         {
-            MediaTextL: ui.ok(),
-            MediaImageL: ui.ok(),
-            MediaVideoL: ui.ok(),
-            MediaSplatL: ui.ok(),
-            Media3dDisplacementL: ui.ok(),
-            ComfyPromptL: ui.ok(),
-            ComfyWorkflowL: ui.ok(),
-            StepL: ui.ok(),
-            MediaCustomL: ui.ok(),
-            RuntimeErrorL: ui.ok(),
+            MediaTextL: ui.empty(),
+            MediaImageL: ui.empty(),
+            MediaVideoL: ui.empty(),
+            MediaSplatL: ui.empty(),
+            Media3dDisplacementL: ui.empty(),
+            ComfyPromptL: ui.empty(),
+            ComfyWorkflowL: ui.empty(),
+            StepL: ui.empty(),
+            MediaCustomL: ui.empty(),
+            RuntimeErrorL: ui.empty(),
         },
         {
             // appearance: 'select',

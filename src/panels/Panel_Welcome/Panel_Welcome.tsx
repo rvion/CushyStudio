@@ -41,7 +41,10 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                         'library/built-in/CushyDiffusion.ts',
                         'library/built-in/quick-actions/quick-add-gradient-background.ts',
                     ].map((path) => (
-                        <StandaloneAppBtnUI key={path} path={path as RelativePath} />
+                        <StandaloneAppBtnUI //
+                            key={path}
+                            path={path as RelativePath}
+                        />
                     ))}
                 </div>
                 <div tw='divider mx-8'></div>
