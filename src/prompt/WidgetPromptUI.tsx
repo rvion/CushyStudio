@@ -41,7 +41,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { f
 
 export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
     return (
-        <div tw='flex self-end gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
+        <div tw='flex gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
             {plugins.map((plugin) => {
                 const active = cushy.configFile.get(plugin.configKey) ?? false
                 // const Icon = Ikon[plugin.icon]
@@ -58,6 +58,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
                         )}
                     >
                         <InputBoolToggleButtonUI
+                            iconSize='1.2em'
                             value={Boolean(active)}
                             icon={plugin.icon}
                             onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
@@ -68,6 +69,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
         </div>
     )
 })
+
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
     const st = useSt()
@@ -89,7 +91,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
     const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
         <div
-            tw='flex flex-col'
+            tw='flex flex-1 flex-col'
             onKeyDownCapture={(ev) => {
                 // Prevent new-line when using the run shortcut
                 // XXX: This should be removed once running a draft is implemented using the proper shortcut method.

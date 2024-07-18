@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
+import { FPath } from '../../../models/PathObj'
 import { useSt } from '../../../state/stateContext'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
@@ -55,10 +56,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                                                 const blob = await clipboardItem.getType(type)
                                                 const imageID = nanoid()
                                                 const filename = `${imageID}.png`
-
-                                                const relPath = asRelativePath(`outputs/imported/${filename}`)
-
-                                                const out = await createMediaImage_fromBlobObject(cushy, blob, relPath)
+                                                const fpath = new FPath(`outputs/imported/${filename}`)
+                                                const out = await createMediaImage_fromBlobObject(blob, fpath)
                                                 field.value = out
                                             }
                                         }

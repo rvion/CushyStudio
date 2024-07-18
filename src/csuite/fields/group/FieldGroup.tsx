@@ -9,6 +9,7 @@ import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { type FC, Fragment } from 'react'
 
+import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form, FormUIProps } from '../../form/FormUI'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
@@ -22,7 +23,11 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
         items?: T
 
         /** if provided, will be used in the header when fields are folded */
-        summary?: (items: { [k in keyof T]: T[k]['$Value'] }) => string
+        summary?: (
+            //
+            items: { [k in keyof T]: T[k]['$Value'] },
+            self: Field_group<T>,
+        ) => string
     },
     Field_group_types<T>
 >
@@ -59,7 +64,8 @@ type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
-    formFields(fields: (keyof T | Accessor<this>)[]): FC<NO_PROPS> {
+    formFields(fields: (keyof T | Accessor<this>)[], props?: { showMore?: (keyof T)[] | false }): FC<NO_PROPS> {
+        const sm = props?.showMore
         return () => (
             <Fragment>
                 {fields.map((f) => {
@@ -67,17 +73,28 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                         const res = f(this)
                         return res({})
                     }
-                    return this.fields[f]!.renderWithLabel()
+                    return this.fields[f]!.renderWithLabel({ fieldName: f as string })
                 })}
+                {sm !== false && (
+                    <CollapsibleUI
+                        content={() => {
+                            const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
+                            return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
+                        }}
+                    />
+                )}
             </Fragment>
         )
     }
 
-    form(fields: (keyof T | Accessor<this>)[], props: Omit<FormUIProps, 'field' | 'layout'>): Form {
+    form(
+        fields: (keyof T | Accessor<this>)[],
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false },
+    ): Form {
         return new Form({
             ...props,
             field: this,
-            component: this.formFields(fields),
+            component: this.formFields(fields, { showMore: props.showMore }),
         })
     }
 
@@ -95,7 +112,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     get summary(): string {
-        return this.config.summary?.(this.value) ?? ''
+        return this.config.summary?.(this.value, this) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
 
@@ -185,12 +202,13 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
-    setPartialValue(val: Partial<Field_group_value<T>>): void {
+    setPartialValue(val: Partial<Field_group_value<T>>): this {
         this.runInValueTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
             }
         })
+        return this
     }
 
     get subFields(): Field[] {

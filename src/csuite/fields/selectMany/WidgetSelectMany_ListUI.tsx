@@ -12,24 +12,26 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_
     const field = p.field
     return (
         <ResizableFrame
-            header={
-                <>
-                    <input
-                        // placeholder={s.isOpen ? p.placeholder : undefined}
-                        // ref={s.inputRef}
-                        // onChange={s.handleInputChange}
-                        tw='w-full h-full !outline-none csuite-basic-input'
-                        type='text'
-                        // value={s.searchQuery}
-                    />
-                </>
-            }
+        border
             tw='w-full'
+            // header={
+            //     <>
+            //         <input
+            //             // placeholder={s.isOpen ? p.placeholder : undefined}
+            //             // ref={s.inputRef}
+            //             // onChange={s.handleInputChange}
+            //             tw='w-full h-full !outline-none csuite-basic-input'
+            //             type='text'
+            //             // value={s.searchQuery}
+            //         />
+            //     </>
+            // }
         >
             {field.choices.slice(0, 100).map((c) => {
                 const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
                 return (
                     <InputBoolToggleButtonUI
+                        key={c.id}
                         value={isSelected}
                         mode='checkbox'
                         showToggleButtonBox

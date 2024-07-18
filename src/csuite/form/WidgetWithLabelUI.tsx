@@ -1,4 +1,5 @@
 import type { Field } from '../model/Field'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -15,7 +16,7 @@ import { WidgetIndentUI } from './WidgetIndentUI'
 import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
-import { WidgetLabelUI } from './WidgetLabelUI'
+import { WidgetLabelTextUI } from './WidgetLabelTextUI'
 import { WidgetMenuUI } from './WidgetMenu'
 import { WidgetToggleUI } from './WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
@@ -37,6 +38,9 @@ export type WidgetWithLabelProps = {
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
     className?: string
+
+    slotDelete?: ReactNode
+    slotDragKnob?: ReactNode
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
@@ -67,6 +71,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             {!p.noHeader && (
                 <WidgetHeaderContainerUI field={field}>
                     {/* HEADER LABEL */}
+
                     <WidgetLabelContainerUI //
                         tooltip={field.config.tooltip}
                         justify={justify}
@@ -75,9 +80,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         {labellayout === 'fixed-left' ? (
                             <>
                                 <WidgetIndentUI depth={originalField.depth} />
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
-                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
+                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {field.config.showID && <WidgetDebugIDUI field={field} />}
                                 {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
@@ -85,9 +91,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         ) : labellayout === 'fixed-right' ? (
                             <>
                                 <WidgetIndentUI depth={field.depth} />
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI tw='mr-auto' field={field} />
                                 {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
+                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                 {field.config.showID && <WidgetDebugIDUI field={field} />}
                                 <WidgetLabelIconUI tw='mx-1' widget={field} />
@@ -95,11 +102,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             </>
                         ) : (
                             <>
+                                {p.slotDragKnob}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetToggleUI tw='mr-1' field={originalField} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
                                 {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                <WidgetLabelUI widget={field}>{labelText}</WidgetLabelUI>
+                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                 {field.config.showID && <WidgetDebugIDUI field={field} />}
                             </>
                         )}
@@ -107,6 +115,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                     </WidgetLabelContainerUI>
 
                     {/* TOOGLE (when justified) */}
+                    <div tw='w-0.5' />
                     {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
                     {/* HEADER CONTROLS */}
                     {HeaderUI && (
@@ -114,6 +123,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                         </WidgetHeaderControlsContainerUI>
                     )}
+
+                    {p.slotDelete}
 
                     {/* HEADER EXTRA prettier-ignore */}
                     {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.schema.LabelExtraUI && (

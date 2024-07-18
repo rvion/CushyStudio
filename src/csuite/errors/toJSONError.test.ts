@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 
+import { naiveDeepClone } from '../utils/naiveDeepClone'
 import { toJSONError } from './toJSONError'
 
 describe('convertThrownObjectToDict', () => {
@@ -28,9 +29,9 @@ describe('convertThrownObjectToDict', () => {
     })
 })
 
-function assertCanBeTransformedToErrorDict(thrown: unknown) {
+function assertCanBeTransformedToErrorDict(thrown: unknown): void {
     const dict = toJSONError(thrown)
     expect(dict).toBeObject()
-    expect(dict).toMatchObject(JSON.parse(JSON.stringify(dict)))
+    expect(dict).toMatchObject(naiveDeepClone(dict))
     // console.log(`[🤠]`, JSON.stringify(dict, null, 4))
 }

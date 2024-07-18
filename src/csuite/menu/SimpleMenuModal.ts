@@ -1,3 +1,4 @@
+import type { IconName } from '../icons/icons'
 import type { FC } from 'react'
 
 /**
@@ -8,6 +9,7 @@ export class SimpleMenuModal {
     constructor(
         public p: {
             label: string
+            icon?: IconName
             submit?: () => void
             submitLabel?: string
             UI: FC<{

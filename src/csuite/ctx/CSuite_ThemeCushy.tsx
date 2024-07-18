@@ -1,5 +1,5 @@
 import type { STATE } from '../../state/state'
-import type { Tint } from '../kolor/Tint'
+import type { Tint, TintExt } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { makeAutoObservable } from 'mobx'
@@ -17,23 +17,23 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }
 
-    get clickAndSlideMultiplicator() {
+    get clickAndSlideMultiplicator(): number {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
 
-    get showWidgetUndo() {
+    get showWidgetUndo(): boolean {
         return this.st.preferences.interface.value.showWidgetUndo ?? true
     }
 
-    get showWidgetMenu() {
+    get showWidgetMenu(): boolean {
         return this.st.preferences.interface.value.showWidgetMenu ?? true
     }
 
-    get showWidgetDiff() {
+    get showWidgetDiff(): boolean {
         return this.st.preferences.interface.value.showWidgetDiff ?? true
     }
 
-    get showToggleButtonBox() {
+    get showToggleButtonBox(): boolean {
         return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
 
@@ -47,12 +47,13 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
 
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
-    get inputHeight() {
+
+    get inputHeight(): number {
         return this.st.preferences.interface.value.inputHeight ?? 1.6
     }
     // theme
 
-    get baseStr() {
+    get baseStr(): string {
         return this.st.theme.root.value.base
     }
 
@@ -60,9 +61,11 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return Kolor.fromString(this.baseStr)
     }
 
-    get shiftDirection() {
+    get shiftDirection(): 1 | -1 {
         return this.base.lightness > 0.5 ? -1 : 1
     }
+
+    labelBackground: TintExt = 3 // {}
 
     get text(): Tint {
         return run_tint(this.st.theme.value.text)
@@ -76,7 +79,10 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return run_tint(raw)
     }
 
-    get fieldGroups() {
+    get fieldGroups(): {
+        border: Maybe<number>
+        contrast: Maybe<number>
+    } {
         return {
             border: this.st.theme.value.fieldGroups?.border,
             contrast: this.st.theme.value.fieldGroups?.contrast,

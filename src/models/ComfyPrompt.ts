@@ -22,6 +22,7 @@ import {
     createMediaImage_fromPath,
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
+import { FPath } from './PathObj'
 
 export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {
@@ -242,7 +243,7 @@ export class ComfyPromptL {
             //     throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
             // let base64Data = dataUrl.slice(prefixToSlice.length)
             // writeFileSync(outputRelPath, base64Data, 'base64')
-            imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
+            imgL = createMediaImage_fromPath(new FPath(outputRelPath), imgCreationOpts)
         }
         // SAVE RAW ------------------------------------------------------------------------------------------
         else {
@@ -250,7 +251,7 @@ export class ComfyPromptL {
             const buff = await response.arrayBuffer()
             const uint8arr = new Uint8Array(buff)
             writeFileSync(absPath, uint8arr)
-            imgL = _createMediaImage_fromLocalyAvailableImage(outputRelPath, buff, imgCreationOpts)
+            imgL = _createMediaImage_fromLocalyAvailableImage(new FPath(outputRelPath), buff, imgCreationOpts)
         }
 
         // apply tags --------------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+import type { CovariantFC } from '../csuite'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
@@ -60,8 +61,19 @@ export type Field_prompt_types = {
 export class Field_prompt extends Field<Field_prompt_types> {
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
-    DefaultHeaderUI = WidgetPrompt_LineUI
-    DefaultBodyUI = WidgetPromptUI
+    // DefaultHeaderUI = WidgetPrompt_LineUI
+    // DefaultBodyUI = WidgetPromptUI
+
+    get DefaultHeaderUI(): CovariantFC<{ field: Field_prompt }> {
+        if (this.isCollapsed) return WidgetPrompt_LineUI
+        return WidgetPromptUI
+    }
+
+    DefaultBodyUI = undefined // WidgetPromptUI
+
+    get isCollapsible(): boolean {
+        return true
+    }
 
     static readonly type: 'prompt' = 'prompt'
 

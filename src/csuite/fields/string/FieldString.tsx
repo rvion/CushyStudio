@@ -9,12 +9,7 @@ import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-
-import {
-   WidgetString_HeaderUI,
-   WidgetString_TextareaBodyUI,
-   WidgetString_TextareaHeaderUI,
-} from './WidgetStringUI'
+import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
 
@@ -100,28 +95,32 @@ export class Field_string extends Field<Field_string_types> {
     UIInputText: FC = () => <WidgetString_HeaderUI field={this} />
 
     get DefaultHeaderUI(): FC<{ field: Field_string }> {
-        if (this.config.textarea) return WidgetString_TextareaHeaderUI
-        else return WidgetString_HeaderUI
+        if (this.config.textarea) {
+            if (this.isCollapsed) return WidgetString_TextareaHeaderUI
+            return WidgetString_TextareaBodyUI
+        } else {
+            return WidgetString_HeaderUI
+        }
     }
 
-    get DefaultBodyUI(): CovariantFC<{ field: Field_string }> | undefined {
-        if (this.config.textarea) return WidgetString_TextareaBodyUI
-        return undefined
+    get isCollapsible(): boolean {
+        if (this.config.textarea) return true
+        return false
     }
+
+    DefaultBodyUI = undefined
 
     get ownProblems(): Problem_Ext {
         const min = this.config.minLength
-        if (min != null && this.value.length < min) 
-            return `Value is too short (must be at least ${min} chars)`
+        if (min != null && this.value.length < min) return `Value is too short (must be at least ${min} chars)`
         const max = this.config.maxLength
-        if (max != null && this.value.length > max)
-            return `Value is too long (must be at most ${max} chars)`
-        // 
+        if (max != null && this.value.length > max) return `Value is too long (must be at most ${max} chars)`
+        //
         const pattern = this.config.pattern
         if (pattern != null) {
-          const reg = new RegExp(pattern).test(this.value)
-          if (!reg) return `Value does not match pattern`
-        } 
+            const reg = new RegExp(pattern).test(this.value)
+            if (!reg) return `Value does not match pattern`
+        }
         return null
     }
 
@@ -154,9 +153,9 @@ export class Field_string extends Field<Field_string_types> {
 
     private evalDefaultValue(): string {
         const d = this.config.default
-        if (d==null) return ''
-        if (typeof d ==='function') return d()
-        if (typeof d ==='string')return d
+        if (d == null) return ''
+        if (typeof d === 'function') return d()
+        if (typeof d === 'string') return d
         return JSON.stringify(d) // failsafe
     }
 

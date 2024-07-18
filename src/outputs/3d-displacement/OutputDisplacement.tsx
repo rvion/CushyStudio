@@ -1,3 +1,4 @@
+import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
@@ -12,6 +13,7 @@ import { toastError } from '../../csuite/utils/toasts'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
+import { FPath } from '../../models/PathObj'
 import { StepL } from '../../models/Step'
 import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
@@ -100,10 +102,15 @@ export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfol
     mkdirSync(dirname(absPath), { recursive: true })
     canvas.toBlob(async (blob) => {
         if (blob == null) return toastError('❌ canvas.toBlob returned null')
-        return createMediaImage_fromBlobObject(cushy, blob, absPath)
+        return createMediaImage_fromBlobObject(blob, new FPath(absPath))
     })
 }
 
-export const saveDataUriAsImage = async (dataURI: string, st: STATE, subfolder?: string) => {
-    return createMediaImage_fromDataURI(st, dataURI, subfolder)
+export const saveDataUriAsImage = async (
+    //
+    dataURI: string,
+    st: STATE,
+    subfolder?: string,
+): Promise<MediaImageL> => {
+    return createMediaImage_fromDataURI(dataURI, subfolder)
 }

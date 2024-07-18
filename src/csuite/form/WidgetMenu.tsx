@@ -14,10 +14,11 @@ import { Tree } from '../../csuite/tree/Tree'
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { TreeView } from '../../csuite/tree/TreeView'
 import { toastInfo } from '../../csuite/utils/toasts'
+import { potatoClone } from '../utils/potatoClone'
 
 export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: Field }) {
     return (
-        <RevealUI className={p.className} content={() => <menu_widgetActions.UI props={p.widget} />}>
+        <RevealUI className={p.className} content={() => <menu_fieldActions.UI props={p.widget} />}>
             <Button //
                 tooltip='Open field menu'
                 borderless
@@ -31,7 +32,7 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
     )
 })
 
-export const menu_widgetActions: Menu<Field> = menuWithProps({
+export const menu_fieldActions: Menu<Field> = menuWithProps({
     title: 'widget actions',
     entries: (field: Field) => {
         const out: MenuEntry[] = []
@@ -40,8 +41,28 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
             new SimpleMenuAction({
                 label: 'Reset',
                 icon: 'mdiUndoVariant',
-                disabled: () => !field.hasChanges,
-                onPick: () => field.reset(),
+                disabled: (): boolean => !field.hasChanges,
+                onPick: (): void => void field.reset(),
+            }),
+        )
+        out.push(MenuDividerUI_)
+        out.push(
+            new SimpleMenuAction({
+                label: 'Save Snapshot',
+                icon: 'mdiArrowLeftBox',
+                onPick: (): void => {
+                    const snap = field.saveSnapshot()
+                    console.log(JSON.stringify(potatoClone(snap), null, 4))
+                },
+            }),
+        )
+
+        out.push(
+            new SimpleMenuAction({
+                label: 'Restore Snapshot',
+                icon: 'mdiArrowRightBox',
+                disabled: (): boolean => !field.hasSnapshot,
+                onPick: (): void => void field.revertToSnapshot(),
             }),
         )
         out.push(MenuDividerUI_)
@@ -51,7 +72,7 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
             new SimpleMenuAction({
                 label: 'Collapse All',
                 icon: 'mdiCollapseAll',
-                onPick: () => field.collapseAllChildren(),
+                onPick: (): void => field.collapseAllChildren(),
             }),
         )
 
@@ -61,7 +82,7 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
                 label: 'Expand All',
                 icon: 'mdiExpandAll',
                 disabled: field.hasNoChild,
-                onPick: () => field.expandAllChildren(),
+                onPick: (): void => field.expandAllChildren(),
             }),
         )
 
@@ -70,10 +91,11 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
         out.push(
             new SimpleMenuModal({
                 label: 'Create Preset',
-                submit: () => {
+                icon: 'mdiPlus',
+                submit: (): void => {
                     console.log(`[🤠] values`)
                 },
-                UI: (w) => <CreatePresetUI field={field} />,
+                UI: (w): JSX.Element => <CreatePresetUI field={field} />,
             }),
         )
         // out.push(
@@ -84,13 +106,13 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
         // )
         const presets = field.config.presets ?? []
         if (presets.length > 0) {
-            out.push(MenuDividerUI_)
+            // out.push(MenuDividerUI_)
             for (const entry of presets) {
                 out.push(
                     new SimpleMenuAction({
                         label: entry.label,
                         icon: entry.icon,
-                        onPick: () => entry.apply(field),
+                        onPick: (): void => entry.apply(field),
                     }),
                 )
             }
@@ -101,7 +123,7 @@ export const menu_widgetActions: Menu<Field> = menuWithProps({
             new SimpleMenuAction({
                 label: `copy path (${field.path})`,
                 icon: 'mdiContentCopy',
-                onPick: () => {
+                onPick: (): Promise<void> => {
                     toastInfo(field.path)
                     return navigator.clipboard.writeText(field.path)
                 },

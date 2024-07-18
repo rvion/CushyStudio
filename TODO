@@ -1,3 +1,11 @@
+2024-07-17:
+    ☐ multiple withConfig / rank-1 types
+    ☐ // 2024-07-17YOLO🦀🦊
+
+2024-07-15:
+    ☐ list identation
+    ☐ list sub-items boxes not taken into account
+
 2024-07-12:
     ☐ repository not as property of other classes, but as param with defulat from DI mechanism
     ☐ csuite expect globalRepo to exist/be available via DI
@@ -12,17 +20,17 @@
 
 2024-07-08:
     ☐ updateSnapshot only called once
-    ☐ type
-    ☐ choices widget
+    ✔ 'type' => '$' @done(24-07-17 16:23)
+    ✔ choices widget @done(24-07-17 16:23)
     ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
-    ☐ size
+    ✔ size @done(24-07-17 16:23)
     ☐ Field_Dyanmic
-    ☐ valmut partout
+    ✔ valmut partout @done(24-07-17 16:23)
     ✔ onInit @done(24-07-10 13:55)
     ☐ onCreate
-    ☐ extends
-        ☐ customMethods
-        ☐ customForms
+    ✔ extends @done(24-07-17 16:23)
+        ✔ customMethods @done(24-07-17 16:23)
+        ✔ customForms @done(24-07-17 16:23)
 
 
 2024-07-01:

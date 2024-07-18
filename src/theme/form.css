@@ -14,6 +14,11 @@
     min-height: var(--widget-height);
 }
 
+
+/* .ABDDE { */
+/*     border: 1px solid red; */
+/* } */
+
 /* Box Utils ------------------------------------------------------------------------------------- */
 /* box sizes */
 .box.box-square {
@@ -48,14 +53,14 @@
 .box.box-xl { @apply text-xl px-8   py-8  ; }
 
 /* ------------------------------------------------------------------------------------------------------- */
-.WIDGET-BLOCK {
+/* .WIDGET-BLOCK { */
     /* margin-left: .6rem; */
     /* margin-top: .1rem; */
     /* margin-right: .4rem; */
     /* padding: .4rem; */
     /* padding-top: .8rem;  */
     /* padding-bottom: .8rem; */
-}
+/* } */
 
 .animated {
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -95,21 +100,26 @@
 
 /* ------------------------------------------------------------------------------------------- */
 /* make sure cushy default inputs look like custom inputs */
+.csuite-input:focus,
 .csuite-basic-input:focus {
     outline: none;
     border: 1px solid oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
+.csuite-input:hover,
 .csuite-basic-input:hover {
     background: oklch(from var(--KLR) calc(l + 0.06 * var(--DIR)) c h);
 }
+.csuite-input,
 .csuite-basic-input {
     /* 🔴 FINISH ME */
-    height: var(--input-height);
     min-height: var(--input-height);
     background: oklch(from var(--KLR) calc(l + 0.03 * var(--DIR)) c h);
     border: 1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h);
     border-radius: .2rem;
     padding: 0 .3rem;
+}
+.csuite-basic-input {
+    height: var(--input-height);
 }
 
 /* Form Utils ------------------------------------------------------------------------------------- */

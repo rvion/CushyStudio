@@ -32,7 +32,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             }}
             onBlur={(ev) => s.onBlur(ev)}
         >
-            <Frame base={{ contrast: 0.05 }} hover className='flex-1 h-full '>
+            <Frame
+                //
+                base={{ contrast: csuite.inputContrast ?? 0.05 }}
+                hover
+                className='flex-1 h-full '
+            >
                 <div // ANCHOR
                     tabIndex={-1}
                     tw={[

@@ -1,6 +1,7 @@
 import type { STATE } from '../../state/state'
 
 import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
+import { FPath } from '../../models/PathObj'
 
 export type FileDownloaded_IPCPayload = {
     originalFilename: string
@@ -54,7 +55,7 @@ export class ElectronUtils {
 
         ipcRenderer.removeAllListeners('filedownloaded')
         ipcRenderer.on('filedownloaded', (_ev, json: FileDownloaded_IPCPayload) => {
-            createMediaImage_fromPath(st, json.relativePath, {})
+            createMediaImage_fromPath(new FPath(json.relativePath), {})
             // console.log(`[👙] `, { json })
         })
 
@@ -66,7 +67,7 @@ export class ElectronUtils {
         })
     }
 
-    toggleDevTools = () => {
+    toggleDevTools(): void {
         try {
             const prevPref = Boolean(this.st.configFile.value.preferDevToolsOpen)
             this.st.configFile.update({ preferDevToolsOpen: !prevPref })

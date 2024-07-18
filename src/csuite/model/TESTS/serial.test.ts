@@ -1,4 +1,4 @@
-import { describe, it } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from './utils/expectJSON'
@@ -76,5 +76,81 @@ describe('assign to value object', () => {
                 },
             },
         }).toMatchObject(E1.toSerialJSON())
+    })
+
+    it('snapshots correctly', () => {
+        const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
+        const E = S.create()
+
+        E.value = [{ id: 'a' }]
+        const snap1 = E.saveSnapshot() // 💾 1
+        expect(snap1 === E.serial).toBeFalsy()
+        const { snapshot, ...serial } = E.serial
+        expectJSON(snap1).toEqual(serial)
+
+        E.value = [{ id: 'b' }]
+        E.revertToSnapshot() // ↩️
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
+
+        E.value.push({ id: 'c' })
+        expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
+
+        E.value.push({ id: 'c' })
+        expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
+
+        E.revertToSnapshot()
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
+    })
+
+    it('snapshots correctly v2', () => {
+        const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
+        const E = S.create()
+
+        E.value = [{ id: 'a' }]
+        E.saveSnapshot() // 💾 1
+
+        E.value.push({ id: 'b' })
+        E.revertToSnapshot() // ↩️
+        E.saveSnapshot() // 💾 2
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
+
+        E.value.push({ id: 'c' })
+        expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
+
+        E.revertToSnapshot() // ↩️ reset to 💾 2
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
+
+        expect(E.serial.snapshot?.snapshot).toBeUndefined()
+    })
+
+    it('Does not nest snapshots', () => {
+        const S = b.int()
+        const E = S.create()
+
+        E.value = 3
+        for (let i = 0; i < 10; ++i) {
+            E.saveSnapshot()
+            E.revertToSnapshot()
+        }
+
+        expect(E.serial.snapshot?.snapshot).toBeUndefined()
+    })
+
+    it('snapshots correctly v3', () => {
+        const S = b.selectMany({ choices: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] })
+        const E = S.create()
+
+        E.value = [{ id: 'a' }]
+        E.saveSnapshot() // 💾 1
+
+        E.value = [{ id: 'b' }]
+        E.revertToSnapshot()
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
+
+        E.value = [{ id: 'a' }, { id: 'c' }]
+        expectJSON(E.value).toMatchObject([{ id: 'a' }, { id: 'c' }])
+
+        E.revertToSnapshot() // Revert to 💾 1 as expected
+        expectJSON(E.value).toMatchObject([{ id: 'a' }])
     })
 })

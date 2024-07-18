@@ -1,9 +1,11 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Channel, ChannelId, Producer } from './Channel'
 import type { Factory } from './Factory'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { Channel, ChannelId } from './pubsub/Channel'
+import type { FieldReaction } from './pubsub/FieldReaction'
+import type { Producer } from './pubsub/Producer'
 
 import { reaction } from 'mobx'
 
@@ -20,25 +22,26 @@ export interface BaseSchema<out FIELD extends Field = Field> {
 }
 
 export abstract class BaseSchema<out FIELD extends Field = Field> {
-    // ⏸️ createForm(x: keyof { [key in keyof FIELD as FIELD[key] extends ProplessFC ? key : never]: FIELD[key] }): void {
-    // ⏸️     //
-    // ⏸️     return
-    // ⏸️ }
-
     // ------------------------------------------------------------
-    private _exts: any[] = []
     applyExts(field: FIELD): void {
-        for (const ext of this._exts) {
+        for (const ext of this.config.customFieldProperties ?? []) {
             const xxx = ext(field)
             Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
         }
     }
-    extend<EXTS extends (self: FIELD) => { [methodName: string]: any }>(
-        //
-        extensions: EXTS,
-    ): BaseSchema<ReturnType<EXTS> & FIELD> {
-        this._exts.push(extensions)
-        return this as any
+
+    extend<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
+        const x: BaseSchema<FIELD> = this.withConfig({
+            customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
+        })
+        return x as any as BaseSchema<EXTS & FIELD>
+    }
+
+    applySchemaExtensions(): void {
+        for (const ext of this.config.customSchemaProperties ?? []) {
+            const xxx = ext(this)
+            Object.defineProperties(this, Object.getOwnPropertyDescriptors(xxx))
+        }
     }
     // ------------------------------------------------------------
 
@@ -64,10 +67,10 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     }
 
     // PubSub -----------------------------------------------------
-    producers: Producer<any, FIELD['$Field']>[] = []
     publish<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD['$Field']) => T): this {
-        this.producers.push({ chan, produce })
-        return this
+        return this.withConfig({
+            producers: [...(this.config.producers ?? []), { chan, produce }],
+        })
     }
 
     subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD['$Field']) => void): this {
@@ -79,26 +82,33 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             },
         )
     }
-    // ------------------------------------------------------------
-    // Reaction system
-    reactions: {
-        expr(self: FIELD['$Field']): any
-        effect(arg: any, self: FIELD['$Field']): void
-    }[] = []
+
+    get reactions(): FieldReaction<FIELD>[] {
+        return this.config.reactions ?? []
+    }
+
+    get producers(): Producer<any, FIELD>[] {
+        return this.config.producers ?? []
+    }
 
     addReaction<T>(
         //
         expr: (self: FIELD['$Field']) => T,
         effect: (arg: T, self: FIELD['$Field']) => void,
     ): this {
-        this.reactions.push({ expr, effect })
-        return this
+        return this.withConfig({
+            reactions: [...(this.config.reactions ?? []), { expr, effect }],
+        })
     }
 
     // ------------------------------------------------------------
     // Instanciation
 
-    create(serial?: FIELD['$Serial'], repository?: Repository): FIELD {
+    create(
+        //
+        serial?: FIELD['$Serial'],
+        repository?: Repository,
+    ): FIELD {
         return this.instanciate(repository ?? getGlobalRepository(), null, null, serial)
     }
 

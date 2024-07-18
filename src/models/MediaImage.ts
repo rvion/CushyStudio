@@ -35,11 +35,12 @@ import {
     type ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
+import { FPath } from './PathObj'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
     /** return the image filename */
-    get filename() {
+    get filename(): string {
         return basename(this.data.path)
     }
 
@@ -440,7 +441,7 @@ export class MediaImageL {
         ctx.drawImage(img, 0, 0)
         p(ctx)
         const newDataURL = canvas.toDataURL(conf?.format, conf?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 
@@ -456,7 +457,7 @@ export class MediaImageL {
         ctx.fillStyle = p?.color ?? 'white'
         ctx.fillText(text, p?.x ?? 0, p?.y ?? 0)
         const newDataURL = canvas.toDataURL(p?.format, p?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 
@@ -535,13 +536,14 @@ export class MediaImageL {
     processWithSharp = async (
         /** processing function */
         fn: (sharp: sharp.Sharp) => sharp.Sharp,
-        relPath: string = `outputs/sharp-${Date.now()}`,
+        path: string = `outputs/sharp-${Date.now()}`,
         tags?: string[],
     ): Promise<MediaImageL> => {
         const buff = await fn(sharp(this.absPath)).toBuffer()
+        const fpath = new FPath(path)
         const suffix = this.extension
-        writeFileSync(relPath, buff)
-        return _createMediaImage_fromLocalyAvailableImage(relPath, buff, this._imageCreationOpts)
+        fpath.write(buff)
+        return _createMediaImage_fromLocalyAvailableImage(fpath, buff, this._imageCreationOpts)
     }
 
     processWithKonva = async (
@@ -562,7 +564,7 @@ export class MediaImageL {
         stage.add(layer)
         fn({ stage, layer, image: konvaImg })
         const newDataURL = stage.toCanvas().toDataURL(imageOpts?.format, imageOpts?.quality)
-        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        const out = createMediaImage_fromDataURI(newDataURL, undefined, this._imageCreationOpts)
         return out
     }
 

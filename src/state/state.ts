@@ -59,6 +59,7 @@ import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFil
 import { CushyAppL } from '../models/CushyApp'
 import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
+import { FPath } from '../models/PathObj'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
@@ -182,7 +183,7 @@ export class STATE {
     get defaultImage(): MediaImageL {
         const def = this.db.media_image.select((t) => t.where('path', '=', 'public/CushyLogo-512.png').limit(1))
         // const def = this.db.media_images.find({ path: 'public/CushyLogo-512.png' }, { limit: 1 })
-        if (def[0] == null) return createMediaImage_fromPath(this, 'public/CushyLogo-512.png')
+        if (def[0] == null) return createMediaImage_fromPath(new FPath('public/CushyLogo-512.png'))
         return def[0]
     }
 

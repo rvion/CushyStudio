@@ -1,47 +1,3 @@
-/**
- * RULES:
- *
- * any serial modification function must go through
- *  - this.SERMUT(() => { ... }) if not modifying the value
- *  - this.VALMUT(() => { ... }) if modifying the value
- *
- * setOwnSerial:
- *       A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
- *
- *       B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
- *
- *       0. MUST NEVER USE THE serial object provided by default
- *            FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
- *            | always create a new 0
- *
- *       1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
- *            | goal: make sure we never have stale references
- *            | => allow to abort early if same ref equality check successfull
- *            | => do not replace your serial object, only assign to it
- *            | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
- *            | object
- *
- *       ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
- *       ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
- *       ❌      | => please. be kind. don't
- *
- *       3. MUST ONLY CHANGE own-data, not data belonging to child
- *            | => setSerial should call setSerial on already instanciated children
- *
- *       ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
- *       ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
- *
- *       5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
- *
- *       if you override setSerial, make sure rules above are respected.
- *       ideally, add checkmarks near
- *
- *       2024-07-05 precision to document:
- *               | setOwnSerial is expected to somewhat call setSerial
- *               | of every of it's children, and forward the applyEffects flag
- *
- */
-
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
@@ -52,9 +8,10 @@ import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
-import type { Channel, ChannelId, Producer } from './Channel'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Instanciable } from './Instanciable'
+import type { Channel, ChannelId } from './pubsub/Channel'
+import type { Producer } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
@@ -74,6 +31,7 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { SimpleSchema } from '../simple/SimpleSchema'
+import { potatoClone } from '../utils/potatoClone'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
@@ -643,11 +601,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return isFieldOptional(this) && !this.serial.active
     }
 
+    get isCollapsedByDefault(): boolean {
+        return false
+    }
+
     get isCollapsed(): boolean {
         if (!this.isCollapsible) return false
         if (this.serial.collapsed != null) return this.serial.collapsed
         if (this.parent?.isDisabled) return true
-        return false
+        return this.isCollapsedByDefault ?? false
     }
 
     /** if specified, override the default algorithm to decide if the widget should have borders */
@@ -748,12 +710,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         )
     }
 
-    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field'>): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
                 field={this}
-                fieldName='_'
+                fieldName={p?.fieldName ?? '_'}
                 {...p}
             />
         )
@@ -884,15 +846,89 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         })
     }
 
-    /** update current field snapshot */
-    saveSnapshot(): void {
-        this.serial.snapshot = JSON.parse(JSON.stringify(this.serial))
+    get hasSnapshot(): boolean {
+        return this.serial.snapshot != null
+    }
+
+    deleteSnapshot(): void {
+        delete this.serial.snapshot
         this.applySerialUpdateEffects()
+    }
+
+    /** update current field snapshot */
+    saveSnapshot(): this['$Serial'] {
+        const snapshot = potatoClone(this.serial)
+
+        // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
+        // but it's wrong. we don't want snapshotception.
+        // so we delete the snapshot from the snapshot before it's too late.
+        // otherwise, once we take a second snapshot, the first snapshot will indeed appear in the second snapshot.
+        // Snapshot.
+        delete snapshot.snapshot
+
+        this.serial.snapshot = snapshot
+        this.applySerialUpdateEffects()
+        return snapshot
     }
 
     /** rever to the last snapshot */
     revertToSnapshot(): void {
-        if (this.serial.snapshot == null) return this.reset()
+        // 🔘 IX++
+        // 🔘 console.log(`[🤠] #${IX} seri`, getUIDForMemoryStructure(this.serial))
+        // 🔘 console.log(`[🤠] #${IX} snap`, getUIDForMemoryStructure(this.serial.snapshot))
+
+        // 🔘 console.log(`[🤠] #${IX} seri.values`, getUIDForMemoryStructure(this.serial?.values))
+        // 🔘 console.log(`[🤠] #${IX} snap.values`, getUIDForMemoryStructure(this.serial.snapshot?.values))
+        if (this.serial.snapshot == null) {
+            // 🔘 console.log(`[🤠] #${IX} RESET`)
+            return this.reset()
+        }
+        // 🔘 console.log(`[🤠] #${IX} SNAP=`, deepCopyNaive(this.serial.snapshot))
         this.setSerial(this.serial.snapshot)
     }
 }
+// 🔘 let IX = 0
+
+/**
+ * RULES:
+ *
+ * any serial modification function must go through
+ *  - this.SERMUT(() => { ... }) if not modifying the value
+ *  - this.VALMUT(() => { ... }) if modifying the value
+ *
+ * setOwnSerial:
+ *       A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
+ *
+ *       B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
+ *
+ *       0. MUST NEVER USE THE serial object provided by default
+ *            FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
+ *            | always create a new 0
+ *
+ *       1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
+ *            | goal: make sure we never have stale references
+ *            | => allow to abort early if same ref equality check successfull
+ *            | => do not replace your serial object, only assign to it
+ *            | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
+ *            | object
+ *
+ *       ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
+ *       ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
+ *       ❌      | => please. be kind. don't
+ *
+ *       3. MUST ONLY CHANGE own-data, not data belonging to child
+ *            | => setSerial should call setSerial on already instanciated children
+ *
+ *       ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
+ *       ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
+ *
+ *       5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
+ *
+ *       if you override setSerial, make sure rules above are respected.
+ *       ideally, add checkmarks near
+ *
+ *       2024-07-05 precision to document:
+ *               | setOwnSerial is expected to somewhat call setSerial
+ *               | of every of it's children, and forward the applyEffects flag
+ *
+ */

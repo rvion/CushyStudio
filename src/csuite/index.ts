@@ -15,7 +15,7 @@ export type { CovariantFC } from './variance/CovariantFC'
 export type * from './variance/BivariantHack'
 export type * from './simple/SimpleAliases'
 
-export { Channel } from './model/Channel'
+export { Channel } from './model/pubsub/Channel'
 export { ActivityContainerUI } from './activity/ActivityContainerUI'
 export { ActivityStackUI } from './activity/ActivityStackUI'
 

@@ -1,7 +1,7 @@
 import type { RevealProps } from './RevealProps'
 
 import { observer } from 'mobx-react-lite'
-import { createElement, useEffect, useMemo, useRef } from 'react'
+import { createElement, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Frame } from '../frame/Frame'
@@ -23,7 +23,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     useEffect(() => {
         const x = uistOrNull
         if (x == null) return
-        if (p.content !== x.p.content) x.contentFn = () => p.content(x)
+        if (p.content !== x.p.content) x.contentFn = (): ReactNode => p.content(x)
         if (p.trigger !== x.p.trigger) x.p.trigger = p.trigger
         if (p.placement !== x.p.placement) x.p.placement = p.placement
         if (p.showDelay !== x.p.showDelay) x.p.showDelay = p.showDelay
@@ -72,7 +72,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     )
 })
 
-const mkTooltip = (uist: RevealState | null) => {
+const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     // ensure uist initialized
     if (uist == null) return null
 

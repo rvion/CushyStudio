@@ -1,9 +1,8 @@
 import type { MenuInstance } from './Menu'
 
+import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { createElement, type MouseEvent } from 'react'
-
-import { observer } from 'mobx-react-lite'
 
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
@@ -13,7 +12,6 @@ import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { isCommand } from '../introspect/_isCommand'
 import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
-
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
@@ -72,6 +70,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                         <MenuItem //
                             tw='_SimpleMenuModal min-w-60'
                             key={ix}
+                            icon={entry.p.icon}
                             localShortcut={char}
                             label={entry.p.label}
                             onClick={(event: MouseEvent) => {

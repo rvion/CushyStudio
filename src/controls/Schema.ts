@@ -11,6 +11,7 @@ import { Field_optional } from '../csuite/fields/optional/FieldOptional'
 import { getFieldLinkClass, isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
 import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
+import { potatoClone } from '../csuite/utils/potatoClone'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
@@ -36,31 +37,11 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     ) {
         super()
         this.FieldClass_UNSAFE = FieldClass
+        this.applySchemaExtensions()
         // makeObservable(this, {
         //     config: true,
         //     FieldClass_UNSAFE: false,
         // })
-    }
-
-    _methods: any = {}
-    actions<T extends { [methodName: string]: (self: FIELD) => any }>(t: T): Schema<FIELD & T> {
-        Object.assign(this._methods, t)
-        return this as any
-    }
-
-    _skins: any = {}
-    skins<
-        T extends {
-            // prettier-ignore
-            [methodName: string]:
-                /** simplified skin definition */
-                | { [key: string]: any }
-                /** full react field */
-                | ((p: { field: FIELD }) => ReactNode)
-        },
-    >(t: T): Schema<FIELD & T /* & { skin: T } */> {
-        Object.assign(this._skins, t)
-        return this as any
     }
 
     LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
@@ -101,12 +82,11 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
 
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this {
-        const mergedConfig = objectAssignTsEfficient_t_pt(this.config, config)
+        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
         const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
-        // 🔴 Keep producers and reactions -> could probably be part of the ctor
-        cloned.producers = this.producers
-        cloned.reactions = this.reactions
         return cloned as this
+
+        // 2024-07-17YOLO🦀🦊 dont' rewrite this here
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
