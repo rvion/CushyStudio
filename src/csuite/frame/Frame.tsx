@@ -22,6 +22,16 @@ export type FrameProps = {
     tooltip?: string
     tooltipPlacement?: RevealPlacement
 
+    // quick layout ----------------------------------------------------
+    /** quick layout feature to add `flex flex-row` */
+    row?: boolean
+    /** quick layout feature to add `flex flex-row items-center` */
+    line?: boolean
+    /** quick layout feature to add `flex flex-row` */
+    col?: boolean
+
+    // hovering --------------------------------------------------------
+
     /** allow to pretend the frame is hovered */
     hovered?: (reallyHovered: boolean) => boolean | undefined
 
@@ -33,13 +43,13 @@ export type FrameProps = {
     loading?: boolean
     disabled?: boolean
 
-    // FITT size ----------------------------------------------------
+    // FITT size -------------------------------------------------------
     // /** when true flex=1 */
     expand?: boolean
 
     /** HIGH LEVEL THEME-DEFINED BOX STYLES */
     look?: FrameAppearance
-    // ICON --------------------------------------------------
+    // ICON ------------------------------------------------------------
     icon?: Maybe<IconName>
     iconSize?: string
 
@@ -70,6 +80,8 @@ export const Frame = observer(
             look,                                               // style: 1/3: frame templates
             base, hover, border, text, textShadow, shadow,      // style: 2/3: frame overrides
             style, className,                                   // style: 3/3: css, className
+
+            row, line, col,                                     // layout
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
@@ -186,6 +198,10 @@ export const Frame = observer(
                     square && `box-square`,
                     loading && 'relative',
                     expand && 'flex-1',
+                    // layout
+                    p.line && 'flex flex-row items-center',
+                    p.row && 'flex flex-row',
+                    p.col && 'flex flex-col',
                     className,
                 ]}
                 style={frameMode === 'CLASSNAME' ? style : { ...style, ...variables }}
