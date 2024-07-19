@@ -165,7 +165,7 @@ export class Repository {
         /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
         _tctMode: TransactionMode,
     ): T {
-        let isRoot = this.tct == null
+        const isRoot = this.tct == null
         let OUT: T
         this.tct ??= new Transaction(this /* tctMode */)
 
