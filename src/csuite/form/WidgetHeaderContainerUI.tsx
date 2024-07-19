@@ -2,10 +2,10 @@ import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-let isDragging = false
-let wasEnabled = false
+let isDragging: boolean = false
+let wasEnabled: boolean = false
 
-const isDraggingListener = (ev: MouseEvent) => {
+const isDraggingListener = (ev: MouseEvent): void => {
     if (ev.button == 0) {
         isDragging = false
         window.removeEventListener('mouseup', isDraggingListener, true)
