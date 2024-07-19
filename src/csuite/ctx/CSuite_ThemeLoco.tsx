@@ -28,7 +28,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     text: Tint = { contrast: 0.824 }
 
     inputBorder = 0.08
-    inputContrast = 0
+    inputContrast = 0.03
     labelText = { contrast: 0.48, chroma: 0.035 }
     widgetHeight: number = 1.8
     inputHeight: number = 1.6
