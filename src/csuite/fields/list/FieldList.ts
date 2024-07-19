@@ -9,6 +9,13 @@ import { Field, type KeyedField } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { clampOpt } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
+import {
+    ListButtonAdd100ItemsUI,
+    ListButtonAddUI,
+    ListButtonClearUI,
+    ListButtonFoldUI,
+    ListButtonUnfoldUI,
+} from './ListControlsUI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 /** */
@@ -86,6 +93,12 @@ export class Field_list<T extends BaseSchema> //
 {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
+
+    UI_AddButton = ListButtonAddUI
+    UI_ClearButton = ListButtonClearUI
+    UI_FoldButton = ListButtonFoldUI
+    UI_UnfoldButton = ListButtonUnfoldUI
+    UI_Add100ItemsButton = ListButtonAdd100ItemsUI
 
     static readonly type: 'list' = 'list'
 
