@@ -56,7 +56,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
             break
     }
 
-    const ConfigModeButton = (p: { mode: ConfigMode }) => {
+    const ConfigModeButton = (p: { mode: ConfigMode }): JSX.Element => {
         return (
             <InputBoolToggleButtonUI //
                 tw='capitalize h-10'
