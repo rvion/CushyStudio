@@ -15,6 +15,7 @@ import { IkonOf } from '../icons/iconHelpers'
 import { overrideTint } from '../kolor/overrideTint'
 import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
+import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { frameTemplates } from './FrameTemplates'
 import { tooltipStuff } from './tooltip'
 
@@ -204,7 +205,12 @@ export const Frame = observer(
                     p.col && 'flex flex-col',
                     className,
                 ]}
-                style={frameMode === 'CLASSNAME' ? style : { ...style, ...variables }}
+                // style={{ position: 'relative' }}
+                style={
+                    frameMode === 'CLASSNAME' //
+                        ? style
+                        : objectAssignTsEfficient_t_t(style, variables)
+                }
                 {...rest}
                 {...(triggerOnPress != null
                     ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
