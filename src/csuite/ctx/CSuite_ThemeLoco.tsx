@@ -14,6 +14,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetUndo = false
     showWidgetMenu = false
     showWidgetDiff = false
+    showFoldButtons = false
     showToggleButtonBox = false
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
     // theme

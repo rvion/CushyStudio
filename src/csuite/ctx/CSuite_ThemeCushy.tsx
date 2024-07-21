@@ -13,6 +13,10 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         makeAutoObservable(this)
     }
 
+    get showFoldButtons(): boolean {
+        return true
+    }
+
     get widgetHeight(): number {
         return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }

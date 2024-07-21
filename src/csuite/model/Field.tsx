@@ -850,6 +850,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.serial.snapshot != null
     }
 
+    get hasFoldableSubfieldsThatAreUnfolded(): boolean {
+        return this.subFields.some((f) => f.isCollapsible && !f.serial.collapsed)
+    }
+
+    get hasFoldableSubfieldsThatAreFolded(): boolean {
+        return this.subFields.some((f) => f.isCollapsible && f.serial.collapsed)
+    }
+
+    get hasFoldableSubfields(): boolean {
+        return this.subFields.some((f) => f.isCollapsible)
+    }
+
     deleteSnapshot(): void {
         delete this.serial.snapshot
         this.applySerialUpdateEffects()

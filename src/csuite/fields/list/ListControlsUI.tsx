@@ -2,6 +2,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
+import { useCSuite } from '../../ctx/useCSuite'
 
 export type IWidgetListLike = {
     addItem(): void
@@ -18,6 +19,8 @@ export type IWidgetListLike = {
 
 export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWidgetListLike }) {
     const field = p.field
+    const csuite = useCSuite()
+
     return (
         <div
             tw='sticky flex gap-0.5 top-0 flex z-[50] w-full'
@@ -28,8 +31,8 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWid
         >
             <ListButtonAddUI field={field} />
             <ListButtonClearUI field={field} />
-            <ListButtonFoldUI field={field} />
-            <ListButtonUnfoldUI field={field} />
+            {csuite.showFoldButtons && <ListButtonFoldUI field={field} />}
+            {csuite.showFoldButtons && <ListButtonUnfoldUI field={field} />}
             {/* <ListButtonAdd100ItemsUI field={field} /> */}
         </div>
     )

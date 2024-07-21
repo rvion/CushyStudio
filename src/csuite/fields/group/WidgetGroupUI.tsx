@@ -4,6 +4,7 @@ import type { Field_group } from './FieldGroup'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
+import { useCSuite } from '../../ctx/useCSuite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
@@ -14,15 +15,35 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     //
     field: Field_group<any>
 }) {
-    if (!p.field.serial.collapsed) {
+    const csuite = useCSuite()
+    const field = p.field
+    if (p.field.serial.collapsed) return <WidgetSingleLineSummaryUI>{p.field.summary}</WidgetSingleLineSummaryUI>
+
+    const showFoldButtons = csuite.showFoldButtons
+    const hasFoldableSubfields = field.hasFoldableSubfields
+    if (showFoldButtons && hasFoldableSubfields) {
         return (
             <div tw='ml-auto flex gap-0.5'>
-                <Button square subtle borderless icon='mdiUnfoldMoreHorizontal' onClick={() => p.field.expandAllChildren()} />
-                <Button square subtle borderless icon='mdiUnfoldLessHorizontal' onClick={() => p.field.collapseAllChildren()} />
+                <Button //
+                    square
+                    subtle
+                    borderless
+                    icon='mdiUnfoldMoreHorizontal'
+                    disabled={!field.hasFoldableSubfieldsThatAreFolded}
+                    onClick={() => p.field.expandAllChildren()}
+                />
+
+                <Button //
+                    square
+                    subtle
+                    borderless
+                    icon='mdiUnfoldLessHorizontal'
+                    disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
+                    onClick={() => p.field.collapseAllChildren()}
+                />
             </div>
         )
     }
-    return <WidgetSingleLineSummaryUI>{p.field.summary}</WidgetSingleLineSummaryUI>
 })
 
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {
