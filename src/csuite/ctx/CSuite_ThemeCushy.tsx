@@ -14,7 +14,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     }
 
     get showFoldButtons(): boolean {
-        return true
+        return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
     }
 
     get widgetHeight(): number {
