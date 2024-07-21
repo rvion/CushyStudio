@@ -164,21 +164,27 @@ export const Frame = observer(
         const _onMouseOver = (ev: MouseEvent): void => {
             // console.log(`[🤠] hover`, ev.currentTarget)
             if (p.hover != null) setHovered(true)
-            if (p.tooltip != null)
-                tooltipStuff.tooltip = {
-                    ref: ev.currentTarget,
-                    text: p.tooltip ?? 'test',
+            if (tooltip != null) {
+                const elem = ev.currentTarget
+                const depth = getElementDepth(elem)
+                tooltipStuff.tooltips.set(depth, {
+                    depth,
+                    ref: elem,
+                    text: tooltip ?? 'test',
                     placement: tooltipPlacement ?? 'bottom',
-                }
+                })
+            }
         }
 
         const _onMouseOut = (ev: MouseEvent): void => {
             if (p.hover != null) setHovered(false)
-            if (
-                p.tooltip != null && //
-                tooltipStuff.tooltip?.ref === ev.currentTarget
-            ) {
-                tooltipStuff.tooltip = null
+            if (tooltip != null) {
+                const elem = ev.currentTarget
+                const depth = getElementDepth(elem)
+                const prev = tooltipStuff.tooltips.get(depth)
+                if (prev?.ref === ev.currentTarget) {
+                    tooltipStuff.tooltips.delete(depth)
+                }
             }
         }
 
@@ -232,3 +238,14 @@ export const Frame = observer(
         )
     }),
 )
+
+function getElementDepth(element: Element): number {
+    let depth = 0
+
+    while (element.parentElement) {
+        element = element.parentElement
+        depth++
+    }
+
+    return depth
+}

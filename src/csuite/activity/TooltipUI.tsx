@@ -8,8 +8,8 @@ import { useDelay } from './useDelay'
 export const TooltipUI = observer(function TooltipUI_(p: {}) {
     const conf = cushy.preferences.interface.value.tooltipDelay
 
-    const isDelayed = useDelay(conf, [tooltipStuff.tooltip, conf])
-    const tooltip = tooltipStuff.tooltip
+    const tooltip = tooltipStuff.deepest
+    const isDelayed = useDelay(conf, [tooltip, conf])
 
     if (isDelayed && conf != null) return null
     if (tooltip == null) return null
@@ -19,7 +19,7 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
 
     return (
         <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999]'>
-            <Frame base={30} border shadow tw='p-2'>
+            <Frame base={80} border shadow tw='px-1 py-0.5 opacity-70'>
                 {/* <div>
                     {tooltip.placement}
                     {' => '}
