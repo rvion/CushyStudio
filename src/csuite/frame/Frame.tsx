@@ -62,7 +62,7 @@ export type FrameProps = {
 // quick and dirty way to configure frame to use either style or className
 type FrameMode = 'CLASSNAME' | 'STYLE'
 let frameMode: FrameMode = 1 - 1 === 1 ? 'STYLE' : 'CLASSNAME'
-export const configureFrameEngine = (mode: FrameMode) => {
+export const configureFrameEngine = (mode: FrameMode): void => {
     frameMode = mode
 }
 // ------------------------------------------------------------------
@@ -160,7 +160,7 @@ export const Frame = observer(
         if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 
         // ===================================================================
-        const _onMouseOver = (ev: MouseEvent) => {
+        const _onMouseOver = (ev: MouseEvent): void => {
             // console.log(`[🤠] hover`, ev.currentTarget)
             if (p.hover != null) setHovered(true)
             if (p.tooltip != null)
@@ -171,7 +171,7 @@ export const Frame = observer(
                 }
         }
 
-        const _onMouseOut = (ev: MouseEvent) => {
+        const _onMouseOut = (ev: MouseEvent): void => {
             if (p.hover != null) setHovered(false)
             if (
                 p.tooltip != null && //
