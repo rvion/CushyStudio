@@ -54,5 +54,5 @@ describe('prompt grammar', () => {
     })
 
     // const end = Date.now()
-    // console.log(`[👙]`, end - start, 'ms')
+    // console.log(`[🧐]`, end - start, 'ms')
 })

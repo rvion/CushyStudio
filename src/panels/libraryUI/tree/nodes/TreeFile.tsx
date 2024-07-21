@@ -79,7 +79,7 @@ export class TreeFile implements ITreeEntry {
         if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
 
         const apps = this.script.apps
-        // console.log(`[👙] 🔴 ${this.path} => ${apps.length}`)
+        // console.log(`[🧐] 🔴 ${this.path} => ${apps.length}`)
         if (apps.length === 0) {
             // console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []

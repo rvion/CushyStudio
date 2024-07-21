@@ -87,7 +87,7 @@ const changeWeight = (
         return
     }
 
-    // console.log(`[👙] D: a(${a.name}:${a.from}->${a.to}) & b(${b.name}:${b.from}->${b.to})`)
+    // console.log(`[🧐] D: a(${a.name}:${a.from}->${a.to}) & b(${b.name}:${b.from}->${b.to})`)
     // group and weights
     const newWeights = formatWeights(1 + amount)
     view.dispatch({

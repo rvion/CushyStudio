@@ -11,16 +11,19 @@ export const Plugin_ReorderTopLevelStuffUI = observer(function Plugin_ReorderTop
                 draggedItemClassName='dragged'
                 className='flex gap-1'
                 onSortEnd={(oldIndex, newIndex) => {
-                    console.log(`[👙] oldIndex, newIndex`, oldIndex, newIndex)
+                    //
+                    console.log(`[🧐] oldIndex, newIndex`, oldIndex, newIndex)
                     const items = uist.ast.findAll('Identifier')
                     const insertBeforeNode = items[newIndex]!
                     const oldItem = items[oldIndex]!
                     let txt = oldItem.text
-                    console.log(`[👙] oldIndex, newIndex`, oldIndex, newIndex)
+                    //
+                    console.log(`[🧐] oldIndex, newIndex`, oldIndex, newIndex)
                     const removeFrom = oldItem.from
                     const removeTo = oldItem.to
                     const insertAt = insertBeforeNode.from
-                    console.log(`[👙] `, { removeFrom, removeTo, insertAt })
+                    //
+                    console.log(`[🧐] `, { removeFrom, removeTo, insertAt })
                     uist.editorView?.dispatch({
                         changes: [
                             { from: removeFrom, to: removeTo, insert: '' },

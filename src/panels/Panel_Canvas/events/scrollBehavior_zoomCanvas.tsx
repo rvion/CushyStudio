@@ -8,7 +8,7 @@ export const scrollBehavior_zoomCanvas = (
 ) => {
     const stage = e.target.getStage()
     if (stage == null) return console.warn(`🔶 missing stage`)
-    // console.log(`[👙] stage`, stage)
+    // console.log(`[🧐😀] stage`, stage)
     // if (e.evt.ctrlKey) {
     const scaleBy = 1.15
     // stop default scrolling
@@ -45,7 +45,7 @@ export const scrollBehavior_zoomCanvas = (
     }
     canvas.infos.canvasX = newPos.x
     canvas.infos.canvasY = newPos.y
-    console.log(`[👙] newPos`, newPos)
+    console.log(`[🧐] newPos`, newPos)
     stage.position(newPos)
     return
 }
