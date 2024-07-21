@@ -12,11 +12,11 @@ import { type FC } from 'react'
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form } from '../../form/Form'
 import { FormUIProps } from '../../form/FormUI'
+import { Frame } from '../../frame/Frame'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
-import { Frame } from 'src/cushy-forms/src/csuite/frame/Frame'
 
 // CONFIG
 export type Field_group_config<T extends SchemaDict> = FieldConfig<
