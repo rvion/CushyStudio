@@ -15,7 +15,7 @@ import { WidgetEnumUI } from './WidgetEnumUI'
 export type Field_enum_config<O> = FieldConfig<
     {
         enumName: string
-        default?: O //Requirable[T] | EnumDefault<T>
+        default?: O
         extraDefaults?: string[]
         filter?: (v: EnumValue) => boolean
     },
