@@ -58,7 +58,8 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
-    const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
+    // const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
+    const Component = p.Component ?? ((): JSX.Element => form.renderWithLabel())
 
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||
