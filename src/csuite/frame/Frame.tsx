@@ -6,7 +6,7 @@ import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, type MouseEvent, useContext, useState } from 'react'
+import { type ForwardedRef, forwardRef, type MouseEvent, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
@@ -14,6 +14,7 @@ import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { overrideTint } from '../kolor/overrideTint'
 import { overrideTintV2 } from '../kolor/overrideTintV2'
+import { normalizeTint, type TintExt } from '../kolor/Tint'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { frameTemplates } from './FrameTemplates'
@@ -22,6 +23,15 @@ import { tooltipStuff } from './tooltip'
 export type FrameProps = {
     tooltip?: string
     tooltipPlacement?: RevealPlacement
+
+    boxShadow?: {
+        inset?: boolean
+        x?: number
+        y?: number
+        blur?: number
+        spread?: number
+        color?: TintExt
+    }
 
     // quick layout ----------------------------------------------------
     /** quick layout feature to add `flex flex-row` */
@@ -78,9 +88,10 @@ export const Frame = observer(
             icon, iconSize, suffixIcon, loading,                // addons
             expand, square, size,                               // size
 
-            look,                                               // style: 1/3: frame templates
-            base, hover, border, text, textShadow, shadow,      // style: 2/3: frame overrides
-            style, className,                                   // style: 3/3: css, className
+            look,                                               // style: 1/4: frame templates
+            base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
+            boxShadow,                                          // style: 3/4: css
+            style, className,                                   // style: 4/4: css, className
 
             row, line, col,                                     // layout
 
@@ -159,6 +170,20 @@ export const Frame = observer(
 
         // BORDER
         if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
+
+        // BOX-SHADOW
+        if (p.boxShadow) {
+            const y = normalizeTint(p.boxShadow.color)
+            variables['box-shadow'] = [
+                //
+                `${p.boxShadow.inset ? 'inset' : ''}`,
+                `${p.boxShadow.x ?? 0}px`,
+                `${p.boxShadow.y ?? 0}px`,
+                `${p.boxShadow.blur ?? 0}px`,
+                `${p.boxShadow.spread ?? 0}px`,
+                `${KBase.tintBg(y).toOKLCH()}`,
+            ].join(' ')
+        }
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent): void => {
