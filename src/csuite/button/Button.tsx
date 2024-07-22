@@ -15,6 +15,7 @@ export const Button = observer(function Button_(
         borderless?: boolean
         /** hue */
         hue?: number
+        chroma?: number
     },
 ) {
     const uist = useMemo(() => new ButtonState(p), [])
@@ -37,6 +38,7 @@ export const Button = observer(function Button_(
                     ? buttonContrastWhenPressed
                     : buttonContrast,
                 hue: p.hue,
+                chroma: p.chroma,
             }}
             border={borderless ? 0 : 10}
             hover={p.disabled ? false : 3}
