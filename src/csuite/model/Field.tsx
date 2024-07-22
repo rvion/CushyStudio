@@ -202,10 +202,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>): void {
         if (s == null) return
-        if (s._version) this.serial._version = s._version
-        if (s.collapsed) this.serial.collapsed = s.collapsed
-        if (s.custom) this.serial.custom = s.custom
-        if (s.lastUpdatedAt != undefined) this.serial.lastUpdatedAt = s.lastUpdatedAt
+        if (s._version != null) this.serial._version = s._version
+        if (s.collapsed != null) this.serial.collapsed = s.collapsed
+        if (s.custom != null) this.serial.custom = s.custom
+        if (s.lastUpdatedAt != null) this.serial.lastUpdatedAt = s.lastUpdatedAt
     }
 
     /** unified api to allow setting serial from value */
