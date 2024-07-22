@@ -145,7 +145,7 @@ export class CushyScriptL {
      *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
      */
     evaluateAndUpdateAppsAndViews = (): /* Executable[]  */ void => {
-        console.log(`[👙] extracting apps...`)
+        console.log(`[🧐] extracting apps...`)
         // debugger
         const evalRes = this._EVALUATE_SCRIPT()
         this._EXECUTABLES = evalRes.apps

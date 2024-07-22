@@ -13,6 +13,14 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         makeAutoObservable(this)
     }
 
+    get tooltipDelay(): Maybe<number> {
+        return cushy.preferences.interface.value.tooltipDelay
+    }
+
+    get showFoldButtons(): boolean {
+        return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
+    }
+
     get widgetHeight(): number {
         return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }

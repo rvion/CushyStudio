@@ -1,6 +1,11 @@
 import { Factory } from './model/Factory'
 import { SimpleBuilder } from './simple/SimpleBuilder'
 
+export { MessageInfoUI } from './messages/MessageInfoUI'
+export { MessageErrorUI } from './messages/MessageErrorUI'
+export { MessageWarningUI } from './messages/MessageWarningUI'
+export { MessageUI } from './messages/MessageUI'
+
 export { CSuiteProvider } from './ctx/CSuiteProvider'
 export { CSuite_ThemeLoco } from './ctx/CSuite_ThemeLoco'
 

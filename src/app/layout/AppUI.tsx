@@ -25,8 +25,8 @@ export const CushyUI = observer(function CushyUI_() {
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
-        function handleKeyDown(event: KeyboardEvent) {
-            const x = commandManager.processKeyDownEvent(event as any)
+        function handleKeyDown(event: KeyboardEvent): void {
+            const x: Trigger = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
                 event.preventDefault()
@@ -53,7 +53,7 @@ export const CushyUI = observer(function CushyUI_() {
         }
         window.addEventListener('keydown', handleKeyDown)
         if (document.activeElement === document.body) current.focus()
-        return () => window.removeEventListener('keydown', handleKeyDown)
+        return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])
 
     return (

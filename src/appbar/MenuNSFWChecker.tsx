@@ -17,8 +17,8 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
                     type='checkbox'
                     checked={val}
                     onChange={(ev) => {
-                        console.log(`[👙] was`, val)
-                        console.log(`[👙] willbe`, val ? SQLITE_false : SQLITE_true)
+                        console.log(`[🧐] was`, val)
+                        console.log(`[🧐] willbe`, val ? SQLITE_false : SQLITE_true)
                         pj.filterNSFW = !val
                     }}
                 />

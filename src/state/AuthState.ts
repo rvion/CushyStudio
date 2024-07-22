@@ -122,10 +122,10 @@ export class AuthState {
         win?.addEventListener('message', async (event) => {
             logger.info(`[🔑 AUTH] 🟢 callback received from sub-window...`)
             // 1. extract href
-            console.log(`[👙]`, event)
+            console.log(`[🧐]`, event)
             const data = event.data as { pageHref: string }
             const pageref = data.pageHref
-            console.log(`[👙]`, data.pageHref)
+            console.log(`[🧐]`, data.pageHref)
 
             // 2. parse callback to extract tokens
             const queryParams = new URL(pageref.replace('#', '?')).searchParams
@@ -139,7 +139,7 @@ export class AuthState {
             }
 
             // 3. ensure access_token & refresh_token are there
-            console.log(`[👙] event:`, payload)
+            console.log(`[🧐] event:`, payload)
             if (payload.access_token == null) throw new Error(`[🔑 AUTH] ❌ failure: payload.access_token is null`)
             if (payload.refresh_token == null) throw new Error(`[🔑 AUTH] ❌ failure: payload.refresh_token is null`)
 

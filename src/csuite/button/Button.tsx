@@ -4,6 +4,9 @@ import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
 
+const buttonContrastWhenPressed: number = 0.13 // 30%
+const buttonContrast: number = 0.08 // 20%
+
 export const Button = observer(function Button_(
     p: FrameProps & {
         /** no contrast */
@@ -12,6 +15,7 @@ export const Button = observer(function Button_(
         borderless?: boolean
         /** hue */
         hue?: number
+        chroma?: number
     },
 ) {
     const uist = useMemo(() => new ButtonState(p), [])
@@ -21,14 +25,25 @@ export const Button = observer(function Button_(
 
     // ensure any unmounting of this component will properly clean-up
     useEffect(() => uist.release, [])
+
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     return (
         <Frame //
             size={size ?? 'input'}
             look={look}
+            boxShadow={
+                uist.visuallyActive || p.subtle || p.borderless //
+                    ? undefined
+                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+            }
             base={{
-                contrast: subtle ? 0 : uist.visuallyActive || uist.running ? 0.3 : 0.2,
+                contrast: subtle //
+                    ? 0
+                    : uist.visuallyActive || uist.running
+                    ? buttonContrastWhenPressed
+                    : buttonContrast,
                 hue: p.hue,
+                chroma: p.chroma,
             }}
             border={borderless ? 0 : 10}
             hover={p.disabled ? false : 3}
@@ -63,7 +78,7 @@ class ButtonState {
         makeAutoObservable(this, { props: observable.ref })
     }
 
-    onClick = (ev: React.MouseEvent<any>) => {
+    onClick = (ev: React.MouseEvent<any>): void => {
         // prevent to run if already running
         if (this.props.disabled) return
         // prevent to run if already running (automatic behaviour when onClick return Promsies)
@@ -81,7 +96,7 @@ class ButtonState {
         }
     }
 
-    press = (_ev: React.MouseEvent) => {
+    press = (_ev: React.MouseEvent): void => {
         // prevent to run if already running
         if (this.props.disabled) return
         // prevent to run if already running (automatic behaviour when onClick return Promsies)
@@ -91,13 +106,13 @@ class ButtonState {
         window.addEventListener('pointerup', this.release, true)
     }
 
-    release = (/* e: MouseEvent */) => {
+    release = (/* e: MouseEvent */): void => {
         this.pressed = false
         window.removeEventListener('pointerup', this.release, true)
     }
 
     /** 2024-06-04 for now, "active" means "pressed or active" */
-    get visuallyActive() {
+    get visuallyActive(): Maybe<boolean> {
         if (this.props.disabled) return false
         return this.pressed ? !this.props.active : this.props.active
     }

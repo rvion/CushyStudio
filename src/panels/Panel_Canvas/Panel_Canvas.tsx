@@ -41,7 +41,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
     const size = useSize(containerRef)
     React.useEffect(() => {
         if (size == null) return
-        // console.log(`[👙] size.height=`, size.height, size.width)
+        // console.log(`[🧐] size.height=`, size.height, size.width)
         canvas.stage.width(size.width)
         canvas.stage.height(size.height)
     }, [Math.round(size?.width ?? 100), Math.round(size?.height ?? 100)])

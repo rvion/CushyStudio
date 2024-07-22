@@ -40,7 +40,9 @@ type UID = Tagged<string, 'UID'>
 // buffer to accumulate logs
 // so we can review what this script did
 let out = ''
-const append = (x: string) => (out += x + '\n')
+const append = (x: string): void => {
+    out += x + '\n'
+}
 
 const ENTRYPOINT = 'src/csuite/index.ts'
 const PACKAGE_NAME = '@cushy/forms'
@@ -63,7 +65,7 @@ await microbench('took', async () => {
     console.log(`- ensure custom jsx-runtime will be found`)
     mkdirSync('lib/csuite/custom-jsx', { recursive: true })
 
-    const cpSync2 = (src: string, dest: string) => {
+    const cpSync2 = (src: string, dest: string): void => {
         cpSync(src, dest)
         console.log(`- copy ${chalk.underline(src)} to ${chalk.underline(dest)}`)
     }
@@ -78,7 +80,7 @@ section(`0.1 cleanup previous build`)
 sectionObjective(`starting fresh ensure we're not mising anything?`)
 sectionTool('bun script')
 await microbench('took', async () => {
-    const remove = (distRelPath: string) => {
+    const remove = (distRelPath: string): void => {
         const _path = resolve(DIST_ABSPATH, distRelPath)
         const exists = existsSync(_path)
         if (!exists) return console.log(`- ${chalk.gray.underline(`./${DIST_RELPATH}/${distRelPath}`)} does not exist`)
@@ -166,7 +168,7 @@ for (const [e, v] of esbuildInputFiles) {
 }
 console.log(`🔵 peer DEPS: `, [...peerDeps.values()])
 
-const updateJSON = <T>(path: string, fn: (json: T) => void) => {
+const updateJSON = <T>(path: string, fn: (json: T) => void): void => {
     const json = JSON.parse(readFileSync(path, 'utf-8'))
     fn(json)
     writeFileSync(path, JSON.stringify(json, null, 4), 'utf-8')
@@ -241,7 +243,7 @@ execSync(commandToGenOutputCSSTailwind, { cwd: DIST_RELPATH, stdio: 'inherit' })
 
 section(`3.3 copy css files`)
 
-const addToPackage = (relPath: string) => {
+const addToPackage = (relPath: string): void => {
     console.log(`    - copy ${chalk.underline(relPath)} to ${chalk.underline(`${PACKAGE_NAME}/${relPath}`)}`)
     cpSync(relPath, `${PACKAGE_NAME}/${relPath}`)
 }
@@ -342,7 +344,7 @@ const whitelist: string[] = [
     'src/rsuite/reveal/RevealProps',
 ]
 
-function emojiLogic(x: string) {
+function emojiLogic(x: string): string {
     if (jsModuleInBundle.has(x)) return '🟢'
     if (whitelist.includes(x)) return '🟡'
     if (!x.startsWith('src/')) return '🔵'

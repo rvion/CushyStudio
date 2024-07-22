@@ -13,11 +13,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     const choices: Entry[] = field.choicesWithLabels
     return (
         <div
-            tw={[
-                //
-                'relative',
-                p.field.expand || p.field.config.justifyLabel ? 'w-full' : 'w-64',
-            ]}
+            tw='relative flex-1'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()

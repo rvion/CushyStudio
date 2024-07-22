@@ -19,8 +19,8 @@ export class DisplacementState {
         // shader: THREE.ShaderMaterial,
         // cutout: any,
     ) => {
-        console.log(`[👙] mat1`, cutout)
-        // console.log(`[👙] mat2`, mat.userData.cutout)
+        console.log(`[🧐] mat1`, cutout)
+        // console.log(`[🧐] mat2`, mat.userData.cutout)
         shader.uniforms.cutout = cutout // mat.userData.cutout //{ value: 0.3 }
         shader.uniforms.removeBackground = removeBackground
 
@@ -97,8 +97,8 @@ export class DisplacementState {
         //     vertexShader: shader.vertexShader,
         //     fragmentShader: shader.fragmentShader,
         // })
-        // console.log(`[👙]`, shader.vertexShader)
-        // console.log(`[👙]`, shader.fragmentShader)
+        // console.log(`[🧐]`, shader.vertexShader)
+        // console.log(`[🧐]`, shader.fragmentShader)
     }
 }
 

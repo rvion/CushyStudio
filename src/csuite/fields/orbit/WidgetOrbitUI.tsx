@@ -42,11 +42,11 @@ export const WidgetOrbitUI = observer((p: { field: Field_orbit }) => {
                         //     p.widget.serial.val.azimuth = clampMod(-90 + curr.getAzimuthalAngle() * (180 / Math.PI), -180, 180)
                         //     p.widget.serial.val.elevation = clampMod(90 - curr.getPolarAngle() * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
 
-                        //     // console.log(`[👙] `, JSON.stringify(p.widget.state.val))
+                        //     // console.log(`[🧐] `, JSON.stringify(p.widget.state.val))
                         // })
                         // if (e == null) return
                         // const azimuthDeg = e.azimuthalAngle * (180 / Math.PI)
-                        // const elevationDeg = console.log(`[👙] `, { rotation, azimuthDeg, elevationDeg })
+                        // const elevationDeg = console.log(`[🧐] `, { rotation, azimuthDeg, elevationDeg })
                     }}
                 />
             </Canvas>

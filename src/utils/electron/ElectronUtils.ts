@@ -56,7 +56,7 @@ export class ElectronUtils {
         ipcRenderer.removeAllListeners('filedownloaded')
         ipcRenderer.on('filedownloaded', (_ev, json: FileDownloaded_IPCPayload) => {
             createMediaImage_fromPath(new FPath(json.relativePath), {})
-            // console.log(`[👙] `, { json })
+            // console.log(`[🧐] `, { json })
         })
 
         ipcRenderer.removeAllListeners('search-result')

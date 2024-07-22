@@ -195,17 +195,17 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     setSerial(serial: Maybe<K['$Serial']>): void {
         autofixSerial_20240711(serial)
         this.runInValueTransaction(() => {
-            this.copyCommonSerialFiels(serial)
+            this.copyCommonSerialFields(serial)
             this.setOwnSerial(serial)
         })
     }
 
-    private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>): void {
+    private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
         if (s == null) return
-        if (s._version) this.serial._version = s._version
-        if (s.collapsed) this.serial.collapsed = s.collapsed
-        if (s.custom) this.serial.custom = s.custom
-        if (s.lastUpdatedAt != undefined) this.serial.lastUpdatedAt = s.lastUpdatedAt
+        if (s._version != null) this.serial._version = s._version
+        if (s.collapsed != null) this.serial.collapsed = s.collapsed
+        if (s.custom != null) this.serial.custom = s.custom
+        if (s.lastUpdatedAt != null) this.serial.lastUpdatedAt = s.lastUpdatedAt
     }
 
     /** unified api to allow setting serial from value */
@@ -495,6 +495,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return [...ownProblems, ...this.customOwnProblems]
     }
 
+    // 2024-07-21 (1) rvion:
+    // | ARRRGH !! this is not cached for some reason !!
+    // | array is everytime recreated => FormUI is re-rendered
+    // 2024-07-21 (2) rvion:
+    // | this is related to mobx-store-inheritance not working properly
     get allErrorsIncludingChildrenErros(): Problem[] {
         return this.errors.concat(this.subFields.flatMap((f) => f.allErrorsIncludingChildrenErros))
     }
@@ -833,13 +838,27 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
         // 3. ...
         this.runInCreateTransaction(() => {
-            this.copyCommonSerialFiels(serial)
+            this.copyCommonSerialFields(serial)
 
             //   VVVVVVVVVVVV this is where we hydrate children
             this.setOwnSerial(serial)
 
             // make the object deeply observable including this base class
-            makeAutoObservableInheritance(this, mobxOverrides)
+            makeAutoObservableInheritance(this, {
+                // schema should not be able
+                schema: false,
+
+                // components should not be observable; otherwise, it breaks the hot reload in dev-mode
+                UIToggle: false,
+                UIErrors: false,
+                UILabelCaret: false,
+                UILabelIcon: false,
+                UILabelContainer: false,
+                UIHeaderContainer: false,
+
+                // overrides retrieved from parents
+                ...mobxOverrides,
+            })
 
             this.repo._registerField(this)
             this.ready = true
@@ -848,6 +867,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     get hasSnapshot(): boolean {
         return this.serial.snapshot != null
+    }
+
+    get hasFoldableSubfieldsThatAreUnfolded(): boolean {
+        return this.subFields.some((f) => f.isCollapsible && !f.serial.collapsed)
+    }
+
+    get hasFoldableSubfieldsThatAreFolded(): boolean {
+        return this.subFields.some((f) => f.isCollapsible && f.serial.collapsed)
+    }
+
+    get hasFoldableSubfields(): boolean {
+        return this.subFields.some((f) => f.isCollapsible)
     }
 
     deleteSnapshot(): void {

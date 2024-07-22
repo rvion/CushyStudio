@@ -53,7 +53,7 @@ export class ComfySchemaL {
      * quick way to check your instance info
      * */
     get size(): number {
-        // console.log(`[👙] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
+        // console.log(`[🧐] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
         return Object.keys(this.data.spec).length
     }
 
@@ -176,9 +176,9 @@ export class ComfySchemaL {
             const outputNamer: { [key: string]: number } = {}
             // console.info(JSON.stringify(nodeDef.output))
             // [⏸️ debug] if (typeof nodeDef.output.entries !== 'function') {
-            // [⏸️ debug]     console.log(`[👙] `, nodeDef)
-            // [⏸️ debug]     console.log(`[👙] `, nodeDef.output)
-            // [⏸️ debug]     console.log(`[👙] `, nodeDef.output.entries)
+            // [⏸️ debug]     console.log(`[🧐] `, nodeDef)
+            // [⏸️ debug]     console.log(`[🧐] `, nodeDef.output)
+            // [⏸️ debug]     console.log(`[🧐] `, nodeDef.output.entries)
             // [⏸️ debug]     debugger
             // [⏸️ debug] }
             for (const [ix, slotType] of nodeDef.output.entries()) {

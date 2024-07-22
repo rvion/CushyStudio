@@ -155,7 +155,7 @@ export class TreeNode {
     }
 
     get nextSibling(): TreeNode | undefined {
-        let siblings = this.siblingsIncludingSelf
+        const siblings = this.siblingsIncludingSelf
         if (siblings.length === 0) FAIL('IMPOSSIBLE 1')
         if (siblings[siblings.length - 1] === this) return // last of the fratry
         for (let i = 0; i < siblings.length - 1; i++) {
@@ -165,9 +165,9 @@ export class TreeNode {
     }
 
     get prevSibling(): TreeNode | undefined {
-        let siblings = this.siblingsIncludingSelf
+        const siblings = this.siblingsIncludingSelf
         // eslint-disable-next-line consistent-this
-        let SELF = this
+        const SELF = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
         if (siblings[0] === SELF) return // first of the fratry
         for (let i = siblings.length - 1; i > 0; i--) {

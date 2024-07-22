@@ -65,7 +65,7 @@ export const recursivelyFindAppsInFolder = (
             //     console.log(`skipping file ${relPath} cause it's not in a valid action folder`)
             //     continue
             // }
-            // console.log(`[👙] >>>>>>>>>>>>>>>>>>>>> SCRIPT:`, absPath)
+            // console.log(`[🧐] >>>>>>>>>>>>>>>>>>>>> SCRIPT:`, absPath)
             const file = library.getFile(relPath)
             out.push(file)
             // library._registerApp(absPath, 'autodiscover')

@@ -51,7 +51,7 @@ export const PanelIframeUI = observer(function Panel_Iframe_(p: PanelIframeProps
             src={p.url}
             // frameBorder='0'
             // ⏸️ onLoad={() => {
-            // ⏸️     console.log(`[👙] 🍻 loaded`)
+            // ⏸️     console.log(`[🧐] 🍻 loaded`)
             // ⏸️ }}
         />
     )

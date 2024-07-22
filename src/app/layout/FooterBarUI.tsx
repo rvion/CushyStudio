@@ -14,7 +14,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
         >
             <DebugControlsUI />
             <div tw='flex-1' />
-            {tooltipStuff.tooltip && <div>{tooltipStuff.tooltip.text}</div>}
+            {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>}
         </Frame>
     )
 })

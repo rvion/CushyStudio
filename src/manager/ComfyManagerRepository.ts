@@ -40,7 +40,7 @@ export class ComfyManagerRepository {
 
     getKnownCheckpoints = (): ModelInfo[] => {
         // for (const mi of knownModels.values()) {
-        //     console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
+        //     console.log(`[🧐] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
         // }
         return [...this.knownModels.values()].filter((i) => i.type === 'checkpoints')
     }
@@ -103,7 +103,7 @@ export class ComfyManagerRepository {
 //     if (!pluginURI) {
 //         console.log(`[🔎] ❌ no CustomNode URI found for nodeName ${nodeNameInCushy}`)
 //         console.log(
-//             `[👙] `,
+//             `[🧐] `,
 //             [...y.byNodeNameInCushy.keys()].filter((x) => x.includes('Cloud')),
 //         )
 //         return []

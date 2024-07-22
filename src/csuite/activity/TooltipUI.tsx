@@ -1,15 +1,17 @@
 import { observer } from 'mobx-react-lite'
 
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { tooltipStuff } from '../frame/tooltip'
 import { useDelay } from './useDelay'
 
 export const TooltipUI = observer(function TooltipUI_(p: {}) {
-    const conf = cushy.preferences.interface.value.tooltipDelay
+    const csuite = useCSuite()
+    const conf = csuite.tooltipDelay
 
-    const isDelayed = useDelay(conf, [tooltipStuff.tooltip, conf])
-    const tooltip = tooltipStuff.tooltip
+    const tooltip = tooltipStuff.deepest
+    const isDelayed = useDelay(conf, [tooltip, conf])
 
     if (isDelayed && conf != null) return null
     if (tooltip == null) return null
@@ -19,16 +21,9 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
 
     return (
         <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999]'>
-            <Frame base={30} border shadow tw='p-2'>
-                {/* <div>
-                    {tooltip.placement}
-                    {' => '}
-                    {tooltip.placement ?? 'bottom'}
-                </div> */}
-                {/* {isDelayed ? '🟢' : '❌'} */}
+            <Frame base={80} border shadow tw='px-1 py-0.5 opacity-70'>
                 <div>{txt}</div>
             </Frame>
-            {/* {JSON.stringify(pos)} */}
         </div>
     )
 })

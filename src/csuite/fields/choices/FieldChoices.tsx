@@ -132,7 +132,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
-            label: schema.config.label || makeLabelFromFieldName(key),
+            label:
+                typeof schema.config.label === 'string' && schema.config.label.length > 0
+                    ? schema.config.label
+                    : makeLabelFromFieldName(key),
             icon: schema.config.icon,
         }))
     }

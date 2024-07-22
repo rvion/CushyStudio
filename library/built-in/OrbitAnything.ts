@@ -59,8 +59,8 @@ app({
         if (!ui.sndPass) return
 
         if (run.isCurrentDraftAutoStartEnabled() && run.isCurrentDraftDirty()) {
-            console.log(`[👙] 1. isCurrentDraftAutoStartEnabled: ${run.isCurrentDraftAutoStartEnabled()}`)
-            console.log(`[👙] 1. isCurrentDraftDirty: ${run.isCurrentDraftDirty()}`)
+            console.log(`[🧐] 1. isCurrentDraftAutoStartEnabled: ${run.isCurrentDraftAutoStartEnabled()}`)
+            console.log(`[🧐] 1. isCurrentDraftDirty: ${run.isCurrentDraftDirty()}`)
             return
         }
 

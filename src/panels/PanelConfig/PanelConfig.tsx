@@ -1,3 +1,6 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+import type { FC } from 'react'
+
 import { observer } from 'mobx-react-lite'
 
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
@@ -13,10 +16,8 @@ import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { FormHelpTextUI } from '../../csuite/inputs/shims'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
-// import { Panel_ComfyUIHosts } from './Panel_ComfyUIHosts'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
-import { Panel } from '../../router/Panel'
-// import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
@@ -25,12 +26,14 @@ export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' |
 
 export const PanelConfig = new Panel({
     name: 'Config',
-    widget: () => PanelConfigUI,
-    header: (p) => ({ title: 'Config', icon: undefined }),
-    def: () => ({}),
+    widget: (): FC<NO_PROPS> => PanelConfigUI,
+    header: (p): PanelHeader => ({ title: 'Config', icon: undefined }),
+    def: (): PanelConfigProps => ({}),
 })
 
-export const PanelConfigUI = observer(function Panel_Config_() {
+export type PanelConfigProps = NO_PROPS
+
+export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps) {
     let page
     switch (cushy.configMode) {
         case 'hosts':
@@ -53,7 +56,7 @@ export const PanelConfigUI = observer(function Panel_Config_() {
             break
     }
 
-    const ConfigModeButton = (p: { mode: ConfigMode }) => {
+    const ConfigModeButton = (p: { mode: ConfigMode }): JSX.Element => {
         return (
             <InputBoolToggleButtonUI //
                 tw='capitalize h-10'

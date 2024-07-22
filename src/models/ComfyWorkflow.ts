@@ -138,7 +138,7 @@ export class ComfyWorkflowL {
         }
         // console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
         // if (this.id === 'hMVVgKmyYZ-baEQtdibSx') {
-        //     console.log(`[👙] GRAPH.onUpdate`, prev, next, this.nodes.length)
+        //     console.log(`[🧐] GRAPH.onUpdate`, prev, next, this.nodes.length)
         // }
     }
 

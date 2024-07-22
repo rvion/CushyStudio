@@ -76,6 +76,10 @@ export const interfaceConf = cushyFactory.entity(
                     tooltip: 'Show undo button near every field',
                     default: true,
                 }),
+                showWidgetFoldButtons: ui.boolean({
+                    tooltip: 'Show undo button near every field',
+                    default: true,
+                }),
                 showWidgetMenu: ui.boolean({
                     text: 'Widget Menu',
                     tooltip: 'Show action buttons at the bottom of the form',
@@ -119,9 +123,10 @@ export const interfaceConf = cushyFactory.entity(
                                         label='Show'
                                     />
                                 }
-                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetUndo} />}
-                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetMenu} />}
-                                {<WidgetWithLabelUI fieldName='' field={f.showWidgetDiff} />}
+                                {f.showWidgetUndo.renderWithLabel({ fieldName: '' })}
+                                {f.showWidgetFoldButtons.renderWithLabel({ fieldName: 'showWidgetFoldButtons' })}
+                                {f.showWidgetMenu.renderWithLabel({ fieldName: '' })}
+                                {f.showWidgetDiff.renderWithLabel({ fieldName: '' })}
                             </div>
                         </div>
                     )

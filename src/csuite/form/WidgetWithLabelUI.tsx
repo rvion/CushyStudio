@@ -41,6 +41,7 @@ export type WidgetWithLabelProps = {
 
     slotDelete?: ReactNode
     slotDragKnob?: ReactNode
+    slotUpDown?: ReactNode
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
@@ -124,6 +125,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         </WidgetHeaderControlsContainerUI>
                     )}
 
+                    {p.slotUpDown}
                     {p.slotDelete}
 
                     {/* HEADER EXTRA prettier-ignore */}
