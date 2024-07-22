@@ -844,7 +844,21 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             this.setOwnSerial(serial)
 
             // make the object deeply observable including this base class
-            makeAutoObservableInheritance(this, mobxOverrides)
+            makeAutoObservableInheritance(this, {
+                // schema should not be able
+                schema: false,
+
+                // components should not be observable; otherwise, it breaks the hot reload in dev-mode
+                UIToggle: false,
+                UIErrors: false,
+                UILabelCaret: false,
+                UILabelIcon: false,
+                UILabelContainer: false,
+                UIHeaderContainer: false,
+
+                // overrides retrieved from parents
+                ...mobxOverrides,
+            })
 
             this.repo._registerField(this)
             this.ready = true
