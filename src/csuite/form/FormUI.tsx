@@ -4,6 +4,7 @@ import type { NO_PROPS } from '../types/NO_PROPS'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -59,9 +60,14 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     const submitAction = p.submitAction
     const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
 
-    const canSubmit =
-        p.allowSubmitWhenErrors || //
-        p.field == null || //
+    const canSubmit: boolean =
+        p.allowSubmitWhenErrors ||
+        p.field == null ||
+        // 2024-07-21 rvion:
+        // | spent one hour troubleshooting this crap:
+        // | components re-evaluated at every single rendering will not be properly cached.
+        // | this was making every sub components re-render everytime => int were not working properly
+        // | also...... now that I'm writing that, why the hell was this component re-rendering everytime the value was changing ?
         p.field.allErrorsIncludingChildrenErros.length === 0
 
     return (
