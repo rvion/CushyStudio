@@ -25,13 +25,13 @@ export const BadgeUI = observer(function BadgeUI_({
     return (
         <Frame
             // [line-height:1.1rem]
-            tw={['rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer']}
+            tw={['leading-normal', 'rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer']}
             hover={hasAction}
             base={{
                 //
                 hue:
                     hue ??
-                    (autoHue
+                    (autoHue != null
                         ? typeof autoHue === 'boolean'
                             ? typeof children === 'string'
                                 ? hashStringToNumber(children)

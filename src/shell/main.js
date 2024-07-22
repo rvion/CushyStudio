@@ -312,10 +312,23 @@ async function START() {
             // app.exit();
         })
 
+        // https://stackoverflow.com/questions/54969526/react-dev-tools-unable-to-use-profiler-in-electron-application
+        // https://stackoverflow.com/questions/37927929/electron-how-to-add-react-dev-tool
+        const installExtensions = async () => {
+            const installer = require('electron-devtools-installer')
+            const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+            const extensions = ['REACT_DEVELOPER_TOOLS']
+            return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log)
+        }
+
         void createWindow()
         app.on('activate', function () {
             if (BrowserWindow.getAllWindows().length === 0) void createWindow()
         })
+
+        if (mode === 'dev') {
+            void app.whenReady().then(installExtensions)
+        }
     })
 
     app.on('window-all-closed', function () {

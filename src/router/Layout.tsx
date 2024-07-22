@@ -556,7 +556,7 @@ export class CushyLayoutManager {
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
-                console.log(`[👙] addition:`, addition, { component: panelName, tabID, icon, title, props: panelProps })
+                console.log(`[🧐] addition:`, addition, { component: panelName, tabID, icon, title, props: panelProps })
                 this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }

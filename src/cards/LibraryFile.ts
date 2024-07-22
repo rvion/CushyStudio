@@ -62,7 +62,7 @@ export class LibraryFile {
 
     /** abs path to the folder this file is in */
     get folderAbs(): AbsolutePath {
-        // console.log(`[👙] 🔴`, dirname(this.absPath))
+        // console.log(`[🧐] 🔴`, dirname(this.absPath))
         return asAbsolutePath(dirname(this.absPath))
     }
 
@@ -230,7 +230,7 @@ export class LibraryFile {
             // console.log('-- a', { eps: this.relPath })
             const ctx = await this._esbuildContext
             const res = await ctx.rebuild()
-            // console.log(`[👙] res`, Object.keys(res.metafile.inputs))
+            // console.log(`[🧐] res`, Object.keys(res.metafile.inputs))
             const outFile: OutputFile = res.outputFiles[0]!
             if (outFile.text == null) throw new Error('compilation failed')
 
@@ -363,7 +363,7 @@ export class LibraryFile {
         codeJS: string,
         metafile?: Metafile,
     ): CushyScriptL => {
-        console.groupCollapsed(`[👙] script extracted for ${this.relPath}`)
+        console.groupCollapsed(`[🧐] script extracted for ${this.relPath}`)
         console.log(codeJS)
         console.groupEnd()
         const script = this.st.db.cushy_script.upsert({

@@ -1,3 +1,4 @@
+import type { FormUIProps } from '../../form/FormUI'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -7,10 +8,11 @@ import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFC } from '../../variance/CovariantFC'
 
-import { type FC, Fragment } from 'react'
+import { type FC } from 'react'
 
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
-import { Form, FormUIProps } from '../../form/FormUI'
+import { Form } from '../../form/Form'
+import { Frame } from '../../frame/Frame'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
@@ -67,7 +69,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     formFields(fields: (keyof T | Accessor<this>)[], props?: { showMore?: (keyof T)[] | false }): FC<NO_PROPS> {
         const sm = props?.showMore
         return () => (
-            <Fragment>
+            <Frame>
                 {fields.map((f) => {
                     if (typeof f === 'function') {
                         const res = f(this)
@@ -83,7 +85,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                         }}
                     />
                 )}
-            </Fragment>
+            </Frame>
         )
     }
 
@@ -94,7 +96,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return new Form({
             ...props,
             field: this,
-            component: this.formFields(fields, { showMore: props.showMore }),
+            Component: this.formFields(fields, { showMore: props.showMore }),
         })
     }
 

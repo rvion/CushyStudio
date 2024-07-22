@@ -72,7 +72,7 @@ export class JsonFile<T extends object> {
             maxLevel == null //
                 ? JSON.stringify(this.value, null, 4)
                 : readableStringify(this.value, maxLevel)
-        // console.warn(`[👙] save to `, this._path, content)
+        // console.warn(`[🧐] save to `, this._path, content)
         writeFileSync(this._path, content)
         return true
     }

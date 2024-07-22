@@ -20,7 +20,6 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     const expand = p.expand
     const chroma = getInputBoolChroma(isActive)
     const kit = useCSuite()
-
     return (
         <Frame
             tw='InputBoolToggleButtonUI minh-input !select-none cursor-pointer justify-center px-1 text-sm flex items-center'
@@ -45,7 +44,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 if (p.preventDefault) ev.preventDefault()
             }}
         >
-            {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode && (
+            {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode != null && (
                 <InputBoolToggleButtonBoxUI isActive={isActive} mode={p.mode} />
             )}
             {/* 2024-06-07 rvion: make sure long label remain legible even on low width

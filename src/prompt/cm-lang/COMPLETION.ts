@@ -109,7 +109,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         'Embedding',
         'Tag',
     ]
-    // console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
+    // console.log(`[🧐] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
     if (!validNodeNames.includes(leftNodeName)) return null
 
     const from =
@@ -121,7 +121,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         ? nodeToReplace.to
         :  */ node.name === 'String' ? node.to - 1 : node.to
 
-    // console.log(`[👙] no meaningful parent`, from, to)
+    // console.log(`[🧐] no meaningful parent`, from, to)
     if (nodeToReplace == null || nodeToReplace.name === 'Lora') addLoras()
     if (nodeToReplace == null || nodeToReplace.name === 'Wildcard') addWildcards()
     if (nodeToReplace == null || nodeToReplace.name === 'Embedding') addEmbeddings()

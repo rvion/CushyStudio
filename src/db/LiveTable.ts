@@ -475,7 +475,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         //             whereVars[k] = v.$like
         //             whereClause.push(`${k} like @${k}`)
         //         } else {
-        //             throw new Error(`[👙] 🔴`)
+        //             throw new Error(`[🧐] 🔴`)
         //         }
         //     } else {
         //         whereVars[k] = v

@@ -279,7 +279,7 @@ export class DraftL {
                     serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
                         this.update({ formSerial: form.serial })
-                        console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
+                        console.log(`[🧐] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
                         this.checkIfShouldRestart()
                     },

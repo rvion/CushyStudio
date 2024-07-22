@@ -40,6 +40,7 @@ export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
          * allow to wrap the list of values if they take more than 1 SLH (standard line height)
          */
         wrap?: boolean
+        wrapButton?: boolean
 
         /**
          * @since 2024-06-24

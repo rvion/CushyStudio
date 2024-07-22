@@ -104,10 +104,10 @@ export const compilePrompt = (p: {
                 const associatedText = st.getLoraAssociatedTriggerWords(loraName)
 
                 if (associatedText) {
-                    console.log(`[👙] 🟢`, associatedText)
+                    console.log(`[🧐] 🟢`, associatedText)
                     set(associatedText)
                 } else {
-                    console.log(`[👙] UUUU: NO associated text for lora:`, loraName)
+                    console.log(`[🧐] UUUU: NO associated text for lora:`, loraName)
                 }
                 return false
                 // 🔴 clip = next._CLIP

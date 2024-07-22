@@ -124,7 +124,7 @@ export class TreeView {
         if (this.at == null) return this.resetCaretPos()
         /** node below may be deleted, so we first store the node above
          * then after the deletion, retrieve the node below */
-        let parent = this.at.nodeAboveInView
+        const parent = this.at.nodeAboveInView
         this.at.delete()
         this.setFocusAt(parent?.nodeBelowInView ?? parent)
     }

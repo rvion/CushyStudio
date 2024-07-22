@@ -26,13 +26,15 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 equalityCheck={(a, b) => a.id === b.id}
                 onChange={(selectOption) => field.toggleItem(selectOption)}
             />
-            <InputBoolFlipButtonUI
-                tooltip='Wrap items'
-                tw='self-start'
-                icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
-                value={p.field.wrap}
-                onValueChange={(next) => (p.field.wrap = next)}
-            />
+            {field.config.wrapButton && (
+                <InputBoolFlipButtonUI
+                    tooltip='Wrap items'
+                    tw='self-start'
+                    icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
+                    value={p.field.wrap}
+                    onValueChange={(next) => (p.field.wrap = next)}
+                />
+            )}
         </div>
     )
 })

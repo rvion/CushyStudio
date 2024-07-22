@@ -27,5 +27,5 @@ parse1.iterate({
     },
 })
 
-// console.log(`[👙]`, parse1)
-// console.log(`[👙]`, parse1.toString())
+// console.log(`[🧐]`, parse1)
+// console.log(`[🧐]`, parse1.toString())

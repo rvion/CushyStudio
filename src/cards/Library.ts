@@ -123,7 +123,7 @@ export class Library {
                     // retrieve the draft from the tab
                     const draft = st.db.draft.get(d.config.draftID)
                     if (draft == null) {
-                        console.error(`[👙] missing draft ${d.config.draftID}; SKIPPING...`)
+                        console.error(`[🧐] missing draft ${d.config.draftID}; SKIPPING...`)
                         continue
                     }
 

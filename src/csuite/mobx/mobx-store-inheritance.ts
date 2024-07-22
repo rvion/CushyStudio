@@ -1,5 +1,5 @@
 // https://github.com/mobxjs/mobx/discussions/2850#discussioncomment-497321
-
+// https://github.com/inoyakaigor/mobx-store-inheritance#readme
 import { $mobx, AnnotationsMap, CreateObservableOptions, isObservable, makeObservable } from 'mobx'
 
 const annotationsSymbol = Symbol()
@@ -44,8 +44,8 @@ export const makeAutoObservableInheritance = <
         // Apply only annotations existed in target already
         // https://github.com/mobxjs/mobx/discussions/2850#discussioncomment-1396837
         const tmp = {} as Annotations<Object, any>
-        for (const key in target) {
-            if (annotations[key]) {
+        for (const key in annotations) {
+            if (key in target) {
                 tmp[key] = annotations[key]
             }
         }

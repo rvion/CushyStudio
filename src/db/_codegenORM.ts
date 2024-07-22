@@ -95,7 +95,7 @@ export const _codegenORM = (store: {
                       ].join('\n')
                     : `export const ${jsTableName}BackRefs = []`,
             ].join('\n') + '\n'
-        console.log(`[👙] `, xxx)
+        console.log(`[🧐] `, xxx)
         //
 
         let typeDecl: string = '' // '\n'
@@ -225,8 +225,8 @@ export const _codegenORM = (store: {
     writeFileSync('src/db/TYPES.gen.ts', out1)
     writeFileSync('src/db/TYPES.d.ts', out2)
 
-    console.log(`[👙] `, backRefs)
-    console.log(`[👙] `, refs)
+    console.log(`[🧐] `, backRefs)
+    console.log(`[🧐] `, refs)
 }
 
 const convertTableNameToJSName = (tableName: string) => {

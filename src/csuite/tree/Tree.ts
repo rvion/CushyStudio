@@ -50,7 +50,7 @@ export class Tree {
         rootNodes: ITreeElement[],
         public config: TreeStorageConfig = { getNodeState: defaultTreeStorage },
     ) {
-        for (let uid of rootNodes) {
+        for (const uid of rootNodes) {
             const node = new TreeNode(this, uid, undefined)
             this.topLevelNodes.push(node)
         }

@@ -27,9 +27,10 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
             ]}
             onMouseUp={() => s.closeIfShouldCloseAfterSelection()}
             style={{
-                minWidth: s.anchorRef.current?.clientWidth
-                    ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
-                    : trueMinWidth,
+                minWidth:
+                    s.anchorRef.current?.clientWidth != null
+                        ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
+                        : trueMinWidth,
                 maxWidth:
                     window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
                 maxHeight: `${s.tooltipMaxHeight}px`,

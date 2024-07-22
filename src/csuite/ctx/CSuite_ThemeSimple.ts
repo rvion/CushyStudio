@@ -9,13 +9,15 @@ import { NumberVar } from '../tinyCSS/CSSVar'
  */
 
 export const CSuite_theme1: CSuiteConfig = {
+    tooltipDelay: 400,
     clickAndSlideMultiplicator: 1,
     showWidgetUndo: true,
     showWidgetMenu: true,
     showWidgetDiff: true,
+    showFoldButtons: true,
     showToggleButtonBox: false,
     inputBorder: new NumberVar('input-border', 8),
-    inputContrast: 0,
+    inputContrast: 0.05,
     labelBackground: 5,
     labellayout: 'fixed-left',
     base: new Kolor(0.987, 0.01, 286),

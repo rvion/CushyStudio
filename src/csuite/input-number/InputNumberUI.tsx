@@ -229,8 +229,8 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
-    const kit = useCSuite()
-    const uist = useMemo(() => new InputNumberStableState(p, kit), [])
+    const csuite = useCSuite()
+    const uist = useMemo(() => new InputNumberStableState(p, csuite), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
     runInAction(() => Object.assign(uist.props, p))
@@ -243,8 +243,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
-
-    const csuite = useCSuite()
     const border = csuite.inputBorder
 
     return (
@@ -297,7 +295,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     tw={[
                         //
                         'th-text',
-                        `flex px-1 items-center justify-center text-sm truncate z-20 h-full`,
+                        `flex px-1 text-sm truncate z-20 h-full`,
+                        'items-center',
+                        // 'items-center justify-center',
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return

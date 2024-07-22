@@ -131,7 +131,7 @@ app({
         const cardsSorted = ui.cards.sort((a, b) => 100 * a.x + a.y - (100 * b.x + b.y))
         let foo: { [key: string]: { base: ImageAndMask; mask: ImageAndMask } } = {}
         for (const card of cardsSorted) {
-            // console.log(`[👙] `, toJS(card))
+            // console.log(`[🧐] `, toJS(card))
             const { col: value, row: suit } = card
             const bg = run.Store.getImageStore(`bg-${suit}`).image
             const xx = await _drawCard(run, {
@@ -141,7 +141,7 @@ app({
                 H,
                 W,
             })
-            console.log(`[👙] `, toJS(xx))
+            console.log(`[🧐] `, toJS(xx))
             foo[`${suit}_${value}`] = xx
             graph.PreviewImage({ images: xx.mask /*filename_prefix: 'mask_1'*/ })
             graph.PreviewImage({
@@ -224,55 +224,55 @@ app({
         await run.PROMPT()
         return
 
-        // 👙        for (const card of cardsSorted) {
-        // 👙            // pixels = graph.AlphaChanelRemove({
-        // 👙            //     images: graph.ImageCompositeAbsolute({
-        // 👙            //         background: 'images_a',
-        // 👙            //         images_a: pixels,
-        // 👙            //         images_b: graph.JoinImageWithAlpha({ alpha: xx.base, image: xx.base }),
-        // 👙            //         method: 'matrix',
-        // 👙            //     }),
-        // 👙            // })
-        // 👙            // graph.PreviewImage({ images: pixels })
-        // 👙
-        // 👙            // SMOOTH LOGOS ----------------------------------------
-        // 👙            sample = graph.SetLatentNoiseMask({
-        // 👙                samples: graph.VAEEncode({ pixels: pixels, vae: ckpt }),
-        // 👙                mask: graph.ImageToMask({ image: xx.mask, channel: 'blue' }),
-        // 👙            })
-        // 👙
-        // 👙            // graph.PreviewImage({ images: xx.mask })
-        // 👙
-        // 👙            sample = graph.KSampler({
-        // 👙                seed: flow.randomSeed(),
-        // 👙                latent_image: sample,
-        // 👙                model: ckpt,
-        // 👙                positive: positive,
-        // 👙                negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
-        // 👙                sampler_name: 'euler',
-        // 👙                scheduler: 'karras',
-        // 👙                denoise: 0.55,
-        // 👙            })
-        // 👙
-        // 👙            // ADD CORNERS ----------------------------------------
-        // 👙            pixels = graph.VAEDecode({ vae: ckpt, samples: sample })
-        // 👙            const sideSize = 2 * margin
-        // 👙
-        // 👙            // ROUND CORNERS ----------------------------------------------------
-        // 👙            // pixels = graph.ImageTransformCropCorners({
-        // 👙            //     images: pixels,
-        // 👙            //     bottom_left_corner: 'true',
-        // 👙            //     bottom_right_corner: 'true',
-        // 👙            //     top_left_corner: 'true',
-        // 👙            //     top_right_corner: 'true',
-        // 👙            //     method: 'lanczos',
-        // 👙            //     radius: 100,
-        // 👙            //     SSAA: 4,
-        // 👙            // })
-        // 👙
-        // 👙            // DONE ----------------------------------------
-        // 👙            graph.PreviewImage({ images: pixels })
-        // 👙        }
-        // 👙        await flow.PROMPT()
+        // 🧐        for (const card of cardsSorted) {
+        // 🧐            // pixels = graph.AlphaChanelRemove({
+        // 🧐            //     images: graph.ImageCompositeAbsolute({
+        // 🧐            //         background: 'images_a',
+        // 🧐            //         images_a: pixels,
+        // 🧐            //         images_b: graph.JoinImageWithAlpha({ alpha: xx.base, image: xx.base }),
+        // 🧐            //         method: 'matrix',
+        // 🧐            //     }),
+        // 🧐            // })
+        // 🧐            // graph.PreviewImage({ images: pixels })
+        // 🧐
+        // 🧐            // SMOOTH LOGOS ----------------------------------------
+        // 🧐            sample = graph.SetLatentNoiseMask({
+        // 🧐                samples: graph.VAEEncode({ pixels: pixels, vae: ckpt }),
+        // 🧐                mask: graph.ImageToMask({ image: xx.mask, channel: 'blue' }),
+        // 🧐            })
+        // 🧐
+        // 🧐            // graph.PreviewImage({ images: xx.mask })
+        // 🧐
+        // 🧐            sample = graph.KSampler({
+        // 🧐                seed: flow.randomSeed(),
+        // 🧐                latent_image: sample,
+        // 🧐                model: ckpt,
+        // 🧐                positive: positive,
+        // 🧐                negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
+        // 🧐                sampler_name: 'euler',
+        // 🧐                scheduler: 'karras',
+        // 🧐                denoise: 0.55,
+        // 🧐            })
+        // 🧐
+        // 🧐            // ADD CORNERS ----------------------------------------
+        // 🧐            pixels = graph.VAEDecode({ vae: ckpt, samples: sample })
+        // 🧐            const sideSize = 2 * margin
+        // 🧐
+        // 🧐            // ROUND CORNERS ----------------------------------------------------
+        // 🧐            // pixels = graph.ImageTransformCropCorners({
+        // 🧐            //     images: pixels,
+        // 🧐            //     bottom_left_corner: 'true',
+        // 🧐            //     bottom_right_corner: 'true',
+        // 🧐            //     top_left_corner: 'true',
+        // 🧐            //     top_right_corner: 'true',
+        // 🧐            //     method: 'lanczos',
+        // 🧐            //     radius: 100,
+        // 🧐            //     SSAA: 4,
+        // 🧐            // })
+        // 🧐
+        // 🧐            // DONE ----------------------------------------
+        // 🧐            graph.PreviewImage({ images: pixels })
+        // 🧐        }
+        // 🧐        await flow.PROMPT()
     },
 })

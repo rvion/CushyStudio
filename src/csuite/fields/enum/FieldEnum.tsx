@@ -15,9 +15,15 @@ import { WidgetEnumUI } from './WidgetEnumUI'
 export type Field_enum_config<O> = FieldConfig<
     {
         enumName: string
-        default?: O //Requirable[T] | EnumDefault<T>
+        default?: O
         extraDefaults?: string[]
         filter?: (v: EnumValue) => boolean
+        appearance?: 'select' | 'tab'
+        /**
+         * @since 2024-07-22
+         * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+         */
+        wrap?: boolean
     },
     Field_enum_types<O>
 >
