@@ -44,10 +44,21 @@ export class MediaImageL {
         return basename(this.data.path)
     }
 
-    get step(): Maybe<StepL> { return this.prompt?.step } // prettier-ignore
-    get draft(): Maybe<DraftL> { return this.step?.draft } // prettier-ignore
-    get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
-    get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
+    get step(): Maybe<StepL> {
+        return this.prompt?.step
+    }
+
+    get draft(): Maybe<DraftL> {
+        return this.step?.draft
+    }
+
+    get app(): Maybe<CushyAppL> {
+        return this.draft?.app
+    }
+
+    get script(): Maybe<CushyScriptL> {
+        return this.app?.script
+    }
 
     /** flip image */
     // 👀 👉 https://github.com/lovell/sharp/issues/28#issuecomment-679193628
@@ -104,7 +115,7 @@ export class MediaImageL {
         }
     }
     /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
-    copyToClipboard = async () => {
+    copyToClipboard = async (): Promise<void> => {
         try {
             await this.st.electronUtils.copyImageToClipboard({
                 format: this.extension.split('.').pop(),
@@ -116,18 +127,18 @@ export class MediaImageL {
         }
     }
 
-    copyToClipboardAsBase64 = () =>
+    copyToClipboardAsBase64 = (): Promise<void> =>
         navigator.clipboard.writeText(this.getBase64Url()).then(() => {
             toastInfo('Image copied to clipboard!')
         })
 
-    useAsDraftIllustration = (draft_?: DraftL) => {
+    useAsDraftIllustration = (draft_?: DraftL): void => {
         const draft = draft_ ?? this.draft
-        if (draft == null) return toastError(`no related draft found`)
+        if (draft == null) return void toastError(`no related draft found`)
         draft.update({ illustration: this.url })
     }
 
-    saveLocally = (localAbsolutePath: string) => {
+    saveLocally = (localAbsolutePath: string): void => {
         mkdirSync(localAbsolutePath, { recursive: true })
         let absFilePath = join(localAbsolutePath, this.filename)
 
@@ -146,7 +157,7 @@ export class MediaImageL {
         writeFileSync(absFilePath, this.getArrayBuffer())
     }
 
-    get relPath() {
+    get relPath(): RelativePath {
         return asRelativePath(this.data.path)
     }
 
@@ -154,11 +165,11 @@ export class MediaImageL {
         return `/` + this.data.path
     }
 
-    get baseName() {
+    get baseName(): string {
         return basename(this.data.path)
     }
 
-    get baseNameWithoutExtension() {
+    get baseNameWithoutExtension(): string {
         const fname = this.baseName
         return fname.slice(0, fname.lastIndexOf('.'))
     }
@@ -167,7 +178,7 @@ export class MediaImageL {
      * return file extension including dot
      * e.g. `.png`, or `.webp`
      * */
-    get extension() {
+    get extension(): string {
         const fname = this.baseName
         return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
     }
@@ -175,14 +186,17 @@ export class MediaImageL {
     onMouseEnter = (ev: MouseEvent): void => {
         cushy.hovered = this
     }
+
     onMouseLeave = (ev: MouseEvent): void => {
         if (cushy.hovered === this) cushy.hovered = null
     }
 
-    onMiddleClick = () => {
+    onMiddleClick = (): void => {
         return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
     }
-    onRightClick = () => {}
+
+    onRightClick = (): void => {}
+
     onClick = (ev: MouseEvent): void => {
         if (hasMod(ev)) {
             ev.stopPropagation()
@@ -409,7 +423,7 @@ export class MediaImageL {
 
     // THUMBNAIL ------------------------------------------------------------------------------------------
     _thumbnailReady: boolean = false
-    get thumbnailURL() {
+    get thumbnailURL(): string {
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
@@ -479,7 +493,7 @@ export class MediaImageL {
         )
     }
 
-    recache(opts?: ImageCreationOpts, preBuff?: Buffer | ArrayBuffer) {
+    recache(opts?: ImageCreationOpts, preBuff?: Buffer | ArrayBuffer): this {
         const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(this.absPath)
         const uint8arr = new Uint8Array(buff)
         const fileSize = uint8arr.byteLength
@@ -495,7 +509,6 @@ export class MediaImageL {
                 promptID: opts?.promptID ?? this.data.promptID,
                 stepID: opts?.stepID ?? this.data.stepID,
             })
-            return this
         } else {
             const relPath = this.relPath
             console.log(`[🏞️] updating existing image (${relPath})`)
@@ -511,6 +524,7 @@ export class MediaImageL {
                 stepID: opts?.stepID ?? this.data.stepID,
             })
         }
+        return this
     }
 
     /**
