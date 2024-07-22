@@ -29,6 +29,20 @@ type CLASSES = {
 
 // 1. wrap text
 export class PromptAST {
+    /**
+     * return all top level nodes except separators
+     * (internally, the "true" top-level node is a single Prompt node
+     * that contains all other nodes; this function return all its children)
+     */
+    get allTopLevelNodes(): Prompt_Node[] {
+        const result: Prompt_Node[] = []
+        return this.root.childrens
+    }
+
+    get allTopLevelNodesExceptSeparators(): Prompt_Node[] {
+        return this.allTopLevelNodes.filter((node) => node.$kind !== 'Separator')
+    }
+
     findAll = <T extends KnownNodeNames>(kind: T): CLASSES[T][] => {
         const result: CLASSES[T][] = []
         this.root.iterate((node) => {
