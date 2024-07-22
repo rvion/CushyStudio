@@ -69,7 +69,7 @@ export const configureFrameEngine = (mode: FrameMode): void => {
 // ------------------------------------------------------------------
 
 export const Frame = observer(
-    forwardRef(function Frame_(p: FrameProps, ref: any) {
+    forwardRef(function Frame_(p: FrameProps, ref: ForwardedRef<HTMLDivElement>) {
         // PROPS --------------------------------------------
 
         // prettier-ignore
