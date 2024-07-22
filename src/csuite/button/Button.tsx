@@ -31,6 +31,11 @@ export const Button = observer(function Button_(
         <Frame //
             size={size ?? 'input'}
             look={look}
+            boxShadow={
+                uist.visuallyActive || p.subtle || p.borderless //
+                    ? undefined
+                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+            }
             base={{
                 contrast: subtle //
                     ? 0
