@@ -195,12 +195,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     setSerial(serial: Maybe<K['$Serial']>): void {
         autofixSerial_20240711(serial)
         this.runInValueTransaction(() => {
-            this.copyCommonSerialFiels(serial)
+            this.copyCommonSerialFields(serial)
             this.setOwnSerial(serial)
         })
     }
 
-    private copyCommonSerialFiels(s: Maybe<FieldSerial_CommonProperties>): void {
+    private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
         if (s == null) return
         if (s._version != null) this.serial._version = s._version
         if (s.collapsed != null) this.serial.collapsed = s.collapsed
@@ -838,7 +838,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
         // 3. ...
         this.runInCreateTransaction(() => {
-            this.copyCommonSerialFiels(serial)
+            this.copyCommonSerialFields(serial)
 
             //   VVVVVVVVVVVV this is where we hydrate children
             this.setOwnSerial(serial)
