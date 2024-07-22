@@ -7,7 +7,6 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-
 import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
@@ -130,6 +129,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
+            DefaultCellUI: false,
         })
     }
 

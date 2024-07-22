@@ -17,19 +17,25 @@ export type IWidgetListLike = {
     }
 }
 
-export const ListControlsUI = observer(function ListControlsUI_(p: { field: IWidgetListLike }) {
+export const ListControlsUI = observer(function ListControlsUI_(p: {
+    //
+    field: IWidgetListLike
+    children?: React.ReactNode
+}) {
     const field = p.field
     const csuite = useCSuite()
 
     return (
         <div
-            tw='sticky flex gap-0.5 top-0 flex z-[50] w-full'
+            tw='sticky flex items-center gap-0.5 top-0 flex z-[50] w-full'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
             }}
         >
             <ListButtonAddUI field={field} />
+            {p.children}
+            <div tw='flex-1' />
             <ListButtonClearUI field={field} />
             {csuite.showFoldButtons && <ListButtonFoldUI field={field} />}
             {csuite.showFoldButtons && <ListButtonUnfoldUI field={field} />}
@@ -45,7 +51,7 @@ export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IW
     return (
         <Button
             size='input'
-            borderless
+            // borderless
             subtle
             disabled={!canAdd}
             square
@@ -70,7 +76,7 @@ export const ListButtonClearUI = observer(function ListButtonClearUI_(p: { field
             subtle
             disabled={!canClear}
             square
-            icon='mdiDeleteOutline'
+            icon='mdiDeleteSweep'
             onClick={(ev) => {
                 if (!canClear) return
                 ev.stopPropagation()
