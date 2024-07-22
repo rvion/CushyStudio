@@ -9,6 +9,7 @@ import { NumberVar } from '../tinyCSS/CSSVar'
  */
 
 export const CSuite_theme1: CSuiteConfig = {
+    tooltipDelay: 400,
     clickAndSlideMultiplicator: 1,
     showWidgetUndo: true,
     showWidgetMenu: true,

@@ -9,6 +9,10 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     constructor() {
         makeAutoObservable(this)
     }
+
+    // tooltip behaviour
+    tooltipDelay = 400
+
     // form behaviour
     clickAndSlideMultiplicator = 1
     showWidgetUndo = false
@@ -17,6 +21,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showFoldButtons = false
     showToggleButtonBox = false
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
+
     // theme
     base: Kolor = new Kolor(0.9999, 0, 240)
     labelBackground?: Maybe<TintExt> = undefined

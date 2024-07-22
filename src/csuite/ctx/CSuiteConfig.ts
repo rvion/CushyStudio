@@ -10,6 +10,11 @@ import { NumberVar } from '../tinyCSS/CSSVar'
  */
 export interface CSuiteConfig {
     // ------------------------------------------------------------
+    // [tooltip delay]
+    /** how much delay on hover before relealing the tooltip */
+    tooltipDelay: Maybe<number>
+
+    // ------------------------------------------------------------
     // [mouse sensitivity]
     clickAndSlideMultiplicator: number
 
