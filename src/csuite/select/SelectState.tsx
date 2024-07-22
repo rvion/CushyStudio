@@ -29,7 +29,7 @@ export class AutoCompleteSelectState<T> {
     }
 
     private _searchQuery = ''
-    get searchQuery() {
+    get searchQuery(): string {
         return this.p.getSearchQuery?.() ?? this._searchQuery
     }
     set searchQuery(value: string) {
@@ -146,17 +146,17 @@ export class AutoCompleteSelectState<T> {
     anchorRef = React.createRef<HTMLInputElement>()
     inputRef = React.createRef<HTMLInputElement>()
     popupRef = React.createRef<HTMLDivElement>()
-    selectedIndex = 0
-    isOpen = false
-    isDragging = false
-    isFocused = false
-    wasEnabled = false
-    hasMouseEntered = false
+    selectedIndex: number = 0
+    isOpen: boolean = false
+    isDragging: boolean = false
+    isFocused: boolean = false
+    wasEnabled: boolean = false
+    hasMouseEntered: boolean = false
 
     tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
-    tooltipMaxHeight = 100
+    tooltipMaxHeight: number = 100
 
-    updatePosition = () => {
+    updatePosition = (): void => {
         const rect = this.anchorRef.current?.getBoundingClientRect()
         if (rect == null) return
 
@@ -198,21 +198,21 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         // ev.preventDefault()
         // ev.stopPropagation()
         this.hasMouseEntered = true
         this.openMenu()
     }
 
-    openMenu = () => {
+    openMenu = (): void => {
         this.isOpen = true
         this.updatePosition()
         this.inputRef.current?.focus()
         window.addEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
-    closeMenu() {
+    closeMenu(): void {
         this.isOpen = false
         this.isFocused = false
         this.selectedIndex = 0
@@ -225,7 +225,7 @@ export class AutoCompleteSelectState<T> {
         window.removeEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
-    filterOptions(inputValue: string) {
+    filterOptions(inputValue: string): void {
         this.searchQuery = inputValue
         this.isOpen = true
         /* Could maybe try to keep to the highlighted option from before filter? (Not the index, but the actual option)
@@ -243,7 +243,7 @@ export class AutoCompleteSelectState<T> {
     // ⏸️     this.inputRef.current?.focus()
     // ⏸️ }
 
-    selectOption(index: number) {
+    selectOption(index: number): void {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption != null) {
             this.p.onChange?.(selectedOption, this)
@@ -255,13 +255,13 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    closeIfShouldCloseAfterSelection() {
+    closeIfShouldCloseAfterSelection(): void {
         // close the menu
         const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
         if (shouldCloseMenu) this.closeMenu()
     }
 
-    navigateSelection(direction: 'up' | 'down') {
+    navigateSelection(direction: 'up' | 'down'): void {
         this.updatePosition() // just in case we scrolled
         if (direction === 'up' && this.selectedIndex > 0) {
             this.selectedIndex--
@@ -270,12 +270,12 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    setNavigationIndex(value: number) {
+    setNavigationIndex(value: number): void {
         this.updatePosition() // just in case we scrolled
         this.selectedIndex = value
     }
 
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.filterOptions(event.target.value)
         this.updatePosition() // just in case we scrolled
     }
@@ -286,7 +286,7 @@ export class AutoCompleteSelectState<T> {
     // | not pleasant when working mostly with keyboard and using tab to open selects.
     // | as soon as the moouse move just one pixel, popup close.
     // |  =>  commenting it out until we find a solution confortable in all cases
-    MouseMoveTooFar = (event: MouseEvent) => {
+    MouseMoveTooFar = (event: MouseEvent): void => {
         const popup = this.popupRef?.current
         const anchor = this.anchorRef?.current
 
@@ -314,11 +314,11 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onBlur(_ev: FocusEvent<HTMLDivElement, Element>) {
+    onBlur(_ev: FocusEvent<HTMLDivElement, Element>): void {
         this.closeMenu()
     }
 
-    handleTooltipKeyDown = (ev: React.KeyboardEvent) => {
+    handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
@@ -327,7 +327,7 @@ export class AutoCompleteSelectState<T> {
         }
     }
 
-    onRealInputKeyUp = (ev: React.KeyboardEvent) => {
+    onRealInputKeyUp = (ev: React.KeyboardEvent): void => {
         if (ev.key === 'Enter' && !this.isOpen) {
             this.openMenu()
             ev.preventDefault()

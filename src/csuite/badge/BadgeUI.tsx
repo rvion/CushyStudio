@@ -32,6 +32,7 @@ export const BadgeUI = observer(function BadgeUI_({
                 hue:
                     hue ??
                     (autoHue
+                    (autoHue != null
                         ? typeof autoHue === 'boolean'
                             ? typeof children === 'string'
                                 ? hashStringToNumber(children)
