@@ -5,21 +5,67 @@ import type { Field_enum } from './FieldEnum'
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../../state/stateContext'
+import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Ikon } from '../../icons/iconHelpers'
 import { MessageErrorUI } from '../../messages/MessageErrorUI'
 import { RevealUI } from '../../reveal/RevealUI'
 import { SelectUI } from '../../select/SelectUI'
+import { exhaust } from '../../utils/exhaust'
 
 // UI
 
 export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { field: Field_enum<any> }) {
+    const field = p.field
+    const skin = field.config.appearance ?? 'select'
+    if (skin === 'select') return <WidgetEnum_SelectUI field={field} />
+    if (skin === 'tab') return <WidgetEnum_TabUI field={field} />
+    exhaust(skin)
+    return <>❌ error</>
+})
+
+export const WidgetEnum_TabUI = observer(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
+    const field = p.field
+    const selected = field.serial.val
+    return (
+        <div
+            tw={[
+                //
+                'flex flex-1',
+                (field.config.wrap ?? true) && 'flex-wrap',
+                'rounded',
+                'select-none',
+                'gap-x-0.5 gap-y-0',
+            ]}
+        >
+            {field.possibleValues.map((c: any) => {
+                const isSelected = selected === c
+                return (
+                    <InputBoolUI
+                        key={c}
+                        value={isSelected}
+                        display='button'
+                        text={c.toString()}
+                        onValueChange={(value) => {
+                            if (value === isSelected) return
+                            field.value = c
+                        }}
+                    />
+                )
+            })}
+        </div>
+    )
+})
+
+export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
+    //
+    field: Field_enum<any>
+}) {
     const field = p.field
     const enumName = field.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
         <EnumSelectorUI
             value={() => field.status}
-            // disabled={!field.serial.active}
             isOptional={isOptional}
             enumName={enumName}
             // substituteValue={req.status}

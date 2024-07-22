@@ -18,6 +18,12 @@ export type Field_enum_config<O> = FieldConfig<
         default?: O
         extraDefaults?: string[]
         filter?: (v: EnumValue) => boolean
+        appearance?: 'select' | 'tab'
+        /**
+         * @since 2024-07-22
+         * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+         */
+        wrap?: boolean
     },
     Field_enum_types<O>
 >
