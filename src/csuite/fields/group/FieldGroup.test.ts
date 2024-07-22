@@ -29,7 +29,7 @@ describe('groups', () => {
 // it means mobx-store-inheritance only work properly the very first time
 // it is applies to class hierarchies
 describe('mobx observability', () => {
-    it.only('is working', () => {
+    it('is working', () => {
         const S1 = b.fields({})
 
         // first work
