@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { RevealUI } from './RevealUI'
+import { RevealUI } from '../RevealUI'
 
 export const RevealExample_NestedMenuUI = observer(function RevealExample_NestedMenuUI_(p: {}) {
     return (

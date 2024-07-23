@@ -12,6 +12,7 @@ import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
@@ -203,3 +204,5 @@ export const Frame = observer(
         )
     }),
 )
+
+registerComponentAsClonableWhenInsideReveal(Frame)

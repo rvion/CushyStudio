@@ -95,7 +95,6 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         {st.favoriteDrafts.map((draft) => (
                                             <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
                                                 <RevealUI
-                                                    className=''
                                                     trigger='hover'
                                                     showDelay={0}
                                                     placement='right'

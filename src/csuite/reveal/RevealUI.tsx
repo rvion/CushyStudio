@@ -1,23 +1,25 @@
 import type { RevealProps } from './RevealProps'
 
 import { observer } from 'mobx-react-lite'
-import { createElement, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
+import React, { cloneElement, createElement, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Frame } from '../frame/Frame'
 import { ModalShellUI } from '../modal/ModalShell'
+import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { global_RevealStack } from './RevealStack'
-import { RevealState, RevealStateLazy } from './RevealState'
+import { RevealState } from './RevealState'
+import { RevealStateLazy } from './RevealStateLazy'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     const ref = useRef<HTMLDivElement>(null)
     const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
 
     // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
-    const SELF = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getUist())), []) // prettier-ignore
-    const { uistOrNull, getUist: uist2 } = SELF
-    const nextTower = useMemo(() => ({ tower: [...parents, SELF] }), [])
+    const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState())), []) // prettier-ignore
+    const { uistOrNull } = lazyState
+    const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
 
     // once updated, make sure to keep props in sync so hot reload work well enough.
     useEffect(() => {
@@ -38,35 +40,61 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
         }
     }, [uistOrNull?.visible])
 
-    const anchor = p.children
-    const tooltip = mkTooltip(uistOrNull)
+    // check if we can clone the child element instead of adding a div in the DOM
+    const shouldClone = ((): boolean => {
+        if (p.UNSAFE_cloned != null) return p.UNSAFE_cloned
+        const children = React.Children.toArray(p.children)
+        if (children.length !== 1) return false
+        const child0 = children[0]!
+        const isValidElement = React.isValidElement(child0)
+        if (!isValidElement) return false
+        if (whitelistedClonableComponents.has(child0.type)) return true
+        return false
+    })()
 
-    // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
+    if (shouldClone) {
+        if (p.style != null) return <>❌ UNSAFE CLONE FAILED</>
+        if (p.className != null) return <>❌ UNSAFE CLONE FAILED</>
+        if (!React.isValidElement(p.children)) return <>❌ UNSAFE CLONE FAILED</>
+        // 2024-07-23: trying to remove the outer div
+        // mostly working but edge cases (multiple children, forwarding props & ref by children)
+        // makes it slightly unsafe / we're not sure what to do with it yet
+        const child = p.children
+        // prettier-ignore
+        const clonedChildren = cloneElement(child, {
+            // @ts-ignore
+            ref: ref,
+            onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
+            onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
+            onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
+            onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
+            onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
+        })
+        return (
+            <RevealCtx.Provider value={nextTower}>
+                {clonedChildren /* anchor */}
+                {mkTooltip(uistOrNull) /* tooltip */}
+            </RevealCtx.Provider>
+        )
+    }
+
+    // this span could be bypassed by cloning the child element and injecting props,
+    // assuming the child will mount them
     return (
         <RevealCtx.Provider value={nextTower}>
             <div //
-                tw={['inline-flex', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
+                tw={['UI-Reveal', 'inline-flex', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
                 className={p.className}
                 ref={ref}
                 style={p.style}
-                // lock input on shift+right click
-                onContextMenu={(ev) => {
-                    if (ev.shiftKey) {
-                        uist2().toggleLock()
-                        ev.preventDefault() //  = prevent window on non-electron apps
-                        ev.stopPropagation() // = right click is consumed
-                    }
-                }}
-                onClick={(ev) => uist2().onLeftClick(ev)}
-                onAuxClick={(ev) => {
-                    if (ev.button === 1) return uist2().onMiddleClick(ev)
-                    if (ev.button === 2) return uist2().onRightClick(ev)
-                }}
-                onMouseEnter={() => uist2().onMouseEnterAnchor()}
-                onMouseLeave={() => uist2().onMouseLeaveAnchor()}
+                onContextMenu={lazyState.onContextMenu}
+                onClick={lazyState.onClick}
+                onAuxClick={lazyState.onAuxClick}
+                onMouseEnter={lazyState.onMouseEnter}
+                onMouseLeave={lazyState.onMouseLeave}
             >
-                {anchor}
-                {tooltip}
+                {p.children /* anchor */}
+                {mkTooltip(uistOrNull) /* tooltip */}
             </div>
         </RevealCtx.Provider>
     )
@@ -82,17 +110,19 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     // find element to attach to
     const element = document.getElementById(
         uist.p.placement?.startsWith('#') //
-            ? uist.p.placement.slice(1)
-            : 'tooltip-root',
+            ? // take the id by trimming the leading '#' ('#foo' => 'foo')
+              uist.p.placement.slice(1)
+            : // OR use the global tooltip-root container at the top
+              'tooltip-root',
     )!
 
     const pos = uist.tooltipPosition
     const p = uist.p
     const hiddenContent = createElement(uist.contentFn)
     const revealedContent =
-        // VIA PORTAL --------------------------------------------------------------------------------
+        // VIA ID ANCHOR --------------------------------------------------------------------------------
         uist.placement.startsWith('#') ? (
-            <div
+            <div // backdrop
                 ref={(e) => {
                     if (e == null) return global_RevealStack.filter((p) => p !== uist)
                     global_RevealStack.push(uist)
@@ -117,7 +147,7 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
             </div>
         ) : // VIA POPUP --------------------------------------------------------------------------------
         uist.placement.startsWith('popup') ? (
-            <div
+            <div // backdrop
                 ref={(e) => {
                     if (e == null) return global_RevealStack.filter((p) => p !== uist)
                     global_RevealStack.push(uist)
@@ -181,7 +211,12 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
                 {/* LOCK */}
                 {
                     uist._lock ? (
-                        <Frame icon='mdiLock' text={{ contrast: 0.3 }} tw='italic text-sm flex gap-1 items-center justify-center'>
+                        <Frame
+                            //
+                            icon='mdiLock'
+                            text={{ contrast: 0.3 }}
+                            tw='italic text-sm flex gap-1 items-center justify-center absolute'
+                        >
                             shift+right-click to unlock
                         </Frame>
                     ) : null

@@ -3,7 +3,8 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
-import { computePlacement } from './RevealPlacement'
+import { computePlacement, type RevealPlacement } from './RevealPlacement'
+import { DEBUG_REVEAL } from './RevealProps'
 
 export const defaultShowDelay_whenRoot = 100
 export const defaultHideDelay_whenRoot = 300
@@ -11,41 +12,22 @@ export const defaultHideDelay_whenRoot = 300
 export const defaultShowDelay_whenNested = 0
 export const defaultHideDelay_whenNested = 0
 
-const DEBUG_REVEAL = false
-
-/**
- * state wrapper that laziy initializes the actual state when actually required
- * it's important to keep that class lighweight.
- */
-export class RevealStateLazy {
-    constructor(
-        //
-        public p: RevealProps,
-        public parents: RevealState[],
-    ) {
-        makeAutoObservable(this, { p: false })
-    }
-    uistOrNull: RevealState | null = null
-    getUist = (): RevealState => {
-        if (this.uistOrNull) return this.uistOrNull
-        if (DEBUG_REVEAL) console.log(`[💙] init RevealUI`)
-        this.uistOrNull = new RevealState({ ...this.p }, this.parents)
-        return this.uistOrNull!
-    }
-}
-
 export class RevealState {
     static nextUID = 1
+
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
+
     uid = RevealState.nextUID++
 
-    onMiddleClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
+    onMiddleClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         // this.onLeftClick(ev)
     }
-    onRightClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
+
+    onRightClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         this.onLeftClick(ev)
     }
-    onLeftClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
+
+    onLeftClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         const toc = this.triggerOnClick
         if (!toc) return
         ev.stopPropagation()
@@ -243,12 +225,14 @@ export class RevealState {
         this._resetTooltipEnterTimeout()
         this._resetTooltipLeaveTimeout()
     }
+
     private _resetTooltipEnterTimeout = (): void => {
         if (this.enterTooltipTimeoutId) {
             clearTimeout(this.enterTooltipTimeoutId)
             this.enterTooltipTimeoutId = null
         }
     }
+
     private _resetTooltipLeaveTimeout = (): void => {
         if (this.leaveTooltipTimeoutId) {
             clearTimeout(this.leaveTooltipTimeoutId)

@@ -32,6 +32,8 @@ if (values.help) {
 console.log('positionals:', JSON.stringify(positionals))
 console.log('flags:', JSON.stringify(values))
 
+// ensure git is ------------------------------------------------------------
+
 // TYPE UTILS ---------------------------------------------------------------
 type PATH = Tagged<string, 'PATH'>
 type UID = Tagged<string, 'UID'>

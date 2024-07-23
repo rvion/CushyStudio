@@ -28,4 +28,8 @@ export type RevealProps = {
     tooltipWrapperClassName?: string
     className?: string
     style?: React.CSSProperties
+
+    // avoid extra div
+    UNSAFE_cloned?: boolean
 }
+export const DEBUG_REVEAL = true

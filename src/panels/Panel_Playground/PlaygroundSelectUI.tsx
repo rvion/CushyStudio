@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
+import { RevealTestUI } from '../../csuite/reveal/demo/RevealTest'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
@@ -40,6 +41,7 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
                     .render()}
                 {/*  */}
                 {/*  */}
+                <RevealTestUI />
             </div>
         </ErrorBoundaryUI>
     )

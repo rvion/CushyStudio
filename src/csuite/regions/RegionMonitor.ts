@@ -1,3 +1,5 @@
+// 💡 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
+
 import { makeAutoObservable } from 'mobx'
 import { useEffect } from 'react'
 
@@ -15,6 +17,20 @@ type HoveredCtx = {
 }
 
 export class RegionMonitor {
+    // 💡 --------------------
+    // 💡 reveals: Map<string, RevealStateLazy> = new Map()
+    // 💡 hoveredReveal: Maybe<RevealStateLazy>
+    // 💡 registerReveal(rls: RevealStateLazy): void {
+    // 💡     if (this.reveals.has(rls.uid)) throw new Error(`[❌] reveal already registered`)
+    // 💡     this.reveals.set(rls.uid, rls)
+    // 💡 }
+    // 💡
+    // 💡 unregisterReveal(rls: RevealStateLazy): void {
+    // 💡     if (!this.reveals.has(rls.uid)) throw new Error(`[❌] reveal not registered`)
+    // 💡     this.reveals.delete(rls.uid)
+    // 💡 }
+    // 💡 --------------------
+
     constructor() {
         makeAutoObservable(this, { knownRegions: false })
     }
@@ -109,6 +125,39 @@ export const useRegionMonitor = (): void => {
                 at = at.parentElement
             }
             regionMonitor.hoveredPanel = currentPanel
+
+            // 💡 2. find deepest reveal ============================================================
+            // 💡 let currentRevealID: string | null = null
+            // 💡 at = target
+            // 💡 while (at != null) {
+            // 💡     const pid = at.getAttribute('data-reveal-id')
+            // 💡     if (pid != null) {
+            // 💡         currentRevealID = pid
+            // 💡         break
+            // 💡     }
+            // 💡     at = at.parentElement
+            // 💡 }
+            // 💡 if (currentRevealID) {
+            // 💡     const currentReveal = regionMonitor.reveals.get(currentRevealID)
+            // 💡     regionMonitor.hoveredReveal = currentReveal
+            // 💡     if (currentReveal) {
+            // 💡         // console.log(`[🤠]`, regionMonitor.hoveredReveal?.uid, event.type)
+            // 💡         const type = event.type
+            // 💡         // if (type === 'mousedown') currentReveal.onMouseDown(event)
+            // 💡         // if (type === 'mouseup') currentReveal.onMouseUp(event)
+            // 💡         if (type === 'mouseenter') currentReveal.onMouseEnter(event as any)
+            // 💡         if (type === 'mouseleave') currentReveal.onMouseLeave(event as any)
+            // 💡         if (type === 'click') currentReveal.onClick(event as any)
+            // 💡         // if (type === 'mousemove') currentReveal.onMouseMove(event as any)
+            // 💡         if (type === 'auxclick') currentReveal.onAuxClick(event as any)
+            // 💡         if (type === 'contextmenu') currentReveal.onContextMenu(event as any)
+            // 💡     }
+            // 💡     // onContextMenu
+            // 💡     // onClick
+            // 💡     // onAuxClick
+            // 💡     // onMouseEnter
+            // 💡     // onMouseLeave
+            // 💡 }
         }
 
         /* Update our modifiers to make keymap stuff easier, also can use anywhere now instead of just events. */
@@ -127,6 +176,9 @@ export const useRegionMonitor = (): void => {
         window.addEventListener('mouseout', handleMouseEvent)
         window.addEventListener('mouseover', handleMouseEvent)
         window.addEventListener('mouseup', handleMouseEvent)
+        // 💡 window.addEventListener('click', handleMouseEvent)
+        // 💡 window.addEventListener('auxclick', handleMouseEvent)
+        // 💡 window.addEventListener('contextmenu', handleMouseEvent)
 
         window.addEventListener('keydown', handleKeyEvent)
         window.addEventListener('keyup', handleKeyEvent)
