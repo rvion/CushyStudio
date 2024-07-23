@@ -177,7 +177,7 @@ export class RevealState {
         this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
     }
     onMouseLeaveAnchor = (): void => {
-        if (this.placement.startsWith('popup')) return
+        if (this.triggerOnClick) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
     }
@@ -235,7 +235,7 @@ export class RevealState {
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
     onMouseLeaveTooltip = (): void => {
-        if (this.placement.startsWith('popup')) return
+        if (this.triggerOnClick) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
     }
