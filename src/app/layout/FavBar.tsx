@@ -55,7 +55,12 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <div tw='rounded items-center justify-center overflow-hidden'>
                             <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
                                 <FavBarContainer>
-                                    <RevealUI tw='hover:brightness-125' placement='popup-lg' content={() => <CreateAppPopupUI />}>
+                                    <RevealUI
+                                        tw='hover:brightness-125'
+                                        placement='screen'
+                                        shell='popup-lg'
+                                        content={() => <CreateAppPopupUI />}
+                                    >
                                         <span
                                             tw='cursor-default flex'
                                             style={{ fontSize: sizeStr }}

@@ -24,9 +24,10 @@ export class Form {
     }): JSX.Element {
         return (
             <RevealUI
-                placement='popup-lg'
+                shell='popup-lg'
+                placement='screen'
                 title={p?.title}
-                content={(reveal) => {
+                content={(pp) => {
                     // 🔶 todo: add modal title via p.title
                     return this.render({
                         className: 'min-w-[600px]',
@@ -39,7 +40,7 @@ export class Form {
                                 fire({ zIndex: 100000, particleCount: 100, spread: 70 })
                             } else this.props.submitAction(x)
 
-                            if (p?.shouldClose !== false) reveal.close()
+                            if (p?.shouldClose !== false) pp.reveal.close()
                         },
                     })
                 }}

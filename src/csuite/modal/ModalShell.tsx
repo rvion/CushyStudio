@@ -3,7 +3,10 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 
+export type ModalShellSize = 'xs' | 'sm' | 'lg' | 'xl'
+
 export const ModalShellUI = observer(function ModalShellUI_(p: {
+    size?: ModalShellSize
     title?: React.ReactNode
     className?: string
     children?: React.ReactNode

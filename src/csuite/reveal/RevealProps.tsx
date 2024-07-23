@@ -1,21 +1,40 @@
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealState } from './RevealState'
+import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
+import type { FC } from 'react'
 
 import React from 'react'
 
+// prettier-ignore
+export type KnownShells =
+    | 'portal' // 🔴 to rename
+    | 'none'
+    | 'popover'
+    | 'popup'
+    | 'popup-xs'
+    | 'popup-sm'
+    | 'popup-lg'
+    | 'popup-xl'
+
 export type RevealProps = {
+    /** @since 2024-07-23 */
+    relativeTo?: `#${string}`
+
+    // placement
+    placement?: RevealPlacement
+
+    /** @since 2024-07-23 */
+    shell?: FC<RevealShellProps> | KnownShells
+
     /**
      * @deprecated
      * unused for now, backword compatibility with rsuite
      */
     enterable?: boolean
     // components
-    content: (p: RevealState) => React.ReactNode
+    content: FC<RevealContentProps>
     children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
-
-    // placement
-    placement?: RevealPlacement
 
     onClick?: (ev: React.MouseEvent) => void
 

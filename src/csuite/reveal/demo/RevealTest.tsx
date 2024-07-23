@@ -1,5 +1,7 @@
+import type { RevealContentProps } from '../shells/ShellProps'
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
 
 import { simpleFactory } from '../../'
 import { Frame } from '../../frame/Frame'
@@ -11,6 +13,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             {where}
         </Frame>
     )
+
     const conf = simpleFactory.useLocalstorage(
         (ui) =>
             ui.fields({
@@ -22,13 +25,19 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     )
 
     const Content2 = observer(
-        (): JSX.Element => (
-            <div style={{ width: `${conf.value.width}px`, height: `${conf.value.height}px` }} tw=' bg-blue-500'>
-                ok
+        (p: { content: () => string }): JSX.Element => (
+            <div //
+                style={{
+                    width: `${conf.value.width}px`,
+                    height: `${conf.value.height}px`,
+                }}
+                tw=' bg-blue-500 text-black'
+            >
+                🟢 ({p.content()})
             </div>
         ),
     )
-    const Content = (): JSX.Element => <Content2 />
+    const Content = (p: RevealContentProps): JSX.Element => <Content2 content={() => JSON.stringify(p.reveal.pos)} />
 
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
@@ -74,10 +83,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                     {anchor('left')}
                 </RevealUI>
                 <div></div>
-                <RevealUI trigger={conf.value.trigger.id} placement='#foo' content={Content}>
+                <RevealUI trigger={conf.value.trigger.id} relativeTo='#foo' placement='above' content={Content}>
                     {anchor('#foo')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='#bar' content={Content}>
+                <RevealUI trigger={conf.value.trigger.id} relativeTo='#bar' placement='above' content={Content}>
                     {anchor('#bar')}
                 </RevealUI>
                 <RevealUI trigger={conf.value.trigger.id} placement='right' content={Content}>
@@ -87,11 +96,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 <RevealUI trigger={conf.value.trigger.id} placement='leftEnd' content={Content}>
                     {anchor('leftEnd')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='popup-sm' content={Content}>
+                <RevealUI trigger={conf.value.trigger.id} shell='popup-sm' placement='screen-top' content={Content}>
                     {anchor('popup-sm')}
                 </RevealUI>
-
-                <RevealUI trigger={conf.value.trigger.id} placement='popup-lg' content={Content}>
+                <RevealUI trigger={conf.value.trigger.id} shell='popup-lg' placement='screen-top' content={Content}>
                     {anchor('popup-lg')}
                 </RevealUI>
                 <div></div>

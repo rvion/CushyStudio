@@ -13,7 +13,13 @@ import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatfo
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
-        <RevealUI placement='popup-lg' title='Create an app' content={() => <CreateAppPopupUI />}>
+        <RevealUI
+            //
+            shell='popup-lg'
+            placement='screen-top'
+            title='Create an app'
+            content={() => <CreateAppPopupUI />}
+        >
             <Button look='primary' icon='mdiOpenInNew'>
                 Create My App
             </Button>

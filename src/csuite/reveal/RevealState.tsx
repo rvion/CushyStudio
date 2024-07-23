@@ -1,9 +1,11 @@
+import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RevealProps } from './RevealProps'
-import type { CSSProperties, ReactNode } from 'react'
+import type { RevealContentProps } from './shells/ShellProps'
+import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
-import { computePlacement, type RevealPlacement } from './RevealPlacement'
+import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { DEBUG_REVEAL } from './RevealProps'
 
 export const defaultShowDelay_whenRoot = 100
@@ -41,7 +43,13 @@ export class RevealState {
      * on its own, without the need to make the entire props observable
      * so we can then hot-reload it nicely and have a nicer dev experience
      */
-    contentFn: () => ReactNode
+    // contentFn: () => ReactNode
+    contentFn: FC<NO_PROPS>
+
+    /** props to pass  */
+    get revealContentProps(): RevealContentProps {
+        return { reveal: this }
+    }
 
     constructor(
         //
@@ -49,7 +57,7 @@ export class RevealState {
         public parents: RevealState[],
     ) {
         // see comment above
-        this.contentFn = (): ReactNode => p.content(this)
+        this.contentFn = (): ReactNode => p.content({ reveal: this })
 
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
@@ -121,7 +129,11 @@ export class RevealState {
     }
 
     // position --------------------------------------------
-    tooltipPosition: any = { top: 0, left: 0 }
+    /** alias for this.tooltipPosition */
+    get pos(): RevealComputedPosition {
+        return this.tooltipPosition
+    }
+    tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
     setPosition = (rect: DOMRect): void => {
         this.tooltipPosition = computePlacement(this.placement, rect)
     }

@@ -1,16 +1,18 @@
 import type { RevealProps } from './RevealProps'
+import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 
 import { observer } from 'mobx-react-lite'
-import React, { cloneElement, createElement, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
+import React, { cloneElement, createElement, type FC, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-import { Frame } from '../frame/Frame'
-import { ModalShellUI } from '../modal/ModalShell'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
-import { global_RevealStack } from './RevealStack'
 import { RevealState } from './RevealState'
 import { RevealStateLazy } from './RevealStateLazy'
+import { ShellNoneUI } from './shells/ShellNone'
+import { ShellPopoverUI } from './shells/ShellPopover'
+import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopupUI'
+import { ShellPortal } from './shells/ShellPortal'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     const ref = useRef<HTMLDivElement>(null)
@@ -23,13 +25,14 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
 
     // once updated, make sure to keep props in sync so hot reload work well enough.
     useEffect(() => {
-        const x = uistOrNull
-        if (x == null) return
-        if (p.content !== x.p.content) x.contentFn = (): ReactNode => p.content(x)
-        if (p.trigger !== x.p.trigger) x.p.trigger = p.trigger
-        if (p.placement !== x.p.placement) x.p.placement = p.placement
-        if (p.showDelay !== x.p.showDelay) x.p.showDelay = p.showDelay
-        if (p.hideDelay !== x.p.hideDelay) x.p.hideDelay = p.hideDelay
+        const revealSt = uistOrNull
+        if (revealSt == null) return
+        if (p.content !== revealSt.p.content)
+            revealSt.contentFn = (): JSX.Element => createElement(p.content, revealSt.revealContentProps)
+        if (p.trigger !== revealSt.p.trigger) revealSt.p.trigger = p.trigger
+        if (p.placement !== revealSt.p.placement) revealSt.p.placement = p.placement
+        if (p.showDelay !== revealSt.p.showDelay) revealSt.p.showDelay = p.showDelay
+        if (p.hideDelay !== revealSt.p.hideDelay) revealSt.p.hideDelay = p.hideDelay
     }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
 
     // update position in case something moved or scrolled
@@ -109,9 +112,9 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
 
     // find element to attach to
     const element = document.getElementById(
-        uist.p.placement?.startsWith('#') //
+        uist.p.relativeTo != null //
             ? // take the id by trimming the leading '#' ('#foo' => 'foo')
-              uist.p.placement.slice(1)
+              uist.p.relativeTo.slice(1)
             : // OR use the global tooltip-root container at the top
               'tooltip-root',
     )!
@@ -119,114 +122,25 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     const pos = uist.tooltipPosition
     const p = uist.p
     const hiddenContent = createElement(uist.contentFn)
-    const revealedContent =
-        // VIA ID ANCHOR --------------------------------------------------------------------------------
-        uist.placement.startsWith('#') ? (
-            <div // backdrop
-                ref={(e) => {
-                    if (e == null) return global_RevealStack.filter((p) => p !== uist)
-                    global_RevealStack.push(uist)
-                }}
-                onKeyUp={(ev) => {
-                    if (ev.key === 'Escape') {
-                        uist.close()
-                        ev.stopPropagation()
-                        ev.preventDefault()
-                    }
-                }}
-                onClick={(ev) => {
-                    p.onClick?.(ev)
-                    uist.close()
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                }}
-                style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
-                tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
-            >
-                {hiddenContent}
-            </div>
-        ) : // VIA POPUP --------------------------------------------------------------------------------
-        uist.placement.startsWith('popup') ? (
-            <div // backdrop
-                ref={(e) => {
-                    if (e == null) return global_RevealStack.filter((p) => p !== uist)
-                    global_RevealStack.push(uist)
-                }}
-                onKeyUp={(ev) => {
-                    if (ev.key === 'Escape') {
-                        uist.close()
-                        ev.stopPropagation()
-                        ev.preventDefault()
-                    }
-                }}
-                onClick={(ev) => {
-                    p.onClick?.(ev)
-                    uist.close()
-                    ev.stopPropagation()
-                    // ev.preventDefault()
-                }}
-                style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
-                tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
-            >
-                <ModalShellUI
-                    close={() => {
-                        uist.close()
-                    }}
-                    title={p.title}
-                >
-                    {hiddenContent}
-                </ModalShellUI>
-            </div>
-        ) : (
-            // VIA POPOVER --------------------------------------------------------------------------------
-            <Frame
-                // border
-                // base={0}
-                shadow
-                className={p.tooltipWrapperClassName}
-                tw={['_RevealUI pointer-events-auto']}
-                onClick={(ev) => ev.stopPropagation()}
-                onMouseEnter={uist.onMouseEnterTooltip}
-                onMouseLeave={uist.onMouseLeaveTooltip}
-                onContextMenu={uist.enterAnchor}
-                // prettier-ignore
-                style={{
-                  position: 'absolute',
-                  zIndex: 99999999,
-                  top:    pos.top    ? `${pos.top}px`    : undefined,
-                  bottom: pos.bottom ? `${pos.bottom}px` : undefined,
-                  left:   pos.left   ? `${pos.left}px`   : undefined,
-                  right:  pos.right  ? `${pos.right}px`  : undefined,
-                  transform: pos.transform,
-              }}
-            >
-                {p.title != null && (
-                    <div tw='px-2'>
-                        <div tw='py-0.5'>{p.title}</div>
-                        <Frame tw='w-full rounded' base={{ contrast: 0.2 }} style={{ height: '1px' }}></Frame>
-                    </div>
-                )}
-                {hiddenContent}
 
-                {/* LOCK */}
-                {
-                    uist._lock ? (
-                        <Frame
-                            //
-                            icon='mdiLock'
-                            text={{ contrast: 0.3 }}
-                            tw='italic text-sm flex gap-1 items-center justify-center absolute'
-                        >
-                            shift+right-click to unlock
-                        </Frame>
-                    ) : null
-                    // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                    //     <Ikon.mdiLockOffOutline />
-                    //     shift+right-click to lock
-                    // </span>
-                }
-            </Frame>
-        )
+    const ShellUI: React.FC<RevealShellProps> = ((): FC<RevealShellProps> => {
+        const s = p.shell
+        if (s === 'popover') return ShellPopoverUI
+        if (s === 'portal') return ShellPortal
+        if (s === 'none') return ShellNoneUI
+        //
+        if (s === 'popup') return ShellPopupUI
+        if (s == 'popup-xs') return ShellPopupLGUI
+        if (s == 'popup-sm') return ShellPopupSMUI
+        if (s == 'popup-lg') return ShellPopupLGUI
+        if (s == 'popup-xl') return ShellPopupLGUI
+        return s ?? ShellPopoverUI
+    })()
 
+    const revealedContent = (
+        <ShellUI pos={pos} reveal={uist}>
+            {hiddenContent}
+        </ShellUI>
+    )
     return createPortal(revealedContent, element)
 }
