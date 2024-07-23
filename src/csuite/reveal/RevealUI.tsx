@@ -92,6 +92,8 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
             onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
             onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
+            onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
+            onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
         })
         return (
             <RevealCtx.Provider value={nextTower}>

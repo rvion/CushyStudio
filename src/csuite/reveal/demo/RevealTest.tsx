@@ -4,12 +4,12 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { simpleFactory } from '../../'
-import { Frame } from '../../frame/Frame'
+import { Frame, type FrameProps } from '../../frame/Frame'
 import { RevealUI } from '../RevealUI'
 
 export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
-    const anchor = (where: string): JSX.Element => (
-        <Frame border={20} base={20} tw='flex-1 text-center'>
+    const anchor = (where: string, props?: FrameProps): JSX.Element => (
+        <Frame border={20} base={20} tw='flex-1 text-center' {...props}>
             {where}
         </Frame>
     )
@@ -141,6 +141,14 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
                 <NotForwardingProps />
             </RevealUI>
+            <Frame row>
+                <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
+                    {anchor('focusable 1', { tabIndex: 1 })}
+                </RevealUI>
+                <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
+                    {anchor('focusable 2', { tabIndex: 1 })}
+                </RevealUI>
+            </Frame>
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
                 Text only
             </RevealUI>

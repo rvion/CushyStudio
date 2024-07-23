@@ -38,6 +38,16 @@ export class RevealState {
         else this.enterAnchor()
     }
 
+    onFocusAnchor = (): void => {
+        if (!this.triggerOnFocus) return
+        this.enterAnchor()
+    }
+
+    onBlurAnchor = (): void => {
+        if (!this.triggerOnFocus) return
+        this.leaveAnchor()
+    }
+
     /**
      * manuall assigned here on init so it can be made observable
      * on its own, without the need to make the entire props observable
@@ -99,6 +109,11 @@ export class RevealState {
         this.inAnchor = false
         this.inTooltip = false
         this.inChildren.clear()
+    }
+
+    get triggerOnFocus(): boolean {
+        return true // 🔴 maybe some orthogonal props or more trigger options?
+        // eg should not trigger for popups
     }
 
     get triggerOnClick(): boolean {
