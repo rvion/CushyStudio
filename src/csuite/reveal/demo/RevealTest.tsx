@@ -9,7 +9,7 @@ import { RevealUI } from '../RevealUI'
 
 export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const anchor = (where: string): JSX.Element => (
-        <Frame base={20} tw='flex-1 text-center'>
+        <Frame border={20} base={20} tw='flex-1 text-center'>
             {where}
         </Frame>
     )
@@ -26,23 +26,23 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
 
     const Content2 = observer(
         (p: { content: () => string }): JSX.Element => (
-            <div //
+            <pre //
                 style={{
                     width: `${conf.value.width}px`,
                     height: `${conf.value.height}px`,
                 }}
                 tw=' bg-blue-500 text-black'
             >
-                🟢 ({p.content()})
-            </div>
+                ({p.content()})
+            </pre>
         ),
     )
-    const Content = (p: RevealContentProps): JSX.Element => <Content2 content={() => JSON.stringify(p.reveal.pos)} />
+    const Content = (p: RevealContentProps): JSX.Element => <Content2 content={() => JSON.stringify(p.reveal.pos, null, 3)} />
 
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
     return (
-        <div tw='flex-1 flex flex-col m-24 gap-8'>
+        <div tw='flex-1 flex flex-col m-24 gap-3'>
             {conf.render()}
             {/* AUTO -------------------------- */}
             <Frame border base={5} tw='relative' style={{ height: '200px' }}>
@@ -54,7 +54,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 </RevealUI>
             </Frame>
             {/* AUTO -------------------------- */}
-            <div tw='grid grid-cols-5 gap-2'>
+            <div tw='grid grid-cols-5 gap-0'>
                 {/* top ---------------------------------------------- */}
                 <div></div>
                 <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>

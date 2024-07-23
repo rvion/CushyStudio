@@ -5,6 +5,8 @@ import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, type FC, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
+import { cls } from '../../widgets/misc/cls'
+import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { RevealState } from './RevealState'
@@ -37,10 +39,20 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
 
     // update position in case something moved or scrolled
     useEffect(() => {
-        if (uistOrNull?.visible && ref.current) {
-            const rect = ref.current.getBoundingClientRect()
-            uistOrNull.setPosition(rect)
-        }
+        if (uistOrNull == null) return
+        if (!uistOrNull.visible) return
+
+        // find element to attach to
+        const element =
+            uistOrNull.p.relativeTo == null
+                ? ref.current
+                : // take the id by trimming the leading '#' ('#foo' => 'foo')
+                  document.getElementById(uistOrNull.p.relativeTo.slice(1))!
+
+        if (!element) return
+
+        const rect = element.getBoundingClientRect()
+        uistOrNull.setPosition(rect)
     }, [uistOrNull?.visible])
 
     // check if we can clone the child element instead of adding a div in the DOM
@@ -56,9 +68,9 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     })()
 
     if (shouldClone) {
-        if (p.style != null) return <>❌ UNSAFE CLONE FAILED</>
-        if (p.className != null) return <>❌ UNSAFE CLONE FAILED</>
-        if (!React.isValidElement(p.children)) return <>❌ UNSAFE CLONE FAILED</>
+        // if (p.style != null) return <>❌ UNSAFE CLONE FAILED (p.style != null)</>
+        // if (p.className != null) return <>❌ UNSAFE CLONE FAILED (p.className != null)</>
+        if (!React.isValidElement(p.children)) return <>❌ UNSAFE CLONE FAILED (!React.isValidElement(p.children))</>
         // 2024-07-23: trying to remove the outer div
         // mostly working but edge cases (multiple children, forwarding props & ref by children)
         // makes it slightly unsafe / we're not sure what to do with it yet
@@ -67,6 +79,8 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
         const clonedChildren = cloneElement(child, {
             // @ts-ignore
             ref: ref,
+            style: objectAssignTsEfficient_t_t(p.style ?? {}, child.props?.style),
+            className: cls(child.props?.className, p.className),
             onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
             onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
             onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
@@ -111,13 +125,7 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     if (!uist?.visible) return null
 
     // find element to attach to
-    const element = document.getElementById(
-        uist.p.relativeTo != null //
-            ? // take the id by trimming the leading '#' ('#foo' => 'foo')
-              uist.p.relativeTo.slice(1)
-            : // OR use the global tooltip-root container at the top
-              'tooltip-root',
-    )!
+    const element = document.getElementById('tooltip-root')!
 
     const pos = uist.tooltipPosition
     const p = uist.p
@@ -142,5 +150,6 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
             {hiddenContent}
         </ShellUI>
     )
+
     return createPortal(revealedContent, element)
 }

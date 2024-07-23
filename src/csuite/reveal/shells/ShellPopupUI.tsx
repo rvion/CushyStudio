@@ -31,8 +31,16 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 ev.stopPropagation()
                 // ev.preventDefault()
             }}
-            style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
-            tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
+            style={{
+                zIndex: 99999999,
+                backgroundColor: '#0000003d',
+            }}
+            tw={[
+                //
+                'pointer-events-auto absolute z-50',
+                'w-full h-full',
+                'flex items-center justify-center',
+            ]}
         >
             <ModalShellUI
                 size={p.size}
