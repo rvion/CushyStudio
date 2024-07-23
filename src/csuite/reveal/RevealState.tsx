@@ -39,13 +39,13 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
-    onMiddleClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    onMiddleClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
         // this.onLeftClick(ev)
     }
-    onRightClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    onRightClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
         this.onLeftClick(ev)
     }
-    onLeftClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    onLeftClick = (ev: React.MouseEvent<HTMLSpanElement /* , MouseEvent */>): void => {
         const toc = this.triggerOnClick
         if (!toc) return
         ev.stopPropagation()
@@ -118,35 +118,40 @@ export class RevealState {
             this.p.trigger == 'clickAndHover'
         )
     }
-    get triggerOnHover() {
+
+    get triggerOnHover(): boolean {
         return (
             this.p.trigger == 'hover' || //
             this.p.trigger == 'clickAndHover'
         )
     }
 
-    get showDelay() {
+    get showDelay(): number {
         return this.p.showDelay ?? (this.ix ? defaultShowDelay_whenNested : defaultShowDelay_whenRoot)
     }
-    get hideDelay() {
+
+    get hideDelay(): number {
         return this.p.hideDelay ?? (this.ix ? defaultHideDelay_whenNested : defaultHideDelay_whenRoot)
     }
-    get placement() { return this.p.placement ?? 'auto' } // prettier-ignore
+
+    get placement(): RevealPlacement {
+        return this.p.placement ?? 'auto'
+    }
 
     // position --------------------------------------------
     tooltipPosition: any = { top: 0, left: 0 }
-    setPosition = (rect: DOMRect) => {
+    setPosition = (rect: DOMRect): void => {
         this.tooltipPosition = computePlacement(this.placement, rect)
     }
 
     // lock --------------------------------------------
     _lock = false
-    toggleLock = () => {
+    toggleLock = (): void => {
         this._lock = !this._lock
     }
 
     // UI --------------------------------------------
-    get defaultCursor() {
+    get defaultCursor(): string {
         if (!this.triggerOnHover) return 'cursor-pointer'
         return 'cursor-help'
     }
@@ -155,20 +160,20 @@ export class RevealState {
     enterAnchorTimeoutId: NodeJS.Timeout | null = null
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
-    onMouseEnterAnchor = () => {
+    onMouseEnterAnchor = (): void => {
         /* 🔥 */ if (!this.triggerOnHover && !this.visible) return
         /* 🔥 */ if (RevealState.shared.current) return this.enterAnchor()
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
     }
-    onMouseLeaveAnchor = () => {
+    onMouseLeaveAnchor = (): void => {
         if (this.placement.startsWith('popup')) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
     }
 
     // ---
-    enterAnchor = () => {
+    enterAnchor = (): void => {
         if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
         /* 🔥 🔴 */ if (RevealState.shared.current != this && !this.parents.includes(RevealState.shared.current!))
             RevealState.shared.current?.close()
@@ -177,7 +182,7 @@ export class RevealState {
         this.inAnchor = true
     }
 
-    leaveAnchor = () => {
+    leaveAnchor = (): void => {
         if (DEBUG_REVEAL) console.log(`[🤠] LEAVING anchor  ${this.ix}`)
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
@@ -185,17 +190,19 @@ export class RevealState {
     }
 
     // ---
-    private _resetAllAnchorTimouts = () => {
+    private _resetAllAnchorTimouts = (): void => {
         this._resetAnchorEnterTimeout()
         this._resetAnchorLeaveTimeout()
     }
-    private _resetAnchorEnterTimeout = () => {
+
+    private _resetAnchorEnterTimeout = (): void => {
         if (this.enterAnchorTimeoutId) {
             clearTimeout(this.enterAnchorTimeoutId)
             this.enterAnchorTimeoutId = null
         }
     }
-    private _resetAnchorLeaveTimeout = () => {
+
+    private _resetAnchorLeaveTimeout = (): void => {
         if (this.leaveAnchorTimeoutId) {
             clearTimeout(this.leaveAnchorTimeoutId)
             this.leaveAnchorTimeoutId = null
@@ -206,25 +213,25 @@ export class RevealState {
     enterTooltipTimeoutId: NodeJS.Timeout | null = null
     leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
-    onMouseEnterTooltip = () => {
+    onMouseEnterTooltip = (): void => {
         this._resetAllTooltipTimouts()
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
-    onMouseLeaveTooltip = () => {
+    onMouseLeaveTooltip = (): void => {
         if (this.placement.startsWith('popup')) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
     }
 
     // ---
-    enterTooltip = () => {
+    enterTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.enterChildren(ix)
         if (DEBUG_REVEAL) console.log(`[🤠] enter tooltip of ${this.ix}`)
         this.inTooltip = true
     }
 
-    leaveTooltip = () => {
+    leaveTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.leaveChildren(ix)
         if (DEBUG_REVEAL) console.log(`[🤠] leaving tooltip of ${this.ix}`)
@@ -232,31 +239,31 @@ export class RevealState {
     }
 
     // ---
-    private _resetAllTooltipTimouts = () => {
+    private _resetAllTooltipTimouts = (): void => {
         this._resetTooltipEnterTimeout()
         this._resetTooltipLeaveTimeout()
     }
-    private _resetTooltipEnterTimeout = () => {
+    private _resetTooltipEnterTimeout = (): void => {
         if (this.enterTooltipTimeoutId) {
             clearTimeout(this.enterTooltipTimeoutId)
             this.enterTooltipTimeoutId = null
         }
     }
-    private _resetTooltipLeaveTimeout = () => {
+    private _resetTooltipLeaveTimeout = (): void => {
         if (this.leaveTooltipTimeoutId) {
             clearTimeout(this.leaveTooltipTimeoutId)
             this.leaveTooltipTimeoutId = null
         }
     }
-    // --------------------
 
-    enterChildren = (depth: number) => {
+    // STACK RELATED STUFF --------------------
+    enterChildren = (depth: number): void => {
         // this._resetAllChildrenTimouts()
         if (DEBUG_REVEAL) console.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
         this.inChildren.add(depth)
     }
 
-    leaveChildren = (depth: number) => {
+    leaveChildren = (depth: number): void => {
         if (DEBUG_REVEAL) console.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
         // this._resetAllChildrenTimouts()
         this.inChildren.delete(depth)

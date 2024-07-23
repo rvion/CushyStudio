@@ -47,7 +47,7 @@ export class RegionMonitor {
     cmd = false
     mod = false
 
-    get debugMods() {
+    get debugMods(): string {
         let out: string[] = []
         if (this.cmd) out.push('cmd')
         if (this.ctrl) out.push('ctrl')
@@ -63,9 +63,9 @@ export const regionMonitor = new RegionMonitor()
 
 // FORMAT: `Region-${type}-${id}`
 /** watch every single event, and update the state */
-export const useRegionMonitor = () => {
+export const useRegionMonitor = (): void => {
     useEffect(() => {
-        function handleMouseEvent(event: MouseEvent) {
+        function handleMouseEvent(event: MouseEvent): void {
             const target = event.target
             if (!(target instanceof HTMLElement)) {
                 // console.log(`[❌] mouse event target is not HTMLElement`)
@@ -112,7 +112,7 @@ export const useRegionMonitor = () => {
         }
 
         /* Update our modifiers to make keymap stuff easier, also can use anywhere now instead of just events. */
-        function handleKeyEvent(event: KeyboardEvent) {
+        function handleKeyEvent(event: KeyboardEvent): void {
             regionMonitor.cmd = event.metaKey
             regionMonitor.ctrl = event.ctrlKey
             regionMonitor.shift = event.shiftKey
@@ -131,7 +131,8 @@ export const useRegionMonitor = () => {
         window.addEventListener('keydown', handleKeyEvent)
         window.addEventListener('keyup', handleKeyEvent)
         window.addEventListener('keypress', handleKeyEvent)
-        return () => {
+
+        return (): void => {
             window.removeEventListener('mousedown', handleMouseEvent)
             window.removeEventListener('mouseenter', handleMouseEvent)
             window.removeEventListener('mouseleave', handleMouseEvent)
