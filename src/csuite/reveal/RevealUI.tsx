@@ -37,6 +37,12 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
         if (p.hideDelay !== revealSt.p.hideDelay) revealSt.p.hideDelay = p.hideDelay
     }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
 
+    useEffect(() => {
+        if (!p.defaultVisible) return
+        const revealSt = lazyState.getRevealState()
+        revealSt.enterAnchor()
+    }, [p.defaultVisible])
+
     // update position in case something moved or scrolled
     useEffect(() => {
         if (uistOrNull == null) return

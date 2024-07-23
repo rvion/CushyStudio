@@ -42,6 +42,7 @@ export type RevealProps = {
     showDelay?: number /** only for hover */
     hideDelay?: number /** only for hover */
     trigger?: Maybe<'hover' | 'click' | 'clickAndHover'>
+    defaultVisible?: boolean
 
     // look and feel
     tooltipWrapperClassName?: string

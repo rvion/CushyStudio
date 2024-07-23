@@ -182,11 +182,18 @@ export class RevealState {
         this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
     }
 
+    get shouldCloseCurrentOnEnter(): boolean {
+        const current = RevealState.shared.current
+        if (current == null) return false
+        if (current === this) return false
+        if (this.parents.includes(current)) return false
+        if (current.p.defaultVisible) return false
+        return true
+    }
     // ---
     enterAnchor = (): void => {
         if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
-        /* 🔥 🔴 */ if (RevealState.shared.current != this && !this.parents.includes(RevealState.shared.current!))
-            RevealState.shared.current?.close()
+        /* 🔥 🔴 */ if (this.shouldCloseCurrentOnEnter) RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true

@@ -20,6 +20,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 trigger: ui.selectOneV3(['hover', 'click', 'clickAndHover'], { default: { id: 'hover' } }),
                 width: ui.pixel({ default: 200, step: 50 }),
                 height: ui.pixel({ default: 120, step: 50 }),
+                defaultVisible: ui.bool({ default: false }),
             }),
         '18nnMJ5aY',
     )
@@ -46,6 +47,11 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     return (
         <div tw='flex-1 flex flex-col m-24 gap-3'>
             {conf.render()}
+            {conf.value.defaultVisible && (
+                <RevealUI trigger='click' placement='bottomStart' content={Content} defaultVisible={conf.value.defaultVisible}>
+                    {anchor('defaultVisible')}
+                </RevealUI>
+            )}
             {/* AUTO -------------------------- */}
             <Frame border base={5} tw='relative' style={{ height: '200px' }}>
                 <RevealUI trigger={conf.value.trigger.id} placement='auto' tw='absolute top-8 left-8' content={Content}>
