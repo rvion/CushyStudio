@@ -31,13 +31,15 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                     width: `${conf.value.width}px`,
                     height: `${conf.value.height}px`,
                 }}
-                tw=' bg-blue-500 text-black'
+                tw='bg-blue-500 text-black'
             >
                 ({p.content()})
             </pre>
         ),
     )
-    const Content = (p: RevealContentProps): JSX.Element => <Content2 content={() => JSON.stringify(p.reveal.pos, null, 3)} />
+    const Content = (p: RevealContentProps): JSX.Element => (
+        <Content2 content={() => /* JSON.stringify(p.reveal.pos, null, 3) */ '🟢'} />
+    )
 
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
@@ -89,6 +91,16 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 <RevealUI trigger={conf.value.trigger.id} relativeTo='#bar' placement='above' content={Content}>
                     {anchor('#bar')}
                 </RevealUI>
+                <RevealUI
+                    //
+                    trigger={conf.value.trigger.id}
+                    relativeTo='#bar'
+                    placement='above'
+                    shell='popup-lg'
+                    content={Content}
+                >
+                    {anchor('#bar in popup')}
+                </RevealUI>
                 <RevealUI trigger={conf.value.trigger.id} placement='right' content={Content}>
                     {anchor('right')}
                 </RevealUI>
@@ -125,6 +137,15 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             </RevealUI>
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
                 Text only
+            </RevealUI>
+            <RevealUI //
+                trigger='click'
+                shell='none'
+                placement='mouse'
+                content={Content}
+                tw='h-52 w-52 bg-blue-300'
+            >
+                Mouse
             </RevealUI>
             <Frame id='foo' base={{ hueShift: 100, contrast: 0.1 }} style={{ height: '150px' }}>
                 #foo

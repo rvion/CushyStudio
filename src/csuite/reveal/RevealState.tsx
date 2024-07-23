@@ -21,15 +21,15 @@ export class RevealState {
 
     uid = RevealState.nextUID++
 
-    onMiddleClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+    onMiddleClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         // this.onLeftClick(ev)
     }
 
-    onRightClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.onLeftClick(ev)
+    onRightClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.onLeftClickAnchor(ev)
     }
 
-    onLeftClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+    onLeftClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         const toc = this.triggerOnClick
         if (!toc) return
         ev.stopPropagation()
@@ -132,6 +132,22 @@ export class RevealState {
     /** alias for this.tooltipPosition */
     get pos(): RevealComputedPosition {
         return this.tooltipPosition
+    }
+
+    get posCSS(): CSSProperties {
+        const pos = this.pos
+        return {
+            position: 'absolute',
+            zIndex: 99999999,
+            top: pos.top ? toCss(pos.top) : undefined,
+            left: pos.left ? toCss(pos.left) : undefined,
+            bottom: pos.bottom ? toCss(pos.bottom) : undefined,
+            right: pos.right ? toCss(pos.right) : undefined,
+            width: pos.width ? toCss(pos.width) : undefined,
+            height: pos.height ? toCss(pos.height) : undefined,
+            overflow: 'auto',
+            transform: pos.transform,
+        }
     }
     tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
     setPosition = (rect: DOMRect): void => {
@@ -264,4 +280,8 @@ export class RevealState {
         // this._resetAllChildrenTimouts()
         this.inChildren.delete(depth)
     }
+}
+
+function toCss(x: number | string): string {
+    return typeof x == 'number' ? `${Math.round(x)}px` : x
 }

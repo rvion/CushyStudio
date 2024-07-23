@@ -6,11 +6,8 @@ import { Frame } from '../../frame/Frame'
 
 export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellProps) {
     const uist = p.reveal
-    const pos = p.pos
     return (
         <Frame
-            // border
-            // base={0}
             shadow
             className={uist.p.tooltipWrapperClassName}
             tw={['_RevealUI pointer-events-auto']}
@@ -18,16 +15,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}
             onContextMenu={uist.enterAnchor}
-            // prettier-ignore
-            style={{
-                position: 'absolute',
-                zIndex: 99999999,
-                top:    pos.top    ? toCss(pos.top) : undefined,
-                left:   pos.left   ? toCss(pos.left) : undefined,
-                bottom: pos.bottom ? toCss(pos.bottom) : undefined,
-                right:  pos.right  ? toCss(pos.right) : undefined,
-                transform: pos.transform,
-            }}
+            style={uist.posCSS}
         >
             {uist.p.title != null && (
                 <div tw='px-2'>
@@ -57,7 +45,3 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
         </Frame>
     )
 })
-
-function toCss(x: number | string): string {
-    return typeof x == 'number' ? `${x}px` : x
-}

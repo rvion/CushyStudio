@@ -36,10 +36,10 @@ export class RevealStateLazy {
             ev.stopPropagation()
         }
     }
-    onClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onLeftClick(ev)
+    onClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onLeftClickAnchor(ev)
     onAuxClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        if (ev.button === 1) return this.getRevealState().onMiddleClick(ev)
-        if (ev.button === 2) return this.getRevealState().onRightClick(ev)
+        if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
+        if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
     }
     onMouseEnter = (_: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onMouseEnterAnchor()
     onMouseLeave = (_: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onMouseLeaveAnchor()

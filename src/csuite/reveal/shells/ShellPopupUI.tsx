@@ -1,6 +1,7 @@
 import type { RevealShellProps } from './ShellProps'
 
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 
 import { type ModalShellSize, ModalShellUI } from '../../modal/ModalShell'
 import { global_RevealStack } from '../RevealStack'
@@ -11,23 +12,27 @@ export const ShellPopupLGUI = (p: RevealShellProps): JSX.Element => <ShellPopupU
 export const ShellPopupXLUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='xl' {...p} />
 
 export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps & { size?: ModalShellSize }) {
-    const uist = p.reveal
+    const reveal = p.reveal
+    useEffect(() => {
+        reveal.onMouseEnterTooltip()
+        return (): void => reveal.onMouseLeaveTooltip()
+    })
     return (
         <div // backdrop
             ref={(e) => {
-                if (e == null) return global_RevealStack.filter((p) => p !== uist)
-                global_RevealStack.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== reveal)
+                global_RevealStack.push(reveal)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
-                    uist.close()
+                    reveal.close()
                     ev.stopPropagation()
                     ev.preventDefault()
                 }
             }}
             onClick={(ev) => {
-                uist.p.onClick?.(ev)
-                uist.close()
+                reveal.p.onClick?.(ev)
+                reveal.close()
                 ev.stopPropagation()
                 // ev.preventDefault()
             }}
@@ -39,16 +44,18 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 //
                 'pointer-events-auto absolute z-50',
                 'w-full h-full',
-                'flex items-center justify-center',
+                // 'flex items-center justify-center',
             ]}
         >
             <ModalShellUI
+                style={p.reveal.posCSS}
                 size={p.size}
                 close={() => {
-                    uist.close()
+                    reveal.close()
                 }}
-                title={uist.p.title}
+                title={reveal.p.title}
             >
+                {/* <pre>{JSON.stringify(p.reveal.posCSS)}</pre> */}
                 {p.children}
             </ModalShellUI>
         </div>

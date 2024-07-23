@@ -7,7 +7,7 @@ import React from 'react'
 
 // prettier-ignore
 export type KnownShells =
-    | 'portal' // 🔴 to rename
+    | 'focus'
     | 'none'
     | 'popover'
     | 'popup'

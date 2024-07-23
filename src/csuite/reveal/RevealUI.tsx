@@ -11,10 +11,10 @@ import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { RevealState } from './RevealState'
 import { RevealStateLazy } from './RevealStateLazy'
+import { ShellFocus } from './shells/ShellFocus'
 import { ShellNoneUI } from './shells/ShellNone'
 import { ShellPopoverUI } from './shells/ShellPopover'
 import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopupUI'
-import { ShellPortal } from './shells/ShellPortal'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     const ref = useRef<HTMLDivElement>(null)
@@ -134,7 +134,7 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     const ShellUI: React.FC<RevealShellProps> = ((): FC<RevealShellProps> => {
         const s = p.shell
         if (s === 'popover') return ShellPopoverUI
-        if (s === 'portal') return ShellPortal
+        if (s === 'focus') return ShellFocus
         if (s === 'none') return ShellNoneUI
         //
         if (s === 'popup') return ShellPopupUI
