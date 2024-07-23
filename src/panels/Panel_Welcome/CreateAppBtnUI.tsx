@@ -26,7 +26,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
     const uist = useLocalObservable(() => ({
         appName: 'my-app',
         description: 'my app description',
-        get fileName() {
+        get fileName(): string {
             return convertToValidCrossPlatformFileName(uist.appName)
         },
         get relPath(): RelativePath {
@@ -35,7 +35,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
         get absPath(): AbsolutePath {
             return `${st.rootPath}/${uist.relPath}` as AbsolutePath
         },
-        get hasConflict() {
+        get hasConflict(): boolean {
             return existsSync(uist.absPath)
         },
     }))
@@ -110,7 +110,7 @@ const mkAppTemplate = (p: {
     //
     name: string
     description: string
-}) => {
+}): string => {
     return `\
 app({
     metadata: {
@@ -148,7 +148,7 @@ app({
 `
 }
 
-const IntroTxt = () => {
+const IntroTxt = (): JSX.Element => {
     const st = useSt()
     return (
         <MessageInfoUI title='Memo'>
