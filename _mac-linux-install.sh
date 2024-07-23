@@ -34,6 +34,7 @@ case "$OS" in
         SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
         mkdir -p $LSHARE/applications
+        mkdir -p $LSHARE/icons
 
         echo "Installing icon to $LSHARE/icons/cushystudio-shell.png"
         # Install icons and .desktop file for Wayland's title icon and tray name to work properly.
