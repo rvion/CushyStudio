@@ -45,6 +45,20 @@ export type RevealHideTrigger =
 
 export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
+export type HideReason =
+    | 'clickAnchor' //
+    | 'clickOutside'
+    | 'mouseOutside'
+    | 'tabKey'
+    | 'shiftTabKey'
+    | 'escapeKey'
+    | 'pickOption'
+    | 'blurAnchor'
+    | 'closeButton' // ex: in modals
+    | 'cascade' // another reveal appearing caused the closure
+    | 'programmatic'
+    | 'unknown'
+
 export type RevealProps = {
     /** @since 2024-07-23 */
     relativeTo?: `#${string}`
@@ -67,7 +81,7 @@ export type RevealProps = {
 
     // callbacks if we need to add side effects after reveal/hide
     onRevealed?: () => void
-    onHidden?: () => void
+    onHidden?: (reason: HideReason) => void
 
     // SHOW triggers ------------------------------------------------------------------
     showDelay?: number /** only for hover */

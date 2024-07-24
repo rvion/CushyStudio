@@ -11,6 +11,16 @@ import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
 
+function focusNextElement(dir: 'next' | 'prev'): void {
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const elements = Array.from(document.querySelectorAll(focusableElements)) as HTMLElement[]
+
+    const currentFocusIndex = elements.indexOf(document.activeElement as HTMLElement)
+    const nextIndex = (currentFocusIndex + (dir === 'next' ? 1 : -1)) % elements.length
+
+    elements[nextIndex]?.focus()
+}
+
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     const csuite = useCSuite()
@@ -21,16 +31,19 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             trigger='pseudofocus'
             shell='popover'
             placement='autoVerticalStart'
-            onHidden={() => {
+            onHidden={(reason) => {
                 select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
-                // 🔴 should only focus anchor in certain cases?
+                select.clean()
+
+                // 🔶 should only focus anchor in certain cases?
                 // (ex: escape while in popup should probably focus the anchor?)
                 // (ex: clicking outside the popup should probably focus the anchor?)
-                // (ex: tab should probably go to the next select, NOT focus this anchor?)
                 // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
-                // ...but this can probably be improved in a future release
+                // (ex: tab should probably go to the next select, NOT focus this anchor?)
+                if (reason === 'programmatic' || reason === 'cascade') return
                 select.anchorRef.current?.focus()
-                select.clean()
+                if (reason === 'tabKey') focusNextElement('next')
+                if (reason === 'shiftTabKey') focusNextElement('prev')
             }}
             content={({ reveal }) => <SelectPopupUI reveal={reveal} selectState={select} />}
             sharedAnchorRef={select.anchorRef}
@@ -70,12 +83,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         <Ikon.mdiTextBoxSearchOutline
                             tw='box-border m-[2px] flex-none'
                             size='calc((var(--input-height) - 4px - 2px)'
-                />
+                        />
                         <SelectValueContainerUI wrap={select.p.wrap ?? true}>{select.displayValue}</SelectValueContainerUI>
                         <Ikon.mdiChevronDown
                             tw='flex-none box-border ml-auto m-[2px]'
-                    size='calc((var(--input-height) - 4px - 4px)'
-                />
+                            size='calc((var(--input-height) - 4px - 4px)'
+                        />
                     </>
                 )}
             </Frame>

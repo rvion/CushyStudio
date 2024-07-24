@@ -134,7 +134,7 @@ export const allLegacyCommands: Command<null>[] = [
         action: () => {
             if (global_RevealStack.length > 0) {
                 const item = global_RevealStack.pop()!
-                item.close()
+                item.close('programmatic')
                 return Trigger.Success
             }
             return Trigger.UNMATCHED

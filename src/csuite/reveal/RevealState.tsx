@@ -1,5 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
+import type { HideReason, RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
@@ -45,7 +45,7 @@ export class RevealState {
             }
         } else {
             if (this.shouldHideOnAnchorClick) {
-                this.close()
+                this.close('clickAnchor')
                 ev.stopPropagation()
             }
         }
@@ -266,7 +266,7 @@ export class RevealState {
         this.log(`_ ${XXX(ev)} onMouseLeaveAnchor`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
-        this.leaveAnchorTimeoutId = setTimeout(this.close, this.hideDelay)
+        this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
     }
 
     // ---
@@ -274,7 +274,7 @@ export class RevealState {
         this.log(`🚨 open`)
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
-        /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close()
+        /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close('cascade')
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true
@@ -282,7 +282,7 @@ export class RevealState {
         if (!wasVisible) this.p.onRevealed?.()
     }
 
-    close = (): void => {
+    close = (reason?: HideReason): void => {
         this.log(`🚨 close`)
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
@@ -298,7 +298,7 @@ export class RevealState {
 
         // 🔴 are children closed properly?
 
-        if (wasVisible) this.p.onHidden?.()
+        if (wasVisible) this.p.onHidden?.(reason ?? 'unknown')
     }
 
     // ---
@@ -417,7 +417,7 @@ export class RevealState {
     onBlurAnchor = (ev: React.FocusEvent<unknown>): void => {
         this.log(`_ ${XXX(ev)} onBlurAnchor`)
         if (!this.shouldHideOnAnchorBlur) return
-        this.close()
+        this.close('blurAnchor')
     }
 
     onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
@@ -441,7 +441,7 @@ export class RevealState {
 
         if (ev.key === 'Escape' && this.isVisible && this.shouldHideOnKeyboardEscape) {
             this.log(`_ ${XXX(ev)} onAnchorOrShellKeyDown: close via Escape (visible: ${this.isVisible})`)
-            this.close()
+            this.close('escapeKey')
             // this.anchorRef.current?.focus()
             ev.preventDefault()
             ev.stopPropagation()
@@ -451,7 +451,7 @@ export class RevealState {
 
     onBackdropClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         this.log(`_ ${XXX(ev)} onBackdropClick`)
-        if (this.shouldHideOnClickOutside) this.close()
+        if (this.shouldHideOnClickOutside) this.close('clickOutside')
     }
 
     log(msg: string): void {

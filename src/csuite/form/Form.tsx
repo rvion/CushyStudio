@@ -40,7 +40,7 @@ export class Form {
                                 fire({ zIndex: 100000, particleCount: 100, spread: 70 })
                             } else this.props.submitAction(x)
 
-                            if (p?.shouldClose !== false) pp.reveal.close()
+                            if (p?.shouldClose !== false) pp.reveal.close('closeButton')
                         },
                     })
                 }}

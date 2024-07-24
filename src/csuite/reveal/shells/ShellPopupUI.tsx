@@ -39,7 +39,7 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 style={p.reveal.posCSS}
                 size={p.size}
                 close={() => {
-                    reveal.close()
+                    reveal.close('closeButton')
                 }}
                 title={reveal.p.title}
             >

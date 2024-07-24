@@ -47,7 +47,8 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                 onKeyDown={(ev) => {
                     if (ev.key === 'Tab') {
                         s.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
-                        s.closeMenu()
+                        const reason = ev.shiftKey ? 'shiftTabKey' : 'tabKey'
+                        s.closeMenu(reason)
                         // 🔶 should probably focus the next select instead?
                         // anyway, already handled via onHidden
                         // s.anchorRef.current?.focus()
