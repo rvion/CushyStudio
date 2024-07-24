@@ -45,8 +45,8 @@ export class RevealStateLazy {
         if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
         if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
     }
-    onMouseEnter = (_: React.MouseEvent<unknown>): void => this.getRevealState().onMouseEnterAnchor()
-    onMouseLeave = (_: React.MouseEvent<unknown>): void => this.getRevealState().onMouseLeaveAnchor()
+    onMouseEnter = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseEnterAnchor(ev)
+    onMouseLeave = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseLeaveAnchor(ev)
     onFocus = (ev: React.FocusEvent<unknown>): void => this.getRevealState().onFocusAnchor(ev)
-    onBlur = (_: React.FocusEvent<unknown>): void => this.getRevealState().onBlurAnchor()
+    onBlur = (ev: React.FocusEvent<unknown>): void => this.getRevealState().onBlurAnchor(ev)
 }

@@ -250,7 +250,7 @@ export class RevealState {
     enterAnchorTimeoutId: NodeJS.Timeout | null = null
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
-    onMouseEnterAnchor = (): void => {
+    onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.log(`_ onMouseEnterAnchor`)
         /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (this.isVisible) return
@@ -259,7 +259,7 @@ export class RevealState {
         this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
     }
 
-    onMouseLeaveAnchor = (): void => {
+    onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.log(`_ onMouseLeaveAnchor`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
@@ -411,7 +411,7 @@ export class RevealState {
         ev.preventDefault()
     }
 
-    onBlurAnchor = (): void => {
+    onBlurAnchor = (ev: React.FocusEvent<unknown>): void => {
         this.log(`_ onBlurAnchor`)
         if (!this.shouldHideOnAnchorBlur) return
         this.close()
