@@ -1,5 +1,6 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
+import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 
 import { observer } from 'mobx-react-lite'
@@ -31,6 +32,7 @@ export class BoolButtonProps {
     children?: ReactNode
     /** alternative way to specify children */
     text?: string
+    border?: TintExt
 
     className?: string
     style?: CSSProperties

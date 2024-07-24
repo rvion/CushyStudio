@@ -33,6 +33,7 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
 
     return (
         <InputBoolToggleButtonUI
+            border={false}
             style={p.style}
             expand
             mode={mode}
