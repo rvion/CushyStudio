@@ -25,7 +25,7 @@ export const BadgeUI = observer(function BadgeUI_({
     return (
         <Frame
             // [line-height:1.1rem]
-            tw={['leading-normal', 'rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer']}
+            tw={['leading-normal', 'rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer', 'w-fit']}
             hover={hasAction}
             base={{
                 //
