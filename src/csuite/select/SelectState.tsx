@@ -281,5 +281,13 @@ export class AutoCompleteSelectState<OPTION> {
             this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
             this.closeIfShouldCloseAfterSelection()
         }
+
+        // when the select is hidden but the anchor is focused
+        // typing a letter should add it to the search query in addition to opening the select
+        const isLetter = ev.keyCode >= 65 && ev.keyCode <= 90
+        if (isLetter && !this.revealState?.isVisible) {
+            // setTimeout prevents from having the newly added letter being selected due to subsequent input.focus()
+            setTimeout(() => (this.searchQuery += ev.key), 0)
+        }
     }
 }
