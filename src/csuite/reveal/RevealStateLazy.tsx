@@ -39,6 +39,8 @@ export class RevealStateLazy {
         }
     }
     onClick = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onLeftClickAnchor(ev)
+    onMouseDown = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseDownAnchor(ev)
+    onMouseUp = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseUpAnchor(ev)
     onAuxClick = (ev: React.MouseEvent<unknown>): void => {
         if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
         if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)

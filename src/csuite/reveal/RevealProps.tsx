@@ -15,6 +15,36 @@ export type KnownShells =
     | 'popup-lg'
     | 'popup-xl'
 
+export type RevealShowTrigger =
+    /** will open on hover after the showDelay */
+    | 'hover'
+
+    // if focused from anywhere outside of the revealed content => open
+    // if we type any letter or number or space or enter when anchor is focused => open
+    | 'pseudofocus' // 🔴 TODO
+
+    /** will open on click */
+    | 'click'
+
+    // weird mix of both click and hover; will probably be either
+    // renamed or replaced by the trigger dict (object) notation.
+    | 'clickAndHover'
+    | 'none' // 🔴 TODO
+// ❓ |  () => ...
+// ❓ |  { chick: ..., hover: ..., focus: ... }
+
+export type RevealHideTrigger =
+    | 'mouseOutside' //
+    | 'escapeKey'
+    | 'blurAnchor'
+    // | 'blurTooltip' // not sure we need this one
+    | 'clickAnchor'
+    | 'clickOutside' // via shell backdrop
+    | 'clickAndMouseOutside'
+    | 'none'
+
+export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
+
 export type RevealProps = {
     /** @since 2024-07-23 */
     relativeTo?: `#${string}`
@@ -41,30 +71,12 @@ export type RevealProps = {
 
     // SHOW triggers ------------------------------------------------------------------
     showDelay?: number /** only for hover */
-    // prettier-ignore
-    trigger?: Maybe<
-        /** will open on hover after the showDelay */
-        | 'hover'
-
-        // if focused from anywhere outside of the revealed content => open
-        // if we type any letter or number or space or enter when anchor is focused => open
-        | 'pseudofocus' // 🔴 TODO
-
-        /** will open on click */
-        | 'click'
-
-        // weird mix of both click and hover; will probably be either
-        // renamed or replaced by the trigger dict (object) notation.
-        | 'clickAndHover'
-
-        | 'none'  // 🔴 TODO
-        // ❓ |  () => ...
-        // ❓ |  { chick: ..., hover: ..., focus: ... }
-    >
+    trigger?: Maybe<RevealShowTrigger>
 
     // HIDE TRIGGER ------------------------------------------------------------------
     hideDelay?: number /** only for hover */
-    hideTrigger?: Maybe<never>
+    // prettier-ignore
+    hideTriggers?: RevealHideTriggers
 
     // HIDE TRIGGER ------------------------------------------------------------------
     defaultVisible?: boolean

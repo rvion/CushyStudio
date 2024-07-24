@@ -1,10 +1,11 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { RevealProps } from './RevealProps'
+import type { RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
+import { exhaust } from '../utils/exhaust'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { DEBUG_REVEAL } from './RevealProps'
 
@@ -22,25 +23,40 @@ export class RevealState {
     uid = RevealState.nextUID++
 
     onMiddleClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ onMiddleClickAnchor`)
         // this.onLeftClick(ev)
     }
 
     onRightClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ onRightClickAnchor`)
         this.onLeftClickAnchor(ev)
     }
 
     onLeftClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        if (this.isVisible) {
-            // console.log(`[🔴] A`)
-            if (!this.shouldHideOnAnchorClick) return
-            this.close()
+        this.log(`_ onLeftClickAnchor (visible: ${this.isVisible ? '🟢' : '🔴'})`)
+        const closed = !this.isVisible
+        if (closed) {
+            if (this.shouldRevealOnAnchorClick) {
+                this.open()
+                ev.stopPropagation()
+            }
         } else {
-            // console.log(`[🔴] B`)
-            if (!this.shouldRevealOnAnchorClick) return
-            this.open()
+            if (this.shouldHideOnAnchorClick) {
+                this.close()
+                ev.stopPropagation()
+            }
         }
+    }
 
-        ev.stopPropagation()
+    _mouseDown = false
+    onMouseDownAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ onMouseDownAnchor`)
+        this._mouseDown = true
+    }
+
+    onMouseUpAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ onMouseUpAnchor`)
+        this._mouseDown = false
     }
 
     /**
@@ -109,54 +125,73 @@ export class RevealState {
     }
 
     // HIDE triggers ------------------------------------------------------
-    get shouldHideOnTooltipBlur(): boolean {
-        return false
+    get hideTriggers(): RevealHideTriggers {
+        if (this.p.hideTriggers) return this.p.hideTriggers
+        if (this.revealTrigger === 'none') return { none: true }
+        if (this.revealTrigger === 'click') return { clickAnchor: true, clickOutside: true, escapeKey: true, blurAnchor: true }
+        if (this.revealTrigger === 'clickAndHover') return { clickAnchor: true, clickOutside: true, clickAndMouseOutside: true, escapeKey: true, blurAnchor: true } // prettier-ignore
+        if (this.revealTrigger === 'hover') return { mouseOutside: true }
+        if (this.revealTrigger === 'pseudofocus') return { clickAnchor: true, clickOutside: true, escapeKey: true }
+        exhaust(this.revealTrigger)
     }
 
+    // 🔶 not sure when we need this one?
+    // get shouldHideOnTooltipBlur(): boolean {
+    //     return false
+    // }
+
     get shouldHideOnAnchorBlur(): boolean {
-        return false
+        return this.hideTriggers.blurAnchor ?? false
     }
 
     get shouldHideOnKeyboardEscape(): boolean {
-        return true
+        return this.hideTriggers.escapeKey ?? false
     }
 
     get shouldHideOnAnchorClick(): boolean {
-        return false
+        return this.hideTriggers.clickAnchor ?? false
     }
 
     get shouldHideOnAnchorOrTooltipMouseLeave(): boolean {
-        return false
+        return this.hideTriggers.mouseOutside ?? this.hideTriggers.clickAndMouseOutside ?? false
+    }
+
+    get shouldHideOnClickOutside(): boolean {
+        return this.hideTriggers.clickOutside ?? this.hideTriggers.clickAndMouseOutside ?? false
     }
 
     // REVEAL triggers ------------------------------------------------------
+    get revealTrigger(): RevealShowTrigger {
+        return this.p.trigger ?? 'click'
+    }
+
     get shouldRevealOnAnchorFocus(): boolean {
-        if (this.p.trigger == 'none') return false
+        if (this.revealTrigger == 'none') return false
         if (this.shouldRevealOnAnchorClick) return true
-        if (this.p.trigger === 'pseudofocus') return true
+        if (this.revealTrigger === 'pseudofocus') return true
         return false
     }
 
     get shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused(): boolean {
-        if (this.p.trigger == 'none') return false
-        if (this.p.trigger === 'pseudofocus') return true
+        if (this.revealTrigger == 'none') return false
+        if (this.revealTrigger === 'pseudofocus') return true
         return false
     }
 
     get shouldRevealOnAnchorClick(): boolean {
-        if (this.p.trigger == 'none') return false
+        if (this.revealTrigger == 'none') return false
         return (
-            this.p.trigger == null ||
-            this.p.trigger == 'click' || //
-            this.p.trigger == 'clickAndHover'
+            this.revealTrigger == 'pseudofocus' ||
+            this.revealTrigger == 'click' || //
+            this.revealTrigger == 'clickAndHover'
         )
     }
 
     get shouldRevealOnAnchorHover(): boolean {
-        if (this.p.trigger == 'none') return false
+        if (this.revealTrigger == 'none') return false
         return (
-            this.p.trigger == 'hover' || //
-            this.p.trigger == 'clickAndHover'
+            this.revealTrigger == 'hover' || //
+            this.revealTrigger == 'clickAndHover'
         )
     }
 
@@ -216,13 +251,16 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = (): void => {
-        /* 🔥 */ if (!this.shouldRevealOnAnchorHover && !this.isVisible) return
+        this.log(`_ onMouseEnterAnchor`)
+        /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
+        /* 🔥 */ if (this.isVisible) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
     }
 
     onMouseLeaveAnchor = (): void => {
+        this.log(`_ onMouseLeaveAnchor`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.close, this.hideDelay)
@@ -230,8 +268,8 @@ export class RevealState {
 
     // ---
     open = (): void => {
+        this.log(`🚨 open`)
         const wasVisible = this.isVisible
-        if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
         /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
@@ -241,7 +279,7 @@ export class RevealState {
     }
 
     close = (): void => {
-        if (DEBUG_REVEAL) console.warn(`[🔴] close  ${this.ix}`)
+        this.log(`🚨 close`)
         const wasVisible = this.isVisible
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
@@ -283,11 +321,13 @@ export class RevealState {
     leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterTooltip = (): void => {
+        this.log(`_ onMouseEnterTooltip`)
         this._resetAllTooltipTimouts()
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
 
     onMouseLeaveTooltip = (): void => {
+        this.log(`_ onMouseLeaveTooltip`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
@@ -297,14 +337,14 @@ export class RevealState {
     enterTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.enterChildren(ix)
-        if (DEBUG_REVEAL) console.log(`[🤠] enter tooltip of ${this.ix}`)
+        this.log(`🔶 enterTooltip`)
         this.inTooltip = true
     }
 
     leaveTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.leaveChildren(ix)
-        if (DEBUG_REVEAL) console.log(`[🤠] leaving tooltip of ${this.ix}`)
+        this.log(`🔶 leaveTooltip`)
         this.inTooltip = false
     }
 
@@ -331,32 +371,44 @@ export class RevealState {
     // STACK RELATED STUFF --------------------
     enterChildren = (depth: number): void => {
         // this._resetAllChildrenTimouts()
-        if (DEBUG_REVEAL) console.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
+        this.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
         this.subRevealsCurrentlyVisible.add(depth)
     }
 
     leaveChildren = (depth: number): void => {
-        if (DEBUG_REVEAL) console.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
+        this.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
         // this._resetAllChildrenTimouts()
         this.subRevealsCurrentlyVisible.delete(depth)
     }
 
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
+        this.log(`_ onFocusAnchor (neutralized: ${this._mouseDown})`)
+
+        // 🔶 when we click, we get
+        // focus event -> menu opens -> left click event -> visible is already true -> left click goes into the wrong branch
+        // so we prevent the conflict by disabling focus triggers when mouse is down
+        if (this._mouseDown) return
+
         if (!this.shouldRevealOnAnchorFocus) return
-        console.warn(`[🔴] SelectUI > onFocus`)
-        if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
-            this.open()
-        }
+
+        // if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) // 🔶 not needed anymore?
+        this.open()
+        ev.stopPropagation()
+        ev.preventDefault()
     }
 
     onBlurAnchor = (): void => {
+        this.log(`_ onBlurAnchor`)
         if (!this.shouldHideOnAnchorBlur) return
-        // 🔴 TODO
-        // this.close()
+        this.close()
     }
 
-    onAnchorKeyUp = (ev: React.KeyboardEvent): void => {
-        if (!this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
+    onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
+        this.log(`_ onAnchorOrShellKeyDown`)
+
+        // 🔴🔴  WE MAY GET A SIMILAR RACE CONDITION WITH FOCUS/BLUR & this.isVisible HERE (but it probably doesn't matter)
+        if (this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
+            this.log(`_ onAnchorOrShellKeyDown: maybe open (visible: ${this.isVisible})`)
             const letterCode = ev.keyCode
             const isLetter = letterCode >= 65 && letterCode <= 90
             const isEnter = ev.key === 'Enter'
@@ -368,14 +420,25 @@ export class RevealState {
             }
         }
 
-        // 🔴
-        if (ev.key === 'Escape' && this.isVisible) {
+        // 🔴🔴  WE MAY GET A SIMILAR RACE CONDITION WITH FOCUS/BLUR & this.isVisible HERE (but it probably doesn't matter)
+        if (ev.key === 'Escape' && this.isVisible && this.shouldHideOnKeyboardEscape) {
+            this.log(`_ onAnchorOrShellKeyDown: close via Escape (visible: ${this.isVisible})`)
             this.close()
             // this.anchorRef.current?.focus()
             ev.preventDefault()
             ev.stopPropagation()
             return
         }
+    }
+
+    onBackdropClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ onBackdropClick`)
+        if (this.shouldHideOnClickOutside) this.close()
+    }
+
+    log(msg: string): void {
+        if (!DEBUG_REVEAL) return
+        console.log(`🌑`, this.ix, msg)
     }
 
     // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴

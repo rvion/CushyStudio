@@ -97,6 +97,8 @@ export const RevealUI = observer(
                     className: cls(child.props?.className, p.className),
                     onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
                     onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
+                    onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
+                    onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
                     onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
                     onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
                     onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
@@ -157,6 +159,10 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
         if (s == 'popup-sm') return ShellPopupSMUI
         if (s == 'popup-lg') return ShellPopupLGUI
         if (s == 'popup-xl') return ShellPopupLGUI
+
+        // we need a shell with a backdrop here, (should probably be transparent though)
+        if (s == null && uist.hideTriggers.clickOutside) return ShellFocus
+
         return s ?? ShellPopoverUI
     })()
 

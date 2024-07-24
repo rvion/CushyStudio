@@ -35,16 +35,33 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
             <InputStringUI
                 autofocus
                 icon='mdiSelectMarker'
+                onFocus={(ev) => {
+                    s.revealState?.log(`🔶 input - onFocus (no op)`)
+                }}
                 onBlur={(ev) => {
-                    console.log(`[🔴] SelectPopupUI > onBlur`)
-                    s.anchorRef.current?.focus()
-                    s.closeMenu()
+                    s.revealState?.log(`🔶 input - onBlur`)
+                    // s.anchorRef.current?.focus()
+                    // s.closeMenu()
                     // TODO: check if the newly focused element is not a child of the popup
                     // if it's a child of the popup, we should (possibly) refocus this instead
                     // or do nothing
                     // ⏸️ if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
                     // ⏸️     s.closeMenu()
                     // ⏸️ }
+                }}
+                onKeyDown={(ev) => {
+                    if (ev.key === 'Tab') {
+                        s.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
+                        s.closeMenu()
+                        // 🔶 should probably focus the next select instead?
+                        // anyway, already handled via onHidden
+                        // s.anchorRef.current?.focus()
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        return
+                    }
+
+                    // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
                 }}
                 placeholder={s.p.placeholder}
                 ref={s.inputRef_real}

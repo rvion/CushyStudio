@@ -22,7 +22,16 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             shell='popover'
             placement='autoVerticalStart'
             onHidden={() => {
+                s.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
+                s.revealState?.log(`🔴🔴🔴 ~ s.anchorRef.current: ${s.anchorRef.current}`)
+                // 🔴 should only focus anchor in certain cases?
+                // (ex: escape while in popup should probably focus the anchor?)
+                // (ex: clicking outside the popup should probably focus the anchor?)
+                // (ex: tab should probably go to the next select, NOT focus this anchor?)
+                // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
+                // ...but this can probably be improved in a future release
                 s.anchorRef.current?.focus()
+                s.clean()
             }}
             content={({ reveal }) => (
                 <SelectPopupUI //
@@ -40,9 +49,20 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 tw={['UI-Select minh-input', 'relative', 'h-full']}
                 border={{ contrast: border }}
                 className={p.className}
-                ref={s.anchorRef}
+                ref={s.anchorRef} // 🔴🔴🔴🔴
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
-                onKeyDown={s.handleTooltipKeyDown}
+                onKeyDown={(ev) => {
+                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
+                    s.handleTooltipKeyDown(ev)
+                    s.revealState?.onAnchorKeyDown(ev)
+                }}
+                onFocus={(ev) => {
+                    s.revealState?.log(`🔶 revealUI - onFocus`)
+                }}
+                onBlur={(ev) => {
+                    s.revealState?.log(`🔶 revealUI - onBlur`)
+                }}
+
                 // HERE
                 // onMouseDown={s.onRootMouseDown}
                 // onBlur={(ev) => s.onBlur(ev)}

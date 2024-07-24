@@ -44,6 +44,8 @@ export type InputStringProps = {
     style?: CSSProperties
 
     onBlur?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
+    onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
+    onKeyDown?: (ev: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 export const InputStringUI = observer(
@@ -118,6 +120,7 @@ export const InputStringUI = observer(
                     onFocus={(ev) => {
                         p.buffered?.setTemporaryValue(p.getValue() ?? '')
                         ev.currentTarget.select()
+                        p.onFocus?.(ev)
                     }}
                     onBlur={(ev) => {
                         // need to be deferenced here because of how it's called in
@@ -134,6 +137,7 @@ export const InputStringUI = observer(
                             p.buffered?.setTemporaryValue(null)
                             ev.currentTarget.blur()
                         }
+                        p.onKeyDown?.(ev)
                     }}
                 />
                 {p.type === 'password' && (

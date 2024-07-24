@@ -23,18 +23,7 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 if (e == null) return global_RevealStack.filter((p) => p !== reveal)
                 global_RevealStack.push(reveal)
             }}
-            onKeyUp={(ev) => {
-                if (ev.key === 'Escape') {
-                    reveal.close()
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                }
-            }}
-            onClick={(ev) => {
-                reveal.close()
-                ev.stopPropagation()
-                // ev.preventDefault()
-            }}
+            onClick={reveal.onBackdropClick}
             style={{
                 zIndex: 99999999,
                 backgroundColor: '#0000003d',

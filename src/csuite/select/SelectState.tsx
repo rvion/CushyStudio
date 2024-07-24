@@ -1,6 +1,6 @@
+import type { RevealState } from '../reveal/RevealState'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
-import type { FocusEvent } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 import React, { ReactNode } from 'react'
@@ -20,6 +20,8 @@ export class AutoCompleteSelectState<OPTION> {
     // various refs for our select so we can quickly puppet
     // various key dom elements of the select, or move the focus
     // around when needed
+
+    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 anchorRef is broken, most others are outdated. revealStateRef works?!
     anchorRef = createObservableRef<HTMLInputElement>()
     inputRef_fake = createObservableRef<HTMLInputElement>()
     inputRef_real = createObservableRef<HTMLInputElement>()
@@ -27,6 +29,9 @@ export class AutoCompleteSelectState<OPTION> {
     revealStateRef = createObservableRef<RevealStateLazy>()
 
     selectedIndex: number = 0
+    get revealState(): Maybe<RevealState> {
+        return this.revealStateRef.current?.state
+    }
     get isOpen(): boolean {
         return this.revealStateRef.current?.state?.isVisible ?? false
     }
@@ -176,12 +181,18 @@ export class AutoCompleteSelectState<OPTION> {
 
     // UNUSED
     openMenuProgrammatically = (): void => {
+        this.revealState?.log(`🔶 SelectSate openMenuProgrammatically`)
         this.revealStateRef.current?.getRevealState()?.open()
-        this.inputRef_fake.current?.focus()
+        this.inputRef_real.current?.focus()
     }
 
     closeMenu(): void {
+        this.revealState?.log(`🔶 SelectSate closeMenu`)
         this.revealStateRef.current?.state?.close()
+        // this.clean() // 🔶 called by onHidden
+    }
+
+    clean(): void {
         this.selectedIndex = 0
         this.searchQuery = ''
     }
@@ -241,6 +252,7 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     toggleOption(option: OPTION): void {
+        this.revealState?.log(`_ SelectSate toggleOption`)
         this.p.onOptionToggled?.(option, this)
         // reset the query
         const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
@@ -265,6 +277,7 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
+        this.revealState?.log(`_ SelectSate handleTooltipKeyDown (probably arrows)`)
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {

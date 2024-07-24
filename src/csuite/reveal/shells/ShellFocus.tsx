@@ -15,18 +15,7 @@ export const ShellFocus = observer(function ShellFocus_({ reveal, children }: Re
                 }
                 global_RevealStack.push(reveal)
             }}
-            onKeyUp={(ev) => {
-                if (ev.key === 'Escape') {
-                    reveal.close()
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                }
-            }}
-            onClick={(ev) => {
-                reveal.close()
-                ev.stopPropagation()
-                ev.preventDefault()
-            }}
+            onClick={reveal.onBackdropClick}
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
         >
