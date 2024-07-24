@@ -73,7 +73,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.base.lightness > 0.5 ? -1 : 1
     }
 
-    labelBackground: TintExt = 3 // {}
+    labelBackground: TintExt = 0 // 3 // {}
 
     get text(): Tint {
         return run_tint(this.st.theme.value.text)

@@ -6,13 +6,13 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 
-export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {
+export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<T extends BaseSelectEntry>(p: {
     field: Field_selectMany<T>
 }) {
     const field = p.field
     return (
         <ResizableFrame
-        border
+            border
             tw='w-full'
             // header={
             //     <>

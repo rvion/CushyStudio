@@ -20,6 +20,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
                     return (
                         <InputBoolUI
+                            key={c.id}
                             value={isSelected}
                             display='button'
                             text={c.label ?? c.id}
@@ -36,6 +37,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     .filter((v) => field.choices.find((i) => i.id === v.id) == null)
                     .map((item) => (
                         <InputBoolUI
+                            key={item.id}
                             value={true}
                             style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
