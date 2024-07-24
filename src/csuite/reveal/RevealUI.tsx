@@ -68,6 +68,8 @@ export const RevealUI = observer(
         }, [uistOrNull?.isVisible])
 
         // check if we can clone the child element instead of adding a div in the DOM
+        // this is a micro-optimisation hack; it's probably worth it long-term, but
+        // if having two code paths prooves a bad idea, we may want to revert that decision
         const shouldClone = ((): boolean => {
             if (p.UNSAFE_cloned != null) return p.UNSAFE_cloned
             const children = React.Children.toArray(p.children)
@@ -97,11 +99,11 @@ export const RevealUI = observer(
                     className: cls(child.props?.className, p.className),
                     onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
                     onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
-                    onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
-                    onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
                     onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
                     onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
                     onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
+                    onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
+                    onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
                     onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
                     onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
                 },
@@ -125,6 +127,10 @@ export const RevealUI = observer(
                     onAuxClick={lazyState.onAuxClick}
                     onMouseEnter={lazyState.onMouseEnter}
                     onMouseLeave={lazyState.onMouseLeave}
+                    onMouseDown={lazyState.onMouseDown}
+                    onMouseUp={lazyState.onMouseUp}
+                    onFocus={lazyState.onFocus}
+                    onBlur={lazyState.onBlur}
                 >
                     {p.children /* anchor */}
                     {mkTooltip(uistOrNull) /* tooltip */}
