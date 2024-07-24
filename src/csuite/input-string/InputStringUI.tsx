@@ -79,6 +79,7 @@ export const InputStringUI = observer(
         const csuite = useCSuite()
         return (
             <Frame
+                className={p.className}
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover
