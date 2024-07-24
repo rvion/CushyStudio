@@ -22,7 +22,6 @@ export const ShellSelectUI = observer(function ShellSelectUI_(p: RevealShellProp
             onClick={(ev) => ev.stopPropagation()}
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}
-            onContextMenu={uist.enterAnchor}
             style={uist.posCSS}
         >
             {p.children}

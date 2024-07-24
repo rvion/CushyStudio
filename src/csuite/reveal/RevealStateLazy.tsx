@@ -30,7 +30,7 @@ export class RevealStateLazy {
         this.state = new RevealState({ ...this.p }, this.parents)
         return this.state!
     }
-    onContextMenu = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+    onContextMenu = (ev: React.MouseEvent<unknown>): void => {
         // lock input on shift+right click
         if (ev.shiftKey) {
             this.getRevealState().toggleLock()
@@ -38,13 +38,13 @@ export class RevealStateLazy {
             ev.stopPropagation()
         }
     }
-    onClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onLeftClickAnchor(ev)
-    onAuxClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+    onClick = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onLeftClickAnchor(ev)
+    onAuxClick = (ev: React.MouseEvent<unknown>): void => {
         if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
         if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
     }
-    onMouseEnter = (_: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onMouseEnterAnchor()
-    onMouseLeave = (_: React.MouseEvent<unknown> | MouseEvent): void => this.getRevealState().onMouseLeaveAnchor()
-    onFocus = (_: React.FocusEvent<unknown> | FocusEvent): void => this.getRevealState().onFocusAnchor()
-    onBlur = (_: React.FocusEvent<unknown> | FocusEvent): void => this.getRevealState().onBlurAnchor()
+    onMouseEnter = (_: React.MouseEvent<unknown>): void => this.getRevealState().onMouseEnterAnchor()
+    onMouseLeave = (_: React.MouseEvent<unknown>): void => this.getRevealState().onMouseLeaveAnchor()
+    onFocus = (ev: React.FocusEvent<unknown>): void => this.getRevealState().onFocusAnchor(ev)
+    onBlur = (_: React.FocusEvent<unknown>): void => this.getRevealState().onBlurAnchor()
 }

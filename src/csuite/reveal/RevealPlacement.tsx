@@ -57,6 +57,49 @@ export const computePlacement = (
     placement: RevealPlacement,
     rect: DOMRect,
 ): RevealComputedPosition => {
+    // 🔴🔴 take screen size into account
+    // updatePosition = (): void => {
+    //     const rect = this.anchorRef.current?.getBoundingClientRect()
+    //     if (rect == null) return
+
+    //     /* Default anchoring is to favor bottom-left */
+    //     this.tooltipPosition = {
+    //         top: rect.bottom + window.scrollY,
+    //         left: rect.left + window.scrollX,
+    //         right: undefined,
+    //         bottom: undefined,
+    //     }
+
+    //     /* Which direction has more space? */
+    //     const onBottom = window.innerHeight * 0.5 < (rect.top + rect.bottom) * 0.5
+    //     const onLeft = window.innerWidth * 0.5 < (rect.left + rect.right) * 0.5
+
+    //     /* Make sure pop-up always fits within screen, but isn't too large */
+    //     this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
+
+    //     // 2024-03-28 @rvion: not so sure about that use of `window.getComputedStyle(document.body).getPropertyValue('--input-height'))`
+    //     // ping 🌶️
+    //     const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
+    //     /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
+    //     const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)
+    //     const bottomSpace = window.innerHeight - rect.bottom
+
+    //     /* Make sure pop-up never goes off-screen vertically, preferring to go on the bottom if there is space. */
+    //     if (onBottom && desiredHeight > bottomSpace) {
+    //         /* This probably doesn't take in to account the fact that the browser's menu bar cuts off the top. */
+    //         this.tooltipMaxHeight = rect.top * 0.99
+
+    //         this.tooltipPosition.top = undefined
+    //         this.tooltipPosition.bottom = window.innerHeight - rect.top
+    //     }
+
+    //     /* Make sure pop-up never goes off-screen horizontally.  */
+    //     if (onLeft) {
+    //         this.tooltipPosition.left = undefined
+    //         this.tooltipPosition.right = window.innerWidth - rect.right
+    //     }
+    // }
+
     // MOUSE RELATIVE ==============================================================================
     if (placement === 'mouse') {
         return {

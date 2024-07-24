@@ -15,7 +15,7 @@ export const defaultShowDelay_whenNested = 0
 export const defaultHideDelay_whenNested = 0
 
 export class RevealState {
-    static nextUID = 1
+    static nextUID: number = 1
 
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
 
@@ -34,18 +34,8 @@ export class RevealState {
         if (!toc) return
         ev.stopPropagation()
         // ev.preventDefault()
-        if (this.isVisible) this.leaveAnchor()
-        else this.enterAnchor()
-    }
-
-    onFocusAnchor = (): void => {
-        if (!this.triggerOnFocus) return
-        this.enterAnchor()
-    }
-
-    onBlurAnchor = (): void => {
-        if (!this.triggerOnFocus) return
-        this.leaveAnchor()
+        if (this.isVisible) this.close()
+        else this.open()
     }
 
     /**
@@ -82,7 +72,7 @@ export class RevealState {
     // ------------------------------------------------
     inAnchor = false
     inTooltip = false
-    inChildren = new Set<number>()
+    subRevealsCurrentlyVisible = new Set<number>()
 
     /** how deep in the reveal stack we are */
     get ix(): number {
@@ -93,30 +83,32 @@ export class RevealState {
         return {
             borderLeft: this.inAnchor ? `3px solid red` : undefined,
             borderTop: this.inTooltip ? `3px solid cyan` : undefined,
-            borderBottom: this.inChildren.size > 0 ? `3px solid orange` : undefined,
+            borderBottom: this.subRevealsCurrentlyVisible.size > 0 ? `3px solid orange` : undefined,
         }
     }
 
     /** toolip is visible if either inAnchor or inTooltip */
     get isVisible(): boolean {
         if (this._lock) return true
-        return this.inAnchor || this.inTooltip || this.inChildren.size > 0
+        return this.inAnchor || this.inTooltip || this.subRevealsCurrentlyVisible.size > 0
     }
 
-    close(): void {
-        this._resetAllAnchorTimouts()
-        this._resetAllTooltipTimouts()
-        this.inAnchor = false
-        this.inTooltip = false
-        this.inChildren.clear()
-    }
-
+    // possible triggers ------------------------------------------------------
     get triggerOnFocus(): boolean {
-        return true // 🔴 maybe some orthogonal props or more trigger options?
-        // eg should not trigger for popups
+        if (this.p.trigger == 'none') return false
+        if (this.triggerOnClick) return true
+        if (this.p.trigger === 'pseudofocus') return true
+        return false
+    }
+
+    get triggerOnKeyboardEnterOrLetter(): boolean {
+        if (this.p.trigger == 'none') return false
+        if (this.p.trigger === 'pseudofocus') return true
+        return false
     }
 
     get triggerOnClick(): boolean {
+        if (this.p.trigger == 'none') return false
         return (
             this.p.trigger == null ||
             this.p.trigger == 'click' || //
@@ -125,12 +117,14 @@ export class RevealState {
     }
 
     get triggerOnHover(): boolean {
+        if (this.p.trigger == 'none') return false
         return (
             this.p.trigger == 'hover' || //
             this.p.trigger == 'clickAndHover'
         )
     }
 
+    // possible triggers ------------------------------------------------------
     get showDelay(): number {
         return this.p.showDelay ?? (this.ix ? defaultShowDelay_whenNested : defaultShowDelay_whenRoot)
     }
@@ -187,14 +181,14 @@ export class RevealState {
 
     onMouseEnterAnchor = (): void => {
         /* 🔥 */ if (!this.triggerOnHover && !this.isVisible) return
-        /* 🔥 */ if (RevealState.shared.current) return this.enterAnchor()
+        /* 🔥 */ if (RevealState.shared.current) return this.open()
         this._resetAllAnchorTimouts()
-        this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
+        this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
     }
     onMouseLeaveAnchor = (): void => {
         if (this.triggerOnClick) return
         this._resetAllAnchorTimouts()
-        this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
+        this.leaveAnchorTimeoutId = setTimeout(this.close, this.hideDelay)
     }
 
     get shouldCloseCurrentOnEnter(): boolean {
@@ -206,19 +200,33 @@ export class RevealState {
         return true
     }
     // ---
-    enterAnchor = (): void => {
+    open = (): void => {
+        const wasVisible = this.isVisible
         if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
         /* 🔥 🔴 */ if (this.shouldCloseCurrentOnEnter) RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true
+
+        if (!wasVisible) this.p.onRevealed?.()
     }
 
-    leaveAnchor = (): void => {
+    close = (): void => {
+        const wasVisible = this.isVisible
         if (DEBUG_REVEAL) console.log(`[🤠] LEAVING anchor  ${this.ix}`)
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
+        this._resetAllTooltipTimouts()
         this.inAnchor = false
+        this.inTooltip = false
+
+        // if we're closing, all our children also are closed.
+        // so we can safely clean the state and forget about previous
+        this.subRevealsCurrentlyVisible.clear()
+
+        // 🔴 are children closed properly?
+
+        if (wasVisible) this.p.onHidden?.()
     }
 
     // ---
@@ -294,13 +302,50 @@ export class RevealState {
     enterChildren = (depth: number): void => {
         // this._resetAllChildrenTimouts()
         if (DEBUG_REVEAL) console.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
-        this.inChildren.add(depth)
+        this.subRevealsCurrentlyVisible.add(depth)
     }
 
     leaveChildren = (depth: number): void => {
         if (DEBUG_REVEAL) console.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
         // this._resetAllChildrenTimouts()
-        this.inChildren.delete(depth)
+        this.subRevealsCurrentlyVisible.delete(depth)
+    }
+
+    onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
+        if (!this.triggerOnFocus) return
+        console.log(`[🔴] SelectUI > onFocus`)
+        if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
+            this.open()
+            // s.openMenu()
+        }
+    }
+
+    onBlurAnchor = (): void => {
+        if (!this.triggerOnFocus) return
+        this.close()
+    }
+
+    onAnchorKeyUp = (ev: React.KeyboardEvent): void => {
+        if (!this.triggerOnKeyboardEnterOrLetter && !this.isVisible) {
+            const letterCode = ev.keyCode
+            const isLetter = letterCode >= 65 && letterCode <= 90
+            const isEnter = ev.key === 'Enter'
+            if (isLetter || isEnter) {
+                this.open()
+                ev.preventDefault()
+                ev.stopPropagation()
+                return
+            }
+        }
+
+        // 🔴
+        if (ev.key === 'Escape' && this.isVisible) {
+            this.close()
+            // this.anchorRef.current?.focus()
+            ev.preventDefault()
+            ev.stopPropagation()
+            return
+        }
     }
 
     // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
@@ -312,6 +357,11 @@ export class RevealState {
     // |  =>  commenting it out until we find a solution confortable in all cases
 
     // window.addEventListener('mousemove', this.MouseMoveTooFar, true)
+
+    // selectUI state:
+    //   - hasMouseEntered: boolean = false
+    //   - onRootMouseDown: this.hasMouseEntered = true
+    //   - closeMenu:
 
     // MouseMoveTooFar = (event: MouseEvent): void => {
     //     const popup = this.popupRef?.current

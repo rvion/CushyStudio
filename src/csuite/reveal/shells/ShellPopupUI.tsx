@@ -31,7 +31,6 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 }
             }}
             onClick={(ev) => {
-                reveal.p.onClick?.(ev)
                 reveal.close()
                 ev.stopPropagation()
                 // ev.preventDefault()

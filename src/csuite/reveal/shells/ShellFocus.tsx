@@ -23,7 +23,6 @@ export const ShellFocus = observer(function ShellFocus_({ reveal, children }: Re
                 }
             }}
             onClick={(ev) => {
-                reveal.p.onClick?.(ev)
                 reveal.close()
                 ev.stopPropagation()
                 ev.preventDefault()

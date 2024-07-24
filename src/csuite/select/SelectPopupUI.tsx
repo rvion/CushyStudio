@@ -50,7 +50,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                 ref={s.inputRef_real}
                 type='text'
                 getValue={() => s.searchQuery}
-                setValue={(next) => s.handleInputChange(next)}
+                setValue={(next) => s.filterOptions(next)}
                 tw={[
                     //
                     'absolute top-0 left-0 right-0 z-50 h-full',

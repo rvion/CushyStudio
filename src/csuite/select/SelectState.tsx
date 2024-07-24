@@ -30,10 +30,7 @@ export class AutoCompleteSelectState<OPTION> {
     get isOpen(): boolean {
         return this.revealStateRef.current?.state?.isVisible ?? false
     }
-    isDragging: boolean = false
-    isFocused: boolean = false
     wasEnabled: boolean = false
-    hasMouseEntered: boolean = false
     tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
     tooltipMaxHeight: number = 100
 
@@ -77,24 +74,6 @@ export class AutoCompleteSelectState<OPTION> {
 
     get options(): OPTION[] {
         return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
-    }
-
-    private _searchQuery = ''
-    get searchQuery(): string {
-        return this.p.getSearchQuery?.() ?? this._searchQuery
-    }
-    set searchQuery(value: string) {
-        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
-        else this._searchQuery = value
-    }
-
-    get filteredOptions(): OPTION[] {
-        if (this.searchQuery === '') return this.options
-        if (this.p.disableLocalFiltering) return this.options
-        return this.options.filter((p) => {
-            const label = this.p.getLabelText(p)
-            return searchMatches(label, this.searchQuery)
-        })
     }
 
     /**
@@ -174,98 +153,73 @@ export class AutoCompleteSelectState<OPTION> {
         //   )
     }
 
+    getDisplayValueWithLabel(): ReactNode {
+        if (this.p.label)
+            return (
+                <>
+                    {this.p.label}: {this.displayValue}
+                </>
+            )
+        return <>{this.displayValue}</>
+    }
+
     get displayValue(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
         let value = this.value
         const placeHolderStr = this.p.placeholder ?? 'Select...'
         if (value == null) return placeHolderStr
         value = Array.isArray(value) ? value : [value]
-        // if (Array.isArray(value)) {
-        const str =
-            value.length === 0 //
-                ? placeHolderStr
-                : value.map((i) => {
-                      return this.displayOption(i)
-                  })
-        if (this.p.label)
-            return (
-                <>
-                    {this.p.label}: {str}
-                </>
-            )
-        return <>{str}</>
-        // } else {
-        //     const str = this.p.getLabelText(value)
-        //     if (this.p.label) return `${this.p.label}: ${str}`
-        //     return str
-        // }
+        if (value.length === 0) return placeHolderStr
+
+        return value.map((op) => this.displayOption(op))
     }
 
-    updatePosition = (): void => {
-        const rect = this.anchorRef.current?.getBoundingClientRect()
-        if (rect == null) return
-
-        /* Default anchoring is to favor bottom-left */
-        this.tooltipPosition = {
-            top: rect.bottom + window.scrollY,
-            left: rect.left + window.scrollX,
-            right: undefined,
-            bottom: undefined,
-        }
-
-        /* Which direction has more space? */
-        const onBottom = window.innerHeight * 0.5 < (rect.top + rect.bottom) * 0.5
-        const onLeft = window.innerWidth * 0.5 < (rect.left + rect.right) * 0.5
-
-        /* Make sure pop-up always fits within screen, but isn't too large */
-        this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
-
-        // 2024-03-28 @rvion: not so sure about that use of `window.getComputedStyle(document.body).getPropertyValue('--input-height'))`
-        // ping 🌶️
-        const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
-        /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
-        const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)
-        const bottomSpace = window.innerHeight - rect.bottom
-
-        /* Make sure pop-up never goes off-screen vertically, preferring to go on the bottom if there is space. */
-        if (onBottom && desiredHeight > bottomSpace) {
-            /* This probably doesn't take in to account the fact that the browser's menu bar cuts off the top. */
-            this.tooltipMaxHeight = rect.top * 0.99
-
-            this.tooltipPosition.top = undefined
-            this.tooltipPosition.bottom = window.innerHeight - rect.top
-        }
-
-        /* Make sure pop-up never goes off-screen horizontally.  */
-        if (onLeft) {
-            this.tooltipPosition.left = undefined
-            this.tooltipPosition.right = window.innerWidth - rect.right
-        }
-    }
-
-    onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        // ev.preventDefault()
-        // ev.stopPropagation()
-        this.hasMouseEntered = true
-        this.openMenu()
-    }
-
-    openMenu = (): void => {
-        this.revealStateRef.current?.getRevealState()?.enterAnchor()
-        this.updatePosition()
+    // UNUSED
+    openMenuProgrammatically = (): void => {
+        this.revealStateRef.current?.getRevealState()?.open()
         this.inputRef_fake.current?.focus()
     }
 
     closeMenu(): void {
         this.revealStateRef.current?.state?.close()
-        this.isFocused = false
         this.selectedIndex = 0
         this.searchQuery = ''
-        this.isDragging = false
-        this.hasMouseEntered = false
+    }
 
-        // Text cursor should only show when menu is open
-        // this.anchorRef?.current?.querySelector('input')?.blur()
+    closeIfShouldCloseAfterSelection(): void {
+        // close the menu
+        const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
+        if (shouldCloseMenu) this.closeMenu()
+    }
+
+    // click means focus change => means need to refocus the input
+    // ⏸️ onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
+    // ⏸️     ev.preventDefault()
+    // ⏸️     ev.stopPropagation()
+    // ⏸️     this.selectOption(index)
+    // ⏸️     this.inputRef.current?.focus()
+    // ⏸️ }
+
+    /**
+     * SEARCH/FILTER OPTIONS
+     **/
+
+    private _searchQuery = ''
+    get searchQuery(): string {
+        return this.p.getSearchQuery?.() ?? this._searchQuery
+    }
+    set searchQuery(value: string) {
+        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
+        else this._searchQuery = value
+    }
+
+    get filteredOptions(): OPTION[] {
+        if (this.searchQuery === '') return this.options
+        if (this.p.disableLocalFiltering) return this.options
+        return this.options.filter((p) => {
+            const label = this.p.getLabelText(p)
+            return searchMatches(label, this.searchQuery)
+        })
     }
 
     filterOptions(inputValue: string): void {
@@ -277,13 +231,9 @@ export class AutoCompleteSelectState<OPTION> {
         // Update this.filteredOptions accordingly
     }
 
-    // click means focus change => means need to refocus the input
-    // ⏸️ onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
-    // ⏸️     ev.preventDefault()
-    // ⏸️     ev.stopPropagation()
-    // ⏸️     this.selectOption(index)
-    // ⏸️     this.inputRef.current?.focus()
-    // ⏸️ }
+    /**
+     * EVENTS ON OPTIONS
+     **/
 
     toggleOptionFromFilteredOptionsAtIndex(index: number): void {
         const selectedOption = this.filteredOptions[index]
@@ -299,14 +249,10 @@ export class AutoCompleteSelectState<OPTION> {
         this.closeIfShouldCloseAfterSelection()
     }
 
-    closeIfShouldCloseAfterSelection(): void {
-        // close the menu
-        const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
-        if (shouldCloseMenu) this.closeMenu()
-    }
-
+    /**
+     * MOVE IN OPTIONS LIST
+     **/
     navigateSelection(direction: 'up' | 'down'): void {
-        this.updatePosition() // just in case we scrolled
         if (direction === 'up' && this.selectedIndex > 0) {
             this.selectedIndex--
         } else if (direction === 'down' && this.selectedIndex < this.filteredOptions.length - 1) {
@@ -315,18 +261,8 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     setNavigationIndex(value: number): void {
-        this.updatePosition() // just in case we scrolled
         this.selectedIndex = value
     }
-
-    handleInputChange = (next: string): void => {
-        this.filterOptions(next)
-        this.updatePosition() // just in case we scrolled
-    }
-
-    // onBlur(_ev: FocusEvent<HTMLDivElement, Element>): void {
-    //     this.closeMenu()
-    // }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
@@ -334,29 +270,6 @@ export class AutoCompleteSelectState<OPTION> {
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
             this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
             this.closeIfShouldCloseAfterSelection()
-        }
-    }
-
-    onRealInputKeyUp = (ev: React.KeyboardEvent): void => {
-        if (ev.key === 'Enter' && !this.isOpen) {
-            this.openMenu()
-            ev.preventDefault()
-            ev.stopPropagation()
-            return
-        }
-        if (ev.key === 'Escape') {
-            this.closeMenu()
-            // this.anchorRef.current?.focus()
-            ev.preventDefault()
-            ev.stopPropagation()
-            return
-        }
-
-        if (!this.isOpen) {
-            this.openMenu()
-            this.setNavigationIndex(0)
-            ev.preventDefault()
-            ev.stopPropagation()
         }
     }
 }

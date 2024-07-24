@@ -46,9 +46,7 @@ export const RevealUI = observer(
         }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
 
         useEffect(() => {
-            if (!p.defaultVisible) return
-            const revealSt = lazyState.getRevealState()
-            revealSt.enterAnchor()
+            if (p.defaultVisible) lazyState.getRevealState().open()
         }, [p.defaultVisible])
 
         // update position in case something moved or scrolled
@@ -90,25 +88,25 @@ export const RevealUI = observer(
             // makes it slightly unsafe / we're not sure what to do with it yet
             const child = p.children
             // prettier-ignore
-            const clonedChildren = cloneElement(child, {
-            // @ts-ignore
-            ref: ref,
-            style: objectAssignTsEfficient_t_t(p.style ?? {}, child.props?.style),
-            className: cls(child.props?.className, p.className),
-            onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
-            onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
-            onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
-            onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
-            onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
-            onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
-            onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
-        })
-            return (
-                <RevealCtx.Provider value={nextTower}>
-                    {clonedChildren /* anchor */}
-                    {mkTooltip(uistOrNull) /* tooltip */}
-                </RevealCtx.Provider>
+            const clonedChildren = cloneElement(
+                child,
+                {
+                    // @ts-ignore
+                    ref: ref,
+                    style: objectAssignTsEfficient_t_t(p.style ?? {}, child.props?.style),
+                    className: cls(child.props?.className, p.className),
+                    onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
+                    onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
+                    onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
+                    onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
+                    onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
+                    onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
+                    onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
+                },
+                ...child.props.children,
+                mkTooltip(uistOrNull) // 🔶 add the tooltip at the end of the children list
             )
+            return <RevealCtx.Provider value={nextTower}>{clonedChildren}</RevealCtx.Provider>
         }
 
         // this span could be bypassed by cloning the child element and injecting props,

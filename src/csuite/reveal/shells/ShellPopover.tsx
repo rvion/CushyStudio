@@ -14,7 +14,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             onClick={(ev) => ev.stopPropagation()}
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}
-            onContextMenu={uist.enterAnchor}
+            // onContextMenu={uist.open}
             style={uist.posCSS}
         >
             {uist.p.title != null && (
