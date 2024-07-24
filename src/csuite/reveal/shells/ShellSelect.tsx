@@ -6,6 +6,14 @@ import { Frame } from '../../frame/Frame'
 
 export const ShellSelectUI = observer(function ShellSelectUI_(p: RevealShellProps) {
     const uist = p.reveal
+    // const trueMinWidth = '40rem'
+    // const minWidth =
+    //     s.anchorRef.current?.clientWidth != null //
+    //         ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
+    //         : trueMinWidth
+    // const maxWidth = window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0)
+    // const maxHeight = `${s.tooltipMaxHeight}px`
+
     return (
         <Frame
             shadow
@@ -24,13 +32,6 @@ export const ShellSelectUI = observer(function ShellSelectUI_(p: RevealShellProp
 
 /*
 
-const trueMinWidth = '40rem'
-const minWidth =
-    s.anchorRef.current?.clientWidth != null //
-        ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
-        : trueMinWidth
-const maxWidth = window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0)
-const maxHeight = `${s.tooltipMaxHeight}px`
 
 <Frame
     ref={s.popupRef}

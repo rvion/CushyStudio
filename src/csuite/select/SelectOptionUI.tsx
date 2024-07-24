@@ -1,4 +1,6 @@
 import type { BoolButtonMode, BoolButtonProps } from '../checkbox/InputBoolUI'
+import type { RevealState } from '../reveal/RevealState'
+import type { RevealContentProps } from '../reveal/shells/ShellProps'
 import type { AutoCompleteSelectState } from './SelectState'
 import type { CSSProperties } from 'react'
 
@@ -8,6 +10,7 @@ import { type ListChildComponentProps } from 'react-window'
 import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 
 export type SelectOptionProps<T> = {
+    reveal: RevealState
     index: number
     style?: CSSProperties
     option: T
@@ -20,6 +23,14 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
     const state = p.state
     const isSelected = state.values.find((v) => state.isEqual(v, p.option)) != null
     const mode: BoolButtonMode = state.isMultiSelect ? 'checkbox' : 'radio'
+    // return (
+    //     <div tw='w-full'>
+    //         {state.p.getLabelUI //
+    //             ? state.p.getLabelUI(p.option)
+    //             : state.p.getLabelText(p.option)}
+    //     </div>
+    // )
+
     return (
         <InputBoolToggleButtonUI
             style={p.style}
@@ -48,12 +59,13 @@ export const SelectOptionUI_FixedList = observer(function SelectOptionUI_<T>({
     index,
     style,
     isScrolling,
-}: ListChildComponentProps<{ s: AutoCompleteSelectState<T> }>) {
+}: ListChildComponentProps<{ s: AutoCompleteSelectState<T>; reveal: RevealState }>) {
     const s = data.s
     const option = s.filteredOptions[index]!
     return (
         <SelectOptionUI //
             option={option}
+            reveal={data.reveal}
             state={s}
             index={index}
             style={style}

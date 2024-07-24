@@ -38,7 +38,13 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 trigger='click'
                 shell='popover'
                 placement='autoVerticalStart'
-                content={() => <SelectPopupUI showValues={!p.wrap} s={s} />}
+                content={({ reveal }) => (
+                    <SelectPopupUI //
+                        reveal={reveal}
+                        showValues={!s.p.wrap}
+                        s={s}
+                    />
+                )}
                 // defaultVisible
             >
                 <Frame
