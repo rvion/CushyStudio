@@ -17,9 +17,13 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     showValues: boolean
 }) {
     const s = p.s
+
+    // 'clientWidth:', s.anchorRef.current?.clientWidth, 466 => ❌ do not take border into account
+    // 'scrollWidth:', s.anchorRef.current?.scrollWidth, 466 => ❌ do not take border into account
+    // 'offsetWidth:', s.anchorRef.current?.offsetWidth, 468 => 🟢 take border into acount
     const minWidth =
         s.anchorRef.current?.clientWidth != null //
-            ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
+            ? `max(${s.anchorRef.current.offsetWidth}px, ${trueMinWidth})`
             : trueMinWidth
 
     const itemSize = typeof s.p.virtualized === 'number' ? s.p.virtualized : 30
