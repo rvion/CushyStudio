@@ -1,21 +1,16 @@
 # misc notes about what needs to be done on the reveal
 
--   🔴 reveal go out of screen in a weird way
-
+- [ ] menus are broken
+- [ ] reveal go out of screen in a weird way
     -   what should we do ? => move to center of screen ?
 
--   🔴 popup should be at the top ? or near mouse
--   reveal props are not all properly updated / hot-reloaded (wrong useMemo)
--   🟢 can we remove the reveal anchro wrapper
+- [🟢] popup should be at the top ? or near mouse
 
-    -   I'd love to
-        // 3 options
-        //
-        // - add a div
-        // => annoying
-        // - clone the child and inject props
-        // => will not work if child does not forward custom props
-        // - do some magic using regionMonitor
-        // => will not work if child does not forward custom props
+- [ ] reveal props are not all properly updated / hot-reloaded (wrong useMemo)
 
--   separate into 2 axies (placement and shell)
+- [🟢] can we remove the reveal anchro wrapper
+    - not always,
+    - [🟢] we can for Frame and other component that are safe to clone/extend, like `Frame`,
+    - [ ] we can for primitives like `div` or `span`
+
+- [🟢] separate into 2 axies (placement and shell)
