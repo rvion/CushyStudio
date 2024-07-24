@@ -32,7 +32,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 s.anchorRef.current?.focus()
                 s.clean()
             }}
-            content={({ reveal }) => <SelectPopupUI reveal={reveal} s={s} />}
+            content={({ reveal }) => <SelectPopupUI reveal={reveal} selectState={s} />}
             sharedAnchorRef={s.anchorRef}
         >
             <Frame

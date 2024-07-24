@@ -12,9 +12,9 @@ const trueMinWidth = '20rem'
 export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     //
     reveal: RevealState
-    s: AutoCompleteSelectState<T>
+    selectState: AutoCompleteSelectState<T>
 }) {
-    const s = p.s
+    const s = p.selectState
 
     // 'clientWidth:', s.anchorRef.current?.clientWidth, 466 => ❌ do not take border into account
     // 'scrollWidth:', s.anchorRef.current?.scrollWidth, 466 => ❌ do not take border into account
