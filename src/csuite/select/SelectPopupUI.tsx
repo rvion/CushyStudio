@@ -58,7 +58,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
 
                     // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
                 }}
-                placeholder={s.p.placeholder}
+                placeholder={s.p.placeholder ?? 'Search...'}
                 ref={s.inputRef_real}
                 type='text'
                 getValue={() => s.searchQuery}
