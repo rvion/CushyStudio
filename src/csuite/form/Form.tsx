@@ -25,7 +25,7 @@ export class Form {
         return (
             <RevealUI
                 shell='popup-lg'
-                placement='screen'
+                placement='screen-top'
                 title={p?.title}
                 content={(pp) => {
                     // 🔶 todo: add modal title via p.title

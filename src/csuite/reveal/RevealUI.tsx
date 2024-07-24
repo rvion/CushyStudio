@@ -1,9 +1,9 @@
 import type { RevealProps } from './RevealProps'
 import type { RevealState } from './RevealState'
-import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
+import type { RevealShellProps } from './shells/ShellProps'
 
 import { observer } from 'mobx-react-lite'
-import React, { cloneElement, createElement, type FC, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react'
+import React, { cloneElement, createElement, type FC, type ReactPortal, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { cls } from '../../widgets/misc/cls'

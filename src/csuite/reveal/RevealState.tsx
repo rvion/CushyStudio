@@ -154,12 +154,12 @@ export class RevealState {
         return {
             position: 'absolute',
             zIndex: 99999999,
-            top: pos.top ? toCss(pos.top) : undefined,
-            left: pos.left ? toCss(pos.left) : undefined,
-            bottom: pos.bottom ? toCss(pos.bottom) : undefined,
-            right: pos.right ? toCss(pos.right) : undefined,
-            width: pos.width ? toCss(pos.width) : undefined,
-            height: pos.height ? toCss(pos.height) : undefined,
+            top: pos.top != null ? toCss(pos.top) : undefined,
+            left: pos.left != null ? toCss(pos.left) : undefined,
+            bottom: pos.bottom != null ? toCss(pos.bottom) : undefined,
+            right: pos.right != null ? toCss(pos.right) : undefined,
+            width: pos.width != null ? toCss(pos.width) : undefined,
+            height: pos.height != null ? toCss(pos.height) : undefined,
             overflow: 'auto',
             transform: pos.transform,
         }

@@ -37,6 +37,7 @@ export type WidgetWithLabelProps = {
     showWidgetExtra?: boolean
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
+    showWidgetIndent?: boolean
     className?: string
 
     slotDelete?: ReactNode
@@ -80,7 +81,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                         {/* {labellayout} */}
                         {labellayout === 'fixed-left' ? (
                             <>
-                                <WidgetIndentUI depth={originalField.depth} />
+                                {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={originalField.depth} />}
                                 {p.slotDragKnob}
                                 <WidgetLabelCaretUI field={field} />
                                 <WidgetLabelIconUI tw='mr-1' widget={field} />
@@ -91,7 +92,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             </>
                         ) : labellayout === 'fixed-right' ? (
                             <>
-                                <WidgetIndentUI depth={field.depth} />
+                                {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={field.depth} />}
                                 {p.slotDragKnob}
                                 <WidgetLabelCaretUI tw='mr-auto' field={field} />
                                 {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}

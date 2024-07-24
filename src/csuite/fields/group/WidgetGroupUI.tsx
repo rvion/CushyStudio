@@ -63,6 +63,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
             {groupFields.map(([rootKey, sub], ix) => (
                 <WidgetWithLabelUI //
                     key={rootKey}
+                    showWidgetIndent={p.field.config.layout === 'H' ? ix === 0 : true}
                     fieldName={rootKey}
                     justifyLabel={isHorizontal ? false : field.config.justifyLabel}
                     field={bang(sub)}

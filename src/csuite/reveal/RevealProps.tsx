@@ -1,5 +1,4 @@
 import type { RevealPlacement } from './RevealPlacement'
-import type { RevealState } from './RevealState'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type { FC } from 'react'
 
@@ -52,4 +51,4 @@ export type RevealProps = {
     // avoid extra div
     UNSAFE_cloned?: boolean
 }
-export const DEBUG_REVEAL = true
+export const DEBUG_REVEAL = false

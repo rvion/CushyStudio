@@ -1,6 +1,8 @@
 import { Factory } from './model/Factory'
 import { SimpleBuilder } from './simple/SimpleBuilder'
 
+export { TooltipUI } from './activity/TooltipUI'
+
 export { MessageInfoUI } from './messages/MessageInfoUI'
 export { MessageErrorUI } from './messages/MessageErrorUI'
 export { MessageWarningUI } from './messages/MessageWarningUI'

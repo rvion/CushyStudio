@@ -1,10 +1,11 @@
 import type { Box } from '../../csuite/box/Box'
+import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { RSSize } from '../types/RsuiteTypes'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -35,6 +36,9 @@ export type FormUIProps = {
     /** @default false */
     allowSubmitWhenErrors?: boolean
 
+    // --------------------------------------------------------------
+    // 🔴 TODO: do the same thing as tong and only provide a single submit prop instead
+
     /**
      * override default label.
      * @default 'Submit'
@@ -43,12 +47,10 @@ export type FormUIProps = {
      *  - submitAction is provided (no submitAction => no button => no label needed)
      */
     submitLabel?: string
-
-    /**
-     * override default ac
-     */
+    submitLook?: FrameAppearance
+    submitSize?: RSSize
+    /** * override default action */
     submitAction?: ((field: Field) => void) | 'confetti'
-
     /** if provided, submitLabel and submitActinod will not be used */
     SubmitButton?: FC<{ form: Field; canSubmit: boolean }>
 }
@@ -86,7 +88,8 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
             ) : submitAction == null ? null : submitAction === 'confetti' ? (
                 <div tw='flex'>
                     <Button
-                        look='primary'
+                        look={p.submitLook ?? 'primary'}
+                        size={p.submitSize ?? 'lg'}
                         tw='ml-auto'
                         disabled={!canSubmit}
                         onClick={async () => {
