@@ -30,7 +30,7 @@ export class RevealState {
     }
 
     onLeftClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        const toc = this.triggerOnClick
+        const toc = this.shouldRevealOnAnchorClick
         if (!toc) return
         ev.stopPropagation()
         // ev.preventDefault()
@@ -93,21 +93,52 @@ export class RevealState {
         return this.inAnchor || this.inTooltip || this.subRevealsCurrentlyVisible.size > 0
     }
 
-    // possible triggers ------------------------------------------------------
-    get triggerOnFocus(): boolean {
+    // ????? -------------------------------------------------------------
+    get shouldHideOtherRevealWhenRevealed(): boolean {
+        const current = RevealState.shared.current
+        if (current == null) return false
+        if (current === this) return false
+        if (this.parents.includes(current)) return false
+        if (current.p.defaultVisible) return false
+        return true
+    }
+
+    // HIDE triggers ------------------------------------------------------
+    get shouldHideOnTooltipBlur(): boolean {
+        return false
+    }
+
+    get shouldHideOnAnchorBlur(): boolean {
+        return false
+    }
+
+    get shouldHideOnKeyboardEscape(): boolean {
+        return true
+    }
+
+    get shouldHideOnAnchorClick(): boolean {
+        return false
+    }
+
+    get shouldHideOnAnchorOrTooltipMouseLeave(): boolean {
+        return false
+    }
+
+    // REVEAL triggers ------------------------------------------------------
+    get shouldRevealOnAnchorFocus(): boolean {
         if (this.p.trigger == 'none') return false
-        if (this.triggerOnClick) return true
+        if (this.shouldRevealOnAnchorClick) return true
         if (this.p.trigger === 'pseudofocus') return true
         return false
     }
 
-    get triggerOnKeyboardEnterOrLetter(): boolean {
+    get shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused(): boolean {
         if (this.p.trigger == 'none') return false
         if (this.p.trigger === 'pseudofocus') return true
         return false
     }
 
-    get triggerOnClick(): boolean {
+    get shouldRevealOnAnchorClick(): boolean {
         if (this.p.trigger == 'none') return false
         return (
             this.p.trigger == null ||
@@ -116,7 +147,7 @@ export class RevealState {
         )
     }
 
-    get triggerOnHover(): boolean {
+    get shouldRevealOnAnchorHover(): boolean {
         if (this.p.trigger == 'none') return false
         return (
             this.p.trigger == 'hover' || //
@@ -171,7 +202,7 @@ export class RevealState {
 
     // UI --------------------------------------------
     get defaultCursor(): string {
-        if (!this.triggerOnHover) return 'cursor-pointer'
+        if (!this.shouldRevealOnAnchorHover) return 'cursor-pointer'
         return 'cursor-help'
     }
 
@@ -180,30 +211,23 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = (): void => {
-        /* 🔥 */ if (!this.triggerOnHover && !this.isVisible) return
+        /* 🔥 */ if (!this.shouldRevealOnAnchorHover && !this.isVisible) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
     }
+
     onMouseLeaveAnchor = (): void => {
-        if (this.triggerOnClick) return
+        if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.close, this.hideDelay)
     }
 
-    get shouldCloseCurrentOnEnter(): boolean {
-        const current = RevealState.shared.current
-        if (current == null) return false
-        if (current === this) return false
-        if (this.parents.includes(current)) return false
-        if (current.p.defaultVisible) return false
-        return true
-    }
     // ---
     open = (): void => {
         const wasVisible = this.isVisible
         if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
-        /* 🔥 🔴 */ if (this.shouldCloseCurrentOnEnter) RevealState.shared.current?.close()
+        /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true
@@ -212,8 +236,8 @@ export class RevealState {
     }
 
     close = (): void => {
+        if (DEBUG_REVEAL) console.log(`[🔴] CLOSING REVEAL  ${this.ix}`)
         const wasVisible = this.isVisible
-        if (DEBUG_REVEAL) console.log(`[🤠] LEAVING anchor  ${this.ix}`)
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
         this._resetAllTooltipTimouts()
@@ -258,7 +282,7 @@ export class RevealState {
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
     onMouseLeaveTooltip = (): void => {
-        if (this.triggerOnClick) return
+        if (this.shouldRevealOnAnchorClick) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
     }
@@ -312,21 +336,20 @@ export class RevealState {
     }
 
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
-        if (!this.triggerOnFocus) return
+        if (!this.shouldRevealOnAnchorFocus) return
         console.log(`[🔴] SelectUI > onFocus`)
         if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
             this.open()
-            // s.openMenu()
         }
     }
 
     onBlurAnchor = (): void => {
-        if (!this.triggerOnFocus) return
-        this.close()
+        if (!this.shouldRevealOnAnchorFocus) return
+        // this.close()
     }
 
     onAnchorKeyUp = (ev: React.KeyboardEvent): void => {
-        if (!this.triggerOnKeyboardEnterOrLetter && !this.isVisible) {
+        if (!this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
             const letterCode = ev.keyCode
             const isLetter = letterCode >= 65 && letterCode <= 90
             const isEnter = ev.key === 'Enter'

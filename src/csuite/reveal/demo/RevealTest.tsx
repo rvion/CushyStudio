@@ -1,5 +1,4 @@
 import type { RevealContentProps } from '../shells/ShellProps'
-import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -143,10 +142,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             </RevealUI>
             <Frame row>
                 <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
-                    {anchor('focusable 1', { tabIndex: 1 })}
+                    {anchor('focusable 1', { tabIndex: 0 })}
                 </RevealUI>
                 <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
-                    {anchor('focusable 2', { tabIndex: 1 })}
+                    {anchor('focusable 2', { tabIndex: 0 })}
                 </RevealUI>
             </Frame>
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>

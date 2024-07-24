@@ -77,4 +77,4 @@ export type RevealProps = {
     // avoid extra div ------------------------------------------------------------------
     UNSAFE_cloned?: boolean
 }
-export const DEBUG_REVEAL = false
+export const DEBUG_REVEAL = true

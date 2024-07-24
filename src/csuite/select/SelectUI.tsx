@@ -21,6 +21,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             trigger='pseudofocus'
             shell='popover'
             placement='autoVerticalStart'
+            onHidden={() => {
+                s.anchorRef.current?.focus()
+            }}
             content={({ reveal }) => (
                 <SelectPopupUI //
                     reveal={reveal}
