@@ -55,17 +55,6 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 onBlur={(ev) => {
                     s.revealState?.log(`🔶 revealUI - onBlur`)
                 }}
-
-                // HERE
-                // onMouseDown={s.onRootMouseDown}
-                // onBlur={(ev) => s.onBlur(ev)}
-                // onKeyUp={s.onRootKeyUp}
-                // onFocus={(ev) => {
-                //     console.log(`[🔴] SelectUI > onFocus`)
-                //     if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
-                //         s.openMenu()
-                //     }
-                // }}
             >
                 <Ikon.mdiTextBoxSearchOutline //
                     tw='box-border ml-[5px] mr-[2px]'
@@ -87,8 +76,20 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     )
 })
 
+// HERE
+// onMouseDown={s.onRootMouseDown}
+// onBlur={(ev) => s.onBlur(ev)}
+// onKeyUp={s.onRootKeyUp}
+// onFocus={(ev) => {
+//     console.log(`[🔴] SelectUI > onFocus`)
+//     if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
+//         s.openMenu()
+//     }
+// }}
 /*
-🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+🔴🔴🔴🔴🔴🔴🔴🔴 THE OLD CODE WAS BETTER; GRID WAS MAKING THE
+🔴🔴🔴🔴🔴🔴🔴🔴 START AND END ICONS not move when input was growing
+🔴🔴🔴🔴🔴🔴🔴🔴 to be multiple line heights
 <div // ANCHOR
         tabIndex={-1}
         tw={['text-sm', 'flex gap-1', 'p-0 h-full bg-transparent', 'select-none overflow-clip']}
