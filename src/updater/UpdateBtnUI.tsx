@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { BadgeUI } from '../csuite/badge/BadgeUI'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { Loader, Message } from '../csuite/inputs/shims'
@@ -37,7 +38,9 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
         ANCHOR = (
             <div tw='flex items-center shrink-0' className={p.className}>
                 {ANCHOR}
-                <span className='indicator-item badge badge-secondary'>Update Available</span>
+                <BadgeUI contrast={0.2} chroma={0.13} hue={0}>
+                    Update Available
+                </BadgeUI>
             </div>
         )
 

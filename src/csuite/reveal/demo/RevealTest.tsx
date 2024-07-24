@@ -44,8 +44,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
     return (
-        <div tw='flex-1 flex flex-col m-24 gap-3'>
-            {conf.render()}
+        <div tw='flex-1 flex flex-col gap-3'>
+            <Frame border base>
+                {conf.render()}
+            </Frame>
             {conf.value.defaultVisible && (
                 <RevealUI trigger='click' placement='bottomStart' content={Content} defaultVisible={conf.value.defaultVisible}>
                     {anchor('defaultVisible')}

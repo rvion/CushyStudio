@@ -4,6 +4,7 @@ import { useLayoutEffect } from 'react'
 import { cushyFactory } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { FormUI } from '../../csuite/form/FormUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
@@ -53,8 +54,8 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     }, [])
 
     return (
-        <>
-            <MessageInfoUI tw='m-1'>
+        <Frame tw='p-1 gap-1' col>
+            <MessageInfoUI>
                 <div tw='inline text-sm overflow-clip'>
                     <span>Use this panel as a scratchpad by modifying </span>
                     <span tw='rounded px-1'>PlaygroundScratchPad</span>
@@ -84,6 +85,6 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.select && <PlaygroundSelectUI />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
-        </>
+        </Frame>
     )
 })
