@@ -1,4 +1,5 @@
 import type { RevealProps } from './RevealProps'
+import type { RevealState } from './RevealState'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 
 import { observer } from 'mobx-react-lite'
@@ -9,7 +10,6 @@ import { cls } from '../../widgets/misc/cls'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
-import { RevealState } from './RevealState'
 import { RevealStateLazy } from './RevealStateLazy'
 import { ShellFocus } from './shells/ShellFocus'
 import { ShellNoneUI } from './shells/ShellNone'
