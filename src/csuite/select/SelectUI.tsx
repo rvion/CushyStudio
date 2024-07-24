@@ -6,11 +6,11 @@ import { useMemo } from 'react'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
+import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
-    // const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     const csuite = useCSuite()
     const border = csuite.inputBorder
@@ -32,24 +32,25 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             }}
             onBlur={(ev) => s.onBlur(ev)}
         >
-            <Frame
+            {/* {(s.isOpen) && <SelectPopupUI showValues={!p.wrap} s={s} />} */}
+            <RevealUI
                 //
-                base={{ contrast: csuite.inputContrast ?? 0.05 }}
-                hover
-                className='flex-1 h-full '
+                trigger='click'
+                shell='popover'
+                placement='autoVerticalStart'
+                content={() => <SelectPopupUI showValues={!p.wrap} s={s} />}
+                // defaultVisible
             >
-                <div // ANCHOR
-                    tabIndex={-1}
-                    tw={[
-                        //
-                        'text-sm',
-                        'flex gap-1',
-                        'p-0 h-full bg-transparent',
-                        'select-none overflow-clip',
-                    ]}
+                <Frame
+                    //
+                    base={{ contrast: csuite.inputContrast ?? 0.05 }}
+                    hover
+                    className='flex-1 h-full '
                 >
-                    {false && (s.isOpen || s.isFocused) ? null : (
-                        /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
+                    <div // ANCHOR
+                        tabIndex={-1}
+                        tw={['text-sm', 'flex gap-1', 'p-0 h-full bg-transparent', 'select-none overflow-clip']}
+                    >
                         <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
                             <Ikon.mdiTextBoxSearchOutline //
                                 tw='box-border m-[2px]' // 2px for parent border + 2 * 2px for icon padding
@@ -70,24 +71,22 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                                 size='calc((var(--input-height) - 4px - 2px)'
                             />
                         </div>
-                    )}
-                </div>
+                    </div>
 
-                {/* MODAL */}
-                <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    <input
-                        placeholder={s.isOpen ? p.placeholder : undefined}
-                        ref={s.inputRef}
-                        onChange={s.handleInputChange}
-                        style={{ opacity: s.isOpen ? 1 : 0 }}
-                        tw={['csuite-basic-input', 'w-full h-full !outline-none']}
-                        type='text'
-                        value={s.searchQuery}
-                    />
-                </div>
-            </Frame>
-            {/* TOOLTIP */}
-            {(s.isOpen || false) && <SelectPopupUI showValues={!p.wrap} s={s} />}
+                    {/* INPUT */}
+                    <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
+                        <input
+                            placeholder={s.isOpen ? p.placeholder : undefined}
+                            ref={s.inputRef}
+                            onChange={s.handleInputChange}
+                            style={{ opacity: s.isOpen ? 1 : 0 }}
+                            tw={['csuite-basic-input', 'w-full h-full !outline-none']}
+                            type='text'
+                            value={s.searchQuery}
+                        />
+                    </div>
+                </Frame>
+            </RevealUI>
         </Frame>
     )
 })

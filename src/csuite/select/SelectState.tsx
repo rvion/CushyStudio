@@ -4,6 +4,8 @@ import { makeAutoObservable } from 'mobx'
 import React, { type FocusEvent, ReactNode } from 'react'
 
 import { BadgeUI } from '../badge/BadgeUI'
+import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
+import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
 
 interface ToolTipPosition {
@@ -13,8 +15,25 @@ interface ToolTipPosition {
     right?: number | undefined
 }
 
-export class AutoCompleteSelectState<T> {
-    constructor(public p: SelectProps<T>) {
+export class AutoCompleteSelectState<OPTION> {
+    anchorRef = createObservableRef<HTMLInputElement>()
+    inputRef = createObservableRef<HTMLInputElement>()
+    popupRef = createObservableRef<HTMLDivElement>()
+    selectedIndex: number = 0
+    isOpen: boolean = false
+    isDragging: boolean = false
+    isFocused: boolean = false
+    wasEnabled: boolean = false
+    hasMouseEntered: boolean = false
+    tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
+    tooltipMaxHeight: number = 100
+
+    /** return the unique key for the given option */
+    getKey(option: OPTION): React.Key | null | undefined {
+        return this.p.getKey?.(option) ?? getUIDForMemoryStructure(option)
+    }
+
+    constructor(public p: SelectProps<OPTION>) {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
@@ -22,9 +41,31 @@ export class AutoCompleteSelectState<T> {
         })
     }
 
+    /**
+     * return true if given option selected
+     * (or one of the selected values, if this.isMultiSelect)
+     */
+    isOptionSelected(option: OPTION): boolean {
+        const selected = this.value
+        if (selected == null) return false
+        if (Array.isArray(selected)) return selected.some((s) => this.isEqual(s, option))
+        return this.isEqual(selected, option)
+    }
+
+    /**
+     * return true if the given option is the only one selected
+     * (return false if more than one option is selected when this.isMultiSelect)
+     */
+    isSingleSelectedOption(option: OPTION): boolean {
+        const selected = this.value
+        if (selected == null) return false
+        if (Array.isArray(selected)) return selected.length === 1 && selected.some((s) => this.isEqual(s, option))
+        return this.isEqual(selected, option)
+    }
+
     isMultiSelect = this.p.multiple ?? false
 
-    get options(): T[] {
+    get options(): OPTION[] {
         return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
     }
 
@@ -37,7 +78,7 @@ export class AutoCompleteSelectState<T> {
         else this._searchQuery = value
     }
 
-    get filteredOptions(): T[] {
+    get filteredOptions(): OPTION[] {
         if (this.searchQuery === '') return this.options
         if (this.p.disableLocalFiltering) return this.options
         return this.options.filter((p) => {
@@ -67,7 +108,7 @@ export class AutoCompleteSelectState<T> {
      *                                but is "equal" according to human logic
      *
      */
-    isEqual = (a: T, b: T): boolean => {
+    isEqual = (a: OPTION, b: OPTION): boolean => {
         if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
         return a === b
     }
@@ -84,7 +125,7 @@ export class AutoCompleteSelectState<T> {
     }
 
     /** return the first selected value */
-    get firstValue(): Maybe<T> {
+    get firstValue(): Maybe<OPTION> {
         const v = this.value
         if (v == null) return null
         if (Array.isArray(v)) {
@@ -95,12 +136,12 @@ export class AutoCompleteSelectState<T> {
     }
 
     /** currently selected value or values */
-    get value(): Maybe<T | T[]> {
+    get value(): Maybe<OPTION | OPTION[]> {
         return this.p.value?.()
     }
 
     /** list of all selected values */
-    get values(): T[] {
+    get values(): OPTION[] {
         const v = this.value
         if (v == null) return []
         return Array.isArray(v) ? v : [v]
@@ -118,12 +159,12 @@ export class AutoCompleteSelectState<T> {
                 ? placeHolderStr
                 : value.map((i) => {
                       const label = this.p.getLabelText(i)
-                      if (!this.p.multiple) return label
+                      if (!this.isMultiSelect) return label
                       return (
                           <BadgeUI
                               key={label}
                               // hack to allow to unselect quickly selected items
-                              onClick={() => this.p.onChange?.(i, this)}
+                              onClick={() => this.p.onOptionToggled?.(i, this)}
                           >
                               {label}
                           </BadgeUI>
@@ -142,19 +183,6 @@ export class AutoCompleteSelectState<T> {
         //     return str
         // }
     }
-
-    anchorRef = React.createRef<HTMLInputElement>()
-    inputRef = React.createRef<HTMLInputElement>()
-    popupRef = React.createRef<HTMLDivElement>()
-    selectedIndex: number = 0
-    isOpen: boolean = false
-    isDragging: boolean = false
-    isFocused: boolean = false
-    wasEnabled: boolean = false
-    hasMouseEntered: boolean = false
-
-    tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
-    tooltipMaxHeight: number = 100
 
     updatePosition = (): void => {
         const rect = this.anchorRef.current?.getBoundingClientRect()
@@ -243,16 +271,18 @@ export class AutoCompleteSelectState<T> {
     // ⏸️     this.inputRef.current?.focus()
     // ⏸️ }
 
-    selectOption(index: number): void {
+    toggleOptionFromFilteredOptionsAtIndex(index: number): void {
         const selectedOption = this.filteredOptions[index]
-        if (selectedOption != null) {
-            this.p.onChange?.(selectedOption, this)
-            // reset the query
-            const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
-            if (shouldResetQuery) this.searchQuery = ''
-            // close the menu
-            // this.closeIfShouldCloseAfterSelection()
-        }
+        if (selectedOption != null) this.toggleOption(selectedOption)
+    }
+
+    toggleOption(option: OPTION): void {
+        this.p.onOptionToggled?.(option, this)
+        // reset the query
+        const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
+        if (shouldResetQuery) this.searchQuery = ''
+        // close the menu
+        this.closeIfShouldCloseAfterSelection()
     }
 
     closeIfShouldCloseAfterSelection(): void {
@@ -322,7 +352,7 @@ export class AutoCompleteSelectState<T> {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
-            this.selectOption(this.selectedIndex)
+            this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
             this.closeIfShouldCloseAfterSelection()
         }
     }

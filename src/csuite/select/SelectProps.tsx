@@ -2,11 +2,19 @@ import type { AutoCompleteSelectState } from './SelectState'
 
 import React from 'react'
 
-export type SelectProps<T> = {
+export type SelectProps<OPTION> = {
     label?: string
 
-    /** callback when a new option is added */
-    onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
+    /**
+     * if true, select is virtualized
+     * @default true
+     */
+    virtualized?: boolean | number
+
+    slotPlaceholderWhenNoResults?: React.ReactNode
+
+    /** callback when a new option is selected */
+    onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
 
     /**
      * list of all choices
@@ -14,22 +22,25 @@ export type SelectProps<T> = {
      *    you should also set `disableLocalFiltering: true`, to avoid
      *    filtering the options twice.
      */
-    options?: (query: string) => T[]
+    options?: (query: string) => OPTION[]
 
     /** set this to true if your choices */
     disableLocalFiltering?: boolean
 
     /** if provided, is used to compare options with selected values */
-    equalityCheck?: (a: T, b: T) => boolean
+    equalityCheck?: (a: OPTION, b: OPTION) => boolean
 
     /** used to search/filter & for UI if no getLabelUI provided */
-    getLabelText: (t: T) => string
+    getLabelText: (t: OPTION) => string
 
     /** if provided, is used to display the options */
-    getLabelUI?: (t: T) => React.ReactNode
+    getLabelUI?: (t: OPTION) => React.ReactNode
+
+    /** if not provided, autoKey will be used instead */
+    getKey?: (t: OPTION) => string
 
     /** the selected value / list of values if multiple values provided */
-    value?: () => Maybe<T | T[]>
+    value?: () => Maybe<OPTION | OPTION[]>
 
     /** if true, this widget is considered a multi-select */
     multiple?: boolean

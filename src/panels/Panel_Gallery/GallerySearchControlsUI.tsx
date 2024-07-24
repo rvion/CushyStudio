@@ -36,7 +36,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
                 getLabelText={(i) => i.name ?? 'unnamed'}
                 value={() => cushy.galleryFilterAppName}
                 equalityCheck={(a, b) => a.id === b.id}
-                onChange={(next) => {
+                onOptionToggled={(next) => {
                     if (cushy.galleryFilterAppName?.id === next.id) cushy.galleryFilterAppName = null
                     else cushy.galleryFilterAppName = next
                 }}

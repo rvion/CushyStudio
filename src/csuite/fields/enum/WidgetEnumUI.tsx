@@ -107,7 +107,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 getLabelText={(v) => v.toString()}
                 value={() => p.value().candidateValue}
                 hideValue={p.displayValue}
-                onChange={(option) => {
+                onOptionToggled={(option) => {
                     if (option == null) return
                     p.onChange(option)
                 }}

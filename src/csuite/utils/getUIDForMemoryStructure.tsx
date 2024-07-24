@@ -4,7 +4,7 @@ const wm = new WeakMap()
 
 export function getUIDForMemoryStructure(
     //
-    x: object | Function | null | undefined | number | string | boolean,
+    x: unknown,
 ): string {
     if (x == null) return 'null'
     if (typeof x === 'number') return x.toString()

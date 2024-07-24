@@ -22,7 +22,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 options={() => field.choices}
                 equalityCheck={(a, b) => a.id === b.id}
                 value={() => field.serial.val}
-                onChange={(selectOption) => {
+                onOptionToggled={(selectOption) => {
                     if (selectOption == null) {
                         // TODO?: hook into it's parent if parent is an option block ?
                         // ⏸️ if (!widget.isOptional) return

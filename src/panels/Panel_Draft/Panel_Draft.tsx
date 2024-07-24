@@ -156,7 +156,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     { label: 'iPhone 5', value: 5 },
                     { label: 'iPhone 6', value: 6 },
                 ]}
-                onChange={null}
+                onOptionToggled={null}
                 getLabelText={(t): string => {
                     return t.label
                 }}

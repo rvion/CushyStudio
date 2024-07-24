@@ -40,7 +40,7 @@ export type RevealProps = {
     // triggers
     showDelay?: number /** only for hover */
     hideDelay?: number /** only for hover */
-    trigger?: Maybe<'hover' | 'click' | 'clickAndHover'>
+    trigger?: Maybe<'hover' | 'click' | 'clickAndHover'> // () => ... | {}
     defaultVisible?: boolean
 
     // look and feel

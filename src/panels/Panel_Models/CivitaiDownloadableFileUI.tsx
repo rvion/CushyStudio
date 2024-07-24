@@ -93,12 +93,12 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                         label='base model'
                         value={() => uist.base}
                         options={() => knownModel_Base}
-                        onChange={(v) => (uist.base = v)}
+                        onOptionToggled={(v) => (uist.base = v)}
                         getLabelText={(v) => v}
                     />
                     <SelectUI // manually override type
                         label='Model Type'
-                        onChange={(v) => (uist.type = v as any)}
+                        onOptionToggled={(v) => (uist.type = v as any)}
                         getLabelText={(v) => v}
                         value={() => uist.type}
                         options={() => knownModel_Type}
@@ -106,7 +106,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
 
                     <SelectUI // manually override save path info
                         label='Save Strategy'
-                        onChange={(v) => (uist.save_path = v as any)}
+                        onOptionToggled={(v) => (uist.save_path = v as any)}
                         getLabelText={(v) => v}
                         options={() => knownModel_SavePath}
                         value={() => uist.save_path}

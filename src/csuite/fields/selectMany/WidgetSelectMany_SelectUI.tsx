@@ -24,7 +24,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 options={() => field.choices}
                 value={() => field.serial.values}
                 equalityCheck={(a, b) => a.id === b.id}
-                onChange={(selectOption) => field.toggleItem(selectOption)}
+                onOptionToggled={(selectOption) => field.toggleItem(selectOption)}
             />
             {field.config.wrapButton && (
                 <InputBoolFlipButtonUI

@@ -141,7 +141,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
             <SelectUI<X>
                 value={() => ({ id: p.promptID, label: 'current' })}
                 getLabelText={(i) => i.label ?? i.id}
-                onChange={(i) => {
+                onOptionToggled={(i) => {
                     const nextWidget = cushy.repository.getFieldByID(i.id) as Field_prompt
                     if (!nextWidget) return toastError('widget not found')
                     if (nextWidget.type !== 'prompt') return toastError('widget is not a prompt')

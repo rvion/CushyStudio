@@ -40,6 +40,7 @@ export type FrameProps = {
     row?: boolean
     /** quick layout feature to add `flex flex-row items-center` */
     line?: boolean
+    linegap?: boolean
     /** quick layout feature to add `flex flex-row` */
     col?: boolean
 
@@ -172,7 +173,8 @@ export const Frame = observer(
                     loading && 'relative',
                     expand && 'flex-1',
                     // layout
-                    p.line && 'flex flex-row items-center',
+                    p.line && 'flex flex-row items-center gap-x-1',
+                    // p.linegap && 'flex flex-row items-center gap-x-2',
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
                     className,

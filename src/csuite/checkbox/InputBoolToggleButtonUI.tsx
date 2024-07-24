@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
-
 import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 import { InputBoolToggleButtonBoxUI } from './_InputBoolToggleButtonBoxUI'
 
@@ -25,8 +24,9 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
         <Frame
             tw={[
                 'InputBoolToggleButtonUI minh-input !select-none cursor-pointer px-1 text-sm flex items-center',
-                p.showToggleButtonBox ? undefined: 'justify-center'
+                p.showToggleButtonBox ? undefined : 'justify-center',
             ]}
+            // boxShadow={{ inset: true, y: -3, blur: 5, spread: 0, color: 5 }}
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
             tooltip={p.tooltip}
