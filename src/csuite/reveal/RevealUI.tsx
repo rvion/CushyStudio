@@ -155,10 +155,10 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
         if (s === 'none') return ShellNoneUI
         //
         if (s === 'popup') return ShellPopupUI
-        if (s == 'popup-xs') return ShellPopupLGUI
-        if (s == 'popup-sm') return ShellPopupSMUI
-        if (s == 'popup-lg') return ShellPopupLGUI
-        if (s == 'popup-xl') return ShellPopupLGUI
+        if (s === 'popup-xs') return ShellPopupLGUI
+        if (s === 'popup-sm') return ShellPopupSMUI
+        if (s === 'popup-lg') return ShellPopupLGUI
+        if (s === 'popup-xl') return ShellPopupLGUI
 
         // we need a shell with a backdrop here, (should probably be transparent though)
         if (s == null && uist.hideTriggers.clickOutside) return ShellFocus
