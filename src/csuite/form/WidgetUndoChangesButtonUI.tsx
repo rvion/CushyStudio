@@ -20,8 +20,9 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
             disabled={!(field?.hasChanges ?? false)}
             icon='mdiUndoVariant'
             look='ghost'
-            size='input'
-            square
+            size='widget'
+            // square
+            tw='!px-0'
         />
     )
 })
