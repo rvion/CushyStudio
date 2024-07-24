@@ -6,6 +6,7 @@ import type { CSSProperties, FC, ReactNode } from 'react'
 import { makeAutoObservable, observable } from 'mobx'
 
 import { exhaust } from '../utils/exhaust'
+import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { DEBUG_REVEAL } from './RevealProps'
 
@@ -15,6 +16,8 @@ export const defaultHideDelay_whenRoot = 300
 export const defaultShowDelay_whenNested = 0
 export const defaultHideDelay_whenNested = 0
 
+const XXX = (x: unknown): string => `(${getUIDForMemoryStructure(x, 3)})`
+
 export class RevealState {
     static nextUID: number = 1
 
@@ -23,17 +26,17 @@ export class RevealState {
     uid = RevealState.nextUID++
 
     onMiddleClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onMiddleClickAnchor`)
+        this.log(`_ ${XXX(ev)} onMiddleClickAnchor`)
         // this.onLeftClick(ev)
     }
 
     onRightClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onRightClickAnchor`)
+        this.log(`_ ${XXX(ev)} onRightClickAnchor`)
         this.onLeftClickAnchor(ev)
     }
 
     onLeftClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onLeftClickAnchor (visible: ${this.isVisible ? '🟢' : '🔴'})`)
+        this.log(`_ ${XXX(ev)} onLeftClickAnchor (visible: ${this.isVisible ? '🟢' : '🔴'})`)
         const closed = !this.isVisible
         if (closed) {
             if (this.shouldRevealOnAnchorClick) {
@@ -50,12 +53,12 @@ export class RevealState {
 
     _mouseDown = false
     onMouseDownAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onMouseDownAnchor`)
+        this.log(`_ ${XXX(ev)} onMouseDownAnchor`)
         this._mouseDown = true
     }
 
     onMouseUpAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onMouseUpAnchor`)
+        this.log(`_ ${XXX(ev)} onMouseUpAnchor`)
         this._mouseDown = false
     }
 
@@ -251,7 +254,7 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
-        this.log(`_ onMouseEnterAnchor`)
+        this.log(`_ ${XXX(ev)} onMouseEnterAnchor`)
         /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (this.isVisible) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()
@@ -260,7 +263,7 @@ export class RevealState {
     }
 
     onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
-        this.log(`_ onMouseLeaveAnchor`)
+        this.log(`_ ${XXX(ev)} onMouseLeaveAnchor`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.close, this.hideDelay)
@@ -323,13 +326,13 @@ export class RevealState {
     leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
-        this.log(`_ onMouseEnterTooltip`)
+        this.log(`_ ${XXX(ev)} onMouseEnterTooltip`)
         this._resetAllTooltipTimouts()
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
 
     onMouseLeaveTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
-        this.log(`_ onMouseLeaveTooltip`)
+        this.log(`_ ${XXX(ev)} onMouseLeaveTooltip`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
@@ -392,7 +395,7 @@ export class RevealState {
     }
 
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
-        this.log(`_ onFocusAnchor (mouseDown: ${this._mouseDown}) (⏳: ${this.delaySinceLastOpenClose})`)
+        this.log(`_ ${XXX(ev)} onFocusAnchor (mouseDown: ${this._mouseDown}) (⏳: ${this.delaySinceLastOpenClose})`)
 
         // 🔶 when we click, we get
         // focus event -> menu opens -> left click event -> visible is already true -> left click goes into the wrong branch
@@ -412,19 +415,19 @@ export class RevealState {
     }
 
     onBlurAnchor = (ev: React.FocusEvent<unknown>): void => {
-        this.log(`_ onBlurAnchor`)
+        this.log(`_ ${XXX(ev)} onBlurAnchor`)
         if (!this.shouldHideOnAnchorBlur) return
         this.close()
     }
 
     onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
-        this.log(`_ onAnchorOrShellKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
+        this.log(`_ ${XXX(ev)} onAnchorOrShellKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
 
         // 🔶 without delay: press 'Enter' in option list => toggle => close popup => calls onAnchorKeyDown 'Enter' with visible now false => re-opens :(
         if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
 
         if (this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
-            this.log(`_ onAnchorOrShellKeyDown: maybe open (visible: ${this.isVisible})`)
+            this.log(`_ ${XXX(ev)} onAnchorOrShellKeyDown: maybe open (visible: ${this.isVisible})`)
             const letterCode = ev.keyCode
             const isLetter = letterCode >= 65 && letterCode <= 90
             const isEnter = ev.key === 'Enter'
@@ -437,7 +440,7 @@ export class RevealState {
         }
 
         if (ev.key === 'Escape' && this.isVisible && this.shouldHideOnKeyboardEscape) {
-            this.log(`_ onAnchorOrShellKeyDown: close via Escape (visible: ${this.isVisible})`)
+            this.log(`_ ${XXX(ev)} onAnchorOrShellKeyDown: close via Escape (visible: ${this.isVisible})`)
             this.close()
             // this.anchorRef.current?.focus()
             ev.preventDefault()
@@ -447,7 +450,7 @@ export class RevealState {
     }
 
     onBackdropClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ onBackdropClick`)
+        this.log(`_ ${XXX(ev)} onBackdropClick`)
         if (this.shouldHideOnClickOutside) this.close()
     }
 
