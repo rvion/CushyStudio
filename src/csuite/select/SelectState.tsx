@@ -22,7 +22,7 @@ export class AutoCompleteSelectState<OPTION> {
     // around when needed
 
     // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 anchorRef is broken, most others are outdated. revealStateRef works?!
-    anchorRef = createObservableRef<HTMLInputElement>()
+    anchorRef = createObservableRef<HTMLDivElement>()
     inputRef_fake = createObservableRef<HTMLInputElement>()
     inputRef_real = createObservableRef<HTMLInputElement>()
     popupRef = createObservableRef<HTMLDivElement>()
@@ -193,6 +193,7 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     clean(): void {
+        this.revealState?.log(`🔶 SelectSate clean`)
         this.selectedIndex = 0
         this.searchQuery = ''
     }

@@ -407,6 +407,8 @@ export class RevealState {
         this.log(`_ onAnchorOrShellKeyDown`)
 
         // 🔴🔴  WE MAY GET A SIMILAR RACE CONDITION WITH FOCUS/BLUR & this.isVisible HERE (but it probably doesn't matter)
+        // 🔴🔴🔴 Actually we get one and it's annoying:
+        // enter in option list => toggle => close => calls onAnchorKeyDown with visible now false => re-opens :(
         if (this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
             this.log(`_ onAnchorOrShellKeyDown: maybe open (visible: ${this.isVisible})`)
             const letterCode = ev.keyCode
