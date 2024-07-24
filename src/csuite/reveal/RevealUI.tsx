@@ -107,8 +107,11 @@ export const RevealUI = observer(
                     onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
                     onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
                 },
-                ...child.props.children,
-                mkTooltip(uistOrNull) // 🔶 add the tooltip at the end of the children list
+                <>
+                    {child.props.children}
+                    {mkTooltip(uistOrNull)}
+                    {/* // 🔶 add the tooltip at the end of the children list */}
+                </>
             )
             return <RevealCtx.Provider value={nextTower}>{clonedChildren}</RevealCtx.Provider>
         }
