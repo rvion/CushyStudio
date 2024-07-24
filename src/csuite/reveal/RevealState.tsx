@@ -34,7 +34,7 @@ export class RevealState {
         if (!toc) return
         ev.stopPropagation()
         // ev.preventDefault()
-        if (this.visible) this.leaveAnchor()
+        if (this.isVisible) this.leaveAnchor()
         else this.enterAnchor()
     }
 
@@ -98,7 +98,7 @@ export class RevealState {
     }
 
     /** toolip is visible if either inAnchor or inTooltip */
-    get visible(): boolean {
+    get isVisible(): boolean {
         if (this._lock) return true
         return this.inAnchor || this.inTooltip || this.inChildren.size > 0
     }
@@ -186,7 +186,7 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = (): void => {
-        /* 🔥 */ if (!this.triggerOnHover && !this.visible) return
+        /* 🔥 */ if (!this.triggerOnHover && !this.isVisible) return
         /* 🔥 */ if (RevealState.shared.current) return this.enterAnchor()
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
@@ -302,6 +302,44 @@ export class RevealState {
         // this._resetAllChildrenTimouts()
         this.inChildren.delete(depth)
     }
+
+    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+    // Close pop-up if too far outside
+    // 💬 2024-02-29 rvion:
+    // | this code was a good idea; but it's really
+    // | not pleasant when working mostly with keyboard and using tab to open selects.
+    // | as soon as the moouse move just one pixel, popup close.
+    // |  =>  commenting it out until we find a solution confortable in all cases
+
+    // window.addEventListener('mousemove', this.MouseMoveTooFar, true)
+
+    // MouseMoveTooFar = (event: MouseEvent): void => {
+    //     const popup = this.popupRef?.current
+    //     const anchor = this.anchorRef?.current
+
+    //     if (!popup || !anchor || !this.hasMouseEntered) {
+    //         return
+    //     }
+
+    //     const x = event.clientX
+    //     const y = event.clientY
+
+    //     // XXX: Should probably be scaled by UI scale
+    //     const maxDistance = 75
+
+    //     if (
+    //         // left
+    //         popup.offsetLeft - x > maxDistance ||
+    //         // top
+    //         popup.offsetTop - y > maxDistance ||
+    //         // right
+    //         x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
+    //         // bottom
+    //         y - (popup.offsetTop + popup.offsetHeight) > maxDistance
+    //     ) {
+    //         this.closeMenu()
+    //     }
+    // }
 }
 
 function toCss(x: number | string): string {

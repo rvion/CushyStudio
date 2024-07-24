@@ -21,12 +21,14 @@ export class RevealStateLazy {
     ) {
         makeAutoObservable(this, { p: false })
     }
-    uistOrNull: RevealState | null = null
+
+    state: RevealState | null = null
+
     getRevealState = (): RevealState => {
-        if (this.uistOrNull) return this.uistOrNull
+        if (this.state) return this.state
         if (DEBUG_REVEAL) console.log(`[💙] init RevealUI`)
-        this.uistOrNull = new RevealState({ ...this.p }, this.parents)
-        return this.uistOrNull!
+        this.state = new RevealState({ ...this.p }, this.parents)
+        return this.state!
     }
     onContextMenu = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         // lock input on shift+right click

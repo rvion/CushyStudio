@@ -1,9 +1,10 @@
+import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
+import type { FocusEvent } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-import React, { type FocusEvent, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
-import { BadgeUI } from '../badge/BadgeUI'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
@@ -16,11 +17,19 @@ interface ToolTipPosition {
 }
 
 export class AutoCompleteSelectState<OPTION> {
+    // various refs for our select so we can quickly puppet
+    // various key dom elements of the select, or move the focus
+    // around when needed
     anchorRef = createObservableRef<HTMLInputElement>()
-    inputRef = createObservableRef<HTMLInputElement>()
+    inputRef_fake = createObservableRef<HTMLInputElement>()
+    inputRef_real = createObservableRef<HTMLInputElement>()
     popupRef = createObservableRef<HTMLDivElement>()
+    revealStateRef = createObservableRef<RevealStateLazy>()
+
     selectedIndex: number = 0
-    isOpen: boolean = false
+    get isOpen(): boolean {
+        return this.revealStateRef.current?.state?.isVisible ?? false
+    }
     isDragging: boolean = false
     isFocused: boolean = false
     wasEnabled: boolean = false
@@ -37,7 +46,8 @@ export class AutoCompleteSelectState<OPTION> {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
-            inputRef: false,
+            inputRef_fake: false,
+            inputRef_real: false,
         })
     }
 
@@ -147,6 +157,23 @@ export class AutoCompleteSelectState<OPTION> {
         return Array.isArray(v) ? v : [v]
     }
 
+    displayOption(option: OPTION): React.ReactNode {
+        if (this.p.getLabelUI) return this.p.getLabelUI(option)
+        const label = this.p.getLabelText(option)
+        return label
+
+        //   if (!this.isMultiSelect) return label
+        //   return (
+        //       <BadgeUI
+        //           key={label}
+        //           // hack to allow to unselect quickly selected items
+        //           onClick={() => this.p.onOptionToggled?.(i, this)}
+        //       >
+        //           {label}
+        //       </BadgeUI>
+        //   )
+    }
+
     get displayValue(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
         let value = this.value
@@ -158,17 +185,7 @@ export class AutoCompleteSelectState<OPTION> {
             value.length === 0 //
                 ? placeHolderStr
                 : value.map((i) => {
-                      const label = this.p.getLabelText(i)
-                      if (!this.isMultiSelect) return label
-                      return (
-                          <BadgeUI
-                              key={label}
-                              // hack to allow to unselect quickly selected items
-                              onClick={() => this.p.onOptionToggled?.(i, this)}
-                          >
-                              {label}
-                          </BadgeUI>
-                      )
+                      return this.displayOption(i)
                   })
         if (this.p.label)
             return (
@@ -234,14 +251,13 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     openMenu = (): void => {
-        this.isOpen = true
+        this.revealStateRef.current?.getRevealState()?.enterAnchor()
         this.updatePosition()
-        this.inputRef.current?.focus()
-        window.addEventListener('mousemove', this.MouseMoveTooFar, true)
+        this.inputRef_fake.current?.focus()
     }
 
     closeMenu(): void {
-        this.isOpen = false
+        this.revealStateRef.current?.state?.close()
         this.isFocused = false
         this.selectedIndex = 0
         this.searchQuery = ''
@@ -250,12 +266,10 @@ export class AutoCompleteSelectState<OPTION> {
 
         // Text cursor should only show when menu is open
         // this.anchorRef?.current?.querySelector('input')?.blur()
-        window.removeEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
     filterOptions(inputValue: string): void {
         this.searchQuery = inputValue
-        this.isOpen = true
         /* Could maybe try to keep to the highlighted option from before filter? (Not the index, but the actual option)
          * This is just easier for now, and I think it's better honestly. It's more predictable behavior for the user. */
         this.setNavigationIndex(0)
@@ -305,48 +319,14 @@ export class AutoCompleteSelectState<OPTION> {
         this.selectedIndex = value
     }
 
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.filterOptions(event.target.value)
+    handleInputChange = (next: string): void => {
+        this.filterOptions(next)
         this.updatePosition() // just in case we scrolled
     }
 
-    // Close pop-up if too far outside
-    // 💬 2024-02-29 rvion:
-    // | this code was a good idea; but it's really
-    // | not pleasant when working mostly with keyboard and using tab to open selects.
-    // | as soon as the moouse move just one pixel, popup close.
-    // |  =>  commenting it out until we find a solution confortable in all cases
-    MouseMoveTooFar = (event: MouseEvent): void => {
-        const popup = this.popupRef?.current
-        const anchor = this.anchorRef?.current
-
-        if (!popup || !anchor || !this.hasMouseEntered) {
-            return
-        }
-
-        const x = event.clientX
-        const y = event.clientY
-
-        // XXX: Should probably be scaled by UI scale
-        const maxDistance = 75
-
-        if (
-            // left
-            popup.offsetLeft - x > maxDistance ||
-            // top
-            popup.offsetTop - y > maxDistance ||
-            // right
-            x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
-            // bottom
-            y - (popup.offsetTop + popup.offsetHeight) > maxDistance
-        ) {
-            this.closeMenu()
-        }
-    }
-
-    onBlur(_ev: FocusEvent<HTMLDivElement, Element>): void {
-        this.closeMenu()
-    }
+    // onBlur(_ev: FocusEvent<HTMLDivElement, Element>): void {
+    //     this.closeMenu()
+    // }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')

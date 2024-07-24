@@ -16,7 +16,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const border = csuite.inputBorder
     return (
         <Frame /* Container/Root */
-            tabIndex={-1}
+            tabIndex={0}
             tw={['SelectUI minh-input', 'flex flex-1 items-center relative']}
             border={{ contrast: border }}
             className={p.className}
@@ -25,19 +25,20 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             onMouseDown={s.onRealWidgetMouseDown}
             onKeyDown={s.handleTooltipKeyDown}
             onFocus={(ev) => {
-                s.isFocused = true
+                s.isFocused = true // TODO remove
                 if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
                     s.openMenu()
                 }
             }}
-            onBlur={(ev) => s.onBlur(ev)}
+            // onBlur={(ev) => s.onBlur(ev)}
         >
             {/* {(s.isOpen) && <SelectPopupUI showValues={!p.wrap} s={s} />} */}
-            <RevealUI
-                //
+            <RevealUI //
+                ref={s.revealStateRef}
                 trigger='click'
                 shell='popover'
                 placement='autoVerticalStart'
+                // defaultVisible
                 content={({ reveal }) => (
                     <SelectPopupUI //
                         reveal={reveal}
@@ -45,15 +46,17 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         s={s}
                     />
                 )}
-                // defaultVisible
             >
                 <Frame
                     //
+                    tabIndex={1}
                     base={{ contrast: csuite.inputContrast ?? 0.05 }}
                     hover
                     className='flex-1 h-full '
                 >
-                    <div // ANCHOR
+                    {s.displayValue}
+
+                    {/* <div // ANCHOR
                         tabIndex={-1}
                         tw={['text-sm', 'flex gap-1', 'p-0 h-full bg-transparent', 'select-none overflow-clip']}
                     >
@@ -77,20 +80,25 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                                 size='calc((var(--input-height) - 4px - 2px)'
                             />
                         </div>
-                    </div>
+                    </div> */}
 
-                    {/* INPUT */}
-                    <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                        <input
-                            placeholder={s.isOpen ? p.placeholder : undefined}
-                            ref={s.inputRef}
-                            onChange={s.handleInputChange}
-                            style={{ opacity: s.isOpen ? 1 : 0 }}
-                            tw={['csuite-basic-input', 'w-full h-full !outline-none']}
-                            type='text'
-                            value={s.searchQuery}
-                        />
-                    </div>
+                    {/* <input // INPUT
+                        ref={s.inputRef_fake}
+                        // onFocusCapture={(ev) => {
+                        //     // const prevFocusWasOn = ev.relatedTarget
+                        // }}
+                        // placeholder={s.isOpen ? p.placeholder : undefined}
+                        // onChange={s.handleInputChange}
+                        tw={[
+                            //
+                            'opacity-0',
+                            'absolute top-0 left-0 right-0 z-50 h-full',
+                            'csuite-basic-input',
+                            'w-full h-full !outline-none',
+                        ]}
+                        type='text'
+                        value={s.searchQuery}
+                    /> */}
                 </Frame>
             </RevealUI>
         </Frame>
