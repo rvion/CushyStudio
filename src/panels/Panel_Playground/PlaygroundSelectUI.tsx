@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
@@ -8,38 +8,73 @@ import { SelectUI } from '../../csuite/select/SelectUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
-    const uist2 = cushy.forms.useLocalstorage((ui) => ui.fields({ selected: ui.string() }), 'lyxiTdJYiN')
+    const values = useLocalObservable(
+        () => ({
+            a: null as Maybe<string>,
+            b: null as Maybe<string>,
+            c: new Set<string>(),
+            d: new Set<string>(),
+        }),
+        [],
+    )
+
     return (
         <ErrorBoundaryUI>
             <div tw='flex flex-col gap-1'>
-                {[false, true].map((b) => (
-                    <Frame line tw='m-1' key={b.toString()}>
-                        <Frame expand base={{ chroma: 0.1, hue: 40 }}>
-                            <SelectUI<string>
-                                multiple={b}
-                                value={() => 'test'}
-                                options={() => ['test', 'test2', 'test3']}
-                                getLabelText={(t) => t}
-                                onOptionToggled={() => {}}
-                            />
-                        </Frame>
-                        <Frame expand base={{ chroma: 0.1, hue: 80 }}>
-                            <SelectUI<string>
-                                //
-                                multiple={b}
-                                value={() => uist2.value.selected}
-                                options={() => [ 'test', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10', 'test11', 'test12', 'test13', 'test14', 'test15', 'test16', 'test17', 'test18', 'test19', 'test20', 'test21', 'test22', 'test23', 'test24', 'test25', 'test26', 'test27', 'test28', 'test29', ]} // prettier-ignore
-                                onOptionToggled={(v) => (uist2.value.selected = v)}
-                                getLabelText={(v) => `🔶 ${v}`}
-                                getLabelUI={(v) => <BadgeUI autoHue>{v}</BadgeUI>}
-                                // disableLocalFiltering={false}
-                                // equalityCheck={(a, b) => a.id === b.id}
-                                // getSearchQuery={() => field.serial.query ?? ''}
-                                // setSearchQuery={(query) => (field.serial.query = query)}
-                            />
-                        </Frame>
+                <Frame
+                    line
+                    tw='m-1' // SINGLE SELECT
+                >
+                    <Frame expand base={{ chroma: 0.1, hue: 40 }}>
+                        <SelectUI<string>
+                            options={() => ['test', 'test2', 'test3']}
+                            getLabelText={(v) => v}
+                            value={() => values.a}
+                            onOptionToggled={(opt) => (values.a = opt)}
+                        />
                     </Frame>
-                ))}
+                    <Frame expand base={{ chroma: 0.1, hue: 80 }}>
+                        <SelectUI<string>
+                            value={() => values.b}
+                            options={() => [ 'test', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10', 'test11', 'test12', 'test13', 'test14', 'test15', 'test16', 'test17', 'test18', 'test19', 'test20', 'test21', 'test22', 'test23', 'test24', 'test25', 'test26', 'test27', 'test28', 'test29', ]} // prettier-ignore
+                            onOptionToggled={(opt) => (values.b = opt)}
+                            getLabelText={(v) => v}
+                            getLabelUI={(v) => <BadgeUI autoHue>{v}</BadgeUI>}
+                            // disableLocalFiltering={false}
+                            // equalityCheck={(a, b) => a.id === b.id}
+                            // getSearchQuery={() => field.serial.query ?? ''}
+                            // setSearchQuery={(query) => (field.serial.query = query)}
+                        />
+                    </Frame>
+                </Frame>
+                <Frame
+                    line
+                    tw='m-1' // MULTI SELECT
+                >
+                    <Frame expand base={{ chroma: 0.1, hue: 40 }}>
+                        <SelectUI<string>
+                            multiple
+                            options={() => ['test', 'test2', 'test3']}
+                            getLabelText={(v) => v}
+                            value={() => [...values.c]}
+                            onOptionToggled={(v) => (values.c.has(v) ? values.c.delete(v) : values.c.add(v))}
+                        />
+                    </Frame>
+                    <Frame expand base={{ chroma: 0.1, hue: 80 }}>
+                        <SelectUI<string>
+                            multiple
+                            value={() => [...values.d]}
+                            options={() => [ 'test', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10', 'test11', 'test12', 'test13', 'test14', 'test15', 'test16', 'test17', 'test18', 'test19', 'test20', 'test21', 'test22', 'test23', 'test24', 'test25', 'test26', 'test27', 'test28', 'test29', ]} // prettier-ignore
+                            onOptionToggled={(v) => (values.d.has(v) ? values.d.delete(v) : values.d.add(v))}
+                            getLabelText={(v) => v}
+                            getLabelUI={(v) => <BadgeUI autoHue>{v}</BadgeUI>}
+                            // disableLocalFiltering={false}
+                            // equalityCheck={(a, b) => a.id === b.id}
+                            // getSearchQuery={() => field.serial.query ?? ''}
+                            // setSearchQuery={(query) => (field.serial.query = query)}
+                        />
+                    </Frame>
+                </Frame>
 
                 {cushy.forms
                     .fields((ui) => ({
