@@ -21,11 +21,8 @@ export class AutoCompleteSelectState<OPTION> {
     // various key dom elements of the select, or move the focus
     // around when needed
 
-    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 anchorRef is broken, most others are outdated. revealStateRef works?!
     anchorRef = createObservableRef<HTMLDivElement>()
-    inputRef_fake = createObservableRef<HTMLInputElement>()
     inputRef_real = createObservableRef<HTMLInputElement>()
-    popupRef = createObservableRef<HTMLDivElement>()
     revealStateRef = createObservableRef<RevealStateLazy>()
 
     selectedIndex: number = 0
@@ -46,9 +43,7 @@ export class AutoCompleteSelectState<OPTION> {
 
     constructor(public p: SelectProps<OPTION>) {
         makeAutoObservable(this, {
-            popupRef: false,
             anchorRef: false,
-            inputRef_fake: false,
             inputRef_real: false,
         })
     }
@@ -183,7 +178,7 @@ export class AutoCompleteSelectState<OPTION> {
     openMenuProgrammatically = (): void => {
         this.revealState?.log(`🔶 SelectSate openMenuProgrammatically`)
         this.revealStateRef.current?.getRevealState()?.open()
-        this.inputRef_real.current?.focus()
+        this.inputRef_real.current?.focus() // 🔴 never been tested
     }
 
     closeMenu(): void {

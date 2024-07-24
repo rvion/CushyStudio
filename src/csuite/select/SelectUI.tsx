@@ -23,7 +23,6 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             placement='autoVerticalStart'
             onHidden={() => {
                 s.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
-                s.revealState?.log(`🔴🔴🔴 ~ s.anchorRef.current: ${s.anchorRef.current}`)
                 // 🔴 should only focus anchor in certain cases?
                 // (ex: escape while in popup should probably focus the anchor?)
                 // (ex: clicking outside the popup should probably focus the anchor?)
@@ -40,6 +39,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     s={s}
                 />
             )}
+            sharedAnchorRef={s.anchorRef}
         >
             <Frame
                 expand
@@ -49,7 +49,6 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 tw={['UI-Select minh-input', 'relative', 'h-full']}
                 border={{ contrast: border }}
                 className={p.className}
-                ref={s.anchorRef} // 🔴🔴🔴🔴
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
                 onKeyDown={(ev) => {
                     // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!

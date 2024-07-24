@@ -19,7 +19,7 @@ import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopu
 
 export const RevealUI = observer(
     forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
-        const ref = useRef<HTMLDivElement>(null)
+        const ref = p.sharedAnchorRef ?? useRef<HTMLDivElement>(null) // 🔴
         const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
 
         // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.

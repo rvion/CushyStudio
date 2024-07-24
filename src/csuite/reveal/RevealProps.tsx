@@ -88,5 +88,7 @@ export type RevealProps = {
 
     // avoid extra div ------------------------------------------------------------------
     UNSAFE_cloned?: boolean
+
+    sharedAnchorRef?: React.RefObject<HTMLDivElement>
 }
 export const DEBUG_REVEAL = true
