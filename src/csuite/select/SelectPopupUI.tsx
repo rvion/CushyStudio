@@ -4,6 +4,7 @@ import type { AutoCompleteSelectState } from './SelectState'
 import { observer } from 'mobx-react-lite'
 import { FixedSizeList } from 'react-window'
 
+import { Frame } from '../frame/Frame'
 import { InputStringUI } from '../input-string/InputStringUI'
 import { SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
 
@@ -94,15 +95,17 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                     itemData={{ s, reveal: p.reveal }}
                 />
             ) : (
-                s.filteredOptions.map((option, index) => (
-                    <SelectOptionUI<T> //
-                        key={s.getKey(option)}
-                        index={index}
-                        reveal={p.reveal}
-                        option={option}
-                        state={s}
-                    />
-                ))
+                <Frame col tw='max-h-96'>
+                    {s.filteredOptions.map((option, index) => (
+                        <SelectOptionUI<T> //
+                            key={s.getKey(option)}
+                            index={index}
+                            reveal={p.reveal}
+                            option={option}
+                            state={s}
+                        />
+                    ))}
+                </Frame>
             )}
         </div>
     )
