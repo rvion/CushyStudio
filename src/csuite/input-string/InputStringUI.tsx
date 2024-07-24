@@ -88,7 +88,7 @@ export const InputStringUI = observer(
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
                         : { contrast: csuite.inputBorder }
                 }
-                tw={['h-input flex items-center relative text-sm rounded-sm']}
+                tw={['UI-InputString h-input flex items-center relative text-sm rounded-sm']}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
                         const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement

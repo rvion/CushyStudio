@@ -114,6 +114,11 @@
     opacity: 100% !important;
 }
 
+.UI-Select,
+.UI-InputNumber,
+.UI-InputString {
+}
+
 /* ------------------------------------------------------------------------------------------- */
 /* make sure cushy default inputs look like custom inputs */
 .csuite-input:focus,

@@ -74,8 +74,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 // }}
             >
                 <Ikon.mdiTextBoxSearchOutline //
-                    tw='box-border m-[2px]'
-                    size='calc((var(--input-height) - 4px - 2px)' // 2px for parent border + 2 * 2px for icon padding
+                    tw='box-border ml-[5px] mr-[2px]'
+                    size='calc((var(--input-height) - 4px - 4px)' // 2px for parent border + 2 * 2px for icon padding
                 />
 
                 <SelectValueContainerUI // list of currently selected values
@@ -86,7 +86,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
 
                 <Ikon.mdiChevronDown // 'v' caret to indicate this is a select
                     tw='box-border ml-auto m-[2px]'
-                    size='calc((var(--input-height) - 4px - 2px)'
+                    size='calc((var(--input-height) - 4px - 4px)'
                 />
             </Frame>
         </RevealUI>

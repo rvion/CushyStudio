@@ -255,6 +255,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             className={p.className}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
+                'UI-InputNumber',
                 p.disabled && 'pointer-events-none opacity-25',
                 'h-input relative',
                 'input-number-ui',
