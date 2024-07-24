@@ -322,13 +322,13 @@ export class RevealState {
     enterTooltipTimeoutId: NodeJS.Timeout | null = null
     leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
-    onMouseEnterTooltip = (): void => {
+    onMouseEnterTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
         this.log(`_ onMouseEnterTooltip`)
         this._resetAllTooltipTimouts()
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
 
-    onMouseLeaveTooltip = (): void => {
+    onMouseLeaveTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
         this.log(`_ onMouseLeaveTooltip`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllTooltipTimouts()

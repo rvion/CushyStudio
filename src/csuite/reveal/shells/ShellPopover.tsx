@@ -12,8 +12,8 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             className={uist.p.tooltipWrapperClassName}
             tw={['_RevealUI pointer-events-auto']}
             onClick={(ev) => ev.stopPropagation()}
-            onMouseEnter={uist.onMouseEnterTooltip}
-            onMouseLeave={uist.onMouseLeaveTooltip}
+            onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.onMouseEnterTooltip(ev)}
+            onMouseLeave={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.onMouseLeaveTooltip(ev)}
             // onContextMenu={uist.open}
             style={uist.posCSS}
         >
