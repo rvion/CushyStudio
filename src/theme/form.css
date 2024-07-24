@@ -1,3 +1,7 @@
+*:focus {
+    outline: double 2px red !important;
+}
+
 /* global vars ------------------------------------------------------------------------------------ */
 :root {
     /* --widget-height: 3rem; */

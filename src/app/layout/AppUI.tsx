@@ -61,14 +61,14 @@ export const CushyUI = observer(function CushyUI_() {
             <div
                 id='CushyStudio'
                 tabIndex={-1}
-                onClick={(ev) => {
-                    // if a click has bubbled outwards up to the body, then we want to close various things
-                    // such as contet menus, tooltips, Revals, etc.
-                    runInAction(() => {
-                        RevealState.shared.current?.close()
-                        RevealState.shared.current = null
-                    })
-                }}
+                // ❌ onClick={(ev) => {
+                // ❌     // if a click has bubbled outwards up to the body, then we want to close various things
+                // ❌     // such as contet menus, tooltips, Revals, etc.
+                // ❌     runInAction(() => {
+                // ❌         RevealState.shared.current?.close()
+                // ❌         RevealState.shared.current = null
+                // ❌     })
+                // ❌ }}
                 ref={appRef}
                 tw={[
                     'col grow h-full overflow-clip',

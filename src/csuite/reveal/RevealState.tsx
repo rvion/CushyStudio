@@ -30,12 +30,17 @@ export class RevealState {
     }
 
     onLeftClickAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        const toc = this.shouldRevealOnAnchorClick
-        if (!toc) return
+        if (this.isVisible) {
+            // console.log(`[🔴] A`)
+            if (!this.shouldHideOnAnchorClick) return
+            this.close()
+        } else {
+            // console.log(`[🔴] B`)
+            if (!this.shouldRevealOnAnchorClick) return
+            this.open()
+        }
+
         ev.stopPropagation()
-        // ev.preventDefault()
-        if (this.isVisible) this.close()
-        else this.open()
     }
 
     /**
@@ -236,7 +241,7 @@ export class RevealState {
     }
 
     close = (): void => {
-        if (DEBUG_REVEAL) console.log(`[🔴] CLOSING REVEAL  ${this.ix}`)
+        if (DEBUG_REVEAL) console.warn(`[🔴] close  ${this.ix}`)
         const wasVisible = this.isVisible
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
@@ -281,8 +286,9 @@ export class RevealState {
         this._resetAllTooltipTimouts()
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
+
     onMouseLeaveTooltip = (): void => {
-        if (this.shouldRevealOnAnchorClick) return
+        if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
     }
@@ -337,14 +343,15 @@ export class RevealState {
 
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
         if (!this.shouldRevealOnAnchorFocus) return
-        console.log(`[🔴] SelectUI > onFocus`)
+        console.warn(`[🔴] SelectUI > onFocus`)
         if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
             this.open()
         }
     }
 
     onBlurAnchor = (): void => {
-        if (!this.shouldRevealOnAnchorFocus) return
+        if (!this.shouldHideOnAnchorBlur) return
+        // 🔴 TODO
         // this.close()
     }
 
