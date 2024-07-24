@@ -5,3 +5,5 @@ TODO:
 - [ ] 2024-07-24: pressing esc doesn't properly put focus back to the select
 - [ ] 2024-07-25: selecting a value reset the popup position => makes it super-hard to select values down the list
 - [ ] 2024-07-24: built-in nullability (no more boolean before the value)
+- [ ] hovering the select anchor is applying hover effect on the popup, it should not
+- [ ] adding enough items to cause the select to wrap is not properly updating the associated reveal position => it should go down a bit
