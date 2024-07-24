@@ -8,10 +8,14 @@ import { hashStringToNumber } from '../hashUtils/hash'
 export const BadgeUI = observer(function BadgeUI_({
     hue,
     autoHue,
+    chroma,
+    contrast,
     children,
     ...rest
 }: {
     /** oklch hue */
+    chroma?: number
+    contrast?: number
     hue?: number
     /**
      * practical way to enforce consistent hue for a given string
@@ -28,7 +32,8 @@ export const BadgeUI = observer(function BadgeUI_({
             tw={['leading-normal', 'rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer', 'w-fit']}
             hover={hasAction}
             base={{
-                //
+                contrast: contrast ?? 0.1,
+                chroma: chroma ?? 0.05,
                 hue:
                     hue ??
                     (autoHue != null
@@ -38,8 +43,6 @@ export const BadgeUI = observer(function BadgeUI_({
                                 : undefined
                             : hashStringToNumber(autoHue)
                         : undefined),
-                contrast: 0.1,
-                chroma: 0.05,
             }}
             {...rest}
         >
