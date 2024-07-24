@@ -86,7 +86,7 @@ export class RevealState {
         // | 📈 const stop = spy((ev) => {
         // | 📈     console.log(`[🤠] ev`, ev)
         // | 📈 })
-        makeAutoObservable(this, { uid: false, p: false })
+        makeAutoObservable(this, { uid: false, p: false, PREVENT_DOUBLE_OPEN_CLOSE_DELAY: false, delaySinceLastOpenClose: false })
         // | 📈 stop()
     }
 
@@ -269,6 +269,7 @@ export class RevealState {
     // ---
     open = (): void => {
         this.log(`🚨 open`)
+        this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
         /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
@@ -280,6 +281,7 @@ export class RevealState {
 
     close = (): void => {
         this.log(`🚨 close`)
+        this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
@@ -381,18 +383,30 @@ export class RevealState {
         this.subRevealsCurrentlyVisible.delete(depth)
     }
 
+    lastOpenClose = 0
+    get delaySinceLastOpenClose(): number {
+        return Date.now() - this.lastOpenClose
+    }
+    get PREVENT_DOUBLE_OPEN_CLOSE_DELAY(): boolean {
+        return this.delaySinceLastOpenClose < 50
+    }
+
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
-        this.log(`_ onFocusAnchor (neutralized: ${this._mouseDown})`)
+        this.log(`_ onFocusAnchor (mouseDown: ${this._mouseDown}) (⏳: ${this.delaySinceLastOpenClose})`)
 
         // 🔶 when we click, we get
         // focus event -> menu opens -> left click event -> visible is already true -> left click goes into the wrong branch
         // so we prevent the conflict by disabling focus triggers when mouse is down
         if (this._mouseDown) return
 
+        // 🔶 another loop here: when we focus due to closure, it reopens due to focus...
+        if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
+
         if (!this.shouldRevealOnAnchorFocus) return
 
         // if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) // 🔶 not needed anymore?
         this.open()
+
         ev.stopPropagation()
         ev.preventDefault()
     }
@@ -404,11 +418,11 @@ export class RevealState {
     }
 
     onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
-        this.log(`_ onAnchorOrShellKeyDown`)
+        this.log(`_ onAnchorOrShellKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
 
-        // 🔴🔴  WE MAY GET A SIMILAR RACE CONDITION WITH FOCUS/BLUR & this.isVisible HERE (but it probably doesn't matter)
-        // 🔴🔴🔴 Actually we get one and it's annoying:
-        // enter in option list => toggle => close => calls onAnchorKeyDown with visible now false => re-opens :(
+        // 🔶 without delay: press 'Enter' in option list => toggle => close popup => calls onAnchorKeyDown 'Enter' with visible now false => re-opens :(
+        if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
+
         if (this.shouldRevealOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
             this.log(`_ onAnchorOrShellKeyDown: maybe open (visible: ${this.isVisible})`)
             const letterCode = ev.keyCode
@@ -422,7 +436,6 @@ export class RevealState {
             }
         }
 
-        // 🔴🔴  WE MAY GET A SIMILAR RACE CONDITION WITH FOCUS/BLUR & this.isVisible HERE (but it probably doesn't matter)
         if (ev.key === 'Escape' && this.isVisible && this.shouldHideOnKeyboardEscape) {
             this.log(`_ onAnchorOrShellKeyDown: close via Escape (visible: ${this.isVisible})`)
             this.close()
