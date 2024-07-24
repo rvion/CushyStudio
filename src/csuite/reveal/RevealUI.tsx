@@ -12,7 +12,7 @@ import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { RevealStateLazy } from './RevealStateLazy'
-import { ShellFocus } from './shells/ShellFocus'
+import { RevealBackdropUI } from './shells/ShellFocus'
 import { ShellNoneUI } from './shells/ShellNone'
 import { ShellPopoverUI } from './shells/ShellPopover'
 import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopupUI'
@@ -160,7 +160,7 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
     const ShellUI: React.FC<RevealShellProps> = ((): FC<RevealShellProps> => {
         const s = p.shell
         if (s === 'popover') return ShellPopoverUI
-        if (s === 'focus') return ShellFocus
+        if (s === 'focus') return RevealBackdropUI // <--- REMOVE ME, not legacy 🔴
         if (s === 'none') return ShellNoneUI
         //
         if (s === 'popup') return ShellPopupUI
@@ -169,10 +169,12 @@ const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
         if (s === 'popup-lg') return ShellPopupLGUI
         if (s === 'popup-xl') return ShellPopupLGUI
 
-        // we need a shell with a backdrop here, (should probably be transparent though)
-        if (s == null && uist.hideTriggers.clickOutside) return ShellFocus
-
         return s ?? ShellPopoverUI
+
+        // 2024-07-24 @domi: we need a shell with a backdrop here, (should probably be transparent though)
+        //  | if (s == null && uist.hideTriggers.clickOutside) return RevealBackdropUI
+        // 2024-07-25 @rvion: YUP, let's have that for all shells in a generic way instead ?
+        //  | I went though a few use-caseds, seems to fit perfectly and solve the issue
     })()
 
     const revealedContent = (

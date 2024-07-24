@@ -4,8 +4,8 @@ import type { ReactNode } from 'react'
 
 export type RevealShellProps = {
     //
-    reveal: RevealState
     pos: RevealComputedPosition
+    reveal: RevealState
     children?: ReactNode
 }
 

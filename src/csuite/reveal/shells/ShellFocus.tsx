@@ -1,12 +1,19 @@
-import type { RevealShellProps } from './ShellProps'
+import type { RevealState } from '../RevealState'
 
 import { observer } from 'mobx-react-lite'
+import { type ReactNode } from 'react'
 
 import { global_RevealStack } from '../RevealStack'
 
-export const ShellFocus = observer(function ShellFocus_({ reveal, children }: RevealShellProps) {
+export const RevealBackdropUI = observer(function RevealBackdropUI_({
+    reveal,
+    children,
+}: {
+    reveal: RevealState
+    children?: ReactNode
+}) {
     return (
-        <div // backdrop
+        <div
             ref={(e) => {
                 // ⁉️ why is this here
                 if (e == null) {
@@ -15,8 +22,11 @@ export const ShellFocus = observer(function ShellFocus_({ reveal, children }: Re
                 }
                 global_RevealStack.push(reveal)
             }}
-            onClick={reveal.onBackdropClick}
-            style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
+            // ON MOUSE DOWN IS SAFE; WON'T TRIGGER ON INITIAL APPEARANCE LIKE A CLICK WOULD
+            onMouseDown={(ev) => {
+                reveal.onBackdropClick(ev)
+            }}
+            style={{ zIndex: 99999999, backgroundColor: '#000000aa' }}
             tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
         >
             {children}

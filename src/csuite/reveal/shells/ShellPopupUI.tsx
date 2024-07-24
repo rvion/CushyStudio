@@ -23,7 +23,7 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 if (e == null) return global_RevealStack.filter((p) => p !== reveal)
                 global_RevealStack.push(reveal)
             }}
-            onClick={reveal.onBackdropClick}
+            onMouseDown={(ev) => reveal.onBackdropClick(ev)}
             style={{
                 zIndex: 99999999,
                 backgroundColor: '#0000003d',

@@ -3,10 +3,11 @@ import type { RevealShellProps } from './ShellProps'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../frame/Frame'
+import { RevealBackdropUI } from './ShellFocus'
 
 export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellProps) {
     const uist = p.reveal
-    return (
+    const content = (
         <Frame
             shadow
             className={uist.p.tooltipWrapperClassName}
@@ -44,4 +45,9 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             }
         </Frame>
     )
+    if (uist.hideTriggers.clickOutside) {
+        return <RevealBackdropUI reveal={uist}>{content}</RevealBackdropUI>
+    }
+
+    return content
 })
