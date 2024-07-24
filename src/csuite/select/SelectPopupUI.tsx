@@ -13,8 +13,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     //
     reveal: RevealState
     s: AutoCompleteSelectState<T>
-    /** @default true */
-    showValues: boolean
 }) {
     const s = p.s
 
@@ -29,13 +27,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
     const itemSize = typeof s.p.virtualized === 'number' ? s.p.virtualized : 30
     return (
         <div style={{ minWidth }}>
-            {/* {(p.showValues ?? true) && (
-                <div // list of all currently selected values
-                    tw={['overflow-auto flex flex-wrap gap-0.5']} // 'max-w-sm',
-                >
-                    {s.displayValue}
-                </div>
-            )} */}
             <InputStringUI
                 autofocus
                 icon='mdiSelectMarker'
