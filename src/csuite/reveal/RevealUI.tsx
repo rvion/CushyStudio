@@ -92,7 +92,7 @@ export const RevealUI = observer(
                 child,
                 {
                     // @ts-ignore
-                    ref: ref,
+                    ref: ref, // 🔴🔴 I guess we're overriding the Frame's ref={s.anchorRef} here?
                     style: objectAssignTsEfficient_t_t(p.style ?? {}, child.props?.style),
                     className: cls(child.props?.className, p.className),
                     onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
