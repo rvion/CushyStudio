@@ -19,14 +19,21 @@ export const MenuItem = observer(function DropdownItem_(p: {
     className?: string
     children?: ReactNode
     label?: ReactNode
-    localShortcut?: CushyShortcut
-    globalShortcut?: CushyShortcut
     loading?: boolean
     /** right before the (menu shortcust) */
+    localShortcut?: CushyShortcut
+    globalShortcut?: CushyShortcut
     beforeShortcut?: ReactNode
     afterShortcut?: ReactNode
 }) {
-    const { size, label, disabled, icon, children, active, onClick, ...rest } = p
+    // prettier-ignore
+    const {
+        //
+        size, label, disabled, icon, children, active,
+        localShortcut, globalShortcut, beforeShortcut, afterShortcut,
+        onClick,
+        ...rest
+    } = p
     return (
         <Frame
             loading={p.loading}
@@ -62,14 +69,14 @@ export const MenuItem = observer(function DropdownItem_(p: {
             <div tw='flex items-center'>
                 {label}
                 {children}
-                {p.beforeShortcut}
-                {p.localShortcut ? (
-                    <div tw='ml-auto pl-2 text-xs italic'>{p.localShortcut && <ComboUI combo={p.localShortcut} />}</div>
+                {beforeShortcut}
+                {localShortcut ? (
+                    <div tw='ml-auto pl-2 text-xs italic'>{localShortcut && <ComboUI combo={localShortcut} />}</div>
                 ) : null}
-                {p.globalShortcut ? (
-                    <div tw='ml-auto pl-2 text-xs italic'>{p.globalShortcut && <ComboUI combo={p.globalShortcut} />}</div>
+                {globalShortcut ? (
+                    <div tw='ml-auto pl-2 text-xs italic'>{globalShortcut && <ComboUI combo={globalShortcut} />}</div>
                 ) : null}
-                {p.afterShortcut}
+                {afterShortcut}
             </div>
         </Frame>
     )
