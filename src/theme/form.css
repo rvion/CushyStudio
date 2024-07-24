@@ -37,6 +37,13 @@
     min-height: var(--input-height);
     @apply text-sm;
 }
+.box.box-square.box-widget {
+    width: var(--widget-height);
+    height: var(--widget-height);
+    min-width: var(--widget-height);
+    min-height: var(--widget-height);
+    @apply text-sm;
+}
 
 .box.box-square.box-xs { @apply w-6  h-6; }
 .box.box-square.box-sm { @apply w-8  h-8; }
@@ -47,6 +54,11 @@
 .box.box-input {
     height: var(--input-height);
     min-height: var(--input-height);
+    @apply text-sm;
+}
+.box.box-widget {
+    height: var(--widget-height);
+    min-height: var(--widget-height);
     @apply text-sm;
 }
 
