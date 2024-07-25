@@ -26,7 +26,17 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 'InputBoolToggleButtonUI minh-input !select-none cursor-pointer px-1 text-sm flex items-center',
                 p.showToggleButtonBox ? undefined : 'justify-center',
             ]}
+            onKeyDown={(ev) => {
+                if (ev.key === 'Enter') {
+                    p.onValueChange?.(!isActive)
+                    ev.preventDefault()
+                } else if (ev.key === ' ') {
+                    p.onValueChange?.(!isActive)
+                    ev.preventDefault()
+                }
+            }}
             // boxShadow={{ inset: true, y: -3, blur: 5, spread: 0, color: 5 }}
+            tabIndex={0}
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
             tooltip={p.tooltip}
