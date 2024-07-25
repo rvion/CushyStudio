@@ -19,6 +19,7 @@ export const Dropdown = (p: {
 }) => (
     <RevealUI
         tw={[p.className]}
+        hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
         content={() => (
             <Frame tabIndex={0} tw='flex flex-col z-[1]'>
                 {p.content?.()}

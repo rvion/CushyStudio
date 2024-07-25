@@ -6,7 +6,6 @@ import React from 'react'
 
 // prettier-ignore
 export type KnownShells =
-    | 'focus'
     | 'none'
     | 'popover'
     | 'popup'
@@ -39,15 +38,16 @@ export type RevealHideTrigger =
     | 'blurAnchor'
     // | 'blurTooltip' // not sure we need this one
     | 'clickAnchor'
-    | 'clickOutside' // via shell backdrop
-    | 'clickAndMouseOutside'
+    | 'backdropClick' // via shell backdrop
+    | 'shellClick' // via shell (not backdrop)
     | 'none'
 
 export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
-export type HideReason =
+export type RevealHideReason =
     | 'clickAnchor' //
-    | 'clickOutside'
+    | 'backdropClick'
+    | 'shellClick' // via shell (not backdrop)
     | 'mouseOutside'
     | 'tabKey'
     | 'shiftTabKey'
@@ -81,7 +81,7 @@ export type RevealProps = {
 
     // callbacks if we need to add side effects after reveal/hide
     onRevealed?: () => void
-    onHidden?: (reason: HideReason) => void
+    onHidden?: (reason: RevealHideReason) => void
 
     // SHOW triggers ------------------------------------------------------------------
     showDelay?: number /** only for hover */

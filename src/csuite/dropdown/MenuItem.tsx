@@ -25,10 +25,12 @@ export const MenuItem = observer(function DropdownItem_(p: {
     globalShortcut?: CushyShortcut
     beforeShortcut?: ReactNode
     afterShortcut?: ReactNode
+    stopPropagation?: boolean
 }) {
     // prettier-ignore
     const {
         //
+        stopPropagation,
         size, label, disabled, icon, children, active,
         localShortcut, globalShortcut, beforeShortcut, afterShortcut,
         onClick,
@@ -45,8 +47,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
             // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
             hover={15}
             onClick={(ev) => {
-                ev.preventDefault()
-                ev.stopPropagation()
+                // ev.preventDefault()
+                if (stopPropagation) ev.stopPropagation()
                 return p.onClick?.(ev)
             }}
             style={{ lineHeight: '1.6rem' }}

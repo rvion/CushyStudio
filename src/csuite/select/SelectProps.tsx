@@ -1,6 +1,6 @@
 import type { FrameProps } from '../frame/Frame'
 import type { InputStringProps } from '../input-string/InputStringUI'
-import type { HideReason, RevealProps } from '../reveal/RevealProps'
+import type { RevealHideReason, RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState } from './SelectState'
@@ -79,7 +79,7 @@ export type SelectProps<OPTION> = {
      */
     wrap?: boolean
 
-    onHidden?: (reason: HideReason) => void
+    onHidden?: (reason: RevealHideReason) => void
     onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
     onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
     onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void

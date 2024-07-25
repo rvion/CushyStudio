@@ -3,6 +3,7 @@ import type { RevealContentProps } from '../shells/ShellProps'
 import { observer } from 'mobx-react-lite'
 
 import { simpleFactory } from '../../'
+import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
 import { RevealUI } from '../RevealUI'
 
@@ -149,6 +150,22 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
                     {anchor('focusable 2', { tabIndex: 0 })}
                 </RevealUI>
+            </Frame>
+
+            <Frame row tw='py-12'>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <RevealUI hideTriggers={{ blurAnchor: true }} trigger={'pseudofocus'} placement='top' content={Content}>
+                    {anchor('hide on blurAnchor', { tabIndex: 0 })}
+                </RevealUI>
+                <RevealUI hideTriggers={{ backdropClick: true }} trigger={'pseudofocus'} placement='top' content={Content}>
+                    {anchor('hide on backdropClick only', { tabIndex: 0 })}
+                </RevealUI>
+                <RevealUI hideTriggers={{ shellClick: true }} trigger={'pseudofocus'} placement='top' content={Content}>
+                    {anchor('hide on shellClick only', { tabIndex: 0 })}
+                </RevealUI>
+                <button>Button 3</button>
+                <button>Button 4</button>
             </Frame>
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
                 Text only

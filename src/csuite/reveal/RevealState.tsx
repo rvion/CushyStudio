@@ -1,5 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { HideReason, RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
+import type { RevealHideReason, RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
@@ -52,7 +52,16 @@ export class RevealState {
     }
 
     _mouseDown = false
+
     onMouseDownAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        // 🔴 why onMouseDownAnchor,onBlurAnchor and onFocusAnchor
+        // are called when clicking/blurring/focusing the shell ?!
+        // https://github.com/facebook/react/issues/19637
+        // => we don't want that to be triggered here
+        // if (isChildOf('_RevealUI', ev.target as HTMLElement)) return
+        // console.log(`   >>> target: `,isChildOf('_RevealUI', ev.target as HTMLElement), ev.target)
+        // console.log(`   >>> currentTarget: `,isChildOf('_RevealUI', ev.currentTarget as HTMLElement), ev.currentTarget)
+        // console.log(`   >>> relatedTarget: `,isChildOf('_RevealUI', ev.relatedTarget as HTMLElement), ev.relatedTarget)
         this.log(`_ ${XXX(ev)} onMouseDownAnchor`)
         this._mouseDown = true
     }
@@ -131,10 +140,10 @@ export class RevealState {
     get hideTriggers(): RevealHideTriggers {
         if (this.p.hideTriggers) return this.p.hideTriggers
         if (this.revealTrigger === 'none') return { none: true }
-        if (this.revealTrigger === 'click') return { clickAnchor: true, clickOutside: true, escapeKey: true, blurAnchor: true }
-        if (this.revealTrigger === 'clickAndHover') return { clickAnchor: true, clickOutside: true, clickAndMouseOutside: true, escapeKey: true, blurAnchor: true } // prettier-ignore
+        if (this.revealTrigger === 'click') return { clickAnchor: true, backdropClick: true, escapeKey: true }
+        if (this.revealTrigger === 'clickAndHover') return { clickAnchor: true, backdropClick: true, escapeKey: true } // prettier-ignore
         if (this.revealTrigger === 'hover') return { mouseOutside: true }
-        if (this.revealTrigger === 'pseudofocus') return { clickAnchor: true, clickOutside: true, escapeKey: true }
+        if (this.revealTrigger === 'pseudofocus') return { clickAnchor: true, backdropClick: true, escapeKey: true }
         exhaust(this.revealTrigger)
     }
 
@@ -156,11 +165,15 @@ export class RevealState {
     }
 
     get shouldHideOnAnchorOrTooltipMouseLeave(): boolean {
-        return this.hideTriggers.mouseOutside ?? this.hideTriggers.clickAndMouseOutside ?? false
+        return this.hideTriggers.mouseOutside ?? false
     }
 
-    get shouldHideOnClickOutside(): boolean {
-        return this.hideTriggers.clickOutside ?? this.hideTriggers.clickAndMouseOutside ?? false
+    get shouldHideOnBackdropClick(): boolean {
+        return this.hideTriggers.backdropClick ?? false
+    }
+
+    get shouldHideOnShellClick(): boolean {
+        return this.hideTriggers.shellClick ?? false
     }
 
     // REVEAL triggers ------------------------------------------------------
@@ -254,7 +267,7 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
-        this.log(`_ ${XXX(ev)} onMouseEnterAnchor`)
+        this.log(`_ ${XXX(ev)} anchor.onMouseEnter`)
         /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (this.isVisible) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()
@@ -263,7 +276,7 @@ export class RevealState {
     }
 
     onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
-        this.log(`_ ${XXX(ev)} onMouseLeaveAnchor`)
+        this.log(`_ ${XXX(ev)} anchor.onMouseLeave`)
         if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
@@ -282,7 +295,7 @@ export class RevealState {
         if (!wasVisible) this.p.onRevealed?.()
     }
 
-    close = (reason?: HideReason): void => {
+    close = (reason?: RevealHideReason): void => {
         this.log(`🚨 close`)
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
@@ -390,10 +403,15 @@ export class RevealState {
     get delaySinceLastOpenClose(): number {
         return Date.now() - this.lastOpenClose
     }
+
     get PREVENT_DOUBLE_OPEN_CLOSE_DELAY(): boolean {
         return this.delaySinceLastOpenClose < 50
     }
 
+    get hasBackdrop(): boolean {
+        // 🔴
+        return this.hideTriggers.backdropClick ?? false
+    }
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
         this.log(`_ ${XXX(ev)} onFocusAnchor (mouseDown: ${this._mouseDown}) (⏳: ${this.delaySinceLastOpenClose})`)
 
@@ -417,6 +435,10 @@ export class RevealState {
     onBlurAnchor = (ev: React.FocusEvent<unknown>): void => {
         this.log(`_ ${XXX(ev)} onBlurAnchor`)
         if (!this.shouldHideOnAnchorBlur) return
+        // if the element getting focus is in shell
+        // reveal should not be closed
+        if (isChildOf('._ShellForFocusEvents', ev.relatedTarget as HTMLElement)) return
+
         this.close('blurAnchor')
     }
 
@@ -451,7 +473,20 @@ export class RevealState {
 
     onBackdropClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
         this.log(`_ ${XXX(ev)} onBackdropClick`)
-        if (this.shouldHideOnClickOutside) this.close('clickOutside')
+        if (this.shouldHideOnBackdropClick) {
+            this.close('backdropClick')
+            ev.stopPropagation() // 🔴 there should be another props letting us know that the backdrop is transparent to clicks
+        }
+    }
+
+    /**
+     * called when a click even bubble upward and reach the shell
+     * if you don't want this to trigger, you should stop propagation
+     */
+    onShellClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
+        this.log(`_ ${XXX(ev)} onShellClick`)
+        if (this.shouldHideOnShellClick) this.close('shellClick')
+        ev.stopPropagation()
     }
 
     log(msg: string): void {
@@ -505,4 +540,13 @@ export class RevealState {
 
 function toCss(x: number | string): string {
     return typeof x == 'number' ? `${Math.round(x)}px` : x
+}
+
+function isChildOf(domSelector: string, elem: HTMLElement): boolean {
+    let at: Maybe<Element> = elem
+    while (at) {
+        if (at.matches(domSelector)) return true
+        at = at.parentElement
+    }
+    return false
 }

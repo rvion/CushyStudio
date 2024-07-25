@@ -1,4 +1,4 @@
-import type { HideReason } from '../reveal/RevealProps'
+import type { RevealHideReason } from '../reveal/RevealProps'
 import type { RevealState } from '../reveal/RevealState'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
@@ -182,7 +182,7 @@ export class AutoCompleteSelectState<OPTION> {
         this.inputRef_real.current?.focus() // 🔴 never been tested
     }
 
-    closeMenu(reason: HideReason): void {
+    closeMenu(reason: RevealHideReason): void {
         this.revealState?.log(`🔶 SelectSate closeMenu`)
         this.revealStateRef.current?.state?.close(reason)
         // this.clean() // 🔶 called by onHidden

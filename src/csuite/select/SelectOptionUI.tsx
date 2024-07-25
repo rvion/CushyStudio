@@ -1,6 +1,5 @@
 import type { BoolButtonMode, BoolButtonProps } from '../checkbox/InputBoolUI'
 import type { RevealState } from '../reveal/RevealState'
-import type { RevealContentProps } from '../reveal/shells/ShellProps'
 import type { AutoCompleteSelectState } from './SelectState'
 import type { CSSProperties } from 'react'
 
