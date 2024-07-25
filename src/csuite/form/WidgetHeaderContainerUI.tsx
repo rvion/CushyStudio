@@ -12,7 +12,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
     const isCollapsed = field.isCollapsed
     return (
         <Frame
-            hover={1}
+            hover={2}
             className='UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH'
             tw={[
                 'flex gap-0.5 select-none',
