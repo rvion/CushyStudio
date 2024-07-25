@@ -161,7 +161,7 @@ function activate(context) {
     }
     const contrDecoration = [];
     activeEditor.setDecorations(iconDecorationType, iconDecoration);
-    const regEx2 = /@(globi|rvion|taha|gui|birdddev|ghusse|domi)/g;
+    const regEx2 = /@(globi|rvion|taha|gui|birdddev|Globidev|ghusse|domi|gggdomi)/g;
     while (match = regEx2.exec(text)) {
       const iconName = match[0];
       const iconPath = allIcons[iconName];
