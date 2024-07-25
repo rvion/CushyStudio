@@ -1,3 +1,8 @@
+import type { FrameProps } from '../frame/Frame'
+import type { InputStringProps } from '../input-string/InputStringUI'
+import type { HideReason, RevealProps } from '../reveal/RevealProps'
+import type { SelectOptionProps } from './SelectOptionUI'
+import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState } from './SelectState'
 
 import React from 'react'
@@ -51,6 +56,7 @@ export type SelectProps<OPTION> = {
     cleanable?: boolean
     hideValue?: boolean
     className?: string
+    style?: React.CSSProperties
 
     /**
      * @default: false if multi-select, true if single select
@@ -72,4 +78,19 @@ export type SelectProps<OPTION> = {
      * @default false
      */
     wrap?: boolean
+
+    onHidden?: (reason: HideReason) => void
+    onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
+    onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
+    onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
+    revealProps?: RevealProps
+    anchorProps?: FrameProps
+    popupWrapperProps?: FrameProps
+    textInputProps?: InputStringProps
+    slotTextInputUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+    slotPopupUI?: React.FC<SelectPopupProps<OPTION>>
+    slotAnchorContentUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+    slotDisplayValueUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+    slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+    slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
 }

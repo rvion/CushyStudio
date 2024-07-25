@@ -10,11 +10,12 @@ import { SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
 
 const trueMinWidth = '20rem'
 
-export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
-    //
+export type SelectPopupProps<OPTION> = {
     reveal: RevealState
-    selectState: AutoCompleteSelectState<T>
-}) {
+    selectState: AutoCompleteSelectState<OPTION>
+}
+
+export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
     const s = p.selectState
 
     // 'clientWidth:', s.anchorRef.current?.clientWidth, 466 => ❌ do not take border into account
@@ -27,60 +28,64 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
 
     const itemSize = typeof s.p.virtualized === 'number' ? s.p.virtualized : 30
     return (
-        <div style={{ minWidth }}>
-            <InputStringUI
-                autofocus
-                icon='mdiSelectMarker'
-                onFocus={(ev) => {
-                    s.revealState?.log(`🔶 input - onFocus (no op)`)
-                }}
-                onBlur={(ev) => {
-                    s.revealState?.log(`🔶 input - onBlur`)
-                    // s.anchorRef.current?.focus()
-                    // s.closeMenu()
-                    // TODO: check if the newly focused element is not a child of the popup
-                    // if it's a child of the popup, we should (possibly) refocus this instead
-                    // or do nothing
-                    // ⏸️ if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
-                    // ⏸️     s.closeMenu()
-                    // ⏸️ }
-                }}
-                onKeyDown={(ev) => {
-                    if (ev.key === 'Tab') {
-                        s.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
-                        const reason = ev.shiftKey ? 'shiftTabKey' : 'tabKey'
-                        s.closeMenu(reason)
-                        // 🔶 should probably focus the next select instead?
-                        // anyway, already handled via onHidden
-                        // s.anchorRef.current?.focus()
-                        ev.stopPropagation()
-                        ev.preventDefault()
-                        return
-                    }
+        <Frame col style={{ minWidth }} {...p.selectState.p.popupWrapperProps}>
+            {s.p.slotTextInputUI != null ? (
+                <s.p.slotTextInputUI
+                    select={s}
+                    // TODO: better props passing...
+                    // ref={s.inputRef_real}
+                />
+            ) : (
+                <InputStringUI
+                    autofocus
+                    icon='mdiSelectMarker'
+                    onFocus={(ev) => {
+                        s.revealState?.log(`🔶 input - onFocus (no op)`)
+                    }}
+                    onBlur={(ev) => {
+                        s.revealState?.log(`🔶 input - onBlur`)
+                    }}
+                    onKeyDown={(ev) => {
+                        if (ev.key === 'Tab') {
+                            s.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
+                            const reason = ev.shiftKey ? 'shiftTabKey' : 'tabKey'
+                            s.closeMenu(reason)
+                            // 🔶 should probably focus the next select instead?
+                            // anyway, already handled via onHidden
+                            // s.anchorRef.current?.focus()
+                            ev.stopPropagation()
+                            ev.preventDefault()
+                            return
+                        }
 
-                    // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
-                }}
-                placeholder={s.p.placeholder ?? 'Search...'}
-                ref={s.inputRef_real}
-                type='text'
-                getValue={() => s.searchQuery}
-                setValue={(next) => s.filterOptions(next)}
-                tw={[
-                    //
-                    'absolute top-0 left-0 right-0 z-50 h-full',
-                    'csuite-basic-input',
-                    'w-full h-full',
-                ]}
-            />
+                        // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
+                    }}
+                    placeholder={s.p.placeholder ?? 'Search...'}
+                    ref={s.inputRef_real}
+                    type='text'
+                    getValue={() => s.searchQuery}
+                    setValue={(next) => s.filterOptions(next)}
+                    tw={[
+                        //
+                        'absolute top-0 left-0 right-0 z-50 h-full',
+                        'csuite-basic-input',
+                        'w-full h-full',
+                    ]}
+                    // TODO: better props passing...
+                    {...p.selectState.p.textInputProps}
+                />
+            )}
 
             {/* No results */}
             {s.filteredOptions.length === 0 //
                 ? s.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>
                 : null}
 
-            {s.p.virtualized !== false ? (
+            {s.p.slotResultsListUI != null ? (
+                <s.p.slotResultsListUI select={s} />
+            ) : s.p.virtualized !== false ? (
                 <FixedSizeList<{
-                    s: AutoCompleteSelectState<T>
+                    s: AutoCompleteSelectState<OPTION>
                     reveal: RevealState
                 }>
                     useIsScrolling={false}
@@ -96,17 +101,27 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
                 />
             ) : (
                 <Frame col tw='max-h-96'>
-                    {s.filteredOptions.map((option, index) => (
-                        <SelectOptionUI<T> //
-                            key={s.getKey(option)}
-                            index={index}
-                            reveal={p.reveal}
-                            option={option}
-                            state={s}
-                        />
-                    ))}
+                    {s.filteredOptions.map((option, index) =>
+                        s.p.slotOptionUI != null ? (
+                            <s.p.slotOptionUI //
+                                key={s.getKey(option)}
+                                index={index}
+                                option={option}
+                                state={s}
+                                reveal={p.reveal}
+                            />
+                        ) : (
+                            <SelectOptionUI<OPTION> //
+                                key={s.getKey(option)}
+                                index={index}
+                                reveal={p.reveal}
+                                option={option}
+                                state={s}
+                            />
+                        ),
+                    )}
                 </Frame>
             )}
-        </div>
+        </Frame>
     )
 })

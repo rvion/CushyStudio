@@ -13,3 +13,4 @@ TODO:
 - [ ] adding enough items to cause the select to wrap is not properly updating the associated reveal position => it should go down a bit
 - [ ] single select: picking an item shouldn't close the popup => the MOUSE UP should. otherwise, drag & slide is broken
 - [🟢] put back the old select anchor code (using grid layout to avoid icons to be stretched)
+- [ ] reveal not hidden when clicking outside of the popup
