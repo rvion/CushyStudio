@@ -19,15 +19,18 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     const img = p.img
     return (
         <>
+            <MenuItem icon='mdiDelete' disabled={!img?.absPath} onClick={() => img.delete()}>
+                Delete
+            </MenuItem>
             <div className='divider my-1'>Send to</div>
-            <MenuItem icon={'mdiContentCopy'} onClick={(e) => img.copyToClipboard()}>
+            <MenuItem icon='mdiContentCopy' onClick={(e) => img.copyToClipboard()}>
                 Clipboard
             </MenuItem>
-            <MenuItem icon={'mdiContentCopy'} onClick={img.copyToClipboardAsBase64}>
+            <MenuItem icon='mdiContentCopy' onClick={img.copyToClipboardAsBase64}>
                 Copy Base64
             </MenuItem>
             <MenuItem
-                icon={'mdiOverscan'}
+                icon='mdiOverscan'
                 disabled={!img?.absPath}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
                 localShortcut='mod+click'
@@ -35,7 +38,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 Dedicated Panel
             </MenuItem>
             <MenuItem
-                icon={'mdiFocusAuto'}
+                icon='mdiFocusAuto'
                 disabled={!img?.absPath}
                 localShortcut='shift+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
@@ -43,7 +46,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 Unified Canvas
             </MenuItem>
             <MenuItem
-                icon={'mdiBrush'}
+                icon='mdiBrush'
                 disabled={!img?.absPath}
                 localShortcut='alt+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
@@ -64,7 +67,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 {ImagePathUIString(st.getConfigValue('favoriteLocalFolderPath'))}
             </MenuItem>
             <MenuItem
-                icon={'mdiFolder'}
+                icon='mdiFolder'
                 disabled={!img?.absPath}
                 onClick={() => {
                     if (!img?.absPath) return
@@ -87,13 +90,10 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 Open
             </MenuItem>
             <div className='divider my-1'>Draft</div>
-            <MenuItem className='_MenuItem' onClick={() => img.useAsDraftIllustration()}>
-                <div className='flex items-center gap-2'>'image' Use as Draft Illustration</div>
+            <MenuItem icon='mdiPin' className='_MenuItem' onClick={() => img.useAsDraftIllustration()}>
+                <div className='flex items-center gap-2'>Use as Draft Illustration</div>
             </MenuItem>
             <div className='divider my-0'></div>
-            <MenuItem icon={'mdiDelete'} disabled={!img?.absPath} onClick={() => img.delete()}>
-                Delete
-            </MenuItem>
             <ImageActionMenu img={img} />
         </>
     )
@@ -118,6 +118,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                     <div key={app.id}>
                         {app.drafts.map((d) => (
                             <MenuItem
+                                icon='mdiPlay'
                                 key={d.id}
                                 className='_MenuItem'
                                 onClick={() => {
