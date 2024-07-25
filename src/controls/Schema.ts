@@ -4,7 +4,7 @@ import type { Field } from '../csuite/model/Field'
 import type { Repository } from '../csuite/model/Repository'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
-import { createElement, type ReactNode } from 'react'
+import { createElement } from 'react'
 
 import { Field_list, Field_list_config } from '../csuite/fields/list/FieldList'
 import { Field_optional } from '../csuite/fields/optional/FieldOptional'
@@ -85,8 +85,6 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
         const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
         const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
         return cloned as this
-
-        // 2024-07-17YOLO🦀🦊 dont' rewrite this here
     }
 
     optional(startActive: boolean = false): X.XOptional<this> {
