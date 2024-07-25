@@ -17,14 +17,18 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
             }}
             style={{
                 zIndex: 99999999,
-                backgroundColor: '#00000022',
             }}
             tw={[
                 //
-                'animate-in fade-in',
-                'pointer-events-auto w-full h-full flex items-center justify-center z-50 absolute',
+                'w-full h-full',
+                'pointer-events-auto justify-center z-50 absolute',
+                'flex items-center',
             ]}
         >
+            <div //
+                style={{ backgroundColor: '#00000022' }}
+                tw='absolute inset-0 animate-in fade-in'
+            ></div>
             {children}
         </div>
     )
