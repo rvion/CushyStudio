@@ -30,6 +30,10 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
             items: { [k in keyof T]: T[k]['$Value'] },
             self: Field_group<T>,
         ) => string
+        // TODO 1: remove summary from here and move it to the base field config directly
+        // TODO 2: stop passing values to that function, only pass the field directly
+        // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
+        // TODO 4: add various .customXXX on each ....
     },
     Field_group_types<T>
 >
@@ -66,27 +70,66 @@ type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
-    formFields(fields: (keyof T | Accessor<this>)[], props?: { showMore?: (keyof T)[] | false }): FC<NO_PROPS> {
+    /**
+     * @deprecated use customForm instead
+     * formFields has been renamed to customForm on the 2024-07-25 for parity
+     * with
+     */
+    formFields(
+        fields: (keyof T | Accessor<this>)[],
+        props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
+    ): FC<NO_PROPS> {
+        return this.customForm(fields, props)
+    }
+
+    // ⏸️ customCell(
+    // ⏸️     _fields: (keyof T | Accessor<this>)[],
+    // ⏸️     _props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
+    // ⏸️ ): FC<NO_PROPS> {
+    // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
+    // ⏸️ }
+
+    customForm(
+        fields: (keyof T | Accessor<this>)[],
+        props?: {
+            showMore?: (keyof T)[] | false
+            readonly?: boolean
+            /**
+             * @stability beta
+             * UNFINISHED
+             */
+            usage?: 'cell' | 'default' | 'text'
+        },
+    ): FC<NO_PROPS> {
         const sm = props?.showMore
-        return () => (
-            <Frame>
-                {fields.map((f) => {
-                    if (typeof f === 'function') {
-                        const res = f(this)
-                        return res({})
-                    }
-                    return this.fields[f]!.renderWithLabel({ fieldName: f as string })
-                })}
-                {sm !== false && (
-                    <CollapsibleUI
-                        content={() => {
-                            const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
-                            return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
-                        }}
-                    />
-                )}
-            </Frame>
-        )
+        return () => {
+            // ⏸️ const defUsage = props?.usage ?? 'default'
+            return (
+                <Frame>
+                    {fields.map((f) => {
+                        if (typeof f === 'function') {
+                            const res = f(this)
+                            return res({})
+                        }
+
+                        // ⏸️ if (props?.usage === 'cell') {
+                        // ⏸️     return this.fields[f]!.renderCell()
+                        // ⏸️     return this.fields[f]!.renderSkin('cell')
+                        // ⏸️ }
+
+                        return this.fields[f]!.renderWithLabel({ fieldName: f as string })
+                    })}
+                    {sm !== false && (
+                        <CollapsibleUI
+                            content={() => {
+                                const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
+                                return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
+                            }}
+                        />
+                    )}
+                </Frame>
+            )
+        }
     }
 
     form(

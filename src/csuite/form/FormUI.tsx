@@ -14,6 +14,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 export type FormUIProps = {
     // form ---------------------------------------------------------
     field: Maybe<Field>
+    // ⏸️ skin?: 'default' | 'cell' | 'text' | 'whatev'
 
     Header?: FC<NO_PROPS>
     Component?: FC<NO_PROPS>
