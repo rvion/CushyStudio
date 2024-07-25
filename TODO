@@ -1,25 +1,31 @@
 2024-07-17:
-    ☐ multiple withConfig / rank-1 types
-    ☐ // 2024-07-17YOLO🦀🦊
-    ☐ well known skins
-    ☐ render du RevealUI (aussi présent sur le FormUI)
-    ☐ inputHeight / widgetHeight
+    ☐ well known skins @started(24-07-25 16:33)
+        ☐ WidgetWithLabelUI:
+            ☐ new flag { vertical?: boolean, ...}
+        ☐ DefaultCellUI: (guarantee to always be ONE cell height)
+        ☐ readonly property on any Widget (bloc)
+    ✘ multiple withConfig / rank-1 types @cancelled(24-07-25 16:33)
+    ✔ // 2024-07-17YOLO🦀🦊 @done(24-07-25 16:33)
+    ✔ render du RevealUI @done(24-07-25 16:32)
+        ☐ (aussi présent sur le FormUI)
+    ✔ discuter inputHeight / widgetHeight @done(24-07-25 16:33)
+        ☐ renommer 'widget' => 'cell', ajouter 'inside'
     ☐ migration system
     ☐ inputUpload
     ☐ customize select agressively so we have one version that looks like notion
 
 2024-07-15:
-    ☐ list identation
-    ☐ list sub-items boxes not taken into account
+    ✔ list identation @done(24-07-25 16:33)
+    ✔ list sub-items boxes not taken into account @done(24-07-25 16:33)
 
 2024-07-12:
-    ☐ repository not as property of other classes, but as param with defulat from DI mechanism
-    ☐ csuite expect globalRepo to exist/be available via DI
-    ☐ csuite expect globalDomain to exist/be available via DI
-    ☐ Builder and Schema do not know the repository that will host the instances
-    ☐ schema must NOT know its builder (it's irrelevant)
-    ☐ basebuilder MUST take the schema class as ctor so we can re-use it.
-    ☐ BASE schema must be able to change it's ctor.
+    ✔ repository not as property of other classes, but as param with defulat from DI mechanism @done(24-07-25 16:34)
+    ✔ csuite expect globalRepo to exist/be available via DI @done(24-07-25 16:34)
+    ✘ csuite expect globalDomain to exist/be available via DI @cancelled(24-07-25 16:39)
+    ✔ Builder and Schema do not know the repository that will host the instances @done(24-07-25 16:39)
+    ✔ schema must NOT know its builder (it's irrelevant) @done(24-07-25 16:39)
+    ✘ basebuilder MUST take the schema class as ctor so we can re-use it. @cancelled(24-07-25 16:39)
+    ✘ BASE schema must be able to change it's ctor. @cancelled(24-07-25 16:39)
 
 2024-07-11:
     ✘ only a single schema class @cancelled(24-07-12 16:15)
