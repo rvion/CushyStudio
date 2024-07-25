@@ -16,6 +16,7 @@ import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
+import { PlaygroundSizeUI } from './PlaygroundSize'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
 const Header_Playground = cushyFactory.entity(
@@ -25,16 +26,17 @@ const Header_Playground = cushyFactory.entity(
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
-                forms: ui.group(),
-                customPanels: ui.group(),
-                requirements: ui.group(),
-                registeredForms: ui.group(),
-                widgetShowcase: ui.group(),
-                scratchPad: ui.group(),
-                graph: ui.group(),
-                comfyImport: ui.group(),
-                messages: ui.group(),
-                select: ui.group(),
+                forms: ui.empty(),
+                customPanels: ui.empty(),
+                requirements: ui.empty(),
+                registeredForms: ui.empty(),
+                widgetShowcase: ui.empty(),
+                scratchPad: ui.empty(),
+                graph: ui.empty(),
+                comfyImport: ui.empty(),
+                messages: ui.empty(),
+                select: ui.empty(),
+                size: ui.empty(),
             },
         }),
     {
@@ -83,6 +85,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.customPanels && <PlaygroundCustomPanelsUI />}
                 {mode.messages && <PlaygroundMessages />}
                 {mode.select && <PlaygroundSelectUI />}
+                {mode.size && <PlaygroundSizeUI />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
         </Frame>
