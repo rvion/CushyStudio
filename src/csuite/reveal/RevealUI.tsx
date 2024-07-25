@@ -24,7 +24,7 @@ export const RevealUI = observer(
 
         // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
         const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState())), []) // prettier-ignore
-        const { state: uistOrNull } = lazyState
+        const { state: reveal } = lazyState
         const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
 
         useEffect(() => {
@@ -35,14 +35,13 @@ export const RevealUI = observer(
 
         // once updated, make sure to keep props in sync so hot reload work well enough.
         useEffect(() => {
-            const revealSt = uistOrNull
-            if (revealSt == null) return
-            if (p.content !== revealSt.p.content)
-                revealSt.contentFn = (): JSX.Element => createElement(p.content, revealSt.revealContentProps)
-            if (p.trigger !== revealSt.p.trigger) revealSt.p.trigger = p.trigger
-            if (p.placement !== revealSt.p.placement) revealSt.p.placement = p.placement
-            if (p.showDelay !== revealSt.p.showDelay) revealSt.p.showDelay = p.showDelay
-            if (p.hideDelay !== revealSt.p.hideDelay) revealSt.p.hideDelay = p.hideDelay
+            if (reveal == null) return
+            if (p.content !== reveal.p.content)
+                reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps)
+            if (p.trigger !== reveal.p.trigger) reveal.p.trigger = p.trigger
+            if (p.placement !== reveal.p.placement) reveal.p.placement = p.placement
+            if (p.showDelay !== reveal.p.showDelay) reveal.p.showDelay = p.showDelay
+            if (p.hideDelay !== reveal.p.hideDelay) reveal.p.hideDelay = p.hideDelay
         }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
 
         useEffect(() => {
@@ -51,21 +50,21 @@ export const RevealUI = observer(
 
         // update position in case something moved or scrolled
         useEffect(() => {
-            if (uistOrNull == null) return
-            if (!uistOrNull.isVisible) return
+            if (reveal == null) return
+            if (!reveal.isVisible) return
 
             // find element to attach to
             const element =
-                uistOrNull.p.relativeTo == null
+                reveal.p.relativeTo == null
                     ? ref.current
                     : // take the id by trimming the leading '#' ('#foo' => 'foo')
-                      document.getElementById(uistOrNull.p.relativeTo.slice(1))!
+                      document.getElementById(reveal.p.relativeTo.slice(1))!
 
             if (!element) return
 
             const rect = element.getBoundingClientRect()
-            uistOrNull.setPosition(rect)
-        }, [uistOrNull?.isVisible])
+            reveal.setPosition(rect)
+        }, [reveal?.isVisible])
 
         // check if we can clone the child element instead of adding a div in the DOM
         // this is a micro-optimisation hack; it's probably worth it long-term, but
@@ -109,7 +108,7 @@ export const RevealUI = observer(
                 },
                 <>
                     {child.props.children}
-                    {mkTooltip(uistOrNull)}
+                    {mkTooltip(reveal)}
                     {/* // 🔶 add the tooltip at the end of the children list */}
                 </>
             )
@@ -121,7 +120,7 @@ export const RevealUI = observer(
         return (
             <RevealCtx.Provider value={nextTower}>
                 <div //
-                    tw={['UI-Reveal', 'inline-flex', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
+                    tw={['UI-Reveal', 'inline-flex', reveal?.defaultCursor ?? 'cursor-pointer']}
                     className={p.className}
                     ref={ref}
                     style={p.style}
@@ -136,55 +135,50 @@ export const RevealUI = observer(
                     onBlur={lazyState.onBlur}
                 >
                     {p.children /* anchor */}
-                    {mkTooltip(uistOrNull) /* tooltip */}
+                    {mkTooltip(reveal) /* tooltip */}
                 </div>
             </RevealCtx.Provider>
         )
     }),
 )
 
-const mkTooltip = (uist: RevealState | null): Maybe<ReactPortal> => {
+const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
     // ensure uist initialized
-    if (uist == null) return null
+    if (select == null) return null
 
     // ensure uist visible
-    if (!uist?.isVisible) return null
+    if (!select?.isVisible) return null
 
     // find element to attach to
     const element = document.getElementById('tooltip-root')!
 
-    const pos = uist.tooltipPosition
-    const p = uist.p
-    const hiddenContent = createElement(uist.contentFn)
+    const pos = select.tooltipPosition
+    const p = select.p
+    const hiddenContent = createElement(select.contentFn)
 
     const ShellUI: React.FC<RevealShellProps> = ((): FC<RevealShellProps> => {
-        const s = p.shell
-        if (s === 'popover') return ShellPopoverUI
-        if (s === 'none') return ShellNoneUI
+        const shell = p.shell
+        if (shell === 'popover') return ShellPopoverUI
+        if (shell === 'none') return ShellNoneUI
         //
-        if (s === 'popup') return ShellPopupUI
-        if (s === 'popup-xs') return ShellPopupLGUI
-        if (s === 'popup-sm') return ShellPopupSMUI
-        if (s === 'popup-lg') return ShellPopupLGUI
-        if (s === 'popup-xl') return ShellPopupLGUI
+        if (shell === 'popup') return ShellPopupUI
+        if (shell === 'popup-xs') return ShellPopupLGUI
+        if (shell === 'popup-sm') return ShellPopupSMUI
+        if (shell === 'popup-lg') return ShellPopupLGUI
+        if (shell === 'popup-xl') return ShellPopupLGUI
 
-        return s ?? ShellPopoverUI
-
-        // 2024-07-24 @domi: we need a shell with a backdrop here, (should probably be transparent though)
-        //  | if (s == null && uist.hideTriggers.backdropClick) return RevealBackdropUI
-        // 2024-07-25 @rvion: YUP, let's have that for all shells in a generic way instead ?
-        //  | I went though a few use-caseds, seems to fit perfectly and solve the issue
+        return shell ?? ShellPopoverUI
     })()
 
     let revealedContent = (
-        <ShellUI pos={pos} reveal={uist}>
+        <ShellUI pos={pos} reveal={select}>
             {hiddenContent}
         </ShellUI>
     )
 
     // wrap with backdrop
-    if (uist.hasBackdrop) {
-        revealedContent = <RevealBackdropUI reveal={uist}>{revealedContent}</RevealBackdropUI>
+    if (select.hasBackdrop) {
+        revealedContent = <RevealBackdropUI reveal={select}>{revealedContent}</RevealBackdropUI>
     }
 
     return createPortal(revealedContent, element)

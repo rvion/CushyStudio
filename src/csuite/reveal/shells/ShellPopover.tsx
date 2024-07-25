@@ -21,12 +21,10 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
                 // we need some class to check that we're indeed focusing on a child of the popup
                 '_ShellForFocusEvents',
             ]}
-            onClick={(ev) => {
-                reveal.onShellClick(ev)
-            }}
+            // onContextMenu={uist.open}
+            onClick={(ev) => reveal.onShellClick(ev)}
             onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseEnterTooltip(ev)}
             onMouseLeave={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseLeaveTooltip(ev)}
-            // onContextMenu={uist.open}
             style={reveal.posCSS}
         >
             {reveal.p.title != null && (
@@ -35,24 +33,17 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
                     <Frame tw='w-full rounded' base={{ contrast: 0.2 }} style={{ height: '1px' }}></Frame>
                 </div>
             )}
+
             {p.children}
-            {/* LOCK */}
-            {
-                reveal._lock ? (
-                    <Frame
-                        //
-                        icon='mdiLock'
-                        text={{ contrast: 0.3 }}
-                        tw='italic text-sm flex gap-1 items-center justify-center absolute'
-                    >
-                        shift+right-click to unlock
-                    </Frame>
-                ) : null
-                // <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
-                //     <Ikon.mdiLockOffOutline />
-                //     shift+right-click to lock
-                // </span>
-            }
+            {reveal._lock ? (
+                <Frame // LOCK
+                    icon='mdiLock'
+                    text={{ contrast: 0.3 }}
+                    tw='italic text-sm flex gap-1 items-center justify-center absolute'
+                >
+                    shift+right-click to unlock
+                </Frame>
+            ) : null}
         </Frame>
     )
 })
