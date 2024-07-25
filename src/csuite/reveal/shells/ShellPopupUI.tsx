@@ -24,21 +24,17 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
                 backgroundColor: '#0000003d',
             }}
             tw={[
-                //
+                // 'flex items-center justify-center',
                 'pointer-events-auto absolute z-50',
                 'w-full h-full',
-                // 'flex items-center justify-center',
             ]}
         >
-            <ModalShellUI
+            <ModalShellUI //
                 style={p.reveal.posCSS}
                 size={p.size}
-                close={() => {
-                    reveal.close('closeButton')
-                }}
+                close={() => reveal.close('closeButton')}
                 title={reveal.p.title}
             >
-                {/* <pre>{JSON.stringify(p.reveal.posCSS)}</pre> */}
                 {p.children}
             </ModalShellUI>
         </div>
