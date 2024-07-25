@@ -19,7 +19,7 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
     const config = useMemo(
         () =>
             new Proxy(p.config, {
-                get: (target, prop) =>
+                get: (target, prop): unknown =>
                     prop in target //
                         ? (target as any)[prop]
                         : (prev as any)[prop],

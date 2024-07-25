@@ -19,7 +19,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                 (field.config.wrap ?? true) && 'flex-wrap',
                 'rounded',
                 'select-none',
-                'gap-x-0.5 gap-y-0',
+                'gap-x-1 gap-y-0',
             ]}
         >
             {field.choices.map((c) => {
