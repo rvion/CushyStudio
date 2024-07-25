@@ -7,6 +7,8 @@ import { makeAutoObservable, observable } from 'mobx'
 
 import { exhaust } from '../utils/exhaust'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
+import { isElemAChildOf } from '../utils/isElemAChildOf'
+import { toCssSizeValue } from '../utils/toCssSizeValue'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { DEBUG_REVEAL } from './RevealProps'
 import { global_RevealStack } from './RevealStack'
