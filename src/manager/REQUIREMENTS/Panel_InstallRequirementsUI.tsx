@@ -31,6 +31,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
         >
             <Button //
                 icon='mdiDownload'
+                size='widget'
                 square={!p.label}
                 subtle={!actionRequired}
                 look={actionRequired ? 'error' : undefined}
