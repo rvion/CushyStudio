@@ -1,9 +1,7 @@
 import type { RevealState } from './RevealState'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type ReactNode } from 'react'
-
-import { global_RevealStack } from './RevealStack'
 
 export const RevealBackdropUI = observer(function RevealBackdropUI_({
     reveal,
@@ -14,14 +12,6 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
 }) {
     return (
         <div
-            ref={(e) => {
-                // ⁉️ why is this here
-                if (e == null) {
-                    const ix = global_RevealStack.indexOf(reveal)
-                    if (ix >= 0) return global_RevealStack.splice(ix, 1)
-                }
-                global_RevealStack.push(reveal)
-            }}
             onClick={(ev) => {
                 reveal.onBackdropClick(ev)
             }}

@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { type ModalShellSize, ModalShellUI } from '../../modal/ModalShell'
-import { global_RevealStack } from '../RevealStack'
 
 export const ShellPopupXSUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='xs' {...p} />
 export const ShellPopupSMUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='sm' {...p} />
@@ -19,10 +18,6 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
     })
     return (
         <div // backdrop
-            ref={(e) => {
-                if (e == null) return global_RevealStack.filter((p) => p !== reveal)
-                global_RevealStack.push(reveal)
-            }}
             onMouseDown={(ev) => reveal.onBackdropClick(ev)}
             style={{
                 zIndex: 99999999,

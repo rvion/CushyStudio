@@ -9,6 +9,7 @@ import { exhaust } from '../utils/exhaust'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { DEBUG_REVEAL } from './RevealProps'
+import { global_RevealStack } from './RevealStack'
 
 export const defaultShowDelay_whenRoot = 100
 export const defaultHideDelay_whenRoot = 300
@@ -282,9 +283,19 @@ export class RevealState {
         this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
     }
 
+    private _register(): void {
+        global_RevealStack.push(this)
+    }
+
+    private _unregister(): void {
+        const ix = global_RevealStack.indexOf(this)
+        if (ix >= 0) global_RevealStack.splice(ix, 1)
+    }
+
     // ---
     open = (): void => {
         this.log(`🚨 open`)
+        this._register()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
         /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close('cascade')
@@ -297,6 +308,7 @@ export class RevealState {
 
     close = (reason?: RevealHideReason): void => {
         this.log(`🚨 close`)
+        this._unregister()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
