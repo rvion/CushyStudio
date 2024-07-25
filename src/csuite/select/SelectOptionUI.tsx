@@ -45,7 +45,7 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
             }}
             {...p.boolButtonProps}
         >
-            <div tw='w-full'>{state.displayOption(p.option)}</div>
+            <div tw='w-full'>{state.displayOption(p.option, { where: 'option-list' })}</div>
         </InputBoolToggleButtonUI>
     )
 })

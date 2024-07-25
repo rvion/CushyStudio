@@ -6,6 +6,7 @@ import type { SelectProps } from './SelectProps'
 import { makeAutoObservable } from 'mobx'
 import React, { ReactNode } from 'react'
 
+import { BadgeUI } from '../badge/BadgeUI'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
@@ -137,21 +138,22 @@ export class AutoCompleteSelectState<OPTION> {
         return Array.isArray(v) ? v : [v]
     }
 
-    displayOption(option: OPTION): React.ReactNode {
+    displayOption(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
         if (this.p.getLabelUI) return this.p.getLabelUI(option)
         const label = this.p.getLabelText(option)
-        return label
-
-        //   if (!this.isMultiSelect) return label
-        //   return (
-        //       <BadgeUI
-        //           key={label}
-        //           // hack to allow to unselect quickly selected items
-        //           onClick={() => this.p.onOptionToggled?.(i, this)}
-        //       >
-        //           {label}
-        //       </BadgeUI>
-        //   )
+        return (
+            <BadgeUI
+                key={this.getKey(option)}
+                autoHue
+                onClick={(ev) => {
+                    if (opt.where === 'option-list') return
+                    this.toggleOption(option) // 🔶 does not work perfectly yet when popup is open the first click unfocuses it.
+                    ev.stopPropagation()
+                }}
+            >
+                {label}
+            </BadgeUI>
+        )
     }
 
     getDisplayValueWithLabel(): ReactNode {
@@ -172,7 +174,7 @@ export class AutoCompleteSelectState<OPTION> {
         value = Array.isArray(value) ? value : [value]
         if (value.length === 0) return placeHolderStr
 
-        return value.map((op) => this.displayOption(op))
+        return value.map((op) => this.displayOption(op, { where: 'select-values' }))
     }
 
     // UNUSED
