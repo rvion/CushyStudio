@@ -15,3 +15,4 @@ TODO:
 -   [🟢] put back the old select anchor code (using grid layout to avoid icons to be stretched)
 -   [ ] reveal not hidden when clicking outside of the popup
 -   [ ] escape closes even when hide trigger escapeKey = false
+-   [ ] make sure csuite.border is dynamically applied (why wouldn't it be ? observability bug ?)
