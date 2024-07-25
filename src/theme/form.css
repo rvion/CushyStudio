@@ -68,7 +68,7 @@
 .box.box-sm { @apply text-sm px-1   py-1  ; }
 .box.box-md { @apply         px-2   py-1  ; }
 .box.box-lg { @apply text-lg px-4   py-2  ; }
-.box.box-xl { @apply text-xl px-8   py-8  ; }
+.box.box-xl { @apply text-3xl px-5   py-5  ; }
 
 /* ------------------------------------------------------------------------------------------------------- */
 /* .WIDGET-BLOCK { */
