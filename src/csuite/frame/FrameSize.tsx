@@ -12,6 +12,7 @@ export function getClassNameForSize(p: FrameSize): Maybe<string> {
     if (p.square) {
         if (p.size === 'input') return `h-input w-input text-sm`
         if (p.size === 'widget') return `h-widget w-widget text-sm`
+        if (p.size === 'inside') return `h-inside w-inside text-sm`
 
         if (p.size === 'xs')    return 'w-6  h-6'
         if (p.size === 'sm')    return 'w-8  h-8'
@@ -23,6 +24,7 @@ export function getClassNameForSize(p: FrameSize): Maybe<string> {
     } else {
         if (p.size === 'input') return `h-input text-sm`
         if (p.size === 'widget') return `h-widget text-sm`
+        if (p.size === 'inside') return `h-inside text-sm`
 
         if (p.size === 'xs')    return 'text-xs px-0.5 py-0.5'
         if (p.size === 'sm')    return 'text-sm px-1   py-1  '

@@ -34,8 +34,11 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
                     // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
+                    // sizes
                     '--widget-height': `${config.widgetHeight}rem`,
                     '--input-height': `${config.inputHeight}rem`,
+                    '--inside-height': `${config.inputHeight}rem`, // TEMP
+                    // legacy ? change to inside ?
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
                 }}
             >

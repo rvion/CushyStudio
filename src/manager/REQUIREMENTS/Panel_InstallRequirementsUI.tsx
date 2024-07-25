@@ -60,7 +60,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                 <RevealUI
                     content={() => (
                         <div tw='max-h-96 overflow-auto'>
-                            {(() => {
+                            {((): JSX.Element => {
                                 if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
                                 return (
                                     <div tw='flex flex-col'>
