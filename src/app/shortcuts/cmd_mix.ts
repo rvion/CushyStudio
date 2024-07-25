@@ -125,19 +125,19 @@ export const allLegacyCommands: Command<null>[] = [
     // full screen library  --------------------------
     globalValidInInput([KEYS.openFull_Library], 'open full screen library', () => cushy.toggleFullLibrary()),
 
-    command({
-        id: 'closeDialogOrPopupsOrFullScreenPanel',
-        combos: KEYS.closeDialogOrPopupsOrFullScreenPanel,
-        ctx: ctx_global,
-        label: 'Close Dialog, Popups, or Full-Screen Panels',
-        validInInput: true,
-        action: () => {
-            if (global_RevealStack.length > 0) {
-                const item = global_RevealStack.pop()!
-                item.close('programmatic')
-                return Trigger.Success
-            }
-            return Trigger.UNMATCHED
-        },
-    }),
+    // ⏸️ command({
+    // ⏸️     id: 'closeDialogOrPopupsOrFullScreenPanel',
+    // ⏸️     combos: KEYS.closeDialogOrPopupsOrFullScreenPanel,
+    // ⏸️     ctx: ctx_global,
+    // ⏸️     label: 'Close Dialog, Popups, or Full-Screen Panels',
+    // ⏸️     validInInput: true,
+    // ⏸️     action: () => {
+    // ⏸️         if (global_RevealStack.length > 0) {
+    // ⏸️             const item = global_RevealStack.pop()!
+    // ⏸️             item.close('programmatic')
+    // ⏸️             return Trigger.Success
+    // ⏸️         }
+    // ⏸️         return Trigger.UNMATCHED
+    // ⏸️     },
+    // ⏸️ }),
 ]
