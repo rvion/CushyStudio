@@ -1,6 +1,12 @@
 2024-07-17:
     ☐ multiple withConfig / rank-1 types
     ☐ // 2024-07-17YOLO🦀🦊
+    ☐ well known skins
+    ☐ render du RevealUI (aussi présent sur le FormUI)
+    ☐ inputHeight / widgetHeight
+    ☐ migration system
+    ☐ inputUpload
+    ☐ customize select agressively so we have one version that looks like notion
 
 2024-07-15:
     ☐ list identation

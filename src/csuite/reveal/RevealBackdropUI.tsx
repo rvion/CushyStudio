@@ -25,8 +25,15 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
             onClick={(ev) => {
                 reveal.onBackdropClick(ev)
             }}
-            style={{ zIndex: 99999999 /*, backgroundColor: '#ff000088' */ }}
-            tw='pointer-events-auto w-full h-full flex items-center justify-center z-50 absolute'
+            style={{
+                zIndex: 99999999,
+                backgroundColor: '#00000022',
+            }}
+            tw={[
+                //
+                'animate-in fade-in',
+                'pointer-events-auto w-full h-full flex items-center justify-center z-50 absolute',
+            ]}
         >
             {children}
         </div>

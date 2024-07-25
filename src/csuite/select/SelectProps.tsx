@@ -87,6 +87,8 @@ export type SelectProps<OPTION> = {
     anchorProps?: FrameProps
     popupWrapperProps?: FrameProps
     textInputProps?: InputStringProps
+
+    // customization slots
     slotTextInputUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
     slotPopupUI?: React.FC<SelectPopupProps<OPTION>>
     slotAnchorContentUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>

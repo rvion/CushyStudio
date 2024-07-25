@@ -1,4 +1,3 @@
-import type { RevealState } from '../reveal/RevealState'
 import type { SelectProps } from './SelectProps'
 
 import { observer } from 'mobx-react-lite'
@@ -8,7 +7,7 @@ import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
-import { type SelectPopupProps, SelectPopupUI } from './SelectPopupUI'
+import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
 

@@ -17,7 +17,7 @@ import { SimpleMenuModal } from './SimpleMenuModal'
 
 export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
     return (
-        <RevealUI className='dropdown' placement='bottomStart' content={() => <p.menu.UI />}>
+        <RevealUI /* className='dropdown' */ placement='bottomStart' content={() => <p.menu.UI />}>
             <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
                 {/* <span tw='hidden lg:inline-block'>{p.startIcon}</span> */}
                 {p.menu.menu.title}

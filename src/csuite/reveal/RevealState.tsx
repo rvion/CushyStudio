@@ -62,12 +62,12 @@ export class RevealState {
         // console.log(`   >>> target: `,isChildOf('_RevealUI', ev.target as HTMLElement), ev.target)
         // console.log(`   >>> currentTarget: `,isChildOf('_RevealUI', ev.currentTarget as HTMLElement), ev.currentTarget)
         // console.log(`   >>> relatedTarget: `,isChildOf('_RevealUI', ev.relatedTarget as HTMLElement), ev.relatedTarget)
-        this.log(`_ ${XXX(ev)} onMouseDownAnchor`)
+        this.log(`_ ${XXX(ev)} anchor.onMouseDown ❓`)
         this._mouseDown = true
     }
 
     onMouseUpAnchor = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ ${XXX(ev)} onMouseUpAnchor`)
+        this.log(`_ ${XXX(ev)} anchor.onMouseUp`)
         this._mouseDown = false
     }
 
@@ -437,7 +437,7 @@ export class RevealState {
         if (!this.shouldHideOnAnchorBlur) return
         // if the element getting focus is in shell
         // reveal should not be closed
-        if (isChildOf('._ShellForFocusEvents', ev.relatedTarget as HTMLElement)) return
+        if (isElemAChildOf(ev.relatedTarget, '._ShellForFocusEvents')) return
 
         this.close('blurAnchor')
     }
@@ -493,56 +493,17 @@ export class RevealState {
         if (!DEBUG_REVEAL) return
         console.log(`🌑`, this.ix, msg)
     }
-
-    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-    // Close pop-up if too far outside
-    // 💬 2024-02-29 rvion:
-    // | this code was a good idea; but it's really
-    // | not pleasant when working mostly with keyboard and using tab to open selects.
-    // | as soon as the moouse move just one pixel, popup close.
-    // |  =>  commenting it out until we find a solution confortable in all cases
-
-    // window.addEventListener('mousemove', this.MouseMoveTooFar, true)
-
-    // selectUI state:
-    //   - hasMouseEntered: boolean = false
-    //   - onRootMouseDown: this.hasMouseEntered = true
-    //   - closeMenu:
-
-    // MouseMoveTooFar = (event: MouseEvent): void => {
-    //     const popup = this.popupRef?.current
-    //     const anchor = this.anchorRef?.current
-
-    //     if (!popup || !anchor || !this.hasMouseEntered) {
-    //         return
-    //     }
-
-    //     const x = event.clientX
-    //     const y = event.clientY
-
-    //     // XXX: Should probably be scaled by UI scale
-    //     const maxDistance = 75
-
-    //     if (
-    //         // left
-    //         popup.offsetLeft - x > maxDistance ||
-    //         // top
-    //         popup.offsetTop - y > maxDistance ||
-    //         // right
-    //         x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
-    //         // bottom
-    //         y - (popup.offsetTop + popup.offsetHeight) > maxDistance
-    //     ) {
-    //         this.closeMenu()
-    //     }
-    // }
 }
 
 function toCss(x: number | string): string {
     return typeof x == 'number' ? `${Math.round(x)}px` : x
 }
 
-function isChildOf(domSelector: string, elem: HTMLElement): boolean {
+function isElemAChildOf(
+    //
+    elem: Element | null,
+    domSelector: string,
+): boolean {
     let at: Maybe<Element> = elem
     while (at) {
         if (at.matches(domSelector)) return true
@@ -550,3 +511,46 @@ function isChildOf(domSelector: string, elem: HTMLElement): boolean {
     }
     return false
 }
+
+// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+// Close pop-up if too far outside
+// 💬 2024-02-29 rvion:
+// | this code was a good idea; but it's really
+// | not pleasant when working mostly with keyboard and using tab to open selects.
+// | as soon as the moouse move just one pixel, popup close.
+// |  =>  commenting it out until we find a solution confortable in all cases
+
+// window.addEventListener('mousemove', this.MouseMoveTooFar, true)
+
+// selectUI state:
+//   - hasMouseEntered: boolean = false
+//   - onRootMouseDown: this.hasMouseEntered = true
+//   - closeMenu:
+
+// MouseMoveTooFar = (event: MouseEvent): void => {
+//     const popup = this.popupRef?.current
+//     const anchor = this.anchorRef?.current
+
+//     if (!popup || !anchor || !this.hasMouseEntered) {
+//         return
+//     }
+
+//     const x = event.clientX
+//     const y = event.clientY
+
+//     // XXX: Should probably be scaled by UI scale
+//     const maxDistance = 75
+
+//     if (
+//         // left
+//         popup.offsetLeft - x > maxDistance ||
+//         // top
+//         popup.offsetTop - y > maxDistance ||
+//         // right
+//         x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
+//         // bottom
+//         y - (popup.offsetTop + popup.offsetHeight) > maxDistance
+//     ) {
+//         this.closeMenu()
+//     }
+// }

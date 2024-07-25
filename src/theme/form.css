@@ -1,6 +1,8 @@
+/*
 *:focus {
-    outline: double 2px red !important;
+    outline: double 1px red !important;
 }
+*/
 
 /* global vars ------------------------------------------------------------------------------------ */
 :root {
@@ -117,6 +119,7 @@
 .UI-Select,
 .UI-InputNumber,
 .UI-InputString {
+    border-radius: .5rem;
 }
 
 /* ------------------------------------------------------------------------------------------- */
