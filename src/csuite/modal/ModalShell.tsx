@@ -14,6 +14,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
     style?: CSSProperties
     children?: React.ReactNode
     footer?: React.ReactNode | undefined
+    onClick?: (ev: React.MouseEvent<unknown, MouseEvent>) => void
     close: () => void
 }) {
     return (
@@ -22,7 +23,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
             style={p.style}
             className={p.className}
             tw={['animate-in fade-in', 'p-4 shadow-xl mt-2']}
-            onClick={(ev) => ev.stopPropagation()}
+            onClick={(ev) => p.onClick?.(ev)}
         >
             {/* HEADER */}
             <div tw='flex'>

@@ -18,6 +18,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
                 getLabelUI={field.config.getLabelUI}
+                getInsideUI={field.config.getInsideUI}
                 getSearchQuery={() => field.serial.query ?? ''}
                 setSearchQuery={(query) => (field.serial.query = query)}
                 disableLocalFiltering={field.config.disableLocalFiltering}

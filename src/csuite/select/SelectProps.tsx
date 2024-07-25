@@ -38,8 +38,11 @@ export type SelectProps<OPTION> = {
     /** used to search/filter & for UI if no getLabelUI provided */
     getLabelText: (t: OPTION) => string
 
-    /** if provided, is used to display the options */
+    /** if provided, is used to display the options in the popover */
     getLabelUI?: (t: OPTION) => React.ReactNode
+
+    /** if provided, is used to display the selected options in the inside area  */
+    getInsideUI?: (t: OPTION) => React.ReactNode
 
     /** if not provided, autoKey will be used instead */
     getKey?: (t: OPTION) => string

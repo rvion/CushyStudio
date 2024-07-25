@@ -138,7 +138,7 @@ export class AutoCompleteSelectState<OPTION> {
         return Array.isArray(v) ? v : [v]
     }
 
-    displayOption(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
+    displayOptionInPopup(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
         if (this.p.getLabelUI) return this.p.getLabelUI(option)
         const label = this.p.getLabelText(option)
         return (
@@ -156,15 +156,33 @@ export class AutoCompleteSelectState<OPTION> {
         )
     }
 
-    getDisplayValueWithLabel(): ReactNode {
-        if (this.p.label)
-            return (
-                <>
-                    {this.p.label}: {this.displayValue}
-                </>
-            )
-        return <>{this.displayValue}</>
+    displayOptionInInside(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
+        if (this.p.getInsideUI) return this.p.getInsideUI(option)
+        const label = this.p.getLabelText(option)
+        return (
+            <BadgeUI
+                key={this.getKey(option)}
+                autoHue
+                onClick={(ev) => {
+                    if (opt.where === 'option-list') return
+                    this.toggleOption(option) // 🔶 does not work perfectly yet when popup is open the first click unfocuses it.
+                    ev.stopPropagation()
+                }}
+            >
+                {label}
+            </BadgeUI>
+        )
     }
+
+    // ⏸️ getDisplayValueWithLabel(): ReactNode {
+    // ⏸️     if (this.p.label)
+    // ⏸️         return (
+    // ⏸️             <>
+    // ⏸️                 {this.p.label}: {this.displayValue}
+    // ⏸️             </>
+    // ⏸️         )
+    // ⏸️     return <>{this.displayValue}</>
+    // ⏸️ }
 
     get displayValue(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
@@ -174,7 +192,7 @@ export class AutoCompleteSelectState<OPTION> {
         value = Array.isArray(value) ? value : [value]
         if (value.length === 0) return placeHolderStr
 
-        return value.map((op) => this.displayOption(op, { where: 'select-values' }))
+        return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
     }
 
     // UNUSED

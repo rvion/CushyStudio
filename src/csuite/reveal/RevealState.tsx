@@ -307,7 +307,7 @@ export class RevealState {
     }
 
     close = (reason?: RevealHideReason): void => {
-        this.log(`🚨 close`)
+        this.log(`🚨 close (reason=${reason})`)
         this._unregister()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
@@ -496,7 +496,7 @@ export class RevealState {
      * if you don't want this to trigger, you should stop propagation
      */
     onShellClick = (ev: React.MouseEvent<unknown> | MouseEvent): void => {
-        this.log(`_ ${XXX(ev)} onShellClick`)
+        this.log(`_ ${XXX(ev)} onShellClick (shouldHideOnShellClick=${this.shouldHideOnShellClick})`)
         if (this.shouldHideOnShellClick) this.close('shellClick')
         ev.stopPropagation()
     }

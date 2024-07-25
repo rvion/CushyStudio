@@ -17,26 +17,14 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
         return (): void => reveal.onMouseLeaveTooltip()
     })
     return (
-        <div // backdrop
-            onMouseDown={(ev) => reveal.onBackdropClick(ev)}
-            style={{
-                zIndex: 99999999,
-                backgroundColor: '#0000003d',
-            }}
-            tw={[
-                // 'flex items-center justify-center',
-                'pointer-events-auto absolute z-50',
-                'w-full h-full',
-            ]}
+        <ModalShellUI //
+            onClick={(ev) => reveal.onShellClick(ev)}
+            style={p.reveal.posCSS}
+            size={p.size}
+            close={() => reveal.close('closeButton')}
+            title={reveal.p.title}
         >
-            <ModalShellUI //
-                style={p.reveal.posCSS}
-                size={p.size}
-                close={() => reveal.close('closeButton')}
-                title={reveal.p.title}
-            >
-                {p.children}
-            </ModalShellUI>
-        </div>
+            {p.children}
+        </ModalShellUI>
     )
 })
