@@ -13,6 +13,7 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
     return (
         <Button
             subtle
+            tabIndex={-1}
             tooltip='Reset to default values'
             borderless
             className={p.className}
