@@ -61,7 +61,7 @@ export type RevealHideReason =
 
 export type RevealProps = {
     /** @since 2024-07-23 */
-    relativeTo?: `#${string}`
+    relativeTo?: `#${string}` | 'mouse' | 'anchor'
 
     // placement
     placement?: RevealPlacement
@@ -105,4 +105,3 @@ export type RevealProps = {
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
 }
-export const DEBUG_REVEAL = false

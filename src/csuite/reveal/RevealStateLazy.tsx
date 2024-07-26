@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import React from 'react'
 
-import { DEBUG_REVEAL } from './RevealProps'
+import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealState } from './RevealState'
 
 /**

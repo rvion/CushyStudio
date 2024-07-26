@@ -9,8 +9,8 @@ import { exhaust } from '../utils/exhaust'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { toCssSizeValue } from '../utils/toCssSizeValue'
+import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
-import { DEBUG_REVEAL } from './RevealProps'
 import { global_RevealStack } from './RevealStack'
 
 export const defaultShowDelay_whenRoot = 100
@@ -235,7 +235,7 @@ export class RevealState {
 
     get posCSS(): CSSProperties {
         const pos = this.pos
-        console.log(`[🤠] pos`, JSON.stringify(pos, null, 4))
+        // ⏸️ console.log(`[🤠] pos`, JSON.stringify(pos, null, 4))
         const out: CSSProperties = {
             position: 'absolute',
             zIndex: 99999999,
@@ -250,7 +250,7 @@ export class RevealState {
             overflow: 'auto',
             transform: pos.transform,
         }
-        console.log(`[🤠] posCSS`, JSON.stringify(out, null, 4))
+        // ⏸️ console.log(`[🤠] posCSS`, JSON.stringify(out, null, 4))
         return out
     }
     tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }

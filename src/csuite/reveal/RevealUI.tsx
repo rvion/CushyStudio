@@ -8,7 +8,9 @@ import React, { cloneElement, createElement, forwardRef, useEffect, useMemo, use
 import { createPortal } from 'react-dom'
 
 import { cls } from '../../widgets/misc/cls'
+import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
+import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealBackdropUI } from './RevealBackdropUI'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
@@ -42,7 +44,9 @@ export const RevealUI = observer(
             if (p.placement !== reveal.p.placement) reveal.p.placement = p.placement
             if (p.showDelay !== reveal.p.showDelay) reveal.p.showDelay = p.showDelay
             if (p.hideDelay !== reveal.p.hideDelay) reveal.p.hideDelay = p.hideDelay
-        }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
+            if (p.shell !== reveal.p.shell) reveal.p.shell = p.shell
+            if (p.relativeTo !== reveal.p.relativeTo) reveal.p.relativeTo = p.relativeTo
+        }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay, p.shell, p.relativeTo])
 
         useEffect(() => {
             if (p.defaultVisible) lazyState.getRevealState().open()
@@ -54,16 +58,36 @@ export const RevealUI = observer(
             if (!reveal.isVisible) return
 
             // find element to attach to
-            const element =
-                reveal.p.relativeTo == null
-                    ? ref.current
-                    : // take the id by trimming the leading '#' ('#foo' => 'foo')
-                      document.getElementById(reveal.p.relativeTo.slice(1))!
+            const relTo = reveal.p.relativeTo
 
-            if (!element) return
+            // 1. place around mouse cursor
+            if (relTo === 'mouse') {
+                const x = regionMonitor.mouseX
+                const y = regionMonitor.mouseY
+                const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
+                reveal.setPosition(vDomRect)
+            }
 
-            const rect = element.getBoundingClientRect()
-            reveal.setPosition(rect)
+            // 2. place around anchor
+            else if (relTo == null || relTo === 'anchor') {
+                const element = ref.current
+                if (!element) return
+                const rect = element.getBoundingClientRect()
+                reveal.setPosition(rect)
+            }
+
+            // 3. place somewhere else
+            else if (relTo?.startsWith('#')) {
+                const element = document.getElementById(relTo.slice(1))!
+                // do we want to throw HERE ?
+                // or defer to anchor instead ?
+                // we could move this block above 2.
+                // and use 2 as a fallback case.
+                if (!element) return
+                const rect = element.getBoundingClientRect()
+                reveal.setPosition(rect)
+                // in that case, let's add a return here
+            }
         }, [reveal?.isVisible])
 
         // check if we can clone the child element instead of adding a div in the DOM
