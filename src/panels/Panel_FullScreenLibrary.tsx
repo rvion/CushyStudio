@@ -6,6 +6,7 @@ import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButto
 import { Frame } from '../csuite/frame/Frame'
 import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
 import { InputSliderUI_legacy } from '../csuite/input-slider/Slider'
+import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { Toggle } from '../csuite/inputs/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
@@ -18,39 +19,33 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
         <div tw='relative h-full flex-grow flex flex-col'>
             <Frame base tw='p-4 flex flex-wrap items-center'>
                 <div tw='text-2xl'>Library</div>
-                <div tw='flex gap-1 items-center'>
-                    <div tw='join'>
-                        <div tw='flex items-center px-2 join-item'>
-                            <span className='material-symbols-outlined'>search</span>
-                        </div>
-                        <input
-                            tw='csuite-basic-input'
-                            type='string'
-                            value={library.query}
-                            onChange={(ev) => {
-                                const next = ev.target.value
-                                library.query = next
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    const app = library.appsFiltered[library.selectionCursor]
-                                    if (app == null) return
-                                    app.openLastOrCreateDraft()
-                                } else if (e.key === 'ArrowDown') {
-                                    library.selectionCursor++
-                                } else if (e.key === 'ArrowUp') {
-                                    library.selectionCursor--
-                                }
-                            }}
-                            autoFocus
-                            placeholder='search'
-                            // auto select text on focus
-                            onFocus={(e) => e.target.select()}
-                        />
-                    </div>
-                    <Button look='primary' onClick={st.startupFileIndexing}>
-                        Index All Apps
-                    </Button>
+                <div tw='flex gap-1 items-center flex-wrap'>
+                    <InputStringUI
+                        icon='mdiSelectSearch'
+                        tw='csuite-basic-input'
+                        getValue={() => library.query}
+                        setValue={(next) => (library.query = next)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                const app = library.appsFiltered[library.selectionCursor]
+                                if (app == null) return
+                                app.openLastOrCreateDraft()
+                            } else if (e.key === 'ArrowDown') {
+                                library.selectionCursor++
+                            } else if (e.key === 'ArrowUp') {
+                                library.selectionCursor--
+                            }
+                        }}
+                        autoFocus
+                        placeholder='search'
+                        // auto select text on focus
+                        onFocus={(e) => e.target.select()}
+                    />
+                    <Button //
+                        look='primary'
+                        onClick={st.startupFileIndexing}
+                        children='Index All Apps'
+                    />
                     <InputBoolToggleButtonUI
                         showToggleButtonBox
                         mode='checkbox'
