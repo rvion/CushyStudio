@@ -16,7 +16,7 @@ export const Dropdown = (p: {
     content?: () => ReactNode
     button?: ReactNode
     expand?: boolean
-}) => (
+}): JSX.Element => (
     <RevealUI
         tw={[p.className]}
         hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}

@@ -3,7 +3,6 @@ import type { RevealContentProps } from '../shells/ShellProps'
 import { observer } from 'mobx-react-lite'
 
 import { simpleFactory } from '../../'
-import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
 import { RevealUI } from '../RevealUI'
 
@@ -45,7 +44,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
     return (
-        <div tw='flex-1 flex flex-col gap-3'>
+        <div tw='flex-1 flex flex-col'>
             <Frame border base>
                 {conf.render()}
             </Frame>
@@ -92,13 +91,6 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 <RevealUI trigger={conf.value.trigger.id} placement='left' content={Content}>
                     {anchor('left')}
                 </RevealUI>
-                <div></div>
-                <RevealUI trigger={conf.value.trigger.id} relativeTo='#foo' placement='above' content={Content}>
-                    {anchor('#foo')}
-                </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} relativeTo='#bar' placement='above' content={Content}>
-                    {anchor('#bar')}
-                </RevealUI>
                 <RevealUI
                     //
                     trigger={conf.value.trigger.id}
@@ -107,8 +99,15 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                     shell='popup-lg'
                     content={Content}
                 >
-                    {anchor('#bar in popup')}
+                    {anchor('#bar in popup', { base: { hueShift: 100, contrast: 0.1 } })}
                 </RevealUI>
+                <RevealUI trigger={conf.value.trigger.id} relativeTo='#foo' placement='above' content={Content}>
+                    {anchor('#foo', { base: { hueShift: 130, contrast: 0.1 } })}
+                </RevealUI>
+                <RevealUI trigger={conf.value.trigger.id} relativeTo='#bar' placement='above' content={Content}>
+                    {anchor('#bar', { base: { hueShift: 160, contrast: 0.1 } })}
+                </RevealUI>
+
                 <RevealUI trigger={conf.value.trigger.id} placement='right' content={Content}>
                     {anchor('right')}
                 </RevealUI>
