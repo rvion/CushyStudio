@@ -31,8 +31,8 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                     </Frame> */}
                 </Frame>
                 <Frame border base expand>
-                    {xx.customForm(['a'])({})}
-                    {xx.customForm(['a', 'b', 'b', 'b'])({})}
+                    {xx.customForm((f) => [f.A, f.A, f.A, f.fields.a])({})}
+                    {xx.customForm((f) => ['a', 'b', 'b', 'b'])({})}
                 </Frame>
                 <Frame border base expand>
                     {xx.customForm([

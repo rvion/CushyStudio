@@ -68,6 +68,7 @@ export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 type Accessor<T extends Field> =
     | keyof T['value']
     | ((field: T) => Maybe<FC<NO_PROPS>>)
+    | Field
     | null | undefined
 
 // STATE
@@ -114,7 +115,9 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                             if (res == null) return null
                             return res({})
                         }
-
+                        if (f instanceof Field) {
+                            return f.renderWithLabel()
+                        }
                         // ⏸️ if (props?.usage === 'cell') {
                         // ⏸️     return this.fields[f]!.renderCell()
                         // ⏸️     return this.fields[f]!.renderSkin('cell')
