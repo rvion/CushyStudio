@@ -36,7 +36,6 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
-                    //
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
                     // sizes
@@ -45,7 +44,6 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
                     '--inside-height': `${config.insideHeight}rem`, // TEMP
                     // legacy ? change to inside ?
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
-                    // '--input-border': getNum(config.inputBorder) / 100,
                 }}
             >
                 {p.children}

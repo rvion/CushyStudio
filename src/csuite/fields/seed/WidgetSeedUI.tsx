@@ -12,10 +12,9 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
     const field = p.field
     const val = field.serial.val
     const csuite = useCSuite()
-    const border = csuite.inputBorder
 
     return (
-        <Frame border={{ contrast: border }} tw={['h-input', 'flex-1 flex items-center']}>
+        <Frame border={csuite.inputBorder} tw={['h-input', 'flex-1 flex items-center']}>
             <InputBoolToggleButtonUI // Random
                 icon='mdiAutoFix'
                 value={field.serial.mode === 'randomize'}

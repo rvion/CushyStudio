@@ -9,19 +9,14 @@ export type ThemeConf = X.XGroup<{
     base: X.XString
     appbar: X.XOptional<X.XString>
     gap: X.XOptional<X.XNumber>
-    widgetWithLabel: X.XGroup<{
-        border: X.XOptional<X.XNumber>
-        contrast: X.XOptional<X.XNumber>
-        padding: X.XOptional<X.XNumber>
-    }>
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
-        padding: X.XOptional<X.XNumber>
     }>
     text: UI_Tint
     textLabel: X.XOptional<UI_Tint>
-    border: X.XOptional<X.XNumber>
+    inputBorder: X.XOptional<X.XNumber>
+    inputContrast: X.XOptional<X.XNumber>
 }>
 
 export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
@@ -50,20 +45,20 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
 
                 // ...
                 gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
-                widgetWithLabel: ui.fields(
-                    {
-                        border: ui.percent({ default: 8 }).optional(),
-                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
-                        padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
-                    },
-                    { background: { hueShift: 90 } },
-                ),
+                // widgetWithLabel: ui.fields(
+                //     {
+                //         border: ui.percent({ default: 8 }).optional(),
+                //         contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
+                //         padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                //     },
+                //     { background: { hueShift: 90 } },
+                // ),
                 // fields group
                 fieldGroups: ui.fields(
                     {
                         border: ui.percent({ default: 8 }).optional(),
                         contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
-                        padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                        // padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
                     },
                     { background: { hue: 180 } },
                 ),
@@ -73,7 +68,9 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
 
                 // 3. misc
-                border: ui.percent({ default: 8 }).optional(true),
+                inputBorder: ui.percent({ default: 8 }).optional(true),
+                inputContrast: ui.percent({ default: 5 }).optional(true),
+                // ui.ratio({ default: 0.05 }).optional(true),
             },
             { label: false, collapsed: false },
         ),

@@ -22,7 +22,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const csuite = useCSuite()
 
     return (
-        <Frame base={{ contrast: csuite.inputContrast ?? 0.05 }} expand>
+        <Frame base={csuite.inputContrast} expand>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */

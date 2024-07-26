@@ -86,7 +86,13 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return run_tint(this.st.theme.value.text)
     }
 
-    inputBorder = new NumberVar('input-border', () => (this.st.theme.value.border ?? 20) / 100)
+    get inputContrast(): TintExt {
+        return this.st.theme.value.inputContrast
+    }
+
+    get inputBorder(): TintExt {
+        return this.st.theme.value.inputBorder ?? 10
+    }
 
     get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel

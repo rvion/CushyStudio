@@ -24,7 +24,6 @@ function focusNextElement(dir: 'next' | 'prev'): void {
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     const csuite = useCSuite()
-    const border = csuite.inputBorder
     const PopupComp = p.slotPopupUI ?? SelectPopupUI
     const AnchorContentComp = p.slotAnchorContentUI ?? AnchorContentUI
     return (
@@ -60,9 +59,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 tabIndex={0}
                 tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
                 style={p.style}
-                border={{ contrast: border }}
+                base={csuite.inputContrast}
+                border={csuite.inputBorder}
                 className={p.className}
-                base={{ contrast: csuite.inputContrast ?? 0.05 }}
                 // 🧚‍♀️ onFocus={(ev) => {
                 // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
                 // 🧚‍♀️     p.onAnchorFocus?.(ev)

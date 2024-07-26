@@ -243,16 +243,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
-    const border = csuite.inputBorder
 
     return (
         <Frame /* Root */
             style={p.style}
-            base={{ contrast: csuite.inputContrast ?? 0.05 }}
-            // base={{ contrast: isEditing ? -0.1 : 0.05 }}
-            border={{ contrast: border }}
+            base={csuite.inputContrast}
+            border={csuite.inputBorder}
             hover={{ contrast: 0.03 }}
             className={p.className}
+            // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
                 'UI-InputNumber',

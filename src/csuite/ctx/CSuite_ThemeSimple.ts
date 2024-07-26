@@ -16,7 +16,7 @@ export const CSuite_theme1: CSuiteConfig = {
     showWidgetDiff: true,
     showFoldButtons: true,
     showToggleButtonBox: false,
-    inputBorder: new NumberVar('input-border', 8),
+    inputBorder: 8,
     inputContrast: 0.05,
     labelBackground: 5,
     labellayout: 'fixed-left',
