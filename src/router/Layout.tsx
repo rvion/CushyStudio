@@ -45,6 +45,13 @@ export class CushyLayoutManager {
     /** the current Flexlayout Model, holding the position of all panels */
     model!: FlexLayoutModel
 
+    setSingleTabStretch(value: boolean): void {
+        const action = Actions.updateModelAttributes({
+            tabSetEnableSingleTabStretch: value,
+        })
+        this.model.doAction(action)
+    }
+
     /**
      * Useful to properly force react component to refresh when switching
      * between different perspectives

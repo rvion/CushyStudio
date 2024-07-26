@@ -62,7 +62,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
     const WUI = (
         <Frame
             className={p.className}
-            tw='UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0'
+            tw={[
+                //
+                'UI-WidgetWithLabel',
+                '!border-l-0 !border-r-0 !border-b-0',
+            ]}
             base={field.background}
             border={field.border}
             // tooltip={field.config.tooltip}

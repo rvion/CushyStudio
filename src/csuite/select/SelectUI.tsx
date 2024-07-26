@@ -56,7 +56,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             <Frame
                 expand
                 line
-                hover
+                hover={3}
                 tabIndex={0}
                 tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
                 style={p.style}
@@ -64,8 +64,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 className={p.className}
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
                 onKeyDown={(ev) => {
-                    // 2024-07-24 @domi: 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
-                    // 2024-07-25 @rvion: it surprises me; I would have really expected the anchor to NOT get the events
+                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
                     select.handleTooltipKeyDown(ev)
                     select.revealState?.onAnchorKeyDown(ev)
                     p.onAnchorKeyDown?.(ev)

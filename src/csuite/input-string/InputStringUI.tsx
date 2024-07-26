@@ -85,7 +85,7 @@ export const InputStringUI = observer(
                 className={p.className}
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
                 text={{ contrast: 1, chromaBlend: 1 }}
-                hover
+                hover={3}
                 border={
                     isDirty //
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }

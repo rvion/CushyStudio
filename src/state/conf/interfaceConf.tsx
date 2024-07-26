@@ -12,6 +12,7 @@ export const interfaceConf = cushyFactory.entity(
                     text: 'Auto-Hide Tabset',
                     tooltip: 'Hide the tabset when there is only one tab',
                     default: false,
+                    onValueChange: (v) => cushy.layout.setSingleTabStretch(v.value),
                 }),
 
                 //

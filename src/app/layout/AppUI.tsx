@@ -85,7 +85,7 @@ export const CushyUI = observer(function CushyUI_() {
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <div className='flex flex-grow relative overflow-clip'>
+                <div className='UI-MAIN flex flex-grow relative overflow-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>

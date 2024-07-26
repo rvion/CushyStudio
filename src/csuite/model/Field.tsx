@@ -639,7 +639,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // if app author manually specify they want no border, then we respect that
         if (this.config.border != null) return this.config.border
         // if the widget do NOT have a body => we do not show the border
-        if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
+        // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
         return false
         // return 8
