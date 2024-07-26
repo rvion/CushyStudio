@@ -1,3 +1,5 @@
+import type { Tint, TintExt } from '../kolor/Tint'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { type FC, type ReactNode, useEffect, useMemo } from 'react'
@@ -15,7 +17,7 @@ export type ShelfProps = {
     floating?: boolean
 }
 
-export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
+export const BasicShelfUI_ = observer(function BasicShelfUI_(p: ShelfProps) {
     const uist = useMemo(() => new ShelfState(p), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -65,4 +67,21 @@ export const BasicShelfUI = observer(function BasicShelfUI_(p: ShelfProps) {
             {p.children}
         </Frame>
     )
+})
+
+const BasicShelf_ColumnUI = observer(function BasicShelf_ColumnUI_(p: { children?: ReactNode }) {
+    return <div tw='flex flex-col p-2 gap'>{p.children}</div>
+})
+
+const BasicShelf_GroupUI = observer(function BasicShelf_GroupUI_({ children, ...tint }: { children?: ReactNode } & Tint) {
+    return (
+        <Frame base={tint} border tw={['[&>*]:!border-none']}>
+            {children}
+        </Frame>
+    )
+})
+
+export const BasicShelfUI = Object.assign(BasicShelfUI_, {
+    Group: BasicShelf_GroupUI,
+    Column: BasicShelf_ColumnUI,
 })
