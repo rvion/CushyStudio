@@ -50,7 +50,10 @@ export type InputStringProps = {
 
 export const InputStringUI = observer(
     forwardRef(function WidgetStringUI_(p: InputStringProps, ref: ForwardedRef<HTMLInputElement>) {
-        const value = p.getValue()
+        // getValue is mandatory, but it may avoid crash to be permissive about it's absense
+        // let's rely on typescript to catch this
+        const value = p.getValue?.() ?? ''
+
         const isBuffered = Boolean(p.buffered)
         const temporaryValue = p.buffered?.getTemporaryValue?.()
         const isDirty = isBuffered && temporaryValue != null && temporaryValue !== value
