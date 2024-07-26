@@ -4,9 +4,10 @@ import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
+import type { ForwardedRef, MouseEvent } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type ForwardedRef, forwardRef, type MouseEvent, useContext, useState } from 'react'
+import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'

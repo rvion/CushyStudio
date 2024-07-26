@@ -11,24 +11,20 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
     children?: ReactNode
 }) {
     return (
-        <div
-            onClick={(ev) => {
-                reveal.onBackdropClick(ev)
-            }}
-            style={{
-                zIndex: 99999999,
-            }}
+        <div // backdrop (full-screen)
+            onClick={(ev) => reveal.onBackdropClick(ev)}
+            style={{ zIndex: 99999999 }}
             tw={[
                 //
-                'w-full h-full',
-                'pointer-events-auto justify-center z-50 absolute',
+                'absolute inset-0',
+                'pointer-events-auto justify-center z-50',
                 'flex items-center',
             ]}
         >
-            <div //
+            <div // backdrop shadow (child div to avoid animation interference)
                 style={{ backgroundColor: '#00000022' }}
                 tw='absolute inset-0 animate-in fade-in'
-            ></div>
+            />
             {children}
         </div>
     )
