@@ -175,6 +175,8 @@ export const Frame = observer(
 
                 onMouseOver={_onMouseOver}
                 onMouseOut={_onMouseOut}
+                // special-case: if it's a button, let's add type=button to disable form submission
+                {...(as === 'button' ? { type: 'button' } : {})}
                 tw={[
                     'box',
                     frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
