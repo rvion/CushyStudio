@@ -30,6 +30,9 @@ export type SimpleBoxShadow = {
 }
 
 export type FrameProps = {
+    //
+    as?: string
+
     tooltip?: string
     tooltipPlacement?: RevealPlacement
 
@@ -88,6 +91,8 @@ export const Frame = observer(
 
         // prettier-ignore
         const {
+            as,                                                 // html
+
             active, disabled,                                   // built-in state & style modifiers
             icon, iconSize, suffixIcon, loading,                // addons
             expand, square, size,                               // size
@@ -156,9 +161,13 @@ export const Frame = observer(
             }
         }
 
+        // for typescript perf reason, let's not care about the `as` prop
+        // and just pretend it's always a div. it will mostly always be.
+
+        const Elem: 'div' = (as ?? 'div') as 'div'
         // ===================================================================
         return (
-            <div //
+            <Elem //
                 ref={ref}
                 // 📋 tooltip is now handled by csuite directly
                 // | no need to rely on the browser's default tooltip
@@ -203,7 +212,7 @@ export const Frame = observer(
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
                     {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
-            </div>
+            </Elem>
         )
     }),
 )
