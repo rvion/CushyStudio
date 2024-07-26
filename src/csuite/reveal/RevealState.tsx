@@ -1,5 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { RevealHideReason, RevealHideTrigger, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
+import type { RevealHideReason, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
@@ -235,18 +235,23 @@ export class RevealState {
 
     get posCSS(): CSSProperties {
         const pos = this.pos
-        return {
+        console.log(`[🤠] pos`, JSON.stringify(pos, null, 4))
+        const out: CSSProperties = {
             position: 'absolute',
             zIndex: 99999999,
-            top: pos.top != null ? toCss(pos.top) : undefined,
-            left: pos.left != null ? toCss(pos.left) : undefined,
-            bottom: pos.bottom != null ? toCss(pos.bottom) : undefined,
-            right: pos.right != null ? toCss(pos.right) : undefined,
-            width: pos.width != null ? toCss(pos.width) : undefined,
-            height: pos.height != null ? toCss(pos.height) : undefined,
+            top: pos.top != null ? toCssSizeValue(pos.top) : undefined,
+            left: pos.left != null ? toCssSizeValue(pos.left) : undefined,
+            bottom: pos.bottom != null ? toCssSizeValue(pos.bottom) : undefined,
+            right: pos.right != null ? toCssSizeValue(pos.right) : undefined,
+            width: pos.width != null ? toCssSizeValue(pos.width) : undefined,
+            height: pos.height != null ? toCssSizeValue(pos.height) : undefined,
+            maxWidth: pos.maxWidth != null ? toCssSizeValue(pos.maxWidth) : undefined,
+            maxHeight: pos.maxHeight != null ? toCssSizeValue(pos.maxHeight) : undefined,
             overflow: 'auto',
             transform: pos.transform,
         }
+        console.log(`[🤠] posCSS`, JSON.stringify(out, null, 4))
+        return out
     }
     tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
     setPosition = (rect: DOMRect): void => {
@@ -507,23 +512,6 @@ export class RevealState {
         if (!DEBUG_REVEAL) return
         console.log(`🌑`, this.ix, msg)
     }
-}
-
-function toCss(x: number | string): string {
-    return typeof x == 'number' ? `${Math.round(x)}px` : x
-}
-
-function isElemAChildOf(
-    //
-    elem: Element | null,
-    domSelector: string,
-): boolean {
-    let at: Maybe<Element> = elem
-    while (at) {
-        if (at.matches(domSelector)) return true
-        at = at.parentElement
-    }
-    return false
 }
 
 // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
