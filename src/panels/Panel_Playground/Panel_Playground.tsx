@@ -1,3 +1,5 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
@@ -5,6 +7,7 @@ import { cushyFactory } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
@@ -19,35 +22,17 @@ import { PlaygroundSizeUI } from './PlaygroundSize'
 import { PlaygroundSkinsUI } from './PlaygroundSkinsUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = cushyFactory.entity(
-    (ui) =>
-        ui.choice({
-            appearance: 'tab',
-            default: 'scratchPad',
-            tabPosition: 'start',
-            items: {
-                skins: ui.empty(),
-                select: ui.empty(),
-                size: ui.empty(),
-                forms: ui.empty(),
-                customPanels: ui.empty(),
-                requirements: ui.empty(),
-                registeredForms: ui.empty(),
-                widgetShowcase: ui.empty(),
-                scratchPad: ui.empty(),
-                graph: ui.empty(),
-                comfyImport: ui.empty(),
-                messages: ui.empty(),
-            },
-        }),
-    {
-        name: 'Playground Conf',
-        serial: () => readJSON('settings/playground_config.json'),
-        onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
-    },
-)
+export const PanelPlayground = new Panel({
+    name: 'Playground',
+    widget: (): React.FC<PanelPlaygroundProps> => PanelPlaygroundUI,
+    header: (p: PanelPlaygroundProps): PanelHeader => ({ title: 'Welcome' }),
+    def: (): PanelPlaygroundProps => ({}),
+    icon: 'mdiLiquidSpot',
+})
 
-export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
+export type PanelPlaygroundProps = NO_PROPS
+
+export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
     const st = useSt()
     const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
     const mode = Header_Playground.value
@@ -93,3 +78,31 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
         </Frame>
     )
 })
+
+const Header_Playground = cushyFactory.entity(
+    (ui) =>
+        ui.choice({
+            appearance: 'tab',
+            default: 'scratchPad',
+            tabPosition: 'start',
+            items: {
+                skins: ui.empty(),
+                select: ui.empty(),
+                size: ui.empty(),
+                forms: ui.empty(),
+                customPanels: ui.empty(),
+                requirements: ui.empty(),
+                registeredForms: ui.empty(),
+                widgetShowcase: ui.empty(),
+                scratchPad: ui.empty(),
+                graph: ui.empty(),
+                comfyImport: ui.empty(),
+                messages: ui.empty(),
+            },
+        }),
+    {
+        name: 'Playground Conf',
+        serial: () => readJSON('settings/playground_config.json'),
+        onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
+    },
+)

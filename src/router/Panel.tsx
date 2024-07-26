@@ -8,7 +8,10 @@ import { menuWithoutProps } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
 import { Trigger } from '../csuite/trigger/Trigger'
 
-export type PanelHeader = { title: string; icon?: IconName }
+export type PanelHeader = {
+    title: string
+    icon?: IconName
+}
 
 export class Panel<Props> {
     $PanelHeader!: PanelHeader

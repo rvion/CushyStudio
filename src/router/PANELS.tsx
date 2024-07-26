@@ -16,7 +16,7 @@ import { Panel_Marketplace } from '../panels/Panel_Marketplace'
 import { Panel_Minipaint } from '../panels/Panel_Minipaint'
 import { Panel_Models } from '../panels/Panel_Models/Panel_Models'
 import { Panel_Step } from '../panels/Panel_Output/Panel_Output'
-import { Panel_Playground } from '../panels/Panel_Playground/Panel_Playground'
+import { PanelPlayground } from '../panels/Panel_Playground/Panel_Playground'
 import { Panel_Script } from '../panels/Panel_Script'
 import { Panel_Shortcuts } from '../panels/Panel_Shortcuts'
 import { Panel_Squoosh } from '../panels/Panel_Squoosh'
@@ -180,13 +180,7 @@ export const panels = {
         def: () => ({}),
         icon: undefined,
     }),
-    Playground: new Panel({
-        name: 'Playground',
-        widget: () => Panel_Playground,
-        header: (p) => ({ title: 'Welcome' }),
-        def: () => ({}),
-        icon: undefined,
-    }),
+    Playground: PanelPlayground,
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils
