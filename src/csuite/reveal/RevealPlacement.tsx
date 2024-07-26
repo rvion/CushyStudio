@@ -1,16 +1,6 @@
 import { regionMonitor } from '../regions/RegionMonitor'
-import { toCssSizeValue } from '../utils/toCssSizeValue'
 
 export type RevealPlacement =
-    /** ---------------------------------------------------------------------------
-     * @since 2024-07-23
-     * will reveal the content around the mouse pointer
-     * at the time of the reveal trigger
-     */
-    | 'mouse'
-    // 2024-07-26 rvion:
-    // 🔴 this is not a placement, this is a `relativeTo` param
-
     /** ---------------------------------------------------------------------------
      * @since 2024-07-23
      * will clamp the revealed content above the dom of the given element.
@@ -67,14 +57,6 @@ export const computePlacement = (
     placement: RevealPlacement,
     anchor: DOMRect,
 ): RevealComputedPosition => {
-    // MOUSE RELATIVE ==============================================================================
-    if (placement === 'mouse') {
-        return {
-            top: regionMonitor.mouseX,
-            left: regionMonitor.mouseY,
-        }
-    }
-
     // ABOVE =======================================================================================
     if (placement === 'above') {
         return {

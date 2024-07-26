@@ -177,7 +177,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             <RevealUI //
                 trigger='click'
                 shell='none'
-                placement='mouse'
+                relativeTo='mouse'
                 content={Content}
                 tw='h-32 w-32 bg-orange-300'
             >
