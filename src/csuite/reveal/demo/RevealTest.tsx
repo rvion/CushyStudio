@@ -3,14 +3,15 @@ import type { RevealContentProps } from '../shells/ShellProps'
 import { observer } from 'mobx-react-lite'
 
 import { simpleFactory } from '../../'
+import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
 import { RevealUI } from '../RevealUI'
 
 export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const anchor = (where: string, props?: FrameProps): JSX.Element => (
-        <Frame border={20} base={20} tw='flex-1 text-center' {...props}>
+        <Button expand {...props}>
             {where}
-        </Frame>
+        </Button>
     )
 
     const conf = simpleFactory.useLocalstorage('18nnMJ5aY', (ui) =>
@@ -42,7 +43,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
     return (
-        <div tw='flex-1 flex flex-col'>
+        <div tw='flex-1 flex flex-col gap-2'>
             <Frame border base>
                 {conf.render()}
             </Frame>
@@ -52,16 +53,16 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 </RevealUI>
             )}
             {/* AUTO -------------------------- */}
-            <Frame border base={5} tw='relative' style={{ height: '200px' }}>
+            {/* <Frame border base={5} tw='relative' style={{ height: '200px' }}>
                 <RevealUI trigger={conf.value.trigger.id} placement='auto' tw='absolute top-8 left-8' content={Content}>
                     {anchor('auto')}
                 </RevealUI>
                 <RevealUI trigger={conf.value.trigger.id} placement='auto' tw='absolute bottom-8 right-8' content={Content}>
                     {anchor('auto')}
                 </RevealUI>
-            </Frame>
+            </Frame> */}
             {/* AUTO -------------------------- */}
-            <div tw='grid grid-cols-5 gap-0'>
+            <div tw='grid grid-cols-5 gap-1 m-8'>
                 {/* top ---------------------------------------------- */}
                 <div></div>
                 <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
@@ -164,6 +165,12 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 <button>Button 3</button>
                 <button>Button 4</button>
             </Frame>
+            <Frame id='foo' base={{ hueShift: 100, contrast: 0.1 }} style={{ height: '150px' }}>
+                #foo
+            </Frame>
+            <Frame id='bar' base={{ hueShift: 200, contrast: 0.1 }} style={{ height: '150px' }}>
+                #bar
+            </Frame>
             <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
                 Text only
             </RevealUI>
@@ -172,16 +179,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 shell='none'
                 placement='mouse'
                 content={Content}
-                tw='h-52 w-52 bg-blue-300'
+                tw='h-32 w-32 bg-orange-300'
             >
                 Mouse
             </RevealUI>
-            <Frame id='foo' base={{ hueShift: 100, contrast: 0.1 }} style={{ height: '150px' }}>
-                #foo
-            </Frame>
-            <Frame id='bar' base={{ hueShift: 200, contrast: 0.1 }} style={{ height: '150px' }}>
-                #bar
-            </Frame>
         </div>
     )
 })

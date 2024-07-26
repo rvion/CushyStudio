@@ -14,3 +14,30 @@
     - [ ] we can for primitives like `div` or `span`
 
 - [🟢] separate into 2 axies (placement and shell)
+
+
+-----------
+
+
+```
+<!-- CLICK ON THE SELECT IN THE POPUP -->
+[🟢] 🌑 1 🎩 9: anchor.onMouseDown ❓
+[❌] 🌑 0 🎩 8: anchor.onMouseDown ❓
+[❔] 🌑 1 🎩 9: anchor.onFocus (mouseDown: true) (⏳: 8592)
+[❔] 🌑 1 🔶 revealUI - onFocus
+[❔] 🌑 0 🎩 8: anchor.onFocus (mouseDown: true) (⏳: 8592)
+[❔] 🌑 1 🎩 9: anchor.onMouseUp
+[❔] 🌑 0 🎩 8: anchor.onMouseUp
+[❔] 🌑 1 🎩 9: onLeftClickAnchor (visible: 🔴)
+[❔] 🌑 1 🚨 open
+[❔] 🌑 1 🎩 9: onBlurAnchor
+[❔] 🌑 1 🔶 revealUI - onBlur
+[❔] 🌑 0 🎩 8: onBlurAnchor
+[❔] 🌑 1 🎩 9: anchor.onFocus (mouseDown: false) (⏳: 10)
+[❔] 🌑 1 🔶 revealUI - onFocus
+[❔] 🌑 0 🎩 8: anchor.onFocus (mouseDown: false) (⏳: 8679)
+[❔] 🌑 0 🚨 open
+[❔] 🌑 1 🚨 close (reason=cascade)
+[❔] 🌑 1 🔶 revealUI - onHidden (focus anchor)
+[❔] 🌑 1 🔶 SelectSate clean
+```

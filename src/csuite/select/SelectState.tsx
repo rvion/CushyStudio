@@ -294,7 +294,7 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
-        this.revealState?.log(`_ SelectSate handleTooltipKeyDown (probably arrows)`)
+        this.revealState?.log(`_ SelectSate handleTooltipKeyDown (${ev.key})`)
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {

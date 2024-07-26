@@ -63,21 +63,21 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 border={{ contrast: border }}
                 className={p.className}
                 base={{ contrast: csuite.inputContrast ?? 0.05 }}
+                // 🧚‍♀️ onFocus={(ev) => {
+                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
+                // 🧚‍♀️     p.onAnchorFocus?.(ev)
+                // 🧚‍♀️ }}
+                // 🧚‍♀️ onBlur={(ev) => {
+                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onBlur`)
+                // 🧚‍♀️     p.onAnchorBlur?.(ev)
+                // 🧚‍♀️ }}
+                {...p.anchorProps}
                 onKeyDown={(ev) => {
                     // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
                     select.handleTooltipKeyDown(ev)
                     select.revealState?.onAnchorKeyDown(ev)
-                    p.onAnchorKeyDown?.(ev)
+                    // 🧚‍♀️ p.anchorProps?.onAnchorKeyDown?.(ev)
                 }}
-                onFocus={(ev) => {
-                    select.revealState?.log(`🔶 revealUI - onFocus`)
-                    p.onAnchorFocus?.(ev)
-                }}
-                onBlur={(ev) => {
-                    select.revealState?.log(`🔶 revealUI - onBlur`)
-                    p.onAnchorBlur?.(ev)
-                }}
-                {...p.anchorProps}
             >
                 <AnchorContentComp select={select} />
             </Frame>

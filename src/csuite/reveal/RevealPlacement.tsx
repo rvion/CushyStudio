@@ -92,8 +92,8 @@ export const computePlacement = (
         return {
             top: 0,
             left: 0,
-            maxWidth: '95vw',
-            maxHeight: '95vh',
+            maxWidth: '100vw',
+            maxHeight: '98vh',
         }
 
     if (placement === 'screen-top')
@@ -101,24 +101,24 @@ export const computePlacement = (
             top: 0,
             left: '50%',
             transform: 'translateX(-50%)',
-            maxWidth: '95vw',
-            maxHeight: '95vh',
+            maxWidth: '100vw',
+            maxHeight: '98vh',
         }
 
     if (placement === 'screen-top-left')
         return {
             top: 0,
             left: 0,
-            maxWidth: '95vw',
-            maxHeight: '95vh',
+            maxWidth: '100vw',
+            maxHeight: '98vh',
         }
 
     if (placement === 'screen-top-right')
         return {
             top: 0,
             right: 0,
-            maxWidth: '95vw',
-            maxHeight: '95vh',
+            maxWidth: '100vw',
+            maxHeight: '98vh',
         }
 
     if (placement === 'screen-centered')
@@ -126,8 +126,8 @@ export const computePlacement = (
             top: '50%',
             left: '50%',
             transform: 'translateX(-50%) translateY(-50%)',
-            maxWidth: '95vw',
-            maxHeight: '95vh',
+            maxWidth: '100vw',
+            maxHeight: '98vh',
         }
 
     // AUTO ========================================================================================
@@ -184,8 +184,8 @@ export const computePlacement = (
         return {
             top: anchor.bottom,
             left: anchor.left,
-            maxWidth: `calc(95vw - ${anchor.left}px)`,
-            maxHeight: `calc(95vh - ${anchor.bottom}px)`,
+            maxWidth: `calc(100vw - ${anchor.left}px)`,
+            maxHeight: `calc(98vh - ${anchor.bottom}px)`,
         }
 
     // |--------------------|
@@ -199,7 +199,7 @@ export const computePlacement = (
             left: anchor.left + anchor.width / 2,
             transform: 'translate(-50%)',
             maxWidth: undefined, // '❓',
-            maxHeight: `calc(95vh - ${anchor.bottom}px)`,
+            maxHeight: `calc(98vh - ${anchor.bottom}px)`,
         }
 
     // |--------------------|
@@ -213,7 +213,7 @@ export const computePlacement = (
             left: anchor.right,
             transform: 'translate(-100%)',
             maxWidth: `${anchor.right}px`,
-            maxHeight: `calc(95vh - ${anchor.bottom}px)`,
+            maxHeight: `calc(98vh - ${anchor.bottom}px)`,
         }
 
     // TOP -----------------------------------------------------------------
@@ -227,7 +227,7 @@ export const computePlacement = (
             top: anchor.top,
             left: anchor.left,
             transform: 'translateY(-100%)',
-            maxWidth: `calc(95vw - ${anchor.left}px)`,
+            maxWidth: `calc(100vw - ${anchor.left}px)`,
             maxHeight: `${anchor.top}px`,
         }
 
@@ -272,7 +272,7 @@ export const computePlacement = (
             left: anchor.left,
             transform: 'translateX(-100%)',
             maxWidth: `${anchor.left}px`,
-            maxHeight: `calc(95vh - ${anchor.top}px)`,
+            maxHeight: `calc(98vh - ${anchor.top}px)`,
         }
 
     // |--------------------|
@@ -314,8 +314,8 @@ export const computePlacement = (
         return {
             top: anchor.top,
             left: anchor.right,
-            maxWidth: `calc(95vw - ${anchor.right}px)`,
-            maxHeight: `calc(95vh - ${anchor.top}px)`,
+            maxWidth: `calc(100vw - ${anchor.right}px)`,
+            maxHeight: `calc(98vh - ${anchor.top}px)`,
         }
 
     // |--------------------|
@@ -328,7 +328,7 @@ export const computePlacement = (
             top: anchor.top + anchor.height / 2,
             left: anchor.right,
             transform: 'translateY(-50%)',
-            maxWidth: `calc(95vw - ${anchor.right}px)`,
+            maxWidth: `calc(100vw - ${anchor.right}px)`,
             maxHeight: undefined /* ❓ 🔴 */,
         }
 
@@ -342,7 +342,7 @@ export const computePlacement = (
             top: anchor.bottom,
             left: anchor.right,
             transform: 'translateY(-100%)',
-            maxWidth: `calc(95vw - ${anchor.right}px)`,
+            maxWidth: `calc(100vw - ${anchor.right}px)`,
             maxHeight: `${anchor.bottom}px`,
         }
 

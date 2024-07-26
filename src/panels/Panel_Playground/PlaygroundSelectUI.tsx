@@ -80,7 +80,9 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
                         </Frame>
                     )}
                 >
-                    <Button>test in Popup</Button>
+                    <Button expand size='lg' look='success'>
+                        test in Popup
+                    </Button>
                 </RevealUI>
 
                 {cushy.forms /* select via fields */

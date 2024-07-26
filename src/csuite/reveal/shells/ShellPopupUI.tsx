@@ -1,8 +1,8 @@
 import type { RevealShellProps } from './ShellProps'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 
+// 👽 import { useEffect } from 'react'
 import { type ModalShellSize, ModalShellUI } from '../../modal/ModalShell'
 
 export const ShellPopupXSUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='xs' {...p} />
@@ -12,10 +12,10 @@ export const ShellPopupXLUI = (p: RevealShellProps): JSX.Element => <ShellPopupU
 
 export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps & { size?: ModalShellSize }) {
     const reveal = p.reveal
-    useEffect(() => {
-        reveal.onMouseEnterTooltip()
-        return (): void => reveal.onMouseLeaveTooltip()
-    })
+    // 👽 useEffect(() => {
+    // 👽     reveal.onMouseEnterTooltip()
+    // 👽     return (): void => reveal.onMouseLeaveTooltip()
+    // 👽 })
     return (
         <ModalShellUI //
             onClick={(ev) => reveal.onShellClick(ev)}

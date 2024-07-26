@@ -22,7 +22,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
             border
             style={p.style}
             className={p.className}
-            tw={['animate-in fade-in', 'p-4 shadow-xl mt-2']}
+            tw={['animate-in fade-in', 'p-4 shadow-xl']}
             onClick={(ev) => p.onClick?.(ev)}
         >
             {/* HEADER */}

@@ -33,9 +33,10 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
                     <InputBoolToggleButtonUI
                         key={c.id}
                         value={isSelected}
+                        border={false}
                         mode='checkbox'
                         showToggleButtonBox
-                        tw='w-full'
+                        tw='w-full [&>p]:text-start' // ❌ misc
                         text={c.label}
                         onValueChange={(value) => {
                             if (value != isSelected) field.toggleItem(c)

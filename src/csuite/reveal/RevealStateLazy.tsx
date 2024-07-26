@@ -26,10 +26,12 @@ export class RevealStateLazy {
 
     getRevealState = (): RevealState => {
         if (this.state) return this.state
-        if (DEBUG_REVEAL) console.log(`[💙] init RevealUI`)
         this.state = new RevealState({ ...this.p }, this.parents)
+        if (DEBUG_REVEAL) this.state.log(`💙 init`)
         return this.state!
     }
+
+    // all of those callbacks are for anchor ----------------------------------------
     onContextMenu = (ev: React.MouseEvent<unknown>): void => {
         // lock input on shift+right click
         if (ev.shiftKey) {
@@ -38,15 +40,30 @@ export class RevealStateLazy {
             ev.stopPropagation()
         }
     }
-    onClick = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onLeftClickAnchor(ev)
-    onMouseDown = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseDownAnchor(ev)
-    onMouseUp = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseUpAnchor(ev)
+
+    onClick = (ev: React.MouseEvent<unknown>): void => {
+        return this.getRevealState().onLeftClickAnchor(ev)
+    }
+    // 🧑‍🎤 onMouseDown = (ev: React.MouseEvent<unknown>): void => {
+    // 🧑‍🎤     return this.getRevealState().onMouseDownAnchor(ev)
+    // 🧑‍🎤 }
+    // 🧑‍🎤 onMouseUp = (ev: React.MouseEvent<unknown>): void => {
+    // 🧑‍🎤     return this.getRevealState().onMouseUpAnchor(ev)
+    // 🧑‍🎤 }
     onAuxClick = (ev: React.MouseEvent<unknown>): void => {
         if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
         if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
     }
-    onMouseEnter = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseEnterAnchor(ev)
-    onMouseLeave = (ev: React.MouseEvent<unknown>): void => this.getRevealState().onMouseLeaveAnchor(ev)
-    onFocus = (ev: React.FocusEvent<unknown>): void => this.getRevealState().onFocusAnchor(ev)
-    onBlur = (ev: React.FocusEvent<unknown>): void => this.getRevealState().onBlurAnchor(ev)
+    onMouseEnter = (ev: React.MouseEvent<unknown>): void => {
+        return this.getRevealState().onMouseEnterAnchor(ev)
+    }
+    onMouseLeave = (ev: React.MouseEvent<unknown>): void => {
+        return this.getRevealState().onMouseLeaveAnchor(ev)
+    }
+    onFocus = (ev: React.FocusEvent<unknown>): void => {
+        return this.getRevealState().onFocusAnchor(ev)
+    }
+    onBlur = (ev: React.FocusEvent<unknown>): void => {
+        return this.getRevealState().onBlurAnchor(ev)
+    }
 }

@@ -35,14 +35,29 @@ export type SelectProps<OPTION> = {
     /** if provided, is used to compare options with selected values */
     equalityCheck?: (a: OPTION, b: OPTION) => boolean
 
+    // --------------------------------------------
     /** used to search/filter & for UI if no getLabelUI provided */
     getLabelText: (t: OPTION) => string
 
     /** if provided, is used to display the options in the popover */
     getLabelUI?: (t: OPTION) => React.ReactNode
+    // ^^^
+    // - [ ] RENAME
+    // - [ ] allow to specify them by well known slot
+    //     - 'ColoredBadgeWithCloseKnob'
+    //     - 'ColoredBadge'
+    //     - 'Badge'
+    //     - 'BadgeWithCloseKnob'
 
     /** if provided, is used to display the selected options in the inside area  */
     getInsideUI?: (t: OPTION) => React.ReactNode
+    // - [ ] RENAME
+    // - [ ] allow to specify them by well known slot
+    //     - 'ColoredBadgeWithCloseKnob'
+    //     - 'ColoredBadge'
+    //     - 'Badge'
+    //     - 'BadgeWithCloseKnob'
+    // --------------------------------------------
 
     /** if not provided, autoKey will be used instead */
     getKey?: (t: OPTION) => string
@@ -83,9 +98,9 @@ export type SelectProps<OPTION> = {
     wrap?: boolean
 
     onHidden?: (reason: RevealHideReason) => void
-    onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
-    onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
-    onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
+    // 🧚‍♀️ onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
+    // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
+    // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
     revealProps?: RevealProps
     anchorProps?: FrameProps
     popupWrapperProps?: FrameProps

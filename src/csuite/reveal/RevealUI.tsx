@@ -125,8 +125,8 @@ export const RevealUI = observer(
                     onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
                     onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
                     onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
-                    onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
-                    onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
+                    // 🧑‍🎤 onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
+                    // 🧑‍🎤 onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
                     onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
                     onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
                 },
@@ -136,7 +136,13 @@ export const RevealUI = observer(
                     {/* // 🔶 add the tooltip at the end of the children list */}
                 </>
             )
-            return <RevealCtx.Provider value={nextTower}>{clonedChildren}</RevealCtx.Provider>
+            return (
+                <RevealCtx.Provider //
+                    value={nextTower}
+                >
+                    {clonedChildren}
+                </RevealCtx.Provider>
+            )
         }
 
         // this span could be bypassed by cloning the child element and injecting props,
@@ -153,10 +159,10 @@ export const RevealUI = observer(
                     onAuxClick={lazyState.onAuxClick}
                     onMouseEnter={lazyState.onMouseEnter}
                     onMouseLeave={lazyState.onMouseLeave}
-                    onMouseDown={lazyState.onMouseDown}
-                    onMouseUp={lazyState.onMouseUp}
                     onFocus={lazyState.onFocus}
                     onBlur={lazyState.onBlur}
+                    // 🧑‍🎤 onMouseDown={lazyState.onMouseDown}
+                    // 🧑‍🎤 onMouseUp={lazyState.onMouseUp}
                 >
                     {p.children /* anchor */}
                     {mkTooltip(reveal) /* tooltip */}
