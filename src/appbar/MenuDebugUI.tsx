@@ -18,6 +18,13 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             title='Debug'
             content={() => (
                 <>
+                    <MenuItem //
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
+                        icon='mdiPlayNetwork'
+                    >
+                        Show Dev Playground Page
+                    </MenuItem>
+                    <MenuDividerUI_ />
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiAutoFix'
@@ -66,12 +73,6 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         label='Reload'
                     />
                     <MenuDividerUI_ />
-                    <MenuItem //
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
-                        icon='mdiPlayNetwork'
-                    >
-                        Show Dev Playground Page
-                    </MenuItem>
                     <MenuItem //
                         iconClassName='text-yellow-500'
                         onClick={() => getDBStats(st.db)}
