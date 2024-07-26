@@ -3,23 +3,32 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { Frame } from '../../csuite/frame/Frame'
+import { sizeManual } from '../../csuite/types/RsuiteTypes'
 
 export const PlaygroundSizeUI = observer(function PlaygroundSizeUI_(p: {}) {
     return (
         <div>
-            <Frame tw='my-1' line /* V1 */>
-                <Button size='lg'>Coucou</Button>
-                <Frame size='lg' children={'hello'} />
-                <Button size='lg'>This is cool</Button>
+            <Frame border base={{ hueShift: 10, contrast: 0.1, chroma: 0.05 }}>
+                <h3>Manual (lg)</h3>
+                {sizeManual.map((size) => (
+                    <Frame tooltip={size} tw='my-1' line /* V1 */>
+                        <Frame tw='w-12'>{size}</Frame>
+                        <Button size={size}>button</Button>
+                        <Frame size={size} children={'text in a frame'} />
+                        {/* <Button size={size}>This is cool</Button> */}
+                    </Frame>
+                ))}
             </Frame>
 
-            <CSuiteOverride config={{ inputHeight: 5 }}>
-                <Frame tw='my-1' line /* V1 */>
-                    <Button>Coucou</Button>
-                    <Frame children={'hello'} />
-                    <Button>This is cool</Button>
-                </Frame>
-            </CSuiteOverride>
+            <Frame border base={{ hueShift: 50, contrast: 0.1, chroma: 0.05 }}>
+                <h3>Via context</h3>
+                <CSuiteOverride config={{ inputHeight: 5 }}>
+                    <Frame line>
+                        <Button>button</Button>
+                        <Frame hover children={'text in a frame'} />
+                    </Frame>
+                </CSuiteOverride>
+            </Frame>
         </div>
     )
 })

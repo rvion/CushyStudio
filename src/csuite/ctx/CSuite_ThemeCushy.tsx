@@ -21,10 +21,20 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
     }
 
+    // sizes ------------------------------------------------------
     get widgetHeight(): number {
         return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }
 
+    get inputHeight(): number {
+        return this.st.preferences.interface.value.inputHeight ?? 1.6
+    }
+
+    get insideHeight(): number {
+        return this.st.preferences.interface.value.insideHeight ?? 1.2
+    }
+
+    // misc ------------------------------------------------------
     get clickAndSlideMultiplicator(): number {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
@@ -56,9 +66,6 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
 
-    get inputHeight(): number {
-        return this.st.preferences.interface.value.inputHeight ?? 1.6
-    }
     // theme
 
     get baseStr(): string {

@@ -42,7 +42,7 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: {
                     // sizes
                     '--widget-height': `${config.widgetHeight}rem`,
                     '--input-height': `${config.inputHeight}rem`,
-                    '--inside-height': `${config.inputHeight}rem`, // TEMP
+                    '--inside-height': `${config.insideHeight}rem`, // TEMP
                     // legacy ? change to inside ?
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
                     // '--input-border': getNum(config.inputBorder) / 100,

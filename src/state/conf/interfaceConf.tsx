@@ -64,6 +64,17 @@ export const interfaceConf = cushyFactory.entity(
                     unit: 'rem',
                     suffix: 'rem',
                 }),
+                insideHeight: ui.number({
+                    label: false,
+                    justifyLabel: false,
+                    text: 'Inside Height', // name is bad
+                    tooltip: 'Height of the content frames within inputs',
+                    min: 1,
+                    max: 3,
+                    default: 1.2,
+                    unit: 'rem',
+                    suffix: 'rem',
+                }),
                 useDefaultCursorEverywhere: ui.boolean({
                     text: 'Default Cursor Everywhere',
                     tooltip:
@@ -108,8 +119,13 @@ export const interfaceConf = cushyFactory.entity(
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 <WidgetWithLabelUI fieldName='' field={f.toolBarIconSize} />
+                            </div>
+                            <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 <WidgetWithLabelUI fieldName='' field={f.widgetHeight} />
                                 <WidgetWithLabelUI fieldName='' field={f.inputHeight} />
+                                <WidgetWithLabelUI fieldName='' field={f.insideHeight} />
+                            </div>
+                            <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
                                 <WidgetWithLabelUI fieldName='' field={f.tooltipDelay} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>

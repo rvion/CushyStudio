@@ -35,6 +35,7 @@ export interface CSuiteConfig {
     // [size]
     widgetHeight: number
     inputHeight: number
+    insideHeight: number
 
     // ------------------------------------------------------------
     // [theme]

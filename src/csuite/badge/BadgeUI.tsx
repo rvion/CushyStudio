@@ -29,7 +29,14 @@ export const BadgeUI = observer(function BadgeUI_({
     return (
         <Frame
             // [line-height:1.1rem]
-            tw={['leading-normal', 'rounded px-2 whitespace-nowrap', hasAction && 'cursor-pointer', 'w-fit']}
+            tw={[
+                //
+                'leading-normal',
+                'rounded px-2 whitespace-nowrap',
+                hasAction && 'cursor-pointer',
+                'w-fit',
+                'lh-inside h-inside',
+            ]}
             hover={hasAction}
             base={{
                 contrast: contrast ?? 0.1,
