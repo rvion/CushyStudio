@@ -21,7 +21,7 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
     return (
         <ErrorBoundaryUI>
             <div tw='flex flex-col gap-1'>
-                <Frame line tw='m-1' /* SINGLE SELECT */>
+                <Frame line /* SINGLE SELECT */>
                     <Frame expand base={{ chroma: 0.05, hue: 40 }}>
                         <SelectUI<string>
                             options={() => ['test', 'test2', 'test3']}
@@ -40,7 +40,7 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
                         />
                     </Frame>
                 </Frame>
-                <Frame line tw='m-1' /* MULTI SELECT */>
+                <Frame line /* MULTI SELECT */>
                     <Frame expand base={{ chroma: 0.05, hue: 40 }}>
                         <SelectUI<string>
                             multiple
