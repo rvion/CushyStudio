@@ -29,6 +29,7 @@ export const Button = observer(function Button_(
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     return (
         <Frame //
+            as='button'
             size={size ?? 'input'}
             look={look}
             boxShadow={
@@ -40,8 +41,8 @@ export const Button = observer(function Button_(
                 contrast: subtle //
                     ? 0
                     : uist.visuallyActive || uist.running
-                    ? buttonContrastWhenPressed
-                    : buttonContrast,
+                      ? buttonContrastWhenPressed
+                      : buttonContrast,
                 hue: p.hue,
                 chroma: p.chroma,
             }}
@@ -50,7 +51,7 @@ export const Button = observer(function Button_(
             // active={uist.visuallyActive}
             disabled={p.disabled}
             loading={p.loading ?? uist.running}
-            tabIndex={p.tabIndex ?? -1}
+            tabIndex={p.tabIndex}
             onMouseDown={uist.press}
             onClick={uist.onClick}
             iconSize={iconSize ?? '1.1rem'}
