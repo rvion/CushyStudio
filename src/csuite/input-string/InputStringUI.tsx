@@ -34,7 +34,7 @@ export type InputStringProps = {
     /** text pattern */
     pattern?: Field_string_config['pattern']
 
-    autofocus?: boolean
+    autoFocus?: boolean
 
     /** input placeholder */
     placeholder?: string
@@ -110,7 +110,7 @@ export const InputStringUI = observer(
                     type={reveal ? 'text' : p.type}
                     pattern={p.pattern}
                     placeholder={p.placeholder}
-                    autoFocus={p.autofocus}
+                    autoFocus={p.autoFocus}
                     value={p.buffered ? temporaryValue ?? value : value}
                     onChange={(ev) => {
                         if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)

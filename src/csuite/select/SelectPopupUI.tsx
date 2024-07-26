@@ -29,7 +29,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                 <select.p.slotTextInputUI select={select} />
             ) : (
                 <InputStringUI
-                    autofocus
+                    autoFocus
                     icon='mdiSelectMarker'
                     onKeyDown={(ev) => {
                         if (ev.key === 'Tab') {

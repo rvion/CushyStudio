@@ -115,7 +115,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: {}) {
                 <Frame tw='h-input flex flex-row'>
                     <InputStringUI
                         // placeholder='filename'
-                        autofocus
+                        autoFocus
                         getValue={() => uist.query}
                         setValue={(val) => (uist.query = val)}
                     />
