@@ -28,11 +28,9 @@ export type CushyDiffusionUI_ = {
     mask: UI_Mask
     upscaleV2: X.XChoices<{
         highResFix: UI_HighResFix
-        upscaleWithModel: Schema<
-            Field_group<{
-                model: X.XEnum<Enum_UpscaleModelLoader_model_name>
-            }>
-        >
+        upscaleWithModel: X.XGroup<{
+            model: X.XEnum<Enum_UpscaleModelLoader_model_name>
+        }>
     }>
     customSave: UI_customSave
     removeBG: UI_rembg_v1

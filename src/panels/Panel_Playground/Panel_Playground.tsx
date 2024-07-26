@@ -3,7 +3,6 @@ import { useLayoutEffect } from 'react'
 
 import { cushyFactory } from '../../controls/Builder'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
-import { FormUI } from '../../csuite/form/FormUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
@@ -13,10 +12,11 @@ import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
-import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
+import { PlaygroundRequirements } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
 import { PlaygroundSizeUI } from './PlaygroundSize'
+import { PlaygroundSkinsUI } from './PlaygroundSkinsUI'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
 const Header_Playground = cushyFactory.entity(
@@ -26,6 +26,9 @@ const Header_Playground = cushyFactory.entity(
             default: 'scratchPad',
             tabPosition: 'start',
             items: {
+                skins: ui.empty(),
+                select: ui.empty(),
+                size: ui.empty(),
                 forms: ui.empty(),
                 customPanels: ui.empty(),
                 requirements: ui.empty(),
@@ -35,8 +38,6 @@ const Header_Playground = cushyFactory.entity(
                 graph: ui.empty(),
                 comfyImport: ui.empty(),
                 messages: ui.empty(),
-                select: ui.empty(),
-                size: ui.empty(),
             },
         }),
     {
@@ -86,6 +87,7 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                 {mode.messages && <PlaygroundMessages />}
                 {mode.select && <PlaygroundSelectUI />}
                 {mode.size && <PlaygroundSizeUI />}
+                {mode.skins && <PlaygroundSkinsUI />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
         </Frame>

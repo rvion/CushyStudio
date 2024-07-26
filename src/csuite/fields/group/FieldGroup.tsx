@@ -24,14 +24,14 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
         /** fields */
         items?: T
 
-        /** if provided, will be used in the header when fields are folded */
+        /** @deprecated; use `toString` instead */
         summary?: (
             //
             items: { [k in keyof T]: T[k]['$Value'] },
             self: Field_group<T>,
         ) => string
-        // TODO 1: remove summary from here and move it to the base field config directly
-        // TODO 2: stop passing values to that function, only pass the field directly
+        // 🔶 TODO 1: remove summary from here and move it to the base field config directly
+        // 🟢 TODO 2: stop passing values to that function, only pass the field directly
         // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
         // TODO 4: add various .customXXX on each ....
     },
@@ -64,7 +64,11 @@ export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
 
 export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
-type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
+// prettier-ignore
+type Accessor<T extends Field> =
+    | keyof T['value']
+    | ((field: T) => Maybe<FC<NO_PROPS>>)
+    | null | undefined
 
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
@@ -76,39 +80,38 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
      * with
      */
     formFields(
-        fields: (keyof T | Accessor<this>)[],
+        fields: Accessor<this>[] | ((self: this) => Accessor<this>[]),
         props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
     ): FC<NO_PROPS> {
         return this.customForm(fields, props)
     }
 
     // ⏸️ customCell(
-    // ⏸️     _fields: (keyof T | Accessor<this>)[],
+    // ⏸️     _fields: (Accessor<this>)[],
     // ⏸️     _props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
     // ⏸️ ): FC<NO_PROPS> {
     // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
     // ⏸️ }
 
     customForm(
-        fields: (keyof T | Accessor<this>)[],
+        extra: Accessor<this>[] | ((self: this) => Accessor<this>[]),
         props?: {
             showMore?: (keyof T)[] | false
             readonly?: boolean
-            /**
-             * @stability beta
-             * UNFINISHED
-             */
             usage?: 'cell' | 'default' | 'text'
         },
-    ): FC<NO_PROPS> {
+    ): FC<NO_PROPS | undefined> {
         const sm = props?.showMore
         return () => {
             // ⏸️ const defUsage = props?.usage ?? 'default'
+            const fields = typeof extra === 'function' ? extra(this) : extra
             return (
                 <Frame>
                     {fields.map((f) => {
+                        if (f == null) return null
                         if (typeof f === 'function') {
                             const res = f(this)
+                            if (res == null) return null
                             return res({})
                         }
 
@@ -133,13 +136,14 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     form(
-        fields: (keyof T | Accessor<this>)[],
+        //
+        fields: Accessor<this>[],
         props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false },
     ): Form {
         return new Form({
             ...props,
             field: this,
-            Component: this.formFields(fields, { showMore: props.showMore }),
+            Component: this.customForm(fields, { showMore: props.showMore }),
         })
     }
 

@@ -91,7 +91,7 @@
     border-left: 1px solid var(--color-tabset-background);
 }
 .flexlayout__tab:hover {
-    border: 1px solid oklch(from var(--KLR) 0.5 .2 calc(h + 180));
+    border: 1px solid oklch(from var(--KLR) 0.5 .1 calc(h));
     /* border: 1px solid oklch(from var(--KLR) 0.5 calc(c * 3) h); */
     /* border: 1px solid red; */
     /* border-top: none; */

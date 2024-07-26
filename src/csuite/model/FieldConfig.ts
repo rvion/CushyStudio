@@ -33,11 +33,32 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     box?: Box
 
-    /** allow to specify custom headers */
+    // --------------------------------
+    /**
+     * override the default header renderer
+     * (passing `null` to restore the default renderer)
+     */
     header?: null | CovariantFC<{ field: T['$Field'] }>
 
-    /** allow to specify custom body */
+    /**
+     * override the default body renderer
+     * (passing `null` to restore the default renderer)
+     */
     body?: null | CovariantFC<{ field: T['$Field'] }>
+
+    /**
+     * override the default cell renderer
+     * (passing `null` to restore the default renderer)
+     */
+    cell?: null | CovariantFC<{ field: T['$Field'] }>
+
+    /**
+     * override the default string renderer
+     * (passing `null` to restore the default renderer)
+     */
+    toString?: null | CovariantFn<[field: T['$Field']], string>
+
+    // --------------------------------
 
     /**
      * @since 2024-05-14

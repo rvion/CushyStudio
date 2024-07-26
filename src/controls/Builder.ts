@@ -14,7 +14,7 @@ import { Field_choices, type Field_choices_config } from '../csuite/fields/choic
 import { Field_color, type Field_color_config } from '../csuite/fields/color/FieldColor'
 import { Field_custom, type Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import { Field_group, type Field_group_config } from '../csuite/fields/group/FieldGroup'
+import { Field_group, type Field_group_config, type FieldGroup } from '../csuite/fields/group/FieldGroup'
 import { Field_image, type Field_image_config } from '../csuite/fields/image/FieldImage'
 import { Field_link } from '../csuite/fields/link/FieldLink'
 import { Field_list, type Field_list_config } from '../csuite/fields/list/FieldList'
@@ -81,7 +81,8 @@ declare global {
 
         // schema aliases
         type XShared<T extends Field> = Schema<Field_shared<T>>
-        type XGroup<T extends SchemaDict> = Schema<Field_group<T>>
+        type XGroup<T extends SchemaDict> = Schema<FieldGroup<T>>
+        type XGroup_<T extends SchemaDict> = Schema<Field_group<T>>
         type XEmpty = Schema<Field_group<NO_PROPS>>
         type XOptional<T extends BaseSchema> = Schema<Field_optional<T>>
         type XBool = Schema<Field_bool>
@@ -328,12 +329,12 @@ export class Builder implements IBuilder {
 
     /** see also: `fields` for a more practical api */
     group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, config)
+        return new Schema<Field_group<T>>(Field_group, config) as any
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
     column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config })
+        return new Schema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
@@ -344,12 +345,12 @@ export class Builder implements IBuilder {
             collapsed: false,
             layout: 'H',
             ...config,
-        })
+        }) as any
     }
 
     /** simpler way to create `group` */
     fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, { items: fields, ...config })
+        return new Schema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
     }
 
     choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {

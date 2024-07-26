@@ -13,15 +13,13 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
         </Frame>
     )
 
-    const conf = simpleFactory.useLocalstorage(
-        (ui) =>
-            ui.fields({
-                trigger: ui.selectOneV3(['hover', 'click', 'clickAndHover'], { default: { id: 'hover' } }),
-                width: ui.pixel({ default: 200, step: 50 }),
-                height: ui.pixel({ default: 120, step: 50 }),
-                defaultVisible: ui.bool({ default: false }),
-            }),
-        '18nnMJ5aY',
+    const conf = simpleFactory.useLocalstorage('18nnMJ5aY', (ui) =>
+        ui.fields({
+            trigger: ui.selectOneV3(['hover', 'click', 'clickAndHover'], { default: { id: 'hover' } }),
+            width: ui.pixel({ default: 200, step: 50 }),
+            height: ui.pixel({ default: 120, step: 50 }),
+            defaultVisible: ui.bool({ default: false }),
+        }),
     )
 
     const Content2 = observer(

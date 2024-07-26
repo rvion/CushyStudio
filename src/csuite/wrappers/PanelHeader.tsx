@@ -28,8 +28,13 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     return (
         <Frame // Container
             className={p.className}
-            base={8}
-            tw={['CSHY-panel-header w-full', 'flex gap-1 select-none', 'items-center p-1']}
+            // base={8}
+            tw={[
+                //
+                'CSHY-panel-header w-full',
+                'flex flex-wrap gap-1 select-none',
+                'items-center',
+            ]}
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY
                 event.stopPropagation()

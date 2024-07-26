@@ -1,6 +1,5 @@
 import '../../ALL_CMDS'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
@@ -10,7 +9,6 @@ import { TooltipUI } from '../../csuite/activity/TooltipUI'
 import { commandManager } from '../../csuite/commands/CommandManager'
 import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
-import { RevealState } from '../../csuite/reveal/RevealState'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
@@ -85,7 +83,7 @@ export const CushyUI = observer(function CushyUI_() {
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <div className='UI-MAIN flex flex-grow relative overflow-clip'>
+                <div className='flex flex-grow relative overflow-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>

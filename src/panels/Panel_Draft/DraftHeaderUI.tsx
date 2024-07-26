@@ -72,21 +72,20 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     // XXX: This is bad because h-input will change from the theme settings, but this will not.
                     size='3.69rem'
                 />
-                <div tw='flex flex-col gap-2'>
-                    <DraftMenuDataBlockUI draft={draft} title='Drafts' />
-                    <div tw='flex items-center'>
+                <div tw='flex flex-col flex-1'>
+                    <Frame line>
+                        <DraftMenuDataBlockUI draft={draft} title='Drafts' />
+                        <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
+                    </Frame>
+                    <div tw='flex items-center justify-between'>
                         <InputStringUI
                             getValue={() => draft.data.canvasToolCategory ?? ''}
                             setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                             placeholder='Unified Canvas Category'
                         />
-                        {/* [TEMPORARY HACK 2024-06-24 START] */}
                         {cushy.theme.fields.labelLayout.renderSimple({ label: 'Label' })}
-                        {/* {p.children} */}
-                        {/* [TEMPORARY HACK 2024-06-24 END] */}
                     </div>
                 </div>
-                <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
             </Frame>
         </Frame>
     )

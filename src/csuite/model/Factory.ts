@@ -87,8 +87,8 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
     /** simple way to defined forms and in react components */
     useLocalstorage<SCHEMA extends BaseSchema>(
-        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         key: string,
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
         const schema: SCHEMA = this.evalSchema(schemaExt)

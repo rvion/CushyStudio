@@ -71,7 +71,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
 
     return (
         <div className='flex flex-1 flex-col h-full'>
-            <PanelHeaderUI></PanelHeaderUI>
+            {/* <PanelHeaderUI></PanelHeaderUI> */}
             <div tw='flex flex-1 flex-row overflow-clip'>
                 <BasicShelfUI anchor='left'>
                     <div tw='flex flex-col p-2 gap'>
