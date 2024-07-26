@@ -140,8 +140,8 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     form(
         //
-        fields: Accessor<this>[],
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false },
+        fields: Accessor<this>[] | ((self: this) => Accessor<this>[]),
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
     ): Form {
         return new Form({
             ...props,
