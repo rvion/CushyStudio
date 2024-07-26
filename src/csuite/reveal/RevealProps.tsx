@@ -105,4 +105,4 @@ export type RevealProps = {
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
 }
-export const DEBUG_REVEAL = true
+export const DEBUG_REVEAL = false
