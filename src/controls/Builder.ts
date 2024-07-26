@@ -239,6 +239,21 @@ export class Builder implements IBuilder {
         })
     }
 
+    /**
+     * [number variant] ratio = mode=float, default=0.5, step=0.01, min=0, max=1, suffix='%',
+     * see also: `percent`
+     */
+    ratio(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
+        return new Schema<Field_number>(Field_number, {
+            mode: 'float',
+            default: 0.5,
+            step: 0.01,
+            min: 0,
+            max: 1,
+            ...config,
+        })
+    }
+
     float(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
         return new Schema<Field_number>(Field_number, { mode: 'float', ...config })
     }
