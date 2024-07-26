@@ -1,5 +1,3 @@
-import { regionMonitor } from '../regions/RegionMonitor'
-
 export type RevealPlacement =
     /** ---------------------------------------------------------------------------
      * @since 2024-07-23
