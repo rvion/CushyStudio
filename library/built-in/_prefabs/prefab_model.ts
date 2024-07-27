@@ -151,6 +151,9 @@ export const run_model = (
 
     let ckpt: HasSingle_MODEL = ckptLoader
     let clip: HasSingle_CLIP = ckptLoader
+    if (ui.ckpt_name.indexOf('sd3') >= 0) {
+        ckpt = graph.ModelSamplingSD3({ model: ckpt, shift: 3 })
+    }
 
     // 2. OPTIONAL CUSTOM VAE
     let vae: _VAE = ckptLoader._VAE

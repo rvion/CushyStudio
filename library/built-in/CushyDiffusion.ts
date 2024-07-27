@@ -59,6 +59,18 @@ app({
             text: negPrompt.promptIncludingBreaks /* + posPrompt.negativeText */,
         })
 
+        //sd3 special negative conditioning
+        if (ui.model.ckpt_name.includes('sd3')) {
+            negative = graph.ConditioningCombine({
+                conditioning_1: graph.ConditioningSetTimestepRange({
+                    conditioning: graph.ConditioningZeroOut({ conditioning: negative }),
+                    start: 0.1,
+                    end: 1.0,
+                }),
+                conditioning_2: graph.ConditioningSetTimestepRange({ conditioning: negative, start: 0, end: 0.1 }),
+            })
+        }
+
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         // let negative = y.conditionning
 
