@@ -9,7 +9,7 @@ import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
-import { FieldUI } from './PanelConfig'
+import { LegacyFieldUI } from './LegacyFieldUI'
 
 export const LegacyOptions = observer(function LegacyOptions_() {
     const st = useSt()
@@ -19,28 +19,28 @@ export const LegacyOptions = observer(function LegacyOptions_() {
         <div tw='flex flex-col'>
             <div className='divider'>Legacy config fields to migrate 👇:</div>
             <div tw='flex flex-col gap-1'>
-                <FieldUI label='Config file path'>
+                <LegacyFieldUI label='Config file path'>
                     <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(st, config.path)}>
                         {config.path}
                     </Button>
-                </FieldUI>
-                <FieldUI label='Set tags file'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Set tags file'>
                     <input
                         tw='csuite-basic-input w-full'
                         name='tagFile'
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                         onChange={(ev) => config.update({ tagFile: ev.target.value })}
                     />
-                </FieldUI>
-                <FieldUI label='Your github username'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Your github username'>
                     <input //
                         tw='csuite-basic-input w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => config.update({ githubUsername: ev.target.value })}
                         name='githubUsername'
                     />
-                </FieldUI>
-                <FieldUI label='Number slider speed multiplier'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Number slider speed multiplier'>
                     <InputNumberUI //
                         placeholder='Number slider speed multiplier'
                         softMin={0.3}
@@ -50,14 +50,14 @@ export const LegacyOptions = observer(function LegacyOptions_() {
                         mode='float'
                         onValueChange={(val) => config.update({ numberSliderSpeed: val })}
                     />
-                </FieldUI>
-                <FieldUI label='Enable TypeChecking Default Apps'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Enable TypeChecking Default Apps'>
                     <InputBoolCheckboxUI
                         onValueChange={(next) => config.update({ enableTypeCheckingBuiltInApps: next })}
                         value={config.value.enableTypeCheckingBuiltInApps ?? false}
                     />
-                </FieldUI>
-                <FieldUI label='Check update every X minutes'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Check update every X minutes'>
                     <input //
                         tw='csuite-basic-input w-full'
                         type='number'
@@ -77,28 +77,28 @@ export const LegacyOptions = observer(function LegacyOptions_() {
                             })
                         }}
                     />
-                </FieldUI>
-                <FieldUI label='OpenRouter API KEY'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='OpenRouter API KEY'>
                     <InputStringUI
                         icon='mdiKey'
                         type='password'
                         getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
                         setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
                     />
-                </FieldUI>
-                <FieldUI label='Configure hosts:'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Configure hosts:'>
                     <Button icon={'mdiOpenInNew'} onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
                         Open Hosts page
                         <ComboUI combo={KEYS.openPage_Hosts} />
                     </Button>
-                </FieldUI>
-                <FieldUI label='Local folder to save favorites:'>
+                </LegacyFieldUI>
+                <LegacyFieldUI label='Local folder to save favorites:'>
                     <InputStringUI
                         icon='mdiFolderStar'
                         getValue={() => config.value.favoriteLocalFolderPath ?? ''}
                         setValue={(next) => config.update({ favoriteLocalFolderPath: next })}
                     />
-                </FieldUI>
+                </LegacyFieldUI>
             </div>
         </div>
     )

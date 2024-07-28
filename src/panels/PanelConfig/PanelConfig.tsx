@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { FormUI } from '../../csuite/form/FormUI'
-import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -24,55 +23,32 @@ export const PanelConfig = new Panel({
 export type PanelConfigProps = NO_PROPS
 
 export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps) {
-    let page: JSX.Element
-    switch (cushy.configMode) {
-        case 'hosts':
-            page = <PanelComfyHostsUI />
-            break
-        case 'input':
-            page = cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' })
-            break
-        case 'interface':
-            page = <FormUI tw='flex-1' field={cushy.preferences.interface} />
-            break
-        case 'legacy':
-            page = <LegacyOptions />
-            break
-        case 'system':
-            page = <FormUI tw='flex-1' field={cushy.preferences.system} />
-            break
-        case 'theme':
-            page = <FormUI tw='flex-1' field={cushy.theme} />
-            break
-    }
-
-    const ConfigModeButton = (p: { mode: ConfigMode }): JSX.Element => {
-        return (
-            <InputBoolToggleButtonUI //
-                tw='capitalize h-10'
-                value={cushy.configMode == p.mode}
-                text={p.mode}
-                onValueChange={(_) => {
-                    cushy.configMode = p.mode
-                }}
-            />
-        )
-    }
+    const page: JSX.Element = ((): JSX.Element => {
+        const mode = cushy.configMode
+        if (mode === 'hosts') return <PanelComfyHostsUI />
+        if (mode === 'input')
+            return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' })
+        if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
+        if (mode === 'legacy') return <LegacyOptions />
+        if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
+        if (mode === 'theme') return <FormUI tw='flex-1' field={cushy.theme} />
+        return <>❌ unknown tab</>
+    })()
 
     return (
         <Frame expand row>
             {/* <PanelHeaderUI></PanelHeaderUI> */}
             <BasicShelfUI anchor='left'>
                 <BasicShelfUI.Column /* 🌶️👋 < components can now be nested */>
-                    <ConfigModeButton mode='legacy' />
+                    <ConfigTabButtonUI mode='legacy' />
                     <BasicShelfUI.Group hueShift={200} /* 🌶️👋 */>
-                        <ConfigModeButton mode='interface' />
-                        <ConfigModeButton mode='input' />
-                        <ConfigModeButton mode='theme' />
+                        <ConfigTabButtonUI mode='interface' />
+                        <ConfigTabButtonUI mode='input' />
+                        <ConfigTabButtonUI mode='theme' />
                     </BasicShelfUI.Group>
                     <BasicShelfUI.Group hueShift={100}>
-                        <ConfigModeButton mode='system' />
-                        <ConfigModeButton mode='hosts' />
+                        <ConfigTabButtonUI mode='system' />
+                        <ConfigTabButtonUI mode='hosts' />
                     </BasicShelfUI.Group>
                 </BasicShelfUI.Column>
             </BasicShelfUI>
@@ -82,20 +58,15 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
     )
 })
 
-export const FieldUI = observer(function FieldUI_(p: {
-    required?: boolean
-    label?: string
-    help?: string
-    className?: string
-    children: React.ReactNode
-}) {
+const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: { mode: ConfigMode }) {
     return (
-        <div className={p.className} tw='flex gap-2 items-center'>
-            <WidgetLabelContainerUI justify>
-                <label tw='whitespace-nowrap'>{p.label}</label>
-            </WidgetLabelContainerUI>
-            {p.children}
-            {p.required && <div tw='join-item'>Required</div>}
-        </div>
+        <InputBoolToggleButtonUI //
+            tw='capitalize h-10'
+            value={cushy.configMode == p.mode}
+            text={p.mode}
+            onValueChange={(_) => {
+                cushy.configMode = p.mode
+            }}
+        />
     )
 })
