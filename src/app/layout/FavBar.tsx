@@ -11,7 +11,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
-import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
+import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?

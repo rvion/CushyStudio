@@ -1,7 +1,7 @@
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
-import type { UnifiedCanvas } from '../panels/Panel_Canvas/states/UnifiedCanvas'
+import type { UnifiedCanvas } from '../panels/PanelCanvas/states/UnifiedCanvas'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties, ReactNode } from 'react'

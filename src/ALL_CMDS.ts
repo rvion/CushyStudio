@@ -21,7 +21,7 @@ import {
     cmd_nav_openGallery3,
     cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
-import { allCanvasCommands } from './panels/Panel_Canvas/commands/canvasCommands'
+import { allCanvasCommands } from './panels/PanelCanvas/commands/canvasCommands'
 
 export const allCommands = [
     //

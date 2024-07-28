@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
-import { CreateAppBtnUI } from '../Panel_Welcome/CreateAppBtnUI'
+import { CreateAppBtnUI } from '../PanelWelcome/CreateAppBtnUI'
 
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 export const PanelMarketplace = new Panel({
