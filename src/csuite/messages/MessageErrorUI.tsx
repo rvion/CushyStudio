@@ -12,7 +12,7 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
     return (
         <MessageUI //
             type='error'
-            icon='mdiSkull'
+            icon='mdiAlertCircle'
             hue={0}
             {...p}
         />
