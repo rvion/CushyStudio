@@ -146,6 +146,23 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         this.serial.query = serial?.query
     }
 
+    /** return true if the value is equal to the given id */
+    is(val: T['id'] | T): boolean {
+        return (
+            this.value.id ===
+            (typeof val === 'object' //
+                ? val.id
+                : val)
+        )
+    }
+
+    /** set value by id */
+    setId(val: T['id']): void {
+        const option = this.choices.find((c) => c.id === val)
+        if (option == null) throw new Error(`option with id ${val} not found`)
+        this.value = option
+    }
+
     get value(): Field_selectOne_value<T> {
         // 🔴 si pas de serial.val "ma valeur par défaut" s'affiche dans l'UI
         // mais n'est pas saved dans le serial?
