@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { HostL } from '../../models/Host'
@@ -61,11 +62,9 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
 
                 {/* SIZE */}
                 {size === 0 ? (
-                    <div tw='btn btn-sm btn-ghost bg-error text-error-content'>
-                        <span className='material-symbols-outlined'>error</span>
-                        {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
-                        <div>empty schema</div>
-                    </div>
+                    <Button loading={host.isUpdatingSchema} icon='mdiAlertCircle' look='error'>
+                        empty schema
+                    </Button>
                 ) : (
                     <div className='btn btn-sm btn-ghost cursor-help'>
                         {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
