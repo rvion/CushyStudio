@@ -13,6 +13,7 @@ import { type FC } from 'react'
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form } from '../../form/Form'
 import { Frame } from '../../frame/Frame'
+import { MarkdownUI } from '../../markdown/MarkdownUI'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
@@ -65,10 +66,21 @@ export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
 export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
 // prettier-ignore
-type Accessor<T extends Field> =
-    | keyof T['value']
+type QuickFormContent<T extends Field> =
+    /** strings will be rendered as Markdown, with a `_MD` className  */
+    | string
+
+    /**
+     * any lambda CURRENTLY expect to return a component
+     * (PROBABLY BAD, SHOULD RETURN AN ELEMENT)
+     */
     | ((field: T) => Maybe<FC<NO_PROPS>>)
+
+    /** Fields will be rendered using the default Component
+     * for the render context (cell, form, text) */
     | Field
+
+    /** null or undefined will be skipped */
     | null | undefined
 
 // STATE
@@ -81,7 +93,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
      * with
      */
     formFields(
-        fields: Accessor<this>[] | ((self: this) => Accessor<this>[]),
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
         props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
     ): FC<NO_PROPS> {
         return this.customForm(fields, props)
@@ -95,7 +107,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     // ⏸️ }
 
     customForm(
-        extra: Accessor<this>[] | ((self: this) => Accessor<this>[]),
+        extra: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
         props?: {
             showMore?: (keyof T)[] | false
             readonly?: boolean
@@ -116,12 +128,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                             return res({})
                         }
                         if (f instanceof Field) {
-                            return f.renderWithLabel()
+                            return f.renderWithLabel({ fieldName: f.mountKey })
                         }
-                        // ⏸️ if (props?.usage === 'cell') {
-                        // ⏸️     return this.fields[f]!.renderCell()
-                        // ⏸️     return this.fields[f]!.renderSkin('cell')
-                        // ⏸️ }
+
+                        if (typeof f === 'string') {
+                            return <MarkdownUI markdown={f} />
+                        }
 
                         return this.fields[f]!.renderWithLabel({ fieldName: f as string })
                     })}
@@ -138,9 +150,16 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
-    form(
+    show(
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
+    ): JSX.Element {
+        return this.defineForm(fields, { ...props }).render()
+    }
+
+    defineForm(
         //
-        fields: Accessor<this>[] | ((self: this) => Accessor<this>[]),
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
         props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
     ): Form {
         return new Form({

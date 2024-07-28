@@ -25,22 +25,13 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                         default (full)
                         {xx.render()}
                     </Frame>
-                    {/* <Frame border base expand>
-                        default (body)
-                        {xx.body()}
-                    </Frame> */}
                 </Frame>
                 <Frame border base expand>
-                    {xx.customForm((f) => [f.A, f.A, f.A, f.fields.a])({})}
-                    {xx.customForm((f) => ['a', 'b', 'b', 'b'])({})}
+                    {xx.show(({ fields: f }) => [`# hello\n\nI love the 'a' field`, f.a, f.a, f.a])}
+                    {xx.show((f) => ['a', 'b', 'b', 'b'])}
                 </Frame>
                 <Frame border base expand>
-                    {xx.customForm([
-                        //
-                        'a',
-                        'b',
-                        (f): Maybe<FC<any>> => f.Arr.at(1)?.customForm(['x', 'x']),
-                    ])({})}
+                    {xx.show(['a', 'b', (f): Maybe<FC<any>> => f.Arr.at(1)?.customForm(['x', 'x'])])}
                 </Frame>
             </Frame>
         </Frame>

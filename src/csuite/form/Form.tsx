@@ -7,10 +7,12 @@ import { FormUI, FormUIProps } from './FormUI'
 
 /** free structure */
 
+export type FormRenderProps = Omit<FormUIProps, 'field'>
+
 export class Form {
     constructor(public props: FormUIProps) {}
 
-    render(p?: Omit<FormUIProps, 'field'>): JSX.Element {
+    render(p?: FormRenderProps): JSX.Element {
         return <FormUI {...this.props} {...p} />
     }
 

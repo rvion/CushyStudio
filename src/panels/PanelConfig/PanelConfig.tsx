@@ -31,15 +31,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
             page = <PanelComfyHostsUI />
             break
         case 'input':
-            page = cushy.theme
-                .form(({ fields: f }) => [
-                    //
-                    f.inputBorder,
-                    f.inputContrast,
-                    'inputBorder',
-                    'inputContrast',
-                ])
-                .render({ className: 'w-full' })
+            page = cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' })
             break
         case 'interface':
             page = <FormUI tw='flex-1' field={cushy.preferences.interface} />
