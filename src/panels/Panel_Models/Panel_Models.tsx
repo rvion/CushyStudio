@@ -2,9 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
-import { FormUI } from '../../csuite/form/FormUI'
-import { FormHelpTextUI } from '../../csuite/inputs/shims'
-import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
@@ -46,7 +43,7 @@ export const FieldUI = observer(function FieldUI_(p: {
         <div className={p.className} tw='flex gap-2 items-center'>
             <label tw='whitespace-nowrap'>{p.label}</label>
             {p.children}
-            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
+            {p.required && <div tw='join-item'>Required</div>}
         </div>
     )
 })

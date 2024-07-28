@@ -7,7 +7,6 @@ import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleBu
 import { FormUI } from '../../csuite/form/FormUI'
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { FormHelpTextUI } from '../../csuite/inputs/shims'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
@@ -96,7 +95,7 @@ export const FieldUI = observer(function FieldUI_(p: {
                 <label tw='whitespace-nowrap'>{p.label}</label>
             </WidgetLabelContainerUI>
             {p.children}
-            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
+            {p.required && <div tw='join-item'>Required</div>}
         </div>
     )
 })

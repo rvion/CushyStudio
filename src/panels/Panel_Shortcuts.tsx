@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../csuite/accelerators/ComboUI'
 import { commandManager } from '../csuite/commands/CommandManager'
-import { FormHelpTextUI } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { useSt } from '../state/stateContext'
@@ -139,7 +138,7 @@ export const FieldUI = observer(function FieldUI_(p: {
         <div className='flex gap-2 items-center'>
             <label>{p.label}</label>
             {p.children}
-            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
+            {p.required && <div tw='join-item'>Required</div>}
         </div>
     )
 })

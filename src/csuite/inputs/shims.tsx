@@ -3,11 +3,7 @@ import type { RSSize } from '../types/RsuiteTypes'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { RevealUI } from '../reveal/RevealUI'
 import { exhaust } from '../utils/exhaust'
-
-// form
-export const FormHelpTextUI = (p: any) => <div {...p}></div>
 
 export const InputLegacy = (p: JSX.IntrinsicElements['input']) => {
     const { className, children, ...rest } = p
