@@ -53,16 +53,6 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-// tooltips
-export const Whisper = (p: {
-    /** @deprecated */
-    enterable?: boolean
-    /** @deprecated */
-    placement?: string
-    speaker: ReactNode
-    children: ReactNode
-}) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
-
 // misc
 export const Surface = (p: {
     //
