@@ -6,16 +6,26 @@ import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { OutputUI } from '../../outputs/OutputUI'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { PanelStepsConf } from '../Panel_Steps/Panel_StepsConf'
 import { StepCardUI } from '../Panel_Steps/StepCardUI'
 import { LatentIfLastUI } from './LatentIfLastUI'
 import { PanelOutputConf } from './PanelOutput_conf'
 
-export const Panel_Step = observer(function Panel_Step_(p: {
-    //
+export const PanelStep = new Panel({
+    name: 'Output',
+    widget: (): React.FC<PanelStepUI> => PanelStepUI,
+    header: (p): PanelHeader => ({ title: 'Output' }),
+    def: (): PanelStepUI => ({}),
+    icon: undefined,
+})
+
+export type PanelStepUI = {
     stepID?: Maybe<StepID>
-}) {
+}
+
+export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
     const st = useSt()
     const step =
         p.stepID == null //

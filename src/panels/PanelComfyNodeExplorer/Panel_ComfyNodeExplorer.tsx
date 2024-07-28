@@ -1,46 +1,23 @@
-import type { ComfyNodeSchema } from '../models/ComfySchema'
-import type { ProjectL } from '../models/Project'
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../core/Colors'
-import { InputLegacy } from '../csuite/inputs/shims'
-import { searchMatches } from '../csuite/utils/searchMatches'
-import { useSt } from '../state/stateContext'
+import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../../core/Colors'
+import { InputLegacy } from '../../csuite/inputs/shims'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
+import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
 
-class ComfyNodeExplorerState {
-    // globalSearch = ''
-    name = ''
-    input = ''
-    output = ''
-    category = ''
-    constructor(public pj: ProjectL) {
-        makeAutoObservable(this)
-    }
-    get nodeEntries(): [string, ComfyNodeSchema][] {
-        return Object.entries(this.pj.schema.nodesByNameInComfy)
-    }
-    get matches(): [string, ComfyNodeSchema][] {
-        const OUT: [string, ComfyNodeSchema][] = []
-        for (const [_nameInCushy, nodeSchema] of this.nodeEntries) {
-            const nameInCushy = _nameInCushy.toLowerCase()
-            const nameInComfy = nodeSchema.nameInComfy.toLowerCase()
-            if (this.name && !(nameInCushy.includes(this.name) || nameInComfy.includes(this.name))) continue
-            if (this.input) {
-                const matches = nodeSchema.inputs.some((x) => searchMatches(x.nameInComfy, this.input))
-                if (!matches) continue
-            }
-            if (this.output && !nodeSchema.outputs.some((x) => searchMatches(x.nameInComfy, this.output))) continue
-            if (this.category && !nodeSchema.category.includes(this.category)) continue
-            OUT.push([nameInCushy, nodeSchema])
-        }
-        return OUT
-    }
-}
+export const PanelComfyNodeExplorer = new Panel({
+    name: 'ComfyUINodeExplorer',
+    widget: (): React.FC<NO_PROPS> => PanelComfyNodeExplorerUI,
+    header: (p): PanelHeader => ({ title: 'ComfyUINodeExplorer' }),
+    def: (): NO_PROPS => ({}),
+    icon: 'mdiAccessPoint',
+})
 
-export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p: {}) {
+export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
     const st = useSt()
     const pj = st.getProject()
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])

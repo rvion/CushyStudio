@@ -1,21 +1,24 @@
 import type * as FL from 'flexlayout-react'
 
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
-import { PanelNames, panels } from './PANELS'
-import { panelContext } from './usePanel'
+import { PanelName, panels } from './PANELS'
+import { panelContext, PanelState } from './usePanel'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     //
-    node?: FL.TabNode
-    panel: PanelNames
+    node: FL.TabNode
+    panel: PanelName
     panelProps: any
 }) {
     const { panel, panelProps, node } = p
+
+    const panelID = p.node.getId()
+    const panelState = useMemo(() => new PanelState(node, panelID), [node, panelID])
 
     // -----------------------
     // Those 3 lines allow to unmount the component when it's not visible
@@ -34,10 +37,9 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
         )
 
     const Component = panelDef.widget
-    const panelID = p.node?.getId() ?? 'fullscreen'
     return (
         <ErrorBoundaryUI>
-            <panelContext.Provider value={{ id: panelID }}>
+            <panelContext.Provider value={panelState}>
                 <Frame
                     //
                     tw={[

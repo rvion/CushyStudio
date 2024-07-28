@@ -1,11 +1,22 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { LibraryHeaderUI } from './TreeExplorerHeader'
 
-export const Panel_TreeExplorer = observer(function Panel_TreeExplorer_(p: {}) {
+export const PanelTreeExplorer = new Panel({
+    name: 'TreeExplorer',
+    widget: (): React.FC<NO_PROPS> => PanelTreeExplorerUI,
+    header: (p: NO_PROPS): PanelHeader => ({ title: 'FileList' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_PROPS) {
     const st = useSt()
     return (
         <>

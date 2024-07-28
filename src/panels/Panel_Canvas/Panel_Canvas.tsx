@@ -11,6 +11,7 @@ import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
@@ -19,11 +20,20 @@ import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './states/UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
 
-// https://github.com/devforth/painterro
-export const Panel_Canvas = observer(function Panel_Canvas_(p: {
-    //
+export const PanelCanvas = new Panel({
+    name: 'Canvas',
+    widget: (): React.FC<PanelCanvasProps> => PanelCanvasUI,
+    header: (p): PanelHeader => ({ title: 'Canvas' }),
+    def: (): PanelCanvasProps => ({}),
+    icon: 'mdiDraw',
+})
+
+export type PanelCanvasProps = {
     imgID?: MediaImageID
-}) {
+}
+
+// https://github.com/devforth/painterro
+export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps) {
     const st = useSt()
     const containerRef = React.useRef<HTMLDivElement>(null)
     const img0: Maybe<MediaImageL> = st.db.media_image.get(p.imgID!)
@@ -53,7 +63,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
         canvas.stage.container(canvas.rootRef.current)
         // canvas.rootRef.current.addEventListener('keydown', canvas.onKeyDown)
         // console.log(`[🟢] MOUNT`)
-        return () => {
+        return (): void => {
             // console.log(`[🔴] CLEANUP`, canvas.rootRef.current)
             if (canvas.rootRef.current == null) return
         }

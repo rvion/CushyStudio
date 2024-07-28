@@ -13,8 +13,8 @@ import { Message } from '../csuite/inputs/shims'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { toastError } from '../csuite/utils/toasts'
-import { type CustomPanelRef, registerCustomPanel } from '../panels/Panel_Temporary'
-import { PanelNames, panels, Panels } from './PANELS'
+import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
+import { PanelName, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
 import { type TraverseFn, traverseLayoutNode } from './Traverse'
 
@@ -84,11 +84,19 @@ export class CushyLayoutManager {
 
     /** quick method to maximize a tabset */
     _maximizeToggle(tabsetNodeID: string): Trigger {
-        return this._doAction(Actions.maximizeToggle(tabsetNodeID))
+        return this.do(Actions.maximizeToggle(tabsetNodeID))
     }
 
-    /** wrap model.doAction, and return Trigger.Success */
-    _doAction(action: FL.Action): Trigger {
+    /**
+     * wrap model.doAction,
+     * allow to use lambda syntax to inject Action builder
+     * return Trigger.Success
+     */
+    do(action_: FL.Action | ((actions: typeof Actions) => FL.Action)): Trigger {
+        const action: FL.Action =
+            typeof action_ === 'function' //
+                ? action_(Actions)
+                : action_
         this.model.doAction(action)
         return Trigger.Success
     }
@@ -124,7 +132,7 @@ export class CushyLayoutManager {
         let tabset = this.getActiveOrFirstTabset_orNull()
         if (tabset == null) return Trigger.UNMATCHED
         while (tabset != null) {
-            this._doAction(Actions.deleteTabset(tabset.getId()))
+            this.do(Actions.deleteTabset(tabset.getId()))
             tabset = this.getActiveOrFirstTabset_orNull()
         }
         return Trigger.Success
@@ -133,7 +141,7 @@ export class CushyLayoutManager {
     closeCurrentTabset(): Trigger {
         let tabset = this.getActiveOrFirstTabset_orNull()
         if (tabset == null) return Trigger.UNMATCHED
-        this._doAction(Actions.deleteTabset(tabset.getId()))
+        this.do(Actions.deleteTabset(tabset.getId()))
         return Trigger.Success
     }
 
@@ -231,7 +239,7 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.updateNodeAttributes(tab.getId(), p))
     }
 
-    isPanelVisible(panelName: PanelNames): boolean {
+    isPanelVisible(panelName: PanelName): boolean {
         const node = this.findTabsFor(panelName)
         const tab = node[0]
         if (tab == null) return false
@@ -429,11 +437,11 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
-    currentHoveredTabIs<K extends PanelNames>(component: K): boolean {
+    currentHoveredTabIs<K extends PanelName>(component: K): boolean {
         return regionMonitor.hoveredRegion?.type === component
     }
 
-    currentTabIs<K extends PanelNames>(component: K): Maybe<Panels[K]['$Props']> {
+    currentTabIs<K extends PanelName>(component: K): Maybe<Panels[K]['$Props']> {
         const tabPrefix = `/${component}/`
         const current = this.currentTab
         if (current == null) {
@@ -453,7 +461,7 @@ export class CushyLayoutManager {
         return (current as FL.TabNode).getConfig() as Maybe<PropsOf<Panels[K]['widget']>>
     }
 
-    findTabsFor = <K extends PanelNames>(
+    findTabsFor = <K extends PanelName>(
         component: K,
     ): {
         //
@@ -477,7 +485,7 @@ export class CushyLayoutManager {
     }
 
     /** practical way to keep a tab properly named (synced with it's content) */
-    syncTabTitle<const K extends PanelNames>(
+    syncTabTitle<const K extends PanelName>(
         //
         panelName: K,
         props: PropsOf<Panels[K]['widget']>,
@@ -525,9 +533,9 @@ export class CushyLayoutManager {
     }
 
     // CREATION --------------------------------------------------------
-    FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
-        panelName: PanelName,
-        panelProps: PropsOf<Panels[PanelName]['widget']>,
+    FOCUS_OR_CREATE = <const PANEL_NAME extends PanelName>(
+        panelName: PANEL_NAME,
+        panelProps: PropsOf<Panels[PANEL_NAME]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
         console.log(`[🤠] `, panelName, panelProps)
@@ -578,7 +586,7 @@ export class CushyLayoutManager {
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private add_<const PN extends PanelNames>(p: {
+    private add_<const PN extends PanelName>(p: {
         panelName: PN
         props: PropsOf<Panels[PN]['widget']>
         width?: number
@@ -661,7 +669,7 @@ export class CushyLayoutManager {
                         children: [
                             //
                             this.add_({ panelName: 'Welcome', props: {}, width: 512 }),
-                            this.add_({ panelName: 'FullScreenLibrary', props: {}, width: 512 }),
+                            this.add_({ panelName: 'PanelAppLibrary', props: {}, width: 512 }),
                             this.add_({ panelName: 'TreeExplorer', props: {}, width: 512 }),
                         ],
                         // enableSingleTabStretch: true,
@@ -715,7 +723,7 @@ export class CushyLayoutManager {
 
     factory(node: FL.TabNode): React.ReactNode {
         // 1. get panel name
-        const panel = node.getComponent() as Maybe<PanelNames>
+        const panel = node.getComponent() as Maybe<PanelName>
         if (panel == null)
             return (
                 <Message type='error' showIcon>

@@ -1,12 +1,22 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
-import { SpacerUI } from '../csuite/components/SpacerUI'
-import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
-import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
-import { TargetBox } from '../importers/TargetBox'
-import { useSt } from '../state/stateContext'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { ImportAsImageUI, ImportedFileUI } from '../../importers/FilesBeeingImported'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
 
-export const Panel_Import = observer(function Panel_Import_(p: {}) {
+export const PanelImport = new Panel({
+    name: 'Import',
+    widget: (): React.FC<NO_PROPS> => PanelImportUI,
+    header: (p): PanelHeader => ({ title: 'Import' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
     const st = useSt()
 
     return (

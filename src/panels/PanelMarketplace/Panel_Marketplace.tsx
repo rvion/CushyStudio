@@ -1,14 +1,23 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../state/stateContext'
-import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
+import { CreateAppBtnUI } from '../Panel_Welcome/CreateAppBtnUI'
 
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
+export const PanelMarketplace = new Panel({
+    name: 'Marketplace',
+    widget: (): React.FC<NO_PROPS> => PanelMarketplaceUI,
+    header: (p): PanelHeader => ({ title: 'Marketplace' }),
+    def: (): NO_PROPS => ({}),
+    icon: 'mdiCubeScan',
+})
 
-export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
+export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PROPS) {
     const st = useSt()
     // const form = useMemo(
-    //     () =>
     //         CushyRepository.form(
     //             (ui) => ({
     //                 query: ui.string(),

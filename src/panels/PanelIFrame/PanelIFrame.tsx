@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Panel, type PanelHeader } from '../router/Panel'
+import { Panel, type PanelHeader } from '../../router/Panel'
 
 export const PanelIframe = new Panel({
     name: 'IFrame',

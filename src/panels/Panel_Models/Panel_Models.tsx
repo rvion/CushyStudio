@@ -1,15 +1,26 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
 
-export const Panel_Models = observer(function Panel_Models_() {
+export const PanelModels = new Panel({
+    name: 'Models',
+    widget: (): React.FC<NO_PROPS> => PanelModelsUI,
+    header: (p): PanelHeader => ({ title: 'Models' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
     const st = useSt()
     const civitai = useMemo(() => new Civitai(), [])
     return (

@@ -3,7 +3,7 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { Panel_ViewImage } from '../panels/Panel_ViewImage'
+import { PanelViewImageUI } from '../panels/PanelViewImage/Panel_ViewImage'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
@@ -15,5 +15,5 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
 })
 
 export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {
-    return <Panel_ViewImage imageID={p.output.id} />
+    return <PanelViewImageUI imageID={p.output.id} />
 })

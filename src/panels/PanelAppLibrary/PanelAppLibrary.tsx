@@ -1,17 +1,25 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
-import { AppCardUI } from '../cards/fancycard/AppCardUI'
-import { Button } from '../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
-import { Frame } from '../csuite/frame/Frame'
-import { InputNumberUI } from '../csuite/input-number/InputNumberUI'
-import { InputSliderUI_legacy } from '../csuite/input-slider/Slider'
-import { InputStringUI } from '../csuite/input-string/InputStringUI'
-import { Toggle } from '../csuite/inputs/shims'
-import { useSt } from '../state/stateContext'
-import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
+import { AppCardUI } from '../../cards/fancycard/AppCardUI'
+import { Button } from '../../csuite/button/Button'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
 
-export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p: {}) {
+export const PanelAppLibrary = new Panel({
+    name: 'PanelAppLibrary',
+    widget: (): React.FC<NO_PROPS> => PanelAppLibraryUI,
+    header: (p): PanelHeader => ({ title: 'PanelAppLibrary' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROPS) {
     const st = useSt()
     const library = st.library
 

@@ -1,13 +1,24 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from './CreateAppBtnUI'
 import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './LibraryHeaderUI'
 
-export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
+export const PanelWelcome = new Panel({
+    name: 'Welcome',
+    widget: (): React.FC<NO_PROPS> => PanelWelcomeUI,
+    header: (p): PanelHeader => ({ title: 'Welcome' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
     const st = useSt()
     useEffect(() => void cushy.showConfettiAndBringFun())
 

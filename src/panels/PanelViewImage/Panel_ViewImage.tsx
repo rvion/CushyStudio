@@ -1,27 +1,45 @@
-import type { MediaImageL } from '../models/MediaImage'
+import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { BadgeListUI } from '../csuite/badge/BadgeListUI'
-import { Button } from '../csuite/button/Button'
-import { SpacerUI } from '../csuite/components/SpacerUI'
-import { Frame } from '../csuite/frame/Frame'
-import { Ikon } from '../csuite/icons/iconHelpers'
-import { InputStringUI } from '../csuite/input-string/InputStringUI'
-import { JsonViewUI } from '../csuite/json/JsonViewUI'
-import { RevealUI } from '../csuite/reveal/RevealUI'
-import { PanelHeaderUI } from '../csuite/wrappers/PanelHeader'
-import { formatSize } from '../db/getDBStats'
-import { useSt } from '../state/stateContext'
-import { assets } from '../utils/assets/assets'
-import { ImageDropdownUI } from './ImageDropdownUI'
+import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
+import { Button } from '../../csuite/button/Button'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { formatSize } from '../../db/getDBStats'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
+import { assets } from '../../utils/assets/assets'
+import { ImageDropdownUI } from '../ImageDropdownUI'
 
-export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
-    //
+export const PanelViewImage = new Panel({
+    name: 'Image',
+    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
+    header: (p): PanelHeader => ({ title: '🎇 Image' }),
+    def: (): PanelViewImageProps => ({}),
+    icon: undefined,
+})
+
+export const PanelLastImage = new Panel({
+    name: 'LastImage',
+    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
+    header: (p): PanelHeader => ({ title: '⏱️ LastImage' }),
+    def: (): PanelViewImageProps => ({}),
+    icon: undefined,
+})
+
+export type PanelViewImageProps = {
     className?: string
     imageID?: MediaImageID | 'latent'
-}) {
+}
+
+export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelViewImageProps) {
     const st = useSt()
     const img: Maybe<MediaImageL> = p.imageID //
         ? st.db.media_image.get(p.imageID)

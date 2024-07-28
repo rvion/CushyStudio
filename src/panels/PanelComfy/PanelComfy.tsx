@@ -1,23 +1,33 @@
-import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { LiteGraphJSON } from '../../core/LiteGraph'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { useSt } from '../state/stateContext'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
 
-export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
-    //
+export const PanelComfy = new Panel({
+    name: 'ComfyUI',
+    widget: (): React.FC<PanelComfyUIProps> => PanelComfyUI,
+    header: (p): PanelHeader => ({ title: 'ComfyUI' }),
+    def: (): PanelComfyUIProps => ({}),
+    icon: 'mdiCabinAFrame',
+})
+
+export type PanelComfyUIProps = {
     // autoLoadLast?: boolean
     litegraphJson?: Maybe<LiteGraphJSON>
     className?: string
     hostID?: HostID
-}) {
+}
+
+export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps) {
     const st = useSt()
     const host = st.db.host.get(p.hostID) ?? st.mainHost
     const url = host.getServerHostHTTP()
 
-    const loadFn = async () => {
+    const loadFn = async (): Promise<void> => {
         // ensure we have a flow ready to load
         if (p.litegraphJson == null) return
 

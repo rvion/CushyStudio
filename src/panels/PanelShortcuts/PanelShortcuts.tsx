@@ -1,13 +1,44 @@
-import type { Command } from '../csuite/commands/Command'
+import type { Command } from '../../csuite/commands/Command'
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
 
-import { ComboUI } from '../csuite/accelerators/ComboUI'
-import { commandManager } from '../csuite/commands/CommandManager'
-import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
-import { Trigger } from '../csuite/trigger/Trigger'
-import { useSt } from '../state/stateContext'
-import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
+import { ComboUI } from '../../csuite/accelerators/ComboUI'
+import { commandManager } from '../../csuite/commands/CommandManager'
+import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { Trigger } from '../../csuite/trigger/Trigger'
+import { Panel, type PanelHeader } from '../../router/Panel'
+import { useSt } from '../../state/stateContext'
+import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
+
+export const PanelShortcuts = new Panel({
+    name: 'Shortcuts',
+    widget: (): React.FC<NO_PROPS> => PanelShortcutsUI,
+    header: (p: NO_PROPS): PanelHeader => ({ title: 'Shortcuts' }),
+    def: (): NO_PROPS => ({}),
+    icon: undefined,
+})
+
+export const PanelShortcutsUI = observer(function PanelShortcutsUI_(p: NO_PROPS) {
+    const st = useSt()
+    return (
+        <div className='_MD flex flex-col gap-2 items-start p-2'>
+            <SectionTitleUI label='Shortcuts' className='block' />
+            <CommandTableUI />
+            <MessageInfoUI
+                markdown={`\
+This is unfinished.
+
+A great contribution would be to make those shortcuts editable.
+
+Interesting files:
+- ./src/app/shortcuts/shortcuts.ts
+- ./src/app/shortcuts/shorcutKeys.ts
+`}
+            ></MessageInfoUI>
+        </div>
+    )
+})
 
 export const Command_ContextTableUI = observer(function Command_ContextTableUI_(p: {}) {
     return (
@@ -103,27 +134,6 @@ export const CommandTableUI = observer(function CommandTableUI_(p: {}) {
                     })}
                 </tbody>
             </table>
-        </div>
-    )
-})
-
-export const Panel_Shortcuts = observer(function Panel_Shortcuts_() {
-    const st = useSt()
-    return (
-        <div className='_MD flex flex-col gap-2 items-start p-2'>
-            <SectionTitleUI label='Shortcuts' className='block' />
-            <CommandTableUI />
-            <MessageInfoUI
-                markdown={`\
-This is unfinished.
-
-A great contribution would be to make those shortcuts editable.
-
-Interesting files:
-- ./src/app/shortcuts/shortcuts.ts
-- ./src/app/shortcuts/shorcutKeys.ts
-`}
-            ></MessageInfoUI>
         </div>
     )
 })

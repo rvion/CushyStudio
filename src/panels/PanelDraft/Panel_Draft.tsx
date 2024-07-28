@@ -15,13 +15,26 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { run_justify, ui_justify } from './prefab_justify'
 import { RecompileUI } from './RecompileUI'
 
-export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
+export const PanelDraft = new Panel({
+    name: 'Draft',
+    widget: (): React.FC<PanelDraftProps> => PanelDraftUI,
+    header: (p): PanelHeader => ({ title: 'Draft' }),
+    def: (): PanelDraftProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
+    icon: undefined,
+})
+
+export type PanelDraftProps = {
+    draftID: DraftID
+}
+
+export const PanelDraftUI = observer(function PanelDraftUI_(p: PanelDraftProps) {
     // 1. get draft
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
