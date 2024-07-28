@@ -14,6 +14,7 @@ import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundMessages } from './PlaygroundMessages'
+import { PlaygroundPanelStoreUI } from './PlaygroundPanelStoreUI'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
@@ -73,6 +74,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
                 {mode.select && <PlaygroundSelectUI />}
                 {mode.size && <PlaygroundSizeUI />}
                 {mode.skins && <PlaygroundSkinsUI />}
+                {mode.panelProps && <PlaygroundPanelStoreUI />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
         </Frame>
@@ -87,6 +89,7 @@ const Header_Playground = cushyFactory.entity(
             tabPosition: 'start',
             items: {
                 skins: ui.empty(),
+                panelProps: ui.empty(),
                 select: ui.empty(),
                 size: ui.empty(),
                 forms: ui.empty(),

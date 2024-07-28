@@ -1,5 +1,6 @@
 import type * as FL from 'flexlayout-react'
 
+import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 
@@ -7,9 +8,13 @@ import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
 import { PanelName, panels } from './PANELS'
-import { panelContext, PanelState } from './usePanel'
+import { PanelState } from './PanelState'
+import { panelContext } from './usePanel'
 
-export const RenderPanelUI = observer(function RenderPanelUI_(p: {
+// export const PanelStateById = new Map<string, PanelState>()
+export const PanelStateByNode = observable(new Map<string, PanelState>())
+
+export const PanelUI = observer(function PanelUI_(p: {
     //
     node: FL.TabNode
     panel: PanelName
@@ -18,7 +23,12 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     const { panel, panelProps, node } = p
 
     const panelID = p.node.getId()
-    const panelState = useMemo(() => new PanelState(node, panelID), [node, panelID])
+    const panelState = useMemo(() => {
+        const ps = new PanelState(node, panelID)
+        // PanelStateById.set(panelID, ps)
+        PanelStateByNode.set(panelID, ps)
+        return ps
+    }, [node, panelID])
 
     // -----------------------
     // Those 3 lines allow to unmount the component when it's not visible

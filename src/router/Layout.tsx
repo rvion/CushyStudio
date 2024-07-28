@@ -1,4 +1,5 @@
 import type { STATE } from '../state/state'
+import type { PanelPersistedJSON } from './PanelPersistedJSON'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
@@ -15,8 +16,8 @@ import { Trigger } from '../csuite/trigger/Trigger'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
 import { PanelName, panels, Panels } from './PANELS'
-import { RenderPanelUI } from './RenderPanelUI'
-import { type TraverseFn, traverseLayoutNode } from './Traverse'
+import { PanelUI } from './PanelUI'
+import { type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -466,7 +467,7 @@ export class CushyLayoutManager {
     ): {
         //
         tabNode: FL.TabNode
-        config: Panels[K]['$Props']
+        props: Panels[K]['$Props']
     }[] => {
         const tabPrefix = `/${component}/`
         const tabs: FL.TabNode[] = []
@@ -477,10 +478,12 @@ export class CushyLayoutManager {
         })
         const out = tabs
             .filter((tab) => tab.getId().startsWith(tabPrefix))
-            .map((tab) => ({
-                config: toJS(tab.getConfig()) as PropsOf<Panels[K]['widget']>,
-                tabNode: tab,
-            }))
+            .map((tab) => {
+                type Props = PropsOf<Panels[K]['widget']>
+                const config: PanelPersistedJSON<Props> = tab.getConfig()
+                const props: Props = config.$props ?? config /* hack */
+                return { props, tabNode: tab }
+            })
         return out
     }
 
@@ -533,9 +536,9 @@ export class CushyLayoutManager {
     }
 
     // CREATION --------------------------------------------------------
-    FOCUS_OR_CREATE = <const PANEL_NAME extends PanelName>(
+    FOCUS_OR_CREATE = <PANEL_NAME extends PanelName>(
         panelName: PANEL_NAME,
-        panelProps: PropsOf<Panels[PANEL_NAME]['widget']>,
+        panelProps: PropsOf<Panels[NoInfer<PANEL_NAME>]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
         console.log(`[🤠] `, panelName, panelProps)
@@ -562,12 +565,13 @@ export class CushyLayoutManager {
         const icon = panel.icon
         if (prevTab == null) {
             const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset_orThrow().getId()
+            const config: PanelPersistedJSON = { $props: panelProps }
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
                 id: tabID,
                 icon: getIconAsDataSVG(icon),
                 name: title,
-                config: panelProps,
+                config,
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
@@ -576,17 +580,19 @@ export class CushyLayoutManager {
                 return void console.log('❌ no new tab')
             }
         } else {
-            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: panelProps }))
+            const prevConfig: PanelPersistedJSON = prevTab.getConfig()
+            const nextConfig = { ...prevConfig, $props: panelProps }
+            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: nextConfig }))
             this.model.doAction(Actions.selectTab(tabID))
         }
 
         // 4. merge props
-        this.model.doAction(Actions.updateNodeAttributes(tabID, panelProps))
+        // this.model.doAction(Actions.updateNodeAttributes(tabID, /* 🔴 */ panelProps))
         return prevTab
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private add_<const PN extends PanelName>(p: {
+    private defineTab<const PN extends PanelName>(p: {
         panelName: PN
         props: PropsOf<Panels[PN]['widget']>
         width?: number
@@ -668,9 +674,9 @@ export class CushyLayoutManager {
                         // enableDeleteWhenEmpty: false,
                         children: [
                             //
-                            this.add_({ panelName: 'Welcome', props: {}, width: 512 }),
-                            this.add_({ panelName: 'PanelAppLibrary', props: {}, width: 512 }),
-                            this.add_({ panelName: 'TreeExplorer', props: {}, width: 512 }),
+                            this.defineTab({ panelName: 'Welcome', props: {}, width: 512 }),
+                            this.defineTab({ panelName: 'PanelAppLibrary', props: {}, width: 512 }),
+                            this.defineTab({ panelName: 'TreeExplorer', props: {}, width: 512 }),
                         ],
                         // enableSingleTabStretch: true,
                     },
@@ -690,7 +696,7 @@ export class CushyLayoutManager {
                         minHeight: 100,
                         selected: 1,
                         children: [
-                            this.add_({ panelName: 'Output', props: {}, canClose: false }),
+                            this.defineTab({ panelName: 'Output', props: {}, canClose: false }),
                             // this._add({ panel: 'Hosts', props: {}, canClose: false }),
                         ],
                     },
@@ -732,15 +738,17 @@ export class CushyLayoutManager {
             )
 
         // 2. get panel props
-        const panelProps = node.getConfig()
+        const panelConfig: PanelPersistedJSON = node.getConfig()
+        const panelProps = panelConfig.$props ?? panelConfig /* 🔴 HACKY backward config */
+
         if (panelProps == null)
             return (
                 <Message type='error' showIcon>
-                    no panel props (TabNode.getConfig())
+                    no panel props (TabNode.getConfig().$props)
                 </Message>
             )
 
-        return createElement(RenderPanelUI, {
+        return createElement(PanelUI, {
             node,
             panel,
             panelProps,

@@ -121,16 +121,16 @@ export class Library {
                 const allDraftTabs = st.layout.findTabsFor('Draft')
                 for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
-                    const draft = st.db.draft.get(d.config.draftID)
+                    const draft = st.db.draft.get(d.props.draftID)
                     if (draft == null) {
-                        console.error(`[🧐] missing draft ${d.config.draftID}; SKIPPING...`)
+                        console.error(`[🧐] missing draft ${d.props.draftID}; SKIPPING...`)
                         continue
                     }
 
                     // check if the changed file is directly related to the draft
                     const file = draft.file
                     const relPath2 = file?.relPath
-                    console.log(`[👁️] - draft: ${d.config.draftID}: relPath ${relPath2}`)
+                    console.log(`[👁️] - draft: ${d.props.draftID}: relPath ${relPath2}`)
                     let shouldUpdate = relPath2 === relPath
 
                     // check if the changed file is an indirect dependency of the draft
@@ -141,7 +141,7 @@ export class Library {
                         // console.log(`[👁️]   | ${draftDeps.join('\n       | ')} `)
                         const changedDep = draftDeps.find((x) => x === relPath)
                         if (changedDep != null) {
-                            console.log(`[👁️]        | ${d.config.draftID}: one depdency (${changedDep}) changed`)
+                            console.log(`[👁️]        | ${d.props.draftID}: one depdency (${changedDep}) changed`)
                             shouldUpdate = true
                         }
                     } else {
