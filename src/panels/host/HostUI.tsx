@@ -40,13 +40,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
                 <div tw='flex join gap-1'>
-                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()}>
-                        Set Primary
-                        {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
-                    </Button>
-                    <Button look='ghost' onClick={() => host.CONNECT()}>
-                        {host.isConnected ? 'Re-Connect' : 'Connect'}
-                    </Button>
+                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
+                    <Button look='ghost' onClick={() => host.CONNECT()} children={host.isConnected ? 'Re-Connect' : 'Connect'} />
+                    <Button
+                        look='ghost'
+                        icon='mdiContentDuplicate'
+                        onClick={() => host.clone({ name: host.data.name + '-clone' })}
+                        children='clone'
+                    />
                     <Button
                         icon='mdiDelete'
                         disabled={host.isReadonly}
