@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 
 import { exhaust } from '../utils/exhaust'
 
-export const InputLegacy = (p: JSX.IntrinsicElements['input']) => {
+export const InputLegacy = (p: JSX.IntrinsicElements['input']): JSX.Element => {
     const { className, children, ...rest } = p
     return (
         <input tw={['csuite-basic-input', className]} {...rest}>
@@ -55,7 +55,7 @@ export const Surface = (p: {
     header?: ReactNode
     className?: string
     children: ReactNode
-}) => {
+}): JSX.Element => {
     const { header, children, ...rest } = p
     return (
         <div
@@ -126,7 +126,6 @@ export const Message = observer(function Message_(p: {
         </div>
     )
 })
-export const Tag = (p: any) => <div {...p}></div>
 
 export const Loader = observer((p: { size?: RSSize; className?: string }) => (
     <span
