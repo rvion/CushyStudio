@@ -33,6 +33,19 @@ export function ui_latent_v3(): UI_LatentV3 {
     return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
         const batchSize = form.linked(batchSize_)
         return form.choice({
+            header: (p) => {
+                const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
+                return (
+                    <div tw='flex gap-1'>
+                        <p.field.DefaultHeaderUI field={p.field} />
+                        {size && (
+                            <>
+                                {size.width} x{size.height}
+                            </>
+                        )}
+                    </div>
+                )
+            },
             icon: 'mdiStarThreePoints',
             appearance: 'tab',
             default: 'emptyLatent',
