@@ -18,6 +18,8 @@ export type InputStringProps = {
     /** when true => 'mdiText' */
     icon?: IconName // | boolean | null | undefined
 
+    disabled?: boolean
+
     // get / set value
     getValue: () => string
     setValue: (value: string) => void
@@ -114,6 +116,7 @@ export const InputStringUI = observer(
                     pattern={p.pattern}
                     placeholder={p.placeholder}
                     autoFocus={p.autoFocus}
+                    disabled={p.disabled}
                     value={p.buffered ? temporaryValue ?? value : value}
                     onChange={(ev) => {
                         if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
