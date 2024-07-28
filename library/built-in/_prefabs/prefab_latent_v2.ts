@@ -1,27 +1,33 @@
-import type { Builder } from '../../../src/controls/Builder'
 import type { ComfyNodeOutput } from '../../../src/core/Slot'
 import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
-export const ui_latent_v2 = (form: X.Builder) => {
+export type UI_latent_v2 = X.XGroup<{
+    image: X.XOptional<X.XImage>
+    size: X.XSize
+    batchSize: X.XNumber
+}>
+
+export const ui_latent_v2 = (form: X.Builder): UI_latent_v2 => {
     return form.group({
         label: 'Start from',
         items: {
             image: form.image({}).optional(),
             size: form.size({}),
-            // width: form.int({ default: 512,  step: 128, min: 128, max: 4096 }),
-            // height: form.int({ default: 768,  step: 128, min: 128, max: 4096 }),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
         },
     })
 }
 
 export const run_latent_v2 = async (p: {
-    //
     run: Runtime
     opts: OutputFor<typeof ui_latent_v2>
     vae: _VAE
-}) => {
+}): Promise<{
+    latent: HasSingle_LATENT
+    width: number | ComfyNodeOutput<'INT', number>
+    height: number | ComfyNodeOutput<'INT', number>
+}> => {
     // init stuff
     const graph = p.run.nodes
     const opts = p.opts

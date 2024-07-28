@@ -1,6 +1,3 @@
-import type { Builder } from '../../../src/controls/Builder'
-import type { Channel } from '../../../src/csuite'
-
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
 
 export type UI_LatentV3 = X.XLink<
