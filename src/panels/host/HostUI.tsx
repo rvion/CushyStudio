@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
@@ -40,8 +41,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <div tw='flex join gap-1'>
-                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
+                <CSuiteOverride line config={{ inputHeight: 3 }}>
+                    <Button look='success' expand active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
                     <Button look='ghost' onClick={() => host.CONNECT()} children={host.isConnected ? 'Re-Connect' : 'Connect'} />
                     <Button
                         look='ghost'
@@ -65,7 +66,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             // })
                         }}
                     ></Button>
-                </div>
+                </CSuiteOverride>
 
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}
