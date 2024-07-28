@@ -222,7 +222,7 @@ export class HostL {
     // 🔶     this.ws?
     // 🔶 }
 
-    CONNECT = () => {
+    CONNECT = (): void => {
         if (this.data.isVirtual) {
             this.updateSchemaFromFileCache()
         } else {

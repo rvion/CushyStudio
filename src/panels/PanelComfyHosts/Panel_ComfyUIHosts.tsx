@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 
-import { Surface } from '../../csuite/inputs/shims'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -14,7 +13,7 @@ export type PanelComfyHostProps = {
 
 export const PanelComfyHosts = new Panel({
     name: 'Hosts',
-    widget: () => PanelComfyHostsUI,
+    widget: (): React.FC<PanelComfyHostProps> => PanelComfyHostsUI,
     header: (): PanelHeader => ({ title: 'Hosts' }),
     def: (): PanelComfyHostProps => ({}),
     icon: 'mdiDesktopTower',
