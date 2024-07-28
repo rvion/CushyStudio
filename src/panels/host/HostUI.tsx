@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
 import { HostL } from '../../models/Host'
@@ -129,13 +130,12 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
                 <div tw='flex flex-col'>
                     <LabelUI>Absolute path to model folder</LabelUI>
-                    <input
-                        tw='csuite-basic-input w-full'
-                        type='string'
+                    <InputStringUI
+                        tw='w-full'
                         disabled={disabled}
-                        onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}
-                        value={host.data.absolutPathToDownloadModelsTo ?? ''}
-                    ></input>
+                        setValue={(next) => host.update({ absolutPathToDownloadModelsTo: next })}
+                        getValue={() => host.data.absolutPathToDownloadModelsTo ?? ''}
+                    />
                 </div>
                 {/* ID */}
                 <div tw='flex'>
