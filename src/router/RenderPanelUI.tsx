@@ -35,16 +35,6 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: {
 
     const Component = panelDef.widget
     const panelID = p.node?.getId() ?? 'fullscreen'
-
-    // 2024-06-03 rvion: not sure if that case can happen
-    // 2024-06-04 rvion: edit: happens for fullscreen panel for now
-    // ⏸️ if (panelID == null)
-    // ⏸️     return (
-    // ⏸️         <Message type='error' showIcon>
-    // ⏸️             Panel have no ID
-    // ⏸️         </Message>
-    // ⏸️     )
-
     return (
         <ErrorBoundaryUI>
             <panelContext.Provider value={{ id: panelID }}>
