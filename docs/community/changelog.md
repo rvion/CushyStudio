@@ -1,5 +1,14 @@
 # 😁 Changelog
 
+
+## 2024-07-29:
+
+Panel Icons
+
+## 2024-07-28
+
+SO MANY STUFF, SEE the 2000+ new COMITS.
+
 ## 2024-02-28:
 
 #### Docs
