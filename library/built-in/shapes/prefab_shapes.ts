@@ -70,7 +70,7 @@ export function ui_LatentShapeGenerator(
             presets: [
                 {
                     label: 'default',
-                    apply: (widget) => {
+                    apply: (widget): void => {
                         widget.setPartialValue({
                             amountCircle: 0,
                             amountRect: 0,
@@ -86,7 +86,7 @@ export function ui_LatentShapeGenerator(
                 },
                 {
                     label: 'pinkPower',
-                    apply: (widget) => {
+                    apply: (widget): void => {
                         widget.setPartialValue({
                             amountCircle: 1,
                             amountRect: 1,
@@ -102,7 +102,7 @@ export function ui_LatentShapeGenerator(
                 },
                 {
                     label: 'itHurtsMyEyes',
-                    apply: (widget) => {
+                    apply: (widget): void => {
                         widget.setPartialValue({
                             amountCircle: 10,
                             amountRect: 10,
@@ -204,6 +204,8 @@ export const run_LatentShapeGenerator = async (
 
     const b64 = Konva.convertLayerToDataURL(layer)
     const img = Images.createFromDataURL(b64)
+    img.addTag('noise')
+    img.addTag('latent-shape-generator')
 
     let latent: _LATENT = graph.VAEEncode({
         pixels: await run.loadImageAnswer(img),
@@ -231,7 +233,7 @@ function _addShapesToLayer(
     color1: string,
     color2: string,
     factor: number,
-) {
+): void {
     const Konva = getCurrentRun().Konva.Konva
 
     const shapeCreators: {
@@ -312,7 +314,7 @@ function _addShapesToLayer(
             }),
         rainbowRing: (x: number, y: number, colorStops: string[], innerRadius: number, outerRadius: number) =>
             new Konva.Shape({
-                sceneFunc: function (context) {
+                sceneFunc: function (context): void {
                     const minRadius = 50 // Set to desired minimum radius
                     innerRadius = Math.max(innerRadius, minRadius / 2)
                     outerRadius = Math.max(outerRadius, minRadius)
