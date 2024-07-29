@@ -1,6 +1,6 @@
 import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/icons'
-import type { CSSProperties, ForwardedRef } from 'react'
+import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef, ReactElement, useState } from 'react'
@@ -40,6 +40,9 @@ export type InputStringProps = {
 
     /** input placeholder */
     placeholder?: string
+
+    // slots ---------------------
+    slotBeforeInput?: ReactNode
 
     // styling -------------------
     className?: string
@@ -109,6 +112,7 @@ export const InputStringUI = observer(
                         name={typeof p.icon === 'string' ? p.icon : 'mdiText'}
                     />
                 )}
+                {p.slotBeforeInput}
                 <input
                     ref={ref}
                     tw={['px-2', inputTailwind]}
