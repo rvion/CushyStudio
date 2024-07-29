@@ -920,6 +920,10 @@ export class STATE {
                         .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
                         .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
                 }
+                // ⏸️ let exclude = 'noise'
+                // ⏸️ if (exclude) {
+                // ⏸️     x = x.where('media_image.tags', 'not like', '%' + exclude + '%')
+                // ⏸️ }
                 return x
             },
             ['media_image.id'],

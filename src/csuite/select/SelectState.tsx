@@ -185,7 +185,7 @@ export class AutoCompleteSelectState<OPTION> {
     // ⏸️ }
 
     get displayValue(): ReactNode {
-        if (this.p.hideValue) return this.p.placeholder ?? ''
+        // if (this.p.hideValue) return this.p.placeholder ?? ''
         let value = this.value
         const placeHolderStr = this.p.placeholder ?? 'Select...'
         if (value == null) return placeHolderStr

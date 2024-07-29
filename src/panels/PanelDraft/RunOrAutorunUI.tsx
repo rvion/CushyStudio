@@ -38,7 +38,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                             }}
                             className='csuite-basic-input'
                             placeholder='ms'
-                            softMax={5000}
+                            softMax={50_000}
                             hideSlider
                             step={250}
                             min={0}

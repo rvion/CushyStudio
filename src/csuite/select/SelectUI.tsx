@@ -57,7 +57,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 line
                 hover={3}
                 tabIndex={0}
-                tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
+                tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}
                 style={p.style}
                 base={csuite.inputContrast}
                 border={csuite.inputBorder}

@@ -72,7 +72,7 @@ export type SelectProps<OPTION> = {
     placeholder?: string
     disabled?: boolean
     cleanable?: boolean
-    hideValue?: boolean
+    // hideValue?: boolean
     className?: string
     style?: React.CSSProperties
 
