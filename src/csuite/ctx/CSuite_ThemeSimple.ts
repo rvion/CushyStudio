@@ -1,7 +1,6 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { Kolor } from '../kolor/Kolor'
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 /**
  * default simple example configuration for external project
