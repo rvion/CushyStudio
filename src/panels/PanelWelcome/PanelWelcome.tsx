@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from './CreateAppBtnUI'
@@ -24,6 +25,7 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
 
     return (
         <div tw='relative'>
+            <PanelHeaderUI></PanelHeaderUI>
             <section tw='text-center py-2 flex flex-col gap-2 items-center px-8'>
                 <h1 tw='text-2xl'>Welcome to CushyStudio !</h1>
                 <div tw='italic text-sm'>

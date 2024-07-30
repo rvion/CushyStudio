@@ -28,12 +28,17 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
     return (
         <Frame // Container
             className={p.className}
-            // base={8}
+            base={{ contrast: 0.08 /* hueShift: 100 */ /* chromaBlend: 2 */ }}
             tw={[
                 //
-                'CSHY-panel-header w-full',
-                'flex flex-wrap gap-1 select-none',
+                'sticky top-0 [z-index:999]',
+                'h-widget px-0.5',
+                'UI-PanelHeader',
+                'CSHY-panel-header',
+                'flex gap-1 select-none',
+                'overflow-auto',
                 'items-center',
+                // 'flex-wrap',
             ]}
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY

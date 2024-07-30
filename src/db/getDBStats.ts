@@ -17,7 +17,7 @@ export const getDBStats = async (db: LiveDB) => {
     console.log(`[🕵️‍♂️] db file on disk: ${formatSize(fileSize)}`)
 }
 
-export const formatSize = (size: number) => {
+export const formatSize = (size: number): string => {
     if (size < 1024) return `${size} B`
 
     const kb = size / 1024

@@ -1,9 +1,8 @@
 import type { Json } from '../csuite/types/Json'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelState } from './PanelState'
 
 import { makeAutoObservable } from 'mobx'
-
-import { PanelState } from './PanelState'
 
 export class PanelPersistentStore<X extends Json = Json> {
     /** data is loaded lazilly, but is not synced automatically

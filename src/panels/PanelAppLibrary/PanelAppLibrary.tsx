@@ -8,6 +8,7 @@ import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleBu
 import { Frame } from '../../csuite/frame/Frame'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 
@@ -25,70 +26,66 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
 
     return (
         <div tw='relative h-full flex-grow flex flex-col'>
-            <Frame base tw='p-4 flex flex-wrap items-center'>
-                <div tw='text-2xl'>Library</div>
-                <div tw='flex gap-1 items-center flex-wrap'>
-                    <InputStringUI
-                        icon='mdiSelectSearch'
-                        tw='csuite-basic-input'
-                        getValue={() => library.query}
-                        setValue={(next) => (library.query = next)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                const app = library.appsFiltered[library.selectionCursor]
-                                if (app == null) return
-                                app.openLastOrCreateDraft()
-                            } else if (e.key === 'ArrowDown') {
-                                library.selectionCursor++
-                            } else if (e.key === 'ArrowUp') {
-                                library.selectionCursor--
-                            }
-                        }}
-                        autoFocus
-                        placeholder='search'
-                        // auto select text on focus
-                        onFocus={(e) => e.target.select()}
-                    />
-                    <Button //
-                        look='primary'
-                        onClick={st.startupFileIndexing}
-                        children='Index All Apps'
-                    />
-                    <InputBoolToggleButtonUI
-                        showToggleButtonBox
-                        mode='checkbox'
-                        text='Descriptions'
-                        value={st.library.showDescription}
-                        onValueChange={(next) => (st.library.showDescription = next)}
-                    />
-                    <InputBoolToggleButtonUI
-                        showToggleButtonBox
-                        mode='checkbox'
-                        text='Drafts'
-                        value={st.library.showDrafts}
-                        onValueChange={(next) => (st.library.showDrafts = next)}
-                    />
-                    <InputBoolToggleButtonUI
-                        showToggleButtonBox
-                        mode='checkbox'
-                        text='Favorites'
-                        value={st.library.showFavorites}
-                        onValueChange={(next) => (st.library.showFavorites = next)}
-                    />
-                    <InputNumberUI
-                        text='size'
-                        mode='int'
-                        min={3}
-                        max={20}
-                        style={{ width: '10rem' }}
-                        suffix='rem'
-                        onValueChange={(next) => (st.library.imageSize = `${next}rem`)}
-                        value={parseInt(st.library.imageSize.slice(0, -3), 10)}
-                    />
-                </div>
-            </Frame>
+            <PanelHeaderUI>
+                <InputStringUI
+                    icon='mdiMagnify'
+                    tw='csuite-basic-input'
+                    getValue={() => library.query}
+                    setValue={(next) => (library.query = next)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            const app = library.appsFiltered[library.selectionCursor]
+                            if (app == null) return
+                            app.openLastOrCreateDraft()
+                        } else if (e.key === 'ArrowDown') {
+                            library.selectionCursor++
+                        } else if (e.key === 'ArrowUp') {
+                            library.selectionCursor--
+                        }
+                    }}
+                    autoFocus
+                    placeholder='search'
+                    // auto select text on focus
+                    onFocus={(e) => e.target.select()}
+                />
+                <Button //
+                    look='primary'
+                    onClick={st.startupFileIndexing}
+                    children='Index All Apps'
+                />
+                <InputBoolToggleButtonUI
+                    showToggleButtonBox
+                    mode='checkbox'
+                    text='Descriptions'
+                    value={st.library.showDescription}
+                    onValueChange={(next) => (st.library.showDescription = next)}
+                />
+                <InputBoolToggleButtonUI
+                    showToggleButtonBox
+                    mode='checkbox'
+                    text='Drafts'
+                    value={st.library.showDrafts}
+                    onValueChange={(next) => (st.library.showDrafts = next)}
+                />
+                <InputBoolToggleButtonUI
+                    showToggleButtonBox
+                    mode='checkbox'
+                    text='Favorites'
+                    value={st.library.showFavorites}
+                    onValueChange={(next) => (st.library.showFavorites = next)}
+                />
+                <InputNumberUI
+                    text='size'
+                    mode='int'
+                    min={3}
+                    max={20}
+                    style={{ width: '10rem' }}
+                    suffix='rem'
+                    onValueChange={(next) => (st.library.imageSize = `${next}rem`)}
+                    value={parseInt(st.library.imageSize.slice(0, -3), 10)}
+                />
+            </PanelHeaderUI>
             <div tw='flex flex-col flex-grow p-4 overflow-auto'>
-                <div tw='divider'></div>
                 <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredBuiltIn.map((app, ix) => (

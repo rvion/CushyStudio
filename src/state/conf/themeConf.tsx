@@ -1,11 +1,13 @@
 import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
 
 import { cushyFactory } from '../../controls/Builder'
+import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
+import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
 export type ThemeConf = X.XGroup<{
-    labelLayout: X.XSelectOne_<'left' | 'right' | 'fluid'>
+    labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
     base: X.XString
     appbar: X.XOptional<X.XString>
     gap: X.XOptional<X.XNumber>
@@ -23,14 +25,15 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOne<BaseSelectEntry<'left' | 'right' | 'fluid'>>({
-                    appearance: 'tab',
+                labelLayout: ui.selectOne<BaseSelectEntry<FormGlobalLayoutMode>>({
+                    header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
                     choices: [
-                        { id: 'left', icon: 'mdiAlignHorizontalLeft' },
-                        { id: 'right', icon: 'mdiAlignHorizontalRight' },
-                        { id: 'fluid', icon: 'mdiFullscreenExit' },
+                        { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
+                        { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },
+                        { id: 'fluid', icon: 'mdiFullscreenExit', label: '' },
+                        { id: 'mobile', icon: 'mdiCellphone', label: '' },
                     ],
-                    default: { id: 'left', icon: 'mdiAlignHorizontalRight' },
+                    default: { id: 'fixed-left', icon: 'mdiAlignHorizontalRight' },
                 }),
                 // 1. colors
                 base: ui.colorV2({

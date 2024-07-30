@@ -23,7 +23,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
     return (
         <Dropdown
             className={p.className}
-            startIcon='mdiMenu'
+            // startIcon='mdiMenu'
             title='Actions'
             content={() => (
                 <>
@@ -62,7 +62,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     <MenuItem icon='mdiContentCopy' onClick={() => navigator.clipboard.writeText(draft.id)}>
                         Copy ID ({draft.id})
                     </MenuItem>
-                    <MenuItem icon='mdiTagEdit' onClick={() => openInVSCode(st, file?.absPath ?? '')}>
+                    <MenuItem icon='mdiTagEdit' onClick={() => openInVSCode(file?.absPath ?? '')}>
                         Edit App Definition
                     </MenuItem>
                     <MenuItem icon='mdiOpenInApp' onClick={() => showItemInFolder(file.absPath)}>

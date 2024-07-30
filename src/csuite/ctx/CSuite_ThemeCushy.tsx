@@ -1,3 +1,4 @@
+import type { FormGlobalLayoutMode } from '../../state/conf/FormGlobalLayoutMode'
 import type { STATE } from '../../state/state'
 import type { Tint, TintExt } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
@@ -55,11 +56,12 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
 
-    get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
+    get labellayout(): FormGlobalLayoutMode {
         const x = this.st.theme.value.labelLayout
         if (x.id === 'fluid') return 'fluid'
-        if (x.id === 'left') return 'fixed-left'
-        if (x.id === 'right') return 'fixed-right'
+        if (x.id === 'fixed-left') return 'fixed-left'
+        if (x.id === 'fixed-right') return 'fixed-right'
+        if (x.id === 'mobile') return 'mobile'
         return 'fixed-right'
     }
 

@@ -59,8 +59,15 @@ export const Button = observer(function Button_(
             tw={[
                 'inline-flex',
                 'select-none',
-                p.square ? null : 'px-2',
-                'font-semibold',
+
+                // 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
+                // | no nee to add too much padding, this can be themed by CSS
+                p.square ? null : 'px-1',
+
+                // 2024-07-30 rvion: let's leave the themeing to somewhere else;
+                // | if people want semibold or bold buttons, they can do so using the ui-button class
+                // | 'font-semibold',
+
                 'ui-button',
                 'rounded-sm gap-1 items-center',
                 p.disabled ? null : 'cursor-pointer',

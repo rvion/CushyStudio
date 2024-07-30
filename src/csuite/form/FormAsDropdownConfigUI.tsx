@@ -26,7 +26,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                     style={{
                         // maxWidth: p.maxWidth ?? '500px',
                         maxWidth: p.maxWidth,
-                        minWidth: p.minWidth,
+                        minWidth: p.minWidth ?? '500px',
                         width: p.width,
                     }}
                 >

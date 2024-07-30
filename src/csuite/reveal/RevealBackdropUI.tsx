@@ -21,10 +21,12 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
                 'flex items-center',
             ]}
         >
-            <div // backdrop shadow (child div to avoid animation interference)
-                style={{ backgroundColor: '#00000022' }}
-                tw='absolute inset-0 animate-in fade-in'
-            />
+            {reveal.showBackdrop && (
+                <div // backdrop shadow (child div to avoid animation interference)
+                    style={{ backgroundColor: '#00000022' }}
+                    tw='absolute inset-0 animate-in fade-in'
+                />
+            )}
             {children}
         </div>
     )

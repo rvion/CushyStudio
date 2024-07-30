@@ -26,13 +26,14 @@ export const PanelStepsUI = observer(function PanelStepsUI_(p: NO_PROPS) {
     const steps = st.db.step.getLastN(amount)
     return (
         <div className='flex flex-col h-full'>
-            <PanelHeaderUI tw='sticky top-0' title='Steps' icon='mdiStepForward'>
-                <FormAsDropdownConfigUI tw='ml-auto' form={PanelStepsConf} title='Step Options' />
+            <PanelHeaderUI tw='sticky top-0' icon='mdiStepForward'>
+                <FormAsDropdownConfigUI form={PanelStepsConf} title='Step Options' />
+                {/* HERE SHOULD BE RENDERED AS CELL */}
             </PanelHeaderUI>
             <div className='flex flex-col gap-0.5 flex-grow select-none' style={{ overflow: 'auto' }}>
-                {PanelStepsConf.render()}
-                {steps.map((step) => (
-                    <StepCardUI key={step.id} step={step} />
+                {/* {PanelStepsConf.render()} */}
+                {steps.map((step, ix: number) => (
+                    <StepCardUI contrast={ix % 2 === 0 ? 8 : undefined} key={step.id} step={step} />
                 ))}
             </div>
         </div>

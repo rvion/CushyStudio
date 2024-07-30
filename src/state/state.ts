@@ -188,7 +188,7 @@ export class STATE {
     }
 
     openInVSCode(filePathWithinWorkspace: RelativePath): Promise<void> {
-        return openInVSCode(this, filePathWithinWorkspace)
+        return openInVSCode(filePathWithinWorkspace)
     }
 
     getKnownCheckpoints(): ModelInfo[] {

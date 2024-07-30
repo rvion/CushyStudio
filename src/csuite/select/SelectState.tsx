@@ -184,14 +184,15 @@ export class AutoCompleteSelectState<OPTION> {
     // ⏸️     return <>{this.displayValue}</>
     // ⏸️ }
 
-    get displayValue(): ReactNode {
-        // if (this.p.hideValue) return this.p.placeholder ?? ''
-        let value = this.value
-        const placeHolderStr = this.p.placeholder ?? 'Select...'
-        if (value == null) return placeHolderStr
-        value = Array.isArray(value) ? value : [value]
-        if (value.length === 0) return placeHolderStr
+    get placeholderElem(): ReactNode {
+        return <span tw='whitespace-nowrap'>{this.p.placeholder ?? 'Select...'}</span>
+    }
 
+    get displayValue(): ReactNode {
+        let value = this.value
+        if (value == null) return this.placeholderElem
+        value = Array.isArray(value) ? value : [value]
+        if (value.length === 0) return this.placeholderElem
         return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
     }
 

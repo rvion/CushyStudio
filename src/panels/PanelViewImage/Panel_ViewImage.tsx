@@ -54,8 +54,14 @@ export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelView
             : null
 
     return (
-        <div className={p.className} style={{ background }} tw='flex flex-col flex-grow  relative'>
+        <div
+            //
+            className={p.className}
+            style={{ background }}
+            tw='flex flex-col flex-grow w-full'
+        >
             <ImageActionBarUI img={img} />
+            {/* 🟢 test2 */}
             {shouldFilter && <pre>{JSON.stringify(safety?.value)}</pre>}
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
@@ -105,92 +111,93 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     const img = p.img
     const isStarred = Boolean(img?.data.star)
     return (
-        <PanelHeaderUI>
-            <Button // rating button
-                square
-                icon='mdiStar'
-                active={isStarred}
-                onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
-            ></Button>
-            <Button // Canvas Button
-                onClick={() => img?.openInCanvasEditor()}
-                disabled={img == null}
-                icon='mdiVectorSquareEdit'
-            >
-                Canvas
-            </Button>
-            <Button // Paint Button
-                icon='mdiBrush'
-                disabled={img == null}
-                onClick={() => img?.openInImageEditor()}
-            >
-                Paint
-            </Button>
-
-            <div tw='h-5  mx-1' style={{ width: '1px' }}></div>
-
-            {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
-
-            <SpacerUI />
-            <InputStringUI
-                icon='mdiTagEdit'
-                getValue={() => img?.data.tags ?? ''}
-                setValue={(next) => {
-                    if (!img) return
-                    img.tags = next
-                }}
-            ></InputStringUI>
-            <div>
-                <BadgeListUI badges={img?.data.tags?.split(',')} onClick={(tag) => img?.removeTag(tag.toString())}></BadgeListUI>
-            </div>
-            {/* Image Info Button */}
-            <RevealUI
-                tw='hover:brightness-125 rounded text-shadow'
-                content={() => (
-                    <div>
-                        <div>Data</div>
-                        <JsonViewUI value={img?.data}></JsonViewUI>
-                        <div>meta</div>
-                        <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
-                        <div>node</div>
-                        <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
-                    </div>
-                )}
-            >
-                <div tw='h-input flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
-                    <Ikon.mdiInformation />
-
-                    {img ? (
-                        <>
-                            <div tw='h-input p-1 truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
-                            {img.data.fileSize && (
-                                <div tw='h-input border-l border-base-100 p-1 truncate'>{`${formatSize(img.data.fileSize)}`}</div>
-                            )}
-                            <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
-                        </>
-                    ) : null}
-                    {/* {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>} */}
-                    {/* {img?.tags.map((t) => (
+        <div>
+            <PanelHeaderUI>
+                {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
+                <Button // rating button
+                    square
+                    icon='mdiStar'
+                    active={isStarred}
+                    borderless
+                    onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
+                />
+                <Button // Canvas Button
+                    onClick={() => img?.openInCanvasEditor()}
+                    disabled={img == null}
+                    icon='mdiVectorSquareEdit'
+                    borderless
+                    children='Canvas'
+                />
+                <Button // Paint Button
+                    icon='mdiBrush'
+                    disabled={img == null}
+                    borderless
+                    onClick={() => img?.openInImageEditor()}
+                >
+                    Paint
+                </Button>
+                <SpacerUI />
+                <Button // Delete button
+                    look='warning'
+                    tooltip='Delete Image'
+                    icon='mdiDeleteForever'
+                    iconSize='1.2rem'
+                    onClick={() => {
+                        if (img == null) return
+                        st.db.media_image.delete(img.id)
+                    }}
+                />
+            </PanelHeaderUI>
+            <PanelHeaderUI>
+                <InputStringUI
+                    icon='mdiTagEdit'
+                    getValue={() => img?.data.tags ?? ''}
+                    setValue={(next) => {
+                        if (!img) return
+                        img.tags = next
+                    }}
+                ></InputStringUI>
+                <div>
+                    <BadgeListUI
+                        wrap={false}
+                        badges={img?.data.tags?.split(',')}
+                        onClick={(tag) => img?.removeTag(tag.toString())}
+                    ></BadgeListUI>
+                </div>
+                {/* Image Info Button */}
+                <RevealUI
+                    tw='hover:brightness-125 rounded text-shadow'
+                    content={() => (
+                        <div>
+                            <div>Data</div>
+                            <JsonViewUI value={img?.data}></JsonViewUI>
+                            <div>meta</div>
+                            <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
+                            <div>node</div>
+                            <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
+                        </div>
+                    )}
+                >
+                    <div tw='h-input flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
+                        {img ? (
+                            <>
+                                <div tw='h-input truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+                                {img.data.fileSize && (
+                                    <div tw='h-input border-l border-base-100 p-1 truncate'>{`${formatSize(img.data.fileSize)}`}</div>
+                                )}
+                                <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
+                            </>
+                        ) : null}
+                        {/* {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>} */}
+                        {/* {img?.tags.map((t) => (
                         <div key={t} tw='italic'>
                             #{t}
                         </div>
                     ))} */}
-                </div>
-            </RevealUI>
-
-            <Frame base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Frame>
-
-            <Button // Delete button
-                look='warning'
-                icon='mdiDeleteForever'
-                iconSize='1.2rem'
-                onClick={() => {
-                    if (img == null) return
-                    st.db.media_image.delete(img.id)
-                }}
-            >
-                Delete
-            </Button>
-        </PanelHeaderUI>
+                    </div>
+                </RevealUI>
+                <Frame base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Frame>
+            </PanelHeaderUI>
+        </div>
     )
 })

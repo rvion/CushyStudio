@@ -107,7 +107,7 @@ export const InputStringUI = observer(
                 {visualHelper}
                 {p.icon != null && (
                     <IkonOf //
-                        tw='mx-1'
+                        tw='mx-1 flex-none'
                         size='1.2rem'
                         name={typeof p.icon === 'string' ? p.icon : 'mdiText'}
                     />
@@ -115,7 +115,7 @@ export const InputStringUI = observer(
                 {p.slotBeforeInput}
                 <input
                     ref={ref}
-                    tw={['px-2', inputTailwind]}
+                    tw={[p.icon ? 'pr-2' : 'px-2', inputTailwind]}
                     type={reveal ? 'text' : p.type}
                     pattern={p.pattern}
                     placeholder={p.placeholder}

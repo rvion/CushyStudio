@@ -3,12 +3,16 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { openFolderInOS } from '../../app/layout/openExternal'
+import { Button } from '../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
+import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
+import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
 import { LegacyOptions } from './LegacyOptions'
 
@@ -51,8 +55,11 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
 
     return (
         <Frame>
+            <PanelHeaderUI>
+                <Button onClick={() => openInVSCode('CONFIG.json')} children='open legacy config file' />
+                <Button onClick={() => openFolderInOS('settings')} children='open config folder' />
+            </PanelHeaderUI>
             <Frame expand row>
-                {/* <PanelHeaderUI></PanelHeaderUI> */}
                 <BasicShelfUI anchor='left'>
                     <BasicShelfUI.Column /* 🌶️👋 < components can now be nested */>
                         <ConfigTabButtonUI field={modeField} mode='legacy' />

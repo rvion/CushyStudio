@@ -58,6 +58,10 @@ export const CushyUI = observer(function CushyUI_() {
         <CSuiteProvider config={cushy.csuite}>
             <div
                 id='CushyStudio'
+                style={{
+                    // @ts-ignore
+                    '--appbar': st.theme.value.appbar ?? 'red',
+                }}
                 tabIndex={-1}
                 // ❌ onClick={(ev) => {
                 // ❌     // if a click has bubbled outwards up to the body, then we want to close various things

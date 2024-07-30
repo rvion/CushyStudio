@@ -1,3 +1,4 @@
+import type { FormGlobalLayoutMode } from '../../state/conf/FormGlobalLayoutMode'
 import type { Kolor } from '../kolor/Kolor'
 import type { Tint, TintExt } from '../kolor/Tint'
 
@@ -19,8 +20,8 @@ export interface CSuiteConfig {
     clickAndSlideMultiplicator: number
 
     // ------------------------------------------------------------
-    // [widget layout]
-    labellayout: 'fixed-left' | 'fixed-right' | 'fluid'
+    // [global form layout]
+    labellayout: FormGlobalLayoutMode
 
     // ------------------------------------------------------------
     // [widget components]

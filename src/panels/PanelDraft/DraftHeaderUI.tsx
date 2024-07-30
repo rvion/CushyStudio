@@ -29,15 +29,16 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
             className={p.className}
             tw='_DraftHeaderUI flex flex-col sticky top-0 z-50 overflow-clip'
         >
-            <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
-                <div tw='flex'>
-                    <DraftMenuLooksUI draft={draft} title={app.name} />
-                    <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
-                </div>
+            <PanelHeaderUI>
+                <DraftMenuLooksUI draft={draft} title={app.name} />
+                <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
+                <PublishAppBtnUI
+                    app={app} // TODO(bird_d): Make this "joined" with the app selection button when not hidden.
+                />
                 {/* ({formatSize(JSON.stringify(draft.data.formSerial).length)})  */}
                 {/* ({formatSize(JSON.stringify(draft.data.formSerial, null, 3).length)}) */}
                 {/* <SpacerUI /> */}
-                <div tw='flex justify-center'>
+                {/* <div tw='flex justify-center'>
                     <Frame
                         // TODO(bird_d): We need a better way to "join" items together automatically. Possibly just move the tailwind from this? But with better handling of the inbetween borders.
                         tw={['flex [&>*]:rounded-none [&_*]:!border-none ']}
@@ -46,7 +47,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <Dropdown //
                             // tw={'flex-grow'}
                             title={false}
-                            content={() => <></>}
+                            content={() => <>Not implemented</>}
                             button={
                                 <Button //
                                     tw={'w-full'}
@@ -57,11 +58,8 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                                 </Button>
                             }
                         />
-                        <PublishAppBtnUI
-                            app={app} // TODO(bird_d): Make this "joined" with the app selection button when not hidden.
-                        />
                     </Frame>
-                </div>
+                </div> */}
                 {p.children}
             </PanelHeaderUI>
             <Frame tw='flex w-full gap-2 p-2 flex-grow text-base-content' base={{ contrast: -0.025 }}>
