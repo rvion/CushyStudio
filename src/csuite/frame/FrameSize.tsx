@@ -8,7 +8,7 @@ export type FrameSize = {
 }
 
 // prettier-ignore
-export function getClassNameForSize(p: FrameSize): Maybe<string> {
+export function getClassNameForSize_UNUSED_SEE_BOX_CSS_INSTEAD(p: FrameSize): Maybe<string> {
     if (p.square) {
         if (p.size === 'input') return `h-input w-input text-sm`
         if (p.size === 'widget') return `h-widget w-widget text-sm`

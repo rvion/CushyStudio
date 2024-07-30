@@ -120,7 +120,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             const fields = typeof extra === 'function' ? extra(this) : extra
             return (
                 <Frame>
-                    {fields.map((f) => {
+                    {fields.map((f, ix) => {
                         if (f == null) return null
                         if (typeof f === 'function') {
                             const res = f(this)
@@ -132,7 +132,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                         }
 
                         if (typeof f === 'string') {
-                            return <MarkdownUI markdown={f} />
+                            return <MarkdownUI markdown={f} key={`${ix}-${f}`} />
                         }
 
                         return this.fields[f]!.renderWithLabel({ fieldName: f as string })

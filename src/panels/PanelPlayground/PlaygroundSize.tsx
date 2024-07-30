@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
-import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { Frame } from '../../csuite/frame/Frame'
 import { sizeManual } from '../../csuite/types/RsuiteTypes'
 
@@ -22,12 +22,12 @@ export const PlaygroundSizeUI = observer(function PlaygroundSizeUI_(p: {}) {
 
             <Frame border base={{ hueShift: 50, contrast: 0.1, chroma: 0.05 }}>
                 <h3>Via context</h3>
-                <CSuiteOverride config={{ inputHeight: 5 }}>
+                <FrameWithCSuiteOverride config={{ inputHeight: 5 }}>
                     <Frame line>
                         <Button>button</Button>
                         <Frame hover children={'text in a frame'} />
                     </Frame>
-                </CSuiteOverride>
+                </FrameWithCSuiteOverride>
             </Frame>
         </div>
     )

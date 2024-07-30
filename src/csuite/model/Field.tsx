@@ -18,7 +18,7 @@ import type { Problem, Problem_Ext } from './Validation'
 import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode } from 'react'
 
-import { CSuiteOverride } from '../ctx/CSuiteOverride'
+import { FrameWithCSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
@@ -703,7 +703,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     renderSimpleAll(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
-            <CSuiteOverride
+            <FrameWithCSuiteOverride
                 config={{
                     showWidgetMenu: false,
                     showWidgetExtra: false,
@@ -711,7 +711,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 }}
             >
                 <WidgetWithLabelUI key={this.id} field={this} fieldName='_' {...p} />
-            </CSuiteOverride>
+            </FrameWithCSuiteOverride>
         )
     }
 

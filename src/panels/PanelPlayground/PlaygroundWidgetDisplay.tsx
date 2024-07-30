@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
 import { cushyFactory } from '../../controls/Builder'
-import { CSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
 import { getIconName } from '../../csuite/icons/getAllIcons'
@@ -15,7 +15,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     const st = useSt()
     return (
         <Fragment>
-            <CSuiteOverride
+            <FrameWithCSuiteOverride
                 config={{
                     //
                     showWidgetUndo: false,
@@ -23,7 +23,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
                 }}
             >
                 <FormUI field={FORM_PlaygroundWidgetDisplay} />
-            </CSuiteOverride>
+            </FrameWithCSuiteOverride>
             <FormUI field={FORM_PlaygroundWidgetDisplay} />
         </Fragment>
     )

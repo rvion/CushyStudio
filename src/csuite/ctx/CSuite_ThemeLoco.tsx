@@ -34,13 +34,13 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     text: Tint = { contrast: 0.824 }
 
     // heights
-    widgetHeight: number = 1.8
-    inputHeight: number = 1.6
-    insideHeight: number = 1.2
+    widgetHeight: number = 2.2
+    inputHeight: number = 2
+    insideHeight: number = 1.8
 
     // misc theming options
-    inputBorder = 0.08
-    inputContrast = 0.03
+    inputBorder = 0
+    inputContrast = 0
     labelText = { contrast: 0.48, chroma: 0.035 }
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
