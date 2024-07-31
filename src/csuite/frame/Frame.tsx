@@ -33,6 +33,9 @@ export type FrameProps = {
     //
     as?: string
 
+    /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
+    block?: boolean
+
     tooltip?: string
     tooltipPlacement?: RevealPlacement
 
@@ -45,6 +48,7 @@ export type FrameProps = {
     /** quick layout feature to add `flex flex-row items-center` */
     line?: boolean
     linegap?: boolean
+    wrap?: boolean
     /** quick layout feature to add `flex flex-row` */
     col?: boolean
 
@@ -102,7 +106,7 @@ export const Frame = observer(
             boxShadow,                                          // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
-            row, line, col,                                     // layout
+            row, line, col, wrap,                               // layout
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
@@ -179,6 +183,7 @@ export const Frame = observer(
                 {...(as === 'button' ? { type: 'button' } : {})}
                 tw={[
                     'box',
+                    // 'flex',
                     frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
                     size && `box-${size}`,
                     square && `box-square`,
@@ -189,6 +194,7 @@ export const Frame = observer(
                     // p.linegap && 'flex flex-row items-center gap-x-2',
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
+                    p.wrap && 'flex-wrap',
                     className,
                 ]}
                 // style={{ position: 'relative' }}
@@ -218,5 +224,9 @@ export const Frame = observer(
         )
     }),
 )
+
+Frame.displayName = 'Frame'
+// @ts-ignore
+Frame.name = 'Frame'
 
 registerComponentAsClonableWhenInsideReveal(Frame)

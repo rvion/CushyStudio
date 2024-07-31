@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
@@ -125,3 +126,5 @@ class ButtonState {
         return this.pressed ? !this.props.active : this.props.active
     }
 }
+
+// registerComponentAsClonableWhenInsideReveal(Button)

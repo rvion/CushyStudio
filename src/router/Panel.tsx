@@ -29,6 +29,7 @@ export class Panel<Props> {
             icon?: IconName
             def: () => NoInfer<Props>
             presets?: { [name: string]: () => NoInfer<Props> }
+            about?: string
         },
     ) {
         this.defaultCommand = command({

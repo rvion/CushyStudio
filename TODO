@@ -1,3 +1,9 @@
+☐ before commit:
+    ☐ finish panel output
+    ☐ change panel config shelf default size
+    ☐ new api to pre-compute colors
+    ☐ select: multiple placement >
+
 2024-07-26 - MAJOR BREAKTHROUGH:
     ☐ header => cell
     ☐ body => full
@@ -16,6 +22,7 @@
         ☐ renommer 'widget' => 'cell', ajouter 'inside'
     ☐ migration system
     ☐ inputUpload
+
     ☐ customize select agressively so we have one version that looks like notion
 
 2024-07-15:

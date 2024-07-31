@@ -1,7 +1,7 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
-import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { type FC, Fragment } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
 import { Button } from '../../csuite/button/Button'
@@ -43,24 +43,23 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
     const page: JSX.Element = ((): JSX.Element => {
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
-        if (mode === 'input')
-            return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' })
+        if (mode === 'input') return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' }) // prettier-ignore
         if (mode === 'TEMP') return <div>{panelState.render()}</div>
         if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
         if (mode === 'legacy') return <LegacyOptions />
         if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
         if (mode === 'theme') return <FormUI tw='flex-1' field={cushy.theme} />
-        return <>❌ unknown tab</>
+        return <Fragment>❌ unknown tab</Fragment>
     })()
 
     return (
-        <Frame>
+        <Frame col>
             <PanelHeaderUI>
                 <Button onClick={() => openInVSCode('CONFIG.json')} children='open legacy config file' />
                 <Button onClick={() => openFolderInOS('settings')} children='open config folder' />
             </PanelHeaderUI>
             <Frame expand row>
-                <BasicShelfUI anchor='left'>
+                <BasicShelfUI anchor='left' defaultSize={140}>
                     <BasicShelfUI.Column /* 🌶️👋 < components can now be nested */>
                         <ConfigTabButtonUI field={modeField} mode='legacy' />
                         <BasicShelfUI.Group hueShift={100} /* 🌶️👋 */>

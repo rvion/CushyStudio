@@ -31,7 +31,7 @@ export class CommandManager {
         return Array.from(this.contextByName.values())
     }
 
-    registerCommand = (op: Command) => {
+    registerCommand = (op: Command): void => {
         this.contextByName.set(op.ctx.name, op.ctx)
         this.commands.set(op.id, op)
         const combos: CushyShortcut[] = op.combos == null ? [] : Array.isArray(op.combos) ? op.combos : [op.combos]
@@ -48,7 +48,7 @@ export class CommandManager {
         }
     }
 
-    getCommandById = (id: string) => this.commands.get(id)
+    getCommandById = (id: string): Maybe<Command<any>> => this.commands.get(id)
 
     inputHistory: InputSequence = []
     // alwaysMatch: Command[] = []
@@ -88,7 +88,7 @@ export class CommandManager {
         // // console.log(this.knownCombos)
         // if (this.conf.log) this.log(`${this.watchList.length} loaded`)
     }
-    log = (...content: any[]) => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
+    log = (...content: any[]): void => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
 
     private evInInput = (ev: KeyboardEvent<HTMLElement>): boolean => {
         const element: HTMLElement = ev.target as HTMLElement
@@ -101,22 +101,25 @@ export class CommandManager {
     }
 
     private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
-        const inputAccum: KeyName[] = []
-        if (ev.ctrlKey) inputAccum.push('ctrl' as KeyName)
-        if (ev.shiftKey) inputAccum.push('shift' as KeyName)
-        if (ev.altKey) inputAccum.push('alt' as KeyName)
+        console.log(`[🤠] input > ev.key`, ev.key)
+        const inputAccum: string[] = []
+        if (ev.ctrlKey) inputAccum.push('ctrl' /* as KeyName */)
+        if (ev.shiftKey) inputAccum.push('shift' /* as KeyName */)
+        if (ev.altKey) inputAccum.push('alt' /* as KeyName */)
         if (ev.metaKey) inputAccum.push(META_NAME)
 
         const key = ev.key
 
         if (key) {
-            if (key === ' ') inputAccum.push('space' as KeyName)
-            else inputAccum.push(key.toLowerCase() as KeyName)
+            if (key === ' ') inputAccum.push('space' /* as KeyName */)
+            else inputAccum.push(key /* .toLowerCase() as KeyName */)
         }
         const input = inputAccum //
+            .map(normalizeKey)
             .sort(sortKeyNamesFn)
-            .join('+')
-            .toLowerCase()
+            .join('') as InputToken
+        // .toLowerCase()
+        console.log(`[🤠] input`, inputAccum, input)
         return input as InputToken
     }
 
@@ -213,35 +216,50 @@ function normalizeInputToken(input: string): InputToken {
         .split('+')
         .map(normalizeKey)
         .sort(sortKeyNamesFn)
-        .join('+')
-        .toLowerCase() as InputToken
+        .join('') as InputToken
+    // .toLowerCase() as InputToken
 }
 
-function normalizeKey(key: string): KeyName {
-    if (key === 'up') return 'ArrowUp' as KeyName
-    if (key === 'down') return 'ArrowDown' as KeyName
-    if (key === 'left') return 'ArrowLeft' as KeyName
-    if (key === 'right') return 'ArrowRight' as KeyName
-    if (key === 'mod') return MOD_KEY
-    if (key === 'meta') return META_NAME
+function normalizeKey(key_: string): KeyName {
+    const key = key_.toLowerCase()
+    // https://www.fileformat.info/info/unicode/char/search.htm?q=shift
+    if (key === 'shift') return '⇧' as KeyName
+    if (key === 'alt') return '⌥' as KeyName
+    if (key === 'ctrl') return '⌃' as KeyName
+    if (key === 'cmd') return '⌘' as KeyName
+    // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+    if (key === 'up' || key === 'arrowup') return '↑' as KeyName
+    if (key === 'down' || key === 'arrowdown') return '↓' as KeyName
+    if (key === 'left' || key === 'arrowleft') return '←' as KeyName
+    if (key === 'right' || key === 'arrowright') return '→' as KeyName
+    if (key === 'mod') return _replace(MOD_KEY)
+    if (key === 'meta') return _replace(META_NAME)
     return key as KeyName
 }
 
-const keyPriorityWhenSorting = (key: KeyName) => {
+const sortKeyNamesFn = (a: KeyName, b: KeyName): number => {
+    const a1 = _keyPriorityWhenSorting(a)
+    const b1 = _keyPriorityWhenSorting(b)
+    return a1.localeCompare(b1)
+}
+const _keyPriorityWhenSorting = (key: KeyName): string => {
     if (key === 'ctrl') return '__1ctrl'
     if (key === 'win') return '__1win'
     if (key === 'cmd') return '__1cmd'
-    if (key === 'shift') return '__2shift'
+    if (key === '⇧') return '__2shift'
     if (key === 'alt') return '__3alt'
     return key
-}
-
-const sortKeyNamesFn = (a: KeyName, b: KeyName): number => {
-    const a1 = keyPriorityWhenSorting(a)
-    const b1 = keyPriorityWhenSorting(b)
-    return a1.localeCompare(b1)
 }
 
 // const globallyAvailableAs = (name: string) => {}
 
 export const commandManager = new CommandManager({})
+
+function _replace(str: 'cmd' | 'ctrl' | 'shift' | 'alt' | 'win'): KeyName {
+    if (str === 'cmd') return '⌘' as KeyName // command ⌘
+    if (str === 'shift') return '⇧' as KeyName // shift ⇧
+    if (str === 'alt') return '⌥' as KeyName // option ⌥
+    if (str === 'ctrl') return '⌃' as KeyName // control ⌃
+    if (str === 'win') return 'win' as KeyName // windows key
+    return str
+}

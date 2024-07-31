@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { jsx as jsx_, jsxs as jsxs_ } from 'react/jsx-runtime'
 
 export { Fragment } from 'react/jsx-runtime'

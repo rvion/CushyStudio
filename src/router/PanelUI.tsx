@@ -49,6 +49,7 @@ export const PanelUI = observer(function PanelUI_(p: {
             <panelContext.Provider value={panelState}>
                 <Frame
                     //
+                    col
                     tw={[
                         //
                         'flex-1 h-full w-full',

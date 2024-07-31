@@ -6,8 +6,8 @@ import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
 export type UI_Model = X.XGroup<{
     ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
-    checkpointConfig: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
     extra: X.XChoices<{
+        checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
         rescaleCFG: X.XNumber
         vae: X.XEnum<Enum_VAELoader_vae_name>
         clipSkip: X.XNumber
@@ -57,7 +57,6 @@ export function ui_model(): UI_Model {
                 label: '(XL) albedobase21',
                 apply: (w): void => {
                     w.value = {
-                        checkpointConfig: undefined,
                         ckpt_name: 'albedobaseXL_v21.safetensors',
                         extra: { clipSkip: 2 },
                     }
@@ -68,7 +67,6 @@ export function ui_model(): UI_Model {
                 label: '(1.5) revAnimated122',
                 apply: (w): void => {
                     w.setValue({
-                        checkpointConfig: undefined,
                         ckpt_name: 'revAnimated_v122.safetensors',
                         extra: {},
                     })
@@ -95,12 +93,12 @@ export function ui_model(): UI_Model {
             ckpt_name: form.enum
                 .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
                 .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
-            checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
             extra: form.choices({
                 border: false,
                 // label: false,
                 appearance: 'tab',
                 items: {
+                    checkpointConfig: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
                     rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
                     vae: form.enum.Enum_VAELoader_vae_name(),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
@@ -135,10 +133,10 @@ export const run_model = (
 
     // 1. MODEL
     let ckptLoader
-    if (ui.checkpointConfig) {
+    if (ui.extra.checkpointConfig) {
         ckptLoader = graph.CheckpointLoader({
             ckpt_name: ui.ckpt_name,
-            config_name: ui.checkpointConfig,
+            config_name: ui.extra.checkpointConfig,
         })
     } else if (ui.extra.civitai_ckpt_air) {
         ckptLoader = graph.CivitAI$_Checkpoint$_Loader({

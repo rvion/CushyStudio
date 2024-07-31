@@ -137,7 +137,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         {draft.data.illustration ? (
                                                             <CachedResizedImage
                                                                 style={{ width: size, height: size }}
-                                                                filePath={fileURLToPath(draft.data.illustration)}
+                                                                src={fileURLToPath(draft.data.illustration)}
                                                                 size={size}
                                                             />
                                                         ) : (

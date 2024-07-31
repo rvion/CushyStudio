@@ -162,6 +162,7 @@ export const RevealUI = observer(
                     onFocus={lazyState.onFocus}
                     onBlur={lazyState.onBlur}
                     // 🧑‍🎤 onMouseDown={lazyState.onMouseDown}
+
                     // 🧑‍🎤 onMouseUp={lazyState.onMouseUp}
                 >
                     {p.children /* anchor */}
@@ -171,6 +172,8 @@ export const RevealUI = observer(
         )
     }),
 )
+
+RevealUI.displayName = 'RevealUI'
 
 const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
     // ensure uist initialized
