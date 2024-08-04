@@ -44,7 +44,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                 }
 
                 // ------------------------------------------------------------------
-                setInternalText = (nextText: string) => {
+                setInternalText = (nextText: string): void => {
                     if (this.internalText === nextText) return
                     this.editorView?.dispatch({
                         changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
@@ -52,7 +52,9 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                 }
 
                 // ------------------------------------------------------------------
-                get currentlyLinkedWidget() { return this._currentlyLinkedWidget } // prettier-ignore
+                get currentlyLinkedWidget(): Field_prompt | undefined {
+                    return this._currentlyLinkedWidget
+                }
                 set currentlyLinkedWidget(v: Field_prompt | undefined) {
                     if (v === this._currentlyLinkedWidget) return
                     if (v == null) return
@@ -64,12 +66,24 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
 
                 // ------------------------------------------------------------------
                 mountRef = createRef<HTMLDivElement>()
+
                 editorView: Maybe<EditorView> = null
+
                 editorState: EditorState
-                get ast(): PromptAST { return new PromptAST(this.linkedText, this.editorView) } // prettier-ignore
-                get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
-                get debugView() { return this.ast.toString() } // prettier-ignore
-                mount = (domNode: HTMLDivElement) => {
+
+                get ast(): PromptAST {
+                    return new PromptAST(this.linkedText, this.editorView)
+                }
+
+                get loras(): Prompt_Lora[] {
+                    return this.ast.findAll('Lora')
+                }
+
+                get debugView(): string {
+                    return this.ast.toString()
+                }
+
+                mount = (domNode: HTMLDivElement): void => {
                     domNode.innerHTML = ''
                     let view = new EditorView({ state: this.editorState, parent: domNode })
                     this.editorView = view

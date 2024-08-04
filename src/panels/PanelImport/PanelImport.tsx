@@ -10,10 +10,11 @@ import { useSt } from '../../state/stateContext'
 
 export const PanelImport = new Panel({
     name: 'Import',
+    category: 'tools',
     widget: (): React.FC<NO_PROPS> => PanelImportUI,
-    header: (p): PanelHeader => ({ title: 'Import' }),
+    header: (p): PanelHeader => ({ title: 'Import', icon: 'mdiImport' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiImport',
 })
 
 export const PanelImportUI = observer(function PanelImportUI_(p: {}) {

@@ -13,6 +13,18 @@ export type PanelHeader = {
     icon?: IconName
 }
 
+// prettier-ignore
+export type PanelCategory =
+    | 'app' // everything related to running CushyStudio apps
+    | 'outputs' // everything related to viewing generated content
+    | 'settings' // everything related to settings / configuration
+    | 'ComfyUI'
+    | 'models'
+    | 'tools'
+    | 'help'
+    | 'misc'
+    | 'developper'
+
 export class Panel<Props> {
     $PanelHeader!: PanelHeader
     $Props!: Props
@@ -24,9 +36,10 @@ export class Panel<Props> {
         public p: {
             //
             name: string
+            category: PanelCategory
             widget: () => React.FC<Props>
             header: (p: NoInfer<Props>) => PanelHeader
-            icon?: IconName
+            icon: IconName
             def: () => NoInfer<Props>
             presets?: { [name: string]: () => NoInfer<Props> }
             about?: string

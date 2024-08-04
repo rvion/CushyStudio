@@ -1,8 +1,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { camelCase } from 'tiny-case'
 
-import { formatSize } from '../../db/getDBStats'
 import { downloadFile } from '../../utils/fs/downloadFile'
+import { formatSize } from '../utils/formatSize'
 
 type Meta = {
     id: string // "CBFA6722-0EE6-49B4-B5C2-0B177A5523C2",

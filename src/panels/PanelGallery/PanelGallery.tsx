@@ -12,6 +12,7 @@ import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 
 export const PanelGallery = new Panel({
     name: 'Gallery',
+    category: 'outputs',
     widget: (): React.FC<PanelGalleryProps> => PanelGalleryUI,
     header: (p: PanelGalleryProps): PanelHeader => ({ title: 'Gallery' }),
     icon: 'mdiViewGallery',

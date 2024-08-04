@@ -14,8 +14,9 @@ export const PanelSteps = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelStepsUI,
     header: (p): PanelHeader => ({ title: 'Steps' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    category: 'outputs',
     about: 'this panels allow to list / search steps matching conditions',
+    icon: 'mdiStepForward',
 })
 
 export const PanelStepsUI = observer(function PanelStepsUI_(p: NO_PROPS) {

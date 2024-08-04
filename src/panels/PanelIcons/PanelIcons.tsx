@@ -17,10 +17,11 @@ import { IconPanelStableState } from './PanelIconsState'
 
 export const PanelIcon = new Panel({
     name: 'Icons',
+    category: 'developper',
     widget: (): React.FC<NO_PROPS> => PanelIconUI,
-    header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons' }),
+    header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons', icon: 'mdiImageSyncOutline' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiImageSyncOutline',
 })
 
 export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {

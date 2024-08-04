@@ -13,7 +13,8 @@ export const PanelTreeExplorer = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelTreeExplorerUI,
     header: (p: NO_PROPS): PanelHeader => ({ title: 'FileList' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiFileTree',
+    category: 'app',
 })
 
 export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_PROPS) {

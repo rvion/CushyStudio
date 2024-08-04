@@ -20,6 +20,8 @@ export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' |
 
 export const PanelConfig = new Panel({
     name: 'Config',
+    icon: 'mdiCogOutline',
+    category: 'settings',
     widget: (): FC<NO_PROPS> => PanelConfigUI,
     header: (p): PanelHeader => ({ title: 'Config', icon: undefined }),
     def: (): PanelConfigProps => ({}),

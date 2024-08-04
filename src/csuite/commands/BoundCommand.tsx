@@ -5,8 +5,9 @@ import type { Command } from './Command'
 import { BoundCommandSym } from '../introspect/_isBoundCommand'
 import { cmdHelper } from './CmdHelper'
 
-/** A bound command; ready to be executed */
 export type BoundCommandOpts = { label?: string }
+
+/** A bound command; ready to be executed */
 export class BoundCommand<Ctx = any> {
     /**
      * this symbol is for DI, so we can have some `instanceOf`

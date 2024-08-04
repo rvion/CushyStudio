@@ -17,7 +17,8 @@ export const PanelModels = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelModelsUI,
     header: (p): PanelHeader => ({ title: 'Models' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    category: 'models',
+    icon: 'mdiGlobeModel',
 })
 
 export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {

@@ -13,6 +13,7 @@ export type PanelComfyHostProps = {
 
 export const PanelComfyHosts = new Panel({
     name: 'Hosts',
+    category: 'ComfyUI',
     widget: (): React.FC<PanelComfyHostProps> => PanelComfyHostsUI,
     header: (): PanelHeader => ({ title: 'Hosts' }),
     def: (): PanelComfyHostProps => ({}),

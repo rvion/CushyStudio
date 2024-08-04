@@ -10,10 +10,11 @@ import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlight
 
 export const PanelScript = new Panel({
     name: 'Script',
+    category: 'developper',
     widget: (): React.FC<PanelScriptProps> => PanelScriptUI,
     header: (p: PanelScriptProps): PanelHeader => ({ title: 'Script' }),
     def: (): PanelScriptProps => ({ scriptID: '' /* 🔴 */ }),
-    icon: undefined,
+    icon: 'mdiLanguageTypescript',
 })
 
 export type PanelScriptProps = {

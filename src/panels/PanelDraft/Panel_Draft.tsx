@@ -27,7 +27,8 @@ export const PanelDraft = new Panel({
     widget: (): React.FC<PanelDraftProps> => PanelDraftUI,
     header: (p): PanelHeader => ({ title: 'Draft' }),
     def: (): PanelDraftProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-    icon: undefined,
+    icon: 'cdiDraft',
+    category: 'app',
 })
 
 export type PanelDraftProps = {

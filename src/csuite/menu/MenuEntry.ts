@@ -1,7 +1,7 @@
 import type { BoundCommand } from '../commands/BoundCommand'
 import type { Command } from '../commands/Command'
 import type { Field } from '../model/Field'
-import type { BoundMenu } from './Menu'
+import type { BoundMenu } from './BoundMenuOpts'
 import type { SimpleMenuAction } from './SimpleMenuAction'
 import type { SimpleMenuModal } from './SimpleMenuModal'
 import type { FC } from 'react'

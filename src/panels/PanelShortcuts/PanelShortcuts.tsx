@@ -11,10 +11,11 @@ import { CommandTableUI } from './CommandTableUI'
 
 export const PanelShortcuts = new Panel({
     name: 'Shortcuts',
+    category: 'settings',
     widget: (): React.FC<NO_PROPS> => PanelShortcutsUI,
     header: (p: NO_PROPS): PanelHeader => ({ title: 'Shortcuts' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiKeyboardOutline',
 })
 
 export const PanelShortcutsUI = observer(function PanelShortcutsUI_(p: NO_PROPS) {

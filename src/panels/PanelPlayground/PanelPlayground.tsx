@@ -29,6 +29,7 @@ export const PanelPlayground = new Panel({
     header: (p: PanelPlaygroundProps): PanelHeader => ({ title: 'Welcome' }),
     def: (): PanelPlaygroundProps => ({}),
     icon: 'mdiLiquidSpot',
+    category: 'developper',
 })
 
 export type PanelPlaygroundProps = NO_PROPS

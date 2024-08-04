@@ -19,7 +19,8 @@ export const PanelStep = new Panel({
     widget: (): React.FC<PanelStepUI> => PanelStepUI,
     header: (p): PanelHeader => ({ title: 'Output' }),
     def: (): PanelStepUI => ({}),
-    icon: undefined,
+    category: 'outputs',
+    icon: 'mdiFolderPlay',
 })
 
 export type PanelStepUI = {

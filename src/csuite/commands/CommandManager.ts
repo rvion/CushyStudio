@@ -19,9 +19,18 @@ type InputToken = Branded<string, { InputToken: true }>
 type InputSequence = InputToken[]
 
 export class CommandManager {
+    /** index of all commands, by their ID */
     commands: Map<Command['id'], Command> = new Map()
+
+    /** index of all commands, by their shortcut */
     commandByShortcut: Map<string, Command[]> = new Map()
+
+    /** index of all commands, by their context */
+    commandByContext: Map<CommandContext, Command[]> = new Map()
+
+    /** index of all known contexts */
     contextByName: Map<string, CommandContext> = new Map()
+
     inputHistory: InputSequence = []
     name: string
 
@@ -34,6 +43,11 @@ export class CommandManager {
         this.contextByName.set(op.ctx.name, op.ctx)
         this.commands.set(op.id, op)
         const combos: CushyShortcut[] = op.combos == null ? [] : Array.isArray(op.combos) ? op.combos : [op.combos]
+
+        // index command in context
+        op.ctx.commands.add(op)
+
+        // store
         for (const k of combos) {
             const key = normalizeCushyShortcut(k)
             // retrieve prev list
@@ -47,7 +61,10 @@ export class CommandManager {
         }
     }
 
-    getCommandById = (id: string): Maybe<Command<any>> => this.commands.get(id)
+    /** retrieve a command by its id */
+    getCommandById(id: string): Command<any> | undefined {
+        return this.commands.get(id)
+    }
 
     constructor(
         public conf: {

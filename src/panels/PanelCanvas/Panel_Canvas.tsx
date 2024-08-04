@@ -22,6 +22,7 @@ import { useSize } from './utils/useSize'
 
 export const PanelCanvas = new Panel({
     name: 'Canvas',
+    category: 'tools',
     widget: (): React.FC<PanelCanvasProps> => PanelCanvasUI,
     header: (p): PanelHeader => ({ title: 'Canvas' }),
     def: (): PanelCanvasProps => ({}),

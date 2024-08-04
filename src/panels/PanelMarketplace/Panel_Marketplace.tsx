@@ -6,13 +6,13 @@ import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from '../PanelWelcome/CreateAppBtnUI'
 
-// import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 export const PanelMarketplace = new Panel({
     name: 'Marketplace',
     widget: (): React.FC<NO_PROPS> => PanelMarketplaceUI,
     header: (p): PanelHeader => ({ title: 'Marketplace' }),
     def: (): NO_PROPS => ({}),
     icon: 'mdiCubeScan',
+    category: 'app',
 })
 
 export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PROPS) {

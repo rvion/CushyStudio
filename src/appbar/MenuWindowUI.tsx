@@ -22,20 +22,4 @@ const menuPanels = menuWithoutProps({
     ],
 })
 
-const layoutShortcuts = menuWithoutProps({
-    title: 'shortcuts',
-    entries: () => [...allLayoutCommands],
-    // entries: () => [...allLayoutCommands],
-})
-
-export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
-    const st = useSt()
-    return (
-        <>
-            {/* <MenuUI menu={menu.UI} /> */}
-            {/* <menu.UI /> */}
-            <menuPanels.UI />
-            <layoutShortcuts.UI />
-        </>
-    )
-})
+export const MenuPanelsUI = (): JSX.Element => <menuPanels.UI />

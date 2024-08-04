@@ -92,7 +92,6 @@ const BasicShelf_GroupUI = observer(function BasicShelf_Group({ children, ...tin
         </Frame>
     )
 })
-
 export const BasicShelfUI = Object.assign(_BasicShelfUI, {
     // name: 'BasicShelfUI',
     Group: BasicShelf_GroupUI,

@@ -1,4 +1,4 @@
-import type { MenuInstance } from './Menu'
+import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
@@ -14,17 +14,6 @@ import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
-
-export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
-    return (
-        <RevealUI /* className='dropdown' */ placement='bottomStart' content={() => <p.menu.UI />}>
-            <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
-                {/* <span tw='hidden lg:inline-block'>{p.startIcon}</span> */}
-                {p.menu.menu.title}
-            </label>
-        </RevealUI>
-    )
-})
 
 export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
     return (

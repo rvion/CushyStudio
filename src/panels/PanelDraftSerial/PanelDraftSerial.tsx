@@ -9,7 +9,8 @@ export const PanelDraftSerial = new Panel({
     widget: (): React.FC<PanelDraftSerialProps> => Panel_DraftJsonSerial,
     header: (p): PanelHeader => ({ title: 'DraftJsonSerial' }),
     def: (): PanelDraftSerialProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-    icon: undefined,
+    icon: 'mdiCodeBlockBraces',
+    category: 'developper',
 })
 
 export type PanelDraftSerialProps = {

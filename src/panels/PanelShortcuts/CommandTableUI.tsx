@@ -10,10 +10,10 @@ import { CommandHistoryTableUI } from './CommandHistoryTableUI'
 export const CommandTableUI = observer(function CommandTableUI_(p: {}) {
     return (
         <div tw='x_MD flex flex-col gap-2'>
-            <Frame row wrap tw='gap-2'>
-                <CommandContextDebugUI border base tw='p-2' />
-                <CommandHistoryTableUI border base tw='p-2' />
-            </Frame>
+            {/* <Frame row wrap tw='gap-2'> */}
+            <CommandContextDebugUI border base tw='p-2' />
+            <CommandHistoryTableUI border base tw='p-2' />
+            {/* </Frame> */}
             <table>
                 <Frame as='thead' base={10}>
                     <tr>

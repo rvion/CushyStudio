@@ -1,5 +1,7 @@
 import type { IconName } from '../icons/icons'
 
+import { makeAutoObservable } from 'mobx'
+
 import { Button } from '../button/Button'
 import { CommandSym } from '../introspect/_isCommand'
 import { Trigger } from '../trigger/Trigger'
@@ -77,10 +79,22 @@ export class CommandContext<Ctx = any> {
     constructor(
         /** display name */
         public name: string,
+
         /** actual function code */
         public check: () => Ctx | Trigger.UNMATCHED,
-    ) {}
+    ) {
+        makeAutoObservable(this)
+    }
 
+    /** set of all commands that have been registered will be listed there */
+    commands: Set<Command<Ctx>> = new Set()
+
+    /** list of known commands based on this context */
+    get commandsArr(): Command<Ctx>[] {
+        return Array.from(this.commands)
+    }
+
+    /** register a new command in the global command manager */
     command(p: {
         combo: CushyShortcut | CushyShortcut[]
         idSuffix?: string
@@ -88,6 +102,7 @@ export class CommandContext<Ctx = any> {
         action?: (t: Ctx) => Trigger | Promise<Trigger>
         /** @default true */
         validInInput?: boolean
+        icon?: IconName
     }): Command<Ctx> {
         return command({
             id: `tree.${p.idSuffix}`,
@@ -96,9 +111,14 @@ export class CommandContext<Ctx = any> {
             ctx: this,
             validInInput: true,
             action: p.action ?? ((): Trigger => Trigger.UNMATCHED),
+            icon: p.icon,
         })
     }
 
+    /**
+     * create a new sub-command context
+     * that may be UNMATCHED in more cases; or have some more specific value
+     */
     derive<X>(fn: (ctx: Ctx) => X | Trigger.UNMATCHED): CommandContext<X> {
         return new CommandContext<X>(this.name, () => {
             const ctx = this.check()

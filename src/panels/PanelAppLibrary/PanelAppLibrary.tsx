@@ -14,10 +14,11 @@ import { useSt } from '../../state/stateContext'
 
 export const PanelAppLibrary = new Panel({
     name: 'PanelAppLibrary',
+    category: 'app',
     widget: (): React.FC<NO_PROPS> => PanelAppLibraryUI,
     header: (p): PanelHeader => ({ title: 'PanelAppLibrary' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiBookmarkBoxMultipleOutline',
 })
 
 export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROPS) {

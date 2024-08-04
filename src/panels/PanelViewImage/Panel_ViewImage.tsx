@@ -11,8 +11,8 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { formatSize } from '../../csuite/utils/formatSize'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
-import { formatSize } from '../../db/getDBStats'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
@@ -20,18 +20,20 @@ import { ImageDropdownUI } from '../ImageDropdownUI'
 
 export const PanelViewImage = new Panel({
     name: 'Image',
+    category: 'outputs',
     widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-    header: (p): PanelHeader => ({ title: '🎇 Image' }),
+    header: (p): PanelHeader => ({ title: 'Image', icon: 'mdiCameraImage' }),
     def: (): PanelViewImageProps => ({}),
-    icon: undefined,
+    icon: 'mdiCameraImage',
 })
 
 export const PanelLastImage = new Panel({
     name: 'LastImage',
+    category: 'outputs',
     widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-    header: (p): PanelHeader => ({ title: '⏱️ LastImage' }),
+    header: (p): PanelHeader => ({ title: 'LastImage', icon: 'mdiImageSyncOutline' }),
     def: (): PanelViewImageProps => ({}),
-    icon: undefined,
+    icon: 'mdiImageSyncOutline',
 })
 
 export type PanelViewImageProps = {

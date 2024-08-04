@@ -10,6 +10,7 @@ export const PanelCustom = new Panel({
     header: (p: PanelCustomProps): PanelHeader => ({ title: 'Temporary' }),
     def: (): PanelCustomProps => ({ uid: '___', props: {} }),
     icon: 'mdiSourceRepositoryMultiple',
+    category: 'misc',
 })
 
 export type PanelCustomProps = {

@@ -10,10 +10,13 @@ import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorU
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
 import { MenuAboutUI } from './MenuAboutUI'
+import { MenuAppsUI } from './MenuApps'
+import { MenuComfyUI } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuEditUI } from './MenuEditUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
+import { MenuShortcutsUI } from './MenuShortcuts'
 import { MenuUtilsUI } from './MenuUtilsUI'
 import { MenuPanelsUI } from './MenuWindowUI'
 
@@ -37,7 +40,10 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
             </div>
             <MenuPanelsUI />
-            <MenuEditUI />
+            <MenuShortcutsUI />
+            <MenuComfyUI />
+            <MenuAppsUI />
+            {/* <MenuEditUI /> */}
             <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
             />
             {/* <MenuWindowUI /> */}
