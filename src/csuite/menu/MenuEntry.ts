@@ -1,4 +1,5 @@
-import type { BoundCommand, Command } from '../commands/Command'
+import type { BoundCommand } from '../commands/BoundCommand'
+import type { Command } from '../commands/Command'
 import type { Field } from '../model/Field'
 import type { BoundMenu } from './Menu'
 import type { SimpleMenuAction } from './SimpleMenuAction'

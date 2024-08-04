@@ -1,15 +1,13 @@
 import type { Tree } from '../../csuite/tree/Tree'
-import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 
-import { ctx_global } from '../../csuite/command-topic/ctx_global'
-import { command, type Command } from '../../csuite/commands/Command'
-import { global_RevealStack } from '../../csuite/reveal/RevealStack'
+import { type Command } from '../../csuite/commands/Command'
+import { ctx_TreeUI } from '../../csuite/tree/TreeCtx'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
-import { globalValidInInput, placeholderTree } from './simpleValidInInput'
+import { globalValidInInput } from './simpleValidInInput'
 
 function focusTree(tree: Tree): void {
     return runInAction(() => {
@@ -36,7 +34,7 @@ function focusTree(tree: Tree): void {
 }
 // ------------------------------------------------------------------------------------
 // core global shortcuts
-export const allLegacyCommands: Command<null>[] = [
+export const allLegacyCommands: Command<any>[] = [
     globalValidInInput(
         KEYS.search,
         'search string globally in window',
@@ -78,16 +76,6 @@ export const allLegacyCommands: Command<null>[] = [
         'mdiNewBox',
     ),
 
-    // tree navigation --------------------------------
-    placeholderTree(KEYS.tree_moveUp, 'move up in tree'),
-    placeholderTree(KEYS.tree_moveDown, 'move down in tree'),
-    placeholderTree(KEYS.tree_moveRight, 'unfold item if folded, then move down'),
-    placeholderTree(KEYS.tree_moveLeft, 'fold item if unfolded and movme up'),
-    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeAbove, 'Delete Node And Focus Node Above'),
-    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeBelow, 'Delete Node And Focus Node Below'),
-    placeholderTree(KEYS.tree_onPrimaryAction, 'execute selected tree primary action'),
-    placeholderTree(KEYS.tree_movePageUp, 'move all the way to the top of the tree'),
-    placeholderTree(KEYS.tree_movePageDown, 'move 100 items down in the tree'),
     // placeholderTree('/', 'focus tree filter (not implemented for now)'),
 
     // tree -----------------------------------------

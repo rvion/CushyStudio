@@ -77,7 +77,11 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >
-            <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
+            <RegionUI //
+                regionName='UnifiedCanvas2'
+                regionCtx={UnifiedCanvasCtx}
+                regionValue={canvas}
+            >
                 <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
                     <div tw='flex gap-2'>
                         <div // TODO(bird_d): Needs Joinable

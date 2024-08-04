@@ -11,6 +11,7 @@ export type ITreeNodeState = {
     isExpanded?: Maybe<SQLITE_boolean_>
     isSelected?: Maybe<SQLITE_boolean_>
 }
+
 export type INodeStore = {
     data: ITreeNodeState
     update: (data: Partial<ITreeNodeState>) => void

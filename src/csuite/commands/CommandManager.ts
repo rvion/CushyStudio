@@ -1,5 +1,3 @@
-/** @todo improve to detect shortkey without order */
-
 import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
@@ -11,22 +9,23 @@ import { isPromise } from '../utils/ManualPromise'
 
 export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shift+i'
 
-// string wrapper for extra type safety and ensuring we're working with sanitized key names
+/** string wrapper for extra type safety and ensuring we're working with sanitized key names */
 export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
 
-// 'ctrl+k'
+/** e.g. '⌃k' */
 type InputToken = Branded<string, { InputToken: true }>
 
-// ['ctrl+k', 'ctrl+shift+i']
+/** e.g. ['⌃k', '⌃⇧i'] */
 type InputSequence = InputToken[]
-
-// easy to store in a Map
-type KnownCombo = [InputSequence, Command]
 
 export class CommandManager {
     commands: Map<Command['id'], Command> = new Map()
     commandByShortcut: Map<string, Command[]> = new Map()
     contextByName: Map<string, CommandContext> = new Map()
+    inputHistory: InputSequence = []
+    name: string
+
+    /** return the list of all known context seen through registered commands */
     get knownContexts(): CommandContext[] {
         return Array.from(this.contextByName.values())
     }
@@ -50,12 +49,6 @@ export class CommandManager {
 
     getCommandById = (id: string): Maybe<Command<any>> => this.commands.get(id)
 
-    inputHistory: InputSequence = []
-    // alwaysMatch: Command[] = []
-    // watchList: KnownCombo[] = []
-    // shortcuts: Command[]
-
-    name: string
     constructor(
         public conf: {
             log?: boolean
@@ -70,23 +63,6 @@ export class CommandManager {
         })
 
         this.name = this.conf.name || 'no-name' //shortId()
-        // this.shortcuts = shortcuts
-        // // 1. unfold shortcuts that have serveral combos and normalize them
-        // for (const shortcut of shortcuts) {
-        //     for (const combo of shortcut.combos) {
-        //         const inputSequence = parseShortcutToInputSequence(combo)
-        //         this.watchList.push([inputSequence, shortcut])
-        //     }
-        // }
-        // // 2. sort from longest combo to shortest
-        // // so `ctrl+k ctrl-u` must be check before versus `ctrl-u`
-        // this.watchList = this.watchList.sort(([ix1], [ix2]) => {
-        //     const l1 = ix1.length
-        //     const l2 = ix2.length
-        //     return l2 - l1
-        // })
-        // // console.log(this.knownCombos)
-        // if (this.conf.log) this.log(`${this.watchList.length} loaded`)
     }
     log = (...content: any[]): void => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
 
@@ -102,11 +78,12 @@ export class CommandManager {
 
     private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
         console.log(`[🤠] input > ev.key`, ev.key)
+        const keyLower = ev.key.toLowerCase()
         const inputAccum: string[] = []
-        if (ev.ctrlKey) inputAccum.push('ctrl' /* as KeyName */)
-        if (ev.shiftKey) inputAccum.push('shift' /* as KeyName */)
-        if (ev.altKey) inputAccum.push('alt' /* as KeyName */)
-        if (ev.metaKey) inputAccum.push(META_NAME)
+        if (ev.ctrlKey && keyLower !== 'ctrl') inputAccum.push('ctrl' /* as KeyName */)
+        if (ev.shiftKey && keyLower !== 'shift') inputAccum.push('shift' /* as KeyName */)
+        if (ev.altKey && keyLower !== 'alt') inputAccum.push('alt' /* as KeyName */)
+        if (ev.metaKey && keyLower !== 'meta') inputAccum.push(META_NAME)
 
         const key = ev.key
 
@@ -209,6 +186,7 @@ export function parseShortcutToInputSequence(combo: CushyShortcut): InputSequenc
 export const normalizeCushyShortcut = (combo: CushyShortcut): CushyShortcut => {
     return combo.split(' ').map(normalizeInputToken).join(' ')
 }
+
 // ctrl+shift+a => a+ctrl+shift
 function normalizeInputToken(input: string): InputToken {
     if (input.includes(' ')) throw new Error(`invalid raw input token: "${input}"`)
@@ -243,11 +221,11 @@ const sortKeyNamesFn = (a: KeyName, b: KeyName): number => {
     return a1.localeCompare(b1)
 }
 const _keyPriorityWhenSorting = (key: KeyName): string => {
-    if (key === 'ctrl') return '__1ctrl'
+    if (key === '⌃') return '__1ctrl'
     if (key === 'win') return '__1win'
-    if (key === 'cmd') return '__1cmd'
+    if (key === '⌘') return '__1cmd'
     if (key === '⇧') return '__2shift'
-    if (key === 'alt') return '__3alt'
+    if (key === '⌥') return '__3alt'
     return key
 }
 
