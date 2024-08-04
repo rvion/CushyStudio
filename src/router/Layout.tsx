@@ -146,6 +146,34 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
+    /** same as cmd+page-up in vscode: focus previous tab in tabset */
+    openPreviousPane(): Trigger {
+        return this._withActiveTabset((tabset) => {
+            // select previous tab
+            const selected = tabset.getSelected()
+            if (selected == null) return Trigger.UNMATCHED
+            const prev = selected - 1
+            if (prev < 0) return Trigger.UNMATCHED
+            const allTabsInTabset = tabset.getChildren()
+            const prevID = allTabsInTabset[prev]!.getId()
+            this.do(Actions.selectTab(prevID))
+            return Trigger.Success
+        })
+    }
+    openNextPane(): Trigger {
+        return this._withActiveTabset((tabset) => {
+            // select next tab
+            const selected = tabset.getSelected()
+            if (selected == null) return Trigger.UNMATCHED
+            const next = selected + 1
+            const allTabsInTabset = tabset.getChildren()
+            if (next >= allTabsInTabset.length) return Trigger.UNMATCHED
+            const nextID = allTabsInTabset[next]!.getId()
+            this.do(Actions.selectTab(nextID))
+            return Trigger.Success
+        })
+    }
+
     /** maximize the active(=selected; with focus) tabset */
     maximizeActiveTabset(): Trigger {
         return this._withActiveTabset((tabset) => this._maximizeToggle(tabset.getId()))
