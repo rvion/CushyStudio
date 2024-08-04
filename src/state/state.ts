@@ -900,6 +900,7 @@ export class STATE {
 
     galleryFilterPath: Maybe<string> = null
     galleryFilterTag: Maybe<string> = null
+    galleryFilterStar: Maybe<boolean> = false
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay(): MediaImageL[] {
         const conf = this.galleryConf.value
@@ -911,7 +912,7 @@ export class STATE {
                         : query.orderBy('media_image.updatedAt', 'desc')
 
                 x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
-
+                if (this.galleryFilterStar) x = x.where('media_image.star', '=', this.galleryFilterStar ? 1 : 0)
                 if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
                 if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
                 if (this.galleryFilterAppName) {
