@@ -77,8 +77,8 @@
         "form:deps:npm": "    madge lib/controls/Builder.loco.js --include-npm -i tmp/depedencies.png && code tmp/depedencies.png",
         "form:deps-svg": "    madge lib/controls/Builder.loco.js -i tmp/depedencies.svg && open tmp/depedencies.svg",
         "form:deps-svg:npm": "madge lib/controls/Builder.loco.js --include-npm -i tmp/depedencies.svg && code tmp/depedencies.svg",
-        "form:export": "rsync -r $CUSHY_INSTALL_DIR/@cushy/forms/ $MONOLOCO_INSTALL_DIR/src/cushy-forms/ --exclude=node_modules --exclude=pre --exclude=.vscode --exclude=global.d.ts --exclude=rollup.config.mjs --exclude=tsconfig.tsbuildinfo --exclude=main.js --exclude=SUMMARY.txt --delete --exclude=.gitignore --exclude=README.md --exclude=main.css --exclude=main.d.ts --exclude=main.meta.json --exclude=main.tw.css --exclude=package-lock.json --exclude=package.json --exclude=dts/main.d.rollup-stats.json --exclude=tsconfig.json --exclude=tailwind.config.js",
-        "form:build": "       bun src/bundle-form-lib.ts",
+        "form:export": "rsync -r $CUSHY_INSTALL_DIR/@cushy/forms/ $MONOLOCO_INSTALL_DIR/src/cushy-forms/ --exclude=node_modules --exclude=pre --exclude=.vscode --exclude=global.d.ts --exclude=rollup.config.mjs --exclude=tsconfig.tsbuildinfo --exclude=main.js --exclude=SUMMARY.txt --delete --exclude=.gitignore --exclude=README.md --exclude=main.css --exclude=main.d.ts --exclude=main.meta.json --exclude=main.tw.css --exclude=package-lock.json --exclude=package.json --exclude=dts/main.d.rollup-stats.json --exclude=tsconfig.json --exclude=tailwind.config.js --exclude=import-sorter.json",
+        "form:build": "       bun src/csuite-bundler/bundle-csuite.ts",
         "form:bundle-dts": "  './src/scripts/node_modules/.bin/rollup' -c './src/scripts/form.rollup.config.mjs'",
         "form:bundle-dts2": " yarn form:bundle-dts && cp stats.json "
     },

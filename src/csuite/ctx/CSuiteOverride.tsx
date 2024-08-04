@@ -14,7 +14,7 @@ type _Override = {
 
 // 2024-07-28 rvion - TODO: rename to something like `FrameWithCSuiteOverride`
 // to better convery what this component does.
-export const CSuiteOverride = observer(function CSuiteOverride_(p: { config: Partial<CSuiteConfig> } & FrameProps) {
+export const FrameWithCSuiteOverride = observer(function CSuiteOverride_(p: { config: Partial<CSuiteConfig> } & FrameProps) {
     // 1. retrieve the current CSuiteConfig
     const prev: CSuiteConfig = useCSuite()
 
@@ -36,7 +36,7 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: { config: Par
         if (p.config.shiftDirection != null) STYLE['--DIR'] = config.shiftDirection
 
         if (p.config.widgetHeight != null) STYLE['--widget-height'] = `${config.widgetHeight}rem`
-        if (p.config.insideHeight) STYLE['--inside-height'] = `${config.insideHeight}rem`
+        if (p.config.insideHeight != null) STYLE['--inside-height'] = `${config.insideHeight}rem`
         if (p.config.inputHeight != null) {
             STYLE['--input-height'] = `${p.config.inputHeight}rem`
             STYLE['--input-icon-height'] = `${p.config.inputHeight / 1.8}rem`
@@ -47,7 +47,7 @@ export const CSuiteOverride = observer(function CSuiteOverride_(p: { config: Par
 
     return (
         <CSuiteCtx.Provider value={CSUITE}>
-            <Frame style={STYLE} {...frameProps} />
+            <Frame {...frameProps} style={STYLE} />
         </CSuiteCtx.Provider>
     )
 })
