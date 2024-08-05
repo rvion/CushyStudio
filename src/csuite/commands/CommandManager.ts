@@ -94,7 +94,7 @@ export class CommandManager {
     }
 
     private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
-        console.log(`[🤠] input > ev.key`, ev.key)
+        // console.log(`[🤠] input > ev.key`, ev.key)
         const keyLower = ev.key.toLowerCase()
         const inputAccum: string[] = []
         if (ev.ctrlKey && keyLower !== 'ctrl') inputAccum.push('ctrl' /* as KeyName */)
@@ -113,7 +113,7 @@ export class CommandManager {
             .sort(sortKeyNamesFn)
             .join('') as InputToken
         // .toLowerCase()
-        console.log(`[🤠] input`, inputAccum, input)
+        // console.log(`[🤠] input`, inputAccum, input)
         return input as InputToken
     }
 

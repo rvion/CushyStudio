@@ -29,7 +29,7 @@ export const ImageUI = observer(function ImageUI_(p: {
     if (image == null) return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
 
     // ugly code; very wtf
-    const ImageWidthPx = ((x: string | number) => {
+    const ImageWidthPx = ((x: string | number): number => {
         if (typeof x === 'number') return x
         if (x === '100%') return 1000
         if (x.endsWith('px')) return parseInt(x.slice(0, -2), 10)

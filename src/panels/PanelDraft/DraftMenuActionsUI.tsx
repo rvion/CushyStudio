@@ -99,21 +99,17 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     <div tw='divider my-0'>Debug</div>
                     <MenuItem
                         icon='mdiInformation'
-                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
+                        onClick={() => st.layout.open('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
                     >
                         Form result
                     </MenuItem>
-                    <MenuItem
-                        icon='mdiForest'
-                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
-                        size='sm'
-                    >
+                    <MenuItem icon='mdiForest' onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })} size='sm'>
                         Form state
                     </MenuItem>
                     <MenuItem
                         icon='mdiCodeArray'
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Script', { scriptID: draft.app.script.id })}
+                        onClick={() => st.layout.open('Script', { scriptID: draft.app.script.id })}
                         size='sm'
                     >
                         App code

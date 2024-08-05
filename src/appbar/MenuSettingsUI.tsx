@@ -17,19 +17,19 @@ export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
             content={() => (
                 <>
                     <MenuItem
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Config', {})}
+                        onClick={() => st.layout.open('Config', {})}
                         icon={'mdiSettingsHelper'}
                         localShortcut={KEYS.openPage_Config}
                         label='Config'
                     />
                     <MenuItem
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
+                        onClick={() => st.layout.open('Hosts', {})}
                         icon={'mdiHospital'}
                         localShortcut={KEYS.openPage_Hosts}
                         label='ComfyUI Hosts'
                     />
                     <MenuItem
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Shortcuts', {})}
+                        onClick={() => st.layout.open('Shortcuts', {})}
                         icon={'mdiKey'}
                         localShortcut={KEYS.openPage_Shortcuts}
                         label='Shortcuts'

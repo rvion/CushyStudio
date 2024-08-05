@@ -20,10 +20,10 @@ function focusTree(tree: Tree): void {
             const currentFocous = window.document.activeElement
             const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
             if (treeAlreadySelected)
-                cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET') // close the panel
+                cushy.layout.open('TreeExplorer', {}, 'right') // close the panel
             else focusTreeRootIfMounted()
         } else {
-            const node = cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET')
+            const node = cushy.layout.open('TreeExplorer', {}, 'right')
             setImmediate((): void => {
                 const isVisible = node?.isVisible()
                 if (!isVisible) return
@@ -93,22 +93,22 @@ export const allLegacyCommands: Command<any>[] = [
     globalValidInInput([KEYS.duplicateCurrentDraft], 'duplicate draft', () => _duplicateCurrentDraft(cushy)),
 
     // menu utils: -----------------------------------
-    globalValidInInput([KEYS.openPage_Civitai],  'open Civitai',    () => cushy.layout.FOCUS_OR_CREATE('Civitai', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Squoosh],  'open Squoosh',    () => cushy.layout.FOCUS_OR_CREATE('Squoosh', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', () => cushy.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Paint],    'open Paint',      () => cushy.layout.FOCUS_OR_CREATE('Paint', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   () => cushy.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Marketplace], 'open Unsplash',() => cushy.layout.FOCUS_OR_CREATE('Marketplace', { }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Civitai],  'open Civitai',    () => cushy.layout.open('Civitai', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Squoosh],  'open Squoosh',    () => cushy.layout.open('Squoosh', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', () => cushy.layout.open('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Paint],    'open Paint',      () => cushy.layout.open('Paint', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   () => cushy.layout.open('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Marketplace], 'open Unsplash',() => cushy.layout.open('Marketplace', { }), ), // prettier-ignore
 
     // menu settings --------------------------------
-    globalValidInInput([KEYS.openPage_Config],    'open Config',    () => cushy.layout.FOCUS_OR_CREATE('Config', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Hosts],     'open Hosts',     () => cushy.layout.FOCUS_OR_CREATE('Hosts', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Shortcuts], 'open Shortcuts', () => cushy.layout.FOCUS_OR_CREATE('Shortcuts', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Config],    'open Config',    () => cushy.layout.open('Config', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Hosts],     'open Hosts',     () => cushy.layout.open('Hosts', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Shortcuts], 'open Shortcuts', () => cushy.layout.open('Shortcuts', {})), // prettier-ignore
 
     // misc... --------------------------------------
-    globalValidInInput([KEYS.openPage_ComfyUI], 'open ComfyUI', () => cushy.layout.FOCUS_OR_CREATE('ComfyUI', {})),
-    globalValidInInput([KEYS.openPage_Gallery], 'open Gallery', () => cushy.layout.FOCUS_OR_CREATE('Gallery', {})),
-    globalValidInInput([KEYS.openPage_Models], 'open Models', () => cushy.layout.FOCUS_OR_CREATE('Models', {})),
+    globalValidInInput([KEYS.openPage_ComfyUI], 'open ComfyUI', () => cushy.layout.open('ComfyUI', {})),
+    globalValidInInput([KEYS.openPage_Gallery], 'open Gallery', () => cushy.layout.open('Gallery', {})),
+    globalValidInInput([KEYS.openPage_Models], 'open Models', () => cushy.layout.open('Models', {})),
 
     // full screen library  --------------------------
     globalValidInInput([KEYS.openFull_Library], 'open full screen library', () => cushy.toggleFullLibrary()),

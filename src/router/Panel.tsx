@@ -52,7 +52,7 @@ export class Panel<Props> {
             ctx: ctx_global,
             action: () => {
                 const props: Props = this.p.def()
-                cushy.layout.FOCUS_OR_CREATE(this.name as any, props, 'LEFT_PANE_TABSET')
+                cushy.layout.open(this.name as any, props, 'left')
                 return Trigger.Success
             },
             icon: this.icon,
@@ -96,7 +96,7 @@ export class Panel<Props> {
                     icon: this.p.icon,
                     onPick: (): void => {
                         const props: Props = preset()
-                        cushy.layout.FOCUS_OR_CREATE(this.name as any, props, 'LEFT_PANE_TABSET')
+                        cushy.layout.open(this.name as any, props, 'left')
                     },
                 })
             })

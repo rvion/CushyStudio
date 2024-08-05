@@ -356,7 +356,7 @@ export class STATE {
     droppedFiles: File[] = []
 
     toggleFullLibrary(): void {
-        this.layout.FOCUS_OR_CREATE('PanelAppLibrary', {})
+        this.layout.open('PanelAppLibrary', {})
     }
 
     /**

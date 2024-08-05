@@ -25,7 +25,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             content={() => (
                 <>
                     <MenuItem //
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
+                        onClick={() => st.layout.open('Playground', {})}
                         icon='mdiPlayNetwork'
                     >
                         Show Dev Playground Page

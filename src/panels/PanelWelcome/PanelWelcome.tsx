@@ -39,7 +39,7 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
                 </div>
                 <div>
                     1. First thing first, make sure you have some ComfyUI server you can connect to in the
-                    <Button icon='mdiOpenInNew' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
+                    <Button icon='mdiOpenInNew' onClick={() => st.layout.open('Hosts', {})}>
                         Hosts
                     </Button>
                     panel.

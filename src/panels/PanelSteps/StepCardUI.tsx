@@ -58,7 +58,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
         <Frame
             base={p.contrast}
             tw={['flex flex-wrap relative cursor-pointer', p.className]}
-            onClick={() => st.layout.FOCUS_OR_CREATE('Output', { stepID: step.id })}
+            onClick={() => st.layout.open('Output', { stepID: step.id })}
             style={p.style}
         >
             {showTitle && (

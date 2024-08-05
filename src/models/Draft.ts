@@ -44,7 +44,7 @@ export class DraftL {
 
     openOrFocusTab(): void {
         if (!(this instanceof DraftL)) throw new Error('❌')
-        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
+        this.st.layout.open('Draft', { draftID: this.id }, 'left')
         // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 
@@ -189,7 +189,7 @@ export class DraftL {
 
         if (p.focusOutput ?? true) {
             // 💬 2024-01-21 should this be here ?
-            this.st.layout.FOCUS_OR_CREATE('Output', {})
+            this.st.layout.open('Output', {})
         }
 
         // ----------------------------------------

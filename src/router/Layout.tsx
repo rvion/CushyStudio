@@ -26,12 +26,6 @@ type PerspectiveDataForSelect = {
     value: string
 }
 
-type LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
-const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
-
-type RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
-const RIGHT_PANE_TABSET_ID: RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
-
 const memoryRefByUniqueID = new WeakMap<object, string>()
 export const uniqueIDByMemoryRef = (x: object): string => {
     let id = memoryRefByUniqueID.get(x)
@@ -74,7 +68,7 @@ export class CushyLayoutManager {
         }
         makeAutoObservable(this, {
             layoutRef: false,
-            FOCUS_OR_CREATE: action,
+            open: action,
         })
     }
 
@@ -564,17 +558,24 @@ export class CushyLayoutManager {
     }
 
     // CREATION --------------------------------------------------------
-    FOCUS_OR_CREATE = <PANEL_NAME extends PanelName>(
+    open = <PANEL_NAME extends PanelName>(
         panelName: PANEL_NAME,
         panelProps: PropsOf<Panels[NoInfer<PANEL_NAME>]['widget']>,
-        where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
+        // prettier-ignore
+        /** @default 'right' */
+        where?:
+            /** open in the current pane */
+            | 'current'
+            /** open in the neares parent row, on the left of current tabset */
+            | 'left'
+            /** open in the neares parent row, on the right of current tabset */
+            | 'right'
+            /** open in the tabset that have the biggest area */
+            | 'biggest'
+            /** open in the non-current tabset that have the biggest area */
+            | 'biggest-except-current',
     ): Maybe<FL.Node> => {
         console.log(`[🤠] `, panelName, panelProps)
-        // this.prettyPrintLayoutModel()
-        // if (where === 'full') {
-        //     this.TOGGLE_FULL(panelName, panelProps)
-        //     return null
-        // }
 
         // 1. ensure layout is present
         const currentLayout = this.layoutRef.current
@@ -694,7 +695,6 @@ export class CushyLayoutManager {
                     //     children: [
                     {
                         type: 'tabset',
-                        id: LEFT_PANE_TABSET_ID,
                         minWidth: 150,
                         minHeight: 150,
                         // width: 512,
@@ -717,7 +717,6 @@ export class CushyLayoutManager {
                     //     children: [
                     {
                         type: 'tabset',
-                        id: RIGHT_PANE_TABSET_ID,
                         // enableClose: false,
                         // enableDeleteWhenEmpty: false,
                         minWidth: 100,
@@ -742,7 +741,7 @@ export class CushyLayoutManager {
      * @unstable
      */
     addCustom<T extends any>(panel: CustomPanelRef<any, T>, props: T): void {
-        this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
+        this.open('Custom', { uid: panel.uid, props })
     }
 
     /**
@@ -752,7 +751,7 @@ export class CushyLayoutManager {
     addCustomV2<T extends any>(fn: FC<T>, props: T): void {
         const uid = uniqueIDByMemoryRef(fn)
         const panel = registerCustomPanel(uid, fn)
-        this.FOCUS_OR_CREATE('Custom', { uid: panel.uid, props }, 'RIGHT_PANE_TABSET')
+        this.open('Custom', { uid: panel.uid, props })
     }
 
     factory(node: FL.TabNode): React.ReactNode {

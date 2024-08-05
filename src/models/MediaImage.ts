@@ -192,7 +192,7 @@ export class MediaImageL {
     }
 
     onMiddleClick = (): void => {
-        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+        return void cushy.layout.open('Image', { imageID: this.id }, 'biggest')
     }
 
     onRightClick = (): void => {}
@@ -201,17 +201,17 @@ export class MediaImageL {
         if (hasMod(ev)) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+            return void cushy.layout.open('Image', { imageID: this.id })
         }
         if (ev.shiftKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+            return void cushy.layout.open('Canvas', { imgID: this.id })
         }
         if (ev.altKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+            return void cushy.layout.open('Paint', { imgID: this.id })
         }
 
         return
@@ -298,11 +298,11 @@ export class MediaImageL {
     }
 
     openInImageEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+        this.st.layout.open('Paint', { imgID: this.id })
     }
 
     openInCanvasEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+        this.st.layout.open('Canvas', { imgID: this.id })
     }
 
     /**
