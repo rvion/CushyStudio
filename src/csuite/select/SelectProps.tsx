@@ -1,4 +1,5 @@
 import type { FrameProps } from '../frame/Frame'
+import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
 import type { RevealHideReason, RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
@@ -9,6 +10,7 @@ import React from 'react'
 
 export type SelectProps<OPTION> = {
     label?: string
+    startIcon?: IconName
 
     /**
      * if true, select is virtualized

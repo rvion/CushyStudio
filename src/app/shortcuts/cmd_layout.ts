@@ -29,29 +29,28 @@ export const allLayoutCommands: Command<null>[] = [
     }),
 
     // move active tab to the right
-    globalValidInInput(
+    command({
         //
-        'mod+k mod+ArrowRight',
-        'move tab to the right',
-        () => cushy.layout.moveActiveTabToRight(),
-        'mdiGamepadCircleRight',
-    ),
+        ctx: ctx_layout,
+        combos: ['mod+k mod+ArrowRight'],
+        id: 'layout.move-tab-to-the-right',
+        label: 'move tab to the right',
+        action: () => cushy.layout.moveActiveTabToRight(),
+        icon: 'mdiGamepadCircleRight',
+        validInInput: true,
+    }),
 
     // move active tab to the left
-    globalValidInInput(
+    command({
         //
-        'mod+k mod+ArrowLeft',
-        'move tab to the left',
-        () => cushy.layout.moveActiveTabToLeft(),
-        'mdiGamepadCircleLeft',
-    ),
-
-    // globalValidInInput(
-    //     //
-    //     'mod+k mod+ArrowDown',
-    //     'move tab to the right',
-    //     () => cushy.layout.getTabsetSurroundings(),
-    // ),
+        ctx: ctx_layout,
+        combos: ['mod+k mod+ArrowLeft'],
+        id: 'layout.move-tab-to-the-left',
+        label: 'move tab to the left',
+        action: () => cushy.layout.moveActiveTabToLeft(),
+        icon: 'mdiGamepadCircleLeft',
+        validInInput: true,
+    }),
 
     command({
         id: 'closeCurrentTab',
@@ -102,9 +101,16 @@ export const allLayoutCommands: Command<null>[] = [
         action: () => cushy.layout.openNextPane(),
         icon: 'mdiArrowUpBoldBox',
     }),
-
-    // TODO:
-    // command({
-    //     id: 'layout.focusFirstTabset'
-    // })
 ]
+
+// TODO:
+// command({
+//     id: 'layout.focusFirstTabset'
+// })
+
+// globalValidInInput(
+//     //
+//     'mod+k mod+ArrowDown',
+//     'move tab to the right',
+//     () => cushy.layout.getTabsetSurroundings(),
+// ),

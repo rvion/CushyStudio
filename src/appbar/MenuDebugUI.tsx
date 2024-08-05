@@ -86,12 +86,12 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                             // cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })
                             cushy.layout.addCustomV2(() => {
                                 return (
-                                    <table>
+                                    <table tw='[&_td]:px-2 [&_th]:px-2'>
                                         <thead>
                                             <tr>
                                                 <th tw='text-right '>size</th>
                                                 <th tw='text-right '>count</th>
-                                                <th>table name</th>
+                                                <th tw='text-left'>table name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -104,15 +104,13 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                                                         key={name}
                                                         base={{ contrast: isOdd(ix) ? 0.1 : 0.2, hue: (360 * ix) / arr.length }}
                                                     >
-                                                        <Frame as='td' tw='text-right px-2'>
-                                                            {formatSize(size)}
+                                                        <Frame as='td' tw='text-right font-mono'>
+                                                            ❓
                                                         </Frame>
-                                                        <Frame as='td' tw='text-right px-2'>
+                                                        <Frame as='td' tw='text-right font-mono'>
                                                             {formatNum(count)}
                                                         </Frame>
-                                                        <Frame tw='px-2' as='td'>
-                                                            {name}
-                                                        </Frame>
+                                                        <Frame as='td'>{name}</Frame>
                                                     </Frame>
                                                 ))}
                                         </tbody>

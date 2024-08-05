@@ -3,17 +3,16 @@ import type { MediaImageL } from '../../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { Ikon } from '../../csuite/icons/iconHelpers'
-import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
 import { formatSize } from '../../csuite/utils/formatSize'
 import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
+import { usePanel } from '../../router/usePanel'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { ImageDropdownUI } from '../ImageDropdownUI'
@@ -112,17 +111,22 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     const st = useSt()
     const img = p.img
     const isStarred = Boolean(img?.data.star)
+    const showTags = usePanel().usePersistentModel('showTags', (ui) =>
+        ui.boolean({ display: 'button', label: 'tags', text: 'tags' }),
+    )
     return (
-        <div>
+        <div key={img?.id ?? 'no-img'}>
             <PanelHeaderUI>
-                {img ? <ImageDropdownUI tw='h-input' img={img} /> : null}
                 <Button // rating button
                     square
                     icon='mdiStar'
-                    active={isStarred}
+                    // active={isStarred}
                     borderless
+                    subtle
+                    text={isStarred ? { hue: 80, chroma: 0.2, lightness: 0.8 } : undefined}
                     onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
                 />
+                {img ? <ImageDropdownUI img={img} /> : null}
                 <Button // Canvas Button
                     onClick={() => img?.openInCanvasEditor()}
                     disabled={img == null}
@@ -138,7 +142,27 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 >
                     Paint
                 </Button>
+                {showTags.header()}
                 <SpacerUI />
+                {img && (
+                    <RevealUI
+                        content={() => (
+                            <div>
+                                <div>Data</div>
+                                <JsonViewUI value={img?.data}></JsonViewUI>
+                                <div>meta</div>
+                                <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
+                                <div>node</div>
+                                <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
+                            </div>
+                        )}
+                    >
+                        <Frame col tw='!leading-none' text={30} size={'xs'}>
+                            <div tw='truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+                            <div>{img.data.fileSize && `${formatSize(img.data.fileSize)}`}</div>
+                        </Frame>
+                    </RevealUI>
+                )}
                 <Button // Delete button
                     look='warning'
                     tooltip='Delete Image'
@@ -150,7 +174,22 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     }}
                 />
             </PanelHeaderUI>
-            <PanelHeaderUI>
+            <div>
+                {img && showTags.value && (
+                    <SelectUI<string> //
+                        startIcon='mdiTagEdit'
+                        multiple
+                        options={(q) =>
+                            img.tags.includes(q) || !Boolean(q) //
+                                ? img.tags
+                                : [q, ...img.tags]
+                        }
+                        getLabelText={(o) => o}
+                        value={() => img.tags}
+                        onOptionToggled={(tag) => img?.toggleTag(tag)}
+                    />
+                )}
+                {/*
                 <InputStringUI
                     icon='mdiTagEdit'
                     getValue={() => img?.data.tags ?? ''}
@@ -166,40 +205,19 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                         onClick={(tag) => img?.removeTag(tag.toString())}
                     ></BadgeListUI>
                 </div>
+                 */}
                 {/* Image Info Button */}
-                <RevealUI
-                    tw='hover:brightness-125 rounded text-shadow'
-                    content={() => (
-                        <div>
-                            <div>Data</div>
-                            <JsonViewUI value={img?.data}></JsonViewUI>
-                            <div>meta</div>
-                            <JsonViewUI value={img?.ComfyNodeMetadata ?? undefined}></JsonViewUI>
-                            <div>node</div>
-                            <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
-                        </div>
-                    )}
-                >
-                    <div tw='h-input flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
-                        {img ? (
-                            <>
-                                <div tw='h-input truncate'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
-                                {img.data.fileSize && (
-                                    <div tw='h-input border-l border-base-100 p-1 truncate'>{`${formatSize(img.data.fileSize)}`}</div>
-                                )}
-                                <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div>
-                            </>
-                        ) : null}
-                        {/* {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>} */}
-                        {/* {img?.tags.map((t) => (
-                        <div key={t} tw='italic'>
-                            #{t}
-                        </div>
-                    ))} */}
-                    </div>
-                </RevealUI>
-                <Frame base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Frame>
-            </PanelHeaderUI>
+
+                {/* <Frame base={5} tw='h-5 mx-1' style={{ width: '1px' }}></Frame> */}
+            </div>
         </div>
     )
 })
+
+// {/* <div tw='h-input border-l border-base-100 p-1 truncate'>{`${img.data.hash?.slice(0, 5)}...`}</div> */}
+// {/* {img?.ComfyNodeMetadata?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadata?.tag}</div>} */}
+// {/* {img?.tags.map((t) => (
+// <div key={t} tw='italic'>
+// #{t}
+// </div>
+// ))} */}

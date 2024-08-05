@@ -11,7 +11,13 @@ import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img
-    return <Dropdown title='Actions' startIcon='mdiMenu' content={() => <ImageDropdownMenuUI img={img} />} />
+    return (
+        <Dropdown //
+            title='Actions'
+            // startIcon='mdiMenu'
+            content={() => <ImageDropdownMenuUI img={img} />}
+        />
+    )
 })
 
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {

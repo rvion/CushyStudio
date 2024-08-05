@@ -1,3 +1,4 @@
+import type { Timestamp } from '../csuite/types/Timestamp'
 import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
@@ -29,7 +30,10 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     ): TABLE['$L'][] => {
         const query = fn(this.query1).compile() // finalize the kysely query
         const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
-        if (stmt == null) return []
+        if (stmt == null) {
+            throw new Error('INVARIANT VIOLATION; statement is null')
+            // return []
+        }
         cushy.db.subscribeToKeys([this.schema.sql_name])
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
         const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
@@ -62,7 +66,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     // 🟢 --------------------------------------------------------------------------------
 
     /** number of entities in the table */
-    get size() {
+    get size(): number {
         DEPENDS_ON(this.liveEntities.size)
         return this.db._getCount(this.name)
     }
@@ -177,12 +181,23 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 next: TABLE['$T'],
             ) => void
 
-            get id() { return this.data.id } // prettier-ignore
-            get createdAt() { return this.data.createdAt } // prettier-ignore
-            get updatedAt() { return this.data.updatedAt } // prettier-ignore
-            get tableName() { return this.table.name } // prettier-ignore
+            get id(): TABLE['$ID'] {
+                return this.data.id
+            }
 
-            update_LiveOnly(changes: Partial<TABLE['$T']>) {
+            get createdAt(): Timestamp {
+                return this.data.createdAt as Timestamp
+            }
+
+            get updatedAt(): Timestamp {
+                return this.data.updatedAt as Timestamp
+            }
+
+            get tableName(): TableNameInDB {
+                return this.table.name
+            }
+
+            update_LiveOnly(changes: Partial<TABLE['$T']>): void {
                 runInAction(() => {
                     Object.assign(this.data, changes)
                 })
@@ -293,15 +308,19 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 return this.table.create(cloneData)
             }
 
-            delete() {
+            delete(): void {
                 this.table.delete(this.data.id)
             }
 
-            toJSON() {
+            toJSON(): TABLE['$T'] {
                 return this.data
             }
 
-            init(table: LiveTable<TABLE>, data: TABLE['$T']) {
+            init(
+                //
+                table: LiveTable<TABLE>,
+                data: TABLE['$T'],
+            ): void {
                 // console.log(`🔴 INIT`, data)
                 /* 🚝 */ const startTime = process.hrtime()
                 this.db = table.db
@@ -326,7 +345,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 /* 🚝 */ quickBench.addStats(`init:${table.name}`, ms)
             }
 
-            log(...args: any[]) {
+            log(...args: any[]): void {
                 console.log(`[${this.table.emoji}] ${this.table.name}:`, ...args)
             }
         }
@@ -411,7 +430,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
      */
     zz_deleted: boolean = false
 
-    delete = (id: string) => {
+    delete = (id: string): void => {
         const sql = `delete from ${this.name} where id = ?`
         try {
             this.schema.backrefs.forEach((backref) => {
@@ -444,7 +463,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
      * - update all in DB
      * - then patch all local instances bypassing the DB
      */
-    updateAll = (changes: Partial<TABLE['$T']>) => {
+    updateAll = (changes: Partial<TABLE['$T']>): void => {
         const sql = `update ${this.name} set ${Object.keys(changes)
             .map((k) => `${k} = @${k}`)
             .join(', ')}`

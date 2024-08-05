@@ -55,6 +55,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             <Frame
                 expand
                 line
+                icon={p.startIcon}
                 hover={3}
                 tabIndex={0}
                 tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}

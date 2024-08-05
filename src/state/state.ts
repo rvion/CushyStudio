@@ -902,8 +902,9 @@ export class STATE {
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay(): MediaImageL[] {
+        // console.log(`[🤠] AAA`)
         const conf = this.galleryConf.value
-        return this.db.media_image.select(
+        const out = this.db.media_image.select(
             (query) => {
                 let x =
                     conf.defaultSort.id === 'createdAt'
@@ -928,6 +929,8 @@ export class STATE {
             },
             ['media_image.id'],
         )
+        // console.log(`[🤠] BBB`)
+        return out
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

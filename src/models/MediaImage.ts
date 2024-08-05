@@ -305,12 +305,24 @@ export class MediaImageL {
         this.st.layout.open('Canvas', { imgID: this.id })
     }
 
+    // ---------------------------------------------------------------
     /**
      * add a tag to MediaImage.tags
      * internally stored as coma-separated string
      * */
     addTag = (...tags: string[]): this => {
         this.update({ tags: this.data.tags ? `${this.data.tags},${tags.join(',')}` : tags.join(',') })
+        return this
+    }
+
+    toggleTag = (...tags: string[]): this => {
+        const curr = new Set(this.tags)
+        for (const tag_ of tags) {
+            const tag = tag_.trim()
+            if (curr.has(tag)) curr.delete(tag)
+            else curr.add(tag)
+        }
+        this.update({ tags: [...curr.values()].join(',') })
         return this
     }
 
@@ -323,15 +335,16 @@ export class MediaImageL {
         return this
     }
 
-    set tags(str: string) {
-        this.update({ tags: str })
-    }
-
+    // ---------------------------------------------------------------
     /** get tags as string list (de-duplicated) */
     get tags(): string[] {
         if (this.data.tags == null) return []
         // temporary fix to deduplicate tags
         return [...new Set(this.data.tags.split(','))]
+    }
+
+    set tags(str: string) {
+        this.update({ tags: str })
     }
 
     /**
