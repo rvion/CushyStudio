@@ -6,11 +6,9 @@ import { useLayoutEffect } from 'react'
 import { cushyFactory } from '../../controls/Builder'
 import { UI } from '../../csuite/components/UI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
-import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
-import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
@@ -45,7 +43,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
     }, [])
 
     return (
-        <UI.Panel>
+        <UI.Panel tw='gap-1'>
             <UI.Panel.Header extensibleHeight>{Header_Playground.root.header()}</UI.Panel.Header>
             <ErrorBoundaryUI /* 👇 playground sub-pages */>
                 {mode.forms && <PlaygroundForms />}
