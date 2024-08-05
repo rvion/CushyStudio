@@ -444,8 +444,9 @@ export class ComfyWorkflowL {
         this.width = colX
         return this
     }
-    width = 100
-    height = 100
+
+    width: number = 100
+    height: number = 100
 
     sendPromptAndWaitUntilDone = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const prompt = await this.sendPrompt(p)

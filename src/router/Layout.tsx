@@ -17,10 +17,10 @@ import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
 import { PanelName, panels, Panels } from './PANELS'
 import { PanelUI } from './PanelUI'
-import { type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
+import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
-
+type TabsetID = string
 type PerspectiveDataForSelect = {
     label: string
     value: string
@@ -140,6 +140,33 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
+    getAllTabset(): FL.TabSetNode[] {
+        const tabsets: FL.TabSetNode[] = []
+        this.traverse({
+            onTabset: (tabset): TraversalNextStep => {
+                tabsets.push(tabset)
+                return 'stop'
+            },
+        })
+        return tabsets
+    }
+
+    get biggestTabset(): Maybe<FL.TabSetNode> {
+        const tabsets = this.getAllTabset()
+        let biggest: Maybe<FL.TabSetNode> = null
+        let biggestArea: number = 0
+        for (const tabset of tabsets) {
+            const rect = tabset.getRect()
+            const area = rect.width * rect.height
+            if (area > biggestArea) {
+                biggest = tabset
+                biggestArea = area
+                continue
+            }
+        }
+        return biggest
+    }
+
     /** same as cmd+page-up in vscode: focus previous tab in tabset */
     openPreviousPane(): Trigger {
         return this._withActiveTabset((tabset) => {
@@ -154,6 +181,8 @@ export class CushyLayoutManager {
             return Trigger.Success
         })
     }
+
+    /** same as cmd+page-down in vscode: focus next tab in tabset */
     openNextPane(): Trigger {
         return this._withActiveTabset((tabset) => {
             // select next tab
@@ -575,44 +604,62 @@ export class CushyLayoutManager {
             /** open in the non-current tabset that have the biggest area */
             | 'biggest-except-current',
     ): Maybe<FL.Node> => {
-        console.log(`[🤠] `, panelName, panelProps)
-
-        // 1. ensure layout is present
+        // 1. retrieve the layout model
         const currentLayout = this.layoutRef.current
         if (currentLayout == null) return void console.log('❌ no currentLayout')
 
-        // 2. get previous tab
-        const tabID = `/${panelName}/${hashJSONObjectToNumber(panelProps ?? {})}`
-        let prevTab: FL.TabNode | undefined
-        prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-        // console.log(`[🤠] `, { prevTab }, prevTab.getRect())
-        // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
+        // 2. compute unique URI for panel
+        const panelURI = `/${panelName}/${hashJSONObjectToNumber(panelProps ?? {})}`
 
-        // 3. create tab if not prev type
-        const panel = panels[panelName]
-        const { title } = panel.header(panelProps as any)
-        const icon = panel.icon
+        // 3. find possibly existing panel with same URI
+        let prevTab: FL.TabNode | undefined
+        prevTab = this.model.getNodeById(panelURI) as FL.TabNode // 🔴 UNSAFE ?
+
+        // 4. create panel if no
         if (prevTab == null) {
-            const tabsetIDToAddThePanelTo = this.getActiveOrFirstTabset_orThrow().getId()
+            const tabsetIDToAddThePanelTo = ((): TabsetID => {
+                // case biggest
+                if (where === 'biggest') {
+                    return this.biggestTabset?.getId() ?? this.getActiveOrFirstTabset_orThrow().getId()
+                }
+
+                // case current
+                if (
+                    where === 'current' || //
+                    where == null
+                ) {
+                    return this.getActiveOrFirstTabset_orThrow().getId()
+                }
+
+                // temporary catch-all until we're done implementing
+                // all `where` options
+                return this.getActiveOrFirstTabset_orThrow().getId()
+            })()
+
+            const panel = panels[panelName]
+            const { title } = panel.header(panelProps as any)
+            const icon = panel.icon
             const config: PanelPersistedJSON = { $props: panelProps }
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
-                id: tabID,
+                id: panelURI,
                 icon: getIconAsDataSVG(icon),
                 name: title,
                 config,
             })
-            prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
+            prevTab = this.model.getNodeById(panelURI) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
-                console.log(`[🧐] addition:`, addition, { component: panelName, tabID, icon, title, props: panelProps })
+                console.log(`[🧐] addition:`, addition, { component: panelName, tabID: panelURI, icon, title, props: panelProps })
                 this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }
-        } else {
+        }
+        // 5. update panel if it already exists
+        else {
             const prevConfig: PanelPersistedJSON = prevTab.getConfig()
             const nextConfig = { ...prevConfig, $props: panelProps }
-            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: nextConfig }))
-            this.model.doAction(Actions.selectTab(tabID))
+            this.model.doAction(Actions.updateNodeAttributes(panelURI, { config: nextConfig }))
+            this.model.doAction(Actions.selectTab(panelURI))
         }
 
         // 4. merge props

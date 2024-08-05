@@ -10,7 +10,6 @@ export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
     base: X.XString
     appbar: X.XOptional<X.XString>
-    gap: X.XOptional<X.XNumber>
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -37,6 +36,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 }),
                 // 1. colors
                 base: ui.colorV2({
+                    tooltip: 'main color of the CushyStudio UI',
                     default: '#F4F5FB',
                     presets: [
                         { label: 'Dark', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B') },
@@ -44,10 +44,15 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                         { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                     ],
                 }),
-                appbar: ui.colorV2({ default: '#313338' }).optional(true),
+                appbar: ui
+                    .colorV2({
+                        tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                        default: '#313338',
+                    })
+                    .optional(true),
 
                 // ...
-                gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
+                // gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
                 // widgetWithLabel: ui.fields(
                 //     {
                 //         border: ui.percent({ default: 8 }).optional(),
