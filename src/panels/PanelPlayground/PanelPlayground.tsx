@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { cushyFactory } from '../../controls/Builder'
+import { UI } from '../../csuite/components/UI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
@@ -13,6 +14,7 @@ import { useSt } from '../../state/stateContext'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
 import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
+import { PlaygroundJSX } from './PlaygroundJSX'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundPanelStoreUI } from './PlaygroundPanelStoreUI'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
@@ -35,8 +37,7 @@ export const PanelPlayground = new Panel({
 export type PanelPlaygroundProps = NO_PROPS
 
 export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
-    const st = useSt()
-    const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
+    const relPathToThisPage = './src/panels/PanelPlayground/PanelPlayground.tsx' as RelativePath
     const mode = Header_Playground.value
 
     useLayoutEffect(() => {
@@ -44,26 +45,9 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
     }, [])
 
     return (
-        <Frame tw='p-1 gap-1' col>
-            <MessageInfoUI>
-                <div tw='inline text-sm overflow-clip'>
-                    <span>Use this panel as a scratchpad by modifying </span>
-                    <span tw='rounded px-1'>PlaygroundScratchPad</span>
-                    <span> in </span>
-                    <span onClick={() => void st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
-                        {relPathToThisPage}
-                    </span>
-                </div>
-            </MessageInfoUI>
-            {/* ------------ */}
-            {/* <FormUI form={Header_Playground} /> */}
-            {/* {Header_Playground.root.renderWithLabel()} */}
-            {/* {Header_Playground.root.renderWithLabel({ label: false })} */}
-            {Header_Playground.root.header()}
-            {/* ------------ */}
-            {/* {mode.requirements && <PlaygroundRequirementsHeader />} */}
-            <ErrorBoundaryUI>
-                {/* 👇 PLAYGROUND HERE */}
+        <UI.Panel>
+            <UI.Panel.Header>{Header_Playground.root.header()}</UI.Panel.Header>
+            <ErrorBoundaryUI /* 👇 playground sub-pages */>
                 {mode.forms && <PlaygroundForms />}
                 {mode.requirements && <PlaygroundRequirements />}
                 {mode.registeredForms && <PlaygroundRegisteredForms />}
@@ -76,9 +60,23 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
                 {mode.size && <PlaygroundSizeUI />}
                 {mode.skins && <PlaygroundSkinsUI />}
                 {mode.panelProps && <PlaygroundPanelStoreUI />}
+                {mode.jsx && <PlaygroundJSX />}
                 {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
             </ErrorBoundaryUI>
-        </Frame>
+
+            <MessageInfoUI>
+                <div tw='inline text-sm overflow-clip'>
+                    <span>Use this panel as a scratchpad by modifying </span>
+                    <span tw='rounded px-1'>PlaygroundScratchPad</span>
+                    <span> in </span>
+                    <UI.Button //
+                        tw='underline'
+                        onClick={() => cushy.openInVSCode(relPathToThisPage)}
+                        children={relPathToThisPage}
+                    />
+                </div>
+            </MessageInfoUI>
+        </UI.Panel>
     )
 })
 
@@ -90,6 +88,7 @@ const Header_Playground = cushyFactory.entity(
             tabPosition: 'start',
             items: {
                 skins: ui.empty(),
+                jsx: ui.empty(),
                 panelProps: ui.empty(),
                 select: ui.empty(),
                 size: ui.empty(),
