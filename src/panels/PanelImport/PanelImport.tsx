@@ -3,7 +3,7 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { ImportAsImageUI, ImportedFileUI } from '../../importers/FilesBeeingImported'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'

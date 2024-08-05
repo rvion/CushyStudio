@@ -11,7 +11,8 @@ import { PanelState } from './PanelState'
 import { PanelStateByNode } from './PanelStateByNode'
 import { panelContext } from './usePanel'
 
-export const PanelUI = observer(function PanelUI_(p: {
+/** internal component; do not use yourself */
+export const PanelContainerUI = observer(function PanelContainer(p: {
     //
     node: FL.TabNode
     panel: PanelName

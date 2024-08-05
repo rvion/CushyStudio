@@ -15,8 +15,8 @@ import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
+import { PanelContainerUI } from './PanelContainerUI'
 import { PanelName, panels, Panels } from './PANELS'
-import { PanelUI } from './PanelUI'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
@@ -822,7 +822,7 @@ export class CushyLayoutManager {
                 </Message>
             )
 
-        return createElement(PanelUI, {
+        return createElement(PanelContainerUI, {
             node,
             panel,
             panelProps,

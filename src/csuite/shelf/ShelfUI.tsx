@@ -1,8 +1,8 @@
-import type { Tint, TintExt } from '../kolor/Tint'
+import type { Tint } from '../kolor/Tint'
+import type { ReactNode } from 'react'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type FC, type ReactNode, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Frame, type FrameProps } from '../frame/Frame'
 import { ShelfState } from './ShelfState'
@@ -81,7 +81,10 @@ export const _BasicShelfUI = observer(function BasicShelf({
     )
 })
 
-const BasicShelf_ColumnUI = observer(function BasicShelf_Column(p: React.HTMLAttributes<HTMLDivElement>) {
+const BasicShelf_ColumnUI = observer(function BasicShelf_Column(
+    //
+    p: React.HTMLAttributes<HTMLDivElement>,
+) {
     return <div tw='flex flex-col p-2 gap' {...p}></div>
 })
 
@@ -92,10 +95,16 @@ const BasicShelf_GroupUI = observer(function BasicShelf_Group({ children, ...tin
         </Frame>
     )
 })
+
+export const BasicShelfContentUI = observer(function BasicShelfContentUI_(p: React.HTMLAttributes<HTMLDivElement>) {
+    return <div tw='flex flex-1 p-2 overflow-auto' {...p} />
+})
+
 export const BasicShelfUI = Object.assign(_BasicShelfUI, {
     // name: 'BasicShelfUI',
     Group: BasicShelf_GroupUI,
     Column: BasicShelf_ColumnUI,
+    Content: BasicShelfContentUI,
 })
 
 // let XXX = <BasicShelfUI />

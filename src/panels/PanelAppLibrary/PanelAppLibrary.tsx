@@ -8,7 +8,7 @@ import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleBu
 import { Frame } from '../../csuite/frame/Frame'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 

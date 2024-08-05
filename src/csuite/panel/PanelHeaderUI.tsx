@@ -18,7 +18,7 @@ import { Frame } from '../frame/Frame'
  * </PanelHeaderUI>
  * ```
  */
-export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {
+export const PanelHeaderUI = observer(function PanelHeader(p: {
     //
     className?: string
     title?: string

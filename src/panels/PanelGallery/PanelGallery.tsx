@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { GalleryImageGridUI } from './GalleryImageGridUI'

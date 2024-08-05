@@ -2,8 +2,8 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
 
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { TreeUI } from '../../csuite/tree/TreeUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { LibraryHeaderUI } from './TreeExplorerHeader'

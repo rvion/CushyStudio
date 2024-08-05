@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {

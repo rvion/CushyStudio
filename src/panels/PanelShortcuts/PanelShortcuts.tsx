@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 import { CommandTableUI } from './CommandTableUI'

@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from './CreateAppBtnUI'
