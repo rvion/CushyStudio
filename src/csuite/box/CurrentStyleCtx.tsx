@@ -13,13 +13,19 @@ export type CurrentStyle = {
     base: Kolor
     // baseH: OKLCH
     text: Tint
-    dir: 1 | -1
+    dir?: 1 | -1
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
+}
+
+export const defaultTextTint: Tint = {
+    contrast: 1,
+    chromaBlend: 0,
+    hueShift: 0,
 }
 
 export const CurrentStyleCtx = createContext<CurrentStyle>({
     base: new Kolor(0.1, 0.05, 0),
-    text: { contrast: 1, chromaBlend: 0, hueShift: 0 },
+    text: defaultTextTint,
     dir: 1,
     /**
      * if we want to handle that though CSS, it HAS to always be present

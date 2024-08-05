@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
+import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { Frame } from '../csuite/frame/Frame'
-import { PanelHeaderUI } from '../csuite/panel/PanelHeaderUI'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
@@ -13,7 +13,6 @@ import { MenuAboutUI } from './MenuAboutUI'
 import { MenuAppsUI } from './MenuApps'
 import { MenuComfyUI } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
-import { MenuEditUI } from './MenuEditUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuShortcutsUI } from './MenuShortcuts'
@@ -49,6 +48,13 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <MenuWindowUI /> */}
             <MenuUtilsUI />
             <MenuAboutUI />
+            <Dropdown // TODO(bird_d): Temporary, just to clean up the top bar for now. Not good to have this be a pop-up imo and should be removed when done testing the theming stuff.
+                // startIcon={'mdiThemeLightDark'}
+                // expand
+                title='Theming'
+                content={() => <>{cushy.theme.render()}</>}
+            />
+
             <MenuDebugUI />
 
             <SpacerUI />

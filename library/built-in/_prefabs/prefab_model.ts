@@ -29,29 +29,32 @@ export function ui_model(): UI_Model {
         box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
         presets: [
-            {
-                label: 'withPopup',
-                icon: 'mdiTrain',
-                apply: (w): void => {
-                    const form = cushy.forms.entity((ui) =>
-                        ui.fields({
-                            a: ui.string({ label: 'A' }),
-                            b: ui.int({ label: 'B' }),
-                        }),
-                    )
-                    cushy.activityManager.start({
-                        title: 'Multi-Step preset Demo',
-                        shell: 'popup-lg',
-                        UI: (p) =>
-                            form.render({
-                                submitAction: () => {
-                                    console.log('submit')
-                                    cushy.activityManager.stop(p.routine) // 🔴
-                                },
-                            }),
-                    })
-                },
-            },
+            // 2024-08-06 rvion:
+            // | this preset was a fake one, only here
+            // | to show how to create a multi-step preset
+            // ⏸️ {
+            // ⏸️     label: 'withPopup',
+            // ⏸️     icon: 'mdiTrain',
+            // ⏸️     apply: (w): void => {
+            // ⏸️         const form = cushy.forms.entity((ui) =>
+            // ⏸️             ui.fields({
+            // ⏸️                 a: ui.string({ label: 'A' }),
+            // ⏸️                 b: ui.int({ label: 'B' }),
+            // ⏸️             }),
+            // ⏸️         )
+            // ⏸️         cushy.activityManager.start({
+            // ⏸️             title: 'Multi-Step preset Demo',
+            // ⏸️             shell: 'popup-lg',
+            // ⏸️             UI: (p) =>
+            // ⏸️                 form.render({
+            // ⏸️                     submitAction: () => {
+            // ⏸️                         console.log('submit')
+            // ⏸️                         cushy.activityManager.stop(p.routine) // 🔴
+            // ⏸️                     },
+            // ⏸️                 }),
+            // ⏸️         })
+            // ⏸️     },
+            // ⏸️ },
             {
                 icon: 'mdiStar',
                 label: '(XL) albedobase21',

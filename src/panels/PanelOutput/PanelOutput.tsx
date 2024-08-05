@@ -45,9 +45,8 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
                 // 'overflow-clip', // Make sure scrollbar doesn't encompass entire panel, only where it makes sense.
             ]}
         >
-            <PanelHeaderUI // STEP HEADER ======================================================================
-                icon={'mdiExitRun'}
-            >
+            {/* STEP HEADER ====================================================================== */}
+            <PanelHeaderUI>
                 {PanelOutputConf.renderAsConfigBtn({ title: 'Output' })}
                 <div>
                     {step.name} {p.stepID == null ? '(latest)' : null}
@@ -57,7 +56,7 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
             </PanelHeaderUI>
 
             <div // STEP OUTPUTS ======================================================================
-                tw={'flex overflow-auto flex-shrink-0 items-center max-h-[50%] p-0.5'}
+                tw={'flex overflow-auto flex-shrink-0 max-h-[50%] p-0.5'}
             >
                 {PanelStepsConf.renderAsConfigBtn()}
                 {step?.finalStatus === Status.Running && (

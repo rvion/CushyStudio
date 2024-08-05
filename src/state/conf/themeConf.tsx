@@ -80,7 +80,28 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 inputContrast: ui.percent({ default: 5 }).optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
             },
-            { label: false, collapsed: false },
+            {
+                label: 'Theme',
+                collapsed: false,
+                presets: [
+                    {
+                        label: 'Dark',
+                        icon: 'mdiLightSwitch',
+                        apply: (w): void => {
+                            w.value.base = '#1E212B'
+                            w.value.appbar = '#846997'
+                        },
+                    },
+                    {
+                        label: 'light',
+                        icon: 'mdiLightSwitch',
+                        apply: (w): void => {
+                            w.value.base = 'oklch(97.1% 0.01 278.6)'
+                            w.value.appbar = 'oklch(32.1% 0.01 268.4)'
+                        },
+                    },
+                ],
+            },
         ),
     {
         name: 'theme config',

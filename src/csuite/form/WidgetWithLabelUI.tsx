@@ -13,11 +13,12 @@ import { WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
 import { WidgetHeaderControlsContainerUI } from './WidgetHeaderControlsContainerUI'
 import { WidgetIndentUI } from './WidgetIndentUI'
-import { WidgetLabelCaretPlaceholderUI, WidgetLabelCaretUI } from './WidgetLabelCaretUI'
+import { WidgetLabelCaretUI } from './WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetLabelTextUI } from './WidgetLabelTextUI'
 import { WidgetMenuUI } from './WidgetMenu'
+import { WidgetPresetsUI } from './WidgetPresets'
 import { WidgetToggleUI } from './WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
@@ -89,6 +90,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                     {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                     <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                     {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                    <WidgetPresetsUI field={field} />
                                 </div>
                                 <div tw='flex flex-1'>
                                     {/* <WidgetLabelCaretPlaceholderUI /> */}
@@ -118,6 +120,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                         {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                        <WidgetPresetsUI tw='ml-auto self-start' field={field} />
                                         {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
                                     </>
                                 ) : labellayout === 'fixed-right' ? (
@@ -125,6 +128,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={field.depth} />}
                                         {p.slotDragKnob}
                                         <WidgetLabelCaretUI tw='mr-auto' field={field} />
+                                        <WidgetPresetsUI tw='self-start mr-2' field={field} />
                                         {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
                                         <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
@@ -142,6 +146,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                         <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
                                         {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                        <WidgetPresetsUI field={field} />
                                     </>
                                 )}
                                 <div tw='w-1' /* margin between label and controls */ />
