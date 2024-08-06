@@ -6,6 +6,7 @@ import type { CushyLayoutManager } from './Layout'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type * as FL from 'flexlayout-react'
 
+import { bang } from '../csuite/utils/bang'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
 export type PanelID = string
@@ -41,9 +42,7 @@ export class PanelState<PROPS extends any = any> {
 
     /** get component props */
     getProps(): PROPS {
-        return (
-            this.getConfig().$props ?? ({} as PROPS) // (this.getConfig() as any as PROPS)
-        )
+        return bang(this.getConfig().$props) // (this.getConfig() as any as PROPS)
     }
 
     stores: Map<string, PanelPersistentStore> = new Map<string, PanelPersistentStore>()

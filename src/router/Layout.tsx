@@ -13,6 +13,7 @@ import { getIconAsDataSVG } from '../csuite/icons/iconStr'
 import { Message } from '../csuite/inputs/shims'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
+import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
 import { PanelContainerUI } from './PanelContainerUI'
@@ -59,7 +60,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v12?.default
+        const prevLayout = st.configFile.value.layouts_v13?.default
         const json = prevLayout ?? this.makeDefaultLayout()
         try {
             this.setModel(FlexLayoutModel.fromJson(json))
@@ -262,8 +263,8 @@ export class CushyLayoutManager {
     saveCurrentPerspectiveAs(perspectiveName: string): void {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v12 ??= {}
-            t.layouts_v12[perspectiveName] = curr
+            t.layouts_v13 ??= {}
+            t.layouts_v13[perspectiveName] = curr
         })
     }
 
@@ -277,8 +278,8 @@ export class CushyLayoutManager {
 
     reset(perspectiveName: string): void {
         this.st.configFile.update((t) => {
-            t.layouts_v12 ??= {}
-            delete t.layouts_v12[perspectiveName]
+            t.layouts_v13 ??= {}
+            delete t.layouts_v13[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(FlexLayoutModel.fromJson(this.makeDefaultLayout()))
@@ -533,7 +534,7 @@ export class CushyLayoutManager {
             .map((tab) => {
                 type Props = PropsOf<Panels[K]['widget']>
                 const config: PanelPersistedJSON<Props> = tab.getConfig()
-                const props: Props = config.$props ?? {} // config /* hack */
+                const props: Props = bang(config.$props) // config /* hack */
                 return { props, tabNode: tab }
             })
         return out
@@ -640,7 +641,7 @@ export class CushyLayoutManager {
             const panel = panels[panelName]
             const { title } = panel.header(panelProps as any)
             const icon = panel.icon
-            const config: PanelPersistedJSON = { $props: panelProps }
+            const config: PanelPersistedJSON = { $props: panelProps ?? {}, $store: {}, $temp: {} }
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
                 id: panelURI,
@@ -680,11 +681,12 @@ export class CushyLayoutManager {
         const panel = panels[panelName]
         const { title } = panel.header(props as any)
         const icon = panel.icon
+        const config: PanelPersistedJSON = { $props: props, $store: {}, $temp: {} }
         return {
             id: id,
             type: 'tab',
             name: title,
-            config: props,
+            config,
             component: p.panelName,
             enableClose: p.canClose ?? true,
             enableRename: false,
@@ -820,7 +822,7 @@ export class CushyLayoutManager {
 
         // 2. get panel props
         const panelConfig: PanelPersistedJSON = node.getConfig()
-        const panelProps = panelConfig.$props ?? {} // panelConfig /* 🔴 HACKY backward config */
+        const panelProps = bang(panelConfig.$props) // panelConfig /* 🔴 HACKY backward config */
 
         // temporary assertions; to be removed when we're sure there is no more wrong config
         if ('$props' in panelProps) throw new Error('❌ $props in panelProps')
