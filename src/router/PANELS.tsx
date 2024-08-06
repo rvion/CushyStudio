@@ -6,7 +6,7 @@ import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfy } from '../panels/PanelComfy/PanelComfy'
 import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
 import { PanelComfyNodeExplorer } from '../panels/PanelComfyNodeExplorer/Panel_ComfyNodeExplorer'
-import { PanelConfig } from '../panels/PanelConfig/PanelConfig'
+import { PanelConfig, PanelSettings } from '../panels/PanelConfig/PanelConfig'
 import { PanelCustom } from '../panels/PanelCustom/PanelCustom'
 import { PanelDraft } from '../panels/PanelDraft/Panel_Draft'
 import { PanelDraftSerial } from '../panels/PanelDraftSerial/PanelDraftSerial'
@@ -74,6 +74,7 @@ export const panels = {
 
     // config
     Config: PanelConfig,
+    Settings: PanelSettings,
     Models: PanelModels,
     Hosts: PanelComfyHosts,
     Shortcuts: PanelShortcuts,

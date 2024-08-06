@@ -21,10 +21,30 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     const field = p.field
     if (p.field.serial.collapsed) return <WidgetSingleLineSummaryUI>{p.field.summary}</WidgetSingleLineSummaryUI>
 
+    const presets = field.config.presets
+    const presetCount = presets?.length ?? 0
+    const out: ReactNode[] = []
     const showFoldButtons = csuite.showFoldButtons
     const hasFoldableSubfields = field.hasFoldableSubfields
+    if (presets?.length && field.config.presetButtons) {
+        out.push(
+            ...presets.map((preset) => (
+                <UI.Button //
+                    key={preset.label}
+                    // square
+                    // subtle
+                    icon={preset.icon}
+                    onClick={(ev) => {
+                        preset.apply(field)
+                        ev.stopPropagation()
+                    }}
+                    children={preset.label}
+                />
+            )),
+        )
+    }
     if (showFoldButtons && hasFoldableSubfields) {
-        return (
+        out.push(
             <div tw='ml-auto flex gap-0.5'>
                 <Button //
                     square
@@ -43,9 +63,11 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
                     onClick={() => p.field.collapseAllChildren()}
                 />
-            </div>
+            </div>,
         )
     }
+    if (out.length == 0) return null
+    return out
 })
 
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {

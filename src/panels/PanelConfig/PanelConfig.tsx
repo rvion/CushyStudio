@@ -4,13 +4,9 @@ import { observer } from 'mobx-react-lite'
 import { type FC, Fragment } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
-import { Button } from '../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { UI } from '../../csuite/components/UI'
 import { FormUI } from '../../csuite/form/FormUI'
-import { Frame } from '../../csuite/frame/Frame'
-import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
-import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
@@ -25,6 +21,16 @@ export const PanelConfig = new Panel({
     category: 'settings',
     widget: (): FC<NO_PROPS> => PanelConfigUI,
     header: (p): PanelHeader => ({ title: 'Config', icon: undefined }),
+    def: (): PanelConfigProps => ({}),
+})
+
+// hacky alias
+export const PanelSettings = new Panel({
+    name: 'Settings',
+    icon: 'mdiCogOutline',
+    category: 'settings',
+    widget: (): FC<NO_PROPS> => PanelConfigUI,
+    header: (p): PanelHeader => ({ title: 'Settings', icon: undefined }),
     def: (): PanelConfigProps => ({}),
 })
 

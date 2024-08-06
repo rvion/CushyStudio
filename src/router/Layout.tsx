@@ -714,7 +714,7 @@ export class CushyLayoutManager {
             //     //     location: 'left',
             //     //     // selected: 0,
             //     //     show: true,
-            //     //     children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
+            //     //     children: [this.defineTab({ panelName: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
             //     //     size: 300,
             //     // },
             //     // RIGHT BORDER
@@ -726,8 +726,8 @@ export class CushyLayoutManager {
             //         size: 150,
             //         children: [
             //             //
-            //             this._add({ panel: 'Gallery', props: {} }),
-            //             this._add({ panel: 'Steps', props: {}, canClose: false }),
+            //             this.defineTab({ panelName: 'Gallery', props: {} }),
+            //             this.defineTab({ panelName: 'Steps', props: {}, canClose: false }),
             //         ],
             //     },
             // ],
@@ -755,23 +755,29 @@ export class CushyLayoutManager {
                         ],
                         // enableSingleTabStretch: true,
                     },
-                    //     ],
-                    // },
-                    // {
-                    //     id: 'rightPane',
-                    //     type: 'row',
-                    //     weight: 100,
-                    //     children: [
                     {
                         type: 'tabset',
                         // enableClose: false,
                         // enableDeleteWhenEmpty: false,
                         minWidth: 100,
                         minHeight: 100,
-                        selected: 1,
+                        selected: 0,
                         children: [
                             this.defineTab({ panelName: 'Output', props: {}, canClose: false }),
-                            // this._add({ panel: 'Hosts', props: {}, canClose: false }),
+                            // this.defineTab({ panelName: 'Hosts', props: {}, canClose: false }),
+                        ],
+                    },
+                    {
+                        type: 'tabset',
+                        // enableClose: false,
+                        // enableDeleteWhenEmpty: false,
+                        minWidth: 100,
+                        minHeight: 100,
+                        selected: 0,
+                        children: [
+                            this.defineTab({ panelName: 'Gallery', props: {} }),
+                            // this.defineTab({ panelName: 'Output', props: {}, canClose: false }),
+                            // this.defineTab({ panelName: 'Hosts', props: {}, canClose: false }),
                         ],
                     },
                     //     ],

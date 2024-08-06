@@ -33,6 +33,11 @@ export interface Command<Ctx = any> extends Command_<Ctx> {}
 export class Command<Ctx = any> {
     $SYM = CommandSym
 
+    /** alias for label */
+    get title(): string {
+        return this.label
+    }
+
     get firstCombo(): CushyShortcut | undefined {
         if (this.combos == null) return undefined
         if (Array.isArray(this.combos)) {

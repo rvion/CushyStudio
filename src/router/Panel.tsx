@@ -1,5 +1,6 @@
 import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
+import type { BoundMenu } from '../csuite/menu/BoundMenuOpts'
 import type { MenuEntry } from '../csuite/menu/MenuEntry'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'
@@ -75,9 +76,9 @@ export class Panel<Props> {
         return this.p.icon
     }
 
-    get menuEntries(): MenuEntry[] {
+    get menuEntries(): (BoundMenu | Command)[] {
         const presets = Object.entries(this.p.presets ?? {})
-        const out: MenuEntry[] = []
+        const out: (BoundMenu | Command)[] = []
 
         const defEntry = this.defaultCommand /* new SimpleMenuAction({
             label: this.name,
@@ -100,7 +101,7 @@ export class Panel<Props> {
                     },
                 })
             })
-            const x = menuWithoutProps({
+            const x: BoundMenu = menuWithoutProps({
                 icon: this.p.icon,
                 title: this.name,
                 id: this.name,

@@ -18,7 +18,7 @@ const menuPanels = menuWithoutProps({
         //     title: 'Utils',
         //     entries: () => allPanels.filter((v) => XXX.includes(v.name)).flatMap((panel) => panel.menuEntries),
         // }).bind(),
-        ...allPanels.flatMap((panel) => panel.menuEntries),
+        ...allPanels.flatMap((panel) => panel.menuEntries).toSorted((a, b) => a.title.localeCompare(b.title)),
     ],
 })
 

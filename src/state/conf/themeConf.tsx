@@ -9,7 +9,7 @@ import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
     base: X.XString
-    appbar: X.XOptional<X.XString>
+    appbar: X.XString
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -38,18 +38,16 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 base: ui.colorV2({
                     tooltip: 'main color of the CushyStudio UI',
                     default: '#F4F5FB',
-                    presets: [
-                        { label: 'Dark', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B') },
-                        { label: 'Light', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#F4F5FB') },
-                        { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
-                    ],
+                    // presets: [
+                    //     { label: 'Dark', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B') },
+                    //     { label: 'Light', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#F4F5FB') },
+                    //     { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
+                    // ],
                 }),
-                appbar: ui
-                    .colorV2({
-                        tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
-                        default: '#313338',
-                    })
-                    .optional(true),
+                appbar: ui.colorV2({
+                    tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                    default: '#313338',
+                }),
 
                 // ...
                 // gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
@@ -82,22 +80,41 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
             },
             {
                 label: 'Theme',
+                presetButtons: true,
                 collapsed: false,
                 presets: [
-                    {
-                        label: 'Dark',
-                        icon: 'mdiLightSwitch',
-                        apply: (w): void => {
-                            w.value.base = '#1E212B'
-                            w.value.appbar = '#846997'
-                        },
-                    },
                     {
                         label: 'light',
                         icon: 'mdiLightSwitch',
                         apply: (w): void => {
                             w.value.base = 'oklch(97.1% 0.01 278.6)'
                             w.value.appbar = 'oklch(32.1% 0.01 268.4)'
+                        },
+                    },
+                    {
+                        label: 'Dark Blue',
+                        icon: 'mdiLightSwitch',
+                        apply: (w): void => {
+                            w.value.base = 'oklch(24.7% 0.01 247.9)'
+                            // w.value.appbar = 'oklch(40.6% 0.08 244.8)'
+                            w.value.appbar = 'oklch(51.6% 0.12 263)'
+                        },
+                    },
+                    {
+                        label: 'Dark Blue 2',
+                        icon: 'mdiLightSwitch',
+                        apply: (w): void => {
+                            w.value.base = 'oklch(24.7% 0.01 247.9)'
+                            w.value.appbar = 'oklch(40.6% 0.08 244.8)'
+                            // w.value.appbar = 'oklch(51.6% 0.12 263)'
+                        },
+                    },
+                    {
+                        label: 'Dark Red',
+                        icon: 'mdiLightSwitch',
+                        apply: (w): void => {
+                            w.value.base = 'oklch(19.7% 0.00 0)'
+                            w.value.appbar = 'oklch(30.6% 0.06 14.7)'
                         },
                     },
                 ],
