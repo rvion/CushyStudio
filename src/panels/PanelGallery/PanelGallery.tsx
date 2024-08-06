@@ -1,8 +1,10 @@
+import type { MediaImageL } from '../../models/MediaImage'
+
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
-import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
@@ -24,22 +26,26 @@ export const PanelGallery = new Panel({
 
 export type PanelGalleryProps = {
     uid?: number
+    className?: string
+    /** when not specified, it will just open the default image menu */
+    onClick?: (img: MediaImageL) => void
 }
 
 export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryProps) {
     const conf = useGalleryConf()
     return (
-        <div //
-            className='flex flex-col h-full'
+        <UI.Panel //
+            // className='flex flex-col h-full'
+            className={p.className}
             style={{ background: conf.value.galleryBgColor ?? undefined }}
         >
-            <PanelHeaderUI>
+            <UI.Panel.Header>
                 <GalleryPreferencesUI />
                 <GallerySearchControlsUI />
                 <SpacerUI />
-            </PanelHeaderUI>
-            <GalleryImageGridUI />
-        </div>
+            </UI.Panel.Header>
+            <GalleryImageGridUI onClick={p.onClick} />
+        </UI.Panel>
     )
 })
 

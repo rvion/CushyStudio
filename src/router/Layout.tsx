@@ -578,7 +578,6 @@ export class CushyLayoutManager {
                 const rect = node.getRect()
                 if (rect.width < minWidth) {
                     console.log(`[🔴] invalid ${node.getType()} width`, JSON.stringify(node.toJson(), null, 4))
-                    // this._doAction(Actions.)
                 }
                 if (rect.height < minHeight) {
                     console.log(`[🔴] invalid ${node.getType()} height`, JSON.stringify(node.toJson(), null, 4))

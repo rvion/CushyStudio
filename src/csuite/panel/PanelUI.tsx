@@ -3,6 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { PanelHeaderUI } from './PanelHeaderUI'
 
+export type PanelUIProps = FrameProps
+
 const _PanelUI = observer(function Panel(p: FrameProps) {
     return (
         <Frame
@@ -10,7 +12,7 @@ const _PanelUI = observer(function Panel(p: FrameProps) {
             // let's have that
             col
             expand
-            tw='overflow-auto'
+            tw='overflow-auto h-full'
             {...p}
         />
     )

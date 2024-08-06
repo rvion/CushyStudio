@@ -181,6 +181,8 @@ export const Frame = observer(
                 onMouseOut={_onMouseOut}
                 // special-case: if it's a button, let's add type=button to disable form submission
                 {...(as === 'button' ? { type: 'button' } : {})}
+                // special-case: if it's an image, let's make it lazy; should be the default
+                {...(as === 'image' ? { loading: 'lazy' } : {})}
                 tw={[
                     'box',
                     // 'flex',

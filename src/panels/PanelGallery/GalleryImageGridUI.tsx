@@ -1,3 +1,5 @@
+import type { MediaImageL } from '../../models/MediaImage'
+
 import { observer } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
@@ -5,7 +7,10 @@ import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
 import { ImageUI } from '../../widgets/galleries/ImageUI'
 import { useGalleryConf } from './galleryConf'
 
-export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {}) {
+export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
+    /** when not specified, it will just open the default image menu */
+    onClick?: (img: MediaImageL) => void
+}) {
     const { ref: refFn, size } = useSizeOf()
     const conf = useGalleryConf()
     const ALLIMAGES = conf.imageToDisplay
@@ -37,8 +42,12 @@ export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {}) {
                     const img = ALLIMAGES[rowIndex * nbCols + columnIndex]
                     if (img == null) return
                     return (
-                        <div style={style}>
-                            <ImageUI size='100%' img={img} />
+                        <div style={style} /* WHY A DIV HERE ?? */>
+                            <ImageUI //
+                                onClick={p.onClick}
+                                size='100%'
+                                img={img}
+                            />
                         </div>
                     )
                 }}
