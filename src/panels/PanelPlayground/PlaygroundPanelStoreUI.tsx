@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { PanelStateByNode } from '../../router/PanelStateByNode'
 import { PanelStateDebugUI } from '../../router/PanelStateDebugUI'
-import { PanelStateByNode } from '../../router/PanelUI'
 import { usePanel } from '../../router/usePanel'
 
 export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(p: {}) {

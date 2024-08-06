@@ -11,7 +11,13 @@ import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img
-    return <Dropdown title='Actions' startIcon='mdiMenu' content={() => <ImageDropdownMenuUI img={img} />} />
+    return (
+        <Dropdown //
+            title='Actions'
+            // startIcon='mdiMenu'
+            content={() => <ImageDropdownMenuUI img={img} />}
+        />
+    )
 })
 
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
@@ -32,7 +38,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <MenuItem
                 icon='mdiOverscan'
                 disabled={!img?.absPath}
-                onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
+                onClick={() => st.layout.open('Image', { imageID: img.id })}
                 localShortcut='mod+click'
             >
                 Dedicated Panel
@@ -41,7 +47,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 icon='mdiFocusAuto'
                 disabled={!img?.absPath}
                 localShortcut='shift+click'
-                onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
+                onClick={() => st.layout.open('Canvas', { imgID: img.id })}
             >
                 Unified Canvas
             </MenuItem>
@@ -49,7 +55,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 icon='mdiBrush'
                 disabled={!img?.absPath}
                 localShortcut='alt+click'
-                onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
+                onClick={() => st.layout.open('Paint', { imgID: img.id })}
             >
                 MiniPaint
             </MenuItem>

@@ -1,5 +1,7 @@
 import type { FrameProps } from '../frame/Frame'
+import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { RevealHideReason, RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
@@ -9,7 +11,9 @@ import React from 'react'
 
 export type SelectProps<OPTION> = {
     label?: string
+    startIcon?: IconName
 
+    placement?: RevealPlacement
     /**
      * if true, select is virtualized
      * @default true
@@ -72,7 +76,7 @@ export type SelectProps<OPTION> = {
     placeholder?: string
     disabled?: boolean
     cleanable?: boolean
-    hideValue?: boolean
+    // hideValue?: boolean
     className?: string
     style?: React.CSSProperties
 

@@ -5,7 +5,7 @@ export const createHTMLImage_fromURL = (
     return new Promise((yes, no) => {
         const img = new Image()
         img.loading = 'eager'
-        img.onload = () => yes(img)
+        img.onload = (): void => yes(img)
         img.onerror = no
         img.src = src
     })

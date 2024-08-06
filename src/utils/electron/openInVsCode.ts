@@ -23,7 +23,8 @@ async function tryEditor(editor: string, filePath: string): Promise<void> {
     })
 }
 
-export async function openInVSCode(st: STATE, filePathWithinWorkspace: string): Promise<void> {
+export async function openInVSCode(filePathWithinWorkspace: string): Promise<void> {
+    const st: STATE = cushy
     return new Promise(async (resolvePromise, rejectPromise) => {
         // Resolve and check the existence of the workspace and file paths
         const absoluteWorkspacePath = pathResolve(workspaceFolderPath)

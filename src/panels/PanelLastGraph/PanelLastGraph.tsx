@@ -12,7 +12,8 @@ export const PanelLastGraph = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelLastGraphUI,
     header: (p): PanelHeader => ({ title: '⏱️ LastGraph' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'cdiNodes',
+    category: 'ComfyUI',
 })
 
 export const PanelLastGraphUI = observer(function PanelLastGraphUI_(p: NO_PROPS) {

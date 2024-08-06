@@ -31,6 +31,9 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
             items: { [k in keyof T]: T[k]['$Value'] },
             self: Field_group<T>,
         ) => string
+
+        /** @default @false */
+        presetButtons?: boolean
         // 🔶 TODO 1: remove summary from here and move it to the base field config directly
         // 🟢 TODO 2: stop passing values to that function, only pass the field directly
         // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string

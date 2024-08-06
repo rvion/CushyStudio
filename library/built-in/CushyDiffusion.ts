@@ -66,7 +66,7 @@ app({
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 HACKY  */
-              await (async () => ({
+              await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
                   latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
                   height: imgCtx.height,
                   width: imgCtx.width,
@@ -200,7 +200,7 @@ app({
         }
 
         // SHOW 3D -------------------------------------------------------------------------------
-        const show3d = ui.show3d
+        const show3d = ui.extra.show3d
         if (show3d) run_Dispacement1(show3d, finalImage)
         else graph.SaveImage({ images: finalImage })
 

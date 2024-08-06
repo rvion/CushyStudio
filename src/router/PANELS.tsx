@@ -6,7 +6,7 @@ import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfy } from '../panels/PanelComfy/PanelComfy'
 import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
 import { PanelComfyNodeExplorer } from '../panels/PanelComfyNodeExplorer/Panel_ComfyNodeExplorer'
-import { PanelConfig } from '../panels/PanelConfig/PanelConfig'
+import { PanelConfig, PanelSettings } from '../panels/PanelConfig/PanelConfig'
 import { PanelCustom } from '../panels/PanelCustom/PanelCustom'
 import { PanelDraft } from '../panels/PanelDraft/Panel_Draft'
 import { PanelDraftSerial } from '../panels/PanelDraftSerial/PanelDraftSerial'
@@ -20,7 +20,7 @@ import { PanelLastStep } from '../panels/PanelLastStep/PanelLastStep'
 import { PanelMarketplace } from '../panels/PanelMarketplace/Panel_Marketplace'
 import { PanelMinipaint } from '../panels/PanelMinipaint/Panel_Minipaint'
 import { PanelModels } from '../panels/PanelModels/Panel_Models'
-import { PanelStep } from '../panels/PanelOutput/Panel_Output'
+import { PanelStep } from '../panels/PanelOutput/PanelOutput'
 import { PanelPlayground } from '../panels/PanelPlayground/PanelPlayground'
 import { PanelShortcuts } from '../panels/PanelShortcuts/PanelShortcuts'
 import { PanelSteps } from '../panels/PanelSteps/Panel_Steps'
@@ -74,6 +74,7 @@ export const panels = {
 
     // config
     Config: PanelConfig,
+    Settings: PanelSettings,
     Models: PanelModels,
     Hosts: PanelComfyHosts,
     Shortcuts: PanelShortcuts,

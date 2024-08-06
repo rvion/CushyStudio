@@ -9,10 +9,11 @@ export const PanelSquoosh = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelSquooshUI,
     header: (p): PanelHeader => ({ title: 'Squoosh' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    category: 'tools',
+    icon: 'mdiImageFilterVintage',
 })
 
-export const PanelSquooshUI = observer(function PanelSquooshUI_(p: {}) {
+export const PanelSquooshUI = observer(function PanelSquooshUI_(p: NO_PROPS) {
     // return (
     //     <iframe
     //         src='https://squoosh.app/'

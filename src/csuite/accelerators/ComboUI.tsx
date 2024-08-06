@@ -13,10 +13,10 @@ export const ComboUI = observer(function ComboUI_(p: {
     const iss = parseShortcutToInputSequence(p.combo)
     return (
         <div tw='whitespace-nowrap flex gap-2'>
-            {iss.map((token) => {
+            {iss.map((token, ix) => {
                 const keys = token.split('+')
                 return (
-                    <div key={token} tw='flex items-center text-xs'>
+                    <div key={ix} tw='flex items-center text-xs'>
                         {keys.map((keyName, ix) => (
                             <Fragment key={ix}>
                                 <span

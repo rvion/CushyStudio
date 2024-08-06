@@ -84,7 +84,7 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     isOptional: boolean
     value: () => CleanedEnumResult<any>
-    displayValue?: boolean
+    // displayValue?: boolean
     // substituteValue?: EnumValue | null
     onChange: (v: EnumValue | null) => void
     disabled?: boolean
@@ -106,7 +106,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 options={() => options}
                 getLabelText={(v) => v.toString()}
                 value={() => p.value().candidateValue}
-                hideValue={p.displayValue}
+                // hideValue={p.displayValue}
                 onOptionToggled={(option) => {
                     if (option == null) return
                     p.onChange(option)

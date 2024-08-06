@@ -24,7 +24,7 @@ const cmd_nav_openGallery = (ix?: number) => {
         ctx: ctx_global,
         combos: ['mod+g mod+g mod+' + (ix ?? 1)],
         action: (p) => {
-            cushy.layout.FOCUS_OR_CREATE('Gallery', { uid: ix })
+            cushy.layout.open('Gallery', { uid: ix })
             return Trigger.Success
         },
     })
@@ -36,7 +36,7 @@ export const cmd_nav_openIcons = command({
     ctx: ctx_global,
     combos: ['mod+i'],
     action: (p) => {
-        cushy.layout.FOCUS_OR_CREATE('Icons', {})
+        cushy.layout.open('Icons', {})
         return Trigger.Success
     },
 })
@@ -49,7 +49,7 @@ export const cmd_nav_openCivitaiPanel = command({
     label: 'Open Civitai Panel',
     ctx: ctx_global,
     action: () => {
-        cushy.layout.FOCUS_OR_CREATE('Models', {})
+        cushy.layout.open('Models', {})
         return Trigger.Success
     },
 })

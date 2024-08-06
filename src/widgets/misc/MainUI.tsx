@@ -14,7 +14,7 @@ import { useGlobalDropHook } from './useGlobalDropHook'
 
 const path = asAbsolutePath(process.cwd())
 
-export const MainUI = observer(() => {
+export const MainUI = observer(function MainUI_() {
     const st = useMemo(() => runInAction(() => new STATE(path)), [])
     useGlobalDropHook(st)
     return (

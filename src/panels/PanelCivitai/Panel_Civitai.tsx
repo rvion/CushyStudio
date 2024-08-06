@@ -1,15 +1,18 @@
+import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
-import { Panel } from '../../router/Panel'
+import { Panel, type PanelHeader } from '../../router/Panel'
 
 export const PanelCivitai = new Panel({
     name: 'Civitai',
-    widget: () => PanelCivitaiUI,
-    header: (p) => ({ title: 'Civitai' }),
-    def: () => ({}),
+    category: 'models',
+    widget: (): React.FC<NO_PROPS> => PanelCivitaiUI,
+    header: (p): PanelHeader => ({ title: 'Civitai' }),
+    def: (): NO_PROPS => ({}),
     icon: 'mdiAccountStarOutline',
 })
 
-const PanelCivitaiUI = observer(function PanelCivitaiUI_(p: {}) {
+const PanelCivitaiUI = observer(function PanelCivitaiUI_(p: NO_PROPS) {
     return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0' />
 })

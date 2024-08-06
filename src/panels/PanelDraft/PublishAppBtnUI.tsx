@@ -11,6 +11,8 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: Cush
     return (
         <Button
             disabled={!app.canBePublishedByUser}
+            loading={app.isPublishing}
+            icon={'mdiPublish'}
             square
             tooltip='Publish app to the Cushy App Store'
             onClick={async () => {
@@ -29,8 +31,6 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_(p: { app: Cush
                 // publish
                 await app.publish()
             }}
-            loading={app.isPublishing}
-            icon={'mdiPublish'}
         />
     )
 })

@@ -42,7 +42,20 @@ export const PanelStepsConf = cushyFactory.entity(
     },
 )
 
-function ui_outputFilter(ui: Builder) {
+type UI_outputFilter = X.XChoices<{
+    MediaTextL: X.XEmpty
+    MediaImageL: X.XEmpty
+    MediaVideoL: X.XEmpty
+    MediaSplatL: X.XEmpty
+    Media3dDisplacementL: X.XEmpty
+    ComfyPromptL: X.XEmpty
+    ComfyWorkflowL: X.XEmpty
+    StepL: X.XEmpty
+    MediaCustomL: X.XEmpty
+    RuntimeErrorL: X.XEmpty
+}>
+
+function ui_outputFilter(ui: Builder): UI_outputFilter {
     return ui.choicesV2(
         {
             MediaTextL: ui.empty(),

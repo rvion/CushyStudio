@@ -1,12 +1,17 @@
 import { observer } from 'mobx-react-lite'
 
-export const WidgetIndentUI = observer(function WidgetIndentUI_(p: { depth: number }) {
+export const WidgetIndentUI = observer(function WidgetIndentUI_(p: {
+    //
+    className?: string
+    depth: number
+}) {
     const depth = p.depth
     if (depth - 1 <= 0) return null
     // TODO: better values here
     return (
         <div
             className='UI-WidgetIndent'
+            tw={p.className}
             style={{
                 // background: 'linear-gradient(90deg, red 0%, blue 100%)',
                 // marginLeft: '.5rem',

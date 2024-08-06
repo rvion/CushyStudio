@@ -9,7 +9,8 @@ export const PanelDraftValue = new Panel({
     widget: (): React.FC<PanelDraftValueProps> => PanelDraftValueUI,
     header: (p): PanelHeader => ({ title: 'DraftJsonResult' }),
     def: (): PanelDraftValueProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-    icon: undefined,
+    category: 'developper',
+    icon: 'mdiDevTo',
 })
 
 export type PanelDraftValueProps = {

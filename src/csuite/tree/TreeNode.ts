@@ -3,6 +3,7 @@ import type { ITreeElement, ITreeEntry } from './TreeEntry'
 
 import { makeAutoObservable } from 'mobx'
 
+import { Trigger } from '../trigger/Trigger'
 import { SQLITE_false, SQLITE_true } from '../types/SQLITE_boolean'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
@@ -16,7 +17,7 @@ export type NodeData = ITreeEntry
 
 type IArrayLike = { [x: number]: TreeNode }
 
-export const getId = (node: TreeNode | NodeId) => {
+export const getId = (node: TreeNode | NodeId): string => {
     if (typeof node === 'string') return node
     return node.id
 }
@@ -33,38 +34,58 @@ const renderNodePath = (path: NodePath): string => {
 export type TreeScrollOptions = {
     /** defaults to 'instant' */
     behavior?: ScrollBehavior
+
     /** default to 'nearest' */
     block?: ScrollLogicalPosition
 }
 
 export interface TreeNode extends IArrayLike {}
 export class TreeNode {
-    scrollIntoView(p?: TreeScrollOptions) {
+    scrollIntoView(p?: TreeScrollOptions): void {
         document.getElementById(this.id)?.scrollIntoView({
             behavior: p?.behavior ?? 'instant',
             block: p?.block ?? 'nearest',
         })
     }
 
-    get isOpen() {
-        return this.entryL.data.isExpanded ?? false
+    get isOpen(): boolean {
+        return this.entryL.data.isExpanded == null //
+            ? false
+            : Boolean(this.entryL.data.isExpanded)
     }
-    open() {
+
+    open(): Trigger {
+        if (this.entryL.data.isExpanded === SQLITE_true) return Trigger.UNMATCHED
         console.log(`[🤠] opening`)
         this.data.onExpand?.(this)
         this.entryL.update({ isExpanded: SQLITE_true })
+        return Trigger.Success
     }
-    close() {
+
+    close(): Trigger {
+        if (this.entryL.data.isExpanded === SQLITE_false) return Trigger.UNMATCHED
         console.log(`[🤠] closing`)
         this.entryL.update({ isExpanded: SQLITE_false })
+        return Trigger.Success
     }
-    toggle() {
+
+    toggle(): void {
         if (this.isOpen) this.close()
         else this.open()
     }
 
-    onPrimaryAction = () => this.data.onPrimaryAction?.(this)
-    onFocusItem = () => this.data.onFocusItem?.(this)
+    onPrimaryAction = (): Trigger => {
+        if (this.data.onPrimaryAction) {
+            this.data.onPrimaryAction?.(this)
+            return Trigger.Success
+        } else {
+            return Trigger.UNMATCHED
+        }
+    }
+
+    onFocusItem = (): void => {
+        this.data.onFocusItem?.(this)
+    }
 
     data: ITreeEntry
     id: string
@@ -94,12 +115,6 @@ export class TreeNode {
             : // @ts-ignore
               ctor(elem.props)
         makeAutoObservable(this, { _children_: false })
-    }
-
-    get valid() {
-        return true
-        // if (this.typeName === 'any') return true
-        // return false // TODO
     }
 
     // intermediary representation
@@ -143,13 +158,13 @@ export class TreeNode {
         return this.data.delete?.(this) ?? false
     }
 
-    get siblingsIncludingSelf() {
+    get siblingsIncludingSelf(): TreeNode[] {
         if (this.parent == null) return this.tree.topLevelNodes
         return this.parent.children
         // ❌ return this.tree.getChildrenOf(this.parentId)
     }
 
-    get siblingsExcludingSelf() {
+    get siblingsExcludingSelf(): TreeNode[] {
         return this.siblingsIncludingSelf.filter((i) => i !== this)
         // ❌ return this.tree.getChildrenOf(this.parentId).filter((i) => i !== this)
     }
@@ -184,7 +199,7 @@ export class TreeNode {
         return children[0]
     }
 
-    get_descendant_and_self(mode: 'dfs' | 'bfs') {
+    get_descendant_and_self(mode: 'dfs' | 'bfs'): TreeNode[] {
         const stack: TreeNode[] = [this]
         let ix: number = 0
         let at: TreeNode | undefined
@@ -251,15 +266,15 @@ export class TreeNode {
         return out
     }
 
-    get_descendant(mode: 'dfs' | 'bfs') {
+    get_descendant(mode: 'dfs' | 'bfs'): TreeNode[] {
         return this.get_descendant_and_self(mode).slice(1)
     }
 
-    get descendantBFS() {
+    get descendantBFS(): TreeNode[] {
         return this.get_descendant('bfs')
     }
 
-    get descendantDFS() {
+    get descendantDFS(): TreeNode[] {
         return this.get_descendant('dfs')
     }
 

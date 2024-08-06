@@ -1,17 +1,18 @@
-import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
+import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
+import { useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 
 export const PanelGallery = new Panel({
     name: 'Gallery',
+    category: 'outputs',
     widget: (): React.FC<PanelGalleryProps> => PanelGalleryUI,
     header: (p: PanelGalleryProps): PanelHeader => ({ title: 'Gallery' }),
     icon: 'mdiViewGallery',
@@ -25,26 +26,35 @@ export const PanelGallery = new Panel({
 
 export type PanelGalleryProps = {
     uid?: number
+    className?: string
+    /** when not specified, it will just open the default image menu */
+    onClick?: (img: MediaImageL) => void
 }
 
 export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryProps) {
-    const st = useSt()
-
+    const conf = useGalleryConf()
     return (
-        <div //
-            className='flex flex-col h-full'
-            style={{ background: st.galleryConf.value.galleryBgColor ?? undefined }}
+        <UI.Panel //
+            // className='flex flex-col h-full'
+            className={p.className}
+            style={{ background: conf.value.galleryBgColor ?? undefined }}
         >
-            <PanelHeaderUI>
+            <UI.Panel.Header>
                 <GalleryPreferencesUI />
                 <GallerySearchControlsUI />
                 <SpacerUI />
-            </PanelHeaderUI>
-            <GalleryImageGridUI />
-        </div>
+            </UI.Panel.Header>
+            <GalleryImageGridUI onClick={p.onClick} />
+        </UI.Panel>
     )
 })
 
 export const GalleryPreferencesUI = observer(function GalleryPreferencesUI_(p: {}) {
-    return <FormAsDropdownConfigUI title='Gallery Options' form={cushy.galleryConf} />
+    const conf = useGalleryConf()
+    return (
+        <FormAsDropdownConfigUI //
+            title='Gallery Options'
+            form={conf}
+        />
+    )
 })

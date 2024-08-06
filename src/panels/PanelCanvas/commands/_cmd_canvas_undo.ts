@@ -6,7 +6,7 @@ import { ctx_unifiedCanvas } from '../../../operators/contexts/ctx_unifiedCanvas
 
 export const cmd_canvas_undo = command<UnifiedCanvas>({
     id: 'unifiedCanvas.undo',
-    label: 'activate Mask Tool',
+    label: 'Undo',
     combos: 'mod+z',
     ctx: ctx_unifiedCanvas,
     action: (uc) => {

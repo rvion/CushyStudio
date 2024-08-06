@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { statusUI } from '../../back/statusUI'
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { Frame } from '../../csuite/frame/Frame'
@@ -33,6 +34,8 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
     // Sizes --------------------
     appSize?: number
     outputSize?: number
+
+    contrast?: number
 }) {
     const conf = PanelStepsConf
     const st = useSt()
@@ -49,18 +52,20 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
     const showExecutionTime = p.showExecutionTime ?? conf.value.show.executionTime
     const showDate = p.showDate ?? conf.value.show.date
 
+    const STYLE = { height: appSize, width: appSize }
+    const STYLE2 = { height: appSize }
     return (
         <Frame
-            // border={10}
+            base={p.contrast}
             tw={['flex flex-wrap relative cursor-pointer', p.className]}
-            onClick={() => {
-                st.layout.FOCUS_OR_CREATE('Output', { stepID: step.id })
-            }}
+            onClick={() => st.layout.open('Output', { stepID: step.id })}
             style={p.style}
         >
-            {showStatus && <div>{statusUI(p.step.finalStatus)}</div>}
-            {showTitle && <div>{step.name}</div>}
-            {showDate && <div className='text-xs w-12 truncate'>{_formatPreviewDate(new Date(step.createdAt))}</div>}
+            {showTitle && (
+                <div style={STYLE2} tw='flex items-center justify-center'>
+                    {step.name}
+                </div>
+            )}
             {showApp && (
                 <div
                     tw={['cursor-pointer', isSelected ? 'border-2 border-primary' : '']}
@@ -69,17 +74,12 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                     {step.app ? (
                         <AppIllustrationUI tw='hover:opacity-100' size={appSize} app={step.app} />
                     ) : (
-                        <div style={{ width: appSize, height: appSize }}>❓</div>
+                        <div style={STYLE}>❓</div>
                     )}
                 </div>
             )}
             {/* 4. DRAFT --------------------------------------------------------------- */}
-            {showDraft &&
-                (step.draft ? (
-                    <DraftIllustrationUI draft={step.draft} size={appSize} />
-                ) : (
-                    <div style={{ width: appSize, height: appSize }}>❓</div>
-                ))}
+            {showDraft && (step.draft ? <DraftIllustrationUI draft={step.draft} size={appSize} /> : <div style={STYLE}>❓</div>)}
             {/* 6. OUTPUTS --------------------------------------------------------------- */}
             {showOutputs &&
                 step?.outputs?.map((output, ix) => (
@@ -90,6 +90,19 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                         output={output}
                     />
                 ))}
+            <SpacerUI />
+            {showDate && (
+                <div style={STYLE2} tw='flex items-center justify-center'>
+                    <BadgeUI autoHue tw='text-xs'>
+                        {_formatPreviewDate(new Date(step.createdAt))}
+                    </BadgeUI>
+                </div>
+            )}
+            {showStatus && (
+                <div style={STYLE} tw='flex items-center justify-center'>
+                    {statusUI(p.step.finalStatus)}
+                </div>
+            )}
         </Frame>
     )
 })

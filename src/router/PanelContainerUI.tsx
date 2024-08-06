@@ -1,6 +1,5 @@
 import type * as FL from 'flexlayout-react'
 
-import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 
@@ -9,12 +8,11 @@ import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
 import { PanelName, panels } from './PANELS'
 import { PanelState } from './PanelState'
+import { PanelStateByNode } from './PanelStateByNode'
 import { panelContext } from './usePanel'
 
-// export const PanelStateById = new Map<string, PanelState>()
-export const PanelStateByNode = observable(new Map<string, PanelState>())
-
-export const PanelUI = observer(function PanelUI_(p: {
+/** internal component; do not use yourself */
+export const PanelContainerUI = observer(function PanelContainer(p: {
     //
     node: FL.TabNode
     panel: PanelName
@@ -52,6 +50,7 @@ export const PanelUI = observer(function PanelUI_(p: {
             <panelContext.Provider value={panelState}>
                 <Frame
                     //
+                    col
                     tw={[
                         //
                         'flex-1 h-full w-full',

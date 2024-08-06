@@ -12,6 +12,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
     return (
         <div tw='flex-1'>
             <SelectUI<T>
+                // placement='auto' 🔶 do we want that ?
                 key={field.id}
                 tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}

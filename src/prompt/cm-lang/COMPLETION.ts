@@ -40,7 +40,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     // OUTPUT
     let completionsOptions: Completion[] = []
 
-    const addWildcards = () => {
+    const addWildcards = (): void => {
         for (const [wildcard, values] of Object.entries(st.wildcards)) {
             const noWrap = isValidPromptLangIdentifier(wildcard)
             const info = values.join(', ')
@@ -55,7 +55,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             })
         }
     }
-    const addLoras = () => {
+    const addLoras = (): void => {
         for (const loraName of st.schema.getLoras()) {
             const noWrap = isValidPromptLangIdentifier(loraName)
             const prefix = alreadyhasPrefix ? '' : `@`
@@ -68,7 +68,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             })
         }
     }
-    const addEmbeddings = () => {
+    const addEmbeddings = (): void => {
         for (const embeddingName of st.schema.data.embeddings) {
             const noWrap = isValidPromptLangIdentifier(embeddingName)
             const prefix = alreadyhasPrefix ? '' : `:`
@@ -82,7 +82,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             })
         }
     }
-    const addTags = () => {
+    const addTags = (): void => {
         for (const tag of st.danbooru.tags) {
             const tagName = tag.text
             const noWrap = isValidPromptLangIdentifier(tagName)

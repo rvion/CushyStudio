@@ -30,7 +30,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             ) : (
                 <InputStringUI
                     autoFocus
-                    icon='mdiSelectMarker'
+                    icon='mdiMagnify'
                     onKeyDown={(ev) => {
                         if (ev.key === 'Tab') {
                             select.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)

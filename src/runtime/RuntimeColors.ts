@@ -13,6 +13,7 @@ export class RuntimeColors {
      * example result: "#f0f0f0"
      */
     randomHexColor = (): string => {
-        return '#' + Math.floor(Math.random() * 16777215).toString(16)
+        const color = Math.floor(Math.random() * 16777215).toString(16)
+        return '#' + color.padStart(6, '0')
     }
 }

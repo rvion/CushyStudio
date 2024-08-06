@@ -7,7 +7,7 @@ import { IndexAllAppsBtnUI } from '../PanelWelcome/LibraryHeaderUI'
 export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
     const st = useSt()
     return (
-        <div tw='flex w-full gap-2'>
+        <div tw='flex w-full gap-0.5'>
             <Button icon='mdiMagnify' onClick={() => st.toggleFullLibrary()}>
                 Browse
             </Button>

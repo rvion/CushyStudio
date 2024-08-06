@@ -31,7 +31,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             ref={select.revealStateRef}
             trigger='pseudofocus'
             shell='popover'
-            placement='autoVerticalStart'
+            placement={p.placement ?? 'autoVerticalStart'}
             onHidden={(reason) => {
                 select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
                 select.clean()
@@ -55,9 +55,10 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             <Frame
                 expand
                 line
+                icon={p.startIcon}
                 hover={3}
                 tabIndex={0}
-                tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
+                tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}
                 style={p.style}
                 base={csuite.inputContrast}
                 border={csuite.inputBorder}
@@ -90,16 +91,16 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
         p.select.p.slotDisplayValueUI != null ? <p.select.p.slotDisplayValueUI select={p.select} /> : p.select.displayValue
     return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
         // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
-        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
+        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '1fr 24px' }}>
             {/* 2px for parent border + 2 * 2px for icon padding */}
-            <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
             <Ikon.mdiChevronDown tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
         </div>
     ) : (
         // IN THIS BRANCH, WE ADD FLEX-NONE
         <>
-            <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' />
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
             <Ikon.mdiChevronDown tw='flex-none box-border ml-auto m-[2px]' size='calc((var(--input-height) - 4px - 4px)' />
         </>

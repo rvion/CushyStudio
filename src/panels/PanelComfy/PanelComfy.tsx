@@ -9,6 +9,7 @@ import { useSt } from '../../state/stateContext'
 
 export const PanelComfy = new Panel({
     name: 'ComfyUI',
+    category: 'ComfyUI',
     widget: (): React.FC<PanelComfyUIProps> => PanelComfyUI,
     header: (p): PanelHeader => ({ title: 'ComfyUI' }),
     def: (): PanelComfyUIProps => ({}),

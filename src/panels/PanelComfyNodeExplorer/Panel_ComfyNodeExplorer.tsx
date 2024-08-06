@@ -10,9 +10,10 @@ import { useSt } from '../../state/stateContext'
 import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
 
 export const PanelComfyNodeExplorer = new Panel({
-    name: 'ComfyUINodeExplorer',
+    name: 'ComfyUI Node Explorer',
+    category: 'ComfyUI',
     widget: (): React.FC<NO_PROPS> => PanelComfyNodeExplorerUI,
-    header: (p): PanelHeader => ({ title: 'ComfyUINodeExplorer' }),
+    header: (p): PanelHeader => ({ title: 'ComfyUI Node Explorer' }),
     def: (): NO_PROPS => ({}),
     icon: 'mdiAccessPoint',
 })

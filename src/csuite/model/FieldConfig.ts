@@ -180,7 +180,7 @@ export interface WidgetMenuAction<out T extends $FieldTypes> {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName
-    apply(form: T['$Field']): void
+    apply(field: T['$Field']): void
 }
 
 export type SchemaExtension<T extends BaseSchema<any>> = (schema: T) => object

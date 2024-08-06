@@ -1,21 +1,27 @@
-import type { ShelfProps } from './ShelfUI'
+import type { OwnShelfProps } from './ShelfUI'
 
 import { makeAutoObservable } from 'mobx'
 
-let startValue = 0
+let startValue: number = 0
+
 export class ShelfState {
     constructor(
         //
-        public props: ShelfProps,
+        public props: OwnShelfProps,
     ) {
         this.size = props.defaultSize ?? 200
         makeAutoObservable(this)
     }
 
+    // having a function makes it automatically an action
+    syncProps(p: Partial<OwnShelfProps>): void {
+        Object.assign(this.props, p)
+    }
+
     size: number
     dragging: boolean = false
 
-    begin = () => {
+    begin = (): void => {
         startValue = this.size
 
         this.dragging = true
@@ -25,7 +31,7 @@ export class ShelfState {
         window.addEventListener('keydown', this.cancel, true)
     }
 
-    cancel = (ev: MouseEvent | KeyboardEvent) => {
+    cancel = (ev: MouseEvent | KeyboardEvent): void => {
         // Only cancel if right click
         if (ev instanceof MouseEvent && ev.button != 2) {
             return
@@ -39,20 +45,17 @@ export class ShelfState {
         this.end()
     }
 
-    onMouseMove = (ev: MouseEvent) => {
+    onMouseMove = (ev: MouseEvent): void => {
+        // prettier-ignore
         switch (this.props.anchor) {
-            case 'left':
-                return (this.size += ev.movementX)
-            case 'right':
-                return (this.size -= ev.movementX)
-            case 'bottom':
-                return (this.size += ev.movementY)
-            case 'top':
-                return (this.size -= ev.movementY)
+            case 'left':   return void (this.size += ev.movementX)
+            case 'right':  return void (this.size -= ev.movementX)
+            case 'bottom': return void (this.size += ev.movementY)
+            case 'top':    return void (this.size -= ev.movementY)
         }
     }
 
-    end = () => {
+    end = (): void => {
         this.dragging = false
         window.removeEventListener('mousemove', this.onMouseMove, true)
         window.removeEventListener('pointerup', this.end, true)
@@ -64,16 +67,13 @@ export class ShelfState {
         return this.props.anchor == 'left' || this.props.anchor == 'right'
     }
 
-    computeResizeAnchor = () => {
+    computeResizeAnchor = (): 'right' | 'left' | 'top' | 'bottom' => {
+        // prettier-ignore
         switch (this.props.anchor) {
-            case 'left':
-                return 'right'
-            case 'right':
-                return 'left'
-            case 'bottom':
-                return 'top'
-            case 'top':
-                return 'bottom'
+            case 'left':   return 'right'
+            case 'right':  return 'left'
+            case 'bottom': return 'top'
+            case 'top':    return 'bottom'
         }
     }
 }

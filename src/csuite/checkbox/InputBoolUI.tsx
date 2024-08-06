@@ -11,6 +11,7 @@ import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 
 export type BoolButtonMode = 'radio' | 'checkbox' | false
 
+// TODO: switch to frame
 export class BoolButtonProps {
     /** true when active, false when inactive, undefined when unset */
     value?: Maybe<boolean>

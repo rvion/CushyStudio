@@ -50,6 +50,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { fiel
             tw='w-full'
             icon={p.field.config.innerIcon}
             type={config.inputType}
+            placeholder={config.placeHolder}
             pattern={config.pattern}
             className={config.className}
             getValue={() => field.value}

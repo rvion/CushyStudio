@@ -9,8 +9,8 @@ import { Button } from '../../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RegionUI } from '../../csuite/regions/RegionUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
@@ -22,6 +22,7 @@ import { useSize } from './utils/useSize'
 
 export const PanelCanvas = new Panel({
     name: 'Canvas',
+    category: 'tools',
     widget: (): React.FC<PanelCanvasProps> => PanelCanvasUI,
     header: (p): PanelHeader => ({ title: 'Canvas' }),
     def: (): PanelCanvasProps => ({}),
@@ -77,7 +78,11 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >
-            <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
+            <RegionUI //
+                regionName='UnifiedCanvas2'
+                regionCtx={UnifiedCanvasCtx}
+                regionValue={canvas}
+            >
                 <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
                     <div tw='flex gap-2'>
                         <div // TODO(bird_d): Needs Joinable

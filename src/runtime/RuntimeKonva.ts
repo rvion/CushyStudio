@@ -55,14 +55,14 @@ export class RuntimeKonva {
     }
 
     /** 🔶 you'll have to create at least one layouer yourself */
-    createStageWithoutLayer = (p: { width: number; height: number }) => {
+    createStageWithoutLayer = (p: { width: number; height: number }): konva.Stage => {
         const container: HTMLDivElement = this.createDivContainer()
         const stage = new this.Konva.Stage({ container: container, width: p.width, height: p.height })
         return stage
     }
 
     // -----------------------------------------
-    addGradientToLayer = (layer: konva.Layer, color: Array<number | string>) => {
+    addGradientToLayer = (layer: konva.Layer, color: Array<number | string>): void => {
         layer.add(
             new this.Konva.Rect({
                 x: 0,
@@ -114,7 +114,7 @@ export class RuntimeKonva {
                 ? path
                 : resolve(this.rt.Cushy.rootPath, path)
             const img = new Image()
-            img.onload = () => yes(img)
+            img.onload = (): void => yes(img)
             img.onerror = no
             img.src = 'file://' + abspath
         })

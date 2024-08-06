@@ -101,8 +101,8 @@ declare global {
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
         type XImage = Schema<Field_image>
-        type XSelectOne<T extends BaseSelectEntry> = Schema<Field_selectOne<T>>
-        type XSelectMany<T extends BaseSelectEntry> = Schema<Field_selectMany<T>>
+        type XSelectOne<T extends BaseSelectEntry = BaseSelectEntry> = Schema<Field_selectOne<T>>
+        type XSelectMany<T extends BaseSelectEntry = BaseSelectEntry> = Schema<Field_selectMany<T>>
         type XSelectOne_<T extends string> = Schema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
         type XSelectMany_<T extends string> = Schema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
         type XSize = Schema<Field_size>
@@ -413,6 +413,29 @@ export class Builder implements IBuilder {
         )
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
+    }
+
+    app(): X.XSelectOne<BaseSelectEntry> {
+        return this.selectOne({
+            choices: (self) => {
+                const matchingApps = cushy.db.cushy_app.selectRaw((q) => {
+                    const query = self.serial.query
+                    let Q1 = q
+                        .innerJoin('step', 'cushy_app.id', 'step.appID')
+                        .groupBy('cushy_app.id')
+                        .select(({ fn }) => [
+                            //
+                            'cushy_app.id',
+                            'cushy_app.name',
+                            fn.count('step.id').as('count'),
+                        ])
+                    return query?.length //
+                        ? Q1.where('cushy_app.name', 'like', `%${query}%`)
+                        : Q1
+                })
+                return matchingApps.map((i) => ({ id: i.id, label: `${i.name} (${i.count} steps)` }))
+            },
+        })
     }
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Field_enum_config<any, any>) => new Field_enum(this.form, config)

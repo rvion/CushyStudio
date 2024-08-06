@@ -17,7 +17,7 @@ import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { RevealStateLazy } from './RevealStateLazy'
 import { ShellNoneUI } from './shells/ShellNone'
 import { ShellPopoverUI } from './shells/ShellPopover'
-import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopupUI'
+import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI, ShellPopupXLUI, ShellPopupXSUI } from './shells/ShellPopupUI'
 
 export const RevealUI = observer(
     forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
@@ -162,6 +162,7 @@ export const RevealUI = observer(
                     onFocus={lazyState.onFocus}
                     onBlur={lazyState.onBlur}
                     // 🧑‍🎤 onMouseDown={lazyState.onMouseDown}
+
                     // 🧑‍🎤 onMouseUp={lazyState.onMouseUp}
                 >
                     {p.children /* anchor */}
@@ -171,6 +172,8 @@ export const RevealUI = observer(
         )
     }),
 )
+
+RevealUI.displayName = 'RevealUI'
 
 const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
     // ensure uist initialized
@@ -192,10 +195,10 @@ const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
         if (shell === 'none') return ShellNoneUI
         //
         if (shell === 'popup') return ShellPopupUI
-        if (shell === 'popup-xs') return ShellPopupLGUI
+        if (shell === 'popup-xs') return ShellPopupXSUI
         if (shell === 'popup-sm') return ShellPopupSMUI
         if (shell === 'popup-lg') return ShellPopupLGUI
-        if (shell === 'popup-xl') return ShellPopupLGUI
+        if (shell === 'popup-xl') return ShellPopupXLUI
 
         return shell ?? ShellPopoverUI
     })()

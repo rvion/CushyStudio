@@ -4,7 +4,7 @@ import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
-import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
@@ -14,15 +14,15 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
             title='Apps'
             content={() => (
                 <>
-                    <MenuItem
+                    {/* <MenuItem
                         onClick={() => cushy.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
                         icon='mdiCloudDownload'
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
-                    />
-                    <MenuDivider>Recently Used Drafts</MenuDivider>
+                    /> */}
+                    <MenuItem.Divider>Recently Used Drafts</MenuItem.Divider>
                     <RecentDrafMenuEntriesUI />
-                    <MenuDivider>Recently Used Apps</MenuDivider>
+                    <MenuItem.Divider>Recently Used Apps</MenuItem.Divider>
                     <RecentAppMenuEntriesUI />
                 </>
             )}

@@ -122,6 +122,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     get isCollapsible(): boolean {
+        if (this.isMulti) return false // 🔶 may be wrong, but it really annoys me right now
         if (this.activeBranchNames.length === 0) return false
         return super.isCollapsible
     }

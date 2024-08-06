@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
-import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
-import { Ikon } from '../csuite/icons/iconHelpers'
+import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
+import { RevealUI } from '../csuite/reveal/RevealUI'
 
 export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
     return (
@@ -35,23 +34,25 @@ export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
                         icon={'mdiPost'}
                         label='Blog'
                     />
-
-                    <MenuDivider // TODO(bird_d): Github integration should be moved inside the CushyStudio "Button" when that's a thing.
-                    >
-                        Github Integration
-                        {cushy.auth.isConnected ? (
-                            <Button //
-                                icon='mdiLogout'
-                                onClick={() => cushy.auth.logout()}
-                            />
-                        ) : (
-                            <Button //
-                                icon='mdiLogin'
-                                onClick={() => void cushy.auth.startLoginFlowWithGithub()}
-                            />
-                        )}
-                    </MenuDivider>
-                    {cushy.auth.user ? <JsonViewUI value={cushy.auth.user} /> : 'Not connected to GitHub'}
+                    {/* Github Integration */}
+                    {cushy.auth.isConnected ? (
+                        <MenuItem //
+                            icon='mdiLogout'
+                            onClick={() => cushy.auth.logout()}
+                            children={'Logout'}
+                        />
+                    ) : (
+                        <MenuItem //
+                            icon='mdiLogin'
+                            onClick={() => void cushy.auth.startLoginFlowWithGithub()}
+                            children={'Login with Github'}
+                        />
+                    )}
+                    {/* // TODO(bird_d): Github integration should be moved inside the CushyStudio "Button" when that's a thing. */}
+                    {/* <MenuDivider></MenuDivider> */}
+                    <RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
+                        <MenuItem icon='mdiInformation'>{cushy.auth.user?.email}</MenuItem>
+                    </RevealUI>
                 </>
             )}
         />

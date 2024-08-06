@@ -1,11 +1,16 @@
-export const randomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16)
-export const randomColorHsv = () => {
+/** @deprecated */
+export const randomColor = (): string => '#' + Math.floor(Math.random() * 16777215).toString(16)
+
+/** @deprecated */
+export const randomColorHsv = (): string => {
     const h = Math.floor(Math.random() * 360)
     const s = Math.floor(Math.random() * 100)
     const v = Math.floor(Math.random() * 100)
     return `hsv(${h},${s}%,${v}%)`
 }
-export const randomNiceColor = (seed: string = '') => {
+
+/** @deprecated */
+export const randomNiceColor = (seed: string = ''): string => {
     const seedNumb = [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0)
     // prettier-ignore
     const cols = [
@@ -14,10 +19,10 @@ export const randomNiceColor = (seed: string = '') => {
         '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080',
         // '#ffffff', // '#000000',
     ]
-    return cols[seedNumb % cols.length]
+    return cols[seedNumb % cols.length]!
 }
 
-export const randomColorHSLNice = (seed: string) => {
+export const randomColorHSLNice = (seed: string): string => {
     // prettier-ignore
     const seedNumb
         = seed === 'IMAGE' ? 12

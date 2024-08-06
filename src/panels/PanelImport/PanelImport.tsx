@@ -3,17 +3,18 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { ImportAsImageUI, ImportedFileUI } from '../../importers/FilesBeeingImported'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 
 export const PanelImport = new Panel({
     name: 'Import',
+    category: 'tools',
     widget: (): React.FC<NO_PROPS> => PanelImportUI,
-    header: (p): PanelHeader => ({ title: 'Import' }),
+    header: (p): PanelHeader => ({ title: 'Import', icon: 'mdiImport' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiImport',
 })
 
 export const PanelImportUI = observer(function PanelImportUI_(p: {}) {

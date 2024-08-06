@@ -192,7 +192,7 @@ export class MediaImageL {
     }
 
     onMiddleClick = (): void => {
-        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+        return void cushy.layout.open('Image', { imageID: this.id }, 'biggest')
     }
 
     onRightClick = (): void => {}
@@ -201,17 +201,17 @@ export class MediaImageL {
         if (hasMod(ev)) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+            return void cushy.layout.open('Image', { imageID: this.id })
         }
         if (ev.shiftKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+            return void cushy.layout.open('Canvas', { imgID: this.id })
         }
         if (ev.altKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+            return void cushy.layout.open('Paint', { imgID: this.id })
         }
 
         return
@@ -298,19 +298,31 @@ export class MediaImageL {
     }
 
     openInImageEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+        this.st.layout.open('Paint', { imgID: this.id })
     }
 
     openInCanvasEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+        this.st.layout.open('Canvas', { imgID: this.id })
     }
 
+    // ---------------------------------------------------------------
     /**
      * add a tag to MediaImage.tags
      * internally stored as coma-separated string
      * */
     addTag = (...tags: string[]): this => {
         this.update({ tags: this.data.tags ? `${this.data.tags},${tags.join(',')}` : tags.join(',') })
+        return this
+    }
+
+    toggleTag = (...tags: string[]): this => {
+        const curr = new Set(this.tags)
+        for (const tag_ of tags) {
+            const tag = tag_.trim()
+            if (curr.has(tag)) curr.delete(tag)
+            else curr.add(tag)
+        }
+        this.update({ tags: [...curr.values()].join(',') })
         return this
     }
 
@@ -323,15 +335,16 @@ export class MediaImageL {
         return this
     }
 
-    set tags(str: string) {
-        this.update({ tags: str })
-    }
-
+    // ---------------------------------------------------------------
     /** get tags as string list (de-duplicated) */
     get tags(): string[] {
         if (this.data.tags == null) return []
         // temporary fix to deduplicate tags
         return [...new Set(this.data.tags.split(','))]
+    }
+
+    set tags(str: string) {
+        this.update({ tags: str })
     }
 
     /**
@@ -410,8 +423,8 @@ export class MediaImageL {
     /** allow to pick the best source to preserve CPU and MEMORY */
     urlForSize = (size: number): string => {
         // 32 x 32 mini-thumb
-        const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
-        if (forceThumb) return this.thumbhashURL
+        // 🛝 const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
+        // 🛝 if (forceThumb) return this.thumbhashURL
         if (size < 32) return this.thumbhashURL
 
         // 100 x 100 thumb

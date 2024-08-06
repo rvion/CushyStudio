@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../accelerators/ComboUI'
 import { Ikon } from '../icons/iconHelpers'
+import { RegionUI } from '../regions/RegionUI'
 import { RevealUI } from '../reveal/RevealUI'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
@@ -20,46 +21,48 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     const tv = p.treeView
 
     return (
-        <TreeViewCtx.Provider value={tv}>
-            <div tw='_TreeUI flex flex-col' className={p.className}>
-                <div tw='flex items-center gap-1'>
-                    <div className='flex flex-1 gap-1 items-center'>{p.title && <div tw='text-sm'>{p.title}</div>}</div>
-                    {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
-                    <RevealUI
-                        trigger={'hover'}
-                        content={() => (
-                            <div tw='flex gap-1 whitespace-nowrap p-2'>
-                                collapse tree: <ComboUI combo={TreeKeys.collapseAllTree} />
-                            </div>
-                        )}
-                    >
-                        {tv.tree.config.updateAll && (
-                            <div
-                                tw='btn btn-square btn-ghost btn-xs shrink-0'
-                                onClick={() => tv.tree.config.updateAll?.({ isExpanded: null })}
-                            >
-                                <Ikon.mdiUnfoldLessHorizontal />
-                            </div>
-                        )}
-                    </RevealUI>
-                </div>
+        <RegionUI regionCtx={TreeViewCtx} regionValue={tv} regionName='tree'>
+            <TreeViewCtx.Provider value={tv}>
+                <div tw='_TreeUI flex flex-col' className={p.className}>
+                    <div tw='flex items-center gap-1'>
+                        <div className='flex flex-1 gap-1 items-center'>{p.title && <div tw='text-sm'>{p.title}</div>}</div>
+                        {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
+                        <RevealUI
+                            trigger={'hover'}
+                            content={() => (
+                                <div tw='flex gap-1 whitespace-nowrap p-2'>
+                                    collapse tree: <ComboUI combo={TreeKeys.collapseAllTree} />
+                                </div>
+                            )}
+                        >
+                            {tv.tree.config.updateAll && (
+                                <div
+                                    tw='btn btn-square btn-ghost btn-xs shrink-0'
+                                    onClick={() => tv.tree.config.updateAll?.({ isExpanded: null })}
+                                >
+                                    <Ikon.mdiUnfoldLessHorizontal />
+                                </div>
+                            )}
+                        </RevealUI>
+                    </div>
 
-                <div
-                    //
-                    tw='flex-1 overflow-auto'
-                    id={tv.tree.KeyboardNavigableDomNodeID}
-                    onKeyDown={tv.onKeyDown}
-                    tabIndex={-1}
-                    autoFocus={p.autofocus}
-                >
-                    {tv.nodes.map((n) => (
-                        <TreeEntryUI key={n.id} node={n} />
-                    ))}
+                    <div
+                        //
+                        tw='flex-1 overflow-auto'
+                        id={tv.tree.KeyboardNavigableDomNodeID}
+                        // onKeyDown={tv.onKeyDown}
+                        tabIndex={-1}
+                        autoFocus={p.autofocus}
+                    >
+                        {tv.nodes.map((n) => (
+                            <TreeEntryUI key={n.id} node={n} />
+                        ))}
+                    </div>
+                    {/* <CursorInfoUI es={es} /> */}
                 </div>
-                {/* <CursorInfoUI es={es} /> */}
-            </div>
-            {/* <TreeDebugUI /> */}
-        </TreeViewCtx.Provider>
+                {/* <TreeDebugUI /> */}
+            </TreeViewCtx.Provider>
+        </RegionUI>
     )
 })
 

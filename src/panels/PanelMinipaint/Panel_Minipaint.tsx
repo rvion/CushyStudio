@@ -18,6 +18,7 @@ export const PanelMinipaint = new Panel({
     header: (p): PanelHeader => ({ title: '🎨 Paint' }),
     def: (): PanelMinipaintProps => ({}),
     icon: 'mdiPencil',
+    category: 'tools',
 })
 
 export type PanelMinipaintProps = {

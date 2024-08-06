@@ -4,8 +4,27 @@ import p from 'pathe'
 export type FilepathExt = string | FPath
 
 export class FPath {
-    relPath: string
-    absPath: string
+    private _relPath: string
+    private _absPath: string
+
+    get relPath(): string {
+        return this._relPath
+    }
+    get absPath(): string {
+        return this._absPath
+    }
+
+    constructor(public path: string) {
+        if (path.startsWith('data:')) {
+            throw new Error(`[🚫] dataURL not supported`)
+        }
+
+        const absPath = p.resolve(path)
+        const relPath = p.relative(this.root, absPath)
+
+        this._absPath = absPath
+        this._relPath = relPath
+    }
 
     readAsString(): string {
         return fs.readFileSync(this.absPath, 'utf-8')
@@ -37,18 +56,6 @@ export class FPath {
 
     get root(): string {
         return getRoot()
-    }
-
-    constructor(public path: string) {
-        if (path.startsWith('data:')) {
-            throw new Error(`[🚫] dataURL not supported`)
-        }
-
-        const absPath = p.resolve(path)
-        const relPath = p.relative(this.root, absPath)
-
-        this.absPath = absPath
-        this.relPath = relPath
     }
 }
 
