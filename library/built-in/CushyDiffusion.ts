@@ -200,7 +200,7 @@ app({
         }
 
         // SHOW 3D -------------------------------------------------------------------------------
-        const show3d = ui.show3d
+        const show3d = ui.extra.show3d
         if (show3d) run_Dispacement1(show3d, finalImage)
         else graph.SaveImage({ images: finalImage })
 

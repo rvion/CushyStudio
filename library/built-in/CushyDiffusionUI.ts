@@ -35,7 +35,6 @@ export type CushyDiffusionUI_ = {
     }>
     customSave: UI_customSave
     removeBG: UI_rembg_v1
-    show3d: X.XOptional<UI_3dDisplacement>
     controlnets: UI_cnet
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -83,7 +82,6 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         ),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
-        show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
@@ -94,6 +92,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
 // ================================================================================
 
 export type UI_extra = X.XChoices<{
+    show3d: UI_3dDisplacement
     regionalPrompt: UI_regionalPrompting_v1
     refine: UI_Refiners
     reversePositiveAndNegative: X.XEmpty
@@ -113,6 +112,7 @@ function extra(ui: X.Builder): UI_extra {
         appearance: 'tab',
         icon: 'mdiAlien',
         items: {
+            show3d: ui_3dDisplacement(),
             regionalPrompt: ui_regionalPrompting_v1(),
             refine: ui_refiners(),
             reversePositiveAndNegative: ui.empty({

@@ -18,6 +18,7 @@ export function ui_3dDisplacement(): UI_3dDisplacement {
     return form
         .group({
             icon: 'mdiRotate3d',
+            label: '3D Displacement',
             items: {
                 normal: form.selectOne({
                     tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
@@ -58,7 +59,11 @@ export function run_Dispacement1(
     const run = getCurrentRun()
     const graph = run.nodes
     run.add_previewImage(finalImage).storeAs('base')
-    const depth = (() => {
+    const depth = (():
+        | MiDaS$7DepthMapPreprocessor
+        | Zoe$7DepthMapPreprocessor
+        | LeReS$7DepthMapPreprocessor
+        | MarigoldDepthEstimation => {
         if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
         if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
         if (show3d.depth.LeReS) return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
@@ -67,7 +72,7 @@ export function run_Dispacement1(
     })()
     run.add_previewImage(depth).storeAs('depth')
 
-    const normal = (() => {
+    const normal = ((): MiDaS$7NormalMapPreprocessor | BAE$7NormalMapPreprocessor | EmptyImage => {
         if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
         if (show3d.normal.id === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
         if (show3d.normal.id === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
