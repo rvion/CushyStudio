@@ -33,6 +33,8 @@ export class PanelPersistentStore<X extends Json = Json> {
                     [this.storeKey]: data,
                 },
             }
+            // ⏸️ console.log(`[🔴] prevConfig`, JSON.stringify(prevConfig, null, 4))
+            // ⏸️ console.log(`[🔴] nextConfig`, JSON.stringify(nextConfig, null, 4))
             return a.updateNodeAttributes(tabId, { config: nextConfig })
         })
     }

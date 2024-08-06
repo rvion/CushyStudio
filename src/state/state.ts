@@ -243,19 +243,6 @@ export class STATE {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
-    // gallery size
-    get gallerySizeStr(): string {
-        return `${this.gallerySize}px`
-    }
-
-    set gallerySize(v: number) {
-        this.galleryConf.fields.gallerySize.value = v
-    }
-
-    get gallerySize(): number {
-        return this.galleryConf.value.gallerySize ?? 48
-    }
-
     get preferedFormLayout(): Maybe<PreferedFormLayout> {
         return this.configFile.value.preferedFormLayout ?? 'auto'
     }
@@ -530,25 +517,6 @@ export class STATE {
             name: 'Displacement Conf',
             serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
-        },
-    )
-
-    galleryConf = cushyFactory.fields(
-        (f) => ({
-            defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
-                default: { id: 'createdAt', label: 'Created At' },
-            }),
-            gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
-            galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
-            galleryBgColor: f.colorV2({ label: 'background' }).optional(),
-            galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
-            showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
-            onlyShowBlurryThumbnails: f.boolean({ label: 'Blur Thumbnails' }),
-        }),
-        {
-            name: 'Gallery Conf',
-            onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            serial: () => readJSON('settings/gallery.json'),
         },
     )
 
@@ -898,40 +866,9 @@ export class STATE {
     //     return this.db.media_images.getLastN(maxImages)
     // }
 
-    galleryFilterPath: Maybe<string> = null
-    galleryFilterTag: Maybe<string> = null
+    // galleryFilterPath: Maybe<string> = null
+    // galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
-    get imageToDisplay(): MediaImageL[] {
-        // console.log(`[🤠] AAA`)
-        const conf = this.galleryConf.value
-        const out = this.db.media_image.select(
-            (query) => {
-                let x =
-                    conf.defaultSort.id === 'createdAt'
-                        ? query.orderBy('media_image.createdAt', 'desc')
-                        : query.orderBy('media_image.updatedAt', 'desc')
-
-                x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
-
-                if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
-                if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
-                if (this.galleryFilterAppName) {
-                    x = x
-                        .innerJoin('step', 'media_image.stepID', 'step.id')
-                        .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
-                        .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
-                }
-                // ⏸️ let exclude = 'noise'
-                // ⏸️ if (exclude) {
-                // ⏸️     x = x.where('media_image.tags', 'not like', '%' + exclude + '%')
-                // ⏸️ }
-                return x
-            },
-            ['media_image.id'],
-        )
-        // console.log(`[🤠] BBB`)
-        return out
-    }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------
     /** write a binary file to given absPath */

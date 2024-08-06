@@ -41,6 +41,11 @@ export type WidgetWithLabelProps = {
     showWidgetIndent?: boolean
     className?: string
 
+    /** 2024-08-06 rvion: temporary addition removing primitive nature of optional */
+    classNameAroundBodyAndHeader?: string
+
+    /** @since 2024-08-06; reserved but unused */
+    slotToggle?: ReactNode
     slotDelete?: ReactNode
     slotDragKnob?: ReactNode
     slotUpDown?: ReactNode
@@ -97,7 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                     {/* <div tw='w-0.5' /> */}
                                     {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
                                     {HeaderUI && (
-                                        <WidgetHeaderControlsContainerUI className={extraClass}>
+                                        <WidgetHeaderControlsContainerUI tw={[extraClass, p.classNameAroundBodyAndHeader]}>
                                             <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                                         </WidgetHeaderControlsContainerUI>
                                     )}
@@ -157,7 +162,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
                             {/* HEADER CONTROLS */}
                             {HeaderUI && (
-                                <WidgetHeaderControlsContainerUI className={extraClass}>
+                                <WidgetHeaderControlsContainerUI tw={[extraClass, p.classNameAroundBodyAndHeader]}>
                                     <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
                                 </WidgetHeaderControlsContainerUI>
                             )}

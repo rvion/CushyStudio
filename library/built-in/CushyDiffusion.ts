@@ -66,7 +66,7 @@ app({
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 HACKY  */
-              await (async () => ({
+              await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
                   latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
                   height: imgCtx.height,
                   width: imgCtx.width,

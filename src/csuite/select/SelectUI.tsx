@@ -31,7 +31,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             ref={select.revealStateRef}
             trigger='pseudofocus'
             shell='popover'
-            placement='autoVerticalStart'
+            placement={p.placement ?? 'autoVerticalStart'}
             onHidden={(reason) => {
                 select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
                 select.clean()

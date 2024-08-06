@@ -46,7 +46,7 @@ export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelView
         ? st.db.media_image.get(p.imageID)
         : st.db.media_image.last()
     const url = img?.url
-    const background = st.galleryConf.value.galleryBgColor ?? undefined
+    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
 
     const shouldFilter = st.project.filterNSFW
     const safety =
@@ -58,7 +58,7 @@ export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelView
         <div
             //
             className={p.className}
-            style={{ background }}
+            // 🛝 style={{ background }}
             tw='flex flex-col flex-grow w-full'
         >
             <ImageActionBarUI img={img} />

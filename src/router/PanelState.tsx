@@ -42,8 +42,7 @@ export class PanelState<PROPS extends any = any> {
     /** get component props */
     getProps(): PROPS {
         return (
-            this.getConfig().$props ?? //
-            (this.getConfig() as any as PROPS)
+            this.getConfig().$props ?? ({} as PROPS) // (this.getConfig() as any as PROPS)
         )
     }
 

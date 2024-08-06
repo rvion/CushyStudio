@@ -20,6 +20,7 @@ import { PanelName, panels, Panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
+
 type TabsetID = string
 type PerspectiveDataForSelect = {
     label: string
@@ -532,7 +533,7 @@ export class CushyLayoutManager {
             .map((tab) => {
                 type Props = PropsOf<Panels[K]['widget']>
                 const config: PanelPersistedJSON<Props> = tab.getConfig()
-                const props: Props = config.$props ?? config /* hack */
+                const props: Props = config.$props ?? {} // config /* hack */
                 return { props, tabNode: tab }
             })
         return out
@@ -819,7 +820,12 @@ export class CushyLayoutManager {
 
         // 2. get panel props
         const panelConfig: PanelPersistedJSON = node.getConfig()
-        const panelProps = panelConfig.$props ?? panelConfig /* 🔴 HACKY backward config */
+        const panelProps = panelConfig.$props ?? {} // panelConfig /* 🔴 HACKY backward config */
+
+        // temporary assertions; to be removed when we're sure there is no more wrong config
+        if ('$props' in panelProps) throw new Error('❌ $props in panelProps')
+        if ('$store' in panelProps) throw new Error('❌ $store in panelProps')
+        if ('$temp' in panelProps) throw new Error('❌ $temp in panelProps')
 
         if (panelProps == null)
             return (

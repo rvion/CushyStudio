@@ -90,7 +90,7 @@ export const useRegionMonitor = (): void => {
     useEffect(() => {
         function handleFocusEvent(event: FocusEvent): void {
             const elem = event.target
-            console.log(`[🔴] focus moved to`, elem)
+            // console.log(`[🔴] focus moved to`, elem)
             if (!(elem instanceof HTMLElement)) return
             regionMonitor.currentlyFocused.current = elem
         }

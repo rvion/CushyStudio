@@ -3,12 +3,12 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
-import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
+import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-export const Button = observer(function Button_(
+const _Button = observer(function Button_(
     p: FrameProps & {
         /** no contrast */
         subtle?: boolean
@@ -126,5 +126,10 @@ class ButtonState {
         return this.pressed ? !this.props.active : this.props.active
     }
 }
+
+export const Button = Object.assign(_Button, {
+    /** a borderless / contrastless button */
+    Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),
+})
 
 // registerComponentAsClonableWhenInsideReveal(Button)

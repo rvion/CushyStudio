@@ -29,12 +29,12 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             id='CushyAppBar'
         >
             {/* <PanelHeaderUI tw='flex items-center px-2 overflow-auto'> */}
-            <Button // TODO(bird_d): Toggle FavBar button here should be temporary, just to save space for now.
+            <Button.Ghost // TODO(bird_d): Toggle FavBar button here should be temporary, just to save space for now.
                 square
                 onClick={cmd_fav_toggleFavBar.execute}
             >
                 <img style={{ width: '1.3rem' }} src={assets.CushyLogo_512_png} alt='' />
-            </Button>
+            </Button.Ghost>
             <div tw='px-1'>
                 <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
             </div>
