@@ -46,7 +46,7 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
 export type Ctx_sampler = {
     ckpt: _MODEL
     clip: _CLIP
-    latent: HasSingle_LATENT
+    latent: _LATENT
     positive: string | _CONDITIONING
     negative: string | _CONDITIONING
     preview?: boolean
