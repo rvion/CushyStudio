@@ -76,7 +76,7 @@ export class LiveDB {
     media_video:           LiveTable<T.TABLES['media_video']          > // prettier-ignore
     media_splat:           LiveTable<T.TABLES['media_splat']          > // prettier-ignore
     media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement']> // prettier-ignore
-    media_custom:        LiveTable<T.TABLES['media_custom']       > // prettier-ignore
+    media_custom:          LiveTable<T.TABLES['media_custom']         > // prettier-ignore
     tree_entry:            LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
     runtime_error:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
     draft:                 LiveTable<T.TABLES['draft']                > // prettier-ignore

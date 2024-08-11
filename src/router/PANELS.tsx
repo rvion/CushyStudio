@@ -22,6 +22,7 @@ import { PanelMinipaint } from '../panels/PanelMinipaint/Panel_Minipaint'
 import { PanelModels } from '../panels/PanelModels/Panel_Models'
 import { PanelStep } from '../panels/PanelOutput/PanelOutput'
 import { PanelPlayground } from '../panels/PanelPlayground/PanelPlayground'
+import { PanelSafetyRatings } from '../panels/PanelSafetyRatings/PanelSafetyRatings'
 import { PanelShortcuts } from '../panels/PanelShortcuts/PanelShortcuts'
 import { PanelSteps } from '../panels/PanelSteps/Panel_Steps'
 import { PanelTreeExplorer } from '../panels/PanelTreeExplorer/PanelTreeExplorer'
@@ -35,6 +36,7 @@ export const panels = {
     Paint: PanelMinipaint,
     Canvas: PanelCanvas,
     Image: PanelViewImage,
+    SafetyRatings: PanelSafetyRatings,
 
     // apps & marketplace
     Marketplace: PanelMarketplace,

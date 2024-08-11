@@ -40,18 +40,17 @@ export type PanelViewImageProps = {
     imageID?: MediaImageID | 'latent'
 }
 
-export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelViewImageProps) {
-    const st = useSt()
+export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewImageProps) {
     const img: Maybe<MediaImageL> = p.imageID //
-        ? st.db.media_image.get(p.imageID)
-        : st.db.media_image.last()
+        ? cushy.db.media_image.get(p.imageID)
+        : cushy.db.media_image.last()
     const url = img?.url
     // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
 
-    const shouldFilter = st.project.filterNSFW
+    const shouldFilter = cushy.project.filterNSFW
     const safety =
         img?.url && shouldFilter //
-            ? st.safetyChecker.isSafe(img?.url)
+            ? cushy.safetyChecker.isSafe(img?.url)
             : null
 
     return (
@@ -72,7 +71,7 @@ export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelView
                     {url ? (
                         <img //
                             style={{
-                                filter: !st.project.filterNSFW
+                                filter: !cushy.project.filterNSFW
                                     ? undefined
                                     : safety?.value == null //
                                       ? 'blur(50px)'
@@ -107,7 +106,7 @@ export const PanelViewImageUI = observer(function PanelViewImageUI_(p: PanelView
     )
 })
 
-export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
+export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
     const isStarred = Boolean(img?.data.star)

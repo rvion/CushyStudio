@@ -2,7 +2,7 @@ import type { MigrationContext } from './_applyAllMigrations'
 
 import { _createTable } from './_createTable'
 
-export const _checkAllMigrationsHaveDifferentIds = () => {
+export const _checkAllMigrationsHaveDifferentIds = (): void => {
     // check all migrations have different IDS
     const ids = new Set()
     for (const migration of migrations) {
@@ -732,5 +732,10 @@ export const migrations: {
         id: 'nanoid',
         name: 'add step created_at missing index',
         up: [`CREATE INDEX idx__step__createdAt ON step(createdAt);`],
+    },
+    {
+        id: 'PED_u_IjG-',
+        name: 'store image safety rating',
+        up: ['alter table media_image add column safetyRating json'],
     },
 ]
