@@ -33,7 +33,7 @@ export function useGalleryConf(): GalleryConf {
                 onlyShowBlurryThumbnails: ui.boolean({ label: 'Blur Thumbnails' }),
                 filterPath: ui.string({ innerIcon: 'mdiFilter', placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
                 filterTag: ui.string({ innerIcon: 'mdiTagSearch', placeHolder: 'tags' }), //.optional(), // emptyAsNullWhenOptional: true
-                filterStar: ui.boolean({ icon: 'mdiStar', default: false }), //.optional(), // emptyAsNullWhenOptional: true
+                filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
                 filterAppName: ui.app().optional(),
             })
             .extend((self) => ({
@@ -49,7 +49,7 @@ export function useGalleryConf(): GalleryConf {
                             x = x.limit(conf.galleryMaxImages ?? 20).select('media_image.id')
                             if (conf.filterPath) x = x.where('media_image.path', 'like', '%' + conf.filterPath + '%')
                             if (conf.filterTag) x = x.where('media_image.tags', 'like', '%' + conf.filterTag + '%')
-                            if (this.filterStar) x = x.where('media_image.star', '=', this.filterStar ? 1 : 0)
+                            if (conf.filterStar) x = x.where('media_image.star', '=', conf.filterStar ? 1 : 0)
                             if (conf.filterAppName) {
                                 x = x
                                     .innerJoin('step', 'media_image.stepID', 'step.id')
