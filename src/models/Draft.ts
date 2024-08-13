@@ -44,7 +44,7 @@ export class DraftL {
 
     openOrFocusTab(): void {
         if (!(this instanceof DraftL)) throw new Error('❌')
-        this.st.layout.open('Draft', { draftID: this.id }, 'left')
+        this.st.layout.open('Draft', { draftID: this.id }, { where: 'left' })
         // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 

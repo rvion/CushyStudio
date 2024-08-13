@@ -108,7 +108,7 @@ export class CushyAppL {
             appID: this.id,
             title: title,
         })
-        this.st.layout.open('Draft', { draftID: draft.id }, 'left')
+        this.st.layout.open('Draft', { draftID: draft.id }, { where: 'left' })
         return draft
     }
 

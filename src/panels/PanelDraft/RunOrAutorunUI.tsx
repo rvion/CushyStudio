@@ -57,7 +57,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 className='self-start'
                 icon={icon}
                 onClick={() => {
-                    draft.st.layout.open('Output', {}, 'right')
+                    draft.st.layout.open('Output', {}, { where: 'right' })
                     draft.setAutostart(false)
                     draft.start({})
                 }}
