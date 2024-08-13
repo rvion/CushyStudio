@@ -1,6 +1,6 @@
 // import { observer } from 'mobx-react-lite'
-// import { GitManagedFolder } from 'src/updater/updater'
-// import { Button } from 'src/rsuite/shims'
+// import { GitManagedFolder } from './updater'
+// import { Button } from '../rsuite/shims'
 
 // export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
 //     const updater = p.updater
@@ -12,7 +12,7 @@
 //                 await updater._gitInit()
 //             }}
 //             size='xs'
-//             appearance='primary'
+//             look='primary'
 //         >
 //             git init
 //         </Button>

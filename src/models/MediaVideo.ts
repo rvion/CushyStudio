@@ -1,14 +1,14 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { StepL } from './Step'
-import type { MediaVideoT } from 'src/db/TYPES.gen'
 
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
-export interface MediaVideoL extends LiveInstance<MediaVideoT, MediaVideoL> {}
+export interface MediaVideoL extends LiveInstance<TABLES['media_video']> {}
 export class MediaVideoL {
-    step = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.db.steps)
-    prompt = new LiveRefOpt<this, ComfyPromptL>(this, 'promptID', () => this.db.comfy_prompts)
+    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
+    prompt = new LiveRefOpt<this, ComfyPromptL>(this, 'promptID', 'comfy_prompt')
 
     get url() {
         return this.data.url

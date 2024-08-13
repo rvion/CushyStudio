@@ -1,35 +1,25 @@
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
-import { Button } from 'src/rsuite/shims'
 
-export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | GraphID }) {
+export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | ComfyWorkflowID }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =
         typeof graphOrGraphID === 'string' //
-            ? st.db.graphs.getOrThrow(graphOrGraphID)
+            ? st.db.comfy_workflow.getOrThrow(graphOrGraphID)
             : graphOrGraphID
 
     return (
         <div tw='flex gap-2 items-center'>
             Open:
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInTab}
-            >
+            <Button icon='mdiOpenInNew' look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
                 open in ComfyUI Tab
             </Button>
-            <Button
-                icon={<span className='material-symbols-outlined'>open_in_full</span>}
-                appearance='ghost'
-                size='sm'
-                onClick={graph.menuAction_openInFullScreen}
-            >
+            <Button icon='mdiFullscreen' look='ghost' size='sm' onClick={graph.menuAction_openInFullScreen}>
                 open in ComfyUI FULL
             </Button>
         </div>

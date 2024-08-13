@@ -1,13 +1,13 @@
+import type { NodeNameInComfy } from '../../models/ComfySchema'
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
-import type { NodeNameInComfy } from 'src/models/Schema'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
+import { normalizeJSIdentifier } from '../../core/normalizeJSIdentifier'
 import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
 import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
-import { normalizeJSIdentifier } from 'src/core/normalizeJSIdentifier'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
     let totalCustomNodeSeen = 0
@@ -44,8 +44,8 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
             const valid = Value.Check(ENMInfos_Schema, enmEntry.meta)
             if (!valid) {
                 const errors: ValueError[] = [...Value.Errors(ENMInfos_Schema, enmEntry.meta)]
-                console.error(`❌ customNode doesn't match schema:`, enmEntry.meta)
-                console.error(`❌ errors`, errors)
+                console.error(`❌ extensionNodeMap doesn't match schema:`, enmEntry.meta)
+                // console.error(`❌ errors`, errors)
                 for (const i of errors) console.log(`❌`, JSON.stringify(i))
                 hasErrors = true
             }
@@ -83,7 +83,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
         for (const [k, v] of DB.plugins_byNodeNameInComfy.entries()) {
             if (v.length > 1) {
                 if (DB.opts.check) console.log(`❌ DUPLICATE: ${k}`)
-                for (const file of v) console.log(`    | ${file}`)
+                for (const file of v) console.log(`    | ${file.author}/${file.title}`)
             }
         }
     }

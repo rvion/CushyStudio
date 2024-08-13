@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import { nanoid } from 'nanoid'
 import { useEffect } from 'react'
@@ -70,7 +70,7 @@ export const useGlobalDropHook = (st: STATE) => {
             ev.preventDefault()
             // ------------------------------------------------------------------------------------
             st.droppedFiles.push(...files)
-            st.layout.FOCUS_OR_CREATE('Import', {})
+            st.layout.open('Import', {})
         }
 
         document.body.ondrop = fn

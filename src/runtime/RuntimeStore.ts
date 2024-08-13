@@ -1,23 +1,24 @@
+import type { ImageStoreT } from '../back/ImageStore'
+import type { LiveTable } from '../db/LiveTable'
+import type { TABLES } from '../db/TYPES.gen'
+import type { CustomDataL } from '../models/CustomData'
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
 
-import { ImageStore, ImageStoreT } from 'src/back/ImageStore'
-import { LiveTable } from 'src/db/LiveTable'
-import { CustomData_C, CustomDataT } from 'src/db/TYPES.gen'
-import { CustomDataL } from 'src/models/CustomData'
-import { bang } from 'src/utils/misc/bang'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { ImageStore } from '../back/ImageStore'
+import { bang } from '../csuite/utils/bang'
+import { exhaust } from '../csuite/utils/exhaust'
 
 export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 
 /** namespace for all store-related utils */
 export class RuntimeStore {
-    private CustomDataTable: LiveTable<CustomDataT, CustomData_C, CustomDataL<any>>
+    private CustomDataTable: LiveTable<TABLES['custom_data']>
     private imageStoresIndex = new Map<string, ImageStore>()
 
     constructor(private rt: Runtime) {
-        this.CustomDataTable = rt.Cushy.db.custom_datas
+        this.CustomDataTable = rt.Cushy.db.custom_data
         makeAutoObservable(this)
     }
 

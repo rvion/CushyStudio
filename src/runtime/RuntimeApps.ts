@@ -1,10 +1,10 @@
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
+import type { CushyAppL } from '../models/CushyApp'
+import type { Runtime, RuntimeExecutionResult } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Runtime, RuntimeExecutionResult } from './Runtime'
-import { $ExtractFormValueType, AppRef, SchemaDict } from 'src/cards/App'
-import { SQLITE_false } from 'src/db/SQLITE_boolean'
+import { $ExtractFormValueType, AppRef } from '../cards/App'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {
@@ -47,8 +47,8 @@ export class RuntimeApps {
          */
         draftID?: string
     }): Promise<RuntimeExecutionResult> => {
-        const app: CushyAppL = this.rt.Cushy.db.cushy_apps.getOrThrow(p.appID)
-        const draft = this.rt.Cushy.db.drafts.getOrCreate(
+        const app: CushyAppL = this.rt.Cushy.db.cushy_app.getOrThrow(p.appID)
+        const draft = this.rt.Cushy.db.draft.getOrCreate(
             //
             p.draftID ?? `${p.appID}-<sub-draft>`,
             () => ({

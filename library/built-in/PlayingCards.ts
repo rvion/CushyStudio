@@ -1,12 +1,13 @@
-import { ImageAndMask } from 'src'
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { ImageAndMask } from '../../src/CUSHY'
+
+import { toJS } from 'mobx'
+
 import { CardSuit, CardValue } from './_PlayingCards/_cardLayouts'
 import { _drawCard } from './_PlayingCards/_drawCard'
-import { toJS } from 'mobx'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { run_model, ui_model } from './_prefabs/prefab_model'
-import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_prompt } from './_prefabs/prefab_prompt'
+import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 
 app({
     metadata: {
@@ -14,78 +15,78 @@ app({
         illustration: 'library/built-in/_illustrations/poker-card-generator.jpg',
         description: 'Allow you to generate illustrated deck of cards',
     },
-    ui: (form: FormBuilder) => ({
+    ui: (ui: X.Builder) => ({
         // [UI] CARD ---------------------------------------
         // _2: form.markdown({ markdown: `### Cards`, label: false }),
-        cards: form.matrix({
+        cards: ui.matrix({
             cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
             rows: ['spades', 'hearts', 'clubs', 'diamonds'],
             default: [],
         }),
         // [UI] SIZES --------------------------------------
-        size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' } }),
-        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
+        size: ui.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' } }),
+        logoSize: ui.int({ default: 120, min: 20, max: 1000 }),
 
         // [UI] MODEL --------------------------------------
         model: ui_model(),
         sampler: ui_sampler(),
-        highResFix: ui_highresfix({ activeByDefault: true }),
-        globalNegative: form.prompt({}),
-        logos: form.group({
+        highResFix: ui_highresfix().optional(true),
+        globalNegative: ui.prompt({}),
+        logos: ui.group({
             layout: 'H',
             // className: 'flex flex-wrap',
-            items: () => ({
-                spades: form.imageOpt({}),
-                hearts: form.imageOpt({}),
-                clubs: form.imageOpt({}),
-                diamonds: form.imageOpt({}),
-            }),
+            items: {
+                spades: ui.image({}).optional(),
+                hearts: ui.image({}).optional(),
+                clubs: ui.image({}).optional(),
+                diamonds: ui.image({}).optional(),
+            },
         }),
 
         // _3: form.markdown({ markdown: `### Prompts`, label: false }),
-        generalTheme: form.string({ default: 'fantasy' }),
+        generalTheme: ui.string({ default: 'fantasy' }),
         // Main cards
-        illustrations: form.group({
+        illustrations: ui.group({
             layout: 'H',
             // className: 'p-2 bg-red-800',
-            items: () => ({
-                Jack: form.string({ default: 'gold, Knight' }),
-                Queen: form.string({ default: 'gold, Queen' }),
-                King: form.string({ default: 'gold, King' }),
-            }),
+            items: {
+                Jack: ui.string({ default: 'gold, Knight' }),
+                Queen: ui.string({ default: 'gold, Queen' }),
+                King: ui.string({ default: 'gold, King' }),
+            },
         }),
 
         // [UI] THEME --------------------------------------
-        themes: form.group({
-            items: () => ({
-                spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
-                hearts: form.string({ default: 'volcanic, lava, rock, fire' }),
-                clubs: form.string({ default: 'forest, nature, branches, trees' }),
-                diamonds: form.string({ default: 'snow, ice, mountain, transparent winter' }),
-            }),
+        themes: ui.group({
+            items: {
+                spades: ui.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
+                hearts: ui.string({ default: 'volcanic, lava, rock, fire' }),
+                clubs: ui.string({ default: 'forest, nature, branches, trees' }),
+                diamonds: ui.string({ default: 'snow, ice, mountain, transparent winter' }),
+            },
         }),
 
-        colors: form.group({
-            items: () => ({
-                spades: form.string({ default: 'blue' }),
-                hearts: form.string({ default: 'red' }),
-                clubs: form.string({ default: 'green' }),
-                diamonds: form.string({ default: 'white' }),
-            }),
+        colors: ui.group({
+            items: {
+                spades: ui.string({ default: 'blue' }),
+                hearts: ui.string({ default: 'red' }),
+                clubs: ui.string({ default: 'green' }),
+                diamonds: ui.string({ default: 'white' }),
+            },
         }),
 
         // theme5: form.string({ default: 'winter', }),
 
         // [UI] BORDERS ------------------------------------
-        background: form.group({
-            items: () => ({
-                seed: form.seed({ default: 0, defaultMode: 'fixed' }),
-                help: form.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
-                prompt: form.string({ default: `{color} background pattern` }),
-            }),
+        background: ui.group({
+            items: {
+                seed: ui.seed({ default: 0, defaultMode: 'fixed' }),
+                help: ui.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
+                prompt: ui.string({ default: `{color} background pattern` }),
+            },
         }),
-        margin: form.intOpt({ default: 40 }),
-        symetry: form.bool({ default: false }),
+        margin: ui.int({ default: 40 }).optional(),
+        symetry: ui.bool({ default: false }),
     }),
     run: async (run, ui) => {
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
@@ -130,7 +131,7 @@ app({
         const cardsSorted = ui.cards.sort((a, b) => 100 * a.x + a.y - (100 * b.x + b.y))
         let foo: { [key: string]: { base: ImageAndMask; mask: ImageAndMask } } = {}
         for (const card of cardsSorted) {
-            // console.log(`[👙] `, toJS(card))
+            // console.log(`[🧐] `, toJS(card))
             const { col: value, row: suit } = card
             const bg = run.Store.getImageStore(`bg-${suit}`).image
             const xx = await _drawCard(run, {
@@ -140,7 +141,7 @@ app({
                 H,
                 W,
             })
-            console.log(`[👙] `, toJS(xx))
+            console.log(`[🧐] `, toJS(xx))
             foo[`${suit}_${value}`] = xx
             graph.PreviewImage({ images: xx.mask /*filename_prefix: 'mask_1'*/ })
             graph.PreviewImage({
@@ -168,8 +169,8 @@ app({
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip, text: positiveText })
-            const negative = negP.positiveConditionning // graph.CLIPTextEncode({ clip, text: negativeText })
-            const xxx = foo[`${suit}_${value}`]
+            const negative = negP.conditioning // graph.CLIPTextEncode({ clip, text: negativeText })
+            const xxx = foo[`${suit}_${value}`]!
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
             let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
             latent = graph.SetLatentNoiseMask({
@@ -223,55 +224,55 @@ app({
         await run.PROMPT()
         return
 
-        // 👙        for (const card of cardsSorted) {
-        // 👙            // pixels = graph.AlphaChanelRemove({
-        // 👙            //     images: graph.ImageCompositeAbsolute({
-        // 👙            //         background: 'images_a',
-        // 👙            //         images_a: pixels,
-        // 👙            //         images_b: graph.JoinImageWithAlpha({ alpha: xx.base, image: xx.base }),
-        // 👙            //         method: 'matrix',
-        // 👙            //     }),
-        // 👙            // })
-        // 👙            // graph.PreviewImage({ images: pixels })
-        // 👙
-        // 👙            // SMOOTH LOGOS ----------------------------------------
-        // 👙            sample = graph.SetLatentNoiseMask({
-        // 👙                samples: graph.VAEEncode({ pixels: pixels, vae: ckpt }),
-        // 👙                mask: graph.ImageToMask({ image: xx.mask, channel: 'blue' }),
-        // 👙            })
-        // 👙
-        // 👙            // graph.PreviewImage({ images: xx.mask })
-        // 👙
-        // 👙            sample = graph.KSampler({
-        // 👙                seed: flow.randomSeed(),
-        // 👙                latent_image: sample,
-        // 👙                model: ckpt,
-        // 👙                positive: positive,
-        // 👙                negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
-        // 👙                sampler_name: 'euler',
-        // 👙                scheduler: 'karras',
-        // 👙                denoise: 0.55,
-        // 👙            })
-        // 👙
-        // 👙            // ADD CORNERS ----------------------------------------
-        // 👙            pixels = graph.VAEDecode({ vae: ckpt, samples: sample })
-        // 👙            const sideSize = 2 * margin
-        // 👙
-        // 👙            // ROUND CORNERS ----------------------------------------------------
-        // 👙            // pixels = graph.ImageTransformCropCorners({
-        // 👙            //     images: pixels,
-        // 👙            //     bottom_left_corner: 'true',
-        // 👙            //     bottom_right_corner: 'true',
-        // 👙            //     top_left_corner: 'true',
-        // 👙            //     top_right_corner: 'true',
-        // 👙            //     method: 'lanczos',
-        // 👙            //     radius: 100,
-        // 👙            //     SSAA: 4,
-        // 👙            // })
-        // 👙
-        // 👙            // DONE ----------------------------------------
-        // 👙            graph.PreviewImage({ images: pixels })
-        // 👙        }
-        // 👙        await flow.PROMPT()
+        // 🧐        for (const card of cardsSorted) {
+        // 🧐            // pixels = graph.AlphaChanelRemove({
+        // 🧐            //     images: graph.ImageCompositeAbsolute({
+        // 🧐            //         background: 'images_a',
+        // 🧐            //         images_a: pixels,
+        // 🧐            //         images_b: graph.JoinImageWithAlpha({ alpha: xx.base, image: xx.base }),
+        // 🧐            //         method: 'matrix',
+        // 🧐            //     }),
+        // 🧐            // })
+        // 🧐            // graph.PreviewImage({ images: pixels })
+        // 🧐
+        // 🧐            // SMOOTH LOGOS ----------------------------------------
+        // 🧐            sample = graph.SetLatentNoiseMask({
+        // 🧐                samples: graph.VAEEncode({ pixels: pixels, vae: ckpt }),
+        // 🧐                mask: graph.ImageToMask({ image: xx.mask, channel: 'blue' }),
+        // 🧐            })
+        // 🧐
+        // 🧐            // graph.PreviewImage({ images: xx.mask })
+        // 🧐
+        // 🧐            sample = graph.KSampler({
+        // 🧐                seed: flow.randomSeed(),
+        // 🧐                latent_image: sample,
+        // 🧐                model: ckpt,
+        // 🧐                positive: positive,
+        // 🧐                negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
+        // 🧐                sampler_name: 'euler',
+        // 🧐                scheduler: 'karras',
+        // 🧐                denoise: 0.55,
+        // 🧐            })
+        // 🧐
+        // 🧐            // ADD CORNERS ----------------------------------------
+        // 🧐            pixels = graph.VAEDecode({ vae: ckpt, samples: sample })
+        // 🧐            const sideSize = 2 * margin
+        // 🧐
+        // 🧐            // ROUND CORNERS ----------------------------------------------------
+        // 🧐            // pixels = graph.ImageTransformCropCorners({
+        // 🧐            //     images: pixels,
+        // 🧐            //     bottom_left_corner: 'true',
+        // 🧐            //     bottom_right_corner: 'true',
+        // 🧐            //     top_left_corner: 'true',
+        // 🧐            //     top_right_corner: 'true',
+        // 🧐            //     method: 'lanczos',
+        // 🧐            //     radius: 100,
+        // 🧐            //     SSAA: 4,
+        // 🧐            // })
+        // 🧐
+        // 🧐            // DONE ----------------------------------------
+        // 🧐            graph.PreviewImage({ images: pixels })
+        // 🧐        }
+        // 🧐        await flow.PROMPT()
     },
 })

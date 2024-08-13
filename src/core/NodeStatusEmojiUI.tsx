@@ -2,8 +2,8 @@ import type { ComfyNode } from './ComfyNode'
 
 import { observer } from 'mobx-react-lite'
 
-import { exhaust } from '../utils/misc/ComfyUtils'
-import { Loader } from 'src/rsuite/shims'
+import { Loader } from '../csuite/inputs/shims'
+import { exhaust } from '../csuite/utils/exhaust'
 
 export const NodeStatusEmojiUI = observer(function NodeStatusEmojiUI_(p: { node: ComfyNode<any, any> }) {
     const s = p.node.status

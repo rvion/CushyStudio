@@ -1,4 +1,4 @@
-import type { StepL } from 'src/models/Step'
+import type { StepL } from '../../models/Step'
 
 import React from 'react'
 

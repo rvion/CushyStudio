@@ -5,7 +5,12 @@
  * using Intl.RelativeTimeFormat
  */
 
-export function _formatAsRelativeDateTime(date: Date | number, lang = navigator.language): string {
+export function _formatAsRelativeDateTime(
+    date: Date | number | null | undefined,
+    /** default to https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language */
+    lang = navigator.language,
+): string {
+    if (date == null) return ''
     // Allow dates or times to be passed
     const timeMs = typeof date === 'number' ? date : date.getTime()
 
@@ -23,9 +28,9 @@ export function _formatAsRelativeDateTime(date: Date | number, lang = navigator.
 
     // Get the divisor to divide from the seconds. E.g. if our unit is "day" our divisor
     // is one day in seconds, so we can divide our seconds by this to get the # of days
-    const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1
+    const divisor = unitIndex ? cutoffs[unitIndex - 1]! : 1
 
     // Intl.RelativeTimeFormat do its magic
     const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })
-    return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex])
+    return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]!)
 }

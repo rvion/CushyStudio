@@ -1,0 +1,59 @@
+{
+    "name": "cushy-vscode-extensions",
+    "description": "Misc productivity additions",
+    "version": "0.0.1",
+    "publisher": "vscode-samples",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.73.0"
+    },
+    "icon": "logo.jpg",
+    "repository": {
+        "url": "https://github.com/Microsoft/vscode-extension-samples"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "myextension.rescale100To24",
+                "title": "rescale100To24"
+            }
+        ],
+        "colors": [
+            {
+                "id": "myextension.largeNumberBackground",
+                "description": "Background decoration color for large numbers",
+                "defaults": {
+                    "dark": "#FF000055",
+                    "light": "#FF000055",
+                    "highContrast": "#FF000055"
+                }
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "esbuild --watch extension.ts --bundle --external:vscode  --external:@mdi/js --format=cjs --outfile=extension.js",
+        "compile:old": "tsc -p ./",
+        "lint": "eslint \"src/**/*.ts\"",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/node": "^18",
+        "@types/vscode": "^1.73.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
+        "eslint": "^8.26.0",
+        "typescript": "^5.4.2"
+    },
+    "dependencies": {
+        "vscode": "^1.1.37"
+    }
+}

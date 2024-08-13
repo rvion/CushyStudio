@@ -1,20 +1,25 @@
 import type { LiveInstance } from './LiveInstance'
 import type { LiveTable } from './LiveTable'
+import type { TableName } from './TYPES.gen'
 
 export class LiveRef<
     //
-    Owner extends LiveInstance<any, any>,
-    L extends LiveInstance<any, any>,
+    Owner extends LiveInstance<any>,
+    L extends LiveInstance<any>,
 > {
     constructor(
         //
-        public owner: LiveInstance<any, any>,
+        public owner: Owner,
         public key: keyof Owner['data'],
-        public table: () => LiveTable<any, any, L>,
+        public tableName: TableName,
     ) {}
 
+    get table() {
+        return cushy.db[this.tableName] as LiveTable<any>
+    }
+
     get id(): L['data']['id'] {
-        return this.owner.data[this.key]
+        return (this.owner.data as any)[this.key]
     }
 
     /** debug string for pretty printing */
@@ -23,7 +28,7 @@ export class LiveRef<
     }
 
     get item(): L {
-        const db = this.owner.db
-        return this.table().getOrThrow(this.id)
+        // const db = this.owner.db
+        return this.table.getOrThrow(this.id)
     }
 }

@@ -1,19 +1,24 @@
+import type { MigrationContext } from './_applyAllMigrations'
+
 import { _createTable } from './_createTable'
 
-export const _checkAllMigrationsHaveDifferentIds = () => {
+export const _checkAllMigrationsHaveDifferentIds = (): void => {
     // check all migrations have different IDS
     const ids = new Set()
     for (const migration of migrations) {
+        if (migration.skip) continue
         if (ids.has(migration.id)) throw new Error(`duplicate migration id: ${migration.id}`)
         ids.add(migration.id)
     }
 }
 
 // ------------------------------------------------------------------------------------
+type MigrationPart = string | ((ctx: MigrationContext) => void)
 export const migrations: {
+    skip?: boolean
     id: string
     name: string
-    up: string | string[] // | (() => void)
+    up: MigrationPart | MigrationPart[]
 }[] = [
     {
         id: '1b5eb947',
@@ -593,9 +598,144 @@ export const migrations: {
         name: 'add media_image.tags',
         up: [`alter table media_image add column tags string`],
     },
+    {
+        id: 'l81PwC-3ae',
+        name: 'add cushy_app.lastRun',
+        up: [
+            //
+            `alter table cushy_app add column lastRunAt int`,
+            `alter table draft add column lastRunAt int`,
+        ],
+    },
+    {
+        id: '88-YAEXU5O',
+        name: 'cleanup and consistency fix',
+        up: [
+            //
+            `drop table users`,
+            `ALTER TABLE graph RENAME TO comfy_workflow`,
+            `ALTER TABLE migrations add column updatedAt integer not null default now`,
+        ],
+    },
+    {
+        id: 'A-IVxHT8_Q',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__createdAt ON media_image(createdAt);`,
+            `CREATE INDEX idx__cushy_app__lastRunAt ON cushy_app(lastRunAt);`,
+            `CREATE INDEX idx__draft__lastRunAt ON draft(lastRunAt);`,
+        ],
+    },
     // {
-    //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
-    //     name: 'create cushy_app table',
-    //     up: ['drop table cushy_app'],
+    //     id: 'nL-l_DcsOF',
+    //     name: 'image thumbnail',
+    //     up: [`alter table media_image add column thumbnail BLOB`],
     // },
+    {
+        id: 'dOSsFFrq4c',
+        name: 'image thumbnail',
+        up: [`alter table media_image add column thumbnail text`],
+    },
+    {
+        id: 'LA3WzwiPEs',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__updatedAt ON media_image(updatedAt DESC);`,
+            `CREATE INDEX idx__media_text__stepID ON media_text(stepID);`,
+            `CREATE INDEX idx__media_image__stepID ON media_image(stepID);`,
+            `CREATE INDEX idx__media_video__stepID ON media_video(stepID);`,
+            `CREATE INDEX idx__media_3d_displacement__stepID ON media_3d_displacement(stepID);`,
+            `CREATE INDEX idx__media_splat__stepID ON media_splat(stepID);`,
+            `CREATE INDEX idx__comfy_workflow__stepID ON comfy_workflow(stepID);`,
+            `CREATE INDEX idx__comfy_prompt__stepID ON comfy_prompt(stepID);`,
+            `CREATE INDEX idx__runtime_error__stepID ON runtime_error(stepID);`,
+        ],
+    },
+    {
+        id: 'mUIqGBGrSF88',
+        name: 'fix img hashes',
+        up: [`update media_image set thumbnail = null`],
+    },
+    // {
+    //     id: 'mUIqGBGrSF88',
+    //     name: 'fix img hashes',
+    //     up: _createTable('lora_infos', [`name text, civitai json`]),    },
+    {
+        id: '6dxu2Zxwev',
+        name: 'initial 3d scene table',
+        up: _createTable('media_3d_scene', [`code text, params json`]),
+    },
+    {
+        id: 'tyFxAIuo0x',
+        name: 'initial 3d scene table',
+        up: [`alter table media_3d_scene add column stepID text references step(id)`],
+    },
+    {
+        id: 'ccm_Kn5Vkm',
+        name: 'initial 3d scene table',
+        up: [
+            `alter table media_3d_scene rename to media_custom`,
+            `alter table media_custom drop column code`,
+            `alter table media_custom add column viewID text`,
+            `alter table media_custom add column relPath text`,
+        ],
+    },
+    {
+        id: 'fZys9QWSar',
+        name: 'initial 3d scene table',
+        up: [`alter table media_custom drop column relPath`],
+    },
+    {
+        id: '-EYwRHM93N',
+        name: 'initial 3d scene table',
+        up: [
+            //
+            `alter table media_custom drop column viewID`,
+            `delete from media_custom`,
+            `alter table media_custom add column viewID text not null`,
+        ],
+    },
+    {
+        id: 'JEIXsfrgbJ',
+        name: 'allow to organize tools into categories / panels',
+        up: [`alter table draft add column canvasToolCategory text`],
+    },
+    {
+        id: 'mNDq6De-sm',
+        name: 'misc indexes',
+        up: [`CREATE INDEX idx__media_image__path ON media_image(path);`],
+    },
+    {
+        id: 'ULe2UYqDZy',
+        name: 'add isSelected to tree_entry',
+        up: ['alter table tree_entry add column isSelected int default 0'],
+    },
+
+    // ⏸️ {
+    // ⏸️     skip: true,
+    // ⏸️     id: 'mNDq6De-sm',
+    // ⏸️     name: 'misc indexes',
+    // ⏸️     up: [
+    // ⏸️         _createTable('tag', [`label string not null unique`, `color string`]),
+    // ⏸️         _createTable('media_image_tags', [
+    // ⏸️             //
+    // ⏸️             `imageID references media_image(id) not null`,
+    // ⏸️             `tagID references tag(id) not null`,
+    // ⏸️         ]),
+    // ⏸️         (ctx: MigrationContext) => {
+    // ⏸️             //
+    // ⏸️             ctx.db.prepare(`insert into tags (label, color) values ('test', '#ff0000')`).run()
+    // ⏸️         },
+    // ⏸️     ],
+    // ⏸️ },
+    {
+        id: 'nanoid',
+        name: 'add step created_at missing index',
+        up: [`CREATE INDEX idx__step__createdAt ON step(createdAt);`],
+    },
+    {
+        id: 'PED_u_IjG-',
+        name: 'store image safety rating',
+        up: ['alter table media_image add column safetyRating json'],
+    },
 ]

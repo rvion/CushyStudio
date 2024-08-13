@@ -1,4 +1,4 @@
-import { run_prompt } from 'library/built-in/_prefabs/prefab_prompt'
+import { run_prompt } from '../built-in/_prefabs/prefab_prompt'
 
 app({
     ui: (form) => ({
@@ -16,12 +16,12 @@ app({
             }),
             element: ({ width: w, height: h }) =>
                 form.group({
-                    items: () => ({
+                    items: {
                         prompt: form.prompt({}),
                         mode: form.selectOne({
                             choices: [{ id: 'combine' }, { id: 'concat' }],
                         }),
-                    }),
+                    },
                 }),
         }),
         // mainPos: form.prompt({}),
@@ -39,12 +39,12 @@ app({
         let positive: _CONDITIONING = graph.ConditioningZeroOut({
             conditioning: graph.CLIPTextEncode({ clip: clip, text: '' }),
         })
-        let negative: _CONDITIONING = run_prompt({ prompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).positiveConditionning
+        let negative: _CONDITIONING = run_prompt({ prompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).conditioning
 
-        for (const { position: x, value: item } of form.demo.items) {
+        for (const { shape: x, value: item } of form.demo.items) {
             const y = run_prompt({ prompt: item.prompt, clip: ckpt, ckpt: ckpt })
             const localConditionning = graph.ConditioningSetArea({
-                conditioning: y.positiveConditionning,
+                conditioning: y.conditioning,
                 height: x.height * (x.scaleX ?? 1),
                 width: x.width * (x.scaleY ?? 1),
                 x: x.x,
@@ -76,8 +76,8 @@ app({
                     negative: negative,
                     latent_image: graph.EmptyLatentImage({
                         batch_size: 1,
-                        width: form.demo.width,
-                        height: form.demo.height,
+                        width: form.demo.area.width,
+                        height: form.demo.area.height,
                     }),
                 }),
             }),

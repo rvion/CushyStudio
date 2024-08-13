@@ -24,7 +24,7 @@ export default defineConfig({
     // publicDir: 'library',
     plugins: [
         // dynamicModulePlugin(),
-        react({ jsxImportSource: 'src/utils/custom-jsx' }),
+        react({ jsxImportSource: 'src/csuite/custom-jsx' }),
         // viteSingleFile(),
     ],
     build: {
@@ -38,10 +38,10 @@ export default defineConfig({
         port: 8788,
         watch: {
             ignored: [
+                '**/src/shell/*.js',
                 //
                 '**/library/**/*.ts',
                 '**/library/**/*.tsx',
-                '**/tsconfig.custom.json',
                 '**/tsconfig.json',
 
                 // find which one to keep later
@@ -56,18 +56,17 @@ export default defineConfig({
     resolve: {
         alias: {
             // -----------------------------------------------------------------------
-            three: `${installDir}/src/syms/three.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
-            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
-            cytoscape: `${installDir}/src/syms/cytoscape.js`,
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
-
-            // -----------------------------------------------------------------------
-            src: `${installDir}/src`,
+            nsfwjs: `${installDir}/src/syms/nsfwjs.js`,
+            '@tensorflow/tfjs': `${installDir}/src/syms/tfjs.js`,
+            'mime-types': `${installDir}/src/syms/mime-types.js`,
 
             // -----------------------------------------------------------------------
             // injected node modules
-            // check the `src/syms/_.cjs`
+            // 🔶 modifications must be kept in sync between :
+            //     | ./src/shell/build.js
+            //     | ./vite.config.ts
+            //     | ./src/shell/externals.cjs
             /* */ assert: `${installDir}/src/syms/assert.js`,
             'node:assert': `${installDir}/src/syms/assert.js`,
             /* */ url: `${installDir}/src/syms/url.js`,

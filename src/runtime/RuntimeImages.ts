@@ -1,16 +1,16 @@
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { MediaImageL } from '../models/MediaImage'
+import type { PromptID } from '../types/ComfyWsApi'
 import type { Runtime } from './Runtime'
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { PromptID } from 'src/types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
-import { hash } from 'ohash'
 
 import {
     createMediaImage_fromBlobObject,
     createMediaImage_fromDataURI,
     createMediaImage_fromPath,
-} from 'src/models/createMediaImage_fromWebFile'
+} from '../models/createMediaImage_fromWebFile'
+import { type FilepathExt, FPath } from '../models/PathObj'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {
@@ -42,17 +42,17 @@ export class RuntimeImages {
     // ----------------------------------------------------------------------------------------
     // utils to create CushyStudio `MediaImagesL` without using them directly
 
-    createFromDataURLOrPath = (relPathOrDataURL: string): MediaImageL => {
-        return relPathOrDataURL.startsWith('data:') //
-            ? this.createFromDataURL(relPathOrDataURL)
-            : this.createFromPath(relPathOrDataURL)
+    createFromDataURLOrPath = (pathOrDataURL: string): MediaImageL => {
+        return pathOrDataURL.startsWith('data:') //
+            ? this.createFromDataURL(pathOrDataURL)
+            : this.createFromPath(pathOrDataURL)
     }
 
     createFromURL = async (url: string): Promise<MediaImageL> => {
         const filename = url.split('/').pop() ?? 'unknown' // 🔴 bad code here
         const blob: Blob = await fetch(url).then((x) => x.blob())
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromBlobObject(cushy, blob, `outputs/imported/${filename}`, { stepID })
+        return createMediaImage_fromBlobObject(blob, new FPath(`outputs/imported/${filename}`), { stepID })
     }
 
     createFromDataURL = (
@@ -61,11 +61,15 @@ export class RuntimeImages {
         p: { promptID?: PromptID } = {},
     ): MediaImageL => {
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL, undefined, { promptID: p.promptID, stepID })
+        return createMediaImage_fromDataURI(dataURL, undefined, { promptID: p.promptID, stepID })
     }
 
-    createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
+    createFromPath = (
+        /** string path */
+        path: string,
+        p: { promptID?: PromptID } = {},
+    ): MediaImageL => {
         const stepID: StepID = this.rt.step.id
-        return createMediaImage_fromPath(this.rt.Cushy, relPath, { promptID: p.promptID, stepID })
+        return createMediaImage_fromPath(new FPath(path), { promptID: p.promptID, stepID })
     }
 }

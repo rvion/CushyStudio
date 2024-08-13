@@ -1,11 +1,11 @@
+import type { Database } from '../supa/database.types'
 import type { STATE } from './state'
 import type { PostgrestSingleResponse } from '@supabase/supabase-js'
-import type { Database } from 'src/supa/database.types'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from 'src/utils/misc/Debounced'
-import { Kwery } from 'src/utils/misc/Kwery'
+import { Debounced } from '../csuite/utils/Debounced'
+import { Promize } from '../csuite/utils/Promize'
 
 type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
 // type SupaUser = Database['auth']['Tables']['users']['Row']
@@ -31,7 +31,7 @@ export class Marketplace {
     // })
 
     publishedApps = () =>
-        Kwery.get(
+        Promize.get(
             'fetchAllPublishedApps',
             { q: this.query.debouncedValue },
             async (): Promise<PostgrestSingleResponse<SupaPublishedApp[]>> => {

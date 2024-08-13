@@ -1,7 +1,7 @@
-// import type { StepL } from 'src/models/Step'
+// import type { StepL } from '../../models/Step'
 
 // import { observer } from 'mobx-react-lite'
-// import { Nav } from 'src/rsuite/shims'
+// import { Nav } from '../../rsuite/shims'
 // import { renderStatus } from '../../../back/Status'
 
 // export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {

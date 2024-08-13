@@ -1,51 +1,85 @@
-.flexlayout__layout {
-  --color-background: oklch(var(--b1)); /* White background equivalent */
-  --color-base: oklch(var(--b1)); /* Base color */
-  --color-1: oklch(var(--b1)); /* Slightly off-white */
-  --color-2: oklch(var(--b2)); /* Whitesmoke equivalent */
-  --color-3: oklch(var(--b3)); /* Light gray equivalent */
-  --color-4: oklch(var(--b3)); /* Placeholder for non-existing base-400 */
-  --color-5: oklch(var(--b3)); /* Slightly darker than --color-3 */
-  --color-6: oklch(var(--b3)); /* Placeholder for a color a bit darker than --color-5 */
-  --color-drag1: oklch(var(--p)); /* Primary color for dragging */
-  --color-drag2: oklch(var(--s)); /* Secondary color for dragging */
-  --color-drag1-background: oklch(var(--p)); /* Primary color background with lowered opacity */
-  --color-drag2-background: oklch(var(--s)); /* Secondary color background with lowered opacity */
-  --color-overflow: oklch(var(--n)); /* Neutral color for overflow */
-  --color-icon: oklch(var(--bc)); /* Neutral color for icons, assuming this is meant to be neutral */
-  --color-tabset-background: oklch(var(--b3));
-  --color-tabset-background-selected: oklch(var(--b3));
-  --color-tabset-background-maximized: oklch(var(--b3));
-  --color-tabset-divider-line: oklch(var(--p)/.2);
-  --color-tabset-header-background: oklch(var(--b3));
-  --color-tabset-header: oklch(var(--b1));
-  --color-border-background: oklch(var(--b3));
-  --color-border-divider-line: oklch(var(--p)/.2);
+.UI-MAIN{
+  /* border: 6px solid oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);; */
+  border-left: 6px solid var(--appbar);
+  border-right: 6px solid var(--appbar);
 
-  --color-tab-selected: oklch(var(--bc)); /* Assuming --sc is a valid variable for selected content */
-  --color-tab-selected-background: oklch(var(--p)/.3);
-  --color-tab-unselected-background: oklch(var(--b1));
-  --color-tab-textbox-background: oklch(var(--b3));
+}
+
+.flexlayout__layout {
+  --color-background:                       oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* White background equivalent */
+  --color-base:                             oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Base color */
+  --color-1:                                oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Slightly off-white */
+  --color-2:                                oklch(var(--t/* b2 */)); /* Whitesmoke equivalent */
+  --color-3:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Light gray equivalent */
+  --color-4:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for non-existing base-400 */
+  --color-5:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Slightly darker than --color-3 */
+  --color-6:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for a color a bit darker than --color-5 */
+
+  --color-drag1:                            oklch(var(--p));  /* Primary color for dragging */
+  --color-drag2:                            oklch(var(--s));  /* Secondary color for dragging */
+  --color-drag1-background:                 oklch(var(--p));  /* Primary color background with lowered opacity */
+  --color-drag2-background:                 oklch(var(--s));  /* Secondary color background with lowered opacity */
+
+  --color-overflow:                         oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
+  --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
+
+  /* tabset background */
+  /* --color-tabset-background:                oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /* --color-tabset-background:                oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background:                var(--appbar);
+
+  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  /*                                        oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background-selected:       var(--appbar);
+
+  /* --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background-maximized:      var(--appbar);
+
+  --color-tabset-divider-line:              oklch(var(--p)/.2);
+  --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-tabset-header:                    oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
+  --color-border-background:                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-border-divider-line:              oklch(var(--p)/.2);
+
+  /* # tab color */
+  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
+  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) calc(c / 2) h);
+  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h); */
+  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
+  --color-tab-unselected:                   var(--foobar1);
+  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l - 0.05 * var(--DIR)) calc(c / 2) h / .2);
 
   /* borders tabs */
-  --color-border-tab-selected: oklch(var(--bc));
-  --color-border-tab-selected-background: oklch(var(--b1));
-  --color-border-tab-unselected-background: transparent;
+  --color-border-tab-selected:              oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-selected-background:   oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-unselected:            oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
+  --color-border-tab-unselected-background: oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
 
-  --color-splitter: oklch(var(--b2));
-  --color-splitter-hover: oklch(var(--p)/.4);
-  --color-splitter-drag: oklch(var(--p));
-  --color-drag-rect-border: oklch(var(--b3));
-  --color-drag-rect-background: oklch(var(--b3));
-  --color-drag-rect: oklch(var(--b1));
-  --color-popup-border: oklch(var(--b3));
-  --color-popup-unselected: oklch(var(--b1));
-  --color-popup-unselected-background: oklch(var(--b3));
-  --color-popup-selected: oklch(var(--b1));
-  --color-popup-selected-background: oklch(var(--b3));
-  --color-edge-marker: oklch(var(--n));
-  --color-underline: oklch(var(--i)); /* Info color for underline */
-  --color-underline-hover: oklch(var(--n)); /* Neutral color for hover state */
+  /* # ??? */
+  --color-tab-textbox-background:           oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+
+/* splitter */
+  --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-splitter:                         var(--appbar);
+  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
+  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
+
+  --color-drag-rect-border:                 oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-drag-rect-background:             oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-drag-rect:                        oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
+  --color-popup-border:                     oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-popup-unselected:                 oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
+  --color-popup-unselected-background:      oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-popup-selected:                   oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
+  --color-popup-selected-background:        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
+  --color-edge-marker:                      oklch(var(--n));
+  --color-underline:                        oklch(var(--i)); /* Info color for underline */
+  --color-underline-hover:                  oklch(var(--n)); /* Neutral color for hover state */
   --underline_height: 3px;
 }
 
@@ -98,7 +132,7 @@
 .flexlayout__edge_rect {
   position: absolute;
   z-index: 1000;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); */
   background-color: var(--color-edge-marker);
   pointer-events: none;
 }
@@ -148,7 +182,7 @@
   border-bottom: 1px solid var(--color-tabset-divider-line);
   color: var(--color-tabset-header);
   background-color: var(--color-tabset-header-background);
-  box-shadow: inset 0 0 3px 0 rgba(136, 136, 136, 0.54);
+  /* box-shadow: inset 0 0 3px 0 rgba(136, 136, 136, 0.54); */
 }
 .flexlayout__tabset_header_content {
   flex-grow: 1;
@@ -250,12 +284,12 @@
   color: var(--color-tab-unselected);
 }
 .flexlayout__tab_button_top {
-  box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
 .flexlayout__tab_button_bottom {
-  box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -419,7 +453,7 @@
   margin: 2px 0px;
   box-sizing: border-box;
   white-space: nowrap;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15); */
   border-radius: 3px;
 }
 .flexlayout__border_button--selected {
@@ -510,7 +544,7 @@
   }
 }
 .flexlayout__popup_menu_container {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15);
+  /* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15); */
   border: 1px solid var(--color-popup-border);
   color: var(--color-popup-unselected);
   background: var(--color-popup-unselected-background);

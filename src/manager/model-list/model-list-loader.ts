@@ -43,44 +43,65 @@ export const _getKnownModels = (
     if (DB.opts.genTypes) {
         // type ---------------------------
         let out1 = ''
-        const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.type] != null) acc[cur.type] += 1
-            else acc[cur.type] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqCategories: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.type] != null) acc[cur.type] += 1
+                else acc[cur.type] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out1 += `// prettier-ignore\n`
         out1 += 'export type KnownModel_Type =\n'
         for (const [cat, count] of Object.entries(uniqCategories))
             out1 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out1 += '\n'
+        out1 += 'export const knownModel_Type: KnownModel_Type[] = [\n'
+        for (const [cat, count] of Object.entries(uniqCategories))
+            out1 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
+        out1 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
         // savepath ---------------------------
         let out4 = ''
-        const uniqSavePath: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.save_path] != null) acc[cur.save_path] += 1
-            else acc[cur.save_path] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqSavePath: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.save_path] != null) acc[cur.save_path] += 1
+                else acc[cur.save_path] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out4 += `// prettier-ignore\n`
         out4 += 'export type KnownModel_SavePath =\n'
         for (const [cat, count] of Object.entries(uniqSavePath))
             out4 += `    | ${JSON.stringify(cat).padEnd(50)} // x ${count.toString().padStart(3)}\n`
         out4 += '\n'
+        out4 += 'export const knownModel_SavePath: KnownModel_SavePath[] = [\n'
+        for (const [cat, count] of Object.entries(uniqSavePath))
+            out4 += `    ${JSON.stringify(cat).padEnd(50)},  // x ${count.toString().padStart(3)}\n`
+        out4 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
 
         // base ---------------------------
         let out2 = ''
-        const uniqBases: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.base] != null) acc[cur.base] += 1
-            else acc[cur.base] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqBases: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.base] != null) acc[cur.base] += 1
+                else acc[cur.base] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out2 += `// prettier-ignore\n`
         out2 += 'export type KnownModel_Base =\n'
         for (const [cat, count] of Object.entries(uniqBases))
             out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out2 += '\n'
+        out2 += 'export const knownModel_Base: KnownModel_Base[] = [\n'
+        for (const [cat, count] of Object.entries(uniqBases))
+            out2 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
+        out2 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_Base.ts', out2 + '\n', 'utf-8')
 
         // KnownModel_Name ----------------------

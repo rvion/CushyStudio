@@ -5,7 +5,6 @@
 
 !schema/global.d.ts
 !schema/nodes.json
-!tsconfig.custom.json
 !CONFIG.json
 !library/**/*.ts
 !library/**/*.tsx

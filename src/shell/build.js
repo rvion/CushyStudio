@@ -31,6 +31,7 @@ async function build() {
     process.exit(0)
 }
 
+process.env.NODE_ENV = 'production'
 async function buildJS() {
     console.log(`[BUILD] 1. build js`)
     const shouldMinify = args.includes('mini') || args.includes('minify')
@@ -38,6 +39,11 @@ async function buildJS() {
     else console.log(`[BUILD] (NO minify)`)
 
     const res = await esbuild.build({
+        // https://github.com/evanw/esbuild/issues/2377#issuecomment-1178426065
+        define: {
+            'process.env.NODE_ENV': '"production"',
+        },
+        // entryPoints: ['src/app/main.tsx'],
         entryPoints: ['src/app/main.tsx'],
         bundle: true,
         minify: shouldMinify,
@@ -54,24 +60,23 @@ async function buildJS() {
         // external:
         // external: ['three'],
         // jsx: 'react',
-        jsxImportSource: 'src/utils/custom-jsx',
+        jsxImportSource: 'src/csuite/custom-jsx',
         alias: {
             // -----------------------------------------------------------------------
-            three: './src/syms/three.js',
             mobx: './src/syms/mobx.js',
-            'cytoscape-klay': './src/syms/cytoscape-klay.js',
-            cytoscape: './src/syms/cytoscape.js',
-            lexical: './src/syms/lexical.js',
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
             nsfwjs: './src/syms/nsfwjs.js',
+            '@tensorflow/tfjs': './src/syms/tfjs.js',
             'mime-types': './src/syms/mime-types.js',
 
             // -----------------------------------------------------------------------
             src: './src',
 
             // -----------------------------------------------------------------------
+            // 🔶 modifications must be kept in sync between :
+            //     | ./src/shell/build.js
+            //     | ./vite.config.ts
+            //     | ./src/shell/externals.cjs
             // injected node modules
-            // check the `src/syms/_.cjs`
             /* */ assert: `./src/syms/assert.js`,
             'node:assert': `./src/syms/assert.js`,
             /* */ url: `./src/syms/url.js`,
@@ -102,6 +107,8 @@ async function buildJS() {
             'node:events': `./src/syms/events.js`,
             /* */ async_hooks: `./src/syms/async_hooks.js`,
             'node:async_hooks': `./src/syms/async_hooks.js`,
+            /* */ crypto: `./src/syms/crypto.js`,
+            'node:crypto': `./src/syms/crypto.js`,
         },
         // external: [
         //     'assert',

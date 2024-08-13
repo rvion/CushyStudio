@@ -1,11 +1,11 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
 import { cwd } from 'process'
 
-import { toastError, toastInfo } from '../misc/toasts'
+import { toastError, toastInfo } from '../../csuite/utils/toasts'
 
 const workspaceFolderPath = cwd()
 
@@ -23,7 +23,8 @@ async function tryEditor(editor: string, filePath: string): Promise<void> {
     })
 }
 
-export async function openInVSCode(st: STATE, filePathWithinWorkspace: string): Promise<void> {
+export async function openInVSCode(filePathWithinWorkspace: string): Promise<void> {
+    const st: STATE = cushy
     return new Promise(async (resolvePromise, rejectPromise) => {
         // Resolve and check the existence of the workspace and file paths
         const absoluteWorkspacePath = pathResolve(workspaceFolderPath)

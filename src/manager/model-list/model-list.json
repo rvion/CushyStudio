@@ -586,16 +586,6 @@
       "url": "https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A3_orangemixs.safetensors"
     },
     {
-      "name": "Anything v3 (fp16; pruned)",
-      "type": "checkpoints",
-      "base": "SD1.5",
-      "save_path": "default",
-      "description": "Anything v3 (anime style)",
-      "reference": "https://huggingface.co/Linaqruf/anything-v3.0",
-      "filename": "anything-v3-fp16-pruned.safetensors",
-      "url": "https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/anything-v3-fp16-pruned.safetensors"
-    },
-    {
       "name": "Waifu Diffusion 1.5 Beta3 (fp16)",
       "type": "checkpoints",
       "base": "SD2.1",
@@ -824,6 +814,116 @@
       "reference": "https://huggingface.co/TencentARC/T2I-Adapter",
       "filename": "t2iadapter_style_sd14v1.pth",
       "url": "https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_style_sd14v1.pth"
+    },
+    {
+        "name": "T2I-Adapter XL (lineart) FP16",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for lineart",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-lineart-sdxl-1.0",
+        "filename": "t2i-adapter-lineart-sdxl-1.0.fp16.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-lineart-sdxl-1.0/resolve/main/diffusion_pytorch_model.fp16.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (canny) FP16",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for canny",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-canny-sdxl-1.0",
+        "filename": "t2i-adapter-canny-sdxl-1.0.fp16.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-canny-sdxl-1.0/resolve/main/diffusion_pytorch_model.fp16.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (depth-zoe) FP16",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for depth-zoe",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-depth-zoe-sdxl-1.0",
+        "filename": "t2i-adapter-depth-zoe-sdxl-1.0.fp16.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-depth-zoe-sdxl-1.0/resolve/main/diffusion_pytorch_model.fp16.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (depth-midas) FP16",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for depth-midas",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-depth-midas-sdxl-1.0",
+        "filename": "t2i-adapter-depth-midas-sdxl-1.0.fp16.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-depth-midas-sdxl-1.0/resolve/main/diffusion_pytorch_model.fp16.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (sketch) FP16",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for sketch",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-sketch-sdxl-1.0",
+        "filename": "t2i-adapter-sketch-sdxl-1.0.fp16.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-sketch-sdxl-1.0/resolve/main/diffusion_pytorch_model.fp16.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (lineart)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for lineart",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-lineart-sdxl-1.0",
+        "filename": "t2i-adapter-lineart-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-lineart-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (canny)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for canny",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-canny-sdxl-1.0",
+        "filename": "t2i-adapter-canny-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-canny-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (depth-zoe)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for depth-zoe",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-depth-zoe-sdxl-1.0",
+        "filename": "t2i-adapter-depth-zoe-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-depth-zoe-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (depth-midas)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for depth-midas",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-depth-midas-sdxl-1.0",
+        "filename": "t2i-adapter-depth-midas-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-depth-midas-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (sketch)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for sketch",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-sketch-sdxl-1.0",
+        "filename": "t2i-adapter-sketch-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-sketch-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+        "name": "T2I-Adapter XL (openpose)",
+        "type": "T2I-Adapter",
+        "base": "SDXL 1.0",
+        "save_path": "default",
+        "description": "ControlNet T2I-Adapter XL for openpose",
+        "reference": "https://huggingface.co/TencentARC/t2i-adapter-openpose-sdxl-1.0",
+        "filename": "t2i-adapter-openpose-sdxl-1.0.safetensors",
+        "url": "https://huggingface.co/TencentARC/t2i-adapter-openpose-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors"
     },
     {
       "name": "CiaraRowles/TemporalNet2",
@@ -1678,7 +1778,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15.safetensors"
     },
     {
-      "name": "ip-adapter_sd15_light.safetensors",
+      "name": "ip-adapter_sd15_light_v11.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/h94/IP-Adapter",
+      "filename": "ip-adapter_sd15_light_v11.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light_v11.bin"
+    },
+    {
+      "name": "ip-adapter_sd15_light.safetensors [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1686,16 +1796,6 @@
       "reference": "https://huggingface.co/h94/IP-Adapter",
       "filename": "ip-adapter_sd15_light.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
-    },
-    {
-      "name": "ip-adapter_sd15_vit-G.safetensors",
-      "type": "IP-Adapter",
-      "base": "SD1.5",
-      "save_path": "ipadapter",
-      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
-      "reference": "https://huggingface.co/h94/IP-Adapter",
-      "filename": "ip-adapter_sd15_vit-G.safetensors",
-      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_vit-G.safetensors"
     },
     {
       "name": "ip-adapter-plus_sd15.safetensors",
@@ -1728,6 +1828,16 @@
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-full-face_sd15.safetensors"
     },
     {
+      "name": "ip-adapter_sd15_vit-G.safetensors",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/h94/IP-Adapter",
+      "filename": "ip-adapter_sd15_vit-G.safetensors",
+      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_vit-G.safetensors"
+    },
+    {
       "name": "ip-adapter-faceid_sd15.bin",
       "type": "IP-Adapter",
       "base": "SD1.5",
@@ -1738,7 +1848,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15.bin"
     },
     {
-      "name": "ip-adapter-faceid-plus_sd15.bin",
+      "name": "ip-adapter-faceid-plusv2_sd15.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Plus V2 Model (SD1.5) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-plusv2_sd15.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-plus_sd15.bin [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1748,7 +1868,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15.bin"
     },
     {
-      "name": "ip-adapter-faceid-portrait_sd15.bin",
+      "name": "ip-adapter-faceid-portrait-v11_sd15.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait V11 Model (SD1.5) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait-v11_sd15.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait-v11_sd15.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-portrait_sd15.bin [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1778,6 +1908,26 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin"
     },
     {
+      "name": "ip-adapter-faceid-portrait_sdxl.bin",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait Model (SDXL) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait_sdxl.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-portrait_sdxl_unnorm.bin",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait Model (SDXL/unnorm) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait_sdxl_unnorm.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl_unnorm.bin"
+    },
+    {
       "name": "ip-adapter-faceid_sd15_lora.safetensors",
       "type": "lora",
       "base": "SD1.5",
@@ -1788,7 +1938,7 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15_lora.safetensors"
     },
     {
-      "name": "ip-adapter-faceid-plus_sd15_lora.safetensors",
+      "name": "ip-adapter-faceid-plus_sd15_lora.safetensors [DEPRECATED]",
       "type": "lora",
       "base": "SD1.5",
       "save_path": "loras/ipadapter",
@@ -1796,16 +1946,6 @@
       "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
       "filename": "ip-adapter-faceid-plus_sd15_lora.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15_lora.safetensors"
-    },
-    {
-      "name": "ip-adapter-faceid-plusv2_sd15.bin",
-      "type": "IP-Adapter",
-      "base": "SD1.5",
-      "save_path": "ipadapter",
-      "description": "IP-Adapter-FaceID-Plus V2 Model (SD1.5) [ipadapter]",
-      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
-      "filename": "ip-adapter-faceid-plusv2_sd15.bin",
-      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin"
     },
     {
       "name": "ip-adapter-faceid-plusv2_sd15_lora.safetensors",
@@ -1837,6 +1977,7 @@
       "filename": "ip-adapter-faceid-plusv2_sdxl_lora.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
     },
+    
     {
       "name": "ip-adapter_sdxl.safetensors",
       "type": "IP-Adapter",
@@ -1876,6 +2017,27 @@
       "reference": "https://huggingface.co/h94/IP-Adapter",
       "filename": "ip-adapter-plus-face_sdxl_vit-h.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors"
+    },
+
+    {
+      "name": "ip_plus_composition_sd15.safetensors",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/ostris/ip-composition-adapter",
+      "filename": "ip_plus_composition_sd15.safetensors",
+      "url": "https://huggingface.co/ostris/ip-composition-adapter/resolve/main/ip_plus_composition_sd15.safetensors"
+    },
+    {
+      "name": "ip_plus_composition_sdxl.safetensors",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/ostris/ip-composition-adapter",
+      "filename": "ip_plus_composition_sdxl.safetensors",
+      "url": "https://huggingface.co/ostris/ip-composition-adapter/resolve/main/ip_plus_composition_sdxl.safetensors"
     },
 
     {
@@ -2169,6 +2331,340 @@
       "reference": "https://github.com/cubiq/ComfyUI_IPAdapter_plus?tab=readme-ov-file#faceid",
       "filename": "w600k_r50.onnx",
       "url": "https://huggingface.co/public-data/insightface/resolve/main/models/buffalo_l/w600k_r50.onnx"
+    },
+    {
+        "name": "BLIP ImageCaption (COCO) w/ ViT-B and CapFilt-L",
+        "type": "BLIP_MODEL",
+        "base": "blip_model",
+        "save_path": "blip",
+        "description": "BLIP ImageCaption (COCO) w/ ViT-B and CapFilt-L",
+        "reference": "https://github.com/salesforce/BLIP",
+        "filename": "model_base_capfilt_large.pth",
+        "url": "https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_capfilt_large.pth"
+    },
+    {
+        "name": "GroundingDINO SwinT OGC - Model",
+        "type": "GroundingDINO",
+        "base": "DINO",
+        "save_path": "groundingdino",
+        "description": "GroundingDINO SwinT OGC Model",
+        "reference": "https://huggingface.co/ShilongLiu/GroundingDINO",
+        "filename": "groundingdino_swint_ogc.pth",
+        "url": "https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth"
+    },
+    {
+        "name": "GroundingDINO SwinT OGC - CFG File",
+        "type": "GroundingDINO",
+        "base": "DINO",
+        "save_path": "groundingdino",
+        "description": "GroundingDINO SwinT OGC CFG File",
+        "reference": "https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/GroundingDINO_SwinT_OGC.cfg.py",
+        "filename": "GroundingDINO_SwinT_OGC.cfg.py",
+        "url": "https://huggingface.co/ShilongLiu/GroundingDINO/raw/main/GroundingDINO_SwinT_OGC.cfg.py"
+    },
+    {
+        "name": "ViT-H SAM model",
+        "type": "sam",
+        "base": "SAM",
+        "save_path": "sams",
+        "description": "Segmenty Anything SAM model (ViT-H)",
+        "reference": "https://github.com/facebookresearch/segment-anything#model-checkpoints",
+        "filename": "sam_vit_h_4b8939.pth",
+        "url": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"
+    },
+    {
+        "name": "ViT-L SAM model",
+        "type": "sam",
+        "base": "SAM",
+        "save_path": "sams",
+        "description": "Segmenty Anything SAM model (ViT-L)",
+        "reference": "https://github.com/facebookresearch/segment-anything#model-checkpoints",
+        "filename": "sam_vit_l_0b3195.pth",
+        "url": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth"
+    },
+    {
+        "name": "MobileSAM",
+        "type": "sam",
+        "base": "SAM",
+        "save_path": "sams",
+        "description": "MobileSAM",
+        "reference": "https://github.com/ChaoningZhang/MobileSAM/",
+        "filename": "mobile_sam.pt",
+        "url": "https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt"
+    },
+    {
+      "name": "DynamiCrafter 1024 bf16 safetensors",
+      "type": "checkpoints",
+      "base": "DynamiCrafter",
+      "save_path": "checkpoints/dynamicrafter",
+      "description": "DynamiCrafter image2video model 1024x575", 
+      "reference": "https://huggingface.co/Kijai/DynamiCrafter_pruned/",
+      "filename": "dynamicrafter_1024_v1_bf16.safetensors",
+      "url": "https://huggingface.co/Kijai/DynamiCrafter_pruned/resolve/main/dynamicrafter_1024_v1_bf16.safetensors"
+    },
+    {
+      "name": "DynamiCrafter 512 interpolation bf16 safetensors",
+      "type": "checkpoints",
+      "base": "DynamiCrafter",
+      "save_path": "checkpoints/dynamicrafter",
+      "description": "DynamiCrafter image2video interpolation model 512", 
+      "reference": "https://huggingface.co/Kijai/DynamiCrafter_pruned/",
+      "filename": "dynamicrafter_512_interp_v1_bf16.safetensors",
+      "url": "https://huggingface.co/Kijai/DynamiCrafter_pruned/resolve/main/dynamicrafter_512_interp_v1_bf16.safetensors"
+    },
+    {
+      "name": "monster-labs - Controlnet QR Code Monster v1 For SDXL",
+      "type": "controlnet",
+      "base": "SDXL",
+      "save_path": "default",
+      "description": "monster-labs - Controlnet QR Code Monster v1 For SDXL", 
+      "reference": "https://huggingface.co/monster-labs/control_v1p_sdxl_qrcode_monster",
+      "filename": "control_v1p_sdxl_qrcode_monster.safetensors",
+      "url": "https://huggingface.co/monster-labs/control_v1p_sdxl_qrcode_monster/resolve/main/diffusion_pytorch_model.safetensors"
+    },
+    {
+      "name": "Depth-FM-v1 fp16 safetensors",
+      "type": "checkpoints",
+      "base": "Depth-FM",
+      "save_path": "checkpoints/depthfm",
+      "description": "Depth-FM monocular depth estimation model", 
+      "reference": "https://huggingface.co/Kijai/depth-fm-pruned",
+      "filename": "depthfm-v1_fp16.safetensors",
+      "url": "https://huggingface.co/Kijai/depth-fm-pruned/resolve/main/depthfm-v1_fp16.safetensors"
+    },
+    {
+      "name": "Depth-FM-v1 fp32 safetensors",
+      "type": "checkpoints",
+      "base": "Depth-FM",
+      "save_path": "checkpoints/depthfm",
+      "description": "Depth-FM monocular depth estimation model", 
+      "reference": "https://huggingface.co/Kijai/depth-fm-pruned",
+      "filename": "depthfm-v1_fp32.safetensors",
+      "url": "https://huggingface.co/Kijai/depth-fm-pruned/resolve/main/depthfm-v1_fp32.safetensors"
+    },
+    {
+      "name": "SUPIR-v0F.ckpt",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/camenduru/SUPIR/tree/main",
+      "filename": "SUPIR-v0F.ckpt",
+      "url": "https://huggingface.co/camenduru/SUPIR/resolve/main/SUPIR-v0F.ckpt"
+    },
+    {
+      "name": "SUPIR-v0Q.ckpt",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/camenduru/SUPIR/tree/main",
+      "filename": "SUPIR-v0Q.ckpt",
+      "url": "https://huggingface.co/camenduru/SUPIR/resolve/main/SUPIR-v0Q.ckpt"
+    },
+    {
+      "name": "Kijai/SUPIR-v0F_fp16.safetensors (pruned)",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/Kijai/SUPIR_pruned/tree/main",
+      "filename": "SUPIR-v0F_fp16.safetensors",
+      "url": "https://huggingface.co/Kijai/SUPIR_pruned/resolve/main/SUPIR-v0F_fp16.safetensors"
+    },
+    {
+      "name": "Kijai/SUPIR-v0Q_fp16.safetensors (pruned)",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/Kijai/SUPIR_pruned/tree/main",
+      "filename": "SUPIR-v0Q_fp16.safetensors",
+      "url": "https://huggingface.co/Kijai/SUPIR_pruned/resolve/main/SUPIR-v0Q_fp16.safetensors"
+    },
+    {
+      "name": "RAM",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "RAM Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize_anything_model",
+      "filename": "ram_swin_large_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize_anything_model/resolve/main/ram_swin_large_14m.pth"
+    },
+    {
+      "name": "RAM++",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "RAM++ Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize-anything-plus-model",
+      "filename": "ram_plus_swin_large_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize-anything-plus-model/resolve/main/ram_plus_swin_large_14m.pth"
+    },
+    {
+      "name": "tag2text",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "tag2text Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize_anything_model",
+      "filename": "tag2text_swin_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize_anything_model/resolve/main/tag2text_swin_14m.pth"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "model that been trained on 10M+ 3D objects from Objaverse-XL, used for generated rotated CamView",
+      "reference": "https://objaverse.allenai.org/docs/zero123-xl/",
+      "filename": "zero123-xl.ckpt",
+      "url": "https://huggingface.co/kealiu/zero123-xl/resolve/main/zero123-xl.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Stable Zero123 is a model for view-conditioned image generation based on [a/Zero123](https://github.com/cvlab-columbia/zero123).",
+      "reference": "https://huggingface.co/stabilityai/stable-zero123",
+      "filename": "stable_zero123.ckpt",
+      "url": "https://huggingface.co/stabilityai/stable-zero123/resolve/main/stable_zero123.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Zero123 original checkpoints in 105000 steps.",
+      "reference": "https://huggingface.co/cvlab/zero123-weights",
+      "filename": "zero123-105000.ckpt",
+      "url": "https://huggingface.co/cvlab/zero123-weights/resolve/main/105000.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Zero123 original checkpoints in 165000 steps.",
+      "reference": "https://huggingface.co/cvlab/zero123-weights",
+      "filename": "zero123-165000.ckpt",
+      "url": "https://huggingface.co/cvlab/zero123-weights/resolve/main/165000.ckpt"
+    },
+    {
+      "name": "InstantID/ip-adapter",
+      "type": "instantid",
+      "base": "SDXL",
+      "save_path": "instantid/SDXL",
+      "description": "ip-adapter model for cubiq/InstantID",
+      "reference": "https://huggingface.co/InstantX/InstantID",
+      "filename": "ip-adapter.bin",
+      "url": "https://huggingface.co/InstantX/InstantID/resolve/main/ip-adapter.bin"
+    },
+    {
+      "name": "InstantID/ControlNet",
+      "type": "controlnet",
+      "base": "SDXL",
+      "save_path": "controlnet/SDXL/instantid",
+      "description": "instantid controlnet model for cubiq/InstantID",
+      "reference": "https://huggingface.co/InstantX/InstantID",
+      "filename": "diffusion_pytorch_model.safetensors",
+      "url": "https://huggingface.co/InstantX/InstantID/resolve/main/ControlNetModel/diffusion_pytorch_model.safetensors"
+    },
+    {
+      "name": "MonsterMMORPG/insightface (for InstantID)",
+      "type": "insightface",
+      "base": "SDXL",
+      "save_path": "insightface/models",
+      "description": "MonsterMMORPG insightface model for cubiq/InstantID",
+      "reference": "https://huggingface.co/MonsterMMORPG/tools/tree/main",
+      "filename": "antelopev2.zip",
+      "url": "https://huggingface.co/MonsterMMORPG/tools/resolve/main/antelopev2.zip"
+    },
+    {
+      "name": "IC-Light/fc",
+      "type": "IC-Light",
+      "base": "SD1.5",
+      "save_path": "unet/IC-Light",
+      "description": "The default relighting model, conditioned on text and foreground",
+      "reference": "https://huggingface.co/lllyasviel/ic-light",
+      "filename": "iclight_sd15_fc.safetensors",
+      "url": "https://huggingface.co/lllyasviel/ic-light/resolve/main/iclight_sd15_fc.safetensors"
+    },
+    {
+      "name": "IC-Light/fbc",
+      "type": "IC-Light",
+      "base": "SD1.5",
+      "save_path": "unet/IC-Light",
+      "description": "Relighting model conditioned with text, foreground, and background",
+      "reference": "https://huggingface.co/lllyasviel/ic-light",
+      "filename": "iclight_sd15_fbc.safetensors",
+      "url": "https://huggingface.co/lllyasviel/ic-light/resolve/main/iclight_sd15_fbc.safetensors"
+    },
+    {
+      "name": "IC-Light/fcon",
+      "type": "IC-Light",
+      "base": "SD1.5",
+      "save_path": "unet/IC-Light",
+      "description": "Same as iclight_sd15_fc.safetensors, but trained with offset noise",
+      "reference": "https://huggingface.co/lllyasviel/ic-light",
+      "filename": "iclight_sd15_fcon.safetensors",
+      "url": "https://huggingface.co/lllyasviel/ic-light/resolve/main/iclight_sd15_fcon.safetensors"
+    },
+
+    
+    {
+      "name": "ID-Animator/animator.ckpt",
+      "type": "ID-Animator",
+      "base": "SD1.5",
+      "save_path": "custom_nodes/ComfyUI_ID_Animator/models",
+      "description": "ID-Animator checkpoint",
+      "reference": "https://huggingface.co/spaces/ID-Animator/ID-Animator",
+      "filename": "animator.ckpt",
+      "url": "https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/animator.ckpt"
+    },
+    {
+      "name": "ID-Animator/mm_sd_v15_v2.ckpt",
+      "type": "ID-Animator",
+      "base": "SD1.5",
+      "save_path": "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models",
+      "description": "AnimateDiff checkpoint for ID-Animator",
+      "reference": "https://huggingface.co/spaces/ID-Animator/ID-Animator",
+      "filename": "mm_sd_v15_v2.ckpt",
+      "url": "https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/mm_sd_v15_v2.ckpt"
+    },
+    {
+      "name": "ID-Animator/image_encoder",
+      "type": "ID-Animator",
+      "base": "SD1.5",
+      "save_path": "custom_nodes/ComfyUI_ID_Animator/models/image_encoder",
+      "description": "CLIP Image encoder for ID-Animator",
+      "reference": "https://huggingface.co/spaces/ID-Animator/ID-Animator",
+      "filename": "model.safetensors",
+      "url": "https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/image_encoder/model.safetensors"
+    },
+
+    {
+      "name": "TencentARC/CustomNet",
+      "type": "CustomNet",
+      "base": "CustomNet",
+      "save_path": "custom_nodes/ComfyUI_CustomNet/pretrain",
+      "description": "CustomNet pretrained model for ComfyUI_CustomNet",
+      "reference": "https://huggingface.co/TencentARC/CustomNet/tree/main",
+      "filename": "customnet_v1.pt",
+      "url": "https://huggingface.co/TencentARC/CustomNet/resolve/main/customnet_v1.pt"
+    },
+
+    {
+      "name": "TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic v2 (fp16)",
+      "type": "controlnet",
+      "base": "SDXL",
+      "save_path": "controlnet/SDXL",
+      "description": "[2.5GB] Controlnet SDXL Tile model realistic version.",
+      "reference": "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic",
+      "filename": "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors",
+      "url": "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors"
     }
   ]
 }

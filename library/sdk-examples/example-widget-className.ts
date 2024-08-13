@@ -7,14 +7,14 @@ app({
             items: {
                 frame: form.group({
                     className: ' p-2 bg-blue-800 rounded-xl',
-                    items: () => ({
+                    items: {
                         seed: form.seed({ default: 12, defaultMode: 'fixed' }),
                         positive: form.string({}),
-                    }),
+                    },
                 }),
                 portrait: form.group({
                     className: 'p-2 bg-red-800 ',
-                    items: () => ({ seed: form.seed({}) }),
+                    items: { seed: form.seed({}) },
                 }),
             },
         }),

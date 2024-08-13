@@ -1,58 +1,69 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Builder } from '../../../src/controls/Builder'
+import type { SchemaDict } from '../../../src/csuite'
+import type { MediaImageL } from '../../../src/models/MediaImage'
+import type { OutputFor } from './_prefabs'
 
-export const ui_mask = () => {
-    const form: FormBuilder = getCurrentForm()
+export type UI_Mask = X.XChoice<{
+    noMask: X.XGroup<SchemaDict>
+    mask: X.XGroup<{
+        image: X.XImage
+        mode: X.XEnum<Enum_LoadImageMask_channel>
+        invert: X.XBool
+        grow: X.XNumber
+        feather: X.XNumber
+        preview: X.XBool
+    }>
+}>
+
+export function ui_mask(): UI_Mask {
+    const form: X.Builder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
+        icon: 'mdiDominoMask',
         label: 'Mask',
         default: 'noMask',
+        // box: { base: { hue: 20, chroma: 0.03 } },
         items: {
             noMask: form.group(),
             mask: form.group({
                 collapsed: false,
                 label: false,
-                items: () => ({
+                items: {
                     image: form.image({}),
                     mode: form.enum.Enum_LoadImageMask_channel({}),
                     invert: form.bool({}),
+                    grow: form.int({ default: 0, min: -100, max: 100 }),
+                    feather: form.int({ default: 0, min: 0, max: 100 }),
+                    preview: form.bool({}),
                     // interrogate: form.bool({}),
-                }),
+                },
             }),
         },
     })
 }
 
-export const run_mask = async (p: {}) => {
-    // // init stuff
-    // const run = getCurrentRun()
-    // const graph = run.nodes
-    // const opts = p.opts
-    // // misc calculatiosn
-    // let width: number
-    // let height: number
-    // let latent: HasSingle_LATENT
-    // // case 1. start form image
-    // if (opts.image) {
-    //     const _img = run.loadImage(opts.image.imageID)
-    //     const image = await _img.loadInWorkflow()
-    //     latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-    //     width = _img.width
-    //     height = _img.height
-    // }
-    // // case 2. start form empty latent
-    // else if (opts.emptyLatent) {
-    //     width = opts.emptyLatent.size.width
-    //     height = opts.emptyLatent.size.height
-    //     latent = graph.EmptyLatentImage({
-    //         batch_size: opts.emptyLatent.batchSize ?? 1,
-    //         height: height,
-    //         width: width,
-    //     })
-    // }
-    // // default case
-    // else {
-    //     throw new Error('no latent')
-    // }
-    // // return everything
-    // return { latent, width, height }
+export async function run_mask(
+    //
+    x: OutputFor<typeof ui_mask>,
+    imageOverride?: Maybe<MediaImageL>,
+): Promise<HasSingle_MASK | null> {
+    const p = x.mask
+    if (p == null) return null
+
+    const graph = getCurrentRun().nodes
+
+    let mask: _MASK = await (imageOverride ?? p.image).loadInWorkflowAsMask(p.mode)
+
+    if (p.invert) mask = graph.InvertMask({ mask: mask })
+    if (p.grow) mask = graph.GrowMask({ mask: mask, expand: p.grow })
+    if (p.feather)
+        mask = graph.FeatherMask({
+            mask: mask,
+            bottom: p.feather,
+            top: p.feather,
+            left: p.feather,
+            right: p.feather,
+        })
+    if (p.preview) graph.PreviewImage({ images: graph.MaskToImage({ mask }) })
+    return mask
 }

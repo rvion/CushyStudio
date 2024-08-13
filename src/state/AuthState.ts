@@ -1,13 +1,12 @@
+import type { LiveTable } from '../db/LiveTable'
 import type { STATE } from './state'
 import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
-import type { LiveTable } from 'src/db/LiveTable'
-import type { AuthL } from 'src/models/Auth'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
+import { asAuthID, type NewAuth, type TABLES } from '../db/TYPES.gen'
 import { logger } from './logfile'
-import { asAuthID, Auth_C, AuthT } from 'src/db/TYPES.gen'
 
 export class AuthState {
     cleanup: Maybe<() => void> = null
@@ -30,8 +29,8 @@ export class AuthState {
 
     auth: SupabaseAuthClient
 
-    get authTable(): LiveTable<AuthT, Auth_C, AuthL> {
-        return this.st.db.auths
+    get authTable(): LiveTable<TABLES['auth']> {
+        return this.st.db.auth
     }
 
     get isConnected() {
@@ -65,7 +64,7 @@ export class AuthState {
 
     tryToRestoreAuthFromDB = async () => {
         logger.info(`[🔑 AUTH] restoring session from DB...`)
-        const prevAuth = this.st.db.auths.get(asAuthID('current'))
+        const prevAuth = this.st.db.auth.get(asAuthID('current'))
         if (prevAuth == null) return
         await this.authFrom({
             access_token: prevAuth.data.access_token!,
@@ -86,11 +85,11 @@ export class AuthState {
     }
 
     __testCB = () => {
-        this.st.layout.FOCUS_OR_CREATE('IFrame', {
+        this.st.layout.open('IFrame', {
             url: `http://localhost:${this.cushyPort}/public/auth/cb_test.html`,
             name: 'test 1',
         })
-        this.st.layout.FOCUS_OR_CREATE('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
+        this.st.layout.open('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
     }
     startLoginFlowWithGithub = async () => {
         logger.info(`[🔑 AUTH] starting login flow...`)
@@ -123,10 +122,10 @@ export class AuthState {
         win?.addEventListener('message', async (event) => {
             logger.info(`[🔑 AUTH] 🟢 callback received from sub-window...`)
             // 1. extract href
-            console.log(`[👙]`, event)
+            console.log(`[🧐]`, event)
             const data = event.data as { pageHref: string }
             const pageref = data.pageHref
-            console.log(`[👙]`, data.pageHref)
+            console.log(`[🧐]`, data.pageHref)
 
             // 2. parse callback to extract tokens
             const queryParams = new URL(pageref.replace('#', '?')).searchParams
@@ -140,7 +139,7 @@ export class AuthState {
             }
 
             // 3. ensure access_token & refresh_token are there
-            console.log(`[👙] event:`, payload)
+            console.log(`[🧐] event:`, payload)
             if (payload.access_token == null) throw new Error(`[🔑 AUTH] ❌ failure: payload.access_token is null`)
             if (payload.refresh_token == null) throw new Error(`[🔑 AUTH] ❌ failure: payload.refresh_token is null`)
 
@@ -189,9 +188,7 @@ export class AuthState {
     }
 
     storeSessionInfoInDB = (session: Session) => {
-        const payload: Omit<AuthT, 'createdAt' | 'updatedAt'> = {
-            id: asAuthID('current'),
-        }
+        const payload: NewAuth & { id: AuthID } = { id: asAuthID('current') }
         if (session.access_token) payload.access_token = session.access_token
         if (session.expires_at) payload.expires_at = session.expires_at
         if (session.expires_in) payload.expires_in = session.expires_in

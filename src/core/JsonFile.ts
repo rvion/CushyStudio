@@ -3,9 +3,10 @@ import JSON5 from 'json5'
 import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
-import { readableStringify } from '../utils/formatters/stringifyReadable'
+import { readableStringify } from '../csuite/formatters/stringifyReadable'
+import { bang } from '../csuite/utils/bang'
+import { debounce } from '../csuite/utils/debounce'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { bang } from '../utils/misc/bang'
 
 // import { ZodSchema } from 'zod'
 
@@ -63,26 +64,29 @@ export class JsonFile<T extends object> {
     get value() { return bang(this._value); } // prettier-ignore
 
     /** save the file */
-    save = (): true => {
-        console.info(`[💾] CONFIGsaving [${this.fileName}] to ${this._path}`)
+
+    _save = (): true => {
+        console.info(`[💾] CONFIG saving [${this.fileName}] to ${this._path}`)
         const maxLevel = this.p.maxLevel
         const content =
             maxLevel == null //
                 ? JSON.stringify(this.value, null, 4)
                 : readableStringify(this.value, maxLevel)
-        // console.warn(`[👙] save to `, this._path, content)
+        // console.warn(`[🧐] save to `, this._path, content)
         writeFileSync(this._path, content)
         return true
     }
 
+    save = debounce(this._save, 200, 2000)
+
     /** update config then save it */
-    update = (configChanges: Partial<T> | ((data: T) => void)): true => {
+    update = (configChanges: Partial<T> | ((data: T) => void)): void => {
         if (typeof configChanges === 'function') {
             configChanges(this.value)
         } else {
             Object.assign(this.value, configChanges)
         }
-        return this.save()
+        this.save()
     }
 
     init = (p: PersistedJSONInfo<T>): T => {

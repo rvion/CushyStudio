@@ -1,9 +1,11 @@
 /** 📝 This needs to be a .tsx file */
 
-import type { CustomWidgetProps } from 'src/controls/widgets/custom/WidgetCustom'
+import type { CustomWidgetProps } from '../../src/csuite/fields/custom/FieldCustom'
+
 import { observer } from 'mobx-react-lite'
-import { MyCustomComponent2 } from './example-widget-custom-2'
 import Confetti from 'react-confetti'
+
+import { MyCustomComponent2 } from './example-widget-custom-2'
 
 const MyCustomComponent = observer(function (
     p: CustomWidgetProps<{
@@ -12,14 +14,14 @@ const MyCustomComponent = observer(function (
         image?: MediaImageID
     }>,
 ) {
-    const value = p.widget.serial.value
-    const img = value.image ?? cushy.db.media_images.last()
+    const value = p.field.value
+    const img = value.image ?? cushy.db.media_image.last()
     return (
-        <div className='flex flex-col gap-2 virtualBorder p-2'>
+        <div className='flex flex-col gap-2 p-2'>
             {/* Text Input -------------------------------------------------------- */}
             type "reset" in the field here and press play to reset the state
             <input
-                tw='input input-bordered p-2'
+                tw='csuite-basic-input p-2'
                 value={value.text ?? `Nothing to see here!`}
                 onChange={(ev) => (value.text = ev.target.value)}
             />
@@ -60,6 +62,6 @@ app({
         run.output_text(`You have clicked it ${clickCount ?? 0} times (before resetting)`)
 
         /** 📝 programmatically reset the state from the UI */
-        if (ui.demo.text === 'reset') run.formInstance.fields.demo.reset()
+        if (ui.demo.text === 'reset') run.form.fields.demo.reset()
     },
 })

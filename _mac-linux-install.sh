@@ -29,13 +29,45 @@ case "$OS" in
             "aarch64") NODE_ARCH="linux-arm64" ;; # aarch64 is another name for arm64 in Linux
             *) echo "Unsupported architecture: $ARCH for Linux"; exit 1 ;;
         esac
+
+        LSHARE="$HOME/.local/share"
+        SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+        mkdir -p $LSHARE/applications
+        mkdir -p $LSHARE/icons
+
+        echo "Installing icon to $LSHARE/icons/cushystudio-shell.png"
+        # Install icons and .desktop file for Wayland's title icon and tray name to work properly.
+        cp "./public/CushyLogo-512.png" "$LSHARE/icons/cushystudio-shell.png"
+
+        echo "Installing .desktop file to $LSHARE/applications/cushystudio-shell.desktop"
+        # The desktop file's name must match the app_id set by electron, which just seems to use the name set in the electron package.json
+        # https://github.com/electron/electron/issues/33578
+        # The cd feels hacky but it's needed unless we add that to the script itself.
+        # I know this is ugly, but do not format this to look nice or it will break.
+        echo "[Desktop Entry]
+Type=Application
+Name=CushyStudio
+Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start.sh\"'
+Path="$SCRIPTPATH"
+Icon=cushystudio-shell
+Terminal=false
+Actions=Developer;
+Keywords=Ai;Image Generation;
+
+[Desktop Action Developer]
+Name=CushyStudio (dev)
+Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start-dev.sh\"'
+" > "$LSHARE/applications/cushystudio-shell.desktop"
+
+
         ;;
     *)
         echo "Unsupported operating system: $OS"; exit 1 ;;
 esac
 echo "Node.js architecture: $NODE_ARCH"
 
-NODE_VERSION="v18.19.0"
+NODE_VERSION="v20.14.0"
 echo "Node.js version: $NODE_VERSION"
 
 # Define the download URL ------------------------------------------------------------
@@ -119,18 +151,6 @@ $NPM_BIN_PATH install --legacy-peer-deps=false
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps
-
-# Define the path to tsconfig.custom.json
-tsconfigPath="./tsconfig.custom.json"
-
-# JSON content to write if the file does not exist
-defaultTsconfigJSON='{ "include": ["src", "schema/global.d.ts"], "exclude": [] }'
-
-# Check if the file exists
-if [ ! -f "$tsconfigPath" ]; then
-    # Write the JSON content to the file without formatting
-    echo "$defaultTsconfigJSON" > "$tsconfigPath"
-fi
 
 # Build the release folder
 ./node_modules/.bin/electron -i src/shell/build.js js css

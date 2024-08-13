@@ -14,12 +14,12 @@ export class ResilientWebSocketClient {
 
     debugMessages: { type: 'info' | 'error'; timestamp: number; message: string }[] = []
 
-    addInfo = (msg: string) => {
+    private addInfo(msg: string): void {
         this.debugMessages.push({ type: 'info', timestamp: Date.now(), message: msg })
         console.info('[🧦] WS:', msg)
     }
 
-    addError = (err: string) => {
+    private addError(err: string): void {
         this.debugMessages.push({ type: 'error', timestamp: Date.now(), message: err })
         console.error('[🧦] WS:', err)
     }
@@ -38,14 +38,14 @@ export class ResilientWebSocketClient {
         // this.protocols = options.protocols
     }
 
-    reconnectTimeout?: Maybe<NodeJS.Timeout>
+    private reconnectTimeout?: Maybe<NodeJS.Timeout>
 
-    updateURL = (url: string): void => {
+    private updateURL(url: string): void {
         this.url = url
         this.connect()
     }
 
-    connect = (): void => {
+    private connect(): void {
         this.isOpen = false
         const prevWS = this.currentWS
 
@@ -63,12 +63,12 @@ export class ResilientWebSocketClient {
         this.currentWS = ws
 
         if (this.options.onMessage) {
-            ws.onmessage = (event: MessageEvent) => {
+            ws.onmessage = (event: MessageEvent): void => {
                 this.options.onMessage(event)
             }
         }
 
-        ws.onopen = (event: Event) => {
+        ws.onopen = (event: Event): void => {
             if (ws !== this.currentWS) return
             this.addInfo('✅ WebSocket connected to ' + this.url)
             this.isOpen = true
@@ -76,7 +76,7 @@ export class ResilientWebSocketClient {
             this.flushMessageBuffer()
         }
 
-        ws.onclose = (event: CloseEvent) => {
+        ws.onclose = (event: CloseEvent): void => {
             if (ws !== this.currentWS) return
             this.addError(`WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
@@ -84,7 +84,7 @@ export class ResilientWebSocketClient {
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
         }
 
-        ws.onerror = (event: Event) => {
+        ws.onerror = (event: Event): void => {
             if (ws !== this.currentWS) return
             this.addError(`WebSocket ERROR` + JSON.stringify(event))
             console.error({ event })

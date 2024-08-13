@@ -1,5 +1,5 @@
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { writeFileSync } from 'fs'
 import { keys } from 'mobx'
@@ -7,17 +7,17 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { Surface } from '../csuite/inputs/shims'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { toastError } from '../csuite/utils/toasts'
+import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
+import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
-import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
-import { MessageInfoUI } from 'src/panels/MessageUI'
-import { Panel } from 'src/rsuite/shims'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { toastError } from 'src/utils/misc/toasts'
-import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
 
 export interface FileListProps {
     files: File[]
@@ -42,7 +42,7 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
                 tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
                 onClick={async () => {
                     if (!uiSt.validImage) return
-                    await createMediaImage_fromFileObject(st, file)
+                    await createMediaImage_fromFileObject(file)
                 }}
             >
                 import as image
@@ -103,13 +103,13 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
     ]
     return (
-        <Panel className={p.className} tw='bg-base-300 overflow-auto virtua'>
-            <Field k='name' v={file.name} />
-            <Field k='size' v={file.size} />
-            <Field k='name' v={file.type} />
+        <Surface className={p.className} tw='overflow-auto virtua'>
+            <LegacyFieldUI k='name' v={file.name} />
+            <LegacyFieldUI k='size' v={file.size} />
+            <LegacyFieldUI k='name' v={file.type} />
             {/* ${file.name}' of size '${file.size}' and type '${file.type}'<div>metadata:</div> */}
-            <Field k='metadata' v={metadata} />
-            <Field k='workflowJSON' v={workflowJSON} />
+            <LegacyFieldUI k='metadata' v={metadata} />
+            <LegacyFieldUI k='workflowJSON' v={workflowJSON} />
             {/* <div>workfow:</div> */}
             {/* <pre>{JSON.stringify(workflowJSON)}</pre> */}
 
@@ -145,7 +145,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                             const res = await file.extractScriptFromFile()
                             if (res.type === 'failed') return toastError('failed to extract script')
                             const script = res.script
-                            script.evaluateAndUpdateApps()
+                            script.evaluateAndUpdateAppsAndViews()
                             const apps = script._apps_viaScript
                             if (apps == null) return toastError('no app found (apps is null)')
                             if (apps.length === 0) return toastError('no app found (apps.length === 0)')
@@ -162,11 +162,11 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
             )}
             {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
             {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
-        </Panel>
+        </Surface>
     )
 })
 
-const Field = observer(function Field_(p: { k: string; v: string | number | object }) {
+const LegacyFieldUI = observer(function LegacyFieldUI_(p: { k: string; v: string | number | object }) {
     return (
         <div className='flex items-start gap-1'>
             <div className='text-neutral-content italic'>{p.k}:</div>

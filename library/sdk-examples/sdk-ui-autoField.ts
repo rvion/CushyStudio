@@ -4,7 +4,6 @@ app({
         FeatherMask: form.auto.FeatherMask(),
         EmptyLatentImage: form.auto.EmptyLatentImage(),
         KSampler: form.auto.KSampler(),
-        text: form.auto.Text(),
 
         // case 2. invalid node
         // @ts-expect-error

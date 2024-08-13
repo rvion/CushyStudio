@@ -2,26 +2,26 @@ app({
     // name: 'playground-seed-widget',
     ui: (form) => ({
         nesstedGroups: form.group({
-            items: () => ({
+            items: {
                 Jack: form.string({ default: 'gold, Knight' }),
                 AAAAA: form.group({
-                    items: () => ({
+                    items: {
                         Jack: form.string({ default: 'gold, Knight' }),
                         foo: form.group({
                             layout: 'H',
-                            items: () => ({
+                            items: {
                                 Jack: form.string({ default: 'gold, Knight' }),
                                 Queen: form.string({ default: 'gold, Queen' }),
                                 King: form.string({ default: 'gold, King' }),
-                            }),
+                            },
                         }),
                         Queen: form.string({ default: 'gold, Queen' }),
                         King: form.string({ default: 'gold, King' }),
-                    }),
+                    },
                 }),
                 Queen: form.string({ default: 'gold, Queen' }),
                 King: form.string({ default: 'gold, King' }),
-            }),
+            },
         }),
     }),
 

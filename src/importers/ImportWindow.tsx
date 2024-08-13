@@ -1,5 +1,5 @@
 // import { observer } from 'mobx-react-lite'
-// import { Modal } from 'src/rsuite/shims'
+// import { Modal } from '../rsuite/shims'
 
 // export const ImportWindowUI = observer(function ImportWindowUI_(p: {}) {
 //     const workspace = useWorkspace()

@@ -2,14 +2,6 @@ import { observer } from 'mobx-react-lite'
 
 import { CSCriticalError } from '../CSCriticalError'
 
-// export const EditorPaneUI = observer(function EditorPaneUI_() {
-//     const client = useWorkspace()
-//     if (client.CRITICAL_ERROR) return
-//     return null // 🔴
-//     // if (monaco == null) return <div>loading monaco</div>
-//     // return <ComfyCodeEditorUI />
-// })
-
 export const ErrorScreenUI = observer(function ErrorScreenUI_(p: { err: CSCriticalError }) {
     return (
         <div

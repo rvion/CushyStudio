@@ -1,3 +1,8 @@
+import { TreeKeys } from '../../csuite/tree/TreeKeys'
+
+// TODO: find a way to mix those with tree shortcuts:
+// in /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/xxx/TreeShortcuts.ts
+
 // prettier-ignore
 export const KEYS = {
     search: 'mod+f',
@@ -32,19 +37,7 @@ export const KEYS = {
     // global
     focusAppAndDraftTree: ['mod+1', 'mod+shift+e', 'mod+b'],
     focusFileExplorerTree: 'mod+2',
-    collapseAllTree: 'mod+shift+k',
-    // in-tree stuff
-    // tree_focusFilter:                 '/',
-    tree_moveUp:                      'ArrowUp',
-    tree_moveDown:                    'ArrowDown',
-    tree_moveRight:                   'ArrowRight',
-    tree_moveLeft:                    'ArrowLeft',
-    tree_deleteNodeAndFocusNodeAbove: 'Backspace',
-    tree_deleteNodeAndFocusNodeBelow: 'Delete',
-    tree_onPrimaryAction:             'Enter',
-    tree_movePageUp:                  'PageUp',
-    tree_movePageDown:                'PageDown',
-}
 
-// TODO: find a way to mix those with tree shortcuts:
-// in /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/xxx/TreeShortcuts.ts
+    // in-tree stuff
+    ...TreeKeys,
+}

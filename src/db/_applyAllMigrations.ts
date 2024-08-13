@@ -3,38 +3,49 @@ import BetterSqlite3 from 'better-sqlite3'
 import { Migration } from './_setupMigrationEngine'
 import { migrations } from './migrations'
 
-export const _applyAllMigrations = (store: {
+export type MigrationContext = {
     //
     db: BetterSqlite3.Database
     log: (...res: any[]) => void
-}) => {
-    const db = store.db
+}
+
+export const _applyAllMigrations = (ctx: MigrationContext) => {
+    const db = ctx.db
     const executedMigrations: Migration[] = db.prepare('select * from migrations').all() as Migration[]
     // const executedMigrationsNames = executedMigrations.map((e) => e.name)
     // store.log(`x executedMigrations:`, executedMigrationsNames)
 
     for (const migration of migrations) {
+        if (migration.skip) continue
         const hasRun = executedMigrations.find((m) => m.id === migration.id)
         if (hasRun) {
             // store.log(`🔵 HAS RUN |`, migration.name)
             continue
-        } else store.log(`🔵 MUST RUN |`, migration.name)
+        } else ctx.log(`🔵 MUST RUN |`, migration.name)
 
         db.transaction(() => {
             const now = Date.now()
-            store.log(`🔵`, migration.id, 'running')
+            ctx.log(`🔵`, migration.id, 'running')
 
-            const stmts = Array.isArray(migration.up) ? migration.up : [migration.up]
-            for (const s of stmts) store.log(db.prepare(s).run())
+            const actions = Array.isArray(migration.up) ? migration.up : [migration.up]
+            for (const action of actions) {
+                if (typeof action === 'string') {
+                    // action is a raw SQL string
+                    ctx.log(db.prepare(action).run())
+                } else {
+                    // action is a lamda ufnctino
+                    action(ctx)
+                }
+            }
 
-            store.log(`🔵`, migration.id, 'saving that it has run')
+            ctx.log(`🔵`, migration.id, 'saving that it has run')
             const stmt2 = db.prepare(`insert into migrations (id, createdAt, name, sql) values (@id, @createdAt, @name, @sql)`)
-            store.log(
+            ctx.log(
                 stmt2.run({
                     id: migration.id,
                     name: migration.name,
                     createdAt: now,
-                    sql: stmts.join(';\n'),
+                    sql: actions.join(';\n'),
                 }),
             )
         })()

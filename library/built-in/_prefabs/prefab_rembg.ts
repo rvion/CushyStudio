@@ -1,26 +1,41 @@
 import type { OutputFor } from './_prefabs'
 
-export const ui_rembg_v1 = () => {
+export type UI_rembg_v1 = X.XChoices<{
+    RemBG: X.XEmpty
+    isnetAnime: X.XEmpty
+    isnetGeneralUse: X.XEmpty
+    silueta: X.XEmpty
+    u2net: X.XEmpty
+    u2net_human_seg: X.XEmpty
+    u2netp: X.XEmpty
+    RemBGV1_4: X.XEmpty
+}>
+
+export function ui_rembg_v1(): UI_rembg_v1 {
     const form = getCurrentForm()
-    return form.choices({
-        requirements: [
+    return form
+        .choices({
+            // appearance: 'tab',
+            expand: true,
+            // appearance: 'tab',
+            // prettier-ignore
+            icon:'mdiTargetAccount',
+            items: {
+                RemBG: form.empty(),
+                // ABG:             form.ok(),
+                isnetAnime: form.empty(),
+                isnetGeneralUse: form.empty(),
+                silueta: form.empty(),
+                u2net: form.empty(),
+                u2net_human_seg: form.empty(),
+                u2netp: form.empty(),
+                RemBGV1_4: form.empty(),
+            },
+        })
+        .addRequirements([
             { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
             { type: 'modelInManager', modelName: 'TEMP_briaai_RMBG-1.4' },
-        ],
-        // appearance: 'tab',
-        // prettier-ignore
-        items: {
-            RemBG:           form.group(),
-            ABG:             form.group(),
-            isnetAnime:      form.group(),
-            isnetGeneralUse: form.group(),
-            silueta:         form.group(),
-            u2net:           form.group(),
-            u2net_human_seg: form.group(),
-            u2netp:          form.group(),
-            RemBGV1_4:       form.group(),
-        },
-    })
+        ])
 }
 
 export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): _IMAGE[] => {
@@ -30,9 +45,8 @@ export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): 
         graph.PreviewImage({ images: img }).tag(tag)
         OUT.push(img)
     }
-    console.log(`[👙] `, ui)
     if (ui.RemBG)            addImg('RemBG',           graph.Image_Remove_Background_$1rembg$2({ image })) // prettier-ignore
-    if (ui.ABG)              addImg('ABG',             graph.Remove_Image_Background_$1abg$2  ({ image }) ) // prettier-ignore
+    // if (ui.ABG)              addImg('ABG',             graph.Remove_Image_Background_$1abg$2  ({ image }) ) // prettier-ignore
     if (ui.isnetAnime)       addImg('isnetAnime',      graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-anime',       background_color: 'none', }), ) // prettier-ignore
     if (ui.isnetGeneralUse)  addImg('isnetGeneralUse', graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-general-use', background_color: 'none', }), ) // prettier-ignore
     if (ui.silueta)          addImg('silueta',         graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'silueta',           background_color: 'none', }), ) // prettier-ignore

@@ -1,4 +1,4 @@
-import type { ImageStore } from 'src/back/ImageStore'
+import type { ImageStore } from '../../src/back/ImageStore'
 
 // ID = library/built-in/parallel-2023-12-19.ts:0
 app({

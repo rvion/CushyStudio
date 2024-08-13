@@ -1,10 +1,31 @@
-import type { CushyScriptL } from './CushyScriptL'
-import type { App } from 'src/cards/App'
-import type { AppMetadata } from 'src/cards/AppManifest'
+import type { App, AppRef, CustomView, CustomViewRef } from '../cards/App'
+import type { AppMetadata } from '../cards/AppManifest'
+import type { CushyScriptL } from './CushyScript'
 
 import { basename } from 'pathe'
 
-import { asCushyAppID } from 'src/db/TYPES.gen'
+import { asCushyAppID } from '../db/TYPES.gen'
+
+export class LoadedCustomView<T = any> {
+    constructor(
+        //
+        public script: CushyScriptL,
+        public ix: number,
+        public def: CustomView<T>,
+    ) {}
+
+    get id(): CushyViewID {
+        return (this.script.relPath + ':' + this.ix) as CushyViewID
+    }
+
+    get ref(): CustomViewRef<any> {
+        return {
+            id: this.id,
+            /** this is a virtual property; only here so app refs can carry the type-level form information. */
+            $PARAMS: 0,
+        }
+    }
+}
 
 export class Executable {
     constructor(
@@ -48,5 +69,13 @@ export class Executable {
 
     get appID(): CushyAppID {
         return asCushyAppID(this.script.relPath + ':' + this.ix)
+    }
+
+    get ref(): AppRef<any> {
+        return {
+            id: this.appID,
+            /** this is a virtual property; only here so app refs can carry the type-level form information. */
+            $FIELDS: 0,
+        }
     }
 }

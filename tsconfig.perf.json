@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": false,
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": false,
+        "skipLibCheck": false,
+        "incremental": false, // 🔴
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "strictFunctionTypes": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "noUncheckedIndexedAccess": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        // "baseUrl": ".",
+        "typeRoots": ["src/typings"],
+        "types": [],
+        "paths": {
+            // overrides
+            "nsfwjs": ["./src/typings/nsfwjs.d.ts"],
+
+            // emptied
+            "typescript": ["./src/typings/empty-types.d.ts"],
+            "webgl2": ["./src/typings/empty-types.d.ts"],
+            "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"]
+        },
+        // -------------// -------------
+        // /* specific to base */ "tsBuildInfoFile": ".tsbuildinfo",
+        /* specific to base */ "noEmit": true
+    },
+
+    // this file will be created by CushyStudio itself
+    // when it runs for the first time
+    // it will allow to only see errors in decks you either
+    // MAINTAIN or are CURRENTLY WORKING ON
+    "extends": "./tsconfig.custom.json"
+}

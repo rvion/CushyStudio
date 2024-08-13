@@ -1,4 +1,4 @@
-import type { Runtime } from 'src/runtime/Runtime'
+import type { Runtime } from '../runtime/Runtime'
 
 import { AsyncLocalStorage } from 'async_hooks'
 

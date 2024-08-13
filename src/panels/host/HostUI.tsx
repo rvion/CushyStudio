@@ -1,13 +1,18 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
+import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
+import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
+import { HostL } from '../../models/Host'
+import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { HostL } from 'src/models/Host'
-import { HostSchemaIndicatorUI } from 'src/panels/host/HostSchemaIndicatorUI'
-import { HostWebsocketIndicatorUI } from 'src/panels/host/HostWebsocketIndicatorUI'
-import { Joined, Toggle } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
+import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
+import { HostWebsocketIndicatorUI } from './HostWebsocketIndicatorUI'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const st = useSt()
@@ -16,19 +21,15 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const isMain = host.id === config.mainComfyHostID
     const disabled = host.data.isVirtual ? true : false
     return (
-        <div
-            tw={[
-                //
-                'virtualBorder',
-                'p-2 bg-base-200 w-96 shadow-xl',
-                isMain && 'bg-primary bg-opacity-30',
-            ]}
+        <Frame
+            base={{
+                contrast: isMain ? 0.1 : 0.03,
+                chroma: isMain ? 0.05 : undefined,
+                hue: isMain ? knownOKLCHHues.success : undefined,
+            }}
+            border={10}
+            tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >
-            {/* {host.data.isReadonly ? (
-                <div tw='bg-secondary text-secondary-content p-0.5 opacity-50'>Readonly Host (Built-in)</div>
-            ) : (
-                <div tw='bg-base-100 p-0.5'>Custom Host</div>
-            )} */}
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
                 {host.data.isVirtual ? (
@@ -40,23 +41,18 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <Joined tw='flex '>
-                    <div
-                        tw={[
-                            //
-                            isMain ? 'btn-success' : 'btn-info btn-outline',
-                            `btn btn-sm flex-grow font-bold`,
-                        ]}
-                        onClick={() => host.electAsPrimary()}
-                    >
-                        Set Primary
-                        {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
-                    </div>
-                    <div onClick={() => host.CONNECT()} tw='btn btn-sm btn-outline'>
-                        {host.isConnected ? 'Re-Connect' : 'Connect'}
-                    </div>
-                    <div
-                        tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
+                <FrameWithCSuiteOverride line config={{ inputHeight: 3 }}>
+                    <Button look='success' expand active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
+                    <Button look='ghost' onClick={() => host.CONNECT()} children={host.isConnected ? 'Re-Connect' : 'Connect'} />
+                    <Button
+                        look='ghost'
+                        icon='mdiContentDuplicate'
+                        onClick={() => host.clone({ name: host.data.name + '-clone' })}
+                        children='clone'
+                    />
+                    <Button
+                        icon='mdiDelete'
+                        disabled={host.isReadonly}
                         onClick={() => {
                             if (host.isReadonly) return
                             runInAction(() => {
@@ -69,10 +65,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             //     if (index != null) config.comfyUIHosts?.splice(index, 1)
                             // })
                         }}
-                    >
-                        <span className='material-symbols-outlined'>delete_forever</span>
-                    </div>
-                </Joined>
+                    ></Button>
+                </FrameWithCSuiteOverride>
 
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}
@@ -81,7 +75,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>name</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='csuite-basic-input w-full'
                         onChange={(ev) => host.update({ name: ev.target.value })}
                         value={host.data.name ?? 'unnamed'}
                     ></input>
@@ -92,7 +86,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Host</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='csuite-basic-input w-full' //
                         onChange={(ev) => host.update({ hostname: ev.target.value })}
                         value={host.data.hostname ?? ''}
                     ></input>
@@ -103,7 +97,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='w-14'>Port</div>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full' //
+                        tw='csuite-basic-input w-full' //
                         value={host.data.port ?? 8188}
                         onChange={(ev) => {
                             const next = ev.target.value
@@ -112,32 +106,24 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     ></input>
                 </div>
 
-                {/* HTTPS */}
-                <div tw='flex gap-2'>
-                    <Toggle //
-                        disabled={disabled}
-                        checked={host.data.useHttps ? true : false}
-                        onChange={(ev) => host.update({ useHttps: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        name='useHttps'
-                    />
-                    <LabelUI>use HTTPS</LabelUI>
-                </div>
+                <InputBoolUI // HTTPS
+                    disabled={disabled}
+                    value={host.data.useHttps ? true : false}
+                    onValueChange={(next) => host.update({ useHttps: next ? SQLITE_true : SQLITE_false })}
+                    text='use HTTPS'
+                />
+                <InputBoolUI // LOCAL PATH
+                    disabled={disabled}
+                    onValueChange={(next) => host.update({ isLocal: next ? SQLITE_true : SQLITE_false })}
+                    value={host.data.isLocal ? true : false}
+                    text='Is local'
+                />
 
-                {/* LOCAL PATH */}
-                <div tw='flex items-center gap-1'>
-                    <Toggle
-                        //
-                        disabled={disabled}
-                        onChange={(ev) => host.update({ isLocal: ev.target.checked ? SQLITE_true : SQLITE_false })}
-                        checked={host.data.isLocal ? true : false}
-                    />
-                    <LabelUI>is local</LabelUI>
-                </div>
                 <div tw='flex flex-col'>
                     <LabelUI>absolute path to ComfyUI install folder</LabelUI>
                     <input
                         disabled={disabled}
-                        tw='input input-bordered input-sm w-full'
+                        tw='csuite-basic-input w-full'
                         type='string'
                         onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
                         value={host.data.absolutePathToComfyUI ?? ''}
@@ -145,18 +131,25 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
                 <div tw='flex flex-col'>
                     <LabelUI>Absolute path to model folder</LabelUI>
-                    <input
-                        tw='input input-bordered input-sm w-full'
-                        type='string'
+                    <InputStringUI
+                        tw='w-full'
                         disabled={disabled}
-                        onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}
-                        value={host.data.absolutPathToDownloadModelsTo ?? ''}
-                    ></input>
+                        setValue={(next) => host.update({ absolutPathToDownloadModelsTo: next })}
+                        getValue={() => host.data.absolutPathToDownloadModelsTo ?? ''}
+                    />
                 </div>
                 {/* ID */}
                 <div tw='flex'>
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
                 </div>
+                <Button
+                    onClick={async () => {
+                        const res = await host.manager.configureLogging(true)
+                        console.log(`[🤠] res=`, res)
+                    }}
+                >
+                    Forward logs via manager
+                </Button>
             </div>
             {/* <div tw='divider m-1'></div> */}
             {/* <div tw='font-bold under'>Status</div> */}
@@ -169,6 +162,6 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div>isLoaded: {host.isConnected ? 'true' : 'false'}</div>
             </div> */}
             {/* STATUS */}
-        </div>
+        </Frame>
     )
 })

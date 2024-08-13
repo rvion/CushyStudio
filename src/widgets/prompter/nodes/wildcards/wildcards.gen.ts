@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync } from 'fs'
 
-import { CodeBuffer } from 'src/utils/codegen/CodeBuffer'
+import { CodeBuffer } from '../../../../utils/codegen/CodeBuffer'
 
 const files = readdirSync('tmp/wildcards')
 const names = files.map((y) => y.replace(/.ts/g, '').replace(/-/g, '_').replace(/.txt/g, ''))

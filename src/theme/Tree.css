@@ -25,3 +25,9 @@
 ._TreeUI ._gutter {
     display: flex;
 }
+
+/* used for indentation */
+/* e.g. https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/abe5a6c0a5600efe290e52c2083a5728a1bc378a.jpg */
+.cushy-borderLeft {
+    border-left: 1px solid oklch(var(--bc)/0.2);
+}

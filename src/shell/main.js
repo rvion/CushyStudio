@@ -1,6 +1,8 @@
 const { mkdirSync } = require('fs')
+const { cwd } = require('process')
+const { clipboard } = require('electron')
 
-START()
+void START()
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
@@ -13,30 +15,32 @@ async function START() {
         process.exit(1)
     }
 
-    const PORT = mode === 'dist' ? 8688 : 8788
+    const EXPRESS_PORT = 8688
+    const VITE_PORT = 8788
+    const UI_PORT = mode === 'dist' ? EXPRESS_PORT : VITE_PORT
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
     // ==//=====//======//======//======//======//======//======//======//======//======//======//===
     // 1. START VITE DEV SERVER
 
     // DIST MODE ------------------------------------------
     const express = require('express')
-    if (mode === 'dist') {
-        async function startDistServer() {
-            const app = express()
-            const path = require('path')
+    const expressApp = express()
+    const bodyParser = require('body-parser')
+    expressApp.use(bodyParser.json({ limit: '20mb' }))
+    expressApp.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }))
+    const path = require('path')
 
-            // Directory paths for the two public folders
-            app.use(express.static('release'))
-            app.use(express.static('library'))
-            app.use(express.static('public'))
-            // Define a simple route for the home page
-            app.get('/', (req, res) => {
-                res.sendFile(path.join('release/index.html'))
-            })
-            // Start the server on port ${PORT}
-            app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
-        }
-        startDistServer()
+    if (mode === 'dist') {
+        expressApp.get('/', (req, res) => {
+            res.sendFile(path.join(cwd() + '/release/index.html'))
+        })
+        // Directory paths for the two public folders
+        expressApp.use(express.static('release'))
+        // expressApp.use(express.static('library'))
+        // expressApp.use(express.static('public'))
+        expressApp.use(express.static(cwd()))
+        // Define a simple route for the home page
+        // Start the server on port ${PORT}
     }
     // DEV MODE ------------------------------------------
     else {
@@ -107,6 +111,16 @@ async function START() {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.webContents.closeDevTools()
     })
+    ipcMain.on('copy-image-to-clipboard', (event, arg) => {
+        try {
+            // Always use 'image/png' for now as it seems like nothing supports anything but image/png
+            clipboard.writeBuffer('image/png', arg.buffer)
+            event.sender.send('image-copied', { result: true, data: arg.buffer })
+        } catch (err) {
+            console.error(err)
+            event.sender.send('image-copied', { result: false, data: err })
+        }
+    })
 
     // required to interract with ComfyUI
     // | https://github.com/electron/electron/issues/18940
@@ -127,6 +141,9 @@ async function START() {
 
     async function createWindow() {
         const mainWindow = new BrowserWindow({
+            // https://stackoverflow.com/questions/39091964/remove-menubar-from-electron-app
+            autoHideMenuBar: true,
+
             icon: image,
             title: '🛋️ CushySudio',
             //
@@ -145,12 +162,57 @@ async function START() {
             },
         })
 
-        mainWindow.webContents.on('found-in-page', function (event, result) {
-            if (result.finalUpdate) {
-                mainWindow.webContents.send('search-result', result)
-                // console.log(`[🤠] final update. result =`, result)
-            }
+        // remove the menu bar on windows & linux
+        try {
+            console.log(`[🤠] process.platform =`, process.platform)
+            if (process.platform !== 'darwin') mainWindow.removeMenu()
+        } catch (error) {
+            console.error('❌ error removing menu bar', error)
+        }
+
+        // START EXPRESS + MOUNT PUBLIC EXTERNAL API ================================================
+        const promiseStore = new Map()
+        ;(() => {
+            expressApp.get('/execute', async (req, res) => {
+                const payload = {
+                    params: req.params,
+                    query: req.query,
+                    body: req.body,
+                    url: req.url,
+                    headers: req.headers,
+                }
+                console.log(`[API] /execute(${payload})`)
+                // res.sendFile(path.join(cwd() + '/release/call-draft.html'))
+                const uid = `req-${Date.now()}+${Math.random()}`
+                mainWindow.webContents.send('execute', { uid, payload })
+                let yes, no
+                const promise = new Promise((resolve, reject) => {
+                    yes = resolve
+                    no = reject
+                })
+                promiseStore.set(uid, { yes, no })
+                const result = await promise
+                res.json(result)
+            })
+            expressApp.listen(EXPRESS_PORT, () => console.log(`API server running on http://localhost:${EXPRESS_PORT}`))
+        })()
+
+        ipcMain.on('executed', (event, arg) => {
+            const promise = promiseStore.get(arg.uid)
+            if (promise == null) return
+            promise.yes(arg)
+            promiseStore.delete(arg.uid)
+            // const focusedWindow = BrowserWindow.getFocusedWindow()
+            // if (focusedWindow) focusedWindow.setSize(1920, 1080)
         })
+        // ==========================================================================================
+
+        // ❓ mainWindow.webContents.on('found-in-page', function (event, result) {
+        // ❓     if (result.finalUpdate) {
+        // ❓         mainWindow.webContents.send('search-result', result)
+        // ❓         // console.log(`[🤠] final update. result =`, result)
+        // ❓     }
+        // ❓ })
         // ------------------------------------------------------------
         // https://github.com/electron/electron/pull/573
         //remove X-Frame-Options headers on all incoming requests.
@@ -207,9 +269,9 @@ async function START() {
         })
 
         // Open DevTools automatically
-        if (mode === 'dev') {
-            mainWindow.webContents.openDevTools()
-        }
+        // if (mode === 'dev') {
+        //     mainWindow.webContents.openDevTools()
+        // }
 
         // check if cushy is running
         let serverStarted = false
@@ -219,11 +281,11 @@ async function START() {
             console.log('waiting for cushy to start')
             retryCount++
             try {
-                res = await fetch(`http://localhost:${PORT}`) //
-                    .catch((err) => fetch(`http://127.0.0.1:${PORT}`))
+                res = await fetch(`http://localhost:${UI_PORT}`) //
+                    .catch((err) => fetch(`http://127.0.0.1:${UI_PORT}`))
 
                 if (res.status !== 200) {
-                    console.log(`[VITE] vite not yet started (status:: ${res.status})`)
+                    console.log(`[VITE] UI not yet ready (status:: ${res.status})`)
                     await sleep(1000)
                 } else {
                     console.log(`[VITE] vite started`)
@@ -236,24 +298,37 @@ async function START() {
         } while (!serverStarted)
 
         // load cushy
-        mainWindow.loadURL(`http://localhost:${PORT}`, { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
+        void mainWindow.loadURL(`http://localhost:${UI_PORT}`, { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
         // Open DevTools (optional)
         // mainWindow.webContents.openDevTools();
     }
 
-    app.whenReady().then(() => {
-        session.defaultSession.clearStorageData(null, (error) => {
+    void app.whenReady().then(() => {
+        void session.defaultSession.clearStorageData(null, (error) => {
             if (error) console.log(error)
             // in our case we need to restart the application
             // app.relaunch();
             // app.exit();
         })
 
-        createWindow()
+        // https://stackoverflow.com/questions/54969526/react-dev-tools-unable-to-use-profiler-in-electron-application
+        // https://stackoverflow.com/questions/37927929/electron-how-to-add-react-dev-tool
+        const installExtensions = async () => {
+            const installer = require('electron-devtools-installer')
+            const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+            const extensions = ['REACT_DEVELOPER_TOOLS']
+            return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log)
+        }
+
+        void createWindow()
         app.on('activate', function () {
-            if (BrowserWindow.getAllWindows().length === 0) createWindow()
+            if (BrowserWindow.getAllWindows().length === 0) void createWindow()
         })
+
+        if (mode === 'dev') {
+            void app.whenReady().then(installExtensions)
+        }
     })
 
     app.on('window-all-closed', function () {

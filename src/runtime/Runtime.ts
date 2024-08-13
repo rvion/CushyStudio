@@ -1,20 +1,30 @@
+import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
-import type { SchemaDict } from 'src/cards/App'
-import type { STATE } from 'src/state/state'
+import type { CompiledPrompt } from '../prompt/FieldPrompt'
+import type { STATE } from '../state/state'
 
 import child_process, { execSync } from 'child_process'
+import { createHash } from 'crypto'
 import fs, { writeFileSync } from 'fs'
-import { hash } from 'ohash'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
+import { toJSONError } from '../csuite/errors/toJSONError'
+import { Field_group } from '../csuite/fields/group/FieldGroup'
+import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
+import { braceExpansion } from '../csuite/utils/expansion'
+import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
+import { compilePrompt } from '../prompt/_compile'
+import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCanvas } from './RuntimeCanvas'
 import { RuntimeColors } from './RuntimeColors'
@@ -24,16 +34,11 @@ import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeImages } from './RuntimeImages'
 import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
+import { RuntimeSharp } from './RuntimeSharp'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
-import { createRandomGenerator } from 'src/back/random'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { compilePrompt } from 'src/controls/widgets/prompt/_compile'
-import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
-import { braceExpansion } from 'src/utils/misc/expansion'
-import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 
+export type ImageStoreName = Tagged<string, 'ImageStoreName'>
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 // prettier-ignore
@@ -102,12 +107,22 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     /**
-     * SDK to programmatically build images
+     * SDK to programmatically build images using a scene graph
      * using the KonvaJS library (layers, filters, effects, etc.)
      */
     get Konva(): RuntimeKonva {
         const it = new RuntimeKonva(this)
         Object.defineProperty(this, 'Konva', { value: it })
+        return it
+    }
+
+    /**
+     * fast and efficient image manipulation SDK
+     * better than Konva for quick actions (bad, resize, etc.)
+     * */
+    get Sharp(): RuntimeSharp {
+        const it = new RuntimeSharp(this)
+        Object.defineProperty(this, 'Sharp', { value: it })
         return it
     }
 
@@ -133,19 +148,22 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * your app can do IO.
      * with great power comes great responsibility.
      */
-    Filesystem = fs
+    Filesystem: typeof import('fs') = fs
 
     /**
      * path manifulation library;
      * avoid concateing paths yourself if you want your app
      */
-    Path = path
+    Path: typeof import('pathe') = path
 
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
     }
 
-    hash = (s: string): string => hash(s)
+    /** fast md5 string hash using node built-in crypto api */
+    hash = (s: string): string => {
+        return createHash('md5').update(s).digest('hex')
+    }
 
     isCurrentDraftDirty(): Maybe<boolean> {
         return this.step.draft?.isDirty
@@ -162,10 +180,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         ) => void
         /** @default true */
         printWildcards?: boolean
-    }) =>
+    }): CompiledPrompt =>
         compilePrompt({
             text: p.text,
-            st: this.Cushy,
+            ctx: this.Cushy,
             seed: p.seed,
             onLora: p.onLora,
             printWildcards: p.printWildcards ?? true,
@@ -203,7 +221,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * the main value sent to your app as context.
      * Most apps only need this value.
      */
-    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
     /**
      * the extended json form value including internal state
@@ -219,7 +237,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * 🔶 it is NOT json: it's a complex object
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
-    formInstance!: Widget_group<FIELDS>
+    form!: Field_group<FIELDS>
     // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any) => {
@@ -254,7 +272,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** a built-in prefab to quickly
      * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
-    add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
+    add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): PreviewImage => {
         return this.nodes.PreviewImage({
             images: this.nodes.JoinImageWithAlpha({
                 image: image,
@@ -265,19 +283,19 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_previewImage = (image: _IMAGE) => {
+    add_previewImage = (image: _IMAGE): PreviewImage => {
         return this.nodes.PreviewImage({ images: image })
     }
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_PreviewMask = (mask: _MASK) => {
+    add_PreviewMask = (mask: _MASK): PreviewImage => {
         return this.nodes.PreviewImage({ images: this.nodes.MaskToImage({ mask: mask }) })
     }
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_saveImage = (image: _IMAGE, prefix?: string) => {
+    add_saveImage = (image: _IMAGE, prefix?: string): SaveImage => {
         return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
     }
 
@@ -306,10 +324,12 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
-    imageToStartFrom: Maybe<MediaImageL> = null
+    // imageToStartFrom: Maybe<MediaImageL> = null
+    /** execution context (image, canvas, mask, ...) */
+    context: Maybe<DraftExecutionContext> = null
 
     /**
      * @internal
@@ -317,8 +337,9 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      */
     _EXECUTE = async (p: {
         //
-        formInstance: Widget_group<any>
-        imageToStartFrom?: Maybe<MediaImageL>
+        formInstance: Field_group<any>
+        context: DraftExecutionContext
+        // imageToStartFrom?: Maybe<MediaImageL>
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
@@ -327,8 +348,8 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = formResult as any
         this.formSerial = appFormSerial
-        this.formInstance = p.formInstance
-        this.imageToStartFrom = p.imageToStartFrom
+        this.form = p.formInstance
+        this.context = p.context
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
@@ -337,7 +358,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, formResult, p.imageToStartFrom)
+            await executable.run(this, formResult, this.context)
             // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -347,9 +368,9 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             // console.error('🌠', (error as any as Error).name)
             // console.error('🌠', (error as any as Error).message)
             // console.error('🌠', 'RUN FAILURE')
-            this.Cushy.db.runtimeErrors.create({
+            this.Cushy.db.runtime_error.create({
                 message: error.message ?? 'no-message',
-                infos: error,
+                infos: toJSONError(error),
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
@@ -401,7 +422,11 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
     }
 
-    doesComfyImageExist = async (imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string }) => {
+    doesComfyImageExist = async (imageInfo: {
+        type: `input` | `ouput`
+        subfolder: string
+        filename: string
+    }): Promise<boolean> => {
         return await checkIfComfyImageExists(this.Cushy.getServerHostHTTP(), imageInfo)
     }
 
@@ -422,7 +447,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     folder: AbsolutePath
 
     /** quick helper to make your card sleep for a given number fo milisecond */
-    sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+    sleep = (ms: number) => new Promise<void>((r: () => void) => setTimeout(r, ms))
 
     // High level API--------------------
 
@@ -434,7 +459,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** outputs a gaussian splat asset, accessible at the given URL */
     output_GaussianSplat = (p: { url: string }) => {
-        this.Cushy.db.media_splats.create({
+        this.Cushy.db.media_splat.create({
             url: p.url,
             stepID: this.step.id,
         })
@@ -443,11 +468,11 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     /** output a 3d scene from an image and its displacement and depth maps */
     output_3dImage = (p: {
         //
-        image: string | MediaImageL
-        depth: string | MediaImageL
-        normal: string | MediaImageL
+        image: ImageStoreName | MediaImageL
+        depth: ImageStoreName | MediaImageL
+        normal: ImageStoreName | MediaImageL
     }) => {
-        const getImg = (i: string | MediaImageL): MediaImageL => {
+        const getImg = (i: ImageStoreName | MediaImageL): MediaImageL => {
             if (typeof i === 'string') {
                 const img = this.Store.getImageStore(i).image
                 if (img == null) {
@@ -474,6 +499,17 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             stepID: this.step.id,
         })
     }
+    output_custom = <P extends Record<string, any>>(p: {
+        //
+        params: P
+        view: CustomViewRef<P>
+    }) => {
+        this.Cushy.db.media_custom.create({
+            stepID: this.step.id,
+            params: p.params,
+            viewID: p.view.id,
+        })
+    }
 
     /** 🔴 unfinished */
     output_File = async (path: RelativePath, content: string): Promise<void> => {
@@ -482,7 +518,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.Cushy.db.media_texts.create({
+        this.Cushy.db.media_text.create({
             kind: 'html',
             title: p.title,
             content: p.htmlContent,
@@ -493,14 +529,14 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     output_Markdown = (p: string | { title: string; markdownContent: string }) => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
-        return this.Cushy.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+        return this.Cushy.db.media_text.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
     output_text = (p: { title: string; message: Printable } | string) => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
-        return this.step.db.media_texts.create({
+        return this.step.db.media_text.create({
             kind: 'text',
             title: title,
             content: msg,
@@ -555,10 +591,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
     // 🐉     //
-    // 🐉     requestFn: (q: FormBuilder) => Req,
+    // 🐉     requestFn: (q: Builder) => Req,
     // 🐉     layout?: 0,
     // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    // 🐉     const reqBuilder = new FormBuilder()
+    // 🐉     const reqBuilder = new Builder()
     // 🐉     const request = requestFn(reqBuilder)
     // 🐉     const ask = new ScriptStep_ask(request)
     // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
@@ -594,21 +630,21 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return seed
     }
 
-    loadImageAnswerAsEnum = (ia: MediaImageL): Promise<Enum_LoadImage_image> => {
-        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
+    loadImageAnswerAsEnum = (img: MediaImageL): Promise<Enum_LoadImage_image> => {
         return img.uploadAndReturnEnumName()
     }
 
-    loadImageAnswer2 = (ia: MediaImageL): MediaImageL => {
-        return this.Cushy.db.media_images.getOrThrow(ia.imageID)
+    /** @deprecated */
+    loadImageAnswer2 = (img: MediaImageL): MediaImageL => {
+        return img
     }
 
     loadImage = (imageID: MediaImageID): MediaImageL => {
-        return this.Cushy.db.media_images.getOrThrow(imageID)
+        return this.Cushy.db.media_image.getOrThrow(imageID)
     }
 
     loadImageAnswer = async (ia: MediaImageL): Promise<ImageAndMask> => {
-        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_image.getOrThrow(ia.id)
         return await img.loadInWorkflow(this.workflow)
     }
 
@@ -637,7 +673,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: PromptSettings): Promise<ComfyPromptL> {
-        console.info('prompt requested')
+        // console.info('prompt requested')
         const prompt = await this.workflow.sendPrompt(p)
         await prompt.finished
         return prompt

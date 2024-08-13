@@ -4,14 +4,17 @@ app({
         description: 'add a gradient background to the input image',
     },
     ui: (form) => ({
-        // title: form.string({ placeHolder: 'My Project' }),
-        // prompt: form.string({ textarea: true }),
-        from: form.image({}),
+        from: form.image({ justifyLabel: false }),
+        tags: form.string({
+            label: 'Tags',
+            placeHolder: 'e.g. "gradient, background"',
+            default: 'gradient, background',
+        }),
     }),
     canStartFromImage: true,
-    run: async (run, ui, ctximg) => {
+    run: async (run, ui, { image }) => {
         const size = 1024
-        const startImage = ctximg ?? ui.from
+        const startImage = image ?? ui.from
         const { Konva, Colors, Images, ComfyUI } = run
         const layer = Konva.createStageWithLayer({ width: size, height: size })
         Konva.addGradientToLayer(layer, [0, Colors.randomHexColor(), 1, Colors.randomHexColor()])
@@ -19,13 +22,6 @@ app({
         logo.setSize({ width: size, height: size })
         layer.add(logo)
         const b64 = Konva.convertLayerToDataURL(layer)
-        const img = Images.createFromDataURL(b64)
-        // const flow = ComfyUI.create_basicWorkflow({
-        //     from: img,
-        //     denoise: 0.9,
-        //     positivePrompt: ui.prompt,
-        //     chekpointName: 'revAnimated_v122.safetensors',
-        // })
-        // await flow.sendPromptAndWaitUntilDone()
+        Images.createFromDataURL(b64).toggleTag(...ui.tags.split(','))
     },
 })

@@ -1,22 +1,22 @@
-import type { ComfySchemaL, EmbeddingName } from './Schema'
-import type { Requirements } from 'src/controls/IWidget'
-import type { LiveInstance } from 'src/db/LiveInstance'
-import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
+import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
+import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
+import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
-import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
-import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
-import { ComfyManager } from 'src/manager/ComfyManager'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { readableStringify } from 'src/utils/formatters/stringifyReadable'
-import { downloadFile } from 'src/utils/fs/downloadFile'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { readableStringify } from '../csuite/formatters/stringifyReadable'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
+import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
+import { ComfyManager } from '../manager/ComfyManager'
+import { downloadFile } from '../utils/fs/downloadFile'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
-export interface HostL extends LiveInstance<HostT, HostL> {}
+export interface HostL extends LiveInstance<TABLES['host']> {}
 
 export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
@@ -57,6 +57,29 @@ export class HostL {
             }
         }
         return true
+    }
+
+    // Rotating srever logs --------------------------------------------
+    private wantLog: boolean = true
+    enableServerLogs(): Promise<any> {
+        this.wantLog = true
+        return this.manager.configureLogging(this.wantLog)
+    }
+    disableServerLogs = () => {
+        this.wantLog = false
+        return this.manager.configureLogging(this.wantLog)
+    }
+    toggleServerLogs = () => {
+        this.wantLog = !this.wantLog
+        return this.manager.configureLogging(this.wantLog)
+    }
+    maxLogs = 200
+    serverLogs: { at: string; content: string; id: number }[] = []
+    logId: number = 0
+    addLog = (content: string) => {
+        if (this.serverLogs.length > this.maxLogs) this.serverLogs.shift()
+        const d = new Date().toISOString().slice(11, 19)
+        this.serverLogs.push({ content, id: this.logId++, at: d })
     }
 
     get isReadonly(): boolean {
@@ -104,7 +127,7 @@ export class HostL {
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
         this.sdkDTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
         const associatedSchemaID = asComfySchemaID(this.id)
-        this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
+        this.schema = this.st.db.comfy_schema.getOrCreate(associatedSchemaID, () => ({
             id: associatedSchemaID,
             embeddings: [],
             spec: {},
@@ -184,10 +207,10 @@ export class HostL {
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
     }
 
-    addLog = (...args: any[]) => {
-        this.schemaRetrievalLogs.push(args.join(' '))
-        console.info('[🐱] CONFY:', ...args)
-    }
+    // addLog = (...args: any[]) => {
+    //     this.schemaRetrievalLogs.push(args.join(' '))
+    //     console.info('[🐱] CONFY:', ...args)
+    // }
 
     // STARTING -----------------------------------------------------------------------------
     get isConnected() {
@@ -199,7 +222,7 @@ export class HostL {
     // 🔶     this.ws?
     // 🔶 }
 
-    CONNECT = () => {
+    CONNECT = (): void => {
         if (this.data.isVirtual) {
             this.updateSchemaFromFileCache()
         } else {
@@ -233,13 +256,13 @@ export class HostL {
      * */
     ws: Maybe<ResilientWebSocketClient> = null
 
-    initWebsocket = () => {
+    private initWebsocket(): ResilientWebSocketClient {
         console.log(`[👢] WEBSOCKET: starting client to ComfyUI host ${this.data.name}`)
         this.ws = new ResilientWebSocketClient({
-            onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
-            onMessage: this.st.onMessage,
+            onConnectOrReconnect: (): Promise<void> => this.fetchAndUpdateSchema(),
+            onMessage: (e: MessageEvent): void => this.st.onMessage(e, this),
             url: this.getWSUrl,
-            onClose: () => {},
+            onClose: (): void => {},
         })
         return this.ws
     }
@@ -251,8 +274,8 @@ export class HostL {
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
     private updateSchemaFromFileCache = () => {
-        const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
-        const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
+        const object_info_json = this.st.readJSON_<any>(this.comfyJSONPath)
+        const embeddings_json = this.st.readJSON_<any>(this.embeddingsPath)
 
         // update schema
         this.schema.update({ spec: object_info_json, embeddings: embeddings_json })

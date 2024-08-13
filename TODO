@@ -1,9 +1,174 @@
+☐ before commit:
+    ☐ finish panel output
+    ☐ change panel config shelf default size
+    ☐ new api to pre-compute colors
+    ☐ select: multiple placement >
+
+2024-07-26 - MAJOR BREAKTHROUGH:
+    ☐ header => cell
+    ☐ body => full
+
+2024-07-17:
+    ☐ well known skins @started(24-07-25 16:33)
+        ☐ WidgetWithLabelUI:
+            ☐ new flag { vertical?: boolean, ...}
+        ☐ DefaultCellUI: (guarantee to always be ONE cell height)
+        ☐ readonly property on any Widget (bloc)
+    ✘ multiple withConfig / rank-1 types @cancelled(24-07-25 16:33)
+    ✔ // 💬 2024-07-17YOLO🦀🦊 @done(24-07-25 16:33)
+    ✔ render du RevealUI @done(24-07-25 16:32)
+        ☐ (aussi présent sur le FormUI)
+    ✔ discuter inputHeight / widgetHeight @done(24-07-25 16:33)
+        ☐ renommer 'widget' => 'cell', ajouter 'inside'
+    ☐ migration system
+    ☐ inputUpload
+
+    ☐ customize select agressively so we have one version that looks like notion
+
+2024-07-15:
+    ✔ list identation @done(24-07-25 16:33)
+    ✔ list sub-items boxes not taken into account @done(24-07-25 16:33)
+
+2024-07-12:
+    ✔ repository not as property of other classes, but as param with defulat from DI mechanism @done(24-07-25 16:34)
+    ✔ csuite expect globalRepo to exist/be available via DI @done(24-07-25 16:34)
+    ✘ csuite expect globalDomain to exist/be available via DI @cancelled(24-07-25 16:39)
+    ✔ Builder and Schema do not know the repository that will host the instances @done(24-07-25 16:39)
+    ✔ schema must NOT know its builder (it's irrelevant) @done(24-07-25 16:39)
+    ✘ basebuilder MUST take the schema class as ctor so we can re-use it. @cancelled(24-07-25 16:39)
+    ✘ BASE schema must be able to change it's ctor. @cancelled(24-07-25 16:39)
+
+2024-07-11:
+    ✘ only a single schema class @cancelled(24-07-12 16:15)
+
+2024-07-08:
+    ☐ updateSnapshot only called once
+    ✔ 'type' => '$' @done(24-07-17 16:23)
+    ✔ choices widget @done(24-07-17 16:23)
+    ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
+    ✔ size @done(24-07-17 16:23)
+    ☐ Field_Dyanmic
+    ✔ valmut partout @done(24-07-17 16:23)
+    ✔ onInit @done(24-07-10 13:55)
+    ☐ onCreate
+    ✔ extends @done(24-07-17 16:23)
+        ✔ customMethods @done(24-07-17 16:23)
+        ✔ customForms @done(24-07-17 16:23)
+
+
+2024-07-01:
+    ✔ test about link auto-migration. @done(24-07-08 10:16)
+    ✔ setSerial. @done(24-07-08 10:16)
+    ✔ setting value on value by addming more proxies. @done(24-07-08 10:16)
+    ✘ info mapping via custom schema mapping. @cancelled(24-07-08 10:16)
+
+2024-06-29:
+    ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
+    ✔ 2. recover from/to list when iterating on the schema (15min) @done(24-07-01 22:33)
+    ☐ 3. config tab persitence (15min)
+    ☐ 4. debug icon to see panel data (15min)
+
+--------------
+☐ make sure choices always show in the same order
+☐ debug electron
+    - https://github.com/nodejs/node/blob/main/doc/abi_version_registry.json
+    - https://www.electronjs.org/blog/electron-31-0
+
+--------------
+
+☐ post to pictogrammers
+☐ form context
+☐ previous value
+☐ router api (copy from loco)
+
+☐ compile classes so it's instant
+☐ rename frame hight-level apperance names ('headless' 'subtle' 'default' 'ghost' 'primary' 'secondary')
+☐ make controls for all of those high-level apperance names
+    ☐ text + shadow + base + ... for each
+☐ add a few cushy-specific options like labels (text +...)
+☐ simpler APIs to override forms
+
+----------------
+
+
+☐ hovering color should propagate
+☐ background should probably not be inherited; I thought transparent by default stuff was bad, b
+
+
+☐ bundle
+    ☐ improve chain leading to type import to easilly remove wrong links
+    ☐ make sure all TS and JS are all present
+    ☐ move all stuff in one unique folder
+
+Loco:
+    ✔ remove `cushy.` usage in all forms @done(24-05-07 14:31)
+    ☐ tree widget (no more st) usage
+    ☐ default values
+    icons:
+        ☐ @mdi/react
+        ☐ @mdi/js
+        ☐ list icons
+        ☐ more icons for other key types
+    ☐ misc forms
+        ☐ color transparency ?
+
+UC take 2:
+    ✔ selection should be hidden when not in generate mode @done(24-03-31 20:49)
+    ☐ selection should appear above unnacepted patches
+    ☐ unnacepted patches should have button so we can accept them
+    ☐ unnacepted patches should have arrow buttons to navigate between suggestions
+    ☐ new Draft.UCCategory : Maybe<tool> string
+    ☐ create a bunch of apps / default drafts in  `library/UnifiedCanvas`
+        ☐ add text
+        ☐ ....
+        ☐ ad a few custom
+        ☐ mozaic
+    ☐ default-drafts section in apps.
+    ☐ better API to communicate with the UC
+    ☐ persist UC state in a form tree
+
+-------------
+
+
+✔ <Form theme={...} /> @done(24-05-07 14:31)
+✔ better bundling ? @done(24-05-07 14:31)
+✔ remove all config options @done(24-05-07 14:31)
+
+✔ make all files accesible @done(24-03-26 15:38)
+✔ output custom @done(24-03-26 15:38)
+    ✔ 3 options @done(24-03-26 15:38)
+        ✔ simple function ? => force d'inliner tout, empèche la moindre reutilisation @done(24-03-26 15:38)
+        ✔ faire dres trucs magique pour compiler une fontion avec toutes ses dépendences @done(24-03-26 15:38)
+        ✔ définir un output type dans l'app, qui en plus se hot reload => prob mieux @done(24-03-26 15:38)
+            ✔ plus résilient et moins résilient à la fois. @done(24-03-26 15:38)
+✔ add back threejs into build @done(24-03-26 15:38)
+☐ investigate https://stackoverflow.com/questions/52579681/typescript-prevent-imports-from-certain-directory-in-project
+✔ add back the live update of string values @done(24-03-20 15:21)
+    ✔ current system forbid usage as dynamic search @done(24-03-20 15:21)
+    ✔ annoying when we expect the string to update live at different areas @done(24-03-20 15:21)
+✔ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once) @done(24-03-26 15:38)
+    ✔ int do not work properly @done(24-03-26 15:38)
+    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
+✔ missing focus around text and input @done(24-03-26 15:38)
+    ✔ tabbing between widgets is hard to do becase we don't have any visual clues anymore @done(24-03-26 15:38)
+    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
+
+✔ fix codegen with new template @done(24-03-05 23:30)
+✔ recent Apps @done(24-03-26 15:38)
+✔ recentDrafts @done(24-03-20 15:22)
+✔ proper Tab @done(24-05-07 14:31)
+✔ lastRunAt @done(24-03-26 15:39)
+☐ https://github.com/WiseLibs/better-sqlite3/issues/262
+✔ lastUpdateAt on forms. @done(24-03-31 19:33)
+☐ fold button when no label.
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
+☐ make adding optional / removing optional recoverable by smartly
+    ☐ reusing the draft
+    ☐ picking subdraft when optional instead of X
 
-
-☐ header (instead of line)
-☐ body (instead of block)
+✔ header (instead of line) @done(24-03-26 15:39)
+✔ body (instead of block) @done(24-03-26 15:39)
 
 // ?
 ☐ unified canvas

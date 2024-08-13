@@ -1,18 +1,6 @@
 app({
     ui: (form) => ({
-        promptV2: form.promptV2({}),
-        // basicList: form.list({
-        //     element: () => form.int({}),
-        // }),
-        // minMax: form.list({
-        //     min: 2,
-        //     max: 4,
-        //     element: () => form.int({}),
-        // }),
-        // startWith3Items: form.list({
-        //     defaultLength: 3,
-        //     element: () => form.int({}),
-        // }),
+        promptV2: form.prompt({}),
     }),
 
     run: async (flow, form) => {

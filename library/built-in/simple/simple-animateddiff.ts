@@ -9,7 +9,7 @@ app({
         preText: form.string({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
-        seed: form.intOpt({}),
+        seed: form.int({}).optional(),
         timeline: form.timeline({
             width: TOTAL_DURATION,
             height: 2,
@@ -60,7 +60,7 @@ app({
         })
         const text = ui.timeline.items
             .map((entry) => {
-                return `"${entry.position.x}" : "${entry.value.text}"`
+                return `"${entry.shape.x}" : "${entry.value.text}"`
             })
             .join(',\n')
         const batchPromptSchedule = graph.BatchPromptSchedule({
@@ -77,7 +77,7 @@ app({
         const aDE_EmptyLatentImageLarge = graph.ADE$_EmptyLatentImageLarge({
             width: 512,
             height: 512,
-            batch_size: ui.timeline.width, //100,
+            batch_size: ui.timeline.items.length, //100,
         })
         let kSampler = graph.KSampler({
             seed: ui.seed ?? run.randomSeed(),

@@ -1,36 +1,63 @@
+import type { Field } from '../csuite/model/Field'
+import type { SchemaDict } from '../csuite/model/SchemaDict'
+import type { MediaImageL } from '../models/MediaImage'
+import type { UnifiedCanvas } from '../panels/PanelCanvas/states/UnifiedCanvas'
+import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
-import type { CSSProperties } from 'react'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ISpec } from 'src/controls/Spec'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { Runtime } from 'src/runtime/Runtime'
-
-// ACTIONS ============================================================
-// 1. the main abstraction of cushy are actions.
-/** quick function to help build actions in a type-safe way */
+import type { CSSProperties, ReactNode } from 'react'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
-export type GlobalGetCurrentRun = () => Runtime
-export type GlobalGetCurrentForm = () => FormBuilder
-export type ActionTagMethod = (arg0: string) => string
-export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
-export type ActionTags = (arg0: ActionTagMethodList) => void
-export type SchemaDict = { [key: string]: ISpec }
-export type AppRef<F> = { $Output: F; id: CushyAppID }
+/* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
+/* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
+/* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+/* shared */ export type GlobalGetCurrentForm = () => X.Builder
+
+/* ⏰ */ export type ActionTagMethod = (arg0: string) => string
+/* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
+
+export type ActionTags = (arg0: ActionTagMethodList) => void
+
+export type AppRef<FIELDS> = {
+    /** this is a virtual property; only here so app refs can carry the type-level form information. */
+    $FIELDS: FIELDS
+    /** app ID */
+    id: CushyAppID
+}
+
+export type CustomViewRef<PARAMS> = {
+    /** this is a virtual property; only here so view refs can carry the type-level view params. */
+    $PARAMS: PARAMS
+    /** app ID */
+    id: CushyViewID
+}
+
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
+
+export type CustomView<T = any> = {
+    preview: (t: T) => ReactNode
+    render: (t: T) => ReactNode
+}
+
+export type DraftExecutionContext = {
+    image?: Maybe<MediaImageL>
+    mask?: Maybe<MediaImageL>
+    canvas?: Maybe<UnifiedCanvas>
+}
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
-    ui: (form: FormBuilder) => FIELDS
+    ui: (form: X.Builder) => FIELDS
+
+    /** so you cana have fancy buttons to switch between a few things */
+    presets?: Record<string, (form: X.XGroup<NoInfer<FIELDS>>) => void>
 
     /** app execution logic */
     run: (
         //
-        runtime: Runtime<FIELDS>,
-        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
-        starImage?: Maybe<MediaImageL>,
+        runtime: Runtime<NoInfer<FIELDS>>,
+        formResult: { [k in keyof NoInfer<FIELDS>]: NoInfer<FIELDS>[k]['$Value'] },
+        context: DraftExecutionContext,
     ) => void | Promise<void>
 
     /** if set to true, will register drafts to quick action in image context menu */

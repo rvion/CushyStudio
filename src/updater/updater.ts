@@ -7,12 +7,12 @@ import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { GithubRepoName } from '../cards/githubRepo'
+import { GithubUserName } from '../cards/GithubUser'
 import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
+import { asRelativePath } from '../utils/fs/pathUtils'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { LogFifo } from './LogFIFO'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
 
 type ManagedFolderConfig = {
     /** current working directory */
@@ -175,7 +175,7 @@ export class GitManagedFolder {
             }
 
             if (!this._hasPeriodicUpdateCheck()) {
-                this._startPeriodicUpdateCheck()
+                void this._startPeriodicUpdateCheck()
             }
 
             // helpers
@@ -249,7 +249,7 @@ export class GitManagedFolder {
             })
         })
         this.currentAction = null
-        this.updateInfos()
+        void this.updateInfos()
         return
     }
 
@@ -275,7 +275,7 @@ export class GitManagedFolder {
             this.git = null
             this.status = FolderGitStatus.DoesNotExist
         }
-        this.updateInfos()
+        void this.updateInfos()
     }
 
     // GIT INFOS -------------------------------------------------------------------------
@@ -419,7 +419,7 @@ export class GitManagedFolder {
         const periodicCheck = setInterval(async () => {
             this.nextFetchAt = Date.now() + interval
             await git.fetch()
-            this.checkForUpdatesNow()
+            await this.checkForUpdatesNow()
         }, interval)
         this._registerPeriodicUpdateCheck(periodicCheck)
     }

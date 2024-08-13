@@ -1,6 +1,6 @@
+import { exhaust } from '../../../src/csuite/utils/exhaust'
 import { type SimpleColor, type SimpleKind, type SimpleRarity } from './_stsAssets'
 import { type STSCard } from './_stsCards'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 // helpes below convert from real data to simplified data
 // cause I don't have all the assets.

@@ -1,10 +1,12 @@
 import hljs from 'highlight.js/lib/core'
+// import json from 'highlight.js/lib/languages/json'
 import typescript from 'highlight.js/lib/languages/typescript'
 import { useLayoutEffect, useRef } from 'react'
 
-import { Button } from 'src/rsuite/shims'
+import { Button } from '../../csuite/button/Button'
 
 hljs.registerLanguage('typescript', typescript)
+// hljs.registerLanguage('json', json)
 
 export const TypescriptHighlightedCodeUI = (p: {
     //
@@ -25,7 +27,7 @@ export const TypescriptHighlightedCodeUI = (p: {
                 <Button
                     size='sm'
                     tabIndex={p.tabIndex}
-                    icon={<span className='material-symbols-outlined'>content_copy</span>}
+                    icon='mdiClipboard'
                     onClick={() => navigator.clipboard.writeText(p.code)}
                 />
             </div>

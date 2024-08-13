@@ -1,16 +1,33 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { action, makeAutoObservable } from 'mobx'
 import path from 'pathe'
 import Watcher from 'watcher'
 
+import { CushyAppL } from '../models/CushyApp'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
-import { LiveCollection } from 'src/db/LiveCollection'
-import { CushyAppL } from 'src/models/CushyApp'
-import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 
 export class Library {
+    // ------------------------------------------------------------------------------------
+    filesKnownToExists = new Map<AbsolutePath, { at: Timestamp; existed: boolean }>()
+
+    // /**
+    //  * returns true if the file exists; cache result 5 minutes
+    //  * all places in the app creating files are expected to call this method ?
+    //  */
+    // doesFileExist = (path: AbsolutePath): boolean => {
+    //     const entry = this.filesKnownToExists.get(path)
+    //     const now = Date.now()
+    //     const fiveMins = 1000 * 60 * 5
+    //     if (entry && now - entry.at < fiveMins) return entry.existed
+    //     const exists = existsSync(path)
+    //     this.filesKnownToExists.set(path, { at: now, existed: true })
+    //     return exists
+    // }
+
+    // ------------------------------------------------------------------------------------
     query = ''
     showDescription = true
     showDrafts = true
@@ -18,16 +35,9 @@ export class Library {
     imageSize = '11rem'
     selectionCursor = 0
 
-    private appsC = new LiveCollection<CushyAppL>({
-        where: () => {
-            return { id: { $like: `%${this.query}%` } }
-        },
-        table: () => this.st.db.cushy_apps,
-        options: { limit: 100 },
-    })
-
     get appsFiltered(): CushyAppL[] {
-        return this.appsC.items
+        return this.st.db.cushy_app //
+            .select((q) => q.where('id', 'like', `%${this.query}%`).limit(100), ['cushy_app'])
     }
 
     get appsFilteredBuiltIn(): CushyAppL[] {
@@ -68,14 +78,8 @@ export class Library {
         public st: STATE,
     ) {
         // Watching a single path
-        const included = st.typecheckingConfig.value.include
-        const includedCards = included.filter(
-            (x) =>
-                x.startsWith('library/') && //
-                x.endsWith('/**/*'),
-        )
-        const expanded = includedCards.map((x) => x.slice(8, -5))
-        this.expanded = new Set(expanded)
+        // ⏸️ const expanded = includedCards.map((x) => x.slice(8, -5))
+        // ⏸️ this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
             ;(cache.watcher as Watcher).close()
@@ -108,7 +112,8 @@ export class Library {
                 // just in case. This should be enough to automatically discover new
                 // scripts when they're added
                 const xxfile = this.getFile(relPath)
-                xxfile.extractScriptFromFile({ force: true })
+                // 🔴🔴🔴 do we want to wait here ? 🔴🔴🔴
+                void xxfile.extractScriptFromFile({ force: true })
 
                 // RELOAD ALL APPS from opened drafts
                 // logic is a bit complex, but it seems like a good trade-off
@@ -116,16 +121,16 @@ export class Library {
                 const allDraftTabs = st.layout.findTabsFor('Draft')
                 for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
-                    const draft = st.db.drafts.get(d.config.draftID)
+                    const draft = st.db.draft.get(d.props.draftID)
                     if (draft == null) {
-                        console.error(`[👙] missing draft ${d.config.draftID}; SKIPPING...`)
+                        console.error(`[🧐] missing draft ${d.props.draftID}; SKIPPING...`)
                         continue
                     }
 
                     // check if the changed file is directly related to the draft
                     const file = draft.file
                     const relPath2 = file?.relPath
-                    console.log(`[👁️] - draft: ${d.config.draftID}: relPath ${relPath2}`)
+                    console.log(`[👁️] - draft: ${d.props.draftID}: relPath ${relPath2}`)
                     let shouldUpdate = relPath2 === relPath
 
                     // check if the changed file is an indirect dependency of the draft
@@ -136,7 +141,7 @@ export class Library {
                         // console.log(`[👁️]   | ${draftDeps.join('\n       | ')} `)
                         const changedDep = draftDeps.find((x) => x === relPath)
                         if (changedDep != null) {
-                            console.log(`[👁️]        | ${d.config.draftID}: one depdency (${changedDep}) changed`)
+                            console.log(`[👁️]        | ${d.props.draftID}: one depdency (${changedDep}) changed`)
                             shouldUpdate = true
                         }
                     } else {
@@ -157,7 +162,7 @@ export class Library {
                 for (const app of apps) {
                     const res = app.file.extractScriptFromFile({ force: true }).then((x) => {
                         if (x.type === 'newScript') {
-                            x.script.evaluateAndUpdateApps()
+                            x.script.evaluateAndUpdateAppsAndViews()
                         }
                     })
                 }
@@ -190,22 +195,10 @@ export class Library {
     }
 
     // expand mechanism -------------------------------------------------
-    private expanded: Set<string>
-    get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
-
-    isExpanded = (path: string): boolean => this.expanded.has(path)
-
-    expand = (path: string): void => {
-        this.expanded.add(path)
-    }
-
-    collapse = (path: string): void => {
-        this.expanded.delete(path)
-        const jsonF = this.st.typecheckingConfig
-        const prevInclude = jsonF.value.include
-        const nextInclude = prevInclude.filter((x) => !x.startsWith(`library/${path}`))
-        jsonF.update({ include: nextInclude })
-    }
+    // ⏸️ private expanded: Set<string>
+    // ⏸️ get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
+    // ⏸️ isExpanded = (path: string): boolean => this.expanded.has(path)
+    // ⏸️ expand = (path: string): void => this.expanded.add(path)
 }
 
 // FAVORITE MANAGEMENT ------------------------------------------------

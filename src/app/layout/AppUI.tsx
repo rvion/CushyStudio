@@ -1,26 +1,33 @@
-import { runInAction } from 'mobx'
+import '../../ALL_CMDS'
+
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { AppBarUI } from '../appbar/AppBarUI'
-import { Trigger } from '../shortcuts/Trigger'
+import { AppBarUI } from '../../appbar/AppBarUI'
+import { ActivityStackUI } from '../../csuite/activity/ActivityStackUI'
+import { TooltipUI } from '../../csuite/activity/TooltipUI'
+import { defaultTextTint } from '../../csuite/box/CurrentStyleCtx'
+import { commandManager } from '../../csuite/commands/CommandManager'
+import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
+import { computeColors } from '../../csuite/frame/FrameColors'
+import { Kolor } from '../../csuite/kolor/Kolor'
+import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
+import { Trigger } from '../../csuite/trigger/Trigger'
+import { useSt } from '../../state/stateContext'
+import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { FavBarUI } from './FavBar'
+import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
-import { RevealState } from 'src/rsuite/reveal/RevealState'
-import { useSt } from 'src/state/stateContext'
-import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const appRef = useRef<HTMLDivElement>(null)
+    useRegionMonitor()
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
-        function handleKeyDown(event: KeyboardEvent) {
-            const x = st.shortcuts.processKeyDownEvent(event as any)
+        function handleKeyDown(event: KeyboardEvent): void {
+            const x: Trigger = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
                 event.preventDefault()
@@ -37,7 +44,7 @@ export const CushyUI = observer(function CushyUI_() {
 
             // prevent accidental tab closing when pressing ctrl+w one too-many times
             if (
-                x === Trigger.UNMATCHED_CONDITIONS && //
+                x === Trigger.UNMATCHED && //
                 event.key === 'w' &&
                 (event.ctrlKey || event.metaKey)
             ) {
@@ -47,35 +54,61 @@ export const CushyUI = observer(function CushyUI_() {
         }
         window.addEventListener('keydown', handleKeyDown)
         if (document.activeElement === document.body) current.focus()
-        return () => window.removeEventListener('keydown', handleKeyDown)
+        return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])
 
+    const appBarColor = st.theme.value.appbar ?? 'red'
+    const appBarBase = Kolor.fromString(appBarColor)
+    const inactiveTabColors = computeColors(
+        {
+            base: appBarBase,
+            dir: appBarBase.lightness > 0.5 ? -1 : 1,
+            text: defaultTextTint,
+        },
+        { base: { contrast: 0.1 } },
+    )
     return (
-        <div
-            //
-            data-theme={st.themeMgr.theme}
-            id='CushyStudio'
-            tabIndex={-1}
-            onClick={(ev) => {
-                // if a click has bubbled outwards up to the body, then we want to close various things
-                // such as contet menus, tooltips, Revals, etc.
-                runInAction(() => {
-                    RevealState.shared.current?.close()
-                    RevealState.shared.current = null
-                })
-            }}
-            ref={appRef}
-            tw={['col grow h100 text-base-content']}
-        >
-            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
-            <GlobalSearchUI />
-            <AppBarUI />
-            <RenderFullPagePanelUI />
-            <div className='flex flex-grow relative'>
-                <FavBarUI direction='column' />
-                <ProjectUI />
+        <CSuiteProvider config={cushy.csuite}>
+            <div
+                id='CushyStudio'
+                style={{
+                    // @ts-ignore
+                    '--appbar': appBarColor,
+                    '--foobar1': inactiveTabColors.variables.color,
+                    '--foobar2': inactiveTabColors.variables.background,
+                }}
+                tabIndex={-1}
+                // ❌ onClick={(ev) => {
+                // ❌     // if a click has bubbled outwards up to the body, then we want to close various things
+                // ❌     // such as contet menus, tooltips, Revals, etc.
+                // ❌     runInAction(() => {
+                // ❌         RevealState.shared.current?.close()
+                // ❌         RevealState.shared.current = null
+                // ❌     })
+                // ❌ }}
+                ref={appRef}
+                tw={[
+                    'col grow h-full overflow-clip',
+                    // topic=WZ2sEOGiLy
+                    st.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+                ]}
+            >
+                <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
+                    id='tooltip-root'
+                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+                >
+                    <TooltipUI />
+                    <ActivityStackUI />
+                </div>
+                <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
+                <AppBarUI />
+                <div className='flex flex-grow relative overflow-clip'>
+                    <FavBarUI direction='row' />
+                    <ProjectUI />
+                </div>
+                <FooterBarUI />
             </div>
-        </div>
+        </CSuiteProvider>
     )
 })
 

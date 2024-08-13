@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 export const SectionTitleUI = observer(function SectionTitleUI_(p: {
     children?: React.ReactNode
     className?: string
-    label: string
+    label: React.ReactNode
 }) {
     return (
         <b className={`flex ${p.className}`}>

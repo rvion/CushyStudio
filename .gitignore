@@ -39,8 +39,7 @@ src/db/cushy*.db-wal
 
 CONFIG.json
 global.d.ts
-!src/utils/custom-jsx/global.d.ts
-tsconfig.custom.json
+!src/utils/global.d.ts
 
 library/local/*
 !library/local/.gitkeep
@@ -58,6 +57,7 @@ src/theme/theme-rvion.css
 site/_site
 site/site
 lib
+lib.old
 
 .cushy/store
 
@@ -66,6 +66,10 @@ docs/ex
 logs/
 *.log
 
+# release folder for forms
+release-forms/*
+
+# release folder for cushy
 release/main.css
 release/meta.json
 release/output.css
@@ -85,3 +89,6 @@ tsconfig.tsbuildinfo
 .tsbuildinfo
 
 src/tools/cushy-screenshots-logs.txt
+
+@cushy/*
+@cushy.zip

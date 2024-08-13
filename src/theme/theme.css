@@ -1,74 +1,17 @@
-#root {
-    --roundness: 5px;
-    --input-height: 28px;
-}
-
-.WIDGET-FIELD {
-    height: var(--input-height);
-}
-
-.WIDGET-FIELD *::selection {
-    background-color: oklch(var(--pc));
-}
-
-.custom-roundness {
-    border-radius: var(--roundness);
-}
+/* ---------------------------------------------------------------------------------------------- */
 
 #CushyStudio:focus {
     outline: none;
 }
-/*
-@font-face {
-    font-family: 'inter';
-    src: url('/Inter-VariableFont_slnt,wght.ttf') format("truetype-variations");
-    font-weight: 1 999;
-}
-body {
-    font-family: 'inter';
-}
-*/
 
-/* FORM STYLING ----------------------------------- */
-/* .WIDGET-BLOCK .WIDGET-GROUP { */
-    /* border-left: 1px solid oklch(var(--p)/.2); */
-    /* padding: 0 .3rem; */
-/* } */
-.WIDGET-GROUP-BORDERED {
-    /* background: oklch(var(--b2)); */
-    border-radius: .3rem;
-    /* border: 1px solid oklch(var(--b3)); */
-    border-top: 1px solid oklch(var(--p)/.4);
-    border-left: 1px solid oklch(var(--p)/.4);
-    border-right: 1px solid oklch(var(--p)/.2);
-    border-bottom: 1px solid oklch(var(--p)/.2);
-    /* border-bottom: 1px solid oklch(var(--p)/.4); */
-    padding: 2px;
+.subtle {
+    @apply text-sm text-gray-500 italic;
 }
 
-.WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {
-    opacity: 100% !important;
-}
 
-.SUB-FIELD {
-    flex: 1;
-    /* background: #272729; */
-}
-
-/* .SUB-FIELD .WIDGET-BLOCK {
-    padding-left: .2rem;
-
-} */
-.WIDGET-BLOCK {
-    margin-left: .6rem;
-    margin-right: .4rem;
-    margin-top: .1rem;
-    /* padding: .4rem; */
-}
-
+/* ---------------------------------------------------------------------------------------------- */
 /* Should be used for right-click/context/pop-up menus */
 .MENU-ROOT {
-    /* padding: 0.5rem; */
     padding: 4px;
 }
 
@@ -84,242 +27,92 @@ body {
     /* background: oklch(var(--b3)) */
 }
 
+/* ------------------------------------------------------------------------------------- */
+/* PanelHeaderUI */
+.CSHY-panel-header {
+    /* height: calc(var(--input-height) + 8px); */
+    /* min-height: calc(var(--input-height) + 8px); */
 
-/* CODEMIRROR ----------------------------------------- */
-.cm-tooltip.cm-completionInfo {
-    max-height: 300px;
-    overflow: auto;
-}
-.ͼo .cm-tooltip-autocomplete > ul > li[aria-selected] {
-    background-color: oklch(var(--p));
-    color: oklch(var(--pc));
-}
+    overflow-x: scroll;
+    overflow-y: hidden;
 
-/* completion stylign */
-.cm-completionIcon {opacity: 1 !important;}
-/* compltion icons */
-.cm-completionIcon.cm-completionIcon-embedding::before { content: '☎️'; }
-.cm-completionIcon.cm-completionIcon-wildcard::before { content: '🎲'; }
-.cm-completionIcon.cm-completionIcon-lora::before { content: '📘'; }
-
-.cm-cushy-completion-for-embedding {color: #ffa1a1;}
-.cm-cushy-completion-for-wildcard  {color: #f3f36a;}
-.cm-cushy-completion-for-lora      {color: #00ccff;}
-
-/* .cm-completionLabel {} */
-.cm-completionDetail { color: #919191 }
-
-/* -------------------- */
-.cm-WeightedExpression .ͼu{ color: orange; font-style: italic; }
-.cm-embedding > * { color: #ffa1a1; }
-.cm-wildcard  > * { color: #f3f36a; }
-.cm-lora      > * { color: #00ccff; }
-
-.cm-lint-marker.cm-lint-marker-error {
-    @apply animate-bounce;
-}
-.cm-lezer-syntax-error {
-    @apply animate-pulse;
-    background: oklch(var(--er)/.3);
-}
-.cm-lintRange.cm-lintRange-error {
-    outline: 1px dashed oklch(var(--er));
-    /* color: oklch(var(--er)); */
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
 }
 
+.CSHY-panel-header::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/* border stuff ----------------------------------------------------------------------------------- */
 .bd { border: 2px solid oklch(var(--p)) }
 .bd1 { border: 1px solid oklch(var(--p)) }
-.bdl1 { border-left: 1px solid oklch(var(--p)) }
-.bderr { border: 1px solid oklch(var(--er)) }
-.animated {
-    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
- /* helpers --------------------- */
+.konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
+/* .virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); } */
+
+ /* helpers ----------------------------------------------------------------------------------- */
 .flex-2{ flex: 2 1 0%; }
-.flex-3{ flex: 3 1 0%; }
-.flex-4{ flex: 4 1 0%; }
-.flex-5{ flex: 5 1 0%; }
+
+/* TODO: check if unused, and if so, remove */
 .line {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: .25rem;
 }
-/* semantic stuff -------------- */
+/* semantic stuff ---------------------------------------------------------------------------- */
 .cushy-panel-header {
-    @apply flex overflow-auto gap-2 bg-base-300 w-full flex-shrink-0;
+    @apply flex overflow-auto gap-2 w-full flex-shrink-0;
 }
 
-/* KBD-------------------------- */
-/* tweak so it's peresence in dropdown entry doesn't impact height */
-.kbd-sm { min-height: 1.2rem; }
+/* ------------------------------------------------------------------------------------------- */
 
-/* ----------------------------- */
-.flexlayout__tab {
-    display: flex;
-    flex-direction: column;
-}
-/* .flexlayout__tabset-selected {
-    border-bottom: 1px solid oklch(var(--p)/0.5);
-} */
-.flexlayout__tabset_tabbar_inner_tab_container  {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-.flexlayout__tab_button {
-    gap: .1rem
-}
-.flexlayout__tabset-selected {
-    background-image: none;
-}
+/* mod 1. makes tabs slightly close to each other */
+.flexlayout__tabset_tab_divider { width: 3px; }
 
-.input,
-input.input {
-    background-color: oklch(var( --p)/.15) !important;
-}
+/* mod 2. attempt to remove the separation between tab name and content on selected tabs  */
+.flexlayout__tabset_tabbar_outer_top { border-bottom: none; }
+.flexlayout__tabset_tabbar_inner_tab_container  { padding-left: 0px; padding-right: 0px; }
+.flexlayout__tab_button--unselected  { border-bottom: 1px solid var(--color-tabset-background); }
 
-/* InputNumberUI   --------------------- */
-.input-number-ui input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    width: 0;
-    height: 0;
-    margin: 0;
-}
+/* mod 2 bis. make it so active box is not too different */
+.flexlayout__tabset-selected { background-image: none; }
 
-.input-number-ui:hover button {
-    opacity: 100;
-}
-
-.input-number-ui:hover .inui-foreground {
-    filter: brightness(1.20)
-}
-
-/* //InputNumberUI */
-
-/* Text Shading - These are defined in theme.css*/
-.text-shadow {
-    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
-}
-
-.text-shadow-inv {
-    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
-}
-
-.bg-primary-1 { background-color: oklch(var(--p)/.1); }
-.bg-primary-2 { background-color: oklch(var(--p)/.2); }
-
-.bg-info-1 { background-color: oklch(var(--in)/.1); }
-.bg-info-2 { background-color: oklch(var(--in)/.2); }
-
-.bg-error-1 { background-color: oklch(var(--er)/.1); }
-.bg-error-2 { background-color: oklch(var(--er)/.2); }
-
-.bg-warning-1 { background-color: oklch(var(--wa)/.1); }
-.bg-warning-2 { background-color: oklch(var(--wa)/.2); }
-
-.bg-success-1 { background-color: oklch(var(--su)/.1); }
-.bg-success-2 { background-color: oklch(var(--su)/.2); }
-
-._SelectPopupUI,
-._RevealUI {
-    box-shadow:
-        0 2px 5px -2px oklch(var(--pc));
-        /* 0 0 10px 1px oklch(var(--b3)); */
-}
-._MenuItem > div  {
-    padding: 0.3em 0.5em;
-}
-.btn-narrow {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
-}
-.btn-narrower {
-    padding-left: 0.1em;
-    padding-right: 0.1em;
-}
-
-.borderLeft {
-    border-left: 1px solid oklch(var(--bc)/0.2);
-}
-.konvajs-content,
-.virtualBorder {
-    border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2));
-}
-.virtualBorder2 {
-    border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5));
-}
-
-/* FIELDSETS */
-/* ._legend {
-    position: absolute;
-    transform: translate(0.2rem, -1rem);
-    z-index: 999;
-    background: oklch(var(--b2));
-} */
-legend {
-    background: none;
-    width: 100%;
-    margin-left: .2rem;
-    /* background: oklch(var(--p)/.05); */
-}
-/* fieldset fieldset { */
-    /* margin-left: 1rem; */
-/* } */
-/* .FIELD .FIELD {border-color: oklch(var(--p)/0.1);}
-.FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
-.FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
-.FIELD .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);} */
-/* .FIELD {
-    background: oklch(var(--b2));
-} */
-/* .FIELDSimple:hover, */
-.FIELD:hover {
-    border-left: 2px groove oklch(var(--s)/0.5);
-    /* border-top-left-radius: .8rem; */
-}
-.FIELDSimple._isTopLevel,
-.FIELD._isTopLevel {
-    margin-left: 0;
-    border: none;
-    padding-left: 0;
-    transform: none;
-    /* border-left: 2px groove oklch(var(--p)/0.5); */
-    /* border-top-left-radius: .8rem; */
-}
-
-.FIELD,
-.FIELDSimple {
-    margin-left: .5rem;
-    padding-left: .5rem;
-    border-left: 2px groove oklch(var(--p)/0.5);
-    /* border-top-left-radius: .5rem; */
-    /* border-bottom-left-radius: 1rem; */
-}
-/* .FIELD._isTopLevel {
-    background: oklch(var(--p)/.1);
-} */
-.FIELD {
-    /* transition: all 0.2s ease-in-out; */
-    /* border-top-left-radius: .8rem; */
-    /* border-bottom-left-radius: .8rem; */
-    position: relative;
-    padding-left: .5rem;
-    /* background: oklch(var(--p)/.05); */
-    /* display: block; */
-    /* margin-left: 2px; */
-    /* margin-right: 2px; */
-    /* padding: .4rem; */
-    /* padding-top: 0.35em; */
-    /* padding-left: 1rem; */
-    /* padding-right: 0.3rem; */
-    /* border: 1px groove var(--fallback-p,oklch(var(--p)/0.45)); */
+/* mod 3. attempt to make a simple hover effect to indicate which tab is currently hovered */
+/* 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 */
+.flexlayout__tab .CSHY-panel-header{
+    /* 🔴 border: 1px solid transparent */
+    /* var(--color-tabset-background); */
     /* border-top: none; */
-    /* border-bottom: 1px groove var(--fallback-p,oklch(var(--p)/0.6)); */
-    /* border-top: 1px groove var(--fallback-p,oklch(var(--p)/0.6)); */
-    /* border: 1px groove var(--fallback-bc,oklch(var(--bc)/0.2)); */
-  }
-/* COMFY NODES ------------------------------------ */
+}
+/* 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 */
+.flexlayout__tab:hover .CSHY-panel-header {
+    /* 🔴 border: 1px solid oklch(from var(--KLR) 0.5 .1 calc(h)); */
+    /* border: 1px solid oklch(from var(--KLR) 0.5 calc(c * 3) h); */
+    /* border: 1px solid red; */
+    /* border-top: none; */
+    /* box-shadow: inset 0 0 10px 10px oklch(from var(--KLR) 0.5 .2 calc(h + 180)); */
+}
+
+/* .flexlayout__tabset_tabbar_inner_tab_container {
+    border-left: 1px solid var(--color-tabset-background);
+} */
+
+/* mod 4. make tabs be flex container by default (prob legacy ; 🔴 not needed anymore) */
+.flexlayout__tab { display: flex; flex-direction: column; }
+
+/* mod 5. make close button slightly close to the text to save a few PX */
+.flexlayout__tab_button { gap: .1rem }
+
+/* mod 6. remove the small top padding above tabs */
+.flexlayout__tabset_tabbar_inner_tab_container_top{ border-top: 0; }
+
+
+/* COMFY NODES -------------------------------------------------------------------------------------- */
 #CushyStudio.light {
     --comfy-default: #d6d6d6;
     --comfy-primitive: #d1c9b2;
@@ -340,56 +133,35 @@ legend {
     --comfy-image: #7e3a3a;
 }
 
-/* markdown */
+/* ------- Helpers and Various Fixes ------- */
 
-/* ._MD { padding-left: .5rem } */
-._MD h1 { font-size: 2rem; }
-._MD h2 { font-size: 1.5rem; }
-._MD h3 { font-size: 1.17rem; }
-._MD h1,._MD h2,._MD h3,._MD h4 {
-    font-weight: bold;
-    color: oklch(var(--p))
-}
-
-._MD ul, ._MD ol {
-    padding-left: 1rem;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-._MD ul { list-style-type: disc; }
-._MD ol { list-style-type: decimal; }
-._MD li {
-    margin-left: 1rem;
-    /* margin-top: .5rem; */
-    /* margin-bottom: .5rem; */
-}
-._MD table, ._MD th, ._MD td {
-    border-top: 1px solid #333333;
-    border-left: 1px solid #333333;
+/*#region*/ /* Hide Scrollbar */
+/* Useful for very narrow places where a scrollbar will take up a ton of space */
+.hide-horizontal-scroll::-webkit-scrollbar, .hide-vertical-scroll::-webkit-scrollbar {
+    height:0px;
+    width: 0px;
+    display: none !important;
 }
 
-
-._MD code{
-    border: 1px solid oklch(var(--p)/.2);
-    display: block;
-    background-color: oklch(var(--p)/.1);
-    padding: .5rem;
-    overflow: auto;
-    white-space: pre-wrap;
-}
-._MD code,
-._MD pre {
-    font-style: italic;
+.hide-horizontal-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
-._MD table {
-    width: 100%;
-    border: 2px solid var(--fallback-p,oklch(var(--a)/0.45));
+.hide-vertical-scroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
-._MD th {
-    background: oklch(var(--p)/.1);
+
+.hide-horizontal-scroll, .hide-vertical-scroll {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
 }
-._MD th, ._MD td {
-    border-bottom: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
-    border-right: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
+/*#endregion*/ /* Hide Scrollbar */
+
+
+/* topic=WZ2sEOGiLy */
+.useDefaultCursorEverywhere .cursor-pointer {
+    cursor: default;
 }

@@ -1,4 +1,4 @@
-import type { EnumValue } from 'src/models/Schema'
+import type { EnumValue } from '../models/ComfySchema'
 
 /** weird abstraction */
 export type CleanedEnumResult<T> = {

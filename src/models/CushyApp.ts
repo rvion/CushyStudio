@@ -1,26 +1,27 @@
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { Timestamp } from '../csuite/types/Timestamp'
+import type { TABLES } from '../db/TYPES.gen'
+import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { CushyAppT } from 'src/db/TYPES.gen'
-import type { CushyScriptL } from 'src/models/CushyScriptL'
 
 import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
-import { LiveCollection } from 'src/db/LiveCollection'
-import { LiveInstance } from 'src/db/LiveInstance'
-import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
+import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
+import { LiveInstance } from '../db/LiveInstance'
+import { LiveRef } from '../db/LiveRef'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
-export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
+export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
 export class CushyAppL {
     // linked scripts
-    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
-    get script() {
+    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
+
+    get script(): CushyScriptL {
         return this._scriptL.item
     }
 
@@ -32,11 +33,9 @@ export class CushyAppL {
         return true
     }
 
-    // link drafts
-    private _draftsCollection = new LiveCollection<DraftL>({
-        table: () => this.db.drafts,
-        where: () => ({ appID: this.id }),
-    })
+    get drafts(): DraftL[] {
+        return cushy.db.draft.select((q) => q.where('appID', '=', this.id))
+    }
 
     get virtualFolder(): string {
         const pieces = this.name.split('/')
@@ -44,8 +43,19 @@ export class CushyAppL {
         return pieces.join('/')
     }
 
-    get drafts(): DraftL[] {
-        return this._draftsCollection.items
+    get lastExecutedDrafts(): {
+        id: DraftID
+        title: Maybe<string>
+        lastRunAt: Maybe<number>
+    }[] {
+        return this.db.draft.selectRaw(
+            (query) =>
+                query
+                    .where('appID', '=', this.id) //
+                    .orderBy('lastRunAt', 'desc')
+                    .select(['id', 'title', 'lastRunAt']),
+            ['draft.lastRunAt', 'draft.appID'],
+        )
     }
 
     /** true if in the library/local folder */
@@ -64,7 +74,7 @@ export class CushyAppL {
     }
 
     /** shortcut to open the last draft of the first app defined in this file */
-    openLastOrCreateDraft = () => {
+    openLastOrCreateDraft = (): void => {
         this.getLastOrCreateDraft().openOrFocusTab()
     }
 
@@ -73,7 +83,7 @@ export class CushyAppL {
 
     getLastOrCreateDraft = (): DraftL => {
         const drafts = this.drafts
-        return drafts.length > 0 ? drafts[0] : this.createDraft()
+        return drafts.length > 0 ? drafts[0]! : this.createDraft()
     }
 
     // favorite system ------------------------------------------------------
@@ -81,20 +91,24 @@ export class CushyAppL {
         return this.data.isFavorite === SQLITE_true
     }
 
-    setFavorite = (fav: boolean) => {
+    setFavorite = (fav: boolean): void => {
         this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false } /* { debug: true } */)
     }
 
-    // ... ------------------------------------------------------
+    // ------------------------------------------------------
+    get draftCount(): number {
+        return this.drafts.length
+    }
+
     createDraft = (): DraftL => {
-        const title = this.name + ' ' + this._draftsCollection.items.length + 1
-        const draft = this.st.db.drafts.create({
+        const title = this.name + ' ' + this.draftCount + 1
+        const draft = this.st.db.draft.create({
             // @ts-expect-error 🔴
             formSerial: {},
             appID: this.id,
             title: title,
         })
-        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+        this.st.layout.open('Draft', { draftID: draft.id }, 'left')
         return draft
     }
 
@@ -107,7 +121,7 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
-    get isLoadedInMemory() {
+    get isLoadedInMemory(): boolean {
         return this.script.getExecutable_orNull(this.id) != null
     }
 
@@ -132,7 +146,7 @@ export class CushyAppL {
         throw new Error([title, howToFix].join('\n'))
     }
 
-    revealInFileExplorer = () => {
+    revealInFileExplorer = (): void => {
         const relPath = this.relPath
         if (relPath == null) return
         const treePath = relPath.split('/')
@@ -141,7 +155,7 @@ export class CushyAppL {
         this.st.tree2View.revealAndFocusAtPath(treePath)
     }
 
-    publish = async () => {
+    publish = async (): Promise<void> => {
         if (this.isPublishing) return
         this.isPublishing = true
         try {
@@ -292,8 +306,8 @@ export class CushyAppL {
     }
 
     /** globaly unique id (in theory...); 🔶 */
-    get uid() {
-        return this.data.createdAt
+    get uid(): Timestamp {
+        return this.data.createdAt as Timestamp
     }
 
     get name(): string {
@@ -341,7 +355,7 @@ export class CushyAppL {
     }
 
     /** ready to be used in URL */
-    get illustrationPathWithFileProtocol() {
+    get illustrationPathWithFileProtocol(): string {
         const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
         if (tmp?.startsWith('data:')) return tmp
         if (tmp?.startsWith('http')) return tmp

@@ -1,7 +1,8 @@
+import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
+import type { TableInfo } from './TYPES_json'
 import type { AnnotationMapEntry } from 'mobx'
-import type { STATE } from 'src/state/state'
 
 export type $OptionalFieldsForUpsert = 'createdAt' | 'updatedAt'
 
@@ -12,26 +13,26 @@ export type BaseInstanceFields = {
     updatedAt: number
 }
 
-export interface LiveInstance<T extends BaseInstanceFields, L> {
+export interface LiveInstance<TABLE extends TableInfo> {
     st: STATE
     db: LiveDB
-    table: LiveTable<T, any, any>
-    data: T
-    get id(): T['id']
-    get createdAt(): T['createdAt']
-    get updatedAt(): T['updatedAt']
+    table: LiveTable<TABLE>
+    data: TABLE['$T']
+    get id(): TABLE['$ID']
+    get createdAt(): number
+    get updatedAt(): number
     get tableName(): TableNameInDB
     observabilityConfig?: { [key: string]: AnnotationMapEntry }
-    onHydrate?: (data: T) => void
-    onCreate?: (data: T) => void
+    onHydrate?: (/* data: TABLE['$T'] */) => void
+    onCreate?: (/* data: TABLE['$T'] */) => void
     /** called on both hydrate and update (bad; need to be changed ❌) */
-    onUpdate?: (prev: Maybe<T>, next: T) => void
-    update: (t: Partial<T>, opts?: UpdateOptions) => void
-    update_LiveOnly: (t: Partial<T>) => void
+    onUpdate?: (prev: TABLE['$T'] | null, next: any /* TABLE['$T'] */) => void
+    update: (t: /* Partial< */ TABLE['$Update'] /* > */, opts?: UpdateOptions) => void
+    update_LiveOnly: (t: Partial<TABLE['$T']>) => void
     delete: () => void
-    toJSON: () => T
-    init(table: LiveTable<T, any, any>, data: T): void
-    clone(t?: Partial<T>): L
+    toJSON: () => TABLE['$T']
+    init(table: LiveTable<TABLE>, data: TABLE['$T']): void
+    clone(t?: Partial<TABLE['$T']>): TABLE['$L']
     log(...args: any[]): void
 }
 

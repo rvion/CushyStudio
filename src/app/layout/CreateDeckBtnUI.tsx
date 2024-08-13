@@ -1,10 +1,10 @@
 // import { observer } from 'mobx-react-lite'
 // import { useMemo } from 'react'
-// import { Button } from 'src/rsuite/shims'
-// import { useSt } from 'src/state/stateContext'
+// import { Button } from '../../rsuite/shims'
+// import { useSt } from '../../state/stateContext'
 // import { CreateDeckModalState } from './CreateDeckModalUI'
 // import { GithubUsernameInputUI } from './GithubUsernameInputUI'
-// import { PackageRelPath } from 'src/cards/Pkg'
+// import { PackageRelPath } from '../../cards/Pkg'
 
 // export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
 //     const st = useSt()
@@ -14,7 +14,7 @@
 //             <Button
 //                 tw='btn-sm'
 //                 onClick={uist.handleOpen}
-//                 appearance='primary'
+//                 look='primary'
 //                 color='green'
 //                 icon={<span className='material-symbols-outlined'>add</span>}
 //             >
@@ -59,11 +59,11 @@
 //                                     uist.isCreating = false
 //                                     uist.handleClose()
 //                                 }}
-//                                 appearance='primary'
+//                                 look='primary'
 //                             >
 //                                 Ok
 //                             </Button>
-//                             <Button onClick={uist.handleClose} appearance='subtle'>
+//                             <Button onClick={uist.handleClose} look='subtle'>
 //                                 Cancel
 //                             </Button>
 //                         </div>

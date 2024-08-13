@@ -8,12 +8,10 @@ export const run_prompt = (p: {
     printWildcards?: boolean
     seed?: number
 }): {
-    positiveText: string
-    negativeText: string
+    promptIncludingBreaks: string
     clip: _CLIP
     ckpt: _MODEL
-    readonly positiveConditionning: _CONDITIONING
-    readonly negativeConditionning: _CONDITIONING
+    readonly conditioning: _CONDITIONING
 } => {
     const run = getCurrentRun()
     const richPrompt = p.prompt
@@ -41,18 +39,26 @@ export const run_prompt = (p: {
         },
     })
 
-    if (p.printWildcards && CX.debugText.length > 0) run.output_text({ title: 'wildcards', message: CX.debugText.join(' ') })
+    if (p.printWildcards && CX.debugText.length > 0) {
+        run.output_text({ title: 'wildcards', message: CX.debugText.join(' ') })
+    }
 
     return {
-        positiveText: CX.positivePrompt,
-        negativeText: CX.negativePrompt,
+        promptIncludingBreaks: CX.promptIncludingBreaks,
         clip,
         ckpt,
-        get positiveConditionning() {
-            return run.nodes.CLIPTextEncode({ clip, text: CX.positivePrompt })
-        },
-        get negativeConditionning() {
-            return run.nodes.CLIPTextEncode({ clip, text: CX.negativePrompt })
+        get conditioning() {
+            if (CX.subPrompts.length > 1) {
+                let start: _CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0]! })
+                for (let i = 1; i < CX.subPrompts.length; i++) {
+                    start = run.nodes.ConditioningConcat({
+                        conditioning_from: start,
+                        conditioning_to: run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[i]! }),
+                    })
+                }
+                return start
+            }
+            return run.nodes.CLIPTextEncode({ clip, text: CX.promptIncludingBreaks })
         },
     }
 }

@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyAppL } from 'src/models/CushyApp'
+import { CushyAppL } from '../../models/CushyApp'
 
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
+    grayscale?: boolean
     className?: string
     onClick?: () => void
     app: Maybe<CushyAppL>
@@ -34,12 +35,13 @@ export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
         <img
             className={p.className}
             loading='lazy'
-            tw={[
-                //
-                'rounded',
-                p.onClick ? 'cursor-pointer' : null,
-            ]}
-            style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}
+            tw={['rounded', p.onClick ? 'cursor-pointer' : null]}
+            style={{
+                width: p.size,
+                height: p.size,
+                objectFit: 'contain',
+                filter: p.grayscale ? 'grayscale(100%)' : undefined,
+            }}
             src={app.illustrationPathWithFileProtocol}
             alt='card illustration'
             onClick={p.onClick}

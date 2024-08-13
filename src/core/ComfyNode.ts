@@ -1,12 +1,14 @@
-import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement, ReactNode } from 'react'
 
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
+import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
 import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
+import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
 import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
@@ -17,6 +19,16 @@ configure({ enforceActions: 'never' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 
+export type NodePort = {
+    id: string
+    label: string
+    width: number
+    height: number
+    type: string
+    x: number
+    y: number
+}
+
 /** ComfyNode
  * - correspond to a signal in the graph
  * - belongs to a script
@@ -26,22 +38,42 @@ export class ComfyNode<
     ComfyNode_input extends object,
     ComfyNode_output extends object = {},
 > {
-    storeAs = (storeName: string) => {
+    storeAs(storeName: string): this {
         this.meta.storeAs = storeName
         return this
     }
-    tag = (tagName: string) => {
-        this.meta.tag = tagName
+
+    tag(tagName: string) {
+        this.addTag(tagName)
+        return this
+    }
+
+    addTag(tag: string) {
+        if (this.meta.tags == null) this.meta.tags = [tag]
+        else this.meta.tags.push(tag)
         return this
     }
     // ---------------------------------------
 
-    // artifacts: _WsMsgExecutedData[] = []
-    // images: GeneratedImage[] = []
-    progressRatio: number = 0
-    progress: NodeProgress | null = null
-    $schema: ComfyNodeSchema
+    /** reported though websocket by ComfyUI */
     status: NodeExecutionStatus = null
+
+    /** last raw progress message reported by comfy */
+    progress: NodeProgress | null = null
+
+    /**
+     * updated on websocket progress report from the progress property just above
+     * between [0, 1]
+     * */
+    progressRatio: number = 0
+
+    get progressReport(): ProgressReport {
+        const percent = this.status === 'done' ? 100 : this.progressRatio * 100
+        const isDone = this.status === 'done'
+        return { percent, isDone, countDone: this.progressRatio * 100, countTotal: 100 }
+    }
+
+    $schema: ComfyNodeSchema
     updatedAt: number = Date.now()
     json: ComfyNodeJSON
 
@@ -59,16 +91,10 @@ export class ComfyNode<
 
     /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        const cyto = this.graph.cyto
         for (const [key, value] of Object.entries(p)) {
             const next = this.serializeValue(key, value)
             const prev = this.json.inputs[key]
             if (next === prev) continue
-            // 🔴
-            if (cyto && Array.isArray(next) && Array.isArray(prev)) {
-                cyto?.removeEdge(`${prev[0]}-${key}->${this.uid}`)
-                cyto?.addEdge({ sourceUID: next[0], targetUID: this.uid, input: key })
-            }
             this.json.inputs[key] = next as any // 🔴
         }
         // 🔴 wrong resonsibility
@@ -79,11 +105,11 @@ export class ComfyNode<
         return comfyColors[this.$schema.category] ?? '#aaa'
     }
 
-    // static X: number = 1
     uidNumber: number
     $outputs: ComfyNodeOutput<any>[] = []
     outputs: ComfyNode_output
     uidPrefixed: string
+
     constructor(
         //
         public graph: ComfyWorkflowL,
@@ -98,7 +124,10 @@ export class ComfyNode<
         // console.log('CONSTRUCTING', xxx.class_type, uid)
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
-        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
+        this.$schema =
+            graph.schema.nodesByNameInComfy[jsonExt.class_type]! ??
+            graph.schema.nodesByNameInComfy[ComfyDefaultNodeWhenUnknown_Name] // 🔴 ? do we want to do that ?
+
         if (this.$schema == null) {
             console.log(`❌ available nodes:`, Object.keys(graph.schema.nodesByNameInComfy).join(','))
             throw new Error(`❌ no schema found for node "${jsonExt.class_type}"`)
@@ -172,34 +201,80 @@ export class ComfyNode<
         return primitives
     }
 
-    _incomingEdges(): { from: ComfyNodeID; inputName: string }[] {
-        const incomingEdges: { from: ComfyNodeID; inputName: string }[] = []
+    // return the list of nodes that feed into this node
+    get parents(): ComfyNode<any>[] {
+        return this._incomingNodes().map((id) => this.graph.getNode(id)!)
+    }
+    // get children(): ComfyNode<any>[] {
+    //     return this._incomingNodes().map((id) => this.graph.getNode(id)!)
+    // }
+
+    x = 0
+    y = 0
+    col = 0
+    get outgoingPorts() {
+        return this.$outputs.map(
+            (o, ix): NodePort => ({
+                id: this.uid + '#' + o.slotIx,
+                label: o.type,
+                width: NodeSlotSize,
+                height: NodeSlotSize,
+                type: o.type,
+                x: this.x + this.width, // + NodeSlotSize / 2,
+                y:
+                    this.y + //             start
+                    NodeTitleHeight + //    title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2, //
+            }),
+        )
+    }
+
+    get incomingPorts() {
+        return this._incomingEdges().map(
+            (e, ix): NodePort => ({
+                id: this.uid + '<-' + e.from + '#' + e.fromSlotIx,
+                width: NodeSlotSize,
+                height: NodeSlotSize,
+                label: e.inputName,
+                type: e.type,
+                x: this.x, // - NodeSlotSize / 2,
+                y:
+                    this.y + // start
+                    NodeTitleHeight + // title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2,
+            }),
+        )
+    }
+
+    _incomingEdges(): { from: ComfyNodeID; inputName: string; type: string; fromSlotIx: number }[] {
+        const incomingEdges: { from: ComfyNodeID; inputName: string; fromSlotIx: number; type: string }[] = []
         for (const [inputName, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
-                const [from, _slotIx] = val
-                incomingEdges.push({ from, inputName })
+                const [from, _slotIx] = val as [ComfyNodeID, number]
+                const type = this.graph.getNode(from)?.$outputs[_slotIx]?.type
+                incomingEdges.push({ from, inputName, fromSlotIx: _slotIx, type })
             }
         }
         return incomingEdges
     }
 
-    // dimensions for autolayout algorithm
-    get width() { return 300 } // prettier-ignore
-    get height() {
-        const inputHeights = this.$schema.inputs.map((i) => {
-            if (i.opts == null) return 30
-            const opts = typeof i.opts === 'object' ? i.opts : {}
-            return opts?.multiline ? 40 : 30
-        })
-        const total = inputHeights.reduce((a, b) => a + b, 0)
+    primitivesCount(): number {
+        return Object.values(this.inputs).filter((val) => !(val instanceof Array)).length
+    }
 
-        const outputHeights = this.$schema.outputs.map((i) => {
-            return 30
-        })
-        const totalOutputs = outputHeights.reduce((a, b) => a + b, 0)
+    // dimensions for autolayout algorithm
+    get width(): number {
+        return 200
+    }
+    get height(): number {
+        const inputLen = this._incomingEdges().length
+        const outputLen = this.$schema.outputs.length
+        const headerCount = Math.max(inputLen, outputLen)
 
         // max height since some nodes have many invisible inputs
-        return Math.min(1000, Math.max(total + 30, totalOutputs + 30))
+        return (this.primitivesCount() + headerCount + 1) * nodeLineHeight
     }
 
     serializeValue(field: string, value: unknown): unknown {

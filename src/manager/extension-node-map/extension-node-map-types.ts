@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 
-import { NodeNameInComfy } from 'src/models/Schema'
+import { NodeNameInComfy } from '../../models/ComfySchema'
 
 // FILE TYPE ------------------------------------------------------------------------
 // wtf is this format...
@@ -19,6 +19,7 @@ export type ENMInfos = {
     description?: string // "Webcams, GLSL shader, Media Streaming, Tick animation, Image manipulation,",
     nodename_pattern?: string // " \\(jov\\)$",
     title?: string // "Jovimetrix",
+    preemptions?: string[] // ❓
 }
 
 // SCHEMA ------------------------------------------------------------------------
@@ -32,6 +33,7 @@ export const ENMInfos_Schema = Type.Object(
         description: Type.Optional(Type.String()),
         nodename_pattern: Type.Optional(Type.String()),
         title: Type.Optional(Type.String()),
+        preemptions: Type.Optional(Type.Array(Type.String())),
     },
     { additionalProperties: false },
 )

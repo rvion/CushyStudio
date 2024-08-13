@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname } from 'pathe'
 
-export const readJSON = (absPath: string): Maybe<object> => {
-    console.log(absPath)
+export const readJSON = <T extends object = object>(absPath: string): Maybe<T> => {
+    // ⏸️ console.log('reading json at' , absPath)
     const exists = existsSync(absPath)
     if (!exists) return null
 
@@ -17,8 +17,8 @@ export const readJSON = (absPath: string): Maybe<object> => {
     }
 }
 
-export const writeJSON = (absPath: string, json: object) => {
-    console.log(absPath)
+export const writeJSON = (absPath: string, json: object): void => {
+    // ⏸️ console.log('writing json at' , absPath)
     mkdirSync(dirname(absPath), { recursive: true })
     const str = JSON.stringify(json, null, 2)
     writeFileSync(absPath, str, 'utf8')

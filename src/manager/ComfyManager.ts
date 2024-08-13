@@ -1,16 +1,16 @@
 /** 🔶 NAMING DISCLAIMER: I call a "custom node package" => "PLUGIN" */
 
+import type { HostL } from '../models/Host'
 import type { ComfyManagerRepository } from './ComfyManagerRepository'
 import type { PluginInfo } from './custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
 import type { KnownModel_Name } from './model-list/KnownModel_Name'
 import type { ModelInfo } from './model-list/model-list-loader-types'
-import type { PluginInstallStatus } from 'src/controls/REQUIREMENTS/PluginInstallStatus'
-import type { HostL } from 'src/models/Host'
+import type { PluginInstallStatus } from './REQUIREMENTS/PluginInstallStatus'
 
 import { makeAutoObservable, observable } from 'mobx'
 
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
 
 type HostPluginList = {
     custom_nodes: {
@@ -56,6 +56,12 @@ export class ComfyManager {
         this.modelList = await this.fetchModelList()
     }
 
+    // -----------
+    configureLogging = (mi: boolean): Promise<any> => {
+        // return this.repository.getModelInfoFinalFilePath(mi)
+        return this.fetchGetText(`/manager/terminal?mode=${mi}`)
+    }
+
     // utils ------------------------------------------------------------------------------
     getModelInfoFinalFilePath = (mi: ModelInfo): string => {
         return this.repository.getModelInfoFinalFilePath(mi)
@@ -67,14 +73,14 @@ export class ComfyManager {
         // 🔴 bad code
         setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
 
-        return this.fetchGet('/manager/reboot')
+        return this.fetchGetJSON('/manager/reboot')
     }
 
     // models --------------------------------------------------------------
     modelList: Maybe<HostModelList> = null
 
     fetchModelList = (): Promise<HostModelList> => {
-        return this.fetchGet<HostModelList>('/externalmodel/getlist?mode=cache')
+        return this.fetchGetJSON<HostModelList>('/externalmodel/getlist?mode=cache')
     }
 
     isModelInstalled = (name: KnownModel_Name): boolean => {
@@ -148,7 +154,7 @@ export class ComfyManager {
     ): Promise<HostPluginList> => {
         try {
             const skip_update = skipUpdate ? '&skip_update=true' : ''
-            const status = await this.fetchGet(`/customnode/getlist?mode=${mode}${skip_update}`)
+            const status = await this.fetchGetJSON(`/customnode/getlist?mode=${mode}${skip_update}`)
             return status as any
         } catch (exception) {
             console.error(`node list retrieval failed: ${exception}`)
@@ -183,11 +189,17 @@ export class ComfyManager {
         return status
     }
 
-    private fetchGet = async <Out>(endopint: string): Promise<Out> => {
+    private fetchGetJSON = async <Out>(endopint: string): Promise<Out> => {
         const url = this.host.getServerHostHTTP() + endopint
         const response = await fetch(url)
         const status = await response.json()
         console.log(`[👀]`, status)
+        return status
+    }
+    private fetchGetText = async (endopint: string): Promise<string> => {
+        const url = this.host.getServerHostHTTP() + endopint
+        const response = await fetch(url)
+        const status = await response.text()
         return status
     }
 }

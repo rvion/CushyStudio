@@ -1,19 +1,29 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
-export const ui_latent_v1 = () => {
-    const form: FormBuilder = getCurrentForm()
+export function ui_latent_v1(): X.XGroup<{
+    image: X.XOptional<X.XImage>
+    batchSize: X.XNumber
+    size: X.XSize
+}> {
+    const form: X.Builder = getCurrentForm()
     return form.group({
         label: 'Start from',
-        items: () => ({
-            image: form.imageOpt({}),
+        items: {
+            image: form.image({}).optional(),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
             size: form.size({}),
-        }),
+        },
     })
 }
 
-export const run_latent_v1 = async (p: { opts: OutputFor<typeof ui_latent_v1>; vae: _VAE }) => {
+export const run_latent_v1 = async (p: {
+    opts: OutputFor<typeof ui_latent_v1>
+    vae: _VAE
+}): Promise<{
+    latent: HasSingle_LATENT
+    width: number
+    height: number
+}> => {
     // init stuff
     const run = getCurrentRun()
     const graph = run.nodes
@@ -26,7 +36,7 @@ export const run_latent_v1 = async (p: { opts: OutputFor<typeof ui_latent_v1>; v
 
     // case 1. start form image
     if (opts.image) {
-        const _img = run.loadImage(opts.image.imageID)
+        const _img = run.loadImage(opts.image.id)
         const image = await _img.loadInWorkflow()
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
         width = _img.width

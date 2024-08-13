@@ -2,15 +2,18 @@ import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { BadgeUI } from '../csuite/badge/BadgeUI'
+import { Button } from '../csuite/button/Button'
+import { Frame } from '../csuite/frame/Frame'
+import { Loader, Message } from '../csuite/inputs/shims'
+import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
+import { RevealUI } from '../csuite/reveal/RevealUI'
+import { exhaust } from '../csuite/utils/exhaust'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { GitInstallUI } from './GitInstallUI'
+import { GitManagedFolder } from './updater'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
-import { FolderGitStatus } from 'src/cards/FolderGitStatus'
-import { MessageInfoUI } from 'src/panels/MessageUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Button, Loader, Message } from 'src/rsuite/shims'
-import { GitManagedFolder } from 'src/updater/updater'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //
@@ -20,31 +23,28 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
 }) {
     const updater = p.updater
     let ANCHOR = (
-        <div
+        <Frame
             //
             className={p.className}
-            tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}
+            tw={['flex items-center', updater.hasUpdateAvailable && 'btn-warning']}
         >
             {p.children}
             <div tw='text-xs italic opacity-50'>
                 <UpdaterAnchorUI updater={updater} />
             </div>
-        </div>
+        </Frame>
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
             <div tw='flex items-center shrink-0' className={p.className}>
                 {ANCHOR}
-                <span className='indicator-item badge badge-secondary'>Update Available</span>
+                <BadgeUI contrast={0.2} chroma={0.13} hue={0}>
+                    Update Available
+                </BadgeUI>
             </div>
         )
 
-    return (
-        <RevealUI>
-            {ANCHOR}
-            <UpdaterDetailsUI updater={updater} />
-        </RevealUI>
-    )
+    return <RevealUI content={() => <UpdaterDetailsUI updater={updater} />}>{ANCHOR}</RevealUI>
 })
 
 export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: GitManagedFolder }) {
@@ -66,56 +66,26 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
     return (
         <div tw='p-1 overflow-auto [max-height:80vh] flex flex-col gap-2'>
             {hasErrors && <Message type='error'>error</Message>}
-            {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and click on the update button</MessageInfoUI>}
-            <div>
-                {/* {updater.hasUpdateAvailable ? (
-                    <Button
-                        className='animate-pulse'
-                        color='red'
-                        size='sm'
-                        appearance='primary'
-                        icon={<span className='material-symbols-outlined'>update</span>}
-                        onClick={async (ev) => {
-                            ev.stopPropagation()
-                            ev.preventDefault()
-                            await updater.updateToLastCommitAvailable()
-                            window.location.reload()
-                        }}
-                    >
-                        update
-                    </Button>
-                ) : null} */}
-            </div>
+            {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and run the update script</MessageInfoUI>}
             <UpdaterErrorUI updater={updater} />
-
-            <div tw='virtualBorder'>
+            <div>
                 {updater.lastFetchAt ? (
                     <div>
-                        <div>
-                            <span className='material-symbols-outlined'>history</span> prev update :{' '}
-                            {_formatAsRelativeDateTime(updater.lastFetchAt)}
-                        </div>
-                        <div>
-                            <span className='material-symbols-outlined'>schedule</span> next update :{' '}
-                            {_formatAsRelativeDateTime(updater.nextFetchAt)}
-                        </div>
+                        <Frame line icon='mdiHistory'>
+                            prev update: {_formatAsRelativeDateTime(updater.lastFetchAt)}
+                        </Frame>
+                        <Frame line icon='mdiPageNext'>
+                            next update: {_formatAsRelativeDateTime(updater.nextFetchAt)}
+                        </Frame>
                     </div>
                 ) : (
                     <>no update done</>
                 )}
             </div>
             <div tw='flex gap-2'>
-                <Button
-                    tw='btn-info'
-                    size='sm'
-                    onClick={() => updater.checkForUpdatesNow()}
-                    icon={<span className='material-symbols-outlined'>refresh</span>}
-                >
+                <Button look='info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
                     REFRESH
                 </Button>
-                {/* {updater.config.canBeUninstalled ? ( //
-                    <UninstallUI updater={updater} />
-                ) : null} */}
             </div>
             <div>
                 <table tw='table table-zebra-zebra table-xs'>

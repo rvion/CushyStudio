@@ -1,5 +1,5 @@
+import type { HostL } from '../models/Host'
 import type { Runtime } from './Runtime'
-import type { HostL } from 'src/models/Host'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -23,7 +23,7 @@ export class RuntimeHosts {
      * - usefull if you want to manually dispatch things
      * */
     get all(): HostL[] {
-        return this.rt.Cushy.db.hosts.findAll()
+        return this.rt.Cushy.db.host.findAll()
     }
 
     /**

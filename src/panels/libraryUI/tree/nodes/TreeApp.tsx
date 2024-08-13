@@ -1,25 +1,23 @@
-import type { VirtualFolder } from '../../VirtualHierarchy'
-import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import type { TreeNode } from '../xxx/TreeNode'
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
+import type { CushyAppL } from '../../../../models/CushyApp'
+import type { DraftL } from '../../../../models/Draft'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { AppFavoriteBtnUI } from '../../CardPicker2UI'
+import { AppFavoriteBtnUI } from './misc/CardPicker2UI'
 import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeApp implements ITreeEntry {
     app?: Maybe<CushyAppL>
+    get st() { return cushy } // prettier-ignore
     constructor(
-        //
-        public st: STATE,
         public appID: CushyAppID, // public app: CushyAppL,
     ) {
-        this.app = st.db.cushy_apps.get(appID)
+        this.app = cushy.db.cushy_app.get(appID)
         makeAutoObservable(this)
     }
 

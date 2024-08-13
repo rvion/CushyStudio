@@ -1,0 +1,63 @@
+/* CODEMIRROR ------------------------------------------------------------------------------------- */
+.cm-tooltip.cm-completionInfo {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.ͼo .cm-activeLineGutter,
+.ͼo .cm-gutters {
+    color:            oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
+    background-color: oklch(from var(--KLR) calc(l) calc(c / 2) h);
+    /* background-color: oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h); */
+}
+
+.ͼo {
+    /* color here is the comment color */
+    color: oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) 0.03 h);
+    /* color:            oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
+    background-color: oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
+}
+.ͼo .cm-tooltip-autocomplete > ul > li[aria-selected] {
+    background-color: oklch(var(--p));
+    color: oklch(var(--pc));
+}
+
+/* completion stylign */
+.cm-completionIcon {opacity: 1 !important;}
+/* compltion icons */
+.cm-completionIcon.cm-completionIcon-embedding::before { content: '☎️'; }
+.cm-completionIcon.cm-completionIcon-wildcard::before { content: '🎲'; }
+.cm-completionIcon.cm-completionIcon-lora::before { content: '📘'; }
+
+.cm-cushy-completion-for-embedding {color: #ffa1a1;}
+.cm-cushy-completion-for-wildcard  {color: #f3f36a;}
+.cm-cushy-completion-for-lora      {color: #00ccff;}
+
+/* .cm-completionLabel {} */
+.cm-completionDetail { color: #919191 }
+
+/* -------------------- */
+/* for some reasons, this styles the text */
+.ͼ13 {
+    color:            oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
+}
+.cm-WeightedExpression .ͼu{ color: orange; font-style: italic; }
+.cm-embedding > * { color: oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) 0.2 10); /* ; */ }
+.cm-wildcard  > * { color: oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) 0.4 90); /* ; */ }
+.cm-lora      > * { color: oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) 0.2 220); /* ; */ }
+
+.foo { color: #ffa1a1 }
+.foo { color: #f3f36a }
+.foo { color: #00ccff }
+
+.cm-lint-marker.cm-lint-marker-error {
+    @apply animate-bounce;
+}
+.cm-lezer-syntax-error {
+    @apply animate-pulse;
+    background: oklch(var(--er)/.3);
+}
+.cm-lintRange.cm-lintRange-error {
+    outline: 1px dashed oklch(var(--er));
+    /* color: oklch(var(--er)); */
+}

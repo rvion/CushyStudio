@@ -1,28 +1,41 @@
 /** by @Vinsi (slightly adapted) */
 
-import type { OutputFor } from '../../local/pony/_prefab_PonyDiffusion'
+import type { SchemaDict } from '../../../src/csuite/model/SchemaDict'
+import type { OutputFor } from '../../local/pony-old/_prefab_PonyDiffusion'
 
-export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
-    return ui
-        .map((item) => {
-            const promptText = item.prompt?.text || ''
-            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
-            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
-            return `${promptText}${characterText}${styleText}`
-        })
-        .join('\n')
-}
+// 📝 2024-06-14 rvion: explicitly adding types is optional;
+// I tend to prefer adding them in built-in prefabs to help
+// with codebase typechecking performances, and making breaking
+// changes more explicit.
+export type UI_advancedPrompt = X.XList<
+    X.XChoice<{
+        prompt: X.XPrompt
+        characters: X.XChoice<{
+            [k: string]: X.XChoice<{
+                [k: string]: X.XGroup<SchemaDict>
+            }>
+        }>
+        styles: X.XChoice<{
+            [k: string]: X.XChoice<{
+                [k: string]: X.XChoice<{
+                    [k: string]: X.XGroup<SchemaDict>
+                }>
+            }>
+        }>
+    }>
+>
 
-export const ui_advancedPrompt = () => {
+export function ui_advancedPrompt(): UI_advancedPrompt {
     const form = getCurrentForm()
     return form.list({
         min: 1,
         layout: 'H',
+        icon: 'mdiBookAlphabet',
         element: () =>
             form.choice({
                 appearance: 'tab',
                 items: {
-                    prompt: form.promptV2({ default: ' \n' }),
+                    prompt: form.prompt({ default: ' \n' }),
                     characters: form.choice({
                         appearance: 'tab',
                         items: Object.fromEntries(
@@ -63,22 +76,33 @@ export const ui_advancedPrompt = () => {
     })
 }
 
+export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
+    return ui
+        .map((item) => {
+            const promptText = item.prompt?.text || ''
+            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
+            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
+            return `${promptText}${characterText}${styleText}`
+        })
+        .join('\n')
+}
+
 // Custom function
 
-function camelCaseToReadable(text: string) {
+function camelCaseToReadable(text: string): string {
     return text
         .replace(/([A-Z])/g, ' $1') // insert a space before all capital letters
         .replace(/^./, (str) => str.toUpperCase()) // capitalize the first letter
 }
 
-function getCharacterText(characters: any) {
+function getCharacterText(characters: any): string {
     return Object.entries(CHARACTER_GROUPS)
         .filter(([group]) => characters[group])
         .flatMap(([group, groupCharacters]) => groupCharacters.filter((character) => characters[group]?.[character]))
         .join(' ')
 }
 
-function getStyleText(styles: any) {
+function getStyleText(styles: any): string {
     return Object.entries(STYLE_GROUPS)
         .filter(([group]) => styles[group])
         .flatMap(([group, subgroups]) =>

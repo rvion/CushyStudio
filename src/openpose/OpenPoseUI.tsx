@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
+import { Button } from '../csuite/button/Button'
+import { useSt } from '../state/stateContext'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
-import { Button } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
 
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
@@ -18,12 +18,9 @@ export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     return (
         <div>
             <div>
-                <Button onClick={() => OPAnim.start()} icon={<span className='material-symbols-outlined'>play_arrow</span>} />
-                <Button onClick={() => OPAnim.stop()} icon={<span className='material-symbols-outlined'>pause</span>} />
-                <Button
-                    onClick={() => OPAnim.drawAllToPngAndSaveLocally()}
-                    icon={<span className='material-symbols-outlined'>save_alt</span>}
-                >
+                <Button onClick={() => OPAnim.start()} icon='mdiPlay' />
+                <Button onClick={() => OPAnim.stop()} icon='mdiPause' />
+                <Button onClick={() => OPAnim.drawAllToPngAndSaveLocally()} icon='mdiContentSave'>
                     Draw all to png and save locally
                 </Button>
             </div>

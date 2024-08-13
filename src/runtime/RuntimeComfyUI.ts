@@ -2,8 +2,8 @@ import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
 
-import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
-import { MediaImageL } from 'src/models/MediaImage'
+import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { MediaImageL } from '../models/MediaImage'
 
 /** namespace for all ComfyUI-related utils */
 export class RuntimeComfyUI {
@@ -14,7 +14,7 @@ export class RuntimeComfyUI {
     // ----------------------------------------------------------------------------------------------------
     /** create a new empty ComfyUI workflow */
     create_emptyWorkflow = (): ComfyWorkflowL => {
-        return this.rt.Cushy.db.graphs.create({
+        return this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -32,7 +32,7 @@ export class RuntimeComfyUI {
             denoise?: number
         } = {},
     ): ComfyWorkflowL => {
-        const graph = this.rt.Cushy.db.graphs.create({
+        const graph = this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -45,6 +45,7 @@ export class RuntimeComfyUI {
         const latent = p.from //
             ? builder.VAEEncode({
                   vae: model,
+                  // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
                   pixels: builder.Base64ImageInput({ bas64_image: p.from.url.replace('data:image/png;base64,', '') }),
               })
             : builder.EmptyLatentImage({})
@@ -97,7 +98,8 @@ export class RuntimeComfyUI {
     get favoriteCheckpiont(): Enum_CheckpointLoaderSimple_ckpt_name {
         if (this.allCheckpoints.length == 0) throw new Error(`❌ no ComfUI checkpoints available at all`)
         if (this.allCheckpoints.includes('revAnimated_v122.safetensors')) return 'revAnimated_v122.safetensors'
+        // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
         if (this.allCheckpoints.includes('lyriel_v15.safetensors')) return 'lyriel_v15.safetensors'
-        return this.allCheckpoints[0]
+        return this.allCheckpoints[0]!
     }
 }

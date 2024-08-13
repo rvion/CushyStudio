@@ -1,16 +1,12 @@
-import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import type { DraftL } from '../../../../models/Draft'
 
-import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
+import { DraftFavoriteBtnUI } from './misc/CardPicker2UI'
 
 export class TreeDraft implements ITreeEntry {
     get name() { return `${this.draft.name}` } // prettier-ignore
-    constructor(
-        //
-        public st: STATE,
-        public draft: DraftL,
-    ) {}
+    get st() { return cushy } // prettier-ignore
+    constructor(public draft: DraftL) {}
 
     isFolder = false
     canRename = true

@@ -4,7 +4,7 @@ import type { ComfyNodeMetadata } from '../src/types/ComfyNodeID'
 import type { ComfyNodeOutput } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 
-import type { GlobalFunctionToDefineAnApp } from '../src/cards/App'
+import type { GlobalFunctionToDefineAnApp, GlobalFunctionToDefineAView, GlobalGetCurrentForm, GlobalGetCurrentRun } from '../src/cards/App'
 
 // CONTENT IN THIS FILE:
 //
@@ -21,13 +21,10 @@ import type { GlobalFunctionToDefineAnApp } from '../src/cards/App'
 
 declare global {
 
-/** @deprecated use the global 'app' function instead to register an app */
-const action: GlobalFunctionToDefineAnApp
-
-/** @deprecated use the global 'app' function instead to register an app */
-const card: GlobalFunctionToDefineAnApp
-
 const app: GlobalFunctionToDefineAnApp
+const view: GlobalFunctionToDefineAView
+const getCurrentForm: GlobalGetCurrentForm
+const getCurrentRun: GlobalGetCurrentRun
 
 
 
@@ -141,6 +138,8 @@ export interface ComfySetup {
     GLIGENLoader(p: GLIGENLoader_input, meta?: ComfyNodeMetadata): GLIGENLoader
     /* category:conditioning_gligen, name:"GLIGENTextBoxApply", output:CONDITIONING */
     GLIGENTextBoxApply(p: GLIGENTextBoxApply_input, meta?: ComfyNodeMetadata): GLIGENTextBoxApply
+    /* category:conditioning_inpaint, name:"InpaintModelConditioning", output:positive+negative+latent */
+    InpaintModelConditioning(p: InpaintModelConditioning_input, meta?: ComfyNodeMetadata): InpaintModelConditioning
     /* category:advanced_loaders, name:"CheckpointLoader", output:MODEL+CLIP+VAE */
     CheckpointLoader(p: CheckpointLoader_input, meta?: ComfyNodeMetadata): CheckpointLoader
     /* category:advanced_loaders_deprecated, name:"DiffusersLoader", output:MODEL+CLIP+VAE */
@@ -211,6 +210,8 @@ export interface ComfySetup {
     JoinImageWithAlpha(p: JoinImageWithAlpha_input, meta?: ComfyNodeMetadata): JoinImageWithAlpha
     /* category:latent_batch, name:"RebatchLatents", output:LATENT */
     RebatchLatents(p: RebatchLatents_input, meta?: ComfyNodeMetadata): RebatchLatents
+    /* category:image_batch, name:"RebatchImages", output:IMAGE */
+    RebatchImages(p: RebatchImages_input, meta?: ComfyNodeMetadata): RebatchImages
     /* category:advanced_model_merging, name:"ModelMergeSimple", output:MODEL */
     ModelMergeSimple(p: ModelMergeSimple_input, meta?: ComfyNodeMetadata): ModelMergeSimple
     /* category:advanced_model_merging, name:"ModelMergeBlocks", output:MODEL */
@@ -235,9 +236,9 @@ export interface ComfySetup {
     CLIPTextEncodeSDXL(p: CLIPTextEncodeSDXL_input, meta?: ComfyNodeMetadata): CLIPTextEncodeSDXL
     /* category:image_preprocessors, name:"Canny", output:IMAGE */
     Canny(p: Canny_input, meta?: ComfyNodeMetadata): Canny
-    /* category:_for_testing, name:"FreeU", output:MODEL */
+    /* category:model_patches, name:"FreeU", output:MODEL */
     FreeU(p: FreeU_input, meta?: ComfyNodeMetadata): FreeU
-    /* category:_for_testing, name:"FreeU_V2", output:MODEL */
+    /* category:model_patches, name:"FreeU_V2", output:MODEL */
     FreeU$_V2(p: FreeU$_V2_input, meta?: ComfyNodeMetadata): FreeU$_V2
     /* category:sampling_custom_sampling, name:"SamplerCustom", output:output+denoised_output */
     SamplerCustom(p: SamplerCustom_input, meta?: ComfyNodeMetadata): SamplerCustom
@@ -263,7 +264,7 @@ export interface ComfySetup {
     SplitSigmas(p: SplitSigmas_input, meta?: ComfyNodeMetadata): SplitSigmas
     /* category:sampling_custom_sampling_sigmas, name:"FlipSigmas", output:SIGMAS */
     FlipSigmas(p: FlipSigmas_input, meta?: ComfyNodeMetadata): FlipSigmas
-    /* category:_for_testing, name:"HyperTile", output:MODEL */
+    /* category:model_patches, name:"HyperTile", output:MODEL */
     HyperTile(p: HyperTile_input, meta?: ComfyNodeMetadata): HyperTile
     /* category:advanced_model, name:"ModelSamplingDiscrete", output:MODEL */
     ModelSamplingDiscrete(p: ModelSamplingDiscrete_input, meta?: ComfyNodeMetadata): ModelSamplingDiscrete
@@ -287,272 +288,115 @@ export interface ComfySetup {
     SVD$_img2vid$_Conditioning(p: SVD$_img2vid$_Conditioning_input, meta?: ComfyNodeMetadata): SVD$_img2vid$_Conditioning
     /* category:sampling_video_models, name:"VideoLinearCFGGuidance", output:MODEL */
     VideoLinearCFGGuidance(p: VideoLinearCFGGuidance_input, meta?: ComfyNodeMetadata): VideoLinearCFGGuidance
+    /* category:_for_testing, name:"ImageOnlyCheckpointSave", output: */
+    ImageOnlyCheckpointSave(p: ImageOnlyCheckpointSave_input, meta?: ComfyNodeMetadata): ImageOnlyCheckpointSave
     /* category:_for_testing, name:"SelfAttentionGuidance", output:MODEL */
     SelfAttentionGuidance(p: SelfAttentionGuidance_input, meta?: ComfyNodeMetadata): SelfAttentionGuidance
     /* category:_for_testing, name:"PerpNeg", output:MODEL */
     PerpNeg(p: PerpNeg_input, meta?: ComfyNodeMetadata): PerpNeg
     /* category:conditioning_3d_models, name:"StableZero123_Conditioning", output:positive+negative+latent */
     StableZero123$_Conditioning(p: StableZero123$_Conditioning_input, meta?: ComfyNodeMetadata): StableZero123$_Conditioning
+    /* category:conditioning_3d_models, name:"StableZero123_Conditioning_Batched", output:positive+negative+latent */
+    StableZero123$_Conditioning$_Batched(p: StableZero123$_Conditioning$_Batched_input, meta?: ComfyNodeMetadata): StableZero123$_Conditioning$_Batched
+    /* category:conditioning_upscale_diffusion, name:"SD_4XUpscale_Conditioning", output:positive+negative+latent */
+    SD$_4XUpscale$_Conditioning(p: SD$_4XUpscale$_Conditioning_input, meta?: ComfyNodeMetadata): SD$_4XUpscale$_Conditioning
+    /* category:test, name:"UnknownNodeXX", output: */
+    UnknownNodeXX(p: UnknownNodeXX_input, meta?: ComfyNodeMetadata): UnknownNodeXX
 }
 
 // 1. Requirable --------------------------
 export interface Requirable {
-    LATENT: LATENT,
-    MODEL: MODEL,
-    INT: INT,
-    FLOAT: FLOAT,
-    CONDITIONING: CONDITIONING,
-    CLIP: CLIP,
-    VAE: VAE,
-    STRING: STRING,
-    IMAGE: IMAGE,
-    MASK: MASK,
-    CLIP_VISION_OUTPUT: CLIP_VISION_OUTPUT,
-    CLIP_VISION: CLIP_VISION,
-    STYLE_MODEL: STYLE_MODEL,
-    CONTROL_NET: CONTROL_NET,
-    GLIGEN: GLIGEN,
-    UPSCALE_MODEL: UPSCALE_MODEL,
-    BOOLEAN: BOOLEAN,
-    SAMPLER: SAMPLER,
-    SIGMAS: SIGMAS,
-    Enum_KSampler_sampler_name: Enum_KSampler_sampler_name,
-    Enum_KSampler_scheduler: Enum_KSampler_scheduler,
-    Enum_CheckpointLoaderSimple_ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name,
-    Enum_VAELoader_vae_name: Enum_VAELoader_vae_name,
-    Enum_LatentUpscale_upscale_method: Enum_LatentUpscale_upscale_method,
-    Enum_LatentUpscale_crop: Enum_LatentUpscale_crop,
-    Enum_LatentUpscaleBy_upscale_method: Enum_LatentUpscaleBy_upscale_method,
-    Enum_LoadImage_image: Enum_LoadImage_image,
-    Enum_LoadImageMask_image: Enum_LoadImageMask_image,
-    Enum_LoadImageMask_channel: Enum_LoadImageMask_channel,
-    Enum_ImageScale_upscale_method: Enum_ImageScale_upscale_method,
-    Enum_ImageScale_crop: Enum_ImageScale_crop,
-    Enum_ImageScaleBy_upscale_method: Enum_ImageScaleBy_upscale_method,
-    Enum_ConditioningSetMask_set_cond_area: Enum_ConditioningSetMask_set_cond_area,
-    Enum_KSamplerAdvanced_add_noise: Enum_KSamplerAdvanced_add_noise,
-    Enum_KSamplerAdvanced_sampler_name: Enum_KSamplerAdvanced_sampler_name,
-    Enum_KSamplerAdvanced_scheduler: Enum_KSamplerAdvanced_scheduler,
-    Enum_KSamplerAdvanced_return_with_leftover_noise: Enum_KSamplerAdvanced_return_with_leftover_noise,
-    Enum_LatentRotate_rotation: Enum_LatentRotate_rotation,
-    Enum_LatentFlip_flip_method: Enum_LatentFlip_flip_method,
-    Enum_LoraLoader_lora_name: Enum_LoraLoader_lora_name,
-    Enum_CLIPLoader_clip_name: Enum_CLIPLoader_clip_name,
-    Enum_UNETLoader_unet_name: Enum_UNETLoader_unet_name,
-    Enum_DualCLIPLoader_clip_name1: Enum_DualCLIPLoader_clip_name1,
-    Enum_DualCLIPLoader_clip_name2: Enum_DualCLIPLoader_clip_name2,
-    Enum_ControlNetLoader_control_net_name: Enum_ControlNetLoader_control_net_name,
-    Enum_DiffControlNetLoader_control_net_name: Enum_DiffControlNetLoader_control_net_name,
-    Enum_StyleModelLoader_style_model_name: Enum_StyleModelLoader_style_model_name,
-    Enum_CLIPVisionLoader_clip_name: Enum_CLIPVisionLoader_clip_name,
-    Enum_unCLIPCheckpointLoader_ckpt_name: Enum_unCLIPCheckpointLoader_ckpt_name,
-    Enum_GLIGENLoader_gligen_name: Enum_GLIGENLoader_gligen_name,
-    Enum_CheckpointLoader_config_name: Enum_CheckpointLoader_config_name,
-    Enum_CheckpointLoader_ckpt_name: Enum_CheckpointLoader_ckpt_name,
-    Enum_DiffusersLoader_model_path: Enum_DiffusersLoader_model_path,
-    Enum_LoadLatent_latent: Enum_LoadLatent_latent,
-    Enum_LoraLoaderModelOnly_lora_name: Enum_LoraLoaderModelOnly_lora_name,
-    Enum_HypernetworkLoader_hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name,
-    Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name,
-    Enum_ImageBlend_blend_mode: Enum_ImageBlend_blend_mode,
-    Enum_ImageQuantize_dither: Enum_ImageQuantize_dither,
-    Enum_ImageScaleToTotalPixels_upscale_method: Enum_ImageScaleToTotalPixels_upscale_method,
-    Enum_ImageToMask_channel: Enum_ImageToMask_channel,
-    Enum_MaskComposite_operation: Enum_MaskComposite_operation,
-    Enum_PorterDuffImageComposite_mode: Enum_PorterDuffImageComposite_mode,
-    Enum_BasicScheduler_scheduler: Enum_BasicScheduler_scheduler,
-    Enum_KSamplerSelect_sampler_name: Enum_KSamplerSelect_sampler_name,
-    "Enum_SamplerDPMPP$_2M$_SDE_solver_type": Enum_SamplerDPMPP$_2M$_SDE_solver_type,
-    "Enum_SamplerDPMPP$_2M$_SDE_noise_device": Enum_SamplerDPMPP$_2M$_SDE_noise_device,
-    "Enum_SamplerDPMPP$_SDE_noise_device": Enum_SamplerDPMPP$_SDE_noise_device,
-    Enum_ModelSamplingDiscrete_sampling: Enum_ModelSamplingDiscrete_sampling,
-    Enum_ModelSamplingContinuousEDM_sampling: Enum_ModelSamplingContinuousEDM_sampling,
-    Enum_PatchModelAddDownscale_downscale_method: Enum_PatchModelAddDownscale_downscale_method,
-    Enum_PatchModelAddDownscale_upscale_method: Enum_PatchModelAddDownscale_upscale_method,
-    Enum_SaveAnimatedWEBP_method: Enum_SaveAnimatedWEBP_method,
-    Enum_ImageOnlyCheckpointLoader_ckpt_name: Enum_ImageOnlyCheckpointLoader_ckpt_name,
-    KSampler: KSampler,
-    CheckpointLoaderSimple: CheckpointLoaderSimple,
-    CLIPTextEncode: CLIPTextEncode,
-    CLIPSetLastLayer: CLIPSetLastLayer,
-    VAEDecode: VAEDecode,
-    VAEEncode: VAEEncode,
-    VAEEncodeForInpaint: VAEEncodeForInpaint,
-    VAELoader: VAELoader,
-    EmptyLatentImage: EmptyLatentImage,
-    LatentUpscale: LatentUpscale,
-    LatentUpscaleBy: LatentUpscaleBy,
-    LatentFromBatch: LatentFromBatch,
-    RepeatLatentBatch: RepeatLatentBatch,
-    SaveImage: SaveImage,
-    PreviewImage: PreviewImage,
-    LoadImage: LoadImage,
-    LoadImageMask: LoadImageMask,
-    ImageScale: ImageScale,
-    ImageScaleBy: ImageScaleBy,
-    ImageInvert: ImageInvert,
-    ImageBatch: ImageBatch,
-    ImagePadForOutpaint: ImagePadForOutpaint,
-    EmptyImage: EmptyImage,
-    ConditioningAverage: ConditioningAverage,
-    ConditioningCombine: ConditioningCombine,
-    ConditioningConcat: ConditioningConcat,
-    ConditioningSetArea: ConditioningSetArea,
-    ConditioningSetAreaPercentage: ConditioningSetAreaPercentage,
-    ConditioningSetMask: ConditioningSetMask,
-    KSamplerAdvanced: KSamplerAdvanced,
-    SetLatentNoiseMask: SetLatentNoiseMask,
-    LatentComposite: LatentComposite,
-    LatentBlend: LatentBlend,
-    LatentRotate: LatentRotate,
-    LatentFlip: LatentFlip,
-    LatentCrop: LatentCrop,
-    LoraLoader: LoraLoader,
-    CLIPLoader: CLIPLoader,
-    UNETLoader: UNETLoader,
-    DualCLIPLoader: DualCLIPLoader,
-    CLIPVisionEncode: CLIPVisionEncode,
-    StyleModelApply: StyleModelApply,
-    unCLIPConditioning: unCLIPConditioning,
-    ControlNetApply: ControlNetApply,
-    ControlNetApplyAdvanced: ControlNetApplyAdvanced,
-    ControlNetLoader: ControlNetLoader,
-    DiffControlNetLoader: DiffControlNetLoader,
-    StyleModelLoader: StyleModelLoader,
-    CLIPVisionLoader: CLIPVisionLoader,
-    VAEDecodeTiled: VAEDecodeTiled,
-    VAEEncodeTiled: VAEEncodeTiled,
-    unCLIPCheckpointLoader: unCLIPCheckpointLoader,
-    GLIGENLoader: GLIGENLoader,
-    GLIGENTextBoxApply: GLIGENTextBoxApply,
-    CheckpointLoader: CheckpointLoader,
-    DiffusersLoader: DiffusersLoader,
-    LoadLatent: LoadLatent,
-    SaveLatent: SaveLatent,
-    ConditioningZeroOut: ConditioningZeroOut,
-    ConditioningSetTimestepRange: ConditioningSetTimestepRange,
-    LoraLoaderModelOnly: LoraLoaderModelOnly,
-    LatentAdd: LatentAdd,
-    LatentSubtract: LatentSubtract,
-    LatentMultiply: LatentMultiply,
-    LatentInterpolate: LatentInterpolate,
-    LatentBatch: LatentBatch,
-    HypernetworkLoader: HypernetworkLoader,
-    UpscaleModelLoader: UpscaleModelLoader,
-    ImageUpscaleWithModel: ImageUpscaleWithModel,
-    ImageBlend: ImageBlend,
-    ImageBlur: ImageBlur,
-    ImageQuantize: ImageQuantize,
-    ImageSharpen: ImageSharpen,
-    ImageScaleToTotalPixels: ImageScaleToTotalPixels,
-    LatentCompositeMasked: LatentCompositeMasked,
-    ImageCompositeMasked: ImageCompositeMasked,
-    MaskToImage: MaskToImage,
-    ImageToMask: ImageToMask,
-    ImageColorToMask: ImageColorToMask,
-    SolidMask: SolidMask,
-    InvertMask: InvertMask,
-    CropMask: CropMask,
-    MaskComposite: MaskComposite,
-    FeatherMask: FeatherMask,
-    GrowMask: GrowMask,
-    PorterDuffImageComposite: PorterDuffImageComposite,
-    SplitImageWithAlpha: SplitImageWithAlpha,
-    JoinImageWithAlpha: JoinImageWithAlpha,
-    RebatchLatents: RebatchLatents,
-    ModelMergeSimple: ModelMergeSimple,
-    ModelMergeBlocks: ModelMergeBlocks,
-    ModelMergeSubtract: ModelMergeSubtract,
-    ModelMergeAdd: ModelMergeAdd,
-    CheckpointSave: CheckpointSave,
-    CLIPMergeSimple: CLIPMergeSimple,
-    CLIPSave: CLIPSave,
-    VAESave: VAESave,
-    TomePatchModel: TomePatchModel,
-    CLIPTextEncodeSDXLRefiner: CLIPTextEncodeSDXLRefiner,
-    CLIPTextEncodeSDXL: CLIPTextEncodeSDXL,
-    Canny: Canny,
-    FreeU: FreeU,
-    "FreeU$_V2": FreeU$_V2,
-    SamplerCustom: SamplerCustom,
-    BasicScheduler: BasicScheduler,
-    KarrasScheduler: KarrasScheduler,
-    ExponentialScheduler: ExponentialScheduler,
-    PolyexponentialScheduler: PolyexponentialScheduler,
-    VPScheduler: VPScheduler,
-    SDTurboScheduler: SDTurboScheduler,
-    KSamplerSelect: KSamplerSelect,
-    "SamplerDPMPP$_2M$_SDE": SamplerDPMPP$_2M$_SDE,
-    "SamplerDPMPP$_SDE": SamplerDPMPP$_SDE,
-    SplitSigmas: SplitSigmas,
-    FlipSigmas: FlipSigmas,
-    HyperTile: HyperTile,
-    ModelSamplingDiscrete: ModelSamplingDiscrete,
-    ModelSamplingContinuousEDM: ModelSamplingContinuousEDM,
-    RescaleCFG: RescaleCFG,
-    PatchModelAddDownscale: PatchModelAddDownscale,
-    ImageCrop: ImageCrop,
-    RepeatImageBatch: RepeatImageBatch,
-    SaveAnimatedWEBP: SaveAnimatedWEBP,
-    SaveAnimatedPNG: SaveAnimatedPNG,
-    ImageOnlyCheckpointLoader: ImageOnlyCheckpointLoader,
-    "SVD$_img2vid$_Conditioning": SVD$_img2vid$_Conditioning,
-    VideoLinearCFGGuidance: VideoLinearCFGGuidance,
-    SelfAttentionGuidance: SelfAttentionGuidance,
-    PerpNeg: PerpNeg,
-    "StableZero123$_Conditioning": StableZero123$_Conditioning,
+    Enum_KSampler_sampler_name: { $Name: "Enum_KSampler_sampler_name", $Value: Enum_KSampler_sampler_name },
+    Enum_KSampler_scheduler: { $Name: "Enum_KSampler_scheduler", $Value: Enum_KSampler_scheduler },
+    Enum_CheckpointLoaderSimple_ckpt_name: { $Name: "Enum_CheckpointLoaderSimple_ckpt_name", $Value: Enum_CheckpointLoaderSimple_ckpt_name },
+    Enum_VAELoader_vae_name: { $Name: "Enum_VAELoader_vae_name", $Value: Enum_VAELoader_vae_name },
+    Enum_LatentUpscale_upscale_method: { $Name: "Enum_LatentUpscale_upscale_method", $Value: Enum_LatentUpscale_upscale_method },
+    Enum_LatentUpscale_crop: { $Name: "Enum_LatentUpscale_crop", $Value: Enum_LatentUpscale_crop },
+    Enum_LatentUpscaleBy_upscale_method: { $Name: "Enum_LatentUpscaleBy_upscale_method", $Value: Enum_LatentUpscaleBy_upscale_method },
+    Enum_LoadImage_image: { $Name: "Enum_LoadImage_image", $Value: Enum_LoadImage_image },
+    Enum_LoadImageMask_image: { $Name: "Enum_LoadImageMask_image", $Value: Enum_LoadImageMask_image },
+    Enum_LoadImageMask_channel: { $Name: "Enum_LoadImageMask_channel", $Value: Enum_LoadImageMask_channel },
+    Enum_ImageScale_upscale_method: { $Name: "Enum_ImageScale_upscale_method", $Value: Enum_ImageScale_upscale_method },
+    Enum_ImageScale_crop: { $Name: "Enum_ImageScale_crop", $Value: Enum_ImageScale_crop },
+    Enum_ImageScaleBy_upscale_method: { $Name: "Enum_ImageScaleBy_upscale_method", $Value: Enum_ImageScaleBy_upscale_method },
+    Enum_ConditioningSetMask_set_cond_area: { $Name: "Enum_ConditioningSetMask_set_cond_area", $Value: Enum_ConditioningSetMask_set_cond_area },
+    Enum_KSamplerAdvanced_add_noise: { $Name: "Enum_KSamplerAdvanced_add_noise", $Value: Enum_KSamplerAdvanced_add_noise },
+    Enum_KSamplerAdvanced_sampler_name: { $Name: "Enum_KSamplerAdvanced_sampler_name", $Value: Enum_KSamplerAdvanced_sampler_name },
+    Enum_KSamplerAdvanced_scheduler: { $Name: "Enum_KSamplerAdvanced_scheduler", $Value: Enum_KSamplerAdvanced_scheduler },
+    Enum_KSamplerAdvanced_return_with_leftover_noise: { $Name: "Enum_KSamplerAdvanced_return_with_leftover_noise", $Value: Enum_KSamplerAdvanced_return_with_leftover_noise },
+    Enum_LatentRotate_rotation: { $Name: "Enum_LatentRotate_rotation", $Value: Enum_LatentRotate_rotation },
+    Enum_LatentFlip_flip_method: { $Name: "Enum_LatentFlip_flip_method", $Value: Enum_LatentFlip_flip_method },
+    Enum_LoraLoader_lora_name: { $Name: "Enum_LoraLoader_lora_name", $Value: Enum_LoraLoader_lora_name },
+    Enum_CLIPLoader_clip_name: { $Name: "Enum_CLIPLoader_clip_name", $Value: Enum_CLIPLoader_clip_name },
+    Enum_UNETLoader_unet_name: { $Name: "Enum_UNETLoader_unet_name", $Value: Enum_UNETLoader_unet_name },
+    Enum_DualCLIPLoader_clip_name1: { $Name: "Enum_DualCLIPLoader_clip_name1", $Value: Enum_DualCLIPLoader_clip_name1 },
+    Enum_DualCLIPLoader_clip_name2: { $Name: "Enum_DualCLIPLoader_clip_name2", $Value: Enum_DualCLIPLoader_clip_name2 },
+    Enum_ControlNetLoader_control_net_name: { $Name: "Enum_ControlNetLoader_control_net_name", $Value: Enum_ControlNetLoader_control_net_name },
+    Enum_DiffControlNetLoader_control_net_name: { $Name: "Enum_DiffControlNetLoader_control_net_name", $Value: Enum_DiffControlNetLoader_control_net_name },
+    Enum_StyleModelLoader_style_model_name: { $Name: "Enum_StyleModelLoader_style_model_name", $Value: Enum_StyleModelLoader_style_model_name },
+    Enum_CLIPVisionLoader_clip_name: { $Name: "Enum_CLIPVisionLoader_clip_name", $Value: Enum_CLIPVisionLoader_clip_name },
+    Enum_unCLIPCheckpointLoader_ckpt_name: { $Name: "Enum_unCLIPCheckpointLoader_ckpt_name", $Value: Enum_unCLIPCheckpointLoader_ckpt_name },
+    Enum_GLIGENLoader_gligen_name: { $Name: "Enum_GLIGENLoader_gligen_name", $Value: Enum_GLIGENLoader_gligen_name },
+    Enum_CheckpointLoader_config_name: { $Name: "Enum_CheckpointLoader_config_name", $Value: Enum_CheckpointLoader_config_name },
+    Enum_CheckpointLoader_ckpt_name: { $Name: "Enum_CheckpointLoader_ckpt_name", $Value: Enum_CheckpointLoader_ckpt_name },
+    Enum_DiffusersLoader_model_path: { $Name: "Enum_DiffusersLoader_model_path", $Value: Enum_DiffusersLoader_model_path },
+    Enum_LoadLatent_latent: { $Name: "Enum_LoadLatent_latent", $Value: Enum_LoadLatent_latent },
+    Enum_LoraLoaderModelOnly_lora_name: { $Name: "Enum_LoraLoaderModelOnly_lora_name", $Value: Enum_LoraLoaderModelOnly_lora_name },
+    Enum_HypernetworkLoader_hypernetwork_name: { $Name: "Enum_HypernetworkLoader_hypernetwork_name", $Value: Enum_HypernetworkLoader_hypernetwork_name },
+    Enum_UpscaleModelLoader_model_name: { $Name: "Enum_UpscaleModelLoader_model_name", $Value: Enum_UpscaleModelLoader_model_name },
+    Enum_ImageBlend_blend_mode: { $Name: "Enum_ImageBlend_blend_mode", $Value: Enum_ImageBlend_blend_mode },
+    Enum_ImageQuantize_dither: { $Name: "Enum_ImageQuantize_dither", $Value: Enum_ImageQuantize_dither },
+    Enum_ImageScaleToTotalPixels_upscale_method: { $Name: "Enum_ImageScaleToTotalPixels_upscale_method", $Value: Enum_ImageScaleToTotalPixels_upscale_method },
+    Enum_ImageToMask_channel: { $Name: "Enum_ImageToMask_channel", $Value: Enum_ImageToMask_channel },
+    Enum_MaskComposite_operation: { $Name: "Enum_MaskComposite_operation", $Value: Enum_MaskComposite_operation },
+    Enum_PorterDuffImageComposite_mode: { $Name: "Enum_PorterDuffImageComposite_mode", $Value: Enum_PorterDuffImageComposite_mode },
+    Enum_BasicScheduler_scheduler: { $Name: "Enum_BasicScheduler_scheduler", $Value: Enum_BasicScheduler_scheduler },
+    Enum_KSamplerSelect_sampler_name: { $Name: "Enum_KSamplerSelect_sampler_name", $Value: Enum_KSamplerSelect_sampler_name },
+    "Enum_SamplerDPMPP$_2M$_SDE_solver_type": { $Name: "Enum_SamplerDPMPP$_2M$_SDE_solver_type", $Value: Enum_SamplerDPMPP$_2M$_SDE_solver_type },
+    "Enum_SamplerDPMPP$_2M$_SDE_noise_device": { $Name: "Enum_SamplerDPMPP$_2M$_SDE_noise_device", $Value: Enum_SamplerDPMPP$_2M$_SDE_noise_device },
+    "Enum_SamplerDPMPP$_SDE_noise_device": { $Name: "Enum_SamplerDPMPP$_SDE_noise_device", $Value: Enum_SamplerDPMPP$_SDE_noise_device },
+    Enum_ModelSamplingDiscrete_sampling: { $Name: "Enum_ModelSamplingDiscrete_sampling", $Value: Enum_ModelSamplingDiscrete_sampling },
+    Enum_ModelSamplingContinuousEDM_sampling: { $Name: "Enum_ModelSamplingContinuousEDM_sampling", $Value: Enum_ModelSamplingContinuousEDM_sampling },
+    Enum_PatchModelAddDownscale_downscale_method: { $Name: "Enum_PatchModelAddDownscale_downscale_method", $Value: Enum_PatchModelAddDownscale_downscale_method },
+    Enum_PatchModelAddDownscale_upscale_method: { $Name: "Enum_PatchModelAddDownscale_upscale_method", $Value: Enum_PatchModelAddDownscale_upscale_method },
+    Enum_SaveAnimatedWEBP_method: { $Name: "Enum_SaveAnimatedWEBP_method", $Value: Enum_SaveAnimatedWEBP_method },
+    Enum_ImageOnlyCheckpointLoader_ckpt_name: { $Name: "Enum_ImageOnlyCheckpointLoader_ckpt_name", $Value: Enum_ImageOnlyCheckpointLoader_ckpt_name },
 }
 
 // 2. Embeddings -------------------------------
 export type Embeddings = ""
 
 // 3. Suggestions -------------------------------
+// 3.1. primitives
 export interface CanProduce_boolean {}
 export interface CanProduce_number {}
 export interface CanProduce_number {}
 export interface CanProduce_string {}
-export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning'> { }
-export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg'> { }
-export interface CanProduce_CLIP extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple'> { }
-export interface CanProduce_VAE extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader'> { }
-export interface CanProduce_CONDITIONING extends Pick<ComfySetup, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning'> { }
-export interface CanProduce_IMAGE extends Pick<ComfySetup, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch'> { }
-export interface CanProduce_MASK extends Pick<ComfySetup, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha'> { }
+// 3.1. types produced
 export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode'> { }
-export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader'> { }
-export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoader'> { }
-export interface CanProduce_CLIP_VISION extends Pick<ComfySetup, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader' | 'ImageOnlyCheckpointLoader'> { }
-export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> { }
+export interface CanProduce_BOOLEAN {} // 🔶 no node can output this type.
+export interface CanProduce_STRING {} // 🔶 no node can output this type.
+export interface CanProduce_FLOAT {} // 🔶 no node can output this type.
 export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'UpscaleModelLoader'> { }
-export interface CanProduce_SIGMAS extends Pick<ComfySetup, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'VPScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'FlipSigmas'> { }
+export interface CanProduce_INT {} // 🔶 no node can output this type.
+export interface CanProduce_CONDITIONING extends Pick<ComfySetup, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'StableZero123$_Conditioning$_Batched' | 'SD$_4XUpscale$_Conditioning' | 'SD$_4XUpscale$_Conditioning'> { }
+export interface CanProduce_CLIP_VISION extends Pick<ComfySetup, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader' | 'ImageOnlyCheckpointLoader'> { }
+export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoader'> { }
+export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader'> { }
 export interface CanProduce_SAMPLER extends Pick<ComfySetup, 'KSamplerSelect' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE'> { }
-export interface CanProduce_INT {}
-export interface CanProduce_FLOAT {}
-export interface CanProduce_STRING {}
-export interface CanProduce_BOOLEAN {}
+export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SD$_4XUpscale$_Conditioning'> { }
+export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> { }
+export interface CanProduce_SIGMAS extends Pick<ComfySetup, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'VPScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'FlipSigmas'> { }
+export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg'> { }
+export interface CanProduce_IMAGE extends Pick<ComfySetup, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchImages' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch'> { }
+export interface CanProduce_CLIP extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple'> { }
+export interface CanProduce_MASK extends Pick<ComfySetup, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha'> { }
+export interface CanProduce_VAE extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader'> { }
 
 // 4. TYPES -------------------------------
-export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
-export type BOOLEAN = boolean | ComfyNodeOutput<'BOOLEAN'>
-export type STRING = string | ComfyNodeOutput<'STRING'>
-export type FLOAT = number | ComfyNodeOutput<'FLOAT'>
-export type UPSCALE_MODEL = ComfyNodeOutput<'UPSCALE_MODEL'>
-export type INT = number | ComfyNodeOutput<'INT'>
-export type CONDITIONING = ComfyNodeOutput<'CONDITIONING'>
-export type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'>
-export type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'>
-export type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'>
-export type SAMPLER = ComfyNodeOutput<'SAMPLER'>
-export type LATENT = ComfyNodeOutput<'LATENT'>
-export type GLIGEN = ComfyNodeOutput<'GLIGEN'>
-export type SIGMAS = ComfyNodeOutput<'SIGMAS'>
-export type MODEL = ComfyNodeOutput<'MODEL'>
-export type IMAGE = ComfyNodeOutput<'IMAGE'>
-export type CLIP = ComfyNodeOutput<'CLIP'>
-export type MASK = ComfyNodeOutput<'MASK'>
-export type VAE = ComfyNodeOutput<'VAE'>
 
 // 5. ACCEPTABLE INPUTS -------------------------------
+export type _INVALID_null = any
 export type _CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'> | HasSingle_CLIP_VISION_OUTPUT | ((x: CanProduce_CLIP_VISION_OUTPUT) => _CLIP_VISION_OUTPUT)
 export type _BOOLEAN = boolean | ComfyNodeOutput<'BOOLEAN'> | HasSingle_BOOLEAN | ((x: CanProduce_BOOLEAN) => _BOOLEAN)
 export type _STRING = string | ComfyNodeOutput<'STRING'> | HasSingle_STRING | ((x: CanProduce_STRING) => _STRING)
@@ -629,28 +473,27 @@ export type Enum_SamplerDPMPP$_SDE_noise_device = Enum_SamplerDPMPP$_2M$_SDE_noi
 export type Enum_ModelSamplingDiscrete_sampling = "eps" | "lcm" | "v_prediction"
 export type Enum_ModelSamplingContinuousEDM_sampling = "eps" | "v_prediction"
 export type Enum_SaveAnimatedWEBP_method = "default" | "fastest" | "slowest"
-export type KnownEnumNames = keyof Requirable
 
 // 7. INTERFACES --------------------------
-export interface HasSingle_LATENT { _LATENT: LATENT } // prettier-ignore
-export interface HasSingle_MODEL { _MODEL: MODEL } // prettier-ignore
-export interface HasSingle_INT { _INT: INT } // prettier-ignore
-export interface HasSingle_FLOAT { _FLOAT: FLOAT } // prettier-ignore
-export interface HasSingle_CONDITIONING { _CONDITIONING: CONDITIONING } // prettier-ignore
-export interface HasSingle_CLIP { _CLIP: CLIP } // prettier-ignore
-export interface HasSingle_VAE { _VAE: VAE } // prettier-ignore
-export interface HasSingle_STRING { _STRING: STRING } // prettier-ignore
-export interface HasSingle_IMAGE { _IMAGE: IMAGE } // prettier-ignore
-export interface HasSingle_MASK { _MASK: MASK } // prettier-ignore
-export interface HasSingle_CLIP_VISION_OUTPUT { _CLIP_VISION_OUTPUT: CLIP_VISION_OUTPUT } // prettier-ignore
-export interface HasSingle_CLIP_VISION { _CLIP_VISION: CLIP_VISION } // prettier-ignore
-export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: STYLE_MODEL } // prettier-ignore
-export interface HasSingle_CONTROL_NET { _CONTROL_NET: CONTROL_NET } // prettier-ignore
-export interface HasSingle_GLIGEN { _GLIGEN: GLIGEN } // prettier-ignore
-export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
-export interface HasSingle_BOOLEAN { _BOOLEAN: BOOLEAN } // prettier-ignore
-export interface HasSingle_SAMPLER { _SAMPLER: SAMPLER } // prettier-ignore
-export interface HasSingle_SIGMAS { _SIGMAS: SIGMAS } // prettier-ignore
+export interface HasSingle_CLIP_VISION_OUTPUT { _CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT'> } // prettier-ignore
+export interface HasSingle_BOOLEAN { _BOOLEAN: boolean | ComfyNodeOutput<'BOOLEAN'> } // prettier-ignore
+export interface HasSingle_STRING { _STRING: string | ComfyNodeOutput<'STRING'> } // prettier-ignore
+export interface HasSingle_FLOAT { _FLOAT: number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
+export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
+export interface HasSingle_INT { _INT: number | ComfyNodeOutput<'INT'> } // prettier-ignore
+export interface HasSingle_CONDITIONING { _CONDITIONING: ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
+export interface HasSingle_CLIP_VISION { _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
+export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
+export interface HasSingle_CONTROL_NET { _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
+export interface HasSingle_SAMPLER { _SAMPLER: ComfyNodeOutput<'SAMPLER'> } // prettier-ignore
+export interface HasSingle_LATENT { _LATENT: ComfyNodeOutput<'LATENT'> } // prettier-ignore
+export interface HasSingle_GLIGEN { _GLIGEN: ComfyNodeOutput<'GLIGEN'> } // prettier-ignore
+export interface HasSingle_SIGMAS { _SIGMAS: ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
+export interface HasSingle_MODEL { _MODEL: ComfyNodeOutput<'MODEL'> } // prettier-ignore
+export interface HasSingle_IMAGE { _IMAGE: ComfyNodeOutput<'IMAGE'> } // prettier-ignore
+export interface HasSingle_CLIP { _CLIP: ComfyNodeOutput<'CLIP'> } // prettier-ignore
+export interface HasSingle_MASK { _MASK: ComfyNodeOutput<'MASK'> } // prettier-ignore
+export interface HasSingle_VAE { _VAE: ComfyNodeOutput<'VAE'> } // prettier-ignore
 
 // 8. NODES -------------------------------
 // KSampler [sampling]
@@ -1443,6 +1286,23 @@ export interface GLIGENTextBoxApply_input {
     y?: _INT
 }
 
+// InpaintModelConditioning [conditioning_inpaint]
+export interface InpaintModelConditioning extends HasSingle_LATENT, ComfyNode<InpaintModelConditioning_input, InpaintModelConditioning_output> {
+    nameInComfy: "InpaintModelConditioning"
+}
+export interface InpaintModelConditioning_output {
+    positive: ComfyNodeOutput<'CONDITIONING', 0>,
+    negative: ComfyNodeOutput<'CONDITIONING', 1>,
+    latent: ComfyNodeOutput<'LATENT', 2>,
+}
+export interface InpaintModelConditioning_input {
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+    vae: _VAE
+    pixels: _IMAGE
+    mask: _MASK
+}
+
 // CheckpointLoader [advanced_loaders]
 export interface CheckpointLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<CheckpointLoader_input, CheckpointLoader_output> {
     nameInComfy: "CheckpointLoader"
@@ -1933,6 +1793,19 @@ export interface RebatchLatents_input {
     batch_size?: _INT
 }
 
+// RebatchImages [image_batch]
+export interface RebatchImages extends HasSingle_IMAGE, ComfyNode<RebatchImages_input, RebatchImages_output> {
+    nameInComfy: "RebatchImages"
+}
+export interface RebatchImages_output {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+}
+export interface RebatchImages_input {
+    images: _IMAGE
+    /** default=1 min=4096 max=4096 */
+    batch_size?: _INT
+}
+
 // ModelMergeSimple [advanced_model_merging]
 export interface ModelMergeSimple extends HasSingle_MODEL, ComfyNode<ModelMergeSimple_input, ModelMergeSimple_output> {
     nameInComfy: "ModelMergeSimple"
@@ -2117,7 +1990,7 @@ export interface Canny_input {
     high_threshold?: _FLOAT
 }
 
-// FreeU [_for_testing]
+// FreeU [model_patches]
 export interface FreeU extends HasSingle_MODEL, ComfyNode<FreeU_input, FreeU_output> {
     nameInComfy: "FreeU"
 }
@@ -2136,7 +2009,7 @@ export interface FreeU_input {
     s2?: _FLOAT
 }
 
-// FreeU_V2 [_for_testing]
+// FreeU_V2 [model_patches]
 export interface FreeU$_V2 extends HasSingle_MODEL, ComfyNode<FreeU$_V2_input, FreeU$_V2_output> {
     nameInComfy: "FreeU_V2"
 }
@@ -2190,6 +2063,8 @@ export interface BasicScheduler_input {
     scheduler: Enum_KSampler_scheduler
     /** default=20 min=10000 max=10000 */
     steps?: _INT
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
 }
 
 // KarrasScheduler [sampling_custom_sampling_schedulers]
@@ -2273,6 +2148,8 @@ export interface SDTurboScheduler_input {
     model: _MODEL
     /** default=1 min=10 max=10 */
     steps?: _INT
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
 }
 
 // KSamplerSelect [sampling_custom_sampling_samplers]
@@ -2344,7 +2221,7 @@ export interface FlipSigmas_input {
     sigmas: _SIGMAS
 }
 
-// HyperTile [_for_testing]
+// HyperTile [model_patches]
 export interface HyperTile extends HasSingle_MODEL, ComfyNode<HyperTile_input, HyperTile_output> {
     nameInComfy: "HyperTile"
 }
@@ -2549,6 +2426,20 @@ export interface VideoLinearCFGGuidance_input {
     min_cfg?: _FLOAT
 }
 
+// ImageOnlyCheckpointSave [_for_testing]
+export interface ImageOnlyCheckpointSave extends ComfyNode<ImageOnlyCheckpointSave_input, ImageOnlyCheckpointSave_output> {
+    nameInComfy: "ImageOnlyCheckpointSave"
+}
+export interface ImageOnlyCheckpointSave_output {
+}
+export interface ImageOnlyCheckpointSave_input {
+    model: _MODEL
+    clip_vision: _CLIP_VISION
+    vae: _VAE
+    /** default="checkpoints/ComfyUI" */
+    filename_prefix?: _STRING
+}
+
 // SelfAttentionGuidance [_for_testing]
 export interface SelfAttentionGuidance extends HasSingle_MODEL, ComfyNode<SelfAttentionGuidance_input, SelfAttentionGuidance_output> {
     nameInComfy: "SelfAttentionGuidance"
@@ -2603,6 +2494,612 @@ export interface StableZero123$_Conditioning_input {
     azimuth?: _FLOAT
 }
 
+// StableZero123_Conditioning_Batched [conditioning_3d_models]
+export interface StableZero123$_Conditioning$_Batched extends HasSingle_LATENT, ComfyNode<StableZero123$_Conditioning$_Batched_input, StableZero123$_Conditioning$_Batched_output> {
+    nameInComfy: "StableZero123_Conditioning_Batched"
+}
+export interface StableZero123$_Conditioning$_Batched_output {
+    positive: ComfyNodeOutput<'CONDITIONING', 0>,
+    negative: ComfyNodeOutput<'CONDITIONING', 1>,
+    latent: ComfyNodeOutput<'LATENT', 2>,
+}
+export interface StableZero123$_Conditioning$_Batched_input {
+    clip_vision: _CLIP_VISION
+    init_image: _IMAGE
+    vae: _VAE
+    /** default=256 min=8192 max=8192 step=8 */
+    width?: _INT
+    /** default=256 min=8192 max=8192 step=8 */
+    height?: _INT
+    /** default=1 min=4096 max=4096 */
+    batch_size?: _INT
+    /** default=0 min=180 max=180 */
+    elevation?: _FLOAT
+    /** default=0 min=180 max=180 */
+    azimuth?: _FLOAT
+    /** default=0 min=180 max=180 */
+    elevation_batch_increment?: _FLOAT
+    /** default=0 min=180 max=180 */
+    azimuth_batch_increment?: _FLOAT
+}
+
+// SD_4XUpscale_Conditioning [conditioning_upscale_diffusion]
+export interface SD$_4XUpscale$_Conditioning extends HasSingle_LATENT, ComfyNode<SD$_4XUpscale$_Conditioning_input, SD$_4XUpscale$_Conditioning_output> {
+    nameInComfy: "SD_4XUpscale_Conditioning"
+}
+export interface SD$_4XUpscale$_Conditioning_output {
+    positive: ComfyNodeOutput<'CONDITIONING', 0>,
+    negative: ComfyNodeOutput<'CONDITIONING', 1>,
+    latent: ComfyNodeOutput<'LATENT', 2>,
+}
+export interface SD$_4XUpscale$_Conditioning_input {
+    images: _IMAGE
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+    /** default=4 min=10 max=10 step=0.01 */
+    scale_ratio?: _FLOAT
+    /** default=0 min=1 max=1 step=0.001 */
+    noise_augmentation?: _FLOAT
+}
+
+// UnknownNodeXX [test]
+export interface UnknownNodeXX extends ComfyNode<UnknownNodeXX_input, UnknownNodeXX_output> {
+    nameInComfy: "UnknownNodeXX"
+}
+export interface UnknownNodeXX_output {
+}
+export interface UnknownNodeXX_input {
+}
+
+
+// 8.2 NODE UI helpers --------------------
+export interface FormHelper {
+    KSampler: {
+        seed: { kind: 'number', type: number }
+        steps: { kind: 'number', type: number }
+        cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
+        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
+        denoise: { kind: 'number', type: number }
+    }
+    CheckpointLoaderSimple: {
+        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
+    }
+    CLIPTextEncode: {
+        text: { kind: 'string', type: string }
+    }
+    CLIPSetLastLayer: {
+        stop_at_clip_layer: { kind: 'number', type: number }
+    }
+    VAEDecode: {
+    }
+    VAEEncode: {
+    }
+    VAEEncodeForInpaint: {
+        grow_mask_by: { kind: 'number', type: number }
+    }
+    VAELoader: {
+        vae_name: { kind: 'enum', type: Enum_VAELoader_vae_name }
+    }
+    EmptyLatentImage: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        batch_size: { kind: 'number', type: number }
+    }
+    LatentUpscale: {
+        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        crop: { kind: 'enum', type: Enum_LatentUpscale_crop }
+    }
+    LatentUpscaleBy: {
+        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
+        scale_by: { kind: 'number', type: number }
+    }
+    LatentFromBatch: {
+        batch_index: { kind: 'number', type: number }
+        length: { kind: 'number', type: number }
+    }
+    RepeatLatentBatch: {
+        amount: { kind: 'number', type: number }
+    }
+    SaveImage: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    PreviewImage: {
+    }
+    LoadImage: {
+        image: { kind: 'enum', type: Enum_LoadImage_image }
+    }
+    LoadImageMask: {
+        image: { kind: 'enum', type: Enum_LoadImage_image }
+        channel: { kind: 'enum', type: Enum_LoadImageMask_channel }
+    }
+    ImageScale: {
+        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        crop: { kind: 'enum', type: Enum_LatentUpscale_crop }
+    }
+    ImageScaleBy: {
+        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
+        scale_by: { kind: 'number', type: number }
+    }
+    ImageInvert: {
+    }
+    ImageBatch: {
+    }
+    ImagePadForOutpaint: {
+        left: { kind: 'number', type: number }
+        top: { kind: 'number', type: number }
+        right: { kind: 'number', type: number }
+        bottom: { kind: 'number', type: number }
+        feathering: { kind: 'number', type: number }
+    }
+    EmptyImage: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        batch_size: { kind: 'number', type: number }
+        color: { kind: 'number', type: number }
+    }
+    ConditioningAverage: {
+        conditioning_to_strength: { kind: 'number', type: number }
+    }
+    ConditioningCombine: {
+    }
+    ConditioningConcat: {
+    }
+    ConditioningSetArea: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        strength: { kind: 'number', type: number }
+    }
+    ConditioningSetAreaPercentage: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        strength: { kind: 'number', type: number }
+    }
+    ConditioningSetMask: {
+        strength: { kind: 'number', type: number }
+        set_cond_area: { kind: 'enum', type: Enum_ConditioningSetMask_set_cond_area }
+    }
+    KSamplerAdvanced: {
+        add_noise: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
+        noise_seed: { kind: 'number', type: number }
+        steps: { kind: 'number', type: number }
+        cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
+        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
+        start_at_step: { kind: 'number', type: number }
+        end_at_step: { kind: 'number', type: number }
+        return_with_leftover_noise: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
+    }
+    SetLatentNoiseMask: {
+    }
+    LatentComposite: {
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        feather: { kind: 'number', type: number }
+    }
+    LatentBlend: {
+        blend_factor: { kind: 'number', type: number }
+    }
+    LatentRotate: {
+        rotation: { kind: 'enum', type: Enum_LatentRotate_rotation }
+    }
+    LatentFlip: {
+        flip_method: { kind: 'enum', type: Enum_LatentFlip_flip_method }
+    }
+    LatentCrop: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+    }
+    LoraLoader: {
+        lora_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
+        strength_model: { kind: 'number', type: number }
+        strength_clip: { kind: 'number', type: number }
+    }
+    CLIPLoader: {
+        clip_name: { kind: 'enum', type: Enum_CLIPLoader_clip_name }
+    }
+    UNETLoader: {
+        unet_name: { kind: 'enum', type: Enum_UNETLoader_unet_name }
+    }
+    DualCLIPLoader: {
+        clip_name1: { kind: 'enum', type: Enum_DualCLIPLoader_clip_name1 }
+        clip_name2: { kind: 'enum', type: Enum_DualCLIPLoader_clip_name2 }
+    }
+    CLIPVisionEncode: {
+    }
+    StyleModelApply: {
+    }
+    unCLIPConditioning: {
+        strength: { kind: 'number', type: number }
+        noise_augmentation: { kind: 'number', type: number }
+    }
+    ControlNetApply: {
+        strength: { kind: 'number', type: number }
+    }
+    ControlNetApplyAdvanced: {
+        strength: { kind: 'number', type: number }
+        start_percent: { kind: 'number', type: number }
+        end_percent: { kind: 'number', type: number }
+    }
+    ControlNetLoader: {
+        control_net_name: { kind: 'enum', type: Enum_ControlNetLoader_control_net_name }
+    }
+    DiffControlNetLoader: {
+        control_net_name: { kind: 'enum', type: Enum_DiffControlNetLoader_control_net_name }
+    }
+    StyleModelLoader: {
+        style_model_name: { kind: 'enum', type: Enum_StyleModelLoader_style_model_name }
+    }
+    CLIPVisionLoader: {
+        clip_name: { kind: 'enum', type: Enum_CLIPVisionLoader_clip_name }
+    }
+    VAEDecodeTiled: {
+        tile_size: { kind: 'number', type: number }
+    }
+    VAEEncodeTiled: {
+        tile_size: { kind: 'number', type: number }
+    }
+    unCLIPCheckpointLoader: {
+        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
+    }
+    GLIGENLoader: {
+        gligen_name: { kind: 'enum', type: Enum_GLIGENLoader_gligen_name }
+    }
+    GLIGENTextBoxApply: {
+        text: { kind: 'string', type: string }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+    }
+    InpaintModelConditioning: {
+    }
+    CheckpointLoader: {
+        config_name: { kind: 'enum', type: Enum_CheckpointLoader_config_name }
+        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
+    }
+    DiffusersLoader: {
+        model_path: { kind: 'enum', type: Enum_DiffusersLoader_model_path }
+    }
+    LoadLatent: {
+        latent: { kind: 'enum', type: Enum_LoadLatent_latent }
+    }
+    SaveLatent: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    ConditioningZeroOut: {
+    }
+    ConditioningSetTimestepRange: {
+        start: { kind: 'number', type: number }
+        end: { kind: 'number', type: number }
+    }
+    LoraLoaderModelOnly: {
+        lora_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
+        strength_model: { kind: 'number', type: number }
+    }
+    LatentAdd: {
+    }
+    LatentSubtract: {
+    }
+    LatentMultiply: {
+        multiplier: { kind: 'number', type: number }
+    }
+    LatentInterpolate: {
+        ratio: { kind: 'number', type: number }
+    }
+    LatentBatch: {
+    }
+    HypernetworkLoader: {
+        hypernetwork_name: { kind: 'enum', type: Enum_HypernetworkLoader_hypernetwork_name }
+        strength: { kind: 'number', type: number }
+    }
+    UpscaleModelLoader: {
+        model_name: { kind: 'enum', type: Enum_UpscaleModelLoader_model_name }
+    }
+    ImageUpscaleWithModel: {
+    }
+    ImageBlend: {
+        blend_factor: { kind: 'number', type: number }
+        blend_mode: { kind: 'enum', type: Enum_ImageBlend_blend_mode }
+    }
+    ImageBlur: {
+        blur_radius: { kind: 'number', type: number }
+        sigma: { kind: 'number', type: number }
+    }
+    ImageQuantize: {
+        colors: { kind: 'number', type: number }
+        dither: { kind: 'enum', type: Enum_ImageQuantize_dither }
+    }
+    ImageSharpen: {
+        sharpen_radius: { kind: 'number', type: number }
+        sigma: { kind: 'number', type: number }
+        alpha: { kind: 'number', type: number }
+    }
+    ImageScaleToTotalPixels: {
+        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
+        megapixels: { kind: 'number', type: number }
+    }
+    LatentCompositeMasked: {
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        resize_source: { kind: 'boolean', type: boolean }
+    }
+    ImageCompositeMasked: {
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        resize_source: { kind: 'boolean', type: boolean }
+    }
+    MaskToImage: {
+    }
+    ImageToMask: {
+        channel: { kind: 'enum', type: Enum_LoadImageMask_channel }
+    }
+    ImageColorToMask: {
+        color: { kind: 'number', type: number }
+    }
+    SolidMask: {
+        value: { kind: 'number', type: number }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+    }
+    InvertMask: {
+    }
+    CropMask: {
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+    }
+    MaskComposite: {
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        operation: { kind: 'enum', type: Enum_MaskComposite_operation }
+    }
+    FeatherMask: {
+        left: { kind: 'number', type: number }
+        top: { kind: 'number', type: number }
+        right: { kind: 'number', type: number }
+        bottom: { kind: 'number', type: number }
+    }
+    GrowMask: {
+        expand: { kind: 'number', type: number }
+        tapered_corners: { kind: 'boolean', type: boolean }
+    }
+    PorterDuffImageComposite: {
+        mode: { kind: 'enum', type: Enum_PorterDuffImageComposite_mode }
+    }
+    SplitImageWithAlpha: {
+    }
+    JoinImageWithAlpha: {
+    }
+    RebatchLatents: {
+        batch_size: { kind: 'number', type: number }
+    }
+    RebatchImages: {
+        batch_size: { kind: 'number', type: number }
+    }
+    ModelMergeSimple: {
+        ratio: { kind: 'number', type: number }
+    }
+    ModelMergeBlocks: {
+        input: { kind: 'number', type: number }
+        middle: { kind: 'number', type: number }
+        out: { kind: 'number', type: number }
+    }
+    ModelMergeSubtract: {
+        multiplier: { kind: 'number', type: number }
+    }
+    ModelMergeAdd: {
+    }
+    CheckpointSave: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    CLIPMergeSimple: {
+        ratio: { kind: 'number', type: number }
+    }
+    CLIPSave: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    VAESave: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    TomePatchModel: {
+        ratio: { kind: 'number', type: number }
+    }
+    CLIPTextEncodeSDXLRefiner: {
+        ascore: { kind: 'number', type: number }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        text: { kind: 'string', type: string }
+    }
+    CLIPTextEncodeSDXL: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        crop_w: { kind: 'number', type: number }
+        crop_h: { kind: 'number', type: number }
+        target_width: { kind: 'number', type: number }
+        target_height: { kind: 'number', type: number }
+        text_g: { kind: 'string', type: string }
+        text_l: { kind: 'string', type: string }
+    }
+    Canny: {
+        low_threshold: { kind: 'number', type: number }
+        high_threshold: { kind: 'number', type: number }
+    }
+    FreeU: {
+        b1: { kind: 'number', type: number }
+        b2: { kind: 'number', type: number }
+        s1: { kind: 'number', type: number }
+        s2: { kind: 'number', type: number }
+    }
+    FreeU$_V2: {
+        b1: { kind: 'number', type: number }
+        b2: { kind: 'number', type: number }
+        s1: { kind: 'number', type: number }
+        s2: { kind: 'number', type: number }
+    }
+    SamplerCustom: {
+        add_noise: { kind: 'boolean', type: boolean }
+        noise_seed: { kind: 'number', type: number }
+        cfg: { kind: 'number', type: number }
+    }
+    BasicScheduler: {
+        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
+        steps: { kind: 'number', type: number }
+        denoise: { kind: 'number', type: number }
+    }
+    KarrasScheduler: {
+        steps: { kind: 'number', type: number }
+        sigma_max: { kind: 'number', type: number }
+        sigma_min: { kind: 'number', type: number }
+        rho: { kind: 'number', type: number }
+    }
+    ExponentialScheduler: {
+        steps: { kind: 'number', type: number }
+        sigma_max: { kind: 'number', type: number }
+        sigma_min: { kind: 'number', type: number }
+    }
+    PolyexponentialScheduler: {
+        steps: { kind: 'number', type: number }
+        sigma_max: { kind: 'number', type: number }
+        sigma_min: { kind: 'number', type: number }
+        rho: { kind: 'number', type: number }
+    }
+    VPScheduler: {
+        steps: { kind: 'number', type: number }
+        beta_d: { kind: 'number', type: number }
+        beta_min: { kind: 'number', type: number }
+        eps_s: { kind: 'number', type: number }
+    }
+    SDTurboScheduler: {
+        steps: { kind: 'number', type: number }
+        denoise: { kind: 'number', type: number }
+    }
+    KSamplerSelect: {
+        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
+    }
+    SamplerDPMPP$_2M$_SDE: {
+        solver_type: { kind: 'enum', type: Enum_SamplerDPMPP$_2M$_SDE_solver_type }
+        eta: { kind: 'number', type: number }
+        s_noise: { kind: 'number', type: number }
+        noise_device: { kind: 'enum', type: Enum_SamplerDPMPP$_2M$_SDE_noise_device }
+    }
+    SamplerDPMPP$_SDE: {
+        eta: { kind: 'number', type: number }
+        s_noise: { kind: 'number', type: number }
+        r: { kind: 'number', type: number }
+        noise_device: { kind: 'enum', type: Enum_SamplerDPMPP$_2M$_SDE_noise_device }
+    }
+    SplitSigmas: {
+        step: { kind: 'number', type: number }
+    }
+    FlipSigmas: {
+    }
+    HyperTile: {
+        tile_size: { kind: 'number', type: number }
+        swap_size: { kind: 'number', type: number }
+        max_depth: { kind: 'number', type: number }
+        scale_depth: { kind: 'boolean', type: boolean }
+    }
+    ModelSamplingDiscrete: {
+        sampling: { kind: 'enum', type: Enum_ModelSamplingDiscrete_sampling }
+        zsnr: { kind: 'boolean', type: boolean }
+    }
+    ModelSamplingContinuousEDM: {
+        sampling: { kind: 'enum', type: Enum_ModelSamplingContinuousEDM_sampling }
+        sigma_max: { kind: 'number', type: number }
+        sigma_min: { kind: 'number', type: number }
+    }
+    RescaleCFG: {
+        multiplier: { kind: 'number', type: number }
+    }
+    PatchModelAddDownscale: {
+        block_number: { kind: 'number', type: number }
+        downscale_factor: { kind: 'number', type: number }
+        start_percent: { kind: 'number', type: number }
+        end_percent: { kind: 'number', type: number }
+        downscale_after_skip: { kind: 'boolean', type: boolean }
+        downscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
+        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
+    }
+    ImageCrop: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+    }
+    RepeatImageBatch: {
+        amount: { kind: 'number', type: number }
+    }
+    SaveAnimatedWEBP: {
+        filename_prefix: { kind: 'string', type: string }
+        fps: { kind: 'number', type: number }
+        lossless: { kind: 'boolean', type: boolean }
+        quality: { kind: 'number', type: number }
+        method: { kind: 'enum', type: Enum_SaveAnimatedWEBP_method }
+    }
+    SaveAnimatedPNG: {
+        filename_prefix: { kind: 'string', type: string }
+        fps: { kind: 'number', type: number }
+        compress_level: { kind: 'number', type: number }
+    }
+    ImageOnlyCheckpointLoader: {
+        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
+    }
+    SVD$_img2vid$_Conditioning: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        video_frames: { kind: 'number', type: number }
+        motion_bucket_id: { kind: 'number', type: number }
+        fps: { kind: 'number', type: number }
+        augmentation_level: { kind: 'number', type: number }
+    }
+    VideoLinearCFGGuidance: {
+        min_cfg: { kind: 'number', type: number }
+    }
+    ImageOnlyCheckpointSave: {
+        filename_prefix: { kind: 'string', type: string }
+    }
+    SelfAttentionGuidance: {
+        scale: { kind: 'number', type: number }
+        blur_sigma: { kind: 'number', type: number }
+    }
+    PerpNeg: {
+        neg_scale: { kind: 'number', type: number }
+    }
+    StableZero123$_Conditioning: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        batch_size: { kind: 'number', type: number }
+        elevation: { kind: 'number', type: number }
+        azimuth: { kind: 'number', type: number }
+    }
+    StableZero123$_Conditioning$_Batched: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        batch_size: { kind: 'number', type: number }
+        elevation: { kind: 'number', type: number }
+        azimuth: { kind: 'number', type: number }
+        elevation_batch_increment: { kind: 'number', type: number }
+        azimuth_batch_increment: { kind: 'number', type: number }
+    }
+    SD$_4XUpscale$_Conditioning: {
+        scale_ratio: { kind: 'number', type: number }
+        noise_augmentation: { kind: 'number', type: number }
+    }
+    UnknownNodeXX: {
+    }
+}
 
 // 9. INDEX -------------------------------
 export type Schemas = {
@@ -2660,6 +3157,7 @@ export type Schemas = {
     unCLIPCheckpointLoader: ComfyNodeSchemaJSON,
     GLIGENLoader: ComfyNodeSchemaJSON,
     GLIGENTextBoxApply: ComfyNodeSchemaJSON,
+    InpaintModelConditioning: ComfyNodeSchemaJSON,
     CheckpointLoader: ComfyNodeSchemaJSON,
     DiffusersLoader: ComfyNodeSchemaJSON,
     LoadLatent: ComfyNodeSchemaJSON,
@@ -2695,6 +3193,7 @@ export type Schemas = {
     SplitImageWithAlpha: ComfyNodeSchemaJSON,
     JoinImageWithAlpha: ComfyNodeSchemaJSON,
     RebatchLatents: ComfyNodeSchemaJSON,
+    RebatchImages: ComfyNodeSchemaJSON,
     ModelMergeSimple: ComfyNodeSchemaJSON,
     ModelMergeBlocks: ComfyNodeSchemaJSON,
     ModelMergeSubtract: ComfyNodeSchemaJSON,
@@ -2733,9 +3232,13 @@ export type Schemas = {
     ImageOnlyCheckpointLoader: ComfyNodeSchemaJSON,
     SVD$_img2vid$_Conditioning: ComfyNodeSchemaJSON,
     VideoLinearCFGGuidance: ComfyNodeSchemaJSON,
+    ImageOnlyCheckpointSave: ComfyNodeSchemaJSON,
     SelfAttentionGuidance: ComfyNodeSchemaJSON,
     PerpNeg: ComfyNodeSchemaJSON,
     StableZero123$_Conditioning: ComfyNodeSchemaJSON,
+    StableZero123$_Conditioning$_Batched: ComfyNodeSchemaJSON,
+    SD$_4XUpscale$_Conditioning: ComfyNodeSchemaJSON,
+    UnknownNodeXX: ComfyNodeSchemaJSON,
 }
 export type ComfyNodeType = keyof Schemas
 }

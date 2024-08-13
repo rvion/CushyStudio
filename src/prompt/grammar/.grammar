@@ -1,0 +1,57 @@
+@top Prompt { expression* }
+
+expression[@isGroup=Expression] {
+  WeightedExpression |
+  Permutations |
+
+  Lora |
+  Wildcard |
+  Embedding |
+  Tag |
+
+  Separator |
+  Break |
+
+  Comment |
+  Identifier |
+  String
+}
+
+@skip { space }
+
+Content {expression+ }
+WeightedExpression { "(" Content ")" ("*" Number)? }
+
+Permutations { "{" Content "}" }
+
+Tag { "%" TagName }
+TagName {  Identifier | String }
+
+// LORA
+// Lora { @specialize<Identifier, "lora"> ":" LoraName  }
+Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
+loraName { Identifier | String  }
+
+// WILDCARD
+Wildcard { "?" wildcardName }
+wildcardName { Identifier | String  }
+
+// EMBEDDING
+Embedding { ":" embeddingName }
+embeddingName { Identifier | String  }
+
+
+@tokens {
+  space { @whitespace+ }
+  Break { "break" }
+  Identifier { ($[A-Za-z0-9._\\\/\-] )+ }
+  String { '"' !["]* '"' }
+  Separator { "," }
+  Comment { ";" ![\n]* }
+  Number { "-"? $[0-9.]+ }
+  // WeightedExpression {"{}"}
+  @precedence { Comment, Break, Identifier }
+  // @precedence { Comment, Break, Identifier, Number } // 🔴
+  // 🔴 TODO: report issue about Number beeing injected as top-level
+  // expression for no reason, if precence is defined
+}

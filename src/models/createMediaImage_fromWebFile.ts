@@ -1,54 +1,66 @@
+import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { PromptID } from '../types/ComfyWsApi'
 import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
-import type { STATE } from 'src/state/state'
-import type { ComfyNodeID } from 'src/types/ComfyNodeID'
-import type { PromptID } from 'src/types/ComfyWsApi'
+import type { MediaImageL } from './MediaImage'
 
-import { mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { mkdirSync } from 'fs'
 import { imageMeta } from 'image-meta'
-import { dirname } from 'pathe'
 
-import { MediaImageL } from './MediaImage'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
+import { bang } from '../csuite/utils/bang'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
+import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
+import { FPath } from './PathObj'
 
 export type ImageCreationOpts = {
-    promptID?: PromptID
-    stepID?: StepID
-    comfyUIInfos?: ImageInfos_ComfyGenerated
-    promptNodeID?: ComfyNodeID
+    promptID?: Maybe<PromptID>
+    stepID?: Maybe<StepID>
+    comfyUIInfos?: Maybe<ImageInfos_ComfyGenerated>
+    promptNodeID?: Maybe<ComfyNodeID>
 }
 
-export const createMediaImage_fromFileObject = async (st: STATE, file: File, subFolder?: string): Promise<MediaImageL> => {
+export const createMediaImage_fromFileObject = async (
+    //
+    file: File,
+    subFolder?: string,
+): Promise<MediaImageL> => {
     console.log(`[🌠] createMediaImage_fromFileObject`)
-    const relPath = `outputs/${subFolder ?? 'imported'}/${file.name}` as RelativePath
-    return createMediaImage_fromBlobObject(st, file, relPath)
+    const relPath = new FPath(`outputs/${subFolder ?? 'imported'}/${file.name}`)
+    return createMediaImage_fromBlobObject(file, relPath)
 }
 
 export const createMediaImage_fromBlobObject = async (
     //
-    st: STATE,
     blob: Blob,
-    relPath: string,
+    fpath: FPath,
     opts?: ImageCreationOpts,
 ): Promise<MediaImageL> => {
     console.log(`[🌠] createMediaImage_fromBlobObject`)
-    const dir = dirname(relPath)
-    mkdirSync(dir, { recursive: true })
+    fpath.ensureDir()
     const buff: Buffer = await blob.arrayBuffer().then((x) => Buffer.from(x))
-    writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    fpath.write(buff)
+    return _createMediaImage_fromLocalyAvailableImage(fpath, buff, opts)
+}
+
+export const createMediaImage_fromBuffer = async (
+    buffer: Buffer,
+    fpath: FPath,
+    opts?: ImageCreationOpts,
+): Promise<MediaImageL> => {
+    console.log(`[🌠] createMediaImage_fromBlobObject`)
+    fpath.ensureDir()
+    fpath.write(buffer)
+    return _createMediaImage_fromLocalyAvailableImage(fpath, buffer, opts)
 }
 
 export const createMediaImage_fromDataURI = (
     //
-    st: STATE,
     dataURI: string,
     subFolder?: string,
     opts?: ImageCreationOpts,
 ): MediaImageL => {
     mkdirSync(`outputs/${subFolder}/`, { recursive: true })
     // type: 'data:image/png;base64,' => 'png
-    const contentType = dataURI.split(';')[0].split(':')[1]
+    const contentType = bang(dataURI.split(';')[0]).split(':')[1]
     if (contentType == null) throw new Error(`❌ dataURI mediaType is null`)
     if (contentType.length === 0) throw new Error(`❌ dataURI mediaType is empty`)
     if (contentType === 'text/plain') throw new Error(`❌ dataURI mediaType is text/plain`)
@@ -67,28 +79,28 @@ export const createMediaImage_fromDataURI = (
 
     // const fName = nanoid() + ext
     const fName = hash + ext
-    const relPath = `outputs/${subFolder}/${fName}` as RelativePath
-    writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    const fpath = new FPath(`outputs/${subFolder}/${fName}`)
+    fpath.write(buff)
+    return _createMediaImage_fromLocalyAvailableImage(fpath, buff, opts)
 }
 
 export const createMediaImage_fromPath = (
     //
-    st: STATE,
-    relPath: string,
+    path: FPath,
     opts?: ImageCreationOpts,
 ): MediaImageL => {
-    const buff = readFileSync(relPath)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
+    const buff = path.readAsBuffer()
+    // const buff = readFileSync(relPath)
+    return _createMediaImage_fromLocalyAvailableImage(path, buff, opts)
 }
 
 export const _createMediaImage_fromLocalyAvailableImage = (
-    st: STATE,
-    relPath: string,
+    fpath: FPath,
     preBuff?: Buffer | ArrayBuffer,
     opts?: ImageCreationOpts,
 ): MediaImageL => {
-    const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(relPath)
+    const st = cushy
+    const buff: Buffer | ArrayBuffer = preBuff ?? fpath.readAsBuffer()
     const uint8arr = new Uint8Array(buff)
     const fileSize = uint8arr.byteLength
     // 🔴 meta shouldn't be computed there; probably very inneficient
@@ -98,7 +110,8 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     const hash = hashArrayBuffer(uint8arr)
     console.log(`[🏞️]`, { ...meta, hash })
 
-    const prevs = st.db.media_images.find({ path: relPath }, { limit: 1 })
+    // const prevs = st.db.media_image.find({ path: relPath }, { limit: 1 })
+    const prevs = st.db.media_image.select((q) => q.where('path', '=', fpath.relPath).limit(1))
     const prev = prevs[0]
 
     if (prev) {
@@ -111,7 +124,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
             })
             return prev
         }
-        console.log(`[🏞️] updating existing imamge`)
+        console.log(`[🏞️] updating existing image (${fpath})`)
         // toastInfo(`🏞️ updating existing imamge`)
         prev.update({
             orientation: meta.orientation,
@@ -120,7 +133,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
             width: meta.width,
             height: meta.height,
             hash,
-            path: relPath,
+            path: fpath.relPath,
             promptID: opts?.promptID ?? prev.data.promptID,
             stepID: opts?.stepID ?? prev.data.stepID,
         })
@@ -128,9 +141,9 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     }
 
     console.log(`[🏞️] create new image`)
-    return st.db.media_images.create({
+    return st.db.media_image.create({
         // base
-        path: relPath,
+        path: fpath.relPath,
         // computed
         fileSize: fileSize,
         hash,

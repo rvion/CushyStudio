@@ -86,9 +86,9 @@ export class OpenPoseDrawer {
         for (let i = 0; i < totalPoses; i++) {
             let pose = poses[i]
             for (let j = 0; j < this.bonePairs.length; j++) {
-                let pair = this.bonePairs[j]
-                let indexStart = pair[0]
-                let indexEnd = pair[1]
+                let pair = this.bonePairs[j]!
+                let indexStart = pair[0]!
+                let indexEnd = pair[1]!
 
                 let keypoint1 = pose[indexStart]
                 let x1 = keypoint1[0] * renderScale
@@ -104,7 +104,7 @@ export class OpenPoseDrawer {
                     continue
                 }
 
-                ctx.strokeStyle = this.convertHexToRGBA(this.boneColors[j], animationAlpha)
+                ctx.strokeStyle = this.convertHexToRGBA(this.boneColors[j]!, animationAlpha)
                 ctx.lineWidth = this.lineWidth
 
                 // Draw the bone
@@ -114,7 +114,7 @@ export class OpenPoseDrawer {
                 ctx.stroke()
 
                 // Draw the joints at the start and end of the bone
-                ctx.fillStyle = this.convertHexToRGBA(this.boneColors[j], animationAlpha)
+                ctx.fillStyle = this.convertHexToRGBA(this.boneColors[j]!, animationAlpha)
                 ctx.moveTo(x1, y1)
                 ctx.arc(x1, y1, this.jointCircleRadius, 0, 2 * Math.PI)
                 ctx.moveTo(x2, y2)

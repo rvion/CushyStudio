@@ -12,7 +12,7 @@ app({
         models: ui_rembg_v1(),
     }),
 
-    run: async (run, form, img) => {
+    run: async (run, form, { image: img }) => {
         const graph = run.nodes
 
         const image = await (() => {
@@ -25,7 +25,7 @@ app({
         })()
 
         if (form.models.RemBG)            graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) }) // prettier-ignore
-        if (form.models.ABG)              graph.PreviewImage({ images: graph.Remove_Image_Background_$1abg$2  ({ image }) }) // prettier-ignore
+        // if (form.models.ABG)              graph.PreviewImage({ images: graph.Remove_Image_Background_$1abg$2  ({ image }) }) // prettier-ignore
         if (form.models.isnetAnime)       graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-anime',       background_color: 'none', }), }) // prettier-ignore
         if (form.models.isnetGeneralUse)  graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-general-use', background_color: 'none', }), }) // prettier-ignore
         if (form.models.silueta)          graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'silueta',           background_color: 'none', }), }) // prettier-ignore

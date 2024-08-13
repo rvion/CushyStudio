@@ -3,7 +3,8 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": ["@typescript-eslint"],
     "rules": {
@@ -12,7 +13,19 @@
         "curly": "off",
         "eqeqeq": "off",
         "no-throw-literal": "warn",
-        "semi": "off"
+        "semi": "off",
+        "@typescript-eslint/prefer-as-const": "off",
+        // https://typescript-eslint.io/rules/no-floating-promises
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-this-alias": "off", // sometimes, we need to preserve this.
+        "@typescript-eslint/explicit-function-return-type": "error",
+        "consistent-this": [2, "self", "that"] // as a paliative solution to above permissive rule
     },
-    "ignorePatterns": ["out", "dist", "**/*.d.ts"]
+    "ignorePatterns": [
+        //
+        "out",
+        "dist",
+        "release",
+        "**/*.d.ts"
+    ]
 }

@@ -1,10 +1,21 @@
-import { observer } from 'mobx-react-lite'
+import type { DraftL } from '../../models/Draft'
 
+import { existsSync } from 'fs'
+import { observer } from 'mobx-react-lite'
+import { fileURLToPath } from 'url'
+
+import { useSt } from '../../state/stateContext'
+import { useImageDrop } from '../../widgets/galleries/dnd'
+import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
-import { useSt } from 'src/state/stateContext'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
+
+// import { CushyAppL } from 'src/models/CushyApp'
+// import { DraftL } from 'src/models/Draft'
+// import { useSt } from 'src/state/stateContext'
+// import { useImageDrop } from 'src/widgets/galleries/dnd'
+// import { existsSync } from 'fs'
+// import { fileURLToPath } from 'url'
+// import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
 
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
@@ -41,26 +52,34 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
         )
     }
 
+    const illustration = fileURLToPath(draft.data.illustration)
+
     // 3. show illustration on top
     return (
         <div style={dropStyle} ref={dropRef} className='relative DROP_IMAGE_HANDLER'>
             {p.revealAppIllustrationOnHover ? ( //
-                <div tw='absolute opacity-0 hover:opacity-100' style={{ transition: 'opacity 0.2s' }}>
+                <div tw='absolute opacity-0 hover:opacity-100 z-50 bg-neutral' style={{ transition: 'opacity 0.2s' }}>
                     <AppIllustrationUI app={draft.app} size={p.size} />
                 </div>
             ) : null}
-            <img
-                // onError={(ev) => {
-                // TODO 2024-01-25 rvion: make it so wiping images doesn't break drafts too much
-                // }}
-                className={p.className}
-                loading='lazy'
-                tw={['bg-base-300', 'rounded', p.onClick ? 'cursor-pointer' : null]}
-                style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}
-                src={draft.data.illustration}
-                alt='draft illustration'
-                onClick={p.onClick}
-            />
+            {existsSync(illustration) ? (
+                <img
+                    // onError={(ev) => {
+                    // TODO 2024-01-25 rvion: make it so wiping images doesn't break drafts too much
+                    // }}
+                    className={p.className}
+                    loading='lazy'
+                    tw={['rounded', p.onClick ? 'cursor-pointer' : null]}
+                    style={{ width: p.size, height: p.size, objectFit: 'contain' }}
+                    src={draft.data.illustration}
+                    alt='draft illustration'
+                    onClick={p.onClick}
+                />
+            ) : (
+                <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>
+                    <ImageErrorDisplayUI icon='folder' />
+                </div>
+            )}
         </div>
     )
 })

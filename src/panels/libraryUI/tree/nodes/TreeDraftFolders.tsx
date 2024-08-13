@@ -1,17 +1,16 @@
-import type { VirtualFolder } from '../../VirtualHierarchy'
-import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { TreeNode } from '../xxx/TreeNode'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { ITreeElement, ITreeEntry } from '../../../../csuite/tree/TreeEntry'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
+import type { DraftL } from '../../../../models/Draft'
 
 import { basename } from 'pathe'
 
 import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
+    get st() { return cushy } // prettier-ignore
     constructor(
         //
-        public st: STATE,
         public vf: VirtualFolder<DraftL>,
     ) {}
 

@@ -13,6 +13,6 @@ export const isSqlExpr = (x: any): x is SqlExpr =>
     x != null &&
     '$like' in x
 
-export type SQLWhere<T extends BaseInstanceFields> = Partial<{
+export type SQLWhere<T> = Partial<{
     [k in keyof T]: T[k] | SqlExpr
 }>

@@ -1,25 +1,23 @@
+import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { STATE } from '../state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { Library } from './Library'
 import type { Metafile, OutputFile } from 'esbuild'
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { STATE } from 'src/state/state'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import path, { basename, dirname } from 'pathe'
 
+import { createEsbuildContextFor } from '../compiler/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { exhaust } from '../csuite/utils/exhaust'
+import { ManualPromise } from '../csuite/utils/ManualPromise'
+import { toastError } from '../csuite/utils/toasts'
+import { asCushyScriptID } from '../db/TYPES.gen'
+import { CushyScriptL } from '../models/CushyScript'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { AppMetadata } from './AppManifest'
-import { createEsbuildContextFor } from 'src/compiler/transpiler'
-// @ts-ignore
-import { LiveCollection } from 'src/db/LiveCollection'
-import { asCushyScriptID } from 'src/db/TYPES.gen'
-import { CushyScriptL } from 'src/models/CushyScriptL'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { toastError } from 'src/utils/misc/toasts'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -64,7 +62,7 @@ export class LibraryFile {
 
     /** abs path to the folder this file is in */
     get folderAbs(): AbsolutePath {
-        // console.log(`[👙] 🔴`, dirname(this.absPath))
+        // console.log(`[🧐] 🔴`, dirname(this.absPath))
         return asAbsolutePath(dirname(this.absPath))
     }
 
@@ -82,7 +80,7 @@ export class LibraryFile {
     // })
 
     get scriptInDB(): Maybe<CushyScriptL> {
-        return this.st.db.cushy_scripts.get(this.relPath) // script is IS the relPath
+        return this.st.db.cushy_script.get(this.relPath) // script is IS the relPath
         // return this.st.db.cushy_scripts.findOne({ path: this.relPath })
     }
 
@@ -107,7 +105,7 @@ export class LibraryFile {
     get script(): Maybe<CushyScriptL> {
         if (this.lastSuccessfullExtractedScriptDuringSession) return this.lastSuccessfullExtractedScriptDuringSession
         if (this.scriptInDB) return this.scriptInDB
-        this.extractScriptFromFile()
+        void this.extractScriptFromFile()
         return null
     }
     /** load a file trying all compatible strategies */
@@ -123,7 +121,7 @@ export class LibraryFile {
             return res
         }
         const script = res.script
-        script.evaluateAndUpdateApps()
+        script.evaluateAndUpdateAppsAndViews()
         return res
     }
 
@@ -150,7 +148,7 @@ export class LibraryFile {
             }
 
             // if we have already attempted extraction once in a previous session, return it
-            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
             if (scriptFromDB) {
                 this.currentScriptExtractionPromise = null
                 return { type: 'cached', script: scriptFromDB }
@@ -180,7 +178,7 @@ export class LibraryFile {
             this.currentScriptExtractionPromise.resolve(RESULT)
             this.currentScriptExtractionPromise = null
 
-            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
             if (scriptFromDB == null) {
                 this.UPSERT_SCRIPT(`/* ERROR */`)
             }
@@ -231,13 +229,10 @@ export class LibraryFile {
             // await this.pkg.rebuild()
             // console.log('-- a', { eps: this.relPath })
             const ctx = await this._esbuildContext
-            // console.log('-- b')
             const res = await ctx.rebuild()
-            // console.log(`[👙] res`, Object.keys(res.metafile.inputs))
+            // console.log(`[🧐] res`, Object.keys(res.metafile.inputs))
             const outFile: OutputFile = res.outputFiles[0]!
-            // console.log(`[👙] res`, outFile.text)
             if (outFile.text == null) throw new Error('compilation failed')
-            // console.log('-- c')
 
             // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
             // const ext = path.extname(distPathWrongExt)
@@ -368,10 +363,10 @@ export class LibraryFile {
         codeJS: string,
         metafile?: Metafile,
     ): CushyScriptL => {
-        console.groupCollapsed(`[👙] script extracted for ${this.relPath}`)
+        console.groupCollapsed(`[🧐] script extracted for ${this.relPath}`)
         console.log(codeJS)
         console.groupEnd()
-        const script = this.st.db.cushy_scripts.upsert({
+        const script = this.st.db.cushy_script.upsert({
             id: asCushyScriptID(this.relPath),
             code: codeJS,
             path: this.relPath,

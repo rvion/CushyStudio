@@ -1,8 +1,9 @@
-import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/Schema'
+import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/ComfySchema'
+import type { ComfyNodeJSON, ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
-import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
-import { bang } from '../utils/misc/bang'
+import { bang } from '../csuite/utils/bang'
+import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
 
 export const convertLiteGraphToPrompt = (
@@ -69,23 +70,25 @@ export const convertLiteGraphToPrompt = (
             }
 
             const inputs: ComfyNodeJSON['inputs'] = {}
-            // const widgets = node.widgets
 
             const fieldNamesWithLinks = new Set((node?.inputs ?? []).map((i) => i.name))
             const nodeTypeName = node.type
-            const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
-            if (nodeSchema == null) {
+            const nodeSchema_ = schema.nodesByNameInComfy[nodeTypeName]
+            // ?? schema.nodesByNameInComfy[ComfyDefaultNodeWhenUnknown_Name]
+
+            if (nodeSchema_ == null) {
                 LOG(`❌ missing schema for: ${nodeTypeName}`)
                 LOG(`❌ node causing a crash:`, { node })
                 LOG(`❌ current prompt Step is:`, { prompt })
-                throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
+                throw new Error(`❌ node ${node.type}) has no known schema; you probably need to install some custom node`)
             }
+            const nodeSchema: ComfyNodeSchema = nodeSchema_
             const inputsInNodeSchema: NodeInputExt[] = nodeSchema.inputs
             if (inputsInNodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 
             let offset = 0
             // new logic:
-            // 1 insert all values found in the node, regardless of the schema
+            // 1. insert all values found in the node, regardless of the schema
             // 2. then insert all values or default from the schema
 
             // 2. By Schema -----------------------------------------------------
@@ -124,11 +127,30 @@ export const convertLiteGraphToPrompt = (
                 // console.log(node.id, ipt.name, isPrimitive)
                 if (isPrimitive) continue
 
-                let parent: Maybe<ParentInfo> = null
+                // not a primitive => we assume it's a link
+                if (ipt.link == null) {
+                    console.log(
+                        `[❌] WARNING: no parent found for ${node.type}.${ipt.name} this could be an error if the input is not optional`,
+                    ) //throw new Error(`no link found for ${node.id}.${ipt.name}`)
+                    continue
+                }
+                // retrieve the parent
+                let parent: Maybe<ParentInfo> = getParentNode(ipt.link)
+
+                // unwrap reroute nodes
                 let max = 100
-                while ((parent == null || parent.node.type === 'Reroute') && max-- > 0) {
-                    if (parent != null) LOG(`${FIELD_PREFIX} 🔥 ${ipt.name}... skipping reroute`)
-                    const linkId = parent?.node.inputs?.[0].link ?? ipt.link
+                while (parent != null && parent.node.type === 'Reroute' && max-- > 0) {
+                    LOG(`${FIELD_PREFIX} 🔥 ${ipt.name}... skipping reroute`)
+                    const firstParentInput = parent?.node.inputs?.[0]
+                    if (firstParentInput == null) {
+                        //
+                        console.log(`[❌] ERROR: no parent found for ${node.type}.${ipt.name}`)
+                        console.log(`[❌]  | parent:`, parent)
+                        console.log(`[❌]  | parent.node:`, parent?.node)
+                        // throw new Error(`no parent found for ${node.type}.${ipt.name}`)
+                        break
+                    }
+                    const linkId = firstParentInput.link ?? ipt.link
                     if (linkId == null) {
                         LOG(`${FIELD_PREFIX} [🔶 WARN] node ${node.id}(${node.type}) has an empty input slot`)
                         continue INPT
@@ -136,7 +158,16 @@ export const convertLiteGraphToPrompt = (
                     parent = getParentNode(linkId)
                 }
 
-                if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
+                // throw if missing parent
+                if (parent == null) {
+                    const link = workflow.links.find((l) => l[0] === ipt.link)
+                    throw new (class extends Error {
+                        extraJSON = { ipt, link, nodeFrom: getParentNode(ipt.link!) }
+                        constructor() {
+                            super(`no parent found for ${node.id}.${ipt.name}`)
+                        }
+                    })()
+                }
 
                 LOG(`${FIELD_PREFIX} 🟰 ${ipt.name} = [${String(parent.node.id)}, ${parent.link[2]}] [LINK ${parent.node.type}]`)
                 inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
@@ -156,3 +187,6 @@ export const convertLiteGraphToPrompt = (
         console.groupEnd()
     }
 }
+
+/** alias cause I keep forgetting about this */
+export const convertWorkflowToPrompt = convertLiteGraphToPrompt

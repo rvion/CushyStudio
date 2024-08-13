@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 
 export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
     if (!cushy.search.active) return null

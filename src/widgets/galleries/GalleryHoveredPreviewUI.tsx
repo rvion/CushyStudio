@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useDragLayer } from 'react-dnd'
 
+import { OutputUI } from '../../outputs/OutputUI'
 import { useSt } from '../../state/stateContext'
-import { OutputUI } from 'src/outputs/OutputUI'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()
@@ -21,7 +21,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
             <div
                 tw='ml-auto inset-0 text-center'
                 style={{
-                    opacity: st.galleryConf.get('galleryHoverOpacity') ?? 0.9, //.galleryHoverOpacity,
+                    opacity: /* 🛝 st.galleryConf.value.galleryHoverOpacity ?? */ 0.9, //.galleryHoverOpacity,
                     boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
                     position: 'absolute',

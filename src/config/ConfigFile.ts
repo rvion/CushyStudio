@@ -1,5 +1,4 @@
 import type { IJsonModel } from 'flexlayout-react'
-import type { ThemeName } from 'src/theme/ThemeManager'
 
 // import { ComfyHostID } from './ComfyHostDef'
 
@@ -37,8 +36,7 @@ export type ConfigFile = {
 
     mainComfyHostID?: Maybe<HostID>
     enableTypeCheckingBuiltInApps?: boolean
-    /** 'light' or 'dark'; default to dark */
-    theme?: ThemeName
+
     /** cloud service api key */
     cushyCloudGPUApiKey?: string
     // ---------------------------------------------------------------------------------------
@@ -66,7 +64,7 @@ export type ConfigFile = {
     showPreviewInPanel?: boolean
 
     /** named perspectives */
-    layouts_v12?: { [perspectiveName: string]: IJsonModel }
+    layouts_v13?: { [perspectiveName: string]: IJsonModel }
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
@@ -78,6 +76,8 @@ export type ConfigFile = {
     showPromptPluginLora?: boolean
     showPromptPluginAst?: boolean
     showPromptPluginShortcuts?: boolean
+
+    favoriteLocalFolderPath?: string
 }
 
 export type ReleaseChannels = 'stable' | 'dev'

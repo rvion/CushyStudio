@@ -1,22 +1,23 @@
 {
+    "eslint.format.enable": true,
+    "eslint.validate": ["typescript", "typescriptreact"],
+    "eslint.options": { "extensions": [".ts", ".tsx"] },
+
+    //
+    "editor.linkedEditing": true,
     "fileswitcher.mappings": [
-        {
-            "from": "library/([^/]+)/([^/]+)/(.*).tsx?",
-            "to": "library/:1/:2/dist/:3.js"
-        },
-        {
-            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
-            "to": "library/:1/:2/:3.tsx"
-        },
-        {
-            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
-            "to": "library/:1/:2/:3.ts"
-        }
+        // { "from": "library/([^/]+)/([^/]+)/(.*).tsx?", "to": "library/:1/:2/dist/:3.js" },
+        // { "from": "library/([^/]+)/([^/]+)/dist/(.*).js", "to": "library/:1/:2/:3.tsx" },
+        // { "from": "library/([^/]+)/([^/]+)/dist/(.*).js", "to": "library/:1/:2/:3.ts" },
+        { "from": "src/(.+).ts", "to": "lib/:1.js" },
+        { "from": "lib/(.+).js", "to": "lib/:1.d.ts" },
+        { "from": "lib/(.+).d.ts", "to": "src/:1.ts" },
+        { "from": "lib/(.+).d.ts", "to": "src/:1.tsx" }
     ],
 
     // lint options
     "css.lint.unknownAtRules": "ignore",
-    "tailwindCSS.classAttributes": ["class", "className", "tw"],
+    "tailwindCSS.classAttributes": ["class", "className", "tw", "iconClassName"],
 
     // // Custom colors
     // "peacock.color": "#0b4867",
@@ -81,15 +82,15 @@
     "typescript.preferences.preferTypeOnlyAutoImports": true, // should be on
     "typescript.enablePromptUseWorkspaceTsdk": true,
 
+    // debug
+    // "typescript.tsserver.log": "normal",
+    // "typescript.tsserver.enableTracing": true,
+
     // perf
     "typescript.tsserver.maxTsServerMemory": 8000
-    // "typescript.tsserver.nodePath": ".cushy/node/v18.19.0-darwin-arm64/bin/node",
+    // "typescript.tsserver.nodePath": ".cushy/node/v20.14.0-darwin-arm64/bin/node",
     // "editor.inlayHints.enabled": "off"
     // "editor.semanticHighlighting.enabled": false,
-
-    // debug
-    // "typescript.tsserver.log": "off",
-    // "typescript.tsserver.enableTracing": false,
 
     // misc
     // "typescript.tsdk": "node_modules/typescript/lib",

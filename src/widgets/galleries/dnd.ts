@@ -1,12 +1,12 @@
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
+import type { MediaImageL } from '../../models/MediaImage'
+import type { STATE } from '../../state/state'
 
 import { CSSProperties } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
+import { createMediaImage_fromFileObject } from '../../models/createMediaImage_fromWebFile'
 import { ItemTypes } from './DnDItemTypes'
-import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
 
 export const useImageDrag = (image: MediaImageL) =>
     useDrag(
@@ -66,7 +66,7 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
                 console.log('[🗳️] drop box: image path is', imageFile?.path ?? '❌')
                 if (imageFile) {
                     console.log(`[🌠] importing native file...`)
-                    void createMediaImage_fromFileObject(st, imageFile).then(fn)
+                    void createMediaImage_fromFileObject(imageFile).then(fn)
                 } else {
                     console.log('Dropped non-image file')
                     return

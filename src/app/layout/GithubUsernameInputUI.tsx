@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { BadgeUI } from '../../csuite/badge/BadgeUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
-import { Addon, Input, Joined, Popover, Tag, Whisper } from 'src/rsuite/shims'
-import { assets } from 'src/utils/assets/assets'
+import { assets } from '../../utils/assets/assets'
 
 export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
 export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {
@@ -13,37 +15,31 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const st = useSt()
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
-        <Joined tw='w-auto join'>
-            <Addon>
+        <div tw='w-auto join'>
+            <div tw='flex items-center px-2 join-item'>
                 <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
-                <Whisper
-                    //
-                    enterable
+                <RevealUI
                     placement='bottomStart'
-                    speaker={
-                        <Popover>
+                    content={() => (
+                        <div>
                             <div>
                                 Only folders in
-                                <Tag>library/{githubUsername}/</Tag>
+                                <BadgeUI>library/{githubUsername}/</BadgeUI>
                                 will have type-checking in your vscode
                             </div>
-                        </Popover>
-                    }
+                        </div>
+                    )}
                 >
                     <div>your github:</div>
-                </Whisper>
-            </Addon>
-            <input
-                tw='input input-sm input-bordered join-item'
-                onChange={(ev) => {
-                    st.configFile.update({ githubUsername: ev.target.value })
-                    st.updateTsConfig()
-                }}
-                value={githubUsername}
-                // tw='font-mono'
-                // style={{ width: `${githubUsername.length + 4}ch` }}
+                </RevealUI>
+            </div>
+            <InputStringUI
+                tw='csuite-basic-input'
+                icon='mdiGithub'
                 placeholder='your github username'
-            ></input>
-        </Joined>
+                getValue={() => githubUsername}
+                setValue={(next) => void st.configFile.update({ githubUsername: next })}
+            />
+        </div>
     )
 })

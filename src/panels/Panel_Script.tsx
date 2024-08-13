@@ -1,14 +1,29 @@
 import { observer } from 'mobx-react-lite'
 
-import { TabUI } from 'src/app/layout/TabUI'
-import { useSt } from 'src/state/stateContext'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
-import { ErrorScreenUI } from 'src/widgets/misc/ErrorScreenUI'
-import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
+import { replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { TabUI } from '../csuite/tabs/TabUI'
+import { Panel, type PanelHeader } from '../router/Panel'
+import { useSt } from '../state/stateContext'
+import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
+import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'
+import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 
-export const Panel_Script = observer(function Panel_Script_(p: { scriptID: CushyScriptID }) {
+export const PanelScript = new Panel({
+    name: 'Script',
+    category: 'developper',
+    widget: (): React.FC<PanelScriptProps> => PanelScriptUI,
+    header: (p: PanelScriptProps): PanelHeader => ({ title: 'Script' }),
+    def: (): PanelScriptProps => ({ scriptID: '' /* 🔴 */ }),
+    icon: 'mdiLanguageTypescript',
+})
+
+export type PanelScriptProps = {
+    scriptID: CushyScriptID
+}
+
+export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProps) {
     const st = useSt()
-    const script = st.db.cushy_scripts.get(p.scriptID)
+    const script = st.db.cushy_script.get(p.scriptID)
 
     if (script == null) {
         return (
@@ -27,8 +42,10 @@ export const Panel_Script = observer(function Panel_Script_(p: { scriptID: Cushy
             <div>updated at: {_formatAsRelativeDateTime(script.updatedAt)}</div>
             <div>extracted from: {script.relPath}</div>
             <TabUI>
-                <div>text</div>
-                <pre tw='bg-base-200 text-xs font-mono'>{script.data.code}</pre>
+                <div>text (before import rewrite)</div>
+                <pre tw='text-xs font-mono'>{script.data.code}</pre>
+                <div>text (after import rewrite)</div>
+                <pre tw='text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
                 <div>code</div>
                 <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
             </TabUI>

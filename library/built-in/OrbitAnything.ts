@@ -20,15 +20,12 @@ app({
     },
     ui: (form) => ({
         image: form.image({}),
-        orbit: form.orbit({ requirements: [{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }] }),
-        sndPass: form.groupOpt({
-            items: () => ({
-                positive: form.prompt({}),
-            }),
-        }),
+        orbit: form.orbit({}).addRequirements([{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }]),
+        sndPass: form.fields({ positive: form.prompt({}) }).optional(),
     }),
     run: async (run, ui) => {
         const graph = run.nodes
+        // @ts-ignore
         const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
         const startImage2 = await run.loadImageAnswer(ui.image)
         // const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
@@ -62,8 +59,8 @@ app({
         if (!ui.sndPass) return
 
         if (run.isCurrentDraftAutoStartEnabled() && run.isCurrentDraftDirty()) {
-            console.log(`[👙] 1. isCurrentDraftAutoStartEnabled: ${run.isCurrentDraftAutoStartEnabled()}`)
-            console.log(`[👙] 1. isCurrentDraftDirty: ${run.isCurrentDraftDirty()}`)
+            console.log(`[🧐] 1. isCurrentDraftAutoStartEnabled: ${run.isCurrentDraftAutoStartEnabled()}`)
+            console.log(`[🧐] 1. isCurrentDraftDirty: ${run.isCurrentDraftDirty()}`)
             return
         }
 
@@ -99,7 +96,7 @@ app({
                 negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
                 positive: run_prompt({
                     prompt: { text: ui.orbit.englishSummary + ui.sndPass.positive.text },
-                }).positiveConditionning,
+                }).conditioning,
             },
         ).latent
 

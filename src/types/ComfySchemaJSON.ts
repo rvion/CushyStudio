@@ -1,6 +1,6 @@
 // import { Static, Type } from '@sinclair/typebox'
 // import { Value, ValueError } from '@sinclair/typebox/value'
-// import { Either, resultFailure, resultSuccess } from 'src/types/Either'
+// import { Either, resultFailure, resultSuccess } from './Either'
 // import { optionalString, string } from './schema'
 
 // RAW -----------------------------------------------------------------

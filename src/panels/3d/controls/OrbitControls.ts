@@ -357,6 +357,7 @@ class OrbitControls extends EventDispatcher {
         // internals
         //
 
+        // eslint-disable-next-line consistent-this
         const scope = this
 
         const STATE = {

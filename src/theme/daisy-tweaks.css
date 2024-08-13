@@ -1,0 +1,6 @@
+/* KBD ---------------------------------------------------------------------------------------- */
+/* tweak so it's presence in dropdown entry doesn't impact height */
+.kbd-sm { min-height: 1.2rem; }
+
+/* 🔶 FIXME: still in use */
+.bg-success-1 { background-color: oklch(var(--su)/.1); }

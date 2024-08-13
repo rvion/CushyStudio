@@ -1,36 +1,32 @@
-import type { TreeNode } from '../xxx/TreeNode'
-import type { STATE } from 'src/state/state'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { CushyScriptL } from '../../../../models/CushyScript'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
 
-import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { LibraryFile, type ScriptExtractionResult } from '../../../../cards/LibraryFile'
+import { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import { assets } from '../../../../utils/assets/assets'
 import { TreeApp } from './TreeApp'
-import { LibraryFile } from 'src/cards/LibraryFile'
-import { assets } from 'src/utils/assets/assets'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
-    onExpand = async () => {
+    async onExpand(): Promise<void> {
         await this.file.extractScriptFromFileAndUpdateApps()
     }
 
-    constructor(
-        //
-        public st: STATE,
-        public path: RelativePath,
-    ) {
-        this.file = st.library.getFile(path)
+    constructor(public path: RelativePath) {
+        this.file = cushy.library.getFile(path)
         makeAutoObservable(this)
     }
 
     /** 🔶 'isFolder' for the tree widget, not on the filesystem */
-    isFolder = true
+    isFolder: boolean = true
 
     /** icon to display in the treeview */
-    get icon() {
+    get icon(): string | JSX.Element {
         if (this.path.endsWith('.ts')) return assets.typescript_512_png
         if (this.path.endsWith('.tsx')) return assets.typescript_512_png
         if (this.path.endsWith('.png')) return `file://${cwd()}/${this.path}`
@@ -42,35 +38,36 @@ export class TreeFile implements ITreeEntry {
         // return <span className='material-symbols-outlined'>home</span>
     }
 
-    get script() {
+    get script(): Maybe<CushyScriptL> {
         return this.file.script
     }
 
-    // get index(){return `path#${this.path}`} //prettier-ignore
-    get name() { return basename(this.path) } // prettier-ignore
+    get name(): string {
+        return basename(this.path)
+    }
 
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',
             icon: 'find_in_page', //'play_arrow',
             mode: 'small',
-            onClick: () => {
+            onClick: async (): Promise<ScriptExtractionResult | undefined> => {
                 if (this.file == null) return
-                this.file.extractScriptFromFile()
+                return this.file.extractScriptFromFile()
             },
         },
     ]
 
-    onFocusItem = () => {
+    onFocusItem = async (): Promise<ScriptExtractionResult | undefined> => {
         if (this.file.scriptExtractionAttemptedOnce) return
-        this.file.extractScriptFromFile()
+        return this.file.extractScriptFromFile()
     }
 
-    onPrimaryAction = (n: TreeNode) => {
-        this.file.extractScriptFromFile()
+    onPrimaryAction(n: TreeNode): void {
+        void this.file.extractScriptFromFile()
         if (!n.isOpen) {
             n.open()
-            this.script?.evaluateAndUpdateApps()
+            this.script?.evaluateAndUpdateAppsAndViews()
         } else {
             n.close()
         }
@@ -82,9 +79,9 @@ export class TreeFile implements ITreeEntry {
         if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
 
         const apps = this.script.apps
-        // console.log(`[👙] 🔴 ${this.path} => ${apps.length}`)
+        // console.log(`[🧐] 🔴 ${this.path} => ${apps.length}`)
         if (apps.length === 0) {
-            console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
+            // console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []
         }
 

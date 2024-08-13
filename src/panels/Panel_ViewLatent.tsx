@@ -1,18 +1,18 @@
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../state/stateContext'
 
 export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
     const st = useSt()
     const url = st.latentPreview?.url
-    const background = st.galleryConf.value.galleryBgColor
+    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
     return (
-        <div tw='w-full h-full flex flex-col' style={{ background }}>
+        <div tw='w-full h-full flex flex-col' /* 🛝 style={{ background }} */>
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
-                    wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%' }}
-                    contentStyle={{ /* border: '5px solid #38731f', */ height: '100%', width: '100%' }}
+                    wrapperStyle={{ height: '100%', width: '100%' }}
+                    contentStyle={{ height: '100%', width: '100%' }}
                 >
                     {url ? (
                         <img //
