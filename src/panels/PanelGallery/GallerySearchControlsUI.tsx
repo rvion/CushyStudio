@@ -8,10 +8,10 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
     const conf = useGalleryConf()
     return (
         <div tw='flex gap-1 items-center'>
-            {conf.fields.filterPath.header()}
-            {conf.fields.filterAppName.header()}
+            {/* {conf.fields.filterPath.header()} */}
+            {/* {conf.fields.filterAppName.header()} */}
             {conf.fields.filterTag.header()}
-            {conf.fields.filterStar.header()}
+            {/* {conf.fields.filterStar.header()} */}
             {/* <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='filename'

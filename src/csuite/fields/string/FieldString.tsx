@@ -45,6 +45,7 @@ export type Field_string_config = FieldConfig<
         textarea?: boolean
         placeHolder?: string
         inputType?: FieldStringInputType
+        autoResize?: boolean
         resize?: CssProprtyResize
         /**
          * if set to true, widget will commit values on enter; not before.

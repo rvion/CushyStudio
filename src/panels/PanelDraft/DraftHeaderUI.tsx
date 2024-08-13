@@ -55,6 +55,8 @@ export const DraftHeaderUI = observer(function DraftHeader({
                     </Frame>
                     <div tw='flex items-center justify-between'>
                         <InputStringUI
+                            icon='mdiHammerScrewdriver'
+                            autoResize
                             getValue={() => draft.data.canvasToolCategory ?? ''}
                             setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                             placeholder='Unified Canvas Category'

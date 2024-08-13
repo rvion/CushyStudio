@@ -1,5 +1,6 @@
 import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/icons'
+import type { CSSSizeString } from './CSSSizeString'
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -19,6 +20,11 @@ export type InputStringProps = {
     icon?: IconName // | boolean | null | undefined
 
     disabled?: boolean
+
+    /** when true, input will match the size of its content */
+    autoResize?: boolean
+    /** only taken into account when autoResize is true */
+    autoResizeMaxWidth?: CSSSizeString
 
     // get / set value
     getValue: () => string
@@ -62,7 +68,8 @@ export const InputStringUI = observer(
         const isBuffered = Boolean(p.buffered)
         const temporaryValue = p.buffered?.getTemporaryValue?.()
         const isDirty = isBuffered && temporaryValue != null && temporaryValue !== value
-
+        const autoResize = p.autoResize
+        const inptClassNameWhenAutosize = autoResize ? 'absolute top-0 left-0 right-0 opacity-10 focus:opacity-100 z-50' : null
         const [reveal, setReveal] = useState(false)
         let inputTailwind: string | ClassLike[] | undefined
         let visualHelper: ReactElement<any, any> | undefined
@@ -85,6 +92,47 @@ export const InputStringUI = observer(
                 break
         }
         const csuite = useCSuite()
+        const input = (
+            <input
+                ref={ref}
+                size={autoResize ? 1 : undefined}
+                tw={[inptClassNameWhenAutosize, inputTailwind]}
+                type={reveal ? 'text' : p.type}
+                pattern={p.pattern}
+                placeholder={p.placeholder}
+                autoFocus={p.autoFocus}
+                disabled={p.disabled}
+                value={p.buffered ? temporaryValue ?? value : value}
+                onChange={(ev) => {
+                    if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
+                    else p.setValue(ev.currentTarget.value)
+                }}
+                /* Prevents drag n drop of selected text, so selecting is easier. */
+                onDragStart={(ev) => ev.preventDefault()}
+                onFocus={(ev) => {
+                    p.buffered?.setTemporaryValue(p.getValue() ?? '')
+                    ev.currentTarget.select()
+                    p.onFocus?.(ev)
+                }}
+                onBlur={(ev) => {
+                    // need to be deferenced here because of how it's called in
+                    // the onKeyDown handler a few lines below
+                    const tempValue = p.buffered?.getTemporaryValue?.()
+                    if (tempValue != null) p.setValue(tempValue)
+                    p.onBlur?.(ev)
+                }}
+                onKeyDown={(ev) => {
+                    if (ev.key === 'Enter') {
+                        ev.currentTarget.blur()
+                    } else if (ev.key === 'Escape') {
+                        if (!p.buffered && temporaryValue) p.setValue(temporaryValue)
+                        p.buffered?.setTemporaryValue(null)
+                        ev.currentTarget.blur()
+                    }
+                    p.onKeyDown?.(ev)
+                }}
+            />
+        )
         return (
             <Frame
                 className={p.className}
@@ -96,7 +144,7 @@ export const InputStringUI = observer(
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
                         : csuite.inputBorder
                 }
-                tw={['UI-InputString h-input flex items-center relative text-sm rounded-sm']}
+                tw={[p.icon ? 'pr-2' : 'px-2', 'UI-InputString h-input flex items-center relative text-sm rounded-sm']}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
                         const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
@@ -113,44 +161,19 @@ export const InputStringUI = observer(
                     />
                 )}
                 {p.slotBeforeInput}
-                <input
-                    ref={ref}
-                    tw={[p.icon ? 'pr-2' : 'px-2', inputTailwind]}
-                    type={reveal ? 'text' : p.type}
-                    pattern={p.pattern}
-                    placeholder={p.placeholder}
-                    autoFocus={p.autoFocus}
-                    disabled={p.disabled}
-                    value={p.buffered ? temporaryValue ?? value : value}
-                    onChange={(ev) => {
-                        if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
-                        else p.setValue(ev.currentTarget.value)
-                    }}
-                    /* Prevents drag n drop of selected text, so selecting is easier. */
-                    onDragStart={(ev) => ev.preventDefault()}
-                    onFocus={(ev) => {
-                        p.buffered?.setTemporaryValue(p.getValue() ?? '')
-                        ev.currentTarget.select()
-                        p.onFocus?.(ev)
-                    }}
-                    onBlur={(ev) => {
-                        // need to be deferenced here because of how it's called in
-                        // the onKeyDown handler a few lines below
-                        const tempValue = p.buffered?.getTemporaryValue?.()
-                        if (tempValue != null) p.setValue(tempValue)
-                        p.onBlur?.(ev)
-                    }}
-                    onKeyDown={(ev) => {
-                        if (ev.key === 'Enter') {
-                            ev.currentTarget.blur()
-                        } else if (ev.key === 'Escape') {
-                            if (!p.buffered && temporaryValue) p.setValue(temporaryValue)
-                            p.buffered?.setTemporaryValue(null)
-                            ev.currentTarget.blur()
-                        }
-                        p.onKeyDown?.(ev)
-                    }}
-                />
+                {autoResize ? (
+                    <div className='relative minh-input'>
+                        {input}
+                        <span
+                            style={{ maxWidth: p.autoResizeMaxWidth }}
+                            tw='whitespace-nowrap minh-input lh-input whitespace-pre select-none'
+                        >
+                            {p.getValue() ? p.getValue() : <span tw='opacity-30'>{p.placeholder || ' '}</span>}
+                        </span>
+                    </div>
+                ) : (
+                    input
+                )}
                 {p.type === 'password' && (
                     <Button
                         subtle

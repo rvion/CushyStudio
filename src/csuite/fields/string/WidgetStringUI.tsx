@@ -55,6 +55,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { fiel
             className={config.className}
             getValue={() => field.value}
             setValue={(value) => (field.value = value)}
+            autoResize={config.autoResize}
             buffered={
                 field.config.buffered
                     ? {
