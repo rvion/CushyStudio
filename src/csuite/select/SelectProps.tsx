@@ -26,6 +26,14 @@ export type SelectProps<OPTION> = {
     onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
 
     /**
+     * @deprecated
+     * use `onOptionToggled` instead
+     * this is just an alias for `onOptionToggled`
+     * this function has been added back since 2 people struggled to find the `onOptionToggled` name
+     */
+    onChange?: (next: OPTION, self: AutoCompleteSelectState<OPTION>) => void
+
+    /**
      * list of all choices
      * 👉 If the list of options is generated from the query directly,
      *    you should also set `disableLocalFiltering: true`, to avoid

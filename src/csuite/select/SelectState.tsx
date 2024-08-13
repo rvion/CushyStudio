@@ -271,7 +271,8 @@ export class AutoCompleteSelectState<OPTION> {
 
     toggleOption(option: OPTION): void {
         this.revealState?.log(`_ SelectSate toggleOption`)
-        this.p.onOptionToggled?.(option, this)
+        const onOptionToggledFn = this.p.onOptionToggled ?? this.p.onChange
+        onOptionToggledFn?.(option, this)
         // reset the query
         const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
         if (shouldResetQuery) this.searchQuery = ''

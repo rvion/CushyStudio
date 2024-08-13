@@ -53,7 +53,7 @@ export class Panel<Props> {
             ctx: ctx_global,
             action: () => {
                 const props: Props = this.p.def()
-                cushy.layout.open(this.name as any, props, 'left')
+                cushy.layout.open(this.name as any, props, { where: 'left' })
                 return Trigger.Success
             },
             icon: this.icon,
@@ -97,7 +97,7 @@ export class Panel<Props> {
                     icon: this.p.icon,
                     onPick: (): void => {
                         const props: Props = preset()
-                        cushy.layout.open(this.name as any, props, 'left')
+                        cushy.layout.open(this.name as any, props, { where: 'left' })
                     },
                 })
             })

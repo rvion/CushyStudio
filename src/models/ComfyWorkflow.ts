@@ -59,7 +59,7 @@ export class ComfyWorkflowL {
         ev.stopPropagation()
         const prompt = await this.json_workflow()
         if (prompt == null) return
-        this.st.layout.open('ComfyUI', { litegraphJson: prompt }, 'biggest')
+        this.st.layout.open('ComfyUI', { litegraphJson: prompt }, { where: 'biggest' })
     }
     menuAction_openInTab = async (ev: MouseEvent): Promise<void> => {
         ev.preventDefault()

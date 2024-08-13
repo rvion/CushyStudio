@@ -258,7 +258,7 @@ const _apply_cnet = (
     image: _IMAGE,
     cnet_name: Enum_ControlNetLoader_control_net_name,
     mask: HasSingle_MASK | null,
-) => {
+): void => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_node = mask
