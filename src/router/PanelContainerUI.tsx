@@ -15,10 +15,10 @@ import { panelContext } from './usePanel'
 export const PanelContainerUI = observer(function PanelContainer(p: {
     //
     node: FL.TabNode
-    panel: PanelName
+    panelName: PanelName
     panelProps: any
 }) {
-    const { panel, panelProps, node } = p
+    const { panelName, panelProps, node } = p
 
     const panelID = p.node.getId()
     const panelState = useMemo(() => {
@@ -36,11 +36,11 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
     // -----------------------
 
     // 3. get panel definition
-    const panelDef = (panels as any)[panel]
+    const panelDef = (panels as any)[panelName]
     if (panelDef == null)
         return (
             <Message type='error' showIcon>
-                no panel definition for {panel}
+                no panel definition for {panelName}
             </Message>
         )
 
@@ -57,7 +57,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                         'overflow-auto', // overflow-auto to only show scrollbar when needed
                         // 'overflow-scroll',
                     ]}
-                    className={`Region-${panel}`}
+                    className={`Region-${panelName}`}
                     data-panel-id={panelID}
                     id={panelID}
                 >
