@@ -57,6 +57,8 @@
         "bump": "bump patch --commit=v --tag=v --push",
         "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
         "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff",
+        "diff-with-dev-all": "   git diff dev                      > tmp/diff-with-dev-all.diff    && code tmp/diff-with-dev-all.diff",
+        "diff-with-dev-add": "   git diff dev | grep -Ev '^\\-'    > tmp/diff-with-dev.diff        && code tmp/diff-with-dev.diff",
         "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff",
         "📌 UTILS": "------------------------------------------------------------------------",
         "pics": "bun --watch src/tools/autoupload-screenshots.ts",
