@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { SelectUI } from '../../csuite/select/SelectUI'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
@@ -16,7 +17,12 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
                     else cushy.galleryFilterPath = next
                 }}
             />
-
+            <Button
+                square
+                icon='mdiStar'
+                active={cushy.galleryFilterStar}
+                onClick={() => (cushy.galleryFilterStar = !cushy.galleryFilterStar)}
+            />
             <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='tags'

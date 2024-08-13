@@ -14,7 +14,7 @@ import { ui_advancedPrompt, type UI_advancedPrompt } from './_prefabs/prefab_pro
 import { ui_recursive, type UI_recursive } from './_prefabs/prefab_recursive'
 import { ui_regionalPrompting_v1, type UI_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { ui_rembg_v1, type UI_rembg_v1 } from './_prefabs/prefab_rembg'
-import { ui_sampler, type UI_Sampler } from './_prefabs/prefab_sampler'
+import { ui_sampler_advanced, type UI_Sampler_Advanced } from './_prefabs/prefab_sampler_advanced'
 import { ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { ui_watermark_v1, type UI_watermark_v1 } from './_prefabs/prefab_watermark'
 import { ui_customSave, type UI_customSave } from './_prefabs/saveSmall'
@@ -24,7 +24,7 @@ export type CushyDiffusionUI_ = {
     negative: X.XPrompt
     model: UI_Model
     latent: UI_LatentV3
-    sampler: UI_Sampler
+    sampler: UI_Sampler_Advanced
     mask: UI_Mask
     upscaleV2: X.XChoices<{
         highResFix: UI_HighResFix
@@ -62,7 +62,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
-        sampler: ui_sampler(),
+        sampler: ui_sampler_advanced(),
         mask: ui_mask(),
         upscaleV2: ui.choicesV2(
             {
