@@ -4,6 +4,7 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { bang } from '../../../src/csuite/utils/bang'
 import { run_cnet_IPAdapter, ui_subform_IPAdapter, type UI_subform_IPAdapter } from '../_ipAdapter/prefab_ipAdapter_base'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID, type UI_IPAdapterFaceID } from '../_ipAdapter/prefab_ipAdapter_face'
+import { run_mask, ui_mask, type UI_Mask } from '../_prefabs/prefab_mask'
 import { run_cnet_canny, ui_subform_Canny, type UI_subform_Canny } from './prefab_cnet_canny'
 import { run_cnet_Depth, ui_subform_Depth, type UI_subform_Depth } from './prefab_cnet_depth'
 import { run_cnet_Lineart, ui_subform_Lineart, type UI_subform_Lineart } from './prefab_cnet_lineart'
@@ -20,6 +21,7 @@ export type UI_cnet = X.XLink<
     X.XList<
         X.XGroup<{
             image: X.XImage
+            mask: UI_Mask
             resize: X.XBool
             applyDuringUpscale: X.Bool
             cnets: X.XChoices<{
@@ -61,6 +63,9 @@ export function ui_cnet(): UI_cnet {
                         label: 'Controlnet Image',
                         items: {
                             image: form.image({}),
+                            mask: ui_mask()
+                                .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'ACN$_AdvancedControlNetApply' }])
+                                .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                             resize: form.bool({ default: true }),
                             applyDuringUpscale: applyDuringUpscale,
                             cnets: form.choices({
@@ -127,6 +132,7 @@ export async function run_cnet(
     if (cnetList) {
         for (const cnetImage of cnetList) {
             let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+            const mask = await run_mask(cnetImage.mask)
             const { width, height } = ctx
             let resolution = Math.min(width, height)
 
@@ -158,63 +164,63 @@ export async function run_cnet(
                 const y = run_cnet_canny(Canny, image, resolution)
                 const startAt = Canny.advanced.startAtStepPercent
                 const endAt = Canny.advanced.endAtStepPercent
-                _apply_cnet(args, Canny.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Canny.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // POSE ===========================================================
             if (Pose) {
                 const y = run_cnet_openPose(Pose, image, resolution)
                 const startAt = Pose.advanced.startAtStepPercent
                 const endAt = Pose.advanced.endAtStepPercent
-                _apply_cnet(args, Pose.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Pose.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // DEPTH ===========================================================
             if (Depth) {
                 const y = run_cnet_Depth(Depth, image, resolution)
                 const startAt = Depth.advanced.startAtStepPercent
                 const endAt = Depth.advanced.endAtStepPercent
-                _apply_cnet(args, Depth.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Depth.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // Normal ===========================================================
             if (Normal) {
                 const y = run_cnet_Normal(Normal, image, resolution)
                 const startAt = Normal.advanced.startAtStepPercent
                 const endAt = Normal.advanced.endAtStepPercent
-                _apply_cnet(args, Normal.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Normal.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // Tile ===========================================================
             if (Tile) {
                 const y = run_cnet_Tile(Tile, image, resolution)
                 const startAt = Tile.advanced.startAtStepPercent
                 const endAt = Tile.advanced.endAtStepPercent
-                _apply_cnet(args, Tile.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Tile.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // Scribble ===========================================================
             if (Scribble) {
                 const y = run_cnet_Scribble(Scribble, image, resolution)
                 const startAt = Scribble.advanced.startAtStepPercent
                 const endAt = Scribble.advanced.endAtStepPercent
-                _apply_cnet(args, Scribble.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Scribble.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // Lineart ===========================================================
             if (Lineart) {
                 const y = run_cnet_Lineart(Lineart, image, resolution)
                 const startAt = Lineart.advanced.startAtStepPercent
                 const endAt = Lineart.advanced.endAtStepPercent
-                _apply_cnet(args, Lineart.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Lineart.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // SoftEdge ===========================================================
             if (SoftEdge) {
                 const y = run_cnet_SoftEdge(SoftEdge, image, resolution)
                 const startAt = SoftEdge.advanced.startAtStepPercent
                 const endAt = SoftEdge.advanced.endAtStepPercent
-                _apply_cnet(args, SoftEdge.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, SoftEdge.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // Sketch ===========================================================
             if (Sketch) {
                 const y = run_cnet_Sketch(Sketch, image)
                 const startAt = Sketch.advanced.startAtStepPercent
                 const endAt = Sketch.advanced.endAtStepPercent
-                _apply_cnet(args, Sketch.strength, startAt, endAt, y.image, y.cnet_name)
+                _apply_cnet(args, Sketch.strength, startAt, endAt, y.image, y.cnet_name, mask)
             }
             // MLSD ===========================================================
             // Reference (do we need this? it is basically ipadapter) ===========================================================
@@ -251,21 +257,36 @@ const _apply_cnet = (
     endPct: number,
     image: _IMAGE,
     cnet_name: Enum_ControlNetLoader_control_net_name,
+    mask: HasSingle_MASK | null,
 ) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    const cnet_node = graph.ControlNetApplyAdvanced({
-        strength: strength ?? 1,
-        positive: args.positive,
-        negative: args.negative,
-        image: /* 🔴 */ bang(image),
-        control_net: graph.DiffControlNetLoader({
-            model: run.AUTO,
-            control_net_name: /* 🔴 */ bang(cnet_name),
-        }),
-        start_percent: startPct,
-        end_percent: endPct,
-    })
+    const cnet_node = mask
+        ? graph.ACN$_AdvancedControlNetApply({
+              strength: strength ?? 1,
+              positive: args.positive,
+              negative: args.negative,
+              image: /* 🔴 */ bang(image),
+              control_net: graph.DiffControlNetLoader({
+                  model: run.AUTO,
+                  control_net_name: /* 🔴 */ bang(cnet_name),
+              }),
+              start_percent: startPct,
+              end_percent: endPct,
+              mask_optional: mask ?? undefined,
+          })
+        : graph.ControlNetApplyAdvanced({
+              strength: strength ?? 1,
+              positive: args.positive,
+              negative: args.negative,
+              image: /* 🔴 */ bang(image),
+              control_net: graph.DiffControlNetLoader({
+                  model: run.AUTO,
+                  control_net_name: /* 🔴 */ bang(cnet_name),
+              }),
+              start_percent: startPct,
+              end_percent: endPct,
+          })
     args.positive = cnet_node.outputs.positive
     args.negative = cnet_node.outputs.negative
 }

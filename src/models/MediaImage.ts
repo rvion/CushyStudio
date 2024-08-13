@@ -243,6 +243,12 @@ export class MediaImageL {
     onRightClick = (): void => {}
 
     onClick = (ev: MouseEvent): void => {
+        //Delete if not starred
+        if (ev.ctrlKey && ev.shiftKey && ev.altKey && !this.star) {
+            ev.stopPropagation()
+            ev.preventDefault()
+            return void this.delete()
+        }
         if (hasMod(ev)) {
             ev.stopPropagation()
             ev.preventDefault()
@@ -390,6 +396,16 @@ export class MediaImageL {
 
     set tags(str: string) {
         this.update({ tags: str })
+    }
+
+    get star(): number {
+        if (this.data.star == null) return 0
+        return this.data.star
+    }
+
+    set star(n: number) {
+        if (n < 0 || n > 5) throw new Error('star must be between 0 and 5')
+        this.update({ star: n })
     }
 
     /**

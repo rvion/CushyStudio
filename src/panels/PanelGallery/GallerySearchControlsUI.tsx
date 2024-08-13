@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { useGalleryConf } from './galleryConf'
 
@@ -10,6 +11,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
             {conf.fields.filterPath.header()}
             {conf.fields.filterAppName.header()}
             {conf.fields.filterTag.header()}
+            {conf.fields.filterStar.header()}
             {/* <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='filename'
@@ -20,8 +22,14 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
                     if (!next) cushy.galleryFilterPath = null
                     else cushy.galleryFilterPath = next
                 }}
-            /> */}
-            {/* <input
+            />
+            <Button
+                square
+                icon='mdiStar'
+                active={cushy.galleryFilterStar}
+                onClick={() => (cushy.galleryFilterStar = !cushy.galleryFilterStar)}
+            />
+            <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='tags'
                 value={cushy.galleryFilterTag ?? ''}
