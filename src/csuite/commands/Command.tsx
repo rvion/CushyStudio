@@ -58,14 +58,10 @@ export class Command<Ctx = any> {
     /**
      * method to programmatically call a command,
      * using when to both extract context and check if command can run
-     * */
+     */
     execute = (): Trigger | Promise<Trigger> => {
-        // console.info(`[CMD] ☣️ TRYING TO RUN... ${this.label}`)
         const context = this.conf.ctx.check()
-        if (context === Trigger.UNMATCHED) {
-            // console.warn(`[CMD] 🔴 FAILED TO RUN`)
-            return Trigger.UNMATCHED
-        }
+        if (context === Trigger.UNMATCHED) return Trigger.UNMATCHED
         const res = this.conf.action?.(context!, cmdHelper)
         return res
     }

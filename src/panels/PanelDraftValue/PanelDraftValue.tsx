@@ -20,6 +20,6 @@ export type PanelDraftValueProps = {
 export const PanelDraftValueUI = observer(function PanelDraftValueUI_(p: PanelDraftValueProps) {
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
-    if (draft == null) return <>🔴 draft with id "{p.draftID}" not found</>
+    if (draft == null) return <>❌ draft with id "{p.draftID}" not found</>
     return <JsonViewUI value={draft.form?.value} />
 })
