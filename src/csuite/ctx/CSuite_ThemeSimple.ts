@@ -1,7 +1,6 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
 import { Kolor } from '../kolor/Kolor'
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 /**
  * default simple example configuration for external project
@@ -16,7 +15,7 @@ export const CSuite_theme1: CSuiteConfig = {
     showWidgetDiff: true,
     showFoldButtons: true,
     showToggleButtonBox: false,
-    inputBorder: new NumberVar('input-border', 8),
+    inputBorder: 8,
     inputContrast: 0.05,
     labelBackground: 5,
     labellayout: 'fixed-left',
@@ -27,6 +26,7 @@ export const CSuite_theme1: CSuiteConfig = {
     shiftDirection: 1,
     widgetHeight: 1.8,
     inputHeight: 1.6,
+    insideHeight: 1.2,
     showWidgetExtra: true,
     truncateLabels: false,
     fieldGroups: {},

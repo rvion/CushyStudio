@@ -1,22 +1,26 @@
 import { observer } from 'mobx-react-lite'
 
-import { Surface } from '../../csuite/inputs/shims'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
-import { Panel } from '../../router/Panel'
+import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { HostUI } from '../host/HostUI'
 import { AddHostBtnUI } from './AddHostBtnUI'
 
+export type PanelComfyHostProps = {
+    hostID?: HostID
+}
+
 export const PanelComfyHosts = new Panel({
     name: 'Hosts',
-    widget: () => PanelComfyHostsUI,
-    header: () => ({ title: 'Hosts' }),
-    def: () => ({}),
+    category: 'ComfyUI',
+    widget: (): React.FC<PanelComfyHostProps> => PanelComfyHostsUI,
+    header: (): PanelHeader => ({ title: 'Hosts' }),
+    def: (): PanelComfyHostProps => ({}),
     icon: 'mdiDesktopTower',
 })
 
-export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: { hostID?: HostID }) {
+export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
     const st = useSt()
     const allHosts = st.hosts
     const mainHost = st.mainHost
@@ -31,7 +35,7 @@ export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: { hostI
                     options={() => allHosts}
                     value={() => mainHost}
                     getLabelText={(host) => host.data.name}
-                    onChange={(host) => host.electAsPrimary()}
+                    onOptionToggled={(host) => host.electAsPrimary()}
                 />
             </div>
             <div tw='text-xl font-bold'>

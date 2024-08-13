@@ -7,7 +7,7 @@ import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredP
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='relative flex-grow flex flex-col h-full'>
+        <div className='UI-MAIN relative flex-grow flex flex-col h-full'>
             <GalleryHoveredPreviewUI />
             <div
                 id='hovered-graph'

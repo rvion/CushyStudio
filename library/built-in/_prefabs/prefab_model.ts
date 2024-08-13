@@ -25,6 +25,7 @@ export type UI_Model = X.XGroup<{
     }>
     checkpointConfig: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
     extra: X.XChoices<{
+        checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
         rescaleCFG: X.XNumber
         vae: X.XEnum<Enum_VAELoader_vae_name>
         clipSkip: X.XNumber
@@ -42,32 +43,36 @@ export function ui_model(): UI_Model {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
+        // border: true,
         box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
         presets: [
-            {
-                label: 'withPopup',
-                icon: 'mdiTrain',
-                apply: (w): void => {
-                    const form = cushy.forms.entity((ui) =>
-                        ui.fields({
-                            a: ui.string({ label: 'A' }),
-                            b: ui.int({ label: 'B' }),
-                        }),
-                    )
-                    cushy.activityManager.start({
-                        title: 'Multi-Step preset Demo',
-                        shell: 'popup-lg',
-                        UI: (p) =>
-                            form.render({
-                                submitAction: () => {
-                                    console.log('submit')
-                                    cushy.activityManager.stop(p.routine) // 🔴
-                                },
-                            }),
-                    })
-                },
-            },
+            // 💬 2024-08-06 rvion:
+            // | this preset was a fake one, only here
+            // | to show how to create a multi-step preset
+            // ⏸️ {
+            // ⏸️     label: 'withPopup',
+            // ⏸️     icon: 'mdiTrain',
+            // ⏸️     apply: (w): void => {
+            // ⏸️         const form = cushy.forms.entity((ui) =>
+            // ⏸️             ui.fields({
+            // ⏸️                 a: ui.string({ label: 'A' }),
+            // ⏸️                 b: ui.int({ label: 'B' }),
+            // ⏸️             }),
+            // ⏸️         )
+            // ⏸️         cushy.activityManager.start({
+            // ⏸️             title: 'Multi-Step preset Demo',
+            // ⏸️             shell: 'popup-lg',
+            // ⏸️             UI: (p) =>
+            // ⏸️                 form.render({
+            // ⏸️                     submitAction: () => {
+            // ⏸️                         console.log('submit')
+            // ⏸️                         cushy.activityManager.stop(p.routine) // 🔴
+            // ⏸️                     },
+            // ⏸️                 }),
+            // ⏸️         })
+            // ⏸️     },
+            // ⏸️ },
             {
                 icon: 'mdiStar',
                 label: '(XL) albedobase21',
@@ -139,7 +144,7 @@ export function ui_model(): UI_Model {
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
             if (ui.extra.pag) out += ` + PAG(${ui.extra.pag.scale})`
             if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
-            // 2024-05-30 rvion:
+            // 💬 2024-05-30 rvion:
             // | changed the summary when Kohya DeepShrink is enabled.
             // | Was causing some error (not able to convert ui.extra.KohyaDeepShrink to string)
             // | automatically
@@ -176,6 +181,7 @@ export function ui_model(): UI_Model {
                 // label: false,
                 appearance: 'tab',
                 items: {
+                    checkpointConfig: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
                     rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
                     vae: form.enum.Enum_VAELoader_vae_name(),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),

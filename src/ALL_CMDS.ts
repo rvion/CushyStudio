@@ -6,6 +6,7 @@ import './operators/commands/cmd_goTo'
 
 import { allLayoutCommands } from './app/shortcuts/cmd_layout'
 import { allLegacyCommands } from './app/shortcuts/cmd_mix'
+import { allTreeCommands } from './csuite/tree/TreeCommands'
 import {
     cmd_copyImage,
     cmd_copyImage_as_JPG,
@@ -21,7 +22,7 @@ import {
     cmd_nav_openGallery3,
     cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
-import { allCanvasCommands } from './panels/Panel_Canvas/commands/canvasCommands'
+import { allCanvasCommands } from './panels/PanelCanvas/commands/canvasCommands'
 
 export const allCommands = [
     //
@@ -41,4 +42,5 @@ export const allCommands = [
     ...allCanvasCommands,
     ...allLayoutCommands,
     ...allLegacyCommands,
+    ...allTreeCommands,
 ]

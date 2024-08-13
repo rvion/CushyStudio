@@ -17,7 +17,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
     const csuite = useCSuite()
     return (
         <div
-            tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0.5'
+            tw='rounded select-none flex flex-1 flex-wrap gap-x-1 gap-y-0.5'
             style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
         >
             {choices.map((c) => {

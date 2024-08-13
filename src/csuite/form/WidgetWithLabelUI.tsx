@@ -18,6 +18,7 @@ import { WidgetLabelContainerUI } from './WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from './WidgetLabelIconUI'
 import { WidgetLabelTextUI } from './WidgetLabelTextUI'
 import { WidgetMenuUI } from './WidgetMenu'
+import { WidgetPresetsUI } from './WidgetPresets'
 import { WidgetToggleUI } from './WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from './WidgetUndoChangesButtonUI'
 
@@ -37,8 +38,14 @@ export type WidgetWithLabelProps = {
     showWidgetExtra?: boolean
     showWidgetUndo?: boolean
     showWidgetMenu?: boolean
+    showWidgetIndent?: boolean
     className?: string
 
+    /** 2024-08-06 rvion: temporary addition removing primitive nature of optional */
+    classNameAroundBodyAndHeader?: string
+
+    /** @since 2024-08-06; reserved but unused */
+    slotToggle?: ReactNode
     slotDelete?: ReactNode
     slotDragKnob?: ReactNode
     slotUpDown?: ReactNode
@@ -61,7 +68,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
     const WUI = (
         <Frame
             className={p.className}
-            tw='UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0'
+            tw={[
+                //
+                'UI-WidgetWithLabel',
+                '!border-l-0 !border-r-0 !border-b-0',
+            ]}
             base={field.background}
             border={field.border}
             // tooltip={field.config.tooltip}
@@ -72,68 +83,101 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
             {!p.noHeader && (
                 <WidgetHeaderContainerUI field={field}>
                     {/* HEADER LABEL */}
+                    {labellayout === 'mobile' ? (
+                        <div tw='flex flex-1'>
+                            {(p.showWidgetIndent ?? true) && <WidgetIndentUI tw='pr-2' depth={originalField.depth} />}
+                            <div tw='flex-1'>
+                                <div tw='flex flex-1'>
+                                    {p.slotDragKnob}
+                                    <WidgetLabelCaretUI placeholder={false} field={field} />
+                                    {/* <WidgetToggleUI tw='mr-1' field={originalField} /> */}
+                                    <WidgetLabelIconUI tw='mr-1' widget={field} />
+                                    {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
+                                    <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                    {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                    <WidgetPresetsUI field={field} />
+                                </div>
+                                <div tw='flex flex-1'>
+                                    {/* <WidgetLabelCaretPlaceholderUI /> */}
+                                    {/* <div tw='w-0.5' /> */}
+                                    {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
+                                    {HeaderUI && (
+                                        <WidgetHeaderControlsContainerUI tw={[extraClass, p.classNameAroundBodyAndHeader]}>
+                                            <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
+                                        </WidgetHeaderControlsContainerUI>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <WidgetLabelContainerUI //
+                                tooltip={field.config.tooltip}
+                                justify={justify}
+                            >
+                                {/* {labellayout} */}
+                                {labellayout === 'fixed-left' ? (
+                                    <>
+                                        {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={originalField.depth} />}
+                                        {p.slotDragKnob}
+                                        <WidgetLabelCaretUI field={field} />
+                                        <WidgetLabelIconUI tw='mr-1' widget={field} />
+                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
+                                        {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                        <WidgetPresetsUI tw='ml-auto self-start' field={field} />
+                                        {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                                    </>
+                                ) : labellayout === 'fixed-right' ? (
+                                    <>
+                                        {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={field.depth} />}
+                                        {p.slotDragKnob}
+                                        <WidgetLabelCaretUI tw='mr-auto' field={field} />
+                                        <WidgetPresetsUI tw='self-start mr-2' field={field} />
+                                        {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
+                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
+                                        {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                        <WidgetLabelIconUI tw='mx-1' widget={field} />
+                                        {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
+                                    </>
+                                ) : (
+                                    <>
+                                        {(p.showWidgetIndent ?? true) && <WidgetIndentUI depth={originalField.depth} />}
+                                        {p.slotDragKnob}
+                                        <WidgetLabelCaretUI field={field} />
+                                        <WidgetToggleUI tw='mr-1' field={originalField} />
+                                        <WidgetLabelIconUI tw='mr-1' widget={field} />
+                                        {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
+                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        {field.config.showID && <WidgetDebugIDUI field={field} />}
+                                        <WidgetPresetsUI field={field} />
+                                    </>
+                                )}
+                                <div tw='w-1' /* margin between label and controls */ />
+                            </WidgetLabelContainerUI>
 
-                    <WidgetLabelContainerUI //
-                        tooltip={field.config.tooltip}
-                        justify={justify}
-                    >
-                        {/* {labellayout} */}
-                        {labellayout === 'fixed-left' ? (
-                            <>
-                                <WidgetIndentUI depth={originalField.depth} />
-                                {p.slotDragKnob}
-                                <WidgetLabelCaretUI field={field} />
-                                <WidgetLabelIconUI tw='mr-1' widget={field} />
-                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
-                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {field.config.showID && <WidgetDebugIDUI field={field} />}
-                                {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
-                            </>
-                        ) : labellayout === 'fixed-right' ? (
-                            <>
-                                <WidgetIndentUI depth={field.depth} />
-                                {p.slotDragKnob}
-                                <WidgetLabelCaretUI tw='mr-auto' field={field} />
-                                {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
-                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                {field.config.showID && <WidgetDebugIDUI field={field} />}
-                                <WidgetLabelIconUI tw='mx-1' widget={field} />
-                                {/* <Field_ToggleUI tw='ml-1' widget={originalWidget} /> */}
-                            </>
-                        ) : (
-                            <>
-                                {p.slotDragKnob}
-                                <WidgetLabelCaretUI field={field} />
-                                <WidgetToggleUI tw='mr-1' field={originalField} />
-                                <WidgetLabelIconUI tw='mr-1' widget={field} />
-                                {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
-                                {field.config.showID && <WidgetDebugIDUI field={field} />}
-                            </>
-                        )}
-                        <div tw='w-1' /* margin between label and controls */ />
-                    </WidgetLabelContainerUI>
+                            {/* TOOGLE (when justified) */}
+                            <div tw='w-0.5' />
+                            {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
+                            {/* HEADER CONTROLS */}
+                            {HeaderUI && (
+                                <WidgetHeaderControlsContainerUI tw={[extraClass, p.classNameAroundBodyAndHeader]}>
+                                    <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
+                                </WidgetHeaderControlsContainerUI>
+                            )}
 
-                    {/* TOOGLE (when justified) */}
-                    <div tw='w-0.5' />
-                    {justify && <WidgetToggleUI /* tw='ml-1' */ field={originalField} />}
-                    {/* HEADER CONTROLS */}
-                    {HeaderUI && (
-                        <WidgetHeaderControlsContainerUI className={extraClass}>
-                            <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
-                        </WidgetHeaderControlsContainerUI>
+                            {p.slotUpDown}
+                            {p.slotDelete}
+
+                            {/* HEADER EXTRA prettier-ignore */}
+                            {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.schema.LabelExtraUI && (
+                                <field.schema.LabelExtraUI field={field} />
+                            )}
+                            {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI field={originalField} />}
+                            {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
+                        </>
                     )}
-
-                    {p.slotUpDown}
-                    {p.slotDelete}
-
-                    {/* HEADER EXTRA prettier-ignore */}
-                    {(p.showWidgetExtra ?? csuite.showWidgetExtra) && field.schema.LabelExtraUI && (
-                        <field.schema.LabelExtraUI field={field} />
-                    )}
-                    {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI field={originalField} />}
-                    {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
                 </WidgetHeaderContainerUI>
             )}
 

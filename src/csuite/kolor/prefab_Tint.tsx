@@ -1,7 +1,5 @@
 import type { Tint } from './Tint'
 
-import { Fragment } from 'react/jsx-runtime'
-
 import { getNum } from '../tinyCSS/CSSVar'
 
 export type UI_Tint = X.XChoices<{
@@ -45,6 +43,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     }),
                 },
                 {
+                    appearance: 'tab',
                     label: 'Light',
                     default: def?.lightness ? 'lightness' : 'contrast',
                 },
@@ -70,6 +69,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     }),
                 },
                 {
+                    appearance: 'tab',
                     label: 'Chroma',
                     default: def?.chroma ? 'chroma' : 'chromaBlend',
                 },
@@ -97,6 +97,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     }),
                 },
                 {
+                    appearance: 'tab',
                     label: 'Hue',
                     default: def?.hue ? 'hue' : 'hueShift',
                 },
@@ -151,43 +152,43 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                 },
             ],
             // tabPosition: 'start',
-            body: (p) => {
-                const { l, c, h } = p.field.enabledBranches
-                return (
-                    <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
-                        {/* ------------------ */}
-                        {l && (
-                            <Fragment>
-                                <div tw='flex'>
-                                    <l.UIToggle /> L
-                                </div>
-                                <l.UITab />
-                                {l.UIChildren()}
-                            </Fragment>
-                        )}
-                        {/* ------------------ */}
-                        {c && (
-                            <Fragment>
-                                <div tw='flex'>
-                                    <c.UIToggle /> C
-                                </div>
-                                {c.UITab()}
-                                {c.UIChildren()}
-                            </Fragment>
-                        )}
-                        {/* ------------------ */}
-                        {h && (
-                            <Fragment>
-                                <div tw='flex'>
-                                    <h.UIToggle /> H
-                                </div>
-                                {h.UITab()}
-                                {h.UIChildren()}
-                            </Fragment>
-                        )}{' '}
-                    </div>
-                )
-            },
+            // body: (p) => {
+            //     const { l, c, h } = p.field.enabledBranches
+            //     return (
+            //         <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
+            //             {/* ------------------ */}
+            //             {l && (
+            //                 <Fragment>
+            //                     <div tw='flex'>
+            //                         <l.UIToggle /> L
+            //                     </div>
+            //                     <l.UITab />
+            //                     {l.UIChildren()}
+            //                 </Fragment>
+            //             )}
+            //             {/* ------------------ */}
+            //             {c && (
+            //                 <Fragment>
+            //                     <div tw='flex'>
+            //                         <c.UIToggle /> C
+            //                     </div>
+            //                     {c.UITab()}
+            //                     {c.UIChildren()}
+            //                 </Fragment>
+            //             )}
+            //             {/* ------------------ */}
+            //             {h && (
+            //                 <Fragment>
+            //                     <div tw='flex'>
+            //                         <h.UIToggle /> H
+            //                     </div>
+            //                     {h.UITab()}
+            //                     {h.UIChildren()}
+            //                 </Fragment>
+            //             )}{' '}
+            //         </div>
+            //     )
+            // },
         },
     )
 }

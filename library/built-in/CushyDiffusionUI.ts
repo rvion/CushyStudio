@@ -18,6 +18,7 @@ import { ui_sampler_advanced, type UI_Sampler_Advanced } from './_prefabs/prefab
 import { ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { ui_watermark_v1, type UI_watermark_v1 } from './_prefabs/prefab_watermark'
 import { ui_customSave, type UI_customSave } from './_prefabs/saveSmall'
+import { sampleNegative, samplePrompts } from './samplePrompts'
 
 export type CushyDiffusionUI_ = {
     positive: X.XPrompt
@@ -28,15 +29,12 @@ export type CushyDiffusionUI_ = {
     mask: UI_Mask
     upscaleV2: X.XChoices<{
         highResFix: UI_HighResFix
-        upscaleWithModel: Schema<
-            Field_group<{
-                model: X.XEnum<Enum_UpscaleModelLoader_model_name>
-            }>
-        >
+        upscaleWithModel: X.XGroup<{
+            model: X.XEnum<Enum_UpscaleModelLoader_model_name>
+        }>
     }>
     customSave: UI_customSave
     removeBG: UI_rembg_v1
-    show3d: X.XOptional<UI_3dDisplacement>
     controlnets: UI_cnet
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -48,17 +46,28 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         positive: ui.prompt({
             icon: 'mdiPlusBoxOutline',
             background: { hue: 150, chroma: 0.05 },
-            default: [
-                'masterpiece, tree',
-                '?color, ?3d_term, ?adj_beauty, ?adj_general',
-                '(nature)*0.9, (intricate_details)*1.1',
-            ].join('\n'),
+            default: samplePrompts.tree,
+            presets: [
+                //
+                { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
+                { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
+                { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
+                { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
+            ],
         }),
         negative: ui.prompt({
             icon: 'mdiMinusBoxOutline',
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
             box: { base: { hue: 0, chroma: 0.05 } },
+            presets: [
+                { icon: 'mdiCloseOctagon', label: 'simple negative', apply: (w) => w.setText(sampleNegative.simpleNegative) },
+                {
+                    icon: 'mdiCloseOctagon',
+                    label: 'simple negative + nsfw',
+                    apply: (w) => w.setText(sampleNegative.simpleNegativeNsfw),
+                },
+            ],
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
@@ -73,7 +82,6 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         ),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
-        show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
@@ -84,6 +92,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
 // ================================================================================
 
 export type UI_extra = X.XChoices<{
+    show3d: UI_3dDisplacement
     regionalPrompt: UI_regionalPrompting_v1
     refine: UI_Refiners
     reversePositiveAndNegative: X.XEmpty
@@ -103,11 +112,21 @@ function extra(ui: X.Builder): UI_extra {
         appearance: 'tab',
         icon: 'mdiAlien',
         items: {
+            show3d: ui_3dDisplacement(),
             regionalPrompt: ui_regionalPrompting_v1(),
             refine: ui_refiners(),
-            reversePositiveAndNegative: ui.empty({ label: 'swap +/-' }),
-            makeAVideo: ui.empty({ icon: 'mdiMessageVideo' }),
-            summary: ui.empty({ icon: 'mdiLanguageMarkdown' }),
+            reversePositiveAndNegative: ui.empty({
+                label: 'swap +/-',
+                tooltip: 'swap the positive and negative prompts. USE AT YOUR OWN RISK.',
+            }),
+            makeAVideo: ui.empty({
+                icon: 'mdiMessageVideo',
+                tooltip: 'generate a video from all the generated images in that step ',
+            }),
+            summary: ui.empty({
+                icon: 'mdiLanguageMarkdown',
+                tooltip: 'outputs a markdown summary about the execution and outputs',
+            }),
             gaussianSplat: ui.empty({ icon: 'mdiDotsHexagon' }),
             promtPlus: ui_advancedPrompt(),
             displayAsBeerCan: ui.empty({ icon: 'mdiBeerOutline' }),

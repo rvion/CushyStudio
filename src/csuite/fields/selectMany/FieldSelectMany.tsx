@@ -34,6 +34,7 @@ export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
         disableLocalFiltering?: boolean
         appearance?: SelectManyAppearance
         getLabelUI?: (t: T) => React.ReactNode
+        getInsideUI?: (t: T) => React.ReactNode
 
         /**
          * @since 2024-06-24

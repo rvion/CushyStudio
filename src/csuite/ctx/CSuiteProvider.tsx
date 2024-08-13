@@ -30,12 +30,13 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
                 style={{
                     // @ts-expect-error 🔴
                     '--KLR': config.baseStr,
-                    // '--KLRH': config.baseStr,
-                    // '--input-border': getNum(config.inputBorder) / 100,
                     '--DIR': config.shiftDirection,
                     '--roundness': '5px',
+                    // sizes
                     '--widget-height': `${config.widgetHeight}rem`,
                     '--input-height': `${config.inputHeight}rem`,
+                    '--inside-height': `${config.insideHeight}rem`, // TEMP
+                    // legacy ? change to inside ?
                     '--input-icon-height': `${config.inputHeight / 1.8}rem`,
                 }}
             >

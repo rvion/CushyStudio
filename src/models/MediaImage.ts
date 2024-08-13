@@ -22,6 +22,7 @@ import { hasMod } from '../csuite/accelerators/META_NAME'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { asSTRING_orCrash } from '../csuite/utils/bang'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
+import { sleep } from '../csuite/utils/sleep'
 import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { SafetyResult } from '../safety/Safety'
@@ -39,6 +40,50 @@ import { FPath } from './PathObj'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
+    static async cacheMissingSafetyRatings({
+        //
+        amount = 10,
+        delay = 100,
+        onProcess,
+    }: {
+        delay: number
+        amount: number
+        onProcess?: (i: MediaImageL) => void
+    }): Promise<void> {
+        const imagesWithoutSafetyRating = cushy.db.media_image.select((t) =>
+            t
+                .where('safetyRating', 'is', null) //
+                .limit(amount),
+        )
+        for (const image of imagesWithoutSafetyRating) {
+            console.log(`[🤠] processing`, image.absPath, 'to cache safety rattings')
+            await sleep(delay)
+            onProcess?.(image)
+            // xxx.value.image = image
+            try {
+                await image.updateSafetyRating()
+            } catch (e: any) {
+                console.log(`[🤠] `, image.data.path, '=>', e)
+            }
+        }
+    }
+
+    static deleteAllMissingOnDisk(): void {
+        const allPaths = cushy.db.media_image.selectRaw2((t) => t.select(['path', 'id']))
+        console.log(`[🤠] allPaths.length`, allPaths)
+        const toDelete: string[] = []
+        for (const x of allPaths) {
+            if (!existsSync(x.path)) {
+                console.log(`[❌] delete ${x.path}`)
+                toDelete.push(x.id)
+                // cushy.db.media_image.delete2((t) => t.where('id', '=', x.id))
+            } else {
+                // console.log(`[🟢] keep   ${x.path}`)
+            }
+        }
+        const xx = cushy.db.media_image.delete2((t) => t.where('id', 'in', toDelete))
+        console.log(`[🤠] xx`, xx)
+    }
     /** return the image filename */
     get filename(): string {
         return basename(this.data.path)
@@ -192,7 +237,7 @@ export class MediaImageL {
     }
 
     onMiddleClick = (): void => {
-        return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+        return void cushy.layout.open('Image', { imageID: this.id }, 'biggest')
     }
 
     onRightClick = (): void => {}
@@ -207,17 +252,17 @@ export class MediaImageL {
         if (hasMod(ev)) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+            return void cushy.layout.open('Image', { imageID: this.id })
         }
         if (ev.shiftKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+            return void cushy.layout.open('Canvas', { imgID: this.id })
         }
         if (ev.altKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+            return void cushy.layout.open('Paint', { imgID: this.id })
         }
 
         return
@@ -304,19 +349,31 @@ export class MediaImageL {
     }
 
     openInImageEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+        this.st.layout.open('Paint', { imgID: this.id })
     }
 
     openInCanvasEditor = (): void => {
-        this.st.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+        this.st.layout.open('Canvas', { imgID: this.id })
     }
 
+    // ---------------------------------------------------------------
     /**
      * add a tag to MediaImage.tags
      * internally stored as coma-separated string
      * */
     addTag = (...tags: string[]): this => {
         this.update({ tags: this.data.tags ? `${this.data.tags},${tags.join(',')}` : tags.join(',') })
+        return this
+    }
+
+    toggleTag = (...tags: string[]): this => {
+        const curr = new Set(this.tags)
+        for (const tag_ of tags) {
+            const tag = tag_.trim()
+            if (curr.has(tag)) curr.delete(tag)
+            else curr.add(tag)
+        }
+        this.update({ tags: [...curr.values()].join(',') })
         return this
     }
 
@@ -329,15 +386,16 @@ export class MediaImageL {
         return this
     }
 
-    set tags(str: string) {
-        this.update({ tags: str })
-    }
-
+    // ---------------------------------------------------------------
     /** get tags as string list (de-duplicated) */
     get tags(): string[] {
         if (this.data.tags == null) return []
         // temporary fix to deduplicate tags
         return [...new Set(this.data.tags.split(','))]
+    }
+
+    set tags(str: string) {
+        this.update({ tags: str })
     }
 
     get star(): number {
@@ -417,6 +475,14 @@ export class MediaImageL {
         return this.st.safetyChecker.isSafe(this.url)
     }
 
+    async updateSafetyRating(): Promise<void> {
+        const sr = await this.st.safetyChecker.isSafe(this.url)
+        this.update({
+            safetyRating: sr,
+            updatedAt: Date.now(),
+        })
+    }
+
     get existsLocally(): boolean {
         return this.absPath != null
     }
@@ -426,8 +492,8 @@ export class MediaImageL {
     /** allow to pick the best source to preserve CPU and MEMORY */
     urlForSize = (size: number): string => {
         // 32 x 32 mini-thumb
-        const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
-        if (forceThumb) return this.thumbhashURL
+        // 🛝 const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
+        // 🛝 if (forceThumb) return this.thumbhashURL
         if (size < 32) return this.thumbhashURL
 
         // 100 x 100 thumb
@@ -440,6 +506,7 @@ export class MediaImageL {
     // THUMBNAIL ------------------------------------------------------------------------------------------
     _thumbnailReady: boolean = false
     get thumbnailURL(): string {
+        console.log(`[🤠] get thumbnailURL(): string`)
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
@@ -454,7 +521,7 @@ export class MediaImageL {
 
     /** absolute path to the thumbnail */
     get _thumbnailAbsPath(): AbsolutePath {
-        // 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
+        // 💬 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
         return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
     }
 
@@ -608,14 +675,19 @@ export class MediaImageL {
     }
 
     _mkThumbnail = async (): Promise<void> => {
-        // console.log(`[🤠] creating thumbnail for`)
-        // resize image to 100px
-        const img = sharp(this.absPath).rotate().resize(100).jpeg({ mozjpeg: true })
-        // then save file to disk for later use (when app restart, let's not re-compute the thumbnail)
-        mkdirSync(resolve(this.st.rootPath, 'outputs/.thumbnails'), { recursive: true })
-        await img.toFile(this._thumbnailRelPath)
-        // then refresh the thumbnail
-        this._thumbnailReady = true
+        // 🔴 BAD TRY CATCH HERE
+        try {
+            // console.log(`[🤠] creating thumbnail for`)
+            // resize image to 100px
+            //  2024-08-11 rvion:          ⁉️ WHAT ⁉️
+            //                             VVVVVVVVV
+            const img = sharp(this.absPath).rotate().resize(100).jpeg({ mozjpeg: true })
+            // then save file to disk for later use (when app restart, let's not re-compute the thumbnail)
+            mkdirSync(resolve(this.st.rootPath, 'outputs/.thumbnails'), { recursive: true })
+            await img.toFile(this._thumbnailRelPath)
+            // then refresh the thumbnail
+            this._thumbnailReady = true
+        } catch {}
     }
 
     // THUMBHASH ------------------------------------------------------------------------------------------
@@ -632,7 +704,9 @@ export class MediaImageL {
             // console.log(`[🤠] this.data.thumbnail 🔴 =`, this.data.thumbnail.length)
             return `data:image/webp;base64,${this.data.thumbnail}`
         }
-        void this._mkThumbhash().then((url) => this.update({ thumbnail: url }))
+        void this._mkThumbhash()
+            .then((url) => this.update({ thumbnail: url }))
+            .catch((err) => console.log(`[❌] failed to generate thumbhash for file ${this.data.path}`, err))
         return ''
     }
 }

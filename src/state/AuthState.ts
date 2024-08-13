@@ -85,11 +85,11 @@ export class AuthState {
     }
 
     __testCB = () => {
-        this.st.layout.FOCUS_OR_CREATE('IFrame', {
+        this.st.layout.open('IFrame', {
             url: `http://localhost:${this.cushyPort}/public/auth/cb_test.html`,
             name: 'test 1',
         })
-        this.st.layout.FOCUS_OR_CREATE('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
+        this.st.layout.open('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
     }
     startLoginFlowWithGithub = async () => {
         logger.info(`[🔑 AUTH] starting login flow...`)

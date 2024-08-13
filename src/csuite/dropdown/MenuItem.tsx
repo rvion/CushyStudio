@@ -8,7 +8,7 @@ import { ComboUI } from '../accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 
-export const MenuItem = observer(function DropdownItem_(p: {
+export const _MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => unknown
     /** ⚠️ unused for now */
     size?: 'sm' | 'xs' | 'md' | 'lg'
@@ -19,14 +19,23 @@ export const MenuItem = observer(function DropdownItem_(p: {
     className?: string
     children?: ReactNode
     label?: ReactNode
-    localShortcut?: CushyShortcut
-    globalShortcut?: CushyShortcut
     loading?: boolean
     /** right before the (menu shortcust) */
+    localShortcut?: CushyShortcut
+    globalShortcut?: CushyShortcut
     beforeShortcut?: ReactNode
     afterShortcut?: ReactNode
+    stopPropagation?: boolean
 }) {
-    const { size, label, disabled, icon, children, active, onClick, ...rest } = p
+    // prettier-ignore
+    const {
+        //
+        stopPropagation,
+        size, label, disabled, icon, children, active,
+        localShortcut, globalShortcut, beforeShortcut, afterShortcut,
+        onClick,
+        ...rest
+    } = p
     return (
         <Frame
             loading={p.loading}
@@ -38,8 +47,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
             // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
             hover={15}
             onClick={(ev) => {
-                ev.preventDefault()
-                ev.stopPropagation()
+                // ev.preventDefault()
+                if (stopPropagation) ev.stopPropagation()
                 return p.onClick?.(ev)
             }}
             style={{ lineHeight: '1.6rem' }}
@@ -62,14 +71,14 @@ export const MenuItem = observer(function DropdownItem_(p: {
             <div tw='flex items-center'>
                 {label}
                 {children}
-                {p.beforeShortcut}
-                {p.localShortcut ? (
-                    <div tw='ml-auto pl-2 text-xs italic'>{p.localShortcut && <ComboUI combo={p.localShortcut} />}</div>
+                {beforeShortcut}
+                {localShortcut ? (
+                    <div tw='ml-auto pl-2 text-xs italic'>{localShortcut && <ComboUI combo={localShortcut} />}</div>
                 ) : null}
-                {p.globalShortcut ? (
-                    <div tw='ml-auto pl-2 text-xs italic'>{p.globalShortcut && <ComboUI combo={p.globalShortcut} />}</div>
+                {globalShortcut ? (
+                    <div tw='ml-auto pl-2 text-xs italic'>{globalShortcut && <ComboUI combo={globalShortcut} />}</div>
                 ) : null}
-                {p.afterShortcut}
+                {afterShortcut}
             </div>
         </Frame>
     )
@@ -78,5 +87,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
 export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
     return <div className='divider px-2 !h-input my-2 text-sm'>{p.children ?? <></>}</div>
 })
-// Can we do subcomponents somehow?
-// MenuItem.Divider = Divider
+
+export const MenuItem = Object.assign(_MenuItem, {
+    // name: 'BasicShelfUI',
+    Divider: MenuDivider,
+})

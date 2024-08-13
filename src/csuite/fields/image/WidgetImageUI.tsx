@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../../models/PathObj'
+import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGallery'
 import { useSt } from '../../../state/stateContext'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
@@ -13,6 +14,7 @@ import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
+import { RevealUI } from '../../reveal/RevealUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     //
@@ -42,8 +44,22 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
             header={
                 <>
                     <SpacerUI />
+                    <RevealUI //
+                        relativeTo='mouse'
+                        shell='popup-sm'
+                        children={<Button subtle icon='mdiImageSearchOutline' />}
+                        content={(p) => (
+                            <PanelGalleryUI
+                                onClick={(img) => {
+                                    field.value = img
+                                    p.reveal.close()
+                                }}
+                            />
+                        )}
+                    />
                     <Button
                         square
+                        subtle
                         icon='mdiContentPaste'
                         onClick={() => {
                             // XXX: This is slow, should probably be done through electron's api, but works for now. Could also be made re-usable? getImageFromClipboard()?
@@ -69,7 +85,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                         }}
                     />
                     <Button //
+                        tooltip='reset'
                         square
+                        subtle
                         icon={'mdiRestore'}
                         onClick={() => (field.value = cushy.defaultImage)}
                     />

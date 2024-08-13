@@ -1,16 +1,17 @@
 import '../../ALL_CMDS'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { AppBarUI } from '../../appbar/AppBarUI'
 import { ActivityStackUI } from '../../csuite/activity/ActivityStackUI'
 import { TooltipUI } from '../../csuite/activity/TooltipUI'
+import { defaultTextTint } from '../../csuite/box/CurrentStyleCtx'
 import { commandManager } from '../../csuite/commands/CommandManager'
 import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
+import { computeColors } from '../../csuite/frame/FrameColors'
+import { Kolor } from '../../csuite/kolor/Kolor'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
-import { RevealState } from '../../csuite/reveal/RevealState'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
@@ -56,19 +57,35 @@ export const CushyUI = observer(function CushyUI_() {
         return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])
 
+    const appBarColor = st.theme.value.appbar ?? 'red'
+    const appBarBase = Kolor.fromString(appBarColor)
+    const inactiveTabColors = computeColors(
+        {
+            base: appBarBase,
+            dir: appBarBase.lightness > 0.5 ? -1 : 1,
+            text: defaultTextTint,
+        },
+        { base: { contrast: 0.1 } },
+    )
     return (
         <CSuiteProvider config={cushy.csuite}>
             <div
                 id='CushyStudio'
-                tabIndex={-1}
-                onClick={(ev) => {
-                    // if a click has bubbled outwards up to the body, then we want to close various things
-                    // such as contet menus, tooltips, Revals, etc.
-                    runInAction(() => {
-                        RevealState.shared.current?.close()
-                        RevealState.shared.current = null
-                    })
+                style={{
+                    // @ts-ignore
+                    '--appbar': appBarColor,
+                    '--foobar1': inactiveTabColors.variables.color,
+                    '--foobar2': inactiveTabColors.variables.background,
                 }}
+                tabIndex={-1}
+                // ❌ onClick={(ev) => {
+                // ❌     // if a click has bubbled outwards up to the body, then we want to close various things
+                // ❌     // such as contet menus, tooltips, Revals, etc.
+                // ❌     runInAction(() => {
+                // ❌         RevealState.shared.current?.close()
+                // ❌         RevealState.shared.current = null
+                // ❌     })
+                // ❌ }}
                 ref={appRef}
                 tw={[
                     'col grow h-full overflow-clip',

@@ -12,6 +12,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
     return (
         <div tw='flex-1'>
             <SelectUI<T>
+                // placement='auto' 🔶 do we want that ?
                 key={field.id}
                 tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
@@ -22,7 +23,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 options={() => field.choices}
                 equalityCheck={(a, b) => a.id === b.id}
                 value={() => field.serial.val}
-                onChange={(selectOption) => {
+                onOptionToggled={(selectOption) => {
                     if (selectOption == null) {
                         // TODO?: hook into it's parent if parent is an option block ?
                         // ⏸️ if (!widget.isOptional) return

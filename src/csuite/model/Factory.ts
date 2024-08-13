@@ -51,12 +51,10 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     }
 
     /** simple alias to create a new Form */
-    define<SCHEMA extends BaseSchema>(
-        schemaFn: ((form: BUILDER) => SCHEMA),
-    ):SCHEMA{
-        return schemaFn(this.builder)   
+    define<SCHEMA extends BaseSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
+        return schemaFn(this.builder)
     }
-    
+
     /** simple alias to create a new Form */
     entity<SCHEMA extends BaseSchema>(
         schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
@@ -85,6 +83,33 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     ): SCHEMA['$Field'] {
         const schema: SCHEMA = this.evalSchema(schemaExt)
         return useMemo(() => this.entity(schema, entityConfig), deps)
+    }
+
+    /** simple way to defined forms and in react components */
+    useLocalstorage<SCHEMA extends BaseSchema>(
+        key: string,
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+        deps: DependencyList = [],
+    ): SCHEMA['$Field'] {
+        const schema: SCHEMA = this.evalSchema(schemaExt)
+        let serial: any = null
+
+        try {
+            const prev = localStorage.getItem(key)
+            const parsed = prev ? JSON.parse(prev) : null
+            serial = parsed
+        } catch {}
+
+        return useMemo(
+            () =>
+                this.entity(schema, {
+                    serial: () => serial,
+                    onSerialChange: (root) => {
+                        localStorage.setItem(key, JSON.stringify(root.serial))
+                    },
+                }),
+            deps,
+        )
     }
 
     /** eval schema if it's a function */

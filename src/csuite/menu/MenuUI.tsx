@@ -1,4 +1,5 @@
-import type { MenuInstance } from './Menu'
+import type { FrameProps } from '../frame/Frame'
+import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
@@ -15,41 +16,45 @@ import { RevealUI } from '../reveal/RevealUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
-export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
-    return (
-        <RevealUI className='dropdown' placement='bottomStart' content={() => <p.menu.UI />}>
-            <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
-                {/* <span tw='hidden lg:inline-block'>{p.startIcon}</span> */}
-                {p.menu.menu.title}
-            </label>
-        </RevealUI>
-    )
-})
+export const MenuUI = observer(function Menu({
+    // own props
+    menu,
 
-export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
+    // top-level 'div' patches
+    tabIndex,
+    autoFocus,
+    onKeyDown,
+
+    // rest (so custom JSX magic can work)
+    ...rest
+}: { menu: MenuInstance<any> } & React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
-            className='_MenuUI'
-            tabIndex={-1}
-            autoFocus
+            tabIndex={tabIndex ?? -1}
+            autoFocus={autoFocus ?? true}
             tw='w-fit'
             onKeyDown={(ev) => {
+                // call the original onKeyDown
+                onKeyDown?.(ev)
+
+                // handle the shortcut key
                 const key = ev.key
-                for (const entry of p.menu.entriesWithKb) {
+                for (const entry of menu.entriesWithKb) {
                     if (entry.char === key) {
                         if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onPick()
                         // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
                         else if (isBoundCommand(entry.entry)) void entry.entry.execute()
                         else if (isCommand(entry.entry)) void entry.entry.execute()
-                        p.menu.onStop()
+                        menu.onStop()
                         ev.stopPropagation()
                         ev.preventDefault()
                         return
                     }
                 }
             }}
+            {...rest}
         >
-            {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
+            {menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
                 if (entry instanceof SimpleMenuAction) {
                     return (
                         <MenuItem //
@@ -60,7 +65,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             icon={entry.opts.icon}
                             onClick={() => {
                                 entry.opts.onPick()
-                                p.menu.onStop()
+                                menu.onStop()
                             }}
                         />
                     )
@@ -101,7 +106,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             icon={entry.icon}
                             onClick={() => {
                                 void entry.execute()
-                                p.menu.onStop()
+                                menu.onStop()
                             }}
                             // beforeShortcut={
                             //     isCommand(entry) && entry.combos ? (
@@ -136,7 +141,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                             trigger='hover'
                             tw='min-w-60 !block'
                             placement='rightStart'
-                            content={() => <MenuUI menu={entry.init(p.menu.allocatedKeys)} />}
+                            content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
                         >
                             <MenuItem //
                                 key={ix}

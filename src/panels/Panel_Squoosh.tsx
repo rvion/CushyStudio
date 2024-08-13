@@ -1,6 +1,19 @@
+import type { NO_PROPS } from '../csuite/types/NO_PROPS'
+
 import { observer } from 'mobx-react-lite'
 
-export const Panel_Squoosh = observer(function Panel_Squoosh_(p: {}) {
+import { Panel, type PanelHeader } from '../router/Panel'
+
+export const PanelSquoosh = new Panel({
+    name: 'Squoosh',
+    widget: (): React.FC<NO_PROPS> => PanelSquooshUI,
+    header: (p): PanelHeader => ({ title: 'Squoosh' }),
+    def: (): NO_PROPS => ({}),
+    category: 'tools',
+    icon: 'mdiImageFilterVintage',
+})
+
+export const PanelSquooshUI = observer(function PanelSquooshUI_(p: NO_PROPS) {
     // return (
     //     <iframe
     //         src='https://squoosh.app/'

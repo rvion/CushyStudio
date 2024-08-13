@@ -1,5 +1,6 @@
 import type { Box } from '../box/Box'
 import type { IconName } from '../icons/icons'
+import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 
 import { observer } from 'mobx-react-lite'
@@ -10,6 +11,7 @@ import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 
 export type BoolButtonMode = 'radio' | 'checkbox' | false
 
+// TODO: switch to frame
 export class BoolButtonProps {
     /** true when active, false when inactive, undefined when unset */
     value?: Maybe<boolean>
@@ -24,13 +26,14 @@ export class BoolButtonProps {
     icon?: Maybe<IconName>
     tooltip?: string
     tooltipPlacement?: RevealPlacement
-    // 2024-06-12 rvion: I think I'd like having this in addition to the single icon prop
+    // 💬 2024-06-12 rvion: I think I'd like having this in addition to the single icon prop
     // iconOn?: Maybe<IconName | false>
     // iconOff?: Maybe<IconName | false>
 
     children?: ReactNode
     /** alternative way to specify children */
     text?: string
+    border?: TintExt
 
     className?: string
     style?: CSSProperties

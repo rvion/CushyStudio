@@ -5,6 +5,9 @@ import { activityManager } from '../csuite/activity/ActivityManager'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { Frame } from '../csuite/frame/Frame'
+import { formatNum } from '../csuite/utils/formatNum'
+import { isOdd } from '../csuite/utils/isOdd'
 import { getDBStats } from '../db/getDBStats'
 import { quickBench } from '../db/quickBench'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
@@ -15,9 +18,16 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     return (
         <Dropdown
             expand
-            title='Debug'
+            title='Dev'
             content={() => (
                 <>
+                    <MenuItem //
+                        onClick={() => st.layout.open('Playground', {})}
+                        icon='mdiPlayNetwork'
+                    >
+                        Show Dev Playground Page
+                    </MenuItem>
+                    <MenuDividerUI_ />
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiAutoFix'
@@ -67,14 +77,45 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     />
                     <MenuDividerUI_ />
                     <MenuItem //
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
-                        icon='mdiPlayNetwork'
-                    >
-                        Show Dev Playground Page
-                    </MenuItem>
-                    <MenuItem //
                         iconClassName='text-yellow-500'
-                        onClick={() => getDBStats(st.db)}
+                        onClick={async () => {
+                            const stats = await getDBStats(st.db)
+                            // cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })
+                            cushy.layout.addCustomV2(() => {
+                                return (
+                                    <table tw='[&_td]:px-2 [&_th]:px-2'>
+                                        <thead>
+                                            <tr>
+                                                <th tw='text-right '>size</th>
+                                                <th tw='text-right '>count</th>
+                                                <th tw='text-left'>table name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {Object.entries(stats)
+                                                .map(([k, v]) => ({ name: k, size: v.size, count: v.count }))
+                                                .sort((a, b) => b.count - a.count)
+                                                .map(({ name, size, count }, ix, arr) => (
+                                                    <Frame
+                                                        as='tr'
+                                                        key={name}
+                                                        base={{ contrast: isOdd(ix) ? 0.1 : 0.2, hue: (360 * ix) / arr.length }}
+                                                    >
+                                                        <Frame as='td' tw='text-right font-mono'>
+                                                            ❓
+                                                        </Frame>
+                                                        <Frame as='td' tw='text-right font-mono'>
+                                                            {formatNum(count)}
+                                                        </Frame>
+                                                        <Frame as='td'>{name}</Frame>
+                                                    </Frame>
+                                                ))}
+                                        </tbody>
+                                        {/* <pre>{JSON.stringify(stats, null, 2)}</pre> */}
+                                    </table>
+                                )
+                            }, {})
+                        }}
                         icon='mdiAccount'
                     >
                         print DB stats

@@ -10,7 +10,6 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
             //
             base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
             tw='flex items-center px-1 h-input'
-            style={{ height: '24px' }}
         >
             <DebugControlsUI />
             <div tw='flex-1' />

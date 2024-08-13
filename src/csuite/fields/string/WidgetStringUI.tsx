@@ -22,7 +22,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const csuite = useCSuite()
 
     return (
-        <Frame base={{ contrast: csuite.inputContrast ?? 0.05 }} expand>
+        <Frame base={csuite.inputContrast} expand>
             <textarea
                 style={{
                     /* ...p.widget.config.style, */
@@ -47,8 +47,10 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { fiel
     const config = field.config
     return (
         <InputStringUI
+            tw='w-full'
             icon={p.field.config.innerIcon}
             type={config.inputType}
+            placeholder={config.placeHolder}
             pattern={config.pattern}
             className={config.className}
             getValue={() => field.value}

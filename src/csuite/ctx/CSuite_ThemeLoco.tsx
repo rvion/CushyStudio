@@ -22,7 +22,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showToggleButtonBox = false
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
 
-    // theme
+    // core theme colors
     base: Kolor = new Kolor(0.9999, 0, 240)
     labelBackground?: Maybe<TintExt> = undefined
     get baseStr(): string {
@@ -33,11 +33,15 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     }
     text: Tint = { contrast: 0.824 }
 
-    inputBorder = 0.08
-    inputContrast = 0.03
+    // heights
+    widgetHeight: number = 2.2
+    inputHeight: number = 2
+    insideHeight: number = 1.8
+
+    // misc theming options
+    inputBorder = 0
+    inputContrast = 0
     labelText = { contrast: 0.48, chroma: 0.035 }
-    widgetHeight: number = 1.8
-    inputHeight: number = 1.6
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
     fieldGroups = {}

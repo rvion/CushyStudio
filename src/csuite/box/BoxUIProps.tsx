@@ -1,6 +1,8 @@
 import { Box } from './Box'
 
-export type BoxUIProps = Box & {
+export type BoxUIProps = Box & BoxBasicProps
+
+export type BoxBasicProps = {
     //
     className?: string
     style?: React.CSSProperties

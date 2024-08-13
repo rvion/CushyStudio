@@ -3,11 +3,12 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
+import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-export const Button = observer(function Button_(
+const _Button = observer(function Button_(
     p: FrameProps & {
         /** no contrast */
         subtle?: boolean
@@ -29,6 +30,7 @@ export const Button = observer(function Button_(
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     return (
         <Frame //
+            as='button'
             size={size ?? 'input'}
             look={look}
             boxShadow={
@@ -40,8 +42,8 @@ export const Button = observer(function Button_(
                 contrast: subtle //
                     ? 0
                     : uist.visuallyActive || uist.running
-                    ? buttonContrastWhenPressed
-                    : buttonContrast,
+                      ? buttonContrastWhenPressed
+                      : buttonContrast,
                 hue: p.hue,
                 chroma: p.chroma,
             }}
@@ -50,7 +52,7 @@ export const Button = observer(function Button_(
             // active={uist.visuallyActive}
             disabled={p.disabled}
             loading={p.loading ?? uist.running}
-            tabIndex={p.tabIndex ?? -1}
+            tabIndex={p.tabIndex}
             onMouseDown={uist.press}
             onClick={uist.onClick}
             iconSize={iconSize ?? '1.1rem'}
@@ -58,8 +60,15 @@ export const Button = observer(function Button_(
             tw={[
                 'inline-flex',
                 'select-none',
-                p.square ? null : 'px-2',
-                'font-semibold',
+
+                // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
+                // | no nee to add too much padding, this can be themed by CSS
+                p.square ? null : 'px-1',
+
+                // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
+                // | if people want semibold or bold buttons, they can do so using the ui-button class
+                // | 'font-semibold',
+
                 'ui-button',
                 'rounded-sm gap-1 items-center',
                 p.disabled ? null : 'cursor-pointer',
@@ -117,3 +126,10 @@ class ButtonState {
         return this.pressed ? !this.props.active : this.props.active
     }
 }
+
+export const Button = Object.assign(_Button, {
+    /** a borderless / contrastless button */
+    Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),
+})
+
+// registerComponentAsClonableWhenInsideReveal(Button)

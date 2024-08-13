@@ -9,9 +9,9 @@ import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
-import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
+import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?
@@ -55,7 +55,12 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <div tw='rounded items-center justify-center overflow-hidden'>
                             <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
                                 <FavBarContainer>
-                                    <RevealUI tw='hover:brightness-125' placement='popup-lg' content={() => <CreateAppPopupUI />}>
+                                    <RevealUI
+                                        tw='hover:brightness-125'
+                                        placement='screen'
+                                        shell='popup-lg'
+                                        content={() => <CreateAppPopupUI />}
+                                    >
                                         <span
                                             tw='cursor-default flex'
                                             style={{ fontSize: sizeStr }}
@@ -95,7 +100,6 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         {st.favoriteDrafts.map((draft) => (
                                             <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
                                                 <RevealUI
-                                                    className=''
                                                     trigger='hover'
                                                     showDelay={0}
                                                     placement='right'
@@ -133,7 +137,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         {draft.data.illustration ? (
                                                             <CachedResizedImage
                                                                 style={{ width: size, height: size }}
-                                                                filePath={fileURLToPath(draft.data.illustration)}
+                                                                src={fileURLToPath(draft.data.illustration)}
                                                                 size={size}
                                                             />
                                                         ) : (

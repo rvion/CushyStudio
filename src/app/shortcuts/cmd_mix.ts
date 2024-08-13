@@ -1,15 +1,13 @@
 import type { Tree } from '../../csuite/tree/Tree'
-import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 
-import { ctx_global } from '../../csuite/command-topic/ctx_global'
-import { command, type Command } from '../../csuite/commands/Command'
-import { global_RevealStack } from '../../csuite/reveal/RevealStack'
+import { type Command } from '../../csuite/commands/Command'
+import { ctx_TreeUI } from '../../csuite/tree/TreeCtx'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
-import { globalValidInInput, placeholderTree } from './simpleValidInInput'
+import { globalValidInInput } from './simpleValidInInput'
 
 function focusTree(tree: Tree): void {
     return runInAction(() => {
@@ -22,10 +20,10 @@ function focusTree(tree: Tree): void {
             const currentFocous = window.document.activeElement
             const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
             if (treeAlreadySelected)
-                cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET') // close the panel
+                cushy.layout.open('TreeExplorer', {}, 'right') // close the panel
             else focusTreeRootIfMounted()
         } else {
-            const node = cushy.layout.FOCUS_OR_CREATE('TreeExplorer', {}, 'LEFT_PANE_TABSET')
+            const node = cushy.layout.open('TreeExplorer', {}, 'right')
             setImmediate((): void => {
                 const isVisible = node?.isVisible()
                 if (!isVisible) return
@@ -36,7 +34,7 @@ function focusTree(tree: Tree): void {
 }
 // ------------------------------------------------------------------------------------
 // core global shortcuts
-export const allLegacyCommands: Command<null>[] = [
+export const allLegacyCommands: Command<any>[] = [
     globalValidInInput(
         KEYS.search,
         'search string globally in window',
@@ -78,16 +76,6 @@ export const allLegacyCommands: Command<null>[] = [
         'mdiNewBox',
     ),
 
-    // tree navigation --------------------------------
-    placeholderTree(KEYS.tree_moveUp, 'move up in tree'),
-    placeholderTree(KEYS.tree_moveDown, 'move down in tree'),
-    placeholderTree(KEYS.tree_moveRight, 'unfold item if folded, then move down'),
-    placeholderTree(KEYS.tree_moveLeft, 'fold item if unfolded and movme up'),
-    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeAbove, 'Delete Node And Focus Node Above'),
-    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeBelow, 'Delete Node And Focus Node Below'),
-    placeholderTree(KEYS.tree_onPrimaryAction, 'execute selected tree primary action'),
-    placeholderTree(KEYS.tree_movePageUp, 'move all the way to the top of the tree'),
-    placeholderTree(KEYS.tree_movePageDown, 'move 100 items down in the tree'),
     // placeholderTree('/', 'focus tree filter (not implemented for now)'),
 
     // tree -----------------------------------------
@@ -105,39 +93,39 @@ export const allLegacyCommands: Command<null>[] = [
     globalValidInInput([KEYS.duplicateCurrentDraft], 'duplicate draft', () => _duplicateCurrentDraft(cushy)),
 
     // menu utils: -----------------------------------
-    globalValidInInput([KEYS.openPage_Civitai],  'open Civitai',    () => cushy.layout.FOCUS_OR_CREATE('Civitai', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Squoosh],  'open Squoosh',    () => cushy.layout.FOCUS_OR_CREATE('Squoosh', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', () => cushy.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Paint],    'open Paint',      () => cushy.layout.FOCUS_OR_CREATE('Paint', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   () => cushy.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Marketplace], 'open Unsplash',() => cushy.layout.FOCUS_OR_CREATE('Marketplace', { url: 'https://unsplash.com/' }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Civitai],  'open Civitai',    () => cushy.layout.open('Civitai', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Squoosh],  'open Squoosh',    () => cushy.layout.open('Squoosh', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', () => cushy.layout.open('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Paint],    'open Paint',      () => cushy.layout.open('Paint', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   () => cushy.layout.open('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Marketplace], 'open Unsplash',() => cushy.layout.open('Marketplace', { }), ), // prettier-ignore
 
     // menu settings --------------------------------
-    globalValidInInput([KEYS.openPage_Config],    'open Config',    () => cushy.layout.FOCUS_OR_CREATE('Config', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Hosts],     'open Hosts',     () => cushy.layout.FOCUS_OR_CREATE('Hosts', {})), // prettier-ignore
-    globalValidInInput([KEYS.openPage_Shortcuts], 'open Shortcuts', () => cushy.layout.FOCUS_OR_CREATE('Shortcuts', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Config],    'open Config',    () => cushy.layout.open('Config', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Hosts],     'open Hosts',     () => cushy.layout.open('Hosts', {})), // prettier-ignore
+    globalValidInInput([KEYS.openPage_Shortcuts], 'open Shortcuts', () => cushy.layout.open('Shortcuts', {})), // prettier-ignore
 
     // misc... --------------------------------------
-    globalValidInInput([KEYS.openPage_ComfyUI], 'open ComfyUI', () => cushy.layout.FOCUS_OR_CREATE('ComfyUI', {})),
-    globalValidInInput([KEYS.openPage_Gallery], 'open Gallery', () => cushy.layout.FOCUS_OR_CREATE('Gallery', {})),
-    globalValidInInput([KEYS.openPage_Models], 'open Models', () => cushy.layout.FOCUS_OR_CREATE('Models', {})),
+    globalValidInInput([KEYS.openPage_ComfyUI], 'open ComfyUI', () => cushy.layout.open('ComfyUI', {})),
+    globalValidInInput([KEYS.openPage_Gallery], 'open Gallery', () => cushy.layout.open('Gallery', {})),
+    globalValidInInput([KEYS.openPage_Models], 'open Models', () => cushy.layout.open('Models', {})),
 
     // full screen library  --------------------------
     globalValidInInput([KEYS.openFull_Library], 'open full screen library', () => cushy.toggleFullLibrary()),
 
-    command({
-        id: 'closeDialogOrPopupsOrFullScreenPanel',
-        combos: KEYS.closeDialogOrPopupsOrFullScreenPanel,
-        ctx: ctx_global,
-        label: 'Close Dialog, Popups, or Full-Screen Panels',
-        validInInput: true,
-        action: () => {
-            if (global_RevealStack.length > 0) {
-                const item = global_RevealStack.pop()!
-                item.close()
-                return Trigger.Success
-            }
-            return Trigger.UNMATCHED
-        },
-    }),
+    // ⏸️ command({
+    // ⏸️     id: 'closeDialogOrPopupsOrFullScreenPanel',
+    // ⏸️     combos: KEYS.closeDialogOrPopupsOrFullScreenPanel,
+    // ⏸️     ctx: ctx_global,
+    // ⏸️     label: 'Close Dialog, Popups, or Full-Screen Panels',
+    // ⏸️     validInInput: true,
+    // ⏸️     action: () => {
+    // ⏸️         if (global_RevealStack.length > 0) {
+    // ⏸️             const item = global_RevealStack.pop()!
+    // ⏸️             item.close('programmatic')
+    // ⏸️             return Trigger.Success
+    // ⏸️         }
+    // ⏸️         return Trigger.UNMATCHED
+    // ⏸️     },
+    // ⏸️ }),
 ]

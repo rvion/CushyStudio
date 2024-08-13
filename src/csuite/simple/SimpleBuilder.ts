@@ -140,6 +140,10 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
+    pixel(config: Omit<Field_number_config, 'mode'> = {}): S.SNumber {
+        return new SimpleSchema<Field_number>(Field_number, { mode: 'int', ...config, unit: 'px', suffix: 'px' })
+    }
+
     list<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
         return new SimpleSchema<Field_list<T>>(Field_list, config)
     }

@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
-import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../csuite/reveal/RevealExamples'
+import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../csuite/reveal/demo/RevealExamples'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { menu_imageActions } from './commands/cmd_copyImage'
 

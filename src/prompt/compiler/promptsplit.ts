@@ -17,7 +17,7 @@ export const expandBraces = (prompt: string): string[] => {
     const prompts = prompt.split(/(?<!\\)\|/).map((item) => item.trim().replace(/\\\|/g, '|'))
     const combinations: Set<string> = new Set()
 
-    const generateCombinations = (list: string[], prefix: string = '') => {
+    const generateCombinations = (list: string[], prefix: string = ''): void => {
         for (const item of list) {
             const newPrefix = prefix ? `${prefix}, ${item}` : item
             combinations.add(newPrefix)

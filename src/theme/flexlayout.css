@@ -1,6 +1,10 @@
-/*
-check @birddev locomotive branch to check the sign calculation magic
-*/
+.UI-MAIN{
+  /* border: 6px solid oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);; */
+  border-left: 6px solid var(--appbar);
+  border-right: 6px solid var(--appbar);
+
+}
+
 .flexlayout__layout {
   --color-background:                       oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* White background equivalent */
   --color-base:                             oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Base color */
@@ -20,9 +24,21 @@ check @birddev locomotive branch to check the sign calculation magic
   --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
 
   /* tabset background */
-  --color-tabset-background:                oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
-  --color-tabset-background-selected:       oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
-  --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);/* oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);*/
+  /* --color-tabset-background:                oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /* --color-tabset-background:                oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background:                var(--appbar);
+
+  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  /*                                        oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
+  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background-selected:       var(--appbar);
+
+  /* --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
+  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
+  --color-tabset-background-maximized:      var(--appbar);
 
   --color-tabset-divider-line:              oklch(var(--p)/.2);
   --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
@@ -32,9 +48,11 @@ check @birddev locomotive branch to check the sign calculation magic
 
   /* # tab color */
   --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
-  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
-  --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) calc(c / 2) h);
+  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h); */
+  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
+  --color-tab-unselected:                   var(--foobar1);
+  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l - 0.05 * var(--DIR)) calc(c / 2) h / .2);
 
   /* borders tabs */
   --color-border-tab-selected:              oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
@@ -45,8 +63,9 @@ check @birddev locomotive branch to check the sign calculation magic
   /* # ??? */
   --color-tab-textbox-background:           oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
 
-
+/* splitter */
   --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
+  --color-splitter:                         var(--appbar);
   --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
   --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
 

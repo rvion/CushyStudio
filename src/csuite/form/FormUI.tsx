@@ -1,10 +1,11 @@
 import type { Box } from '../../csuite/box/Box'
+import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { RSSize } from '../types/RsuiteTypes'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -13,6 +14,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 export type FormUIProps = {
     // form ---------------------------------------------------------
     field: Maybe<Field>
+    // ⏸️ skin?: 'default' | 'cell' | 'text' | 'whatev'
 
     Header?: FC<NO_PROPS>
     Component?: FC<NO_PROPS>
@@ -35,6 +37,9 @@ export type FormUIProps = {
     /** @default false */
     allowSubmitWhenErrors?: boolean
 
+    // --------------------------------------------------------------
+    // 🔴 TODO: do the same thing as tong and only provide a single submit prop instead
+
     /**
      * override default label.
      * @default 'Submit'
@@ -43,12 +48,10 @@ export type FormUIProps = {
      *  - submitAction is provided (no submitAction => no button => no label needed)
      */
     submitLabel?: string
-
-    /**
-     * override default ac
-     */
+    submitLook?: FrameAppearance
+    submitSize?: RSSize
+    /** * override default action */
     submitAction?: ((field: Field) => void) | 'confetti'
-
     /** if provided, submitLabel and submitActinod will not be used */
     SubmitButton?: FC<{ form: Field; canSubmit: boolean }>
 }
@@ -64,7 +67,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||
         p.field == null ||
-        // 2024-07-21 rvion:
+        // 💬 2024-07-21 rvion:
         // | spent one hour troubleshooting this crap:
         // | components re-evaluated at every single rendering will not be properly cached.
         // | this was making every sub components re-render everytime => int were not working properly
@@ -86,7 +89,8 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
             ) : submitAction == null ? null : submitAction === 'confetti' ? (
                 <div tw='flex'>
                     <Button
-                        look='primary'
+                        look={p.submitLook ?? 'primary'}
+                        size={p.submitSize ?? 'lg'}
                         tw='ml-auto'
                         disabled={!canSubmit}
                         onClick={async () => {

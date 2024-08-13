@@ -28,7 +28,7 @@ export const BadgeListUI = observer(function BadgeListUI_({
                 <BadgeUI //
                     autoHue={autoHue}
                     key={tag}
-                    onClick={onClick ? () => onClick(tag) : undefined}
+                    onClick={onClick ? (): void => onClick(tag) : undefined}
                 >
                     {tag}
                 </BadgeUI>

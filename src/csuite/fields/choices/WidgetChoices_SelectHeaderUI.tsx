@@ -50,7 +50,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 multiple={field.config.multi ?? false}
                 // closeOnPick={false}
                 resetQueryOnPick={false}
-                onChange={(v) => field.toggleBranch(v.key)}
+                onOptionToggled={(v) => field.toggleBranch(v.key)}
             />
         </div>
     )

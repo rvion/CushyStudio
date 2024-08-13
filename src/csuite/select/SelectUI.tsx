@@ -6,88 +6,114 @@ import { useMemo } from 'react'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
+import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { AutoCompleteSelectState } from './SelectState'
+import { SelectValueContainerUI } from './SelectValueContainerUI'
+
+function focusNextElement(dir: 'next' | 'prev'): void {
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const elements = Array.from(document.querySelectorAll(focusableElements)) as HTMLElement[]
+
+    const currentFocusIndex = elements.indexOf(document.activeElement as HTMLElement)
+    const nextIndex = (currentFocusIndex + (dir === 'next' ? 1 : -1)) % elements.length
+
+    elements[nextIndex]?.focus()
+}
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
-    // const st = useSt()
-    const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
+    const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     const csuite = useCSuite()
-    const border = csuite.inputBorder
+    const PopupComp = p.slotPopupUI ?? SelectPopupUI
+    const AnchorContentComp = p.slotAnchorContentUI ?? AnchorContentUI
     return (
-        <Frame /* Container/Root */
-            tabIndex={-1}
-            tw={['SelectUI minh-input', 'flex flex-1 items-center relative']}
-            border={{ contrast: border }}
-            className={p.className}
-            ref={s.anchorRef}
-            onKeyUp={s.onRealInputKeyUp}
-            onMouseDown={s.onRealWidgetMouseDown}
-            onKeyDown={s.handleTooltipKeyDown}
-            onFocus={(ev) => {
-                s.isFocused = true
-                if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
-                    s.openMenu()
-                }
+        <RevealUI //
+            ref={select.revealStateRef}
+            trigger='pseudofocus'
+            shell='popover'
+            placement={p.placement ?? 'autoVerticalStart'}
+            onHidden={(reason) => {
+                select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
+                select.clean()
+
+                // 🔶 should only focus anchor in certain cases?
+                // (ex: escape while in popup should probably focus the anchor?)
+                // (ex: clicking outside the popup should probably focus the anchor?)
+                // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
+                // (ex: tab should probably go to the next select, NOT focus this anchor?)
+                if (reason === 'programmatic' || reason === 'cascade') return
+                select.anchorRef.current?.focus()
+                if (reason === 'tabKey') focusNextElement('next')
+                if (reason === 'shiftTabKey') focusNextElement('prev')
+
+                p.onHidden?.(reason)
             }}
-            onBlur={(ev) => s.onBlur(ev)}
+            content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
+            {...p.revealProps}
+            sharedAnchorRef={select.anchorRef}
         >
             <Frame
-                //
-                base={{ contrast: csuite.inputContrast ?? 0.05 }}
-                hover
-                className='flex-1 h-full '
+                expand
+                line
+                icon={p.startIcon}
+                hover={3}
+                tabIndex={0}
+                tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}
+                style={p.style}
+                base={csuite.inputContrast}
+                border={csuite.inputBorder}
+                className={p.className}
+                // 🧚‍♀️ onFocus={(ev) => {
+                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
+                // 🧚‍♀️     p.onAnchorFocus?.(ev)
+                // 🧚‍♀️ }}
+                // 🧚‍♀️ onBlur={(ev) => {
+                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onBlur`)
+                // 🧚‍♀️     p.onAnchorBlur?.(ev)
+                // 🧚‍♀️ }}
+                {...p.anchorProps}
+                onKeyDown={(ev) => {
+                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
+                    select.handleTooltipKeyDown(ev)
+                    select.revealState?.onAnchorKeyDown(ev)
+                    // 🧚‍♀️ p.anchorProps?.onAnchorKeyDown?.(ev)
+                }}
             >
-                <div // ANCHOR
-                    tabIndex={-1}
-                    tw={[
-                        //
-                        'text-sm',
-                        'flex gap-1',
-                        'p-0 h-full bg-transparent',
-                        'select-none overflow-clip',
-                    ]}
-                >
-                    {false && (s.isOpen || s.isFocused) ? null : (
-                        /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
-                        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
-                            <Ikon.mdiTextBoxSearchOutline //
-                                tw='box-border m-[2px]' // 2px for parent border + 2 * 2px for icon padding
-                                size='calc((var(--input-height) - 4px - 2px)'
-                            />
-                            <div
-                                tw={[
-                                    'flex gap-0.5 flex-grow items-center lh-input-2 ',
-                                    p.wrap //
-                                        ? 'flex-wrap'
-                                        : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
-                                ]}
-                            >
-                                {s.displayValue}
-                            </div>
-                            <Ikon.mdiChevronDown //
-                                tw='box-border m-[2px]'
-                                size='calc((var(--input-height) - 4px - 2px)'
-                            />
-                        </div>
-                    )}
-                </div>
-
-                {/* MODAL */}
-                <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    <input
-                        placeholder={s.isOpen ? p.placeholder : undefined}
-                        ref={s.inputRef}
-                        onChange={s.handleInputChange}
-                        style={{ opacity: s.isOpen ? 1 : 0 }}
-                        tw={['csuite-basic-input', 'w-full h-full !outline-none']}
-                        type='text'
-                        value={s.searchQuery}
-                    />
-                </div>
+                <AnchorContentComp select={select} />
             </Frame>
-            {/* TOOLTIP */}
-            {(s.isOpen || false) && <SelectPopupUI showValues={!p.wrap} s={s} />}
-        </Frame>
+        </RevealUI>
     )
 })
+
+const WRAP_SHOULD_NOT_IMPACT_ICONS = true
+export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { select: AutoCompleteSelectState<OPTION> }) {
+    const displayValue =
+        p.select.p.slotDisplayValueUI != null ? <p.select.p.slotDisplayValueUI select={p.select} /> : p.select.displayValue
+    return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
+        // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
+        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '1fr 24px' }}>
+            {/* 2px for parent border + 2 * 2px for icon padding */}
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
+            <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+            <Ikon.mdiChevronDown tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
+        </div>
+    ) : (
+        // IN THIS BRANCH, WE ADD FLEX-NONE
+        <>
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
+            <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+            <Ikon.mdiChevronDown tw='flex-none box-border ml-auto m-[2px]' size='calc((var(--input-height) - 4px - 4px)' />
+        </>
+    )
+})
+
+// HERE
+// onMouseDown={s.onRootMouseDown}
+// onBlur={(ev) => s.onBlur(ev)}
+// onKeyUp={s.onRootKeyUp}
+// onFocus={(ev) => {
+//     console.log(`[🔴] SelectUI > onFocus`)
+//     if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
+//         s.openMenu()
+//     }
+// }}

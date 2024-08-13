@@ -3,7 +3,9 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
 import { HostL } from '../../models/Host'
@@ -39,14 +41,15 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <div tw='flex join gap-1'>
-                    <Button look='primary' active={isMain} onClick={() => host.electAsPrimary()}>
-                        Set Primary
-                        {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
-                    </Button>
-                    <Button look='ghost' onClick={() => host.CONNECT()}>
-                        {host.isConnected ? 'Re-Connect' : 'Connect'}
-                    </Button>
+                <FrameWithCSuiteOverride line config={{ inputHeight: 3 }}>
+                    <Button look='success' expand active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
+                    <Button look='ghost' onClick={() => host.CONNECT()} children={host.isConnected ? 'Re-Connect' : 'Connect'} />
+                    <Button
+                        look='ghost'
+                        icon='mdiContentDuplicate'
+                        onClick={() => host.clone({ name: host.data.name + '-clone' })}
+                        children='clone'
+                    />
                     <Button
                         icon='mdiDelete'
                         disabled={host.isReadonly}
@@ -63,7 +66,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             // })
                         }}
                     ></Button>
-                </div>
+                </FrameWithCSuiteOverride>
 
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}
@@ -128,13 +131,12 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
                 <div tw='flex flex-col'>
                     <LabelUI>Absolute path to model folder</LabelUI>
-                    <input
-                        tw='csuite-basic-input w-full'
-                        type='string'
+                    <InputStringUI
+                        tw='w-full'
                         disabled={disabled}
-                        onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}
-                        value={host.data.absolutPathToDownloadModelsTo ?? ''}
-                    ></input>
+                        setValue={(next) => host.update({ absolutPathToDownloadModelsTo: next })}
+                        getValue={() => host.data.absolutPathToDownloadModelsTo ?? ''}
+                    />
                 </div>
                 {/* ID */}
                 <div tw='flex'>

@@ -52,5 +52,8 @@ export function normalizeTint(tint: TintExt): Tint {
     if (typeof tint === 'boolean') return { contrast: tint ? /* 0.2 */ 0.08 : 0 }
     if (typeof tint === 'number') return { contrast: clamp(tint / 100, 0, 1) }
     if (typeof tint === 'string') return Kolor.fromString(tint)
+    // for (const prop in tint) {
+    //     if (tint[prop] === 0) delete tint[prop]
+    // }
     return tint
 }

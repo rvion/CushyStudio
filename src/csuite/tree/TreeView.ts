@@ -5,6 +5,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
+import { Trigger } from '../trigger/Trigger'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {
@@ -32,16 +33,40 @@ export class TreeView {
         makeAutoObservable(this, { filterRef: false, id: false })
     }
 
+    /**
+     * @deprecated
+     * UNUSED / BROKEN
+     */
     filterRef = createRef<HTMLInputElement>()
+
+    /**
+     * @deprecated
+     * UNUSED / BROKEN
+     */
+
     filter: string | undefined
-    updateFilter = (xPath: string) => (this.filter = xPath)
-    focusFilter = () => {
+
+    /**
+     * @deprecated
+     * UNUSED / BROKEN
+     */
+
+    updateFilter = (xPath: string): void => {
+        this.filter = xPath
+    }
+
+    /**
+     * @deprecated
+     * UNUSED / BROKEN
+     */
+
+    focusFilter = (): void => {
         const curr = this.filterRef.current
         if (!(curr instanceof HTMLElement)) return
         curr.focus()
     }
 
-    get nodes() {
+    get nodes(): TreeNode[] {
         return this.tree.topLevelNodes
     }
 
@@ -74,7 +99,22 @@ export class TreeView {
     // cursor
     at: TreeNode | undefined
 
-    get cursorInfos() {
+    get cursorInfos(): Maybe<{
+        nodeAboveInTreeview: string | undefined
+        nodeBelowInTreeview: string | undefined
+        lastDescendant: string | undefined
+        lastChild: string | undefined
+        descendant_bfs: string[]
+        descendant_dfs: string[]
+        depth: number
+        parent: string | undefined
+        pathStr: string
+        siblingsIncludingSelf: string[]
+        siblingsExcludingSelf: string[]
+        nextSibling: string | undefined
+        prevSibling: string | undefined
+        firstChild: string | undefined
+    }> {
         const at = this.at
         if (at == null) return null
         return {
@@ -94,13 +134,14 @@ export class TreeView {
             firstChild: at.firstChild?.id,
         }
     }
-    setFocusAt = (at: TreeNode | undefined, p?: TreeScrollOptions) => {
+    setFocusAt = (at: TreeNode | undefined, p?: TreeScrollOptions): Trigger => {
         this.at = at
         this.at?.scrollIntoView(p)
         this.conf.onFocusChange?.(at)
+        return Trigger.Success
     }
 
-    onKeyDown = (ev: KeyEv) => {
+    onKeyDown = (ev: KeyEv): void => {
         const handler = this.onKeyDownHandlers(ev)
         if (handler) {
             ev.stopPropagation()
@@ -111,39 +152,45 @@ export class TreeView {
         console.log('key-pressed:', ev.key)
     }
 
-    private onKeyDownHandlers = (ev: KeyEv) => onKeyDownHandlers(ev, this)
+    private onKeyDownHandlers = (ev: KeyEv): Maybe<() => void> => {
+        return onKeyDownHandlers(ev, this)
+    }
 
-    deleteNodeAndFocusNodeAbove = () => {
+    deleteNodeAndFocusNodeAbove = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         const parent = this.at.nodeAboveInView
         this.at.delete()
         this.setFocusAt(parent)
+        return Trigger.Success
     }
 
-    deleteNodeAndFocusNodeBelow = () => {
+    deleteNodeAndFocusNodeBelow = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         /** node below may be deleted, so we first store the node above
          * then after the deletion, retrieve the node below */
         const parent = this.at.nodeAboveInView
         this.at.delete()
         this.setFocusAt(parent?.nodeBelowInView ?? parent)
+        return Trigger.Success
     }
 
-    resetCaretPos = (): undefined => {
+    resetCaretPos = (): Trigger => {
         this.setFocusAt(this.tree.topLevelNodes[0])
+        return Trigger.Success
     }
 
-    moveUp = () => {
+    moveUp = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeAboveInView
-        if (nextAt) this.setFocusAt(nextAt)
+        if (nextAt) return this.setFocusAt(nextAt)
+        else return Trigger.UNMATCHED
     }
 
-    movePageUp = () => {
+    movePageUp = (): Trigger => {
         return this.resetCaretPos()
     }
 
-    movePageDown = () => {
+    movePageDown = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         let ptr: Maybe<TreeNode> = this.at
         let max = 100
@@ -152,15 +199,21 @@ export class TreeView {
             final = ptr
         }
         this.setFocusAt(final)
+        return Trigger.Success // 🔶 should return UNMATCHED if last item is already selected
     }
 
-    moveDown = () => {
+    moveDown = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeBelowInView
-        if (nextAt) this.setFocusAt(nextAt)
+        if (nextAt) {
+            this.setFocusAt(nextAt)
+            return Trigger.Success
+        } else {
+            return Trigger.UNMATCHED
+        }
     }
 
-    moveRight = () => {
+    moveRight = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         const children = this.at.children
         if (children.length > 0) {
@@ -170,9 +223,13 @@ export class TreeView {
         return this.moveDown()
     }
 
-    moveLeft = () => {
+    moveLeft = (): Trigger => {
         if (this.at == null) return this.resetCaretPos()
         if (this.at.isOpen) return this.at.close()
-        if (this.at.parent) return (this.at = this.at.parent)
+        if (this.at.parent) {
+            this.at = this.at.parent
+            return Trigger.Success
+        }
+        return Trigger.UNMATCHED
     }
 }

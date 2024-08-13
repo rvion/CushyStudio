@@ -16,7 +16,14 @@ export function ui_latent_v1(): X.XGroup<{
     })
 }
 
-export const run_latent_v1 = async (p: { opts: OutputFor<typeof ui_latent_v1>; vae: _VAE }) => {
+export const run_latent_v1 = async (p: {
+    opts: OutputFor<typeof ui_latent_v1>
+    vae: _VAE
+}): Promise<{
+    latent: HasSingle_LATENT
+    width: number
+    height: number
+}> => {
     // init stuff
     const run = getCurrentRun()
     const graph = run.nodes

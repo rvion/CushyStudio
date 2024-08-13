@@ -20,16 +20,35 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     const expand = p.expand
     const chroma = getInputBoolChroma(isActive)
     const kit = useCSuite()
+    const border = p.border ?? 10
     return (
         <Frame
-            tw='InputBoolToggleButtonUI minh-input !select-none cursor-pointer justify-center px-1 text-sm flex items-center'
+            tw={[
+                'InputBoolToggleButtonUI minh-input !select-none cursor-pointer px-1 text-sm flex items-center',
+                p.showToggleButtonBox ? undefined : 'justify-center',
+            ]}
+            onKeyDown={(ev) => {
+                if (ev.key === 'Enter') {
+                    p.onValueChange?.(!isActive)
+                    ev.preventDefault()
+                } else if (ev.key === ' ') {
+                    p.onValueChange?.(!isActive)
+                    ev.preventDefault()
+                }
+            }}
+            boxShadow={
+                !Boolean(border) //
+                    ? undefined
+                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+            }
+            tabIndex={0}
             className={p.className}
             triggerOnPress={{ startingState: isActive }}
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement}
             look='default'
             base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
-            border={10 /* isActive ? 10 : 20 */}
+            border={border}
             iconSize={p.iconSize ?? '1.5em'}
             hover={!p.disabled}
             expand={expand}
@@ -51,7 +70,6 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 - I removed the "line-clamp-1" from the paragraph below
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
-
             {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
         </Frame>
     )

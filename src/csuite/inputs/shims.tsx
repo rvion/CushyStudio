@@ -3,13 +3,9 @@ import type { RSSize } from '../types/RsuiteTypes'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { RevealUI } from '../reveal/RevealUI'
 import { exhaust } from '../utils/exhaust'
 
-// form
-export const FormHelpTextUI = (p: any) => <div {...p}></div>
-
-export const InputLegacy = (p: JSX.IntrinsicElements['input']) => {
+export const InputLegacy = (p: JSX.IntrinsicElements['input']): JSX.Element => {
     const { className, children, ...rest } = p
     return (
         <input tw={['csuite-basic-input', className]} {...rest}>
@@ -53,23 +49,13 @@ export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input'
     )
 })
 
-// tooltips
-export const Whisper = (p: {
-    /** @deprecated */
-    enterable?: boolean
-    /** @deprecated */
-    placement?: string
-    speaker: ReactNode
-    children: ReactNode
-}) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
-
 // misc
 export const Surface = (p: {
     //
     header?: ReactNode
     className?: string
     children: ReactNode
-}) => {
+}): JSX.Element => {
     const { header, children, ...rest } = p
     return (
         <div
@@ -140,7 +126,6 @@ export const Message = observer(function Message_(p: {
         </div>
     )
 })
-export const Tag = (p: any) => <div {...p}></div>
 
 export const Loader = observer((p: { size?: RSSize; className?: string }) => (
     <span

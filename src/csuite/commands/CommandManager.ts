@@ -1,5 +1,3 @@
-/** @todo improve to detect shortkey without order */
-
 import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
@@ -11,30 +9,45 @@ import { isPromise } from '../utils/ManualPromise'
 
 export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shift+i'
 
-// string wrapper for extra type safety and ensuring we're working with sanitized key names
+/** string wrapper for extra type safety and ensuring we're working with sanitized key names */
 export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
 
-// 'ctrl+k'
+/** e.g. '⌃k' */
 type InputToken = Branded<string, { InputToken: true }>
 
-// ['ctrl+k', 'ctrl+shift+i']
+/** e.g. ['⌃k', '⌃⇧i'] */
 type InputSequence = InputToken[]
 
-// easy to store in a Map
-type KnownCombo = [InputSequence, Command]
-
 export class CommandManager {
+    /** index of all commands, by their ID */
     commands: Map<Command['id'], Command> = new Map()
+
+    /** index of all commands, by their shortcut */
     commandByShortcut: Map<string, Command[]> = new Map()
+
+    /** index of all commands, by their context */
+    commandByContext: Map<CommandContext, Command[]> = new Map()
+
+    /** index of all known contexts */
     contextByName: Map<string, CommandContext> = new Map()
+
+    inputHistory: InputSequence = []
+    name: string
+
+    /** return the list of all known context seen through registered commands */
     get knownContexts(): CommandContext[] {
         return Array.from(this.contextByName.values())
     }
 
-    registerCommand = (op: Command) => {
+    registerCommand = (op: Command): void => {
         this.contextByName.set(op.ctx.name, op.ctx)
         this.commands.set(op.id, op)
         const combos: CushyShortcut[] = op.combos == null ? [] : Array.isArray(op.combos) ? op.combos : [op.combos]
+
+        // index command in context
+        op.ctx.commands.add(op)
+
+        // store
         for (const k of combos) {
             const key = normalizeCushyShortcut(k)
             // retrieve prev list
@@ -48,14 +61,11 @@ export class CommandManager {
         }
     }
 
-    getCommandById = (id: string) => this.commands.get(id)
+    /** retrieve a command by its id */
+    getCommandById(id: string): Command<any> | undefined {
+        return this.commands.get(id)
+    }
 
-    inputHistory: InputSequence = []
-    // alwaysMatch: Command[] = []
-    // watchList: KnownCombo[] = []
-    // shortcuts: Command[]
-
-    name: string
     constructor(
         public conf: {
             log?: boolean
@@ -70,25 +80,8 @@ export class CommandManager {
         })
 
         this.name = this.conf.name || 'no-name' //shortId()
-        // this.shortcuts = shortcuts
-        // // 1. unfold shortcuts that have serveral combos and normalize them
-        // for (const shortcut of shortcuts) {
-        //     for (const combo of shortcut.combos) {
-        //         const inputSequence = parseShortcutToInputSequence(combo)
-        //         this.watchList.push([inputSequence, shortcut])
-        //     }
-        // }
-        // // 2. sort from longest combo to shortest
-        // // so `ctrl+k ctrl-u` must be check before versus `ctrl-u`
-        // this.watchList = this.watchList.sort(([ix1], [ix2]) => {
-        //     const l1 = ix1.length
-        //     const l2 = ix2.length
-        //     return l2 - l1
-        // })
-        // // console.log(this.knownCombos)
-        // if (this.conf.log) this.log(`${this.watchList.length} loaded`)
     }
-    log = (...content: any[]) => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
+    log = (...content: any[]): void => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
 
     private evInInput = (ev: KeyboardEvent<HTMLElement>): boolean => {
         const element: HTMLElement = ev.target as HTMLElement
@@ -101,22 +94,26 @@ export class CommandManager {
     }
 
     private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
-        const inputAccum: KeyName[] = []
-        if (ev.ctrlKey) inputAccum.push('ctrl' as KeyName)
-        if (ev.shiftKey) inputAccum.push('shift' as KeyName)
-        if (ev.altKey) inputAccum.push('alt' as KeyName)
-        if (ev.metaKey) inputAccum.push(META_NAME)
+        // console.log(`[🤠] input > ev.key`, ev.key)
+        const keyLower = ev.key.toLowerCase()
+        const inputAccum: string[] = []
+        if (ev.ctrlKey && keyLower !== 'ctrl') inputAccum.push('ctrl' /* as KeyName */)
+        if (ev.shiftKey && keyLower !== 'shift') inputAccum.push('shift' /* as KeyName */)
+        if (ev.altKey && keyLower !== 'alt') inputAccum.push('alt' /* as KeyName */)
+        if (ev.metaKey && keyLower !== 'meta') inputAccum.push(META_NAME)
 
         const key = ev.key
 
         if (key) {
-            if (key === ' ') inputAccum.push('space' as KeyName)
-            else inputAccum.push(key.toLowerCase() as KeyName)
+            if (key === ' ') inputAccum.push('space' /* as KeyName */)
+            else inputAccum.push(key /* .toLowerCase() as KeyName */)
         }
         const input = inputAccum //
+            .map(normalizeKey)
             .sort(sortKeyNamesFn)
-            .join('+')
-            .toLowerCase()
+            .join('') as InputToken
+        // .toLowerCase()
+        // console.log(`[🤠] input`, inputAccum, input)
         return input as InputToken
     }
 
@@ -124,7 +121,7 @@ export class CommandManager {
         // 2022-xx-xx: why did I write this ?? => because I get "shift+shift" stuff
         // | I could also check just above if (év.ctrlKey && !ev.key==='...')
         // | but I would also need to handle the ctrl<->control case
-        // 2024-04-09: blender-like shortcuts means those should be treated normally
+        // 💬 2024-04-09: blender-like shortcuts means those should be treated normally
         // | todo: uncomment
         // if (['Control', 'Shift', 'Alt', 'Meta'].includes(ev.key)) {
         //     return Trigger.UNMATCHED
@@ -206,6 +203,7 @@ export function parseShortcutToInputSequence(combo: CushyShortcut): InputSequenc
 export const normalizeCushyShortcut = (combo: CushyShortcut): CushyShortcut => {
     return combo.split(' ').map(normalizeInputToken).join(' ')
 }
+
 // ctrl+shift+a => a+ctrl+shift
 function normalizeInputToken(input: string): InputToken {
     if (input.includes(' ')) throw new Error(`invalid raw input token: "${input}"`)
@@ -213,35 +211,50 @@ function normalizeInputToken(input: string): InputToken {
         .split('+')
         .map(normalizeKey)
         .sort(sortKeyNamesFn)
-        .join('+')
-        .toLowerCase() as InputToken
+        .join('') as InputToken
+    // .toLowerCase() as InputToken
 }
 
-function normalizeKey(key: string): KeyName {
-    if (key === 'up') return 'ArrowUp' as KeyName
-    if (key === 'down') return 'ArrowDown' as KeyName
-    if (key === 'left') return 'ArrowLeft' as KeyName
-    if (key === 'right') return 'ArrowRight' as KeyName
-    if (key === 'mod') return MOD_KEY
-    if (key === 'meta') return META_NAME
+function normalizeKey(key_: string): KeyName {
+    const key = key_.toLowerCase()
+    // https://www.fileformat.info/info/unicode/char/search.htm?q=shift
+    if (key === 'shift') return '⇧' as KeyName
+    if (key === 'alt') return '⌥' as KeyName
+    if (key === 'ctrl') return '⌃' as KeyName
+    if (key === 'cmd') return '⌘' as KeyName
+    // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+    if (key === 'up' || key === 'arrowup') return '↑' as KeyName
+    if (key === 'down' || key === 'arrowdown') return '↓' as KeyName
+    if (key === 'left' || key === 'arrowleft') return '←' as KeyName
+    if (key === 'right' || key === 'arrowright') return '→' as KeyName
+    if (key === 'mod') return _replace(MOD_KEY)
+    if (key === 'meta') return _replace(META_NAME)
     return key as KeyName
 }
 
-const keyPriorityWhenSorting = (key: KeyName) => {
-    if (key === 'ctrl') return '__1ctrl'
-    if (key === 'win') return '__1win'
-    if (key === 'cmd') return '__1cmd'
-    if (key === 'shift') return '__2shift'
-    if (key === 'alt') return '__3alt'
-    return key
-}
-
 const sortKeyNamesFn = (a: KeyName, b: KeyName): number => {
-    const a1 = keyPriorityWhenSorting(a)
-    const b1 = keyPriorityWhenSorting(b)
+    const a1 = _keyPriorityWhenSorting(a)
+    const b1 = _keyPriorityWhenSorting(b)
     return a1.localeCompare(b1)
+}
+const _keyPriorityWhenSorting = (key: KeyName): string => {
+    if (key === '⌃') return '__1ctrl'
+    if (key === 'win') return '__1win'
+    if (key === '⌘') return '__1cmd'
+    if (key === '⇧') return '__2shift'
+    if (key === '⌥') return '__3alt'
+    return key
 }
 
 // const globallyAvailableAs = (name: string) => {}
 
 export const commandManager = new CommandManager({})
+
+function _replace(str: 'cmd' | 'ctrl' | 'shift' | 'alt' | 'win'): KeyName {
+    if (str === 'cmd') return '⌘' as KeyName // command ⌘
+    if (str === 'shift') return '⇧' as KeyName // shift ⇧
+    if (str === 'alt') return '⌥' as KeyName // option ⌥
+    if (str === 'ctrl') return '⌃' as KeyName // control ⌃
+    if (str === 'win') return 'win' as KeyName // windows key
+    return str
+}

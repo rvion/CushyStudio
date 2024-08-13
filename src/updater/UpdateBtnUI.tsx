@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { BadgeUI } from '../csuite/badge/BadgeUI'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { Loader, Message } from '../csuite/inputs/shims'
@@ -37,7 +38,9 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
         ANCHOR = (
             <div tw='flex items-center shrink-0' className={p.className}>
                 {ANCHOR}
-                <span className='indicator-item badge badge-secondary'>Update Available</span>
+                <BadgeUI contrast={0.2} chroma={0.13} hue={0}>
+                    Update Available
+                </BadgeUI>
             </div>
         )
 
@@ -63,39 +66,17 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
     return (
         <div tw='p-1 overflow-auto [max-height:80vh] flex flex-col gap-2'>
             {hasErrors && <Message type='error'>error</Message>}
-            {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and click on the update button</MessageInfoUI>}
-            <div>
-                {/* {updater.hasUpdateAvailable ? (
-                    <Button
-                        className='animate-pulse'
-                        color='red'
-                        size='sm'
-                        look='primary'
-                        icon={<span className='material-symbols-outlined'>update</span>}
-                        onClick={async (ev) => {
-                            ev.stopPropagation()
-                            ev.preventDefault()
-                            await updater.updateToLastCommitAvailable()
-                            window.location.reload()
-                        }}
-                    >
-                        update
-                    </Button>
-                ) : null} */}
-            </div>
+            {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and run the update script</MessageInfoUI>}
             <UpdaterErrorUI updater={updater} />
-
             <div>
                 {updater.lastFetchAt ? (
                     <div>
-                        <div>
-                            <span className='material-symbols-outlined'>history</span> prev update :{' '}
-                            {_formatAsRelativeDateTime(updater.lastFetchAt)}
-                        </div>
-                        <div>
-                            <span className='material-symbols-outlined'>schedule</span> next update :{' '}
-                            {_formatAsRelativeDateTime(updater.nextFetchAt)}
-                        </div>
+                        <Frame line icon='mdiHistory'>
+                            prev update: {_formatAsRelativeDateTime(updater.lastFetchAt)}
+                        </Frame>
+                        <Frame line icon='mdiPageNext'>
+                            next update: {_formatAsRelativeDateTime(updater.nextFetchAt)}
+                        </Frame>
                     </div>
                 ) : (
                     <>no update done</>
@@ -105,10 +86,6 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 <Button look='info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
                     REFRESH
                 </Button>
-
-                {/* {updater.config.canBeUninstalled ? ( //
-                    <UninstallUI updater={updater} />
-                ) : null} */}
             </div>
             <div>
                 <table tw='table table-zebra-zebra table-xs'>

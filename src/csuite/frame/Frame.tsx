@@ -4,14 +4,16 @@ import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
+import type { ForwardedRef, MouseEvent } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type ForwardedRef, forwardRef, type MouseEvent, useContext, useState } from 'react'
+import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
@@ -28,6 +30,12 @@ export type SimpleBoxShadow = {
 }
 
 export type FrameProps = {
+    //
+    as?: string
+
+    /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
+    block?: boolean
+
     tooltip?: string
     tooltipPlacement?: RevealPlacement
 
@@ -39,6 +47,8 @@ export type FrameProps = {
     row?: boolean
     /** quick layout feature to add `flex flex-row items-center` */
     line?: boolean
+    linegap?: boolean
+    wrap?: boolean
     /** quick layout feature to add `flex flex-row` */
     col?: boolean
 
@@ -85,6 +95,8 @@ export const Frame = observer(
 
         // prettier-ignore
         const {
+            as,                                                 // html
+
             active, disabled,                                   // built-in state & style modifiers
             icon, iconSize, suffixIcon, loading,                // addons
             expand, square, size,                               // size
@@ -94,7 +106,7 @@ export const Frame = observer(
             boxShadow,                                          // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
-            row, line, col,                                     // layout
+            row, line, col, wrap,                               // layout
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
@@ -153,9 +165,13 @@ export const Frame = observer(
             }
         }
 
+        // for typescript perf reason, let's not care about the `as` prop
+        // and just pretend it's always a div. it will mostly always be.
+
+        const Elem: 'div' = (as ?? 'div') as 'div'
         // ===================================================================
         return (
-            <div //
+            <Elem //
                 ref={ref}
                 // 📋 tooltip is now handled by csuite directly
                 // | no need to rely on the browser's default tooltip
@@ -163,17 +179,24 @@ export const Frame = observer(
 
                 onMouseOver={_onMouseOver}
                 onMouseOut={_onMouseOut}
+                // special-case: if it's a button, let's add type=button to disable form submission
+                {...(as === 'button' ? { type: 'button' } : {})}
+                // special-case: if it's an image, let's make it lazy; should be the default
+                {...(as === 'image' ? { loading: 'lazy' } : {})}
                 tw={[
                     'box',
+                    // 'flex',
                     frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
                     size && `box-${size}`,
                     square && `box-square`,
                     loading && 'relative',
                     expand && 'flex-1',
                     // layout
-                    p.line && 'flex flex-row items-center',
+                    p.line && 'flex flex-row items-center gap-x-1',
+                    // p.linegap && 'flex flex-row items-center gap-x-2',
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
+                    p.wrap && 'flex-wrap',
                     className,
                 ]}
                 // style={{ position: 'relative' }}
@@ -199,7 +222,13 @@ export const Frame = observer(
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
                     {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
-            </div>
+            </Elem>
         )
     }),
 )
+
+Frame.displayName = 'Frame'
+// @ts-ignore
+Frame.name = 'Frame'
+
+registerComponentAsClonableWhenInsideReveal(Frame)

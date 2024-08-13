@@ -106,10 +106,16 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
 
     create(
         //
-        serial?: FIELD['$Serial'],
+        serial?: FIELD['$Serial'] | false,
         repository?: Repository,
     ): FIELD {
-        return this.instanciate(repository ?? getGlobalRepository(), null, null, serial)
+        return this.instanciate(
+            //
+            repository ?? getGlobalRepository(),
+            null, // root
+            null, // parent
+            serial === false ? undefined : serial,
+        )
     }
 
     instanciate(

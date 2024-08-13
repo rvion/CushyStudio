@@ -4,7 +4,8 @@ const wm = new WeakMap()
 
 export function getUIDForMemoryStructure(
     //
-    x: object | Function | null | undefined | number | string | boolean,
+    x: unknown,
+    nanoidLength?: number,
 ): string {
     if (x == null) return 'null'
     if (typeof x === 'number') return x.toString()
@@ -12,7 +13,7 @@ export function getUIDForMemoryStructure(
     if (typeof x === 'boolean') return x.toString()
     const prev = wm.get(x)
     if (prev) return prev
-    const uid = nanoid()
+    const uid = nanoid(nanoidLength)
     wm.set(x, uid)
     return uid
 }

@@ -7,10 +7,12 @@ import { FormUI, FormUIProps } from './FormUI'
 
 /** free structure */
 
+export type FormRenderProps = Omit<FormUIProps, 'field'>
+
 export class Form {
     constructor(public props: FormUIProps) {}
 
-    render(p?: Omit<FormUIProps, 'field'>): JSX.Element {
+    render(p?: FormRenderProps): JSX.Element {
         return <FormUI {...this.props} {...p} />
     }
 
@@ -24,9 +26,10 @@ export class Form {
     }): JSX.Element {
         return (
             <RevealUI
-                placement='popup-lg'
+                shell='popup-lg'
+                placement='screen-top'
                 title={p?.title}
-                content={(reveal) => {
+                content={(pp) => {
                     // 🔶 todo: add modal title via p.title
                     return this.render({
                         className: 'min-w-[600px]',
@@ -39,7 +42,7 @@ export class Form {
                                 fire({ zIndex: 100000, particleCount: 100, spread: 70 })
                             } else this.props.submitAction(x)
 
-                            if (p?.shouldClose !== false) reveal.close()
+                            if (p?.shouldClose !== false) pp.reveal.close('closeButton')
                         },
                     })
                 }}

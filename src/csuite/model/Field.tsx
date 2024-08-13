@@ -18,7 +18,7 @@ import type { Problem, Problem_Ext } from './Validation'
 import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode } from 'react'
 
-import { CSuiteOverride } from '../ctx/CSuiteOverride'
+import { FrameWithCSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
@@ -495,10 +495,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return [...ownProblems, ...this.customOwnProblems]
     }
 
-    // 2024-07-21 (1) rvion:
+    // 💬 2024-07-21 (1) rvion:
     // | ARRRGH !! this is not cached for some reason !!
     // | array is everytime recreated => FormUI is re-rendered
-    // 2024-07-21 (2) rvion:
+    // 💬 2024-07-21 (2) rvion:
     // | this is related to mobx-store-inheritance not working properly
     get allErrorsIncludingChildrenErros(): Problem[] {
         return this.errors.concat(this.subFields.flatMap((f) => f.allErrorsIncludingChildrenErros))
@@ -639,7 +639,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         // if app author manually specify they want no border, then we respect that
         if (this.config.border != null) return this.config.border
         // if the widget do NOT have a body => we do not show the border
-        if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
+        // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
         // default case when we have a body => we show the border
         return false
         // return 8
@@ -703,7 +703,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     renderSimpleAll(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
         return (
-            <CSuiteOverride
+            <FrameWithCSuiteOverride
                 config={{
                     showWidgetMenu: false,
                     showWidgetExtra: false,
@@ -711,7 +711,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 }}
             >
                 <WidgetWithLabelUI key={this.id} field={this} fieldName='_' {...p} />
-            </CSuiteOverride>
+            </FrameWithCSuiteOverride>
         )
     }
 

@@ -38,7 +38,7 @@ describe('auto-migration ', () => {
 
     // it('can recover from/to links', () => {
     //     expect(0).toBe(1)
-    //     // 2024-07-02: TODO with GUI
+    //     // 💬 2024-07-02: TODO with GUI
     //     // see `src/csuite/simple/SimpleSchema.ts`, near the `AUTOMIGRATION` section
     // })
 

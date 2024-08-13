@@ -18,24 +18,8 @@ const menuPanels = menuWithoutProps({
         //     title: 'Utils',
         //     entries: () => allPanels.filter((v) => XXX.includes(v.name)).flatMap((panel) => panel.menuEntries),
         // }).bind(),
-        ...allPanels.flatMap((panel) => panel.menuEntries),
+        ...allPanels.flatMap((panel) => panel.menuEntries).toSorted((a, b) => a.title.localeCompare(b.title)),
     ],
 })
 
-const layoutShortcuts = menuWithoutProps({
-    title: 'shortcuts',
-    entries: () => [...allLayoutCommands],
-    // entries: () => [...allLayoutCommands],
-})
-
-export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
-    const st = useSt()
-    return (
-        <>
-            {/* <MenuUI menu={menu.UI} /> */}
-            {/* <menu.UI /> */}
-            <menuPanels.UI />
-            <layoutShortcuts.UI />
-        </>
-    )
-})
+export const MenuPanelsUI = (): JSX.Element => <menuPanels.UI />

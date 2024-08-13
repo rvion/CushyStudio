@@ -11,6 +11,8 @@ export type IWidgetListLike = {
     collapseAllChildren(): void
     items: unknown[]
     readonly length: number
+    readonly isCollapsed?: boolean
+    setCollapsed(value: boolean): void
     config: {
         max?: number
         min?: number
@@ -60,6 +62,7 @@ export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IW
                 if (!canAdd) return
                 ev.stopPropagation()
                 field.addItem()
+                if (field.isCollapsed) field.setCollapsed(false)
             }}
         />
     )

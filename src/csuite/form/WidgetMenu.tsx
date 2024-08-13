@@ -21,12 +21,14 @@ export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: str
         <RevealUI className={p.className} content={() => <menu_fieldActions.UI props={p.widget} />}>
             <Button //
                 tooltip='Open field menu'
+                tabIndex={-1}
                 borderless
                 subtle
                 icon='mdiDotsVertical'
                 look='ghost'
-                square
-                size='input'
+                size='widget'
+                // square
+                tw='!px-0'
             />
         </RevealUI>
     )

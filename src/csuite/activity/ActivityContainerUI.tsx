@@ -1,7 +1,7 @@
 import type { Routine } from './Routine'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type ReactNode } from 'react'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
@@ -21,7 +21,11 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
     if (activity.event) {
         const target = activity.event.target
         if (target instanceof HTMLElement) {
-            pos = computePlacement(activity.placement ?? 'popup-lg', target.getBoundingClientRect())
+            pos = computePlacement(
+                //
+                activity.placement ?? 'screen',
+                target.getBoundingClientRect(),
+            )
         }
     }
     return (
@@ -58,7 +62,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 activity.onEvent?.(ev, routine)
             }}
             onKeyUp={(ev) => {
-                // 2024-06-22 rvion:
+                // 💬 2024-06-22 rvion:
                 // | I'm OK with escape being a built-in feature
                 // | safeguard for escape key
                 // | so no custom activity can lock the UI

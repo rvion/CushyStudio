@@ -13,6 +13,7 @@ import { type FC } from 'react'
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form } from '../../form/Form'
 import { Frame } from '../../frame/Frame'
+import { MarkdownUI } from '../../markdown/MarkdownUI'
 import { Field, type KeyedField } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
@@ -24,12 +25,19 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
         /** fields */
         items?: T
 
-        /** if provided, will be used in the header when fields are folded */
+        /** @deprecated; use `toString` instead */
         summary?: (
             //
             items: { [k in keyof T]: T[k]['$Value'] },
             self: Field_group<T>,
         ) => string
+
+        /** @default @false */
+        presetButtons?: boolean
+        // 🔶 TODO 1: remove summary from here and move it to the base field config directly
+        // 🟢 TODO 2: stop passing values to that function, only pass the field directly
+        // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
+        // TODO 4: add various .customXXX on each ....
     },
     Field_group_types<T>
 >
@@ -60,43 +68,107 @@ export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
 
 export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
-type Accessor<T extends Field> = (field: T) => FC<NO_PROPS>
+// prettier-ignore
+type QuickFormContent<T extends Field> =
+    /** strings will be rendered as Markdown, with a `_MD` className  */
+    | string
+
+    /**
+     * any lambda CURRENTLY expect to return a component
+     * (PROBABLY BAD, SHOULD RETURN AN ELEMENT)
+     */
+    | ((field: T) => Maybe<FC<NO_PROPS>>)
+
+    /** Fields will be rendered using the default Component
+     * for the render context (cell, form, text) */
+    | Field
+
+    /** null or undefined will be skipped */
+    | null | undefined
 
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
-    formFields(fields: (keyof T | Accessor<this>)[], props?: { showMore?: (keyof T)[] | false }): FC<NO_PROPS> {
-        const sm = props?.showMore
-        return () => (
-            <Frame>
-                {fields.map((f) => {
-                    if (typeof f === 'function') {
-                        const res = f(this)
-                        return res({})
-                    }
-                    return this.fields[f]!.renderWithLabel({ fieldName: f as string })
-                })}
-                {sm !== false && (
-                    <CollapsibleUI
-                        content={() => {
-                            const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
-                            return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
-                        }}
-                    />
-                )}
-            </Frame>
-        )
+    /**
+     * @deprecated use customForm instead
+     * formFields has been renamed to customForm on the 2024-07-25 for parity
+     * with
+     */
+    formFields(
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
+        props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
+    ): FC<NO_PROPS> {
+        return this.customForm(fields, props)
     }
 
-    form(
-        fields: (keyof T | Accessor<this>)[],
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false },
+    // ⏸️ customCell(
+    // ⏸️     _fields: (Accessor<this>)[],
+    // ⏸️     _props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
+    // ⏸️ ): FC<NO_PROPS> {
+    // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
+    // ⏸️ }
+
+    customForm(
+        extra: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
+        props?: {
+            showMore?: (keyof T)[] | false
+            readonly?: boolean
+            usage?: 'cell' | 'default' | 'text'
+        },
+    ): FC<NO_PROPS | undefined> {
+        const sm = props?.showMore
+        return () => {
+            // ⏸️ const defUsage = props?.usage ?? 'default'
+            const fields = typeof extra === 'function' ? extra(this) : extra
+            return (
+                <Frame>
+                    {fields.map((f, ix) => {
+                        if (f == null) return null
+                        if (typeof f === 'function') {
+                            const res = f(this)
+                            if (res == null) return null
+                            return res({})
+                        }
+                        if (f instanceof Field) {
+                            return f.renderWithLabel({ fieldName: f.mountKey })
+                        }
+
+                        if (typeof f === 'string') {
+                            return <MarkdownUI markdown={f} key={`${ix}-${f}`} />
+                        }
+
+                        return this.fields[f]!.renderWithLabel({ fieldName: f as string })
+                    })}
+                    {sm !== false && (
+                        <CollapsibleUI
+                            content={() => {
+                                const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
+                                return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
+                            }}
+                        />
+                    )}
+                </Frame>
+            )
+        }
+    }
+
+    show(
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
+    ): JSX.Element {
+        return this.defineForm(fields, { ...props }).render()
+    }
+
+    defineForm(
+        //
+        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
+        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
     ): Form {
         return new Form({
             ...props,
             field: this,
-            Component: this.formFields(fields, { showMore: props.showMore }),
+            Component: this.customForm(fields, { showMore: props.showMore }),
         })
     }
 

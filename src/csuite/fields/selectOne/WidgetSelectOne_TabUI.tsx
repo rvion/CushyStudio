@@ -7,19 +7,22 @@ import { getJustifyContent } from '../choices/TabPositionConfig'
 
 export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T extends BaseSelectEntry>(p: {
     field: Field_selectOne<T>
+    className?: string
 }) {
     const field = p.field
     const selected = field.serial.val
     return (
         <div
             style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
+            className={p.className}
             tw={[
                 //
                 'flex flex-1',
-                (field.config.wrap ?? true) && 'flex-wrap',
                 'rounded',
                 'select-none',
-                'gap-x-0.5 gap-y-0',
+                //
+                (field.config.wrap ?? true) && 'flex-wrap',
+                'gap-x-1 gap-y-0',
             ]}
         >
             {field.choices.map((c) => {

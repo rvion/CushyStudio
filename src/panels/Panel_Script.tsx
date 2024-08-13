@@ -2,12 +2,26 @@ import { observer } from 'mobx-react-lite'
 
 import { replaceImportsWithSyncImport } from '../compiler/transpiler'
 import { TabUI } from '../csuite/tabs/TabUI'
+import { Panel, type PanelHeader } from '../router/Panel'
 import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 
-export const Panel_Script = observer(function Panel_Script_(p: { scriptID: CushyScriptID }) {
+export const PanelScript = new Panel({
+    name: 'Script',
+    category: 'developper',
+    widget: (): React.FC<PanelScriptProps> => PanelScriptUI,
+    header: (p: PanelScriptProps): PanelHeader => ({ title: 'Script' }),
+    def: (): PanelScriptProps => ({ scriptID: '' /* 🔴 */ }),
+    icon: 'mdiLanguageTypescript',
+})
+
+export type PanelScriptProps = {
+    scriptID: CushyScriptID
+}
+
+export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProps) {
     const st = useSt()
     const script = st.db.cushy_script.get(p.scriptID)
 

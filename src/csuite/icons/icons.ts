@@ -1,7 +1,6 @@
-import * as icons from '@mdi/js'
-
 import { _CushyIcons } from './iconsCDI'
 import { _IconsLDI } from './iconsLDI'
+import { _IconsMDI } from './iconsMDI'
 import { _IconsXDI } from './iconsXDI'
 
 // Q. how to merge multiple path into a single one ?
@@ -33,7 +32,7 @@ import { _IconsXDI } from './iconsXDI'
 export const allIcons = {
     _: 'M 0,0 z',
     // made by pictogrammers, for all
-    ...icons,
+    ..._IconsMDI,
     // made by/for ???
     ..._IconsXDI,
     // made by/for locomotive

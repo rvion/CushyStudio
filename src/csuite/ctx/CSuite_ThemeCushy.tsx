@@ -1,3 +1,4 @@
+import type { FormGlobalLayoutMode } from '../../state/conf/FormGlobalLayoutMode'
 import type { STATE } from '../../state/state'
 import type { Tint, TintExt } from '../kolor/Tint'
 import type { CSuiteConfig } from './CSuiteConfig'
@@ -21,10 +22,20 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
     }
 
+    // sizes ------------------------------------------------------
     get widgetHeight(): number {
         return this.st.preferences.interface.value.widgetHeight ?? 1.8
     }
 
+    get inputHeight(): number {
+        return this.st.preferences.interface.value.inputHeight ?? 1.6
+    }
+
+    get insideHeight(): number {
+        return this.st.preferences.interface.value.insideHeight ?? 1.2
+    }
+
+    // misc ------------------------------------------------------
     get clickAndSlideMultiplicator(): number {
         return this.st.clickAndSlideMultiplicator ?? 1
     }
@@ -45,20 +56,18 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.showToggleButtonBox ?? false
     }
 
-    get labellayout(): 'fixed-left' | 'fixed-right' | 'fluid' {
+    get labellayout(): FormGlobalLayoutMode {
         const x = this.st.theme.value.labelLayout
         if (x.id === 'fluid') return 'fluid'
-        if (x.id === 'left') return 'fixed-left'
-        if (x.id === 'right') return 'fixed-right'
+        if (x.id === 'fixed-left') return 'fixed-left'
+        if (x.id === 'fixed-right') return 'fixed-right'
+        if (x.id === 'mobile') return 'mobile'
         return 'fixed-right'
     }
 
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false
 
-    get inputHeight(): number {
-        return this.st.preferences.interface.value.inputHeight ?? 1.6
-    }
     // theme
 
     get baseStr(): string {
@@ -73,13 +82,19 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.base.lightness > 0.5 ? -1 : 1
     }
 
-    labelBackground: TintExt = 3 // {}
+    labelBackground: TintExt = 0 // 3 // {}
 
     get text(): Tint {
         return run_tint(this.st.theme.value.text)
     }
 
-    inputBorder = new NumberVar('input-border', () => (this.st.theme.value.border ?? 20) / 100)
+    get inputContrast(): TintExt {
+        return this.st.theme.value.inputContrast
+    }
+
+    get inputBorder(): TintExt {
+        return this.st.theme.value.inputBorder ?? 10
+    }
 
     get labelText(): Tint | undefined {
         const raw = this.st.theme.value.textLabel

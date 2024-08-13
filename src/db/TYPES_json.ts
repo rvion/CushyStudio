@@ -2,6 +2,7 @@ import type { Status } from '../back/Status'
 import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
 import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
+import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
@@ -9,13 +10,15 @@ import type { WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 import type { BaseInstanceFields } from './LiveInstance'
 import type { KyselyTables } from './TYPES.gen'
+import type { TNull, TUndefined, TUnion } from '@sinclair/typebox'
 import type { Metafile } from 'esbuild'
 
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
 export type StatusT = keyof typeof Status
 // export type JSONColumnType< =
-export const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null(), Type.Undefined()])
+export const Nullable = <T extends TSchema>(schema: T): TUnion<[T, TNull, TUndefined]> =>
+    Type.Union([schema, Type.Null(), Type.Undefined()])
 
 export type CushyScript_metafile = Metafile
 // export type CushyScript_metafile = {
@@ -26,6 +29,9 @@ export const CushyScript_metafile_Schema = Type.Record(Type.String(), Type.Any()
 
 export type MediaCustom_params = Record<string, any>
 export const MediaCustom_params_Schema = Type.Record(Type.String(), Type.Any())
+
+export type MediaImage_safetyRating = SafetyResult
+export const MediaImage_safetyRating_Schema = Type.Record(Type.String(), Type.Any())
 
 export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
