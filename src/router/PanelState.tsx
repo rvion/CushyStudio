@@ -4,13 +4,14 @@ import type { Json } from '../csuite/types/Json'
 import type { Builder } from '../CUSHY'
 import type { CushyLayoutManager } from './Layout'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
 import { bang } from '../csuite/utils/bang'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
 export type PanelID = string
-export class PanelState<PROPS extends any = any> {
+export class PanelState<PROPS extends object = any> {
     constructor(
         public node: FL.TabNode,
         public id: PanelID,
@@ -27,6 +28,12 @@ export class PanelState<PROPS extends any = any> {
 
     get layout(): CushyLayoutManager {
         return cushy.layout
+    }
+
+
+    get panelName(): PanelName {
+        const panelName = this.node.getComponent() as Maybe<PanelName>
+        return bang(panelName)
     }
 
     /**
