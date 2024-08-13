@@ -237,7 +237,7 @@ export class MediaImageL {
     }
 
     onMiddleClick = (): void => {
-        return void cushy.layout.open('Image', { imageID: this.id }, 'biggest')
+        return void cushy.layout.open('Image', { imageID: this.id }, { where: 'biggest' })
     }
 
     onRightClick = (): void => {}
