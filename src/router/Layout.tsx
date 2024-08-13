@@ -1,5 +1,6 @@
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelState } from './PanelState'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
@@ -21,6 +22,19 @@ import { PanelName, panels, Panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
+
+// prettier-ignore
+export type PanelPlacement =
+    /** open in the current pane */
+    | 'current'
+    /** open in the neares parent row, on the left of current tabset */
+    | 'left'
+    /** open in the neares parent row, on the right of current tabset */
+    | 'right'
+    /** open in the tabset that have the biggest area */
+    | 'biggest'
+    /** open in the non-current tabset that have the biggest area */
+    | 'biggest-except-current'
 
 type TabsetID = string
 type PerspectiveDataForSelect = {
@@ -602,22 +616,43 @@ export class CushyLayoutManager {
     }
 
     // CREATION --------------------------------------------------------
+    // clone = <PANEL_NAME extends PanelName>(
+    //     panelState: PanelState,
+    //     panelName: PANEL_NAME,
+    //     panelProps: PropsOf<Panels[NoInfer<PANEL_NAME>]['widget']>,
+    // ): void => {
+    //     if (panelState.getConfig)
+    // }
+
     open = <PANEL_NAME extends PanelName>(
         panelName: PANEL_NAME,
         panelProps: PropsOf<Panels[NoInfer<PANEL_NAME>]['widget']>,
-        // prettier-ignore
-        /** @default 'right' */
-        where?:
-            /** open in the current pane */
-            | 'current'
-            /** open in the neares parent row, on the left of current tabset */
-            | 'left'
-            /** open in the neares parent row, on the right of current tabset */
-            | 'right'
-            /** open in the tabset that have the biggest area */
-            | 'biggest'
-            /** open in the non-current tabset that have the biggest area */
-            | 'biggest-except-current',
+        conf: {
+            /**
+             * you can specify where to open the panel,
+             * relative to the currently active one
+             * @default 'right'
+             */
+            where?: PanelPlacement
+            /**
+             * allow to specify whether the placement specified should be
+             * relative to the `active` or the `focused` tab
+             * @default 'active'
+             */
+            relativeTo?: 'active' | 'hovered'
+
+            /**
+             * allow to pre-fill the panel $store data
+             * notably usefull when cloning a tab
+             */
+            $store?: any
+
+            /**
+             * allow to pre-fill the panel $store data
+             * notably usefull when cloning a tab
+             */
+            $temp?: any
+        } = {},
     ): Maybe<FL.Node> => {
         // 1. retrieve the layout model
         const currentLayout = this.layoutRef.current
@@ -634,14 +669,14 @@ export class CushyLayoutManager {
         if (prevTab == null) {
             const tabsetIDToAddThePanelTo = ((): TabsetID => {
                 // case biggest
-                if (where === 'biggest') {
+                if (conf.where === 'biggest') {
                     return this.biggestTabset?.getId() ?? this.getActiveOrFirstTabset_orThrow().getId()
                 }
 
                 // case current
                 if (
-                    where === 'current' || //
-                    where == null
+                    conf.where === 'current' || //
+                    conf.where == null
                 ) {
                     return this.getActiveOrFirstTabset_orThrow().getId()
                 }
@@ -654,7 +689,11 @@ export class CushyLayoutManager {
             const panel = panels[panelName]
             const { title } = panel.header(panelProps as any)
             const icon = panel.icon
-            const config: PanelPersistedJSON = { $props: panelProps ?? {}, $store: {}, $temp: {} }
+            const config: PanelPersistedJSON = {
+                $props: panelProps ?? {},
+                $store: {},
+                $temp: {},
+            }
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
                 id: panelURI,
@@ -825,8 +864,8 @@ export class CushyLayoutManager {
 
     factory(node: FL.TabNode): React.ReactNode {
         // 1. get panel name
-        const panel = node.getComponent() as Maybe<PanelName>
-        if (panel == null)
+        const panelName = node.getComponent() as Maybe<PanelName>
+        if (panelName == null)
             return (
                 <Message type='error' showIcon>
                     no panel (TabNode.getComponent())
@@ -851,7 +890,7 @@ export class CushyLayoutManager {
 
         return createElement(PanelContainerUI, {
             node,
-            panel,
+            panelName,
             panelProps,
         })
     }
