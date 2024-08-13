@@ -8,6 +8,7 @@ import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
 import { bang } from '../csuite/utils/bang'
+import { naiveDeepClone } from '../csuite/utils/naiveDeepClone'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
 export type PanelID = string
@@ -30,6 +31,19 @@ export class PanelState<PROPS extends object = any> {
         return cushy.layout
     }
 
+    clone(partialProps: Partial<PROPS>): void {
+        const config = this.getConfig()
+        this.layout.open(
+            //
+            this.panelName,
+            { ...this.getProps(), ...partialProps },
+            {
+                where: 'below',
+                $store: naiveDeepClone(config.$store),
+                $temp: naiveDeepClone(config.$temp),
+            },
+        )
+    }
 
     get panelName(): PanelName {
         const panelName = this.node.getComponent() as Maybe<PanelName>

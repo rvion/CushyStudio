@@ -27,10 +27,12 @@ export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 export type PanelPlacement =
     /** open in the current pane */
     | 'current'
-    /** open in the neares parent row, on the left of current tabset */
+    /** open in the nearest parent row, on the left of current tabset */
     | 'left'
-    /** open in the neares parent row, on the right of current tabset */
+    /** open in the nearest parent row, on the right of current tabset */
     | 'right'
+    /** open ..... TODO */
+    | 'below'
     /** open in the tabset that have the biggest area */
     | 'biggest'
     /** open in the non-current tabset that have the biggest area */
@@ -644,12 +646,14 @@ export class CushyLayoutManager {
             /**
              * allow to pre-fill the panel $store data
              * notably usefull when cloning a tab
+             * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
              */
             $store?: any
 
             /**
              * allow to pre-fill the panel $store data
              * notably usefull when cloning a tab
+             * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
              */
             $temp?: any
         } = {},
@@ -691,8 +695,8 @@ export class CushyLayoutManager {
             const icon = panel.icon
             const config: PanelPersistedJSON = {
                 $props: panelProps ?? {},
-                $store: {},
-                $temp: {},
+                $store: conf.$store ?? {},
+                $temp: conf.$temp ?? {},
             }
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: panelName,
@@ -707,6 +711,18 @@ export class CushyLayoutManager {
                 this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }
+        }
+        if (conf.where === 'below') {
+            this.do((t) =>
+                t.moveNode(
+                    //
+                    panelURI,
+                    prevTab.getParent()!.getId(),
+                    FL.DockLocation.BOTTOM,
+                    -1,
+                    true,
+                ),
+            )
         }
         // 5. update panel if it already exists
         else {
