@@ -209,6 +209,20 @@ export class CushyLayoutManager {
         return this._withHoveredTabset((tabset) => this._maximizeToggle(tabset.getId()))
     }
 
+    getHoveredOrFirstTabset_orThrow = (): FL.TabSetNode => {
+        return (
+            this.hoveredTabset ?? //
+            this._assertTabsetNode_orThrow(this.model.getFirstTabSet())
+        )
+    }
+
+    getHoveredOrFirstTabset_orNull = (): Maybe<FL.TabSetNode> => {
+        return (
+            this.hoveredTabset ?? //
+            this._assertTabsetNode_orNull(this.model.getFirstTabSet())
+        )
+    }
+
     /** access hovered tabset */
     get hoveredTabset(): Maybe<FL.TabSetNode> {
         // get hovered tab
