@@ -109,10 +109,10 @@ export class Field_list<T extends BaseSchema> //
     items!: T['$Field'][]
 
     get hasChanges(): boolean {
-        // 2024-06-?? rvion:
+        // 💬 2024-06-?? rvion:
         //  | in auto mode, length is managed,
         //  | so we must not take it into account
-        // 2024-07-05 rvion:
+        // 💬 2024-07-05 rvion:
         //   | ^^^ 🤔< NOT SURE about my previous opinion here
         //   |         I'll add some '🔴' for future review
         if (!this.config.auto) {
@@ -492,7 +492,7 @@ export class Field_list<T extends BaseSchema> //
         // ensure item is in the list
         const i = this.items.indexOf(item)
         if (i === -1) {
-            // 2024-07-11 rvion: should we throw
+            // 💬 2024-07-11 rvion: should we throw
             return void console.log(`[🔶] list.removeItem: item not found`)
         }
         this.removeItemAt(i)

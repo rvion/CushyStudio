@@ -40,7 +40,7 @@ export const CurrentStyleCtx = createContext<CurrentStyle>({
      */
 })
 
-// 2024-06-03 rvion:
+// 💬 2024-06-03 rvion:
 // those are not required to travel in the context, as they're not inherited
 // only the base is since all computation are not derived from it.
 // | text: { type: 'absolute', lightness: 0, chroma: 0.5, hue: 180, },

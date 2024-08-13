@@ -53,7 +53,7 @@ export class MenuInstance<Props> implements Activity {
         for (const entry of this.entries) {
             if (entry instanceof SimpleMenuAction) {
                 const res = this.findSuitableKeys(entry.opts.label, allocatedKeys)
-                // 2024-06-22 rvion: we don't want to skip entries,
+                // 💬 2024-06-22 rvion: we don't want to skip entries,
                 // | we want to show them with no key if we can't find letter
                 // | for them
                 // | ⏸️ if (res == null) continue

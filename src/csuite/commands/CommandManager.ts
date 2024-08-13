@@ -121,7 +121,7 @@ export class CommandManager {
         // 2022-xx-xx: why did I write this ?? => because I get "shift+shift" stuff
         // | I could also check just above if (év.ctrlKey && !ev.key==='...')
         // | but I would also need to handle the ctrl<->control case
-        // 2024-04-09: blender-like shortcuts means those should be treated normally
+        // 💬 2024-04-09: blender-like shortcuts means those should be treated normally
         // | todo: uncomment
         // if (['Control', 'Shift', 'Alt', 'Meta'].includes(ev.key)) {
         //     return Trigger.UNMATCHED

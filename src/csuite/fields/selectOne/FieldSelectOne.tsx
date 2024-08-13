@@ -176,7 +176,7 @@ export class Field_selectOne<T extends BaseSelectEntry> //
         this.runInValueTransaction(() => {
             this.serial.val = next
 
-            // 2024-07-08 rvion:
+            // 💬 2024-07-08 rvion:
             // | when setting a value with equal id, we may be actually changing the SelectEntry
             // | (cached name could be different, etc.)
             // | since it's a bit complicated, let's not care today. if this cause a bug, let's improve

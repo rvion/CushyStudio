@@ -61,11 +61,11 @@ const _Button = observer(function Button_(
                 'inline-flex',
                 'select-none',
 
-                // 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
+                // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
                 // | no nee to add too much padding, this can be themed by CSS
                 p.square ? null : 'px-1',
 
-                // 2024-07-30 rvion: let's leave the themeing to somewhere else;
+                // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
                 // | if people want semibold or bold buttons, they can do so using the ui-button class
                 // | 'font-semibold',
 

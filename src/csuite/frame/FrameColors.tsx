@@ -72,7 +72,7 @@ export function computeColors(
     }
 
     // MODIFIERS
-    // 2024-06-05 I'm not quite sure having those modifiers
+    // 💬 2024-06-05 I'm not quite sure having those modifiers
     // here is a good idea; I originally though they were standard;
     // but they are probably not
     if (disabled) {
@@ -88,7 +88,7 @@ export function computeColors(
     const _goingTooDark = prevDir === 1 && KBase.lightness > 0.7
     const _goingTooLight = prevDir === -1 && KBase.lightness < 0.45
     const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevDir
-    // 2024-08-06 :
+    // 💬 2024-08-06 :
     // | in check below, we want to check
     // | against `prevCtx`.dir instead of `prevDir`, to handle the case
     // | where `prevCtx.dir` is null

@@ -108,7 +108,7 @@ export const RevealUI = observer(
             // if (p.style != null) return <>❌ UNSAFE CLONE FAILED (p.style != null)</>
             // if (p.className != null) return <>❌ UNSAFE CLONE FAILED (p.className != null)</>
             if (!React.isValidElement(p.children)) return <>❌ UNSAFE CLONE FAILED (!React.isValidElement(p.children))</>
-            // 2024-07-23: trying to remove the outer div
+            // 💬 2024-07-23: trying to remove the outer div
             // mostly working but edge cases (multiple children, forwarding props & ref by children)
             // makes it slightly unsafe / we're not sure what to do with it yet
             const child = p.children

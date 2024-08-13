@@ -5,7 +5,7 @@ import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveIns
 import type { RunResult } from 'better-sqlite3'
 import type { CompiledQuery, DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
-// 2024-03-14 commented serial checks for now
+// 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
 import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -156,7 +156,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     stmt_query = `select * from ${this.name} order by createdAt desc limit 1`
     stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
 
-    // 2024-06-13 rvion; perf issue was caused by this
+    // 💬 2024-06-13 rvion; perf issue was caused by this
     // beeing a function instead of a getter;
     last = (): Maybe<TABLE['$L']> => {
         return this.last_

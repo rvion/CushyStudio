@@ -521,7 +521,7 @@ export class MediaImageL {
 
     /** absolute path to the thumbnail */
     get _thumbnailAbsPath(): AbsolutePath {
-        // 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
+        // 💬 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
         return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
     }
 

@@ -47,7 +47,7 @@ export function ui_model(): UI_Model {
         box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
         presets: [
-            // 2024-08-06 rvion:
+            // 💬 2024-08-06 rvion:
             // | this preset was a fake one, only here
             // | to show how to create a multi-step preset
             // ⏸️ {
@@ -144,7 +144,7 @@ export function ui_model(): UI_Model {
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
             if (ui.extra.pag) out += ` + PAG(${ui.extra.pag.scale})`
             if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
-            // 2024-05-30 rvion:
+            // 💬 2024-05-30 rvion:
             // | changed the summary when Kohya DeepShrink is enabled.
             // | Was causing some error (not able to convert ui.extra.KohyaDeepShrink to string)
             // | automatically
