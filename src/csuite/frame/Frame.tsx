@@ -148,7 +148,7 @@ export const Frame = observer(
                     depth,
                     ref: elem,
                     text: tooltip ?? 'test',
-                    placement: tooltipPlacement ?? 'bottom',
+                    placement: tooltipPlacement ?? 'auto',
                 })
             }
         }
