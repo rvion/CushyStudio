@@ -31,6 +31,12 @@ export class PanelState<PROPS extends object = any> {
         return cushy.layout
     }
 
+    get parentTabset(): FL.TabSetNode {
+        const parent1 = this.node.getParent()
+        if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
+        const tabset = parent1 as FL.TabSetNode
+        return tabset
+    }
     clone(partialProps: Partial<PROPS>): void {
         const config = this.getConfig()
         this.layout.open(
