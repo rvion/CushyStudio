@@ -45,10 +45,19 @@ export class PanelState<PROPS extends object = any> {
         return row
     }
 
+    /** widen this tab tabset */
+    widen(): void {
+        this.layout.widenTabset(this.parentTabset)
+    }
+
+    /** widen this tab tabset */
+    shrink(): void {
+        this.layout.shrinkTabset(this.parentTabset)
+    }
+
     clone(partialProps: Partial<PROPS>): void {
         const config = this.getConfig()
         this.layout.open(
-            //
             this.panelName,
             { ...this.getProps(), ...partialProps },
             {

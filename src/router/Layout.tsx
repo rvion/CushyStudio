@@ -23,6 +23,8 @@ import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './t
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
+export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
+
 // prettier-ignore
 export type PanelPlacement =
     /** open in the current pane */
@@ -90,11 +92,41 @@ export class CushyLayoutManager {
         })
     }
 
-    /** pretty print model layout as json  */
+    /** pretty print model layout as json */
     prettyPrintLayoutModel(): void {
         console.log(`[💠] layout model:`, JSON.stringify(this.model.toJson(), null, 4))
     }
 
+    private _getTabset(tse: TabsetExt): FL.TabSetNode {
+        if (tse === 'active') return this.getActiveOrFirstTabset_orThrow()
+        if (tse === 'hoverd') return this.getHoveredOrFirstTabset_orThrow()
+        return tse
+    }
+
+    widenTabset(tse: TabsetExt, factor = 1.3): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
+    shrinkTabset(tse: TabsetExt, factor = 0.7): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
 
     /** pretty print model shape as tree, only showing important infos */
     prettyPrintLayoutShape(): void {
