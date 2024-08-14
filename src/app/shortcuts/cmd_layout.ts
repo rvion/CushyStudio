@@ -1,5 +1,6 @@
 import { ctx_layout } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { KEYS } from './shorcutKeys'
 import { globalValidInInput } from './simpleValidInInput'
 
@@ -100,6 +101,32 @@ export const allLayoutCommands: Command<null>[] = [
         ctx: ctx_layout,
         action: () => cushy.layout.openNextPane(),
         icon: 'mdiArrowUpBoldBox',
+    }),
+
+    command({
+        id: 'layout.widen-hovered-tabset',
+        label: 'widen hovered tabset',
+        combos: 'mod+ctrl+arrowright',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiArrowExpandHorizontal',
+        action: () => {
+            cushy.layout.widenTabset('hoverd')
+            return Trigger.Success
+        },
+    }),
+
+    command({
+        id: 'layout.shrink-hovered-tabset',
+        label: 'shrink hovered tabset',
+        combos: 'mod+ctrl+arrowleft',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiArrowExpandHorizontal',
+        action: () => {
+            cushy.layout.shrinkTabset('hoverd')
+            return Trigger.Success
+        },
     }),
 ]
 
