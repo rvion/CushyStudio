@@ -37,6 +37,14 @@ export class PanelState<PROPS extends object = any> {
         const tabset = parent1 as FL.TabSetNode
         return tabset
     }
+
+    get parentRow(): FL.RowNode {
+        const parent2 = this.parentTabset.getParent()
+        if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
+        const row = parent2 as FL.RowNode
+        return row
+    }
+
     clone(partialProps: Partial<PROPS>): void {
         const config = this.getConfig()
         this.layout.open(
