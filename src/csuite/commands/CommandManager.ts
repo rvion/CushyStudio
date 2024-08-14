@@ -34,6 +34,25 @@ export class CommandManager {
     inputHistory: InputSequence = []
     name: string
 
+    lastTriggered: {
+        uid: number
+        command: Command
+        shortcut: string
+        tokens: InputToken[]
+    }[] = []
+    private _lastTriggeredNextUID: number = 1
+    private _recordInHistory(command: Command, shortcut: string, tokens: InputToken[]): void {
+        this.lastTriggered.unshift({
+            uid: this._lastTriggeredNextUID++,
+            command,
+            shortcut,
+            tokens,
+        })
+        if (this.lastTriggered.length > 10) {
+            this.lastTriggered.pop()
+        }
+    }
+
     /** return the list of all known context seen through registered commands */
     get knownContexts(): CommandContext[] {
         return Array.from(this.contextByName.values())
@@ -77,6 +96,8 @@ export class CommandManager {
             contextByName: observable.shallow,
             commandByShortcut: observable.shallow,
             knownContexts: computed,
+            // items are readonly, no need to make them recursively observabel
+            lastTriggered: observable.shallow,
         })
 
         this.name = this.conf.name || 'no-name' //shortId()
@@ -136,7 +157,8 @@ export class CommandManager {
         const lastX = this.inputHistory.slice(-5)
 
         for (let x = 0; x < lastX.length; x++) {
-            const shortcut: CushyShortcut = lastX.slice(x).join(' ')
+            const tokens: InputToken[] = lastX.slice(x)
+            const shortcut: CushyShortcut = tokens.join(' ')
             const matches = this.commandByShortcut.get(shortcut)
 
             for (const s of matches || []) {
@@ -146,7 +168,10 @@ export class CommandManager {
                 if (this.conf.log || s.action == null) this.log(shortcut, `triggered (${s.label})`)
 
                 const done = this.tryToRun(s, ev)
-                if (done) return Trigger.Success
+                if (done) {
+                    this._recordInHistory(s, shortcut, tokens)
+                    return Trigger.Success
+                }
             }
         }
 
