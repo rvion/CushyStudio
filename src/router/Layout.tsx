@@ -92,7 +92,33 @@ export class CushyLayoutManager {
 
     /** pretty print model layout as json  */
     prettyPrintLayoutModel(): void {
-        console.log(`[💠] model:`, JSON.stringify(this.model.toJson(), null, 4))
+        console.log(`[💠] layout model:`, JSON.stringify(this.model.toJson(), null, 4))
+    }
+
+
+    /** pretty print model shape as tree, only showing important infos */
+    prettyPrintLayoutShape(): void {
+        const out: string[] = []
+        function getDepth(node: FL.Node): number {
+            let depth = 0
+            let at: Maybe<FL.Node> = node
+            while (at != null) {
+                depth++
+                at = at.getParent()
+            }
+            return depth
+        }
+        this.traverse({
+            onNode2({ type, node }) {
+                const weight =
+                    type === 'tabset' //
+                        ? ` (${node.getWeight().toString()})`
+                        : ''
+                out.push(`${'  '.repeat(getDepth(node))}${type}${weight}`)
+                return null
+            },
+        })
+        console.log(`[💠] layout shape:\n${out.join('\n')}`)
     }
 
     /** quick method to maximize a tabset */
