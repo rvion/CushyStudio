@@ -78,7 +78,7 @@ export class ElectronUtils {
         }
     }
 
-    openDevTools = (updateConfig: boolean = false) => {
+    openDevTools = (updateConfig: boolean = false): void => {
         try {
             this.st.configFile.update({ preferDevToolsOpen: true })
             const ipcRenderer = window.require('electron').ipcRenderer
@@ -88,7 +88,7 @@ export class ElectronUtils {
         }
     }
 
-    closeDevTools = (updateConfig: boolean = false) => {
+    closeDevTools = (updateConfig: boolean = false): void => {
         try {
             this.st.configFile.update({ preferDevToolsOpen: false })
             const ipcRenderer = window.require('electron').ipcRenderer
@@ -98,7 +98,7 @@ export class ElectronUtils {
         }
     }
 
-    copyImageToClipboard = (payload: Clipboard_ImagePayload) => {
+    copyImageToClipboard = (payload: Clipboard_ImagePayload): Promise<unknown> => {
         return new Promise((resolve, reject) => {
             const format = payload.format ?? 'png'
             const ipcRenderer = window.require('electron').ipcRenderer
