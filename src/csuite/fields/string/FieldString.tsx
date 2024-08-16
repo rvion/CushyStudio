@@ -4,7 +4,6 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { CovariantFC } from '../../variance/CovariantFC'
 import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
@@ -140,7 +139,10 @@ export class Field_string extends Field<Field_string_types> {
         serial?: Field_string_serial,
     ) {
         super(repo, root, parent, schema)
-        this.init(serial)
+        this.init(serial, {
+            UITextarea: false,
+            UIInputText: false,
+        })
     }
 
     get animateResize(): boolean {
