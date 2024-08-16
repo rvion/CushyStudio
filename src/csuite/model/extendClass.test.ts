@@ -2,7 +2,6 @@ import { describe, expect, it } from 'bun:test'
 import { isObservableProp, reaction } from 'mobx'
 
 import { simpleBuilder as b, simpleFactory as f } from '../'
-import { Field_group } from '../fields/group/FieldGroup'
 
 const r = f.repository
 
