@@ -101,6 +101,8 @@ export class CushyLayoutManager {
         return tse
     }
 
+    // Tabset Size Manipulation -----------------------------------------------------------
+    /** widen given tabset by given factor (default to 1.3) */
     widenTabset(tse: TabsetExt, factor = 1.3): void {
         this.prettyPrintLayoutShape()
         const tabset = this._getTabset(tse)
@@ -113,6 +115,8 @@ export class CushyLayoutManager {
             ),
         )
     }
+
+    /** widen given tabset by given factor (default to 0.7) */
     shrinkTabset(tse: TabsetExt, factor = 0.7): void {
         this.prettyPrintLayoutShape()
         const tabset = this._getTabset(tse)
@@ -125,6 +129,15 @@ export class CushyLayoutManager {
             ),
         )
     }
+
+    /** reset tabset size by resetting it's layout weight (default to 1) */
+    resetTabsetSize(tse: TabsetExt, weight = 100): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        this.do((a) => a.updateNodeAttributes(tabset.getId(), { weight }))
+    }
+
+    // Tabset Size Manipulation -----------------------------------------------------------
 
     /** pretty print model shape as tree, only showing important infos */
     prettyPrintLayoutShape(): void {

@@ -55,6 +55,11 @@ export class PanelState<PROPS extends object = any> {
         this.layout.shrinkTabset(this.parentTabset)
     }
 
+    /** reset tabset size */
+    resetSize(): void {
+        this.layout.resetTabsetSize(this.parentTabset)
+    }
+
     clone(partialProps: Partial<PROPS>): void {
         const config = this.getConfig()
         this.layout.open(

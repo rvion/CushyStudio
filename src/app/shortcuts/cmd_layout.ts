@@ -128,6 +128,19 @@ export const allLayoutCommands: Command<null>[] = [
             return Trigger.Success
         },
     }),
+
+    command({
+        id: 'layout.reset-tabset-size',
+        label: 'Reset Tabset Size',
+        combos: 'mod+ctrl+r',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiLockReset',
+        action: () => {
+            cushy.layout.resetTabsetSize('hoverd')
+            return Trigger.Success
+        },
+    }),
 ]
 
 // TODO:
