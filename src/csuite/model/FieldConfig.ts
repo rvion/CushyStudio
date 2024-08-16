@@ -162,6 +162,12 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     customFieldProperties?: FieldExtension<any>[]
 
     /**
+     * @since 2024-08-14
+     * @stability beta
+     */
+    classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
+
+    /**
      * you probably DON'T want to specify this manually.
      * you can use the <schema>.publish(...) method instead
      *                          ^^^^^^^^^^^^

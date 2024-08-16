@@ -36,7 +36,11 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
         public readonly config: FIELD['$Config'],
     ) {
         super()
-        this.FieldClass_UNSAFE = FieldClass
+        this.FieldClass_UNSAFE =
+            this.config.classToUse != null //
+                ? this.config.classToUse(FieldClass)
+                : FieldClass
+
         this.applySchemaExtensions()
         // makeObservable(this, {
         //     config: true,

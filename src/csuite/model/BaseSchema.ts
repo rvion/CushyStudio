@@ -37,6 +37,40 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         return x as any as BaseSchema<EXTS & FIELD>
     }
 
+    /**
+     *
+     * example usage:
+     *
+     *  ```ts
+     *  // define base schema
+     *  const S0 = b.fields({
+     *      foo: b.int({ default: 10 }),
+     *  })
+     *
+     *  // use `useClass` to extend the auto-generated class
+     *  // with your custom class
+     *  const S1 = S0.useClass((FIELD) => {
+     *      return class Foo extends FIELD {
+     *          static HELLO = 'WORLD'
+     *          volatile = 12
+     *          get foofoo(): number {
+     *              return this.value.foo * 2
+     *          }
+     *      }
+     *  })
+     *
+     * // S1: BaseSchema<Foo>
+     * ```
+     *
+     */
+    useClass<EXTS extends Field>(
+        /** the class constructor */
+        cls: (base: new (...args: any[]) => FIELD) => new (...args: any[]) => EXTS,
+    ): BaseSchema<EXTS /* & FIELD */> {
+        if (this.config.classToUse != null) throw new Error('already have a custom class')
+        return this.withConfig({ classToUse: cls }) as any as BaseSchema<EXTS>
+    }
+
     applySchemaExtensions(): void {
         for (const ext of this.config.customSchemaProperties ?? []) {
             const xxx = ext(this)
@@ -146,7 +180,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         // ----------------------------------------------------------------------------------
 
         // run the config.onCreation if needed
-        if (this.config.beforeInit) {
+        if (this.config.beforeInit != null) {
             const oldVersion = serial?._version ?? 'default'
             const newVersion = this.config.version ?? 'default'
             if (oldVersion !== newVersion) {
@@ -161,8 +195,20 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             console.log(`[🔶] INVALID SERIAL:`, serial)
             serial = null
         }
-        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
+        // create the instance
+        const field = new this.FieldClass_UNSAFE(
+            //
+            repo,
+            root,
+            parent,
+            this,
+            serial,
+        )
+
+        // start publications
         field.publishValue()
+
+        // start reactions
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later
             reaction(
