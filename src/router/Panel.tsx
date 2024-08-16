@@ -2,29 +2,38 @@ import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
 import type { BoundMenu } from '../csuite/menu/BoundMenuOpts'
 import type { MenuEntry } from '../csuite/menu/MenuEntry'
+import type { PanelCategory } from './PanelCategory'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'
 import { command } from '../csuite/commands/Command'
 import { menuWithoutProps } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
 import { Trigger } from '../csuite/trigger/Trigger'
+import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 
 export type PanelHeader = {
     title: string
     icon?: IconName
 }
 
-// prettier-ignore
-export type PanelCategory =
-    | 'app' // everything related to running CushyStudio apps
-    | 'outputs' // everything related to viewing generated content
-    | 'settings' // everything related to settings / configuration
-    | 'ComfyUI'
-    | 'models'
-    | 'tools'
-    | 'help'
-    | 'misc'
-    | 'developper'
+export type PanelPreset<Props> = {
+    props: Partial<Props>
+    icon?: IconName
+    name?: string
+}
+export type PanelDef<Props> = {
+    //
+    name: string
+    category: PanelCategory
+    widget: () => React.FC<Props>
+    header: (p: NoInfer<Props>) => PanelHeader
+    icon: IconName
+    def: () => NoInfer<Props>
+    presets?: {
+        [name: string]: () => PanelPreset<Props>
+    }
+    about?: string
+}
 
 export class Panel<Props> {
     $PanelHeader!: PanelHeader
@@ -33,19 +42,7 @@ export class Panel<Props> {
     /** default command to open the panel with default props */
     defaultCommand: Command
 
-    constructor(
-        public p: {
-            //
-            name: string
-            category: PanelCategory
-            widget: () => React.FC<Props>
-            header: (p: NoInfer<Props>) => PanelHeader
-            icon: IconName
-            def: () => NoInfer<Props>
-            presets?: { [name: string]: () => NoInfer<Props> }
-            about?: string
-        },
-    ) {
+    constructor(public p: PanelDef<Props>) {
         this.defaultCommand = command({
             id: 'panel.default.open.' + this.name,
             description: `Open ${this.name} panel`,
@@ -58,6 +55,10 @@ export class Panel<Props> {
             },
             icon: this.icon,
         })
+    }
+
+    get category(): PanelCategory {
+        return this.p.category
     }
 
     get name(): string {
@@ -88,15 +89,17 @@ export class Panel<Props> {
                 cushy.layout.FOCUS_OR_CREATE(this.name as any, {}, 'LEFT_PANE_TABSET')
             },
         }) */
+        const baseProps = this.p.def()
         if (presets.length === 0) {
             out.push(defEntry)
         } else {
-            const sub = presets.map(([name, preset]) => {
+            const sub = presets.map(([name, presetFn]) => {
                 return new SimpleMenuAction({
                     label: name,
                     icon: this.p.icon,
                     onPick: (): void => {
-                        const props: Props = preset()
+                        const preset: PanelPreset<any> = presetFn()
+                        const props: Props = { ...baseProps, ...preset.props }
                         cushy.layout.open(this.name as any, props, { where: 'left' })
                     },
                 })

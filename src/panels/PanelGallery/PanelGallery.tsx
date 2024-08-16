@@ -7,7 +7,7 @@ import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
-import { Panel, type PanelHeader } from '../../router/Panel'
+import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
 import { useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
@@ -21,9 +21,9 @@ export const PanelGallery = new Panel({
     icon: 'mdiViewGallery',
     def: (): PanelGalleryProps => ({}),
     presets: {
-        'Gallery 1': (): PanelGalleryProps => ({ uid: 1 }),
-        'Gallery 2': (): PanelGalleryProps => ({ uid: 2 }),
-        'Gallery 3': (): PanelGalleryProps => ({ uid: 3 }),
+        'Gallery 1': (): PanelPreset<PanelGalleryProps> => ({ props: { uid: 1 } }),
+        'Gallery 2': (): PanelPreset<PanelGalleryProps> => ({ props: { uid: 2 } }),
+        'Gallery 3': (): PanelPreset<PanelGalleryProps> => ({ props: { uid: 3 } }),
     },
 })
 
