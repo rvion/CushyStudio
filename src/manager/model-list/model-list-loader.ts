@@ -45,7 +45,7 @@ export const _getKnownModels = (
         let out1 = ''
         const uniqCategories: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.type] != null) acc[cur.type] += 1
+                if (acc[cur.type] != null) acc[cur.type]! += 1
                 else acc[cur.type] = 1
                 return acc
             },
@@ -66,7 +66,7 @@ export const _getKnownModels = (
         let out4 = ''
         const uniqSavePath: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.save_path] != null) acc[cur.save_path] += 1
+                if (acc[cur.save_path] != null) acc[cur.save_path]! += 1
                 else acc[cur.save_path] = 1
                 return acc
             },
@@ -87,7 +87,7 @@ export const _getKnownModels = (
         let out2 = ''
         const uniqBases: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.base] != null) acc[cur.base] += 1
+                if (acc[cur.base] != null) acc[cur.base]! += 1
                 else acc[cur.base] = 1
                 return acc
             },
