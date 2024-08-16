@@ -1,10 +1,10 @@
+import type { PropsOf } from '../csuite/types/PropsOf'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
-import type { PanelState } from './PanelState'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
-import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC, type RefObject } from 'react'
@@ -20,8 +20,6 @@ import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/
 import { PanelContainerUI } from './PanelContainerUI'
 import { PanelName, panels, Panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
-
-export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
 export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
 

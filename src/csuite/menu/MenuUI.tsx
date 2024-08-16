@@ -1,4 +1,3 @@
-import type { FrameProps } from '../frame/Frame'
 import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'

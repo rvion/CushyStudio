@@ -1,13 +1,13 @@
 import type { Activity } from '../activity/Activity'
+import type { Trigger } from '../trigger/Trigger'
+import type { Menu, MenuEntryWithKey } from './Menu'
 import type { MenuEntry } from './MenuEntry'
 
 import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
 import { Command } from '../commands/Command'
-import { Trigger } from '../trigger/Trigger'
 import { BoundMenu } from './BoundMenuOpts'
-import { Menu, MenuEntryWithKey } from './Menu'
 import { menuBuilder } from './MenuBuilder'
 import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'

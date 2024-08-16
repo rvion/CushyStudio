@@ -1,4 +1,4 @@
-import type { PropsOf } from '../../router/Layout'
+import type { PropsOf } from '../types/PropsOf'
 
 import { observer } from 'mobx-react-lite'
 
