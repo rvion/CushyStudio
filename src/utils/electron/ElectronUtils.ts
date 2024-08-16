@@ -1,5 +1,7 @@
 import type { STATE } from '../../state/state'
 
+import { MOD_KEY } from '../../csuite/accelerators/META_NAME'
+import { type InputToken, makeInputToken } from '../../csuite/commands/CommandManager'
 import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../models/PathObj'
 
@@ -64,6 +66,24 @@ export class ElectronUtils {
             cushy.search.results = json
             // console.log(`[🔎] search-result =`, { json })
             // createMediaImage_fromPath(st, json.relativePath, {})
+        })
+
+        // 2024-08-16 rvion: 🏑
+        ipcRenderer.removeAllListeners('custom-cmd-w')
+        ipcRenderer.on('custom-cmd-w', (_ev, json: SearchResult_IPCPayload) => {
+            console.log('B. custom-cmd-w')
+            cushy.commands.processKeyDown({
+                inInput: false,
+                inputToken: makeInputToken(['cmd', 'w']),
+            })
+        })
+        ipcRenderer.removeAllListeners('custom-ctrl-w')
+        ipcRenderer.on('custom-ctrl-w', (_ev, json: SearchResult_IPCPayload) => {
+            console.log('B. custom-ctrl-w')
+            cushy.commands.processKeyDown({
+                inInput: false,
+                inputToken: makeInputToken(['ctrl', 'w']),
+            })
         })
     }
 
