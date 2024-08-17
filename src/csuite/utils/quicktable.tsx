@@ -6,10 +6,14 @@ import { Frame } from '../frame/Frame'
 export const QuickTableUI = observer(function QuickTable({
     // own props
     rows,
+    dense,
 
     // top-level 'table' patches
     ...rest
-}: { rows: unknown[] } & React.HTMLAttributes<HTMLTableElement>) {
+}: {
+    rows: unknown[]
+    dense?: boolean
+} & React.HTMLAttributes<HTMLTableElement>) {
     if (rows.length === 0) return null
     const firstRow = rows[0]!
     const keys = Object.keys(firstRow)
@@ -20,8 +24,8 @@ export const QuickTableUI = observer(function QuickTable({
             tw={[
                 //
                 '[&_th]:text-left',
-                '[&_th]:p-2',
-                '[&_td]:p-2',
+                dense !== true && '[&_th]:p-2',
+                dense !== true && '[&_td]:p-2',
             ]}
         >
             <Frame as='thead' base={10}>
