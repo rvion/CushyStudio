@@ -24,8 +24,8 @@ export const QuickTableUI = observer(function QuickTable({
             tw={[
                 //
                 '[&_th]:text-left',
-                dense !== true && '[&_th]:p-2',
-                dense !== true && '[&_td]:p-2',
+                dense === true ? '[&_th]:px-2' : '[&_th]:p-2',
+                dense === true ? '[&_td]:px-2' : '[&_td]:p-2',
             ]}
         >
             <Frame as='thead' base={10}>

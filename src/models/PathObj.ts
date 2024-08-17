@@ -26,6 +26,19 @@ export class FPath {
         this._relPath = relPath
     }
 
+    get hierarchy(): FPath[] {
+        const sep = p.sep
+        const str = this.path
+        const out: FPath[] = []
+        for (let i = 0; i < str.length; i++) {
+            if (str[i] === sep) {
+                out.push(new FPath(str.slice(0, i + 1)))
+            }
+        }
+        out.push(this)
+        return out.reverse()
+    }
+
     readAsString(): string {
         return fs.readFileSync(this.absPath, 'utf-8')
     }
@@ -50,7 +63,7 @@ export class FPath {
         }
     }
 
-    existsSync(): boolean {
+    get existsSync(): boolean {
         return fs.existsSync(this.absPath)
     }
 

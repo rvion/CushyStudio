@@ -5,14 +5,16 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
+import { openFolderInOS } from '../../app/layout/openExternal'
+import { Button } from '../../csuite/button/Button'
 import { FormUI } from '../../csuite/form/FormUI'
-import { stringifyUnknown } from '../../csuite/formatters/stringifyUnknown'
 import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
+import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -105,9 +107,23 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
     const metadata = draft.app.executable_orExtract?.metadata
     // {/* <ActionDraftListUI card={card} /> */}
+    const fpath = draft.file.fPath
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
             <DraftHeaderUI draft={draft} children={justify.root.renderSimple({ className: 'ml-auto' })} />
+            {fpath.existsSync ? null : (
+                <MessageErrorUI title='File Does not exists'>
+                    <QuickTableUI
+                        dense
+                        rows={fpath.hierarchy.map((str) => ({
+                            exists: str.existsSync ? '✅' : '❌',
+                            path: JSON.stringify(str.path),
+                        }))}
+                    ></QuickTableUI>
+                    {/* {fpath.hierarchy.map} */}
+                    <Button onClick={() => openFolderInOS(draft.file.folderAbs)}>open folder</Button>
+                </MessageErrorUI>
+            )}
             {draft.shouldAutoStart && (
                 <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
             )}
