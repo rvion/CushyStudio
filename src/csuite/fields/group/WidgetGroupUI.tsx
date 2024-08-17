@@ -28,9 +28,9 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     const hasFoldableSubfields = field.hasFoldableSubfields
     if (presets?.length && field.config.presetButtons) {
         out.push(
-            ...presets.map((preset) => (
+            ...presets.map((preset, ix) => (
                 <UI.Button //
-                    key={preset.label}
+                    key={preset.label + ix}
                     // square
                     // subtle
                     icon={preset.icon}
