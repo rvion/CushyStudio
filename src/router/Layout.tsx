@@ -12,11 +12,13 @@ import { createElement, createRef, FC, type RefObject } from 'react'
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
 import { Message } from '../csuite/inputs/shims'
+import { PanelUI } from '../csuite/panel/PanelUI'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
+import { PanelWelcome, PanelWelcomeUI } from '../panels/PanelWelcome/PanelWelcome'
 import { PanelContainerUI } from './PanelContainerUI'
 import { PanelName, panels, Panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
@@ -499,6 +501,13 @@ export class CushyLayoutManager {
                 ref={this.layoutRef}
                 model={this.model}
                 factory={this.factory}
+                onTabSetPlaceHolder={() => {
+                    return (
+                        <PanelUI>
+                            <PanelWelcomeUI />
+                        </PanelUI>
+                    )
+                }}
                 /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
                  * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
                 realtimeResize
