@@ -28,7 +28,7 @@ export const ImageUI = observer(function ImageUI_({
     const ImageWidth =
         typeof size === 'number' //
             ? `${size}px`
-            : size ?? LEGACY_ST_gallerySizeStr
+            : (size ?? LEGACY_ST_gallerySizeStr)
 
     // get image
     const image = typeof img === 'string' ? st.db.media_image.get(img) : img
