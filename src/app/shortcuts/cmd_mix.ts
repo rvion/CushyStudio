@@ -56,15 +56,6 @@ export const allLegacyCommands: Command<any>[] = [
         'mdiMoveResize',
     ),
     globalValidInInput(
-        KEYS.resizeWindowForLaptop,
-        'Resize Window for video capture',
-        () => {
-            cushy.resizeWindowForLaptop()
-            return Trigger.Success
-        },
-        'mdiMoveResize',
-    ),
-    globalValidInInput(
         KEYS.resetLayout,
         'Reset layout',
         () => {

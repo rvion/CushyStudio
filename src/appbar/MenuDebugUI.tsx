@@ -42,6 +42,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         localShortcut={KEYS.resetLayout}
                         label='Fix Tabs with negative size'
                     />
+                    {/* 🔴 */}
                     <MenuItem
                         iconClassName='text-green-500'
                         icon='mdiVideo'

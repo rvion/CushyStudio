@@ -225,6 +225,8 @@ export class STATE {
         return this.mainHost.schema
     }
 
+    showCommandHistory: boolean = false
+
     comfySessionId = 'temp' /** send by ComfyUI server */
 
     // paths
