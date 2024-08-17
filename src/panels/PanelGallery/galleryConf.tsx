@@ -64,8 +64,7 @@ export function useGalleryConf(): GalleryConf {
                         },
                         ['media_image.id'],
                     )
-                    console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
-
+                    // console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
                     // console.log(`[🤠] BBB`)
                     return out
                 },
