@@ -5,7 +5,7 @@ import { makeAutoObservable } from 'mobx'
 import sharp, { type Blend } from 'sharp'
 
 import { createMediaImage_fromBuffer } from '../models/createMediaImage_fromWebFile'
-import { FPath } from '../models/PathObj'
+import { FPath } from '../models/FPath'
 
 export class RuntimeSharp {
     constructor(private rt: Runtime) {

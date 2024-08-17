@@ -1,5 +1,8 @@
 import * as fs from 'fs'
 import p from 'pathe'
+import { createElement } from 'react'
+
+import { FPathDiagnosticBadgeUI, FPathDiagnosticUI } from './FPathDiagnostic'
 
 export type FilepathExt = string | FPath
 
@@ -10,9 +13,15 @@ export class FPath {
     get relPath(): string {
         return this._relPath
     }
+
     get absPath(): string {
         return this._absPath
     }
+
+    /** complete file diagnostics */
+    UIDiagnostic = (): JSX.Element => createElement(FPathDiagnosticUI, { fpath: this })
+
+    UIDiagnosticBadge = (): JSX.Element => createElement(FPathDiagnosticBadgeUI, { fpath: this })
 
     constructor(public path: string) {
         if (path.startsWith('data:')) {

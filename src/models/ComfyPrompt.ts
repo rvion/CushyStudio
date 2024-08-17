@@ -22,7 +22,7 @@ import {
     createMediaImage_fromPath,
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
-import { FPath } from './PathObj'
+import { FPath } from './FPath'
 
 export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {

@@ -10,7 +10,7 @@ import {
     createMediaImage_fromDataURI,
     createMediaImage_fromPath,
 } from '../models/createMediaImage_fromWebFile'
-import { type FilepathExt, FPath } from '../models/PathObj'
+import { type FilepathExt, FPath } from '../models/FPath'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {

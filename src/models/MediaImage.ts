@@ -35,8 +35,8 @@ import {
     createMediaImage_fromDataURI,
     type ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
+import { FPath } from './FPath'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
-import { FPath } from './PathObj'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
