@@ -563,9 +563,9 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab(): Trigger {
+    closeCurrentTab(tse: TabsetExt = 'hoverd'): Trigger {
         // 1. find tabset
-        const tabset = this.getActiveOrFirstTabset_orThrow()
+        const tabset = this._getTabset(tse)
         if (tabset == null) return Trigger.UNMATCHED
 
         // 2. find active tab
