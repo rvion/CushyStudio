@@ -51,7 +51,7 @@ export class ComfyManager {
         })
         void this.updateHostPluginsAndModels()
     }
-    updateHostPluginsAndModels = async () => {
+    updateHostPluginsAndModels = async (): Promise<void> => {
         this.pluginList = await this.fetchPluginList()
         this.modelList = await this.fetchModelList()
     }
@@ -69,7 +69,7 @@ export class ComfyManager {
 
     // actions ---------------------------------------------------------------------------
     // @server.PromptServer.instance.routes.get("/manager/reboot")
-    rebootComfyUI = async () => {
+    rebootComfyUI = async (): Promise<unknown> => {
         // 🔴 bad code
         setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
 
@@ -89,7 +89,7 @@ export class ComfyManager {
 
     modelsBeeingInstalled = new Set<KnownModel_Name>()
 
-    installModel = async (model: ModelInfo) => {
+    installModel = async (model: ModelInfo): Promise<boolean> => {
         try {
             this.modelsBeeingInstalled.add(model.name)
             const status = await this.fetchPost('/model/install', model)
@@ -163,7 +163,7 @@ export class ComfyManager {
         }
     }
 
-    installPlugin = async (model: PluginInfo) => {
+    installPlugin = async (model: PluginInfo): Promise<boolean> => {
         try {
             const status = await this.fetchPost('/customnode/install', model)
             toastSuccess('Custom Node installed')
