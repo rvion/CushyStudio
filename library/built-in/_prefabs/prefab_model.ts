@@ -159,19 +159,37 @@ export function ui_model(): UI_Model {
                             .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
                             .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
                     }),
-                    SD3: form.fields({
-                        ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
-                        clip1: form.enum.Enum_TripleCLIPLoader_clip_name1({ default: 't5xxl_fp16.safetensors' }),
-                        clip2: form.enum.Enum_TripleCLIPLoader_clip_name2({ default: 'clip_l.safetensors' }),
-                        clip3: form.enum.Enum_TripleCLIPLoader_clip_name3({ default: 'clip_g.safetensors' }),
-                    }),
-                    FLUX: form.fields({
-                        ckpt_name: form.enum.Enum_UNETLoader_unet_name({ default: 'flux1-dev.sft' }),
-                        weight_type: form.enum.Enum_UNETLoader_weight_dtype({ label: 'Weight Type', default: 'fp8_e4m3fn' }),
-                        clip1: form.enum.Enum_DualCLIPLoader_clip_name1({ default: 't5xxl_fp16.safetensors' }),
-                        clip2: form.enum.Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' }),
-                        type: form.enum.Enum_DualCLIPLoader_type({ default: 'flux' }),
-                    }),
+                    SD3: form
+                        .fields({
+                            ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
+                            clip1: form.enum.Enum_TripleCLIPLoader_clip_name1({ default: 't5xxl_fp16.safetensors' }),
+                            clip2: form.enum.Enum_TripleCLIPLoader_clip_name2({ default: 'clip_l.safetensors' }),
+                            clip3: form.enum.Enum_TripleCLIPLoader_clip_name3({ default: 'clip_g.safetensors' }),
+                        })
+                        .addRequirements([
+                            //
+                        ]),
+                    FLUX: form
+                        .fields({
+                            ckpt_name: form.enum.Enum_UNETLoader_unet_name({ default: 'flux1-dev.sft' }),
+                            weight_type: form.enum.Enum_UNETLoader_weight_dtype({ label: 'Weight Type', default: 'fp8_e4m3fn' }),
+                            clip1: form.enum
+                                .Enum_DualCLIPLoader_clip_name1({ default: 't5xxl_fp16.safetensors' })
+                                .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp16')
+                                .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp8_e4m3fn'),
+                            clip2: form.enum
+                                .Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' })
+                                .addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
+                            type: form.enum.Enum_DualCLIPLoader_type({ default: 'flux' }),
+                        })
+                        .addRequirements([
+                            { type: 'modelInManager', modelName: 'FLUX.1 VAE model' },
+                            { type: 'modelInManager', modelName: 'FLUX.1 [schnell] Diffusion model' },
+                            { type: 'modelInManager', modelName: 'kijai/FLUX.1 [dev] Diffusion model (float8_e4m3fn)' },
+                            { type: 'modelInManager', modelName: 'kijai/FLUX.1 [schnell] Diffusion model (float8_e4m3fn)' },
+                            { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [dev] Checkpoint model (fp8)' },
+                            { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [schnell] Checkpoint model (fp8)' },
+                        ]),
                 },
                 appearance: 'tab',
             }),
@@ -314,7 +332,7 @@ export const run_model_modifiers = (
         ui.extra.KohyaDeepShrink &&
         ((!forHiRes && ui.extra.KohyaDeepShrink.include.base) || (forHiRes && ui.extra.KohyaDeepShrink.include.hiRes))
     ) {
-        const setScale = forHiRes ? kohyaScale : ui.extra.KohyaDeepShrink.advancedSettings.downscaleFactor ?? 2
+        const setScale = forHiRes ? kohyaScale : (ui.extra.KohyaDeepShrink.advancedSettings.downscaleFactor ?? 2)
         const set = ui.extra.KohyaDeepShrink.advancedSettings
         ckpt = graph.PatchModelAddDownscale({
             downscale_factor: setScale,

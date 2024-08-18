@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { HostL } from '../../models/Host'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
@@ -29,18 +30,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                         </Message>
                     )}
                     <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
-                    <div
-                        tw='btn btn-sm'
-                        onClick={async () => {
-                            await host.fetchAndUpdateSchema()
-                            return host.manager.updateHostPluginsAndModels()
-                        }}
-                    >
-                        Reload Schema
-                    </div>
-                    <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
-                        Restart ComfyUI
-                    </div>
+                    <QuickHostActionsUI host={host} />
                 </div>
             )}
         >

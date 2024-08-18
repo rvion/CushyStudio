@@ -89,6 +89,9 @@ export function ui_sampler_advanced(p?: {
                       default: p?.sampler_name ?? 'euler',
                   }),
             guidanceType: form.choice({
+                appearance: 'tab',
+                collapsed: false,
+                default: { CFG: true },
                 items: {
                     CFG: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 6 }),
                     DualCFG: form.fields({
@@ -119,12 +122,12 @@ export function ui_sampler_advanced(p?: {
                         }),
                     }),
                 },
-                appearance: 'select',
-                default: { CFG: true },
             }),
             // cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 6 }),
             //denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
             sigmasType: form.choice({
+                appearance: 'tab',
+                collapsed: false,
                 items: {
                     basic: form.fields({
                         denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
@@ -142,7 +145,6 @@ export function ui_sampler_advanced(p?: {
                     SDTurbo: form.auto.SDTurboScheduler(),
                     VPScheduler: form.auto.VPScheduler(),
                 },
-                appearance: 'select',
             }),
             seed: form.seed({}),
             textEncoderType: form.choice({

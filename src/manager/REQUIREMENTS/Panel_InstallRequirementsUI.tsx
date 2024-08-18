@@ -11,6 +11,7 @@ import { exhaust } from '../../csuite/utils/exhaust'
 import { useSt } from '../../state/stateContext'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
+import { QuickHostActionsUI } from './QuickHostActionsUI'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
     active: boolean
@@ -48,44 +49,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const manager = host.manager
     const repo = manager.repository
     return (
-        <div tw='flex flex-col gap-2 '>
-            <div tw='flex gap-1'>
-                {/*
-                TODO: uncomment when implemented
-                <div tw='btn btn-sm flex-1' onClick={() => host.fetchAndUpdateSchema()}>
-                    <span className='material-symbols-outlined'>cloud_download</span>
-                    Install All
-                </div>
-                */}
-                <RevealUI
-                    content={() => (
-                        <div tw='max-h-96 overflow-auto'>
-                            {((): JSX.Element => {
-                                if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
-                                return (
-                                    <div tw='flex flex-col'>
-                                        {manager.titlesOfAllInstalledPlugins.map((name) => (
-                                            <div key={name}>{name}</div>
-                                        ))}
-                                    </div>
-                                )
-                            })()}
-                        </div>
-                    )}
-                >
-                    <Button>See Installed</Button>
-                </RevealUI>
-                <Button
-                    onClick={async () => {
-                        await host.fetchAndUpdateSchema()
-                        await host.manager.updateHostPluginsAndModels()
-                    }}
-                >
-                    Reload Schema
-                </Button>
-                <Button onClick={() => host.manager.rebootComfyUI()}>Restart ComfyUI</Button>
-            </div>
-            <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' />
+        <div tw='flex flex-col gap-2 p-2'>
+            <QuickHostActionsUI host={host} tw='flex gap-1 flex-wrap' />
+            <hr />
             <div tw='flex flex-col overflow-scroll gap-2'>
                 {rr.map((req) => {
                     // ------------------------------------------------
@@ -93,7 +59,12 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                         if (plugins.length == 0) return <MessageErrorUI markdown={`node plugin **${req.nodeName}** not found`} />
                         if (plugins.length === 1)
-                            return <Button_InstallCustomNodeUI optional={req.optional ?? false} plugin={plugins[0]!} />
+                            return (
+                                <Button_InstallCustomNodeUI //
+                                    optional={req.optional ?? false}
+                                    plugin={plugins[0]!}
+                                />
+                            )
                         return (
                             <div tw='bd'>
                                 <MessageErrorUI>
@@ -104,7 +75,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                                 </MessageErrorUI>
                                 {plugins.map((x) => {
                                     return (
-                                        <Button_InstallCustomNodeUI optional={req.optional ?? false} key={x.title} plugin={x} />
+                                        <Button_InstallCustomNodeUI //
+                                            optional={req.optional ?? false}
+                                            key={x.title}
+                                            plugin={x}
+                                        />
                                     )
                                 })}
                             </div>
@@ -222,6 +197,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // )
                 })}
             </div>
+            <MessageWarningUI //
+                markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs'
+            />
         </div>
     )
 })

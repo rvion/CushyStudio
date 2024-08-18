@@ -2,6 +2,7 @@ import type { CovariantFC, CovariantFn } from '../csuite'
 import type { Field_link_config } from '../csuite/fields/link/FieldLink'
 import type { Field } from '../csuite/model/Field'
 import type { Repository } from '../csuite/model/Repository'
+import type { KnownModel_Name } from '../CUSHY'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement } from 'react'
@@ -57,6 +58,25 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     // Requirements (CushySpecifc)
     readonly requirements: Requirements[] = []
 
+    // 💬 2024-08-18 rvion:
+    // | I'd like to preserve the typedoc in the autocompletion panel,
+    // | mostly to know the size and descriptions of the models I'm
+    // | adding to the recommendation sections;
+    // | For now, it's not working, and It may require some more codegen
+    // 💡 requireModel = new Proxy(
+    // 💡     {},
+    // 💡     {
+    // 💡         get: (target, prop: any): this => {
+    // 💡             if (typeof prop === 'string') this.addRequirementOnComfyManagerModel(prop as KnownModel_Name)
+    // 💡             return this
+    // 💡         },
+    // 💡     },
+    // 💡 ) as { [modelName in KnownModel_Name]: this }
+
+    addRequirementOnComfyManagerModel(modelName: KnownModel_Name): this {
+        this.addRequirements({ type: 'modelInManager', modelName, optional: true })
+        return this
+    }
     addRequirements(requirements: Maybe<Requirements | Requirements[]>): this {
         if (requirements == null) return this
         if (Array.isArray(requirements)) this.requirements.push(...requirements)

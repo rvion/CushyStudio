@@ -109,7 +109,13 @@ export const _getKnownModels = (
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
         out3 += `// prettier-ignore\n`
         out3 += 'export type KnownModel_Name =\n'
-        for (const modelInfo of sortedModels) out3 += `    | ${JSON.stringify(modelInfo.name)}\n`
+        for (const mi of sortedModels) {
+            out3 += `    /** ${mi.description}\n`
+            out3 += `     * ${mi.size} - ${mi.url}\n`
+            out3 += `     * see ${mi.reference}\n`
+            out3 += `     */\n`
+            out3 += `    | ${JSON.stringify(mi.name)}\n`
+        }
         out3 += '\n'
         writeFileSync('src/manager/model-list/KnownModel_Name.ts', out3 + '\n', 'utf-8')
     }
