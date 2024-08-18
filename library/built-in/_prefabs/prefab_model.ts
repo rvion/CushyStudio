@@ -103,11 +103,11 @@ export function ui_model(): UI_Model {
                         checkpointConfig: undefined,
                         modelType: {
                             SD3: {
-                                ckpt_name: 'SD3_medium.safetensors',
-                                type: 'sd3',
-                                clip1: 't5xxl_fp18_e4m3fn.safetensors',
+                                // ⏸️ type: 'sd3',
+                                ckpt_name: 'SD3_medium.safetensors' as Enum_CheckpointLoaderSimple_ckpt_name,
+                                clip1: 't5xxl_fp18_e4m3fn.safetensors' as Enum_TripleCLIPLoader_clip_name1,
                                 clip2: 'clip_l.safetensors',
-                                clip3: 'clip_g.safetensors',
+                                clip3: 'clip_g.safetensors' as Enum_TripleCLIPLoader_clip_name3,
                             },
                         },
                         extra: { vae: undefined },
@@ -122,14 +122,14 @@ export function ui_model(): UI_Model {
                         checkpointConfig: undefined,
                         modelType: {
                             FLUX: {
-                                ckpt_name: 'flux1-dev.sft',
                                 type: 'flux',
+                                ckpt_name: 'flux1-dev.sft' as Enum_UNETLoader_unet_name,
                                 weight_type: 'fp8_e4m3fn',
-                                clip1: 't5xxl_fp16.safetensors',
-                                clip2: 'clip_l.safetensors',
+                                clip1: 't5xxl_fp16.safetensors' as Enum_DualCLIPLoader_clip_name1,
+                                clip2: 'clip_l.safetensors' as Enum_DualCLIPLoader_clip_name2,
                             },
                         },
-                        extra: { vae: 'ae.sft' },
+                        extra: { vae: 'ae.sft' as Enum_VAELoader_vae_name },
                     })
                 },
             },
