@@ -45,7 +45,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     }
     if (showFoldButtons && hasFoldableSubfields) {
         out.push(
-            <div tw='ml-auto flex gap-0.5'>
+            <div tw='ml-auto flex gap-0.5' key='lShd8JZuFZ'>
                 <Button //
                     square
                     subtle
