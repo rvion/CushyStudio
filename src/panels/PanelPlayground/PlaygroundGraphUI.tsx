@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
+import { usePanel } from '../../router/usePanel'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
@@ -17,7 +18,10 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
                 {form.renderAsConfigBtn({ title: 'Graph Conf' })}
             </div>
             {form.render()}
-            <DrawWorkflowUI spline={form.value.spline} workflow={workflow} />
+            <DrawWorkflowUI //
+                spline={form.value.spline}
+                workflow={workflow}
+            />
         </div>
     )
 })

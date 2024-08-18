@@ -18,7 +18,7 @@ import { join } from 'pathe'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
-import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNode, type ComfyNodeUID } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
 import { bang } from '../csuite/utils/bang'
 import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
@@ -396,28 +396,60 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
+    /** compute autolayout */
     RUNLAYOUT = (p?: {
-        /** default: 20 */
+        /** @default: 20 */
         node_vsep?: number
-        /** default: 20 */
+        /** @default: 20 */
         node_hsep?: number
+        /** @default false */
+        forceLeft?: boolean
     }): this => {
-        const nodes = toposort(
+        const nodeIds = toposort(
             this.nodes.map((n) => n.uid),
             this.nodes.flatMap((n) => n._incomingNodes().map((from) => [from, n.uid] as TEdge)),
         )
+        const nodes = nodeIds.map((id) => this.getNode(id)!)
+        const cols: ComfyNode<any>[][] = new Array(nodeIds.length)
 
-        const cols: ComfyNode<any>[][] = new Array(nodes.length)
-        for (const nodeId of nodes) {
-            const node = this.getNode(nodeId)!
-            node.col = Math.max(...node.parents.map((p) => p.col), 0) + 1
-            // console.log(
-            //     `[🤠] node ${node.$schema.nameInComfy}`,
-            //     node.col,
-            //     node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
-            // )
-            if (cols[node.col]) cols[node.col]!.push(node)
-            else cols[node.col] = [node]
+        type NodePlacement = {
+            node: ComfyNode<any>
+            minCol: number
+            maxCol?: number
+        }
+        const ranges: {
+            [nodeId: ComfyNodeUID]: NodePlacement
+        } = {}
+
+        // console.log(`[🤠] 1/3 ----------------------------`)
+        for (const node of nodes) {
+            // must be at least 1 after the closest parent
+            const parentCols = node.parents.map((p) => ranges[p.uid]!.minCol)
+            const minCol = Math.max(...parentCols, -1) + 1
+            const range: NodePlacement = { node: node, minCol: minCol }
+            ranges[node.uid] = range
+        }
+
+        // console.log(`[🤠] 2/3 ----------------------------`)
+        if (!p?.forceLeft === true) {
+            for (const node of nodes) {
+                const range = ranges[node.uid]!
+                for (const p of node.parents) {
+                    const parentRange = ranges[p.uid]!
+                    parentRange.maxCol =
+                        parentRange.maxCol != null
+                            ? Math.min(parentRange.maxCol, (range.maxCol ?? range.minCol) - 1)
+                            : (range.maxCol ?? range.minCol) - 1
+                }
+            }
+        }
+
+        // console.log(`[🤠] 3/3 ----------------------------`)
+        for (const node of nodes) {
+            const range = ranges[node.uid]!
+            const at = range.maxCol ?? range.minCol
+            if (cols[at]) cols[at]!.push(node)
+            else cols[at] = [node]
         }
 
         const HSEP = p?.node_hsep ?? 20

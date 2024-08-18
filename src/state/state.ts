@@ -431,18 +431,22 @@ export class STATE {
     get autolayoutOpts(): {
         node_hsep: number
         node_vsep: number
+        forceLeft: boolean
     } {
         const fv = this.graphConf.value
         return {
             node_hsep: fv.hsep,
             node_vsep: fv.vsep,
+            forceLeft: fv.forceLeft,
         }
     }
+
     graphConf = cushyFactory.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
             hsep: ui.int({ min: 0, max: 100, default: 20 }),
+            forceLeft: ui.bool(),
         }),
         {
             name: 'Graph Visualisation',
