@@ -42,7 +42,7 @@ export class ComfyManagerRepository {
         // for (const mi of knownModels.values()) {
         //     console.log(`[🧐] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
         // }
-        return [...this.knownModels.values()].filter((i) => i.type === 'checkpoints')
+        return [...this.knownModels.values()].filter((i) => i.type === 'checkpoint')
     }
 
     /**
@@ -68,7 +68,7 @@ export class ComfyManagerRepository {
          *
          */
         if (mi.save_path === 'default') return `models/${mi.type}/${mi.filename}`
-        if (mi.type === 'checkpoints') return `models/checkpoints/${mi.filename}`
+        if (mi.type === 'checkpoint') return `models/checkpoints/${mi.filename}`
         if (mi.save_path.startsWith('custom_nodes')) return `${mi.save_path}/${mi.filename}`
         else return `models/${mi.save_path}/${mi.filename}`
     }
