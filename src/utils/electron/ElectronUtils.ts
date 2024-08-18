@@ -1,7 +1,6 @@
 import type { STATE } from '../../state/state'
 
-import { MOD_KEY } from '../../csuite/accelerators/META_NAME'
-import { type InputToken, makeInputToken } from '../../csuite/commands/CommandManager'
+import { makeInputToken } from '../../csuite/commands/CommandManager'
 import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../models/FPath'
 

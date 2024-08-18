@@ -2,7 +2,6 @@ import { ctx_layout } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { KEYS } from './shorcutKeys'
-import { globalValidInInput } from './simpleValidInInput'
 
 // should every layout command start with `mod+k` for some consistency ?
 

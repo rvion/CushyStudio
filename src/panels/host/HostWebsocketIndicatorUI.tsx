@@ -5,7 +5,6 @@ import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
-import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
     //

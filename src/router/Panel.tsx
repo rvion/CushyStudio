@@ -1,7 +1,6 @@
 import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
 import type { BoundMenu } from '../csuite/menu/BoundMenuOpts'
-import type { MenuEntry } from '../csuite/menu/MenuEntry'
 import type { PanelCategory } from './PanelCategory'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'
@@ -9,7 +8,6 @@ import { command } from '../csuite/commands/Command'
 import { menuWithoutProps } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
 import { Trigger } from '../csuite/trigger/Trigger'
-import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
 
 export type PanelHeader = {
     title: string

@@ -3,7 +3,6 @@ import type { Tree } from '../../csuite/tree/Tree'
 import { runInAction } from 'mobx'
 
 import { type Command } from '../../csuite/commands/Command'
-import { ctx_TreeUI } from '../../csuite/tree/TreeCtx'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'

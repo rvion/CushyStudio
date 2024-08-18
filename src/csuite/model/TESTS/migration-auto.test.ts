@@ -1,4 +1,4 @@
-import { describe, expect as expect_, it } from 'bun:test'
+import { describe, it } from 'bun:test'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from './utils/expectJSON'

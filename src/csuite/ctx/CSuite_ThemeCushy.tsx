@@ -7,7 +7,6 @@ import { makeAutoObservable } from 'mobx'
 
 import { Kolor } from '../kolor/Kolor'
 import { run_tint } from '../kolor/prefab_Tint'
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 export class CSuite_ThemeCushy implements CSuiteConfig {
     constructor(private st: STATE) {

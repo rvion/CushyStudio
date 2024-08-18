@@ -1,4 +1,3 @@
-import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
 import type { UnifiedCanvas } from '../panels/PanelCanvas/states/UnifiedCanvas'

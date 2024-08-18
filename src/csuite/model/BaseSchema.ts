@@ -1,6 +1,5 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Factory } from './Factory'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'

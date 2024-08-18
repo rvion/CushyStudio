@@ -3,7 +3,6 @@ import type { ComfyNodeJSON, ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 
 import { bang } from '../csuite/utils/bang'
-import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
 
 export const convertLiteGraphToPrompt = (

@@ -2,7 +2,6 @@ import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { writeFileSync } from 'fs'
-import { keys } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 

@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
-import { usePanel } from '../../router/usePanel'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {

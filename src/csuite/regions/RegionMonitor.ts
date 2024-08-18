@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
-import { createObservableRef, createObservableRefMut } from '../utils/observableRef'
+import { createObservableRefMut } from '../utils/observableRef'
 
 export type HoveredRegion = {
     id: string

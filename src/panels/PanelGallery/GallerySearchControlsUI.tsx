@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../csuite/button/Button'
-import { SelectUI } from '../../csuite/select/SelectUI'
 import { useGalleryConf } from './galleryConf'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {

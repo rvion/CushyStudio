@@ -1,5 +1,4 @@
 import type { FieldGroup } from '../../csuite/fields/group/FieldGroup'
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { usePanel } from '../../router/usePanel'

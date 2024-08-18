@@ -2,7 +2,6 @@ import type { FormGlobalLayoutMode } from '../../state/conf/FormGlobalLayoutMode
 import type { Kolor } from '../kolor/Kolor'
 import type { Tint, TintExt } from '../kolor/Tint'
 
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 /**
  * set of shared configuration used by cushy kit;

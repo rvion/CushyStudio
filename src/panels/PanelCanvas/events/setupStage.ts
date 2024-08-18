@@ -1,5 +1,5 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool, ToolCommitPayload } from '../utils/_ICanvasTool'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { Stage } from 'konva/lib/Stage'

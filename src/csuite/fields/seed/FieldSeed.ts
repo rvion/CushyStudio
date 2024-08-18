@@ -1,5 +1,4 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { Factory } from '../../model/Factory'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
