@@ -1,7 +1,7 @@
 import { PanelScript } from '../panels/Panel_Script'
 import { PanelSquoosh } from '../panels/Panel_Squoosh'
 import { PanelAppLibrary } from '../panels/PanelAppLibrary/PanelAppLibrary'
-import { PanelCanvas } from '../panels/PanelCanvas/Panel_Canvas'
+import { PanelCanvas } from '../panels/PanelCanvas/PanelCanvas'
 import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfy } from '../panels/PanelComfy/PanelComfy'
 import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
