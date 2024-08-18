@@ -29,6 +29,7 @@ export const ModelInfo_Schema = Type.Object(
         reference: Type.String(),
         filename: Type.String(),
         url: Type.String(),
+        size: Type.String(),
     },
     { additionalProperties: false },
 )
