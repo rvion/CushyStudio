@@ -16,6 +16,7 @@ export type ModelInfo = {
     "reference": string; // e.g. "https://huggingface.co/h94/IP-Adapter",
     "filename": string; // e.g. "ip-adapter_sd15_light.safetensors",
     "url": string; // e.g. "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
+    "size": string; // e.g.  "698.4MB"
 };
 
 export const ModelInfo_Schema = Type.Object(
