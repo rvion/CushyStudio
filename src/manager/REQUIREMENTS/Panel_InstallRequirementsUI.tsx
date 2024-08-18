@@ -133,6 +133,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                                     reference: 'https://civitai.com/models/56519/negativehand-negative-embedding',
                                     filename: 'negative_hand-neg.pt',
                                     url: 'https://civitai.com/api/download/models/60938',
+                                    size: '1.2Mb',
                                 }}
                             />
                         )

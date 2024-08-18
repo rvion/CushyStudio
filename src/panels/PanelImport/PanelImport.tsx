@@ -2,7 +2,9 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { ImportAsImageUI, ImportedFileUI } from '../../importers/FilesBeeingImported'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -25,21 +27,21 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
             <PanelHeaderUI>
                 <SpacerUI />
                 {/* Putting clear items button on the right because actions that remove things should be separated in some way from other things to prevent mis-clicks. */}
-                <div
+                <Button
+                    tw='h-input btn btn-sm btn-warning'
                     onClick={() => {
                         st.droppedFiles.splice(0)
                     }}
-                    tw='h-input btn btn-sm  btn-warning'
                 >
                     <span className='material-symbols-outlined'>backspace</span>
                     Clear Items
-                </div>
+                </Button>
             </PanelHeaderUI>
             <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (
-                    <div key={`${file.name}+${ix}`} tw='card card-bordered p-2'>
-                        <div tw='card-title'>Imported file</div>
-                        <div tw='italic text-sm'>"{file.name}"</div>
+                    <Frame border base key={`${file.name}+${ix}`} tw='p-1'>
+                        <div>Imported file</div>
+                        <div>"{file.name}"</div>
                         <ul>
                             <li>
                                 as workflow:
@@ -49,7 +51,7 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
                                 as image: <ImportAsImageUI file={file} />
                             </li>
                         </ul>
-                    </div>
+                    </Frame>
                 ))}
             </div>
             {st.droppedFiles.length == 0 ? (

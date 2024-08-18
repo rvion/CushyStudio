@@ -1,4 +1,5 @@
 import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { writeFileSync } from 'fs'
@@ -6,10 +7,14 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { UnknownCustomNode } from '../core/UnknownCustomNode'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { Frame } from '../csuite/frame/Frame'
 import { Surface } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
+import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
@@ -86,6 +91,25 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
     } catch (error) {
         console.log(error)
+        if (error instanceof UnknownCustomNode) {
+            return (
+                <Frame border>
+                    <div>Unknown </div>
+                    <InstallRequirementsBtnUI
+                        active
+                        requirements={[
+                            //
+                            {
+                                type: 'customNodesByNameInCushy',
+                                nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
+                                    error.node.type,
+                                ) as KnownCustomNode_CushyName,
+                            },
+                        ]}
+                    />
+                </Frame>
+            )
+        }
         return <>❌3. cannot convert LiteGraph To Prompt {extractErrorMessage(error)}</>
     }
 

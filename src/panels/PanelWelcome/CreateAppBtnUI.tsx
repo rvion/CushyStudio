@@ -3,6 +3,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
 import { Button } from '../../csuite/button/Button'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -52,23 +53,17 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                 <div tw='flex flex-col gap-2'>
                     <div>
                         <div tw='font-bold'>App name</div>
-                        <input
+                        <InputStringUI
+                            tw={[uist.hasConflict && 'rsx-field-error']}
                             autoFocus
-                            value={uist.appName}
-                            onChange={(ev) => (uist.appName = ev.target.value)}
-                            type='text'
-                            tw={['input input-bordered', uist.hasConflict && 'rsx-field-error']}
+                            getValue={() => uist.appName}
+                            setValue={(next) => (uist.appName = next)}
                         />
                         {uist.hasConflict && <MessageErrorUI markdown='File alreay exist' />}
                     </div>
                     <div>
                         <div tw='font-bold'>Description</div>
-                        <input
-                            value={uist.description}
-                            onChange={(ev) => (uist.description = ev.target.value)}
-                            type='text'
-                            tw='input input-bordered'
-                        />
+                        <InputStringUI getValue={() => uist.description} setValue={(next) => (uist.description = next)} />
                     </div>
                 </div>
                 <div tw='p-2'>
@@ -83,8 +78,10 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                 </div>
             </div>
             <div tw='flex'>
-                <button
-                    tw={['btn btn-primary ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
+                <Button
+                    size='lg'
+                    look='success'
+                    tw={['ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
                     onClick={async () => {
                         if (uist.hasConflict) return toastError('file already exist, change app name')
                         //
@@ -105,7 +102,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                     }}
                 >
                     Create
-                </button>
+                </Button>
             </div>
             <IntroTxt />
         </div>
