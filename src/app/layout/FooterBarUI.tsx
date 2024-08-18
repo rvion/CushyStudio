@@ -14,6 +14,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
             tw='flex items-center px-1 h-input'
         >
             <InputBoolToggleButtonUI
+                tw='mr-2'
                 tooltip='Show Command Visualizer'
                 onValueChange={(next) => (cushy.showCommandHistory = next)}
                 value={cushy.showCommandHistory}
