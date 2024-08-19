@@ -2,8 +2,6 @@ import type { BoolButtonProps } from './InputBoolUI'
 
 import { observer } from 'mobx-react-lite'
 
-import { Frame } from '../frame/Frame'
-import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 2024-07-31: domi: not 100% sure what the difference is supposed to be with InputBoolToggleButtonUI

@@ -3,8 +3,7 @@ import type { IconName } from '../icons/icons'
 import { observer } from 'mobx-react-lite'
 import { Toggle } from 'rsuite' // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD
 
-import { Frame } from '../frame/Frame'
-import { Ikon, IkonOf } from '../icons/iconHelpers'
+import { IkonOf } from '../icons/iconHelpers'
 
 export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI_(p: {
     //

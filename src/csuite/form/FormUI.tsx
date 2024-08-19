@@ -3,7 +3,7 @@ import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RSSize } from '../types/RsuiteTypes'
-import type { CSSProperties, FC, ReactNode } from 'react'
+import type { CSSProperties, FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 

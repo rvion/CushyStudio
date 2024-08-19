@@ -1,4 +1,3 @@
-import type { SelectOption } from '../selectOne/FieldSelectOne'
 import type { Field_selectMany, SelectManyAppearance } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'

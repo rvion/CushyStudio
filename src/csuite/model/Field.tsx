@@ -18,7 +18,6 @@ import type { Problem, Problem_Ext } from './Validation'
 import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
-import { FrameWithCSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'

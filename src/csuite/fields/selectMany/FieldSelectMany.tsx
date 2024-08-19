@@ -8,7 +8,6 @@ import type { SELECT_ID, SelectOption } from '../selectOne/FieldSelectOne'
 import type { SelectValueSlots } from 'src/cushy-forms/main'
 
 import { Field } from '../../model/Field'
-import { potatoClone } from '../../utils/potatoClone'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { stableStringify } from 'src/cushy-forms/src/csuite/hashUtils/hash'

@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite'
 import { type ListChildComponentProps } from 'react-window'
 
 import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
-import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 
 export type SelectOptionProps<T> = {
     reveal: RevealState

@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
-import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { exhaust } from '../../csuite/utils/exhaust'
 import { useSt } from '../../state/stateContext'
