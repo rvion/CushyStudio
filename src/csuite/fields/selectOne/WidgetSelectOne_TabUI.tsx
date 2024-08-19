@@ -1,13 +1,11 @@
-import type { BaseSelectEntry, Field_selectOne } from './FieldSelectOne'
+import type { Field_selectOne, SelectOption } from './FieldSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 
-export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectOne<T>
-}) {
+export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<VALUE>(p: { field: Field_selectOne<VALUE> }) {
     const field = p.field
     const selected = field.serial.val
     return (
@@ -22,8 +20,8 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                 'gap-x-1 gap-y-0',
             ]}
         >
-            {field.choices.map((c) => {
-                const isSelected = selected?.id === c.id
+            {field.options.map((c) => {
+                const isSelected = selected === c.id
                 return (
                     <InputBoolUI
                         key={c.id}
@@ -33,7 +31,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                         text={c.label ?? c.id}
                         onValueChange={(value) => {
                             if (value === isSelected) return
-                            field.value = c
+                            field.selectedId = c.id
                         }}
                     />
                 )

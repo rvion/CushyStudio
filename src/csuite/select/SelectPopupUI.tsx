@@ -22,45 +22,61 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             ? `max(${select.anchorRef.current.offsetWidth /* take into account border width */}px, ${trueMinWidth})`
             : trueMinWidth
 
-    const itemSize = typeof select.p.virtualized === 'number' ? select.p.virtualized : 30
+    const itemSize = typeof select.p.virtualized === 'number' ? select.p.virtualized : 28 // should probably match input height or cell height
     return (
-        <Frame col style={{ minWidth }} {...p.selectState.p.popupWrapperProps}>
-            {select.p.slotTextInputUI != null ? (
-                <select.p.slotTextInputUI select={select} />
-            ) : (
-                <InputStringUI
-                    autoFocus
-                    icon='mdiSelectMarker'
-                    onKeyDown={(ev) => {
-                        if (ev.key === 'Tab') {
-                            select.revealState?.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
-                            const reason = ev.shiftKey ? 'shiftTabKey' : 'tabKey'
-                            select.closeMenu(reason)
-                            // 🔶 should probably focus the next select instead?
-                            // anyway, already handled via onHidden
-                            // s.anchorRef.current?.focus()
-                            ev.stopPropagation()
-                            ev.preventDefault()
-                            return
-                        }
+        <div
+            tw={[
+                //
+                'flex flex-col',
+                'max-w-xl',
+            ]}
+            {...p.selectState.p.popupWrapperProps}
+            style={{ minWidth, ...p.selectState.p.popupWrapperProps?.style }}
+        >
+            <div
+                tw={[
+                    //
+                    'minh-input p-input', // padding shoud simulate the difference between input size and inside size
+                    'flex flex-wrap items-start gap-0.5 rounded-t-md',
+                    'border-b border-gray-200',
+                    'bg-gray-100',
+                ]}
+            >
+                {p.selectState.displayValueInPopup}
 
-                        // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
-                    }}
-                    placeholder={select.p.placeholder ?? 'Search...'}
-                    ref={select.inputRef_real}
-                    type='text'
-                    getValue={() => select.searchQuery}
-                    setValue={(next) => select.filterOptions(next)}
-                    tw={[
-                        //
-                        'absolute top-0 left-0 right-0 z-50 h-full',
-                        'csuite-basic-input',
-                        'w-full h-full',
-                    ]}
-                    // TODO: better props passing...
-                    {...p.selectState.p.textInputProps}
-                />
-            )}
+                {select.p.slotTextInputUI != null ? (
+                    <select.p.slotTextInputUI select={select} />
+                ) : (
+                    <InputStringUI
+                        noColorStuff
+                        autoFocus
+                        onKeyDown={(ev) => {
+
+                            if (ev.key === 'Backspace' && select.searchQuery === '' && select.lastValue != null) {
+                                select.toggleOption(select.lastValue)
+                                ev.stopPropagation()
+                                ev.preventDefault()
+                                return
+                            }
+
+                            // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
+                        }}
+                        placeholder={select.firstValue == null ? 'Rechercher une valeur...' : undefined} // 🚂 we need a second placeholder prop
+                        ref={select.inputRef_real}
+                        type='text'
+                        getValue={() => select.searchQuery}
+                        setValue={(next) => select.filterOptions(next)}
+                        tw={[
+                            //
+                            'absolute top-0 left-0 right-0 z-50 h-inside',
+                            'min-w-24 flex-1',
+                            // 'bg-gray-200 !rounded-none',
+                        ]}
+                        // TODO: better props passing...
+                        {...p.selectState.p.textInputProps}
+                    />
+                )}
+            </div>
 
             {/* No results */}
             {select.filteredOptions.length === 0 //
@@ -74,6 +90,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                     s: AutoCompleteSelectState<OPTION>
                     reveal: RevealState
                 }>
+                    className='mt-2 mb-1'
                     useIsScrolling={false}
                     height={Math.min(
                         400,
@@ -86,7 +103,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                     itemData={{ s: select, reveal: p.reveal }}
                 />
             ) : (
-                <Frame col tw='max-h-96'>
+                <Frame col tw='max-h-96 pt-2 pb-1'>
                     {select.filteredOptions.map((option, index) =>
                         select.p.slotOptionUI != null ? (
                             <select.p.slotOptionUI //
@@ -108,6 +125,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                     )}
                 </Frame>
             )}
-        </Frame>
+        </div>
     )
 })

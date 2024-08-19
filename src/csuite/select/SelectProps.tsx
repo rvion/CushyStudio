@@ -1,11 +1,19 @@
-import type { FrameProps } from '../frame/Frame'
 import type { InputStringProps } from '../input-string/InputStringUI'
-import type { RevealHideReason, RevealProps } from '../reveal/RevealProps'
+import type { RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
-import type { AutoCompleteSelectState } from './SelectState'
+import type { AutoCompleteSelectState, SelectValueSlots } from './SelectState'
+import type { DovProps } from 'src/front/lsuite/Dov/Dov'
 
 import React from 'react'
+
+// 🔶 should probably use symbols
+export type SelectValueLooks =
+    | '🔶DEFAULT🔶' // convenient when we only want to customize one 'where' case
+    | 'TODO_ColoredBadgeWithCloseKnob'
+    | 'TODO_ColoredBadge'
+    | 'TODO_Badge'
+    | 'TODO_BadgeWithCloseKnob'
 
 export type SelectProps<OPTION> = {
     label?: string
@@ -40,24 +48,9 @@ export type SelectProps<OPTION> = {
     getLabelText: (t: OPTION) => string
 
     /** if provided, is used to display the options in the popover */
-    getLabelUI?: (t: OPTION) => React.ReactNode
-    // ^^^
-    // - [ ] RENAME
-    // - [ ] allow to specify them by well known slot
-    //     - 'ColoredBadgeWithCloseKnob'
-    //     - 'ColoredBadge'
-    //     - 'Badge'
-    //     - 'BadgeWithCloseKnob'
+    OptionLabelUI?: (t: OPTION, where: SelectValueSlots) => React.ReactNode | SelectValueLooks
 
-    /** if provided, is used to display the selected options in the inside area  */
-    getInsideUI?: (t: OPTION) => React.ReactNode
-    // - [ ] RENAME
-    // - [ ] allow to specify them by well known slot
-    //     - 'ColoredBadgeWithCloseKnob'
-    //     - 'ColoredBadge'
-    //     - 'Badge'
-    //     - 'BadgeWithCloseKnob'
-    // --------------------------------------------
+    hideOptionCheckbox?: boolean
 
     /** if not provided, autoKey will be used instead */
     getKey?: (t: OPTION) => string
@@ -68,13 +61,16 @@ export type SelectProps<OPTION> = {
     /** if true, this widget is considered a multi-select */
     multiple?: boolean
 
+    /** prevents popup from opening, not well thought out, probably does not belongs here */
+    readonly?: boolean
+
     /** text to show when no value yet nor filter query */
     placeholder?: string
     disabled?: boolean
     cleanable?: boolean
     hideValue?: boolean
-    className?: string
-    style?: React.CSSProperties
+    // className?: string // use reveal.anchorProps.className instead
+    // style?: React.CSSProperties // use reveal.anchorProps.style instead
 
     /**
      * @default: false if multi-select, true if single select
@@ -95,15 +91,15 @@ export type SelectProps<OPTION> = {
      * since 2024-06-12
      * @default false
      */
-    wrap?: boolean
+    wrap?:
+        | boolean //
+        | 'no-wrap-no-overflow-hidden' // in cells, we don't want to wrap, but overflow hidden is handled by the cell container, we want the select to overflow.
 
-    onHidden?: (reason: RevealHideReason) => void
     // 🧚‍♀️ onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
     // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
     // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
-    revealProps?: RevealProps
-    anchorProps?: FrameProps
-    popupWrapperProps?: FrameProps
+    revealProps?: Partial<RevealProps>
+    popupWrapperProps?: DovProps
     textInputProps?: InputStringProps
 
     // customization slots

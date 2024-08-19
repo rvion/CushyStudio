@@ -11,7 +11,7 @@ import type { Field_number } from '../fields/number/FieldNumber'
 import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field_seed } from '../fields/seed/FieldSeed'
 import type { Field_selectMany } from '../fields/selectMany/FieldSelectMany'
-import type { BaseSelectEntry, Field_selectOne } from '../fields/selectOne/FieldSelectOne'
+import type { Field_selectOne, SelectOption } from '../fields/selectOne/FieldSelectOne'
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { Field_size } from '../fields/size/FieldSize'
 import type { Field_string } from '../fields/string/FieldString'
@@ -36,10 +36,13 @@ declare global {
         type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
         type Optional<T extends BaseSchema> = Field_optional<T>
         //
-        type SelectOne<T extends BaseSelectEntry> = Field_selectOne<T>
-        type SelectMany<T extends BaseSelectEntry> = Field_selectMany<T>
-        type SelectOne_<T extends string> = Field_selectOne<BaseSelectEntry<T>>
-        type SelectMany_<T extends string> = Field_selectMany<BaseSelectEntry<T>>
+
+        //  🔴 loco select fields changes not ported to other builders
+        type SelectOne<T extends SelectOption<any>> = Field_selectOne<T>
+        //  🔴 loco select fields changes not ported to other builders
+        type SelectMany<T extends SelectOption<any>> = Field_selectMany<T>
+        type SelectOne_<T extends string> = Field_selectOne<SelectOption<T>>
+        type SelectMany_<T extends string> = Field_selectMany<SelectOption<T>>
         //
         type Empty = Field_group<NO_PROPS>
         type Bool = Field_bool
@@ -62,10 +65,12 @@ declare global {
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
         type SOptional<T extends BaseSchema> = SimpleSchema<Field_optional<T>>
         //
-        type SSelectOne<T extends BaseSelectEntry> = SimpleSchema<Field_selectOne<T>>
-        type SSelectMany<T extends BaseSelectEntry> = SimpleSchema<Field_selectMany<T>>
-        type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+        //  🔴 loco select fields changes not ported to other builders
+        type SSelectOne<T extends SelectOption<any>> = SimpleSchema<Field_selectOne<T>>
+        //  🔴 loco select fields changes not ported to other builders
+        type SSelectMany<T extends SelectOption<any>> = SimpleSchema<Field_selectMany<T>>
+        type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<SelectOption<T>>> // variant that may be shorter to read
+        type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<SelectOption<T>>> // variant that may be shorter to read
         //
         type SEmpty = SimpleSchema<Field_group<NO_PROPS>>
         type SBool = SimpleSchema<Field_bool>

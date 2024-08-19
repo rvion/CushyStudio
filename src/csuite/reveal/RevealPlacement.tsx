@@ -26,6 +26,8 @@ export type RevealPlacement =
     | 'leftEnd'
     | 'rightStart'
     | 'rightEnd'
+    | 'cover'
+
     //
     | 'auto'
     | 'autoVerticalStart'
@@ -155,6 +157,7 @@ export const computePlacement = (
     }
 
     // BOTTOM --------------------------------------------------------------
+
     // |--------------------|
     // |                    |
     // |      [anchor]      |
@@ -324,6 +327,20 @@ export const computePlacement = (
             transform: 'translateY(-100%)',
             maxWidth: `calc(100vw - ${anchor.right}px)`,
             maxHeight: `${anchor.bottom}px`,
+        }
+
+    // |--------------------|
+    // |                    |
+    // |      [XXXXXXXXXXXX]|
+    // |      [XXXXXXXXXXXX]|
+    // |--------------------|
+    const WINDOW_PADDING = 5
+    if (placement == 'cover')
+        return {
+            top: anchor.top - 1, // 🔴 -1 due to shell border, does not belongs here though
+            left: anchor.left - 1,
+            maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
+            maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
         }
 
     return {

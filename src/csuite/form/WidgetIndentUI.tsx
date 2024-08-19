@@ -25,7 +25,7 @@ export const WidgetIndentUI = observer(function WidgetIndentUI_(p: { depth: numb
                         // marginRight: '.2rem',
                         flexShrink: 0,
                         alignSelf: 'stretch',
-                        borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)',
+                        // borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)', // 🚂 we disabled this border
                     }}
                 />
             ))}

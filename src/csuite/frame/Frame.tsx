@@ -72,6 +72,7 @@ export type FrameProps = {
     iconSize?: string
 
     suffixIcon?: Maybe<IconName>
+    noColorStuff?: boolean
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
@@ -108,6 +109,7 @@ export const Frame = observer(
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
             tooltip, tooltipPlacement,
 
+            noColorStuff: noColorStuff__,
             // remaining properties
             ...rest
         } = p
@@ -118,6 +120,7 @@ export const Frame = observer(
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
         const hovered = hovered__ ? hovered__(hovered_) : hovered_
+        const noColorStuff = p.noColorStuff ?? prevCtx.noColorStuff
 
         // 👉 2024-06-12 rvion: we should probably be able to
         // | stop here by checking against a hash of those props
@@ -179,7 +182,11 @@ export const Frame = observer(
                 {...(as === 'button' ? { type: 'button' } : {})}
                 tw={[
                     'box',
-                    frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
+                    noColorStuff === true
+                        ? undefined
+                        : frameMode === 'CLASSNAME'
+                        ? compileOrRetrieveClassName(variables)
+                        : undefined,
                     size && `box-${size}`,
                     square && `box-square`,
                     loading && 'relative',
@@ -193,7 +200,9 @@ export const Frame = observer(
                 ]}
                 // style={{ position: 'relative' }}
                 style={
-                    frameMode === 'CLASSNAME' //
+                    noColorStuff === true
+                        ? style
+                        : frameMode === 'CLASSNAME' //
                         ? style
                         : objectAssignTsEfficient_t_t(style, variables)
                 }
@@ -207,6 +216,7 @@ export const Frame = observer(
                         dir: nextDir,
                         base: KBase,
                         text: nextext,
+                        noColorStuff: noColorStuff,
                     }}
                 >
                     {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}

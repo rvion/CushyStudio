@@ -46,7 +46,13 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     // ------------------------------------------------------------
 
     /** constructor/class of the field to instanciate */
-    abstract FieldClass_UNSAFE: any
+    abstract buildField(
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: this,
+        serial?: Maybe<FIELD['$Serial']>,
+    ): FIELD
 
     /** type of the field to instanciate */
     abstract type: FIELD['type']
@@ -161,7 +167,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             console.log(`[🔶] INVALID SERIAL:`, serial)
             serial = null
         }
-        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
+        const field = this.buildField(repo, root, parent, this, serial)
         field.publishValue()
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later

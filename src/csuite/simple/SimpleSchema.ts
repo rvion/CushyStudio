@@ -2,6 +2,7 @@ import type { Field_link, Field_link_config } from '../fields/link/FieldLink'
 import type { Field_list, Field_list_config } from '../fields/list/FieldList'
 import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field } from '../model/Field'
+import type { FieldExtension, SchemaExtension } from '../model/FieldConfig'
 import type { Instanciable } from '../model/Instanciable'
 import type { Repository } from '../model/Repository'
 import type { CovariantFn } from '../variance/BivariantHack'
@@ -14,33 +15,70 @@ import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 import { potatoClone } from '../utils/potatoClone'
 
 export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements Instanciable<FIELD> {
-    FieldClass_UNSAFE: any
-
-    get type(): FIELD['$Type'] {
-        return this.FieldClass_UNSAFE.type
-    }
-
     constructor(
-        FieldClass: {
-            readonly type: FIELD['$Type']
-            new (
+        public readonly type: FIELD['$Type'],
+        public buildField: CovariantFn<
+            [
                 //
                 repo: Repository,
-                root: Field,
+                root: Field | null,
                 parent: Field | null,
-                spec: BaseSchema<FIELD>,
+                spec: SimpleSchema<FIELD>,
                 serial?: FIELD['$Serial'],
-            ): FIELD
-        },
+            ],
+            FIELD
+        >,
         public readonly config: FIELD['$Config'],
     ) {
         super()
-        this.FieldClass_UNSAFE = FieldClass
-        this.applySchemaExtensions()
         makeObservable(this, {
             config: true,
-            FieldClass_UNSAFE: false,
+            buildField: false, // 🔴 now useless?
         })
+        super.applySchemaExtensions()
+    }
+
+    static NEW<F extends Field>(
+        FieldClass: {
+            readonly type: F['$Type']
+            new (
+                //
+                repo: Repository,
+                root: Field | null,
+                parent: Field | null,
+                spec: BaseSchema<F>,
+                serial?: F['$Serial'],
+            ): F
+        },
+        config: F['$Config'],
+    ): SimpleSchema<F> {
+        return new SimpleSchema<F>(
+            FieldClass.type,
+            (repo, root, parent, spec, serial) => new FieldClass(repo, root, parent, spec, serial),
+            config,
+        )
+    }
+
+    extend_TEMP<EXTS extends FieldExtension<FIELD>>(
+        //
+        extensions: EXTS,
+    ): SimpleSchema<ReturnType<EXTS> & FIELD /* , EXTRA */> {
+        const x: SimpleSchema<FIELD /* , EXTRA */> = this.withConfig({
+            customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
+        })
+
+        return x as any as SimpleSchema<ReturnType<EXTS> & FIELD /* , EXTRA */>
+    }
+
+    extendSchema<EXTS extends SchemaExtension<this>>(extensions: EXTS): this & ReturnType<EXTS> {
+        const withoutNewExts: SimpleSchema<FIELD> = this.withConfig({
+            customSchemaProperties: [
+                //
+                ...(this.config.customSchemaProperties ?? []),
+                extensions,
+            ],
+        })
+        return withoutNewExts as this & ReturnType<EXTS>
     }
 
     /**
@@ -51,13 +89,13 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
         const FieldLinkClass = getFieldLinkClass()
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new SimpleSchema<Field_link<this, BP>>(FieldLinkClass, linkConf)
+        return SimpleSchema.NEW<Field_link<this, BP>>(FieldLinkClass, linkConf)
     }
 
     /** wrap field schema to list stuff */
     list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
         const FieldListClass = getFieldListClass()
-        return new SimpleSchema<Field_list<this>>(FieldListClass, {
+        return SimpleSchema.NEW<Field_list<this>>(FieldListClass, {
             ...config,
             element: this,
         })
@@ -66,7 +104,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     /** make field optional (A => Maybe<A>) */
     optional(startActive: boolean = false): S.SOptional<this> {
         const FieldOptionalClass = getFieldOptionalClass()
-        return new SimpleSchema<Field_optional<this>>(FieldOptionalClass, {
+        return SimpleSchema.NEW<Field_optional<this>>(FieldOptionalClass, {
             schema: this,
             startActive: startActive,
             label: this.config.label,
@@ -77,9 +115,9 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     }
 
     /** clone the schema, and patch the cloned config */
-    withConfig(config: Partial<FIELD['$Config']>): this {
+    withConfig(config: Partial<FIELD['$Config']>): this /* & EXTRA */ {
         const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new SimpleSchema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
+        const cloned = new SimpleSchema<FIELD>(this.type, (...args) => this.buildField(...args), mergedConfig)
         return cloned as this
     }
 }

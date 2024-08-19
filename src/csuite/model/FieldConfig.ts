@@ -38,7 +38,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * override the default header renderer
      * (passing `null` to restore the default renderer)
      */
-    header?: null | CovariantFC<{ field: T['$Field'] }>
+    header?: null | CovariantFC<{ field: T['$Field']; readonly?: boolean }>
 
     /**
      * override the default body renderer
@@ -174,6 +174,13 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      *                          ^^^^^^^^^^^^^^^^
      */
     reactions?: FieldReaction<T>[]
+
+    /**
+     * 2024-08-08 domi: not really used / thought through
+     * mostly placeholders
+     */
+    required?: boolean
+    readonly?: boolean
 }
 
 export interface WidgetMenuAction<out T extends $FieldTypes> {

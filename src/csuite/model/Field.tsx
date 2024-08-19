@@ -16,7 +16,7 @@ import type { Repository } from './Repository'
 import type { Problem, Problem_Ext } from './Validation'
 
 import { observer } from 'mobx-react-lite'
-import { createElement, type FC, type ReactNode } from 'react'
+import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
 import { FrameWithCSuiteOverride } from '../ctx/CSuiteOverride'
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
@@ -29,17 +29,22 @@ import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
+import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
-import { SimpleSchema } from '../simple/SimpleSchema'
 import { potatoClone } from '../utils/potatoClone'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
+import { LocoFormSchema } from 'src/front/form/LocoFormSchema'
 
 /** make sure the user-provided function will properly react to any mobx changes */
-const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
+export const useEnsureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
+    return useMemo(() => ensureObserver(fn), [fn])
+}
+
+export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     if (fn == null) return null as T
     const isObserver = '$$typeof' in fn && fn.$$typeof === Symbol.for('react.memo')
     const FmtUI = (isObserver ? fn : observer(fn)) as T
@@ -142,7 +147,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         serial: any | null,
     ): Field_shared<this> {
         const FieldSharedClass = getFieldSharedClass()
-        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
+        // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvvvvv
+        const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
+            field: this,
+        })
         return schema.instanciate(repo, root, parent, serial)
     }
 
@@ -242,7 +250,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // ---------------------------------------------------------------------------------------------------
     /** default header UI */
-    abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field'] }> | undefined
+    abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field']; readonly?: boolean }> | undefined
 
     /** default body UI */
     abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
@@ -664,7 +672,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * without having to import any component; usage:
      * | <div>{x.render()}</div>
      */
-    render(p: Omit<FormUIProps, 'field'> = {}): ReactNode {
+    renderAsForm(p: Omit<FormUIProps, 'field'> = {}): ReactNode {
         return createElement(FormUI, { field: this, ...p })
     }
 
@@ -686,36 +694,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return createElement(FormAsDropdownConfigUI, { form: this, ...p })
     }
 
-    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
-        return (
-            <WidgetWithLabelUI //
-                key={this.id}
-                field={this}
-                showWidgetMenu={false}
-                showWidgetExtra={false}
-                showWidgetUndo={false}
-                justifyLabel={false}
-                fieldName='_'
-                {...p}
-            />
-        )
-    }
-
-    renderSimpleAll(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
-        return (
-            <FrameWithCSuiteOverride
-                config={{
-                    showWidgetMenu: false,
-                    showWidgetExtra: false,
-                    showWidgetUndo: false,
-                }}
-            >
-                <WidgetWithLabelUI key={this.id} field={this} fieldName='_' {...p} />
-            </FrameWithCSuiteOverride>
-        )
-    }
-
-    renderWithLabel(this: Field, p?: Omit<WidgetWithLabelProps, 'field'>): JSX.Element {
+    /**
+     * use field.header() if you just want to render the input
+     */
+    renderWithLabel(
+        this: Field,
+        p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'> & Partial<Pick<WidgetWithLabelProps, 'fieldName'>>,
+    ): JSX.Element {
         return (
             <WidgetWithLabelUI //
                 key={this.id}
@@ -736,19 +721,27 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return <this.DefaultBodyUI field={this} />
     }
 
-    header(this: Field): JSX.Element | undefined {
+    // 🔴 not sure where this 'readonly' goes, it's a render prop, not a config.
+    // do we have have render props? (active? look?) or do we make different custom components? probably both are required?
+    // currently those kind of "render" config are only available at top level via FormUIProps or via calling field.renderWithLabel(...)
+    // but actually header and renderWithLabel have the same nature, so yeah, they should be here too. See commonalities with WidgetWithLabelProps
+    header(this: Field, p?: { readonly?: boolean }): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
-                ? ensureObserver(this.config.header)
+                ? useEnsureObserver(this.config.header)
                 : this.DefaultHeaderUI
         if (HeaderUI == null) return
-        return <HeaderUI field={this} />
+        return <HeaderUI key={this.id} field={this} {...p} />
+    }
+
+    HeaderBound = (p?: { readonly?: boolean }): JSX.Element | undefined => {
+        return this.header(p)
     }
 
     body(this: Field): JSX.Element | undefined {
         const BodyUI =
             'body' in this.config //
-                ? ensureObserver(this.config.body)
+                ? useEnsureObserver(this.config.body)
                 : this.DefaultBodyUI
         if (BodyUI == null) return
         return <BodyUI field={this} />
@@ -916,6 +909,12 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
         // 🔘 console.log(`[🤠] #${IX} SNAP=`, deepCopyNaive(this.serial.snapshot))
         this.setSerial(this.serial.snapshot)
+    }
+
+    get isDirtyFromSnapshot_UNSAFE(): boolean {
+        const { snapshot, ...currentSerial } = this.serial
+        if (snapshot == null) return false
+        return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
     }
 }
 // 🔘 let IX = 0

@@ -8,11 +8,13 @@
 
 import type { Field } from '../model/Field'
 import type { Repository } from '../model/Repository'
+import type { Field_bool } from './bool/FieldBool'
 import type { Field_group } from './group/FieldGroup'
 import type { Field_link } from './link/FieldLink'
 import type { Field_list } from './list/FieldList'
 import type { Field_number } from './number/FieldNumber'
 import type { Field_optional } from './optional/FieldOptional'
+import type { Field_selectMany } from './selectMany/FieldSelectMany'
 import type { Field_selectOne } from './selectOne/FieldSelectOne'
 import type { Field_shared } from './shared/FieldShared'
 import type { Field_string } from './string/FieldString'
@@ -56,8 +58,10 @@ export const isFieldShared = _checkIfIs<Field_shared>('shared')
 export const isFieldGroup = _checkIfIs<Field_group<any>>('group')
 export const isFieldString = _checkIfIs<Field_string>('str')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
+export const isFieldBool = _checkIfIs<Field_bool>('bool')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')
 export const isFieldSelectOne = _checkIfIs<Field_selectOne<any>>('selectOne')
+export const isFieldSelectMany = _checkIfIs<Field_selectMany<any>>('selectMany')
 
 function _checkIfIs<W extends { $Type: string }>(
     /** widget type to check */

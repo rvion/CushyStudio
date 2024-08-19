@@ -51,6 +51,7 @@ export type InputStringProps = {
     onBlur?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onKeyDown?: (ev: React.KeyboardEvent<HTMLInputElement>) => void
+    noColorStuff?: boolean
 }
 
 export const InputStringUI = observer(
@@ -87,6 +88,7 @@ export const InputStringUI = observer(
         const csuite = useCSuite()
         return (
             <Frame
+                noColorStuff={p.noColorStuff}
                 className={p.className}
                 base={csuite.inputContrast}
                 text={{ contrast: 1, chromaBlend: 1 }}
@@ -115,7 +117,7 @@ export const InputStringUI = observer(
                 {p.slotBeforeInput}
                 <input
                     ref={ref}
-                    tw={['px-2', inputTailwind]}
+                    tw={['px-1', inputTailwind]} // 🚂 was px-2
                     type={reveal ? 'text' : p.type}
                     pattern={p.pattern}
                     placeholder={p.placeholder}
@@ -130,7 +132,7 @@ export const InputStringUI = observer(
                     onDragStart={(ev) => ev.preventDefault()}
                     onFocus={(ev) => {
                         p.buffered?.setTemporaryValue(p.getValue() ?? '')
-                        ev.currentTarget.select()
+                        // ev.currentTarget.select()
                         p.onFocus?.(ev)
                     }}
                     onBlur={(ev) => {

@@ -22,7 +22,7 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
             ]}
         >
             <div // backdrop shadow (child div to avoid animation interference)
-                style={{ backgroundColor: '#00000022' }}
+                style={{ backgroundColor: reveal.backdropColor }}
                 tw='absolute inset-0 animate-in fade-in'
             />
             {children}

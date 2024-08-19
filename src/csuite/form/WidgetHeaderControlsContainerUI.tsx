@@ -12,6 +12,7 @@ export const WidgetHeaderControlsContainerUI = observer(function WidgetHeaderCon
                 'UI-WidgetHeaderControlsContainer',
                 'COLLAPSE-PASSTHROUGH',
                 'flex flex-1 items-center',
+                'py-input',
             ]}
         >
             {p.children}

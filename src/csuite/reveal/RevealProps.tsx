@@ -1,6 +1,7 @@
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type { FC } from 'react'
+import type { DovProps } from 'src/front/lsuite/Dov/Dov'
 
 import React from 'react'
 
@@ -96,7 +97,7 @@ export type RevealProps = {
     defaultVisible?: boolean
 
     // look and feel ------------------------------------------------------------------
-    tooltipWrapperClassName?: string
+    shellClassName?: string
     className?: string
     style?: React.CSSProperties
 
@@ -104,4 +105,12 @@ export type RevealProps = {
     UNSAFE_cloned?: boolean
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
+    backdropColor?: string
+
+    /**
+     * when we have nested Reveals but they actually are independent
+     */
+    useSeparateTower?: boolean
+
+    anchorProps?: DovProps // 🔴 actually the child may not accept DovProps...
 }

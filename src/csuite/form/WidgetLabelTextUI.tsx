@@ -37,6 +37,7 @@ export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: {
                 p.className,
             ]}
         >
+            {p.widget.isHidden && '🥷 '}
             {p.children}
         </span>
     )

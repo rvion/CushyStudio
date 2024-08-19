@@ -8,7 +8,7 @@ import { RevealUI } from '../reveal/RevealUI'
 import { FormUI } from './FormUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-    form?: Field<any>
+    form: Field<any>
     children?: React.ReactNode
     title?: string
     className?: string
@@ -30,7 +30,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                         width: p.width,
                     }}
                 >
-                    {p.form && <FormUI field={p.form} />}
+                    {p.form.renderAsForm()}
                     {p.children}
                 </div>
             )}

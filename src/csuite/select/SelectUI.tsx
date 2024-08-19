@@ -1,67 +1,76 @@
 import type { SelectProps } from './SelectProps'
 
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
+import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
-
-function focusNextElement(dir: 'next' | 'prev'): void {
-    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    const elements = Array.from(document.querySelectorAll(focusableElements)) as HTMLElement[]
-
-    const currentFocusIndex = elements.indexOf(document.activeElement as HTMLElement)
-    const nextIndex = (currentFocusIndex + (dir === 'next' ? 1 : -1)) % elements.length
-
-    elements[nextIndex]?.focus()
-}
+import { isDevServer } from 'src/front/envi/envi'
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
+
+    if (isDevServer) {
+        useEffect(() => {
+            // is it too much updates?
+            // better than useMemo depending on the props which
+            // re-creates AutoCompleteSelectState with every render
+            // could target specific props more precisely?
+            // but not sure if it would be better or worse?
+            // console.log('❌🔶 USE EFFECT props')
+            // should we use useState instead of useMemo? https://mobx.js.org/react-integration.html#using-external-state-in-observer-components
+            // probably ask @rvion
+            if (p !== select.p) select.p = p
+        }, [p])
+    }
+
     const csuite = useCSuite()
     const PopupComp = p.slotPopupUI ?? SelectPopupUI
     const AnchorContentComp = p.slotAnchorContentUI ?? AnchorContentUI
+
+    if (p.readonly) return <AnchorContentComp select={select} />
+
     return (
         <RevealUI //
             ref={select.revealStateRef}
             trigger='pseudofocus'
-            shell='popover'
-            placement='autoVerticalStart'
+            shell={SelectShellUI}
+            placement='cover'
+            content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
+            // 🔶 be careful to not override stuff with that (goes both ways)
+            {...p.revealProps}
             onHidden={(reason) => {
                 select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
                 select.clean()
 
-                // 🔶 should only focus anchor in certain cases?
-                // (ex: escape while in popup should probably focus the anchor?)
-                // (ex: clicking outside the popup should probably focus the anchor?)
-                // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
-                // (ex: tab should probably go to the next select, NOT focus this anchor?)
-                if (reason === 'programmatic' || reason === 'cascade') return
-                select.anchorRef.current?.focus()
-                if (reason === 'tabKey') focusNextElement('next')
-                if (reason === 'shiftTabKey') focusNextElement('prev')
-
-                p.onHidden?.(reason)
+                p.revealProps?.onHidden?.(reason)
             }}
-            content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
-            {...p.revealProps}
             sharedAnchorRef={select.anchorRef}
+            anchorProps={{
+                ...p.revealProps?.anchorProps,
+                onKeyDown: (ev) => {
+                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
+                    select.handleTooltipKeyDown(ev)
+                    p.revealProps?.anchorProps?.onKeyDown?.(ev)
+                },
+            }}
         >
-            <Frame
+            <Row
                 expand
-                line
-                hover={3}
                 tabIndex={0}
                 tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
-                style={p.style}
-                base={csuite.inputContrast}
-                border={csuite.inputBorder}
-                className={p.className}
+                // style={p.style}
+                hoverable
+                // hover={3}
+                // base={csuite.inputContrast}
+                // border={csuite.inputBorder}
+                // className={p.className} // will be overwritten by reveal anchorProps, need fix
                 // 🧚‍♀️ onFocus={(ev) => {
                 // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
                 // 🧚‍♀️     p.onAnchorFocus?.(ev)
@@ -70,24 +79,26 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onBlur`)
                 // 🧚‍♀️     p.onAnchorBlur?.(ev)
                 // 🧚‍♀️ }}
-                {...p.anchorProps}
-                onKeyDown={(ev) => {
-                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
-                    select.handleTooltipKeyDown(ev)
-                    select.revealState?.onAnchorKeyDown(ev)
-                    // 🧚‍♀️ p.anchorProps?.onAnchorKeyDown?.(ev)
-                }}
             >
                 <AnchorContentComp select={select} />
-            </Frame>
+            </Row>
         </RevealUI>
     )
 })
 
 const WRAP_SHOULD_NOT_IMPACT_ICONS = true
 export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { select: AutoCompleteSelectState<OPTION> }) {
-    const displayValue =
-        p.select.p.slotDisplayValueUI != null ? <p.select.p.slotDisplayValueUI select={p.select} /> : p.select.displayValue
+    if (p.select.p.slotDisplayValueUI != null) return <p.select.p.slotDisplayValueUI select={p.select} />
+    const displayValue = p.select.displayValueInAnchor
+
+    const csuite = useCSuite()
+    if (!csuite.showSelectIcons)
+        return (
+            <div tw={['w-full', 'grid', 'p-input']} style={{ gridTemplateColumns: '1fr' }}>
+                <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+            </div>
+        )
+
     return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
         // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
         <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>

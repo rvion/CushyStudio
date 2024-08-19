@@ -1,41 +1,44 @@
-import type { BaseSelectEntry, Field_selectOne } from './FieldSelectOne'
+import type { SelectProps } from '../../select/SelectProps'
+import type { Field_selectOne, SelectOption } from './FieldSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectOne<T>
+export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<VALUE>(p: {
+    field: Field_selectOne<VALUE>
+    selectProps?: Partial<SelectProps<SelectOption<VALUE>>>
 }) {
     const field = p.field
     return (
-        <div tw='flex-1'>
-            <SelectUI<T>
+        <div tw='flex-1 w-full'>
+            <SelectUI<SelectOption<VALUE>>
                 key={field.id}
                 tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
-                getLabelUI={field.config.getLabelUI}
+                OptionLabelUI={field.config.OptionLabelUI}
                 getSearchQuery={() => field.serial.query ?? ''}
                 setSearchQuery={(query) => (field.serial.query = query)}
                 disableLocalFiltering={field.config.disableLocalFiltering}
-                options={() => field.choices}
+                options={() => field.options}
                 equalityCheck={(a, b) => a.id === b.id}
-                value={() => field.serial.val}
-                onOptionToggled={(selectOption) => {
-                    if (selectOption == null) {
-                        // TODO?: hook into it's parent if parent is an option block ?
-                        // ⏸️ if (!widget.isOptional) return
-                        // ⏸️ widget.state.active = false
-                        return
-                    }
-                    const next = field.choices.find((c) => c.id === selectOption.id)
-                    if (next == null) {
-                        console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
-                        return
-                    }
-                    field.value = next
+                value={() => field.selectedOption}
+                placeholder={field.config.placeholder}
+                readonly={field.config.readonly}
+                slotAnchorContentUI={field.config.SlotAnchorContentUI}
+                onOptionToggled={(option) => {
+                    // 🔴 TODO: handle null/optional case properly
+                    // if (option == null) {
+                    //     // TODO?: hook into it's parent if parent is an option block ?
+                    //     // ⏸️ if (!widget.isOptional) return
+                    //     // ⏸️ widget.state.active = false
+                    //     return
+                    // }
+
+                    field.selectedId = option.id
                 }}
+                {...p.selectProps}
             />
             {/* {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>

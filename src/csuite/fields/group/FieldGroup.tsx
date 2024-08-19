@@ -1,4 +1,3 @@
-import type { FormUIProps } from '../../form/FormUI'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -7,11 +6,13 @@ import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFC } from '../../variance/CovariantFC'
+import type { WidgetWithLabelProps } from 'src/cushy-forms/main'
 
-import { type FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form } from '../../form/Form'
+import { FormUI, type FormUIProps } from '../../form/FormUI'
 import { Frame } from '../../frame/Frame'
 import { MarkdownUI } from '../../markdown/MarkdownUI'
 import { Field, type KeyedField } from '../../model/Field'
@@ -83,21 +84,15 @@ type QuickFormContent<T extends Field> =
     /** null or undefined will be skipped */
     | null | undefined
 
+type RenderFieldsSubsetProps<T extends SchemaDict> = {
+    showMore?: (keyof T)[] | false // 🔴 probably migrate to QuickFormContent<this>[] asap too
+    readonly?: boolean
+    usage?: 'cell' | 'default' | 'text' | 'header'
+}
+
 // STATE
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
-
-    /**
-     * @deprecated use customForm instead
-     * formFields has been renamed to customForm on the 2024-07-25 for parity
-     * with
-     */
-    formFields(
-        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
-    ): FC<NO_PROPS> {
-        return this.customForm(fields, props)
-    }
 
     // ⏸️ customCell(
     // ⏸️     _fields: (Accessor<this>)[],
@@ -106,18 +101,15 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
     // ⏸️ }
 
-    customForm(
+    renderFieldsSubset(
         extra: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props?: {
-            showMore?: (keyof T)[] | false
-            readonly?: boolean
-            usage?: 'cell' | 'default' | 'text'
-        },
+        props?: RenderFieldsSubsetProps<T>,
     ): FC<NO_PROPS | undefined> {
         const sm = props?.showMore
         return () => {
+            // 🔴 should this be called with render-time FormUIProps? (and render-time RenderFieldsSubsetProps)
             // ⏸️ const defUsage = props?.usage ?? 'default'
-            const fields = typeof extra === 'function' ? extra(this) : extra
+            const fields = typeof extra === 'function' ? extra(this) : extra // 🔴 we may also want to pass props here
             return (
                 <Frame>
                     {fields.map((f, ix) => {
@@ -128,19 +120,29 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                             return res({})
                         }
                         if (f instanceof Field) {
+                            if (props?.usage === 'header') return f.header({ readonly: props?.readonly })
+                            // if (props?.usage === 'cell') return f.cell({ readonly: props?.readonly }) // f.cell does not exist yet
+                            // if (props?.usage === 'text') return f.text({ readonly: props?.readonly }) // f.text does not exist yet
+
                             return f.renderWithLabel({ fieldName: f.mountKey })
                         }
 
                         if (typeof f === 'string') {
+                            // if (this.fields[f] != null) return this.fields[f].renderWithLabel({ fieldName: f }) // 🔶 not sure if we still allow 'my_field_name' API
                             return <MarkdownUI markdown={f} key={`${ix}-${f}`} />
                         }
-
-                        return this.fields[f]!.renderWithLabel({ fieldName: f as string })
                     })}
                     {sm !== false && (
                         <CollapsibleUI
                             content={() => {
-                                const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
+                                const moreFields =
+                                    sm == null
+                                        ? Object.keys(this.fields).filter(
+                                              (k) =>
+                                                  !fields.includes(k) && // display all fields that are not in the main list
+                                                  !fields.includes(this.fields[k]),
+                                          )
+                                        : sm
                                 return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
                             }}
                         />
@@ -150,9 +152,48 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
+    // 🔴 WIP
+    // should it return FC or ReactNode?
+    // this is a kind of very basic WidgetGroupUI alternative
+    // probably stupid to have a separate component for this, should just be a different layout.
+    renderFieldsSubsetLine = (p: {
+        extra:
+            | QuickFormContent<any>[] /* 🔴 should be '<this>' but ts is not happy when in object param (top level param is ok) ?! */
+            | ((self: any) => QuickFormContent<any>[])
+    }): ReactNode => {
+        const extra = p.extra
+        // ⏸️ const defUsage = props?.usage ?? 'default'
+        const fields = typeof extra === 'function' ? extra(this) : extra
+        return (
+            <Frame row>
+                {fields.map((f, ix) => {
+                    if (f == null) return null
+                    if (typeof f === 'function') {
+                        const res = f(this)
+                        if (res == null) return null
+                        return res({})
+                    }
+                    if (f instanceof Field) {
+                        return (
+                            <Frame col key={f.id}>
+                                {f.mountKey}
+                                {f.header()}
+                            </Frame>
+                        )
+                    }
+
+                    if (typeof f === 'string') {
+                        // if (this.fields[f] != null) return this.fields[f].renderWithLabel({ fieldName: f }) // 🔶 not sure if we still allow 'my_field_name' API
+                        return <MarkdownUI markdown={f} key={`${ix}-${f}`} />
+                    }
+                })}
+            </Frame>
+        )
+    }
+
     show(
         fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
+        props: Omit<FormUIProps, 'field'> & RenderFieldsSubsetProps<T> = {},
     ): JSX.Element {
         return this.defineForm(fields, { ...props }).render()
     }
@@ -160,12 +201,15 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     defineForm(
         //
         fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
+        // 🔶 put FormUIProps props in a third param?
+        // include usage/readonly in FormUIProps? => probably, forwarding to <Content />
+        // then propagate them via WidgetGroup_BlockUI and WidgetWithLabel? (i guess here is the inversion of control improvement)
+        props: Omit<FormUIProps, 'field'> & RenderFieldsSubsetProps<T> = {},
     ): Form {
         return new Form({
             ...props,
             field: this,
-            Component: this.customForm(fields, { showMore: props.showMore }),
+            Content: this.renderFieldsSubset(fields, { showMore: props.showMore, usage: props.usage, readonly: props.readonly }),
         })
     }
 

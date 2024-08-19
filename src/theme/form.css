@@ -1,8 +1,14 @@
-/*
-*:focus {
-    outline: double 1px red !important;
+/** debug focus stuff
+*:active {
+    outline: dashed 2px blue !important;
 }
-*/
+*:focus {
+    outline: dashed 2px red !important;
+}
+*:focus-visible {
+    outline: dashed 2px orange !important;
+}
+/**/
 
 /* global vars ------------------------------------------------------------------------------------ */
 :root {
@@ -126,8 +132,38 @@
 .lh-inside-2   { line-height: calc(var(--inside-height) - 2px); }
 
 
+/**
+ * padding to go from input size to inside size
+ */
+.p-input  { padding:        calc((var(--input-height) - var(--inside-height)) / 2 - 0px); } /* minus 1px to account for border */
+.py-input { padding-top:    calc((var(--input-height) - var(--inside-height)) / 2 - 0px); padding-bottom: calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
+.px-input { padding-left:   calc((var(--input-height) - var(--inside-height)) / 2 - 0px); padding-right:  calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
+.pt-input { padding-top:    calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
+.pb-input { padding-bottom: calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
+.pl-input { padding-left:   calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
+.pr-input { padding-right:  calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
 
+/**
+* padding to go from cell/widget size to input size
+*/
+.p-widget  { padding:        calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.py-widget { padding-top:    calc((var(--widget-height) - var(--input-height)) / 2 - 0px); padding-bottom: calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.px-widget { padding-left:   calc((var(--widget-height) - var(--input-height)) / 2 - 0px); padding-right:  calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.pt-widget { padding-top:    calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.pb-widget { padding-bottom: calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.pl-widget { padding-left:   calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
+.pr-widget { padding-right:  calc((var(--widget-height) - var(--input-height)) / 2 - 0px); }
 
+/**
+* padding to go from cell/widget size to input size
+*/
+.p-widget-inside  { padding:        calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.py-widget-inside { padding-top:    calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); padding-bottom: calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.px-widget-inside { padding-left:   calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); padding-right:  calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.pt-widget-inside { padding-top:    calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.pb-widget-inside { padding-bottom: calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.pl-widget-inside { padding-left:   calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
+.pr-widget-inside { padding-right:  calc((var(--widget-height) - var(--inside-height)) / 2 - 0px); }
 
 .COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
@@ -137,7 +173,7 @@
 .UI-Select,
 .UI-InputNumber,
 .UI-InputString {
-    border-radius: .5rem;
+    border-radius: 0.375rem;
 }
 
 /* ------------------------------------------------------------------------------------------- */

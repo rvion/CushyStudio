@@ -3,6 +3,7 @@ import type { Field } from '../model/Field'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../csuite/icons/iconHelpers'
+import { useCSuite } from '../ctx/useCSuite'
 
 export const LabelCaretWidth = '1rem'
 
@@ -11,6 +12,8 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     className?: string
     field: Field
 }) {
+    const csuite = useCSuite()
+    if (!csuite.showExpandCarets) return null
     if (!p.field.isCollapsed && !p.field.isCollapsible)
         return (
             <Ikon._

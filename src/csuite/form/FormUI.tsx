@@ -17,7 +17,7 @@ export type FormUIProps = {
     // ⏸️ skin?: 'default' | 'cell' | 'text' | 'whatev'
 
     Header?: FC<NO_PROPS>
-    Component?: FC<NO_PROPS>
+    Content?: FC<NO_PROPS> //
     // layout?: SimplifiedFormDef
 
     // root wrapper
@@ -28,10 +28,6 @@ export type FormUIProps = {
     theme?: Box
     className?: string
     style?: CSSProperties
-
-    // extra --------------------------------------------------------
-    /** any react children passed to this widget will be displayed at the end of the form */
-    children?: ReactNode
 
     // submit -------------------------------------------------------
     /** @default false */
@@ -44,25 +40,32 @@ export type FormUIProps = {
      * override default label.
      * @default 'Submit'
      * only used when
-     *  - submitButton is not provided
      *  - submitAction is provided (no submitAction => no button => no label needed)
+     * Use `Footer` instead if you want to provide multiple actions, custom submit button, etc.
      */
     submitLabel?: string
     submitLook?: FrameAppearance
     submitSize?: RSSize
     /** * override default action */
     submitAction?: ((field: Field) => void) | 'confetti'
-    /** if provided, submitLabel and submitActinod will not be used */
-    SubmitButton?: FC<{ form: Field; canSubmit: boolean }>
+    /** for custom submit button and more actions */
+    Footer?: FC<{ field: Field; canSubmit: boolean }>
 }
 
+/**
+ * Mostly a central component doing the heavy lifting
+ * (likely coming from field.someRender(), field likely being a group)
+ * with additionally:
+ * - some custom header to include in the main div
+ * - some action buttons (submit...)
+ */
 export const FormUI = observer(function FormUI_(p: FormUIProps) {
-    const form = p.field
-    if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
+    const field = p.field
+    if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
     // const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
-    const Component = p.Component ?? ((): JSX.Element => form.renderWithLabel())
+    const Content = p.Content ?? ((): JSX.Element => field.renderWithLabel({ noHeader: true }))
 
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||
@@ -78,38 +81,37 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
         <Frame
             //
             tw='UI-Form'
+            col
             {...p.theme}
             className={p.className}
             style={p.style}
         >
             {p.Header && <p.Header />}
-            <Component /> {/* FORM */}
-            {p.SubmitButton != null ? (
-                <p.SubmitButton form={form} canSubmit={canSubmit} />
-            ) : submitAction == null ? null : submitAction === 'confetti' ? (
+            <Content /> {/* FORM */}
+            {submitAction != null && (
                 <div tw='flex'>
                     <Button
                         look={p.submitLook ?? 'primary'}
-                        size={p.submitSize ?? 'lg'}
+                        size={p.submitSize ?? 'input'}
                         tw='ml-auto'
                         disabled={!canSubmit}
                         onClick={async () => {
                             if (!canSubmit) return
-                            // @ts-ignore
-                            const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
-                            fire({ zIndex: 100000, particleCount: 100, spread: 70 })
+
+                            if (submitAction === 'confetti') {
+                                // @ts-ignore
+                                const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
+                                fire({ zIndex: 100000, particleCount: 100, spread: 70 })
+                            } else {
+                                submitAction(field)
+                            }
                         }}
                     >
                         {p.submitLabel ?? 'Submit'}
                     </Button>
                 </div>
-            ) : (
-                <div tw='flex'>
-                    <Button look='primary' tw='ml-auto' disabled={!canSubmit} onClick={() => submitAction(form)}>
-                        {p.submitLabel ?? 'Submit'}
-                    </Button>
-                </div>
             )}
+            {p.Footer != null && <p.Footer field={field} canSubmit={canSubmit} />}
         </Frame>
     )
 })

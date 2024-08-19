@@ -6,6 +6,7 @@ import type { FC, ForwardedRef, ReactPortal } from 'react'
 import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, forwardRef, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { twMerge } from 'tailwind-merge'
 
 import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
@@ -17,18 +18,23 @@ import { RevealCtx, useRevealOrNull } from './RevealCtx'
 import { RevealStateLazy } from './RevealStateLazy'
 import { ShellNoneUI } from './shells/ShellNone'
 import { ShellPopoverUI } from './shells/ShellPopover'
-import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI } from './shells/ShellPopupUI'
+import { ShellPopupLGUI, ShellPopupSMUI, ShellPopupUI, ShellPopupXLUI, ShellPopupXSUI } from './shells/ShellPopupUI'
+import { useSyncForwardedRef } from './useSyncForwardedRef'
 
 export const RevealUI = observer(
     forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
-        const ref = p.sharedAnchorRef ?? useRef<HTMLDivElement>(null) // 🔴
-        const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
+        const anchorRef = useRef<HTMLDivElement>(null)
+        useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
+
+        const parents_: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
+        const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
         // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
-        const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState())), []) // prettier-ignore
+        const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState()), anchorRef), []) // prettier-ignore
         const { state: reveal } = lazyState
         const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
 
+        // 🔴 2024-08-08 domi: isn't this broken/useless?
         useEffect(() => {
             if (ref2 == null) return
             if (typeof ref2 === 'function') ref2(lazyState)
@@ -46,7 +52,7 @@ export const RevealUI = observer(
             if (p.hideDelay !== reveal.p.hideDelay) reveal.p.hideDelay = p.hideDelay
             if (p.shell !== reveal.p.shell) reveal.p.shell = p.shell
             if (p.relativeTo !== reveal.p.relativeTo) reveal.p.relativeTo = p.relativeTo
-        }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay, p.shell, p.relativeTo])
+        }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay, p.shell, p.relativeTo, reveal])
 
         useEffect(() => {
             if (p.defaultVisible) lazyState.getRevealState().open()
@@ -70,7 +76,7 @@ export const RevealUI = observer(
 
             // 2. place around anchor
             else if (relTo == null || relTo === 'anchor') {
-                const element = ref.current
+                const element = anchorRef.current
                 if (!element) return
                 const rect = element.getBoundingClientRect()
                 reveal.setPosition(rect)
@@ -117,18 +123,20 @@ export const RevealUI = observer(
                 child,
                 {
                     // @ts-ignore
-                    ref: ref, // 🔴🔴 I guess we're overriding the Frame's ref={s.anchorRef} here?
+                    ref: anchorRef, // 🔴🔴 I guess we're overriding the Frame's ref={s.anchorRef} here?
                     style: objectAssignTsEfficient_t_t(p.style ?? {}, child.props?.style),
-                    className: cls(child.props?.className, p.className),
-                    onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); child.props?.onContextMenu?.(ev) },
-                    onClick: (ev: any)       => { lazyState.onClick(ev)      ; child.props?.onClick?.(ev) },
-                    onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; child.props?.onAuxClick?.(ev) },
-                    onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; child.props?.onMouseEnter?.(ev) },
-                    onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; child.props?.onMouseLeave?.(ev) },
-                    // 🧑‍🎤 onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; child.props?.onMouseDown?.(ev) },
-                    // 🧑‍🎤 onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; child.props?.onMouseUp?.(ev) },
-                    onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; child.props?.onFocus?.(ev) },
-                    onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; child.props?.onBlur?.(ev) },
+                    className: cls('🟢CLONED🟢', child.props?.className, p.className, /* 'bg-red-500' /**/),
+                    ...p.anchorProps as any, // 🔴 not sure how to type this
+                    onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); p.anchorProps?.onContextMenu?.(ev); child.props?.onContextMenu?.(ev) },
+                    onClick: (ev: any)       => { lazyState.onClick(ev)      ; p.anchorProps?.onClick?.(ev); child.props?.onClick?.(ev) },
+                    onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; p.anchorProps?.onAuxClick?.(ev); child.props?.onAuxClick?.(ev) },
+                    onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; p.anchorProps?.onMouseEnter?.(ev); child.props?.onMouseEnter?.(ev) },
+                    onMouseLeave: (ev: any)  => { lazyState.onMouseLeave(ev) ; p.anchorProps?.onMouseLeave?.(ev); child.props?.onMouseLeave?.(ev) },
+                    // 🧑‍🎤 onMouseDown: (ev: any)   => { lazyState.onMouseDown(ev)  ; p.anchorProps?.onMouseDown?.(ev); child.props?.onMouseDown?.(ev) },
+                    // 🧑‍🎤 onMouseUp: (ev: any)     => { lazyState.onMouseUp(ev)    ; p.anchorProps?.onMouseUp?.(ev); child.props?.onMouseUp?.(ev) },
+                    onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; p.anchorProps?.onFocus?.(ev); child.props?.onFocus?.(ev) },
+                    onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; p.anchorProps?.onBlur?.(ev); child.props?.onBlur?.(ev) },
+                    onKeyDown: (ev: any)     => { lazyState.onKeyDown(ev)    ; p.anchorProps?.onKeyDown?.(ev); child.props?.onKeyDown?.(ev) },
                 },
                 <>
                     {child.props.children}
@@ -150,9 +158,14 @@ export const RevealUI = observer(
         return (
             <RevealCtx.Provider value={nextTower}>
                 <div //
-                    tw={['UI-Reveal', 'inline-flex', reveal?.defaultCursor ?? 'cursor-pointer']}
-                    className={p.className}
-                    ref={ref}
+                    tw={twMerge([
+                        'UI-Reveal 🔶NOT-CLONED🔶',
+                        'h-full w-full', // 🔴 not sure what's the best default
+                        'inline-flex', // 'flex'
+                        reveal?.defaultCursor ?? 'cursor-pointer',
+                        p.className,
+                    ])}
+                    ref={anchorRef}
                     style={p.style}
                     onContextMenu={lazyState.onContextMenu}
                     onClick={lazyState.onClick}
@@ -163,6 +176,8 @@ export const RevealUI = observer(
                     onBlur={lazyState.onBlur}
                     // 🧑‍🎤 onMouseDown={lazyState.onMouseDown}
                     // 🧑‍🎤 onMouseUp={lazyState.onMouseUp}
+                    onKeyDown={lazyState.onKeyDown}
+                    {...p.anchorProps}
                 >
                     {p.children /* anchor */}
                     {mkTooltip(reveal) /* tooltip */}
@@ -192,10 +207,10 @@ const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
         if (shell === 'none') return ShellNoneUI
         //
         if (shell === 'popup') return ShellPopupUI
-        if (shell === 'popup-xs') return ShellPopupLGUI
+        if (shell === 'popup-xs') return ShellPopupXSUI
         if (shell === 'popup-sm') return ShellPopupSMUI
         if (shell === 'popup-lg') return ShellPopupLGUI
-        if (shell === 'popup-xl') return ShellPopupLGUI
+        if (shell === 'popup-xl') return ShellPopupXLUI
 
         return shell ?? ShellPopoverUI
     })()

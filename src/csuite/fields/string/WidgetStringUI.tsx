@@ -42,7 +42,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 })
 
 // string HEADER
-export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_string }) {
+export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_string; readonly?: boolean }) {
     const field = p.field
     const config = field.config
     return (
@@ -54,6 +54,8 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { fiel
             className={config.className}
             getValue={() => field.value}
             setValue={(value) => (field.value = value)}
+            placeholder={field.config.placeHolder}
+            disabled={p.readonly}
             buffered={
                 field.config.buffered
                     ? {

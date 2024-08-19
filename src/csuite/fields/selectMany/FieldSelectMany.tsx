@@ -2,19 +2,26 @@ import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
+import type { SelectValueLooks } from '../../select/SelectProps'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
-import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
+import type { SELECT_ID, SelectOption } from '../selectOne/FieldSelectOne'
+import type { SelectValueSlots } from 'src/cushy-forms/main'
 
 import { Field } from '../../model/Field'
 import { potatoClone } from '../../utils/potatoClone'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
+import { stableStringify } from 'src/cushy-forms/src/csuite/hashUtils/hash'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG
-export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
+export type Field_selectMany_config<VALUE> = FieldConfig<
     {
-        default?: T[]
+        /**
+         * 🔶 the *IDs* of the options selected by default
+         * true: all options selected
+         */
+        default?: SELECT_ID[] | SELECT_ID | true
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic
@@ -29,12 +36,14 @@ export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices: T[] | ((self: Field_selectMany<T>) => T[])
+        choices: SELECT_ID[] | ((self: Field_selectMany<VALUE>) => SELECT_ID[])
+        getIdFromValue: (t: VALUE) => SELECT_ID
+        getValueFromId: (t: SELECT_ID) => Maybe<VALUE>
+        getOptionFromId: (t: SELECT_ID, field: Field_selectMany<VALUE>) => Maybe<SelectOption<VALUE>>
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         appearance?: SelectManyAppearance
-        getLabelUI?: (t: T) => React.ReactNode
-        getInsideUI?: (t: T) => React.ReactNode
+        OptionLabelUI?: (t: Maybe<SelectOption<VALUE>>, where: SelectValueSlots) => React.ReactNode | SelectValueLooks
 
         /**
          * @since 2024-06-24
@@ -48,40 +57,41 @@ export type Field_selectMany_config<T extends BaseSelectEntry> = FieldConfig<
          * @deprecated use global csuite config instead
          */
         tabPosition?: TabPositionConfig
+        placeholder?: string
     },
-    Field_selectMany_types<T>
+    Field_selectMany_types<VALUE>
 >
 
 // SERIAL
-export type Field_selectMany_serial<T extends BaseSelectEntry> = FieldSerial<{
+export type Field_selectMany_serial = FieldSerial<{
     $: 'selectMany'
     query: string
-    values: T[]
+    values: SELECT_ID[]
 }>
 
 // SERIAL FROM VALUE
-export const Field_selectMany_fromValue = <T extends BaseSelectEntry>(
-    values: Field_selectMany_value<T>,
-): Field_selectMany_serial<T> => ({
-    $: 'selectMany',
-    query: '',
-    values,
-})
+// 🔴 this is not possible anymore, we need the base select entry to get the id.
+// not sure if important
+// export const Field_selectMany_fromValue = <T extends any>(val: Field_selectMany_value<T>): Field_selectMany_serial => ({
+//     $: 'selectMany',
+//     query: '',
+//     values,
+// })
 
 // VALUE
-export type Field_selectMany_value<T extends BaseSelectEntry> = T[]
+export type Field_selectMany_value<VALUE extends any> = VALUE[]
 
 // TYPES
-export type Field_selectMany_types<T extends BaseSelectEntry> = {
+export type Field_selectMany_types<VALUE extends any> = {
     $Type: 'selectMany'
-    $Config: Field_selectMany_config<T>
-    $Serial: Field_selectMany_serial<T>
-    $Value: Field_selectMany_value<T>
-    $Field: Field_selectMany<T>
+    $Config: Field_selectMany_config<VALUE>
+    $Serial: Field_selectMany_serial
+    $Value: Field_selectMany_value<VALUE> // 🔴 not sure if we need nullability since it's an array
+    $Field: Field_selectMany<VALUE>
 }
 
 // STATE
-export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_selectMany_types<T>> {
+export class Field_selectMany<VALUE extends any> extends Field<Field_selectMany_types<VALUE>> {
     static readonly type: 'selectMany' = 'selectMany'
     DefaultHeaderUI = WidgetSelectManyUI
     // DefaultBodyUI = WidgetSelectMany_ListUI
@@ -92,40 +102,51 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
     }
 
     get isCollapsible(): boolean {
-        return true
+        // return true // 🚂 we disabled this
+        return false
     }
 
-    get defaultValue(): Field_selectMany_value<T> {
+    get defaultIds(): SELECT_ID[] {
+        // 2024-08-02: domi: 🔴 select all is dangerous for models
+        // because it will evaluate choices in the backend...
+        if (this.config.default === true) return this.choices
+        if (typeof this.config.default === 'string') return [this.config.default]
         return this.config.default ?? []
     }
 
     get hasChanges(): boolean {
-        if (this.serial.values.length !== this.defaultValue.length) return true
-        for (const item of this.serial.values) {
-            if (!this.defaultValue.find((i) => i.id === item.id)) return true
+        if (this.serial.values.length !== this.defaultIds.length) return true
+        for (const id of this.serial.values) {
+            if (!this.defaultIds.find((i) => i === id)) return true
         }
         return false
     }
 
     reset(): void {
-        this.value = this.defaultValue
+        this.selectedIds = this.defaultIds
     }
 
     wrap = this.config.wrap ?? false
 
-    get choices(): T[] {
+    get choices(): SELECT_ID[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //
             ? _choices(this)
             : _choices
     }
 
+    get options(): SelectOption<VALUE>[] {
+        return this.choices.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE>[]
+    }
+
     get ownProblems(): Maybe<string[]> {
         if (this.serial.values == null) return null
         const errors: string[] = []
-        for (const value of this.serial.values) {
-            if (!this.choices.find((choice) => choice.id === value.id)) {
-                errors.push(`value ${value.id} (label: ${value.label}) not in choices`)
+        for (const id of this.selectedIds) {
+            if (!this.choices.find((choice) => choice === id)) {
+                const option = this.getOptionFromId(id)
+                if (option == null) errors.push(`value ${id} (label: unknown, could not retrieve option) not in choices`)
+                else errors.push(`value ${option.id} (label: ${option.label}) not in choices`)
             }
         }
         if (errors.length > 0) return errors
@@ -137,8 +158,8 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: BaseSchema<Field_selectMany<T>>,
-        serial?: Field_selectMany_serial<T>,
+        schema: BaseSchema<Field_selectMany<VALUE>>,
+        serial?: Field_selectMany_serial,
     ) {
         super(repo, root, parent, schema)
         const config = schema.config
@@ -149,83 +170,157 @@ export class Field_selectMany<T extends BaseSelectEntry> extends Field<Field_sel
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectMany_serial<T>>): void {
+    protected setOwnSerial(serial: Maybe<Field_selectMany_serial>): void {
         this.serial.query = serial?.query ?? ''
-        const finalVal = serial?.values ?? this.defaultValue
+
+        let prevVal = serial?.values
+        // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
+        if (
+            prevVal &&
+            Array.isArray(prevVal) &&
+            prevVal.length > 0 &&
+            typeof prevVal[0] === 'object' &&
+            prevVal[0] != null &&
+            'id' in prevVal[0]
+        ) {
+            prevVal = prevVal.map((v) => (v as unknown as { id: string }).id).filter(Boolean)
+        }
+
+        const finalVal = prevVal ?? this.defaultIds
         this.serial.values = [...finalVal]
     }
 
     /** un-select given item */
-    removeItem(item: T): void {
+    removeId(id: SELECT_ID): void {
         // ensure item was selected
-        const indexOf = this.serial.values.findIndex((i) => i.id === item.id)
+        const indexOf = this.serial.values.findIndex((i) => i === id)
         if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
         // remove it
         this.runInValueTransaction(() => {
-            this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+            this.serial.values = this.serial.values.filter((v) => v !== id) // filter just in case of duplicate
         })
     }
 
     /** select given item */
-    addItem(item: T): void {
+    addId(id: SELECT_ID): void {
         // ensure item is not selected yet
-        const i = this.serial.values.findIndex((i) => i.id === item.id)
+        const i = this.serial.values.findIndex((i) => i === id)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
         // insert it
-        this.runInValueTransaction(() => this.serial.values.push(item))
+        this.runInValueTransaction(() => this.serial.values.push(id))
+    }
+
+    addValue(value: VALUE): void {
+        const valueId = this.config.getIdFromValue(value)
+
+        if (!valueId) return
+
+        this.addId(valueId)
     }
 
     /** select item if item was not selected, un-select if item was selected */
-    toggleItem(item: T): void {
+    toggleId(id: SELECT_ID): void {
         this.runInValueTransaction(() => {
-            const i = this.serial.values.findIndex((i) => i.id === item.id)
+            const i = this.serial.values.findIndex((i) => i === id)
             if (i < 0) {
-                this.serial.values.push(item)
+                this.serial.values.push(id)
             } else {
-                this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+                this.serial.values = this.serial.values.filter((v) => v !== id) // filter just in case of duplicate
             }
         })
     }
 
-    get value(): Field_selectMany_value<T> {
+    get value(): Field_selectMany_value<VALUE> {
         // return naiveDeepClone(this.serial.values)
-        const cloned = potatoClone(this.serial.values)
+        return [...this.selectedValues] // do we still need to clone?
 
+        // 2024-08-01 domi: we removed that for simplicity because it gets even more intricated now that value is not an option.
+        // stuff like addValue only have dubious implementations
+        //
         // return cloned
-        return new Proxy(cloned as any, {
-            get: (target, prop): any => {
-                // ⏸️ console.log(`[GET]`, prop)
-                if (typeof prop === 'symbol') return target[prop]
+        // return new Proxy(cloned as any, {
+        //     get: (target, prop): any => {
+        //         // ⏸️ console.log(`[GET]`, prop)
+        //         if (typeof prop === 'symbol') return target[prop]
 
-                if (prop === 'push') return this.addItem.bind(this)
-                if (prop === 'slice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
-                if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+        //         if (prop === 'push') return this.addValue.bind(this)
+        //         if (prop === 'slice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+        //         if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
 
-                // handle numbers (1) and number-like ('1')
-                if (parseInt(prop, 10) === +prop) {
-                    return target[+prop]
-                }
+        //         // handle numbers (1) and number-like ('1')
+        //         if (parseInt(prop, 10) === +prop) {
+        //             return target[+prop]
+        //         }
 
-                return target[prop]
-            },
-            set: (target, prop, value): boolean => {
-                const msg = `[🔶] Field_selectMany.value: use .addItem() or .removeItem() instead`
+        //         return target[prop]
+        //     },
+        //     set: (target, prop, value): boolean => {
+        //         const msg = `[🔶] Field_selectMany.value: use .addItem() or .removeItem() instead`
 
-                // alt 1. either we throw
-                throw new Error(msg)
+        //         // alt 1. either we throw
+        //         throw new Error(msg)
 
-                // alt 2. either we warn and return false
-                // console.warn(msg)
-                // return false
-            },
+        //         // alt 2. either we warn and return false
+        //         // console.warn(msg)
+        //         // return false
+        //     },
+        // })
+    }
+
+    set value(next: Field_selectMany_value<VALUE>) {
+        if (
+            this.serial.values.length === next.length && //
+            this.serial.values.every((v, i) => v === next[i])
+        )
+            return
+
+        const nextIds = next.map((v) => this.config.getIdFromValue(v)).filter((x) => x != null) as SELECT_ID[]
+        this.selectedIds = nextIds
+    }
+
+    get selectedIds(): SELECT_ID[] {
+        return [...this.serial.values]
+    }
+
+    set selectedIds(nextIds: SELECT_ID[]) {
+        if (
+            this.serial.values.length === nextIds.length && //
+            this.serial.values.every((v, i) => v === nextIds[i])
+        )
+            return
+
+        this.runInValueTransaction(() => {
+            this.serial.values = [...nextIds]
+
+            // 2024-07-08 rvion:
+            // | when setting a value with equal id, we may be actually changing the SelectEntry
+            // | (cached name could be different, etc.)
+            // | since it's a bit complicated, let's not care today. if this cause a bug, let's improve
+            // | that later
+
+            // ⏸️ const nextHasSameID = this.value.id === next.id
+            // ⏸️ if (!nextHasSameID) this.applyValueUpdateEffects()
+            // ⏸️ else this.applySerialUpdateEffects()
         })
     }
 
-    set value(next: Field_selectMany_value<T>) {
-        if (this.serial.values === next) return
-        // we should NOT allow fields to share structure with stuff from elsewhere
-        // oterwise, we may experience subtle bugs due to users manipulating the value
-        this.runInValueTransaction(() => (this.serial.values = next))
+    get selectedOptions(): SelectOption<VALUE>[] {
+        return this.selectedIds.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE>[]
+    }
+
+    // see FieldSelectOne.getValueFromId notes
+    getValueFromId = (id: SELECT_ID): Maybe<VALUE> => this.config.getValueFromId(id)
+    getOptionFromId = (id: SELECT_ID): Maybe<SelectOption<VALUE>> => this.config.getOptionFromId(id, this)
+
+    private get selectedValues(): VALUE[] {
+        return this.selectedIds.map(this.getValueFromId).filter((x) => x != null) as VALUE[]
+    }
+
+    // 🔶 do not compare queries
+    get isDirtyFromSnapshot_UNSAFE(): boolean {
+        const { snapshot, ...currentSerial } = this.serial
+        if (snapshot == null) return false
+        return stableStringify(snapshot.values) !== stableStringify(currentSerial.values)
     }
 }
 

@@ -1,4 +1,4 @@
-import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
+import type { SelectOption } from '../selectOne/FieldSelectOne'
 import type { Field_selectMany } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
@@ -6,9 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 
-export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectMany<T>
-}) {
+export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<VALUE>(p: { field: Field_selectMany<VALUE> }) {
     const field = p.field
     return (
         <ResizableFrame
@@ -27,19 +25,19 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
             //     </>
             // }
         >
-            {field.choices.slice(0, 100).map((c) => {
-                const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
+            {field.options.slice(0, 100).map((c) => {
+                const isSelected = field.selectedIds.includes(c.id)
                 return (
                     <InputBoolToggleButtonUI
                         key={c.id}
                         value={isSelected}
-                        border={false}
+                        // border={false}
                         mode='checkbox'
                         showToggleButtonBox
                         tw='w-full [&>p]:text-start' // ❌ misc
                         text={c.label}
                         onValueChange={(value) => {
-                            if (value != isSelected) field.toggleItem(c)
+                            if (value != isSelected) field.toggleId(c.id)
                         }}
                     />
                 )

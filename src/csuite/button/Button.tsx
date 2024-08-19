@@ -41,8 +41,8 @@ export const Button = observer(function Button_(
                 contrast: subtle //
                     ? 0
                     : uist.visuallyActive || uist.running
-                      ? buttonContrastWhenPressed
-                      : buttonContrast,
+                    ? buttonContrastWhenPressed
+                    : buttonContrast,
                 hue: p.hue,
                 chroma: p.chroma,
             }}
@@ -71,11 +71,11 @@ export const Button = observer(function Button_(
     )
 })
 
-class ButtonState {
+export class ButtonState {
     pressed: boolean = false
     running: boolean = false
 
-    constructor(public props: FrameProps) {
+    constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
         makeAutoObservable(this, { props: observable.ref })
     }
 

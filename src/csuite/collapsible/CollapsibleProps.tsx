@@ -11,6 +11,8 @@ export type CollapsibleProps = {
     titleCollapsed?: React.ReactNode
     titleExpanded?: React.ReactNode
 
+    hideAnchorWhenExpanded?: boolean
+
     onToggle?: (state: CollapsibleState) => void
 
     className?: string

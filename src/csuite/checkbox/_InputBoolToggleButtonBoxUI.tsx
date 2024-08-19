@@ -1,32 +1,38 @@
+import type { IconName } from '../icons/icons'
+
 import { observer } from 'mobx-react-lite'
+import { Toggle } from 'rsuite' // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD
 
 import { Frame } from '../frame/Frame'
-import { Ikon } from '../icons/iconHelpers'
+import { Ikon, IkonOf } from '../icons/iconHelpers'
 
-export const InputBoolToggleButtonBoxUI = observer(function InputBoolToggleButtonBoxUI_(p: {
+export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI_(p: {
     //
-    mode: 'radio' | 'checkbox' | false
+    mode: 'radio' | 'checkbox' | false | 'switch'
     isActive: boolean
+    iconSize?: string
 }) {
+    if (p.mode === 'switch') return <Toggle checked={p.isActive} size='sm' /> // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD, and size not flexible
     const { mode, isActive } = p
-    const chroma = isActive ? 0.08 : 0.02
+    const icon: Maybe<IconName> =
+        mode === 'radio'
+            ? isActive
+                ? 'mdiCheckCircle'
+                : 'mdiCircleOutline'
+            : mode === 'checkbox'
+            ? isActive
+                ? 'mdiCheckboxMarked'
+                : 'mdiCheckboxBlankOutline'
+            : null
+
     return (
-        <div>
-            <Frame tw='text-lg mr-1' text={{ contrast: 0.3, chroma: isActive ? 0.15 : chroma }}>
-                {mode === 'radio' ? (
-                    isActive ? (
-                        <Ikon.mdiCheckCircle />
-                    ) : (
-                        <Ikon.mdiCircleOutline />
-                    )
-                ) : mode === 'checkbox' ? (
-                    isActive ? (
-                        <Ikon.mdiCheckboxMarked />
-                    ) : (
-                        <Ikon.mdiCheckboxBlankOutline />
-                    )
-                ) : null}
-            </Frame>
-        </div>
+        icon && (
+            <IkonOf
+                name={icon}
+                tw={[isActive ? 'text-lsuite-primary' : 'text-lsuite-gray', 'shrink-0']}
+                size={p.iconSize ?? '1.3em'}
+            />
+        )
     )
+    // return <div tw='text-lg mr-1'>{icon && <IkonOf name={icon} />}</div>
 })

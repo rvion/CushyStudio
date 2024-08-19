@@ -43,10 +43,12 @@ export type WidgetWithLabelProps = {
     slotDelete?: ReactNode
     slotDragKnob?: ReactNode
     slotUpDown?: ReactNode
+
+    showHidden?: () => boolean
 }
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetWithLabelProps) {
-    if (p.field.isHidden) return null
+    if (p.field.isHidden && !p.showHidden?.()) return null
     const originalField = p.field
     const field = originalField.actualWidgetToDisplay
     const HeaderUI = field.header()

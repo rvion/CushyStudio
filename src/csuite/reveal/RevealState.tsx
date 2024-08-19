@@ -5,6 +5,7 @@ import type { CSSProperties, FC, ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
+import { hasMod } from '../accelerators/META_NAME'
 import { exhaust } from '../utils/exhaust'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
@@ -33,7 +34,7 @@ export class RevealState {
 
     onRightClickAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.logEv(ev, `anchor.onRightClick`)
-        this.onLeftClickAnchor(ev)
+        // this.onLeftClickAnchor(ev) // 2024-07-31 domi: not sure what the use-case is, but annoying when you want to inspect the element
     }
 
     onLeftClickAnchor = (ev: React.MouseEvent<unknown>): void => {
@@ -89,9 +90,13 @@ export class RevealState {
         //
         public p: RevealProps,
         public parents: RevealState[],
+        public anchorRef: React.RefObject<HTMLDivElement>, // 🚨 ref do not work when observables!
     ) {
         // see comment above
-        this.contentFn = (): ReactNode => p.content({ reveal: this })
+        this.contentFn = (): ReactNode => {
+            const Component = p.content
+            return <Component reveal={this} />
+        }
 
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
@@ -99,7 +104,14 @@ export class RevealState {
         // | 📈 const stop = spy((ev) => {
         // | 📈     console.log(`[🤠] ev`, ev)
         // | 📈 })
-        makeAutoObservable(this, { uid: false, p: false, PREVENT_DOUBLE_OPEN_CLOSE_DELAY: false, delaySinceLastOpenClose: false })
+        makeAutoObservable(this, {
+            uid: false,
+            p: false,
+            PREVENT_DOUBLE_OPEN_CLOSE_DELAY: false,
+            delaySinceLastOpenClose: false,
+            anchorRef: false, // 🚨 ref do not work when observables!
+        })
+
         // | 📈 stop()
     }
 
@@ -184,7 +196,7 @@ export class RevealState {
 
     get shouldRevealOnAnchorFocus(): boolean {
         if (this.revealTrigger == 'none') return false
-        if (this.shouldRevealOnAnchorClick) return true
+        // if (this.shouldRevealOnAnchorClick) return true
         if (this.revealTrigger === 'pseudofocus') return true
         return false
     }
@@ -330,7 +342,20 @@ export class RevealState {
 
         // 🔴 are children closed properly?
 
-        if (wasVisible) this.p.onHidden?.(reason ?? 'unknown')
+        if (wasVisible) {
+            this.p.onHidden?.(reason ?? 'unknown')
+
+            // 🔶 when should we focus anchor on close?
+            // (ex: escape while in popup should probably focus the anchor?)
+            // (ex: clicking outside the popup should probably focus the anchor?)
+            // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
+            // (ex: tab should probably go to the next select, NOT focus this anchor? => done in Tab handling)
+            if (reason === 'programmatic' || reason === 'cascade') return
+            // if we entered via hover, the closure is likely not like a click on the anchor (need clearer implementation though)
+            if (this.p.trigger === 'hover') return
+            if (this.anchorRef.current == null) console.log('❌ anchorRef is null?!')
+            this.anchorRef.current?.focus()
+        }
     }
 
     // ---
@@ -477,7 +502,7 @@ export class RevealState {
             const letterCode = ev.keyCode
             const isLetter = letterCode >= 65 && letterCode <= 90
             const isEnter = ev.key === 'Enter'
-            if (isLetter || isEnter) {
+            if ((isLetter && !hasMod(ev)) || isEnter) {
                 this.open()
                 ev.preventDefault()
                 ev.stopPropagation()
@@ -491,6 +516,33 @@ export class RevealState {
             // this.anchorRef.current?.focus()
             ev.preventDefault()
             ev.stopPropagation()
+            return
+        }
+
+        if (ev.key === 'Tab' && this.isVisible) {
+            // this.log(`🔶 input - onKeyDown TAB (closes and focus anchor)`)
+            const reason = ev.shiftKey ? 'shiftTabKey' : 'tabKey'
+            if (
+                this.placement === 'screen' ||
+                this.placement === 'screen-centered' ||
+                this.placement === 'screen-top' ||
+                this.placement === 'screen-top-left' ||
+                this.placement === 'screen-top-right'
+            )
+                return // 🔶 tab should not close popups
+            // 🔶 todo: proper "if shouldHideOnTab"...
+            this.close(reason)
+            // 🔴 if in grid context, do not stop propagation and do not focusNextElement so the grid focus the next cell (which have tabIndex=-1) itself
+            // (or maybe call .selectCell ourselves to keep the grid selection in sync with our own?)
+            // see ev.preventGridDefault() in https://github.com/adazzle/react-data-grid/blob/main/website/demos/CellNavigation.tsx#L136
+            //     and gridUI.tsx => onCellKeyDown
+            // (maybe we are also able to focus the reveal inside the cell on cell selection)
+            // 🔴 also, maybe hide official cell focus because it's currently wrong?
+            // 🔴 if not, this is useful
+            if (reason === 'tabKey') focusNextElement('next')
+            if (reason === 'shiftTabKey') focusNextElement('prev')
+            ev.stopPropagation()
+            ev.preventDefault()
             return
         }
     }
@@ -531,10 +583,39 @@ export class RevealState {
         if (!DEBUG_REVEAL) return
         console.log(`🎩 ${this.ix.toString()} | ${this.uid.toString().padStart(2)}`, msg)
     }
+
+    get backdropColor(): string | undefined {
+        if (this.p.backdropColor != null) return this.p.backdropColor
+
+        // popups are darker
+        if (this.p.placement === 'screen') return '#00000022'
+        if (this.p.placement === 'screen-centered') return '#00000022'
+        if (this.p.placement === 'screen-top') return '#00000022'
+        if (this.p.placement === 'screen-top-left') return '#00000022'
+        if (this.p.placement === 'screen-top-right') return '#00000022'
+
+        // popovers are transparent? we need better semantics than "placement" though
+        return
+    }
 }
 
 function evUID(x: unknown): string {
     return `${getUIDForMemoryStructure(x, 3)}`
+}
+
+function focusNextElement(dir: 'next' | 'prev'): void {
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const elements = Array.from(document.querySelectorAll(focusableElements)).filter(
+        (e) =>
+            (e as any).tabIndex >= 0 && // 🔴 the selector needs to be refined: a button with tabindex=-1 will match!
+            e.tagName !== 'link', // exlude <link href="https://..." rel="stylesheet">
+        // => we might look at elements content to see other common patterns that need exclusion
+    ) as HTMLElement[]
+
+    const currentFocusIndex = elements.indexOf(document.activeElement as HTMLElement)
+    const nextIndex = (currentFocusIndex + (dir === 'next' ? 1 : -1)) % elements.length
+
+    elements[nextIndex]?.focus()
 }
 
 // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴

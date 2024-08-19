@@ -30,6 +30,8 @@ export interface CSuiteConfig {
     showWidgetDiff: boolean
     showToggleButtonBox: boolean
     showFoldButtons: boolean
+    showSelectIcons: boolean
+    showExpandCarets: boolean
 
     // ------------------------------------------------------------
     // [size]
