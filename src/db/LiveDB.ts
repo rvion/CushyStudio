@@ -42,12 +42,13 @@ export class LiveDB {
     _tables: LiveTable<any>[] = []
 
     keys = new Map<T.LiveDBSubKeys, Timestamp>([...liveDBSubKeys.values()].map((k) => [k, 0] as [T.LiveDBSubKeys, Timestamp]))
-    bump = (t: T.LiveDBSubKeys) => {
+
+    bump = (t: T.LiveDBSubKeys): void => {
         if (!liveDBSubKeys.has(t)) throw new Error('🔴 (bump) unknown LiveDBSubKeys: ' + t)
         else this.keys.set(t, Date.now() as Timestamp)
     }
 
-    subscribeToKeys = (keys: T.LiveDBSubKeys[]) => {
+    subscribeToKeys = (keys: T.LiveDBSubKeys[]): void => {
         const tables = new Set(keys.map((k) => (k.split('.')[0] + '.id') as T.LiveDBSubKeys))
         for (const k1 of tables) this.subscribeToKey(k1)
         for (const k2 of keys) this.subscribeToKey(k2)
@@ -57,7 +58,7 @@ export class LiveDB {
      * this functions seems like it does nothing,
      * but it just subscribe through mobx to keys.
      * */
-    subscribeToKey = (key: T.LiveDBSubKeys) => {
+    subscribeToKey = (key: T.LiveDBSubKeys): void => {
         if (!liveDBSubKeys.has(key)) throw new Error('🔴 (subscribe) unknown LiveDBSubKeys: ' + key)
         this.keys.get(key)
     }
@@ -75,7 +76,7 @@ export class LiveDB {
     media_video:           LiveTable<T.TABLES['media_video']          > // prettier-ignore
     media_splat:           LiveTable<T.TABLES['media_splat']          > // prettier-ignore
     media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement']> // prettier-ignore
-    media_custom:        LiveTable<T.TABLES['media_custom']       > // prettier-ignore
+    media_custom:          LiveTable<T.TABLES['media_custom']         > // prettier-ignore
     tree_entry:            LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
     runtime_error:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
     draft:                 LiveTable<T.TABLES['draft']                > // prettier-ignore
@@ -84,13 +85,13 @@ export class LiveDB {
     auth:                  LiveTable<T.TABLES['auth']                 > // prettier-ignore
 
     /** run all pending migrations */
-    migrate = () => {
+    migrate = (): void => {
         _checkAllMigrationsHaveDifferentIds()
         _applyAllMigrations(this)
     }
 
     /** You should not call that unless you know what you're doing */
-    runCodegen = () => _codegenORM(this)
+    runCodegen = (): void => _codegenORM(this)
 
     // prettier-ignore
     constructor(public st: STATE) {
@@ -128,6 +129,14 @@ export class LiveDB {
 
             // console.log('🟢 TABLE INITIALIZED')
         }
+
+    _getSize = (tabeName: string): number => {
+        // 1️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1226 (allow modern electron)
+        // 2️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1228 (allow size)
+        return -1
+        // ⏸️ const stmt = this.db.prepare(`select page_count * page_size as size from pragma_page_count('${tabeName}')`)
+        // ⏸️ return (stmt.get() as { size: number }).size
+    }
 
     _getCount = (tabeName: string): number => {
         const stmt = this.db.prepare(`select count(id) as count from ${tabeName}`)
@@ -186,18 +195,18 @@ export class LiveDB {
 
     compileDelete = <T, R>(sql: string) => {
         const stmt = this.db.prepare(sql)
-        return (args: T) => stmt.run(args) as R
+        return (args: T): R => stmt.run(args) as R
     }
 
     // ------------------------------------------------------------------------------------
-    log = (...res: any[]) => console.log(`{${ix++}}`, ...res)
+    log = (...res: any[]): void => console.log(`{${ix++}}`, ...res)
     db: BetterSqlite3.Database
 
     /* erase the DB file on disk */
-    reset = () => this.erase()
+    reset = (): void => this.erase()
 
     /* erase the DB file on disk */
-    erase = () => {
+    erase = (): void => {
         this.db.close()
         rmSync(DB_RELATIVE_PATH)
     }

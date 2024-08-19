@@ -1,3 +1,9 @@
+☐ before commit:
+    ☐ finish panel output
+    ☐ change panel config shelf default size
+    ☐ new api to pre-compute colors
+    ☐ select: multiple placement >
+
 2024-07-26 - MAJOR BREAKTHROUGH:
     ☐ header => cell
     ☐ body => full
@@ -9,13 +15,14 @@
         ☐ DefaultCellUI: (guarantee to always be ONE cell height)
         ☐ readonly property on any Widget (bloc)
     ✘ multiple withConfig / rank-1 types @cancelled(24-07-25 16:33)
-    ✔ // 2024-07-17YOLO🦀🦊 @done(24-07-25 16:33)
+    ✔ // 💬 2024-07-17YOLO🦀🦊 @done(24-07-25 16:33)
     ✔ render du RevealUI @done(24-07-25 16:32)
         ☐ (aussi présent sur le FormUI)
     ✔ discuter inputHeight / widgetHeight @done(24-07-25 16:33)
         ☐ renommer 'widget' => 'cell', ajouter 'inside'
     ☐ migration system
     ☐ inputUpload
+
     ☐ customize select agressively so we have one version that looks like notion
 
 2024-07-15:

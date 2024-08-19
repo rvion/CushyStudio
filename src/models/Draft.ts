@@ -1,17 +1,16 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
-import type { Field } from '../csuite/model/Field'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
+import type { Executable } from './Executable'
 import type { StepL } from './Step'
 
 import { reaction } from 'mobx'
 
-// import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
-import { type Builder, cushyFactory } from '../controls/Builder'
+import { cushyFactory } from '../controls/Builder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
@@ -45,7 +44,7 @@ export class DraftL {
 
     openOrFocusTab(): void {
         if (!(this instanceof DraftL)) throw new Error('❌')
-        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
+        this.st.layout.open('Draft', { draftID: this.id }, { where: 'left' })
         // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 
@@ -61,7 +60,7 @@ export class DraftL {
             return input + '-1'
         }
     }
-    duplicateAndFocus() {
+    duplicateAndFocus(): void {
         const newDraft = this.clone({
             title: this._duplicateTitle(this.name),
         })
@@ -69,7 +68,7 @@ export class DraftL {
         newDraft.revealInFileExplorer()
     }
 
-    revealInFileExplorer = () => {
+    revealInFileExplorer = (): void => {
         const app = this.app
         const relPath = app.relPath
         if (relPath == null) return
@@ -92,11 +91,11 @@ export class DraftL {
         return this.appRef.item
     }
 
-    get executable() {
+    get executable(): Maybe<Executable> {
         return this.app.executable_orExtract
     }
 
-    get name() {
+    get name(): string {
         return this.data.title ?? this.id
     }
 
@@ -104,14 +103,14 @@ export class DraftL {
         return this.data.isFavorite === SQLITE_true
     }
 
-    setFavorite = (fav: boolean) => {
+    setFavorite = (fav: boolean): void => {
         this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false })
     }
 
     private autoStartTimer: NodeJS.Timeout | null = null
     private autoStartMaxTimer: NodeJS.Timeout | null = null
 
-    setAutostart(val: boolean) {
+    setAutostart(val: boolean): void {
         this.shouldAutoStart = val
         if (val) this.start({})
     }
@@ -190,7 +189,7 @@ export class DraftL {
 
         if (p.focusOutput ?? true) {
             // 💬 2024-01-21 should this be here ?
-            this.st.layout.FOCUS_OR_CREATE('Output', {})
+            this.st.layout.open('Output', {})
         }
 
         // ----------------------------------------
@@ -249,7 +248,7 @@ export class DraftL {
         return step
     }
 
-    get form() {
+    get form(): Maybe<Field_group<any>> {
         this.AWAKE()
         return this._form
     }

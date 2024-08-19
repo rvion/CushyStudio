@@ -162,6 +162,13 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     customFieldProperties?: FieldExtension<any>[]
 
     /**
+     * @since 2024-08-14
+     * @stability beta
+     */
+    classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
+
+    /**
+     * @internal
      * you probably DON'T want to specify this manually.
      * you can use the <schema>.publish(...) method instead
      *                          ^^^^^^^^^^^^
@@ -169,6 +176,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     producers?: Producer<any, T['$Field']>[]
 
     /**
+     * @internal
      * you probably DON'T want to specify this manually.
      * you can use the <schema>.addReaction(...) method instead
      *                          ^^^^^^^^^^^^^^^^
@@ -187,7 +195,7 @@ export interface WidgetMenuAction<out T extends $FieldTypes> {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName
-    apply(form: T['$Field']): void
+    apply(field: T['$Field']): void
 }
 
 export type SchemaExtension<T extends BaseSchema<any>> = (schema: T) => object

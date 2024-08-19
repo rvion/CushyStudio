@@ -1,7 +1,7 @@
 import type { CompiledQuery } from 'kysely'
 
 /** micro bench */
-export const microbench = async (title: string, cb: () => Promise<void>) => {
+export const microbench = async (title: string, cb: () => Promise<void>): Promise<void> => {
     const A = process.hrtime.bigint() // TIMER start
     let x = await cb()
     const B = process.hrtime.bigint() // TIMER end

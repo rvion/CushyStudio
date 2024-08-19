@@ -31,11 +31,17 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
         public readonly config: FIELD['$Config'],
     ) {
         super()
+
+        // 🔴 this.FieldClass_UNSAFE =
+        // 🔴     this.config.classToUse != null //
+        // 🔴         ? this.config.classToUse(FieldClass)
+        // 🔴         : FieldClass
+
+        this.applySchemaExtensions()
         makeObservable(this, {
             config: true,
             buildField: false, // 🔴 now useless?
         })
-        super.applySchemaExtensions()
     }
 
     static NEW<F extends Field>(

@@ -3,14 +3,13 @@ import type { PromptID } from '../types/ComfyWsApi'
 import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
 import type { MediaImageL } from './MediaImage'
 
-import { mkdirSync, writeFileSync } from 'fs'
+import { mkdirSync } from 'fs'
 import { imageMeta } from 'image-meta'
-import { dirname } from 'pathe'
 
 import { bang } from '../csuite/utils/bang'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
-import { FPath } from './PathObj'
+import { FPath } from './FPath'
 
 export type ImageCreationOpts = {
     promptID?: Maybe<PromptID>

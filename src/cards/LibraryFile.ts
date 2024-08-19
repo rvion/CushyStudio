@@ -15,6 +15,7 @@ import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { toastError } from '../csuite/utils/toasts'
 import { asCushyScriptID } from '../db/TYPES.gen'
 import { CushyScriptL } from '../models/CushyScript'
+import { FPath } from '../models/FPath'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { AppMetadata } from './AppManifest'
@@ -51,10 +52,20 @@ export class LibraryFile {
     ) {
         this.st = library.st
         this.strategies = this.findLoadStrategies()
-        makeAutoObservable(this, { _esbuildContext: false })
+        makeAutoObservable(this, {
+            fPath: false,
+            _esbuildContext: false,
+        })
     }
 
-    get baseName() {
+    /** the new abstraction around files */
+    get fPath(): FPath {
+        const out = new FPath(this.absPath)
+        Object.defineProperty(this, 'fPath', { value: out })
+        return out
+    }
+
+    get baseName(): string {
         return basename(this.relPath)
     }
     /** access to the global app state */

@@ -20,7 +20,7 @@ export const LegacyOptions = observer(function LegacyOptions_() {
             <div className='divider'>Legacy config fields to migrate 👇:</div>
             <div tw='flex flex-col gap-1'>
                 <LegacyFieldUI label='Config file path'>
-                    <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(st, config.path)}>
+                    <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(config.path)}>
                         {config.path}
                     </Button>
                 </LegacyFieldUI>
@@ -87,7 +87,7 @@ export const LegacyOptions = observer(function LegacyOptions_() {
                     />
                 </LegacyFieldUI>
                 <LegacyFieldUI label='Configure hosts:'>
-                    <Button icon={'mdiOpenInNew'} onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
+                    <Button icon={'mdiOpenInNew'} onClick={() => st.layout.open('Hosts', {})}>
                         Open Hosts page
                         <ComboUI combo={KEYS.openPage_Hosts} />
                     </Button>

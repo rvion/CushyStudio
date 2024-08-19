@@ -1,4 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
+import type { Timestamp } from '../csuite/types/Timestamp'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
@@ -19,7 +20,8 @@ export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
 export class CushyAppL {
     // linked scripts
     private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
-    get script() {
+
+    get script(): CushyScriptL {
         return this._scriptL.item
     }
 
@@ -72,7 +74,7 @@ export class CushyAppL {
     }
 
     /** shortcut to open the last draft of the first app defined in this file */
-    openLastOrCreateDraft = () => {
+    openLastOrCreateDraft = (): void => {
         this.getLastOrCreateDraft().openOrFocusTab()
     }
 
@@ -89,7 +91,7 @@ export class CushyAppL {
         return this.data.isFavorite === SQLITE_true
     }
 
-    setFavorite = (fav: boolean) => {
+    setFavorite = (fav: boolean): void => {
         this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false } /* { debug: true } */)
     }
 
@@ -106,7 +108,7 @@ export class CushyAppL {
             appID: this.id,
             title: title,
         })
-        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+        this.st.layout.open('Draft', { draftID: draft.id }, { where: 'left' })
         return draft
     }
 
@@ -119,7 +121,7 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
-    get isLoadedInMemory() {
+    get isLoadedInMemory(): boolean {
         return this.script.getExecutable_orNull(this.id) != null
     }
 
@@ -144,7 +146,7 @@ export class CushyAppL {
         throw new Error([title, howToFix].join('\n'))
     }
 
-    revealInFileExplorer = () => {
+    revealInFileExplorer = (): void => {
         const relPath = this.relPath
         if (relPath == null) return
         const treePath = relPath.split('/')
@@ -153,7 +155,7 @@ export class CushyAppL {
         this.st.tree2View.revealAndFocusAtPath(treePath)
     }
 
-    publish = async () => {
+    publish = async (): Promise<void> => {
         if (this.isPublishing) return
         this.isPublishing = true
         try {
@@ -304,8 +306,8 @@ export class CushyAppL {
     }
 
     /** globaly unique id (in theory...); 🔶 */
-    get uid() {
-        return this.data.createdAt
+    get uid(): Timestamp {
+        return this.data.createdAt as Timestamp
     }
 
     get name(): string {
@@ -353,7 +355,7 @@ export class CushyAppL {
     }
 
     /** ready to be used in URL */
-    get illustrationPathWithFileProtocol() {
+    get illustrationPathWithFileProtocol(): string {
         const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
         if (tmp?.startsWith('data:')) return tmp
         if (tmp?.startsWith('http')) return tmp

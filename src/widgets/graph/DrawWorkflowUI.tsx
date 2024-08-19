@@ -26,7 +26,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     }
     const ref = useRef<HTMLDivElement>(null)
     const colorFn = randomColorHSLNice // randomNiceColor
-    const update = () => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
+    const update = (): void => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
     useEffect(update, [JSON.stringify(cushy.autolayoutOpts), wflow.id])
 
     useEffect(() => {
@@ -86,7 +86,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             const color = colorFn(p.type)
                             return (
                                 <div
-                                    tw='absolute'
+                                    tw='absolute transition-all'
                                     key={p.id}
                                     style={{
                                         // borderRadius: '50%',
@@ -108,8 +108,8 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             const color = colorFn(p.type)
                             return (
                                 <div
+                                    tw='absolute transition-all'
                                     key={p.id}
-                                    tw='absolute'
                                     style={{
                                         border: '1px solid gray',
                                         borderRadius: '50%',
@@ -126,9 +126,9 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                         {/* ACTUAL NODE */}
                         <Frame
                             base={{ contrast: 0.03, hue: getChroma(node.$schema.nameInComfy), chroma: 0.07 }}
+                            className='node rounded-sm transition-all'
                             hover
                             border={20}
-                            className='node rounded-sm'
                             key={node.uid}
                             style={{
                                 zIndex: 991,

@@ -7,6 +7,15 @@ export const BadgeContainerUI = observer(function BadgeGroupUI_(p: {
     wrap?: boolean
     children?: ReactNode
 }) {
-    if (p.wrap ?? true) return <div tw='flex flex-wrap gap-1'>{p.children}</div>
-    return <div tw='flex'>{p.children}</div>
+    return (
+        <div
+            tw={[
+                //
+                'UI-BadgeContainer flex gap-0.5',
+                (p.wrap ?? true) && 'flex-wrap',
+            ]}
+        >
+            {p.children}
+        </div>
+    )
 })

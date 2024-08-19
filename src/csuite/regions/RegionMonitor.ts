@@ -4,6 +4,8 @@ import { makeAutoObservable } from 'mobx'
 import { useEffect } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
+import { isElemAChildOf } from '../utils/isElemAChildOf'
+import { createObservableRefMut } from '../utils/observableRef'
 
 export type HoveredRegion = {
     id: string
@@ -35,6 +37,11 @@ export class RegionMonitor {
         makeAutoObservable(this, { knownRegions: false })
     }
 
+    currentlyFocused = createObservableRefMut<HTMLElement>()
+    isWithin = (domSelector: string): boolean => {
+        if (this.currentlyFocused.current == null) return false
+        return isElemAChildOf(this.currentlyFocused.current, domSelector)
+    }
     knownRegions: Map<string, HoveredCtx> = new Map()
     hoveredRegion: Maybe<HoveredRegion> = null
     hoveredPanel: Maybe<string> = null
@@ -81,6 +88,13 @@ export const regionMonitor = new RegionMonitor()
 /** watch every single event, and update the state */
 export const useRegionMonitor = (): void => {
     useEffect(() => {
+        function handleFocusEvent(event: FocusEvent): void {
+            const elem = event.target
+            // console.log(`[🔴] focus moved to`, elem)
+            if (!(elem instanceof HTMLElement)) return
+            regionMonitor.currentlyFocused.current = elem
+        }
+
         function handleMouseEvent(event: MouseEvent): void {
             const target = event.target
             if (!(target instanceof HTMLElement)) {
@@ -184,6 +198,10 @@ export const useRegionMonitor = (): void => {
         window.addEventListener('keyup', handleKeyEvent)
         window.addEventListener('keypress', handleKeyEvent)
 
+        window.addEventListener('focusin', handleFocusEvent)
+        // window.addEventListener('focus', handleFocusEvent)
+        // window.addEventListener('focusout', handleFocusEvent)
+
         return (): void => {
             window.removeEventListener('mousedown', handleMouseEvent)
             window.removeEventListener('mouseenter', handleMouseEvent)
@@ -196,6 +214,10 @@ export const useRegionMonitor = (): void => {
             window.removeEventListener('keydown', handleKeyEvent)
             window.removeEventListener('keyup', handleKeyEvent)
             window.removeEventListener('keypress', handleKeyEvent)
+
+            window.removeEventListener('focusin', handleFocusEvent)
+            // window.removeEventListener('focus', handleFocusEvent)
+            // window.removeEventListener('focusout', handleFocusEvent)
         }
     }, [])
 }

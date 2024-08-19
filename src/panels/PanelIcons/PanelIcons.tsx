@@ -9,18 +9,19 @@ import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
 import { IconPanelStableState } from './PanelIconsState'
 
 export const PanelIcon = new Panel({
     name: 'Icons',
+    category: 'developper',
     widget: (): React.FC<NO_PROPS> => PanelIconUI,
-    header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons' }),
+    header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons', icon: 'mdiImageSyncOutline' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiImageSyncOutline',
 })
 
 export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
@@ -53,9 +54,11 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                     {/* {form.fields.query.header()} */}
 
                     <InputStringUI
+                        autoResize
                         placeholder='Search...'
                         slotBeforeInput={
                             <InputBoolUI
+                                tw='mr-1'
                                 value={uist.filter}
                                 icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
                                 border={false}

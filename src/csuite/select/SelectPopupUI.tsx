@@ -51,7 +51,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                         noColorStuff
                         autoFocus
                         onKeyDown={(ev) => {
-
                             if (ev.key === 'Backspace' && select.searchQuery === '' && select.lastValue != null) {
                                 select.toggleOption(select.lastValue)
                                 ev.stopPropagation()
@@ -80,7 +79,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
 
             {/* No results */}
             {select.filteredOptions.length === 0 //
-                ? select.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>
+                ? (select.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>)
                 : null}
 
             {select.p.slotResultsListUI != null ? (

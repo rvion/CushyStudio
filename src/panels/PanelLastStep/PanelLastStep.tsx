@@ -10,7 +10,8 @@ export const PanelLastStep = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelLastStepUI,
     header: (p: NO_PROPS): PanelHeader => ({ title: 'LastStep' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiStepForward',
+    category: 'outputs',
 })
 
 export const PanelLastStepUI = observer(function PanelLastStepUI_(p: NO_PROPS) {

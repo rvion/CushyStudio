@@ -11,10 +11,10 @@ export const CustomViewSpriteSheet = view<{
     imageID: MediaImageID
 }>({
     preview: () => <div>🚶‍♂️‍➡️</div>,
-    render: (p) => <SpriteSheet imageID={p.imageID} />,
+    render: (p) => <SpriteSheetUI imageID={p.imageID} />,
 })
 
-const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
+const SpriteSheetUI = observer(function SpriteSheet(p: { imageID: MediaImageID | null }) {
     const image = cushy.db.media_image.get(p.imageID)
     const form = cushy.forms.use(
         (ui) =>
@@ -33,12 +33,12 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
                         {
                             icon: 'mdiAnimationPlay',
                             label: '4 dirs',
-                            apply: (f) => f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
+                            apply: (f): void => void f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
                         },
                         {
                             icon: 'mdiRun',
                             label: 'run 1x6',
-                            apply: (f) => f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
+                            apply: (f): void => void f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
                         },
                     ],
                 },
@@ -53,7 +53,7 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
     const v = form.value
     useEffect(() => {
         const i = setInterval(() => uist.step++, 1000 / v.fps)
-        return () => clearInterval(i)
+        return (): void => clearInterval(i)
     }, [v.fps])
     if (image == null) return <div>no image</div>
     const cellWidth = image?.width / v.col
@@ -94,8 +94,7 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
     )
 })
 
-const useGLTFProxy = (url: string) => {}
-
+// const useGLTFProxy = (url: string) => {}
 const Can3 = observer(
     function Can3_(props: GroupProps & { _textureURL?: string }) {
         // writeFileSync('src/outputs/3d-scene/can3/test/can3.gltf,')

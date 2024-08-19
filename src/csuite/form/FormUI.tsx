@@ -70,7 +70,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||
         p.field == null ||
-        // 2024-07-21 rvion:
+        // 💬 2024-07-21 rvion:
         // | spent one hour troubleshooting this crap:
         // | components re-evaluated at every single rendering will not be properly cached.
         // | this was making every sub components re-render everytime => int were not working properly

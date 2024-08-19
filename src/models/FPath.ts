@@ -1,11 +1,52 @@
 import * as fs from 'fs'
 import p from 'pathe'
+import { createElement } from 'react'
+
+import { FPathDiagnosticBadgeUI, FPathDiagnosticUI } from './FPathDiagnostic'
 
 export type FilepathExt = string | FPath
 
 export class FPath {
-    relPath: string
-    absPath: string
+    private _relPath: string
+    private _absPath: string
+
+    get relPath(): string {
+        return this._relPath
+    }
+
+    get absPath(): string {
+        return this._absPath
+    }
+
+    /** complete file diagnostics */
+    UIDiagnostic = (): JSX.Element => createElement(FPathDiagnosticUI, { fpath: this })
+
+    UIDiagnosticBadge = (): JSX.Element => createElement(FPathDiagnosticBadgeUI, { fpath: this })
+
+    constructor(public path: string) {
+        if (path.startsWith('data:')) {
+            throw new Error(`[🚫] dataURL not supported`)
+        }
+
+        const absPath = p.resolve(path)
+        const relPath = p.relative(this.root, absPath)
+
+        this._absPath = absPath
+        this._relPath = relPath
+    }
+
+    get hierarchy(): FPath[] {
+        const sep = p.sep
+        const str = this.path
+        const out: FPath[] = []
+        for (let i = 0; i < str.length; i++) {
+            if (str[i] === sep) {
+                out.push(new FPath(str.slice(0, i + 1)))
+            }
+        }
+        out.push(this)
+        return out.reverse()
+    }
 
     readAsString(): string {
         return fs.readFileSync(this.absPath, 'utf-8')
@@ -31,24 +72,12 @@ export class FPath {
         }
     }
 
-    existsSync(): boolean {
+    get existsSync(): boolean {
         return fs.existsSync(this.absPath)
     }
 
     get root(): string {
         return getRoot()
-    }
-
-    constructor(public path: string) {
-        if (path.startsWith('data:')) {
-            throw new Error(`[🚫] dataURL not supported`)
-        }
-
-        const absPath = p.resolve(path)
-        const relPath = p.relative(this.root, absPath)
-
-        this.absPath = absPath
-        this.relPath = relPath
     }
 }
 

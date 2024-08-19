@@ -1,9 +1,8 @@
 import type { Json } from '../csuite/types/Json'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelState } from './PanelState'
 
 import { makeAutoObservable } from 'mobx'
-
-import { PanelState } from './PanelState'
 
 export class PanelPersistentStore<X extends Json = Json> {
     /** data is loaded lazilly, but is not synced automatically
@@ -34,6 +33,8 @@ export class PanelPersistentStore<X extends Json = Json> {
                     [this.storeKey]: data,
                 },
             }
+            // ⏸️ console.log(`[🔴] prevConfig`, JSON.stringify(prevConfig, null, 4))
+            // ⏸️ console.log(`[🔴] nextConfig`, JSON.stringify(nextConfig, null, 4))
             return a.updateNodeAttributes(tabId, { config: nextConfig })
         })
     }

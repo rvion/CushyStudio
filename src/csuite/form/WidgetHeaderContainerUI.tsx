@@ -16,7 +16,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
             className='UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH'
             tw={[
                 'flex gap-0.5 select-none',
-                // 2024-06-03 rvion, changing 'items-center' to 'items-start'
+                // 💬 2024-06-03 rvion, changing 'items-center' to 'items-start'
                 // as well as adding some `h-input` class to <WidgetLabelContainerUI />
                 'items-start',
             ]}

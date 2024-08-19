@@ -29,7 +29,7 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                     </MenuItem>
                     <MenuDividerUI_ />
                     {file?.liteGraphJSON && (
-                        <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
+                        <MenuItem onClick={() => st.layout.open('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
                             Open in ComfyUI
                         </MenuItem>
                     )}

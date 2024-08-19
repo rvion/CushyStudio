@@ -4,6 +4,11 @@ import { TreeKeys } from './TreeKeys'
 
 export type KeyEv = React.KeyboardEvent<HTMLDivElement>
 
+/**
+ * @deprecated
+ * replaced by the new command system, so we can enable the command on hover,
+ * not necessarilly on focus
+ */
 export const onKeyDownHandlers = (ev: KeyEv, view: TreeView): undefined | (() => void) => {
     // if (ev.key === TreeKeys.tree_focusFilter) return view.focusFilter
 

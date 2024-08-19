@@ -1,7 +1,7 @@
+import type { DovProps } from '../frame/Dov/Dov'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type { FC } from 'react'
-import type { DovProps } from 'src/front/lsuite/Dov/Dov'
 
 import React from 'react'
 
@@ -112,5 +112,6 @@ export type RevealProps = {
      */
     useSeparateTower?: boolean
 
-    anchorProps?: DovProps // 🔴 actually the child may not accept DovProps...
+    // 🔴 actually the child may not accept DovProps...
+    anchorProps?: DovProps
 }

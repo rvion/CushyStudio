@@ -62,7 +62,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 activity.onEvent?.(ev, routine)
             }}
             onKeyUp={(ev) => {
-                // 2024-06-22 rvion:
+                // 💬 2024-06-22 rvion:
                 // | I'm OK with escape being a built-in feature
                 // | safeguard for escape key
                 // | so no custom activity can lock the UI

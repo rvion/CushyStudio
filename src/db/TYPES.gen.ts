@@ -499,6 +499,8 @@ export type MediaImageTable = {
     tags?: Maybe<string>
     /** @default: null, sqlType: TEXT */
     thumbnail?: Maybe<string>
+    /** @default: null, sqlType: json */
+    safetyRating?: Maybe<T.MediaImage_safetyRating>
 }
 export type NewMediaImage = Insertable<MediaImageTable>
 export type MediaImageUpdate = Updateable<MediaImageTable>
@@ -522,6 +524,7 @@ export const MediaImageSchema = Type.Object(
         orientation: Type.Optional(T.Nullable(Type.Number())),
         tags: Type.Optional(T.Nullable(Type.String())),
         thumbnail: Type.Optional(T.Nullable(Type.String())),
+        safetyRating: Type.Optional(T.Nullable(T.MediaImage_safetyRating_Schema)),
     },
     { additionalProperties: false },
 )
@@ -550,6 +553,7 @@ export const MediaImageFields = {
     orientation: { cid: 14, name: 'orientation', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
     tags: { cid: 15, name: 'tags', type: 'string', notnull: 0, dflt_value: null, pk: 0 },
     thumbnail: { cid: 16, name: 'thumbnail', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    safetyRating: { cid: 17, name: 'safetyRating', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
@@ -1411,6 +1415,7 @@ export type LiveDBSubKeys =
     | 'media_image.orientation'
     | 'media_image.tags'
     | 'media_image.thumbnail'
+    | 'media_image.safetyRating'
     | 'media_3d_displacement'
     | 'media_3d_displacement.id'
     | 'media_3d_displacement.createdAt'
@@ -1596,6 +1601,7 @@ export const liveDBSubKeys = new Set([
     'media_image.orientation',
     'media_image.tags',
     'media_image.thumbnail',
+    'media_image.safetyRating',
     'media_3d_displacement',
     'media_3d_displacement.id',
     'media_3d_displacement.createdAt',

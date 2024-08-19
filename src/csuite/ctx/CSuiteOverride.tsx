@@ -12,7 +12,7 @@ type _Override = {
     STYLE: { [key: string]: any }
 }
 
-// 2024-07-28 rvion - TODO: rename to something like `FrameWithCSuiteOverride`
+// 💬 2024-07-28 rvion - TODO: rename to something like `FrameWithCSuiteOverride`
 // to better convery what this component does.
 export const FrameWithCSuiteOverride = observer(function CSuiteOverride_(p: { config: Partial<CSuiteConfig> } & FrameProps) {
     // 1. retrieve the current CSuiteConfig

@@ -1,4 +1,4 @@
-// 2024-05-28 rvion: this code is HORRIBLE and slow. 🐌
+// 💬 2024-05-28 rvion: this code is HORRIBLE and slow. 🐌
 // 🔴 todo: rewrite this
 export function makeLabelFromFieldName(s: string): string {
     if (typeof s !== 'string') {

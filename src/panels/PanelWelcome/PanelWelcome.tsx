@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from './CreateAppBtnUI'
@@ -15,7 +16,8 @@ export const PanelWelcome = new Panel({
     widget: (): React.FC<NO_PROPS> => PanelWelcomeUI,
     header: (p): PanelHeader => ({ title: 'Welcome' }),
     def: (): NO_PROPS => ({}),
-    icon: undefined,
+    icon: 'mdiHome',
+    category: 'help',
 })
 
 export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
@@ -24,6 +26,7 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
 
     return (
         <div tw='relative'>
+            <PanelHeaderUI></PanelHeaderUI>
             <section tw='text-center py-2 flex flex-col gap-2 items-center px-8'>
                 <h1 tw='text-2xl'>Welcome to CushyStudio !</h1>
                 <div tw='italic text-sm'>
@@ -36,7 +39,7 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
                 </div>
                 <div>
                     1. First thing first, make sure you have some ComfyUI server you can connect to in the
-                    <Button icon='mdiOpenInNew' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
+                    <Button icon='mdiOpenInNew' onClick={() => st.layout.open('Hosts', {})}>
                         Hosts
                     </Button>
                     panel.

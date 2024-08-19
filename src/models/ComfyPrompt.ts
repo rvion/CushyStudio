@@ -8,7 +8,6 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { dirname, join } from 'pathe'
 import sharp, { type FormatEnum } from 'sharp'
 
-import { openFolderInOS } from '../app/layout/openExternal'
 import { Status } from '../back/Status'
 import { SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
@@ -22,7 +21,7 @@ import {
     createMediaImage_fromPath,
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
-import { FPath } from './PathObj'
+import { FPath } from './FPath'
 
 export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {

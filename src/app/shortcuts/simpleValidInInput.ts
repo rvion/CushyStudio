@@ -21,9 +21,6 @@ const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: 
         action: () => Trigger.UNMATCHED,
     })
 }
-export const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: string): Command<null> => {
-    return placholder(combo, info, 'in tree')
-}
 // const simple = (shortcut: CushyShortcut | CushyShortcut[], info: string, action: (fn: STATE) => void): Shortcut<STATE> => ({
 //     combos: Array.isArray(shortcut) ? shortcut : [shortcut],
 //     action: always(action),

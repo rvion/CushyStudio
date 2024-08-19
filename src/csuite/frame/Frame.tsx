@@ -33,6 +33,9 @@ export type FrameProps = {
     //
     as?: string
 
+    /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
+    block?: boolean
+
     tooltip?: string
     tooltipPlacement?: RevealPlacement
 
@@ -45,6 +48,7 @@ export type FrameProps = {
     /** quick layout feature to add `flex flex-row items-center` */
     line?: boolean
     linegap?: boolean
+    wrap?: boolean
     /** quick layout feature to add `flex flex-row` */
     col?: boolean
 
@@ -103,7 +107,7 @@ export const Frame = observer(
             boxShadow,                                          // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
-            row, line, col,                                     // layout
+            row, line, col, wrap,                               // layout
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
@@ -126,15 +130,9 @@ export const Frame = observer(
         // | stop here by checking against a hash of those props
         // | + prevCtx + box + look + disabled + hovered + active + boxShadow
         // 👉 2024-07-22 rvion: done
-        const { variables, nextDir, KBase, nextext }: ComputedColors = computeColors(
-            prevCtx,
-            box,
-            look,
-            disabled,
-            hovered,
-            active,
-            boxShadow,
-        )
+        const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
+            ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
+            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow)
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent): void => {
@@ -147,7 +145,7 @@ export const Frame = observer(
                     depth,
                     ref: elem,
                     text: tooltip ?? 'test',
-                    placement: tooltipPlacement ?? 'bottom',
+                    placement: tooltipPlacement ?? 'auto',
                 })
             }
         }
@@ -180,13 +178,16 @@ export const Frame = observer(
                 onMouseOut={_onMouseOut}
                 // special-case: if it's a button, let's add type=button to disable form submission
                 {...(as === 'button' ? { type: 'button' } : {})}
+                // special-case: if it's an image, let's make it lazy; should be the default
+                {...(as === 'image' ? { loading: 'lazy' } : {})}
                 tw={[
                     'box',
                     noColorStuff === true
                         ? undefined
                         : frameMode === 'CLASSNAME'
-                        ? compileOrRetrieveClassName(variables)
-                        : undefined,
+                          ? compileOrRetrieveClassName(variables)
+                          : undefined,
+                    // 'flex',
                     size && `box-${size}`,
                     square && `box-square`,
                     loading && 'relative',
@@ -196,6 +197,7 @@ export const Frame = observer(
                     // p.linegap && 'flex flex-row items-center gap-x-2',
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
+                    p.wrap && 'flex-wrap',
                     className,
                 ]}
                 // style={{ position: 'relative' }}
@@ -203,8 +205,8 @@ export const Frame = observer(
                     noColorStuff === true
                         ? style
                         : frameMode === 'CLASSNAME' //
-                        ? style
-                        : objectAssignTsEfficient_t_t(style, variables)
+                          ? style
+                          : objectAssignTsEfficient_t_t(style, variables)
                 }
                 {...rest}
                 {...(triggerOnPress != null
@@ -228,5 +230,9 @@ export const Frame = observer(
         )
     }),
 )
+
+Frame.displayName = 'Frame'
+// @ts-ignore
+Frame.name = 'Frame'
 
 registerComponentAsClonableWhenInsideReveal(Frame)

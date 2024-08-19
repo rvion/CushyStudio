@@ -19,8 +19,10 @@ app({
             items: {
                 stage_a_vae: form.enum.Enum_VAELoader_vae_name({ default: 'Stable-Cascade\\stage_a.safetensors' }),
                 stage_b: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_b_bf16.safetensors' }),
+                stage_b_type: form.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
                 // @ts-ignore
                 stage_c: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_c_bf16.safetensors' }),
+                stage_c_type: form.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
             },
         }),
         startingLatent: form.group({
@@ -75,8 +77,14 @@ app({
     run: async (run, ui) => {
         const graph = run.nodes
         const vae = graph.VAELoader({ vae_name: ui.models.stage_a_vae })
-        const stagec = graph.UNETLoader({ unet_name: ui.models.stage_c })
-        const stageb = graph.UNETLoader({ unet_name: ui.models.stage_b })
+        const stagec = graph.UNETLoader({
+            weight_dtype: ui.models.stage_c_type,
+            unet_name: ui.models.stage_c,
+        })
+        const stageb = graph.UNETLoader({
+            weight_dtype: ui.models.stage_b_type,
+            unet_name: ui.models.stage_b,
+        })
 
         // latent
         const latentOpts = ui.startingLatent

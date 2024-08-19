@@ -3,6 +3,9 @@
 import { Color_ } from './Color_'
 
 export function getLCHFromStringAsString(str: string): string {
+    // empty case: let's have some default without generating any error
+    if (str === '') return 'lch(.5 1 0)'
+
     try {
         const color = new Color_(str)
         const [l, c, h_] = color.oklch
@@ -15,7 +18,7 @@ export function getLCHFromStringAsString(str: string): string {
 }
 
 /** toFixed(2), but without the uncesseray leading 0 */
-const fmtNum2 = (n: number) => {
+function fmtNum2(n: number): string {
     const s = n.toFixed(2)
     return s.endsWith('.00') //
         ? s.slice(0, -3)
@@ -25,7 +28,7 @@ const fmtNum2 = (n: number) => {
 }
 
 /** toFixed(1), but without the uncesseray leading 0 */
-const fmtNum1 = (n: number) => {
+function fmtNum1(n: number): string {
     const s = n.toFixed(1)
     return s.endsWith('.0') //
         ? s.slice(0, -2)

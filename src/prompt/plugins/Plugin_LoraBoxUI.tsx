@@ -6,6 +6,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputLegacy } from '../../csuite/inputs/shims'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
+import { SelectUI } from '../../csuite/select/SelectUI'
 import { useSt } from '../../state/stateContext'
 import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
@@ -83,15 +84,43 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
-                {node.name}
+                <div //Join Lora selection and Delete Button
+                    tw='flex-1 join'
+                >
+                    <SelectUI<string>
+                        tw='join-item'
+                        value={() => loraName}
+                        options={() => st.schema.getLoras()}
+                        onOptionToggled={(val) => {
+                            node.nameNode?.setText(val)
+                            // p.uist.editorView?.dispatch({
+                            //     changes: {
+                            //         from: node.from,
+                            //         to: node.to,
+                            //         insert: val.indexOf(' ') > -1 ? `@"${val}"` : `@${val}`,
+                            //     },
+                            // })
+                        }}
+                        getLabelText={(t): string => t}
+                        getLabelUI={(v) => <div>{v}</div>}
+                    />
+                    <Button //
+                        tw='WIDGET-FIELD join-item w-8'
+                        size='xs'
+                        icon='mdiDeleteForever'
+                        onClick={p.onDelete}
+                    />
+                </div>
+                {/* {node.name}
                 <div tw='flex-0 flex-grow'></div>
                 <Button //
                     size='xs'
                     icon='mdiDeleteForever'
                     onClick={p.onDelete}
                     tw='h-full'
-                />
+                /> */}
             </div>
+            {/* {node.name} */}
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>Model Strength</div>
                 <div tw='flex flex-grow items-center'>

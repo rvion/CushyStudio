@@ -32,6 +32,7 @@ app({
         colors: ui.selectOneV2(['red', 'green', 'gray']).optional(),
         kind: ui.selectOneV2(['attack', 'power', 'skill']).optional(),
         cards: ui.selectMany({
+            appearance: 'select',
             choices: allCards.map((x) => {
                 const color = convertColors(x.Color)
                 const kind = convertKind(x.Type)

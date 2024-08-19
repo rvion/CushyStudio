@@ -5,7 +5,7 @@ import { action, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../models/createMediaImage_fromWebFile'
-import { FPath } from '../../models/PathObj'
+import { FPath } from '../../models/FPath'
 
 export const getLayers = (): any => {
     // console.log('🟢', (document as any).getElementById('miniPaint').contentWindow.Layers)

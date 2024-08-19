@@ -11,7 +11,8 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { run_rembg_v1 } from './_prefabs/prefab_rembg'
-import { Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
+import { type Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
+import { type Ctx_sampler_advanced, encodeText, run_sampler_advanced } from './_prefabs/prefab_sampler_advanced'
 import { run_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave } from './_prefabs/saveSmall'
@@ -58,7 +59,6 @@ app({
             clip,
             text: negPrompt.promptIncludingBreaks /* + posPrompt.negativeText */,
         })
-
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         // let negative = y.conditionning
 
@@ -66,7 +66,7 @@ app({
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 HACKY  */
-              await (async () => ({
+              await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
                   latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
                   height: imgCtx.height,
                   width: imgCtx.width,
@@ -100,7 +100,7 @@ app({
         }
 
         // FIRST PASS --------------------------------------------------------------------------------
-        const ctx_sampler: Ctx_sampler = {
+        const ctx_sampler_advanced: Ctx_sampler_advanced = {
             ckpt: run_model_modifiers(ui.model, ckptPos, false),
             clip: clipPos,
             vae,
@@ -109,25 +109,33 @@ app({
             positive: positive,
             negative: negative,
             preview: false,
+            width: width,
+            height: height,
+            cfg: ui.sampler?.textEncoderType.FLUX ? ui.sampler.guidanceType?.CFG : undefined,
         }
-        latent = run_sampler(run, ui.sampler, ctx_sampler).latent
+        latent = run_sampler_advanced(run, ui.sampler, ctx_sampler_advanced).output
 
         // RECURSIVE PASS ----------------------------------------------------------------------------
         const extra = ui.extra
         if (extra.recursiveImgToImg) {
             for (let i = 0; i < extra.recursiveImgToImg.loops; i++) {
-                latent = run_sampler(
+                latent = run_sampler_advanced(
                     run,
                     {
                         seed: ui.sampler.seed + i,
-                        cfg: extra.recursiveImgToImg.cfg,
-                        steps: extra.recursiveImgToImg.steps,
-                        denoise: extra.recursiveImgToImg.denoise,
+                        guidanceType: { CFG: extra.recursiveImgToImg.cfg },
+                        sigmasType: {
+                            basic: {
+                                steps: extra.recursiveImgToImg.steps,
+                                denoise: extra.recursiveImgToImg.denoise,
+                                scheduler: 'ddim_uniform',
+                            },
+                        },
                         sampler_name: 'ddim',
-                        scheduler: 'ddim_uniform',
+                        textEncoderType: ui.sampler.textEncoderType,
                     },
-                    { ...ctx_sampler, latent, preview: true },
-                ).latent
+                    { ...ctx_sampler_advanced, latent, preview: true },
+                ).output
             }
         }
 
@@ -171,11 +179,15 @@ app({
                 run,
                 {
                     seed: ui.sampler.seed,
-                    cfg: ui.sampler.cfg,
+                    cfg:
+                        ui.sampler.guidanceType.CFG ??
+                        ui.sampler.guidanceType.DualCFG?.cfg ??
+                        ui.sampler.guidanceType.PerpNeg?.cfg ??
+                        6,
                     steps: HRF.steps,
                     denoise: HRF.denoise,
                     sampler_name: HRF.useMainSampler ? ui.sampler.sampler_name : 'ddim',
-                    scheduler: HRF.useMainSampler ? ui.sampler.scheduler : 'ddim_uniform',
+                    scheduler: !HRF.useMainSampler ? 'ddim_uniform' : ui.sampler.sigmasType.basic?.scheduler ?? 'ddim_uniform',
                 },
                 { ...ctx_sampler_fix, latent, preview: false },
             ).latent
@@ -200,7 +212,7 @@ app({
         }
 
         // SHOW 3D -------------------------------------------------------------------------------
-        const show3d = ui.show3d
+        const show3d = ui.extra.show3d
         if (show3d) run_Dispacement1(show3d, finalImage)
         else graph.SaveImage({ images: finalImage })
 

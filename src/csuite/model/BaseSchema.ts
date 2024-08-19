@@ -1,6 +1,6 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
+import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Factory } from './Factory'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
@@ -35,6 +35,40 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
         })
         return x as any as BaseSchema<EXTS & FIELD>
+    }
+
+    /**
+     *
+     * example usage:
+     *
+     *  ```ts
+     *  // define base schema
+     *  const S0 = b.fields({
+     *      foo: b.int({ default: 10 }),
+     *  })
+     *
+     *  // use `useClass` to extend the auto-generated class
+     *  // with your custom class
+     *  const S1 = S0.useClass((FIELD) => {
+     *      return class Foo extends FIELD {
+     *          static HELLO = 'WORLD'
+     *          volatile = 12
+     *          get foofoo(): number {
+     *              return this.value.foo * 2
+     *          }
+     *      }
+     *  })
+     *
+     * // S1: BaseSchema<Foo>
+     * ```
+     *
+     */
+    useClass<EXTS extends Field>(
+        /** the class constructor */
+        cls: (base: new (...args: any[]) => FIELD) => new (...args: any[]) => EXTS,
+    ): BaseSchema<EXTS /* & FIELD */> {
+        if (this.config.classToUse != null) throw new Error('already have a custom class')
+        return this.withConfig({ classToUse: cls }) as any as BaseSchema<EXTS>
     }
 
     applySchemaExtensions(): void {
@@ -142,17 +176,30 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
                 const next: Field_list_serial<any> = { $: 'list', items_: [prev] }
                 serial = next
             }
+            // ADDING OPTIONAL
+            else if (this.type === 'optional') {
+                const prev: any = serial
+                const next: Field_optional_serial<any> = { $: 'optional', active: true, child: prev }
+                serial = next
+            }
+
             // REMOVING LIST
             else if (serial.$ === 'list') {
                 const prev: Field_list_serial<any> = serial as any
                 const next: any = prev.items_[0] ?? null
                 serial = next
             }
+            // REMOVING OPTIONAL
+            else if (serial.$ === 'optional') {
+                const prev: Field_optional_serial = serial as any
+                const next = prev.child
+                if (next != null) serial = next
+            }
         }
         // ----------------------------------------------------------------------------------
 
         // run the config.onCreation if needed
-        if (this.config.beforeInit) {
+        if (this.config.beforeInit != null) {
             const oldVersion = serial?._version ?? 'default'
             const newVersion = this.config.version ?? 'default'
             if (oldVersion !== newVersion) {
@@ -167,8 +214,21 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             console.log(`[🔶] INVALID SERIAL:`, serial)
             serial = null
         }
-        const field = this.buildField(repo, root, parent, this, serial)
+        // create the instance
+        // const field = new this.FieldClass_UNSAFE( 🔴
+        const field = this.buildField(
+            //
+            repo,
+            root,
+            parent,
+            this,
+            serial,
+        )
+
+        // start publications
         field.publishValue()
+
+        // start reactions
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later
             reaction(

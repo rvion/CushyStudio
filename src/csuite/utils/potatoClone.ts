@@ -7,7 +7,7 @@
  *  0 CUSTOM-clone
  *      - anything that has a `potatoClone` method or [Symbol.for('🥔')] method
  *
- *  1. TRUE DEEP-clone
+ *  1. TRUE DEEP-clone all of
  *      - JSON-like objects
  *          - for JSON structure, potatoClone will work like `JSON.parse(JSON.stringify(obj))` bu)
  *      - Date, RegExp, BigInt, ...

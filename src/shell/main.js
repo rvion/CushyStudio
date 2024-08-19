@@ -162,6 +162,26 @@ async function START() {
             },
         })
 
+        // 2024-08-16 rvion: 🏑
+        // | attempt to fix `cmd+w` closing the whole app when triggerd from an iframe
+        // | every possible fix (diabling global events, injecting js code, etc etc) fails.
+        // | I tried 5+ solutions and none of them worked, despite the fact all of them should
+        // | have worked. My guess is that there is some hard-coded stuff somewhere in electron
+        // | below is some weird-ass solution that seems to work
+        // Use 'before-input-event' to intercept the Cmd+W combination
+        mainWindow.webContents.on('before-input-event', (event, input) => {
+            if (input.key === 'w' && input.meta) {
+                console.log(`[🏑] custom 'cmd+w'`)
+                event.preventDefault() // Prevent the default close behavior
+                mainWindow.webContents.send('custom-cmd-w')
+            }
+            if (input.key === 'w' && input.control) {
+                console.log(`[🏑] custom 'ctrl+w'`)
+                event.preventDefault() // Prevent the default close behavior
+                mainWindow.webContents.send('custom-ctrl-w')
+            }
+        })
+
         // remove the menu bar on windows & linux
         try {
             console.log(`[🤠] process.platform =`, process.platform)

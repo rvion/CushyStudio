@@ -1,9 +1,11 @@
+import type { Timestamp } from '../csuite/types/Timestamp'
 import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
-import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
+import type { RunResult } from 'better-sqlite3'
+import type { CompiledQuery, DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
-// 2024-03-14 commented serial checks for now
+// 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
 import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -21,6 +23,12 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 }
 
 export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
+    /**
+     * hydrate at the end;
+     * can only work with all fields
+     * CANNOT use joins, NOR select only a few fields, etc
+     * see `selectRaw` if you need those
+     */
     select = (
         fn: (
             x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']>,
@@ -29,7 +37,10 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     ): TABLE['$L'][] => {
         const query = fn(this.query1).compile() // finalize the kysely query
         const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
-        if (stmt == null) return []
+        if (stmt == null) {
+            throw new Error('INVARIANT VIOLATION; statement is null')
+            // return []
+        }
         cushy.db.subscribeToKeys([this.schema.sql_name])
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
         const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
@@ -38,6 +49,11 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         return instances
     }
 
+    /**
+     * do not hydrate entities;
+     * you can use joins, select only a few fields, etc
+     * see also `select` for simpler use cases, or when you need hydated entities
+     */
     selectRaw = <T>(
         fn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => SelectQueryBuilder<any, any, T>,
         subscriptions?: LiveDBSubKeys[],
@@ -50,8 +66,38 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         return x as any[] // return the result
     }
 
+    /**
+     * do not hydrate entities;
+     * you can use joins, select only a few fields, etc
+     * see also `select` for simpler use cases, or when you need hydated entities
+     */
+    selectRaw2 = <T>(
+        fn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => SelectQueryBuilder<any, any, T>,
+        subscriptions?: LiveDBSubKeys[],
+    ): T[] => {
+        const query = fn(this.query3).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) return []
+        if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
+        return x as any[] // return the result
+    }
+
     query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = kysely.selectFrom(this.name).selectAll(this.name)
     query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.selectFrom(this.name).selectAll(this.name)
+    query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.selectFrom(this.name)
+
+    delete_: DeleteQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.deleteFrom(this.name)
+    delete2(
+        fn: (x: DeleteQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}>) => DeleteQueryBuilder<any, any, any>,
+    ): RunResult {
+        //
+        const query = fn(this.delete_).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) throw new Error('❌')
+        const x = sqlbench(query, () => stmt.run(query.parameters)) // execute the statement
+        return x
+    }
     // ⏸️ query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
     // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
@@ -62,7 +108,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     // 🟢 --------------------------------------------------------------------------------
 
     /** number of entities in the table */
-    get size() {
+    get size(): number {
         DEPENDS_ON(this.liveEntities.size)
         return this.db._getCount(this.name)
     }
@@ -110,7 +156,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     stmt_query = `select * from ${this.name} order by createdAt desc limit 1`
     stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
 
-    // 2024-06-13 rvion; perf issue was caused by this
+    // 💬 2024-06-13 rvion; perf issue was caused by this
     // beeing a function instead of a getter;
     last = (): Maybe<TABLE['$L']> => {
         return this.last_
@@ -177,12 +223,23 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 next: TABLE['$T'],
             ) => void
 
-            get id() { return this.data.id } // prettier-ignore
-            get createdAt() { return this.data.createdAt } // prettier-ignore
-            get updatedAt() { return this.data.updatedAt } // prettier-ignore
-            get tableName() { return this.table.name } // prettier-ignore
+            get id(): TABLE['$ID'] {
+                return this.data.id
+            }
 
-            update_LiveOnly(changes: Partial<TABLE['$T']>) {
+            get createdAt(): Timestamp {
+                return this.data.createdAt as Timestamp
+            }
+
+            get updatedAt(): Timestamp {
+                return this.data.updatedAt as Timestamp
+            }
+
+            get tableName(): TableNameInDB {
+                return this.table.name
+            }
+
+            update_LiveOnly(changes: Partial<TABLE['$T']>): void {
                 runInAction(() => {
                     Object.assign(this.data, changes)
                 })
@@ -293,15 +350,19 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 return this.table.create(cloneData)
             }
 
-            delete() {
+            delete(): void {
                 this.table.delete(this.data.id)
             }
 
-            toJSON() {
+            toJSON(): TABLE['$T'] {
                 return this.data
             }
 
-            init(table: LiveTable<TABLE>, data: TABLE['$T']) {
+            init(
+                //
+                table: LiveTable<TABLE>,
+                data: TABLE['$T'],
+            ): void {
                 // console.log(`🔴 INIT`, data)
                 /* 🚝 */ const startTime = process.hrtime()
                 this.db = table.db
@@ -326,7 +387,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 /* 🚝 */ quickBench.addStats(`init:${table.name}`, ms)
             }
 
-            log(...args: any[]) {
+            log(...args: any[]): void {
                 console.log(`[${this.table.emoji}] ${this.table.name}:`, ...args)
             }
         }
@@ -411,7 +472,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
      */
     zz_deleted: boolean = false
 
-    delete = (id: string) => {
+    delete = (id: string): void => {
         const sql = `delete from ${this.name} where id = ?`
         try {
             this.schema.backrefs.forEach((backref) => {
@@ -444,7 +505,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
      * - update all in DB
      * - then patch all local instances bypassing the DB
      */
-    updateAll = (changes: Partial<TABLE['$T']>) => {
+    updateAll = (changes: Partial<TABLE['$T']>): void => {
         const sql = `update ${this.name} set ${Object.keys(changes)
             .map((k) => `${k} = @${k}`)
             .join(', ')}`

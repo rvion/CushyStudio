@@ -7,7 +7,6 @@
 */
 
 import type { Field } from '../model/Field'
-import type { Repository } from '../model/Repository'
 import type { Field_bool } from './bool/FieldBool'
 import type { Field_group } from './group/FieldGroup'
 import type { Field_link } from './link/FieldLink'

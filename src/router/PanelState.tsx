@@ -4,12 +4,15 @@ import type { Json } from '../csuite/types/Json'
 import type { Builder } from '../CUSHY'
 import type { CushyLayoutManager } from './Layout'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
+import { bang } from '../csuite/utils/bang'
+import { naiveDeepClone } from '../csuite/utils/naiveDeepClone'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
 export type PanelID = string
-export class PanelState<PROPS extends any = any> {
+export class PanelState<PROPS extends object = any> {
     constructor(
         public node: FL.TabNode,
         public id: PanelID,
@@ -28,6 +31,53 @@ export class PanelState<PROPS extends any = any> {
         return cushy.layout
     }
 
+    get parentTabset(): FL.TabSetNode {
+        const parent1 = this.node.getParent()
+        if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
+        const tabset = parent1 as FL.TabSetNode
+        return tabset
+    }
+
+    get parentRow(): FL.RowNode {
+        const parent2 = this.parentTabset.getParent()
+        if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
+        const row = parent2 as FL.RowNode
+        return row
+    }
+
+    /** widen this tab tabset */
+    widen(): void {
+        this.layout.widenTabset(this.parentTabset)
+    }
+
+    /** widen this tab tabset */
+    shrink(): void {
+        this.layout.shrinkTabset(this.parentTabset)
+    }
+
+    /** reset tabset size */
+    resetSize(): void {
+        this.layout.resetTabsetSize(this.parentTabset)
+    }
+
+    clone(partialProps: Partial<PROPS>): void {
+        const config = this.getConfig()
+        this.layout.open(
+            this.panelName,
+            { ...this.getProps(), ...partialProps },
+            {
+                where: 'below',
+                $store: naiveDeepClone(config.$store),
+                $temp: naiveDeepClone(config.$temp),
+            },
+        )
+    }
+
+    get panelName(): PanelName {
+        const panelName = this.node.getComponent() as Maybe<PanelName>
+        return bang(panelName)
+    }
+
     /**
      * Returns the config attribute that can be used to store node specific data that
      * WILL be saved to the json. The config attribute should be changed via the action Actions.updateNodeAttributes rather
@@ -41,10 +91,7 @@ export class PanelState<PROPS extends any = any> {
 
     /** get component props */
     getProps(): PROPS {
-        return (
-            this.getConfig().$props ?? //
-            (this.getConfig() as any as PROPS)
-        )
+        return bang(this.getConfig().$props) // (this.getConfig() as any as PROPS)
     }
 
     stores: Map<string, PanelPersistentStore> = new Map<string, PanelPersistentStore>()

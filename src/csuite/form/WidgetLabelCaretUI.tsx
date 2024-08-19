@@ -7,25 +7,33 @@ import { useCSuite } from '../ctx/useCSuite'
 
 export const LabelCaretWidth = '1rem'
 
+export const WidgetLabelCaretPlaceholderUI = observer(function WidgetLabelCaretPlaceholderUI_(p: { className?: string }) {
+    return (
+        <Ikon._
+            className={p.className}
+            tw={[
+                //
+                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                'COLLAPSE-PASSTHROUGH shrink-0',
+            ]}
+        />
+    )
+})
+
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
     //
     className?: string
+    /** @default true */
+    placeholder?: boolean
     field: Field
 }) {
     const csuite = useCSuite()
     if (!csuite.showExpandCarets) return null
-    if (!p.field.isCollapsed && !p.field.isCollapsible)
-        return (
-            <Ikon._
-                //
-                className={p.className}
-                tw={[
-                    //
-                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
-                    'COLLAPSE-PASSTHROUGH shrink-0',
-                ]}
-            />
-        )
+    if (!p.field.isCollapsed && !p.field.isCollapsible) {
+        const showPlaceholder = p.placeholder ?? true
+        if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.className} />
+        return null
+    }
     return (
         <WidgetLabelCaretAlwaysUI //
             className={p.className}

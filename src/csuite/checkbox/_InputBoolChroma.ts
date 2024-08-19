@@ -1,11 +1,11 @@
 import type { Tint } from '../kolor/Tint'
 
-export const getInputBoolChroma = (isActive: boolean) => {
+export const getInputBoolChroma = (isActive: boolean): number => {
     // TODO: make that behind a theme color
     return isActive ? 0.06 : 0.03
 }
 
-export const getInputBoolContrast = (isActive: boolean) => {
+export const getInputBoolContrast = (isActive: boolean): number => {
     return isActive ? 0.3 : 0.05
 }
 

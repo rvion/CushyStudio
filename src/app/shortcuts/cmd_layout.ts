@@ -1,7 +1,7 @@
-import { ctx_global } from '../../csuite/command-topic/ctx_global'
+import { ctx_layout } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { KEYS } from './shorcutKeys'
-import { globalValidInInput } from './simpleValidInInput'
 
 // should every layout command start with `mod+k` for some consistency ?
 
@@ -10,7 +10,7 @@ export const allLayoutCommands: Command<null>[] = [
     command({
         id: 'cmd_maximize_active_panel',
         label: 'maximize active panel',
-        ctx: ctx_global,
+        ctx: ctx_layout,
         combos: 'ctrl+shift+space',
         action: () => cushy.layout.maximizeActiveTabset(),
         icon: 'mdiWindowMaximize',
@@ -21,7 +21,7 @@ export const allLayoutCommands: Command<null>[] = [
     command({
         id: 'cmd_maximize_hovered_panel',
         label: 'maximize hovered panel',
-        ctx: ctx_global,
+        ctx: ctx_layout,
         combos: ['alt+space', 'ctrl+u'],
         icon: 'mdiWindowMaximize',
         action: () => cushy.layout.maximizHoveredTabset(),
@@ -29,35 +29,34 @@ export const allLayoutCommands: Command<null>[] = [
     }),
 
     // move active tab to the right
-    globalValidInInput(
+    command({
         //
-        'mod+k mod+ArrowRight',
-        'move tab to the right',
-        () => cushy.layout.moveActiveTabToRight(),
-        'mdiGamepadCircleRight',
-    ),
+        ctx: ctx_layout,
+        combos: ['mod+k mod+ArrowRight'],
+        id: 'layout.move-tab-to-the-right',
+        label: 'move tab to the right',
+        action: () => cushy.layout.moveActiveTabToRight(),
+        icon: 'mdiGamepadCircleRight',
+        validInInput: true,
+    }),
 
     // move active tab to the left
-    globalValidInInput(
+    command({
         //
-        'mod+k mod+ArrowLeft',
-        'move tab to the left',
-        () => cushy.layout.moveActiveTabToLeft(),
-        'mdiGamepadCircleLeft',
-    ),
-
-    // globalValidInInput(
-    //     //
-    //     'mod+k mod+ArrowDown',
-    //     'move tab to the right',
-    //     () => cushy.layout.getTabsetSurroundings(),
-    // ),
+        ctx: ctx_layout,
+        combos: ['mod+k mod+ArrowLeft'],
+        id: 'layout.move-tab-to-the-left',
+        label: 'move tab to the left',
+        action: () => cushy.layout.moveActiveTabToLeft(),
+        icon: 'mdiGamepadCircleLeft',
+        validInInput: true,
+    }),
 
     command({
         id: 'closeCurrentTab',
         combos: KEYS.closeCurrentTab,
         validInInput: true,
-        ctx: ctx_global,
+        ctx: ctx_layout,
         action: () => cushy.layout.closeCurrentTab(),
         label: 'Close current tab',
         icon: 'mdiCloseBoxOutline',
@@ -68,7 +67,7 @@ export const allLayoutCommands: Command<null>[] = [
         label: 'Close all tabs',
         combos: 'mod+k mod+shift+x',
         validInInput: true,
-        ctx: ctx_global,
+        ctx: ctx_layout,
         action: () => cushy.layout.closeAllTabs(),
         icon: 'mdiCloseBoxMultipleOutline',
     }),
@@ -78,8 +77,79 @@ export const allLayoutCommands: Command<null>[] = [
         label: 'Close current tabset',
         combos: 'mod+k mod+x',
         validInInput: true,
-        ctx: ctx_global,
+        ctx: ctx_layout,
         action: () => cushy.layout.closeCurrentTabset(),
         icon: 'mdiCloseOctagonOutline',
     }),
+
+    command({
+        id: 'layout.focusPreviousPanel',
+        label: 'Focus previous panel in tabset',
+        combos: 'mod+pageup',
+        validInInput: true,
+        ctx: ctx_layout,
+        action: () => cushy.layout.openPreviousPane(),
+        icon: 'mdiArrowUpBoldBox',
+    }),
+
+    command({
+        id: 'layout.focusnextPanel',
+        label: 'Focus next panel in tabset',
+        combos: 'mod+pageDown',
+        validInInput: true,
+        ctx: ctx_layout,
+        action: () => cushy.layout.openNextPane(),
+        icon: 'mdiArrowUpBoldBox',
+    }),
+
+    command({
+        id: 'layout.widen-hovered-tabset',
+        label: 'widen hovered tabset',
+        combos: 'mod+ctrl+arrowright',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiArrowExpandHorizontal',
+        action: () => {
+            cushy.layout.widenTabset('hoverd')
+            return Trigger.Success
+        },
+    }),
+
+    command({
+        id: 'layout.shrink-hovered-tabset',
+        label: 'shrink hovered tabset',
+        combos: 'mod+ctrl+arrowleft',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiArrowExpandHorizontal',
+        action: () => {
+            cushy.layout.shrinkTabset('hoverd')
+            return Trigger.Success
+        },
+    }),
+
+    command({
+        id: 'layout.reset-tabset-size',
+        label: 'Reset Tabset Size',
+        combos: 'mod+ctrl+r',
+        validInInput: true,
+        ctx: ctx_layout,
+        icon: 'mdiLockReset',
+        action: () => {
+            cushy.layout.resetTabsetSize('hoverd')
+            return Trigger.Success
+        },
+    }),
 ]
+
+// TODO:
+// command({
+//     id: 'layout.focusFirstTabset'
+// })
+
+// globalValidInInput(
+//     //
+//     'mod+k mod+ArrowDown',
+//     'move tab to the right',
+//     () => cushy.layout.getTabsetSurroundings(),
+// ),

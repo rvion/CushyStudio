@@ -1,6 +1,5 @@
 import type * as FL from 'flexlayout-react'
 
-import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 
@@ -9,18 +8,17 @@ import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
 import { PanelName, panels } from './PANELS'
 import { PanelState } from './PanelState'
+import { PanelStateByNode } from './PanelStateByNode'
 import { panelContext } from './usePanel'
 
-// export const PanelStateById = new Map<string, PanelState>()
-export const PanelStateByNode = observable(new Map<string, PanelState>())
-
-export const PanelUI = observer(function PanelUI_(p: {
+/** internal component; do not use yourself */
+export const PanelContainerUI = observer(function PanelContainer(p: {
     //
     node: FL.TabNode
-    panel: PanelName
+    panelName: PanelName
     panelProps: any
 }) {
-    const { panel, panelProps, node } = p
+    const { panelName, panelProps, node } = p
 
     const panelID = p.node.getId()
     const panelState = useMemo(() => {
@@ -38,11 +36,11 @@ export const PanelUI = observer(function PanelUI_(p: {
     // -----------------------
 
     // 3. get panel definition
-    const panelDef = (panels as any)[panel]
+    const panelDef = (panels as any)[panelName]
     if (panelDef == null)
         return (
             <Message type='error' showIcon>
-                no panel definition for {panel}
+                no panel definition for {panelName}
             </Message>
         )
 
@@ -52,13 +50,14 @@ export const PanelUI = observer(function PanelUI_(p: {
             <panelContext.Provider value={panelState}>
                 <Frame
                     //
+                    col
                     tw={[
                         //
                         'flex-1 h-full w-full',
                         'overflow-auto', // overflow-auto to only show scrollbar when needed
                         // 'overflow-scroll',
                     ]}
-                    className={`Region-${panel}`}
+                    className={`Region-${panelName}`}
                     data-panel-id={panelID}
                     id={panelID}
                 >

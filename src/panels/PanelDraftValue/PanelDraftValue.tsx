@@ -9,7 +9,8 @@ export const PanelDraftValue = new Panel({
     widget: (): React.FC<PanelDraftValueProps> => PanelDraftValueUI,
     header: (p): PanelHeader => ({ title: 'DraftJsonResult' }),
     def: (): PanelDraftValueProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-    icon: undefined,
+    category: 'developper',
+    icon: 'mdiDevTo',
 })
 
 export type PanelDraftValueProps = {
@@ -19,6 +20,6 @@ export type PanelDraftValueProps = {
 export const PanelDraftValueUI = observer(function PanelDraftValueUI_(p: PanelDraftValueProps) {
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
-    if (draft == null) return <>🔴 draft with id "{p.draftID}" not found</>
+    if (draft == null) return <>❌ draft with id "{p.draftID}" not found</>
     return <JsonViewUI value={draft.form?.value} />
 })

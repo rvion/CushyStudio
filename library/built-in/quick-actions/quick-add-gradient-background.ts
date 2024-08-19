@@ -5,9 +5,14 @@ app({
     },
     ui: (form) => ({
         from: form.image({ justifyLabel: false }),
+        tags: form.string({
+            label: 'Tags',
+            placeHolder: 'e.g. "gradient, background"',
+            default: 'gradient, background',
+        }),
     }),
     canStartFromImage: true,
-    run: async (run, ui, { image }) => {
+    run: async (run, ui, { image, mask, canvas }) => {
         const size = 1024
         const startImage = image ?? ui.from
         const { Konva, Colors, Images, ComfyUI } = run
@@ -17,6 +22,6 @@ app({
         logo.setSize({ width: size, height: size })
         layer.add(logo)
         const b64 = Konva.convertLayerToDataURL(layer)
-        const img = Images.createFromDataURL(b64)
+        Images.createFromDataURL(b64).toggleTag(...ui.tags.split(','))
     },
 })

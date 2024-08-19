@@ -213,6 +213,18 @@ export class AutoCompleteSelectState<OPTION> {
         return value.map((op) => this.DisplayOptionUI(op, { where: 'popup-input' }))
     }
 
+    // get placeholderElem(): ReactNode {
+    //     return <span tw='whitespace-nowrap'>{this.p.placeholder ?? 'Select...'}</span>
+    // }
+
+    // get displayValue(): ReactNode {
+    //     let value = this.value
+    //     if (value == null) return this.placeholderElem
+    //     value = Array.isArray(value) ? value : [value]
+    //     if (value.length === 0) return this.placeholderElem
+    //     return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
+    // }
+
     // UNUSED
     openMenuProgrammatically = (): void => {
         this.revealState?.log(`🔶 SelectSate openMenuProgrammatically`)
@@ -288,7 +300,8 @@ export class AutoCompleteSelectState<OPTION> {
 
     toggleOption(option: OPTION): void {
         this.revealState?.log(`_ SelectSate toggleOption`)
-        this.p.onOptionToggled?.(option, this)
+        const onOptionToggledFn = this.p.onOptionToggled ?? this.p.onChange
+        onOptionToggledFn?.(option, this)
         // reset the query
         const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
         if (shouldResetQuery) this.searchQuery = ''

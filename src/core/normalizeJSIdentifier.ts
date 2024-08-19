@@ -1,3 +1,11 @@
+export const convertComfyNodeNameToCushyNodeNameValidInJS = (name: string): string => {
+    return normalizeJSIdentifier(name, ' ')
+}
+
+export const convetComfySlotNameToCushySlotNameValidInJS = (name: string): string => {
+    return normalizeJSIdentifier(name, '_')
+}
+
 /**
  * there is sadly no perfect normalization for JS identifiers
  * ComfyUI node names tend to use spaces ' '
@@ -9,7 +17,7 @@ export const normalizeJSIdentifier = (
     //
     name: string,
     preferedSeparatorToKeepReadable: ' ' | '_',
-) => {
+): string => {
     let out = ''
     if (name.length > 0 && '0123456789'.includes(name[0]!)) out += '_'
     for (const char of name) out += mapChar(char, preferedSeparatorToKeepReadable)
@@ -21,7 +29,7 @@ const mapChar = (
     //
     char: string,
     preferedSeparatorToKeepReadable: ' ' | '_',
-) => {
+): string => {
     if (p1.test(char)) return char
 
     if (preferedSeparatorToKeepReadable === ' ') {

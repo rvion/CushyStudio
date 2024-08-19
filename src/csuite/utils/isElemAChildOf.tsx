@@ -1,3 +1,4 @@
+/** check if an element is a child of given selector */
 export function isElemAChildOf(
     //
     elem: Element | null,

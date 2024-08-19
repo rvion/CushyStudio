@@ -1,7 +1,8 @@
 import type { STATE } from '../../state/state'
 
+import { makeInputToken } from '../../csuite/commands/CommandManager'
 import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
-import { FPath } from '../../models/PathObj'
+import { FPath } from '../../models/FPath'
 
 export type FileDownloaded_IPCPayload = {
     originalFilename: string
@@ -65,6 +66,24 @@ export class ElectronUtils {
             // console.log(`[🔎] search-result =`, { json })
             // createMediaImage_fromPath(st, json.relativePath, {})
         })
+
+        // 2024-08-16 rvion: 🏑
+        ipcRenderer.removeAllListeners('custom-cmd-w')
+        ipcRenderer.on('custom-cmd-w', (_ev, json: SearchResult_IPCPayload) => {
+            console.log('B. custom-cmd-w')
+            cushy.commands.processKeyDown({
+                inInput: false,
+                inputToken: makeInputToken(['cmd', 'w']),
+            })
+        })
+        ipcRenderer.removeAllListeners('custom-ctrl-w')
+        ipcRenderer.on('custom-ctrl-w', (_ev, json: SearchResult_IPCPayload) => {
+            console.log('B. custom-ctrl-w')
+            cushy.commands.processKeyDown({
+                inInput: false,
+                inputToken: makeInputToken(['ctrl', 'w']),
+            })
+        })
     }
 
     toggleDevTools(): void {
@@ -78,7 +97,7 @@ export class ElectronUtils {
         }
     }
 
-    openDevTools = (updateConfig: boolean = false) => {
+    openDevTools = (updateConfig: boolean = false): void => {
         try {
             this.st.configFile.update({ preferDevToolsOpen: true })
             const ipcRenderer = window.require('electron').ipcRenderer
@@ -88,7 +107,7 @@ export class ElectronUtils {
         }
     }
 
-    closeDevTools = (updateConfig: boolean = false) => {
+    closeDevTools = (updateConfig: boolean = false): void => {
         try {
             this.st.configFile.update({ preferDevToolsOpen: false })
             const ipcRenderer = window.require('electron').ipcRenderer
@@ -98,7 +117,7 @@ export class ElectronUtils {
         }
     }
 
-    copyImageToClipboard = (payload: Clipboard_ImagePayload) => {
+    copyImageToClipboard = (payload: Clipboard_ImagePayload): Promise<unknown> => {
         return new Promise((resolve, reject) => {
             const format = payload.format ?? 'png'
             const ipcRenderer = window.require('electron').ipcRenderer

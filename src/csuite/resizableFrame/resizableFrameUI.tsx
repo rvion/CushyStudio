@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from 'react'
 
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
-import { PanelHeaderUI } from '../wrappers/PanelHeader'
+import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0

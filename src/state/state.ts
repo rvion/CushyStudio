@@ -58,8 +58,8 @@ import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFile'
 import { CushyAppL } from '../models/CushyApp'
 import { DraftL } from '../models/Draft'
+import { FPath } from '../models/FPath'
 import { HostL } from '../models/Host'
-import { FPath } from '../models/PathObj'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
@@ -188,7 +188,7 @@ export class STATE {
     }
 
     openInVSCode(filePathWithinWorkspace: RelativePath): Promise<void> {
-        return openInVSCode(this, filePathWithinWorkspace)
+        return openInVSCode(filePathWithinWorkspace)
     }
 
     getKnownCheckpoints(): ModelInfo[] {
@@ -225,6 +225,8 @@ export class STATE {
         return this.mainHost.schema
     }
 
+    showCommandHistory: boolean = false
+
     comfySessionId = 'temp' /** send by ComfyUI server */
 
     // paths
@@ -241,19 +243,6 @@ export class STATE {
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
-    }
-
-    // gallery size
-    get gallerySizeStr(): string {
-        return `${this.gallerySize}px`
-    }
-
-    set gallerySize(v: number) {
-        this.galleryConf.fields.gallerySize.value = v
-    }
-
-    get gallerySize(): number {
-        return this.galleryConf.value.gallerySize ?? 48
     }
 
     get preferedFormLayout(): Maybe<PreferedFormLayout> {
@@ -356,7 +345,7 @@ export class STATE {
     droppedFiles: File[] = []
 
     toggleFullLibrary(): void {
-        this.layout.FOCUS_OR_CREATE('PanelAppLibrary', {})
+        this.layout.open('PanelAppLibrary', {})
     }
 
     /**
@@ -442,18 +431,22 @@ export class STATE {
     get autolayoutOpts(): {
         node_hsep: number
         node_vsep: number
+        forceLeft: boolean
     } {
         const fv = this.graphConf.value
         return {
             node_hsep: fv.hsep,
             node_vsep: fv.vsep,
+            forceLeft: fv.forceLeft,
         }
     }
+
     graphConf = cushyFactory.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
             hsep: ui.int({ min: 0, max: 100, default: 20 }),
+            forceLeft: ui.bool(),
         }),
         {
             name: 'Graph Visualisation',
@@ -530,25 +523,6 @@ export class STATE {
             name: 'Displacement Conf',
             serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
-        },
-    )
-
-    galleryConf = cushyFactory.fields(
-        (f) => ({
-            defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
-                default: { id: 'createdAt', label: 'Created At' },
-            }),
-            gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
-            galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
-            galleryBgColor: f.colorV2({ label: 'background' }).optional(),
-            galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
-            showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
-            onlyShowBlurryThumbnails: f.boolean({ label: 'Blur Thumbnails' }),
-        }),
-        {
-            name: 'Gallery Conf',
-            onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            serial: () => readJSON('settings/gallery.json'),
         },
     )
 
@@ -898,33 +872,9 @@ export class STATE {
     //     return this.db.media_images.getLastN(maxImages)
     // }
 
-    galleryFilterPath: Maybe<string> = null
-    galleryFilterTag: Maybe<string> = null
+    // galleryFilterPath: Maybe<string> = null
+    // galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
-    get imageToDisplay(): MediaImageL[] {
-        const conf = this.galleryConf.value
-        return this.db.media_image.select(
-            (query) => {
-                let x =
-                    conf.defaultSort.id === 'createdAt'
-                        ? query.orderBy('media_image.createdAt', 'desc')
-                        : query.orderBy('media_image.updatedAt', 'desc')
-
-                x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
-
-                if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
-                if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
-                if (this.galleryFilterAppName) {
-                    x = x
-                        .innerJoin('step', 'media_image.stepID', 'step.id')
-                        .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
-                        .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
-                }
-                return x
-            },
-            ['media_image.id'],
-        )
-    }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------
     /** write a binary file to given absPath */

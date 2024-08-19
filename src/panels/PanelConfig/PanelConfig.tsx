@@ -1,14 +1,15 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
-import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { type FC, Fragment } from 'react'
 
+import { openFolderInOS } from '../../app/layout/openExternal'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { UI } from '../../csuite/components/UI'
 import { FormUI } from '../../csuite/form/FormUI'
-import { Frame } from '../../csuite/frame/Frame'
-import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
+import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
 import { LegacyOptions } from './LegacyOptions'
 
@@ -16,8 +17,20 @@ export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' |
 
 export const PanelConfig = new Panel({
     name: 'Config',
+    icon: 'mdiCogOutline',
+    category: 'settings',
     widget: (): FC<NO_PROPS> => PanelConfigUI,
     header: (p): PanelHeader => ({ title: 'Config', icon: undefined }),
+    def: (): PanelConfigProps => ({}),
+})
+
+// hacky alias
+export const PanelSettings = new Panel({
+    name: 'Settings',
+    icon: 'mdiCogOutline',
+    category: 'settings',
+    widget: (): FC<NO_PROPS> => PanelConfigUI,
+    header: (p): PanelHeader => ({ title: 'Settings', icon: undefined }),
     def: (): PanelConfigProps => ({}),
 })
 
@@ -39,40 +52,42 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
     const page: JSX.Element = ((): JSX.Element => {
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
-        if (mode === 'input')
-            return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' })
+        if (mode === 'input') return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' }) // prettier-ignore
         if (mode === 'TEMP') return <div>{panelState.render()}</div>
         if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
         if (mode === 'legacy') return <LegacyOptions />
         if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
         if (mode === 'theme') return <FormUI tw='flex-1' field={cushy.theme} />
-        return <>❌ unknown tab</>
+        return <Fragment>❌ unknown tab</Fragment>
     })()
 
     return (
-        <Frame>
-            <Frame expand row>
-                {/* <PanelHeaderUI></PanelHeaderUI> */}
-                <BasicShelfUI anchor='left'>
-                    <BasicShelfUI.Column /* 🌶️👋 < components can now be nested */>
+        <UI.Panel>
+            <UI.Panel.Header>
+                <UI.Button onClick={() => openInVSCode('CONFIG.json')} children='open legacy config file' />
+                <UI.Button onClick={() => openFolderInOS('settings')} children='open config folder' />
+            </UI.Panel.Header>
+            <UI.Frame expand row tw='overflow-auto'>
+                <UI.Shelf anchor='left' defaultSize={140}>
+                    <UI.Shelf.Column>
                         <ConfigTabButtonUI field={modeField} mode='legacy' />
-                        <BasicShelfUI.Group hueShift={100} /* 🌶️👋 */>
+                        <UI.Shelf.Group hueShift={100}>
                             <ConfigTabButtonUI field={modeField} mode='interface' />
                             <ConfigTabButtonUI field={modeField} mode='input' />
                             <ConfigTabButtonUI field={modeField} mode='theme' />
-                        </BasicShelfUI.Group>
-                        <BasicShelfUI.Group hueShift={200}>
+                        </UI.Shelf.Group>
+                        <UI.Shelf.Group hueShift={200}>
                             <ConfigTabButtonUI field={modeField} mode='system' />
                             <ConfigTabButtonUI field={modeField} mode='hosts' />
-                        </BasicShelfUI.Group>
-                        <BasicShelfUI.Group hueShift={300}>
+                        </UI.Shelf.Group>
+                        <UI.Shelf.Group hueShift={300}>
                             <ConfigTabButtonUI field={modeField} mode='TEMP' />
-                        </BasicShelfUI.Group>
-                    </BasicShelfUI.Column>
-                </BasicShelfUI>
-                <div tw='flex flex-1 p-2 overflow-scroll'>{page}</div>
-            </Frame>
-        </Frame>
+                        </UI.Shelf.Group>
+                    </UI.Shelf.Column>
+                </UI.Shelf>
+                <UI.Shelf.Content>{page}</UI.Shelf.Content>
+            </UI.Frame>
+        </UI.Panel>
     )
 })
 

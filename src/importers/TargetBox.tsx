@@ -1,7 +1,7 @@
 import type { DropTargetMonitor } from 'react-dnd'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type FC, ReactNode, useCallback } from 'react'
+import { ReactNode } from 'react'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
@@ -21,7 +21,7 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
                 if (item) {
                     const files = item.files
                     st.droppedFiles.push(...files)
-                    st.layout.FOCUS_OR_CREATE('Import', {})
+                    st.layout.open('Import', {})
                 }
             },
             canDrop(item: any) {

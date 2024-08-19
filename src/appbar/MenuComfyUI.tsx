@@ -6,7 +6,6 @@ import { openFolderInOS } from '../app/layout/openExternal'
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
-import { Ikon } from '../csuite/icons/iconHelpers'
 import { useSt } from '../state/stateContext'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
@@ -21,9 +20,9 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
             title='ComfyUI'
             content={() => (
                 <>
-                    <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})} label='ComfyUI' icon={'cdiNodes'} />
+                    <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={'cdiNodes'} />
                     <MenuItem //
-                        onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
+                        onClick={() => st.layout.open('ComfyUINodeExplorer', {})}
                         label='Nodes Explorer'
                     />
                     <MenuDivider>
@@ -54,7 +53,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     <MenuDivider>
                         <Button //
                             subtle
-                            onClick={() => cushy.layout.FOCUS_OR_CREATE('Hosts', {})}
+                            onClick={() => cushy.layout.open('Hosts', {})}
                             icon='mdiOpenInApp'
                         >
                             Hosts
@@ -84,7 +83,7 @@ const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
                 onClick={(ev) => {
                     ev.preventDefault()
                     ev.stopPropagation()
-                    cushy.layout.FOCUS_OR_CREATE('ComfyUI', {})
+                    cushy.layout.open('ComfyUI', {})
                 }}
             />
         </MenuItem>

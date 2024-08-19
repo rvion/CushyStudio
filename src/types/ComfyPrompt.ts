@@ -5,6 +5,14 @@ export type ComfyPromptJSON = {
 }
 
 export type ComfyNodeJSON = {
-    inputs: { [key: string]: [string, number] | string | number | boolean | null }
+    inputs: {
+        // prettier-ignore
+        [key: string]:
+            | [string, number]
+            | string
+            | number
+            | boolean
+            | null
+    }
     class_type: string
 }

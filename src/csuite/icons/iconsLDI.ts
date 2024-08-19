@@ -1,5 +1,3 @@
-import * as icons from '@mdi/js'
-
 // Prefixed with _ to not pollute intellisense since this needs to
 // be exported to use in the main icon file.
 

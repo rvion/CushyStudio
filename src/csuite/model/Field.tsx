@@ -503,10 +503,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return [...ownProblems, ...this.customOwnProblems]
     }
 
-    // 2024-07-21 (1) rvion:
+    // 💬 2024-07-21 (1) rvion:
     // | ARRRGH !! this is not cached for some reason !!
     // | array is everytime recreated => FormUI is re-rendered
-    // 2024-07-21 (2) rvion:
+    // 💬 2024-07-21 (2) rvion:
     // | this is related to mobx-store-inheritance not working properly
     get allErrorsIncludingChildrenErros(): Problem[] {
         return this.errors.concat(this.subFields.flatMap((f) => f.allErrorsIncludingChildrenErros))

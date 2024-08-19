@@ -1,9 +1,11 @@
+import type { DovProps } from '../frame/Dov/Dov'
+import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState, SelectValueSlots } from './SelectState'
-import type { DovProps } from 'src/front/lsuite/Dov/Dov'
 
 import React from 'react'
 
@@ -17,7 +19,9 @@ export type SelectValueLooks =
 
 export type SelectProps<OPTION> = {
     label?: string
+    startIcon?: IconName
 
+    placement?: RevealPlacement
     /**
      * if true, select is virtualized
      * @default true
@@ -28,6 +32,14 @@ export type SelectProps<OPTION> = {
 
     /** callback when a new option is selected */
     onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
+
+    /**
+     * @deprecated
+     * use `onOptionToggled` instead
+     * this is just an alias for `onOptionToggled`
+     * this function has been added back since 2 people struggled to find the `onOptionToggled` name
+     */
+    onChange?: (next: OPTION, self: AutoCompleteSelectState<OPTION>) => void
 
     /**
      * list of all choices
@@ -68,9 +80,10 @@ export type SelectProps<OPTION> = {
     placeholder?: string
     disabled?: boolean
     cleanable?: boolean
+
     hideValue?: boolean
-    // className?: string // use reveal.anchorProps.className instead
-    // style?: React.CSSProperties // use reveal.anchorProps.style instead
+    // className?: string // use revealProps.anchorProps.className instead
+    // style?: React.CSSProperties // use revealProps.anchorProps.style instead
 
     /**
      * @default: false if multi-select, true if single select

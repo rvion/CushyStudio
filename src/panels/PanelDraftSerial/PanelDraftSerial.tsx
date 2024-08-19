@@ -9,7 +9,8 @@ export const PanelDraftSerial = new Panel({
     widget: (): React.FC<PanelDraftSerialProps> => Panel_DraftJsonSerial,
     header: (p): PanelHeader => ({ title: 'DraftJsonSerial' }),
     def: (): PanelDraftSerialProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-    icon: undefined,
+    icon: 'mdiCodeBlockBraces',
+    category: 'developper',
 })
 
 export type PanelDraftSerialProps = {
@@ -19,6 +20,6 @@ export type PanelDraftSerialProps = {
 export const Panel_DraftJsonSerial = observer(function Panel_DraftJsonSerial_(p: PanelDraftSerialProps) {
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
-    if (draft == null) return <>🔴 draft with id "{p.draftID}" not found</>
+    if (draft == null) return <>❌ draft with id "{p.draftID}" not found</>
     return <JsonViewUI value={draft.data.formSerial} />
 })

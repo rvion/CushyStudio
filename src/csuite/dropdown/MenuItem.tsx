@@ -8,7 +8,7 @@ import { ComboUI } from '../accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 
-export const MenuItem = observer(function DropdownItem_(p: {
+export const _MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => unknown
     /** ⚠️ unused for now */
     size?: 'sm' | 'xs' | 'md' | 'lg'
@@ -87,5 +87,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
 export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
     return <div className='divider px-2 !h-input my-2 text-sm'>{p.children ?? <></>}</div>
 })
-// Can we do subcomponents somehow?
-// MenuItem.Divider = Divider
+
+export const MenuItem = Object.assign(_MenuItem, {
+    // name: 'BasicShelfUI',
+    Divider: MenuDivider,
+})

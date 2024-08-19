@@ -18,7 +18,7 @@ import { join } from 'pathe'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
-import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNode, type ComfyNodeUID } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
 import { bang } from '../csuite/utils/bang'
 import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
@@ -54,21 +54,21 @@ export class ComfyWorkflowL {
         return this.nodes.length
     }
 
-    menuAction_openInFullScreen = async (ev: MouseEvent) => {
+    menuAction_openInFullScreen = async (ev: MouseEvent): Promise<void> => {
         ev.preventDefault()
         ev.stopPropagation()
         const prompt = await this.json_workflow()
         if (prompt == null) return
-        this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
+        this.st.layout.open('ComfyUI', { litegraphJson: prompt }, { where: 'biggest' })
     }
-    menuAction_openInTab = async (ev: MouseEvent) => {
+    menuAction_openInTab = async (ev: MouseEvent): Promise<void> => {
         ev.preventDefault()
         ev.stopPropagation()
         const prompt = await this.json_workflow()
         if (prompt == null) return
-        this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
+        this.st.layout.open('ComfyUI', { litegraphJson: prompt })
     }
-    menuAction_downloadPrompt = async (ev: MouseEvent) => {
+    menuAction_downloadPrompt = async (ev: MouseEvent): Promise<void> => {
         ev.preventDefault()
         ev.stopPropagation()
         const jsonPrompt = this.json_forPrompt('use_class_name_and_number')
@@ -83,7 +83,7 @@ export class ComfyWorkflowL {
         writeFileSync(path, JSON.stringify(jsonPrompt, null, 3))
     }
 
-    menuAction_downloadWorkflow = async (ev: MouseEvent) => {
+    menuAction_downloadWorkflow = async (ev: MouseEvent): Promise<void> => {
         ev.preventDefault()
         ev.preventDefault()
         const jsonWorkflow = await this.json_workflow()
@@ -99,12 +99,12 @@ export class ComfyWorkflowL {
         writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
     }
 
-    get comfyPromptJSON() {
+    get comfyPromptJSON(): ComfyPromptJSON {
         return this.data.comfyPromptJSON
     }
 
     /** ❓ UNTESTED */
-    setMetadata = (nodeID: ComfyNodeID, meta: ComfyNodeMetadata) => {
+    setMetadata = (nodeID: ComfyNodeID, meta: ComfyNodeMetadata): void => {
         this.data.metadata[nodeID] = meta
     }
 
@@ -114,7 +114,7 @@ export class ComfyWorkflowL {
     }
 
     _problems: { title: string; data?: any }[] = []
-    recordProblem = (title: string, data?: any) => {
+    recordProblem = (title: string, data?: any): void => {
         this._problems.push({ title, data })
     }
 
@@ -125,7 +125,7 @@ export class ComfyWorkflowL {
         return this._builder
     }
 
-    onUpdate = (prev: Maybe<ComfyWorkflowT>, next: ComfyWorkflowT) => {
+    onUpdate = (prev: Maybe<ComfyWorkflowT>, next: ComfyWorkflowT): void => {
         const prevSize = this.size
         if (prev != null) {
             this.nodes = []
@@ -161,7 +161,7 @@ export class ComfyWorkflowL {
     // ⏸️ }
 
     /** @internal every node constructor must call this */
-    registerNode = (node: ComfyNode<any>) => {
+    registerNode = (node: ComfyNode<any>): void => {
         if (this.data.comfyPromptJSON == null) throw new Error('graph not hydrated')
         this.data.comfyPromptJSON[node.uid] = node.json
         this.data.metadata[node.uid] = node.meta
@@ -170,17 +170,19 @@ export class ComfyWorkflowL {
     }
 
     /** proxy to this.db.schema */
-    get schema() {
+    get schema(): ComfySchemaL {
         return this.st.schema
     }
 
     /** nodes, in creation order */
     nodes: ComfyNode<any>[] = []
-    get pendingNodes() {
+
+    /** nodes that are still pending execution */
+    get pendingNodes(): ComfyNode<any>[] {
         return this.nodes.filter((n) => n.status == null || n.status === 'waiting')
     }
 
-    get nodesByUpdatedAt() {
+    get nodesByUpdatedAt(): ComfyNode<any>[] {
         return this.nodes //
             .filter((n) => n.status != null && n.status !== 'waiting')
             .sort((a, b) => b.updatedAt - a.updatedAt)
@@ -269,17 +271,18 @@ export class ComfyWorkflowL {
         const isDone = this.done
         return { percent, isDone, countDone: doneNodes + bonus, countTotal: totalNode }
     }
+
     /** @internal update the progress value of the currently focused onde */
-    onProgress = (msg: WsMsgProgress) => {
+    onProgress = (msg: WsMsgProgress): void => {
         if (this.currentExecutingNode == null) return console.log('❌ no current executing node', msg)
         this.currentExecutingNode.progress = msg.data
         this.currentExecutingNode.progressRatio = (msg.data.value ?? 0) / (msg.data.max || 1)
     }
 
-    getTargetWorkflowFilePath = () => {
+    getTargetWorkflowFilePath = (): AbsolutePath => {
         return asAbsolutePath(join(this.st.cacheFolderPath, 'workflow.json'))
     }
-    getTargetPromptFilePath = () => {
+    getTargetPromptFilePath = (): AbsolutePath => {
         return asAbsolutePath(join(this.st.cacheFolderPath, 'prompt.json'))
     }
 
@@ -290,10 +293,10 @@ export class ComfyWorkflowL {
     // private outputs: WsMsgExecuted[] = []
     // images: ImageL[] = []
 
-    done = false
+    done: boolean = false
 
     /** @internal update pointer to the currently executing node */
-    onExecuting = (msg: WsMsgExecuting) => {
+    onExecuting = (msg: WsMsgExecuting): void => {
         // 1. mark currentExecutingNode as done
         if (this.currentExecutingNode) {
             this.currentExecutingNode.status = 'done'
@@ -315,7 +318,7 @@ export class ComfyWorkflowL {
         node.updatedAt = Date.now()
     }
 
-    onExecutionCached = (msg: WsMsgExecutionCached) => {
+    onExecutionCached = (msg: WsMsgExecutionCached): void => {
         for (const x of msg.data.nodes) {
             const node = this.getNodeOrCrash(x)
             node.status = 'cached'
@@ -393,28 +396,60 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
+    /** compute autolayout */
     RUNLAYOUT = (p?: {
-        /** default: 20 */
+        /** @default: 20 */
         node_vsep?: number
-        /** default: 20 */
+        /** @default: 20 */
         node_hsep?: number
+        /** @default false */
+        forceLeft?: boolean
     }): this => {
-        const nodes = toposort(
+        const nodeIds = toposort(
             this.nodes.map((n) => n.uid),
             this.nodes.flatMap((n) => n._incomingNodes().map((from) => [from, n.uid] as TEdge)),
         )
+        const nodes = nodeIds.map((id) => this.getNode(id)!)
+        const cols: ComfyNode<any>[][] = new Array(nodeIds.length)
 
-        const cols: ComfyNode<any>[][] = new Array(nodes.length)
-        for (const nodeId of nodes) {
-            const node = this.getNode(nodeId)!
-            node.col = Math.max(...node.parents.map((p) => p.col), 0) + 1
-            // console.log(
-            //     `[🤠] node ${node.$schema.nameInComfy}`,
-            //     node.col,
-            //     node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
-            // )
-            if (cols[node.col]) cols[node.col]!.push(node)
-            else cols[node.col] = [node]
+        type NodePlacement = {
+            node: ComfyNode<any>
+            minCol: number
+            maxCol?: number
+        }
+        const ranges: {
+            [nodeId: ComfyNodeUID]: NodePlacement
+        } = {}
+
+        // console.log(`[🤠] 1/3 ----------------------------`)
+        for (const node of nodes) {
+            // must be at least 1 after the closest parent
+            const parentCols = node.parents.map((p) => ranges[p.uid]!.minCol)
+            const minCol = Math.max(...parentCols, -1) + 1
+            const range: NodePlacement = { node: node, minCol: minCol }
+            ranges[node.uid] = range
+        }
+
+        // console.log(`[🤠] 2/3 ----------------------------`)
+        if (!p?.forceLeft === true) {
+            for (const node of nodes) {
+                const range = ranges[node.uid]!
+                for (const p of node.parents) {
+                    const parentRange = ranges[p.uid]!
+                    parentRange.maxCol =
+                        parentRange.maxCol != null
+                            ? Math.min(parentRange.maxCol, (range.maxCol ?? range.minCol) - 1)
+                            : (range.maxCol ?? range.minCol) - 1
+                }
+            }
+        }
+
+        // console.log(`[🤠] 3/3 ----------------------------`)
+        for (const node of nodes) {
+            const range = ranges[node.uid]!
+            const at = range.maxCol ?? range.minCol
+            if (cols[at]) cols[at]!.push(node)
+            else cols[at] = [node]
         }
 
         const HSEP = p?.node_hsep ?? 20
@@ -441,10 +476,11 @@ export class ComfyWorkflowL {
         this.width = colX
         return this
     }
-    width = 100
-    height = 100
 
-    sendPromptAndWaitUntilDone = async (p: PromptSettings = {}) => {
+    width: number = 100
+    height: number = 100
+
+    sendPromptAndWaitUntilDone = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const prompt = await this.sendPrompt(p)
         await prompt.finished
         return prompt

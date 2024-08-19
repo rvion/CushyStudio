@@ -9,8 +9,8 @@ import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { PanelHeaderUI } from '../../csuite/wrappers/PanelHeader'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
 
@@ -137,7 +137,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         {draft.data.illustration ? (
                                                             <CachedResizedImage
                                                                 style={{ width: size, height: size }}
-                                                                filePath={fileURLToPath(draft.data.illustration)}
+                                                                src={fileURLToPath(draft.data.illustration)}
                                                                 size={size}
                                                             />
                                                         ) : (

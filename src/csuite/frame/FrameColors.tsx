@@ -1,7 +1,6 @@
 import type { BoxNormalized } from '../box/BoxNormalized'
 import type { CurrentStyle } from '../box/CurrentStyleCtx'
 import type { Kolor } from '../kolor/Kolor'
-import type { CSSObject } from './CSSObject'
 import type { SimpleBoxShadow } from './Frame'
 import type { FrameAppearance } from './FrameTemplates'
 
@@ -12,22 +11,35 @@ import { overrideTintV2 } from '../kolor/overrideTintV2'
 import { normalizeTint, type Tint } from '../kolor/Tint'
 import { frameTemplates } from './FrameTemplates'
 
+export type FrameCssVariables = {
+    background?: string
+    color?: string
+    border?: string
+    // shadow
+    'box-shadow'?: string
+    textShadow?: string
+    '--KLR'?: string
+    '--DIR'?: string
+}
+
 export type ComputedColors = {
-    variables: CSSObject
+    variables: FrameCssVariables // CSSObject
     KBase: Kolor
     nextDir: 1 | -1
     nextext: Tint
 }
+
 let totalComputeColors = 0
 const colorCache = new Map<string, ComputedColors>()
 export function computeColors(
     prevCtx: CurrentStyle,
     box: BoxNormalized,
-    look: Maybe<FrameAppearance>,
-    disabled: Maybe<boolean>,
-    hovered: Maybe<boolean>,
-    active: Maybe<boolean>,
-    boxShadow: Maybe<SimpleBoxShadow>,
+
+    look: Maybe<FrameAppearance> = null,
+    disabled: Maybe<boolean> = null,
+    hovered: Maybe<boolean> = null,
+    active: Maybe<boolean> = null,
+    boxShadow: Maybe<SimpleBoxShadow> = null,
 ): ComputedColors {
     // ------------------------------------------------------------
     const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow })
@@ -39,7 +51,7 @@ export function computeColors(
     }
 
     // ------------------------------------------------------------
-    const variables: { [key: string]: string | number } = {}
+    const variables: FrameCssVariables = {}
     const dir = prevCtx.dir
     const template = look != null ? frameTemplates[look] : undefined
     const baseTint = overrideTintV2(template?.base, box.base, disabled && { lightness: prevCtx.base.lightness })
@@ -59,7 +71,7 @@ export function computeColors(
     }
 
     // MODIFIERS
-    // 2024-06-05 I'm not quite sure having those modifiers
+    // 💬 2024-06-05 I'm not quite sure having those modifiers
     // here is a good idea; I originally though they were standard;
     // but they are probably not
     if (disabled) {
@@ -71,9 +83,15 @@ export function computeColors(
 
     // ===================================================================
     // DIR
-    const _goingTooDark = prevCtx.dir === 1 && KBase.lightness > 0.7
-    const _goingTooLight = prevCtx.dir === -1 && KBase.lightness < 0.45
-    const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevCtx.dir
+    const prevDir = prevCtx.dir ?? (KBase.lightness > 0.5 ? -1 : 1)
+    const _goingTooDark = prevDir === 1 && KBase.lightness > 0.7
+    const _goingTooLight = prevDir === -1 && KBase.lightness < 0.45
+    const nextDir = _goingTooDark ? -1 : _goingTooLight ? 1 : prevDir
+    // 💬 2024-08-06 :
+    // | in check below, we want to check
+    // | against `prevCtx`.dir instead of `prevDir`, to handle the case
+    // | where `prevCtx.dir` is null
+    // | here       VVVVVVVVVVV
     if (nextDir !== prevCtx.dir) variables['--DIR'] = nextDir.toString()
 
     // BACKGROUND

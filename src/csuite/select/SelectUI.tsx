@@ -4,19 +4,18 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Row } from '../frame/Dov/Dov'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
-import { isDevServer } from 'src/front/envi/envi'
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
 
-    if (isDevServer) {
+    if (false /* falesisDevServer 🔴 */) {
         useEffect(() => {
             // is it too much updates?
             // better than useMemo depending on the props which
@@ -40,7 +39,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
         <RevealUI //
             ref={select.revealStateRef}
             trigger='pseudofocus'
+            // shell='popover'
             shell={SelectShellUI}
+            // placement={p.placement ?? 'autoVerticalStart'}
             placement='cover'
             content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
             // 🔶 be careful to not override stuff with that (goes both ways)
@@ -67,10 +68,16 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
                 // style={p.style}
                 hoverable
-                // hover={3}
-                // base={csuite.inputContrast}
-                // border={csuite.inputBorder}
-                // className={p.className} // will be overwritten by reveal anchorProps, need fix
+
+                // 🉑 tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}
+                // 🉑 line
+                // 🉑 icon={p.startIcon}
+                // 🉑 style={p.style}
+                // 🉑 hover={3}
+                // 🉑 base={csuite.inputContrast}
+                // 🉑 border={csuite.inputBorder}
+                // 🉑 className={p.className} // will be overwritten by reveal anchorProps, need fix
+
                 // 🧚‍♀️ onFocus={(ev) => {
                 // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
                 // 🧚‍♀️     p.onAnchorFocus?.(ev)
@@ -101,16 +108,16 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
 
     return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
         // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
-        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '24px 1fr 24px' }}>
+        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '1fr 24px' }}>
             {/* 2px for parent border + 2 * 2px for icon padding */}
-            <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
             <Ikon.mdiChevronDown tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
         </div>
     ) : (
         // IN THIS BRANCH, WE ADD FLEX-NONE
         <>
-            <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' />
+            {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
             <Ikon.mdiChevronDown tw='flex-none box-border ml-auto m-[2px]' size='calc((var(--input-height) - 4px - 4px)' />
         </>
