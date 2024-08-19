@@ -168,6 +168,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
 
     /**
+     * @internal
      * you probably DON'T want to specify this manually.
      * you can use the <schema>.publish(...) method instead
      *                          ^^^^^^^^^^^^
@@ -175,6 +176,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     producers?: Producer<any, T['$Field']>[]
 
     /**
+     * @internal
      * you probably DON'T want to specify this manually.
      * you can use the <schema>.addReaction(...) method instead
      *                          ^^^^^^^^^^^^^^^^

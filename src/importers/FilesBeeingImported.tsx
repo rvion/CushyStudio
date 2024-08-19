@@ -9,12 +9,13 @@ import { useState } from 'react'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'
+import { MessageErrorUI } from '../csuite'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { Frame } from '../csuite/frame/Frame'
 import { Surface } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
-import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
@@ -94,19 +95,20 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         if (error instanceof UnknownCustomNode) {
             return (
                 <Frame border>
-                    <div>Unknown </div>
-                    <InstallRequirementsBtnUI
-                        active
-                        requirements={[
-                            //
-                            {
-                                type: 'customNodesByNameInCushy',
-                                nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
-                                    error.node.type,
-                                ) as KnownCustomNode_CushyName,
-                            },
-                        ]}
-                    />
+                    <MessageErrorUI title={`${error.node.type} ❓`}>
+                        Unknown Node
+                        <Panel_InstallRequirementsUI
+                            requirements={[
+                                //
+                                {
+                                    type: 'customNodesByNameInCushy',
+                                    nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
+                                        error.node.type,
+                                    ) as KnownCustomNode_CushyName,
+                                },
+                            ]}
+                        />
+                    </MessageErrorUI>
                 </Frame>
             )
         }

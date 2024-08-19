@@ -198,9 +198,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // )
                 })}
             </div>
-            <MessageWarningUI //
+            {/* <MessageWarningUI //
                 markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs'
-            />
+            /> */}
         </div>
     )
 })

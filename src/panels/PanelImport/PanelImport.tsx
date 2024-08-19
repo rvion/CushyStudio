@@ -40,16 +40,18 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
             <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (
                     <Frame border base key={`${file.name}+${ix}`} tw='p-1'>
-                        <div>Imported file</div>
-                        <div>"{file.name}"</div>
+                        <Frame line icon='mdiFileImport'>
+                            "{file.name}"
+                        </Frame>
+
                         <ul>
-                            <li>
-                                as workflow:
+                            <Frame as='li' border tw='m-2 p-2'>
+                                Import as workflow:
                                 <ImportedFileUI key={file.name} file={file} />
-                            </li>
-                            <li>
-                                as image: <ImportAsImageUI file={file} />
-                            </li>
+                            </Frame>
+                            <Frame as='li' border tw='m-2'>
+                                Import as image: <ImportAsImageUI file={file} />
+                            </Frame>
                         </ul>
                     </Frame>
                 ))}

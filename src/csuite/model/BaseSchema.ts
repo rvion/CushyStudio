@@ -1,4 +1,5 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
+import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
@@ -169,11 +170,24 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
                 const next: Field_list_serial<any> = { $: 'list', items_: [prev] }
                 serial = next
             }
+            // ADDING OPTIONAL
+            else if (this.type === 'optional') {
+                const prev: any = serial
+                const next: Field_optional_serial<any> = { $: 'optional', active: true, child: prev }
+                serial = next
+            }
+
             // REMOVING LIST
             else if (serial.$ === 'list') {
                 const prev: Field_list_serial<any> = serial as any
                 const next: any = prev.items_[0] ?? null
                 serial = next
+            }
+            // REMOVING OPTIONAL
+            else if (serial.$ === 'optional') {
+                const prev: Field_optional_serial = serial as any
+                const next = prev.child
+                if (next != null) serial = next
             }
         }
         // ----------------------------------------------------------------------------------

@@ -3,6 +3,7 @@ import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
+import { Frame } from '../../csuite/frame/Frame'
 import { useAsyncAction } from '../../importers/usePromise'
 import { useSt } from '../../state/stateContext'
 import { renderStatus } from './renderStatus'
@@ -20,11 +21,11 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
     const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
     return (
-        <div tw={[isInstalled ? 'bg-success-1' : null, 'flex-col p-2 rounded']}>
+        <Frame base tw={[isInstalled ? 'bg-success-1' : null, 'flex-col p-2 rounded']}>
             <div tw='flex pb-2' /* Contains everything but description */>
                 <div tw='flex-1 flex-col' /* Node info container */>
                     <div tw='flex items-center gap-1 p-0.5' /* Title container */>
-                        <span tw='font-bold whitespace-nowrap text-3xl text-blue-500'>
+                        <span tw='font-bold whitespace-nowrap text-xl text-blue-500'>
                             <span className='material-symbols-outlined'>account_tree</span>
                         </span>
                         <div tw='flex-col self-start' /* Title and Author */>
@@ -37,19 +38,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                         <div className='flex-1'></div>
                         {renderStatus(pluginStatus, p.optional, 'text-xs pr-2 self-start')}
                     </div>
-                    {/* <div tw='flex-col flex-1 p-2'> */}
-                    {/* <details>
-                        <summary>more...</summary>
-                        <div tw='flex gap-1'>
-                            <div tw='font-bold'>Author:</div> */}
-
-                    {/* <div>{getCustomNodeRegistry()}</div> */}
-                    {/* <pre>{JSON.stringify(host.manager.knownNodeList, null, 3)}</pre> */}
-                    {/* </div>
-                    </details> */}
-                    {/* </div> */}
                 </div>
-
                 <div tw='flex-col flex'>
                     {!isInstalled && (
                         <div
@@ -80,6 +69,6 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                 </span>
             </div>
             {/* {showDescription && <span tw='italic text-sm opacity-75'>why ? author: {reason}</span>} */}
-        </div>
+        </Frame>
     )
 })

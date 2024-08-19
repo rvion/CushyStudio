@@ -12,7 +12,7 @@ app({
         }),
     }),
     canStartFromImage: true,
-    run: async (run, ui, { image }) => {
+    run: async (run, ui, { image, mask, canvas }) => {
         const size = 1024
         const startImage = image ?? ui.from
         const { Konva, Colors, Images, ComfyUI } = run
