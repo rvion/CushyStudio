@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 
-export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<VALUE>(p: {
-    field: Field_selectOne<VALUE>
+export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectOne<VALUE, KEY>
     className?: string
 }) {
     const field = p.field

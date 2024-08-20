@@ -1,5 +1,3 @@
-import type { SelectOption } from '../../csuite/fields/selectOne/SelectOption'
-
 import { cushyFactory } from '../../controls/Builder'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
@@ -24,16 +22,18 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOne<SelectOption<FormGlobalLayoutMode>>({
-                    header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
-                    choices: [
+                labelLayout: ui.selectOneStringWithMeta<FormGlobalLayoutMode>(
+                    [
                         { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
                         { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },
                         { id: 'fluid', icon: 'mdiFullscreenExit', label: '' },
                         { id: 'mobile', icon: 'mdiCellphone', label: '' },
                     ],
-                    default: { id: 'fixed-left', icon: 'mdiAlignHorizontalRight' },
-                }),
+                    {
+                        header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
+                        default: 'fixed-left',
+                    },
+                ),
                 // 1. colors
                 base: ui.colorV2({
                     tooltip: 'main color of the CushyStudio UI',

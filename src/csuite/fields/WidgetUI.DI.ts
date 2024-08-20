@@ -39,7 +39,7 @@ export const getFieldGroupClass = (): typeof Field_group<any> => getFieldClass('
 export const getFieldStringClass = (): typeof Field_string => getFieldClass('str') as any
 export const getFieldNumberClass = (): typeof Field_number => getFieldClass('number') as any
 export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('list') as any
-export const getFieldSelectOneClass = (): typeof Field_selectOne<any> => getFieldClass('selectOne') as any
+export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> => getFieldClass('selectOne') as any
 
 export const registerFieldClass = <T extends { $Type: string }>(
     //

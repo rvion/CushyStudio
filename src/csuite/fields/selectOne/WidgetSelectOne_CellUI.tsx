@@ -6,8 +6,8 @@ import { BadgeUI } from '../../badge/BadgeUI'
 import { hashStringToNumber } from '../../hashUtils/hash'
 import { RevealUI } from '../../reveal/RevealUI'
 
-export const WidgetSelectOne_CellUI = observer(function WidgetSelectOne_TabUI_<VALUE>(p: {
-    field: Field_selectOne<VALUE>
+export const WidgetSelectOne_CellUI = observer(function WidgetSelectOne_TabUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectOne<VALUE, KEY>
     opts?: { reveal?: boolean }
 }) {
     const val = p.field.selectedOption

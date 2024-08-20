@@ -37,7 +37,6 @@ import { Field_string, type Field_string_config } from '../csuite/fields/string/
 import { Factory } from '../csuite/model/Factory'
 import { Field } from '../csuite/model/Field'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
-import { SimpleSchema } from '../csuite/simple/SimpleSchema'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
@@ -74,10 +73,10 @@ declare global {
         type Seed = Field_seed
         type Matrix = Field_matrix
         type Image = Field_image
-        type SelectOne<T extends SelectOption> = Field_selectOne<T>
-        type SelectMany<T extends SelectOption> = Field_selectMany<T>
-        type SelectOne_<T extends string> = Field_selectOne<SelectOption<T>> // variant that may be shorter to read
-        type SelectMany_<T extends string> = Field_selectMany<SelectOption<T>> // variant that may be shorter to read
+        type SelectOne<T, KEY extends string> = Field_selectOne<T, KEY>
+        type SelectMany<T, KEY extends string> = Field_selectMany<T, KEY>
+        type SelectOne_<T extends string> = Field_selectOne<T, T> // variant that may be shorter to read
+        type SelectMany_<T extends string> = Field_selectMany<T, T> // variant that may be shorter to read
         type Size = Field_size
         type Markdown = Field_markdown
         type Custom<T> = Field_custom<T>
@@ -104,10 +103,12 @@ declare global {
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
         type XImage = Schema<Field_image>
-        type XSelectOne<T extends SelectOption = SelectOption> = Schema<Field_selectOne<T>>
-        type XSelectMany<T extends SelectOption = SelectOption> = Schema<Field_selectMany<T>>
-        type XSelectOne_<T extends string> = Schema<Field_selectOne<SelectOption<T>>> // variant that may be shorter to read
-        type XSelectMany_<T extends string> = Schema<Field_selectMany<SelectOption<T>>> // variant that may be shorter to read
+
+        type XSelectOne<T, ID extends string> = Schema<Field_selectOne<T, ID>>
+        type XSelectMany<T, ID extends string> = Schema<Field_selectMany<T, ID>>
+        type XSelectOne_<T extends string> = Schema<Field_selectOne<T, T>> // variant that may be shorter to read
+        type XSelectMany_<T extends string> = Schema<Field_selectMany<T, T>> // variant that may be shorter to read
+
         type XSize = Schema<Field_size>
         type XMarkdown = Schema<Field_markdown>
         type XCustom<T> = Schema<Field_custom<T>>
@@ -313,14 +314,18 @@ export class Builder implements IBuilder {
     // 🔴 may need to be renamed for backwards compatibility
     selectOne<
         //
-        const VALUE,
-        const OPTION_ID extends string = string,
-    >(config: Field_selectOne_config<VALUE, OPTION_ID>): S.SSelectOne<VALUE, OPTION_ID> {
-        return SimpleSchema.NEW<Field_selectOne<VALUE>>(Field_selectOne, {
-            wrap: true,
-            placeholder: 'Vide',
-            ...config,
-        })
+        VALUE,
+        KEY extends string = string,
+    >(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
+        return new Schema<Field_selectOne<VALUE, KEY>>(
+            Field_selectOne<VALUE, KEY>,
+            config,
+            //     {
+            //     // wrap: true,
+            //     // placeholder: 'Vide',
+            //     // ...config,
+            // }
+        )
     }
 
     selectOneString<VALUE extends string>(
@@ -329,7 +334,7 @@ export class Builder implements IBuilder {
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
         > = {},
-    ): S.SSelectOne<VALUE, VALUE> {
+    ): X.XSelectOne<VALUE, VALUE> {
         return this.selectOne<VALUE, VALUE>({
             choices: choices as VALUE[],
             getIdFromValue: (v) => v,
@@ -345,7 +350,7 @@ export class Builder implements IBuilder {
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
         > = {},
-    ): S.SSelectOne<VALUE, VALUE> {
+    ): X.XSelectOne_<VALUE> {
         const ids: VALUE[] = options.map((c) => c.id)
         return this.selectOne<VALUE, VALUE>({
             choices: ids,

@@ -4,11 +4,11 @@ export type OptionID = string
 
 export type SelectOption<
     //
-    VALUE = any /* 🔴 */,
-    OPTION_ID extends OptionID = OptionID,
+    VALUE,
+    KEY extends OptionID,
 > = {
     // 🔴 todo: require 2nd type arg to see bad usages + add extend Id type in FieldSelectOne_config
-    id: OPTION_ID
+    id: KEY
     value: VALUE
     label?: string
     icon?: IconName

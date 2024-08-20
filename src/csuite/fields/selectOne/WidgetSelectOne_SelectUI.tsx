@@ -7,14 +7,14 @@ import { observer } from 'mobx-react-lite'
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<VALUE>(p: {
-    field: Field_selectOne<VALUE>
-    selectProps?: Partial<SelectProps<SelectOption<VALUE>>>
+export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectOne<VALUE, KEY>
+    selectProps?: Partial<SelectProps<SelectOption<VALUE, KEY>>>
 }) {
     const field = p.field
     return (
         <div tw='flex-1 w-full'>
-            <SelectUI<SelectOption<VALUE>>
+            <SelectUI<SelectOption<VALUE, KEY>>
                 key={field.id}
                 tw={[field.ownProblems && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}

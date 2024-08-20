@@ -7,7 +7,9 @@ import { WidgetSelectOne_RollUI } from './WidgetSelectOne_RollUI'
 import { WidgetSelectOne_SelectUI } from './WidgetSelectOne_SelectUI'
 import { WidgetSelectOne_TabUI } from './WidgetSelectOne_TabUI'
 
-export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<VALUE>(p: { field: Field_selectOne<VALUE> }) {
+export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectOne<VALUE, KEY>
+}) {
     const field = p.field
     const skin = field.config.appearance ?? 'select'
     if (skin === 'tab') return <WidgetSelectOne_TabUI field={field} />
