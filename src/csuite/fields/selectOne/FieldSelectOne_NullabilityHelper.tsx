@@ -1,16 +1,17 @@
 import type { Field_group_value } from '../group/FieldGroup'
 
-type SubSelectsNonNullable<T> = T extends Field_group_value<infer G>
-    ? {
-          [K in keyof G]: G[K] extends Z.SSelectOne<infer U> //
-              ? U
-              : T[K] // "T[K]" (not G[K]) here is on purpose.
-      }
-    : T extends undefined // discard the other values of the union Field_group_value<...> | undefined
-    ? never
-    : T extends null
-    ? never
-    : unknown
+type SubSelectsNonNullable<T> =
+    T extends Field_group_value<infer G>
+        ? {
+              [K in keyof G]: G[K] extends S.SSelectOne<infer U> //
+                  ? U
+                  : T[K] // "T[K]" (not G[K]) here is on purpose.
+          }
+        : T extends undefined // discard the other values of the union Field_group_value<...> | undefined
+          ? never
+          : T extends null
+            ? never
+            : unknown
 
 export const BANG_SELECT_REQUIRED_SUBFIELDS = <T extends any>(x: T): SubSelectsNonNullable<T> => x as any
 

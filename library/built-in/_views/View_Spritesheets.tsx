@@ -61,7 +61,7 @@ const SpriteSheetUI = observer(function SpriteSheet(p: { imageID: MediaImageID |
     const totalAnim = Math.floor((v.row * v.col) / v.imagePerAnim)
     return (
         <>
-            <div tw='w-96 right-0 absolute z-20'>{form.render()}</div>
+            <div tw='w-96 right-0 absolute z-20'>{form.renderAsForm()}</div>
             {totalAnim} animations
             <div tw='flex flex-wrap'>
                 {new Array(totalAnim).fill(0).map((_, i) => {

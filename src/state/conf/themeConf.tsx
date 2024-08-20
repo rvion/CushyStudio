@@ -1,4 +1,4 @@
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
+import type { SelectOption } from '../../csuite/fields/selectOne/FieldSelectOne'
 
 import { cushyFactory } from '../../controls/Builder'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
@@ -24,7 +24,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOne<BaseSelectEntry<FormGlobalLayoutMode>>({
+                labelLayout: ui.selectOne<SelectOption<FormGlobalLayoutMode>>({
                     header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
                     choices: [
                         { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },

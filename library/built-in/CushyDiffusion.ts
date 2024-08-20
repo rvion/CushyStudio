@@ -12,7 +12,7 @@ import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { run_rembg_v1 } from './_prefabs/prefab_rembg'
 import { type Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
-import { type Ctx_sampler_advanced, encodeText, run_sampler_advanced } from './_prefabs/prefab_sampler_advanced'
+import { type Ctx_sampler_advanced, run_sampler_advanced } from './_prefabs/prefab_sampler_advanced'
 import { run_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave } from './_prefabs/saveSmall'
@@ -187,7 +187,7 @@ app({
                     steps: HRF.steps,
                     denoise: HRF.denoise,
                     sampler_name: HRF.useMainSampler ? ui.sampler.sampler_name : 'ddim',
-                    scheduler: !HRF.useMainSampler ? 'ddim_uniform' : ui.sampler.sigmasType.basic?.scheduler ?? 'ddim_uniform',
+                    scheduler: !HRF.useMainSampler ? 'ddim_uniform' : (ui.sampler.sigmasType.basic?.scheduler ?? 'ddim_uniform'),
                 },
                 { ...ctx_sampler_fix, latent, preview: false },
             ).latent

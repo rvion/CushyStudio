@@ -34,7 +34,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
     )
     return (
         <>
-            <div tw='w-96 right-0 absolute z-20'>{form.render()}</div>
+            <div tw='w-96 right-0 absolute z-20'>{form.renderAsForm()}</div>
             <Canvas tw='flex-1'>
                 <axesHelper args={[]} />
                 <OrbitControls target={[0, 0, 0]} enableDamping={true} dampingFactor={0.25} enableZoom={true} />

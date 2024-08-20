@@ -14,7 +14,7 @@ import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type SELECT_ID = string
-export type SelectOption<VALUE, Id extends SELECT_ID = SELECT_ID> = {
+export type SelectOption<VALUE = any /* 🔴 */, Id extends SELECT_ID = SELECT_ID> = {
     // 🔴 todo: require 2nd type arg to see bad usages + add extend Id type in FieldSelectOne_config
     id: Id
     value: VALUE

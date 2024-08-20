@@ -37,10 +37,9 @@ declare global {
         type Optional<T extends BaseSchema> = Field_optional<T>
         //
 
-        //  🔴 loco select fields changes not ported to other builders
-        type SelectOne<T extends SelectOption<any>> = Field_selectOne<T>
-        //  🔴 loco select fields changes not ported to other builders
-        type SelectMany<T extends SelectOption<any>> = Field_selectMany<T>
+        type SelectOne<T> = Field_selectOne<T>
+        type SelectMany<T> = Field_selectMany<T>
+
         type SelectOne_<T extends string> = Field_selectOne<SelectOption<T>>
         type SelectMany_<T extends string> = Field_selectMany<SelectOption<T>>
         //
@@ -65,10 +64,13 @@ declare global {
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
         type SOptional<T extends BaseSchema> = SimpleSchema<Field_optional<T>>
         //
-        //  🔴 loco select fields changes not ported to other builders
-        type SSelectOne<T extends SelectOption<any>> = SimpleSchema<Field_selectOne<T>>
-        //  🔴 loco select fields changes not ported to other builders
-        type SSelectMany<T extends SelectOption<any>> = SimpleSchema<Field_selectMany<T>>
+        // //  🔴 loco select fields changes not ported to other builders
+        // type SSelectOne<T extends SelectOption<any>> = SimpleSchema<Field_selectOne<T>>
+        // //  🔴 loco select fields changes not ported to other builders
+        // type SSelectMany<T extends SelectOption<any>> = SimpleSchema<Field_selectMany<T>>
+        type SSelectOne<T> = SimpleSchema<Field_selectOne<T>>
+        type SSelectMany<T> = SimpleSchema<Field_selectMany<T>>
+
         type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<SelectOption<T>>> // variant that may be shorter to read
         type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<SelectOption<T>>> // variant that may be shorter to read
         //

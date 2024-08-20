@@ -41,7 +41,7 @@ export function useGalleryConf(): GalleryConf {
                     const out = cushy.db.media_image.select(
                         (query) => {
                             let x =
-                                conf.defaultSort.id === 'createdAt'
+                                conf.defaultSort === 'createdAt'
                                     ? query.orderBy('media_image.createdAt', 'desc')
                                     : query.orderBy('media_image.updatedAt', 'desc')
 

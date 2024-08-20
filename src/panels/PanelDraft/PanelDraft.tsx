@@ -110,7 +110,17 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const fpath = draft.file.fPath
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
-            <DraftHeaderUI draft={draft} children={justify.root.renderSimple({ className: 'ml-auto' })} />
+            <DraftHeaderUI
+                draft={draft}
+                children={justify.root.renderWithLabel({
+                    showWidgetMenu: false,
+                    showWidgetExtra: false,
+                    showWidgetUndo: false,
+                    justifyLabel: false,
+                    className: 'ml-auto',
+                    fieldName: '_',
+                })}
+            />
             {fpath.existsSync ? null : (
                 <MessageErrorUI title='File Does not exists'>
                     <QuickTableUI

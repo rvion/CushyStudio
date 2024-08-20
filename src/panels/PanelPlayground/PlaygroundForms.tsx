@@ -55,7 +55,7 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
     return (
         <>
             {/*  */}
-            {field.render()}
+            {field.renderAsForm()}
             {field.v1()}
         </>
     )

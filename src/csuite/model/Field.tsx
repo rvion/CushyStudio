@@ -30,13 +30,13 @@ import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
+import { SimpleSchema } from '../simple/SimpleSchema'
 import { potatoClone } from '../utils/potatoClone'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
-import { LocoFormSchema } from 'src/front/form/LocoFormSchema'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 export const useEnsureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -147,7 +147,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     ): Field_shared<this> {
         const FieldSharedClass = getFieldSharedClass()
         // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvvvvv
-        const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
+        // const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
+        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
             field: this,
         })
         return schema.instanciate(repo, root, parent, serial)

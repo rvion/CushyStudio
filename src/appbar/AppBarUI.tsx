@@ -52,7 +52,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 // startIcon={'mdiThemeLightDark'}
                 // expand
                 title='Theming'
-                content={() => <>{cushy.theme.render()}</>}
+                content={() => <>{cushy.theme.renderAsForm()}</>}
             />
 
             <MenuDebugUI />

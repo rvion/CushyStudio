@@ -3,14 +3,14 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { SelectValueLooks } from '../../select/SelectProps'
+import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { SELECT_ID, SelectOption } from '../selectOne/FieldSelectOne'
-import type { SelectValueSlots } from 'src/cushy-forms/main'
 
+import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
-import { stableStringify } from 'src/cushy-forms/src/csuite/hashUtils/hash'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG

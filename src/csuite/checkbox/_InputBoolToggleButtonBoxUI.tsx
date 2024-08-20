@@ -1,8 +1,8 @@
 import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
-import { Toggle } from 'rsuite' // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD
 
+// import { Toggle } from 'rsuite' // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD
 import { IkonOf } from '../icons/iconHelpers'
 
 export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI_(p: {
@@ -11,7 +11,7 @@ export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI
     isActive: boolean
     iconSize?: string
 }) {
-    if (p.mode === 'switch') return <Toggle checked={p.isActive} size='sm' /> // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD, and size not flexible
+    // if (p.mode === 'switch') return <Toggle checked={p.isActive} size='sm' /> // 🔴🔴🔴🔴🔴🔴🔴🔴🔴 BAD, and size not flexible
     const { mode, isActive } = p
     const icon: Maybe<IconName> =
         mode === 'radio'
@@ -19,10 +19,10 @@ export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI
                 ? 'mdiCheckCircle'
                 : 'mdiCircleOutline'
             : mode === 'checkbox'
-            ? isActive
-                ? 'mdiCheckboxMarked'
-                : 'mdiCheckboxBlankOutline'
-            : null
+              ? isActive
+                  ? 'mdiCheckboxMarked'
+                  : 'mdiCheckboxBlankOutline'
+              : null
 
     return (
         icon && (

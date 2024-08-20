@@ -16,7 +16,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
 
     const conf = simpleFactory.useLocalstorage('18nnMJ5aY', (ui) =>
         ui.fields({
-            trigger: ui.selectOneV3(['hover', 'click', 'clickAndHover'], { default: { id: 'hover' } }),
+            trigger: ui.selectOneV3(['hover', 'click', 'clickAndHover'], { default: 'hover' }),
             width: ui.pixel({ default: 200, step: 50 }),
             height: ui.pixel({ default: 120, step: 50 }),
             defaultVisible: ui.bool({ default: false }),
@@ -45,7 +45,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     return (
         <div tw='flex-1 flex flex-col gap-2'>
             <Frame border base>
-                {conf.render()}
+                {conf.renderAsForm()}
             </Frame>
             {conf.value.defaultVisible && (
                 <RevealUI trigger='click' placement='bottomStart' content={Content} defaultVisible={conf.value.defaultVisible}>
@@ -54,10 +54,10 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             )}
             {/* AUTO -------------------------- */}
             {/* <Frame border base={5} tw='relative' style={{ height: '200px' }}>
-                <RevealUI trigger={conf.value.trigger.id} placement='auto' tw='absolute top-8 left-8' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='auto' tw='absolute top-8 left-8' content={Content}>
                     {anchor('auto')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='auto' tw='absolute bottom-8 right-8' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='auto' tw='absolute bottom-8 right-8' content={Content}>
                     {anchor('auto')}
                 </RevealUI>
             </Frame> */}
@@ -65,34 +65,34 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             <div tw='grid grid-cols-5 gap-1 m-8'>
                 {/* top ---------------------------------------------- */}
                 <div></div>
-                <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
                     {anchor('topStart')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
                     {anchor('top')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='topEnd' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='topEnd' content={Content}>
                     {anchor('topEnd')}
                 </RevealUI>
                 <div></div>
 
                 {/* ---------------------------------------------- */}
-                <RevealUI trigger={conf.value.trigger.id} placement='leftStart' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='leftStart' content={Content}>
                     {anchor('leftStart')}
                 </RevealUI>
                 <div></div>
                 <div></div>
                 <div></div>
-                <RevealUI trigger={conf.value.trigger.id} placement='rightStart' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='rightStart' content={Content}>
                     {anchor('rightStart')}
                 </RevealUI>
                 {/* ---------------------------------------------- */}
-                <RevealUI trigger={conf.value.trigger.id} placement='left' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='left' content={Content}>
                     {anchor('left')}
                 </RevealUI>
                 <RevealUI
                     //
-                    trigger={conf.value.trigger.id}
+                    trigger={conf.value.trigger}
                     relativeTo='#bar'
                     placement='above'
                     shell='popup-lg'
@@ -100,52 +100,52 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 >
                     {anchor('#bar in popup', { base: { hueShift: 100, contrast: 0.1 } })}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} relativeTo='#foo' placement='above' content={Content}>
+                <RevealUI trigger={conf.value.trigger} relativeTo='#foo' placement='above' content={Content}>
                     {anchor('#foo', { base: { hueShift: 130, contrast: 0.1 } })}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} relativeTo='#bar' placement='above' content={Content}>
+                <RevealUI trigger={conf.value.trigger} relativeTo='#bar' placement='above' content={Content}>
                     {anchor('#bar', { base: { hueShift: 160, contrast: 0.1 } })}
                 </RevealUI>
 
-                <RevealUI trigger={conf.value.trigger.id} placement='right' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='right' content={Content}>
                     {anchor('right')}
                 </RevealUI>
                 {/* ---------------------------------------------- */}
-                <RevealUI trigger={conf.value.trigger.id} placement='leftEnd' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='leftEnd' content={Content}>
                     {anchor('leftEnd')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} shell='popup-sm' placement='screen-top' content={Content}>
+                <RevealUI trigger={conf.value.trigger} shell='popup-sm' placement='screen-top' content={Content}>
                     {anchor('popup-sm')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} shell='popup-lg' placement='screen-top' content={Content}>
+                <RevealUI trigger={conf.value.trigger} shell='popup-lg' placement='screen-top' content={Content}>
                     {anchor('popup-lg')}
                 </RevealUI>
                 <div></div>
-                <RevealUI trigger={conf.value.trigger.id} placement='rightEnd' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='rightEnd' content={Content}>
                     {anchor('rightEnd')}
                 </RevealUI>
                 {/* ---------------------------------------------- */}
                 {/* bottom */}
                 <div></div>
-                <RevealUI trigger={conf.value.trigger.id} placement='bottomStart' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='bottomStart' content={Content}>
                     {anchor('bottomStart')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='bottom' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='bottom' content={Content}>
                     {anchor('bottom')}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='bottomEnd' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='bottomEnd' content={Content}>
                     {anchor('bottomEnd')}
                 </RevealUI>
                 <div></div>
             </div>
-            <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
+            <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
                 <NotForwardingProps />
             </RevealUI>
             <Frame row>
-                <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
                     {anchor('focusable 1', { tabIndex: 0 })}
                 </RevealUI>
-                <RevealUI trigger={conf.value.trigger.id} placement='top' content={Content}>
+                <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
                     {anchor('focusable 2', { tabIndex: 0 })}
                 </RevealUI>
             </Frame>
@@ -171,7 +171,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             <Frame id='bar' base={{ hueShift: 200, contrast: 0.1 }} style={{ height: '150px' }}>
                 #bar
             </Frame>
-            <RevealUI trigger={conf.value.trigger.id} placement='topStart' content={Content}>
+            <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
                 Text only
             </RevealUI>
             <RevealUI //

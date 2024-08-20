@@ -3,8 +3,8 @@ import type { Field_selectOne } from './FieldSelectOne'
 import { observer } from 'mobx-react-lite'
 
 import { BadgeUI } from '../../badge/BadgeUI'
+import { hashStringToNumber } from '../../hashUtils/hash'
 import { RevealUI } from '../../reveal/RevealUI'
-import { hashStringToNumber } from 'src/cushy-forms/src/csuite/hashUtils/hash'
 
 export const WidgetSelectOne_CellUI = observer(function WidgetSelectOne_TabUI_<VALUE>(p: {
     field: Field_selectOne<VALUE>

@@ -1,5 +1,5 @@
 import type { Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import type { BaseSelectEntry } from '../csuite/fields/selectOne/FieldSelectOne'
+import type { SelectOption } from '../csuite/fields/selectOne/FieldSelectOne'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -102,8 +102,8 @@ export class EnumBuilderOpt {
 
 export type IEnumListBuilder = {
     [K in keyof Requirable]: (
-        config?: Omit<Field_selectMany_config<BaseSelectEntry<Requirable[K]['$Value'] & string>>, 'choices'>,
-    ) => X.XSelectMany<BaseSelectEntry<Requirable[K]['$Value'] & string>>
+        config?: Omit<Field_selectMany_config<SelectOption<Requirable[K]['$Value'] & string>>, 'choices'>,
+    ) => X.XSelectMany<SelectOption<Requirable[K]['$Value'] & string>>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}

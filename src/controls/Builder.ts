@@ -3,6 +3,7 @@ import type { IBuilder } from '../csuite/model/IBuilder'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
+import type { PartialOmit } from '../types/Misc'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -28,13 +29,14 @@ import { Field_optional, type Field_optional_config } from '../csuite/fields/opt
 import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import { type BaseSelectEntry, Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/FieldSelectOne'
+import { Field_selectOne, type Field_selectOne_config, type SelectOption } from '../csuite/fields/selectOne/FieldSelectOne'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
 import { Factory } from '../csuite/model/Factory'
 import { Field } from '../csuite/model/Field'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
+import { SimpleSchema } from '../csuite/simple/SimpleSchema'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
@@ -71,10 +73,10 @@ declare global {
         type Seed = Field_seed
         type Matrix = Field_matrix
         type Image = Field_image
-        type SelectOne<T extends BaseSelectEntry> = Field_selectOne<T>
-        type SelectMany<T extends BaseSelectEntry> = Field_selectMany<T>
-        type SelectOne_<T extends string> = Field_selectOne<BaseSelectEntry<T>> // variant that may be shorter to read
-        type SelectMany_<T extends string> = Field_selectMany<BaseSelectEntry<T>> // variant that may be shorter to read
+        type SelectOne<T extends SelectOption> = Field_selectOne<T>
+        type SelectMany<T extends SelectOption> = Field_selectMany<T>
+        type SelectOne_<T extends string> = Field_selectOne<SelectOption<T>> // variant that may be shorter to read
+        type SelectMany_<T extends string> = Field_selectMany<SelectOption<T>> // variant that may be shorter to read
         type Size = Field_size
         type Markdown = Field_markdown
         type Custom<T> = Field_custom<T>
@@ -101,10 +103,10 @@ declare global {
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
         type XImage = Schema<Field_image>
-        type XSelectOne<T extends BaseSelectEntry = BaseSelectEntry> = Schema<Field_selectOne<T>>
-        type XSelectMany<T extends BaseSelectEntry = BaseSelectEntry> = Schema<Field_selectMany<T>>
-        type XSelectOne_<T extends string> = Schema<Field_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
-        type XSelectMany_<T extends string> = Schema<Field_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
+        type XSelectOne<T extends SelectOption = SelectOption> = Schema<Field_selectOne<T>>
+        type XSelectMany<T extends SelectOption = SelectOption> = Schema<Field_selectMany<T>>
+        type XSelectOne_<T extends string> = Schema<Field_selectOne<SelectOption<T>>> // variant that may be shorter to read
+        type XSelectMany_<T extends string> = Schema<Field_selectMany<SelectOption<T>>> // variant that may be shorter to read
         type XSize = Schema<Field_size>
         type XMarkdown = Schema<Field_markdown>
         type XCustom<T> = Schema<Field_custom<T>>
@@ -292,32 +294,67 @@ export class Builder implements IBuilder {
 
     // SELECT ONE ------------------------------------------------------------------------------------
 
-    selectOne = <const T extends BaseSelectEntry>(config: Field_selectOne_config<T>): X.XSelectOne<T> => {
-        return new Schema<Field_selectOne<T>>(Field_selectOne, config)
+    // 🆘 selectOne = <const T extends SelectOption>(config: Field_selectOne_config<T>): X.XSelectOne<T> => {
+    // 🆘     return new Schema<Field_selectOne<T>>(Field_selectOne, config)
+    // 🆘 }
+    // 🆘
+    // 🆘 selectOneV2 = <T extends string>(
+    // 🆘     p: readonly T[],
+    // 🆘     config: Omit<Field_selectOne_config<SelectOption<T>>, 'choices'> = {},
+    // 🆘 ): X.XSelectOne_<T> => {
+    // 🆘     return new Schema<Field_selectOne<SelectOption<T>>>(Field_selectOne, {
+    // 🆘         choices: p.map((id) => ({ id, label: id })),
+    // 🆘         appearance: 'tab',
+    // 🆘         ...config,
+    // 🆘     })
+    // 🆘 }
+
+    // 🔴 may need to be renamed for backwards compatibility
+    selectOne<const Value>(config: Field_selectOne_config<Value>): S.SSelectOne<Value> {
+        return SimpleSchema.NEW<Field_selectOne<Value>>(Field_selectOne, {
+            wrap: true,
+            placeholder: 'Vide',
+            ...config,
+            // 🔴 debug by putting what you want in the label
+            // getLabelUI: undefined,
+            // getInsideUI: undefined,
+            // getOptionFromId: (id, field) => {
+            //    const op = config.getOptionFromId?.(id, field)
+            //    if (op == null) return op
+            //    if (field === 'FIELD_NOT_INSTANCIATED') return op
+
+            //    return { ...op, label: (op.label ?? op.id) + (field.isDirtyFromSnapshot_UNSAFE ? '❌' : '🟢') }
+            // },
+        })
     }
 
-    selectOneV2 = <T extends string>(
-        p: readonly T[],
-        config: Omit<Field_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): X.XSelectOne_<T> => {
-        return new Schema<Field_selectOne<BaseSelectEntry<T>>>(Field_selectOne, {
-            choices: p.map((id) => ({ id, label: id })),
-            appearance: 'tab',
+    selectOneV2<VALUE extends string>(
+        choices: readonly VALUE[],
+        config: PartialOmit<
+            Field_selectOne_config<VALUE>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): S.SSelectOne<VALUE> {
+        return this.selectOne<VALUE>({
+            choices: choices as VALUE[],
+            getIdFromValue: (v) => v,
+            getValueFromId: (id) => id as VALUE,
+            getOptionFromId: (id) => ({ id, label: id, value: id as VALUE }),
             ...config,
         })
     }
 
     // SELECT MANY ------------------------------------------------------------------------------------
 
-    selectMany = <const T extends BaseSelectEntry>(config: Field_selectMany_config<T>): X.XSelectMany<T> => {
+    selectMany = <const T extends SelectOption>(config: Field_selectMany_config<T>): X.XSelectMany<T> => {
         return new Schema<Field_selectMany<T>>(Field_selectMany, config)
     }
 
     selectManyV2 = <T extends string>(
         p: readonly T[],
-        config: Omit<Field_selectMany_config<BaseSelectEntry<T>>, 'choices'> = {},
-    ): X.XSelectMany<BaseSelectEntry<T>> => {
-        return new Schema<Field_selectMany<BaseSelectEntry<T>>>(Field_selectMany, {
+        config: Omit<Field_selectMany_config<SelectOption<T>>, 'choices'> = {},
+    ): X.XSelectMany<SelectOption<T>> => {
+        return new Schema<Field_selectMany<SelectOption<T>>>(Field_selectMany, {
             choices: p.map((id) => ({ id, label: id })),
             ...config,
         })
@@ -407,15 +444,15 @@ export class Builder implements IBuilder {
         return new Schema<Field_optional<T>>(Field_optional, p)
     }
 
-    llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<BaseSelectEntry<OpenRouter_Models>> {
+    llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<SelectOption<OpenRouter_Models>> {
         const choices = Object.entries(openRouterInfos).map(
-            ([id, info]): BaseSelectEntry<OpenRouter_Models> => ({ id: id as OpenRouter_Models, label: info.name }),
+            ([id, info]): SelectOption<OpenRouter_Models> => ({ id: id as OpenRouter_Models, label: info.name }),
         )
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
         return this.selectOne({ default: def, choices })
     }
 
-    app(): X.XSelectOne<BaseSelectEntry> {
+    app(): X.XSelectOne<SelectOption> {
         return this.selectOne({
             choices: (self) => {
                 const matchingApps = cushy.db.cushy_app.selectRaw((q) => {

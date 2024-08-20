@@ -53,7 +53,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
         if (mode === 'input') return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' }) // prettier-ignore
-        if (mode === 'TEMP') return <div>{panelState.render()}</div>
+        if (mode === 'TEMP') return <div>{panelState.renderAsForm()}</div>
         if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
         if (mode === 'legacy') return <LegacyOptions />
         if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
