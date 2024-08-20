@@ -11,7 +11,8 @@ import type { Field_number } from '../fields/number/FieldNumber'
 import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field_seed } from '../fields/seed/FieldSeed'
 import type { Field_selectMany } from '../fields/selectMany/FieldSelectMany'
-import type { Field_selectOne, SelectOption } from '../fields/selectOne/FieldSelectOne'
+import type { Field_selectOne } from '../fields/selectOne/FieldSelectOne'
+import type { SelectOption } from '../fields/selectOne/SelectOption'
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { Field_size } from '../fields/size/FieldSize'
 import type { Field_string } from '../fields/string/FieldString'
@@ -68,11 +69,11 @@ declare global {
         // type SSelectOne<T extends SelectOption<any>> = SimpleSchema<Field_selectOne<T>>
         // //  🔴 loco select fields changes not ported to other builders
         // type SSelectMany<T extends SelectOption<any>> = SimpleSchema<Field_selectMany<T>>
-        type SSelectOne<T> = SimpleSchema<Field_selectOne<T>>
-        type SSelectMany<T> = SimpleSchema<Field_selectMany<T>>
+        type SSelectOne<T, ID extends string = string> = SimpleSchema<Field_selectOne<T, ID>>
+        type SSelectMany<T, ID extends string = string> = SimpleSchema<Field_selectMany<T, ID>>
 
-        type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<SelectOption<T>>> // variant that may be shorter to read
-        type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<SelectOption<T>>> // variant that may be shorter to read
+        type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+        type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<T, T>> // variant that may be shorter to read
         //
         type SEmpty = SimpleSchema<Field_group<NO_PROPS>>
         type SBool = SimpleSchema<Field_bool>

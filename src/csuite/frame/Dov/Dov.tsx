@@ -220,7 +220,7 @@ export const Dov = observer(
     }),
 )
 
-const stableColor = (s: string) => `hsl(${hashStringToNumber(s) % 360}, 70%, 50%)`
+const stableColor = (s: string): string => `hsl(${hashStringToNumber(s) % 360}, 70%, 50%)`
 
 export const Col = observer(
     forwardRef(function Col_(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {

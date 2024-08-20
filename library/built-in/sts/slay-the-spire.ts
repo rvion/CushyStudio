@@ -25,12 +25,12 @@ app({
         ipadapter: ui_ipadapter_standalone().optional(),
         // positive: ui.string({ default: 'masterpiece, tree' }),
         seed: ui.seed({}),
-        mode: ui.selectOneV2(['xl', '1.5']),
+        mode: ui.selectOneString(['xl', '1.5']),
         secondPass: ui.bool(),
         //
-        rarity: ui.selectOneV2(['uncommon', 'common', 'rare']).optional(),
-        colors: ui.selectOneV2(['red', 'green', 'gray']).optional(),
-        kind: ui.selectOneV2(['attack', 'power', 'skill']).optional(),
+        rarity: ui.selectOneString(['uncommon', 'common', 'rare']).optional(),
+        colors: ui.selectOneString(['red', 'green', 'gray']).optional(),
+        kind: ui.selectOneString(['attack', 'power', 'skill']).optional(),
         cards: ui.selectMany({
             appearance: 'select',
             choices: allCards.map((x) => {

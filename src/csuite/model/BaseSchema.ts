@@ -2,6 +2,7 @@ import type { Field_list_serial } from '../fields/list/FieldList'
 import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
+import type { FieldConstructor } from './FieldConstructor'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
@@ -78,18 +79,13 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         }
     }
     // ------------------------------------------------------------
-
-    /** constructor/class of the field to instanciate */
-    abstract buildField(
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: this,
-        serial?: Maybe<FIELD['$Serial']>,
-    ): FIELD
+    /** constructor/class/builder-fn of the field to instanciate */
+    abstract fieldConstructor: FieldConstructor<FIELD>
 
     /** type of the field to instanciate */
-    abstract type: FIELD['type']
+    get type(): FIELD['type'] {
+        return this.fieldConstructor.type
+    }
 
     /** config of the field to instanciate */
     abstract config: FIELD['$Config']
@@ -215,15 +211,21 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
             serial = null
         }
         // create the instance
-        // const field = new this.FieldClass_UNSAFE( 🔴
-        const field = this.buildField(
-            //
-            repo,
-            root,
-            parent,
-            this,
-            serial,
-        )
+        let field: FIELD
+        if (this.fieldConstructor.build === 'new') {
+            const FieldClass_UNSAFE =
+                this.config.classToUse != null //
+                    ? this.config.classToUse(this.fieldConstructor)
+                    : this.fieldConstructor
+            field = new FieldClass_UNSAFE(repo, root, parent, this, serial)
+        } else {
+            /** final safety net for the extends class feature */
+            if (this.config.classToUse != null) {
+                throw new Error('impossible to use a custom class when using a FieldConstructor_ViaFunction')
+            }
+
+            field = this.fieldConstructor.build(repo, root, parent, this, serial)
+        }
 
         // start publications
         field.publishValue()

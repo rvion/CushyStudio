@@ -1,5 +1,6 @@
 import type { SelectProps } from '../../select/SelectProps'
-import type { Field_selectOne, SelectOption } from './FieldSelectOne'
+import type { Field_selectOne } from './FieldSelectOne'
+import type { SelectOption } from './SelectOption'
 
 import { observer } from 'mobx-react-lite'
 

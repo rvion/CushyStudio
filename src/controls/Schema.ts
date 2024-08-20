@@ -1,7 +1,7 @@
 import type { CovariantFC, CovariantFn } from '../csuite'
 import type { Field_link_config } from '../csuite/fields/link/FieldLink'
 import type { Field } from '../csuite/model/Field'
-import type { Repository } from '../csuite/model/Repository'
+import type { FieldConstructor } from '../csuite/model/FieldConstructor'
 import type { KnownModel_Name } from '../CUSHY'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
@@ -16,37 +16,27 @@ import { potatoClone } from '../csuite/utils/potatoClone'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
-    FieldClass_UNSAFE: any
-
-    get type(): FIELD['$Type'] {
-        return this.FieldClass_UNSAFE.type
-    }
-
     constructor(
-        FieldClass: {
-            readonly type: FIELD['$Type']
-            new (
-                //
-                repo: Repository,
-                root: Field,
-                parent: Field | null,
-                schema: BaseSchema<FIELD>,
-                serial?: FIELD['$Serial'],
-            ): FIELD
-        },
+        public fieldConstructor: FieldConstructor<FIELD>,
         public readonly config: FIELD['$Config'],
     ) {
         super()
-        this.FieldClass_UNSAFE =
-            this.config.classToUse != null //
-                ? this.config.classToUse(FieldClass)
-                : FieldClass
+
+        // early check, just in case, this should also be checked at instanciation time
+        if (this.config.classToUse != null) {
+            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
+        }
 
         this.applySchemaExtensions()
-        // makeObservable(this, {
-        //     config: true,
-        //     FieldClass_UNSAFE: false,
-        // })
+
+        // 💬 2024-08-20 rvion:
+        // | I don't need that observable for now.
+        // | `SimpleSchema` have it observable to make sure it will work if need be
+        //
+        // ⏸️ makeObservable(this, {
+        // ⏸️     config: true,
+        // ⏸️     FieldClass_UNSAFE: false,
+        // ⏸️ })
     }
 
     LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
@@ -107,7 +97,7 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this {
         const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new Schema<FIELD>(this.FieldClass_UNSAFE, mergedConfig)
+        const cloned = new Schema<FIELD>(this.fieldConstructor, mergedConfig)
         return cloned as this
     }
 

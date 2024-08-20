@@ -29,7 +29,8 @@ import { Field_optional, type Field_optional_config } from '../csuite/fields/opt
 import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import { Field_selectOne, type Field_selectOne_config, type SelectOption } from '../csuite/fields/selectOne/FieldSelectOne'
+import { Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/FieldSelectOne'
+import { type SelectOption, type SelectOption_NO_VALUE } from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -310,36 +311,51 @@ export class Builder implements IBuilder {
     // 🆘 }
 
     // 🔴 may need to be renamed for backwards compatibility
-    selectOne<const Value>(config: Field_selectOne_config<Value>): S.SSelectOne<Value> {
-        return SimpleSchema.NEW<Field_selectOne<Value>>(Field_selectOne, {
+    selectOne<
+        //
+        const VALUE,
+        const OPTION_ID extends string = string,
+    >(config: Field_selectOne_config<VALUE, OPTION_ID>): S.SSelectOne<VALUE, OPTION_ID> {
+        return SimpleSchema.NEW<Field_selectOne<VALUE>>(Field_selectOne, {
             wrap: true,
             placeholder: 'Vide',
             ...config,
-            // 🔴 debug by putting what you want in the label
-            // getLabelUI: undefined,
-            // getInsideUI: undefined,
-            // getOptionFromId: (id, field) => {
-            //    const op = config.getOptionFromId?.(id, field)
-            //    if (op == null) return op
-            //    if (field === 'FIELD_NOT_INSTANCIATED') return op
-
-            //    return { ...op, label: (op.label ?? op.id) + (field.isDirtyFromSnapshot_UNSAFE ? '❌' : '🟢') }
-            // },
         })
     }
 
-    selectOneV2<VALUE extends string>(
+    selectOneString<VALUE extends string>(
         choices: readonly VALUE[],
         config: PartialOmit<
-            Field_selectOne_config<VALUE>,
+            Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
         > = {},
-    ): S.SSelectOne<VALUE> {
-        return this.selectOne<VALUE>({
+    ): S.SSelectOne<VALUE, VALUE> {
+        return this.selectOne<VALUE, VALUE>({
             choices: choices as VALUE[],
             getIdFromValue: (v) => v,
             getValueFromId: (id) => id as VALUE,
             getOptionFromId: (id) => ({ id, label: id, value: id as VALUE }),
+            ...config,
+        })
+    }
+
+    selectOneStringWithMeta<VALUE extends string>(
+        options: readonly SelectOption_NO_VALUE<VALUE, VALUE>[],
+        config: PartialOmit<
+            Field_selectOne_config<VALUE, VALUE>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): S.SSelectOne<VALUE, VALUE> {
+        const ids: VALUE[] = options.map((c) => c.id)
+        return this.selectOne<VALUE, VALUE>({
+            choices: ids,
+            getIdFromValue: (v) => v,
+            getValueFromId: (id) => id as VALUE,
+            getOptionFromId: (id): SelectOption<VALUE> => {
+                const opt = options.find((c) => c.id === id)
+                if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE>
+                return { ...opt, value: id as VALUE }
+            }, //
             ...config,
         })
     }

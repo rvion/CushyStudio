@@ -20,7 +20,7 @@ app({
                 collapsed: false,
                 items: {
                     signature: ui.string({ label: 'Signature par défaut' }),
-                    assigner: ui.selectOneV2(['Assigner', 'Ne pas assigner']),
+                    assigner: ui.selectOneString(['Assigner', 'Ne pas assigner']),
                 },
             }),
             date: ui.group({
@@ -39,7 +39,7 @@ app({
                                 label: 'Calculée',
 
                                 items: {
-                                    [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
+                                    [`D'après la`]: ui.selectOneString(['Date de création', 'Date de modification']),
                                     offset: ui.int({ label: 'à J+' }),
                                     // time: ui.int({ label: 'Heure' /* suffix: 'min' */ }),
                                     heure: ui.time({ default: '10:30' }),

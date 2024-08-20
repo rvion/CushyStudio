@@ -1,4 +1,4 @@
-import type { SelectOption } from '../../csuite/fields/selectOne/FieldSelectOne'
+import type { SelectOption } from '../../csuite/fields/selectOne/SelectOption'
 
 import { cushyFactory } from '../../controls/Builder'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'

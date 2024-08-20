@@ -1,5 +1,4 @@
-import { describe, expect, it } from 'bun:test'
-import Color from 'colorjs.io'
+import { describe, it } from 'bun:test'
 
 describe('model links', () => {
     it('work', () => {

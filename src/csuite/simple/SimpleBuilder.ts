@@ -20,7 +20,8 @@ import { Field_number, type Field_number_config } from '../fields/number/FieldNu
 import { Field_optional, type Field_optional_config } from '../fields/optional/FieldOptional'
 import { Field_seed, type Field_seed_config } from '../fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../fields/selectMany/FieldSelectMany'
-import { Field_selectOne, type Field_selectOne_config, type SelectOption } from '../fields/selectOne/FieldSelectOne'
+import { Field_selectOne, type Field_selectOne_config } from '../fields/selectOne/FieldSelectOne'
+import { type SelectOption } from '../fields/selectOne/SelectOption'
 import { Field_shared } from '../fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../fields/string/FieldString'
@@ -166,11 +167,12 @@ export class SimpleBuilder implements IBuilder {
     selectOneV3<T extends string>(
         p: T[],
         // @ts-ignore 🔴 loco select fields changes not ported to other builders
-        config: Omit<Field_selectOne_config<SelectOption<T>>, 'choices'> = {},
+        config: Omit<Field_selectOne_config<T, T>, 'choices' | 'getIdFromValue'> = {},
     ): S.SSelectOne_<T> {
-        return SimpleSchema.NEW<Field_selectOne<SelectOption<T>>>(Field_selectOne, {
+        return SimpleSchema.NEW<Field_selectOne<T, T>>(Field_selectOne, {
             // @ts-ignore 🔴 loco select fields changes not ported to other builders
             choices: p.map((id) => ({ id, label: id })),
+            getIdFromValue: (v: T) => v,
             appearance: 'tab',
             ...config,
         })

@@ -62,6 +62,9 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
 export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
+    /** @internal */
+    static build: 'new'
+
     /**
      * unique Field instance ID;
      * each node in the form tree has one;
@@ -148,9 +151,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         const FieldSharedClass = getFieldSharedClass()
         // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvvvvv
         // const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
-        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
-            field: this,
-        })
+        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
         return schema.instanciate(repo, root, parent, serial)
     }
 
@@ -666,6 +667,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // UI ----------------------------------------------------
+
+    /** temporary until shells */
+    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                field={this}
+                showWidgetMenu={false}
+                showWidgetExtra={false}
+                showWidgetUndo={false}
+                justifyLabel={false}
+                fieldName='_'
+                {...p}
+            />
+        )
+    }
 
     /**
      * allow to quickly render the model as a react form

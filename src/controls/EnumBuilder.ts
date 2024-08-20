@@ -1,5 +1,5 @@
 import type { Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import type { SelectOption } from '../csuite/fields/selectOne/FieldSelectOne'
+import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving

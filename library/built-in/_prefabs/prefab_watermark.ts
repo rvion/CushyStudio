@@ -16,13 +16,13 @@ export function ui_watermark_v1(): UI_watermark_v1 {
     return ui.fields(
         {
             pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
-            font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
-            format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
+            font: ui.selectOneString(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
+            format: ui.selectOneString(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
             content: ui.textarea({ default: 'Cushy Diffusion' }),
             color: ui.colorV2({ default: 'black' }),
             fontSize: ui.int({ default: 20, min: 3, softMax: 30 }),
             quality: ui.number({ min: 0, max: 1, default: 1 }),
-            tool: ui.selectOneV2(['canvas', 'konva']),
+            tool: ui.selectOneString(['canvas', 'konva']),
         },
         { icon: 'mdiWatermark' },
     )

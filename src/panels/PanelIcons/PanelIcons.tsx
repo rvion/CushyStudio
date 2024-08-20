@@ -61,7 +61,8 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                                 tw='mr-1'
                                 value={uist.filter}
                                 icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
-                                border={false}
+                                // border={false}
+                                bordered={false}
                                 onValueChange={() => {
                                     uist.filter = !uist.filter
                                 }}

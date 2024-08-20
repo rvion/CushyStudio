@@ -1,18 +1,19 @@
 import type { Tint } from './Tint'
 
+import Color from 'colorjs.io'
+
 import { getNum } from '../tinyCSS/CSSVar'
 import { clamp } from '../utils/clamp'
-import { Color_ } from './Color_'
 
-const white = new Color_('oklch', [1, 0, 0])
-const black = new Color_('oklch', [0, 0, 0])
+const white = new Color('oklch', [1, 0, 0])
+const black = new Color('oklch', [0, 0, 0])
 
 type TintDir = -1 | 1 // 'ligher' | 'darker' | 'auto'
 
 export class Kolor implements Tint {
     static fromString = (str: string): Kolor => {
         try {
-            const color = new Color_(str)
+            const color = new Color(str)
             const [l, c, h] = color.oklch
             return new Kolor(l!, c!, isNaN(h!) ? 0 : h!)
         } catch (e) {
@@ -21,9 +22,8 @@ export class Kolor implements Tint {
         }
     }
 
-    get color(): typeof Color_ {
-        return new Color_('oklch', [this.lightness, this.chroma, this.hue])
-        // return new Color_('hct', [this.hue, this.chroma, this.lightness * 100])
+    get color(): Color {
+        return new Color('oklch', [this.lightness, this.chroma, this.hue])
     }
 
     get isInRec2020Gamut(): boolean { return this.color.inGamut('rec2020') } // prettier-ignore
@@ -59,7 +59,7 @@ export class Kolor implements Tint {
         this.ASSERT_VALID()
     }
 
-    private ASSERT_VALID = () => {
+    private ASSERT_VALID = (): void => {
         if (isNaN(this.lightness)) {
             this.lightness = 0
             // throw new Error('isNaN(this.lightness)')
@@ -128,7 +128,7 @@ export class Kolor implements Tint {
             lightness = x.l
         }
 
-        const clamped = new Color_('oklch', [lightness, chroma, hue]).toGamut('srgb')
+        const clamped = new Color('oklch', [lightness, chroma, hue]).toGamut('srgb')
         // console.log(`[🤠] `, xxxx.oklch[0]!, xxxx.oklch[1]!, or0(xxxx.oklch[2]!))
         const next = new Kolor(clamped.oklch[0]!, clamped.oklch[1]!, or0(clamped.oklch[2]!))
 
@@ -136,7 +136,7 @@ export class Kolor implements Tint {
         return next
     }
 
-    get webLink() {
+    get webLink(): string {
         return `https://oklch.com/#${(this.lightness * 100).toFixed(2)},${this.chroma.toFixed(3)},${this.hue.toFixed(3)},100`
     }
     /*
@@ -192,4 +192,4 @@ export class Kolor implements Tint {
     }
 }
 
-const or0 = (n: number) => (n == null ? 0 : isNaN(n) ? 0 : n)
+const or0 = (n: number): number => (n == null ? 0 : isNaN(n) ? 0 : n)

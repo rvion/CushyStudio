@@ -43,7 +43,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
 
     const panelState = panel.usePersistentModel('abcd', (ui) =>
         ui.fields({
-            configMode: ui.selectOneV2(configTabs),
+            configMode: ui.selectOneString(configTabs),
             shelfSize: ui.int(),
         }),
     )
