@@ -348,6 +348,19 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return p.path + '.' + this.mountKey
     }
 
+    /**
+     * mountKey alias
+     * @sicne 2024-08-12
+     */
+    get fieldName(): string {
+        return this.mountKey
+    }
+
+    /**
+     * return the key used to mount this widget in the parent
+     * CAN CHANGE: in a list, the key is the index for instance
+     * so reordering the list items will change the item keys
+     */
     get mountKey(): string {
         if (this.parent == null) return '$'
         return this.parent.subFieldsWithKeys.find(({ field }) => field === this)?.key ?? '<error>'
