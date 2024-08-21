@@ -23,7 +23,7 @@ export type UI_Model = X.XGroup<{
             type: X.XEnum<Enum_DualCLIPLoader_type>
         }>
     }>
-    checkpointConfig: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
+    checkpointConfig2: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
     extra: X.XChoices<{
         checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
         rescaleCFG: X.XNumber
@@ -46,94 +46,6 @@ export function ui_model(): UI_Model {
         // border: true,
         box: { base: { hue: 240, chroma: 0.03 } },
         icon: 'mdiFlaskEmptyPlusOutline',
-        presets: [
-            // 💬 2024-08-06 rvion:
-            // | this preset was a fake one, only here
-            // | to show how to create a multi-step preset
-            // ⏸️ {
-            // ⏸️     label: 'withPopup',
-            // ⏸️     icon: 'mdiTrain',
-            // ⏸️     apply: (w): void => {
-            // ⏸️         const form = cushy.forms.entity((ui) =>
-            // ⏸️             ui.fields({
-            // ⏸️                 a: ui.string({ label: 'A' }),
-            // ⏸️                 b: ui.int({ label: 'B' }),
-            // ⏸️             }),
-            // ⏸️         )
-            // ⏸️         cushy.activityManager.start({
-            // ⏸️             title: 'Multi-Step preset Demo',
-            // ⏸️             shell: 'popup-lg',
-            // ⏸️             UI: (p) =>
-            // ⏸️                 form.render({
-            // ⏸️                     submitAction: () => {
-            // ⏸️                         console.log('submit')
-            // ⏸️                         cushy.activityManager.stop(p.routine) // 🔴
-            // ⏸️                     },
-            // ⏸️                 }),
-            // ⏸️         })
-            // ⏸️     },
-            // ⏸️ },
-            {
-                icon: 'mdiStar',
-                label: '(XL) albedobase21',
-                apply: (w): void => {
-                    w.value = {
-                        checkpointConfig: undefined,
-                        modelType: { Diffusion: { ckpt_name: 'albedobaseXL_v21.safetensors' } },
-                        extra: { clipSkip: 2 },
-                    }
-                },
-            },
-            {
-                icon: 'mdiStar',
-                label: '(1.5) revAnimated122',
-                apply: (w): void => {
-                    w.setValue({
-                        checkpointConfig: undefined,
-                        modelType: { Diffusion: { ckpt_name: 'revAnimated_v122.safetensors' } },
-                        extra: {},
-                    })
-                },
-            },
-            {
-                icon: 'mdiStar',
-                label: 'SD3',
-                apply: (w): void => {
-                    w.setValue({
-                        checkpointConfig: undefined,
-                        modelType: {
-                            SD3: {
-                                // ⏸️ type: 'sd3',
-                                ckpt_name: 'SD3_medium.safetensors' as Enum_CheckpointLoaderSimple_ckpt_name,
-                                clip1: 't5xxl_fp18_e4m3fn.safetensors' as Enum_TripleCLIPLoader_clip_name1,
-                                clip2: 'clip_l.safetensors',
-                                clip3: 'clip_g.safetensors' as Enum_TripleCLIPLoader_clip_name3,
-                            },
-                        },
-                        extra: { vae: undefined },
-                    })
-                },
-            },
-            {
-                icon: 'mdiStar',
-                label: 'FLUX',
-                apply: (w): void => {
-                    w.setValue({
-                        checkpointConfig: undefined,
-                        modelType: {
-                            FLUX: {
-                                type: 'flux',
-                                ckpt_name: 'flux1-dev.sft' as Enum_UNETLoader_unet_name,
-                                weight_type: 'fp8_e4m3fn',
-                                clip1: 't5xxl_fp16.safetensors' as Enum_DualCLIPLoader_clip_name1,
-                                clip2: 'clip_l.safetensors' as Enum_DualCLIPLoader_clip_name2,
-                            },
-                        },
-                        extra: { vae: 'ae.sft' as Enum_VAELoader_vae_name },
-                    })
-                },
-            },
-        ],
         label: 'Model',
         summary: (ui) => {
             let out: string =
@@ -205,7 +117,7 @@ export function ui_model(): UI_Model {
                 },
                 appearance: 'tab',
             }),
-            checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
+            checkpointConfig2: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
             extra: form.choices({
                 border: false,
                 // label: false,
@@ -230,6 +142,94 @@ export function ui_model(): UI_Model {
                 },
             }),
         },
+        presets: [
+            // 💬 2024-08-06 rvion:
+            // | this preset was a fake one, only here
+            // | to show how to create a multi-step preset
+            // ⏸️ {
+            // ⏸️     label: 'withPopup',
+            // ⏸️     icon: 'mdiTrain',
+            // ⏸️     apply: (w): void => {
+            // ⏸️         const form = cushy.forms.entity((ui) =>
+            // ⏸️             ui.fields({
+            // ⏸️                 a: ui.string({ label: 'A' }),
+            // ⏸️                 b: ui.int({ label: 'B' }),
+            // ⏸️             }),
+            // ⏸️         )
+            // ⏸️         cushy.activityManager.start({
+            // ⏸️             title: 'Multi-Step preset Demo',
+            // ⏸️             shell: 'popup-lg',
+            // ⏸️             UI: (p) =>
+            // ⏸️                 form.render({
+            // ⏸️                     submitAction: () => {
+            // ⏸️                         console.log('submit')
+            // ⏸️                         cushy.activityManager.stop(p.routine) // 🔴
+            // ⏸️                     },
+            // ⏸️                 }),
+            // ⏸️         })
+            // ⏸️     },
+            // ⏸️ },
+            {
+                icon: 'mdiStar',
+                label: '(XL) albedobase21',
+                apply: (w): void => {
+                    w.value = {
+                        checkpointConfig2: undefined,
+                        modelType: { Diffusion: { ckpt_name: 'albedobaseXL_v21.safetensors' } },
+                        extra: { clipSkip: 2 },
+                    }
+                },
+            },
+            {
+                icon: 'mdiStar',
+                label: '(1.5) revAnimated122',
+                apply: (w): void => {
+                    w.setValue({
+                        checkpointConfig2: undefined,
+                        modelType: { Diffusion: { ckpt_name: 'revAnimated_v122.safetensors' } },
+                        extra: {},
+                    })
+                },
+            },
+            {
+                icon: 'mdiStar',
+                label: 'SD3',
+                apply: (w): void => {
+                    w.setValue({
+                        checkpointConfig2: undefined,
+                        modelType: {
+                            SD3: {
+                                // ⏸️ type: 'sd3',
+                                ckpt_name: 'SD3_medium.safetensors' as Enum_CheckpointLoaderSimple_ckpt_name,
+                                clip1: 't5xxl_fp18_e4m3fn.safetensors' as Enum_TripleCLIPLoader_clip_name1,
+                                clip2: 'clip_l.safetensors',
+                                clip3: 'clip_g.safetensors' as Enum_TripleCLIPLoader_clip_name3,
+                            },
+                        },
+                        extra: { vae: undefined },
+                    })
+                },
+            },
+            {
+                icon: 'mdiStar',
+                label: 'FLUX',
+                apply: (w): void => {
+                    w.setValue({
+                        checkpointConfig2: undefined,
+                        modelType: {
+                            FLUX: {
+                                type: 'flux',
+                                ckpt_name: 'flux1-dev.sft' as Enum_UNETLoader_unet_name,
+                                weight_type: 'fp8_e4m3fn',
+                                clip1: 't5xxl_fp16.safetensors' as Enum_DualCLIPLoader_clip_name1,
+                                clip2: 'clip_l.safetensors' as Enum_DualCLIPLoader_clip_name2,
+                            },
+                        },
+                        extra: { vae: 'ae.sft' as Enum_VAELoader_vae_name },
+                    })
+                },
+            },
+        ],
     })
 }
 
@@ -247,10 +247,10 @@ export function run_model(ui: OutputFor<typeof ui_model>): {
     let clip: _CLIP
     let vae: _VAE | undefined = undefined
     if (ui.modelType.Diffusion) {
-        if (ui.checkpointConfig) {
+        if (ui.extra.checkpointConfig) {
             const ckptLoader = graph.CheckpointLoader({
                 ckpt_name: ui.modelType.Diffusion.ckpt_name,
-                config_name: ui.checkpointConfig,
+                config_name: ui.extra.checkpointConfig,
             })
             ckpt = ckptLoader._MODEL
             clip = ckptLoader._CLIP
