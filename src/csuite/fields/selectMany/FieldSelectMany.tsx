@@ -15,6 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 
 // CONFIG
+export type Field_selectMany_config_<KEY extends string> = Field_selectMany_config<KEY, KEY>
 export type Field_selectMany_config<
     /** the final object that will be accessible as value */
     VALUE,

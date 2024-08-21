@@ -31,7 +31,7 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                     {xx.show((f) => ['a', 'b', 'b', 'b'])}
                 </Frame>
                 <Frame border base expand>
-                    {xx.show(['a', 'b', (f): Maybe<FC<any>> => f.Arr.at(1)?.customForm(['x', 'x'])])}
+                    {xx.show(['a', 'b', (f): Maybe<FC<any>> => f.Arr.at(1)?.renderFieldsSubset(['x', 'x'])])}
                 </Frame>
             </Frame>
         </Frame>

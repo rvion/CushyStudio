@@ -16,10 +16,15 @@ import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
-// 🔴 what about dynamic list?
-// it was complicated to add/remove status without more migration mechanism according to globi
+// 💬 2024-08-.. domi:
+// | 🔴 what about dynamic list?
+// | it was complicated to add/remove status without more migration mechanism according to globi
+//
+// 💬 2024-08-21 rvion:
+// | it shouldn't be complicated; I've done it a few times, it wasn't that hard.
 
 // CONFIG
+export type Field_selectOne_config_<KEY extends string> = Field_selectOne_config<KEY, KEY>
 export type Field_selectOne_config<
     //
     VALUE,

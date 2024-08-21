@@ -102,7 +102,7 @@ export class EnumBuilderOpt {
 
 export type IEnumListBuilder = {
     [K in keyof Requirable]: (
-        config?: Omit<Field_selectMany_config<SelectOption<Requirable[K]['$Value'] & string>>, 'choices'>,
+        config?: Omit<Field_selectMany_config<Requirable[K]['$Value'] & string>, 'choices'>,
     ) => X.XSelectMany<SelectOption<Requirable[K]['$Value'] & string>>
 }
 

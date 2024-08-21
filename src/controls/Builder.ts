@@ -325,7 +325,7 @@ export class Builder implements IBuilder {
         )
     }
 
-    selectOneString<VALUE extends string>(
+    selectOneString<const VALUE extends string>(
         choices: VALUE[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
@@ -341,8 +341,8 @@ export class Builder implements IBuilder {
         })
     }
 
-    selectOneStringWithMeta<VALUE extends string>(
-        options: readonly SelectOption_NO_VALUE<VALUE, VALUE>[],
+    selectOneStringWithMeta<const VALUE extends string>(
+        options: SelectOption_NO_VALUE<VALUE, VALUE>[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
@@ -364,15 +364,17 @@ export class Builder implements IBuilder {
 
     // SELECT MANY
 
-    selectMany = <VALUE, KEY extends string>(config: Field_selectMany_config<VALUE, KEY>): X.XSelectMany<VALUE, KEY> => {
+    selectMany = <const VALUE, const KEY extends string>(
+        config: Field_selectMany_config<VALUE, KEY>,
+    ): X.XSelectMany<VALUE, KEY> => {
         return new Schema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
     }
 
-    selectManyString = <const T extends string>(
-        p: T[],
-        config: Omit<Field_selectMany_config<T, T>, 'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'> = {},
-    ): X.XSelectMany_<T> => {
-        return new Schema<Field_selectMany<T, T>>(Field_selectMany, {
+    selectManyString = <const KEY extends string>(
+        p: KEY[],
+        config: Omit<Field_selectMany_config<KEY, KEY>, 'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'> = {},
+    ): X.XSelectMany_<KEY> => {
+        return new Schema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
             choices: p,
             getOptionFromId: (id) => ({ id, label: id, value: id }),
             getValueFromId: (id) => id,
