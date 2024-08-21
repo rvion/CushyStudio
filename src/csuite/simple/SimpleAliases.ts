@@ -12,7 +12,6 @@ import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field_seed } from '../fields/seed/FieldSeed'
 import type { Field_selectMany } from '../fields/selectMany/FieldSelectMany'
 import type { Field_selectOne } from '../fields/selectOne/FieldSelectOne'
-import type { SelectOption } from '../fields/selectOne/SelectOption'
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { Field_size } from '../fields/size/FieldSize'
 import type { Field_string } from '../fields/string/FieldString'
@@ -38,11 +37,10 @@ declare global {
         type Optional<T extends BaseSchema> = Field_optional<T>
         //
 
-        type SelectOne<T> = Field_selectOne<T>
-        type SelectMany<T> = Field_selectMany<T>
-
-        type SelectOne_<T extends string> = Field_selectOne<SelectOption<T>>
-        type SelectMany_<T extends string> = Field_selectMany<SelectOption<T>>
+        type SelectOne<T, K extends string> = Field_selectOne<T, K>
+        type SelectMany<T, K extends string> = Field_selectMany<T, K>
+        type SelectOne_<T extends string> = Field_selectOne<T, T>
+        type SelectMany_<T extends string> = Field_selectMany<T, T>
         //
         type Empty = Field_group<NO_PROPS>
         type Bool = Field_bool

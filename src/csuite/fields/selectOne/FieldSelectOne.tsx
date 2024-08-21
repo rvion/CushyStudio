@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { SelectValueLooks } from '../../select/SelectProps'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
-import type { OptionID, SelectOption } from './SelectOption'
+import type { SelectOption } from './SelectOption'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
@@ -49,7 +49,7 @@ export type Field_selectOne_config<
         options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
 
         getIdFromValue: (t: VALUE) => KEY
-        getValueFromId: (id: KEY) => VALUE
+        getValueFromId: (id: KEY) => Maybe<VALUE>
         getOptionFromId: (
             t: KEY,
             self:
@@ -100,10 +100,10 @@ export type Field_selectOne_config<
 // ): Field_selectOne_serial => ({ $: 'selectOne', val })
 
 // SERIAL
-export type Field_selectOne_serial = FieldSerial<{
+export type Field_selectOne_serial<KEY extends string> = FieldSerial<{
     $: 'selectOne'
     query?: string
-    val: OptionID
+    val: KEY
 
     /**
      * @deprecated: NOT IMPLEMENTED YET
@@ -135,7 +135,7 @@ export type Field_selectOne_types<
 > = {
     $Type: 'selectOne'
     $Config: Field_selectOne_config<VALUE, KEY>
-    $Serial: Field_selectOne_serial
+    $Serial: Field_selectOne_serial<KEY>
     $Value: Field_selectOne_value<VALUE>
     $Field: Field_selectOne<VALUE, KEY>
 }
@@ -152,7 +152,7 @@ export class Field_selectOne<
         VALUE extends any,
         KEY extends string,
     > //
-    extends Field<Field_selectOne_types<VALUE, OptionID>>
+    extends Field<Field_selectOne_types<VALUE, KEY>>
 {
     static readonly type: 'selectOne' = 'selectOne'
     DefaultHeaderUI = WidgetSelectOneUI
@@ -168,11 +168,11 @@ export class Field_selectOne<
     }
 
     get hasChanges(): boolean {
-        return this.serial.val !== this.default
+        return this.serial.val !== this.defaultKey
     }
 
     reset(): void {
-        this.selectedId = this.default
+        this.selectedId = this.defaultKey
     }
 
     get choices(): KEY[] {
@@ -211,11 +211,18 @@ export class Field_selectOne<
             return _options
         }
 
-        if (this.config.choices != null && this.getOptionFromId != null) {
+        if (
+            this.config.choices != null && //
+            this.getOptionFromId != null
+        ) {
             return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
         }
 
-        if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
+        if (
+            this.config.values != null && //
+            this.getValueFromId != null &&
+            this.getOptionFromId != null
+        ) {
             return this.values.map((v) => this.getOptionFromId(this.config.getIdFromValue(v))).filter((x) => x != null)
         }
 
@@ -250,7 +257,7 @@ export class Field_selectOne<
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_selectOne<VALUE, KEY>>,
-        serial?: Field_selectOne_serial,
+        serial?: Field_selectOne_serial<KEY>,
     ) {
         super(repo, root, parent, schema)
         this.init(serial, {
@@ -264,19 +271,19 @@ export class Field_selectOne<
         return bang(this.choices[0])
     }
 
-    get default(): KEY {
+    get defaultKey(): KEY {
         return this.config.default ?? this.firstID
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectOne_serial>): void {
+    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<KEY>>): void {
         // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
-        let prevVal = serial?.val
-        if (serial != null && typeof serial.val === 'object' && serial.val != null && 'id' in serial.val) {
-            if ((serial.val as any).id != '❌') prevVal = (serial.val as unknown as { id: string }).id
-            else prevVal = null
+        /* 🕗 */ let prevKey: Maybe<KEY> = serial?.val
+        /* 🕗 */ if (serial != null && typeof serial.val === 'object' && serial.val != null && 'id' in serial.val) {
+            /* 🕗 */ if ((serial.val as any).id != '❌') prevKey = (serial.val as unknown as { id: KEY }).id
+            /* 🕗 */ else prevKey = null
+            /* 🕗 */
         }
-        this.serial.val = prevVal ?? this.default
-
+        this.serial.val = prevKey ?? this.defaultKey
         this.serial.query = serial?.query
     }
 
@@ -285,24 +292,27 @@ export class Field_selectOne<
         return this.config.getIdFromValue(val) === this.selectedId
     }
 
-    get value(): Field_selectOne_value<VALUE> {
-        return this.getValueFromId(this.selectedId)
+    get defaultValue(): Field_selectOne_value<VALUE> {
+        return bang(this.getValueFromId(this.defaultKey))
     }
 
-    get selectedOption(): SelectOption<VALUE> {
+    get value(): Field_selectOne_value<VALUE> {
+        return this.getValueFromId(this.selectedId) ?? this.defaultValue
+    }
+
+    get selectedOption(): SelectOption<VALUE, KEY> {
         return this.getOptionFromId(this.selectedId)
     }
 
-    set value(next: Maybe<Field_selectOne_value<VALUE>>) {
-        const nextId = next == null ? null : this.config.getIdFromValue(next)
-        this.selectedId = nextId
+    set value(next: Field_selectOne_value<VALUE>) {
+        this.selectedId = this.config.getIdFromValue(next)
     }
 
-    get selectedId(): OptionID {
+    get selectedId(): KEY {
         return this.serial.val // || this.default // 🔴 idk, probably bad to have default here
     }
 
-    set selectedId(nextId: OptionID) {
+    set selectedId(nextId: KEY) {
         if (this.serial.val === nextId) return
 
         this.runInValueTransaction(() => {
@@ -337,9 +347,13 @@ export class Field_selectOne<
      *
      * see also "extra"
      */
-    getValueFromId = (id: OptionID): VALUE => this.config.getValueFromId(id)
+    getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id)
 
-    getOptionFromId = (id: OptionID): SelectOption<VALUE> => this.config.getOptionFromId(id, this)
+    // 💬 2024-08-21 rvion: (for @domi)
+    // | I dislike this `getOptionFromId`.
+    // | it is redundant / slow / sometimes unnecessary
+    // | I'd rather just add the missing mapper for icon, and we would have everything.
+    getOptionFromId = (id: KEY): SelectOption<VALUE, KEY> => this.config.getOptionFromId(id, this)
 
     // 🔶 do not compare queries
     get isDirtyFromSnapshot_UNSAFE(): boolean {

@@ -14,16 +14,17 @@ export type GalleryConf = FieldGroup<{
     filterPath: X.XString
     filterTag: X.XString
     filterStar: X.XBool
-    filterAppName: X.XOptional<X.XSelectOne>
+    filterAppName: X.XOptional<X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
 }> & {
     readonly imageToDisplay: MediaImageL[]
 }
 
 export function useGalleryConf(): GalleryConf {
-    return usePanel().usePersistentModel('gallery-conf', (ui) =>
-        ui
+    return usePanel().usePersistentModel('gallery-conf', (ui) => {
+        // const y = ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' })
+        return ui
             .fields({
-                defaultSort: ui.selectOneString(['createdAt', 'updatedAt'], { default: { id: 'createdAt' } }),
+                defaultSort: ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' }),
                 gallerySize: ui.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
                 galleryMaxImages: ui.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
                 galleryBgColor: ui.colorV2({ label: 'background' }).optional(),
@@ -67,6 +68,6 @@ export function useGalleryConf(): GalleryConf {
                     // console.log(`[🤠] BBB`)
                     return out
                 },
-            })),
-    )
+            }))
+    })
 }

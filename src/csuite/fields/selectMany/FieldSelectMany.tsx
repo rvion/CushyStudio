@@ -5,7 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { SelectValueLooks } from '../../select/SelectProps'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
-import type { OptionID, SelectOption } from '../selectOne/SelectOption'
+import type { SelectOption } from '../selectOne/SelectOption'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
@@ -19,7 +19,7 @@ export type Field_selectMany_config<
     /** the final object that will be accessible as value */
     VALUE,
     /** type-level literal for the id string */
-    KEY extends OptionID,
+    KEY extends string,
 > = FieldConfig<
     {
         /**
@@ -68,38 +68,34 @@ export type Field_selectMany_config<
 >
 
 // SERIAL
-export type Field_selectMany_serial<OPTION_ID extends string> = FieldSerial<{
+export type Field_selectMany_serial<KEY extends string> = FieldSerial<{
     $: 'selectMany'
     query: string
-    values: OPTION_ID[]
+    // 💬 2024-08-20 rvion: TODO: rename as keys ?
+    values: KEY[]
 }>
-
-// SERIAL FROM VALUE
-// 🔴 this is not possible anymore, we need the base select entry to get the id.
-// not sure if important
-// export const Field_selectMany_fromValue = <T extends any>(val: Field_selectMany_value<T>): Field_selectMany_serial => ({
-//     $: 'selectMany',
-//     query: '',
-//     values,
-// })
 
 // VALUE
 export type Field_selectMany_value<VALUE extends any> = VALUE[]
 
 // TYPES
-export type Field_selectMany_types<VALUE extends any, OPTION_ID extends OptionID> = {
+export type Field_selectMany_types<
+    //
+    VALUE extends any,
+    KEY extends string,
+> = {
     $Type: 'selectMany'
-    $Config: Field_selectMany_config<VALUE, OPTION_ID>
-    $Serial: Field_selectMany_serial<OPTION_ID>
-    $Value: Field_selectMany_value<VALUE> // 🔴 not sure if we need nullability since it's an array
-    $Field: Field_selectMany<VALUE>
+    $Config: Field_selectMany_config<VALUE, KEY>
+    $Serial: Field_selectMany_serial<KEY>
+    $Value: Field_selectMany_value<VALUE>
+    $Field: Field_selectMany<VALUE, KEY>
 }
 
 // STATE
 export class Field_selectMany<
     //
     VALUE extends any,
-    KEY extends OptionID,
+    KEY extends string,
 > extends Field<Field_selectMany_types<VALUE, KEY>> {
     static readonly type: 'selectMany' = 'selectMany'
     DefaultHeaderUI = WidgetSelectManyUI
@@ -144,8 +140,8 @@ export class Field_selectMany<
             : _choices
     }
 
-    get options(): SelectOption<VALUE>[] {
-        return this.choices.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE>[]
+    get options(): SelectOption<VALUE, KEY>[] {
+        return this.choices.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
     }
 
     get ownProblems(): Maybe<string[]> {
@@ -167,7 +163,7 @@ export class Field_selectMany<
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: BaseSchema<Field_selectMany<VALUE>>,
+        schema: BaseSchema<Field_selectMany<VALUE, KEY>>,
         serial?: Field_selectMany_serial<KEY>,
     ) {
         super(repo, root, parent, schema)
@@ -202,7 +198,7 @@ export class Field_selectMany<
     }
 
     /** un-select given item */
-    removeId(id: OptionID): void {
+    removeId(id: KEY): void {
         // ensure item was selected
         const indexOf = this.serial.values.findIndex((i) => i === id)
         if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
@@ -213,7 +209,7 @@ export class Field_selectMany<
     }
 
     /** select given item */
-    addId(id: OptionID): void {
+    addId(id: KEY): void {
         // ensure item is not selected yet
         const i = this.serial.values.findIndex((i) => i === id)
         if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
@@ -230,7 +226,7 @@ export class Field_selectMany<
     }
 
     /** select item if item was not selected, un-select if item was selected */
-    toggleId(id: OptionID): void {
+    toggleId(id: KEY): void {
         this.runInValueTransaction(() => {
             const i = this.serial.values.findIndex((i) => i === id)
             if (i < 0) {
@@ -279,9 +275,10 @@ export class Field_selectMany<
     }
 
     set value(next: Field_selectMany_value<VALUE>) {
+        const keys = next.map((val) => this.config.getIdFromValue(val))
         if (
             this.serial.values.length === next.length && //
-            this.serial.values.every((v, i) => v === next[i])
+            this.serial.values.every((v, i) => v === keys[i])
         )
             return
 
@@ -315,13 +312,13 @@ export class Field_selectMany<
         })
     }
 
-    get selectedOptions(): SelectOption<VALUE>[] {
-        return this.selectedIds.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE>[]
+    get selectedOptions(): SelectOption<VALUE, KEY>[] {
+        return this.selectedIds.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
     }
 
     // see FieldSelectOne.getValueFromId notes
     getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id)
-    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE>> => this.config.getOptionFromId(id, this)
+    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
     private get selectedValues(): VALUE[] {
         return this.selectedIds.map(this.getValueFromId).filter((x) => x != null) as VALUE[]

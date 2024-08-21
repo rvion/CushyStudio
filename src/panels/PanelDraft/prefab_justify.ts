@@ -1,6 +1,6 @@
 import type { Builder } from '../../controls/Builder'
 
-export type UI_Justify = S.SSelectOne<'full' | 'L' | 'center' | 'R', 'full' | 'L' | 'center' | 'R'>
+export type UI_Justify = X.XSelectOne_<'full' | 'L' | 'center' | 'R'>
 
 export const ui_justify = (ui: Builder): UI_Justify =>
     ui.selectOneStringWithMeta(

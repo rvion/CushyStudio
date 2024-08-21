@@ -36,8 +36,9 @@ import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldS
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
 import { Factory } from '../csuite/model/Factory'
 import { Field } from '../csuite/model/Field'
-import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
+import { type OpenRouter_ModelInfo, openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
+import { bang } from '../csuite/utils/bang'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
@@ -312,11 +313,7 @@ export class Builder implements IBuilder {
     // 🆘 }
 
     // 🔴 may need to be renamed for backwards compatibility
-    selectOne<
-        //
-        VALUE,
-        KEY extends string = string,
-    >(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
+    selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
         return new Schema<Field_selectOne<VALUE, KEY>>(
             Field_selectOne<VALUE, KEY>,
             config,
@@ -329,12 +326,12 @@ export class Builder implements IBuilder {
     }
 
     selectOneString<VALUE extends string>(
-        choices: readonly VALUE[],
+        choices: VALUE[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
         > = {},
-    ): X.XSelectOne<VALUE, VALUE> {
+    ): X.XSelectOne_<VALUE> {
         return this.selectOne<VALUE, VALUE>({
             choices: choices as VALUE[],
             getIdFromValue: (v) => v,
@@ -356,30 +353,35 @@ export class Builder implements IBuilder {
             choices: ids,
             getIdFromValue: (v) => v,
             getValueFromId: (id) => id as VALUE,
-            getOptionFromId: (id): SelectOption<VALUE> => {
+            getOptionFromId: (id): SelectOption<VALUE, VALUE> => {
                 const opt = options.find((c) => c.id === id)
-                if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE>
+                if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE, VALUE>
                 return { ...opt, value: id as VALUE }
             }, //
             ...config,
         })
     }
 
-    // SELECT MANY ------------------------------------------------------------------------------------
+    // SELECT MANY
 
-    selectMany = <const T extends SelectOption>(config: Field_selectMany_config<T>): X.XSelectMany<T> => {
-        return new Schema<Field_selectMany<T>>(Field_selectMany, config)
+    selectMany = <VALUE, KEY extends string>(config: Field_selectMany_config<VALUE, KEY>): X.XSelectMany<VALUE, KEY> => {
+        return new Schema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
     }
 
-    selectManyV2 = <T extends string>(
-        p: readonly T[],
-        config: Omit<Field_selectMany_config<SelectOption<T>>, 'choices'> = {},
-    ): X.XSelectMany<SelectOption<T>> => {
-        return new Schema<Field_selectMany<SelectOption<T>>>(Field_selectMany, {
-            choices: p.map((id) => ({ id, label: id })),
+    selectManyString = <const T extends string>(
+        p: T[],
+        config: Omit<Field_selectMany_config<T, T>, 'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'> = {},
+    ): X.XSelectMany_<T> => {
+        return new Schema<Field_selectMany<T, T>>(Field_selectMany, {
+            choices: p,
+            getOptionFromId: (id) => ({ id, label: id, value: id }),
+            getValueFromId: (id) => id,
+            getIdFromValue: (v) => v,
             ...config,
         })
     }
+
+    // Dynamic
 
     /**
      * Allow to instanciate a field early, so you can re-use it in multiple places
@@ -465,17 +467,32 @@ export class Builder implements IBuilder {
         return new Schema<Field_optional<T>>(Field_optional, p)
     }
 
-    llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<SelectOption<OpenRouter_Models>> {
-        const choices = Object.entries(openRouterInfos).map(
-            ([id, info]): SelectOption<OpenRouter_Models> => ({ id: id as OpenRouter_Models, label: info.name }),
-        )
-        const def = choices ? choices.find((c) => c.id === p.default) : undefined
-        return this.selectOne({ default: def, choices })
+    llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<OpenRouter_ModelInfo, OpenRouter_Models> {
+        const knownModels = Object.values(openRouterInfos)
+        const def = p.default ? knownModels.find((c) => c.id === p.default) : undefined
+        return this.selectOne({
+            values: knownModels,
+            getIdFromValue: (v) => v.id,
+            getOptionFromId: (id) => knownModels.find((c) => c.id === id),
+            getValueFromId: (id) => knownModels.find((c) => c.id === id),
+            default: def?.id,
+        })
     }
 
-    app(): X.XSelectOne<SelectOption> {
-        return this.selectOne({
-            choices: (self) => {
+    app(): X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID> {
+        type OX = { id: CushyAppID; label: string }
+        return this.selectOne<OX, CushyAppID>({
+            getIdFromValue: (v): CushyAppID => v.id,
+            getOptionFromId: (id: CushyAppID): SelectOption<OX, CushyAppID> => {
+                const app = bang(cushy.db.cushy_app.selectOne((q) => q.where('id', 'is', id)))
+                const value = { id: app.id, label: app.name }
+                return { ...value, value: value }
+            },
+            getValueFromId: (id: CushyAppID): OX => {
+                const app = cushy.db.cushy_app.selectOne((q) => q.where('id', 'is', id))
+                return { id: app?.id ?? 'NotFound', label: app?.name ?? 'Not Found' }
+            },
+            values: (self) => {
                 const matchingApps = cushy.db.cushy_app.selectRaw((q) => {
                     const query = self.serial.query
                     let Q1 = q

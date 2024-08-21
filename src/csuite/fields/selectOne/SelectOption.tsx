@@ -2,12 +2,13 @@ import type { IconName } from '../../icons/icons'
 
 export type OptionID = string
 
+export type SelectOption_<VALUE extends string> = SelectOption<VALUE, VALUE>
+
 export type SelectOption<
     //
     VALUE,
-    KEY extends OptionID,
+    KEY extends string,
 > = {
-    // 🔴 todo: require 2nd type arg to see bad usages + add extend Id type in FieldSelectOne_config
     id: KEY
     value: VALUE
     label?: string
@@ -16,8 +17,12 @@ export type SelectOption<
 }
 // 🔴 this is temp and does not belong here
 
-export type SelectOption_NO_VALUE<VALUE, Id extends OptionID = OptionID> = {
-    id: Id
+export type SelectOption_NO_VALUE<
+    //
+    VALUE,
+    KEY extends string,
+> = {
+    id: KEY
     value?: VALUE
     label?: string
     labelNode?: JSX.Element

@@ -60,10 +60,10 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
 
     get labellayout(): FormGlobalLayoutMode {
         const x = this.st.theme.value.labelLayout
-        if (x.id === 'fluid') return 'fluid'
-        if (x.id === 'fixed-left') return 'fixed-left'
-        if (x.id === 'fixed-right') return 'fixed-right'
-        if (x.id === 'mobile') return 'mobile'
+        if (x === 'fluid') return 'fluid'
+        if (x === 'fixed-left') return 'fixed-left'
+        if (x === 'fixed-right') return 'fixed-right'
+        if (x === 'mobile') return 'mobile'
         return 'fixed-right'
     }
 

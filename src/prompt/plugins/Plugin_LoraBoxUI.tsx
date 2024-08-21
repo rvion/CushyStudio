@@ -102,7 +102,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                             // })
                         }}
                         getLabelText={(t): string => t}
-                        getLabelUI={(v) => <div>{v}</div>}
+                        OptionLabelUI={(v) => <div>{v}</div>}
                     />
                     <Button //
                         tw='WIDGET-FIELD join-item w-8'

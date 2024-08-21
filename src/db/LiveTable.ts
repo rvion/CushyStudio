@@ -23,6 +23,8 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 }
 
 export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
+    // ORM HELPER --------------------------------------------------------------------------------
+
     /**
      * hydrate at the end;
      * can only work with all fields
@@ -48,6 +50,35 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
         return instances
     }
+
+    /**
+     * hydrate at the end;
+     * can only work with all fields
+     * CANNOT use joins, NOR select only a few fields, etc
+     * see `selectRaw` if you need those
+     */
+    selectOne = (
+        fn: (
+            x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']>,
+        ) => SelectQueryBuilder<any, any, TABLE['$T']> = (x) => x,
+        subscriptions?: LiveDBSubKeys[],
+    ): Maybe<TABLE['$L']> => {
+        const query = fn(this.query1.limit(1)).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) {
+            throw new Error('INVARIANT VIOLATION; statement is null')
+            // return []
+        }
+        cushy.db.subscribeToKeys([this.schema.sql_name])
+        if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
+        const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
+        const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
+        if (instances.length === 0) return null
+        return instances[0]
+    }
+
+    // --------------------------------------------------------------------------------
 
     /**
      * do not hydrate entities;
