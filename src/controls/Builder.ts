@@ -41,7 +41,9 @@ import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt, EnumListBuilder } from './EnumBuilder'
+import { EnumBuilder } from './EnumBuilder'
+import { EnumBuilderOpt } from './EnumBuilderOpt'
+import { EnumListBuilder } from './EnumListBuilder'
 import { Schema } from './Schema'
 
 declare global {

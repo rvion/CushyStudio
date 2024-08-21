@@ -7,14 +7,20 @@ import type { Builder } from './Builder'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { Schema } from './Schema'
 
-export type IEnumBuilderFN<T> = (config?: Omit<Field_enum_config<T>, 'enumName'>) => X.XEnum<T>
-export type IEnumBuilder = { [K in keyof Requirable]: IEnumBuilderFN<Requirable[K]['$Value']> }
+// 🔴 showcase how nullability work without optional
 
-export interface EnumBuilder extends IEnumBuilder {}
-export class EnumBuilder {
+export type IEnumBuilderOptFn<T> = (
+    config?: Omit<Field_enum_config<T>, 'enumName'> & { startActive?: boolean },
+) => X.XOptional<X.XEnum<T>>
+export type IEnumBuilderOpt = {
+    [K in keyof Requirable]: IEnumBuilderOptFn<Requirable[K]['$Value']>
+}
+
+export interface EnumBuilderOpt extends IEnumBuilderOpt {}
+export class EnumBuilderOpt {
     constructor(public domain: Builder) {
         return new Proxy(this, {
-            get(target, prop): IEnumBuilderFN<any> {
+            get(target, prop): IEnumBuilderOptFn<any> {
                 // skip symbols
                 if (typeof prop === 'symbol') return (target as any)[prop]
 
@@ -33,13 +39,22 @@ export class EnumBuilder {
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
                     return (config: any = {}) =>
-                        new Schema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName: 'INVALID_null' })
+                        domain.optional({
+                            label: config.label,
+                            startActive: config.startActive,
+                            schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName: 'INVALID_null' }),
+                        })
                     // 🔴 can't throw here, will break for everyone !!
-                    // 🔴 throw new Error(`unknown enum: ${enumName}`)
+                    // throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Schema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName })
+                return (config: any = {}) =>
+                    domain.optional({
+                        label: config.label,
+                        startActive: config.startActive,
+                        schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
+                    })
             },
         })
     }
