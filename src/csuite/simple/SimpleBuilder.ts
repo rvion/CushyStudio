@@ -1,4 +1,5 @@
 import type { PartialOmit } from '../../types/Misc'
+import type { SelectOption, SelectOption_NO_VALUE } from '../fields/selectOne/SelectOption'
 import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
@@ -22,7 +23,6 @@ import { Field_optional, type Field_optional_config } from '../fields/optional/F
 import { Field_seed, type Field_seed_config } from '../fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../fields/selectMany/FieldSelectMany'
 import { Field_selectOne, type Field_selectOne_config } from '../fields/selectOne/FieldSelectOne'
-import { type SelectOption, type SelectOption_NO_VALUE } from '../fields/selectOne/SelectOption'
 import { Field_shared } from '../fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../fields/string/FieldString'

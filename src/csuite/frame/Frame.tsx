@@ -1,9 +1,9 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
-import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
+import type { SimpleBoxShadow } from './SimpleBoxShadow'
 import type { ForwardedRef, MouseEvent } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -19,15 +19,6 @@ import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { computeColors, ComputedColors } from './FrameColors'
 import { tooltipStuff } from './tooltip'
-
-export type SimpleBoxShadow = {
-    inset?: boolean
-    x?: number
-    y?: number
-    blur?: number
-    spread?: number
-    color?: TintExt
-}
 
 export type FrameProps = {
     //
