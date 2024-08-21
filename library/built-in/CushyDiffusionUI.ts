@@ -23,15 +23,7 @@ export type CushyDiffusionUI_ = {
     model: UI_Model
     latent: UI_LatentV3
     sampler: UI_Sampler_Advanced
-    mask: UI_Mask
-    upscaleV2: X.XChoices<{
-        highResFix: UI_HighResFix
-        upscaleWithModel: X.XGroup<{
-            model: X.XEnum<Enum_UpscaleModelLoader_model_name>
-        }>
-    }>
     customSave: UI_customSave
-    removeBG: UI_rembg_v1
     controlnets: UI_cnet
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -69,16 +61,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         model: ui_model(),
         latent: ui_latent_v3(),
         sampler: ui_sampler_advanced(),
-        mask: ui_mask(),
-        upscaleV2: ui.choicesV2(
-            {
-                highResFix: ui_highresfix(),
-                upscaleWithModel: ui_upscaleWithModel().withConfig({ label: 'Model' }),
-            },
-            { icon: 'mdiArrowExpandAll' },
-        ),
         customSave: ui_customSave(),
-        removeBG: ui_rembg_v1(),
         controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
@@ -91,6 +74,10 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
 export type UI_extra = X.XChoices<{
     show3d: UI_3dDisplacement
     regionalPrompt: UI_regionalPrompting_v1
+    removeBG: UI_rembg_v1
+    mask: UI_Mask
+    highResFix: UI_HighResFix
+    upscaleWithModel: X.XGroup<{ model: X.XEnum<Enum_UpscaleModelLoader_model_name> }>
     refine: UI_Refiners
     reversePositiveAndNegative: X.XEmpty
     makeAVideo: X.XEmpty
@@ -111,6 +98,10 @@ function extra(ui: X.Builder): UI_extra {
         items: {
             show3d: ui_3dDisplacement(),
             regionalPrompt: ui_regionalPrompting_v1(),
+            mask: ui_mask(),
+            removeBG: ui_rembg_v1(),
+            highResFix: ui_highresfix(),
+            upscaleWithModel: ui_upscaleWithModel(), //.withConfig({ label: 'Model' }),
             refine: ui_refiners(),
             reversePositiveAndNegative: ui.empty({
                 label: 'swap +/-',

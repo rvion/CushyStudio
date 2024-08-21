@@ -42,6 +42,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
             header={
                 <>
                     <SpacerUI />
+                    <Button onClick={() => {}} subtle icon='mdiCircle'></Button>
+                    <Button onClick={() => {}} subtle icon='mdiSquare'></Button>
                     <RevealUI //
                         relativeTo='mouse'
                         shell='popup-sm'

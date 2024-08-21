@@ -74,7 +74,8 @@ app({
             : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
-        let mask: Maybe<_MASK> = await run_mask(ui.mask, ctx.mask)
+        let mask: Maybe<_MASK>
+        if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
         if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------
@@ -146,7 +147,7 @@ app({
         // }
 
         // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
-        const HRF = ui.upscaleV2.highResFix
+        const HRF = ui.extra.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
                 ckpt: run_model_modifiers(ui.model, ckptPos, true, HRF.scaleFactor),
@@ -206,8 +207,8 @@ app({
         }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
-        if (ui.removeBG) {
-            const sub = run_rembg_v1(ui.removeBG, finalImage)
+        if (ui.extra.removeBG) {
+            const sub = run_rembg_v1(ui.extra.removeBG, finalImage)
             if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0]! })
         }
 
@@ -217,7 +218,7 @@ app({
         else graph.SaveImage({ images: finalImage })
 
         // UPSCALE with upscale model ------------------------------------------------------------
-        if (ui.upscaleV2.upscaleWithModel) finalImage = run_upscaleWithModel(ui.upscaleV2.upscaleWithModel, { image: finalImage })
+        if (ui.extra.upscaleWithModel) finalImage = run_upscaleWithModel(ui.extra.upscaleWithModel, { image: finalImage })
 
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
