@@ -41,11 +41,11 @@ export async function run_watermark_v1(
         y: ui.pos.y,
         fontSize: ui.fontSize,
         color: ui.color,
-        font: ui.font.id,
-        format: ui.format.id,
+        font: ui.font,
+        format: ui.format,
         quality: ui.quality,
     }
-    if (ui.tool.id === 'canvas') {
+    if (ui.tool === 'canvas') {
         return image.addWatermark_withCanvas(ui.content, params)
     } else {
         return image.addWatermark_withKonva(ui.content, params)

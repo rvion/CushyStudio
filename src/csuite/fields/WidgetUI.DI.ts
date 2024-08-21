@@ -59,8 +59,8 @@ export const isFieldString = _checkIfIs<Field_string>('str')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
 export const isFieldBool = _checkIfIs<Field_bool>('bool')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')
-export const isFieldSelectOne = _checkIfIs<Field_selectOne<any>>('selectOne')
-export const isFieldSelectMany = _checkIfIs<Field_selectMany<any>>('selectMany')
+export const isFieldSelectOne = _checkIfIs<Field_selectOne<any, any>>('selectOne')
+export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectMany')
 
 function _checkIfIs<W extends { $Type: string }>(
     /** widget type to check */

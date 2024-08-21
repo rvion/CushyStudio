@@ -1,3 +1,4 @@
+import type { PartialOmit } from '../../types/Misc'
 import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
@@ -21,7 +22,7 @@ import { Field_optional, type Field_optional_config } from '../fields/optional/F
 import { Field_seed, type Field_seed_config } from '../fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../fields/selectMany/FieldSelectMany'
 import { Field_selectOne, type Field_selectOne_config } from '../fields/selectOne/FieldSelectOne'
-import { type SelectOption } from '../fields/selectOne/SelectOption'
+import { type SelectOption, type SelectOption_NO_VALUE } from '../fields/selectOne/SelectOption'
 import { Field_shared } from '../fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../fields/string/FieldString'
@@ -149,38 +150,64 @@ export class SimpleBuilder implements IBuilder {
         return SimpleSchema.NEW<Field_list<T>>(Field_list, config)
     }
 
-    // @ts-ignore 🔴 loco select fields changes not ported to other builders
-    selectOne<T extends SelectOption>(config: Field_selectOne_config<T>): S.SSelectOne<T> {
-        return SimpleSchema.NEW<Field_selectOne<T>>(Field_selectOne, config)
+    selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): S.SSelectOne<VALUE, KEY> {
+        return new SimpleSchema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
     }
 
-    // @ts-ignore 🔴 loco select fields changes not ported to other builders
-    selectOneV2(p: string[]): S.SSelectOne<SelectOption> {
-        // @ts-ignore 🔴 loco select fields changes not ported to other builders
-        return SimpleSchema.NEW<Field_selectOne<SelectOption>>(Field_selectOne, {
-            // @ts-ignore 🔴 loco select fields changes not ported to other builders
-            choices: p.map((id) => ({ id, label: id })),
-            appearance: 'tab',
-        })
-    }
-
-    selectOneV3<T extends string>(
-        p: T[],
-        // @ts-ignore 🔴 loco select fields changes not ported to other builders
-        config: Omit<Field_selectOne_config<T, T>, 'choices' | 'getIdFromValue'> = {},
-    ): S.SSelectOne_<T> {
-        return SimpleSchema.NEW<Field_selectOne<T, T>>(Field_selectOne, {
-            // @ts-ignore 🔴 loco select fields changes not ported to other builders
-            choices: p.map((id) => ({ id, label: id })),
-            getIdFromValue: (v: T) => v,
-            appearance: 'tab',
+    selectOneString<const VALUE extends string>(
+        choices: VALUE[],
+        config: PartialOmit<
+            Field_selectOne_config<VALUE, VALUE>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): S.SSelectOne_<VALUE> {
+        return this.selectOne<VALUE, VALUE>({
+            choices: choices as VALUE[],
+            getIdFromValue: (v) => v,
+            getValueFromId: (id) => id as VALUE,
+            getOptionFromId: (id) => ({ id, label: id, value: id as VALUE }),
             ...config,
         })
     }
 
-    // @ts-ignore 🔴 loco select fields changes not ported to other builders
-    selectMany<T extends SelectOption>(config: Field_selectMany_config<T>): S.SSelectMany<T> {
-        return SimpleSchema.NEW<Field_selectMany<T>>(Field_selectMany, config)
+    selectOneStringWithMeta<const VALUE extends string>(
+        options: SelectOption_NO_VALUE<VALUE, VALUE>[],
+        config: PartialOmit<
+            Field_selectOne_config<VALUE, VALUE>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): S.SSelectOne_<VALUE> {
+        const ids: VALUE[] = options.map((c) => c.id)
+        return this.selectOne<VALUE, VALUE>({
+            choices: ids,
+            getIdFromValue: (v) => v,
+            getValueFromId: (id) => id as VALUE,
+            getOptionFromId: (id): SelectOption<VALUE, VALUE> => {
+                const opt = options.find((c) => c.id === id)
+                if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE, VALUE>
+                return { ...opt, value: id as VALUE }
+            }, //
+            ...config,
+        })
+    }
+
+    selectMany = <const VALUE, const KEY extends string>(
+        config: Field_selectMany_config<VALUE, KEY>,
+    ): S.SSelectMany<VALUE, KEY> => {
+        return new SimpleSchema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
+    }
+
+    selectManyString = <const KEY extends string>(
+        p: KEY[],
+        config: Omit<Field_selectMany_config<KEY, KEY>, 'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'> = {},
+    ): S.SSelectMany_<KEY> => {
+        return new SimpleSchema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
+            choices: p,
+            getOptionFromId: (id) => ({ id, label: id, value: id }),
+            getValueFromId: (id) => id,
+            getIdFromValue: (v) => v,
+            ...config,
+        })
     }
 
     /**

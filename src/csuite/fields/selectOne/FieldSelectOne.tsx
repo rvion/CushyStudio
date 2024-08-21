@@ -184,7 +184,7 @@ export class Field_selectOne<
         if (this.config.choices != null) {
             const _choices = this.config.choices
             if (typeof _choices === 'function') {
-                if (!this.root.ready) return []
+                // 🔴 if (!this.root.ready) return []
                 return _choices(this)
             }
             return _choices
@@ -210,7 +210,7 @@ export class Field_selectOne<
         if (this.config.options != null) {
             const _options = this.config.options
             if (typeof _options === 'function') {
-                if (!this.root.ready) return []
+                // 🔴 if (!this.root.ready) return []
                 return _options(this)
             }
             return _options
@@ -273,7 +273,9 @@ export class Field_selectOne<
     }
 
     get firstID(): KEY {
-        return bang(this.choices[0])
+        const id0 = this.choices[0]
+        // if (id0 == null) debugger
+        return '' as any
     }
 
     get defaultKey(): KEY {

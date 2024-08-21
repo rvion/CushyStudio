@@ -1,6 +1,3 @@
-import type { Schema } from '../../src/controls/Schema'
-import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
-
 import { ui_cnet, type UI_cnet } from './_controlNet/prefab_cnet'
 import { ui_IPAdapterV2, type UI_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
 import { ui_IPAdapterFaceIDV2, type UI_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'

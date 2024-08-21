@@ -11,13 +11,11 @@
  * ❌ import {...} from '...'`
  * */
 
-import type { Builder } from '../../../src/controls/Builder'
-
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
 
 export type UI_HighResFix = X.XGroup<{
-    upscaleMethod: X.XSelectOne<{ readonly id: 'regular' } | { readonly id: 'Neural 1.5' } | { readonly id: 'Neural XL' }>
+    upscaleMethod: X.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>
     scaleFactor: X.XNumber
     steps: X.XNumber
     denoise: X.XNumber
@@ -37,11 +35,9 @@ export function ui_highresfix(): UI_HighResFix {
             //     label: 'NN Latent Upscale?',
             // }),
             upscaleMethod: form
-                .selectOne({
+                .selectOneString(['regular', 'Neural 1.5', 'Neural XL'], {
                     appearance: 'tab',
-                    choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
-                    tooltip:
-                        'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
+                    tooltip: 'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better', // prettier-ignore
                 })
                 .addRequirements([{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }]),
 
@@ -55,7 +51,13 @@ export function ui_highresfix(): UI_HighResFix {
 }
 
 // ---------------------------------------------------------
-export const ui_themes = (form: X.Builder) =>
+export type UI_Themes = X.XList<
+    X.XGroup<{
+        text: X.XString
+        theme: X.XList<X.XGroup<{ text: X.XString }>>
+    }>
+>
+export const ui_themes = (form: X.Builder): UI_Themes =>
     form.list({
         element: () =>
             form.group({
@@ -88,37 +90,43 @@ export const util_expandBrances = (str: string): string[] => {
     return Array.from(result)
 }
 
-export const ui_vaeName = (form: X.Builder) => form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
-export const ui_modelName = (form: X.Builder) => form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-export const ui_resolutionPicker = (form: X.Builder) =>
-    form.selectOne({
-        label: 'Resolution',
-        choices: [
-            { id: '1024x1024' },
-            { id: '896x1152' },
-            { id: '832x1216' },
-            { id: '768x1344' },
-            { id: '640x1536' },
-            { id: '1152x862' },
-            { id: '1216x832' },
-            { id: '1344x768' },
-            { id: '1536x640' },
-        ],
-        tooltip: 'Width x Height',
-    })
+export const ui_vaeName = (form: X.Builder): X.XOptional<X.XEnum<Enum_VAELoader_vae_name>> =>
+    form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
+
+export const ui_modelName = (form: X.Builder): X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name> =>
+    form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+
+const resolutions: Resolutions[] = [
+    '1024x1024',
+    '896x1152',
+    '832x1216',
+    '768x1344',
+    '640x1536',
+    '1152x862',
+    '1216x832',
+    '1344x768',
+    '1536x640',
+]
+type Resolutions =
+    | '1024x1024'
+    | '896x1152'
+    | '832x1216'
+    | '768x1344'
+    | '640x1536'
+    | '1152x862'
+    | '1216x832'
+    | '1344x768'
+    | '1536x640'
+
+export const ui_resolutionPicker = (form: X.Builder): X.XSelectOne_<Resolutions> =>
+    form.selectOneString(resolutions, { label: 'Resolution', tooltip: 'Width x Height' })
 
 /** allow to easilly pick a shape */
-export const ui_shapePickerBasic = (form: X.Builder) => {
-    return form.selectOne({
-        label: 'Shape',
-        choices: [{ id: 'round' }, { id: 'square' }],
-    })
+export const ui_shapePickerBasic = (form: X.Builder): X.XSelectOne_<'round' | 'square'> => {
+    return form.selectOneString(['round', 'square'], { label: 'Shape' })
 }
 
 /** allow to easilly pick any shape given as parameter */
-export const ui_shapePickerExt = <const T extends string>(form: X.Builder, values: T[]) => {
-    return form.selectOne({
-        label: 'Shape',
-        choices: values.map((t) => ({ id: t })),
-    })
+export const ui_shapePickerExt = <const T extends string>(form: X.Builder, values: T[]): X.XSelectOne_<T> => {
+    return form.selectOneString(values, { label: 'Shape' })
 }

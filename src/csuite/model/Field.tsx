@@ -63,7 +63,7 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
 
 export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
     /** @internal */
-    static build: 'new'
+    static build: 'new' = 'new'
 
     /**
      * unique Field instance ID;

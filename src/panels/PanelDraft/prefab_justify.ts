@@ -13,7 +13,6 @@ export const ui_justify = (ui: Builder): UI_Justify =>
         {
             appearance: 'roll',
             wrap: false,
-            choices: [],
         },
     )
 

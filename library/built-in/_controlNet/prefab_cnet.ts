@@ -1,4 +1,3 @@
-import type { Builder } from '../../../src/controls/Builder'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'

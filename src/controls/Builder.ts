@@ -312,17 +312,8 @@ export class Builder implements IBuilder {
     // 🆘     })
     // 🆘 }
 
-    // 🔴 may need to be renamed for backwards compatibility
     selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
-        return new Schema<Field_selectOne<VALUE, KEY>>(
-            Field_selectOne<VALUE, KEY>,
-            config,
-            //     {
-            //     // wrap: true,
-            //     // placeholder: 'Vide',
-            //     // ...config,
-            // }
-        )
+        return new Schema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
     }
 
     selectOneString<const VALUE extends string>(
