@@ -4,7 +4,7 @@ import type { Field_listExt } from './WidgetListExt'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
+import { FieldPresenter_Cushy } from '../../form/FieldPresenter_Cushy'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
     //
@@ -39,7 +39,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         >
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetWithLabelUI fieldName={subWidget.id} field={subWidget} />
+                        <FieldPresenter_Cushy fieldName={subWidget.id} field={subWidget} />
                         <Button
                             look='subtle'
                             disabled={min ? items.length <= min : undefined}

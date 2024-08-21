@@ -4,20 +4,26 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../ctx/useCSuite'
+import { makeLabelFromFieldName } from '../utils/makeLabelFromFieldName'
 
-export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: {
-    //
-    widget: Field
+export type WidgetLabelTextProps = {
+    field: Field
     className?: string
-    children: ReactNode
-}) {
+    label?: ReactNode
+}
+
+export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetLabelTextProps) {
     const csuite = useCSuite()
+    const labelText =
+        p.label ?? //
+        p.field.config.label ??
+        makeLabelFromFieldName(p.field.fieldName)
     return (
         <span
             tw={[
                 'UI-WidgetLabel self-start minh-widget lh-widget ABDDE',
                 // 1. indicate we can click on the label
-                p.widget.isCollapsed || p.widget.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
+                p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
 
                 // 3. label wrappign strategy
                 // 3.1  alt. 1: disable all wrapping
@@ -37,8 +43,8 @@ export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: {
                 p.className,
             ]}
         >
-            {p.widget.isHidden && '🥷 '}
-            {p.children}
+            {p.field.isHidden && '🥷 '}
+            {labelText}
         </span>
     )
 })

@@ -1,6 +1,6 @@
 import type { Field_shared } from '../fields/shared/FieldShared'
+import type { FieldPresenterProps } from '../form/FieldPresenterProps'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
-import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
@@ -9,6 +9,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { FieldRenderProps } from './FieldShell'
 import type { Instanciable } from './Instanciable'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { Producer } from './pubsub/Producer'
@@ -19,6 +20,8 @@ import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
+import { FieldPresenter_Cushy } from '../form/FieldPresenter_Cushy'
+import { fieldPresenterComponents } from '../form/FieldPresenterComponents'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
@@ -27,7 +30,6 @@ import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
-import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { SimpleSchema } from '../simple/SimpleSchema'
@@ -198,7 +200,53 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * will be set to true after the first initialization
      * TODO: also use that to wait for whole tree to be patched before applying effects
      * */
-    ready = false
+    ready: boolean = false
+
+    /**
+     * use field.header() if you just want to render the input
+     */
+    renderWithLabel(
+        p?: Omit<FieldPresenterProps, 'field' | 'fieldName'> & Partial<Pick<FieldPresenterProps, 'fieldName'>>,
+    ): JSX.Element {
+        return (
+            <FieldPresenter_Cushy //
+                key={this.id}
+                field={this}
+                fieldName={p?.fieldName ?? '_'}
+                {...p}
+            />
+        )
+    }
+
+    get RenderProps(): FieldPresenterProps {
+        return { field: this, ...fieldPresenterComponents }
+    }
+
+    /**
+     * render now have 3 layers of customization
+     *    - render manully passed: the user provided render function
+     *          (full customization, take shell and props as params if you want to reuse some of them)
+     *    - render passed in config
+     *          (full customization, take shell and props as params if you want to reuse some of them)
+     *    - retrieve the default render function (a.k.a. Widget)
+     */
+    render(p: Partial<FieldPresenterProps>): ReactNode {
+        if (typeof p === 'function') {
+            const CustomRenderUI = p
+            return <CustomRenderUI /> // p({ field: this,  })
+        }
+
+        if (this.config.render) return this.config.render(p)
+        const Shell = p.shell ?? this.config.Shell ?? ((p: FieldShellProps): ReactNode => null) // ....
+        return (
+            <Shell //
+                field={this}
+                slotHeader={this.DefaultHeaderUI} // <- Widget
+                slotBody={this.DefaultBodyUI}
+                {...p.ShellProps}
+            />
+        )
+    }
 
     /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
     setSerial(serial: Maybe<K['$Serial']>): void {
@@ -259,7 +307,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
     UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
     UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
-    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI widget={this} />
+    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
     UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
@@ -682,9 +730,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // UI ----------------------------------------------------
 
     /** temporary until shells */
-    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+    renderSimple(this: Field, p?: Omit<FieldPresenterProps, 'field' | 'fieldName'>): JSX.Element {
         return (
-            <WidgetWithLabelUI //
+            <FieldPresenter_Cushy //
                 key={this.id}
                 field={this}
                 showWidgetMenu={false}
@@ -722,23 +770,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         width?: string
     }): ReactNode {
         return createElement(FormAsDropdownConfigUI, { form: this, ...p })
-    }
-
-    /**
-     * use field.header() if you just want to render the input
-     */
-    renderWithLabel(
-        this: Field,
-        p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'> & Partial<Pick<WidgetWithLabelProps, 'fieldName'>>,
-    ): JSX.Element {
-        return (
-            <WidgetWithLabelUI //
-                key={this.id}
-                field={this}
-                fieldName={p?.fieldName ?? '_'}
-                {...p}
-            />
-        )
     }
 
     defaultHeader(this: Field): JSX.Element | undefined {

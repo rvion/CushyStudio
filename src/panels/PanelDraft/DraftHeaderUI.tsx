@@ -61,7 +61,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                             setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                             placeholder='Unified Canvas Category'
                         />
-                        {cushy.theme.fields.labelLayout.renderSimple({ label: 'Label' })}
+                        {cushy.theme.fields.labelLayout.renderSimple({ UILabel: 'Label' })}
                     </div>
                 </div>
             </Frame>

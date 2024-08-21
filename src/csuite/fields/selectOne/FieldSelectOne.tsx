@@ -31,10 +31,9 @@ export type Field_selectOne_config<
     KEY extends string,
 > = FieldConfig<
     {
-        /**
-         * 🔶 the *ID* of the option selected by default
-         */
+        /** 🔶 the *ID* of the option selected by default */
         default?: KEY
+
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic
@@ -109,6 +108,12 @@ export type Field_selectOne_serial<KEY extends string> = FieldSerial<{
     $: 'selectOne'
     query?: string
     val: KEY
+
+    // 💬 2024-08-21 rvion:
+    // | TODO : UNSAFE KEY, POSSIBLY NULL, POSSIBLY NO LONGER IN CHOICES
+    selected?: string
+    selectedLabel?: string
+    selectedIcon?: string
 
     /**
      * @deprecated: NOT IMPLEMENTED YET

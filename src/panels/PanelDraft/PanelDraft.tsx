@@ -113,9 +113,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <DraftHeaderUI
                 draft={draft}
                 children={justify.root.renderWithLabel({
-                    showWidgetMenu: false,
-                    showWidgetExtra: false,
-                    showWidgetUndo: false,
+                    UIActionMenu: false,
+                    UISchemaExtra: false,
+                    UIUndo: false,
                     justifyLabel: false,
                     className: 'ml-auto',
                     fieldName: '_',

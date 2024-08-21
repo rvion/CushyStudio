@@ -34,6 +34,8 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     box?: Box
 
     // --------------------------------
+    render?: any
+
     /**
      * override the default header renderer
      * (passing `null` to restore the default renderer)

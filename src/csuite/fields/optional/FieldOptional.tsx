@@ -6,6 +6,7 @@ import type { Problem_Ext } from '../../model/Validation'
 
 import { Field, type KeyedField } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
+import { WidgetOptionalUI } from './WidgetOptional'
 
 // CONFIG
 export type Field_optional_config<T extends BaseSchema = BaseSchema> = FieldConfig<
@@ -55,6 +56,10 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
+    }
+
+    render(p: any): ReactNode {
+        return <WidgetOptionalUI />
     }
 
     protected setOwnSerial(serial: Maybe<Field_optional_serial<T>>): void {

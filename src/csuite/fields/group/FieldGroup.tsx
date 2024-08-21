@@ -105,7 +105,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return () => {
             // 🔴 should this be called with render-time FormUIProps? (and render-time RenderFieldsSubsetProps)
             // ⏸️ const defUsage = props?.usage ?? 'default'
-            const fields = typeof extra === 'function' ? extra(this) : extra // 🔴 we may also want to pass props here
+            const fields =
+                typeof extra === 'function' //
+                    ? extra(this)
+                    : extra // 🔴 we may also want to pass props here
             return (
                 <Frame>
                     {fields.map((f, ix) => {

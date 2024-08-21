@@ -65,7 +65,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
     // const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
-    const Content = p.Content ?? ((): JSX.Element => field.renderWithLabel({ noHeader: true }))
+    const Content = p.Content ?? ((): JSX.Element => field.renderWithLabel({ Header: null }))
 
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||

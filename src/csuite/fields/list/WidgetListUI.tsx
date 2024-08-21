@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
+import { FieldPresenter_Cushy } from '../../form/FieldPresenter_Cushy'
 import { ListControlsUI } from './ListControlsUI'
 
 const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
@@ -40,7 +40,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
             {subFields.map((subField, ix) => {
                 return (
                     <SortableItem key={subField.id}>
-                        <WidgetWithLabelUI
+                        <FieldPresenter_Cushy
                             fieldName={ix.toString()}
                             field={subField}
                             // slotDragKnob={

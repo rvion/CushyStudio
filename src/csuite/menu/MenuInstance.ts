@@ -13,9 +13,16 @@ import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
 export class MenuInstance<Props> implements Activity {
+    /** called when menu starts */
     onStart(): void {}
-    UI = (): JSX.Element => createElement(MenuUI, { menu: this })
+
+    /** callled when menu is closed */
     onStop(): void {}
+
+    /** calle */
+    UI = (): JSX.Element => createElement(MenuUI, { menu: this })
+
+    /** unique volative menu id */
     uid: string = nanoid()
 
     onEvent = (event: UIEvent): Trigger | null => {

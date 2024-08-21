@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { twMerge } from 'tailwind-merge'
 
 import { useCSuite } from '../ctx/useCSuite'
-import { Row } from '../frame/Dov/Dov'
+import { Frame } from '../frame/Frame'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 🔴 2024-07-31: domi: this should actually look like a button?
@@ -20,11 +20,12 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     },
 ) {
     const isActive = p.value ?? false
+    const csuite = useCSuite()
     // const chroma = getInputBoolChroma(isActive)
-    const kit = useCSuite()
-    // const border = p.border ?? 10
+    const border = p.border ?? 10
     return (
-        <Row
+        <Frame
+            line
             tw={twMerge([
                 'minh-input select-none cursor-pointer px-1',
                 p.showToggleButtonBox ? undefined : 'justify-center',
@@ -50,9 +51,9 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement}
             look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options
-            // border={border}
+            border={border}
             // iconSize={p.iconSize ?? '2.5em'}
-            hoverable={!p.disabled}
+            // hoverable={!p.disabled}
             disabled={p.disabled}
             expand={p.expand}
             style={p.style}
@@ -66,7 +67,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 if (p.preventDefault) ev.preventDefault()
             }}
         >
-            {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode != null && (
+            {(p.showToggleButtonBox ?? csuite.showToggleButtonBox) && p.mode != null && (
                 <CheckboxAndRadioIcon isActive={isActive} mode={p.mode} />
             )}
             {/* 2024-06-07 rvion: make sure long label remain legible even on low width
@@ -74,6 +75,6 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
             {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
-        </Row>
+        </Frame>
     )
 })
