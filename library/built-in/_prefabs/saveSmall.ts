@@ -3,12 +3,7 @@ import type { OutputFor } from './_prefabs'
 export type UI_customSave = X.XOptional<
     X.XGroup<{
         subfolder: X.XString
-        format: X.XSelectOne<
-            | { id: 'raw'; label: 'Raw' }
-            | { id: 'image/webp'; label: 'WebP' }
-            | { id: 'image/png'; label: 'PNG' }
-            | { id: 'image/jpeg'; label: 'JPG' }
-        >
+        format: X.XSelectOne_<'raw' | 'image/webp' | 'image/png' | 'image/jpeg'>
         quality: X.XNumber
     }>
 >
@@ -31,17 +26,15 @@ export function ui_customSave(): UI_customSave {
                     ].join('\n'),
                     default: '{YYYY}-{MM}-{DD}/{HH}h{mm}-{ss}',
                 }),
-                format: form.selectOne({
-                    label: 'Format',
-                    appearance: 'tab',
-                    default: { id: 'raw', label: 'Raw' },
-                    choices: [
+                format: form.selectOneStringWithMeta(
+                    [
                         { id: 'raw', label: 'Raw' },
                         { id: 'image/webp', label: 'WebP' },
                         { id: 'image/png', label: 'PNG' },
                         { id: 'image/jpeg', label: 'JPG' },
                     ],
-                }),
+                    { default: 'raw', label: 'Format', appearance: 'tab' },
+                ),
                 quality: form.float({
                     tooltip: 'only when saving as WebP or JPG',
                     default: 0.9,
@@ -58,7 +51,7 @@ export const run_customSave = (ui: OutputFor<typeof ui_customSave>): ImageSaveFo
     if (ui == null) return undefined
     const now = new Date()
     return {
-        format: ui.format.id,
+        format: ui.format,
         prefix: ui.subfolder //
             .replaceAll('{YYYY}', now.getFullYear().toString())
             .replaceAll('{MM}', (now.getMonth() + 1).toString())
