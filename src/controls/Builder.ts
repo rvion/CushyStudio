@@ -466,7 +466,10 @@ export class Builder implements IBuilder {
         return this.selectOne({
             values: knownModels,
             getIdFromValue: (v) => v.id,
-            getOptionFromId: (id) => knownModels.find((c) => c.id === id),
+            getOptionFromId: (id) => {
+                const model = bang(knownModels.find((c) => c.id === id))
+                return { id: model.id, label: model.name, value: model }
+            },
             getValueFromId: (id) => knownModels.find((c) => c.id === id),
             default: def?.id,
         })

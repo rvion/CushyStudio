@@ -29,7 +29,7 @@ export type Field_selectMany_config<
          */
         default?: KEY[] | KEY | true
         /**
-         * list of all choices
+         * list of all keys
          * 👉 you can use a lambda if you want the option to to dynamic
          *    the lambda will receive the widget instance as argument, from
          *    which you can access variosu stuff like

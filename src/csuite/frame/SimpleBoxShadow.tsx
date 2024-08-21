@@ -1,4 +1,4 @@
-import type { TintExt } from '../index.LIBRARY'
+import type { TintExt } from '../kolor/Tint'
 
 export type SimpleBoxShadow = {
     inset?: boolean
