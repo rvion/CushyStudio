@@ -48,7 +48,7 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
         }),
     )
     const modeField = panelState.fields.configMode
-    const configMode = modeField.value.id
+    const configMode = modeField.value
     const page: JSX.Element = ((): JSX.Element => {
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
@@ -101,7 +101,7 @@ const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: {
             tw='capitalize h-10'
             value={p.field.is(p.mode)}
             text={p.mode}
-            onValueChange={(_) => p.field.setId(p.mode)}
+            onValueChange={(_) => p.field.setValue(p.mode)}
         />
     )
 })

@@ -1,5 +1,4 @@
-import type { Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
+import type { Field_selectMany_config_ } from '../csuite/fields/selectMany/FieldSelectMany'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -9,23 +8,20 @@ import type { Builder } from './Builder'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { Schema } from './Schema'
 
-export type IEnumBuilder = {
-    [K in keyof Requirable]: (
-        config?: Omit<Field_enum_config<Requirable[K]['$Value']>, 'enumName'>,
-    ) => X.XEnum<Requirable[K]['$Value']>
-}
+export type IEnumBuilderFN<T> = (config?: Omit<Field_enum_config<T>, 'enumName'>) => X.XEnum<T>
+export type IEnumBuilder = { [K in keyof Requirable]: IEnumBuilderFN<Requirable[K]['$Value']> }
 
-export type IEnumBuilderOpt = {
-    [K in keyof Requirable]: (
-        config?: Omit<Field_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-    ) => X.XOptional<X.XEnum<Requirable[K]['$Value']>>
-}
+// 🔴 showcase how nullability work without optional
+export type IEnumBuilderOptFn<T> = (
+    config?: Omit<Field_enum_config<T>, 'enumName'> & { startActive?: boolean },
+) => X.XOptional<X.XEnum<T>>
+export type IEnumBuilderOpt = { [K in keyof Requirable]: IEnumBuilderOptFn<Requirable[K]['$Value']> }
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
     constructor(public domain: Builder) {
         return new Proxy(this, {
-            get(target, prop) {
+            get(target, prop): IEnumBuilderFN<any> {
                 // skip symbols
                 if (typeof prop === 'symbol') return (target as any)[prop]
 
@@ -60,7 +56,7 @@ export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
     constructor(public domain: Builder) {
         return new Proxy(this, {
-            get(target, prop) {
+            get(target, prop): IEnumBuilderOptFn<any> {
                 // skip symbols
                 if (typeof prop === 'symbol') return (target as any)[prop]
 
@@ -100,17 +96,16 @@ export class EnumBuilderOpt {
     }
 }
 
+export type IEnumListBuilderFn<T extends string> = (config?: Omit<Field_selectMany_config_<T>, 'choices'>) => X.XSelectMany_<T>
 export type IEnumListBuilder = {
-    [K in keyof Requirable]: (
-        config?: Omit<Field_selectMany_config<Requirable[K]['$Value'] & string>, 'choices'>,
-    ) => X.XSelectMany<SelectOption<Requirable[K]['$Value'] & string>>
+    [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}
 export class EnumListBuilder {
     constructor(public domain: Builder) {
         return new Proxy(this, {
-            get(target, prop) {
+            get(target, prop): IEnumListBuilderFn<any> {
                 // skip symbols
                 if (typeof prop === 'symbol') return (target as any)[prop]
 
