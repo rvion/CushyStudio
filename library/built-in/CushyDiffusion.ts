@@ -161,7 +161,7 @@ app({
                 graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
             }
             latent =
-                HRF.upscaleMethod.id === 'regular'
+                HRF.upscaleMethod === 'regular'
                     ? graph.LatentUpscale({
                           samples: latent,
                           crop: 'disabled',
@@ -171,7 +171,7 @@ app({
                       })
                     : graph.NNLatentUpscale({
                           latent,
-                          version: HRF.upscaleMethod.id == 'Neural XL' ? 'SDXL' : 'SD 1.x',
+                          version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                           upscale: HRF.scaleFactor,
                       })
             if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })

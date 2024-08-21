@@ -128,7 +128,12 @@ export const run_cnet_IPAdapterFaceID = (
     const faceIDnode = graph.IPAdapterFaceID({
         ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
         clip_vision: ip_clip_name,
-        insightface: (t) => t.IPAdapterInsightFaceLoader({ provider: 'CPU' }),
+        insightface: (t) =>
+            t.IPAdapterInsightFaceLoader({
+                provider: 'CPU',
+                // 🔴        VVVVVV review that
+                model_name: 'antelopev2',
+            }),
         image: image,
         combine_embeds: 'average',
         model: ckpt,
