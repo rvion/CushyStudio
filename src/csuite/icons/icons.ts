@@ -1,4 +1,4 @@
-import { _CushyIcons } from './iconsCDI'
+import { _IconsCDI } from './iconsCDI'
 import { _IconsLDI } from './iconsLDI'
 import { _IconsMDI } from './iconsMDI'
 import { _IconsXDI } from './iconsXDI'
@@ -38,7 +38,7 @@ export const allIcons = {
     // made by/for locomotive
     ..._IconsLDI,
     // made by/for cushy
-    ..._CushyIcons,
+    ..._IconsCDI,
 }
 
 // slow when used in union => will break typescript
