@@ -2,22 +2,17 @@ import type { Field } from '../model/Field'
 import type { FieldPresenterComponents } from './FieldPresenterComponents'
 import type { FC } from 'react'
 
-/**
- * field presenter are technically be able to render a whole form
- * or not, this is on of the multiple layer of customization.
- *  | field.render(FC<...>)
- *  | field.render({shell: ...})
- *  | field.config.render(FC<...>)
- *  | field.config.render({shell: ..., shellProps...})
- *  | field.config.render({shellProps...}) (get shell from parent)
- * */
 export interface FieldPresenterProps<FIELD extends Field> extends FieldPresenterComponents {
+    // Specific to the given fielid --------------------------------------------------------
+    // that part of the object may be overwritten by each field parent ❓
+
     // the field beeing rendered
     field: FIELD
 
     /** custom UI for root (won't be passed down) */
     UI?: FC<FieldPresenterProps<FIELD>>
 
+    // Specific to everything else --------------------------------------------------------
     /**
      * custom UI for each component type or at realtive subFields
      *

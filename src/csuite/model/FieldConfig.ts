@@ -33,8 +33,9 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     box?: Box
 
-    // --------------------------------
-    render?: any
+    // ------------------------------------------------
+    /** @since 2024-08-22 */
+    render?: any // CovariantFC<FieldPresenterProps<T['$Field']>>
 
     /**
      * override the default header renderer

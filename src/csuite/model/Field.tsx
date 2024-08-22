@@ -9,7 +9,6 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
-import type { FieldRenderProps } from './FieldShell'
 import type { Instanciable } from './Instanciable'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { Producer } from './pubsub/Producer'
@@ -20,7 +19,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
-import { FieldPresenter_Cushy } from '../form/FieldPresenter_Cushy'
+import { FieldPresenterCushyUI } from '../form/FieldPresenter_Cushy'
 import { fieldPresenterComponents } from '../form/FieldPresenterComponents'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
@@ -209,7 +208,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         p?: Omit<FieldPresenterProps, 'field' | 'fieldName'> & Partial<Pick<FieldPresenterProps, 'fieldName'>>,
     ): JSX.Element {
         return (
-            <FieldPresenter_Cushy //
+            <FieldPresenterCushyUI //
                 key={this.id}
                 field={this}
                 fieldName={p?.fieldName ?? '_'}
@@ -218,9 +217,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         )
     }
 
-    get RenderProps(): FieldPresenterProps {
-        return { field: this, ...fieldPresenterComponents }
-    }
+    // ❌
+    // get RenderProps(): FieldPresenterProps {
+    //     return { field: this, ...fieldPresenterComponents }
+    // }
 
     /**
      * render now have 3 layers of customization
@@ -230,12 +230,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *          (full customization, take shell and props as params if you want to reuse some of them)
      *    - retrieve the default render function (a.k.a. Widget)
      */
-    render(p: Partial<FieldPresenterProps>): ReactNode {
-        if (typeof p === 'function') {
-            const CustomRenderUI = p
-            return <CustomRenderUI /> // p({ field: this,  })
-        }
-
+    render(p: Partial<FieldPresenterProps<this>>): ReactNode {
+        const props = { field: this, ...fieldPresenterComponents, ...p }
+        if (props.UI) return <props.UI {...props} />
         if (this.config.render) return this.config.render(p)
         const Shell = p.shell ?? this.config.Shell ?? ((p: FieldShellProps): ReactNode => null) // ....
         return (
@@ -730,16 +727,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // UI ----------------------------------------------------
 
     /** temporary until shells */
-    renderSimple(this: Field, p?: Omit<FieldPresenterProps, 'field' | 'fieldName'>): JSX.Element {
+    renderSimple(this: Field, p?: Omit<FieldPresenterProps<this>, 'field'>): JSX.Element {
         return (
-            <FieldPresenter_Cushy //
+            <FieldPresenterCushyUI //
                 key={this.id}
                 field={this}
                 showWidgetMenu={false}
                 showWidgetExtra={false}
                 showWidgetUndo={false}
                 justifyLabel={false}
-                fieldName='_'
                 {...p}
             />
         )
