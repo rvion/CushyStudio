@@ -4,7 +4,7 @@ import type { Field_listExt } from './WidgetListExt'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
-import { FieldPresenter_Cushy } from '../../form/FieldPresenter_Cushy'
+import { FieldPresenter_Cushy } from '../../form/ShellCushy'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
     //

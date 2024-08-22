@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
-import { FieldPresenter_Cushy } from '../../form/FieldPresenter_Cushy'
+import { FieldPresenter_Cushy } from '../../form/ShellCushy'
 import { ListControlsUI } from './ListControlsUI'
 
 const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
