@@ -3,7 +3,7 @@ import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'
 
-import { FieldPresenterCushyUI } from '../../form/FieldPresenter_Cushy'
+import { FieldPresenterCushyUI } from '../../form/ShellCushy'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'

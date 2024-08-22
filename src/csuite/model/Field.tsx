@@ -19,10 +19,11 @@ import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
-import { FieldPresenterCushyUI } from '../form/FieldPresenter_Cushy'
 import { fieldPresenterComponents } from '../form/FieldPresenterComponents'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
+import { FieldPresenterCushyUI } from '../form/ShellCushy'
+import { ShellSimpleUI } from '../form/ShellSimple'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
@@ -230,17 +231,20 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *          (full customization, take shell and props as params if you want to reuse some of them)
      *    - retrieve the default render function (a.k.a. Widget)
      */
-    render(p: Partial<FieldPresenterProps<this>>): ReactNode {
+    render(p: Partial<FieldPresenterProps>): ReactNode {
         const props = { field: this, ...fieldPresenterComponents, ...p }
-        if (props.UI) return <props.UI {...props} />
+
+        // if (props.UI) return <props.UI {...props} />
         if (this.config.render) return this.config.render(p)
-        const Shell = p.shell ?? this.config.Shell ?? ((p: FieldShellProps): ReactNode => null) // ....
+        const Shell = p.Shell ?? this.schema
+        //  ?? this.config.Shell ?? ((p: FieldShellProps): ReactNode => null) // ....
         return (
             <Shell //
                 field={this}
-                slotHeader={this.DefaultHeaderUI} // <- Widget
-                slotBody={this.DefaultBodyUI}
-                {...p.ShellProps}
+
+                // slotHeader={this.DefaultHeaderUI} // <- Widget
+                // slotBody={this.DefaultBodyUI}
+                // {...p.ShellProps}
             />
         )
     }
@@ -727,18 +731,18 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // UI ----------------------------------------------------
 
     /** temporary until shells */
-    renderSimple(this: Field, p?: Omit<FieldPresenterProps<this>, 'field'>): JSX.Element {
-        return (
-            <FieldPresenterCushyUI //
-                key={this.id}
-                field={this}
-                showWidgetMenu={false}
-                showWidgetExtra={false}
-                showWidgetUndo={false}
-                justifyLabel={false}
-                {...p}
-            />
-        )
+    renderSimple(this: Field, p?: Omit<FieldPresenterProps, 'field'>): ReactNode {
+        return this.render({ Shell: ShellSimpleUI })
+        // return (
+        //     <FieldPresenterCushyUI //
+        //         key={this.id}
+        //         field={this}
+        //         UIExtra={false}
+        //         UIUndo={false}
+        //         justifyLabel={false}
+        //         {...p}
+        //     />
+        // )
     }
 
     /**

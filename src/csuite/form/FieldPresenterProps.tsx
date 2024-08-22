@@ -2,15 +2,16 @@ import type { Field } from '../model/Field'
 import type { FieldPresenterComponents } from './FieldPresenterComponents'
 import type { FC } from 'react'
 
-export interface FieldPresenterProps<FIELD extends Field> extends FieldPresenterComponents {
+export interface FieldPresenterProps</* FIELD extends Field */>extends FieldPresenterComponents {
     // Specific to the given fielid --------------------------------------------------------
     // that part of the object may be overwritten by each field parent ❓
+    Shell: FC<FieldPresenterProps>
 
     // the field beeing rendered
-    field: FIELD
+    field: Field
 
-    /** custom UI for root (won't be passed down) */
-    UI?: FC<FieldPresenterProps<FIELD>>
+    // /** custom UI for root (won't be passed down) */
+    // UI?: FC<FieldPresenterProps<FIELD>>
 
     // Specific to everything else --------------------------------------------------------
     /**
