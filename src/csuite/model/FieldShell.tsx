@@ -1,7 +1,7 @@
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
 
-import { FieldPresenter_Cushy } from '../form/FieldPresenter_Cushy'
+import { FieldPresenterCushyUI } from '../form/FieldPresenter_Cushy'
 import { type FieldPresenterProps } from '../form/FieldPresenterProps'
 
 // Widget --------------------------------------------------------
@@ -36,5 +36,5 @@ export function getShellComponent(
     shellExt?: FieldShellExt,
 ): FieldShell {
     // TODO
-    return FieldPresenter_Cushy
+    return FieldPresenterCushyUI
 }

@@ -1,5 +1,5 @@
 import { cushyFactory } from '../../controls/Builder'
-import { FieldPresenter_Cushy } from '../../csuite/form/FieldPresenter_Cushy'
+import { FieldPresenterCushyUI } from '../../csuite/form/FieldPresenter_Cushy'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const systemConf = cushyFactory.entity(
@@ -39,7 +39,7 @@ export const systemConf = cushyFactory.entity(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenter_Cushy fieldName='' field={f.externalEditor} />
+                                <FieldPresenterCushyUI fieldName='' field={f.externalEditor} />
                             </div>
                         </div>
                     )

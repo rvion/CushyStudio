@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../button/Button'
 import { UI } from '../../components/UI'
 import { useCSuite } from '../../ctx/useCSuite'
-import { FieldPresenter_Cushy } from '../../form/FieldPresenter_Cushy'
+import { FieldPresenterCushyUI } from '../../form/FieldPresenter_Cushy'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 import { bang } from '../../utils/bang'
@@ -86,7 +86,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
         >
             {groupFields.map(([rootKey, sub], ix) => (
                 // sub.render()
-                <FieldPresenter_Cushy //
+                <FieldPresenterCushyUI //
                     key={rootKey}
                     showWidgetIndent={p.field.config.layout === 'H' ? ix === 0 : true}
                     fieldName={rootKey}
