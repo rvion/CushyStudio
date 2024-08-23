@@ -3,6 +3,9 @@
  * without really importing them
  */
 
+import type { any_TsEfficient } from '../csuite/utils/objectAssignTsEfficient'
+import type { BuildContext } from 'esbuild'
+
 // EXTERNAL MODULES we'll inject ------------------------------------------------
 import * as drei from '@react-three/drei'
 import * as fiber from '@react-three/fiber'
@@ -18,7 +21,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { jsx, jsxs } from '../csuite/custom-jsx/jsx-runtime'
 
 // REWRITE LOGIC ------------------------------------------------------------------------
-export const CUSHY_IMPORT = (mod: string) => {
+export const CUSHY_IMPORT = (mod: string): any_TsEfficient => {
     // initial externals allowed
     if (mod === 'react') return __react
     if (mod === 'mobx') return mobx
@@ -37,7 +40,10 @@ export const CUSHY_IMPORT = (mod: string) => {
     throw new Error('🔴 unsupported import: ' + mod)
 }
 
-export async function createEsbuildContextFor(p: { entrypoints: AbsolutePath[]; root: AbsolutePath }) {
+export async function createEsbuildContextFor(p: {
+    entrypoints: AbsolutePath[]
+    root: AbsolutePath
+}): Promise<BuildContext<any>> {
     const esbuild = window.require('esbuild') as typeof import('esbuild')
     const distFolder = path.join(p.root, 'dist')
 
@@ -136,15 +142,17 @@ export function replaceImportsWithSyncImport(code: string): string {
 
 // --------------------------------------------------------------------
 
-type ImportStructure = {
+export type ImportStructure = {
     moduleName: string
     defaultImport?: string
     namedImports: { [key: string]: string }
     stringToReplace: string
 }
 
-function _parseImportStatements(code: string): ImportStructure[] {
-    const importRegex = /import\s+(?:(\w+),\s*)?\{\s*([^}]+)\s*\}\s+from\s+["'](.+?)["'];?/g
+export function _parseImportStatements(code: string): ImportStructure[] {
+    // const oldRegex = /import\s+            (?:(\w+), \s*)?   \{\s*([^}]+)\s*\}  \s+from\s+["'](.+?)["'];?/g
+    //                            VVVVVVVVVVVV         V     VVV                 VV  V
+    const importRegex = /import\s+(?:\* as\s)?(?:(\w+),?\s*)?(?:\{\s*([^}]+)\s*\})?\s*from\s+["'](.+?)["'];?/g
     const result: ImportStructure[] = []
 
     let match: RegExpExecArray | null
@@ -152,7 +160,7 @@ function _parseImportStatements(code: string): ImportStructure[] {
         const [stringToReplace, defaultImport, namedImportsPart, moduleName] = match
 
         const namedImports: { [key: string]: string } = {}
-        namedImportsPart!.split(',').forEach((namedImport) => {
+        namedImportsPart?.split(',').forEach((namedImport) => {
             const parts = namedImport.trim().split(/\s+as\s+/)
             const parts0 = parts[0]!
             namedImports[parts0] = parts[1] || parts0
