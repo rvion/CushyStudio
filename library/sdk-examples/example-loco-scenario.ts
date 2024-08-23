@@ -9,7 +9,7 @@ app({
             source: ui.group({
                 label: 'Source des Données',
                 items: {
-                    source: ui.selectOne({ choices: [{ id: 'a', label: 'ISCAB - Liens de borne' }] }),
+                    source: ui.selectOneString(['ISCAB - Liens de borne']),
                     maxEvents: ui.int({ min: 1, max: 5000, default: 10, step: 100 }),
                     actif: ui.bool(),
                 },
@@ -70,20 +70,13 @@ app({
             audience: ui.group({
                 label: 'Audience',
                 items: {
-                    via: ui.selectOne({
-                        label: 'Via',
-                        choices: [
-                            { id: 'sms', label: 'SMS' },
-                            { id: 'email', label: 'Email' },
-                            { id: 'push', label: 'Push' },
-                        ],
-                    }),
-                    locations: ui.selectMany({
+                    via: ui.selectOneOptionId([
+                        { id: 'sms', label: 'SMS' },
+                        { id: 'email', label: 'Email' },
+                        { id: 'push', label: 'Push' },
+                    ]),
+                    locations: ui.selectManyString(['Locomotive', 'Locomotive (Bis)'], {
                         label: 'Établissements',
-                        choices: [
-                            { id: 'a', label: 'Locomotive' },
-                            { id: 'b', label: 'Locomotive (Bis)' },
-                        ],
                     }),
                     filter: ui.prompt({ label: 'Filtre' }),
                 },

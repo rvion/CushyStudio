@@ -22,7 +22,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOneStringWithMeta<FormGlobalLayoutMode>(
+                labelLayout: ui.selectOneOptionValue<FormGlobalLayoutMode>(
                     [
                         { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
                         { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },

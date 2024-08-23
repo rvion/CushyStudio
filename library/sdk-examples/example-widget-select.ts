@@ -1,5 +1,3 @@
-import { capitalize } from '../../src/csuite/utils/capitalize'
-
 app({
     ui: (form) => ({
         doc: form.markdown({
@@ -16,13 +14,11 @@ app({
             ],
             {},
         ),
-        selectMany: form.selectMany({
-            choices: [
-                { label: 'one', id: 'one', foo: 1 },
-                { label: 'two', id: 'two', bar: 2 },
-                { label: 'three', id: 'three', baz: 3 },
-            ],
-        }),
+        selectMany: form.selectManyOptions([
+            { label: 'one', id: 'one', foo: 1 },
+            { label: 'two', id: 'two', bar: 2 },
+            { label: 'three', id: 'three', baz: 3 },
+        ]),
         // ability to add metadata to choice
         // minMax: form.list({
         //     min: 2,

@@ -3,7 +3,7 @@ import type { Builder } from '../../controls/Builder'
 export type UI_Justify = X.XSelectOne_<'full' | 'L' | 'center' | 'R'>
 
 export const ui_justify = (ui: Builder): UI_Justify =>
-    ui.selectOneStringWithMeta(
+    ui.selectOneOptionValue(
         [
             { id: 'full', icon: 'mdiFormatAlignJustify', label: '' },
             { id: 'L', icon: 'mdiFormatAlignLeft', label: '' },

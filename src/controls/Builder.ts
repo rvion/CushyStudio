@@ -34,12 +34,7 @@ import {
     type Field_selectOne_config,
     type Field_selectOne_config_,
 } from '../csuite/fields/selectOne/FieldSelectOne'
-import {
-    type SelectOption,
-    type SelectOption_,
-    type SelectOptionNoVal,
-    type SelectOptionOpt,
-} from '../csuite/fields/selectOne/SelectOption'
+import { type SelectOption, type SelectOption_, type SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -308,27 +303,12 @@ export class Builder implements IBuilder {
 
     // SELECT ONE ------------------------------------------------------------------------------------
 
-    // 🆘 selectOne = <const T extends SelectOption>(config: Field_selectOne_config<T>): X.XSelectOne<T> => {
-    // 🆘     return new Schema<Field_selectOne<T>>(Field_selectOne, config)
-    // 🆘 }
-    // 🆘
-    // 🆘 selectOneV2 = <T extends string>(
-    // 🆘     p: readonly T[],
-    // 🆘     config: Omit<Field_selectOne_config<SelectOption<T>>, 'choices'> = {},
-    // 🆘 ): X.XSelectOne_<T> => {
-    // 🆘     return new Schema<Field_selectOne<SelectOption<T>>>(Field_selectOne, {
-    // 🆘         choices: p.map((id) => ({ id, label: id })),
-    // 🆘         appearance: 'tab',
-    // 🆘         ...config,
-    // 🆘     })
-    // 🆘 }
-
     selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
         return new Schema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
     }
 
     selectOneString<const VALUE extends string>(
-        choices: VALUE[],
+        choices: readonly VALUE[] | (() => VALUE[]),
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
@@ -343,7 +323,7 @@ export class Builder implements IBuilder {
         })
     }
 
-    selectOneStringWithMeta<const VALUE extends string>(
+    selectOneOptionValue<const VALUE extends string>(
         options: SelectOption<VALUE, VALUE>[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
@@ -434,6 +414,30 @@ export class Builder implements IBuilder {
             getOptionFromId: (id) => ({ id, label: id, value: id }),
             getValueFromId: (id) => id,
             getIdFromValue: (v) => v,
+            ...config,
+        })
+    }
+
+    selectManyOptions<const OptionLike extends SelectOptionNoVal<string>>(
+        options: readonly OptionLike[],
+        config: PartialOmit<
+            Field_selectMany_config<OptionLike, OptionLike['id']>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): X.XSelectMany<OptionLike, OptionLike['id']> {
+        const keys: OptionLike['id'][] = options.map((c) => c.id)
+        return this.selectMany<OptionLike, OptionLike['id']>({
+            choices: keys,
+            getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
+                // 2024-08-02 domi: could probably include a cache
+                // see also notes on `SelectManyConfig.serial.extra`
+                // see also notes on `selectManyStringFn` usage in `prefab_prql_query.tsx`
+                const option = options.find((c) => c.id === id)
+                if (!option) return null
+                return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
+            },
+            getIdFromValue: (v) => v.id,
+            getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
             ...config,
         })
     }
