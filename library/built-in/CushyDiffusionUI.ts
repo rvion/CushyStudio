@@ -23,7 +23,7 @@ export type CushyDiffusionUI_ = {
     model: UI_Model
     latent: UI_LatentV3
     sampler: UI_Sampler_Advanced
-    customSave: UI_customSave
+    customSave: X.XOptional<UI_customSave>
     controlnets: UI_cnet
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -61,7 +61,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         model: ui_model(),
         latent: ui_latent_v3(),
         sampler: ui_sampler_advanced(),
-        customSave: ui_customSave(),
+        customSave: ui_customSave().optional(true),
         controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),

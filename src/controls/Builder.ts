@@ -34,7 +34,12 @@ import {
     type Field_selectOne_config,
     type Field_selectOne_config_,
 } from '../csuite/fields/selectOne/FieldSelectOne'
-import { type SelectOption, type SelectOption_, type SelectOptionOpt } from '../csuite/fields/selectOne/SelectOption'
+import {
+    type SelectOption,
+    type SelectOption_,
+    type SelectOptionNoVal,
+    type SelectOptionOpt,
+} from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -359,13 +364,7 @@ export class Builder implements IBuilder {
         })
     }
 
-    selectOneOptionId<
-        const OptionLike extends { id: string; label?: string; hue?: number } = {
-            id: string
-            label?: string
-            hue?: number
-        },
-    >(
+    selectOneOptionId<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
         config: PartialOmit<
             Field_selectOne_config_<OptionLike['id']>,
@@ -394,13 +393,7 @@ export class Builder implements IBuilder {
         })
     }
 
-    selectOneOption<
-        const OptionLike extends { id: string; label?: string; hue?: number } = {
-            id: string
-            label?: string
-            hue?: number
-        },
-    >(
+    selectOneOption<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
         config: PartialOmit<
             Field_selectOne_config<OptionLike, OptionLike['id']>,

@@ -18,6 +18,9 @@ export type SelectOption<
     hue?: number
 }
 
+// Variants ----------------------------------------------------------------------------------------
+// probably not really needed
+
 /** SelectOptional variant with optional value */
 export type SelectOptionOpt<
     //
@@ -29,6 +32,18 @@ export type SelectOptionOpt<
 
     // optional
     value?: VALUE
+    label?: string
+    labelNode?: JSX.Element
+    icon?: IconName
+    hue?: number
+}
+
+/** SelectOptional variant with optional value */
+export type SelectOptionNoVal<KEY extends string> = {
+    // NOT optional
+    id: KEY
+
+    // optional
     label?: string
     labelNode?: JSX.Element
     icon?: IconName
