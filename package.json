@@ -68,6 +68,7 @@
         "tsc:perf": "bun ./src/perfs/monitorTSCPerfs",
         "tsc:peft0": "tsc -p tsconfig.perf.json --generateTrace tmp/traceDir --noEmit  && npx @typescript/analyze-trace tmp/traceDir --forceMillis=100 > x.txt",
         "vscode:tsc:debug": "bun src/perfs/monitorVSCodePerfs.ts",
+        "patch-vscode-typescript": "./src/scripts/patchTypesHoverTruncationMac.sh",
         "📌 LINT": "-------------------------------------------------------------------------",
         "lint": "./node_modules/.bin/eslint src --ext .ts,.tsx",
         "lint:fix": "./node_modules/.bin/eslint src --ext .ts,.tsx --fix",
