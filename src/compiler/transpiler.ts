@@ -52,7 +52,7 @@ export async function createEsbuildContextFor(p: {
         outbase: p.root,
         bundle: true,
         format: 'esm',
-        banner: { js: '// 🛋️ CushyStudio' },
+        banner: { js: '// 🛋️ CushyStudio\n' + p.entrypoints.map((e) => `//   - ${e}`) },
         jsx: 'transform',
         jsxSideEffects: false,
         target: ['deno1'],
