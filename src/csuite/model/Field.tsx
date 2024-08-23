@@ -231,7 +231,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *          (full customization, take shell and props as params if you want to reuse some of them)
      *    - retrieve the default render function (a.k.a. Widget)
      */
-    render(p: Partial<FieldPresenterProps>): ReactNode {
+    render(p: Partial<FieldPresenterProps> = {}): ReactNode {
         const props = { field: this, ...fieldPresenterComponents, ...p }
 
         // if (props.UI) return <props.UI {...props} />
@@ -730,6 +730,15 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // UI ----------------------------------------------------
 
+    /**
+     * allow to quickly render the model as a react form
+     * without having to import any component; usage:
+     * | <div>{x.render()}</div>
+     */
+    renderAsForm(p: Omit<FormUIProps, 'field'> = {}): ReactNode {
+        return createElement(FormUI, { field: this, ...p })
+    }
+
     /** temporary until shells */
     renderSimple(this: Field, p?: Omit<FieldPresenterProps, 'field'>): ReactNode {
         return this.render({ Shell: ShellSimpleUI })
@@ -743,15 +752,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         //         {...p}
         //     />
         // )
-    }
-
-    /**
-     * allow to quickly render the model as a react form
-     * without having to import any component; usage:
-     * | <div>{x.render()}</div>
-     */
-    renderAsForm(p: Omit<FormUIProps, 'field'> = {}): ReactNode {
-        return createElement(FormUI, { field: this, ...p })
     }
 
     /**
@@ -978,8 +978,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
     }
 }
-// 🔘 let IX = 0
 
+// 🔘 let IX = 0
 /**
  * RULES:
  *

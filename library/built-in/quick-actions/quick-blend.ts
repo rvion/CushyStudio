@@ -21,8 +21,8 @@ app({
         for (const val of blend) {
             await img1.processWithSharp((i) =>
                 i.composite([
-                    { input: img2.absPath, blend: val.id },
-                    { input: { text: { text: val.id, font: 'Arial', dpi: 800 } }, gravity: 'north' },
+                    { input: img2.absPath, blend: val },
+                    { input: { text: { text: val, font: 'Arial', dpi: 800 } }, gravity: 'north' },
                 ]),
             )
         }

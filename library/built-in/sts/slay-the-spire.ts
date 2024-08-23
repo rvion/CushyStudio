@@ -56,7 +56,7 @@ app({
         const graph = workflow.builder
         let { ckpt, clip, vae } = run_model(ui.model)
         if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
-        const isXL = ui.mode.id === 'xl'
+        const isXL = ui.mode === 'xl'
         const height = isXL ? H * 3 : H
         const width = isXL ? W * 3 : W
         const negativeText = ui.negative.compile({ onLora: () => {} }).promptIncludingBreaks
@@ -76,7 +76,7 @@ app({
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
-                const match = ui.cards.map((i) => i.id).includes(x.ID ?? x.Name)
+                const match = ui.cards.includes(x.ID ?? x.Name)
                 if (!match) continue
             }
 

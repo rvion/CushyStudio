@@ -29,8 +29,12 @@ import { Field_optional, type Field_optional_config } from '../csuite/fields/opt
 import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/FieldSeed'
 import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import { Field_selectOne, type Field_selectOne_config } from '../csuite/fields/selectOne/FieldSelectOne'
-import { type SelectOption, type SelectOption_NO_VALUE } from '../csuite/fields/selectOne/SelectOption'
+import {
+    Field_selectOne,
+    type Field_selectOne_config,
+    type Field_selectOne_config_,
+} from '../csuite/fields/selectOne/FieldSelectOne'
+import { type SelectOption, type SelectOption_, type SelectOptionOpt } from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -335,7 +339,7 @@ export class Builder implements IBuilder {
     }
 
     selectOneStringWithMeta<const VALUE extends string>(
-        options: SelectOption_NO_VALUE<VALUE, VALUE>[],
+        options: SelectOption<VALUE, VALUE>[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
@@ -351,6 +355,71 @@ export class Builder implements IBuilder {
                 if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE, VALUE>
                 return { ...opt, value: id as VALUE }
             }, //
+            ...config,
+        })
+    }
+
+    selectOneOptionId<
+        const OptionLike extends { id: string; label?: string; hue?: number } = {
+            id: string
+            label?: string
+            hue?: number
+        },
+    >(
+        options: readonly OptionLike[],
+        config: PartialOmit<
+            Field_selectOne_config_<OptionLike['id']>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): X.XSelectOne_<OptionLike['id']> {
+        const choices = options.map((c) => c.id)
+        return this.selectOne<OptionLike['id'], OptionLike['id']>({
+            choices: choices,
+            getOptionFromId: (id): Maybe<SelectOption_<OptionLike['id']>> => {
+                // 2024-08-02 domi: could probably include a cache
+                // see also notes on `SelectOneConfig.serial.extra`
+                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
+                const option = options.find((c) => c.id === id)
+                if (!option) return null
+                return {
+                    id: option.id,
+                    label: option.label ?? option.id,
+                    value: option.id,
+                    hue: option.hue,
+                }
+            },
+            getIdFromValue: (v) => v,
+            getValueFromId: (id) => id as OptionLike['id'],
+            ...config,
+        })
+    }
+
+    selectOneOption<
+        const OptionLike extends { id: string; label?: string; hue?: number } = {
+            id: string
+            label?: string
+            hue?: number
+        },
+    >(
+        options: readonly OptionLike[],
+        config: PartialOmit<
+            Field_selectOne_config<OptionLike, OptionLike['id']>,
+            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+        > = {},
+    ): X.XSelectOne<OptionLike, OptionLike['id']> {
+        const keys: OptionLike['id'][] = options.map((c) => c.id)
+        return this.selectOne<OptionLike, OptionLike['id']>({
+            choices: keys,
+            getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
+                // 2024-08-02 domi: could probably include a cache
+                // see also notes on `SelectOneConfig.serial.extra`
+                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
+                const option = options.find((c) => c.id === id)
+                if (!option) return null
+                return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
+            },
+            getIdFromValue: (v) => v.id,
+            getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
             ...config,
         })
     }

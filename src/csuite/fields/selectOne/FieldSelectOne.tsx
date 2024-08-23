@@ -63,7 +63,7 @@ export type Field_selectOne_config<
                 // And exceptionally (autoColumn) we need to use this function from schema without instanciating the field.
                 // not sure what to do.
                 | 'FIELD_NOT_INSTANCIATED',
-        ) => SelectOption<VALUE, KEY>
+        ) => Maybe<SelectOption<VALUE, KEY>>
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         OptionLabelUI?: (
@@ -313,7 +313,8 @@ export class Field_selectOne<
     }
 
     get selectedOption(): SelectOption<VALUE, KEY> {
-        return this.getOptionFromId(this.selectedId)
+        // 🔴
+        return bang(this.getOptionFromId(this.selectedId))
     }
 
     set value(next: Field_selectOne_value<VALUE>) {
@@ -365,7 +366,7 @@ export class Field_selectOne<
     // | I dislike this `getOptionFromId`.
     // | it is redundant / slow / sometimes unnecessary
     // | I'd rather just add the missing mapper for icon, and we would have everything.
-    getOptionFromId = (id: KEY): SelectOption<VALUE, KEY> => this.config.getOptionFromId(id, this)
+    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
     // 🔶 do not compare queries
     get isDirtyFromSnapshot_UNSAFE(): boolean {

@@ -1,5 +1,5 @@
 import type { Box } from '../box/Box'
-import type { DovProps } from '../frame/Dov/Dov'
+import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
@@ -26,11 +26,12 @@ export type BoolButtonProps = {
 
     /** alternative way to specify children */
     text?: string
+
     // border?: TintExt
 
     box?: Box
     onValueChange?: (next: boolean) => void
-} & DovProps
+} & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
     const display = p.display ?? 'check'

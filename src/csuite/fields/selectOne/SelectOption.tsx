@@ -1,28 +1,33 @@
 import type { IconName } from '../../icons/icons'
 
-export type OptionID = string
-
+export type SelectOptionID = string
 export type SelectOption_<VALUE extends string> = SelectOption<VALUE, VALUE>
-
 export type SelectOption<
     //
     VALUE,
     KEY extends string,
 > = {
+    // NOT optional
     id: KEY
     value: VALUE
+
+    // optional
     label?: string
+    labelNode?: JSX.Element
     icon?: IconName
     hue?: number
 }
-// 🔴 this is temp and does not belong here
 
-export type SelectOption_NO_VALUE<
+/** SelectOptional variant with optional value */
+export type SelectOptionOpt<
     //
     VALUE,
     KEY extends string,
 > = {
+    // NOT optional
     id: KEY
+
+    // optional
     value?: VALUE
     label?: string
     labelNode?: JSX.Element

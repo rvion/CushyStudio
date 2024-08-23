@@ -1,5 +1,5 @@
 import type { PartialOmit } from '../../types/Misc'
-import type { SelectOption, SelectOption_NO_VALUE } from '../fields/selectOne/SelectOption'
+import type { SelectOption, SelectOptionOpt } from '../fields/selectOne/SelectOption'
 import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
@@ -171,7 +171,7 @@ export class SimpleBuilder implements IBuilder {
     }
 
     selectOneStringWithMeta<const VALUE extends string>(
-        options: SelectOption_NO_VALUE<VALUE, VALUE>[],
+        options: SelectOptionOpt<VALUE, VALUE>[],
         config: PartialOmit<
             Field_selectOne_config<VALUE, VALUE>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'

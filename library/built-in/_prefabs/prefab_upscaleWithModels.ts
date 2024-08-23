@@ -21,7 +21,7 @@ export const run_upscaleWithModel_v2 = (
     const run = getCurrentRun()
     const graph: ComfyWorkflowBuilder = run.nodes
     for (const model of ui) {
-        const upscaleModelName = model.id as Enum_UpscaleModelLoader_model_name
+        const upscaleModelName = model as Enum_UpscaleModelLoader_model_name
         const upscaleModel = graph.UpscaleModelLoader({ model_name: upscaleModelName })
         const upscaledResult = graph.ImageUpscaleWithModel({
             image: p?.image ?? run.AUTO,

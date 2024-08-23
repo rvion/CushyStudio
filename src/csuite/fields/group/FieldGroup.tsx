@@ -123,7 +123,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                             // if (props?.usage === 'cell') return f.cell({ readonly: props?.readonly }) // f.cell does not exist yet
                             // if (props?.usage === 'text') return f.text({ readonly: props?.readonly }) // f.text does not exist yet
 
-                            return f.renderWithLabel({ fieldName: f.mountKey })
+                            return f.render()
                         }
 
                         if (typeof f === 'string') {
