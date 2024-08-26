@@ -1,6 +1,9 @@
-import type { Field_selectOne_config, Field_selectOne_config_ } from '../csuite/fields/selectOne/FieldSelectOne'
+import type {
+    Field_selectOne_config,
+    Field_selectOne_config_simplified,
+    Field_selectOne_config_simplified_,
+} from '../csuite/fields/selectOne/FieldSelectOne'
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
-import type { PartialOmit } from '../types/Misc'
 
 import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
 import { Schema } from './Schema'
@@ -40,10 +43,7 @@ export class SelectOneBuilder {
      */
     selectOneString<const VALUE extends string>(
         choices: readonly VALUE[] | (() => VALUE[]),
-        config: PartialOmit<
-            Field_selectOne_config<VALUE, VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
+        config: Field_selectOne_config_simplified_<VALUE> = {},
     ): X.XSelectOne_<VALUE> {
         return this.selectOne<VALUE, VALUE>({
             choices: choices as VALUE[],
@@ -63,10 +63,7 @@ export class SelectOneBuilder {
      */
     selectOneOption<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[] /* | ((self: X.SelectOne<OptionLike, OptionLike['id']>) => OptionLike[]) */,
-        config: PartialOmit<
-            Field_selectOne_config<OptionLike, OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
+        config: Field_selectOne_config_simplified<OptionLike, OptionLike['id']> = {},
     ): X.XSelectOne<OptionLike, OptionLike['id']> {
         // precompute key list
         const keys: OptionLike['id'][] = options.map((c) => c.id)
@@ -80,17 +77,44 @@ export class SelectOneBuilder {
             getIdFromValue: (v) => v.id,
             getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
             getOptionFromId: (id) => {
-                // 💬 2024-08-02 domi:
-                // | could probably include a cache
-                // |  - see also notes on `SelectOneConfig.serial.extra`
-                // |  - see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
-
-                // 💬 2024-08-26 rvion:
-                // | is it done ?
-
                 const option = cache.get(id) ?? null
                 if (option == null) return null
+                return {
+                    // value needs to be injected
+                    value: option,
+                    // forward all reamining props
+                    id: option.id,
+                    label: option.label ?? option.id,
+                    hue: option.hue,
+                    icon: option.icon,
+                    labelNode: option.labelNode,
+                }
+            },
+            ...config,
+        })
+    }
 
+    /**
+     * 🔴 UGLY
+     *
+     * the value is the option itself
+     * practical way when you just want to make label, icon, hue, etc
+     * on the fly, but still want to access the full object in the end,
+     * so you can add some custom properties to the same object, like stuff
+     * you'll actually need in the callback.
+     */
+    selectOneOptionFn<const OptionLike extends SelectOptionNoVal<string>>(
+        optionsFn: (self: X.SelectOne<OptionLike, OptionLike['id']>) => OptionLike[],
+        config: Field_selectOne_config_simplified<OptionLike, OptionLike['id']> = {},
+    ): X.XSelectOne<OptionLike, OptionLike['id']> {
+        return this.selectOne<OptionLike, OptionLike['id']>({
+            choices: (self) => optionsFn(self).map((i) => i.id),
+            getIdFromValue: (v) => v.id,
+            getValueFromId: (id, self) => optionsFn(self).find((c) => c.id === id) ?? null,
+            getOptionFromId: (id, self) => {
+                const options = optionsFn(self)
+                const option = options.find((o) => o.id === id) ?? null
+                if (option == null) return null
                 return {
                     // value needs to be injected
                     value: option,
@@ -111,21 +135,25 @@ export class SelectOneBuilder {
      * If you specify the value, it will be IGNORED.
      */
     selectOneOptionId<const OptionLike extends SelectOptionNoVal<string>>(
-        options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectOne_config_<OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
+        options: OptionLike[] | ((self: X.SelectOne_<NoInfer<OptionLike>['id']>) => OptionLike[]),
+        config: Field_selectOne_config_simplified_<OptionLike['id']> = {},
     ): X.XSelectOne_<OptionLike['id']> {
-        const choices = options.map((c) => c.id)
+        type _Field = X.SelectOne_<OptionLike['id']>
+        function getOptions(field: _Field): OptionLike[] {
+            if (typeof options === 'function') return options(field)
+            return options
+        }
+        const choices =
+            typeof options === 'function' //
+                ? (self: _Field): OptionLike['id'][] => options(self).map((c) => c.id)
+                : options.map((c) => c.id)
+
         return this.selectOne<OptionLike['id'], OptionLike['id']>({
-            choices: choices,
+            choices,
             getIdFromValue: (v) => v,
             getValueFromId: (id) => id as OptionLike['id'],
-            getOptionFromId: (id): Maybe<SelectOption_<OptionLike['id']>> => {
-                // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectOneConfig.serial.extra`
-                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
+            getOptionFromId: (id, field): Maybe<SelectOption_<OptionLike['id']>> => {
+                const options = getOptions(field)
                 const option = options.find((c) => c.id === id)
                 if (!option) return null
                 return {
@@ -146,10 +174,7 @@ export class SelectOneBuilder {
      */
     selectOneOptionValue<const VALUE extends string>(
         options: SelectOption_<VALUE>[],
-        config: PartialOmit<
-            Field_selectOne_config_<VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
+        config: Field_selectOne_config_simplified_<VALUE> = {},
     ): X.XSelectOne_<VALUE> {
         const ids: VALUE[] = options.map((c) => c.id)
         return this.selectOne<VALUE, VALUE>({

@@ -20,6 +20,8 @@ import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { simpleBuilder } from '../csuite'
 import { SpacerUI } from '../csuite/components/SpacerUI'
@@ -171,6 +173,15 @@ export class Builder implements IBuilder {
         return new Schema<Field_string>(Field_string, { inputType: 'url', ...config })
     }
 
+    /**
+     * @deprecated
+     * super ugly function; do not use
+     */
+    nanoid(config: Field_string_config = {}): X.XString {
+        const uid = nanoid()
+        return this.string({ ...config, header: (field) => createElement('div', {}, uid), default: uid })
+    }
+
     string(config: Field_string_config = {}): X.XString {
         return new Schema<Field_string>(Field_string, config)
     }
@@ -318,6 +329,7 @@ export class Builder implements IBuilder {
     selectOne: SelectOneBuilder['selectOne'] = this._sob.selectOne.bind(this._sob)
     selectOneString: SelectOneBuilder['selectOneString'] = this._sob.selectOneString.bind(this._sob)
     selectOneOption: SelectOneBuilder['selectOneOption'] = this._sob.selectOneOption.bind(this._sob)
+    selectOneOptionFn: SelectOneBuilder['selectOneOptionFn'] = this._sob.selectOneOptionFn.bind(this._sob)
     selectOneOptionValue: SelectOneBuilder['selectOneOptionValue'] = this._sob.selectOneOptionValue.bind(this._sob)
     selectOneOptionId: SelectOneBuilder['selectOneOptionId'] = this._sob.selectOneOptionId.bind(this._sob)
 

@@ -23,6 +23,16 @@ export type SelectOneSkin = 'select' | 'tab' | 'roll'
 // 💬 2024-08-21 rvion:
 // | it shouldn't be complicated; I've done it a few times, it wasn't that hard.
 
+export type Field_selectOne_config_simplified<VALUE, KEY extends string> = Omit<
+    Field_selectOne_config<VALUE, KEY>,
+    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+>
+
+export type Field_selectOne_config_simplified_<KEY extends string> = Omit<
+    Field_selectOne_config_<KEY>,
+    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+>
+
 // CONFIG
 export type Field_selectOne_config_<KEY extends string> = Field_selectOne_config<KEY, KEY>
 export type Field_selectOne_config<
@@ -53,17 +63,8 @@ export type Field_selectOne_config<
         options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
 
         getIdFromValue: (t: VALUE) => KEY
-        getValueFromId: (id: KEY) => Maybe<VALUE>
-        getOptionFromId: (
-            t: KEY,
-            self:
-                | Field_selectOne<NoInfer<VALUE>, KEY>
-                // 🔴 2024-08-02 domi: bad.
-                // Exceptionally, we need self to consume some channel.
-                // And exceptionally (autoColumn) we need to use this function from schema without instanciating the field.
-                // not sure what to do.
-                | 'FIELD_NOT_INSTANCIATED',
-        ) => Maybe<SelectOption<VALUE, KEY>>
+        getValueFromId: (id: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<VALUE>
+        getOptionFromId: (t: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<SelectOption<VALUE, KEY>>
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         OptionLabelUI?: (
@@ -214,25 +215,15 @@ export class Field_selectOne<
     get options(): SelectOption<VALUE, KEY>[] {
         if (this.config.options != null) {
             const _options = this.config.options
-            if (typeof _options === 'function') {
-                // 🔴 if (!this.root.ready) return []
-                return _options(this)
-            }
+            if (typeof _options === 'function') return _options(this)
             return _options
         }
 
-        if (
-            this.config.choices != null && //
-            this.getOptionFromId != null
-        ) {
+        if (this.config.choices != null && this.getOptionFromId != null) {
             return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
         }
 
-        if (
-            this.config.values != null && //
-            this.getValueFromId != null &&
-            this.getOptionFromId != null
-        ) {
+        if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
             return this.values.map((v) => this.getOptionFromId(this.config.getIdFromValue(v))).filter((x) => x != null)
         }
 
@@ -256,7 +247,7 @@ export class Field_selectOne<
 
         if (this.config.choices != null && this.config.getValueFromId != null) {
             const _choices = this.choices
-            return _choices.map(this.config.getValueFromId).filter((x) => x != null)
+            return _choices.map(this.getValueFromId).filter((x) => x != null)
         }
 
         throw new Error('no way to get values. Provide values or options or choices + getValueFromId')
@@ -360,7 +351,7 @@ export class Field_selectOne<
      *
      * see also "extra"
      */
-    getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id)
+    getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id, this)
 
     // 💬 2024-08-21 rvion: (for @domi)
     // | I dislike this `getOptionFromId`.
