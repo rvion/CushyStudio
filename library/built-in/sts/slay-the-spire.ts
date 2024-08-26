@@ -3,6 +3,7 @@
  * For the slay-the-spire game
  */
 
+import type { SelectOptionNoVal } from '../../../src/csuite/fields/selectOne/SelectOption'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 
 import { bang } from '../../../src/csuite/utils/bang'
@@ -14,6 +15,14 @@ import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
 import { convertColors, convertKind, convertRarity } from './_stsHelpers'
+
+const cardOptions: SelectOptionNoVal<string>[] = allCards.map((x) => {
+    const color = convertColors(x.Color)
+    const kind = convertKind(x.Type)
+    const rarity = convertRarity(x.Rarity)
+    const label = `${x.Name} ${color} ${kind} (${rarity})`
+    return { id: x.ID ?? x.Name, label }
+})
 
 app({
     metadata: {
@@ -31,16 +40,7 @@ app({
         rarity: ui.selectOneString(['uncommon', 'common', 'rare']).optional(),
         colors: ui.selectOneString(['red', 'green', 'gray']).optional(),
         kind: ui.selectOneString(['attack', 'power', 'skill']).optional(),
-        cards: ui.selectMany({
-            appearance: 'select',
-            choices: allCards.map((x) => {
-                const color = convertColors(x.Color)
-                const kind = convertKind(x.Type)
-                const rarity = convertRarity(x.Rarity)
-                const label = `${x.Name} ${color} ${kind} (${rarity})`
-                return { id: x.ID ?? x.Name, label }
-            }),
-        }),
+        cards: ui.selectManyOptions(cardOptions, { appearance: 'select' }),
         llmModel: ui.llmModel({ default: 'openai/gpt-4' }),
         max: ui.int({ default: 3, min: 1, max: 100 }),
         promptPrefix: ui.prompt(),

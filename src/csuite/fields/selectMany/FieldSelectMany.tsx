@@ -14,8 +14,23 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 
-// CONFIG
+// CONFIG variants
+/**
+ * for when key === value is a string
+ * @since 2024-08-23
+ */
 export type Field_selectMany_config_<KEY extends string> = Field_selectMany_config<KEY, KEY>
+
+/**
+ * for when all mappers are deductibles cause the values / keys are string
+ * @since 2024-08-26
+ */
+export type Field_selectManyString_config<KEY extends string> = Omit<
+    Field_selectMany_config<KEY, KEY>,
+    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
+>
+
+// CONFIG
 export type Field_selectMany_config<
     /** the final object that will be accessible as value */
     VALUE,

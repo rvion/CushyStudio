@@ -1,3 +1,19 @@
+import type { Field_bool_config } from '../csuite/fields/bool/FieldBool'
+import type { Field_button_config } from '../csuite/fields/button/FieldButton'
+import type { Field_choices_config } from '../csuite/fields/choices/FieldChoices'
+import type { Field_color_config } from '../csuite/fields/color/FieldColor'
+import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
+import type { Field_group_config, FieldGroup } from '../csuite/fields/group/FieldGroup'
+import type { Field_image_config } from '../csuite/fields/image/FieldImage'
+import type { Field_list_config } from '../csuite/fields/list/FieldList'
+import type { ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
+import type { Field_listExt_config, SListExt } from '../csuite/fields/listExt/WidgetListExt'
+import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
+import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
+import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
+import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
+import type { Field_seed_config } from '../csuite/fields/seed/FieldSeed'
+import type { Field_selectMany_config, Field_selectManyString_config } from '../csuite/fields/selectMany/FieldSelectMany'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
@@ -9,32 +25,28 @@ import { makeAutoObservable } from 'mobx'
 
 import { simpleBuilder } from '../csuite'
 import { SpacerUI } from '../csuite/components/SpacerUI'
-import { Field_bool, type Field_bool_config } from '../csuite/fields/bool/FieldBool'
-import { Field_button, type Field_button_config } from '../csuite/fields/button/FieldButton'
-import { Field_choices, type Field_choices_config } from '../csuite/fields/choices/FieldChoices'
-import { Field_color, type Field_color_config } from '../csuite/fields/color/FieldColor'
-import { Field_custom, type Field_custom_config } from '../csuite/fields/custom/FieldCustom'
+import { Field_bool } from '../csuite/fields/bool/FieldBool'
+import { Field_button } from '../csuite/fields/button/FieldButton'
+import { Field_choices } from '../csuite/fields/choices/FieldChoices'
+import { Field_color } from '../csuite/fields/color/FieldColor'
+import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import { Field_group, type Field_group_config, type FieldGroup } from '../csuite/fields/group/FieldGroup'
-import { Field_image, type Field_image_config } from '../csuite/fields/image/FieldImage'
+import { Field_group } from '../csuite/fields/group/FieldGroup'
+import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_link } from '../csuite/fields/link/FieldLink'
-import { Field_list, type Field_list_config } from '../csuite/fields/list/FieldList'
-import { mkShapeSchema, type ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
-import { type Field_listExt_config, listExt, type SListExt } from '../csuite/fields/listExt/WidgetListExt'
+import { Field_list } from '../csuite/fields/list/FieldList'
+import { mkShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
+import { listExt } from '../csuite/fields/listExt/WidgetListExt'
 import { WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/listExt/WidgetListExtUI'
 import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/FieldMarkdown'
-import { Field_matrix, type Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
-import { Field_number, type Field_number_config } from '../csuite/fields/number/FieldNumber'
-import { Field_optional, type Field_optional_config } from '../csuite/fields/optional/FieldOptional'
-import { Field_orbit, type Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
-import { Field_seed, type Field_seed_config } from '../csuite/fields/seed/FieldSeed'
-import { Field_selectMany, type Field_selectMany_config } from '../csuite/fields/selectMany/FieldSelectMany'
-import {
-    Field_selectOne,
-    type Field_selectOne_config,
-    type Field_selectOne_config_,
-} from '../csuite/fields/selectOne/FieldSelectOne'
-import { type SelectOption, type SelectOption_, type SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
+import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
+import { Field_number } from '../csuite/fields/number/FieldNumber'
+import { Field_optional } from '../csuite/fields/optional/FieldOptional'
+import { Field_orbit } from '../csuite/fields/orbit/FieldOrbit'
+import { Field_seed } from '../csuite/fields/seed/FieldSeed'
+import { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
+import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
+import { type SelectOption, type SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -45,6 +57,7 @@ import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
+import { SelectOneBuilder } from './BuilderSelectOne'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
@@ -301,101 +314,13 @@ export class Builder implements IBuilder {
         return listExt(simpleBuilder, sub)
     }
 
-    // SELECT ONE ------------------------------------------------------------------------------------
-
-    selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
-        return new Schema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
-    }
-
-    selectOneString<const VALUE extends string>(
-        choices: readonly VALUE[] | (() => VALUE[]),
-        config: PartialOmit<
-            Field_selectOne_config<VALUE, VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<VALUE> {
-        return this.selectOne<VALUE, VALUE>({
-            choices: choices as VALUE[],
-            getIdFromValue: (v) => v,
-            getValueFromId: (id) => id as VALUE,
-            getOptionFromId: (id) => ({ id, label: id, value: id as VALUE }),
-            ...config,
-        })
-    }
-
-    selectOneOptionValue<const VALUE extends string>(
-        options: SelectOption<VALUE, VALUE>[],
-        config: PartialOmit<
-            Field_selectOne_config<VALUE, VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<VALUE> {
-        const ids: VALUE[] = options.map((c) => c.id)
-        return this.selectOne<VALUE, VALUE>({
-            choices: ids,
-            getIdFromValue: (v) => v,
-            getValueFromId: (id) => id as VALUE,
-            getOptionFromId: (id): SelectOption<VALUE, VALUE> => {
-                const opt = options.find((c) => c.id === id)
-                if (opt == null) return { id, label: id, value: id as VALUE } as SelectOption<VALUE, VALUE>
-                return { ...opt, value: id as VALUE }
-            }, //
-            ...config,
-        })
-    }
-
-    selectOneOptionId<const OptionLike extends SelectOptionNoVal<string>>(
-        options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectOne_config_<OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<OptionLike['id']> {
-        const choices = options.map((c) => c.id)
-        return this.selectOne<OptionLike['id'], OptionLike['id']>({
-            choices: choices,
-            getOptionFromId: (id): Maybe<SelectOption_<OptionLike['id']>> => {
-                // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectOneConfig.serial.extra`
-                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
-                const option = options.find((c) => c.id === id)
-                if (!option) return null
-                return {
-                    id: option.id,
-                    label: option.label ?? option.id,
-                    value: option.id,
-                    hue: option.hue,
-                }
-            },
-            getIdFromValue: (v) => v,
-            getValueFromId: (id) => id as OptionLike['id'],
-            ...config,
-        })
-    }
-
-    selectOneOption<const OptionLike extends SelectOptionNoVal<string>>(
-        options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectOne_config<OptionLike, OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne<OptionLike, OptionLike['id']> {
-        const keys: OptionLike['id'][] = options.map((c) => c.id)
-        return this.selectOne<OptionLike, OptionLike['id']>({
-            choices: keys,
-            getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
-                // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectOneConfig.serial.extra`
-                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
-                const option = options.find((c) => c.id === id)
-                if (!option) return null
-                return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
-            },
-            getIdFromValue: (v) => v.id,
-            getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
-            ...config,
-        })
-    }
+    // SELECT ONE
+    private _sob = new SelectOneBuilder()
+    selectOne: SelectOneBuilder['selectOne'] = this._sob.selectOne.bind(this._sob)
+    selectOneString: SelectOneBuilder['selectOneString'] = this._sob.selectOneString.bind(this._sob)
+    selectOneOption: SelectOneBuilder['selectOneOption'] = this._sob.selectOneOption.bind(this._sob)
+    selectOneOptionValue: SelectOneBuilder['selectOneOptionValue'] = this._sob.selectOneOptionValue.bind(this._sob)
+    selectOneOptionId: SelectOneBuilder['selectOneOptionId'] = this._sob.selectOneOptionId.bind(this._sob)
 
     // SELECT MANY
 
@@ -407,7 +332,7 @@ export class Builder implements IBuilder {
 
     selectManyString = <const KEY extends string>(
         p: KEY[],
-        config: Omit<Field_selectMany_config<KEY, KEY>, 'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'> = {},
+        config: Field_selectManyString_config<KEY> = {},
     ): X.XSelectMany_<KEY> => {
         return new Schema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
             choices: p,
