@@ -21,34 +21,32 @@ app({
                         _2: ui.header({ markdown: `#### Reference values (select):`, label: false, border: false }),
                         listOfRefs: ui.list({
                             defaultLength: 1,
-                            element: ui.selectOne({
-                                label: 'dynamic-test',
-                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
-                            }),
+                            element: ui.selectOneOption(
+                                listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                                { label: 'dynamic OneOf' },
+                            ),
                         }),
                         listOfRefs2: ui.list({
                             defaultLength: 1,
-                            element: ui.selectMany({
-                                label: 'dynamic-test',
-                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
-                            }),
+                            element: ui.selectManyOptions(
+                                listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                                { label: 'dynamic Many' },
+                            ),
                         }),
                         _3: ui.header({ markdown: `#### Reference values (tabs):`, label: false, border: false }),
                         refs4: ui.list({
                             defaultLength: 1,
-                            element: ui.selectOne({
-                                label: 'dynamic-test',
-                                appearance: 'tab',
-                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
-                            }),
+                            element: ui.selectOneOption(
+                                listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                                { label: 'dynamic OneOf(tab)', appearance: 'tab' },
+                            ),
                         }),
                         refs5: ui.list({
                             defaultLength: 1,
-                            element: ui.selectMany({
-                                label: 'dynamic-test',
-                                appearance: 'tab',
-                                choices: (x) => listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
-                            }),
+                            element: ui.selectManyOptions(
+                                listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                                { label: 'dynamic Many(tab)', appearance: 'tab' },
+                            ),
                         }),
                     }),
                 ),

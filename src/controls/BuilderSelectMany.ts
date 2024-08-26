@@ -26,7 +26,7 @@ export class SelectManyBuilder {
      * @see {@link selectManyString}
      * @see {@link selectManyOptions}
      * @see {@link selectManyOptionIds}
-     * [TODO] @see {@link selectManyOptionValues}
+     * @see {@link selectManyOptionValues}
      */
     selectMany = <const VALUE, const KEY extends string>(
         config: Field_selectMany_config<VALUE, KEY>,
@@ -38,6 +38,7 @@ export class SelectManyBuilder {
      * simplest way to build a quick enum select,
      * work with both static and dynamic select;
      *
+     * @see {@link selectMany} or other variants for more advanced use cases.
      * @since 2024-08-26
      */
     selectManyString = <const KEY extends string>(
@@ -59,6 +60,9 @@ export class SelectManyBuilder {
      * on the fly, but still want to access the full object in the end,
      * so you can add some custom properties to the same object, like stuff
      * you'll actually need in the callback.
+     *
+     * @see {@link selectMany} or other variants for more advanced use cases.
+     * @since 2024-08-26
      */
     selectManyOptions<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
@@ -86,6 +90,9 @@ export class SelectManyBuilder {
      * value is the option id (`option.id`)
      * NO NEED to specify the value in the given options.
      * If you specify the value, it will be IGNORED.
+     *
+     * @see {@link selectMany} or other variants for more advanced use cases.
+     * @since 2024-08-26
      */
     selectManyOptionIds<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
@@ -117,6 +124,9 @@ export class SelectManyBuilder {
      * @since 2024-08-26
      * value is the option value
      * you NEED to specify the value in the given options.
+     *
+     * @see {@link selectMany} or other variants for more advanced use cases.
+     * @since 2024-08-26
      */
     selectManyOptionValues<const VALUE extends string>(
         options: SelectOption_<VALUE>[],

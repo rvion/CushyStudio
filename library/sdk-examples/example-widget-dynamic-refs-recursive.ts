@@ -3,20 +3,19 @@ import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
-import type { Field_selectOne } from '../../src/csuite/fields/selectOne/FieldSelectOne'
 
 app({
-    ui: (form) => ({
-        samplerUI: form.list({
+    ui: (m) => ({
+        samplerUI: m.list({
             label: 'Sampler',
             // showID: true,
             startCollapsed: true,
             defaultLength: 1,
             min: 1,
             element: () =>
-                form.choice({
+                m.choice({
                     items: {
-                        sampler_output_abc_asdf: form.selectOneString(
+                        sampler_output_abc_asdf: m.selectOneString(
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
                             (self): string[] => {
@@ -57,15 +56,15 @@ app({
                                 })
                             },
                         ),
-                        empty_latent: form.group({
+                        empty_latent: m.group({
                             layout: 'H',
                             items: {
-                                width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
-                                height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
-                                batch: form.int({ default: 1, min: 1, max: 32, hideSlider: true }),
+                                width: m.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
+                                height: m.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
+                                batch: m.int({ default: 1, min: 1, max: 32, hideSlider: true }),
                             },
                         }),
-                        pick_image: form.image(),
+                        pick_image: m.image(),
                     },
                 }),
         }),

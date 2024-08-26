@@ -3,12 +3,23 @@
  * TODO: document the unique challenges this appraoch is solving
  */
 
-import type { Field_selectMany_config_ } from '../csuite/fields/selectMany/FieldSelectMany'
+import type { Field_selectMany_config_simplified_ } from '../csuite/fields/selectMany/FieldSelectMany'
 import type { Builder } from '../CUSHY'
 
-export type IEnumListBuilderFn<T extends string> = (config?: Omit<Field_selectMany_config_<T>, 'choices'>) => X.XSelectMany_<T>
+export type IEnumListBuilderFn<T extends string> = (
+    config?: Omit<Field_selectMany_config_simplified_<T>, 'choices'>,
+) => X.XSelectMany_<T>
+
 export type IEnumListBuilder = {
-    [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
+    // 💬 2024-08-26 rvion:
+    // | Extract seems to be a better default, since it preserve type alias name
+    // | provided in the the type template.
+    // | with Extract:
+    // |    ✅: X.Many_<Enum_UpscaleModelLoader_model_name>
+    // | without Extract<...>
+    // |    ❌: X.Many_<"4x-AnimeSharp.pth" | "4x-UltraSharp.pth" | "4x_NMKD-Siax_200k.pth" | ...>
+    [K in keyof Requirable]: IEnumListBuilderFn<Extract<Requirable[K]['$Value'], string>>
+    // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}

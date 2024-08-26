@@ -62,24 +62,43 @@ export class SelectOneBuilder {
      * you'll actually need in the callback.
      */
     selectOneOption<const OptionLike extends SelectOptionNoVal<string>>(
-        options: readonly OptionLike[],
+        options: readonly OptionLike[] /* | ((self: X.SelectOne<OptionLike, OptionLike['id']>) => OptionLike[]) */,
         config: PartialOmit<
             Field_selectOne_config<OptionLike, OptionLike['id']>,
             'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
         > = {},
     ): X.XSelectOne<OptionLike, OptionLike['id']> {
+        // precompute key list
         const keys: OptionLike['id'][] = options.map((c) => c.id)
+
+        // precompute key-to-option map
+        const cache = new Map<OptionLike['id'], OptionLike>()
+        options.forEach((c) => cache.set(c.id, c))
+
         return this.selectOne<OptionLike, OptionLike['id']>({
             choices: keys,
             getIdFromValue: (v) => v.id,
             getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
-            getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
-                // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectOneConfig.serial.extra`
-                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
-                const option = options.find((c) => c.id === id)
-                if (!option) return null
-                return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
+            getOptionFromId: (id) => {
+                // 💬 2024-08-02 domi:
+                // | could probably include a cache
+                // |  - see also notes on `SelectOneConfig.serial.extra`
+                // |  - see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
+
+                // 💬 2024-08-26 rvion:
+                // | is it done ?
+
+                const option = cache.get(id) ?? null
+                if (option == null) return null
+
+                return {
+                    // value needs to be injected
+                    value: option,
+                    //
+                    id: option.id,
+                    label: option.label ?? option.id,
+                    hue: option.hue,
+                }
             },
             ...config,
         })
