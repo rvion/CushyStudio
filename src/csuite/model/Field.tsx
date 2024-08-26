@@ -740,7 +740,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** temporary until shells */
-    renderSimple(this: Field, p?: Omit<FieldPresenterProps, 'field'>): ReactNode {
+    renderSimple(p?: Omit<FieldPresenterProps, 'field'>): ReactNode {
         return this.render({ Shell: ShellSimpleUI })
         // return (
         //     <FieldPresenterCushyUI //
@@ -786,7 +786,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // do we have have render props? (active? look?) or do we make different custom components? probably both are required?
     // currently those kind of "render" config are only available at top level via FormUIProps or via calling field.renderWithLabel(...)
     // but actually header and renderWithLabel have the same nature, so yeah, they should be here too. See commonalities with WidgetWithLabelProps
-    header(this: Field, p?: { readonly?: boolean }): JSX.Element | undefined {
+    header(p?: { readonly?: boolean }): JSX.Element | undefined {
         const HeaderUI =
             'header' in this.config //
                 ? useEnsureObserver(this.config.header)
