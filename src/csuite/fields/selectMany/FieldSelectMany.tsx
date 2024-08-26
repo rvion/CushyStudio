@@ -17,18 +17,32 @@ export type SelectManyAppearance = 'select' | 'tab' | 'list'
 // CONFIG variants
 /**
  * for when key === value is a string
+ *
  * @since 2024-08-23
  */
 export type Field_selectMany_config_<KEY extends string> = Field_selectMany_config<KEY, KEY>
 
 /**
- * for when all mappers are deductibles cause the values / keys are string
+ * for when all mappers are deductibles because the builder function
+ * already imply the mapping logic.
+ *
  * @since 2024-08-26
  */
-export type Field_selectManyString_config<KEY extends string> = Omit<
-    Field_selectMany_config<KEY, KEY>,
+export type Field_selectMany_config_simplified<VALUE, KEY extends string> = Omit<
+    Field_selectMany_config<VALUE, KEY>,
     'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
 >
+
+/**
+ * for when all mappers are deductibles because the builder function
+ * already imply the mapping logic. (variant for when key === value)
+ *
+ * (same as `Field_selectMany_config_simplified` for when value is the same as key)
+ *
+ * @since 2024-08-26
+ */
+
+export type Field_selectMany_config_simplified_<KEY extends string> = Field_selectMany_config_simplified<KEY, KEY>
 
 // CONFIG
 export type Field_selectMany_config<

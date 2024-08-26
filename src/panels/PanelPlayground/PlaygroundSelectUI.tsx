@@ -87,8 +87,8 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
 
                 {cushy.forms /* select via fields */
                     .fields((ui) => ({
-                        test: ui.selectManyString(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh']),
-                        test2: ui.selectManyString(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh'], {
+                        test: ui.selectManyStrings(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh']),
+                        test2: ui.selectManyStrings(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh'], {
                             appearance: 'select',
                         }),
                     }))

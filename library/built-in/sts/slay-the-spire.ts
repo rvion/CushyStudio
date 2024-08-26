@@ -40,7 +40,7 @@ app({
         rarity: ui.selectOneString(['uncommon', 'common', 'rare']).optional(),
         colors: ui.selectOneString(['red', 'green', 'gray']).optional(),
         kind: ui.selectOneString(['attack', 'power', 'skill']).optional(),
-        cards: ui.selectManyOptions(cardOptions, { appearance: 'select' }),
+        cards: ui.selectManyOptionIds(cardOptions, { appearance: 'select' }),
         llmModel: ui.llmModel({ default: 'openai/gpt-4' }),
         max: ui.int({ default: 3, min: 1, max: 100 }),
         promptPrefix: ui.prompt(),

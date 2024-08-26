@@ -10,7 +10,7 @@ app({
         img1: form.image(),
         img2: form.image(),
         // prettier-ignore
-        blend: form.selectManyString([
+        blend: form.selectManyStrings([
             'clear', 'source', 'over', 'in', 'out', 'atop', 'dest', 'dest-over', 'dest-in',
             'dest-out', 'dest-atop', 'xor', 'add', 'saturate', 'multiply', 'screen',
             'overlay', 'darken', 'lighten', 'colour-dodge', 'color-dodge', 'colour-burn',

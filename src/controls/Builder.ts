@@ -13,13 +13,11 @@ import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import type { Field_seed_config } from '../csuite/fields/seed/FieldSeed'
-import type { Field_selectMany_config, Field_selectManyString_config } from '../csuite/fields/selectMany/FieldSelectMany'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
-import type { PartialOmit } from '../types/Misc'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -46,7 +44,7 @@ import { Field_orbit } from '../csuite/fields/orbit/FieldOrbit'
 import { Field_seed } from '../csuite/fields/seed/FieldSeed'
 import { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
 import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
-import { type SelectOption, type SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
+import { type SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
@@ -57,6 +55,7 @@ import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
+import { SelectManyBuilder } from './BuilderSelectMany'
 import { SelectOneBuilder } from './BuilderSelectOne'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
@@ -323,49 +322,12 @@ export class Builder implements IBuilder {
     selectOneOptionId: SelectOneBuilder['selectOneOptionId'] = this._sob.selectOneOptionId.bind(this._sob)
 
     // SELECT MANY
-
-    selectMany = <const VALUE, const KEY extends string>(
-        config: Field_selectMany_config<VALUE, KEY>,
-    ): X.XSelectMany<VALUE, KEY> => {
-        return new Schema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
-    }
-
-    selectManyString = <const KEY extends string>(
-        p: KEY[],
-        config: Field_selectManyString_config<KEY> = {},
-    ): X.XSelectMany_<KEY> => {
-        return new Schema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
-            choices: p,
-            getOptionFromId: (id) => ({ id, label: id, value: id }),
-            getValueFromId: (id) => id,
-            getIdFromValue: (v) => v,
-            ...config,
-        })
-    }
-
-    selectManyOptions<const OptionLike extends SelectOptionNoVal<string>>(
-        options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectMany_config<OptionLike, OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectMany<OptionLike, OptionLike['id']> {
-        const keys: OptionLike['id'][] = options.map((c) => c.id)
-        return this.selectMany<OptionLike, OptionLike['id']>({
-            choices: keys,
-            getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
-                // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectManyConfig.serial.extra`
-                // see also notes on `selectManyStringFn` usage in `prefab_prql_query.tsx`
-                const option = options.find((c) => c.id === id)
-                if (!option) return null
-                return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
-            },
-            getIdFromValue: (v) => v.id,
-            getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
-            ...config,
-        })
-    }
+    private _smb = new SelectManyBuilder()
+    selectMany: SelectManyBuilder['selectMany'] = this._smb.selectMany.bind(this._smb)
+    selectManyStrings: SelectManyBuilder['selectManyString'] = this._smb.selectManyString.bind(this._smb)
+    selectManyOptions: SelectManyBuilder['selectManyOptions'] = this._smb.selectManyOptions.bind(this._smb)
+    selectManyOptionIds: SelectManyBuilder['selectManyOptionIds'] = this._smb.selectManyOptionIds.bind(this._smb)
+    selectManyOptionValues: SelectManyBuilder['selectManyOptionValues'] = this._smb.selectManyOptionValues.bind(this._smb)
 
     // Dynamic
 

@@ -75,7 +75,7 @@ app({
                         { id: 'email', label: 'Email' },
                         { id: 'push', label: 'Push' },
                     ]),
-                    locations: ui.selectManyString(['Locomotive', 'Locomotive (Bis)'], {
+                    locations: ui.selectManyStrings(['Locomotive', 'Locomotive (Bis)'], {
                         label: 'Établissements',
                     }),
                     filter: ui.prompt({ label: 'Filtre' }),

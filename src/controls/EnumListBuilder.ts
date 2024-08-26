@@ -36,7 +36,7 @@ export class EnumListBuilder {
                 // return (config: any = {}) => form.builder.bool()
                 // return the builder
                 return (config: any = {}) =>
-                    domain.selectManyString({
+                    domain.selectManyStrings({
                         choices: enumSchema.values.map((v) => ({ id: v.toString(), label: v })),
                         appearance: 'tab',
                         ...config,

@@ -1,12 +1,15 @@
-import type { Field_selectOne_config, Field_selectOne_config_ } from '../csuite/fields/selectOne/FieldSelectOne'
+import type {
+    Field_selectMany_config,
+    Field_selectMany_config_simplified,
+    Field_selectMany_config_simplified_,
+} from '../csuite/fields/selectMany/FieldSelectMany'
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
-import type { PartialOmit } from '../types/Misc'
 
-import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
+import { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
 import { Schema } from './Schema'
 
 /**
- * SelectOneBuilder allow to centralize every selectOne method
+ * SelectManyBuilder allow to centralize every selectMany method
  *
  * 💬 2024-08-26 rvion: TODO:
  * | use some  rank-2 polymorphism to allow the user to pass
@@ -15,18 +18,20 @@ import { Schema } from './Schema'
  * | ping @Globidev
  *
  */
-export class SelectOneBuilder {
+export class SelectManyBuilder {
     /**
-     * this method has all the selectOne capabilities.
+     * this method has all the selectMany capabilities.
      * please, use a simpler variant if you don't need all the features.
      *
-     * @see {@link selectOneString}
-     * @see {@link selectOneOption}
-     * @see {@link selectOneOptionId}
-     * @see {@link selectOneOptionValue}
+     * @see {@link selectManyString}
+     * @see {@link selectManyOptions}
+     * @see {@link selectManyOptionIds}
+     * [TODO] @see {@link selectManyOptionValues}
      */
-    selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
-        return new Schema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
+    selectMany = <const VALUE, const KEY extends string>(
+        config: Field_selectMany_config<VALUE, KEY>,
+    ): X.XSelectMany<VALUE, KEY> => {
+        return new Schema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
     }
 
     /**
@@ -34,22 +39,16 @@ export class SelectOneBuilder {
      * work with both static and dynamic select;
      *
      * @since 2024-08-26
-     *
-     * 👉 if you use dyanmic selections, just make sure
-     * there is at least one value in the array.
      */
-    selectOneString<const VALUE extends string>(
-        choices: readonly VALUE[] | (() => VALUE[]),
-        config: PartialOmit<
-            Field_selectOne_config<VALUE, VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<VALUE> {
-        return this.selectOne<VALUE, VALUE>({
-            choices: choices as VALUE[],
+    selectManyString = <const KEY extends string>(
+        p: KEY[],
+        config: Field_selectMany_config_simplified_<KEY> = {},
+    ): X.XSelectMany_<KEY> => {
+        return new Schema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
+            choices: p,
+            getOptionFromId: (id) => ({ id, label: id, value: id }),
+            getValueFromId: (id) => id,
             getIdFromValue: (v) => v,
-            getValueFromId: (id) => id as VALUE,
-            getOptionFromId: (id) => ({ id, label: id, value: id as VALUE }),
             ...config,
         })
     }
@@ -61,22 +60,19 @@ export class SelectOneBuilder {
      * so you can add some custom properties to the same object, like stuff
      * you'll actually need in the callback.
      */
-    selectOneOption<const OptionLike extends SelectOptionNoVal<string>>(
+    selectManyOptions<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectOne_config<OptionLike, OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne<OptionLike, OptionLike['id']> {
+        config: Field_selectMany_config_simplified<OptionLike, OptionLike['id']> = {},
+    ): X.XSelectMany<OptionLike, OptionLike['id']> {
         const keys: OptionLike['id'][] = options.map((c) => c.id)
-        return this.selectOne<OptionLike, OptionLike['id']>({
+        return this.selectMany<OptionLike, OptionLike['id']>({
             choices: keys,
             getIdFromValue: (v) => v.id,
             getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
             getOptionFromId: (id): Maybe<SelectOption<OptionLike, OptionLike['id']>> => {
                 // 2024-08-02 domi: could probably include a cache
-                // see also notes on `SelectOneConfig.serial.extra`
-                // see also notes on `selectOneStringFn` usage in `prefab_prql_query.tsx`
+                // see also notes on `SelectManyConfig.serial.extra`
+                // see also notes on `selectManyStringFn` usage in `prefab_prql_query.tsx`
                 const option = options.find((c) => c.id === id)
                 if (!option) return null
                 return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
@@ -91,15 +87,12 @@ export class SelectOneBuilder {
      * NO NEED to specify the value in the given options.
      * If you specify the value, it will be IGNORED.
      */
-    selectOneOptionId<const OptionLike extends SelectOptionNoVal<string>>(
+    selectManyOptionIds<const OptionLike extends SelectOptionNoVal<string>>(
         options: readonly OptionLike[],
-        config: PartialOmit<
-            Field_selectOne_config_<OptionLike['id']>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<OptionLike['id']> {
+        config: Field_selectMany_config_simplified_<OptionLike['id']> = {},
+    ): X.XSelectMany_<OptionLike['id']> {
         const choices = options.map((c) => c.id)
-        return this.selectOne<OptionLike['id'], OptionLike['id']>({
+        return this.selectMany<OptionLike['id'], OptionLike['id']>({
             choices: choices,
             getIdFromValue: (v) => v,
             getValueFromId: (id) => id as OptionLike['id'],
@@ -125,15 +118,12 @@ export class SelectOneBuilder {
      * value is the option value
      * you NEED to specify the value in the given options.
      */
-    selectOneOptionValue<const VALUE extends string>(
+    selectManyOptionValues<const VALUE extends string>(
         options: SelectOption_<VALUE>[],
-        config: PartialOmit<
-            Field_selectOne_config_<VALUE>,
-            'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
-        > = {},
-    ): X.XSelectOne_<VALUE> {
+        config: Field_selectMany_config_simplified_<VALUE> = {},
+    ): X.XSelectMany_<VALUE> {
         const ids: VALUE[] = options.map((c) => c.id)
-        return this.selectOne<VALUE, VALUE>({
+        return this.selectMany<VALUE, VALUE>({
             choices: ids,
             getIdFromValue: (v) => v,
             getValueFromId: (id) => id as VALUE,
