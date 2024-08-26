@@ -1,5 +1,5 @@
-import type { Field } from '../model/Field'
-import type { FieldPresenterComponents } from './FieldPresenterComponents'
+import type { Field } from '../../model/Field'
+import type { FieldPresenterComponents } from '../FieldPresenterComponents'
 import type { FC } from 'react'
 
 export interface FieldPresenterProps</* FIELD extends Field */>extends FieldPresenterComponents {

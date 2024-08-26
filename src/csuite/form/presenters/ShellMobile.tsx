@@ -2,9 +2,9 @@ import type { FieldPresenterProps } from './FieldPresenterProps'
 
 import { observer } from 'mobx-react-lite'
 
-import { Frame } from '../frame/Frame'
-import { AnimatedSizeUI } from '../smooth-size/AnimatedSizeUI'
-import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
+import { Frame } from '../../frame/Frame'
+import { AnimatedSizeUI } from '../../smooth-size/AnimatedSizeUI'
+import { WidgetHeaderContainerUI } from '../WidgetHeaderContainerUI'
 
 export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(p: FieldPresenterProps) {
     const field = p.field

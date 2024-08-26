@@ -1,8 +1,8 @@
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
 
-import { type FieldPresenterProps } from '../form/FieldPresenterProps'
-import { FieldPresenterCushyUI } from '../form/ShellCushy'
+import { type FieldPresenterProps } from '../form/presenters/FieldPresenterProps'
+import { FieldPresenterCushyUI } from '../form/presenters/ShellCushy'
 
 // Widget --------------------------------------------------------
 // every field can defined a component to render it.
