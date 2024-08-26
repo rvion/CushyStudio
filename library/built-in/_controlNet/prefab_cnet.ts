@@ -261,7 +261,8 @@ const _apply_cnet = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_node = mask
-        ? graph.ACN$_AdvancedControlNetApply({
+        ? // @ts-expect-error
+          graph.ACN$_AdvancedControlNetApply({
               strength: strength ?? 1,
               positive: args.positive,
               negative: args.negative,
