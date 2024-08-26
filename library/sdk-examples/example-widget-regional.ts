@@ -18,9 +18,7 @@ app({
                 form.group({
                     items: {
                         prompt: form.prompt({}),
-                        mode: form.selectOne({
-                            choices: [{ id: 'combine' }, { id: 'concat' }],
-                        }),
+                        mode: form.selectOneString(['combine', 'concat']),
                     },
                 }),
         }),
@@ -53,7 +51,7 @@ app({
             })
 
             positive =
-                item.mode.id === 'combine'
+                item.mode === 'combine'
                     ? graph.ConditioningCombine({
                           conditioning_1: positive,
                           conditioning_2: localConditionning,

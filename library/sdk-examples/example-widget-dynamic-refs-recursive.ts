@@ -16,10 +16,10 @@ app({
             element: () =>
                 form.choice({
                     items: {
-                        sampler_output_abc_asdf: form.selectOne({
+                        sampler_output_abc_asdf: form.selectOneString(
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
-                            choices: (self) => {
+                            (self): string[] => {
                                 const formRoot = self.root as Field_group<any>
 
                                 // 🔶 null when the form is not yet fully initialized
@@ -31,7 +31,7 @@ app({
                                 const steps = formRoot.fields.samplerUI as Field_list<
                                     Schema<
                                         Field_choices<{
-                                            sampler_output_abc_asdf: Schema<Field_selectOne<any>>
+                                            sampler_output_abc_asdf: Schema<X.SelectOne_<any>>
                                             empty_latent: Schema<Field_group<any>>
                                             pick_image: Schema<Field_image>
                                         }>
@@ -56,7 +56,7 @@ app({
                                     }
                                 })
                             },
-                        }),
+                        ),
                         empty_latent: form.group({
                             layout: 'H',
                             items: {

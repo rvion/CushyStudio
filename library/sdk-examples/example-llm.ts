@@ -1,7 +1,3 @@
-import type { OpenRouter_Models } from '../../src/csuite/openrouter/OpenRouter_models'
-
-import { openRouterInfos } from '../../src/csuite/openrouter/OpenRouter_infos'
-
 const defaultSystemPrompt = [
     //
     `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
@@ -17,9 +13,7 @@ const defaultSystemPrompt = [
 app({
     ui: (ui) => ({
         topic: ui.string({ textarea: true, default: 'world tree, fantasy, epic, majestic' }),
-        llmModel: ui.selectOne({
-            choices: Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name })),
-        }),
+        llmModel: ui.llmModel(),
         customSystemMessage: ui.group({
             startCollapsed: true,
             items: {

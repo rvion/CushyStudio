@@ -1,7 +1,3 @@
-import type { OpenRouter_Models } from '../../src/csuite/openrouter/OpenRouter_models'
-
-import { openRouterInfos } from '../../src/csuite/openrouter/OpenRouter_infos'
-
 app({
     metadata: {
         name: 'example prompt programmatic',
@@ -9,13 +5,7 @@ app({
     },
     ui: (ui) => ({
         userMessage: ui.string({ textarea: true }),
-        llmModel: ui.selectOne({
-            // appearance: 'tab',
-            choices: Object.entries(openRouterInfos).map(([id, info]) => ({
-                id: id as OpenRouter_Models,
-                label: info.name,
-            })),
-        }),
+        llmModel: ui.llmModel(),
         regionalPrompt: ui.regional({
             height: 512,
             width: 512,
@@ -31,9 +21,7 @@ app({
             element: () =>
                 ui.fields({
                     prompt: ui.prompt({}),
-                    mode: ui.selectOne({
-                        choices: [{ id: 'combine' }, { id: 'concat' }],
-                    }),
+                    mode: ui.selectOneString(['combine', 'concat']),
                 }),
         }),
         button: ui.button({ onClick: () => void cushy.showConfettiAndBringFun() }),

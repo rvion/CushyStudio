@@ -43,7 +43,7 @@ export function ui_customSave(): UI_customSave {
     })
 }
 
-export const run_customSave = (ui: OutputFor<typeof ui_customSave>): ImageSaveFormat | undefined => {
+export const run_customSave = (ui: Maybe<OutputFor<typeof ui_customSave>>): ImageSaveFormat | undefined => {
     if (ui == null) return undefined
     const now = new Date()
     return {

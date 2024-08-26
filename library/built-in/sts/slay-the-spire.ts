@@ -86,9 +86,9 @@ app({
             const uid = `${x.ID ?? x.Name}-${color}-${kind}-${rarity}`
 
             console.log(`[🤠] `, color, kind, rarity)
-            if (ui.rarity && ui.rarity.id !== rarity) continue
-            if (ui.colors && ui.colors.id !== color) continue
-            if (ui.kind && ui.kind.id !== kind) continue
+            if (ui.rarity && ui.rarity !== rarity) continue
+            if (ui.colors && ui.colors !== color) continue
+            if (ui.kind && ui.kind !== kind) continue
 
             // ----------------------------
 

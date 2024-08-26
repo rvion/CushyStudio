@@ -242,7 +242,8 @@ export class LibraryFile {
             const ctx = await this._esbuildContext
             const res = await ctx.rebuild()
             // console.log(`[🧐] res`, Object.keys(res.metafile.inputs))
-            const outFile: OutputFile = res.outputFiles[0]!
+            //                                    🔴   V
+            const outFile: OutputFile = res.outputFiles?.[0]!
             if (outFile.text == null) throw new Error('compilation failed')
 
             // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
