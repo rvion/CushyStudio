@@ -1,5 +1,5 @@
 import type { Field_shared } from '../fields/shared/FieldShared'
-import type { FieldPresenterProps } from '../form/presenters/FieldPresenterProps'
+import type { PresenterFn } from '../form/presenters/FieldPresenterProps'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
@@ -19,10 +19,10 @@ import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
 import { getFieldSharedClass, isFieldGroup, isFieldOptional } from '../fields/WidgetUI.DI'
-import { fieldPresenterComponents } from '../form/FieldPresenterComponents'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { FormUI, type FormUIProps } from '../form/FormUI'
-import { FieldPresenterCushyUI } from '../form/presenters/ShellCushy'
+import { FieldPresenterCushyUI } from '../form/presenters/PresenterCushy'
+import { defaultPresenterSlots } from '../form/presenters/PresenterSlotsDefaults'
 import { ShellSimpleUI } from '../form/presenters/ShellSimple'
 import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
@@ -205,9 +205,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /**
      * use field.header() if you just want to render the input
      */
-    renderWithLabel(
-        p?: Omit<FieldPresenterProps, 'field' | 'fieldName'> & Partial<Pick<FieldPresenterProps, 'fieldName'>>,
-    ): JSX.Element {
+    renderWithLabel(p?: Omit<PresenterFn, 'field' | 'fieldName'> & Partial<Pick<PresenterFn, 'fieldName'>>): JSX.Element {
         return (
             <FieldPresenterCushyUI //
                 key={this.id}
@@ -231,8 +229,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      *          (full customization, take shell and props as params if you want to reuse some of them)
      *    - retrieve the default render function (a.k.a. Widget)
      */
-    render(p: Partial<FieldPresenterProps> = {}): ReactNode {
-        const props = { field: this, ...fieldPresenterComponents, ...p }
+    render(p: Partial<PresenterFn> = {}): ReactNode {
+        const props = { field: this, ...defaultPresenterSlots, ...p }
 
         // if (props.UI) return <props.UI {...props} />
         if (this.config.render) return this.config.render(p)
@@ -740,7 +738,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     /** temporary until shells */
-    renderSimple(p?: Omit<FieldPresenterProps, 'field'>): ReactNode {
+    renderSimple(p?: Omit<PresenterFn, 'field'>): ReactNode {
         return this.render({ Shell: ShellSimpleUI })
         // return (
         //     <FieldPresenterCushyUI //

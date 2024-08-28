@@ -1,9 +1,9 @@
-import type { FieldPresenterProps } from './FieldPresenterProps'
+import type { PresenterFn } from './FieldPresenterProps'
 
 import { observer } from 'mobx-react-lite'
 
 // SHELL SIMPLE
-export const ShellSimpleUI = observer(function ShellSimple(p: FieldPresenterProps) {
+export const ShellSimpleUI = observer(function ShellSimple(p: PresenterFn) {
     const field = p.field
     return (
         <div>

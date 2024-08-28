@@ -1,5 +1,3 @@
-import type { FieldPresenterProps } from './FieldPresenterProps'
-
 import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../../errors/ErrorBoundaryUI'
@@ -20,19 +18,7 @@ import { WidgetMenuUI } from '../WidgetMenu'
 import { WidgetToggleUI } from '../WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../WidgetUndoChangesButtonUI'
 
-// const field = originalField.actualWidgetToDisplay
-// const HeaderUI = p.slotHeader ?? field.header()
-// const BodyUI = p.slotBody ?? field.body()
-// const extraClass = originalField.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
-// const csuite = useCSuite()
-// const fieldName = p.fieldName ?? field.fieldName
-// const labelText: string | false = p.label ?? field.config.label ?? makeLabelFromFieldName(p.fieldName)
-// const justifyOld = p.justifyLabel ?? field.justifyLabel
-// const labellayout = justifyOld ? csuite.labellayout : 'fixed-left'
-// const justify = p.justifyLabel ?? (labellayout === 'fluid' ? false : true)
-// SHELL CUSHY
-
-export const FieldPresenterCushyUI = observer(function FieldPresenterCushy(p: FieldPresenterProps) {
+export const FieldPresenterCushyUI = observer(function FieldPresenterCushy(p: PresenterFn) {
     const field = p.field
     if (p.field.isHidden && !p.showHidden?.()) return null
     const originalField = p.field

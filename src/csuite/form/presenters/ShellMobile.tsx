@@ -1,4 +1,5 @@
-import type { FieldPresenterProps } from './FieldPresenterProps'
+import type { Field } from '../../model/Field'
+import type { Presenter } from './Presenter'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,8 +7,8 @@ import { Frame } from '../../frame/Frame'
 import { AnimatedSizeUI } from '../../smooth-size/AnimatedSizeUI'
 import { WidgetHeaderContainerUI } from '../WidgetHeaderContainerUI'
 
-export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(p: FieldPresenterProps) {
-    const field = p.field
+export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(p: { presenter: Presenter; field: Field }) {
+    const { field, presenter } = p
     if (p.field.isHidden && !p.showHidden?.()) return null
 
     const WUI = (

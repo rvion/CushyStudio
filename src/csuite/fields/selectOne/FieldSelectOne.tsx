@@ -268,6 +268,13 @@ export class Field_selectOne<
         })
     }
 
+    randomize(): void {
+        const choices = this.choices
+        if (choices.length === 0) return
+        const idx = Math.floor(Math.random() * choices.length)
+        this.selectedId = choices[idx]!
+    }
+
     get firstID(): KEY {
         const id0 = this.choices[0]
         // if (id0 == null) debugger

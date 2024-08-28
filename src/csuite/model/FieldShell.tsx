@@ -1,8 +1,8 @@
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
 
-import { type FieldPresenterProps } from '../form/presenters/FieldPresenterProps'
-import { FieldPresenterCushyUI } from '../form/presenters/ShellCushy'
+import { type PresenterFn } from '../form/presenters/FieldPresenterProps'
+import { FieldPresenterCushyUI } from '../form/presenters/PresenterCushy'
 
 // Widget --------------------------------------------------------
 // every field can defined a component to render it.
@@ -11,7 +11,7 @@ import { FieldPresenterCushyUI } from '../form/presenters/ShellCushy'
 export type FieldRenderProps<FIELD extends Field> = {
     field: FIELD
     shell?: FieldShellExt
-    ShellProps?: Partial<FieldPresenterProps>
+    ShellProps?: Partial<PresenterFn>
 }
 
 // --------------------------------------------------------------------
@@ -19,7 +19,7 @@ export type FieldRenderProps<FIELD extends Field> = {
 export type FieldWidget<FIELD extends Field> = CovariantFC<FieldRenderProps<FIELD>>
 
 // Shells --------------------------------------------------------
-export type FieldShell = React.FC<FieldPresenterProps>
+export type FieldShell = React.FC<PresenterFn>
 
 // prettier-ignore
 export type FieldShellExt =

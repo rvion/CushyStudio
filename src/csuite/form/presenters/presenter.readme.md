@@ -1,3 +1,5 @@
+❌ no longer true
+
 # **Presenters**
 
 ## concept:
@@ -47,18 +49,16 @@ FIELD.render(PRESENTER)
 PRESENTER.render(FIELD)
 ```
 
+## built-in
 
+While Presenter are by default codebase agnostic, and easy to extend, you may still want
+to use a custom presenter in your project, to tweak the
 
-```
-// when you have a presenter instance, you can use it to render a field
-// using it's render method
-PRESENTER.render(field)
-```
+you may want custom presenter
+    - that are aware of your project's components.
+    - that support custom logic / config override strategy that fits your project better.
 
-## Well-known presenters
-
-
-csuite defined a few well-known presenters, that can be overriden if you want.
+Csuite defines a few well-known presenters, that can be overriden if you want.
 
 ```ts
 field.renderAsCell; /* => */ field.render(CellPresenter, {... /* Cell Presenter Props */})
