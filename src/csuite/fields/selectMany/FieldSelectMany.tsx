@@ -122,6 +122,7 @@ export type Field_selectMany_types<
 }
 
 // STATE
+export type Field_selectMany_<KEY extends string> = Field_selectMany<KEY, KEY>
 export class Field_selectMany<
     //
     VALUE extends any,
@@ -359,6 +360,21 @@ export class Field_selectMany<
         const { snapshot, ...currentSerial } = this.serial
         if (snapshot == null) return false
         return stableStringify(snapshot.values) !== stableStringify(currentSerial.values)
+    }
+
+    /**
+     * pick between 0 and 2 random values
+     */
+    randomize(): void {
+        const choices = this.choices
+        if (choices.length === 0) return
+        const numOfValuesSelected = Math.floor(Math.random() * 3)
+        for (let i = 0; i < numOfValuesSelected; i++) {
+            const idx = Math.floor(Math.random() * choices.length)
+            const choice = choices[idx]!
+            if (this.selectedIds.includes(choice)) continue
+            this.addId(choice)
+        }
     }
 }
 

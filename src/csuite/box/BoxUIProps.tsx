@@ -1,4 +1,4 @@
-import { Box } from './Box'
+import type { Box } from './Box'
 
 export type BoxUIProps = Box & BoxBasicProps
 

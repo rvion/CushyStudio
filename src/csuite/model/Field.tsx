@@ -8,7 +8,7 @@ import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
-import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { FieldSerial, FieldSerial_CommonProperties } from './FieldSerial'
 import type { Instanciable } from './Instanciable'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { Producer } from './pubsub/Producer'
@@ -53,6 +53,14 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 }
 
 export type KeyedField = { key: string; field: Field }
+
+export type FieldCtorProps<F extends Field> = [
+    //
+    repo: Repository,
+    root: Field | null,
+    parent: Field | null,
+    schema: BaseSchema<F>,
+]
 
 export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -135,6 +143,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** own errors specific to this widget; must NOT include child errors */
     abstract readonly ownProblems: Problem_Ext
 
+    static migrateSerial(serial: FieldSerial<unknown>): any {
+        return serial
+    }
+
     /**
      * TODO later: make abstract to make sure we
      * have that on every single field + add field config option
@@ -151,8 +163,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         serial: any | null,
     ): Field_shared<this> {
         const FieldSharedClass = getFieldSharedClass()
-        // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvvvvv
         // const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
+        // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvv
         const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
         return schema.instanciate(repo, root, parent, serial)
     }
@@ -727,6 +739,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // UI ----------------------------------------------------
+
+    /** temporary until shells */
+    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                field={this}
+                showWidgetMenu={false}
+                showWidgetExtra={false}
+                showWidgetUndo={false}
+                justifyLabel={false}
+                fieldName='_'
+                {...p}
+            />
+        )
+    }
 
     /**
      * allow to quickly render the model as a react form

@@ -98,11 +98,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this /* & EXTRA */ {
         const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new SimpleSchema<FIELD>(
-            //
-            this.fieldConstructor,
-            mergedConfig,
-        )
+        const cloned = new SimpleSchema<FIELD>(this.fieldConstructor, mergedConfig)
         return cloned as this
     }
 }

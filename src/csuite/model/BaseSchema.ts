@@ -1,7 +1,7 @@
 import type { Field_list_serial } from '../fields/list/FieldList'
 import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Field } from './Field'
+import type { Field, FieldCtorProps } from './Field'
 import type { FieldConstructor } from './FieldConstructor'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
@@ -31,7 +31,7 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         }
     }
 
-    extend<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
+    extend_<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
         const x: BaseSchema<FIELD> = this.withConfig({
             customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
         })
@@ -70,6 +70,14 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
     ): BaseSchema<EXTS /* & FIELD */> {
         if (this.config.classToUse != null) throw new Error('already have a custom class')
         return this.withConfig({ classToUse: cls }) as any as BaseSchema<EXTS>
+    }
+
+    useBuilder<EXTS extends Field>(
+        /** the class constructor */
+        builder: (...args: FieldCtorProps<FIELD>) => EXTS,
+    ): BaseSchema<EXTS /* & FIELD */> {
+        if (this.config.classToUse != null) throw new Error('already have a custom class')
+        return this.withConfig({ builderToUse: builder }) as any as BaseSchema<EXTS>
     }
 
     applySchemaExtensions(): void {
@@ -165,6 +173,8 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         // recover phase
         serial = autofixSerial_20240703(serial)
         autofixSerial_20240711(serial)
+
+        // 🔶 To move into migrateSerial
         if (serial != null && serial.$ !== this.type) {
             // ADDING LIST
             if (this.type === 'list') {
@@ -192,6 +202,11 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
                 if (next != null) serial = next
             }
         }
+
+        if (serial != null) {
+            const newSerial = this.fieldConstructor.migrateSerial(serial)
+            if (newSerial) serial = newSerial
+        }
         // ----------------------------------------------------------------------------------
 
         // run the config.onCreation if needed
@@ -207,17 +222,21 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         // ensure the serial is compatible
         if (serial != null && serial.$ !== this.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
-            console.log(`[🔶] INVALID SERIAL:`, serial)
+            console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
             serial = null
         }
         // create the instance
         let field: FIELD
         if (this.fieldConstructor.build === 'new') {
-            const FieldClass_UNSAFE =
-                this.config.classToUse != null //
-                    ? this.config.classToUse(this.fieldConstructor)
-                    : this.fieldConstructor
-            field = new FieldClass_UNSAFE(repo, root, parent, this, serial)
+            if (this.config.classToUse) {
+                const KTOR = this.config.classToUse(this.fieldConstructor)
+                field = new KTOR(repo, root, parent, this, serial)
+            } else if (this.config.builderToUse != null) {
+                field = this.config.builderToUse(repo, root, parent, this, serial)
+            } else {
+                const KTOR = this.fieldConstructor
+                field = new KTOR(repo, root, parent, this, serial)
+            }
         } else {
             /** final safety net for the extends class feature */
             if (this.config.classToUse != null) {

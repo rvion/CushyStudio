@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react'
+
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'

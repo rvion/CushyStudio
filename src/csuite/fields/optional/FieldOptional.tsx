@@ -172,6 +172,12 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
             this.child.value = next
         }
     }
+
+    randomize() {
+        const active = Math.random() < 0.5
+        this.setActive(active)
+        if (active) this.child.randomize()
+    }
 }
 
 // DI

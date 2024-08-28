@@ -1,11 +1,12 @@
 import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { IconName } from '../icons/icons'
 import type { RevealProps } from '../reveal/RevealProps'
+import type { FormUIProps } from './FormUI'
 import type { ReactNode } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { RevealUI } from '../reveal/RevealUI'
-import { FormUI, FormUIProps } from './FormUI'
+import { FormUI } from './FormUI'
 
 /** free structure */
 
@@ -35,7 +36,7 @@ export class Form {
         const { title, label, ...rest } = p ?? {}
         return (
             <RevealUI
-                shell='popup-lg'
+                shell='popup-sm'
                 placement='screen-top'
                 title={p?.title}
                 onRevealed={p?.onRevealed}

@@ -93,6 +93,10 @@ type RenderFieldsSubsetProps<T extends SchemaDict> = {
 }
 
 // STATE
+export interface Field_group<T extends SchemaDict> {
+    $Subfields: T
+}
+
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
@@ -208,7 +212,11 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return new Form({
             ...props,
             field: this,
-            Content: this.renderFieldsSubset(fields, { showMore: props.showMore, usage: props.usage, readonly: props.readonly }),
+            Content: this.renderFieldsSubset(fields, {
+                showMore: props.showMore,
+                usage: props.usage,
+                readonly: props.readonly,
+            }),
         })
     }
 
@@ -376,6 +384,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             }
         },
     })
+
+    randomize() {
+        this.subFields.forEach((f) => f.randomize())
+    }
 }
 
 // DI

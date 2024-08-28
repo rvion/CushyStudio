@@ -1,9 +1,8 @@
 import type { DovProps } from '../frame/Dov/Dov'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
+import type React from 'react'
 import type { FC } from 'react'
-
-import React from 'react'
 
 // prettier-ignore
 export type KnownShells =

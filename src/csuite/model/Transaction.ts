@@ -20,10 +20,9 @@ export type TransactionMode = 'WITH_EFFECT' | 'NO_EFFECT'
 export class Transaction {
     constructor(
         //
-        public repo: Repository,
-        // 🔴 Transaction mode is not used yet
-        // public mode: TransactionMode,
-    ) {}
+        public repo: Repository, // 🔴 Transaction mode is not used yet
+    ) // public mode: TransactionMode,
+    {}
 
     /** fields that have been created during the transaction */
     bump: {

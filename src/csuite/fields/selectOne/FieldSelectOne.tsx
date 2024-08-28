@@ -158,6 +158,7 @@ const FAILOVER_VALUE: SelectOption<any, string> = Object.freeze({
     value: '❌',
 })
 
+export type Field_selectOne_<KEY extends string> = Field_selectOne<KEY, KEY>
 export class Field_selectOne<
         //
         VALUE extends any,
@@ -215,7 +216,10 @@ export class Field_selectOne<
     get options(): SelectOption<VALUE, KEY>[] {
         if (this.config.options != null) {
             const _options = this.config.options
-            if (typeof _options === 'function') return _options(this)
+            if (typeof _options === 'function') {
+                // 🔴 if (!this.root.ready) return []
+                return _options(this)
+            }
             return _options
         }
 
@@ -223,7 +227,11 @@ export class Field_selectOne<
             return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
         }
 
-        if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
+        if (
+            this.config.values != null && //
+            this.getValueFromId != null &&
+            this.getOptionFromId != null
+        ) {
             return this.values.map((v) => this.getOptionFromId(this.config.getIdFromValue(v))).filter((x) => x != null)
         }
 

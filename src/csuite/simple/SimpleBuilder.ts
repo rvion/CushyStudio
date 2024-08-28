@@ -1,5 +1,23 @@
 import type { PartialOmit } from '../../types/Misc'
+import type { Field_bool_config } from '../fields/bool/FieldBool'
+import type { Field_button_config } from '../fields/button/FieldButton'
+import type { Field_choices_config } from '../fields/choices/FieldChoices'
+import type { Field_color_config } from '../fields/color/FieldColor'
+import type { Field_date_config } from '../fields/date/FieldDate'
+import type { Field_datePlain_config } from '../fields/date_plain/FieldDatePlain'
+import type { Field_dateTimeZoned_config } from '../fields/datetime_zoned/FieldDateTimeZoned'
+import type { Field_group_config } from '../fields/group/FieldGroup'
+import type { Field_list_config } from '../fields/list/FieldList'
+import type { Field_markdown_config } from '../fields/markdown/FieldMarkdown'
+import type { Field_matrix_config } from '../fields/matrix/FieldMatrix'
+import type { Field_number_config } from '../fields/number/FieldNumber'
+import type { Field_optional_config } from '../fields/optional/FieldOptional'
+import type { Field_seed_config } from '../fields/seed/FieldSeed'
+import type { Field_selectMany_config } from '../fields/selectMany/FieldSelectMany'
+import type { Field_selectOne_config } from '../fields/selectOne/FieldSelectOne'
 import type { SelectOption, SelectOptionOpt } from '../fields/selectOne/SelectOption'
+import type { Field_size_config } from '../fields/size/FieldSize'
+import type { Field_string_config } from '../fields/string/FieldString'
 import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { IBuilder } from '../model/IBuilder'
@@ -9,23 +27,26 @@ import type { NO_PROPS } from '../types/NO_PROPS'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Field_bool, type Field_bool_config } from '../fields/bool/FieldBool'
-import { Field_button, type Field_button_config } from '../fields/button/FieldButton'
-import { Field_choices, type Field_choices_config } from '../fields/choices/FieldChoices'
-import { Field_color, type Field_color_config } from '../fields/color/FieldColor'
-import { Field_group, type Field_group_config } from '../fields/group/FieldGroup'
+import { Field_bool } from '../fields/bool/FieldBool'
+import { Field_button } from '../fields/button/FieldButton'
+import { Field_choices } from '../fields/choices/FieldChoices'
+import { Field_color } from '../fields/color/FieldColor'
+import { Field_date } from '../fields/date/FieldDate'
+import { Field_datePlain } from '../fields/date_plain/FieldDatePlain'
+import { Field_dateTimeZoned } from '../fields/datetime_zoned/FieldDateTimeZoned'
+import { Field_group } from '../fields/group/FieldGroup'
 import { Field_link } from '../fields/link/FieldLink'
-import { Field_list, type Field_list_config } from '../fields/list/FieldList'
-import { Field_markdown, Field_markdown_config } from '../fields/markdown/FieldMarkdown'
-import { Field_matrix, type Field_matrix_config } from '../fields/matrix/FieldMatrix'
-import { Field_number, type Field_number_config } from '../fields/number/FieldNumber'
-import { Field_optional, type Field_optional_config } from '../fields/optional/FieldOptional'
-import { Field_seed, type Field_seed_config } from '../fields/seed/FieldSeed'
-import { Field_selectMany, type Field_selectMany_config } from '../fields/selectMany/FieldSelectMany'
-import { Field_selectOne, type Field_selectOne_config } from '../fields/selectOne/FieldSelectOne'
+import { Field_list } from '../fields/list/FieldList'
+import { Field_markdown } from '../fields/markdown/FieldMarkdown'
+import { Field_matrix } from '../fields/matrix/FieldMatrix'
+import { Field_number } from '../fields/number/FieldNumber'
+import { Field_optional } from '../fields/optional/FieldOptional'
+import { Field_seed } from '../fields/seed/FieldSeed'
+import { Field_selectMany } from '../fields/selectMany/FieldSelectMany'
+import { Field_selectOne } from '../fields/selectOne/FieldSelectOne'
 import { Field_shared } from '../fields/shared/FieldShared'
-import { Field_size, type Field_size_config } from '../fields/size/FieldSize'
-import { Field_string, type Field_string_config } from '../fields/string/FieldString'
+import { Field_size } from '../fields/size/FieldSize'
+import { Field_string } from '../fields/string/FieldString'
 import { openRouterInfos } from '../openrouter/OpenRouter_infos'
 import { SimpleSchema } from './SimpleSchema'
 
@@ -34,16 +55,94 @@ export class SimpleBuilder implements IBuilder {
         makeAutoObservable(this, {})
     }
 
-    time(config: Field_string_config = {}): S.SString {
+    /**
+     * legacy string-based time
+     * based on `Field_string`
+     * - value is just a string
+     * - no specific validation
+     * - no specific practical method on the field to add or remove time, etc.
+     *
+     * @deprecated
+     * @see {@link date} for js Date object fields
+     * @see {@link datePlain} for Temporal.PlainDate fields
+     * @see {@link dateTimeZoned} for Temporal.PlainDate fields
+     */
+    stringTime(config: Field_string_config = {}): S.SString {
         return SimpleSchema.NEW<Field_string>(Field_string, { inputType: 'time', ...config })
     }
 
-    date(config: Field_string_config = {}): S.SString {
+    /**
+     * legacy string-based date
+     * based on `Field_string`
+     * - value is just a string
+     * - no specific validation
+     * - no specific practical method on the field to add or remove time, etc.
+     *
+     * @deprecated
+     * @see {@link date} for js Date object fields
+     * @see {@link datePlain} for Temporal.PlainDate fields
+     * @see {@link dateTimeZoned} for Temporal.PlainDate fields
+     */
+    stringDate(config: Field_string_config = {}): S.SString {
         return SimpleSchema.NEW<Field_string>(Field_string, { inputType: 'date', ...config })
     }
 
-    datetime(config: Field_string_config = {}): S.SString {
+    /**
+     * legacy string-based datetime
+     * based on `Field_string`
+     * - value is string
+     * - serial is plain string
+     * - no specific validation
+     *
+     * @deprecated
+     * @see {@link date} for js Date object fields
+     * @see {@link datePlain} for Temporal.PlainDate fields
+     * @see {@link dateTimeZoned} for Temporal.PlainDate fields
+     */
+    stringDatetime(config: Field_string_config = {}): S.SString {
         return SimpleSchema.NEW<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
+    }
+
+    /**
+     * Field for javascipt date object
+     * @since 2024-08-27
+     */
+    date<NULLABLE extends boolean = false>(config: Field_date_config<NULLABLE> = {}): S.SDate<NULLABLE> {
+        return SimpleSchema.NEW<Field_date<NULLABLE>>(Field_date, config)
+    }
+
+    /**
+     * Field for Temporal.PlainDate
+     * https://tc39.es/proposal-temporal/docs/#Temporal-PlainDate
+     *
+     * A Temporal.PlainTime object represents a wall-clock time that is
+     * not associated with a particular date or time zone, e.g. 7:39 PM.
+     *
+     * @since 2024-08-27
+     */
+    datePlain<NULLABLE extends boolean = false>(config: Field_datePlain_config<NULLABLE> = {}): S.SDatePlain<NULLABLE> {
+        return SimpleSchema.NEW<Field_datePlain<NULLABLE>>(Field_datePlain, { ...config })
+    }
+
+    /**
+     * Field for Temporal.ZonedDateTime
+     *
+     * https://tc39.es/proposal-temporal/docs/#Temporal-ZonedDateTime
+     *
+     * A `Temporal.ZonedDateTime` is a timezone-aware, calendar-aware date/time
+     * object that represents a real event that has happened (or will happen) at
+     * a particular exact time from the perspective of a particular region on
+     * Earth, e.g. December 7th, 1995 at 3:24 AM in US Pacific time (in
+     * Gregorian calendar). This type is optimized for use cases that require a
+     * time zone, including DST-safe arithmetic and interoperability with RFC
+     * 5545 (iCalendar).
+     *
+     * @since 2024-08-27
+     */
+    dateTimeZoned<NULLABLE extends boolean = false>(
+        config: Field_dateTimeZoned_config<NULLABLE> = {},
+    ): S.SDateTimeZoned<NULLABLE> {
+        return SimpleSchema.NEW<Field_dateTimeZoned<NULLABLE>>(Field_dateTimeZoned, config)
     }
 
     password(config: Field_string_config = {}): S.SString {

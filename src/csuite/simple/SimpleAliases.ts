@@ -2,6 +2,9 @@ import type { Field_bool } from '../fields/bool/FieldBool'
 import type { Field_button } from '../fields/button/FieldButton'
 import type { Field_choices } from '../fields/choices/FieldChoices'
 import type { Field_color } from '../fields/color/FieldColor'
+import type { Field_date } from '../fields/date/FieldDate'
+import type { Field_datePlain } from '../fields/date_plain/FieldDatePlain'
+import type { Field_dateTimeZoned } from '../fields/datetime_zoned/FieldDateTimeZoned'
 import type { Field_group, FieldGroup } from '../fields/group/FieldGroup'
 import type { Field_link } from '../fields/link/FieldLink'
 import type { Field_list } from '../fields/list/FieldList'
@@ -76,6 +79,19 @@ declare global {
         type SEmpty = SimpleSchema<Field_group<NO_PROPS>>
         type SBool = SimpleSchema<Field_bool>
         type SString = SimpleSchema<Field_string>
+
+        type SDatePlain<NULLABLE extends boolean> = SimpleSchema<Field_datePlain<NULLABLE>>
+        type SDatePlainRequired = SimpleSchema<Field_datePlain<false>>
+        type SDatePlainNullable = SimpleSchema<Field_datePlain<true>>
+
+        type SDateTimeZoned<NULLABLE extends boolean> = SimpleSchema<Field_dateTimeZoned<NULLABLE>>
+        type SDateTimeZonedRequired = SimpleSchema<Field_dateTimeZoned<false>>
+        type SDateTimeZonedNullable = SimpleSchema<Field_dateTimeZoned<true>>
+
+        type SDate<NULLABLE extends boolean> = SimpleSchema<Field_date<NULLABLE>>
+        type SDateRequired = SimpleSchema<Field_date<false>>
+        type SDateNullable = SimpleSchema<Field_date<true>>
+
         type SNumber = SimpleSchema<Field_number>
         type SColor = SimpleSchema<Field_color>
         type SSeed = SimpleSchema<Field_seed>
