@@ -60,7 +60,7 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
             if (!isNaN(parsed.getTime())) {
                 return {
                     $: this.type,
-                    value: Temporal.Instant.from(parsed.toISOString()).toZonedDateTimeISO(Temporal.Now.timeZone()).toString(),
+                    value: Temporal.Instant.from(parsed.toISOString()).toZonedDateTimeISO(Temporal.Now.timeZoneId()).toString(),
                 }
             }
         }
@@ -140,7 +140,7 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
     setValueFromString(value: string): void {
         const nextValue = value ? new Date(value) : null
         const zonedNext = nextValue
-            ? Temporal.Instant.from(nextValue.toISOString()).toZonedDateTimeISO(Temporal.Now.timeZone())
+            ? Temporal.Instant.from(nextValue.toISOString()).toZonedDateTimeISO(Temporal.Now.timeZoneId())
             : null
 
         if (this.config.nullable || this.selectedValue != null) {
