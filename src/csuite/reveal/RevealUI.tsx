@@ -160,7 +160,7 @@ export const RevealUI = observer(
                 <div //
                     tw={twMerge([
                         'UI-Reveal 🔶NOT-CLONED🔶',
-                        'h-full w-full', // 🔴 not sure what's the best default
+                        // 'h-full w-full', // 🔴 not sure what's the best default
                         'inline-flex', // 'flex'
                         reveal?.defaultCursor ?? 'cursor-pointer',
                         p.className,

@@ -4,7 +4,9 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<VALUE>(p: { field: Field_selectOne<VALUE> }) {
+export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectOne<VALUE, KEY>
+}) {
     const field = p.field
     const selected = field.selectedId
     const idx = field.choices.findIndex((c) => c === selected)

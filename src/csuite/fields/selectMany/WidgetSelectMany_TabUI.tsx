@@ -5,7 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 
-export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<VALUE>(p: { field: Field_selectMany<VALUE> }) {
+export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectMany<VALUE, KEY>
+}) {
     const field = p.field
 
     return (

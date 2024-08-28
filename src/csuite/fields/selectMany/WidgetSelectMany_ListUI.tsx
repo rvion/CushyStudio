@@ -5,7 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 
-export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<VALUE>(p: { field: Field_selectMany<VALUE> }) {
+export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectMany<VALUE, KEY>
+}) {
     const field = p.field
     return (
         <ResizableFrame

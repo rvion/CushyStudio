@@ -2,9 +2,10 @@ import type { RevealHideReason } from '../reveal/RevealProps'
 import type { RevealState } from '../reveal/RevealState'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { BadgeUI } from '../badge/BadgeUI'

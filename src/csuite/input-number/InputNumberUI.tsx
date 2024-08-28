@@ -147,13 +147,13 @@ class InputNumberStableState {
 
     increment = (): void => {
         startValue = this.value
-        let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value + (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
     decrement = (): void => {
         startValue = this.value
-        let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value - (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
@@ -167,8 +167,8 @@ class InputNumberStableState {
         dragged = true
         cumulativeOffset += e.movementX
 
-        let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
-        let offset = this.numberSliderSpeed * cumulativeOffset * precision
+        const precision = (e.shiftKey ? 0.001 : 0.01) * this.step
+        const offset = this.numberSliderSpeed * cumulativeOffset * precision
 
         const next = lastValue + offset
         // Parse value
@@ -352,7 +352,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             uist.inputValue = ev?.target.value
                         }}
                         onFocus={(ev) => {
-                            let textInput = ev.currentTarget
+                            const textInput = ev.currentTarget
                             activeSlider = textInput.parentElement as HTMLDivElement
                             textInput.select()
                             startValue = val

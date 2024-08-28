@@ -7,7 +7,9 @@ import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
-export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE>(p: { field: Field_selectMany<VALUE> }) {
+export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, KEY extends string>(p: {
+    field: Field_selectMany<VALUE, KEY>
+}) {
     const field = p.field
     const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
     if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />

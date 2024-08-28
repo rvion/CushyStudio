@@ -32,28 +32,14 @@ describe('default values', () => {
     itDefaultsSimple(
         //
         'select one',
-        (def) =>
-            b.selectOne({
-                choices: [{ id: 'a' }, { id: 'b' }, { id: 'c ' }],
-                default: def,
-            }),
-        [{ id: 'a' }, { id: 'b' }, { id: 'c' }],
+        (def) => b.selectOneString(['a', 'b', 'c '], { default: def }),
+        ['a', 'b', 'c'],
     )
     itDefaultsSimple(
         //
         'select many',
-        (def) =>
-            b.selectMany({
-                choices: [{ id: 'a' }, { id: 'b' }, { id: 'c ' }],
-                default: def,
-            }),
-        [
-            //
-            [],
-            [{ id: 'a' }],
-            [{ id: 'b' }, { id: 'c' }],
-            [{ id: 'c' }, { id: 'a' }],
-        ],
+        (def) => b.selectManyString(['a', 'b', 'c '], { default: def }),
+        [[], ['a'], ['b', 'c'], ['c', 'a']],
     )
 
     itDefaults(

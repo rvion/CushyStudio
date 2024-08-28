@@ -8,7 +8,7 @@ import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
-import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { FieldSerial, FieldSerial_CommonProperties } from './FieldSerial'
 import type { Instanciable } from './Instanciable'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { Producer } from './pubsub/Producer'
@@ -37,6 +37,7 @@ import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { type FieldId, mkNewFieldId } from './FieldId'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
+import { LocoSchema } from 'src/front/form/LocoFormSchema'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 export const useEnsureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -52,6 +53,14 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 
 export type KeyedField = { key: string; field: Field }
 
+export type FieldCtorProps<F extends Field> = [
+    //
+    repo: Repository,
+    root: Field | null,
+    parent: Field | null,
+    schema: BaseSchema<F>,
+]
+
 export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -62,6 +71,9 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
 export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']> {
+    /** @internal */
+    static build: 'new' = 'new'
+
     /**
      * unique Field instance ID;
      * each node in the form tree has one;
@@ -130,6 +142,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /** own errors specific to this widget; must NOT include child errors */
     abstract readonly ownProblems: Problem_Ext
 
+    static migrateSerial(serial: FieldSerial<unknown>): any {
+        return serial
+    }
+
     /**
      * TODO later: make abstract to make sure we
      * have that on every single field + add field config option
@@ -146,11 +162,13 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         serial: any | null,
     ): Field_shared<this> {
         const FieldSharedClass = getFieldSharedClass()
-        // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvvvvv
         // const schema = new LocoFormSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
-        const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass.type, (...args) => new FieldSharedClass(...args), {
-            field: this,
-        })
+        // const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
+        // 🔴🔴🔴🔴🔴🔴🔴  vvvvvvvvvvv
+        const schema = new LocoSchema<Field_shared<this>>(
+            FieldSharedClass,
+            { field: this }, // Works if migrateSerial is defined in the subclass
+        )
         return schema.instanciate(repo, root, parent, serial)
     }
 
@@ -667,6 +685,22 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // UI ----------------------------------------------------
 
+    /** temporary until shells */
+    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
+        return (
+            <WidgetWithLabelUI //
+                key={this.id}
+                field={this}
+                showWidgetMenu={false}
+                showWidgetExtra={false}
+                showWidgetUndo={false}
+                justifyLabel={false}
+                fieldName='_'
+                {...p}
+            />
+        )
+    }
+
     /**
      * allow to quickly render the model as a react form
      * without having to import any component; usage:
@@ -917,48 +951,3 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
     }
 }
-// 🔘 let IX = 0
-
-/**
- * RULES:
- *
- * any serial modification function must go through
- *  - this.SERMUT(() => { ... }) if not modifying the value
- *  - this.VALMUT(() => { ... }) if modifying the value
- *
- * setOwnSerial:
- *       A. /!\ THIS METHOD MUST BE IDEMPOTENT /!\
- *
- *       B. /!\ THIS METHOD MUST BE CALLED ON INIT AND SET_SERIAL /!\
- *
- *       0. MUST NEVER USE THE serial object provided by default
- *            FIELD MUST ALWAYS CREATE A NEW OBJECT at init time
- *            | always create a new 0
- *
- *       1. MUST KEEP ITS CURRENT SERIAL REFERENCE through setSerial/setValue calls
- *            | goal: make sure we never have stale references
- *            | => allow to abort early if same ref equality check successfull
- *            | => do not replace your serial object, only assign to it
- *            | YES, kinda opposite of #0, but once created, I'd rather  preserve the same
- *            | object
- *
- *       ❌ 2. NEVER CHANGE A SERIAL ID => NO more IDSs.
- *       ❌      | IDs are runtime only (formulas persist paths, and react to field.path changew)
- *       ❌      | => please. be kind. don't
- *
- *       3. MUST ONLY CHANGE own-data, not data belonging to child
- *            | => setSerial should call setSerial on already instanciated children
- *
- *       ❌ 4 IF FIELD HAS CHILD, must do reconciliation based on child ID.
- *       ❌      | => list MUST NOT BLINDLY REPLACE it's children by index
- *
- *       5 CONSTRUCTOR MUST USE THE FUNCTION; logic should not be duplicated if p'ossible
- *
- *       if you override setSerial, make sure rules above are respected.
- *       ideally, add checkmarks near
- *
- *       2024-07-05 precision to document:
- *               | setOwnSerial is expected to somewhat call setSerial
- *               | of every of it's children, and forward the applyEffects flag
- *
- */

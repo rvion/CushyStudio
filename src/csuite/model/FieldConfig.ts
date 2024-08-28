@@ -166,6 +166,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * @stability beta
      */
     classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
+    builderToUse?: any
 
     /**
      * @internal

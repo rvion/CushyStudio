@@ -52,12 +52,16 @@ export class Repository {
         }
         if (this.allFields.size !== 0) {
             throw new Error(
-                `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[...this.allFields.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[
+                    ...this.allFields.values(),
+                ].map((i) => [i.type, i.summary])})`,
             )
         }
         if (this.allRoots.size !== 0)
             throw new Error(
-                `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[...this.allRoots.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[
+                    ...this.allRoots.values(),
+                ].map((i) => [i.type, i.summary])})`,
             )
     }
 

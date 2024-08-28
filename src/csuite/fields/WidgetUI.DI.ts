@@ -39,7 +39,7 @@ export const getFieldGroupClass = (): typeof Field_group<any> => getFieldClass('
 export const getFieldStringClass = (): typeof Field_string => getFieldClass('str') as any
 export const getFieldNumberClass = (): typeof Field_number => getFieldClass('number') as any
 export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('list') as any
-export const getFieldSelectOneClass = (): typeof Field_selectOne<any> => getFieldClass('selectOne') as any
+export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> => getFieldClass('selectOne') as any
 
 export const registerFieldClass = <T extends { $Type: string }>(
     //
@@ -59,8 +59,8 @@ export const isFieldString = _checkIfIs<Field_string>('str')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
 export const isFieldBool = _checkIfIs<Field_bool>('bool')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')
-export const isFieldSelectOne = _checkIfIs<Field_selectOne<any>>('selectOne')
-export const isFieldSelectMany = _checkIfIs<Field_selectMany<any>>('selectMany')
+export const isFieldSelectOne = _checkIfIs<Field_selectOne<any, any>>('selectOne')
+export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectMany')
 
 function _checkIfIs<W extends { $Type: string }>(
     /** widget type to check */

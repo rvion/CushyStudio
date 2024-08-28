@@ -1,4 +1,6 @@
+import type { FormUIProps } from '../../form/FormUI'
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { KeyedField } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -6,15 +8,13 @@ import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFC } from '../../variance/CovariantFC'
-
-import { type FC, type ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
 import { Form } from '../../form/Form'
-import { type FormUIProps } from '../../form/FormUI'
 import { Frame } from '../../frame/Frame'
 import { MarkdownUI } from '../../markdown/MarkdownUI'
-import { Field, type KeyedField } from '../../model/Field'
+import { Field } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
@@ -93,16 +93,14 @@ type RenderFieldsSubsetProps<T extends SchemaDict> = {
 }
 
 // STATE
+export interface Field_group<T extends SchemaDict> {
+    $Subfields: T
+}
+
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
 
-    // ⏸️ customCell(
-    // ⏸️     _fields: (Accessor<this>)[],
-    // ⏸️     _props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
-    // ⏸️ ): FC<NO_PROPS> {
-    // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
-    // ⏸️ }
-
+    // 🔴 wrong name; it's compiling a component, not rendering a custom list of sub-fields
     renderFieldsSubset(
         extra: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
         props?: RenderFieldsSubsetProps<T>,
@@ -211,7 +209,11 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return new Form({
             ...props,
             field: this,
-            Content: this.renderFieldsSubset(fields, { showMore: props.showMore, usage: props.usage, readonly: props.readonly }),
+            Content: this.renderFieldsSubset(fields, {
+                showMore: props.showMore,
+                usage: props.usage,
+                readonly: props.readonly,
+            }),
         })
     }
 
@@ -379,6 +381,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
             }
         },
     })
+
+    randomize() {
+        this.subFields.forEach((f) => f.randomize())
+    }
 }
 
 // DI

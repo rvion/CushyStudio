@@ -1,4 +1,3 @@
-import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -6,44 +5,36 @@ import type { Repository } from '../../model/Repository'
 import type { SelectValueLooks } from '../../select/SelectProps'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
+import type { SelectOption } from './SelectOption'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
+import { bang } from '../../utils/bang'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
-export type SELECT_ID = string
-export type SelectOption<VALUE = any /* 🔴 */, Id extends SELECT_ID = SELECT_ID> = {
-    // 🔴 todo: require 2nd type arg to see bad usages + add extend Id type in FieldSelectOne_config
-    id: Id
-    value: VALUE
-    label?: string
-    icon?: IconName
-    hue?: number
-}
-
-// 🔴 this is temp and does not belong here
-export type SelectOption_NO_VALUE<VALUE, Id extends SELECT_ID = SELECT_ID> = {
-    id: Id
-    value?: VALUE
-    label?: string
-    labelNode?: JSX.Element
-    icon?: IconName
-    hue?: number
-}
-
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
-// 🔴 what about dynamic list? it was complicated to add/remove status without more migration mechanism according to globi
+// 💬 2024-08-.. domi:
+// | 🔴 what about dynamic list?
+// | it was complicated to add/remove status without more migration mechanism according to globi
+//
+// 💬 2024-08-21 rvion:
+// | it shouldn't be complicated; I've done it a few times, it wasn't that hard.
 
 // CONFIG
-export type Field_selectOne_config<VALUE> = FieldConfig<
+export type Field_selectOne_config_<KEY extends string> = Field_selectOne_config<KEY, KEY>
+export type Field_selectOne_config<
+    //
+    VALUE,
+    KEY extends string,
+> = FieldConfig<
     {
         /**
          * 🔶 the *ID* of the option selected by default
          */
-        default?: SELECT_ID
+        default?: KEY
         /**
          * list of all choices
          * 👉 you can use a lambda if you want the option to to dynamic
@@ -58,24 +49,29 @@ export type Field_selectOne_config<VALUE> = FieldConfig<
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices?: SELECT_ID[] | ((self: Field_selectOne<VALUE>) => SELECT_ID[])
-        values?: VALUE[] | ((field: Field_selectOne<VALUE>) => VALUE[])
-        options?: SelectOption<VALUE>[] | ((field: Field_selectOne<VALUE>) => SelectOption<VALUE>[])
-        getIdFromValue: (t: VALUE) => SELECT_ID
-        getValueFromId: (id: SELECT_ID) => Maybe<VALUE>
+        choices?: KEY[] | ((self: Field_selectOne<VALUE, KEY>) => KEY[])
+        values?: VALUE[] | ((field: Field_selectOne<VALUE, KEY>) => VALUE[])
+        options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
+
+        getIdFromValue: (t: VALUE) => KEY
+        getValueFromId: (id: KEY) => Maybe<VALUE>
         getOptionFromId: (
-            t: SELECT_ID,
+            t: KEY,
             self:
-                | Field_selectOne<NoInfer<VALUE>>
+                | Field_selectOne<NoInfer<VALUE>, KEY>
                 // 🔴 2024-08-02 domi: bad.
                 // Exceptionally, we need self to consume some channel.
                 // And exceptionally (autoColumn) we need to use this function from schema without instanciating the field.
                 // not sure what to do.
                 | 'FIELD_NOT_INSTANCIATED',
-        ) => Maybe<SelectOption<VALUE>>
+        ) => Maybe<SelectOption<VALUE, KEY>>
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
-        OptionLabelUI?: (t: Maybe<SelectOption<VALUE>>, where: SelectValueSlots) => React.ReactNode | SelectValueLooks
+        OptionLabelUI?: (
+            //
+            t: Maybe<SelectOption<VALUE, KEY>>,
+            where: SelectValueSlots,
+        ) => React.ReactNode | SelectValueLooks
         SlotAnchorContentUI?: React.FC<{}>
         appearance?: SelectOneSkin
 
@@ -98,7 +94,7 @@ export type Field_selectOne_config<VALUE> = FieldConfig<
          */
         nullable?: boolean
     },
-    Field_selectOne_types<VALUE>
+    Field_selectOne_types<VALUE, KEY>
 >
 
 // SERIAL FROM VALUE
@@ -109,10 +105,10 @@ export type Field_selectOne_config<VALUE> = FieldConfig<
 // ): Field_selectOne_serial => ({ $: 'selectOne', val })
 
 // SERIAL
-export type Field_selectOne_serial = FieldSerial<{
+export type Field_selectOne_serial<KEY extends string> = FieldSerial<{
     $: 'selectOne'
     query?: string
-    val?: Maybe<SELECT_ID>
+    val: KEY
 
     /**
      * @deprecated: NOT IMPLEMENTED YET
@@ -137,20 +133,32 @@ export type Field_selectOne_serial = FieldSerial<{
 export type Field_selectOne_value<VALUE extends any> = VALUE
 
 // TYPES
-export type Field_selectOne_types<VALUE extends any> = {
+export type Field_selectOne_types<
+    //
+    VALUE extends any,
+    KEY extends string,
+> = {
     $Type: 'selectOne'
-    $Config: Field_selectOne_config<VALUE>
-    $Serial: Field_selectOne_serial
-    $Value: Maybe<Field_selectOne_value<VALUE>>
-    $Field: Field_selectOne<VALUE>
+    $Config: Field_selectOne_config<VALUE, KEY>
+    $Serial: Field_selectOne_serial<KEY>
+    $Value: Field_selectOne_value<VALUE>
+    $Field: Field_selectOne<VALUE, KEY>
 }
 
 // STATE
+const FAILOVER_VALUE: SelectOption<any, string> = Object.freeze({
+    id: '❌',
+    label: '❌',
+    value: '❌',
+})
 
-const FAILOVER_VALUE: SelectOption<any> = Object.freeze({ id: '❌', label: '❌', value: '❌' })
-
-export class Field_selectOne<VALUE extends any> //
-    extends Field<Field_selectOne_types<VALUE>>
+export type Field_selectOne_<KEY extends string> = Field_selectOne<KEY, KEY>
+export class Field_selectOne<
+        //
+        VALUE extends any,
+        KEY extends string,
+    > //
+    extends Field<Field_selectOne_types<VALUE, KEY>>
 {
     static readonly type: 'selectOne' = 'selectOne'
     DefaultHeaderUI = WidgetSelectOneUI
@@ -166,18 +174,18 @@ export class Field_selectOne<VALUE extends any> //
     }
 
     get hasChanges(): boolean {
-        return this.serial.val !== this.default
+        return this.serial.val !== this.defaultKey
     }
 
     reset(): void {
-        this.selectedId = this.default
+        this.selectedId = this.defaultKey
     }
 
-    get choices(): SELECT_ID[] {
+    get choices(): KEY[] {
         if (this.config.choices != null) {
             const _choices = this.config.choices
             if (typeof _choices === 'function') {
-                if (!this.root.ready) return []
+                // 🔴 if (!this.root.ready) return []
                 return _choices(this)
             }
             return _choices
@@ -199,21 +207,28 @@ export class Field_selectOne<VALUE extends any> //
 
     // 🔴 make sure that those are triggered lazily by SelectUI:
     // we don't want to fetch all users if the select popup has not been opened yet
-    get options(): SelectOption<VALUE>[] {
+    get options(): SelectOption<VALUE, KEY>[] {
         if (this.config.options != null) {
             const _options = this.config.options
             if (typeof _options === 'function') {
-                if (!this.root.ready) return []
+                // 🔴 if (!this.root.ready) return []
                 return _options(this)
             }
             return _options
         }
 
-        if (this.config.choices != null && this.getOptionFromId != null) {
-            return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE>[]
+        if (
+            this.config.choices != null && //
+            this.getOptionFromId != null
+        ) {
+            return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
         }
 
-        if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
+        if (
+            this.config.values != null && //
+            this.getValueFromId != null &&
+            this.getOptionFromId != null
+        ) {
             return this.values.map((v) => this.getOptionFromId(this.config.getIdFromValue(v))).filter((x) => x != null)
         }
 
@@ -247,8 +262,8 @@ export class Field_selectOne<VALUE extends any> //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: BaseSchema<Field_selectOne<VALUE>>,
-        serial?: Field_selectOne_serial,
+        schema: BaseSchema<Field_selectOne<VALUE, KEY>>,
+        serial?: Field_selectOne_serial<KEY>,
     ) {
         super(repo, root, parent, schema)
         this.init(serial, {
@@ -258,19 +273,25 @@ export class Field_selectOne<VALUE extends any> //
         })
     }
 
-    get default(): Maybe<SELECT_ID> {
-        return this.config.default ?? null
+    get firstID(): KEY {
+        const id0 = this.choices[0]
+        // if (id0 == null) debugger
+        return '' as any
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectOne_serial>): void {
-        // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
-        let prevVal = serial?.val
-        if (serial != null && typeof serial.val === 'object' && serial.val != null && 'id' in serial.val) {
-            if ((serial.val as any).id != '❌') prevVal = (serial.val as unknown as { id: string }).id
-            else prevVal = null
-        }
-        this.serial.val = prevVal ?? this.default
+    get defaultKey(): KEY {
+        return this.config.default ?? this.firstID
+    }
 
+    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<KEY>>): void {
+        // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
+        /* 🕗 */ let prevKey: Maybe<KEY> = serial?.val
+        /* 🕗 */ if (serial != null && typeof serial.val === 'object' && serial.val != null && 'id' in serial.val) {
+            /* 🕗 */ if ((serial.val as any).id != '❌') prevKey = (serial.val as unknown as { id: KEY }).id
+            /* 🕗 */ else prevKey = null
+            /* 🕗 */
+        }
+        this.serial.val = prevKey ?? this.defaultKey
         this.serial.query = serial?.query
     }
 
@@ -279,26 +300,27 @@ export class Field_selectOne<VALUE extends any> //
         return this.config.getIdFromValue(val) === this.selectedId
     }
 
-    get value(): Maybe<Field_selectOne_value<VALUE>> {
-        if (this.selectedId == null) return null
-        return this.getValueFromId(this.selectedId)
+    get defaultValue(): Field_selectOne_value<VALUE> {
+        return bang(this.getValueFromId(this.defaultKey))
     }
 
-    get selectedOption(): Maybe<SelectOption<VALUE>> {
-        if (this.selectedId == null) return null
+    get value(): Field_selectOne_value<VALUE> {
+        return this.getValueFromId(this.selectedId) ?? this.defaultValue
+    }
+
+    get selectedOption(): Maybe<SelectOption<VALUE, KEY>> {
         return this.getOptionFromId(this.selectedId)
     }
 
-    set value(next: Maybe<Field_selectOne_value<VALUE>>) {
-        const nextId = next == null ? null : this.config.getIdFromValue(next)
-        this.selectedId = nextId
+    set value(next: Field_selectOne_value<VALUE>) {
+        this.selectedId = this.config.getIdFromValue(next)
     }
 
-    get selectedId(): Maybe<SELECT_ID> {
+    get selectedId(): KEY {
         return this.serial.val // || this.default // 🔴 idk, probably bad to have default here
     }
 
-    set selectedId(nextId: Maybe<SELECT_ID>) {
+    set selectedId(nextId: KEY) {
         if (this.serial.val === nextId) return
 
         this.runInValueTransaction(() => {
@@ -320,7 +342,7 @@ export class Field_selectOne<VALUE extends any> //
     //     // 🔴 can we do without this?
     // }
 
-    renderAsCell(this: Field_selectOne<VALUE>, p?: { reveal?: boolean }): JSX.Element {
+    renderAsCell(this: Field_selectOne<VALUE, KEY>, p?: { reveal?: boolean }): JSX.Element {
         return <this.DefaultCellUI field={this} opts={p} {...p} />
     }
 
@@ -333,8 +355,13 @@ export class Field_selectOne<VALUE extends any> //
      *
      * see also "extra"
      */
-    getValueFromId = (id: SELECT_ID): Maybe<VALUE> => this.config.getValueFromId(id)
-    getOptionFromId = (id: SELECT_ID): Maybe<SelectOption<VALUE>> => this.config.getOptionFromId(id, this)
+    getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id)
+
+    // 💬 2024-08-21 rvion: (for @domi)
+    // | I dislike this `getOptionFromId`.
+    // | it is redundant / slow / sometimes unnecessary
+    // | I'd rather just add the missing mapper for icon, and we would have everything.
+    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
     // 🔶 do not compare queries
     get isDirtyFromSnapshot_UNSAFE(): boolean {

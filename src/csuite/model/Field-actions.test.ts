@@ -13,7 +13,7 @@ describe('field customizations', () => {
             toSquareV2(): void
             set abc(x: number)
         }
-        const SA = b.int().extend(
+        const SA = b.int().extend_(
             (self): T1 => ({
                 squareV2: (): number => self.value ** 2,
                 square(): number {
@@ -49,7 +49,7 @@ describe('field customizations', () => {
                 // ),
             })
 
-            .extend((self) => {
+            .extend_((self) => {
                 return {
                     bang: (): void => {
                         // TODO: this should be done implicitly

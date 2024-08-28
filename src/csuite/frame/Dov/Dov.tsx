@@ -1,6 +1,5 @@
 import type { BoxBasicProps } from '../../box/BoxUIProps'
 import type { IconName } from '../../icons/icons'
-import type { TintExt } from '../../kolor/Tint'
 import type { RevealPlacement } from '../../reveal/RevealPlacement'
 
 import { observer } from 'mobx-react-lite'
@@ -15,15 +14,6 @@ import { getDOMElementDepth } from '../../utils/getDOMElementDepth'
 import { tooltipStuff } from '../tooltip'
 import { appearanceCVA, type DovAppearanceProps, type DovLook, type DovSize, lookToProps } from './DovAppearance'
 import { type DovFlexProps, flexCVA, lookToFlexProps } from './DovFlex'
-
-export type SimpleBoxShadow = {
-    inset?: boolean
-    x?: number
-    y?: number
-    blur?: number
-    spread?: number
-    color?: TintExt
-}
 
 export type DovProps = {
     //
@@ -220,7 +210,7 @@ export const Dov = observer(
     }),
 )
 
-const stableColor = (s: string) => `hsl(${hashStringToNumber(s) % 360}, 70%, 50%)`
+const stableColor = (s: string): string => `hsl(${hashStringToNumber(s) % 360}, 70%, 50%)`
 
 export const Col = observer(
     forwardRef(function Col_(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {
