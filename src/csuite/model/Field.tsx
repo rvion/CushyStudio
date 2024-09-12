@@ -554,7 +554,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
     UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
     UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
-    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI widget={this} />
+    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
     UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
