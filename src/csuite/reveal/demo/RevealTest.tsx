@@ -2,9 +2,9 @@ import type { RevealContentProps } from '../shells/ShellProps'
 
 import { observer } from 'mobx-react-lite'
 
-import { simpleFactory } from '../../'
 import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
+import { simpleFactory } from '../../SimpleFactory'
 import { RevealUI } from '../RevealUI'
 
 export const RevealTestUI = observer(function RevealTestUI_(p: {}) {

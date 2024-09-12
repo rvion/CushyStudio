@@ -383,6 +383,7 @@ export class SimpleBuilder implements IBuilder {
         })
     }
 
+    // #region linked
     /**
      * Allow to instanciate a field early, so you can re-use it in multiple places
      * or access it's instance to dynamically change some other field schema.
@@ -402,7 +403,7 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_shared<T>>(Field_shared<any>, { field })
     }
 
-    // #region group
+    // #region Group
     /** see also: `fields` for a more practical api */
     group<T extends SchemaDict>(config: Field_group_config<T> = {}): S.SGroup<T> {
         return new SimpleSchema<Field_group<T>>(Field_group, config) as S.SGroup<T>
@@ -416,14 +417,17 @@ export class SimpleBuilder implements IBuilder {
         return new SimpleSchema<Field_group<NO_PROPS>>(Field_group, config)
     }
 
-    // #region choices
+    // #region Choices
 
     /** single choice, default to first branch */
     choice<T extends SchemaDict>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ): S.SChoices<T> {
-        return this.choices_(items, { multi: false, default: bang(Object.keys(items)[0]), ...config })
+        return this.choice_(items, {
+            default: bang(Object.keys(items)[0]),
+            ...config,
+        })
     }
 
     /** multiple choice, default to no choice */
@@ -469,12 +473,12 @@ export class SimpleBuilder implements IBuilder {
     //     return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, ...config })
     // }
 
-    // #region optional
+    // #region Optional
     optional<T extends BaseSchema>(p: Field_optional_config<T>): S.SOptional<T> {
         return new SimpleSchema<Field_optional<T>>(Field_optional, p)
     }
 
-    // #region llm
+    // #region Llm
     // @ts-ignore 🔴 loco select fields changes not ported to other builders
     llmModel(p: { default?: OpenRouter_Models } = {}): S.SSelectOne<{
         id: OpenRouter_Models

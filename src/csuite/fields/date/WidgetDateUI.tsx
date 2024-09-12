@@ -4,11 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { InputStringUI } from '../../input-string/InputStringUI'
-
-function formatDateForInput(date: Maybe<Date>): string {
-    if (date == null || isNaN(date.getTime())) return ''
-    return date.toISOString().split('.')[0]!
-}
+import { formatDateForInput } from './formatDateForInput'
 
 /**
  * This component throws a warning in the console: when changing the value of `disabled`

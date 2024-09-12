@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { InputStringUI } from '../../input-string/InputStringUI'
-import { formatDateForInput } from 'src/loco/scripts.next/@shared/_crm-poc/common/misc'
+import { formatDateForInput } from './formatDateForInput'
 
 /**
  * This component throws a warning in the console: when changing the value of `disabled`

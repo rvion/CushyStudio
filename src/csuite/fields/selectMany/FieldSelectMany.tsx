@@ -10,7 +10,7 @@ import type { SelectOption } from '../selectOne/SelectOption'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
-import { registerFieldClass } from '../WidgetUI.DI'
+import { isProbablySerialSelectMany, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
@@ -101,9 +101,9 @@ export type Field_selectMany_config<
 // SERIAL
 export type Field_selectMany_serial<KEY extends string> = FieldSerial<{
     $: 'selectMany'
-    query: string
+    query?: string
     // 💬 2024-08-20 rvion: TODO: rename as keys ?
-    values: KEY[]
+    values?: KEY[]
 }>
 
 // VALUE
@@ -133,8 +133,29 @@ export class Field_selectMany<
 > extends Field<Field_selectMany_types<VALUE, KEY>> {
     // #region TYPE
     static readonly type: 'selectMany' = 'selectMany'
-    static readonly emptySerial: Field_selectMany_serial<any> = { $: 'selectMany', query: '', values: [] }
-    static migrateSerial(): undefined {}
+    static readonly emptySerial: Field_selectMany_serial<any> = { $: 'selectMany' }
+    static migrateSerial<K extends string>(serial: object): Maybe<Field_selectMany_serial<K>> {
+        if (isProbablySerialSelectMany(serial)) {
+            const { $, values, ...rest } = serial
+            // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
+            const legacyValues: object[] | undefined = values
+            if (
+                Array.isArray(legacyValues) &&
+                legacyValues.length > 0 &&
+                typeof legacyValues[0] === 'object' &&
+                legacyValues[0] != null &&
+                'id' in legacyValues[0]
+            ) {
+                const values = legacyValues.map((v) => (v as unknown as { id: K }).id).filter(Boolean)
+                const next: Field_selectMany_serial<K> = {
+                    $: 'selectMany',
+                    values,
+                    ...rest,
+                }
+                return next
+            }
+        }
+    }
 
     // #region UI
     DefaultHeaderUI = WidgetSelectManyUI
@@ -150,50 +171,51 @@ export class Field_selectMany<
         return false
     }
 
-    get defaultKeys(): KEY[] {
-        // 2024-08-02: domi: 🔴 select all is dangerous for models
-        // because it will evaluate choices in the backend...
+    get defaultKeys(): KEY[] | undefined {
+        if (this.config.default == null) return
         if (this.config.default === true) return this.possibleKeys
         if (typeof this.config.default === 'string') return [this.config.default]
-        return this.config.default ?? []
+        return this.config.default
     }
 
     get isOwnSet(): boolean {
-        return true
+        return this.serial.values != null
     }
 
     get hasChanges(): boolean {
-        if (this.serial.values.length !== this.defaultKeys.length) return true
-        for (const id of this.serial.values) {
-            if (!this.defaultKeys.find((i) => i === id)) return true
-        }
+        if (this.serial.values == null) return false
+        const def = this.defaultKeys
+        if (def == null) return this.serial.values.length > 0
+        if (this.serial.values.some((id) => !def.includes(id))) return true
         return false
     }
 
     reset(): void {
-        this.selectedKeys = this.defaultKeys
+        this.selectedKeys = this.defaultKeys ?? []
     }
 
     wrap = this.config.wrap ?? false
 
     get possibleKeys(): KEY[] {
         const _choices = this.config.choices
+        // 2024-08-02: domi: 🔴 select all is dangerous for models
+        // because it will evaluate choices in the backend...
         return typeof _choices === 'function' //
             ? _choices(this)
             : _choices
     }
 
     get options(): SelectOption<VALUE, KEY>[] {
-        return this.possibleKeys.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
+        return this.possibleKeys.map((key) => this.getOptionFromId(key)).filter((opt) => opt != null)
     }
 
     get ownTypeSpecificProblems(): Maybe<string[]> {
         if (this.serial.values == null) return null
         const errors: string[] = []
-        for (const id of this.selectedKeys) {
-            if (!this.possibleKeys.find((choice) => choice === id)) {
-                const option = this.getOptionFromId(id)
-                if (option == null) errors.push(`value ${id} (label: unknown, could not retrieve option) not in choices`)
+        for (const key of this.selectedKeys) {
+            if (!this.possibleKeys.find((choice) => choice === key)) {
+                const option = this.getOptionFromId(key)
+                if (option == null) errors.push(`value ${key} (label: unknown, could not retrieve option) not in choices`)
                 else errors.push(`value ${option.id} (label: ${option.label}) not in choices`)
             }
         }
@@ -211,8 +233,6 @@ export class Field_selectMany<
         serial?: Field_selectMany_serial<KEY>,
     ) {
         super(repo, root, parent, schema, initialMountKey, serial)
-        const config = schema.config
-        /* 💊 */ if (this.serial.values == null) this.serial.values = []
         this.init(serial, {
             // UI
             DefaultHeaderUI: false,
@@ -225,65 +245,77 @@ export class Field_selectMany<
     }
 
     protected setOwnSerial(next: Field_selectMany_serial<KEY>): void {
-        let prevVal: KEY[] | undefined = next?.values
-        // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
-        if (
-            prevVal &&
-            Array.isArray(prevVal) &&
-            prevVal.length > 0 &&
-            typeof prevVal[0] === 'object' &&
-            prevVal[0] != null &&
-            'id' in prevVal[0]
-        ) {
-            prevVal = prevVal //
-                .map((v) => (v as unknown as { id: KEY }).id)
-                .filter(Boolean)
+        this.assignNewSerial(next)
+
+        if (next.values == null) {
+            const def = this.defaultKeys
+            if (def != null) this.patchSerial((draft) => void (draft.values = def))
         }
-
-        const finalVal = prevVal ?? this.defaultKeys
-
-        this.patchSerial((draft) => {
-            draft.query = next?.query ?? ''
-            draft.values = [...finalVal] // still need to do a deep clone ? probably wrong
-        })
     }
 
-    /** un-select given item */
-    removeId(id: KEY): void {
-        // ensure item was selected
-        const indexOf = this.serial.values.findIndex((i) => i === id)
-        if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
-        // remove it
-        this.runInValueTransaction(() => {
-            this.serial.values = this.serial.values.filter((v) => v !== id) // filter just in case of duplicate
-        })
+    /**
+     * un-select given item
+     * @deprecated use `removeKey` instead
+     */
+    removeId = this.removeKey
+    /**
+     * un-select an item with the given key
+     */
+    removeKey(key: KEY): void {
+        if (!this.isKeySet(key)) return console.log(`[🔶] WidgetSelectMany.removeKey: key not set`)
+        return this._removeExistingKey(key)
+    }
+    private _removeExistingKey(key: KEY): void {
+        const values = this.serial.values
+        if (values == null) return
+        this.runInValueTransaction(() =>
+            this.patchSerial((draft) => {
+                draft.values = values.filter((k) => k !== key) // filter just in case of duplicate
+            }),
+        )
     }
 
-    /** select given item */
-    addId(id: KEY): void {
-        // ensure item is not selected yet
-        const i = this.serial.values.findIndex((i) => i === id)
-        if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
-        // insert it
-        this.runInValueTransaction(() => this.serial.values.push(id))
+    /**
+     * select given item
+     * @deprecated use `addKey` instead
+     */
+    addId = this.addKey
+    /**
+     * select an item with the given key
+     */
+    addKey(key: KEY): void {
+        if (this.isKeySet(key)) return console.log(`[🔶] WidgetSelectMany.addKey: key already set`)
+        this._addNewKey(key)
+    }
+    private _addNewKey(key: KEY): void {
+        this.runInValueTransaction(() =>
+            this.patchSerial((draft) => {
+                draft.values ??= [] // adding a new key means we're being set
+                draft.values.push(key)
+            }),
+        )
     }
 
     addValue(value: VALUE): void {
-        const valueId = this.config.getIdFromValue(value)
-        if (!valueId) return
-        this.addId(valueId)
+        const key = this.config.getIdFromValue(value)
+        return this.addKey(key)
     }
 
-    /** select item if item was not selected, un-select if item was selected */
-    toggleId(id: KEY): void {
-        this.runInValueTransaction(() => {
-            const i = this.serial.values.findIndex((i) => i === id)
-            if (i < 0) {
-                this.serial.values.push(id)
-            } else {
-                this.serial.values = this.serial.values.filter((v) => v !== id) // filter just in case of duplicate
-            }
-        })
+    /**
+     * @deprecated use `toggleKey` instead
+     */
+    toggleId = this.toggleKey
+
+    /**
+     * select an item if the corresponding key was set, or un-select it otherwise
+     */
+    toggleKey(key: KEY): void {
+        if (this.isKeySet(key)) return this._removeExistingKey(key)
+        return this._addNewKey(key)
+    }
+
+    isKeySet(key: KEY): boolean {
+        return this.serial.values?.includes(key) ?? false
     }
 
     /**
@@ -298,7 +330,7 @@ export class Field_selectMany<
      */
     hasValue(value: VALUE): boolean {
         const valueId = this.config.getIdFromValue(value)
-        return this.serial.values.includes(valueId)
+        return this.hasKey(valueId)
     }
 
     /**
@@ -360,12 +392,12 @@ export class Field_selectMany<
                     const newKey = this.config.getIdFromValue(value)
                     if (prevKey == null) {
                         // 🔴 weird to assign at 3 but append at the end 🤔 ❓
-                        this.addId(newKey)
+                        this.addKey(newKey)
                     } else if (prevKey != null) {
                         if (prevKey === newKey) return false // nothing to do
                         this.runInValueTransaction(() => {
-                            this.removeId(prevKey)
-                            this.addId(newKey)
+                            this.removeKey(prevKey)
+                            this.addKey(newKey)
                         })
                     }
                 }
@@ -375,30 +407,27 @@ export class Field_selectMany<
     }
 
     set value(next: Field_selectMany_value<VALUE>) {
-        const keys = next.map((val) => this.config.getIdFromValue(val))
-        if (
-            this.serial.values.length === next.length && //
-            this.serial.values.every((v, i) => v === keys[i])
-        )
-            return
-
-        const nextKeys = next.map((v) => this.config.getIdFromValue(v)).filter((x) => x != null) as KEY[]
-        this.selectedKeys = nextKeys
+        this.selectedKeys = next.map((val) => this.config.getIdFromValue(val))
     }
 
     get selectedKeys(): KEY[] {
+        if (this.serial.values == null) return []
         return [...this.serial.values]
     }
 
     set selectedKeys(nextKeys: KEY[]) {
+        const values = this.serial.values
+
+        // Avoid patching when no-op
         if (
-            this.serial.values.length === nextKeys.length && //
-            this.serial.values.every((v, i) => v === nextKeys[i])
+            values != null && //
+            values.length === nextKeys.length &&
+            values.every((v, i) => v === nextKeys[i])
         )
             return
 
         this.runInValueTransaction(() => {
-            this.serial.values = [...nextKeys]
+            this.patchSerial((draft) => void (draft.values = [...nextKeys]))
 
             // 2024-07-08 rvion:
             // | when setting a value with equal id, we may be actually changing the SelectEntry
@@ -448,7 +477,7 @@ export class Field_selectMany<
             const idx = Math.floor(Math.random() * choices.length)
             const choice = choices[idx]!
             if (this.selectedKeys.includes(choice)) continue
-            this.addId(choice)
+            this.addKey(choice)
         }
     }
 }

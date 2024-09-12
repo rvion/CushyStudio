@@ -1,10 +1,6 @@
-import type { Field } from '../Field'
-import type { Field_choices } from 'src/cushy-forms/main'
-
 import { describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b } from '../../index'
-import { expectJSON } from './utils/expectJSON'
+import { simpleBuilder as b } from '../../SimpleFactory'
 
 describe('default values', () => {
     const S1 = b.bool_()

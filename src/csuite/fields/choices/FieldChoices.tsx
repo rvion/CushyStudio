@@ -95,11 +95,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     static readonly type: 'choices' = 'choices'
     static readonly emptySerial: Field_choices_serial = { $: 'choices' }
     static migrateSerial<T extends SchemaDict>(serial: object): Maybe<Field_choices_serial<T>> {
-        type Serial = Field_choices_serial<T>
-
         if (isProbablySerialChoices(serial)) {
             if ('values_' in serial) {
-                const legacyValues = serial.values_ as Serial['values'] // 🔴 very unchecked cast, much danger
+                const legacyValues = serial.values_ as Field_choices_serial<T>['values'] // 🔴 very unchecked cast, much danger
                 const { $, values_, ...rest } = serial
                 const next: Field_choices_serial<T> = {
                     $: 'choices',
@@ -292,7 +290,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     get hasChanges(): boolean {
-        const def = this.config.default
         for (const branchName of this.allPossibleChoices) {
             const shouldBeActive = this.isBranchActiveByDefault(branchName)
             const child = this.enabledBranches[branchName]
@@ -347,7 +344,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    protected checkConfigValidity() {
+    protected checkConfigValidity(): void {
         // INVARIANT CHECKING -----------------------------------------------------------------------------
         const OUT: Problem_Ext[] = []
         const config = this.config
