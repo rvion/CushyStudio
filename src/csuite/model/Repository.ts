@@ -52,12 +52,16 @@ export class Repository {
         }
         if (this.allFields.size !== 0) {
             throw new Error(
-                `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[...this.allFields.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[
+                    ...this.allFields.values(),
+                ].map((i) => [i.type, i.summary])})`,
             )
         }
         if (this.allRoots.size !== 0)
             throw new Error(
-                `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[...this.allRoots.values()].map((i) => [i.type, i.summary])})`,
+                `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allRoots.size} (${[
+                    ...this.allRoots.values(),
+                ].map((i) => [i.type, i.summary])})`,
             )
     }
 
@@ -149,9 +153,9 @@ export class Repository {
 
     private tct: Maybe<Transaction> = null
 
-    TRANSACT<T>(
-        /** mutation to run */
-        fn: (transaction: Transaction) => T,
+    TRANSACT<A>(
+        /** serial mutation to run */
+        fn: (tct: Transaction) => A,
 
         /**
          * field the mutation is scoped to
@@ -160,27 +164,48 @@ export class Repository {
          */
         field: Field,
 
-        /** we maintain 3 representation: field/serial/value */
+        /** we maintain 3 representation: 'field', 'serial', 'value', 'create' */
         touchMode: FieldTouchMode,
+
         /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
         _tctMode: TransactionMode,
-    ): T {
+    ): A {
         const isRoot = this.tct == null
-        let OUT: T
         this.tct ??= new Transaction(this /* tctMode */)
+        const tct = this.tct
+        let OUT: A
+        tct.tower.push(field)
+        const prevFieldSerial = field.serial
 
         if (touchMode === 'auto') {
-            const prevValue = this.tct.bump.create + this.tct.bump.value
-            const prevSerial = prevValue + this.tct.bump.serial
-            OUT = fn(this.tct)
-            const nextValue = this.tct.bump.create + this.tct.bump.value
-            const nextSerial = nextValue + this.tct.bump.serial
+            const prevCreateAndValueBumpCount = tct.bump.create + tct.bump.value
+            const prevSerialBumpCount = prevCreateAndValueBumpCount + tct.bump.serial
+            OUT = fn(tct)
+            const nextCreateAndValueBumpCountBumpCount = tct.bump.create + tct.bump.value
+            const nextSerialBumpCount = nextCreateAndValueBumpCountBumpCount + tct.bump.serial
 
-            if (prevValue !== nextValue) this.tct.track(field, 'value')
-            else if (prevSerial !== nextSerial) this.tct.track(field, 'serial')
+            if (prevCreateAndValueBumpCount !== nextCreateAndValueBumpCountBumpCount) tct.track(field, 'value')
+            else if (prevSerialBumpCount !== nextSerialBumpCount) tct.track(field, 'serial')
         } else {
-            OUT = fn(this.tct)
-            this.tct.track(field, touchMode)
+            OUT = fn(tct)
+            tct.track(field, touchMode)
+        }
+
+        tct.tower.pop()
+
+        const fieldDidChange = field.serial !== prevFieldSerial
+        if (fieldDidChange) {
+            // TODO: assert the tower is well-formed (only goes down the field tree)
+            // now that the transaction is done, we need to bubble the serial update
+            // upwards until the closest parent in the tower.
+            const stopAt = tct.tower.length > 0 ? tct.tower[tct.tower.length - 1] : undefined
+            let at: Maybe<Field> = field
+            while (at != null && at !== stopAt) {
+                // console.log(`[🤠] UPDATE serial`, at.pathExt)
+                const didChange = at.parent?._acknowledgeNewChildSerial(at.mountKey, at.serial)
+                if (!didChange) break
+                at = at.parent
+            }
         }
 
         // ONLY COMMIT THE ROOT TRANSACTION

@@ -28,6 +28,8 @@ export const normalizeProblem = (problem: Problem_Ext): Problem[] => {
 export enum Severity {
     Error = 'Error',
     Warning = 'Warning',
-    Info = 'Info',
-    Success = 'Success',
+    // 💬 2024-09-06 rvion:
+    // | we probably don't need these since this type is only used in errors
+    // | Info = 'Info',
+    // | Success = 'Success',
 }

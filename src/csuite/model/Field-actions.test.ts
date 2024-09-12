@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b, simpleFactory as f } from '../'
 
 const r = f.repository
 
 describe('field customizations', () => {
+    beforeEach(() => r.reset())
     it('works', () => {
         type T1 = {
             squareV2(): number
@@ -13,7 +14,7 @@ describe('field customizations', () => {
             toSquareV2(): void
             set abc(x: number)
         }
-        const SA = b.int().extend(
+        const SA = b.int().useMixin(
             (self): T1 => ({
                 squareV2: (): number => self.value ** 2,
                 square(): number {
@@ -33,23 +34,9 @@ describe('field customizations', () => {
                 a1: SA,
                 a2: SA,
                 b: b.string({ default: 'ok' }),
-                // .withClass(
-                //     class FieldStringPlusPlus extends Field_string {
-                //         get coucou(): string {
-                //             return '👋'
-                //         }
-                //         constructor(
-                //             //
-                //             ...args:any[]
-                //         ) {
-                //             super(repo, root, parent, schema)
-                //             this.init(serial)
-                //         }
-                //     },
-                // ),
             })
 
-            .extend((self) => {
+            .useMixin((self) => {
                 return {
                     bang: (): void => {
                         // TODO: this should be done implicitly

@@ -5,7 +5,7 @@ import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
-import type { Field } from './Field'
+import type { Field, FieldCtorProps } from './Field'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
 import type { Problem_Ext } from './Validation'
@@ -33,10 +33,7 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     box?: Box
 
-    // ------------------------------------------------
-    /** @since 2024-08-22 */
-    render?: any // CovariantFC<FieldPresenterProps<T['$Field']>>
-
+    // --------------------------------
     /**
      * override the default header renderer
      * (passing `null` to restore the default renderer)
@@ -64,10 +61,11 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     // --------------------------------
 
     /**
-     * @since 2024-05-14
-     * @stability beta
      * This function will be executed before every widget instanciation.
      * if the version is not the samed as store in the serial
+     *
+     * @since 2024-05-14
+     * @stability beta
      */
     beforeInit?: CovariantFn<[serial: unknown /* T['$Serial'] */], T['$Serial']>
     version?: string
@@ -158,13 +156,17 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
 
-    /** mixin system for the schema */
-    customSchemaProperties?: SchemaExtension<any>[]
-
-    /** mixin system for the field */
-    customFieldProperties?: FieldExtension<any>[]
+    // EXTENSION SYSMEM ------------------------------------------------------
+    // csuite models have 3 main ways to be extends:
+    //    1. custom sub-class via `classToUse`
+    //    2. custom sub-class or something else via `builderToUse`
+    //    3. manually adding properties via `customFieldProperties`
 
     /**
+     * @internal
+     * you probably DON'T want to specify this manually.
+     * you can use the <schema>.useClass(...) method instead
+     *
      * @since 2024-08-14
      * @stability beta
      */
@@ -173,8 +175,42 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
     /**
      * @internal
      * you probably DON'T want to specify this manually.
+     * you can use the <schema>.useBuilder(...) method instead
+     *
+     * @since 2024-08-14
+     * @stability beta
+     */
+    builderToUse?: CovariantFn<FieldCtorProps<any>, any>
+
+    /**
+     * @internal
+     * you probably DON'T want to specify this manually.
+     * you can use the <schema>.extend(...) method instead
+     *
+     * Mixin system for the field.
+     */
+    customFieldProperties?: FieldExtension<any>[]
+
+    /**
+     * @internal
+     * you probably DON'T want to specify this manually.
+     * you can use the <schema>.extendSchema (...) method instead
+     * (mixin system for the schema)
+     *
+     * 💬 2024-08-30 rvion: was probably a bad idea
+     * @depreacted
+     */
+    customSchemaProperties?: SchemaExtension<any>[]
+
+    // PUB-SUB SYSMEM ------------------------------------------------------
+
+    /**
+     * @internal
+     * you probably DON'T want to specify this manually.
      * you can use the <schema>.publish(...) method instead
      *                          ^^^^^^^^^^^^
+     * @since 2024-05-01
+     * @stability beta
      */
     producers?: Producer<any, T['$Field']>[]
 

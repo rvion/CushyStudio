@@ -1,5 +1,6 @@
 import type { Field_group } from '../fields/group/FieldGroup'
 import type { BaseSchema } from './BaseSchema'
+import type { DraftLike } from './Draft'
 import type { EntityConfig } from './Entity'
 import type { IBuilder } from './IBuilder'
 import type { SchemaDict } from './SchemaDict'
@@ -41,22 +42,21 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
             onSerialChange: entityConfig.onSerialChange,
             onValueChange: entityConfig.onValueChange,
         })
+
+        // 👇 🔴 CALL CREATE INSTEAD
         return schema.instanciate(
             //
             this.repository,
             null,
             null,
+            '$',
             entityConfig.serial?.(),
         )
     }
 
-    /** simple alias to create a new Form */
-    define<SCHEMA extends BaseSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
-        return schemaFn(this.builder)
-    }
-
-    /** simple alias to create a new Form */
-    entity<SCHEMA extends BaseSchema>(
+    // #region Creation
+    /** simple alias to create a new Document */
+    document<SCHEMA extends BaseSchema>(
         schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
     ): SCHEMA['$Field'] {
@@ -66,14 +66,18 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
                 onSerialChange: entityConfig.onSerialChange,
                 onValueChange: entityConfig.onValueChange,
             })
-        return schema.instanciate(
-            //
-            this.repository,
-            null,
-            null,
-            entityConfig.serial?.(),
-        )
+        return schema.create(entityConfig.serial?.(), this.repository)
     }
+
+    /** simple alias to create a new Document */
+    draft<SCHEMA extends BaseSchema>(
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
+    ): DraftLike<SCHEMA['$Field']> {
+        return this.document(schemaExt, entityConfig)
+    }
+
+    // #region React Hooks
 
     /** simple way to defined forms and in react components */
     use<SCHEMA extends BaseSchema>(
@@ -82,7 +86,16 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
         const schema: SCHEMA = this.evalSchema(schemaExt)
-        return useMemo(() => this.entity(schema, entityConfig), deps)
+        return useMemo(() => this.document(schema, entityConfig), deps)
+    }
+
+    useDraft<SCHEMA extends BaseSchema>(
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
+        deps: DependencyList = [],
+    ): DraftLike<SCHEMA['$Field']> {
+        const schema: SCHEMA = this.evalSchema(schemaExt)
+        return useMemo(() => this.draft(schema, entityConfig), deps)
     }
 
     /** simple way to defined forms and in react components */
@@ -102,7 +115,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
         return useMemo(
             () =>
-                this.entity(schema, {
+                this.document(schema, {
                     serial: () => serial,
                     onSerialChange: (root) => {
                         localStorage.setItem(key, JSON.stringify(root.serial))
@@ -110,6 +123,12 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
                 }),
             deps,
         )
+    }
+
+    // #region misc
+    /** simple alias to create a new Form */
+    define<SCHEMA extends BaseSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
+        return schemaFn(this.builder)
     }
 
     /** eval schema if it's a function */

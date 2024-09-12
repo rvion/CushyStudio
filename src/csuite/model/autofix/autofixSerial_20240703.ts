@@ -1,11 +1,8 @@
-export function autofixSerial_20240703(serial: any): any {
-    // RECOVER FROM EntitySerial
-    if (serial?.type === 'FormSerial') {
-        const prev: any = serial
-        const next: any = prev.root
-
-        return next
-    }
-
+/**
+ * we used to have some kind of root document specific serial.
+ * it's now gone
+ */
+export function autofixSerial_20240703(serial: object): object {
+    if ('type' in serial && serial?.type === 'FormSerial') return (serial as any).root
     return serial
 }

@@ -1,10 +1,12 @@
-import { describe, it } from 'bun:test'
+import { beforeEach, describe, it } from 'bun:test'
 
-import { simpleBuilder as b } from '../../index'
+import { simpleBuilder as b, simpleFactory as f } from '../../index'
 import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------
+const r = f.repository
 describe('default values', () => {
+    beforeEach(() => r.reset())
     itDefaultsSimple(
         //
         'bool',
@@ -52,12 +54,12 @@ describe('default values', () => {
     itDefaults<'a' | 'b' | { [k in 'a' | 'b']?: boolean }>(
         //
         'choices',
-        (def) => b.choices({ a: b.int(), b: b.string() }, { default: def }),
+        (def) => b.choices({ a: b.int({ default: 8 }), b: b.string() }, { default: def }),
         [
-            { seed: 'a', expect: { a: 0 } },
+            { seed: 'a', expect: { a: 8 } },
             { seed: 'b', expect: { b: '' } },
-            { seed: { a: true }, expect: { a: 0 } },
-            { seed: { a: true, b: true }, expect: { a: 0, b: '' } },
+            { seed: { a: true }, expect: { a: 8 } },
+            { seed: { a: true, b: true }, expect: { a: 8, b: '' } },
         ],
     )
 })
@@ -72,7 +74,6 @@ function itDefaults<const T>(
         for (const def of defaults) {
             const S = schema(def.seed)
             const E = S.create()
-
             expectJSON(E.value).toEqual(def.expect)
         }
     })
