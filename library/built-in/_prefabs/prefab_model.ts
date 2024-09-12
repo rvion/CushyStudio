@@ -150,7 +150,7 @@ export function ui_model(): UI_Model {
             // ⏸️     label: 'withPopup',
             // ⏸️     icon: 'mdiTrain',
             // ⏸️     apply: (w): void => {
-            // ⏸️         const form = cushy.forms.entity((ui) =>
+            // ⏸️         const form = cushy.forms.document((ui) =>
             // ⏸️             ui.fields({
             // ⏸️                 a: ui.string({ label: 'A' }),
             // ⏸️                 b: ui.int({ label: 'B' }),

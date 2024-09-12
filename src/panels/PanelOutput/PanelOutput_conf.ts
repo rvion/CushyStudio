@@ -1,7 +1,7 @@
 import { cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PanelOutputConf = cushyFactory.entity(
+export const PanelOutputConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {

@@ -78,7 +78,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
     )
 })
 
-const Header_Playground = cushyFactory.entity(
+const Header_Playground = cushyFactory.document(
     (ui) =>
         ui.choice({
             appearance: 'tab',

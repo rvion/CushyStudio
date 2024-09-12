@@ -2,7 +2,7 @@ import { type Builder, cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = cushyFactory.entity(
+export const PanelStepsConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {

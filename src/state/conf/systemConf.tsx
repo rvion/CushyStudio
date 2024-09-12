@@ -2,7 +2,7 @@ import { cushyFactory } from '../../controls/Builder'
 import { FieldPresenterCushyUI } from '../../csuite/form/presenters/PresenterCushy'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const systemConf = cushyFactory.entity(
+export const systemConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {

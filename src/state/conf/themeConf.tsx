@@ -18,7 +18,7 @@ export type ThemeConf = X.XGroup<{
     inputContrast: X.XOptional<X.XNumber>
 }>
 
-export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
+export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
