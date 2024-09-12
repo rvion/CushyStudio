@@ -1,3 +1,5 @@
+import type { Field_list_serial } from '../fields/list/FieldList'
+import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { FormUIProps } from '../form/FormUI'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
@@ -20,7 +22,6 @@ import type { Producer } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
-import type { Field_list_serial, Field_optional_serial } from 'src/cushy-forms/main'
 
 import { produce, setAutoFreeze } from 'immer'
 import { $mobx, type AnnotationsMap, extendObservable, isObservable, observable } from 'mobx'
@@ -55,10 +56,10 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { mkNewFieldId } from './FieldId'
+import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
-import { __ERROR, __OK } from 'src/types/Result'
 
 /*
  * fact 1. mobx object can't be frozen;
@@ -133,7 +134,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     root: Field
 
     /** alias to root; since that's what `document` is. */
-    get document() {
+    get document(): Field {
         return this.root
     }
 
@@ -368,7 +369,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @see {@link serialProblems}
      * @since 2024-09-11
      */
-    recordSerialProblem = (msg: string, data: any) => this.serialProblems.push({ msg, data })
+    recordSerialProblem = (msg: string, data: any): void => {
+        this.serialProblems.push({ msg, data })
+    }
 
     /*
 
@@ -640,7 +643,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.schema.config
     }
 
-    getValue(mode: VALUE_MODE) {
+    getValue(mode: VALUE_MODE): K['$Value'] | K['$Unchecked'] {
         if (mode === 'fail') return this.value_or_fail
         if (mode === 'zero') return this.value_or_zero
         if (mode === 'unchecked') return this.value_unchecked
@@ -1417,7 +1420,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                     'class has been made observable using makeAutoObservableInheritance',
             )
 
-        const accumPropertiesAndAnnotations = (something: any) => {
+        const accumPropertiesAndAnnotations = (something: any): void => {
             Reflect.ownKeys(something).forEach((key) => {
                 if (key === $mobx || key === 'constructor') return
                 if (key in baseAnnotations) return

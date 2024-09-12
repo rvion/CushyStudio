@@ -94,6 +94,7 @@
         "@codemirror/theme-one-dark": "^6.1.2",
         "@codemirror/view": "^6.32.0",
         "@fast-csv/parse": "^5.0.0",
+        "@js-temporal/polyfill": "^0.4.4",
         "@lezer/common": "^1.2.1",
         "@lezer/generator": "^1.7.1",
         "@lezer/highlight": "^1.2.1",

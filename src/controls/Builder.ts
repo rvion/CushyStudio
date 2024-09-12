@@ -111,19 +111,16 @@ declare global {
         type XBool = Schema<Field_bool>
         type XLink<A extends BaseSchema, B extends BaseSchema> = Schema<Field_link<A, B>>
         type XString = Schema<Field_string>
-        type XPrompt = Schema<Field_prompt>
         type XChoices<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
         type XChoice<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
         type XNumber = Schema<Field_number>
         type XColor = Schema<Field_color>
-        type XEnum<T> = Schema<Field_enum<T>>
         type XList<T extends BaseSchema> = Schema<Field_list<T>>
-        type XOrbit = Schema<Field_orbit>
         type XListExt<T extends BaseSchema> = SListExt<T>
         type XButton<T> = Schema<Field_button<T>>
         type XSeed = Schema<Field_seed>
         type XMatrix = Schema<Field_matrix>
-        type XImage = Schema<Field_image>
+        //
 
         type XSelectOne<T, ID extends string> = Schema<Field_selectOne<T, ID>>
         type XSelectMany<T, ID extends string> = Schema<Field_selectMany<T, ID>>
@@ -132,6 +129,11 @@ declare global {
 
         type XSize = Schema<Field_size>
         type XMarkdown = Schema<Field_markdown>
+
+        type XPrompt = Schema<Field_prompt>
+        type XEnum<T> = Schema<Field_enum<T>>
+        type XOrbit = Schema<Field_orbit>
+        type XImage = Schema<Field_image>
         type XCustom<T> = Schema<Field_custom<T>>
     }
 }

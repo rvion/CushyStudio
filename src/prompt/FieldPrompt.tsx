@@ -24,7 +24,7 @@ export type CompiledPrompt = {
     debugText: string[]
 }
 
-// CONFIG
+// #region Config
 export type Field_prompt_config = FieldConfig<
     {
         default?: string
@@ -33,32 +33,57 @@ export type Field_prompt_config = FieldConfig<
     Field_prompt_types
 >
 
-// SERIAL FROM VALUE
+// #region Serial from value
 export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_serial => ({
     $: 'prompt',
     val: val.text,
 })
 
-// SERIAL
+// #region Serial
 export type Field_prompt_serial = FieldSerial<{
     $: 'prompt'
     val?: string
 }>
 
-// VALUE
+// #region Value
 export type Field_prompt_value = Field_prompt // { text: string; tree: Tree }
 
-// TYPES
+// #region $FieldTypes
 export type Field_prompt_types = {
     $Type: 'prompt'
     $Config: Field_prompt_config
     $Serial: Field_prompt_serial
     $Value: Field_prompt_value
+    $Unchecked: Field_prompt_value | undefined
     $Field: Field_prompt
 }
 
-// STATE
+// #region State
 export class Field_prompt extends Field<Field_prompt_types> {
+    // #region types
+    static readonly type: 'prompt' = 'prompt'
+    static readonly emptySerial: Field_prompt_serial = { $: 'prompt' }
+    static migrateSerial(): undefined {}
+
+    // #region Ctor
+    constructor(
+        //
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: BaseSchema<Field_prompt>,
+        initialMountKey: string,
+        serial?: Field_prompt_serial,
+    ) {
+        super(repo, root, parent, schema, initialMountKey, serial)
+
+        this.init(serial, {
+            DefaultBodyUI: false,
+            DefaultHeaderUI: false,
+        })
+    }
+
+    // #region UI
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     // DefaultHeaderUI = WidgetPrompt_LineUI
@@ -75,29 +100,14 @@ export class Field_prompt extends Field<Field_prompt_types> {
         return true
     }
 
-    static readonly type: 'prompt' = 'prompt'
-
+    // #region validation
     get ownProblems(): Problem_Ext {
         return null
     }
 
+    // #region change tracking
     get hasChanges(): boolean {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
-    }
-
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_prompt>,
-        serial?: Field_prompt_serial,
-    ) {
-        super(repo, root, parent, schema)
-        this.init(serial, {
-            DefaultBodyUI: false,
-            DefaultHeaderUI: false,
-        })
     }
 
     protected setOwnSerial(serial: Maybe<Field_prompt_serial>): void {

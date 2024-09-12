@@ -36,13 +36,16 @@ export type Field_color_types = {
 
 // STATE
 export class Field_color extends Field<Field_color_types> {
+    // #region types
     static readonly type: 'color' = 'color'
     static readonly emptySerial: Field_color_serial = { $: 'color' }
     static migrateSerial(): undefined {}
 
+    // #region UI
     readonly DefaultHeaderUI = WidgetColorUI
     readonly DefaultBodyUI = undefined
 
+    // #region Ctor
     constructor(
         //
         repo: Repository,
