@@ -8,11 +8,12 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Field }) {
     const field = p.field
-    if (field.hasErrors === false) return null
+    if (field.hasOwnErrors === false) return null
     return (
         <MessageErrorUI>
-            {field.errors.map((e, i) => (
-                <div key={i} tw='flex items-center gap-1'>
+            {field.ownErrors.map((e, i) => (
+                // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way
+                <div key={i} tw='flex items-center gap-1 h-input'>
                     <Ikon.mdiAlert />
                     {e.message}
                 </div>

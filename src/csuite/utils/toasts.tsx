@@ -1,4 +1,6 @@
-import { toast, ToastPosition } from 'react-toastify'
+import type { ToastPosition } from 'react-toastify'
+
+import { toast } from 'react-toastify'
 
 import { Trigger } from '../trigger/Trigger'
 

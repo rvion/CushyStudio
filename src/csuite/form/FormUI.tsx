@@ -3,7 +3,7 @@ import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RSSize } from '../types/RsuiteTypes'
-import type { CSSProperties, FC } from 'react'
+import { type CSSProperties, type FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -64,8 +64,6 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
     if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
     // if (form.error) return <MessageErrorUI markdown={form.error} />
     const submitAction = p.submitAction
-    // const Component = useMemo(() => p.Component ?? ((): JSX.Element => form.renderWithLabel()), [])
-    const Content = p.Content ?? ((): JSX.Element => field.renderWithLabel({ Header: null }))
 
     const canSubmit: boolean =
         p.allowSubmitWhenErrors ||
@@ -75,7 +73,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
         // | components re-evaluated at every single rendering will not be properly cached.
         // | this was making every sub components re-render everytime => int were not working properly
         // | also...... now that I'm writing that, why the hell was this component re-rendering everytime the value was changing ?
-        p.field.allErrorsIncludingChildrenErros.length === 0
+        p.field.allErrorsIncludingChildrenErrors.length === 0
 
     return (
         <Frame
@@ -87,7 +85,8 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
             style={p.style}
         >
             {p.Header && <p.Header />}
-            <Content /> {/* FORM */}
+            {/* FORM */}
+            {p.Content ? <p.Content /> : field.renderWithLabel({ noHeader: true })}
             {submitAction != null && (
                 <div tw='flex'>
                     <Button
