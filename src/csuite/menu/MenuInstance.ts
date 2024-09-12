@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
 import { Command } from '../commands/Command'
-import { BoundMenu } from './BoundMenuOpts'
+import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { menuBuilder } from './MenuBuilder'
 import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
@@ -69,7 +69,7 @@ export class MenuInstance<Props> implements Activity {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry, char: res?.char, charIx: res?.pos })
-            } else if (entry instanceof BoundMenu) {
+            } else if (isBoundMenu(entry)) {
                 const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry, char: res?.char, charIx: res?.pos })

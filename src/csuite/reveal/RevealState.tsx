@@ -26,7 +26,7 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
 
     get showBackdrop(): boolean {
-        return false
+        return true
     }
 
     uid = RevealState.nextUID++
