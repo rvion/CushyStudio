@@ -16,6 +16,7 @@ import { potatoClone } from '../utils/potatoClone'
 
 export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements Instanciable<FIELD> {
     constructor(
+        /** field constructor (class or function, see FieldConstructor definition)  */
         public fieldConstructor: FieldConstructor<FIELD>,
         public readonly config: FIELD['$Config'],
     ) {
@@ -26,7 +27,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
             if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
         }
 
-        this.applySchemaExtensions()
+        // ❌ this.applySchemaExtensions()
         makeObservable(this, {
             config: true,
             fieldConstructor: false,
@@ -51,16 +52,16 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
         return x as any as SimpleSchema<ReturnType<EXTS> & FIELD /* , EXTRA */>
     }
 
-    extendSchema<EXTS extends SchemaExtension<this>>(extensions: EXTS): this & ReturnType<EXTS> {
-        const withoutNewExts: SimpleSchema<FIELD> = this.withConfig({
-            customSchemaProperties: [
-                //
-                ...(this.config.customSchemaProperties ?? []),
-                extensions,
-            ],
-        })
-        return withoutNewExts as this & ReturnType<EXTS>
-    }
+    // ❌ extendSchema<EXTS extends SchemaExtension<this>>(extensions: EXTS): this & ReturnType<EXTS> {
+    // ❌     const withoutNewExts: SimpleSchema<FIELD> = this.withConfig({
+    // ❌         customSchemaProperties: [
+    // ❌             //
+    // ❌             ...(this.config.customSchemaProperties ?? []),
+    // ❌             extensions,
+    // ❌         ],
+    // ❌     })
+    // ❌     return withoutNewExts as this & ReturnType<EXTS>
+    // ❌ }
 
     /**
      * chain construction
@@ -70,13 +71,21 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
         const FieldLinkClass = getFieldLinkClass()
         const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return SimpleSchema.NEW<Field_link<this, BP>>(FieldLinkClass, linkConf)
+        return new SimpleSchema<Field_link<this, BP>>(FieldLinkClass, linkConf)
     }
 
     /** wrap field schema to list stuff */
     list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
+        return this.list_({
+            defaultLength: config.min ?? 0,
+            ...config,
+        })
+    }
+
+    /** wrap field schema to list stuff */
+    list_(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
         const FieldListClass = getFieldListClass()
-        return SimpleSchema.NEW<Field_list<this>>(FieldListClass, {
+        return new SimpleSchema<Field_list<this>>(FieldListClass, {
             ...config,
             element: this,
         })
@@ -85,7 +94,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     /** make field optional (A => Maybe<A>) */
     optional(startActive: boolean = false): S.SOptional<this> {
         const FieldOptionalClass = getFieldOptionalClass()
-        return SimpleSchema.NEW<Field_optional<this>>(FieldOptionalClass, {
+        return new SimpleSchema<Field_optional<this>>(FieldOptionalClass, {
             schema: this,
             startActive: startActive,
             label: this.config.label,
@@ -98,11 +107,7 @@ export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FI
     /** clone the schema, and patch the cloned config */
     withConfig(config: Partial<FIELD['$Config']>): this /* & EXTRA */ {
         const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new SimpleSchema<FIELD>(
-            //
-            this.fieldConstructor,
-            mergedConfig,
-        )
+        const cloned = new SimpleSchema<FIELD>(this.fieldConstructor, mergedConfig)
         return cloned as this
     }
 }
