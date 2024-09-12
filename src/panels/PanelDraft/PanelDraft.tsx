@@ -1,5 +1,6 @@
 import type { CushyAppL } from '../../models/CushyApp'
 import type { DraftL } from '../../models/Draft'
+import type { PanelState } from '../../router/PanelState'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -18,6 +19,7 @@ import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
+import { usePanel } from '../../router/usePanel'
 import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
@@ -59,10 +61,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const justify = cushy.forms.use(ui_justify)
 
     // useEffect(() => draft?.AWAKE(), [draft?.id])
-
+    const panel: PanelState<any> = usePanel()
     // ensure
     useLayoutEffect(() => {
         if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, draft.name)
+        // if (panel.def.tabColor) panel.setTabColor('!bg-blue-900')
     }, [draft?.name])
 
     // 1. draft

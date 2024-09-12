@@ -1,6 +1,13 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { Runtime } from '../runtime/Runtime'
-import type { ComfyImageInfo, PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
+import type {
+    ComfyImageInfo,
+    PromptRelated_WsMsg,
+    WsMsgExecuted,
+    WsMsgExecuting,
+    WsMsgExecutionError,
+    WsMsgExecutionSuccess,
+} from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
 import type { StepL } from './Step'
 
@@ -34,9 +41,9 @@ export class ComfyPromptL {
         this._rejects = rejects
     })
 
-    notifyEmptyPrompt = () => console.log('🔶 No work to do')
+    notifyEmptyPrompt = (): void => console.log('🔶 No work to do')
 
-    onCreate = () => {
+    onCreate = (): void => {
         const data: ComfyPromptT = this.data
         const pending = this.st._pendingMsgs.get(data.id)
         if (pending == null) return
@@ -53,17 +60,24 @@ export class ComfyPromptL {
         if (this.data.status === 'Success') return { countDone: 1, countTotal: 1, isDone: true, percent: 100 }
         return this.graph.progressGlobal
     }
-    get status() {
+
+    get status(): 'New' | 'Scheduled' | 'Running' | 'Success' | 'Failure' {
         return this.data.status ?? 'New'
     }
 
     // link to step
     stepRef = new LiveRef<this, StepL>(this, 'stepID', 'step')
-    get step(){ return this.stepRef.item } // prettier-ignore
+
+    get step(): StepL {
+        return this.stepRef.item
+    }
 
     // link to grah
     graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', 'comfy_workflow')
-    get graph() { return this.graphRef.item } // prettier-ignore
+
+    get graph(): ComfyWorkflowL {
+        return this.graphRef.item
+    }
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg): void => {
         // console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
@@ -74,6 +88,7 @@ export class ComfyPromptL {
         if (msg.type === 'progress') return graph.onProgress(msg)
         if (msg.type === 'executed') return this.onExecuted(msg)
         if (msg.type === 'execution_error') return void this.onError(msg)
+        if (msg.type === 'execution_success') return void this.onExecutionSuccess(msg)
         console.log(`🔴 UNEXPECTED MESSAGE:`, msg)
         exhaust(msg)
         // await Promise.all(images.map(i => i.savedPromise))
@@ -91,7 +106,9 @@ export class ComfyPromptL {
     /** update pointer to the currently executing node */
     private onExecuting = async (msg: WsMsgExecuting): Promise<void> => {
         this.graph.onExecuting(msg)
+
         if (msg.data.node == null) {
+            console.error(`[❌] LEGACY PATH; SHOULD NOT BE CALLED; UPDATE COMFY ?`)
             // * When `msg.data.node` is null, it means the prompt has nothing
             //   to execute anymore, so it's done.
             // * Before marking it finished, we need to wait pending promises.
@@ -102,6 +119,12 @@ export class ComfyPromptL {
             return await this._finish({ status: 'Success' })
         }
     }
+
+    private onExecutionSuccess = async (msg: WsMsgExecutionSuccess): Promise<void> => {
+        await Promise.all(this.pendingPromises)
+        return await this._finish({ status: 'Success' })
+    }
+
     private onError = async (msg: WsMsgExecutionError): Promise<void> => {
         console.error(msg)
         this.db.runtime_error.create({
@@ -124,7 +147,7 @@ export class ComfyPromptL {
     }
 
     /** update execution list */
-    private onExecuted = (msg: WsMsgExecuted) => {
+    private onExecuted = (msg: WsMsgExecuted): void => {
         const promptNodeID = msg.data.node
         // if (!Array.isArray(msg.data.output.images)) {
         //     console.error(`❌ invariant violation: msg.data.output.images is not an array`, msg.data)
@@ -144,7 +167,7 @@ export class ComfyPromptL {
         //
         comfyImageInfo: ComfyImageInfo,
         promptNodeID: ComfyNodeID,
-    ) => {
+    ): Promise<void> => {
         // retrieve the node
         const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]!
         const promptMeta = this.graph.data.metadata[promptNodeID]!
@@ -266,7 +289,7 @@ export class ComfyPromptL {
     }
 
     /** finish this step */
-    private _finish = async (p: Pick<ComfyPromptUpdate, 'status' | 'error'>) => {
+    private _finish = async (p: Pick<ComfyPromptUpdate, 'status' | 'error'>): Promise<void> => {
         this.update({ ...p, executed: SQLITE_true })
         await Promise.all(this.pendingPromises)
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')

@@ -662,6 +662,7 @@ export class CushyLayoutManager {
             this.model.doAction(Actions.renameTab(tabID, title || panelName))
         })
     }
+
     // TRAVERSAL CAPABILITIES --------------------------------------------------------
 
     /** traverse layout tree from the root */
@@ -983,7 +984,7 @@ export class CushyLayoutManager {
             )
 
         return createElement(PanelContainerUI, {
-            node,
+            flexLayoutTabNode: node,
             panelName,
             panelProps,
         })

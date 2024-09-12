@@ -4,6 +4,9 @@
     "eslint.options": { "extensions": [".ts", ".tsx"] },
 
     //
+    "marksToOutline.mark": "#region",
+
+    //
     "editor.linkedEditing": true,
     "fileswitcher.mappings": [
         // { "from": "library/([^/]+)/([^/]+)/(.*).tsx?", "to": "library/:1/:2/dist/:3.js" },

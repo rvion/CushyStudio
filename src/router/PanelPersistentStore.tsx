@@ -22,7 +22,7 @@ export class PanelPersistentStore<X extends Json = Json> {
     }
 
     saveData(data: X): void {
-        const tabId = this.ps.id
+        const tabId = this.ps.uri
         const prevConfig = this.ps.getConfig()
         this.data = data
         this.ps.layout.do((a) => {

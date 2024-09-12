@@ -28,7 +28,7 @@ export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(
     return (
         <Frame col tw='gap-2'>
             <ShowAllPanelConfigsUI />
-            <Frame>panel id: {panel.id}</Frame>
+            <Frame>panel URI: {panel.uri}</Frame>
             <Frame row tw='gap-2'>
                 <Button size='lg' onClick={() => test1.saveData({ x: test1.data.x + 1 })}>
                     Incc {test1.data.x}

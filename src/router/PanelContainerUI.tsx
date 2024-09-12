@@ -14,29 +14,28 @@ import { panelContext } from './usePanel'
 /** internal component; do not use yourself */
 export const PanelContainerUI = observer(function PanelContainer(p: {
     //
-    node: FL.TabNode
+    flexLayoutTabNode: FL.TabNode
     panelName: PanelName
     panelProps: any
 }) {
-    const { panelName, panelProps, node } = p
-
-    const panelID = p.node.getId()
+    const { panelName, panelProps, flexLayoutTabNode } = p
+    const panelDef = (panels as any)[panelName]
+    const panelURI = p.flexLayoutTabNode.getId()
     const panelState = useMemo(() => {
-        const ps = new PanelState(node, panelID)
+        const ps = new PanelState(flexLayoutTabNode, panelURI, panelDef)
         // PanelStateById.set(panelID, ps)
-        PanelStateByNode.set(panelID, ps)
+        PanelStateByNode.set(panelURI, ps)
         return ps
-    }, [node, panelID])
+    }, [flexLayoutTabNode, panelURI])
 
     // -----------------------
     // Those 3 lines allow to unmount the component when it's not visible
-    const [visible, setVisible] = useState(() => node?.isVisible() ?? true)
-    p.node?.setEventListener('visibility', (e: { visible: boolean }) => setVisible(e.visible))
+    const [visible, setVisible] = useState(() => flexLayoutTabNode?.isVisible() ?? true)
+    p.flexLayoutTabNode?.setEventListener('visibility', (e: { visible: boolean }) => setVisible(e.visible))
     if (!visible) return null
     // -----------------------
 
     // 3. get panel definition
-    const panelDef = (panels as any)[panelName]
     if (panelDef == null)
         return (
             <Message type='error' showIcon>
@@ -58,8 +57,8 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                         // 'overflow-scroll',
                     ]}
                     className={`Region-${panelName}`}
-                    data-panel-id={panelID}
-                    id={panelID}
+                    data-panel-id={panelURI}
+                    id={panelURI}
                 >
                     <Component {...panelProps} className='w-full h-full border-none' />
                 </Frame>

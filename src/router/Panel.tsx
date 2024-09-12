@@ -19,6 +19,7 @@ export type PanelPreset<Props> = {
     icon?: IconName
     name?: string
 }
+
 export type PanelDef<Props> = {
     //
     name: string
@@ -31,8 +32,10 @@ export type PanelDef<Props> = {
         [name: string]: () => PanelPreset<Props>
     }
     about?: string
+    tabColor?: string
 }
 
+// TODO: rename to `Page`
 export class Panel<Props> {
     $PanelHeader!: PanelHeader
     $Props!: Props
@@ -61,6 +64,10 @@ export class Panel<Props> {
 
     get name(): string {
         return this.p.name
+    }
+
+    get tabColor(): Maybe<string> {
+        return this.p.tabColor
     }
 
     get widget(): React.FC<Props> {

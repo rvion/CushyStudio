@@ -809,6 +809,7 @@ export class STATE {
             msg.type === 'execution_start' ||
             msg.type === 'execution_cached' ||
             msg.type === 'execution_error' ||
+            msg.type === 'execution_success' ||
             msg.type === 'executing' ||
             msg.type === 'executed'
         ) {
