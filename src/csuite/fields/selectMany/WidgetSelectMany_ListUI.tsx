@@ -27,7 +27,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
             // }
         >
             {field.options.slice(0, 100).map((c) => {
-                const isSelected = field.selectedIds.includes(c.id)
+                const isSelected = field.selectedKeys.includes(c.id)
                 return (
                     <InputBoolToggleButtonUI
                         key={c.id}

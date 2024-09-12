@@ -17,7 +17,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                 style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
             >
                 {p.field.options.map((option) => {
-                    const isSelected = field.selectedIds.includes(option.id)
+                    const isSelected = field.selectedKeys.includes(option.id)
 
                     return (
                         <InputBoolUI
@@ -34,8 +34,8 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
 
                 {/* ERROR ITEMS (items that are no longer valid to pick from) */}
                 {/* We need to display them so we can properly uncheck them. */}
-                {field.selectedIds
-                    .filter((v) => !field.choices.includes(v))
+                {field.selectedKeys
+                    .filter((v) => !field.possibleKeys.includes(v))
                     .map((missingId) => (
                         <InputBoolUI
                             key={missingId}

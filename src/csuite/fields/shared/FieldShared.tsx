@@ -7,62 +7,69 @@ import type { Problem_Ext } from '../../model/Validation'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
-// CONFIG
+// #region CONFIG TYPE
 export type Field_shared_config<F extends Field> = FieldConfig<
     //
     { field: F },
     Field_shared_types<F>
 >
 
-// SERIAL
+// #region SERIAL TYPE
 export type Field_shared_serial = FieldSerial<{
     $: 'shared'
     // NO VALUE HERE; otherwise, we would store the data twice
 }>
 
-// SERIAL FROM VALUE
-export const Field_shared_fromValue = (val: Field_shared_value): Field_shared_serial => ({
-    $: 'shared',
-})
-
-// VALUE
+// #region VALUE TYPE
 export type Field_shared_value<F extends Field = Field> = F['$Value']
+export type Field_shared_unchecked<F extends Field = Field> = F['$Unchecked']
 
-// TYPES
+// #region $FieldTypes
 export type Field_shared_types<F extends Field = Field> = {
     $Type: 'shared'
     $Config: Field_shared_config<F>
     $Serial: Field_shared_serial
     $Value: Field_shared_value<F>
+    $Unchecked: Field_shared_unchecked<F>
     $Field: Field_shared<F>
 }
 
-// STATE
+// #region STATE
 export class Field_shared<F extends Field = Field> extends Field<Field_shared_types<F>> {
+    // #region TYPE
     static readonly type: 'shared' = 'shared'
+    static readonly emptySerial: Field_shared_serial = { $: 'shared' }
+    static migrateSerial(): undefined {}
 
-    readonly DefaultHeaderUI = undefined
-    readonly DefaultBodyUI = undefined
-
+    // #region CTOR
     constructor(
         //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_shared<F>>,
+        initialMountKey: string,
         serial?: Field_shared_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    protected setOwnSerial(_serial: Maybe<Field_shared_serial>): void {}
+    // #region UI
+    readonly DefaultHeaderUI = undefined
+    readonly DefaultBodyUI = undefined
+
+    protected setOwnSerial(_next: Field_shared_serial): void {}
+
+    get isOwnSet(): boolean {
+        return this.shared.isSet
+    }
 
     get hasChanges(): boolean {
-        return this.shared.hasChanges ?? false
+        return this.shared.hasChanges
     }
 
     get actualWidgetToDisplay(): Field {
@@ -73,8 +80,8 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
         return this.config.field
     }
 
-    get ownProblems(): Problem_Ext {
-        return this.shared.ownProblems
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return this.shared.ownTypeSpecificProblems
     }
 
     get value(): Field_shared_value<F> {
@@ -83,6 +90,18 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
 
     set value(val: Field_shared_value<F>) {
         this.shared.value = val
+    }
+
+    get value_or_fail(): Field_shared_value<F> {
+        return this.shared.value_or_fail
+    }
+
+    get value_or_zero(): Field_shared_value<F> {
+        return this.shared.value_or_zero
+    }
+
+    get value_unchecked(): Field_shared_unchecked<F> {
+        return this.shared.value_unchecked
     }
 }
 

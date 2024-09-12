@@ -21,7 +21,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
                 icon={field.icon}
                 text={field.config.text ?? field.config.label2}
                 // value
-                value={field.value}
+                value={field.value_or_zero}
                 onValueChange={(value) => (field.value = value)}
             />
 

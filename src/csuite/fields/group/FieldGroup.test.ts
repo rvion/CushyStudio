@@ -1,3 +1,5 @@
+import type { Field_group_serial } from './FieldGroup'
+
 import { describe, expect, it } from 'bun:test'
 import { _getAdministration, isObservableProp } from 'mobx'
 
@@ -55,5 +57,61 @@ describe('mobx observability', () => {
         // TEST TO WRITE
         // .Foo on schema 1
         // .Bar on schema 2
+    })
+})
+
+describe('structural sharing', () => {
+    it('works', () => {
+        type T = {
+            num: S.SNumber
+            str: S.SString
+        }
+
+        const S1 = b.fields({
+            num: b.number(),
+            str: b.string(),
+        })
+
+        const ser1: Field_group_serial<T> = {
+            $: 'group',
+            values_: {
+                num: { $: 'number', value: 10 },
+                str: { $: 'str', value: 'A' },
+            },
+        }
+
+        const ser2: Field_group_serial<T> = {
+            $: 'group',
+            values_: {
+                num: { $: 'number', value: 20 },
+                str: { $: 'str', value: 'B' },
+            },
+        }
+
+        const E1 = S1.create(ser1)
+        expect(E1.value).toEqual({ num: 10, str: 'A' })
+        expect(E1.serial === ser1).toBeTrue()
+        expect(E1.__version__).toBe(1)
+        expect(E1.Num.__version__).toBe(1)
+        expect(E1.Str.__version__).toBe(1)
+
+        E1.setSerial(ser2)
+        expect(E1.value).toEqual({ num: 20, str: 'B' })
+        expect(E1.serial === ser2).toBeTrue()
+        expect(E1.__version__).toBe(2)
+        expect(E1.Num.__version__).toBe(2)
+        expect(E1.Str.__version__).toBe(2)
+
+        E1.setSerial(ser2)
+        E1.setSerial(ser2)
+        E1.setSerial(ser2)
+        E1.setSerial(ser2)
+        expect(E1.__version__).toBe(2)
+        expect(E1.Num.__version__).toBe(2)
+
+        E1.value.num = 30
+        expect(E1.__version__).toBe(3) // <- changed
+        expect(E1.Num.__version__).toBe(3)
+        expect(E1.Str.__version__).toBe(2) // <- not changed
     })
 })

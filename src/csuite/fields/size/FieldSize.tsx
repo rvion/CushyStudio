@@ -4,7 +4,10 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
+import { produce } from 'immer'
+
 import { Field } from '../../model/Field'
+import { bang } from '../../utils/bang'
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
 import { registerFieldClass } from '../WidgetUI.DI'
 import {
@@ -34,13 +37,12 @@ export type Field_size_config = FieldConfig<
 >
 
 // SERIAL
-export type Field_size_serial = FieldSerial<CushySize /* {
-    width: number
-    height: number
-    aspectRatio: AspectRatio
-    // TODO: remove VVV
-    modelType: SDModelType
-} */>
+export type Field_size_serial = FieldSerial<{
+    width?: number
+    height?: number
+    modelType?: SDModelType
+    aspectRatio?: AspectRatio
+}>
 
 // SERIAL FROM VALUE
 export const Field_size_fromValue = (val: Field_size_value): Field_size_serial => ({
@@ -49,6 +51,7 @@ export const Field_size_fromValue = (val: Field_size_value): Field_size_serial =
 
 // VALUE
 export type Field_size_value = CushySize // prettier-ignore
+export type Field_size_unchecked = Field_size_serial
 
 // TYPES
 export type Field_size_types = {
@@ -56,15 +59,27 @@ export type Field_size_types = {
     $Config: Field_size_config
     $Serial: Field_size_serial
     $Value: Field_size_value
+    $Unchecked: Field_size_unchecked
     $Field: Field_size
 }
 
 // STATE
 export class Field_size extends Field<Field_size_types> {
     static readonly type: 'size' = 'size'
-
+    static migrateSerial(serial: object): void {}
+    static readonly emptySerial: Field_size_serial = {
+        $: 'size',
+        aspectRatio: '1:1',
+        modelType: 'SD1.5 512',
+        height: 512,
+        width: 512,
+    }
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
+
+    get isOwnSet(): boolean {
+        return this.serial.width != null
+    }
 
     constructor(
         //
@@ -72,9 +87,10 @@ export class Field_size extends Field<Field_size_types> {
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_size>,
+        initialMountKey: string,
         serial?: Field_size_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             sizeHelper: false,
             DefaultHeaderUI: false,
@@ -82,15 +98,50 @@ export class Field_size extends Field<Field_size_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_size_serial>): void {
-        const config = this.config
-        this.serial.aspectRatio = serial?.aspectRatio ?? config.default?.aspectRatio ?? '1:1'
-        this.serial.modelType = serial?.modelType ?? config.default?.modelType ?? 'SD1.5 512'
-        this.serial.width = serial?.width ?? config.default?.width ?? parseInt(this.serial.modelType.split(' ')[1]!)
-        this.serial.height = serial?.height ?? config.default?.height ?? parseInt(this.serial.modelType.split(' ')[1]!)
+    get aspectRatio_or_zero(): AspectRatio {
+        return this.serial.aspectRatio ?? '1:1'
     }
 
-    get ownProblems(): Problem_Ext {
+    get modelType_or_zero(): SDModelType {
+        return this.serial.modelType ?? 'SD1.5 512'
+    }
+
+    get width_or_zero(): number {
+        return this.serial.width ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
+    }
+
+    get height_or_zero(): number {
+        return this.serial.height ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
+    }
+
+    protected setOwnSerial(next: Field_size_serial): void {
+        // 1. MAKE SERIAL CANONICAL
+        if (
+            next.width == null || //
+            next.height == null ||
+            next.aspectRatio == null ||
+            next.modelType == null
+        ) {
+            const def = this.config.default
+            if (def != null) {
+                next = produce(next, (draft) => {
+                    draft.aspectRatio = next.aspectRatio ?? def.aspectRatio
+                    draft.modelType = next.modelType ?? def.modelType
+                    draft.width = next.width ?? def.width
+                    draft.height = next.height ?? def.height
+                })
+            }
+        }
+
+        // 2. ASSIGN SERIAL
+        this.assignNewSerial(next)
+        this.serial = next
+
+        // 3. RECONCILE CHILDREN
+        // (primitive field; no children)
+    }
+
+    get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }
 
@@ -115,12 +166,14 @@ export class Field_size extends Field<Field_size_types> {
         this.value = this.defaultValue
     }
 
+    /** crash if unset */
     get width(): number {
-        return this.serial.width
+        return bang(this.serial.width)
     }
 
+    /** crash if unset */
     get height(): number {
-        return this.serial.height
+        return bang(this.serial.height)
     }
 
     set width(next: number) {
@@ -150,7 +203,7 @@ export class Field_size extends Field<Field_size_types> {
     }
 
     get value(): Field_size_value {
-        return this.serial
+        return this.value_or_fail
     }
 
     set value(val: Field_size_value) {
@@ -165,6 +218,32 @@ export class Field_size extends Field<Field_size_types> {
         this.runInValueTransaction(() => {
             Object.assign(this.serial, val)
         })
+    }
+
+    get value_or_fail(): Field_size_value {
+        const serial = this.value_unchecked
+        if (serial == null) throw new Error('Field_size.value_or_fail: not set')
+        return {
+            $: 'size',
+            aspectRatio: bang(serial.aspectRatio),
+            modelType: bang(serial.modelType),
+            height: bang(serial.height),
+            width: bang(serial.width),
+        }
+    }
+
+    get value_or_zero(): Field_size_value {
+        return {
+            $: 'size',
+            aspectRatio: this.aspectRatio_or_zero,
+            modelType: this.modelType_or_zero,
+            height: this.height_or_zero,
+            width: this.width_or_zero,
+        }
+    }
+
+    get value_unchecked(): Field_size_unchecked {
+        return this.serial
     }
 
     private idealSizeforModelType(model: ModelType | string): SizeAble {

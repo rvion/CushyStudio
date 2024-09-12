@@ -17,7 +17,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
             <SelectUI<SelectOption<VALUE, KEY>>
                 multiple
                 wrap={field.wrap}
-                tw={[field.ownProblems && 'rsx-field-error']}
+                tw={[field.ownTypeSpecificProblems != null && field.ownTypeSpecificProblems.length > 0 && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
                 OptionLabelUI={field.config.OptionLabelUI}
                 getSearchQuery={() => field.serial.query ?? ''}

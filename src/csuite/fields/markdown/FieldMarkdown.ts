@@ -9,7 +9,7 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
-// CONFIG
+// #region CONFIG TYPE
 export type Field_markdown_config = FieldConfig<
     {
         markdown: string | ((self: Field_markdown) => string)
@@ -18,41 +18,46 @@ export type Field_markdown_config = FieldConfig<
     Field_markdown_types
 >
 
-// SERIAL
+// #region SERIAL TYPE
 export type Field_markdown_serial = FieldSerial<{
     $: 'markdown'
 }>
 
-// VALUE
+// #region VALUE TYPE
 export type Field_markdown_value = { $: 'markdown' }
+export type Field_markdown_unchecked = Field_markdown_value
 
-// TYPES
+// #region $FieldTypes
 export type Field_markdown_types = {
     $Type: 'markdown'
     $Config: Field_markdown_config
     $Serial: Field_markdown_serial
     $Value: Field_markdown_value
+    $Unchecked: Field_markdown_unchecked
     $Field: Field_markdown
 }
 
-// STATE
+// #region STATE TYPE
 export class Field_markdown extends Field<Field_markdown_types> {
+    // #region TYPE
     static readonly type: 'markdown' = 'markdown'
+    static readonly emptySerial: Field_markdown_serial = { $: 'markdown' }
+    static migrateSerial(): undefined {}
 
+    // #region CTOR
     constructor(
         //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_markdown>,
+        initialMountKey: string,
         serial?: Field_markdown_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial)
     }
-
-    protected setOwnSerial(serial: Maybe<Field_markdown_serial>): void {}
-
+    // #region UI
     get DefaultHeaderUI(): FC<{ field: Field_markdown }> | undefined {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
@@ -63,14 +68,31 @@ export class Field_markdown extends Field<Field_markdown_types> {
         return WidgetMardownUI
     }
 
-    get ownProblems(): Problem_Ext {
+    // #region SERIAL
+    protected setOwnSerial(_next: Field_markdown_serial): void {}
+
+    // #region VALIDATION
+    get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }
 
+    get isOwnSet(): boolean {
+        return true
+    }
+
+    // #region MISC
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
         return md(this)
+    }
+
+    // #region value
+    /** do nothing, see coment on the hasChange getter */
+    set value(_: Field_markdown_value) {}
+
+    get value(): Field_markdown_value {
+        return this.serial
     }
 
     /**
@@ -80,14 +102,15 @@ export class Field_markdown extends Field<Field_markdown_types> {
     get hasChanges(): boolean {
         return false
     }
-
-    /** do nothing, see coment on the hasChange getter */
-    // ⏸️ reset(): void {}
-
-    /** do nothing, see coment on the hasChange getter */
-    set value(_: Field_markdown_value) {}
-
-    get value(): Field_markdown_value {
+    // the whole markdown field is legacy
+    // this is why most of the attributes make no sense.
+    get value_or_fail(): Field_markdown_value {
+        return this.serial
+    }
+    get value_or_zero(): Field_markdown_value {
+        return this.serial
+    }
+    get value_unchecked(): Field_markdown_unchecked {
         return this.serial
     }
 }

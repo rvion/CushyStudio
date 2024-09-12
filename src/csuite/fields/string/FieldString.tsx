@@ -1,13 +1,16 @@
 import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
+import type { UNVALIDATED, UNVALIDATED2 } from '../../model/FieldConstructor'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
+import { produce } from 'immer'
+
 import { Field } from '../../model/Field'
-import { registerFieldClass } from '../WidgetUI.DI'
+import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
@@ -26,7 +29,7 @@ export type FieldStringInputType =
     | 'datetime-local'
     | 'color'
 
-// CONFIG
+// #region CONFIG TYPE
 export type Field_string_config = FieldConfig<
     {
         /**
@@ -57,43 +60,211 @@ export type Field_string_config = FieldConfig<
         pattern?: string
         minLength?: number
         maxLength?: number
+
+        // randomization
+        randomizationPool?: string[]
     },
     Field_string_types
 >
 
-// SERIAL
+// #region SERIAL TYPE
 export type Field_string_serial = FieldSerial<{
     $: 'str'
-    value?: string
+    value?: string | undefined
 }>
 
-// {type:"str",val:"coucou",id:"dsafasdfsdafas"}
-// {T:"str",val:"coucou",id:"dsafasdfsdafas"}
-// ["str","dsafasdfsdafas","coucou"],
-// SERIAL FROM VALUE
-export const Field_string_fromValue = (val: string): Field_string_serial => ({
-    $: 'str',
-    value: val,
-})
+// 💬 2024-09-03 rvion:
+// | so many ways we could golf the serial some more
+// | 💡 {type:"str",val:"coucou",id:"dsafasdfsdafas"}
+// | 💡 {T:"str",val:"coucou",id:"dsafasdfsdafas"}
+// | 💡 ["str","dsafasdfsdafas","coucou"],
 
-// VALUE
+// #region VALUE TYPE
 export type Field_string_value = string
+export type Field_string_unchecked = Field_string_value | undefined
 
-// TYPES
+// #region $FieldTypes
 export type Field_string_types = {
     $Type: 'str'
     $Config: Field_string_config
     $Serial: Field_string_serial
     $Value: Field_string_value
+    $Unchecked: Field_string_unchecked
     $Field: Field_string
 }
 
-// STATE
+// #region STATE
 export class Field_string extends Field<Field_string_types> {
+    // #region Type
     static readonly type: 'str' = 'str'
+    static readonly emptySerial: Field_string_serial = { $: 'str' }
+    static migrateSerial(serial: object): Maybe<Field_string_serial> | void {
+        if (isProbablySerialString(serial)) {
+            // recover from previous version of string serial
+            if ('val' in serial) {
+                const recoveredVal = serial.val
+                if (typeof recoveredVal !== 'string') throw new Error(`Field_string: invalid legacy 'val' serial`)
+                return produce(serial, (serial) => void ((serial as Field_string_serial).value = recoveredVal))
+            }
+        }
+    }
+
+    // #region CTOR
+    constructor(
+        //
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: BaseSchema<Field_string>,
+        initialMountKey: string,
+        serial?: Field_string_serial,
+    ) {
+        super(repo, root, parent, schema, initialMountKey, serial)
+        this.init(serial, {
+            UITextarea: false,
+            UIInputText: false,
+        })
+    }
+
+    // #region SERIAL
+    // 🟢
+    protected setOwnSerial(next: Field_string_serial): void {
+        // 💬 2024-09-10 rvion:
+        // | we CAN'T do this:
+        // | ```
+        // | this.patchSerial((draft) => {
+        // |     draft.value = next.value ?? this.defaultValue
+        // | })
+        // | ```
+        // | otherwise, structural equality will not be preserved
+        // | when assigning new serial once field is already created.
+
+        // 0. SERIAL STRUCTURAL FIX (probably to move to migrateSerial)
+        // N.A.
+
+        // 1. APPLY DEFAULT
+        // assign default value if not value set but has default value
+        if (next.value == null) {
+            const def = this.defaultValue
+            if (def != null) next = produce(next, (draft) => void (draft.value = def))
+        }
+
+        // 2. ASSIGN
+        // assign given serial (or default one)
+        // this.serial = next
+        this.assignNewSerial(next)
+
+        // 3. RECONCILIATION
+        // N.A.
+    }
+
+    // #region VALUE
+    get value(): Field_string_value {
+        return this.value_or_fail
+    }
+
+    set value(next: Field_string_value) {
+        // Do we want to add that to implicitly convert non strings to string ?
+        // convenient, but can be a source of bugs / unexpected behaviours.
+        const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
+
+        // abort if same value
+        if (this.serial.value === nextStrVal) return
+
+        // patch value in serial
+        this.runInValueTransaction(() => {
+            this.patchSerial((serial) => void (serial.value = nextStrVal))
+        })
+    }
+
+    get value_or_fail(): Field_string_value {
+        const val = this.value_unchecked
+        if (val == null) throw new Error('Field_string.value_or_fail: not set')
+        return val
+    }
+
+    get value_or_zero(): Field_string_value {
+        return this.value_unchecked ?? ''
+    }
+
+    get value_unchecked(): Field_string_unchecked {
+        return this.serial.value
+    }
+
+    // #region BUFFERED
+    temporaryValue: string | null = null
+    setTemporaryValue(next: string | null): void {
+        this.temporaryValue = next
+    }
+
+    // #region CHANGES
+    get isOwnSet(): boolean {
+        return this.serial.value !== undefined
+    }
+
+    get hasChanges(): boolean {
+        if (this.serial.value == null) return false
+        if (this.serial.value === this.defaultValue) return false
+        return true
+    }
+
+    get defaultValue(): string | undefined {
+        return this.evalDefaultValue()
+    }
+
+    private evalDefaultValue(): string | undefined {
+        const d = this.config.default
+        if (d == null) return undefined
+        if (typeof d === 'function') return d()
+        if (typeof d === 'string') return d
+        return JSON.stringify(d) // failsafe
+    }
+
+    // #region PROBLEMS
+    get ownTypeSpecificProblems(): Problem_Ext {
+        const out: Problem_Ext = []
+
+        if (!this.isSet) return null
+        const value = this.value_or_zero
+
+        // check min
+        const min = this.config.minLength
+        if (min != null && value.length < min) out.push(`Value is too short (must be at least ${min} chars)`)
+
+        // check max
+        const max = this.config.maxLength
+        if (max != null && value.length > max) out.push(`Value is too long (must be at most ${max} chars)`)
+
+        // check pattern
+        const pattern = this.config.pattern
+        if (pattern != null) {
+            const reg = new RegExp(pattern).test(value)
+            if (!reg) out.push(`Value does not match pattern /${pattern}/`)
+        }
+        return out.length > 0 ? out : null
+    }
+    // #region randomization
+
+    randomize(): void {
+        if (this.config.randomizationPool) {
+            this.value = choose(this.config.randomizationPool)
+        } else {
+            this.value = random3LetterWord()
+        }
+
+        function choose(arr: string[]): string {
+            return arr[Math.floor(Math.random() * arr.length)]!
+        }
+
+        function random3LetterWord(): string {
+            return Math.random().toString(36).substring(2, 5)
+        }
+    }
+
+    // #region UI
     UITextarea: FC = () => <WidgetString_TextareaBodyUI field={this} />
     UIInputText: FC = () => <WidgetString_HeaderUI field={this} />
-
+    DefaultBodyUI = undefined
     get DefaultHeaderUI(): FC<{ field: Field_string }> {
         if (this.config.textarea) {
             if (this.isCollapsed) return WidgetString_TextareaHeaderUI
@@ -108,76 +279,9 @@ export class Field_string extends Field<Field_string_types> {
         return false
     }
 
-    DefaultBodyUI = undefined
-
-    get ownProblems(): Problem_Ext {
-        const min = this.config.minLength
-        if (min != null && this.value.length < min) return `Value is too short (must be at least ${min} chars)`
-        const max = this.config.maxLength
-        if (max != null && this.value.length > max) return `Value is too long (must be at most ${max} chars)`
-        //
-        const pattern = this.config.pattern
-        if (pattern != null) {
-            const reg = new RegExp(pattern).test(this.value)
-            if (!reg) return `Value does not match pattern`
-        }
-        return null
-    }
-
-    temporaryValue: string | null = null
-
-    setTemporaryValue(next: string | null): void {
-        this.temporaryValue = next
-    }
-
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_string>,
-        serial?: Field_string_serial,
-    ) {
-        super(repo, root, parent, schema)
-        this.init(serial, {
-            UITextarea: false,
-            UIInputText: false,
-        })
-    }
-
     get animateResize(): boolean {
         if (this.config.textarea) return false
         return true
-    }
-
-    protected setOwnSerial(serial: Maybe<Field_string_serial>): void {
-        this.serial.value = serial?.value ?? (serial as any)?.val ?? this.defaultValue
-    }
-
-    private evalDefaultValue(): string {
-        const d = this.config.default
-        if (d == null) return ''
-        if (typeof d === 'function') return d()
-        if (typeof d === 'string') return d
-        return JSON.stringify(d) // failsafe
-    }
-
-    get defaultValue(): string {
-        return this.evalDefaultValue() ?? ''
-    }
-
-    get hasChanges(): boolean {
-        return this.value !== this.defaultValue
-    }
-
-    get value(): Field_string_value {
-        return this.serial.value ?? this.defaultValue
-    }
-
-    set value(next: Field_string_value) {
-        const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
-        if (this.serial.value === nextStrVal) return
-        this.runInValueTransaction(() => (this.serial.value = nextStrVal))
     }
 }
 

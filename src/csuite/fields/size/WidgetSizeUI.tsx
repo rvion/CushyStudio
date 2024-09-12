@@ -128,8 +128,12 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
                     borderRadius: '0px',
                     // Use transform here because it works with floats and will not cause popping/mis-alignments.
                     transform: `
-                 scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
-                 scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
+                 scaleX(${
+                     uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'
+                 })
+                 scaleY(${
+                     uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'
+                 })`,
                 }}
                 // icon='mdiCheckboxBlank'
                 square

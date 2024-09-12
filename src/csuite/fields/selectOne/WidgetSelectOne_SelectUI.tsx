@@ -9,44 +9,39 @@ import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
 
 export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<VALUE, KEY extends string>(p: {
     field: Field_selectOne<VALUE, KEY>
-    selectProps?: Partial<SelectProps<SelectOption<VALUE, KEY>>>
+    selectProps?: Partial<SelectProps<SelectOption<VALUE, KEY> | undefined>>
 }) {
     const field = p.field
     return (
         <div tw='flex-1 w-full'>
-            <SelectUI<SelectOption<VALUE, KEY>>
+            <SelectUI<SelectOption<VALUE, KEY> | undefined>
                 key={field.id}
-                tw={[field.ownProblems && 'rsx-field-error']}
-                getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
-                OptionLabelUI={field.config.OptionLabelUI}
+                tw={[field.ownTypeSpecificProblems && 'rsx-field-error']}
+                getLabelText={(t): string => {
+                    if (t == null) return '<null>'
+                    return t.label ?? makeLabelFromFieldName(t.id)
+                }}
+                OptionLabelUI={(t, wh, sst) => {
+                    if (t?.value == null) return '<null>'
+                    return sst.DefaultDisplayOption(t, { where: wh })
+                }}
                 getSearchQuery={() => field.serial.query ?? ''}
                 setSearchQuery={(query) => (field.serial.query = query)}
                 disableLocalFiltering={field.config.disableLocalFiltering}
                 options={() => field.options}
-                equalityCheck={(a, b) => a.id === b.id}
+                equalityCheck={(a, b) => a?.id === b?.id}
                 value={() => field.selectedOption}
                 placeholder={field.config.placeholder}
                 readonly={field.config.readonly}
                 slotAnchorContentUI={field.config.SlotAnchorContentUI}
+                clearable={field.canBeSetOnOrOff ? () => field.setOff() : undefined}
                 onOptionToggled={(option) => {
-                    // 🔴 TODO: handle null/optional case properly
-                    // if (option == null) {
-                    //     // TODO?: hook into it's parent if parent is an option block ?
-                    //     // ⏸️ if (!widget.isOptional) return
-                    //     // ⏸️ widget.state.active = false
-                    //     return
-                    // }
-
+                    console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+                    if (option == null || field.selectedId === option.id) return field.unset()
                     field.selectedId = option.id
                 }}
                 {...p.selectProps}
             />
-            {/* {widget.baseErrors && (
-                <div tw='text-red-500 flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
-                    {widget.baseErrors}
-                </div>
-            )} */}
         </div>
     )
 })

@@ -21,7 +21,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
             style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
         >
             {choices.map((c) => {
-                const isSelected = field.serial.branches[c.key]
+                const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
                 return (
                     <InputBoolUI
                         icon={c.icon}

@@ -14,6 +14,12 @@ export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, K
     const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
     if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
     if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
+    // if (appearance === 'select') return (
+    //     <div tw='flex flex-col flex-1'>
+    //         <WidgetSelectMany_SelectUI field={field} />
+    //         {!field.isCollapsed  && <WidgetSelectMany_ListUI field={field} />}
+    //     </div>
+    // )
     if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
     exhaust(appearance)
 })

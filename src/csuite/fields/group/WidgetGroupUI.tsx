@@ -7,9 +7,9 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../button/Button'
 import { UI } from '../../components/UI'
 import { useCSuite } from '../../ctx/useCSuite'
-import { FieldPresenterCushyUI } from '../../form/presenters/PresenterCushy'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
+import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 import { bang } from '../../utils/bang'
 
 // HEADER
@@ -26,7 +26,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     const out: ReactNode[] = []
     const showFoldButtons = csuite.showFoldButtons
     const hasFoldableSubfields = field.hasFoldableSubfields
-    if (presets?.length && field.config.presetButtons) {
+    if (presets && presetCount > 0 && field.config.presetButtons) {
         out.push(
             ...presets.map((preset, ix) => (
                 <UI.Button //
@@ -85,8 +85,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
             tw={[field.config.className, p.className]}
         >
             {groupFields.map(([rootKey, sub], ix) => (
-                // sub.render()
-                <FieldPresenterCushyUI //
+                <WidgetWithLabelUI //
                     key={rootKey}
                     showWidgetIndent={p.field.config.layout === 'H' ? ix === 0 : true}
                     fieldName={rootKey}

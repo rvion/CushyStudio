@@ -1,4 +1,5 @@
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { VALUE_MODE } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -107,6 +108,7 @@ export type Field_selectMany_serial<KEY extends string> = FieldSerial<{
 
 // VALUE
 export type Field_selectMany_value<VALUE extends any> = VALUE[]
+export type Field_selectMany_unchecked<VALUE extends any> = Field_selectMany_value<VALUE>
 
 // TYPES
 export type Field_selectMany_types<
@@ -118,19 +120,26 @@ export type Field_selectMany_types<
     $Config: Field_selectMany_config<VALUE, KEY>
     $Serial: Field_selectMany_serial<KEY>
     $Value: Field_selectMany_value<VALUE>
+    $Unchecked: Field_selectMany_unchecked<VALUE>
     $Field: Field_selectMany<VALUE, KEY>
 }
 
-// STATE
+// #region STATE
+export type Field_selectMany_<KEY extends string> = Field_selectMany<KEY, KEY>
 export class Field_selectMany<
     //
     VALUE extends any,
     KEY extends string,
 > extends Field<Field_selectMany_types<VALUE, KEY>> {
+    // #region TYPE
     static readonly type: 'selectMany' = 'selectMany'
+    static readonly emptySerial: Field_selectMany_serial<any> = { $: 'selectMany', query: '', values: [] }
+    static migrateSerial(): undefined {}
+
+    // #region UI
     DefaultHeaderUI = WidgetSelectManyUI
-    // DefaultBodyUI = WidgetSelectMany_ListUI
     DefaultBodyUI = undefined
+    // DefaultBodyUI = WidgetSelectMany_ListUI
 
     get isCollapsedByDefault(): boolean {
         return true
@@ -141,29 +150,33 @@ export class Field_selectMany<
         return false
     }
 
-    get defaultIds(): KEY[] {
+    get defaultKeys(): KEY[] {
         // 2024-08-02: domi: 🔴 select all is dangerous for models
         // because it will evaluate choices in the backend...
-        if (this.config.default === true) return this.choices
+        if (this.config.default === true) return this.possibleKeys
         if (typeof this.config.default === 'string') return [this.config.default]
         return this.config.default ?? []
     }
 
+    get isOwnSet(): boolean {
+        return true
+    }
+
     get hasChanges(): boolean {
-        if (this.serial.values.length !== this.defaultIds.length) return true
+        if (this.serial.values.length !== this.defaultKeys.length) return true
         for (const id of this.serial.values) {
-            if (!this.defaultIds.find((i) => i === id)) return true
+            if (!this.defaultKeys.find((i) => i === id)) return true
         }
         return false
     }
 
     reset(): void {
-        this.selectedIds = this.defaultIds
+        this.selectedKeys = this.defaultKeys
     }
 
     wrap = this.config.wrap ?? false
 
-    get choices(): KEY[] {
+    get possibleKeys(): KEY[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //
             ? _choices(this)
@@ -171,14 +184,14 @@ export class Field_selectMany<
     }
 
     get options(): SelectOption<VALUE, KEY>[] {
-        return this.choices.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
+        return this.possibleKeys.map((id) => this.getOptionFromId(id)).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
     }
 
-    get ownProblems(): Maybe<string[]> {
+    get ownTypeSpecificProblems(): Maybe<string[]> {
         if (this.serial.values == null) return null
         const errors: string[] = []
-        for (const id of this.selectedIds) {
-            if (!this.choices.find((choice) => choice === id)) {
+        for (const id of this.selectedKeys) {
+            if (!this.possibleKeys.find((choice) => choice === id)) {
                 const option = this.getOptionFromId(id)
                 if (option == null) errors.push(`value ${id} (label: unknown, could not retrieve option) not in choices`)
                 else errors.push(`value ${option.id} (label: ${option.label}) not in choices`)
@@ -194,21 +207,25 @@ export class Field_selectMany<
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_selectMany<VALUE, KEY>>,
+        initialMountKey: string,
         serial?: Field_selectMany_serial<KEY>,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         const config = schema.config
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
         this.init(serial, {
+            // UI
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
+            // Values
+            value_or_fail: false,
+            value_or_zero: false,
+            value_unchecked: false,
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_selectMany_serial<KEY>>): void {
-        this.serial.query = serial?.query ?? ''
-
-        let prevVal: KEY[] | undefined = serial?.values
+    protected setOwnSerial(next: Field_selectMany_serial<KEY>): void {
+        let prevVal: KEY[] | undefined = next?.values
         // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
         if (
             prevVal &&
@@ -223,8 +240,12 @@ export class Field_selectMany<
                 .filter(Boolean)
         }
 
-        const finalVal = prevVal ?? this.defaultIds
-        this.serial.values = [...finalVal]
+        const finalVal = prevVal ?? this.defaultKeys
+
+        this.patchSerial((draft) => {
+            draft.query = next?.query ?? ''
+            draft.values = [...finalVal] // still need to do a deep clone ? probably wrong
+        })
     }
 
     /** un-select given item */
@@ -249,9 +270,7 @@ export class Field_selectMany<
 
     addValue(value: VALUE): void {
         const valueId = this.config.getIdFromValue(value)
-
         if (!valueId) return
-
         this.addId(valueId)
     }
 
@@ -267,41 +286,92 @@ export class Field_selectMany<
         })
     }
 
+    /**
+     * @since 2024-09-03
+     */
+    hasKey(key: KEY): boolean {
+        return this.possibleKeys.includes(key)
+    }
+
+    /**
+     * @since 2024-09-03
+     */
+    hasValue(value: VALUE): boolean {
+        const valueId = this.config.getIdFromValue(value)
+        return this.serial.values.includes(valueId)
+    }
+
+    /**
+     * alias to `hasValue`
+     * @since 2024-09-03
+     * @see {@link hasValue}
+     */
+    has = this.hasValue
+
+    /**
+     * @since 2024-09-03
+     */
+    pushValue(...values: VALUE[]): void {
+        this.runInValueTransaction(() => {
+            for (const value of values) {
+                this.addValue(value)
+            }
+        })
+    }
+
     get value(): Field_selectMany_value<VALUE> {
-        // return naiveDeepClone(this.serial.values)
-        return [...this.selectedValues] // do we still need to clone?
+        return new Proxy([] as any, this.makeValueProxy('fail'))
+    }
 
-        // 2024-08-01 domi: we removed that for simplicity because it gets even more intricated now that value is not an option.
-        // stuff like addValue only have dubious implementations
-        //
-        // return cloned
-        // return new Proxy(cloned as any, {
-        //     get: (target, prop): any => {
-        //         // ⏸️ console.log(`[GET]`, prop)
-        //         if (typeof prop === 'symbol') return target[prop]
+    value_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy('fail'))
+    value_or_zero: Field_selectMany_value<VALUE> = this.value_or_fail
+    value_unchecked: Field_selectMany_value<VALUE> = this.value_or_fail
 
-        //         if (prop === 'push') return this.addValue.bind(this)
-        //         if (prop === 'slice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
-        //         if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<never> {
+        return {
+            get: (_, prop): any => {
+                if (typeof prop === 'symbol') return (this.selectedValues as any)[prop]
 
-        //         // handle numbers (1) and number-like ('1')
-        //         if (parseInt(prop, 10) === +prop) {
-        //             return target[+prop]
-        //         }
+                // handle numbers (1) and number-like ('1')
+                if (parseInt(prop, 10) === +prop) return this.selectedValueAt(+prop)
 
-        //         return target[prop]
-        //     },
-        //     set: (target, prop, value): boolean => {
-        //         const msg = `[🔶] Field_selectMany.value: use .addItem() or .removeItem() instead`
+                // whiltelist/blacklist some methods
+                // (todo: test; review; then add more to the list)
+                if (prop === 'push') return this.pushValue.bind(this)
+                if (prop === 'slice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
+                if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
 
-        //         // alt 1. either we throw
-        //         throw new Error(msg)
+                if (prop === 'length') return this.selectedKeys.length
+                if (prop === 'toJSON') return undefined
+                // 💬 2024-09-03 rvion:
+                // | let's be conservative and just throw, rather to pass that to some other
+                // | function we haven't properly tested/reviewed yet.
+                // | return (target as any)[prop]
 
-        //         // alt 2. either we warn and return false
-        //         // console.warn(msg)
-        //         // return false
-        //     },
-        // })
+                throw new Error(`FieldSelectMany.value: property ${prop} not handled on the value proxy`)
+            },
+            set: (_, prop, value): boolean => {
+                if (typeof prop === 'symbol') return false
+
+                if (parseInt(prop, 10) === +prop) {
+                    const index = +prop
+                    const prevKey = this.selectedKeys[index]
+
+                    const newKey = this.config.getIdFromValue(value)
+                    if (prevKey == null) {
+                        // 🔴 weird to assign at 3 but append at the end 🤔 ❓
+                        this.addId(newKey)
+                    } else if (prevKey != null) {
+                        if (prevKey === newKey) return false // nothing to do
+                        this.runInValueTransaction(() => {
+                            this.removeId(prevKey)
+                            this.addId(newKey)
+                        })
+                    }
+                }
+                return false
+            },
+        }
     }
 
     set value(next: Field_selectMany_value<VALUE>) {
@@ -312,23 +382,23 @@ export class Field_selectMany<
         )
             return
 
-        const nextIds = next.map((v) => this.config.getIdFromValue(v)).filter((x) => x != null) as KEY[]
-        this.selectedIds = nextIds
+        const nextKeys = next.map((v) => this.config.getIdFromValue(v)).filter((x) => x != null) as KEY[]
+        this.selectedKeys = nextKeys
     }
 
-    get selectedIds(): KEY[] {
+    get selectedKeys(): KEY[] {
         return [...this.serial.values]
     }
 
-    set selectedIds(nextIds: KEY[]) {
+    set selectedKeys(nextKeys: KEY[]) {
         if (
-            this.serial.values.length === nextIds.length && //
-            this.serial.values.every((v, i) => v === nextIds[i])
+            this.serial.values.length === nextKeys.length && //
+            this.serial.values.every((v, i) => v === nextKeys[i])
         )
             return
 
         this.runInValueTransaction(() => {
-            this.serial.values = [...nextIds]
+            this.serial.values = [...nextKeys]
 
             // 2024-07-08 rvion:
             // | when setting a value with equal id, we may be actually changing the SelectEntry
@@ -343,7 +413,7 @@ export class Field_selectMany<
     }
 
     get selectedOptions(): SelectOption<VALUE, KEY>[] {
-        return this.selectedIds.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
+        return this.selectedKeys.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
     }
 
     // see FieldSelectOne.getValueFromId notes
@@ -351,7 +421,12 @@ export class Field_selectMany<
     getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
     private get selectedValues(): VALUE[] {
-        return this.selectedIds.map(this.getValueFromId).filter((x) => x != null) as VALUE[]
+        return this.selectedKeys.map(this.getValueFromId).filter((x) => x != null) as VALUE[]
+    }
+
+    private selectedValueAt(index: number): Maybe<VALUE> {
+        if (index < 0 || index >= this.selectedKeys.length) return null
+        return this.getValueFromId(this.selectedKeys[index]!)
     }
 
     // 🔶 do not compare queries
@@ -359,6 +434,22 @@ export class Field_selectMany<
         const { snapshot, ...currentSerial } = this.serial
         if (snapshot == null) return false
         return stableStringify(snapshot.values) !== stableStringify(currentSerial.values)
+    }
+
+    /**
+     * TODO: add distribution config in the config
+     * pick between 0 and 2 random values
+     */
+    randomize(): void {
+        const choices = this.possibleKeys
+        if (choices.length === 0) return
+        const numOfValuesSelected = Math.floor(Math.random() * 3)
+        for (let i = 0; i < numOfValuesSelected; i++) {
+            const idx = Math.floor(Math.random() * choices.length)
+            const choice = choices[idx]!
+            if (this.selectedKeys.includes(choice)) continue
+            this.addId(choice)
+        }
     }
 }
 

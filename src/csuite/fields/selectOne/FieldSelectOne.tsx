@@ -5,11 +5,11 @@ import type { Repository } from '../../model/Repository'
 import type { SelectValueLooks } from '../../select/SelectProps'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
+import type { CanThrow } from './CanCrash'
 import type { SelectOption } from './SelectOption'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
-import { bang } from '../../utils/bang'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
@@ -33,7 +33,7 @@ export type Field_selectOne_config_simplified_<KEY extends string> = Omit<
     'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
 >
 
-// CONFIG
+// #region CONFIG
 export type Field_selectOne_config_<KEY extends string> = Field_selectOne_config<KEY, KEY>
 export type Field_selectOne_config<
     //
@@ -97,18 +97,11 @@ export type Field_selectOne_config<
     Field_selectOne_types<VALUE, KEY>
 >
 
-// SERIAL FROM VALUE
-// 🔴 this is not possible anymore, we need the config.getIdFromValue to get the id.
-// not sure if important
-// export const Field_selectOne_fromValue = <T extends any>(
-//     val: Field_selectOne_value<T>,
-// ): Field_selectOne_serial => ({ $: 'selectOne', val })
-
-// SERIAL
+// #region SERIAL
 export type Field_selectOne_serial<KEY extends string> = FieldSerial<{
     $: 'selectOne'
     query?: string
-    val: KEY
+    val?: KEY
 
     // 💬 2024-08-21 rvion:
     // | TODO : UNSAFE KEY, POSSIBLY NULL, POSSIBLY NO LONGER IN CHOICES
@@ -135,10 +128,11 @@ export type Field_selectOne_serial<KEY extends string> = FieldSerial<{
     extra?: any
 }>
 
-// VALUE
+// #region VALUE
 export type Field_selectOne_value<VALUE extends any> = VALUE
+export type Field_selectOne_unchecked<VALUE extends any> = Field_selectOne_value<VALUE> | undefined
 
-// TYPES
+// #region TYPES
 export type Field_selectOne_types<
     //
     VALUE extends any,
@@ -147,17 +141,19 @@ export type Field_selectOne_types<
     $Type: 'selectOne'
     $Config: Field_selectOne_config<VALUE, KEY>
     $Serial: Field_selectOne_serial<KEY>
-    $Value: Field_selectOne_value<VALUE>
+    $Value: VALUE
+    $Unchecked: Field_selectOne_unchecked<VALUE>
     $Field: Field_selectOne<VALUE, KEY>
 }
 
-// STATE
+// #region STATE
 const FAILOVER_VALUE: SelectOption<any, string> = Object.freeze({
     id: '❌',
     label: '❌',
     value: '❌',
 })
 
+// #region STATE
 export class Field_selectOne<
         //
         VALUE extends any,
@@ -165,17 +161,50 @@ export class Field_selectOne<
     > //
     extends Field<Field_selectOne_types<VALUE, KEY>>
 {
+    // #region TYPE
     static readonly type: 'selectOne' = 'selectOne'
+    static readonly emptySerial: Field_selectOne_serial<any> = { $: 'selectOne' }
+    static migrateSerial(): undefined {}
+
+    // #region CTOR
+    constructor(
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: BaseSchema<Field_selectOne<VALUE, KEY>>,
+        initialMountKey: string,
+        serial?: Field_selectOne_serial<KEY>,
+    ) {
+        super(repo, root, parent, schema, initialMountKey, serial)
+        this.init(serial, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+            DefaultCellUI: false,
+        })
+    }
+
+    // 📌 UI ---------------------------------------------------------------------|
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
     DefaultCellUI = WidgetSelectOne_CellUI
 
-    get ownProblems(): Maybe<string> {
+    // @deprecated
+    renderAsCell(this: Field_selectOne<VALUE, KEY>, p?: { reveal?: boolean }): JSX.Element {
+        return <this.DefaultCellUI field={this} opts={p} {...p} />
+    }
+
+    // #region PROBLEMS
+    get ownTypeSpecificProblems(): Maybe<string> {
         if (this.serial.val == null && this.schema.config.required) return 'no value selected'
-        const selected = this.choices.find((c) => c === this.selectedId)
+        const selected = this.possibleKeys.find((c) => c === this.selectedId)
         if (selected == null && !this.config.disableLocalFiltering)
             return `selected value (id: ${this.selectedId}) not in choices`
         return
+    }
+
+    // 📌 CHANGES ----------------------------------------------------------------|
+    get isOwnSet(): boolean {
+        return this.serial.val != null
     }
 
     get hasChanges(): boolean {
@@ -183,10 +212,14 @@ export class Field_selectOne<
     }
 
     reset(): void {
-        this.selectedId = this.defaultKey
+        if (this.defaultKey != null) this.selectedId = this.defaultKey
     }
 
-    get choices(): KEY[] {
+    /**
+     * list of all possible keys
+     * 🔶 warning: if config.choices is a function, will execute the method
+     */
+    get possibleKeys(): KEY[] {
         if (this.config.choices != null) {
             const _choices = this.config.choices
             if (typeof _choices === 'function') {
@@ -220,7 +253,7 @@ export class Field_selectOne<
         }
 
         if (this.config.choices != null && this.getOptionFromId != null) {
-            return this.choices.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
+            return this.possibleKeys.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<VALUE, KEY>[]
         }
 
         if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
@@ -246,80 +279,136 @@ export class Field_selectOne<
         }
 
         if (this.config.choices != null && this.config.getValueFromId != null) {
-            const _choices = this.choices
+            const _choices = this.possibleKeys
             return _choices.map(this.getValueFromId).filter((x) => x != null)
         }
 
         throw new Error('no way to get values. Provide values or options or choices + getValueFromId')
     }
 
-    constructor(
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_selectOne<VALUE, KEY>>,
-        serial?: Field_selectOne_serial<KEY>,
-    ) {
-        super(repo, root, parent, schema)
-        this.init(serial, {
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-            DefaultCellUI: false,
-        })
-    }
-
+    // 📌 MOCK ------------------------------------------------------------|
+    /** randomly pick one of the options */
     randomize(): void {
-        const choices = this.choices
+        const choices = this.possibleKeys
         if (choices.length === 0) return
         const idx = Math.floor(Math.random() * choices.length)
         this.selectedId = choices[idx]!
     }
 
-    get firstID(): KEY {
-        const id0 = this.choices[0]
-        // if (id0 == null) debugger
-        return '' as any
-    }
+    // #region CHILDREN
 
-    get defaultKey(): KEY {
-        return this.config.default ?? this.firstID
-    }
+    // 📌 SERIAL -----------------------------------------------------------------|
+    protected setOwnSerial(next: Field_selectOne_serial<KEY>): void {
+        let prevKey: Maybe<KEY> = next?.val
 
-    protected setOwnSerial(serial: Maybe<Field_selectOne_serial<KEY>>): void {
         // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
-        /* 🕗 */ let prevKey: Maybe<KEY> = serial?.val
-        /* 🕗 */ if (serial != null && typeof serial.val === 'object' && serial.val != null && 'id' in serial.val) {
-            /* 🕗 */ if ((serial.val as any).id != '❌') prevKey = (serial.val as unknown as { id: KEY }).id
-            /* 🕗 */ else prevKey = null
-            /* 🕗 */
+        // TODO: move to migrateSerial to stop polluting this ctor.
+        if (next != null && typeof next.val === 'object' && next.val != null && 'id' in next.val) {
+            if ((next.val as any).id != '❌') prevKey = (next.val as unknown as { id: KEY }).id
+            else prevKey = null
         }
-        this.serial.val = prevKey ?? this.defaultKey
-        this.serial.query = serial?.query
+
+        this.patchSerial((draft) => {
+            draft.val = prevKey ?? this.defaultKey
+            draft.query = next?.query
+        })
     }
 
     /** return true if the value is equal to the given id */
-    is(val: VALUE): boolean {
-        return this.config.getIdFromValue(val) === this.selectedId
+    is(value: VALUE): boolean {
+        return this.config.getIdFromValue(value) === this.selectedId
     }
 
-    get defaultValue(): Field_selectOne_value<VALUE> {
-        return bang(this.getValueFromId(this.defaultKey))
+    // #region VALUE
+    /**
+     * First key for the list of possibleKeys
+     * May return undefined if the list is empty
+     */
+    get firstPossibleKey(): KEY | undefined {
+        return this.possibleKeys[0]
     }
 
-    get value(): Field_selectOne_value<VALUE> {
-        return this.getValueFromId(this.selectedId) ?? this.defaultValue
+    /**
+     * true when config.default has been set,
+     * even when set to null or undefined
+     *
+     * 🔴 TODO: add test
+     */
+    get hasDefaultKey(): boolean {
+        return 'default' in this.config
     }
 
-    get selectedOption(): SelectOption<VALUE, KEY> {
-        // 🔴
-        return bang(this.getOptionFromId(this.selectedId))
+    /** proxy to this.config.default */
+    get defaultKey(): KEY | undefined {
+        return this.config.default
+    }
+
+    // #region VALUE
+    get value(): CanThrow<VALUE> {
+        return this.value_or_fail
     }
 
     set value(next: Field_selectOne_value<VALUE>) {
         this.selectedId = this.config.getIdFromValue(next)
     }
 
-    get selectedId(): KEY {
+    get value_unchecked(): Field_selectOne_unchecked<VALUE> {
+        return this._getValueOrUndefined(this.selectedId)
+    }
+
+    /** different from reset; doesn't take default into account */
+    unset() {
+        this.runInValueTransaction(() => {
+            this.serial.val = undefined
+        })
+    }
+
+    get value_or_fail(): CanThrow<VALUE> {
+        return this._getValueOrThrow(this.selectedId)
+    }
+
+    /** zero value may not exists */
+    get value_or_zero(): CanThrow<VALUE> {
+        return this._getValueOrThrow(this.selectedId ?? this.firstPossibleKey)
+    }
+
+    private _getValueOrThrow(key: KEY | undefined): CanThrow<VALUE> {
+        if (key == null) throw new Error('Field_selectOne._zeroValue: no key available')
+        const value = this.getValueFromId(key)
+        if (value == null) throw new Error('Field_selectOne._zeroValue: value not found for first key')
+        return value
+    }
+
+    private _getValueOrUndefined(key: KEY | undefined): VALUE | undefined {
+        const firstKey = this.firstPossibleKey
+        if (firstKey == null) return
+        const value = this.getValueFromId(firstKey)
+        if (value == null) return
+        return value
+    }
+
+    // #region SELECTED OPTION
+    get selectedOption_unchecked(): SelectOption<VALUE, KEY> | undefined {
+        const key = this.selectedId
+        if (key == null) return
+
+        const opt = this.getOptionFromId(key)
+        if (opt == null) return
+
+        return opt
+    }
+
+    get selectedOption(): SelectOption<VALUE, KEY> {
+        const key = this.selectedId
+        if (key == null) throw new Error('Field_selectOne.selectedOption: no value selected')
+
+        const opt = this.getOptionFromId(key)
+        if (opt == null) throw new Error('Field_selectOne.selectedOption: no option found for key')
+
+        return opt
+    }
+
+    get selectedId(): KEY | undefined {
         return this.serial.val // || this.default // 🔴 idk, probably bad to have default here
     }
 
@@ -341,24 +430,41 @@ export class Field_selectOne<
         })
     }
 
+    // 💬 2024-09-03 rvion:
+    // | defaultValue should NEVER be usefull anymore
+    // | when setOwnSerial is called with a defaultKey,
+    // | the serial should already have the key set, and the default getValue(key)
+    // | will properly retrieve the value
+    //
+    // ❌ get defaultValue(): VALUE | undefined {
+    // ❌     if (!this.hasDefaultKey) return undefined
+    // ❌     // 💬 2024-09-03 rvion:
+    // ❌     // | technically, some select could allow null as KEY,
+    // ❌     // | so testing against (== null) is just wrong.
+    // ❌     // | that's why we use this.hasDefaultKey instead, then assume
+    // ❌     // | that the defaultKey has type KEY, even if it's null in the
+    // ❌     // | live below         VVVVVVVVVVVVVVVVVVVVVV
+    // ❌     const defaultKey: KEY = this.defaultKey as KEY
+    // ❌     const value = this.getValueFromId(defaultKey)
+    // ❌     return value ?? undefined
+    // ❌ }
+
     // set value(next: Field_selectOne_value<VALUE>) {
     //     // 🔴 can we do without this?
     // }
 
-    renderAsCell(this: Field_selectOne<VALUE, KEY>, p?: { reveal?: boolean }): JSX.Element {
-        return <this.DefaultCellUI field={this} opts={p} {...p} />
-    }
-
     /**
-     * 2024-08-02 domi: problem: getting the value via getOptionFromId
-     * sometimes goes through options or choices (and their side effects),
-     * when we probably just want to go from serial to value.
-     * especially in back-end when we likely don't need label or icon.
-     * In most cases (all for now), value is the id, so we can just get value from serial.
-     *
-     * see also "extra"
+     * 💬 2024-09-03 domi:
+     * | problem: getting the value via getOptionFromId
+     * | sometimes goes through options or choices (and their side effects),
+     * | when we probably just want to go from serial to value.
+     * | especially in back-end when we likely don't need label or icon.
+     * | In most cases (all for now), value is the id, so we can just get value from serial.
+     * | see also "extra"
      */
-    getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id, this)
+    getValueFromId = (id: KEY): Maybe<VALUE> => {
+        return this.config.getValueFromId(id, this)
+    }
 
     // 💬 2024-08-21 rvion: (for @domi)
     // | I dislike this `getOptionFromId`.

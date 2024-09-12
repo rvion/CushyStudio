@@ -1,3 +1,7 @@
+/*
+ * 🔴 TODO: rewrite as field composite
+ */
+
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -38,6 +42,7 @@ export type Field_matrix_serial = FieldSerial<{
 
 // VALUE
 export type Field_matrix_value = Field_matrix_cell[]
+export type Field_matrix_unchecked = Field_matrix_value
 
 // TYPES
 export type Field_matrix_types = {
@@ -45,12 +50,15 @@ export type Field_matrix_types = {
     $Config: Field_matrix_config
     $Serial: Field_matrix_serial
     $Value: Field_matrix_value
+    $Unchecked: Field_matrix_unchecked
     $Field: Field_matrix
 }
 
 // STATE
 export class Field_matrix extends Field<Field_matrix_types> {
     static readonly type: 'matrix' = 'matrix'
+    static readonly emptySerial: Field_matrix_serial = { $: 'matrix', selected: [] }
+    static migrateSerial(): undefined {}
 
     constructor(
         //
@@ -58,9 +66,10 @@ export class Field_matrix extends Field<Field_matrix_types> {
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_matrix>,
+        initialMountKey: string,
         serial?: Field_matrix_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
@@ -71,12 +80,12 @@ export class Field_matrix extends Field<Field_matrix_types> {
     DefaultBodyUI = undefined
 
     /** this method must be idem-potent */
-    protected setOwnSerial(serial: Maybe<Field_matrix_serial>): void {
+    protected setOwnSerial(next: Field_matrix_serial): void {
         const { rows, cols, default: defs } = this.config
 
         // 1. create a set with all cellKeys that should be ON
         let selectedCells: Set<string>
-        if (serial != null) selectedCells = new Set(serial.selected.map(({ row, col, value }) => this.getCellkey(row, col)))
+        if (next != null) selectedCells = new Set(next.selected.map(({ row, col, value }) => this.getCellkey(row, col)))
         else if (defs != null) selectedCells = new Set(defs.map(({ row, col }) => this.getCellkey(row, col)))
         else selectedCells = new Set()
 
@@ -91,11 +100,27 @@ export class Field_matrix extends Field<Field_matrix_types> {
             }
         }
 
-        this.serial.selected = this.activeCells
+        this.patchSerial((draft) => {
+            // transitively read from store set a few line above in the
+            // double for loop
+            draft.selected = this.activeCells
+        })
     }
 
     /** list of all active cells */
     get value(): Field_matrix_value {
+        return this.serial.selected
+    }
+
+    get value_or_fail(): Field_matrix_value {
+        return this.serial.selected
+    }
+
+    get value_or_zero(): Field_matrix_value {
+        return this.serial.selected
+    }
+
+    get value_unchecked(): Field_matrix_unchecked {
         return this.serial.selected
     }
 
@@ -125,8 +150,12 @@ export class Field_matrix extends Field<Field_matrix_types> {
         return this.config.cols
     }
 
-    get ownProblems(): Problem_Ext {
+    get ownTypeSpecificProblems(): Problem_Ext {
         return null
+    }
+
+    get isOwnSet(): boolean {
+        return true
     }
 
     get hasChanges(): boolean {

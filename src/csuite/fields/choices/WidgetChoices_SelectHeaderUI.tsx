@@ -23,9 +23,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 tw='flex-grow'
                 placeholder={p.field.config.placeholder}
                 value={() =>
-                    Object.entries(field.serial.branches)
-                        .filter(([_, value]) => value)
-                        .map(([key, _]) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
+                    field.activeBranchNames.map((key) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
                 }
                 options={() => choices}
                 getLabelText={(v) => v.label}

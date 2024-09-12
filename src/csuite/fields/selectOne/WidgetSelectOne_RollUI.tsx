@@ -9,10 +9,10 @@ export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<
 }) {
     const field = p.field
     const selected = field.selectedId
-    const idx = field.choices.findIndex((c) => c === selected)
+    const idx = field.possibleKeys.findIndex((c) => c === selected)
     const curr = field.selectedOption
     if (curr == null) return null // 🔴 2024-08-02: domi: not sure what this UI is supposed to look like
-    const nextId = field.choices[(idx + 1) % field.choices.length]
+    const nextId = field.possibleKeys[(idx + 1) % field.possibleKeys.length]
 
     return (
         <>
