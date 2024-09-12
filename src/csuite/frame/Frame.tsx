@@ -18,6 +18,7 @@ import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { computeColors, ComputedColors } from './FrameColors'
+import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
@@ -73,14 +74,6 @@ export type FrameProps = {
     FrameSize
 
 // ------------------------------------------------------------------
-// quick and dirty way to configure frame to use either style or className
-type FrameMode = 'CLASSNAME' | 'STYLE'
-let frameMode: FrameMode = 1 - 1 === 1 ? 'STYLE' : 'CLASSNAME'
-export const configureFrameEngine = (mode: FrameMode): void => {
-    frameMode = mode
-}
-// ------------------------------------------------------------------
-
 export const Frame = observer(
     forwardRef(function Frame_(p: FrameProps, ref: ForwardedRef<HTMLDivElement>) {
         // PROPS --------------------------------------------
@@ -176,8 +169,8 @@ export const Frame = observer(
                     noColorStuff === true
                         ? undefined
                         : frameMode === 'CLASSNAME'
-                          ? compileOrRetrieveClassName(variables)
-                          : undefined,
+                        ? compileOrRetrieveClassName(variables)
+                        : undefined,
                     // 'flex',
                     size && `box-${size}`,
                     square && `box-square`,
@@ -196,8 +189,8 @@ export const Frame = observer(
                     noColorStuff === true
                         ? style
                         : frameMode === 'CLASSNAME' //
-                          ? style
-                          : objectAssignTsEfficient_t_t(style, variables)
+                        ? style
+                        : objectAssignTsEfficient_t_t(style, variables)
                 }
                 {...rest}
                 {...(triggerOnPress != null
