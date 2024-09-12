@@ -7,13 +7,10 @@ import { type ForwardedRef, type RefObject, useEffect } from 'react'
  * (note: this hook could even include the useRef itself)
  */
 
-export function useSyncForwardedRef(
-   forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>,
-   localRef: RefObject<HTMLDivElement>,
-) {
-   useEffect(() => {
-      if (forwaredRef == null) return
-      if (typeof forwaredRef === 'function') forwaredRef(localRef.current)
-      else forwaredRef.current = localRef.current
-   }, [localRef.current])
+export function useSyncForwardedRef(forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>, localRef: RefObject<HTMLDivElement>) {
+    useEffect(() => {
+        if (forwaredRef == null) return
+        if (typeof forwaredRef === 'function') forwaredRef(localRef.current)
+        else forwaredRef.current = localRef.current
+    }, [localRef.current])
 }
