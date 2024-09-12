@@ -2,9 +2,10 @@ import type { RevealHideReason } from '../reveal/RevealProps'
 import type { RevealState } from '../reveal/RevealState'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { BadgeUI } from '../badge/BadgeUI'
@@ -155,13 +156,7 @@ export class AutoCompleteSelectState<OPTION> {
         if (option != null && typeof option === 'object' && 'hue' in option && typeof option.hue === 'number') return option.hue
     }
 
-    DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
-        if (this.p.OptionLabelUI) {
-            // return '🔶'
-            const val = this.p.OptionLabelUI(option, opt.where)
-            if (val !== '🔶DEFAULT🔶') return val
-            // we could handle other magic values here
-        }
+    DefaultDisplayOption = (option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode => {
         const label = this.p.getLabelText(option)
         return (
             <BadgeUI key={this.getKey(option)} autoHue={label} hue={this.getHue(option)}>
@@ -170,8 +165,14 @@ export class AutoCompleteSelectState<OPTION> {
                     <Frame
                         tw='ml-1'
                         hover
+                        onFocus={(ev) => {
+                            ev.stopPropagation()
+                            ev.preventDefault()
+                        }}
                         onClick={(ev) => {
+                            console.log(`[🤠] UUUU`)
                             this.toggleOption(option)
+                            ev.preventDefault()
                             ev.stopPropagation()
                         }}
                         icon='mdiClose'
@@ -180,6 +181,15 @@ export class AutoCompleteSelectState<OPTION> {
                 )}
             </BadgeUI>
         )
+    }
+    DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
+        if (this.p.OptionLabelUI) {
+            // return '🔶'
+            const val = this.p.OptionLabelUI(option, opt.where, this)
+            if (val !== '🔶DEFAULT🔶') return val
+            // we could handle other magic values here
+        }
+        return this.DefaultDisplayOption(option, opt)
     }
 
     // ⏸️ getDisplayValueWithLabel(): ReactNode {
@@ -300,8 +310,8 @@ export class AutoCompleteSelectState<OPTION> {
 
     toggleOption(option: OPTION): void {
         this.revealState?.log(`_ SelectSate toggleOption`)
-        const onOptionToggledFn = this.p.onOptionToggled ?? this.p.onChange
-        onOptionToggledFn?.(option, this)
+        const onOptionToggled = this.p.onOptionToggled ?? this.p.onChange
+        onOptionToggled?.(option, this)
         // reset the query
         const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
         if (shouldResetQuery) this.searchQuery = ''

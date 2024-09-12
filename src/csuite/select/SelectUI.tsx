@@ -3,9 +3,10 @@ import type { SelectProps } from './SelectProps'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
+import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Row } from '../frame/Dov/Dov'
-import { Ikon } from '../icons/iconHelpers'
+import { Ikon, IkonOf } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
@@ -88,6 +89,20 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 // 🧚‍♀️ }}
             >
                 <AnchorContentComp select={select} />
+                {p.clearable && (
+                    <Button
+                        subtle
+                        borderless
+                        size='inside'
+                        icon='_clear'
+                        onFocus={(ev) => ev.stopPropagation()}
+                        onClick={(ev) => {
+                            ev.preventDefault()
+                            ev.stopPropagation()
+                            p.clearable!()
+                        }}
+                    />
+                )}
             </Row>
         </RevealUI>
     )

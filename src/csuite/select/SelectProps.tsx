@@ -6,8 +6,7 @@ import type { RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState, SelectValueSlots } from './SelectState'
-
-import React from 'react'
+import type React from 'react'
 
 // 🔶 should probably use symbols
 export type SelectValueLooks =
@@ -60,7 +59,11 @@ export type SelectProps<OPTION> = {
     getLabelText: (t: OPTION) => string
 
     /** if provided, is used to display the options in the popover */
-    OptionLabelUI?: (t: OPTION, where: SelectValueSlots) => React.ReactNode | SelectValueLooks
+    OptionLabelUI?: (
+        t: OPTION,
+        where: SelectValueSlots,
+        selectState: AutoCompleteSelectState<OPTION>,
+    ) => React.ReactNode | SelectValueLooks
 
     hideOptionCheckbox?: boolean
 
@@ -79,7 +82,8 @@ export type SelectProps<OPTION> = {
     /** text to show when no value yet nor filter query */
     placeholder?: string
     disabled?: boolean
-    cleanable?: boolean
+
+    clearable?: Maybe<() => void>
 
     hideValue?: boolean
     // className?: string // use revealProps.anchorProps.className instead
