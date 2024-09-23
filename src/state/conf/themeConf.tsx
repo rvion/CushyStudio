@@ -44,10 +44,12 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                     //     { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                     // ],
                 }),
-                appbar: ui.colorV2({
-                    tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
-                    default: '#313338',
-                }),
+                appbar: ui
+                    .colorV2({
+                        tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                        default: '#313338',
+                    })
+                    .optional(false),
 
                 // ...
                 // gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),

@@ -24,7 +24,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <Frame
             //
-            base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
+            base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
             tw={['flex items-center px-2 overflow-auto', 'overflow-auto shrink-0']}
             id='CushyAppBar'
         >

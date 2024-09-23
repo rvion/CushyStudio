@@ -44,7 +44,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     return (
         <>
             <Frame
-                base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
+                base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
                 tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
