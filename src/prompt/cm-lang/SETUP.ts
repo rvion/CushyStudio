@@ -31,6 +31,14 @@ import { simpleLezerLinter } from './LINT2'
 
 export { EditorView } from '@codemirror/view'
 
+/* Disables newline from ctrl + enter */
+const customKeymap = defaultKeymap.map((binding) => {
+    if (binding.key === 'Mod-Enter') {
+        return { key: binding.key, run: (): boolean => false }
+    }
+    return binding // Keep other bindings as is
+})
+
 export const basicSetup = (() => [
     EditorView.lineWrapping,
     simpleLezerLinter(),
@@ -57,7 +65,8 @@ export const basicSetup = (() => [
     highlightSelectionMatches(),
     keymap.of([
         ...closeBracketsKeymap,
-        ...defaultKeymap,
+        ...customKeymap,
+        // ...defaultKeymap,
         ...searchKeymap,
         ...historyKeymap,
         ...foldKeymap,

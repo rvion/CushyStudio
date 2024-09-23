@@ -90,21 +90,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
 
     const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
     return (
-        <div
-            tw='flex flex-1 flex-col'
-            onKeyDownCapture={(ev) => {
-                // Prevent new-line when using the run shortcut
-                // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
-                // ⏸️ if (ev.ctrlKey && ev.key == ' ') {
-                // ⏸️     ev.preventDefault()
-                // ⏸️     ev.stopPropagation()
-                // ⏸️ }
-                if (ev.ctrlKey && ev.key == 'Enter') {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                }
-            }}
-        >
+        <div tw='flex flex-1 flex-col'>
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
