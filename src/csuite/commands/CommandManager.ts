@@ -102,7 +102,8 @@ export class CommandManager {
         if (ev.altKey && keyLower !== 'alt') inputAccum.push('alt' /* as KeyName */)
         if (ev.metaKey && keyLower !== 'meta') inputAccum.push(META_NAME)
 
-        const key = ev.key
+        // const key = ev.key
+        const key = ev.key != 'Unidentified' ? ev.key : ev.code
 
         if (key) {
             if (key === ' ') inputAccum.push('space' /* as KeyName */)
