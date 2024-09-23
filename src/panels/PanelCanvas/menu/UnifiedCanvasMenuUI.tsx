@@ -65,26 +65,43 @@ const UCLayerUI = observer(function UCLayerUI_(p: { canvas: UnifiedCanvas; UCIma
             </Frame>
             {/*  */}
             <div tw='flex flex-col w-full'>
-                <InputStringUI
-                    getValue={() => img.name}
-                    setValue={(val) => {
-                        img.name = val
-                    }}
-                />
                 <div
                     tw={[
                         //
-                        'flex gap-2',
+                        'flex flex-grow gap-2',
+                    ]}
+                    style={{ height: `${inputHeight}rem` }}
+                >
+                    <InputStringUI
+                        getValue={() => img.name}
+                        setValue={(val) => {
+                            img.name = val
+                        }}
+                    />
+                </div>
+                <div
+                    tw={[
+                        //
+                        'flex flex-grow gap-2',
                     ]}
                     style={{ height: `${inputHeight}rem` }}
                 ></div>
                 <div
                     tw={[
                         //
-                        'flex gap-2',
+                        'flex flex-grow gap-2',
                     ]}
                     style={{ height: `${inputHeight}rem` }}
                 >
+                    <Frame //
+                        tw='rounded-sm w-8 h-full'
+                        base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
+                        border={{ contrast: 0.2 }}
+                        text={{ contrast: 0.2 }}
+                        textShadow={{ contrast: -1 }}
+                        icon='mdiBrush'
+                        square
+                    />
                     <SpacerUI />
                     <Button
                         onClick={() => {
