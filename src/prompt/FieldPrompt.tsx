@@ -66,10 +66,10 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     get DefaultHeaderUI(): CovariantFC<{ field: Field_prompt }> {
         if (this.isCollapsed) return WidgetPrompt_LineUI
-        return WidgetPromptUI
+        return null
     }
 
-    DefaultBodyUI = undefined // WidgetPromptUI
+    DefaultBodyUI = WidgetPromptUI // WidgetPromptUI
 
     get isCollapsible(): boolean {
         return true
