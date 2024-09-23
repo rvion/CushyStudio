@@ -134,7 +134,8 @@ export class StepL {
     }
     get lastMediaOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
-        const last = outputs[outputs.length - 1]
+
+        const last = outputs[0]
         if (
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
@@ -142,8 +143,9 @@ export class StepL {
             last instanceof MediaCustomL ||
             last instanceof MediaTextL ||
             last instanceof MediaImageL
-        )
+        ) {
             return last
+        }
 
         return null
     }
