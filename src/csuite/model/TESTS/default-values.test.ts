@@ -51,10 +51,17 @@ describe('default values', () => {
         ['', '🔵', 'cushy'].map((v) => ({ seed: v, expect: { a: v, b: v } })),
     )
 
-    itDefaults<'a' | 'b' | { [k in 'a' | 'b']?: boolean }>(
+    itDefaults<'a' | 'b' | { [k in 'a' | 'b']?: true }>(
         //
         'choices',
-        (def) => b.choices({ a: b.int({ default: 8 }), b: b.string() }, { default: def }),
+        (def) =>
+            b.choices(
+                {
+                    a: b.int({ default: 8 }),
+                    b: b.string(),
+                },
+                { default: def },
+            ),
         [
             { seed: 'a', expect: { a: 8 } },
             { seed: 'b', expect: { b: '' } },

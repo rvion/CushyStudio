@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b } from '../../SimpleFactory'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
+import { expectJSON } from './utils/expectJSON'
 
 describe('default values', () => {
     const S1 = b.bool_()

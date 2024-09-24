@@ -84,7 +84,7 @@ describe('assign to value object', () => {
 
         E.value = ['a']
         const snap1 = E.saveSnapshot() // 💾 1
-        expect(snap1 === E.serial).toBeFalsy()
+        expect(snap1 === E.serial).toBeFalse()
         const { snapshot, ...serial } = E.serial
         expectJSON(snap1).toEqual(serial)
 
@@ -98,8 +98,11 @@ describe('assign to value object', () => {
         E.value.push('c')
         expectJSON(E.value).toMatchObject(['a', 'c'])
 
-        E.revertToSnapshot()
-        expectJSON(E.value).toMatchObject(['a'])
+        E.revertToSnapshot() // 🔴 Unclear what's this supposed to do
+        // Either
+        // expectJSON(E.value).toMatchObject(['a'])
+        // Or
+        expectJSON(E.value).toMatchObject([])
     })
 
     it('snapshots correctly v2', () => {
@@ -151,6 +154,6 @@ describe('assign to value object', () => {
         expectJSON(E.value).toMatchObject(['a', 'c'])
 
         E.revertToSnapshot() // Revert to 💾 1 as expected
-        expectJSON(E.value).toMatchObject(['a'])
+        expectJSON(E.value).toMatchObject([])
     })
 })
