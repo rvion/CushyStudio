@@ -13,7 +13,7 @@ import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 
-// CONFIG
+// #region Config
 export type Field_seed_config = FieldConfig<
     {
         default?: number
@@ -25,25 +25,18 @@ export type Field_seed_config = FieldConfig<
     Field_seed_types
 >
 
-// SERIAL
+// #region Serial
 export type Field_seed_serial = FieldSerial<{
     $: 'seed'
     val?: number
     mode?: SeedMode
 }>
 
-// SERIAL FROM VALUE
-export const Field_seed_fromValue = (value: Field_seed_value): Field_seed_serial => ({
-    $: 'seed',
-    mode: 'fixed',
-    val: value,
-})
-
-// VALUE
+// #region Value
 export type Field_seed_value = number
 export type Field_seed_unchecked = Field_seed_value | undefined
 
-// TYPES
+// #region Types
 export type Field_seed_types = {
     $Type: 'seed'
     $Config: Field_seed_config
@@ -51,16 +44,55 @@ export type Field_seed_types = {
     $Value: Field_seed_value
     $Unchecked: Field_seed_unchecked
     $Field: Field_seed
+    $Child: never
 }
 
 // STATE
 export class Field_seed extends Field<Field_seed_types> {
+    // #region type
     static readonly type: 'seed' = 'seed'
     static readonly emptySerial: Field_seed_serial = { $: 'seed' }
     static migrateSerial(): undefined {}
 
+    // #region Ctor
+    constructor(
+        //
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: BaseSchema<Field_seed>,
+        initialMountKey: string,
+        serial?: Field_seed_serial,
+    ) {
+        super(repo, root, parent, schema, initialMountKey, serial)
+        this.init(serial, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
+    }
+
+    // #region setOwnSerial
+    protected setOwnSerial(next: Field_seed_serial): void {
+        if (next.val == null) {
+            const def = this.defaultValue
+            if (def != null) next = produce(next, (draft) => void (draft.val = def))
+        }
+        if (next.mode == null) {
+            const def = this.defaultMode
+            if (def != null) next = produce(next, (draft) => void (draft.mode = def))
+        }
+
+        this.assignNewSerial(next)
+    }
+
+    // #region UI
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
+
+    // #region validation
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
 
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
@@ -70,12 +102,14 @@ export class Field_seed extends Field<Field_seed_types> {
         return this.serial.val != null
     }
 
+    // #region changes
     get hasChanges(): boolean {
         if (this.serial.mode !== this.defaultMode) return true
         if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
         return false
     }
 
+    // #region misc
     get defaultMode(): SeedMode {
         return this.config.defaultMode ?? 'randomize'
     }
@@ -103,35 +137,7 @@ export class Field_seed extends Field<Field_seed_types> {
         this.runInValueTransaction(() => this.patchSerial((draft) => void (draft.mode = 'randomize')))
     }
 
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_seed>,
-        initialMountKey: string,
-        serial?: Field_seed_serial,
-    ) {
-        super(repo, root, parent, schema, initialMountKey, serial)
-        this.init(serial, {
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-    }
-
-    protected setOwnSerial(next: Field_seed_serial): void {
-        if (next.val == null) {
-            const def = this.defaultValue
-            if (def != null) next = produce(next, (draft) => void (draft.val = def))
-        }
-        if (next.mode == null) {
-            const def = this.defaultMode
-            if (def != null) next = produce(next, (draft) => void (draft.mode = def))
-        }
-
-        this.assignNewSerial(next)
-    }
-
+    // #region value
     get value(): Field_seed_value {
         return this.value_or_fail
         // const seeder = this.config.seeder ?? getGlobalSeeder()

@@ -2,6 +2,7 @@ import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
+import type { Problem_Ext } from 'src/cushy-forms/main'
 
 import { reaction } from 'mobx'
 
@@ -90,6 +91,7 @@ export type Field_list_types<T extends BaseSchema> = {
     $Value: Field_list_value<T>
     $Unchecked: Field_list_unchecked<T>
     $Field: Field_list<T>
+    $Child: T['$Field']
 }
 
 // #region STATE
@@ -437,7 +439,11 @@ export class Field_list<T extends BaseSchema> //
         }
     }
 
-    // ERRORS --------------------------------------------------------
+    // #region Validation
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): string[] {
         // console.log(`[🤠] `, this.config.min, this.length)
         // console.log(`[🤠] `, this.config.max, this.length)

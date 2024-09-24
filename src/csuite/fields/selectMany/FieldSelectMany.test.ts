@@ -5,6 +5,7 @@ import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 const b = simpleBuilder
 
+// ------------------------------------------------------------------------------
 describe('FieldSelectMany', () => {
     it('works', () => {
         const S = b.selectManyString(['a', 'b', 'c'])

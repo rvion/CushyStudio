@@ -1,10 +1,11 @@
 import type { Field_number_serial } from './FieldNumber'
 
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, expect as expect_, it, type Matchers } from 'bun:test'
 import { produce } from 'immer'
-import { reaction } from 'mobx'
+import { observable, reaction, toJS } from 'mobx'
 
-import { simpleBuilder } from '../../SimpleFactory'
+import { simpleBuilder } from '../../simple/SimpleFactory'
+import { getUIDForMemoryStructure } from '../../utils/getUIDForMemoryStructure'
 
 const b = simpleBuilder
 

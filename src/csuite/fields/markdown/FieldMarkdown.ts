@@ -35,6 +35,7 @@ export type Field_markdown_types = {
     $Value: Field_markdown_value
     $Unchecked: Field_markdown_unchecked
     $Field: Field_markdown
+    $Child: never
 }
 
 // #region STATE TYPE
@@ -72,6 +73,10 @@ export class Field_markdown extends Field<Field_markdown_types> {
     protected setOwnSerial(_next: Field_markdown_serial): void {}
 
     // #region VALIDATION
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }

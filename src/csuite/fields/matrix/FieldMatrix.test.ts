@@ -14,7 +14,6 @@ describe('FieldMatrix', () => {
 
         const S2 = S1.withConfig({ default: [{ row: 'a', col: 'x' }] })
         const E2 = S2.create()
-        console.log(`[🤠] E2.serial`, E2.serial)
         expectJSON(E2.value).toMatchObject([{ row: 'a', col: 'x' }])
         E2.setCol('y', true)
         expectJSON(E2.value).toMatchObject([
