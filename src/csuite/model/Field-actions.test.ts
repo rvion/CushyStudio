@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'bun:test'
 
-import { simpleBuilder as b, simpleFactory as f } from '../SimpleFactory'
+import { simpleBuilder as b, simpleFactory as f } from '../'
 
 const r = f.repository
 

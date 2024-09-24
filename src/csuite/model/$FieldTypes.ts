@@ -9,12 +9,13 @@ import type { FieldSerial_CommonProperties } from './FieldSerial'
  * | > still allow to use SharedConfig properties, and SharedSerial properties
  */
 export type $FieldTypes = {
-    $Type: string
+    $Type: CATALOG.AllFieldTypes
     $Config: FieldConfig_CommonProperties<any>
     $Serial: FieldSerial_CommonProperties
     $Field: Field
     $Value: any
     $Unchecked: any
+    $Child: $FieldTypes | never
 }
 
 export type $FieldTypes_Nullable = $FieldTypes & {

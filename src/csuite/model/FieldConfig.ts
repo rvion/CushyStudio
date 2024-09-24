@@ -6,6 +6,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { Field, FieldCtorProps } from './Field'
+import type { KlassToUse } from './KlassToUse'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
 import type { Problem_Ext } from './Validation'
@@ -13,6 +14,7 @@ import type { Problem_Ext } from './Validation'
 export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
 
 export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
+    uiui?: CATALOG.variants[T['$Type']]
     /**
      * @since 2024-05-20
      * @stability beta
@@ -170,7 +172,8 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      * @since 2024-08-14
      * @stability beta
      */
-    classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
+    classToUse?: KlassToUse<T['$Field'], any>
+    // classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
 
     /**
      * @internal

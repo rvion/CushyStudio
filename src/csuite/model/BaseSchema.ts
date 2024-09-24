@@ -1,3 +1,7 @@
+import type { Field_link_config } from '../fields/link/FieldLink'
+import type { Field_list_config } from '../fields/list/FieldList'
+import type { Field_optional_config } from '../fields/optional/FieldOptional'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field, FieldCtorProps } from './Field'
 import type { FieldConstructor } from './FieldConstructor'
@@ -8,20 +12,66 @@ import type { ValidationError } from './ValidationError'
 
 import { reaction } from 'mobx'
 
-import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
+import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
+import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
+import { potatoClone } from '../utils/potatoClone'
 import { Draft, type DraftLike } from './Draft'
+import { getKlass, type KlassToUse } from './KlassToUse'
 import { getGlobalRepository, type Repository } from './Repository'
 
-export interface BaseSchema<out FIELD extends Field = Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+    Link: HKT
+    List: HKT
+    Optional: HKT
+}
+
+export interface BaseSchema<
+    //
+    out FIELD extends Field = Field,
+    Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
+> {
     $Field: FIELD
     $Type: FIELD['$Type']
     $Config: FIELD['$Config']
     $Serial: FIELD['$Serial']
     $Value: FIELD['$Value']
     $Unchecked: FIELD['$Unchecked']
+    $Child: FIELD['$Child']
 }
 
-export abstract class BaseSchema<out FIELD extends Field = Field> {
+export class BaseSchema<
+    //
+    out FIELD extends Field = Field,
+    Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
+> {
+    /** untyped so the schema remains covariant over Field */
+    private UNSAFE_selfConstructor: any
+
+    // private get pocLessUnsafe_selfConstructor(): CovariantFn<[fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$Config']],  Apply<HKSCHEMA, FIELD>> {
+    //     return this.UNSAFE_selfConstructor
+    // }
+
+    constructor(
+        /** field constructor (class or function, see FieldConstructor definition)  */
+        public fieldConstructor: FieldConstructor<FIELD>,
+        /** config of the field to instanciate */
+        public readonly config: FIELD['$Config'],
+        /** necessary for higher-kinded clone (e.g. withConfig) */
+        selfConstructor: (fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$Config']) => Apply<Schemaᐸ_ᐳ, FIELD>,
+    ) {
+        this.UNSAFE_selfConstructor = selfConstructor
+
+        // early check, just in case, this should also be checked at instanciation time
+        if (this.config.classToUse != null) {
+            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
+            if (this.config.builderToUse != null) throw new Error('impossible to use a custom class')
+        }
+        if (this.config.builderToUse != null) {
+            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
+            if (this.config.classToUse != null) throw new Error('impossible to use a custom class')
+        }
+    }
+
     // ------------------------------------------------------------
     applyFieldExtensions(field: FIELD): void {
         for (const ext of this.config.customFieldProperties ?? []) {
@@ -86,29 +136,68 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
      * ```
      *
      */
-    useClass<EXTS extends Field>(
+    useClass<CUSTOM extends Field>(
         /** the class constructor */
-        classToUse: (base: new (...args: any[]) => FIELD) => new (...args: any[]) => EXTS,
-    ): BaseSchema<EXTS /* & FIELD */> {
+        // prettier-ignore
+        classToUse: KlassToUse<FIELD, CUSTOM>,
+    ): Apply<Schemaᐸ_ᐳ, CUSTOM> {
         if (this.config.classToUse != null) throw new Error('already have a custom class')
         if (this.config.builderToUse != null) throw new Error('already have a custom class')
-        return this.withConfig({ classToUse }) as any as BaseSchema<EXTS>
+        return this.withConfig({ classToUse }) as any as Apply<Schemaᐸ_ᐳ, CUSTOM>
     }
 
-    useBuilder<EXTS extends Field>(
+    useBuilder<F extends Field>(
         /** the builder function that will call some field constructor itself */
-        builderToUse: (...args: FieldCtorProps<FIELD>) => EXTS,
-    ): BaseSchema<EXTS /* & FIELD */> {
+        builderToUse: (...args: FieldCtorProps<FIELD>) => F,
+    ): Apply<Schemaᐸ_ᐳ, F> {
         if (this.config.classToUse != null) throw new Error('already have a custom class')
         if (this.config.builderToUse != null) throw new Error('already have a custom class')
-        return this.withConfig({ builderToUse }) as any as BaseSchema<EXTS>
+        return this.withConfig({ builderToUse }) as any as Apply<Schemaᐸ_ᐳ, F>
     }
 
-    useMixin<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
+    useMixin<EXTS extends object>(extensions: (self: FIELD) => EXTS): Apply<Schemaᐸ_ᐳ, EXTS & FIELD> {
         const x: BaseSchema<FIELD> = this.withConfig({
             customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
         })
-        return x as any as BaseSchema<EXTS & FIELD>
+        return x as any as Apply<Schemaᐸ_ᐳ, EXTS & FIELD>
+    }
+
+    /**
+     * chain construction
+     * @since 2024-06-30
+     * TODO: WRITE MORE DOC
+     * MORE DOC: yo dawg; I heard you like beeing hight wiht types, so I put a type in your type,
+     * so you can type a lot of type.
+     */
+    useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): Apply<Schemaᐸ_ᐳ['Link'], this, BP> {
+        const FieldLinkClass = getFieldLinkClass()
+        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
+        return this.UNSAFE_selfConstructor(FieldLinkClass, linkConf)
+    }
+
+    /** wrap field schema to list stuff */
+    list(config: Omit<Field_list_config<this>, 'element'> = {}): Apply<Schemaᐸ_ᐳ['List'], this> {
+        return this.list_({ defaultLength: config.min ?? 0, ...config })
+    }
+
+    /** wrap field schema to list stuff */
+    list_(config: Omit<Field_list_config<this>, 'element'> = {}): Apply<Schemaᐸ_ᐳ['List'], this> {
+        const FieldListClass = getFieldListClass()
+        return this.UNSAFE_selfConstructor(FieldListClass, { ...config, element: this })
+    }
+
+    /** make field optional (A => Maybe<A>) */
+    optional(startActive: boolean = false, config?: Partial<Field_optional_config<this>>): Apply<Schemaᐸ_ᐳ['Optional'], this> {
+        const FieldOptionalClass = getFieldOptionalClass()
+        return this.UNSAFE_selfConstructor(FieldOptionalClass, {
+            schema: this,
+            startActive: startActive,
+            label: this.config.label,
+            startCollapsed: this.config.startCollapsed,
+            collapsed: this.config.collapsed,
+            border: this.config.border,
+            ...config,
+        })
     }
 
     applySchemaExtensions(): void {
@@ -118,23 +207,27 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         }
     }
     // ------------------------------------------------------------
-    /** constructor/class/builder-fn of the field to instanciate */
-    abstract fieldConstructor: FieldConstructor<FIELD>
+    // ⏸️ /** constructor/class/builder-fn of the field to instanciate */
+    // ⏸️ fieldConstructor: FieldConstructor<FIELD>
 
     /** type of the field to instanciate */
     get type(): FIELD['type'] {
         return this.fieldConstructor.type
     }
 
-    /** config of the field to instanciate */
-    abstract config: FIELD['$Config']
+    // ⏸️ /** config of the field to instanciate */
+    // ⏸️ config: FIELD['$Config']
 
     // ------------------------------------------------------------
     LabelExtraUI?: CovariantFC<{ field: FIELD }>
 
     // ------------------------------------------------------------
     // Clone/Fork
-    abstract withConfig(config: Partial<FIELD['$Config']>): this
+    withConfig(config: Partial<FIELD['$Config']>): this {
+        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
+        const cloned = this.UNSAFE_selfConstructor(this.fieldConstructor, mergedConfig)
+        return cloned
+    }
 
     /** clone the schema, and patch the cloned config to make it hidden */
     hidden(): this {
@@ -292,7 +385,8 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         let field: FIELD
         if (this.fieldConstructor.build === 'new') {
             if (this.config.classToUse) {
-                const KTOR = this.config.classToUse(this.fieldConstructor)
+                const SUPER = this.fieldConstructor
+                const KTOR = getKlass(SUPER, this.config.classToUse)
                 field = new KTOR(repo, root, parent, this, serial)
             } else if (this.config.builderToUse != null) {
                 field = this.config.builderToUse(repo, root, parent, this, initialMountKey, serial)

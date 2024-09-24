@@ -1,11 +1,12 @@
 import type { Field_group } from '../fields/group/FieldGroup'
 import type { BaseSchema } from './BaseSchema'
+import type { IBuilder } from './builders/IBuilder'
 import type { DraftLike } from './Draft'
 import type { EntityConfig } from './Entity'
-import type { IBuilder } from './IBuilder'
 import type { SchemaDict } from './SchemaDict'
 
-import { type DependencyList, useMemo } from 'react'
+import { runInAction } from 'mobx'
+import { type DependencyList, useEffect, useMemo } from 'react'
 
 import { getGlobalRepository, type Repository } from './Repository'
 
@@ -30,7 +31,10 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         this.builder = builder
     }
 
-    /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
+    /**
+     * LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT
+     * @deprecated
+     */
     fields<FIELDS extends SchemaDict>(
         schemaExt: (form: BUILDER) => FIELDS,
         entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
@@ -44,7 +48,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         })
 
         // 👇 🔴 CALL CREATE INSTEAD
-        return schema.instanciate(
+        return (schema as any).instanciate(
             //
             this.repository,
             null,
@@ -79,14 +83,53 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
     // #region React Hooks
 
-    /** simple way to defined forms and in react components */
+    /**
+     * simple way to defined forms and in react components
+     *
+     * 🔶 warning: as of 2024-09-19, the schema is memoized based
+     * | on the DependencyList provided as 3rd argument.
+     * | // TODO: change that ?
+     */
     use<SCHEMA extends BaseSchema>(
         schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
-        const schema: SCHEMA = this.evalSchema(schemaExt)
-        return useMemo(() => this.document(schema, entityConfig), deps)
+        const doc = useMemo(() => {
+            // TODO: document properly
+            // 💬 2024-09-19 rvion:
+            // | when we create a multable object
+            // | in a useMemo, then happen to update it within that same useMemo lambda
+            // | we need to prevent the component from re-rendering.
+            // |
+            // | BUT we also need to allow sub-lambdas to still be able to register subscription
+            // | on other mobx atoms.
+            // | so we can't use `untracked`. `runInAction` does exactly that
+            return runInAction(() => {
+                const doc = this.document(schemaExt, entityConfig)
+                console.log(`[👉] document created`, doc)
+                return doc
+            })
+        }, deps)
+
+        return doc
+    }
+
+    /**
+     * same as `use` but dispose the document when the component unmount.
+     *
+     * @since 2024-09-19
+     * @see {@link use}
+     */
+    useDisposable<SCHEMA extends BaseSchema>(
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
+        deps: DependencyList = [],
+    ): SCHEMA['$Field'] {
+        const doc = this.use(schemaExt, entityConfig, deps)
+        // dispose that document when the component unmount
+        useEffect(() => () => doc.disposeTree(), [doc])
+        return doc
     }
 
     useDraft<SCHEMA extends BaseSchema>(
@@ -94,8 +137,22 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
         deps: DependencyList = [],
     ): DraftLike<SCHEMA['$Field']> {
-        const schema: SCHEMA = this.evalSchema(schemaExt)
-        return useMemo(() => this.draft(schema, entityConfig), deps)
+        return this.use(schemaExt, entityConfig, deps)
+    }
+
+    /**
+     * same as `useDraft` but dispose the document when the component unmount.
+     *
+     * @since 2024-09-19
+     * @see {@link useDraft}
+     * @see {@link use}
+     */
+    useDisposableDraft<SCHEMA extends BaseSchema>(
+        schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+        entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
+        deps: DependencyList = [],
+    ): DraftLike<SCHEMA['$Field']> {
+        return this.useDisposable(schemaExt, entityConfig, deps)
     }
 
     /** simple way to defined forms and in react components */
@@ -104,7 +161,6 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
         deps: DependencyList = [],
     ): SCHEMA['$Field'] {
-        const schema: SCHEMA = this.evalSchema(schemaExt)
         let serial: any = null
 
         try {
@@ -113,14 +169,14 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
             serial = parsed
         } catch {}
 
-        return useMemo(
-            () =>
-                this.document(schema, {
-                    serial: () => serial,
-                    onSerialChange: (root) => {
-                        localStorage.setItem(key, JSON.stringify(root.serial))
-                    },
-                }),
+        return this.use(
+            schemaExt,
+            {
+                serial: () => serial,
+                onSerialChange: (root) => {
+                    localStorage.setItem(key, JSON.stringify(root.serial))
+                },
+            },
             deps,
         )
     }
