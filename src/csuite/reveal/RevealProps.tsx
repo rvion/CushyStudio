@@ -105,6 +105,8 @@ export type RevealProps = {
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
     backdropColor?: string
+    hasBackdrop?: boolean
+    showBackdrop?: boolean
 
     /**
      * when we have nested Reveals but they actually are independent

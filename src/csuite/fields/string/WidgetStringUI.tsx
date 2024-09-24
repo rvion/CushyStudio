@@ -15,11 +15,16 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
 })
 
 // Textarea BODY
-export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { field: Field_string }) {
+export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: {
+    field: Field_string
+    readonly?: boolean
+}) {
     const field = p.field
     const csuite = useCSuite()
+    if (p.readonly) return <pre>{field.value_or_zero}</pre>
     return (
         <Frame base={csuite.inputContrast} expand>
+            {/* <pre>{JSON.stringify(Object.keys(p))}</pre> */}
             <textarea
                 style={{
                     /* ...p.widget.config.style, */

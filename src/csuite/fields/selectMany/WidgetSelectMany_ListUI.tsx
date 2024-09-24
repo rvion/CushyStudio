@@ -4,8 +4,10 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
+import { convertSelectKeyToReactKey, type SelectKey } from '../selectOne/SelectOneKey'
 
-export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<VALUE, KEY extends string>(p: {
+export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<VALUE, KEY extends SelectKey>(p: {
     field: Field_selectMany<VALUE, KEY>
 }) {
     const field = p.field
@@ -30,13 +32,13 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
                 const isSelected = field.selectedKeys.includes(c.id)
                 return (
                     <InputBoolToggleButtonUI
-                        key={c.id}
+                        key={convertSelectKeyToReactKey(c.id)}
                         value={isSelected}
                         // border={false}
                         mode='checkbox'
                         showToggleButtonBox
                         tw='w-full [&>p]:text-start' // ❌ misc
-                        text={c.label}
+                        text={c.label ?? makeLabelFromPrimitiveValue(c.id)}
                         onValueChange={(value) => {
                             if (value != isSelected) field.toggleId(c.id)
                         }}

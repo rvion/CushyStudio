@@ -29,7 +29,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                         value={isSelected}
                         display='button'
                         mode={p.field.isMulti ? 'checkbox' : 'radio'}
-                        text={c.label}
+                        text={c.label ?? c.key}
                         box={isSelected ? undefined : { text: csuite.labelText }}
                         onValueChange={(value) => {
                             if (value != isSelected) {

@@ -1,4 +1,5 @@
 import type { Field_selectOne } from './FieldSelectOne'
+import type { SelectKey } from './SelectOneKey'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +8,7 @@ import { WidgetSelectOne_RollUI } from './WidgetSelectOne_RollUI'
 import { WidgetSelectOne_SelectUI } from './WidgetSelectOne_SelectUI'
 import { WidgetSelectOne_TabUI } from './WidgetSelectOne_TabUI'
 
-export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<VALUE, KEY extends string>(p: {
+export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<VALUE, KEY extends SelectKey>(p: {
     field: Field_selectOne<VALUE, KEY>
 }) {
     const field = p.field

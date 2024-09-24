@@ -1,3 +1,4 @@
+import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { Field_selectMany, SelectManyAppearance } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
@@ -7,19 +8,20 @@ import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
-export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, KEY extends string>(p: {
+export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, KEY extends SelectKey>(p: {
     field: Field_selectMany<VALUE, KEY>
 }) {
     const field = p.field
     const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
     if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
     if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
-    // if (appearance === 'select') return (
-    //     <div tw='flex flex-col flex-1'>
-    //         <WidgetSelectMany_SelectUI field={field} />
-    //         {!field.isCollapsed  && <WidgetSelectMany_ListUI field={field} />}
-    //     </div>
-    // )
     if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
     exhaust(appearance)
 })
+
+// if (appearance === 'select') return (
+//     <div tw='flex flex-col flex-1'>
+//         <WidgetSelectMany_SelectUI field={field} />
+//         {!field.isCollapsed  && <WidgetSelectMany_ListUI field={field} />}
+//     </div>
+// )

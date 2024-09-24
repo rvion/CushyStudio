@@ -32,6 +32,7 @@ export type Field_shared_types<F extends Field = Field> = {
     $Value: Field_shared_value<F>
     $Unchecked: Field_shared_unchecked<F>
     $Field: Field_shared<F>
+    $Child: F
 }
 
 // #region STATE
@@ -78,6 +79,10 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
 
     get shared(): F {
         return this.config.field
+    }
+
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
     }
 
     get ownTypeSpecificProblems(): Problem_Ext {

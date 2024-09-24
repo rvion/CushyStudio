@@ -4,8 +4,6 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { CovariantFC } from '../../variance/CovariantFC'
-import type { Field_date_serial } from '../date/FieldDate'
-import type { Field_string_serial } from '../string/FieldString'
 
 import { Temporal } from '@js-temporal/polyfill'
 import { produce } from 'immer'
@@ -15,6 +13,7 @@ import { type Problem_Ext, Severity } from '../../model/Validation'
 import { isProbablySerialDate, isProbablySerialString } from '../WidgetUI.DI'
 import { WidgetDateTimeZoned_HeaderUI } from './WidgetDateTimeZonedUI'
 
+// #region Config
 export type Field_dateTimeZoned_config<NULLABLE extends boolean> = FieldConfig<
     {
         default?: NULLABLE extends false
@@ -27,19 +26,22 @@ export type Field_dateTimeZoned_config<NULLABLE extends boolean> = FieldConfig<
     Field_dateTimeZoned_types<NULLABLE>
 >
 
-// Value
-export type Field_dateTimeZoned_value<NULLABLE extends boolean> = NULLABLE extends false
-    ? Temporal.ZonedDateTime
-    : Maybe<Temporal.ZonedDateTime>
-export type Field_dateTimeZoned_unchecked<NULLABLE extends boolean> = Field_dateTimeZoned_value<NULLABLE> | undefined
+// #region Value
+export type Field_dateTimeZoned_value<NULLABLE extends boolean> = //
+    NULLABLE extends false //
+        ? Temporal.ZonedDateTime
+        : Maybe<Temporal.ZonedDateTime>
 
-// SERIAL
+export type Field_dateTimeZoned_unchecked<NULLABLE extends boolean> = //
+    Field_dateTimeZoned_value<NULLABLE> | undefined
+
+// #region Serial
 export type Field_dateTimeZoned_serial = FieldSerial<{
     $: 'datetimezoned'
-    value?: string
+    value?: Maybe<string>
 }>
 
-// TYPES
+// #region Types
 export type Field_dateTimeZoned_types<NULLABLE extends boolean> = {
     $Type: 'datetimezoned'
     $Config: Field_dateTimeZoned_config<NULLABLE>
@@ -47,13 +49,16 @@ export type Field_dateTimeZoned_types<NULLABLE extends boolean> = {
     $Value: Field_dateTimeZoned_value<NULLABLE>
     $Unchecked: Field_dateTimeZoned_value<NULLABLE> | undefined
     $Field: Field_dateTimeZoned<NULLABLE>
+    $Child: never
 }
 
-// #region STATE
+// #region State
 export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends Field<Field_dateTimeZoned_types<NULLABLE>> {
-    // #region TYPE
+    // #region Static
     static readonly type: 'datetimezoned' = 'datetimezoned'
     static readonly emptySerial: Field_dateTimeZoned_serial = { $: 'datetimezoned' }
+
+    // #region Migration
     static migrateSerial(serial: object): Maybe<Field_dateTimeZoned_serial> {
         if (isProbablySerialString(serial) || isProbablySerialDate(serial)) {
             if (!serial.value) return { $: this.type }
@@ -65,11 +70,7 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
         }
     }
 
-    private selectedValue_: Field_dateTimeZoned_value<NULLABLE> | null = null
-    readonly DefaultHeaderUI: CovariantFC<{ field: Field_dateTimeZoned<NULLABLE>; readonly?: boolean }> | undefined =
-        WidgetDateTimeZoned_HeaderUI<NULLABLE>
-    readonly DefaultBodyUI: CovariantFC<{ field: Field_dateTimeZoned<NULLABLE> }> | undefined = undefined
-
+    // #region Ctor
     constructor(
         repo: Repository,
         root: Field | null,
@@ -82,40 +83,65 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
         this.init(serial)
     }
 
-    get isOwnSet(): boolean {
+    // #region serial
+    protected setOwnSerial(next: Field_dateTimeZoned_serial): void {
+        // step 1. normalize + inject default if not set but with default
+        if (next.value === undefined) {
+            const def = this.defaultValue
+            if (def !== undefined)
+                next = produce(next, (draft) => {
+                    draft.value = def == null ? null : def.toString()
+                })
+        }
+
+        this.assignNewSerial(next)
+
+        const raw = this.serial.value
+        this.selectedValue_ = raw == null ? null : Temporal.ZonedDateTime.from(raw)
+    }
+
+    // #region Nullability
+    get canBeToggledWithinParent(): boolean {
         if (this.config.nullable) return true
-        return this.serial.value != null
+        return super.canBeToggledWithinParent
     }
 
-    get selectedValue(): Field_dateTimeZoned_value<NULLABLE> | null {
-        return this.selectedValue_
-    }
-
-    get defaultValue(): Field_dateTimeZoned_value<NULLABLE> | null {
-        if (typeof this.config.default === 'function') {
-            return this.config.default()
+    disableSelfWithinParent(): void {
+        if (this.config.nullable) {
+            this.patchSerial((draft) => void (draft.value = null))
+            return
         }
-
-        if (this.config.default != null || this.config.nullable) {
-            return (this.config.default ?? null) as Field_dateTimeZoned_value<NULLABLE>
-        }
-
-        return null
+        return super.disableSelfWithinParent()
     }
 
+    // #region Set/Unset
+    get isOwnSet(): boolean {
+        return this.config.nullable //
+            ? 'value' in this.serial
+            : this.serial.value != null
+    }
+
+    unset(): void {
+        this.patchSerial((draft) => {
+            delete draft.value
+        })
+    }
+
+    // #region value
     get value(): Field_dateTimeZoned_value<NULLABLE> {
         return this.value_or_fail
     }
 
     set value(next: Field_dateTimeZoned_value<NULLABLE>) {
-        if (this.config.nullable || next != null) {
-            this.selectedValue_ = next
-            this.runInValueTransaction(() => {
-                this.serial.value = next?.toString()
-            })
-        } else {
-            throw new Error('Field_date: value is null')
+        if (!this.config.nullable && next == null) {
+            throw new Error('Field_dateTimeZoned: value is null')
         }
+        this.selectedValue_ = next
+        this.runInValueTransaction(() => {
+            this.patchSerial((draft) => {
+                draft.value = next?.toString()
+            })
+        })
     }
 
     get value_or_fail(): Field_dateTimeZoned_value<NULLABLE> {
@@ -136,6 +162,30 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
         return this.selectedValue ?? undefined
     }
 
+    // #region value ext
+    private selectedValue_: Field_dateTimeZoned_value<NULLABLE> | null = null
+
+    get selectedValue(): Field_dateTimeZoned_value<NULLABLE> | null {
+        return this.selectedValue_
+    }
+
+    get defaultValue(): Field_dateTimeZoned_value<NULLABLE> | null {
+        if (typeof this.config.default === 'function') {
+            return this.config.default()
+        }
+
+        if (this.config.default != null || this.config.nullable) {
+            return (this.config.default ?? null) as Field_dateTimeZoned_value<NULLABLE>
+        }
+
+        return null
+    }
+
+    // #region Validation
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         if (this.config.nullable || this.selectedValue != null) return null
 
@@ -149,28 +199,21 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
         return this.serial.value != this.defaultValue?.toString()
     }
 
-    protected setOwnSerial(next: Field_dateTimeZoned_serial): void {
-        if (next.value == null) {
-            const def = this.defaultValue
-            if (def != null) next = produce(next, (draft) => void (draft.value = def.toString()))
-        }
-
-        this.assignNewSerial(next)
-
-        const raw = this.serial.value
-        this.selectedValue_ = raw == null ? null : Temporal.ZonedDateTime.from(raw)
-    }
-
     setValueFromString(value: string): void {
         const nextValue = value ? new Date(value) : null
         const zonedNext = nextValue
             ? Temporal.Instant.from(nextValue.toISOString()).toZonedDateTimeISO(Temporal.Now.timeZoneId())
             : null
 
-        if (this.config.nullable || this.selectedValue != null) {
+        if (this.config.nullable || zonedNext != null) {
             this.value = zonedNext as Field_dateTimeZoned_value<NULLABLE>
         } else {
             this.selectedValue_ = zonedNext
         }
     }
+
+    // #region UI
+    readonly DefaultHeaderUI: CovariantFC<{ field: Field_dateTimeZoned<NULLABLE>; readonly?: boolean }> | undefined =
+        WidgetDateTimeZoned_HeaderUI<NULLABLE>
+    readonly DefaultBodyUI: CovariantFC<{ field: Field_dateTimeZoned<NULLABLE> }> | undefined = undefined
 }

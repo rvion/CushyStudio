@@ -38,6 +38,7 @@ export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
     $Value: Field_optional_value<T>
     $Unchecked: Field_optional_value<T>
     $Field: Field_optional<T>
+    $Child: T
 }
 
 // #region State
@@ -144,6 +145,10 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
     }
 
     // #region Problems
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }
@@ -232,12 +237,20 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
     setActive(value: boolean): void {
         if (this.serial.active === value) return
         this.runInValueTransaction(() => {
-            this.serial.active = value
+            this.patchSerial((draft) => void (draft.active = value))
 
             // update child collapsed state if need be
             if (value) this.child.setCollapsed(false)
             else this.child.setCollapsed(true)
         })
+    }
+
+    get active(): boolean {
+        return this.serial.active === true
+    }
+
+    set active(value: boolean) {
+        this.setActive(value)
     }
 
     /**

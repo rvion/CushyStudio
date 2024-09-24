@@ -1,7 +1,6 @@
 import type { FrameAppearance } from '../../frame/FrameTemplates'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
-import type { UNVALIDATED, UNVALIDATED2 } from '../../model/FieldConstructor'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -49,6 +48,7 @@ export type Field_button_types<K> = {
     $Value: Field_button_value
     $Unchecked: Field_button_unchecked
     $Field: Field_button<K>
+    $Child: never
 }
 
 // STATE
@@ -151,6 +151,10 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
     // #region VALIDATION
 
     // #region PROBLEMS
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }

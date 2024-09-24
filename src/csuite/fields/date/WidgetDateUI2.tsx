@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { InputStringUI } from '../../input-string/InputStringUI'
-import { formatDateForInput } from './formatDateForInput'
+import { formatDateForInput } from './format'
 
 /**
  * This component throws a warning in the console: when changing the value of `disabled`
@@ -27,7 +27,7 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
             square
             icon='mdiClose'
             disabled={p.field.selectedValue == null}
-            onClick={() => p.field.setOff()}
+            onClick={() => p.field.disableSelfWithinParent()}
         />
     )
 })
@@ -37,9 +37,10 @@ export const WidgetDate_HeaderUI = observer(function WidgetDateUI_(p: { field: F
     const field = p.field
     const config = field.config
     return (
-        <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
+        <div tw='sticky flex items-center gap-0.5 top-0 w-full'>
             <InputStringUI
                 tw='w-full'
+                inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
                 icon={p.field.config.innerIcon}
                 type='datetime-local'
                 className={config.className}

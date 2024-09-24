@@ -32,6 +32,7 @@ export type Field_color_types = {
     $Value: Field_color_value
     $Unchecked: Field_color_unchecked
     $Field: Field_color
+    $Child: never
 }
 
 // STATE
@@ -99,6 +100,10 @@ export class Field_color extends Field<Field_color_types> {
     }
 
     get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
     }
 

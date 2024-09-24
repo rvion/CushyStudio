@@ -44,6 +44,7 @@ export const WidgetDatePlain_HeaderUI = observer(function WidgetDatePlainUI_<NUL
         <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
             <InputStringUI
                 tw='w-full'
+                inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
                 icon={p.field.config.innerIcon}
                 type='date'
                 className={config.className}

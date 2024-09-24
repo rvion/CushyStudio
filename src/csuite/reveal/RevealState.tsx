@@ -26,7 +26,7 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
 
     get showBackdrop(): boolean {
-        return true
+        return this.p.showBackdrop ?? true
     }
 
     uid = RevealState.nextUID++
@@ -458,7 +458,7 @@ export class RevealState {
 
     get hasBackdrop(): boolean {
         // 🔴
-        return this.hideTriggers.backdropClick ?? false
+        return this.p.hasBackdrop ?? this.hideTriggers.backdropClick ?? false
     }
 
     onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {

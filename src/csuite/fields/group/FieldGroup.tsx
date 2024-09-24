@@ -1,4 +1,3 @@
-import type { FormUIProps } from '../../form/FormUI'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { KeyedField, VALUE_MODE } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
@@ -8,14 +7,10 @@ import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFC } from '../../variance/CovariantFC'
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 
 import { produce } from 'immer'
 
-import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
-import { Form } from '../../form/Form'
-import { Frame } from '../../frame/Frame'
-import { MarkdownUI } from '../../markdown/MarkdownUI'
 import { Field } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
@@ -67,6 +62,7 @@ export type Field_group_types<T extends SchemaDict> = {
     $Value: Field_group_value<T>
     $Unchecked: Field_group_unchecked<T>
     $Field: Field_group<T>
+    $Child: T[keyof T]
 }
 
 export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
@@ -281,6 +277,10 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     // #region PROBLEMS
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }

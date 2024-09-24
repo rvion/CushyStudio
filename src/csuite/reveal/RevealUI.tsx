@@ -89,7 +89,7 @@ export const RevealUI = observer(
                 // or defer to anchor instead ?
                 // we could move this block above 2.
                 // and use 2 as a fallback case.
-                if (!element) return
+                if (element == null) return
                 const rect = element.getBoundingClientRect()
                 reveal.setPosition(rect)
                 // in that case, let's add a return here

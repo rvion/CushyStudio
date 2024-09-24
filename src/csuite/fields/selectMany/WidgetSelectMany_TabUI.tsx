@@ -1,11 +1,14 @@
+import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { Field_selectMany } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { getJustifyContent } from '../choices/TabPositionConfig'
+import { convertSelectKeyToReactKey } from '../selectOne/SelectOneKey'
 
-export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<VALUE, KEY extends string>(p: {
+export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<VALUE, KEY extends SelectKey>(p: {
     field: Field_selectMany<VALUE, KEY>
 }) {
     const field = p.field
@@ -21,10 +24,10 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
 
                     return (
                         <InputBoolUI
-                            key={option.id}
+                            key={convertSelectKeyToReactKey(option.id)}
                             value={isSelected}
                             display='button'
-                            text={option.label ?? option.id}
+                            text={option.label ?? makeLabelFromPrimitiveValue(option.id)}
                             onValueChange={(value) => {
                                 if (value != isSelected) field.toggleId(option.id)
                             }}
@@ -38,11 +41,11 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                     .filter((v) => !field.possibleKeys.includes(v))
                     .map((missingId) => (
                         <InputBoolUI
-                            key={missingId}
+                            key={convertSelectKeyToReactKey(missingId)}
                             value={true}
                             style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
-                            text={missingId}
+                            text={makeLabelFromPrimitiveValue(missingId)}
                             onValueChange={(value) => field.toggleId(missingId)}
                         />
                     ))}

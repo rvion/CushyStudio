@@ -55,6 +55,7 @@ export type Field_link_types<A extends BaseSchema, B extends BaseSchema> = {
     $Value: B['$Value']
     $Field: Field_link<A, B>
     $Unchecked: Field_link_unchecked<A, B>
+    $Child: B
 }
 
 // #region STATE
@@ -100,11 +101,12 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         }
     }
 
-    // #region serial
+    // #region children
     /** the dict of all child widgets */
     aField!: A['$Field']
     bField!: B['$Field']
 
+    // #region serial
     protected setOwnSerial(next: Field_link_serial<A, B>): void {
         this.assignNewSerial(next)
 
@@ -131,16 +133,21 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
         })
     }
 
+    // #region UI
+    DefaultHeaderUI = undefined
+    DefaultBodyUI: FC<{}> = () => this.bField.renderWithLabel() // 🔴 Not sure how to use `Render` properly here
+
     get actualWidgetToDisplay(): Field {
         return this.bField.actualWidgetToDisplay
     }
 
-    DefaultHeaderUI: FC<{}> = () => <>🟢</>
-
-    DefaultBodyUI: FC<{}> = () => this.bField.renderWithLabel()
+    // #region Validation
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
 
     get ownTypeSpecificProblems(): Problem_Ext {
-        return this.bField.hasOwnErrors
+        return [this.aField.ownTypeSpecificProblems, this.bField.ownTypeSpecificProblems]
     }
 
     get isOwnSet(): boolean {

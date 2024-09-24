@@ -1,7 +1,6 @@
 import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
-import type { UNVALIDATED, UNVALIDATED2 } from '../../model/FieldConstructor'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -9,6 +8,7 @@ import type { FC } from 'react'
 
 import { produce } from 'immer'
 
+import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
@@ -91,6 +91,7 @@ export type Field_string_types = {
     $Value: Field_string_value
     $Unchecked: Field_string_unchecked
     $Field: Field_string
+    $Child: never
 }
 
 // #region STATE
@@ -221,7 +222,31 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     // #region PROBLEMS
+    get ownConfigSpecificProblems(): Problem_Ext {
+        const i18n = csuiteConfig.i18n
+        const out: string[] = []
+        const minlen = this.config.minLength
+        const maxlen = this.config.maxLength
+        if (minlen != null && maxlen != null) {
+            if (minlen > maxlen) {
+                // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
+                out.push(i18n.err.str.minLengthGreaterThanMaxLength({ min: minlen, max: maxlen }))
+            }
+            if (minlen === maxlen) {
+                out.push(i18n.err.str.minLengthSameThanMaxLength({ minmax: minlen }))
+            }
+        }
+        const def = this.config.default
+        if (def != null) {
+            const defLen = def?.length
+            if (minlen != null && defLen < minlen) out.push(i18n.err.str.defaultTooSmall({ min: minlen, def: defLen }))
+            if (maxlen != null && defLen > maxlen) out.push(i18n.err.str.defaultTooBig({ def: defLen, max: maxlen }))
+        }
+        return out
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
+        const i18n = csuiteConfig.i18n
         const out: Problem_Ext = []
 
         if (!this.isSet) return null
@@ -229,11 +254,11 @@ export class Field_string extends Field<Field_string_types> {
 
         // check min
         const min = this.config.minLength
-        if (min != null && value.length < min) out.push(`Value is too short (must be at least ${min} chars)`)
+        if (min != null && value.length < min) out.push(i18n.err.str.tooShort({ min }))
 
         // check max
         const max = this.config.maxLength
-        if (max != null && value.length > max) out.push(`Value is too long (must be at most ${max} chars)`)
+        if (max != null && value.length > max) out.push(i18n.err.str.tooLong({ max }))
 
         // check pattern
         const pattern = this.config.pattern

@@ -61,24 +61,25 @@ export type Field_size_types = {
     $Value: Field_size_value
     $Unchecked: Field_size_unchecked
     $Field: Field_size
+    $Child: never
 }
 
 // STATE
 export class Field_size extends Field<Field_size_types> {
     static readonly type: 'size' = 'size'
     static migrateSerial(serial: object): void {}
-    static readonly emptySerial: Field_size_serial = {
-        $: 'size',
-        aspectRatio: '1:1',
-        modelType: 'SD1.5 512',
-        height: 512,
-        width: 512,
-    }
+    static readonly emptySerial: Field_size_serial = { $: 'size' }
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
 
     get isOwnSet(): boolean {
-        return this.serial.width != null
+        const ser = this.serial
+        return (
+            ser.width != null && //
+            ser.height != null &&
+            ser.aspectRatio != null &&
+            ser.modelType != null
+        )
     }
 
     constructor(
@@ -135,10 +136,13 @@ export class Field_size extends Field<Field_size_types> {
 
         // 2. ASSIGN SERIAL
         this.assignNewSerial(next)
-        this.serial = next
 
         // 3. RECONCILE CHILDREN
         // (primitive field; no children)
+    }
+
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
     }
 
     get ownTypeSpecificProblems(): Problem_Ext {
@@ -178,12 +182,12 @@ export class Field_size extends Field<Field_size_types> {
 
     set width(next: number) {
         if (next === this.serial.width) return
-        this.runInValueTransaction(() => (this.serial.width = next))
+        this.runInValueTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
     }
 
     set height(next: number) {
         if (next === this.serial.height) return
-        this.runInValueTransaction(() => (this.serial.height = next))
+        this.runInValueTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
     }
 
     setWidth(width: number): void {
@@ -216,13 +220,15 @@ export class Field_size extends Field<Field_size_types> {
             return
         }
         this.runInValueTransaction(() => {
-            Object.assign(this.serial, val)
+            this.patchSerial((draft) => {
+                Object.assign(draft, val)
+            })
         })
     }
 
     get value_or_fail(): Field_size_value {
         const serial = this.value_unchecked
-        if (serial == null) throw new Error('Field_size.value_or_fail: not set')
+        if (!this.isOwnSet) throw new Error('Field_size.value_or_fail: field not set')
         return {
             $: 'size',
             aspectRatio: bang(serial.aspectRatio),

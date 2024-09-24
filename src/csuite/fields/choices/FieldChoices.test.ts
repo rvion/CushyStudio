@@ -149,9 +149,9 @@ describe('FieldChoices', () => {
             E1.setSerial(serial)
             expect(E1.serial === serial).toBeFalse() // because of migration
             expect(E1.serial).toMatchObject({
-                $: 'choices' as const,
+                $: 'choices',
                 branches: { baz: true },
-                values: { baz: { $: 'str' as const, value: '🔵' } },
+                values: { baz: { $: 'str', value: '🔵' } },
             })
             expectJSON(E1.value).toEqual({ baz: '🔵' })
         })
@@ -159,9 +159,9 @@ describe('FieldChoices', () => {
         it('should assign the serial if the branch is active', () => {
             const E1 = Multi.create()
             const serial: (typeof Multi)['$Serial'] = {
-                $: 'choices' as const,
+                $: 'choices',
                 branches: { baz: true },
-                values: { baz: { $: 'str' as const, value: '🔵' } },
+                values: { baz: { $: 'str', value: '🔵' } },
             }
 
             E1.setSerial(serial)

@@ -5,6 +5,7 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { CovariantFC } from '../../variance/CovariantFC'
 import type { Field_string_serial } from '../string/FieldString'
+import type { ISOString } from './ISOString'
 
 import { produce } from 'immer'
 
@@ -28,7 +29,7 @@ export type Field_date_unchecked = Field_date_value | undefined
 // SERIAL
 export type Field_date_serial = FieldSerial<{
     $: 'date'
-    value?: string
+    value?: ISOString
 }>
 
 // TYPES
@@ -39,6 +40,7 @@ export type Field_date_types = {
     $Value: Field_date_value
     $Unchecked: Field_date_unchecked
     $Field: Field_date
+    $Child: never
 }
 
 export class Field_date extends Field<Field_date_types> {
@@ -79,18 +81,6 @@ export class Field_date extends Field<Field_date_types> {
         this.init(serial)
     }
 
-    get canBeSetOnOrOff(): true {
-        return true
-    }
-
-    setOn(): void {
-        throw new Error('Field_date: setOn not implemented; set a value directly')
-    }
-
-    setOff(): void {
-        this._setValue(undefined)
-    }
-
     get isOwnSet(): boolean {
         return this.serial.value !== undefined
     }
@@ -116,7 +106,9 @@ export class Field_date extends Field<Field_date_types> {
     private _setValue(value: Field_date_value | undefined): void {
         this._value = value
         this.runInValueTransaction(() => {
-            this.serial.value = value?.toISOString()
+            this.patchSerial((draft) => {
+                draft.value = value?.toISOString()
+            })
         })
     }
 
@@ -134,6 +126,10 @@ export class Field_date extends Field<Field_date_types> {
         return this.selectedValue
     }
 
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         if (this._value != null && isNaN(this._value.getTime()))
             return {
@@ -149,9 +145,12 @@ export class Field_date extends Field<Field_date_types> {
     }
 
     protected setOwnSerial(next: Field_date_serial): void {
-        if (next.value == null) {
+        if (next.value === undefined) {
             const def = this.defaultValue
-            if (def != null) next = produce(next, (draft) => void (draft.value = def.toISOString()))
+            if (def !== undefined)
+                next = produce(next, (draft) => {
+                    draft.value = def.toISOString()
+                })
         }
 
         this.assignNewSerial(next)

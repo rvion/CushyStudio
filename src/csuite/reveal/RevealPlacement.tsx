@@ -57,6 +57,10 @@ export const computePlacement = (
     placement: RevealPlacement,
     anchor: DOMRect,
 ): RevealComputedPosition => {
+    // 2024-09-06 domi: we could consider something like https://floating-ui.com/docs/tutorial
+    // it seems to exclusively handle the positioning
+    // may do that well and integrate with our custom reveal
+
     // ABOVE =======================================================================================
     if (placement === 'above') {
         return {

@@ -1,113 +1,116 @@
-import type { Field_link, Field_link_config } from '../fields/link/FieldLink'
-import type { Field_list, Field_list_config } from '../fields/list/FieldList'
-import type { Field_optional } from '../fields/optional/FieldOptional'
 import type { Field } from '../model/Field'
-import type { FieldExtension, SchemaExtension } from '../model/FieldConfig'
 import type { FieldConstructor } from '../model/FieldConstructor'
 import type { Instanciable } from '../model/Instanciable'
-import type { CovariantFn } from '../variance/BivariantHack'
+import type { SchemaDict } from '../model/SchemaDict'
 
 import { makeObservable } from 'mobx'
 
-import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
 import { BaseSchema } from '../model/BaseSchema'
-import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
-import { potatoClone } from '../utils/potatoClone'
 
-export class SimpleSchema<out FIELD extends Field = Field> extends BaseSchema<FIELD> implements Instanciable<FIELD> {
+export class SimpleSchema<out FIELD extends Field = Field>
+    extends BaseSchema<FIELD, SimpleSchemaᐸ_ᐳ>
+    implements Instanciable<FIELD>
+{
     constructor(
         /** field constructor (class or function, see FieldConstructor definition)  */
-        public fieldConstructor: FieldConstructor<FIELD>,
-        public readonly config: FIELD['$Config'],
+        fieldConstructor: FieldConstructor<FIELD>,
+        config: FIELD['$Config'],
     ) {
-        super()
-
-        // early check, just in case, this should also be checked at instanciation time
-        if (this.config.classToUse != null) {
-            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
-        }
-
-        // ❌ this.applySchemaExtensions()
-        makeObservable(this, {
-            config: true,
-            fieldConstructor: false,
-        })
+        super(fieldConstructor, config, (...args) => new SimpleSchema(...args) as any)
+        makeObservable(this, { config: true, fieldConstructor: false })
     }
+}
 
-    static NEW<F extends Field>(
-        FieldClass: Extract<FieldConstructor<F>, { build: 'new' }>,
-        config: F['$Config'],
-    ): SimpleSchema<F> {
-        return new SimpleSchema<F>(FieldClass, config)
-    }
+// INTERNAL MODULE --------------------------------------
+export interface SimpleSchemaᐸ_ᐳ extends HKT<Field> {
+    type: SimpleSchema<this['__1']>
 
-    extend_TEMP<EXTS extends FieldExtension<FIELD>>(
-        //
-        extensions: EXTS,
-    ): SimpleSchema<ReturnType<EXTS> & FIELD /* , EXTRA */> {
-        const x: SimpleSchema<FIELD /* , EXTRA */> = this.withConfig({
-            customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
-        })
+    String: S.SString
+    Bool: S.SBool
+    Number: S.SNumber
 
-        return x as any as SimpleSchema<ReturnType<EXTS> & FIELD /* , EXTRA */>
-    }
+    Date: HKSimpleDateAlias
+    DatePlain: HKSimpleDatePlainAlias
+    DateTimeZoned: HKSimpleDateTimeZonedAlias
 
-    // ❌ extendSchema<EXTS extends SchemaExtension<this>>(extensions: EXTS): this & ReturnType<EXTS> {
-    // ❌     const withoutNewExts: SimpleSchema<FIELD> = this.withConfig({
-    // ❌         customSchemaProperties: [
-    // ❌             //
-    // ❌             ...(this.config.customSchemaProperties ?? []),
-    // ❌             extensions,
-    // ❌         ],
-    // ❌     })
-    // ❌     return withoutNewExts as this & ReturnType<EXTS>
-    // ❌ }
+    Link: HKSimpleLinkAlias
+    Shared: HKSimpleSharedAlias
+    List: HKSimpleListAlias
+    Optional: HKSimpleOptionalAlias
 
-    /**
-     * chain construction
-     * @since 2024-06-30
-     * TODO: WRITE MORE DOC
-     */
-    useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): S.SLink<this, BP> {
-        const FieldLinkClass = getFieldLinkClass()
-        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new SimpleSchema<Field_link<this, BP>>(FieldLinkClass, linkConf)
-    }
+    OneOf: HKSimpleOneOfAlias
+    OneOf_: HKSimpleOneOf_Alias
 
-    /** wrap field schema to list stuff */
-    list(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
-        return this.list_({
-            defaultLength: config.min ?? 0,
-            ...config,
-        })
-    }
+    Many: HKSimpleManyAlias
+    Many_: HKSimpleMany_Alias
 
-    /** wrap field schema to list stuff */
-    list_(config: Omit<Field_list_config<this>, 'element'> = {}): S.SList<this> {
-        const FieldListClass = getFieldListClass()
-        return new SimpleSchema<Field_list<this>>(FieldListClass, {
-            ...config,
-            element: this,
-        })
-    }
+    Choices: HKSimpleChoicesAlias
 
-    /** make field optional (A => Maybe<A>) */
-    optional(startActive: boolean = false): S.SOptional<this> {
-        const FieldOptionalClass = getFieldOptionalClass()
-        return new SimpleSchema<Field_optional<this>>(FieldOptionalClass, {
-            schema: this,
-            startActive: startActive,
-            label: this.config.label,
-            startCollapsed: this.config.startCollapsed,
-            collapsed: this.config.collapsed,
-            border: this.config.border,
-        })
-    }
+    Group: HKSimpleGroupAlias
 
-    /** clone the schema, and patch the cloned config */
-    withConfig(config: Partial<FIELD['$Config']>): this /* & EXTRA */ {
-        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new SimpleSchema<FIELD>(this.fieldConstructor, mergedConfig)
-        return cloned as this
-    }
+    Size: S.SSize
+    Seed: S.SSeed
+    Color: S.SColor
+    Matrix: S.SMatrix
+    Button: HKSimpleButtonAlias
+    Markdown: S.SMarkdown
+}
+
+// #region link
+interface HKSimpleLinkAlias extends HKT<BaseSchema, BaseSchema> {
+    type: S.SLink<this['__1'], this['__2']>
+}
+
+interface HKSimpleSharedAlias extends HKT<Field> {
+    type: S.SShared<this['__1']>
+}
+interface HKSimpleListAlias extends HKT<BaseSchema> {
+    type: S.SList<this['__1']>
+}
+
+// #region optional
+interface HKSimpleOptionalAlias extends HKT<BaseSchema> {
+    type: S.SOptional<this['__1']>
+}
+
+// #region oneOf
+interface HKSimpleOneOfAlias extends HKT<unknown, string> {
+    type: S.SSelectOne<this['__1'], this['__2']>
+}
+interface HKSimpleOneOf_Alias extends HKT<string> {
+    type: S.SSelectOne_<this['__1']>
+}
+
+// #region many
+interface HKSimpleManyAlias extends HKT<unknown, string> {
+    type: S.SSelectMany<this['__1'], this['__2']>
+}
+interface HKSimpleMany_Alias extends HKT<string> {
+    type: S.SSelectMany_<this['__1']>
+}
+
+// #region choices
+interface HKSimpleChoicesAlias extends HKT<SchemaDict> {
+    type: S.SChoices<this['__1']>
+}
+
+// #region group
+interface HKSimpleGroupAlias extends HKT<SchemaDict> {
+    type: S.SGroup<this['__1']>
+}
+
+// #region dates
+interface HKSimpleDateAlias extends HKT<boolean> {
+    type: S.SDate<this['__1']>
+}
+interface HKSimpleDatePlainAlias extends HKT<boolean> {
+    type: S.SDatePlain<this['__1']>
+}
+interface HKSimpleDateTimeZonedAlias extends HKT<boolean> {
+    type: S.SDateTimeZoned<this['__1']>
+}
+
+// #region button
+interface HKSimpleButtonAlias extends HKT<any> {
+    type: S.SButton<this['__1']>
 }

@@ -13,7 +13,7 @@ import type { TabPositionConfig } from './TabPositionConfig'
 import { produce } from 'immer'
 
 import { Field } from '../../model/Field'
-import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialChoices, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
@@ -87,6 +87,7 @@ export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
     $Value: Field_choices_value<T>
     $Unchecked: Field_choices_unchecked<T>
     $Field: Field_choices<T>
+    $Child: T[keyof T]
 }
 
 // #region STATE
@@ -191,7 +192,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
                 label:
                     typeof schema.config.label === 'string' && schema.config.label.length > 0
                         ? schema.config.label
-                        : makeLabelFromFieldName(key),
+                        : makeLabelFromPrimitiveValue(key),
                 icon: schema.config.icon,
             }
         })
@@ -264,6 +265,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     // #region VALIDATION
+
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         const OUT: Problem_Ext[] = []
         const config = this.config
@@ -344,7 +350,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    protected checkConfigValidity(): void {
+    protected checkConfigValidity() {
         // INVARIANT CHECKING -----------------------------------------------------------------------------
         const OUT: Problem_Ext[] = []
         const config = this.config

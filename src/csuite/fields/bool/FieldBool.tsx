@@ -1,6 +1,5 @@
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
-import type { UNVALIDATED, UNVALIDATED2 } from '../../model/FieldConstructor'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -70,6 +69,7 @@ export type Field_bool_types = {
     $Value: Field_bool_value
     $Unchecked: Field_bool_unchecked
     $Field: Field_bool
+    $Child: never
 }
 
 // #region STATE
@@ -159,6 +159,10 @@ export class Field_bool extends Field<Field_bool_types> {
     }
 
     // #region PROBLEMS
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
     get ownTypeSpecificProblems(): Problem_Ext {
         return null
     }

@@ -1,12 +1,13 @@
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
-import type { UNVALIDATED2 } from '../../model/FieldConstructor'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
+import type { Problem_Ext } from 'src/cushy-forms/main'
 
 import { produce } from 'immer'
 import { computed } from 'mobx'
 
+import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
@@ -49,6 +50,7 @@ export type Field_number_types = {
     $Value: Field_number_value
     $Unchecked: Field_number_unchecked
     $Field: Field_number
+    $Child: never
 }
 
 // #region STATE
@@ -115,7 +117,28 @@ export class Field_number extends Field<Field_number_types> {
         return this.serial.value !== this.defaultValue
     }
 
-    get ownTypeSpecificProblems(): Maybe<string> {
+    get ownConfigSpecificProblems(): Problem_Ext {
+        const i18n = csuiteConfig.i18n
+        const out: string[] = []
+        const min = this.config.min
+        const max = this.config.max
+        if (min != null && max != null) {
+            if (min > max) {
+                // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
+                out.push(i18n.err.int.minGreaterThanMax({ min, max }))
+            }
+            if (min === max) {
+                out.push(i18n.err.int.minSameThanMax({ minmax: min }))
+            }
+        }
+        const def = this.config.default
+        if (def != null) {
+            if (min != null && def < min) out.push(i18n.err.int.defaultTooSmall({ min, def }))
+            if (max != null && def > max) out.push(i18n.err.int.defaultTooBig({ def, max }))
+        }
+        return out
+    }
+    get ownTypeSpecificProblems(): Problem_Ext {
         if (!this.isSet) return null
 
         const value = this.value_or_zero

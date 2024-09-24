@@ -40,20 +40,21 @@ export const WidgetDateTimeZoned_HeaderUI = observer(function WidgetDateTimeZone
     const field = p.field
     const config = field.config
     return (
-        <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
-            <InputStringUI
-                tw='w-full'
-                icon={p.field.config.innerIcon}
-                type='datetime-local'
-                className={config.className}
-                getValue={() => field.selectedValue?.toString()?.slice(0, 19) ?? ''}
-                setValue={(value) => {
-                    field.setValueFromString(value)
-                }}
-                placeholder={field.config.placeHolder}
-                disabled={p.readonly}
-            />
-            <WidgetDateTimeZoned_ClearButtonUI field={field} readonly={p.readonly} />
-        </div>
+            <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
+                <InputStringUI
+                    tw='w-full'
+                    inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
+                    icon={p.field.config.innerIcon}
+                    type='datetime-local'
+                    className={config.className}
+                    getValue={() => field.selectedValue?.toString()?.slice(0, 19) ?? ''}
+                    setValue={(value) => {
+                        field.setValueFromString(value)
+                    }}
+                    placeholder={field.config.placeHolder}
+                    disabled={p.readonly}
+                />
+                <WidgetDateTimeZoned_ClearButtonUI field={field} readonly={p.readonly} />
+            </div>
     )
 })
