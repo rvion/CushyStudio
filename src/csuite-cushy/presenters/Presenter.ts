@@ -1,6 +1,6 @@
 // see `src/csuite/form/presenters/presenter.readme.md`
 
-import type { Field } from '../../model/Field'
+import type { Field } from '../../csuite/model/Field'
 import type { PresenterConfig } from './PresenterConfig'
 import type { PresenterSlots } from './PresenterSlots'
 

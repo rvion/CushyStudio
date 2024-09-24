@@ -1,4 +1,7 @@
+import type { Field } from '../../csuite/model/Field'
 import type { widgetsCatalog } from './widgets-catalog'
+import type { Renderer } from 'marked'
+import type { ReactNode } from 'react'
 
 // import type { ReactNode } from 'react'
 
@@ -27,6 +30,23 @@ export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {
+    namespace RENDERER {
+        interface FieldRenderArgs<out FIELD extends Field> {}
+
+        // prettier-ignore
+        //   type RendererConfig =
+        //       & RendererArgsWidgets
+        //       & UsualWrapperProps
+        //       & UsualWidgetProps
+    }
+
+    interface Window {
+        RENDERER: {
+            render(field: Field, p: RENDERER.FieldRenderArgs<any>): ReactNode
+            useRenderer(props?: RENDERER.FieldRenderArgs<any>): Renderer
+        }
+    }
+
     namespace CATALOG {
         type variants = { [k in AllFieldTypes]: CatalogVariants<k> }
 

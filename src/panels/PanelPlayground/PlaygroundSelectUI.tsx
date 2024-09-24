@@ -12,8 +12,8 @@ import { SelectUI } from '../../csuite/select/SelectUI'
 export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
     const values = useLocalObservable(
         () => ({
-            a: null as Maybe<string>,
-            b: null as Maybe<string>,
+            a: undefined as string | undefined,
+            b: undefined as string | undefined,
             c: new Set<string>(),
             d: new Set<string>(),
         }),
