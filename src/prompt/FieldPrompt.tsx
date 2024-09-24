@@ -6,6 +6,8 @@ import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'
 
+import { produce } from 'immer'
+
 import { registerFieldClass } from '../csuite/fields/WidgetUI.DI'
 import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
@@ -42,11 +44,14 @@ export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_se
 // #region Serial
 export type Field_prompt_serial = FieldSerial<{
     $: 'prompt'
+
+    /** when undefined, the field is considered unset */
     val?: string
 }>
 
 // #region Value
-export type Field_prompt_value = Field_prompt // { text: string; tree: Tree }
+export type Field_prompt_value = Field_prompt
+export type Field_prompt_unchecked = Field_prompt
 
 // #region $FieldTypes
 export type Field_prompt_types = {
@@ -84,6 +89,10 @@ export class Field_prompt extends Field<Field_prompt_types> {
         })
     }
 
+    get isOwnSet(): boolean {
+        return typeof this.serial.val === 'string'
+    }
+
     // #region UI
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
@@ -102,7 +111,11 @@ export class Field_prompt extends Field<Field_prompt_types> {
     }
 
     // #region validation
-    get ownProblems(): Problem_Ext {
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
     }
 
@@ -111,8 +124,14 @@ export class Field_prompt extends Field<Field_prompt_types> {
         return (this.serial.val ?? '') !== (this.config.default ?? '')
     }
 
-    protected setOwnSerial(serial: Maybe<Field_prompt_serial>): void {
-        this.serial.val = serial?.val ?? this.defaultValue
+    protected setOwnSerial(next: Field_prompt_serial): void {
+        // assign default value if not value set but has default value
+        if (next.val == null) {
+            const def = this.defaultValue
+            if (def != null) next = produce(next, (draft) => void (draft.val = def))
+        }
+
+        this.assignNewSerial(next)
     }
 
     // sentinel value so we know when to trigger update effect in the UI to update
@@ -154,10 +173,11 @@ export class Field_prompt extends Field<Field_prompt_types> {
         return parser.parse(this.serial.val ?? '')
     }
 
-    get defaultValue(): string {
-        return this.config.default ?? ''
+    get defaultValue(): string | undefined {
+        return this.config.default
     }
 
+    // #region value
     get value(): Field_prompt_value {
         return this
         // return {
@@ -170,6 +190,21 @@ export class Field_prompt extends Field<Field_prompt_types> {
         if (next !== this) throw new Error('not implemented')
         // do nothing, value it the instance itself
     }
+
+    get value_or_fail(): Field_prompt_value {
+        if (this.serial.val == null) throw new Error('Field_prompt.value_or_fail: not set')
+        return this
+    }
+
+    get value_unchecked(): Field_prompt_unchecked {
+        return this
+    }
+
+    get value_or_zero(): Field_prompt_value {
+        return this
+    }
+
+    // #region ...
 
     get animateResize(): false {
         // codemirror resize automatically every time a line is added

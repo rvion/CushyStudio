@@ -254,7 +254,13 @@ export class Builder implements IBuilder {
         return new Schema<Field_image>(Field_image, config)
     }
 
+    /** prompt, defaulting to '' */
     prompt(config: Field_prompt_config = {}): X.XPrompt {
+        const def = config.default ?? ''
+        return this.prompt_({ default: def, ...config })
+    }
+
+    prompt_(config: Field_prompt_config = {}): X.XPrompt {
         return new Schema<Field_prompt>(Field_prompt, config)
     }
 
