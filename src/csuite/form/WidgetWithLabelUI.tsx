@@ -7,9 +7,9 @@ import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
-import { makeLabelFromFieldName } from '../../csuite/utils/makeLabelFromFieldName'
+import { makeLabelFromPrimitiveValue } from '../../csuite/utils/makeLabelFromFieldName'
 import { WidgetDebugIDUI } from './WidgetDebugIDUI'
-import { WidgetErrorsUI } from './WidgetErrorsUI'
+import { WidgetConfigErrorsUI, WidgetErrorsUI } from './WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from './WidgetHeaderContainerUI'
 import { WidgetHeaderControlsContainerUI } from './WidgetHeaderControlsContainerUI'
 import { WidgetIndentUI } from './WidgetIndentUI'
@@ -61,7 +61,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
     const BodyUI = field.body()
     const extraClass = originalField.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
     const csuite = useCSuite()
-    const labelText: string | false = p.label ?? field.config.label ?? makeLabelFromFieldName(p.fieldName)
+    const labelText: string | false = p.label ?? field.config.label ?? makeLabelFromPrimitiveValue(p.fieldName)
 
     const justifyOld = p.justifyLabel ?? field.justifyLabel
     const labellayout = justifyOld ? csuite.labellayout : 'fixed-left'
@@ -166,6 +166,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                             {HeaderUI && (
                                 <WidgetHeaderControlsContainerUI tw={[extraClass, p.classNameAroundBodyAndHeader]}>
                                     <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
+                                    {/*
+                                        // 💬 2024-09-17 rvion:
+                                        // | instead of the `{!p.noErrors && <WidgetErrorsUI field={field} />}` at the bottom
+                                        <div tw='w-full'>
+                                            <ErrorBoundaryUI>{HeaderUI}</ErrorBoundaryUI>
+                                            {!p.noErrors && <WidgetErrorsUI field={field} />}
+                                        </div>
+                                    */}
                                 </WidgetHeaderControlsContainerUI>
                             )}
 
@@ -194,6 +202,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
 
             {/* ERRORS  ------------------------------------------------------------------------------ */}
             {!p.noErrors && <WidgetErrorsUI field={field} />}
+            {!p.noErrors && <WidgetConfigErrorsUI field={field} />}
         </Frame>
     )
     if (field.animateResize && !p.noBody && BodyUI) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
