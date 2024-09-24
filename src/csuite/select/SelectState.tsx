@@ -141,7 +141,7 @@ export class AutoCompleteSelectState<OPTION> {
     }
 
     /** currently selected value or values */
-    get value(): Maybe<OPTION | OPTION[]> {
+    get value(): (OPTION | OPTION[]) | undefined {
         return this.p.value?.()
     }
 
@@ -161,7 +161,7 @@ export class AutoCompleteSelectState<OPTION> {
         return (
             <BadgeUI key={this.getKey(option)} autoHue={label} hue={this.getHue(option)}>
                 {label}
-                {opt.where === 'popup-input' && (
+                {opt.where === 'popup-input' && !this.p.uncloseableOptions && (
                     <Frame
                         tw='ml-1'
                         hover
@@ -204,13 +204,16 @@ export class AutoCompleteSelectState<OPTION> {
 
     get displayValueInAnchor(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
-        let value = this.value
+        const value: (OPTION | OPTION[]) | undefined = this.value
         const placeHolderStr = <div tw='text-gray-300 text-sm w-full '>{this.p.placeholder ?? 'Select...'}</div>
-        if (value == null) return placeHolderStr
-        value = Array.isArray(value) ? value : [value]
-        if (value.length === 0) return placeHolderStr
+        if (value === undefined) return placeHolderStr
+        // 💬 2024-09-18 rvion:
+        // | null is now a valid value; only undefined means no value.
+        // |> if (value == null) return placeHolderStr
+        const values = Array.isArray(value) ? value : [value]
+        if (values.length === 0) return placeHolderStr
 
-        return value.map((op) => this.DisplayOptionUI(op, { where: 'anchor' }))
+        return values.map((op) => this.DisplayOptionUI(op, { where: 'anchor' }))
     }
 
     get displayValueInPopup(): ReactNode {

@@ -71,7 +71,7 @@ export type SelectProps<OPTION> = {
     getKey?: (t: OPTION) => string
 
     /** the selected value / list of values if multiple values provided */
-    value?: () => Maybe<OPTION | OPTION[]>
+    value?: () => (OPTION | OPTION[]) | undefined
 
     /** if true, this widget is considered a multi-select */
     multiple?: boolean
@@ -84,6 +84,8 @@ export type SelectProps<OPTION> = {
     disabled?: boolean
 
     clearable?: Maybe<() => void>
+    /** if true, popup-input options won't have a close icon */
+    uncloseableOptions?: boolean
 
     hideValue?: boolean
     // className?: string // use revealProps.anchorProps.className instead
