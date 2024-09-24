@@ -56,10 +56,10 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { mkNewFieldId } from './FieldId'
+import { __ERROR, __OK } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
-import { __ERROR, __OK } from 'src/types/Result'
 
 /*
  * fact 1. mobx object can't be frozen;
@@ -135,7 +135,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     root: Field
 
     /** alias to root; since that's what `document` is. */
-    get document() {
+    get document(): Field {
         return this.root
     }
 
@@ -389,7 +389,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @see {@link serialProblems}
      * @since 2024-09-11
      */
-    recordSerialProblem = (msg: string, data: any) => this.serialProblems.push({ msg, data })
+    recordSerialProblem = (msg: string, data: any): number => this.serialProblems.push({ msg, data })
 
     /*
 

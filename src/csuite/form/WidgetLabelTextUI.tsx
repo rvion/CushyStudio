@@ -4,20 +4,23 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../ctx/useCSuite'
-import { makeLabelFromFieldName } from '../utils/makeLabelFromFieldName'
+import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
 
 export type WidgetLabelTextProps = {
     field: Field
     className?: string
+
     label?: ReactNode
+    children?: ReactNode
 }
 
 export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetLabelTextProps) {
     const csuite = useCSuite()
     const labelText =
         p.label ?? //
+        p.children ??
         p.field.config.label ??
-        makeLabelFromFieldName(p.field.fieldName)
+        makeLabelFromPrimitiveValue(p.field.mountKey)
     return (
         <span
             tw={[

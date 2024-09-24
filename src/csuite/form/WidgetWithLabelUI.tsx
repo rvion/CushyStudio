@@ -95,7 +95,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                     {/* <WidgetToggleUI tw='mr-1' field={originalField} /> */}
                                     <WidgetLabelIconUI tw='mr-1' field={field} />
                                     {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                    <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                    <WidgetLabelTextUI field={field}>{labelText}</WidgetLabelTextUI>
                                     {field.config.showID && <WidgetDebugIDUI field={field} />}
                                     <WidgetPresetsUI field={field} />
                                 </div>
@@ -124,7 +124,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         {p.slotDragKnob}
                                         <WidgetLabelCaretUI field={field} />
                                         <WidgetLabelIconUI tw='mr-1' field={field} />
-                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        <WidgetLabelTextUI field={field}>{labelText}</WidgetLabelTextUI>
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                         {field.config.showID && <WidgetDebugIDUI field={field} />}
                                         <WidgetPresetsUI tw='ml-auto self-start' field={field} />
@@ -137,7 +137,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         <WidgetLabelCaretUI tw='mr-auto' field={field} />
                                         <WidgetPresetsUI tw='self-start mr-2' field={field} />
                                         {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        <WidgetLabelTextUI field={field}>{labelText}</WidgetLabelTextUI>
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
                                         {field.config.showID && <WidgetDebugIDUI field={field} />}
                                         <WidgetLabelIconUI tw='mx-1' field={field} />
@@ -151,7 +151,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                         <WidgetToggleUI tw='mr-1' field={originalField} />
                                         <WidgetLabelIconUI tw='mr-1' field={field} />
                                         {/* {widget.config.tooltip && <WidgetTooltipUI widget={widget} />} */}
-                                        <WidgetLabelTextUI widget={field}>{labelText}</WidgetLabelTextUI>
+                                        <WidgetLabelTextUI field={field}>{labelText}</WidgetLabelTextUI>
                                         {field.config.showID && <WidgetDebugIDUI field={field} />}
                                         <WidgetPresetsUI field={field} />
                                     </>

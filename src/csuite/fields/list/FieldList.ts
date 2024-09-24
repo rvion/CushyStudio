@@ -2,7 +2,7 @@ import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from 'src/cushy-forms/main'
+import type { Problem_Ext } from '../../model/Validation'
 
 import { reaction } from 'mobx'
 
