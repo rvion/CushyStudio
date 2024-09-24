@@ -10,7 +10,6 @@ export type FieldConstructor<FIELD extends Field> =
     | FieldConstructor_ViaClass<FIELD>
 
 export type UNVALIDATED<T> = T | unknown
-export type UNVALIDATED2<T = object> = (T | object) & object
 
 export type FieldConstructor_ViaFunction<out FIELD extends Field> = {
     type: FIELD['$Type']

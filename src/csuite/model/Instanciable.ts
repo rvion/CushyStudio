@@ -8,6 +8,7 @@ export interface Instanciable<T extends Field = Field> {
     $Value: T['$Value']
     $Field: T['$Field']
     $Unchecked: T['$Unchecked']
+    $Child: T['$Child']
 
     type: T['type']
     config: T['$Config']

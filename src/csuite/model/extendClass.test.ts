@@ -3,9 +3,9 @@ import type { FieldCtorProps } from './Field'
 import { describe, expect, it } from 'bun:test'
 import { isAction, isComputedProp, isObservableProp, reaction } from 'mobx'
 
+import { simpleBuilder as b, simpleFactory as f } from '../'
 import { Field_bool } from '../fields/bool/FieldBool'
 import { Field_group } from '../fields/group/FieldGroup'
-import { simpleBuilder as b, simpleFactory as f } from '../SimpleFactory'
 
 const r = f.repository
 
@@ -150,10 +150,7 @@ describe('field customizations', () => {
             }>['$Subfields']
 
             class Foo3 extends Field_group<T0> {
-                constructor(
-                    public hello: string,
-                    ...args: FieldCtorProps<any>
-                ) {
+                constructor(public hello: string, ...args: FieldCtorProps<any>) {
                     super(...args)
                     this.autoExtendObservable()
                 }
@@ -232,22 +229,22 @@ describe('field customizations', () => {
 
                         attrObs = 1
                         attrNotObs = 1
-                        get getterObs(): number {
+                        get getterObs() {
                             return 2
                         }
-                        get getterNotObs(): number {
+                        get getterNotObs() {
                             return 2
                         }
-                        protoFnAction(): number {
+                        protoFnAction() {
                             return 3
                         }
-                        protoFnNotAction(): number {
+                        protoFnNotAction() {
                             return 3
                         }
-                        instanceFnAction = (): number => {
+                        instanceFnAction = () => {
                             return 3
                         }
-                        instanceFnNotAction = (): number => {
+                        instanceFnNotAction = () => {
                             return 3
                         }
                     },
@@ -289,22 +286,22 @@ describe('field customizations', () => {
                     class Glux extends Field_group<any> {
                         attrObs = 1
                         attrNotObs = 1
-                        get getterObs(): number {
+                        get getterObs() {
                             return 2
                         }
-                        get getterNotObs(): number {
+                        get getterNotObs() {
                             return 2
                         }
-                        protoFnAction(): number {
+                        protoFnAction() {
                             return 3
                         }
-                        protoFnNotAction(): number {
+                        protoFnNotAction() {
                             return 3
                         }
-                        instanceFnAction = (): number => {
+                        instanceFnAction = () => {
                             return 3
                         }
-                        instanceFnNotAction = (): number => {
+                        instanceFnNotAction = () => {
                             return 3
                         }
                     },

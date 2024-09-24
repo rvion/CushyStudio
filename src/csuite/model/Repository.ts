@@ -1,6 +1,8 @@
 import type { Field } from './Field'
 import type { FieldId } from './FieldId'
 
+import { runInAction } from 'mobx'
+
 import { bang } from '../utils/bang'
 import { type FieldTouchMode, Transaction, type TransactionMode } from './Transaction'
 
@@ -170,63 +172,65 @@ export class Repository {
         /** 🔴 VVV for choices ? so we can use "mutable-actions" method in the ctor */
         _tctMode: TransactionMode,
     ): A {
-        const isRoot = this.tct == null
-        this.tct ??= new Transaction(this /* tctMode */)
-        const tct = this.tct
-        let OUT: A
-        tct.tower.push(field)
-        const prevFieldSerial = field.serial
-
-        if (touchMode === 'auto') {
-            const prevCreateAndValueBumpCount = tct.bump.create + tct.bump.value
-            const prevSerialBumpCount = prevCreateAndValueBumpCount + tct.bump.serial
-            OUT = fn(tct)
-            const nextCreateAndValueBumpCountBumpCount = tct.bump.create + tct.bump.value
-            const nextSerialBumpCount = nextCreateAndValueBumpCountBumpCount + tct.bump.serial
-
-            if (prevCreateAndValueBumpCount !== nextCreateAndValueBumpCountBumpCount) tct.track(field, 'value')
-            else if (prevSerialBumpCount !== nextSerialBumpCount) tct.track(field, 'serial')
-        } else {
-            OUT = fn(tct)
-            tct.track(field, touchMode)
-        }
-
-        tct.tower.pop()
-
-        const fieldDidChange = field.serial !== prevFieldSerial
-        if (fieldDidChange) {
-            // TODO: assert the tower is well-formed (only goes down the field tree)
-            // now that the transaction is done, we need to bubble the serial update
-            // upwards until the closest parent in the tower.
-            const stopAt = tct.tower.length > 0 ? tct.tower[tct.tower.length - 1] : undefined
-            let at: Maybe<Field> = field
-            while (at != null && at !== stopAt) {
-                // console.log(`[🤠] UPDATE serial`, at.pathExt)
-                const didChange = at.parent?._acknowledgeNewChildSerial(at.mountKey, at.serial)
-                if (!didChange) break
-                at = at.parent
-            }
-        }
-
-        // ONLY COMMIT THE ROOT TRANSACTION
-        if (isRoot) {
-            // ALTERNATIVE A:
-            // | execute the Commit callbacks outside of the transaction
-            // | if a callback triggers a change, it will be executed in
-            // | new transaction (and trigger onValueChange)
+        return runInAction(() => {
+            const isRoot = this.tct == null
+            this.tct ??= new Transaction(this /* tctMode */)
             const tct = this.tct
-            this.tct = null
-            //  VVV  apply the callback once every update is done, OUTSIDE of the transaction
-            tct.commit()
-            this.lastTransaction = tct
+            let OUT: A
+            tct.tower.push(field)
+            const prevFieldSerial = field.serial
 
-            // ALTERNATIVE B:
-            // | execute the Commit callbacks within the transaction
-            // ⏸️          VVV apply the callback once every update is done, INSIDE the transaction
-            // ⏸️ this.tct.commit()
-            // ⏸️ this.tct = null
-        }
-        return OUT
+            if (touchMode === 'auto') {
+                const prevCreateAndValueBumpCount = tct.bump.create + tct.bump.value
+                const prevSerialBumpCount = prevCreateAndValueBumpCount + tct.bump.serial
+                OUT = fn(tct)
+                const nextCreateAndValueBumpCountBumpCount = tct.bump.create + tct.bump.value
+                const nextSerialBumpCount = nextCreateAndValueBumpCountBumpCount + tct.bump.serial
+
+                if (prevCreateAndValueBumpCount !== nextCreateAndValueBumpCountBumpCount) tct.track(field, 'value')
+                else if (prevSerialBumpCount !== nextSerialBumpCount) tct.track(field, 'serial')
+            } else {
+                OUT = fn(tct)
+                tct.track(field, touchMode)
+            }
+
+            tct.tower.pop()
+
+            const fieldDidChange = field.serial !== prevFieldSerial
+            if (fieldDidChange) {
+                // TODO: assert the tower is well-formed (only goes down the field tree)
+                // now that the transaction is done, we need to bubble the serial update
+                // upwards until the closest parent in the tower.
+                const stopAt = tct.tower.length > 0 ? tct.tower[tct.tower.length - 1] : undefined
+                let at: Maybe<Field> = field
+                while (at != null && at !== stopAt) {
+                    // console.log(`[🤠] UPDATE serial`, at.pathExt)
+                    const didChange = at.parent?._acknowledgeNewChildSerial(at.mountKey, at.serial)
+                    if (!didChange) break
+                    at = at.parent
+                }
+            }
+
+            // ONLY COMMIT THE ROOT TRANSACTION
+            if (isRoot) {
+                // ALTERNATIVE A:
+                // | execute the Commit callbacks outside of the transaction
+                // | if a callback triggers a change, it will be executed in
+                // | new transaction (and trigger onValueChange)
+                const tct = this.tct
+                this.tct = null
+                //  VVV  apply the callback once every update is done, OUTSIDE of the transaction
+                tct.commit()
+                this.lastTransaction = tct
+
+                // ALTERNATIVE B:
+                // | execute the Commit callbacks within the transaction
+                // ⏸️          VVV apply the callback once every update is done, INSIDE the transaction
+                // ⏸️ this.tct.commit()
+                // ⏸️ this.tct = null
+            }
+            return OUT
+        })
     }
 
     /**
