@@ -1,10 +1,10 @@
 import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/icons'
 import type { CSSSizeString } from './CSSSizeString'
-import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
+import type { CSSProperties, ForwardedRef, ReactElement, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, ReactElement, useState } from 'react'
+import { forwardRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
@@ -51,8 +51,18 @@ export type InputStringProps = {
     slotBeforeInput?: ReactNode
 
     // styling -------------------
+    // styling > frame:
+
+    /** className added on the Frame enclosing the input */
     className?: string
+    /** style added on the frame enclosing the input */
     style?: CSSProperties
+
+    // styling > input
+    /** className added on the input itself */
+    inputClassName?: string
+    /** style added on the input itself */
+    inputStyle?: CSSProperties
 
     onBlur?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
@@ -97,13 +107,15 @@ export const InputStringUI = observer(
             <input
                 ref={ref}
                 size={autoResize ? 1 : undefined}
+                className={p.inputClassName}
+                style={p.inputStyle}
                 tw={[inptClassNameWhenAutosize, inputTailwind]}
                 type={reveal ? 'text' : p.type}
                 pattern={p.pattern}
                 placeholder={p.placeholder}
                 autoFocus={p.autoFocus}
                 disabled={p.disabled}
-                value={p.buffered ? (temporaryValue ?? value) : value}
+                value={p.buffered ? temporaryValue ?? value : value}
                 onChange={(ev) => {
                     if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
                     else p.setValue(ev.currentTarget.value)
@@ -138,6 +150,7 @@ export const InputStringUI = observer(
             <Frame
                 noColorStuff={p.noColorStuff}
                 className={p.className}
+                style={p.style}
                 base={csuite.inputContrast}
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover={3}
