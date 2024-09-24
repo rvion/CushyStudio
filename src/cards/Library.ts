@@ -118,7 +118,7 @@ export class Library {
                 // RELOAD ALL APPS from opened drafts
                 // logic is a bit complex, but it seems like a good trade-off
                 const allAppsNeedingUpdate = new Set<CushyAppL>()
-                const allDraftTabs = st.layout.findTabsFor('Draft')
+                const allDraftTabs = cushy.layout.findTabsFor('Draft')
                 for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
                     const draft = st.db.draft.get(d.props.draftID)

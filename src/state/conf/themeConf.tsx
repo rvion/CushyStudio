@@ -24,10 +24,10 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             {
                 labelLayout: ui.selectOneOptionValue<FormGlobalLayoutMode>(
                     [
-                        { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
-                        { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },
-                        { id: 'fluid', icon: 'mdiFullscreenExit', label: '' },
-                        { id: 'mobile', icon: 'mdiCellphone', label: '' },
+                        { id: 'fixed-left', /*  */ icon: 'mdiAlignHorizontalLeft' /*  */, label: '' },
+                        { id: 'fixed-right', /* */ icon: 'mdiAlignHorizontalRight' /* */, label: '' },
+                        { id: 'fluid', /*       */ icon: 'mdiFullscreenExit' /*       */, label: '' },
+                        { id: 'mobile', /*      */ icon: 'mdiCellphone' /*            */, label: '' },
                     ],
                     {
                         header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
