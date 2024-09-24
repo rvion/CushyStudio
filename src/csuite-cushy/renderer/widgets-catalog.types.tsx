@@ -50,29 +50,33 @@ declare global {
     namespace CATALOG {
         type variants = { [k in AllFieldTypes]: CatalogVariants<k> }
 
-        /** closed union to help typescript proove that exhaustiveness */
+        /** closed union to help typescript proove variance by checking all branches */
         type AllFieldTypes =
             | 'optional'
             | 'str'
             | 'group'
             | 'selectOne'
             | 'selectMany'
-            | 'file'
             | 'bool'
             | 'button'
             | 'choices'
             | 'color'
+            | 'custom'
             | 'date'
             | 'date'
             | 'plaindate'
             | 'datetimezoned'
+            | 'enum'
+            | 'image'
             | 'link'
             | 'list'
             | 'markdown'
             | 'matrix'
             | 'number'
+            | 'orbit'
             | 'seed'
             | 'shared'
             | 'size'
+            | 'prompt'
     }
 }
