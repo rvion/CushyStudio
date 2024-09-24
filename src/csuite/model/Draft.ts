@@ -1,4 +1,5 @@
 import type { $FieldTypes } from './$FieldTypes'
+import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
 
 /**

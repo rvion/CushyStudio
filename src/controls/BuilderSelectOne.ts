@@ -6,7 +6,7 @@ import type {
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
 
 import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
-import { Schema } from './Schema'
+import { CushySchema } from './Schema'
 
 /**
  * SelectOneBuilder allow to centralize every selectOne method
@@ -29,7 +29,7 @@ export class SelectOneBuilder {
      * @see {@link selectOneOptionValue}
      */
     selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
-        return new Schema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
+        return new CushySchema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
     }
 
     /**

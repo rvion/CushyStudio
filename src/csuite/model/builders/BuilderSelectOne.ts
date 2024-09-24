@@ -8,8 +8,8 @@ import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../../field
 import type { Field } from '../Field'
 
 import { Field_selectOne } from '../../fields/selectOne/FieldSelectOne'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { BaseBuilder } from './BaseBuilder'
-import { makeLabelFromPrimitiveValue } from 'src/cushy-forms/main'
 
 type Field_selectOne_<V extends SelectKey> = Field_selectOne<V, V>
 
@@ -22,7 +22,8 @@ export class BuilderSelectOne<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> ext
     static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderSelectOne)
 
     private _defaultSelectOneConfig: Partial<Field_selectOne_config<any, any>> = {}
-    withDefaultSelectOneConfig(conf: Partial<Field_selectOne_config<any, any>>) {
+
+    withDefaultSelectOneConfig(conf: Partial<Field_selectOne_config<any, any>>): this {
         this._defaultSelectOneConfig = conf
         return this
     }

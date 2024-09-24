@@ -1,26 +1,26 @@
-import type { CovariantFC, CovariantFn } from '../csuite'
-import type { Field_link_config } from '../csuite/fields/link/FieldLink'
+import type { CovariantFC } from '../csuite'
 import type { Field } from '../csuite/model/Field'
 import type { FieldConstructor } from '../csuite/model/FieldConstructor'
+import type { Instanciable } from '../csuite/model/Instanciable'
 import type { KnownModel_Name } from '../CUSHY'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 
 import { createElement } from 'react'
 
-import { Field_list, Field_list_config } from '../csuite/fields/list/FieldList'
-import { Field_optional } from '../csuite/fields/optional/FieldOptional'
-import { getFieldLinkClass, isFieldOptional } from '../csuite/fields/WidgetUI.DI'
+import { isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
-import { objectAssignTsEfficient_t_pt } from '../csuite/utils/objectAssignTsEfficient'
-import { potatoClone } from '../csuite/utils/potatoClone'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
+export class CushySchema<out FIELD extends Field = Field> //
+    extends BaseSchema<FIELD, CushySchemaᐸ_ᐳ>
+    implements Instanciable<FIELD>
+{
     constructor(
-        public fieldConstructor: FieldConstructor<FIELD>,
-        public readonly config: FIELD['$Config'],
+        /** field constructor (class or function, see FieldConstructor definition)  */
+        fieldConstructor: FieldConstructor<FIELD>,
+        config: FIELD['$Config'],
     ) {
-        super()
+        super(fieldConstructor, config, (...args) => new CushySchema(...args) as any)
 
         // early check, just in case, this should also be checked at instanciation time
         if (this.config.classToUse != null) {
@@ -28,40 +28,16 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
         }
 
         this.applySchemaExtensions()
-
-        // 💬 2024-08-20 rvion:
-        // | I don't need that observable for now.
-        // | `SimpleSchema` have it observable to make sure it will work if need be
-        //
-        // ⏸️ makeObservable(this, {
-        // ⏸️     config: true,
-        // ⏸️     FieldClass_UNSAFE: false,
-        // ⏸️ })
     }
 
     LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
         createElement(InstallRequirementsBtnUI, {
-            active: isFieldOptional(p.field) ? p.field.serial.active : true,
+            active: isFieldOptional(p.field) ? (p.field.active ?? false) : true,
             requirements: this.requirements,
         })
 
-    // Requirements (CushySpecifc)
+    // #region Cushy Specific Schema APIs
     readonly requirements: Requirements[] = []
-
-    // 💬 2024-08-18 rvion:
-    // | I'd like to preserve the typedoc in the autocompletion panel,
-    // | mostly to know the size and descriptions of the models I'm
-    // | adding to the recommendation sections;
-    // | For now, it's not working, and It may require some more codegen
-    // 💡 requireModel = new Proxy(
-    // 💡     {},
-    // 💡     {
-    // 💡         get: (target, prop: any): this => {
-    // 💡             if (typeof prop === 'string') this.addRequirementOnComfyManagerModel(prop as KnownModel_Name)
-    // 💡             return this
-    // 💡         },
-    // 💡     },
-    // 💡 ) as { [modelName in KnownModel_Name]: this }
 
     addRequirementOnComfyManagerModel(modelName: KnownModel_Name): this {
         this.addRequirements({ type: 'modelInManager', modelName, optional: true })
@@ -74,42 +50,91 @@ export class Schema<out FIELD extends Field = Field> extends BaseSchema<FIELD> {
         // this.🐌
         return this
     }
+}
 
-    useIn<BP extends BaseSchema>(
-        /** function that dynamically return a new child schema
-         * that depends on the instance that will be created by this schema
-         */
-        fn: CovariantFn<[field: FIELD], BP>,
-    ): X.XLink<this, BP> {
-        const FieldLink = getFieldLinkClass()
-        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
-        return new Schema(FieldLink, linkConf)
-    }
+// TODO: make it work like in loco
+// INTERNAL MODULE --------------------------------------
+export interface CushySchemaᐸ_ᐳ extends HKT<Field> {
+    type: CushySchema<this['__1']>
 
-    /** wrap widget schema to list stuff */
-    list(config: Omit<Field_list_config<any>, 'element'> = {}): X.XList<this> {
-        return new Schema<Field_list<this>>(Field_list, {
-            ...config,
-            element: this,
-        })
-    }
+    String: X.XString
+    Bool: X.XBool
+    Number: X.XNumber
 
-    /** clone the schema, and patch the cloned config */
-    withConfig(config: Partial<FIELD['$Config']>): this {
-        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
-        const cloned = new Schema<FIELD>(this.fieldConstructor, mergedConfig)
-        return cloned as this
-    }
+    Date: HKSimpleDateAlias
+    DatePlain: HKSimpleDatePlainAlias
+    DateTimeZoned: HKSimpleDateTimeZonedAlias
 
-    optional(startActive: boolean = false): X.XOptional<this> {
-        return new Schema<Field_optional<this>>(Field_optional, {
-            schema: this,
-            startActive: startActive,
-            label: this.config.label,
-            // requirements: this.config.requirements,
-            startCollapsed: this.config.startCollapsed,
-            collapsed: this.config.collapsed,
-            border: this.config.border,
-        })
-    }
+    Link: HKSimpleLinkAlias
+    Shared: HKSimpleSharedAlias
+    List: HKSimpleListAlias
+    Optional: HKSimpleOptionalAlias
+
+    OneOf: HKSimpleOneOfAlias
+    OneOf_: HKSimpleOneOf_Alias
+
+    Many: HKSimpleManyAlias
+    Many_: HKSimpleMany_Alias
+
+    Choices: HKSimpleChoicesAlias
+
+    Group: HKSimpleGroupAlias
+
+    Size: X.XSize
+    Seed: X.XSeed
+    Color: X.XColor
+    Matrix: X.XMatrix
+    Button: HKSimpleButtonAlias
+    Markdown: X.XMarkdown
+}
+
+interface HKSimpleLinkAlias extends HKT<BaseSchema, BaseSchema> {
+    type: X.XLink<this['__1'], this['__2']>
+}
+
+interface HKSimpleSharedAlias extends HKT<Field> {
+    type: X.XShared<this['__1']>
+}
+interface HKSimpleListAlias extends HKT<BaseSchema> {
+    type: X.XList<this['__1']>
+}
+
+interface HKSimpleOptionalAlias extends HKT<BaseSchema> {
+    type: X.XOptional<this['__1']>
+}
+
+interface HKSimpleOneOfAlias extends HKT<unknown, SelectKey> {
+    type: X.XSelectOne<this['__1'], this['__2']>
+}
+interface HKSimpleOneOf_Alias extends HKT<SelectKey> {
+    type: X.XSelectOne_<this['__1']>
+}
+
+interface HKSimpleManyAlias extends HKT<unknown, SelectKey> {
+    type: X.XSelectMany<this['__1'], this['__2']>
+}
+interface HKSimpleMany_Alias extends HKT<SelectKey> {
+    type: X.XSelectMany_<this['__1']>
+}
+
+interface HKSimpleChoicesAlias extends HKT<SchemaDict> {
+    type: X.XChoices<this['__1']>
+}
+
+interface HKSimpleGroupAlias extends HKT<SchemaDict> {
+    type: X.XGroup<this['__1']>
+}
+
+interface HKSimpleDateAlias extends HKT<boolean> {
+    type: X.XDate<this['__1']>
+}
+interface HKSimpleDatePlainAlias extends HKT<boolean> {
+    type: X.XDatePlain<this['__1']>
+}
+interface HKSimpleDateTimeZonedAlias extends HKT<boolean> {
+    type: X.XDateTimeZoned<this['__1']>
+}
+
+interface HKSimpleButtonAlias extends HKT<any> {
+    type: X.XButton<this['__1']>
 }

@@ -1,11 +1,11 @@
-import type { Field } from '../../model/Field'
+import type { Field } from '../../csuite/model/Field'
 import type { Presenter } from './Presenter'
 
 import { observer } from 'mobx-react-lite'
 
-import { Frame } from '../../frame/Frame'
-import { AnimatedSizeUI } from '../../smooth-size/AnimatedSizeUI'
-import { WidgetHeaderContainerUI } from '../WidgetHeaderContainerUI'
+import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 
 export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(p: { presenter: Presenter; field: Field }) {
     const { field, presenter } = p

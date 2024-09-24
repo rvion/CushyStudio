@@ -2,17 +2,17 @@
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Builder } from './Builder'
+import type { CushySchemaBuilder } from './Builder'
 
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
-import { Schema } from './Schema'
+import { CushySchema } from './Schema'
 
 export type IEnumBuilderFN<T> = (config?: Omit<Field_enum_config<T>, 'enumName'>) => X.XEnum<T>
 export type IEnumBuilder = { [K in keyof Requirable]: IEnumBuilderFN<Requirable[K]['$Value']> }
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public domain: Builder) {
+    constructor(public domain: CushySchemaBuilder) {
         return new Proxy(this, {
             get(target, prop): IEnumBuilderFN<any> {
                 // skip symbols
@@ -33,13 +33,13 @@ export class EnumBuilder {
                 if (enumSchema == null) {
                     console.error(`❌ unknown enum: ${enumName}`)
                     return (config: any = {}) =>
-                        new Schema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName: 'INVALID_null' })
+                        new CushySchema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName: 'INVALID_null' })
                     // 🔴 can't throw here, will break for everyone !!
                     // 🔴 throw new Error(`unknown enum: ${enumName}`)
                 }
 
                 // return the builder
-                return (config: any = {}) => new Schema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName })
+                return (config: any = {}) => new CushySchema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName })
             },
         })
     }

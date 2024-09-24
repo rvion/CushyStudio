@@ -36,7 +36,7 @@ export function useGalleryConf(): GalleryConf {
                 filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
                 filterAppName: ui.app().optional(),
             })
-            .extend((self) => ({
+            .useMixin((self) => ({
                 get imageToDisplay(): MediaImageL[] {
                     const conf = self.value
                     const out = cushy.db.media_image.select(

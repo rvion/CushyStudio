@@ -8,6 +8,7 @@ import type { FieldConstructor } from './FieldConstructor'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
+import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
 
 import { reaction } from 'mobx'

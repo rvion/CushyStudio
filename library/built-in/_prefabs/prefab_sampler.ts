@@ -1,4 +1,4 @@
-import type { Builder } from '../../../src/controls/Builder'
+import type { CushySchemaBuilder } from '../../../src/controls/Builder'
 import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 

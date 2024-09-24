@@ -1,8 +1,8 @@
-import type { Builder } from '../../controls/Builder'
+import type { CushySchemaBuilder } from '../../controls/Builder'
 
 export type UI_Justify = X.XSelectOne_<'full' | 'L' | 'center' | 'R'>
 
-export const ui_justify = (ui: Builder): UI_Justify =>
+export const ui_justify = (ui: CushySchemaBuilder): UI_Justify =>
     ui.selectOneOptionId(
         [
             { id: 'full', icon: 'mdiFormatAlignJustify', label: '' },

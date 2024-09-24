@@ -1,4 +1,4 @@
-import { type Builder, cushyFactory } from '../../controls/Builder'
+import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
@@ -55,7 +55,7 @@ type UI_outputFilter = X.XChoices<{
     RuntimeErrorL: X.XEmpty
 }>
 
-function ui_outputFilter(ui: Builder): UI_outputFilter {
+function ui_outputFilter(ui: CushySchemaBuilder): UI_outputFilter {
     return ui.choicesV2(
         {
             MediaTextL: ui.empty(),

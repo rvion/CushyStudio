@@ -1,4 +1,4 @@
-import type { Schema } from '../../src/controls/Schema'
+import type { CushySchema } from '../../src/controls/Schema'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
@@ -33,11 +33,11 @@ app({
                         // so to make sure code is correct, we need to cast it to the correct type
                         // (and yes, types are slighly verbose for now)
                         const steps = formRoot.fields.samplerUI as Field_list<
-                            Schema<
+                            CushySchema<
                                 Field_choices<{
-                                    sampler_output_abc_asdf: Schema<X.SelectOne_<any>>
-                                    empty_latent: Schema<Field_group<any>>
-                                    pick_image: Schema<Field_image>
+                                    sampler_output_abc_asdf: CushySchema<X.SelectOne_<any>>
+                                    empty_latent: CushySchema<Field_group<any>>
+                                    pick_image: CushySchema<Field_image>
                                 }>
                             >
                         >

@@ -2,10 +2,10 @@
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Builder } from './Builder'
+import type { CushySchemaBuilder } from './Builder'
 
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
-import { Schema } from './Schema'
+import { CushySchema } from './Schema'
 
 // 🔴 showcase how nullability work without optional
 
@@ -18,7 +18,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
-    constructor(public domain: Builder) {
+    constructor(public domain: CushySchemaBuilder) {
         return new Proxy(this, {
             get(target, prop): IEnumBuilderOptFn<any> {
                 // skip symbols
@@ -42,7 +42,7 @@ export class EnumBuilderOpt {
                         domain.optional({
                             label: config.label,
                             startActive: config.startActive,
-                            schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName: 'INVALID_null' }),
+                            schema: new CushySchema(Field_enum<any /* 🔴 */>, { ...config, enumName: 'INVALID_null' }),
                         })
                     // 🔴 can't throw here, will break for everyone !!
                     // throw new Error(`unknown enum: ${enumName}`)
@@ -53,7 +53,7 @@ export class EnumBuilderOpt {
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        schema: new Schema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
+                        schema: new CushySchema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
                     })
             },
         })

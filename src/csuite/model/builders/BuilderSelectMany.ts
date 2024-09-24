@@ -1,15 +1,15 @@
+import type {
+    Field_selectMany_config,
+    Field_selectMany_config_simplified,
+    Field_selectMany_config_simplified_,
+} from '../../fields/selectMany/FieldSelectMany'
 import type { SelectKey } from '../../fields/selectOne/SelectOneKey'
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../../fields/selectOne/SelectOption'
 import type { Field } from '../Field'
 
-import {
-    Field_selectMany,
-    type Field_selectMany_config,
-    type Field_selectMany_config_simplified,
-    type Field_selectMany_config_simplified_,
-} from '../../fields/selectMany/FieldSelectMany'
+import { Field_selectMany } from '../../fields/selectMany/FieldSelectMany'
+import { removeReadOnly } from '../../utils/removeReadOnly'
 import { BaseBuilder } from './BaseBuilder'
-import { removeReadOnly } from 'src/front/reusable/utils.types.shared'
 
 interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
     Many: HKT<unknown, SelectKey>
@@ -20,7 +20,8 @@ export class BuilderSelectMany<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> ex
     static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderSelectMany)
 
     private _defaultSelectManyConfig: Partial<Field_selectMany_config<any, any>> = {}
-    withDefaultSelectManyConfig(conf: Partial<Field_selectMany_config<any, any>>) {
+
+    withDefaultSelectManyConfig(conf: Partial<Field_selectMany_config<any, any>>): this {
         this._defaultSelectManyConfig = conf
         return this
     }

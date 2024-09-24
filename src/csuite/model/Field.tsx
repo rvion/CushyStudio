@@ -1212,6 +1212,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         )
     }
 
+    renderAsForm(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+        return window.RENDERER.render(this, p)
+    }
     /**
      * do not use directly; prefer `Render`.
      *
@@ -1505,7 +1508,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                     'class has been made observable using makeAutoObservableInheritance',
             )
 
-        const accumPropertiesAndAnnotations = (something: any) => {
+        const accumPropertiesAndAnnotations = (something: any): void => {
             Reflect.ownKeys(something).forEach((key) => {
                 if (key === $mobx || key === 'constructor') return
                 if (key in baseAnnotations) return

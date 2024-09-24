@@ -245,6 +245,7 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
         })
     }
 
+    /** defaults to false when field is unset */
     get active(): boolean {
         return this.serial.active === true
     }
@@ -273,7 +274,7 @@ export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Fie
         }
     }
 
-    randomize() {
+    randomize(): void {
         const active = Math.random() < 0.5
         this.setActive(active)
         if (active) this.child.randomize()

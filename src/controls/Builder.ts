@@ -13,6 +13,7 @@ import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import type { Field_seed_config } from '../csuite/fields/seed/FieldSeed'
+import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
@@ -47,14 +48,26 @@ import { Field_seed } from '../csuite/fields/seed/FieldSeed'
 import { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
 import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
 import { type SelectOption } from '../csuite/fields/selectOne/SelectOption'
+import { WidgetSelectOneUI } from '../csuite/fields/selectOne/WidgetSelectOneUI'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
 import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
+import { BuilderBool } from '../csuite/model/builders/BuilderBoolTypes'
+import { BuilderChoices } from '../csuite/model/builders/BuilderChoices'
+import { BuilderDate } from '../csuite/model/builders/BuilderDateTypes'
+import { BuilderGroup } from '../csuite/model/builders/BuilderGroup'
+import { BuilderMisc } from '../csuite/model/builders/BuilderMisc'
+import { BuilderNumber } from '../csuite/model/builders/BuilderNumberTypes'
+import { BuilderSelectMany } from '../csuite/model/builders/BuilderSelectMany'
+import { BuilderSelectOne } from '../csuite/model/builders/BuilderSelectOne'
+import { BuilderShared } from '../csuite/model/builders/BuilderShared'
+import { BuilderString } from '../csuite/model/builders/BuilderStringTypes'
 import { Factory } from '../csuite/model/Factory'
 import { Field } from '../csuite/model/Field'
 import { type OpenRouter_ModelInfo, openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
+import { combine } from '../csuite/utils/combine'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { SelectManyBuilder } from './BuilderSelectMany'
@@ -62,12 +75,12 @@ import { SelectOneBuilder } from './BuilderSelectOne'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
-import { Schema } from './Schema'
+import { CushySchema, type CushySchemaᐸ_ᐳ } from './Schema'
 
 declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
-        type Builder = import('./Builder').Builder
+        type Builder = import('./Builder').CushySchemaCushySchemaCushySchemaBuilder
         type Field = import('../csuite/model/Field').Field
         type BaseSchema<out FIELD extends Field = Field> = import('../csuite/model/BaseSchema').BaseSchema<FIELD>
 
@@ -103,44 +116,83 @@ declare global {
         type Custom<T> = Field_custom<T>
 
         // schema aliases
-        type XShared<T extends Field> = Schema<Field_shared<T>>
-        type XGroup<T extends SchemaDict> = Schema<FieldGroup<T>>
-        type XGroup_<T extends SchemaDict> = Schema<Field_group<T>>
-        type XEmpty = Schema<Field_group<NO_PROPS>>
-        type XOptional<T extends BaseSchema> = Schema<Field_optional<T>>
-        type XBool = Schema<Field_bool>
-        type XLink<A extends BaseSchema, B extends BaseSchema> = Schema<Field_link<A, B>>
-        type XString = Schema<Field_string>
-        type XChoices<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
-        type XChoice<T extends SchemaDict = SchemaDict> = Schema<Field_choices<T>>
-        type XNumber = Schema<Field_number>
-        type XColor = Schema<Field_color>
-        type XList<T extends BaseSchema> = Schema<Field_list<T>>
+        type XShared<T extends Field> = CushySchema<Field_shared<T>>
+        type XGroup<T extends SchemaDict> = CushySchema<FieldGroup<T>>
+        type XGroup_<T extends SchemaDict> = CushySchema<Field_group<T>>
+        type XEmpty = CushySchema<Field_group<NO_PROPS>>
+        type XOptional<T extends BaseSchema> = CushySchema<Field_optional<T>>
+        type XBool = CushySchema<Field_bool>
+        type XLink<A extends BaseSchema, B extends BaseSchema> = CushySchema<Field_link<A, B>>
+        type XString = CushySchema<Field_string>
+        type XChoices<T extends SchemaDict = SchemaDict> = CushySchema<Field_choices<T>>
+        type XChoice<T extends SchemaDict = SchemaDict> = CushySchema<Field_choices<T>>
+        type XNumber = CushySchema<Field_number>
+        type XColor = CushySchema<Field_color>
+        type XList<T extends BaseSchema> = CushySchema<Field_list<T>>
         type XListExt<T extends BaseSchema> = SListExt<T>
-        type XButton<T> = Schema<Field_button<T>>
-        type XSeed = Schema<Field_seed>
-        type XMatrix = Schema<Field_matrix>
+        type XButton<T> = CushySchema<Field_button<T>>
+        type XSeed = CushySchema<Field_seed>
+        type XMatrix = CushySchema<Field_matrix>
         //
 
-        type XSelectOne<T, ID extends string> = Schema<Field_selectOne<T, ID>>
-        type XSelectMany<T, ID extends string> = Schema<Field_selectMany<T, ID>>
-        type XSelectOne_<T extends string> = Schema<Field_selectOne<T, T>> // variant that may be shorter to read
-        type XSelectMany_<T extends string> = Schema<Field_selectMany<T, T>> // variant that may be shorter to read
+        type XSelectOne<T, ID extends SelectKey> = CushySchema<Field_selectOne<T, ID>>
+        type XSelectMany<T, ID extends SelectKey> = CushySchema<Field_selectMany<T, ID>>
+        type XSelectOne_<T extends SelectKey> = CushySchema<Field_selectOne<T, T>> // variant that may be shorter to read
+        type XSelectMany_<T extends SelectKey> = CushySchema<Field_selectMany<T, T>> // variant that may be shorter to read
 
-        type XSize = Schema<Field_size>
-        type XMarkdown = Schema<Field_markdown>
+        type XSize = CushySchema<Field_size>
+        type XMarkdown = CushySchema<Field_markdown>
 
-        type XPrompt = Schema<Field_prompt>
-        type XEnum<T> = Schema<Field_enum<T>>
-        type XOrbit = Schema<Field_orbit>
-        type XImage = Schema<Field_image>
-        type XCustom<T> = Schema<Field_custom<T>>
+        type XPrompt = CushySchema<Field_prompt>
+        type XEnum<T> = CushySchema<Field_enum<T>>
+        type XOrbit = CushySchema<Field_orbit>
+        type XImage = CushySchema<Field_image>
+        type XCustom<T> = CushySchema<Field_custom<T>>
     }
 }
 
+export interface CushySchemaBuilder
+    extends BuilderString<CushySchemaᐸ_ᐳ>,
+        BuilderBool<CushySchemaᐸ_ᐳ>,
+        BuilderNumber<CushySchemaᐸ_ᐳ>,
+        BuilderDate<CushySchemaᐸ_ᐳ>,
+        BuilderMisc<CushySchemaᐸ_ᐳ>,
+        BuilderSelectOne<CushySchemaᐸ_ᐳ>,
+        BuilderSelectMany<CushySchemaᐸ_ᐳ>,
+        BuilderChoices<CushySchemaᐸ_ᐳ>,
+        BuilderGroup<CushySchemaᐸ_ᐳ>,
+        BuilderShared<CushySchemaᐸ_ᐳ> {
+    //
+}
+
 /** cushy studio form builder */
-export class Builder implements IBuilder {
+export class CushySchemaBuilder implements IBuilder {
     constructor() {
+        combine<any /* ts perf maybe ? */>(
+            //
+            this,
+            BuilderString.fromSchemaClass(CushySchema),
+            BuilderBool.fromSchemaClass(CushySchema),
+            BuilderNumber.fromSchemaClass(CushySchema),
+            BuilderDate.fromSchemaClass(CushySchema),
+            BuilderMisc.fromSchemaClass(CushySchema),
+            // loco specific options (default in french, custom widget, etc.)
+            BuilderSelectOne.fromSchemaClass(CushySchema).withDefaultSelectOneConfig({
+                wrap: false,
+                placeholder: 'None',
+                header: WidgetSelectOneUI,
+            }),
+            BuilderSelectMany.fromSchemaClass(CushySchema).withDefaultSelectManyConfig({
+                wrap: false,
+                placeholder: 'None',
+                appearance: 'select',
+            }),
+            BuilderChoices.fromSchemaClass(CushySchema),
+            BuilderGroup.fromSchemaClass(CushySchema),
+            BuilderShared.fromSchemaClass(CushySchema),
+            new LocoBuilderFile(),
+        )
+
         // public model: Model<BaseSchema, Builder>,
         makeAutoObservable(this, {
             auto: false,
@@ -152,27 +204,27 @@ export class Builder implements IBuilder {
     }
 
     time(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'time', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'time', ...config })
     }
 
     date(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'date', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'date', ...config })
     }
 
     datetime(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
     }
 
     password(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'password', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'password', ...config })
     }
 
     email(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'email', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'email', ...config })
     }
 
     url(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'url', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'url', ...config })
     }
 
     /**
@@ -185,27 +237,27 @@ export class Builder implements IBuilder {
     }
 
     string(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, config)
+        return new CushySchema<Field_string>(Field_string, config)
     }
 
     text(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, config)
+        return new CushySchema<Field_string>(Field_string, config)
     }
 
     textarea(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { textarea: true, ...config })
+        return new CushySchema<Field_string>(Field_string, { textarea: true, ...config })
     }
 
     boolean(config: Field_bool_config = {}): X.XBool {
-        return new Schema<Field_bool>(Field_bool, config)
+        return new CushySchema<Field_bool>(Field_bool, config)
     }
 
     bool(config: Field_bool_config = {}): X.XBool {
-        return new Schema<Field_bool>(Field_bool, config)
+        return new CushySchema<Field_bool>(Field_bool, config)
     }
 
     size(config: Field_size_config = {}): X.XSize {
-        return new Schema<Field_size>(Field_size, config)
+        return new CushySchema<Field_size>(Field_size, config)
     }
 
     spacer(): X.XBool {
@@ -213,32 +265,32 @@ export class Builder implements IBuilder {
     }
 
     orbit(config: Field_orbit_config = {}): X.XOrbit {
-        return new Schema<Field_orbit>(Field_orbit, config)
+        return new CushySchema<Field_orbit>(Field_orbit, config)
     }
 
     seed(config: Field_seed_config = {}): X.XSeed {
-        return new Schema<Field_seed>(Field_seed, config)
+        return new CushySchema<Field_seed>(Field_seed, config)
     }
 
     color(config: Field_color_config = {}): X.XColor {
-        return new Schema<Field_color>(Field_color, config)
+        return new CushySchema<Field_color>(Field_color, config)
     }
 
     colorV2(config: Field_string_config = {}): X.XString {
-        return new Schema<Field_string>(Field_string, { inputType: 'color', ...config })
+        return new CushySchema<Field_string>(Field_string, { inputType: 'color', ...config })
     }
 
     matrix(config: Field_matrix_config): X.XMatrix {
-        return new Schema<Field_matrix>(Field_matrix, config)
+        return new CushySchema<Field_matrix>(Field_matrix, config)
     }
 
     button<K>(config: Field_button_config<K>): X.XButton<K> {
-        return new Schema<Field_button<K>>(Field_button, config)
+        return new CushySchema<Field_button<K>>(Field_button, config)
     }
 
     /** variants: `header` */
     markdown(config: Field_markdown_config | string): X.XMarkdown {
-        return new Schema<Field_markdown>(Field_markdown, typeof config === 'string' ? { markdown: config } : config)
+        return new CushySchema<Field_markdown>(Field_markdown, typeof config === 'string' ? { markdown: config } : config)
     }
 
     /** [markdown variant]: inline=true, label=false */
@@ -247,11 +299,11 @@ export class Builder implements IBuilder {
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, justifyLabel: false, ...config }
-        return new Schema<Field_markdown>(Field_markdown, config_)
+        return new CushySchema<Field_markdown>(Field_markdown, config_)
     }
 
     image(config: Field_image_config = {}): X.XImage {
-        return new Schema<Field_image>(Field_image, config)
+        return new CushySchema<Field_image>(Field_image, config)
     }
 
     /** prompt, defaulting to '' */
@@ -261,16 +313,16 @@ export class Builder implements IBuilder {
     }
 
     prompt_(config: Field_prompt_config = {}): X.XPrompt {
-        return new Schema<Field_prompt>(Field_prompt, config)
+        return new CushySchema<Field_prompt>(Field_prompt, config)
     }
 
     int(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new Schema<Field_number>(Field_number, { mode: 'int', ...config })
+        return new CushySchema<Field_number>(Field_number, { mode: 'int', ...config })
     }
 
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new Schema<Field_number>(Field_number, {
+        return new CushySchema<Field_number>(Field_number, {
             mode: 'int',
             default: 100,
             step: 10,
@@ -286,7 +338,7 @@ export class Builder implements IBuilder {
      * see also: `percent`
      */
     ratio(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new Schema<Field_number>(Field_number, {
+        return new CushySchema<Field_number>(Field_number, {
             mode: 'float',
             default: 0.5,
             step: 0.01,
@@ -297,11 +349,11 @@ export class Builder implements IBuilder {
     }
 
     float(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new Schema<Field_number>(Field_number, { mode: 'float', ...config })
+        return new CushySchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
     number(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new Schema<Field_number>(Field_number, { mode: 'float', ...config })
+        return new CushySchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
     remSize(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
@@ -309,11 +361,11 @@ export class Builder implements IBuilder {
     }
 
     custom<T>(config: Field_custom_config<T>): X.XCustom<T> {
-        return new Schema<Field_custom<T>>(Field_custom, config)
+        return new CushySchema<Field_custom<T>>(Field_custom, config)
     }
 
     list<T extends BaseSchema>(config: Field_list_config<T>): X.XList<T> {
-        return new Schema<Field_list<T>>(Field_list, config)
+        return new CushySchema<Field_list<T>>(Field_list, config)
     }
 
     cube(): ShapeSchema {
@@ -363,26 +415,26 @@ export class Builder implements IBuilder {
         injected: SCHEMA1,
         children: (shared: SCHEMA1['$Field']) => SCHEMA2,
     ): X.XLink<SCHEMA1, SCHEMA2> {
-        return new Schema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
+        return new CushySchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
     }
 
     linked<T extends Field>(field: T): X.XShared<T> {
-        return new Schema<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
+        return new CushySchema<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
     }
 
     /** see also: `fields` for a more practical api */
     group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, config) as any
+        return new CushySchema<Field_group<T>>(Field_group, config) as any
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
     column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
+        return new CushySchema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
     }
 
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
     row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, {
+        return new CushySchema<Field_group<T>>(Field_group, {
             border: false,
             label: false,
             collapsed: false,
@@ -393,29 +445,29 @@ export class Builder implements IBuilder {
 
     /** simpler way to create `group` */
     fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
-        return new Schema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
+        return new CushySchema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
     }
 
     choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
-        return new Schema<Field_choices<T>>(Field_choices, { multi: false, ...config })
+        return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, ...config })
     }
 
     choices<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
-        return new Schema<Field_choices<T>>(Field_choices, { multi: true, ...config })
+        return new CushySchema<Field_choices<T>>(Field_choices, { multi: true, ...config })
     }
 
     choiceV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): X.XChoice<T> {
-        return new Schema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
+        return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
     }
 
     choicesV2<T extends { [key: string]: BaseSchema }>(
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
     ): X.XChoices<T> {
-        return new Schema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
+        return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
     }
 
     /** simple choice alternative api */
@@ -423,16 +475,16 @@ export class Builder implements IBuilder {
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): X.XChoices<T> {
-        return new Schema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
+        return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
     }
 
     empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
-        return new Schema<Field_group<NO_PROPS>>(Field_group, config)
+        return new CushySchema<Field_group<NO_PROPS>>(Field_group, config)
     }
 
     // optional wrappers
     optional<T extends BaseSchema>(p: Field_optional_config<T>): X.XOptional<T> {
-        return new Schema<Field_optional<T>>(Field_optional, p)
+        return new CushySchema<Field_optional<T>>(Field_optional, p)
     }
 
     llmModel(p: { default?: OpenRouter_Models } = {}): X.XSelectOne<OpenRouter_ModelInfo, OpenRouter_Models> {
@@ -518,6 +570,6 @@ export class Builder implements IBuilder {
     _FIX_INDENTATION = _FIX_INDENTATION
 }
 
-export const builder = new Builder()
-export type CushyFactory = Factory<Builder>
-export const cushyFactory: CushyFactory = new Factory<Builder>(builder)
+export const builder = new CushySchemaBuilder()
+export type CushyFactory = Factory<CushySchemaBuilder>
+export const cushyFactory: CushyFactory = new Factory<CushySchemaBuilder>(builder)

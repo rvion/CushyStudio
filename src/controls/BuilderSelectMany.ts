@@ -6,7 +6,7 @@ import type {
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../csuite/fields/selectOne/SelectOption'
 
 import { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
-import { Schema } from './Schema'
+import { CushySchema } from './Schema'
 
 /**
  * SelectManyBuilder allow to centralize every selectMany method
@@ -31,7 +31,7 @@ export class SelectManyBuilder {
     selectMany = <const VALUE, const KEY extends string>(
         config: Field_selectMany_config<VALUE, KEY>,
     ): X.XSelectMany<VALUE, KEY> => {
-        return new Schema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
+        return new CushySchema<Field_selectMany<VALUE, KEY>>(Field_selectMany, config)
     }
 
     /**
@@ -45,7 +45,7 @@ export class SelectManyBuilder {
         p: KEY[],
         config: Field_selectMany_config_simplified_<KEY> = {},
     ): X.XSelectMany_<KEY> => {
-        return new Schema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
+        return new CushySchema<Field_selectMany<KEY, KEY>>(Field_selectMany, {
             choices: p,
             getOptionFromId: (id) => ({ id, label: id, value: id }),
             getValueFromId: (id) => id,
