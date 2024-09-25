@@ -7,11 +7,13 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
+import { produce } from 'immer'
+
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
-// CONFIG
+// #region Config
 export type Field_image_config = FieldConfig<
     {
         default?: MediaImageL
@@ -21,9 +23,10 @@ export type Field_image_config = FieldConfig<
     Field_image_types
 >
 
-// SERIAL
+// #region Serial
 export type Field_image_serial = FieldSerial<{
     $: 'image'
+
     imageID?: Maybe<MediaImageID>
 
     /** for form expiration */
@@ -33,89 +36,141 @@ export type Field_image_serial = FieldSerial<{
      * Height of the resizable frame's content,
      * the width is aspect ratio locked.
      */
-    size: number
+    size?: number
 }>
 
-// VALUE
+// #region Value
 export type Field_image_value = MediaImageL
 
-// TYPES
+// #region Types
 export type Field_image_types = {
     $Type: 'image'
     $Config: Field_image_config
     $Serial: Field_image_serial
     $Value: Field_image_value
+    $Unchecked: Field_image_value | undefined
     $Field: Field_image
+    $Child: never
 }
 
-// STATE
+// #region STATE
 export class Field_image extends Field<Field_image_types> {
+    // #region static
     static readonly type: 'image' = 'image'
+    static readonly emptySerial: Field_image_serial = { $: 'image' }
+    static migrateSerial(): undefined {}
 
+    // #region constructor
     constructor(
         //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_image>,
+        initialMountKey: string,
         serial?: Field_image_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_image_serial>): void {
-        this.serial.size = serial?.size ?? this._defaultPreviewSize()
-        this.serial.imageID = serial?.imageID ?? this._defaultImageID()
+    // #region serial
+    get isOwnSet(): boolean {
+        return this.serial.imageID != null
     }
 
-    DefaultHeaderUI = WidgetSelectImageUI
+    protected setOwnSerial(next: Field_image_serial): void {
+        // apply default if unset + default in config
+        const def = this.config.default
+        if (this.serial.imageID == null && def != null) {
+            next = produce(next, (draft) => {
+                draft.imageID = def.id
+            })
+        }
 
+        this.assignNewSerial(next)
+    }
+
+    // #region UI
+    DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
 
-    get ownProblems(): Problem_Ext {
+    // #region UI/helpers
+    get animateResize(): boolean {
+        return false
+    }
+
+    // #region Validation
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
     }
 
-    get defaultValue(): MediaImageL {
-        return this.config.default ?? cushy.defaultImage
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    // #region ...
+    get defaultValue(): MediaImageL | undefined {
+        return this.config.default
     }
 
     get hasChanges(): boolean {
         return this.value !== this.defaultValue
     }
 
-    private _defaultImageID(): MediaImageID {
-        return this.config.default?.id ?? cushy.defaultImage.id
-    }
-
-    private _defaultPreviewSize(): number {
-        return 128
-    }
-
-    get animateResize(): boolean {
-        return false
-    }
-
+    // #region value
     get value(): MediaImageL {
-        return cushy.db.media_image.get(this.serial.imageID)!
+        return this.value_or_fail
     }
 
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return
-        this.runInValueTransaction(() => (this.serial.imageID = next.id))
+        this.runInValueTransaction(() => {
+            this.patchSerial((draft) => {
+                draft.imageID = next.id
+            })
+        })
+    }
+
+    get value_or_zero(): MediaImageL {
+        if (this.serial.imageID == null) return cushy.defaultImage
+        return cushy.db.media_image.get(this.serial.imageID) ?? cushy.defaultImage
+    }
+
+    get value_or_fail(): MediaImageL {
+        if (this.serial.imageID == null) throw new Error('Field_image.value_or_fail: not set')
+        const image = cushy.db.media_image.get(this.serial.imageID)
+        if (image == null) throw new Error('Field_image.value_or_fail: not found')
+        return image
+    }
+
+    get value_unchecked(): MediaImageL | undefined {
+        if (this.serial.imageID == null) return
+        const image = cushy.db.media_image.get(this.serial.imageID)
+        if (image == null) return
+        return image
+    }
+
+    // #region UI/preview
+    /** size of the preview */
+    get size(): number {
+        return this.serial.size ?? this._defaultPreviewSize
     }
 
     set size(val: number) {
-        this.runInSerialTransaction(() => (this.serial.size = val))
+        this.runInSerialTransaction(() => {
+            this.patchSerial((serial) => {
+                if (val === this._defaultPreviewSize) delete serial.size
+                else serial.size = val
+            })
+        })
     }
 
-    /** size of the preview */
-    get size(): number {
-        return this.serial.size
+    private get _defaultPreviewSize(): number {
+        return 128
     }
 }
 
