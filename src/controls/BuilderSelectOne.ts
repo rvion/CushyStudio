@@ -75,7 +75,7 @@ export class SelectOneBuilder {
         return this.selectOne<OptionLike, OptionLike['id']>({
             choices: keys,
             getIdFromValue: (v) => v.id,
-            getValueFromId: (id) => options.find((c) => c.id === id) ?? null,
+            getValueFromId: (id) => options.find((c) => c.id === id),
             getOptionFromId: (id) => {
                 const option = cache.get(id) ?? null
                 if (option == null) return null
@@ -110,7 +110,7 @@ export class SelectOneBuilder {
         return this.selectOne<OptionLike, OptionLike['id']>({
             choices: (self) => optionsFn(self).map((i) => i.id),
             getIdFromValue: (v) => v.id,
-            getValueFromId: (id, self) => optionsFn(self).find((c) => c.id === id) ?? null,
+            getValueFromId: (id, self) => optionsFn(self).find((c) => c.id === id),
             getOptionFromId: (id, self) => {
                 const options = optionsFn(self)
                 const option = options.find((o) => o.id === id) ?? null
