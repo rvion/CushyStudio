@@ -48,12 +48,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <MenuWindowUI /> */}
             <MenuUtilsUI />
             <MenuAboutUI />
-            <Dropdown // TODO(bird_d): Temporary, just to clean up the top bar for now. Not good to have this be a pop-up imo and should be removed when done testing the theming stuff.
-                // startIcon={'mdiThemeLightDark'}
-                // expand
-                title='Theming'
-                content={() => <>{cushy.theme.render()}</>}
-            />
 
             <MenuDebugUI />
 
