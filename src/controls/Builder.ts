@@ -80,7 +80,7 @@ import { CushySchema, type CushySchemaᐸ_ᐳ } from './Schema'
 declare global {
     namespace X {
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
-        type Builder = import('./Builder').CushySchemaCushySchemaCushySchemaBuilder
+        type Builder = import('./Builder').CushySchemaBuilder
         type Field = import('../csuite/model/Field').Field
         type BaseSchema<out FIELD extends Field = Field> = import('../csuite/model/BaseSchema').BaseSchema<FIELD>
 
