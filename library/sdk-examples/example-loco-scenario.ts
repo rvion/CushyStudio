@@ -42,7 +42,7 @@ app({
                                     [`D'après la`]: ui.selectOneString(['Date de création', 'Date de modification']),
                                     offset: ui.int({ label: 'à J+' }),
                                     // time: ui.int({ label: 'Heure' /* suffix: 'min' */ }),
-                                    heure: ui.time({ default: '10:30' }),
+                                    heure: ui.stringTime({ default: '10:30' }),
                                     limit: ui.int({ label: 'Limite /jour', default: 200 }),
                                 },
                             }),
