@@ -87,8 +87,8 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
         }
 
         const dateForm = {
-            date: ui.date(),
-            dateTime: ui.datetime(),
+            date: ui.stringDate(),
+            dateTime: ui.stringDatetime(),
         }
 
         const emailForm = {
