@@ -1,8 +1,10 @@
-import type { Field_bool_config } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
 import type { Field_choices_config } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color_config } from '../csuite/fields/color/FieldColor'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
+import type { Field_date } from '../csuite/fields/date/FieldDate'
+import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
+import type { Field_dateTimeZoned } from '../csuite/fields/datetime_zoned/FieldDateTimeZoned'
 import type { Field_group_config, FieldGroup } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
@@ -25,7 +27,6 @@ import { nanoid } from 'nanoid'
 import { createElement } from 'react'
 
 import { simpleBuilder } from '../csuite'
-import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Field_bool } from '../csuite/fields/bool/FieldBool'
 import { Field_button } from '../csuite/fields/button/FieldButton'
 import { Field_choices } from '../csuite/fields/choices/FieldChoices'
@@ -79,12 +80,14 @@ import { CushySchema, type CushySchemaᐸ_ᐳ } from './Schema'
 
 declare global {
     namespace X {
+        // #region core types
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
         type Builder = import('./Builder').CushySchemaBuilder
         type Field = import('../csuite/model/Field').Field
         type BaseSchema<out FIELD extends Field = Field> = import('../csuite/model/BaseSchema').BaseSchema<FIELD>
-
         type Runtime = import('../runtime/Runtime').Runtime
+
+        // #region core types
 
         // field aliases
         type Shared<T extends Field> = Field_shared<T>
@@ -133,8 +136,19 @@ declare global {
         type XButton<T> = CushySchema<Field_button<T>>
         type XSeed = CushySchema<Field_seed>
         type XMatrix = CushySchema<Field_matrix>
-        //
 
+        // dates
+        type XDatePlain<NULLABLE extends boolean> = CushySchema<Field_datePlain<NULLABLE>>
+        type XDatePlainRequired = CushySchema<Field_datePlain<false>>
+        type XDatePlainNullable = CushySchema<Field_datePlain<true>>
+        type XDate<NULLABLE extends boolean> = CushySchema<Field_date<NULLABLE>>
+        type XDateRequired = CushySchema<Field_date<false>>
+        type XDateNullable = CushySchema<Field_date<true>>
+        type XDateTimeZoned<NULLABLE extends boolean> = CushySchema<Field_dateTimeZoned<NULLABLE>>
+        type XDateTimeZonedRequired = CushySchema<Field_dateTimeZoned<false>>
+        type XDateTimeZonedNullable = CushySchema<Field_dateTimeZoned<true>>
+
+        // selects
         type XSelectOne<T, ID extends SelectKey> = CushySchema<Field_selectOne<T, ID>>
         type XSelectMany<T, ID extends SelectKey> = CushySchema<Field_selectMany<T, ID>>
         type XSelectOne_<T extends SelectKey> = CushySchema<Field_selectOne<T, T>> // variant that may be shorter to read
@@ -190,7 +204,6 @@ export class CushySchemaBuilder implements IBuilder {
             BuilderChoices.fromSchemaClass(CushySchema),
             BuilderGroup.fromSchemaClass(CushySchema),
             BuilderShared.fromSchemaClass(CushySchema),
-            new LocoBuilderFile(),
         )
 
         // public model: Model<BaseSchema, Builder>,
@@ -203,30 +216,6 @@ export class CushySchemaBuilder implements IBuilder {
         })
     }
 
-    time(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'time', ...config })
-    }
-
-    date(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'date', ...config })
-    }
-
-    datetime(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'datetime-local', ...config })
-    }
-
-    password(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'password', ...config })
-    }
-
-    email(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'email', ...config })
-    }
-
-    url(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'url', ...config })
-    }
-
     /**
      * @deprecated
      * super ugly function; do not use
@@ -236,32 +225,12 @@ export class CushySchemaBuilder implements IBuilder {
         return this.string({ ...config, header: (field) => createElement('div', {}, uid), default: uid })
     }
 
-    string(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, config)
-    }
-
-    text(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, config)
-    }
-
     textarea(config: Field_string_config = {}): X.XString {
         return new CushySchema<Field_string>(Field_string, { textarea: true, ...config })
     }
 
-    boolean(config: Field_bool_config = {}): X.XBool {
-        return new CushySchema<Field_bool>(Field_bool, config)
-    }
-
-    bool(config: Field_bool_config = {}): X.XBool {
-        return new CushySchema<Field_bool>(Field_bool, config)
-    }
-
     size(config: Field_size_config = {}): X.XSize {
         return new CushySchema<Field_size>(Field_size, config)
-    }
-
-    spacer(): X.XBool {
-        return this.bool({ header: SpacerUI, justifyLabel: false, label: false, collapsed: false, border: false })
     }
 
     orbit(config: Field_orbit_config = {}): X.XOrbit {
@@ -302,7 +271,14 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_markdown>(Field_markdown, config_)
     }
 
+    /** image field, defaulting to `cushy.defaultImage` if no default provided */
     image(config: Field_image_config = {}): X.XImage {
+        const def = config.default ?? cushy.defaultImage
+        return this.image_({ default: def, ...config })
+    }
+
+    /** image field, without any default */
+    image_(config: Field_image_config = {}): X.XImage {
         return new CushySchema<Field_image>(Field_image, config)
     }
 

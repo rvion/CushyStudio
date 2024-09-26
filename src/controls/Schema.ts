@@ -1,4 +1,5 @@
-import type { CovariantFC } from '../csuite'
+import type { CovariantFC, SchemaDict } from '../csuite'
+import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../csuite/model/Field'
 import type { FieldConstructor } from '../csuite/model/FieldConstructor'
 import type { Instanciable } from '../csuite/model/Instanciable'
@@ -43,6 +44,7 @@ export class CushySchema<out FIELD extends Field = Field> //
         this.addRequirements({ type: 'modelInManager', modelName, optional: true })
         return this
     }
+
     addRequirements(requirements: Maybe<Requirements | Requirements[]>): this {
         if (requirements == null) return this
         if (Array.isArray(requirements)) this.requirements.push(...requirements)
@@ -52,7 +54,7 @@ export class CushySchema<out FIELD extends Field = Field> //
     }
 }
 
-// TODO: make it work like in loco
+// #region Aliases
 // INTERNAL MODULE --------------------------------------
 export interface CushySchemaᐸ_ᐳ extends HKT<Field> {
     type: CushySchema<this['__1']>
@@ -88,6 +90,7 @@ export interface CushySchemaᐸ_ᐳ extends HKT<Field> {
     Markdown: X.XMarkdown
 }
 
+// #region Aliases/HKT
 interface HKSimpleLinkAlias extends HKT<BaseSchema, BaseSchema> {
     type: X.XLink<this['__1'], this['__2']>
 }
