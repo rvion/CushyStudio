@@ -1224,31 +1224,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @see {@link Render}
      */
     render(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        return window.RENDERER.render(this, p)
+        return <window.RENDERER.Render field={this} p={p} />
     }
 
-    // 💬 2024-09-19 rvion:
-    // | I dislike we have to use an `=` here to make Render a property
-    //
-    // 🔴 < Variance problem
-    //    | we had to make it back as a proto fn, and override it somewhere else
-    //    | to bind the this due to variance pbs.
-    //
-    // 🔴 < overriden in `this.init` :
-    //    |  this.Render = observer(this.Render.bind(this))
-    //
-    // 🔴🔴 hack this is wrapped in `observer()` somehwere in that file.
-    //vvvvvvv
     Render(props: RENDERER.FieldRenderArgs<this>): ReactNode {
-        // 💬 2024-09-19 rvion:
-        // | what a shitty problem; we can't use useObserver here because
-        // | it does not apply `memo(...)` like useObserver does.
-        // |> return useObserver(() => {
-        // |>    ...
-        // |> })
-        // useDebugReasonOfRerendering(`Field.Render(${this.pathExt})`, props)
-        const baseRenderer = window.RENDERER.useRenderer(props)
-        return this.render({ ...props, baseRenderer })
+        return <window.RENDERER.Render field={this} p={props} />
     }
 
     /**
@@ -1576,16 +1556,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 {},
                 2,
             )
-
-            // 💬 2024-09-19 rvion: 🔴
-            // | 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-            // | Nooooes.... ugly, impoosible to understand what's going on
-            // | if we have to split every function just so we can satisfie a
-            // | STUPID variance annotation that is just plain wrong but that we
-            // | carry because it's hard to get rid of and will sank us a few days
-            // | of work
-            // | ping @globi
-            this.Render = observer(this.Render.bind(this))
 
             this.repo._registerField(this)
             this.ready = true
