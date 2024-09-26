@@ -1,5 +1,5 @@
 import { cushyFactory } from '../../controls/Builder'
-import { FieldPresenterCushyUI } from '../../csuite/form/presenters/PresenterCushy'
+import { FieldPresenterCushyUI } from '../../csuite-cushy/shells/PresenterCushy'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const interfaceConf = cushyFactory.document(

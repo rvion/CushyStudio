@@ -1,50 +1,64 @@
 // see `src/csuite/form/presenters/presenter.readme.md`
 
 import type { Field } from '../../csuite/model/Field'
-import type { PresenterConfig } from './PresenterConfig'
-import type { PresenterSlots } from './PresenterSlots'
+import type { PresenterRule, PresenterSlots } from './PresenterSlots'
 
 import { createElement, type ReactNode } from 'react'
 
-import { defaultPresenterSlots } from './PresenterSlotsDefaults'
+import { mergeDefined } from '../../csuite/utils/mergeDefined'
+import { defaultPresenterRule, defaultPresenterSlots } from './PresenterSlots'
 
 /**
  * retrieve * Shell + Slots for each field,
  * and convenient method to call the Wrapper bound to field and slots
  */
 export class Presenter {
-    constructor(
-        //
-        public config: PresenterConfig,
-        parent?: Presenter,
-    ) {}
+    rules: PresenterRule<Field>[]
 
-    extend(config: PresenterConfig): Presenter {
-        return new Presenter((field) => {
-            const x = config(field)
-            if (x !== undefined) return x
-            return this.renderFn(field)
-        })
+    constructor(
+        /** rules are functions that may alter slots for current fields */
+        rules: PresenterRule<Field>[],
+
+        /** if parent is given, it's rules will be re-used as fallback */
+        parent?: Presenter,
+    ) {
+        this.rules = parent ? [...parent.rules, ...rules] : rules
+    }
+
+    /** create a new Presenter from this one with extra rendering rules */
+    extend(rule_: PresenterRule<Field> | PresenterRule<Field>[]): Presenter {
+        const rules = Array.isArray(rule_) ? rule_ : [rule_]
+        return new Presenter(rules, this)
     }
 
     /**
      * this method is both for humans (calling render on field root)
      * and for fields rendering their childern
      */
-    render(field: Field, slotsOverride: PresenterSlots): ReactNode {
-        const Shell = this.config.shell(field) ?? DefaultShell
-        const slotsBase = defaultPresenterSlots
-        const slotsConfig = this.config.slots(field)
-        const slots = {
-            ...slotsBase,
-            ...slotsConfig,
-            ...slotsOverride,
-        }
-        return createElement(Shell, { field, ...slots })
-        // return this.renderFn(field)
-    }
-}
+    render<FIELD extends Field>(
+        //
+        field: FIELD,
+        extraRules_: PresenterRule<FIELD> | PresenterRule<FIELD>[],
+    ): ReactNode {
+        // slots accumulator
+        let slots: PresenterSlots = defaultPresenterRule(field)
 
-const DefaultShell = () => {
-    return createElement('div', null, '❌ Default Shell ❌')
+        // apply all rules from context
+        for (const rule of this.rules) {
+            const slots_ = rule(field)
+            if (slots_) slots = mergeDefined(slots, slots_)
+        }
+
+        // apply all rules specific to this field
+        const extraRules = Array.isArray(extraRules_) ? extraRules_ : [extraRules_]
+        for (const rule of extraRules) {
+            const slots_ = rule(field)
+            if (slots_) slots = mergeDefined(slots, slots_)
+        }
+
+        const Shell = slots.Shell ?? defaultPresenterSlots.Shell
+        if (!Shell) throw new Error('Shell is not defined')
+
+        return createElement(Shell, { field, ...slots })
+    }
 }

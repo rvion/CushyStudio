@@ -1,3 +1,6 @@
+import type { Field } from '../../csuite/model/Field'
+import type { ShellProps } from '../presenters/PresenterSlots'
+
 import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
@@ -19,7 +22,7 @@ import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesBu
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 
-export const FieldPresenterCushyUI = observer(function FieldPresenterCushy(p: PresenterFn) {
+export const FieldPresenterCushyUI = observer(function FieldPresenterCushy(p: ShellProps<Field>) {
     const field = p.field
     if (p.field.isHidden && !p.showHidden?.()) return null
     const originalField = p.field

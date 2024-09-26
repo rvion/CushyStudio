@@ -1,16 +1,18 @@
 import type { Field } from '../../csuite/model/Field'
+import type { Presenter } from '../presenters/Presenter'
 import type { widgetsCatalog } from './widgets-catalog'
-import type { Renderer } from 'marked'
-import type { ReactNode } from 'react'
+import type { FC } from 'react'
 
 // import type { ReactNode } from 'react'
 
 export type WidgetsCatalog = typeof widgetsCatalog
-// type A = Parameters<Catalog['Field_select']['rsuite']>[0]
 
-type VariantPropsDict<T extends { [k: string]: (p: any) => any }> = {
-    [k in keyof T]?: Omit<Parameters<T[k]>[0], 'field'>
-}
+// type A = Parameters<Catalog['Field_select']['rsuite']>[0]
+type Renderer = Presenter
+
+// type VariantPropsDict<T extends { [k: string]: (p: any) => any }> = {
+//     [k in keyof T]?: Omit<Parameters<T[k]>[0], 'field'>
+// }
 
 // type C = ParamDict<Catalog['Field_select']>
 export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
@@ -42,8 +44,7 @@ declare global {
 
     interface Window {
         RENDERER: {
-            render(field: Field, p: RENDERER.FieldRenderArgs<any>): ReactNode
-            useRenderer(props?: RENDERER.FieldRenderArgs<any>): Renderer
+            Render: FC<{ field: Field; p: RENDERER.FieldRenderArgs<any> }>
         }
     }
 

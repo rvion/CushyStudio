@@ -1,69 +1,48 @@
 ❌ no longer true
 
-# **Presenters**
+# **Renderers**
 
 ## concept:
 
-`Presenters` is the core abstraction to define **model views**.
+`Renderers` is the core abstraction to define **document views** and forms.
 
 ## Problem:
 
-- We need to **render models in different ways in different places**.
+- We need to **render document in different ways in different places**
+  -  sometimes all document fields.
+  -  sometimes some fields only
+  -  various layout, various field order, etc.
 
-- We need a way to completely **change how every field in a model tree is rendered**,
+- Schema and View should live in different places:
+  - We need a way to completely **change how every field in a model tree is rendered**,
   **without having to change the field definition** (schema)
 
-- We need to be able to **extend** a presenter inline in a component,
-  to quickly tweak some field anywhere in the tree without having to recreate a full renderer
 
 - we need to make it easy to **configure and override** how fields are rendered based
   - their `surrounding`
   - their `field type`
   - their `path in the model`
+  in the most concise way;
+  in other words:
+    👉 we need to be able to customize views as fast as possible during UX session with a designer. the overal api should be so smooth that mostly any form/field combination should be easy to express.
+    👉 we must be able to quickly tweak some field anywhere in the tree without having to re-specify the whole from UI.
 
-- we need presenter to be **codebase agnostic**. Anyone, in any codebase must be able to create
-    a presenter, and use it to render a field using custom components, in a **type-safe way**.
+    👉👉👉 MOST IMPORTANT POINT
+    THE API MUST FOLLOW LANGUAGE DESIGN (DSL) PRINCIPLES:
+      - match how UX/UI people speak
+      - need to have concise API for every UX tweak they might request.
 
-- we need to be able to customize models as fast as possible during UX session with a designer.
-  the overal api should be so smooth that mostly any form/field combination should be easy to
-  express.
+- we need `renderer` to be **codebase agnostic**. Anyone, in any codebase must be able to create/extend a `renderer`, and use it to render a document using custom components, in a **type-safe way**.
+
 
 ## Solution:
 
-A presenter class, that is easilly extensible, and acts as a proxy to render field.
-Presenters are injectec when rendering fields, and carried down the rendering tree.
+A `renderer` class that is able to compute for every field in a document
+the Wrapper Component and it's params/slot from various.
 
-## high-level technical design:
+The obligation to go though the `renderer` to render fields: every field with children must
+go though `renderCtx.`renderer`.present(child)`.
 
-Presenters are class
-    - that implements the `render(field: Field) => JSX` method
+An exhaustive list of slots that can be tweaked/overriden easilly: one slot per word UI/UX people might use when helping us to make form better.
 
-Every field in the tree that render child fields,
-must call `context.currentPresenter.render(child)`
-
-We can use presenters from fields with any custom presenter class
-
-```ts
-FIELD.render(PRESENTER)
-// (👇) equivalent to
-PRESENTER.render(FIELD)
-```
-
-## built-in
-
-While Presenter are by default codebase agnostic, and easy to extend, you may still want
-to use a custom presenter in your project, to tweak the
-
-you may want custom presenter
-    - that are aware of your project's components.
-    - that support custom logic / config override strategy that fits your project better.
-
-Csuite defines a few well-known presenters, that can be overriden if you want.
-
-```ts
-field.renderAsCell; /* => */ field.render(CellPresenter, {... /* Cell Presenter Props */})
-field.renderAsForm; /* => */ field.render(FormPresenter, {... /* Form Presenter Props */})
-```
-
-Those showcase how to use custom Formatters that accept custom configuration props to
-adapt to
+A powerfull, flexible and composable rule system that allow to quickly tweak look and feel in any arbitrary part of the document tree.

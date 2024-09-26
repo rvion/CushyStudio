@@ -1,5 +1,6 @@
 import type { Field } from '../../csuite/model/Field'
-import type { Presenter } from './Presenter'
+import type { Presenter } from '../presenters/Presenter'
+import type { PresenterSlots } from '../presenters/PresenterSlots'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +8,13 @@ import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainer
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 
-export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(p: { presenter: Presenter; field: Field }) {
+export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(
+    p: {
+        //
+        presenter: Presenter
+        field: Field
+    } & PresenterSlots,
+) {
     const { field, presenter } = p
     if (p.field.isHidden && !p.showHidden?.()) return null
 
