@@ -14,8 +14,8 @@ import { BuilderSelectMany } from '../model/builders/BuilderSelectMany'
 import { BuilderSelectOne } from '../model/builders/BuilderSelectOne'
 import { BuilderShared } from '../model/builders/BuilderShared'
 import { BuilderString } from '../model/builders/BuilderStringTypes'
+import { combine } from '../utils/combine'
 import { SimpleSchema, type SimpleSchemaᐸ_ᐳ } from './SimpleSchema'
-import { combine } from 'src/inbox/edsl/helpers'
 
 export interface SimpleBuilder //
     extends BuilderString<SimpleSchemaᐸ_ᐳ>,
