@@ -5,7 +5,10 @@ export const usePromise = <T>(
     //
     promise?: () => Maybe<Promise<T>>,
     deps?: DependencyList,
-) => {
+): {
+    value: T | null
+    error: Error | null
+} => {
     const [value, setValue] = useState<T | null>(null)
     const [error, setError] = useState<Error | null>(null)
     useEffect(() => {

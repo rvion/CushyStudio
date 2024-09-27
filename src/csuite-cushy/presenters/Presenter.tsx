@@ -33,7 +33,7 @@ import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
 import { ShellCushyRightUI } from '../shells/ShellCushy'
-import { usePresenter } from './PresenterCtx'
+import { usePresenter, usePresenterOrNull } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
 // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
@@ -108,7 +108,7 @@ export class Presenter {
         // extraRules_: PresenterRule<FIELD> | PresenterRule<FIELD>[],
     ): ReactNode {
         // slots accumulator
-        let slots: UISlots<FIELD> = {}
+        let slots: UISlots<FIELD> = defaultPresenterRule(field)
 
         // apply all rules from context
         for (const rule of this.rules) {

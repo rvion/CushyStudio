@@ -5,6 +5,7 @@ import { activityManager } from '../csuite/activity/ActivityManager'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDividerUI_ } from '../csuite/dropdown/MenuDividerUI'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
+import { PanelUI } from '../csuite/panel/PanelUI'
 import { DBStatsUI } from '../db/gui/DBStats'
 import { quickBench } from '../db/quickBench'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
@@ -76,7 +77,17 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuDividerUI_ />
                     <MenuItem //
                         iconClassName='text-yellow-500'
-                        onClick={async () => cushy.layout.addCustomV2(() => <DBStatsUI />, {})}
+                        onClick={async () =>
+                            cushy.layout.addCustomV2(
+                                () => (
+                                    <PanelUI>
+                                        <PanelUI.Header title='DB Stats' />
+                                        <DBStatsUI />
+                                    </PanelUI>
+                                ),
+                                {},
+                            )
+                        }
                         icon='mdiAccount'
                     >
                         print DB stats
