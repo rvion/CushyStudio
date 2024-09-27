@@ -1,4 +1,4 @@
-import type { Builder, Runtime } from '../../../src/CUSHY'
+import type { Runtime } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
@@ -88,11 +88,8 @@ export function ui_sampler_advanced(p?: {
                       label: 'Sampler',
                       default: p?.sampler_name ?? 'euler',
                   }),
-            guidanceType: form.choice({
-                appearance: 'tab',
-                collapsed: false,
-                default: { CFG: true },
-                items: {
+            guidanceType: form.choice(
+                {
                     CFG: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 6 }),
                     DualCFG: form.fields({
                         cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 6 }),
@@ -122,13 +119,12 @@ export function ui_sampler_advanced(p?: {
                         }),
                     }),
                 },
-            }),
+                { default: { CFG: true }, appearance: 'tab', collapsed: false },
+            ),
             // cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 6 }),
             //denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
-            sigmasType: form.choice({
-                appearance: 'tab',
-                collapsed: false,
-                items: {
+            sigmasType: form.choice(
+                {
                     basic: form.fields({
                         denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
                         steps: form.int({ step: 20, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
@@ -145,17 +141,18 @@ export function ui_sampler_advanced(p?: {
                     SDTurbo: form.auto.SDTurboScheduler(),
                     VPScheduler: form.auto.VPScheduler(),
                 },
-            }),
+                { appearance: 'tab', collapsed: false },
+            ),
             seed: form.seed({}),
-            textEncoderType: form.choice({
-                appearance: 'tab',
-                items: {
+            textEncoderType: form.choice(
+                {
                     CLIP: form.group({}),
                     SDXL: form.group({}),
                     SD3: form.group({}),
                     FLUX: form.group({}),
                 },
-            }),
+                { appearance: 'tab' },
+            ),
             // steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
         },
         {

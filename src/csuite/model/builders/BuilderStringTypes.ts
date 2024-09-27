@@ -115,4 +115,21 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
     stringDatetime(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
         return this.string({ inputType: 'datetime-local', ...config })
     }
+
+    /**
+     * legacy string-based color
+     * based on `Field_string`
+     * - value is string
+     * - serial is plain string
+     * - no specific validation
+     * - no specific API to handle color manipulation
+     *
+     * @deprecated
+     * @see {@link date} for js Date object fields
+     * @see {@link datePlain} for Temporal.PlainDate fields
+     * @see {@link dateTimeZoned} for Temporal.PlainDate fields
+     */
+    stringColor(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
+        return this.string({ inputType: 'datetime-local', ...config })
+    }
 }

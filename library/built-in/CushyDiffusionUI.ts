@@ -92,10 +92,8 @@ export type UI_extra = X.XChoices<{
 }>
 
 function extra(ui: X.Builder): UI_extra {
-    return ui.choices({
-        appearance: 'tab',
-        icon: 'mdiAlien',
-        items: {
+    return ui.choices(
+        {
             show3d: ui_3dDisplacement(),
             regionalPrompt: ui_regionalPrompting_v1(),
             mask: ui_mask(),
@@ -123,5 +121,6 @@ function extra(ui: X.Builder): UI_extra {
             watermark: ui_watermark_v1(),
             fancyWatermark: ui.empty({ icon: 'mdiWatermark' }),
         },
-    })
+        { appearance: 'tab', icon: 'mdiAlien' },
+    )
 }

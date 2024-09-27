@@ -24,16 +24,15 @@ export function ui_3dDisplacement(): UI_3dDisplacement {
                     tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
                     default: 'None',
                 }),
-                depth: form.choice({
-                    default: 'Marigold',
-                    appearance: 'tab',
-                    items: {
+                depth: form.choice(
+                    {
                         MiDaS: form.empty(),
                         Zoe: form.empty(),
                         LeReS: form.empty(),
                         Marigold: form.auto.MarigoldDepthEstimation(),
                     },
-                }),
+                    { default: 'Marigold', appearance: 'tab' },
+                ),
             },
         })
         .addRequirements([

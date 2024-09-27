@@ -42,6 +42,6 @@
         /* specific to base */ "noEmit": true
     },
 
-    "include": ["src", "schema/global.d.ts" /*  "library" */],
+    "include": ["src", "schema/global.d.ts", "library"],
     "exclude": []
 }

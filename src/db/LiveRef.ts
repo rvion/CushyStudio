@@ -1,11 +1,11 @@
-import type { LiveInstance } from './LiveInstance'
+import type { BaseInst } from './BaseInst'
 import type { LiveTable } from './LiveTable'
 import type { TableName } from './TYPES.gen'
 
 export class LiveRef<
     //
-    Owner extends LiveInstance<any>,
-    L extends LiveInstance<any>,
+    Owner extends BaseInst<any>,
+    L extends BaseInst<any>,
 > {
     constructor(
         //
@@ -14,16 +14,16 @@ export class LiveRef<
         public tableName: TableName,
     ) {}
 
-    get table() {
-        return cushy.db[this.tableName] as LiveTable<any>
+    get table(): LiveTable<any, any> {
+        return cushy.db[this.tableName] as LiveTable<any, any>
     }
 
     get id(): L['data']['id'] {
         return (this.owner.data as any)[this.key]
     }
 
-    /** debug string for pretty printing */
-    get debugStr() {
+    /** debuging string for pretty printing */
+    get debugStr(): string {
         return `LiveRef: ${this.owner.table.name}->${this.table}(${this.id})`
     }
 

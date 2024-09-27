@@ -5,15 +5,15 @@ import type { TableInfo } from './TYPES_json'
 
 import BetterSqlite3, { default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
-import { AuthL } from '../models/Auth'
+import { AuthRepo } from '../models/Auth'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfySchemaL } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { CushyAppL } from '../models/CushyApp'
 import { CushyScriptL } from '../models/CushyScript'
-import { CustomDataL } from '../models/CustomData'
+import { CustomDataRepo } from '../models/CustomData'
 import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { Media3dDisplacementL } from '../models/Media3dDisplacement'
@@ -24,7 +24,7 @@ import { MediaTextL } from '../models/MediaText'
 import { MediaVideoL } from '../models/MediaVideo'
 import { ProjectL } from '../models/Project'
 import { RuntimeErrorL } from '../models/RuntimeError'
-import { StepL } from '../models/Step'
+import { StepRepo } from '../models/Step'
 import { TreeEntryL } from '../models/TreeEntry'
 import { _applyAllMigrations } from './_applyAllMigrations'
 import { _codegenORM } from './_codegenORM'
@@ -39,13 +39,15 @@ export type Indexed<T> = { [id: string]: T }
 let ix = 0
 
 export class LiveDB {
-    _tables: LiveTable<any>[] = []
+    _tables: LiveTable<any, any>[] = []
 
     keys = new Map<T.LiveDBSubKeys, Timestamp>([...liveDBSubKeys.values()].map((k) => [k, 0] as [T.LiveDBSubKeys, Timestamp]))
 
     bump = (t: T.LiveDBSubKeys): void => {
-        if (!liveDBSubKeys.has(t)) throw new Error('🔴 (bump) unknown LiveDBSubKeys: ' + t)
-        else this.keys.set(t, Date.now() as Timestamp)
+        runInAction(() => {
+            if (!liveDBSubKeys.has(t)) throw new Error('🔴 (bump) unknown LiveDBSubKeys: ' + t)
+            else this.keys.set(t, Date.now() as Timestamp)
+        })
     }
 
     subscribeToKeys = (keys: T.LiveDBSubKeys[]): void => {
@@ -64,25 +66,25 @@ export class LiveDB {
     }
 
     // tables ---------------------------------------------------------
-    project:               LiveTable<T.TABLES['project']              > // prettier-ignore
-    custom_data:           LiveTable<T.TABLES['custom_data']          > // prettier-ignore
-    comfy_schema:          LiveTable<T.TABLES['comfy_schema']         > // prettier-ignore
-    host:                  LiveTable<T.TABLES['host']                 > // prettier-ignore
-    comfy_prompt:          LiveTable<T.TABLES['comfy_prompt']         > // prettier-ignore
-    cushy_script:          LiveTable<T.TABLES['cushy_script']         > // prettier-ignore
-    cushy_app:             LiveTable<T.TABLES['cushy_app']            > // prettier-ignore
-    media_text:            LiveTable<T.TABLES['media_text']           > // prettier-ignore
-    media_image:           LiveTable<T.TABLES['media_image']          > // prettier-ignore
-    media_video:           LiveTable<T.TABLES['media_video']          > // prettier-ignore
-    media_splat:           LiveTable<T.TABLES['media_splat']          > // prettier-ignore
-    media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement']> // prettier-ignore
-    media_custom:          LiveTable<T.TABLES['media_custom']         > // prettier-ignore
-    tree_entry:            LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
-    runtime_error:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
-    draft:                 LiveTable<T.TABLES['draft']                > // prettier-ignore
-    comfy_workflow:        LiveTable<T.TABLES['comfy_workflow']       > // prettier-ignore
-    step:                  LiveTable<T.TABLES['step']                 > // prettier-ignore
-    auth:                  LiveTable<T.TABLES['auth']                 > // prettier-ignore
+    project:               LiveTable<T.TABLES['project']              , typeof ProjectL            > // prettier-ignore
+    custom_data: CustomDataRepo
+    comfy_schema:          LiveTable<T.TABLES['comfy_schema']         , typeof ComfySchemaL        > // prettier-ignore
+    host:                  LiveTable<T.TABLES['host']                 , typeof HostL               > // prettier-ignore
+    comfy_prompt:          LiveTable<T.TABLES['comfy_prompt']         , typeof ComfyPromptL        > // prettier-ignore
+    cushy_script:          LiveTable<T.TABLES['cushy_script']         , typeof CushyScriptL        > // prettier-ignore
+    cushy_app:             LiveTable<T.TABLES['cushy_app']            , typeof CushyAppL           > // prettier-ignore
+    media_text:            LiveTable<T.TABLES['media_text']           , typeof MediaTextL          > // prettier-ignore
+    media_image:           LiveTable<T.TABLES['media_image']          , typeof MediaImageL         > // prettier-ignore
+    media_video:           LiveTable<T.TABLES['media_video']          , typeof MediaVideoL         > // prettier-ignore
+    media_splat:           LiveTable<T.TABLES['media_splat']          , typeof MediaSplatL         > // prettier-ignore
+    media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement'], typeof Media3dDisplacementL> // prettier-ignore
+    media_custom:          LiveTable<T.TABLES['media_custom']         , typeof MediaCustomL        > // prettier-ignore
+    tree_entry:            LiveTable<T.TABLES['tree_entry']           , typeof TreeEntryL          > // prettier-ignore
+    runtime_error:         LiveTable<T.TABLES['runtime_error']        , typeof RuntimeErrorL       > // prettier-ignore
+    draft:                 LiveTable<T.TABLES['draft']                , typeof DraftL              > // prettier-ignore
+    comfy_workflow:        LiveTable<T.TABLES['comfy_workflow']       , typeof ComfyWorkflowL      > // prettier-ignore
+    step: StepRepo
+    auth: AuthRepo
 
     /** run all pending migrations */
     migrate = (): void => {
@@ -107,25 +109,25 @@ export class LiveDB {
             makeAutoObservable(this)
 
             // 3. create tables (after the store has benn made already observable)
-            this.project =               new LiveTable<T.TABLES['project']              >(this, 'project'              , '🤠', ProjectL, { singleton: true })
-            this.custom_data =           new LiveTable<T.TABLES['custom_data']          >(this, 'custom_data'          , '🎁', CustomDataL)
-            this.comfy_schema =          new LiveTable<T.TABLES['comfy_schema']         >(this, 'comfy_schema'         , '📑', ComfySchemaL)
-            this.host =                  new LiveTable<T.TABLES['host']                 >(this, 'host'                 , '📑', HostL)
-            this.comfy_prompt =          new LiveTable<T.TABLES['comfy_prompt']         >(this, 'comfy_prompt'         , '❓', ComfyPromptL)
-            this.cushy_script =          new LiveTable<T.TABLES['cushy_script']         >(this, 'cushy_script'         , '⭐️', CushyScriptL)
-            this.cushy_app =             new LiveTable<T.TABLES['cushy_app']            >(this, 'cushy_app'            , '🌟', CushyAppL)
-            this.media_text =            new LiveTable<T.TABLES['media_text']           >(this, 'media_text'           , '💬', MediaTextL)
-            this.media_image =           new LiveTable<T.TABLES['media_image']          >(this, 'media_image'          , '🖼️', MediaImageL)
-            this.media_video =           new LiveTable<T.TABLES['media_video']          >(this, 'media_video'          , '🖼️', MediaVideoL)
-            this.media_splat =           new LiveTable<T.TABLES['media_splat']          >(this, 'media_splat'          , '🖼️', MediaSplatL)
-            this.media_3d_displacement = new LiveTable<T.TABLES['media_3d_displacement']>(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
-            this.media_custom =          new LiveTable<T.TABLES['media_custom']         >(this, 'media_custom'         , '🖼️', MediaCustomL)
-            this.tree_entry =            new LiveTable<T.TABLES['tree_entry']           >(this, 'tree_entry'           , '🖼️', TreeEntryL)
-            this.runtime_error =         new LiveTable<T.TABLES['runtime_error']        >(this, 'runtime_error'        , '❌', RuntimeErrorL)
-            this.draft =                 new LiveTable<T.TABLES['draft']                >(this, 'draft'                , '📝', DraftL)
-            this.comfy_workflow =        new LiveTable<T.TABLES['comfy_workflow']       >(this, 'comfy_workflow'       , '📊', ComfyWorkflowL)
-            this.step =                  new LiveTable<T.TABLES['step']                 >(this, 'step'                 , '🚶‍♂️', StepL)
-            this.auth =                  new LiveTable<T.TABLES['auth']                 >(this, 'auth'                 , '🚶‍♂️', AuthL)
+            this.project =               new LiveTable<T.TABLES['project']              , typeof ProjectL            >(this, 'project'              , '🤠', ProjectL, { singleton: true })
+            this.custom_data =           new CustomDataRepo(this)
+            this.comfy_schema =          new LiveTable<T.TABLES['comfy_schema']         , typeof ComfySchemaL        >(this, 'comfy_schema'         , '📑', ComfySchemaL)
+            this.host =                  new LiveTable<T.TABLES['host']                 , typeof HostL               >(this, 'host'                 , '📑', HostL)
+            this.comfy_prompt =          new LiveTable<T.TABLES['comfy_prompt']         , typeof ComfyPromptL        >(this, 'comfy_prompt'         , '❓', ComfyPromptL)
+            this.cushy_script =          new LiveTable<T.TABLES['cushy_script']         , typeof CushyScriptL        >(this, 'cushy_script'         , '⭐️', CushyScriptL)
+            this.cushy_app =             new LiveTable<T.TABLES['cushy_app']            , typeof CushyAppL           >(this, 'cushy_app'            , '🌟', CushyAppL)
+            this.media_text =            new LiveTable<T.TABLES['media_text']           , typeof MediaTextL          >(this, 'media_text'           , '💬', MediaTextL)
+            this.media_image =           new LiveTable<T.TABLES['media_image']          , typeof MediaImageL         >(this, 'media_image'          , '🖼️', MediaImageL)
+            this.media_video =           new LiveTable<T.TABLES['media_video']          , typeof MediaVideoL         >(this, 'media_video'          , '🖼️', MediaVideoL)
+            this.media_splat =           new LiveTable<T.TABLES['media_splat']          , typeof MediaSplatL         >(this, 'media_splat'          , '🖼️', MediaSplatL)
+            this.media_3d_displacement = new LiveTable<T.TABLES['media_3d_displacement'], typeof Media3dDisplacementL>(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
+            this.media_custom =          new LiveTable<T.TABLES['media_custom']         , typeof MediaCustomL        >(this, 'media_custom'         , '🖼️', MediaCustomL)
+            this.tree_entry =            new LiveTable<T.TABLES['tree_entry']           , typeof TreeEntryL          >(this, 'tree_entry'           , '🖼️', TreeEntryL)
+            this.runtime_error =         new LiveTable<T.TABLES['runtime_error']        , typeof RuntimeErrorL       >(this, 'runtime_error'        , '❌', RuntimeErrorL)
+            this.draft =                 new LiveTable<T.TABLES['draft']                , typeof DraftL              >(this, 'draft'                , '📝', DraftL)
+            this.comfy_workflow =        new LiveTable<T.TABLES['comfy_workflow']       , typeof ComfyWorkflowL      >(this, 'comfy_workflow'       , '📊', ComfyWorkflowL)
+            this.step =                  new StepRepo(this)
+            this.auth =                  new AuthRepo(this)
 
             // console.log('🟢 TABLE INITIALIZED')
         }

@@ -1,13 +1,15 @@
-import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyScriptL } from './CushyScript'
 import type { LoadedCustomView } from './Executable'
 import type { StepL } from './Step'
 
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 
-export interface MediaCustomL extends LiveInstance<TABLES['media_custom']> {}
-export class MediaCustomL {
+export class MediaCustomL extends BaseInst<TABLES['media_custom']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 
     get relPath(): Maybe<RelativePath> {

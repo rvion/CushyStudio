@@ -11,17 +11,17 @@ export const ui_model_pag = (form: X.Builder): UI_model_pag => {
     return form
         .fields(
             {
-                include: form.choices({
-                    items: { base: form.fields({}), hiRes: form.fields({}) },
-                    default: { base: true, hiRes: false },
-                    // -----------------------------
-                    appearance: 'tab',
-                    tabPosition: 'start',
-                    border: false,
-                    collapsed: false,
-                    justifyLabel: true,
-                    // --------------------------
-                }),
+                include: form.choices(
+                    { base: form.fields({}), hiRes: form.fields({}) },
+                    {
+                        default: 'base',
+                        appearance: 'tab',
+                        tabPosition: 'start',
+                        border: false,
+                        collapsed: false,
+                        justifyLabel: true,
+                    },
+                ),
                 scale: form.float({
                     default: 3,
                     min: 0,

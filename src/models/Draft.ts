@@ -1,26 +1,30 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
-import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { Executable } from './Executable'
 import type { StepL } from './Step'
 
-import { reaction } from 'mobx'
+import { observable, reaction } from 'mobx'
 
 import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/Builder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 
 export type FormPath = (string | number)[]
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
-export interface DraftL extends LiveInstance<TABLES['draft']> {}
-export class DraftL {
+export class DraftL extends BaseInst<TABLES['draft']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig = {
+        formSerial: observable.ref,
+    }
+
     // 🔴 HACKY
     shouldAutoStart = false
 
@@ -60,12 +64,12 @@ export class DraftL {
             return input + '-1'
         }
     }
-    duplicateAndFocus(): void {
-        const newDraft = this.clone({
-            title: this._duplicateTitle(this.name),
-        })
+
+    duplicateAndFocus(): DraftL {
+        const newDraft = this.clone({ title: this._duplicateTitle(this.name) })
         newDraft.openOrFocusTab()
         newDraft.revealInFileExplorer()
+        return newDraft
     }
 
     revealInFileExplorer = (): void => {

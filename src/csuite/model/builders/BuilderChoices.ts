@@ -42,6 +42,9 @@ export class BuilderChoices<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> exten
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
+        if ('items' in items) {
+            console.warn(`[🔴] wrong choice`)
+        }
         return this.buildSchema(Field_choices<T>, {
             items,
             multi: false,

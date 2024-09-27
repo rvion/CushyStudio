@@ -29,45 +29,44 @@ export function ui_latent_v3(): UI_LatentV3 {
     const form: X.Builder = getCurrentForm()
     return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
         const batchSize = form.linked(batchSize_)
-        return form.choice({
-            header: (p) => {
-                const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
-                return (
-                    <div tw='flex gap-1'>
-                        <p.field.DefaultHeaderUI field={p.field} />
-                        {size && (
-                            <>
-                                {size.width} x{size.height}
-                            </>
-                        )}
-                    </div>
-                )
-            },
-            icon: 'mdiStarThreePoints',
-            appearance: 'tab',
-            default: 'emptyLatent',
-            label: 'Latent Input',
-            background: { hue: 270, chroma: 0.04 },
-            items: {
-                emptyLatent: form.group({
-                    items: {
-                        batchSize,
-                        size: form.size({}),
-                    },
+        return form.choice(
+            {
+                emptyLatent: form.fields({
+                    batchSize,
+                    size: form.size({}),
                 }),
                 // cas 2
-                image: form.group({
-                    collapsed: false,
-                    border: false,
-                    items: {
+                image: form.fields(
+                    {
                         batchSize,
                         image: form.image({ label: false, justifyLabel: false }),
                         resize: form.auto.Image_Resize().optional(),
                     },
-                }),
+                    { collapsed: false, border: false },
+                ),
                 random: ui_LatentShapeGenerator(batchSize),
             },
-        })
+            {
+                header: (p) => {
+                    const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
+                    return (
+                        <div tw='flex gap-1'>
+                            <p.field.DefaultHeaderUI field={p.field} />
+                            {size && (
+                                <>
+                                    {size.width} x{size.height}
+                                </>
+                            )}
+                        </div>
+                    )
+                },
+                icon: 'mdiStarThreePoints',
+                appearance: 'tab',
+                default: 'emptyLatent',
+                label: 'Latent Input',
+                background: { hue: 270, chroma: 0.04 },
+            },
+        )
     })
 }
 

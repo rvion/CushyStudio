@@ -1,4 +1,5 @@
 import type { LiveTable } from '../db/LiveTable'
+import type { AuthL, AuthRepo } from '../models/Auth'
 import type { STATE } from './state'
 import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
@@ -30,7 +31,7 @@ export class AuthState {
 
     auth: SupabaseAuthClient
 
-    get authTable(): LiveTable<TABLES['auth']> {
+    get authTable(): AuthRepo {
         return this.st.db.auth
     }
 

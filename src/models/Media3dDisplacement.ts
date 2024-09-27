@@ -1,10 +1,12 @@
-import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { StepL } from './Step'
 
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 
-export interface Media3dDisplacementL extends LiveInstance<TABLES['media_3d_displacement']> {}
-export class Media3dDisplacementL {
+export class Media3dDisplacementL extends BaseInst<TABLES['media_3d_displacement']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 }

@@ -1,4 +1,3 @@
-import type { LiveInstance } from '../db/LiveInstance'
 import type { Runtime } from '../runtime/Runtime'
 import type {
     ComfyImageInfo,
@@ -18,6 +17,7 @@ import sharp, { type FormatEnum } from 'sharp'
 import { Status } from '../back/Status'
 import { SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
 import { ComfyNodeID } from '../types/ComfyNodeID'
@@ -30,8 +30,10 @@ import {
 } from './createMediaImage_fromWebFile'
 import { FPath } from './FPath'
 
-export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
-export class ComfyPromptL {
+export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     saveFormat: Maybe<ImageSaveFormat> = null
 
     private _resolve!: (value: this) => void

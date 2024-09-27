@@ -16,7 +16,7 @@ import type { FC, ReactNode } from 'react'
 
 import { createElement } from 'react'
 
-import { WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
+import { type BodyContainerProps, WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
 import { WidgetDebugIDUI } from '../../csuite/form/WidgetDebugIDUI'
 import { WidgetErrorsUI } from '../../csuite/form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
@@ -201,7 +201,7 @@ export interface UISlots<out FIELD extends Field = Field> {
 
     // suggested containers
     /* 🟠 */ ContainerForHeader?: Maybe<FC<WidgetHeaderContainerProps>>
-    /* 🟠 */ ContainerForBody?: Maybe<FC<React.HTMLAttributes<HTMLDivElement>>>
+    /* 🟠 */ ContainerForBody?: Maybe<FC<BodyContainerProps>>
     /* 🟠 */ ContainerForSummary?: Maybe<FC<WidgetSingleLineSummaryProps>>
 
     // ---------------------------------------------------------

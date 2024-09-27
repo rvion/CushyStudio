@@ -1,4 +1,3 @@
-import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
@@ -24,6 +23,7 @@ import { asSTRING_orCrash } from '../csuite/utils/bang'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { sleep } from '../csuite/utils/sleep'
 import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
@@ -38,8 +38,10 @@ import {
 import { FPath } from './FPath'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
-export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
-export class MediaImageL {
+export class MediaImageL extends BaseInst<TABLES['media_image']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     static async cacheMissingSafetyRatings({
         //
         amount = 10,

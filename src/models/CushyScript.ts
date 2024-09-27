@@ -1,5 +1,4 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
 
 import { statSync } from 'fs'
@@ -10,6 +9,7 @@ import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpil
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
+import { BaseInst } from '../db/BaseInst'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { CushyAppL } from './CushyApp'
 import { Executable, LoadedCustomView } from './Executable'
@@ -17,8 +17,9 @@ import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 // import { LazyValue } from '../db/LazyValue'
 
-export interface CushyScriptL extends LiveInstance<TABLES['cushy_script']> {}
-export class CushyScriptL {
+export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
     // get firstApp(): Maybe<CushyAppL> {
     //     return this.apps[0]
     // }
@@ -29,7 +30,8 @@ export class CushyScriptL {
     }
 
     _apps_viaScript: Maybe<CushyAppL[]> = null
-    get _apps_viaDB() {
+
+    get _apps_viaDB(): CushyAppL[] {
         return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
     }
     // private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
@@ -51,7 +53,7 @@ export class CushyScriptL {
     // ⏸️     return this._apps_viaScript!
     // ⏸️ }
 
-    onHydrate = () => {
+    onHydrate = (): void => {
         if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
     }
 

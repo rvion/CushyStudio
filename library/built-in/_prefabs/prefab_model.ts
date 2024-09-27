@@ -64,13 +64,13 @@ export function ui_model(): UI_Model {
             return out
         },
         items: {
-            modelType: form.choice({
-                items: {
-                    Diffusion: form.fields({
-                        ckpt_name: form.enum
-                            .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-                            .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
-                    }),
+            modelType: form.choice(
+                {
+                    Diffusion: /* form.fields({
+                        ckpt_name: */ form.enum
+                        .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+                        .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
+                    // }),
                     SD3: form
                         .fields({
                             ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
@@ -115,14 +115,11 @@ export function ui_model(): UI_Model {
                             { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [schnell] Checkpoint model (fp8)' },
                         ]),
                 },
-                appearance: 'tab',
-            }),
+                { appearance: 'tab' },
+            ),
             checkpointConfig2: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
-            extra: form.choices({
-                border: false,
-                // label: false,
-                appearance: 'tab',
-                items: {
+            extra: form.choices(
+                {
                     checkpointConfig: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
                     rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
                     vae: form.enum.Enum_VAELoader_vae_name(),
@@ -140,7 +137,12 @@ export function ui_model(): UI_Model {
                         })
                         .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }]),
                 },
-            }),
+                {
+                    border: false,
+                    // label: false,
+                    appearance: 'tab',
+                },
+            ),
         },
         presets: [
             // 💬 2024-08-06 rvion:

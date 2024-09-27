@@ -10,7 +10,7 @@ import {
     normalizeJSIdentifier,
 } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
-import { LiveInstance } from '../db/LiveInstance'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
@@ -51,8 +51,12 @@ export type EnumInfo = {
     aliases: string[]
 }
 
-export interface ComfySchemaL extends LiveInstance<TABLES['comfy_schema']> {}
-export class ComfySchemaL {
+export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig = {
+        spec: observable.ref,
+    }
+
     /**
      * return the number of nodes in your current schema
      * quick way to check your instance info
@@ -552,9 +556,10 @@ export class ComfySchemaL {
         return b.content
     }
 
-    private toTSType = (t: string) =>
+    private toTSType = (t: string): string =>
         ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | ComfyNodeOutput<'${t}'>` : `ComfyNodeOutput<'${t}'>`
-    private toSignalType = (t: string) => `ComfyNodeOutput<'${t}'>`
+
+    private toSignalType = (t: string): string => `ComfyNodeOutput<'${t}'>`
 }
 
 export class ComfyNodeSchema {
@@ -572,7 +577,7 @@ export class ComfyNodeSchema {
         this.category = this.category.replaceAll('/', '_')
     }
 
-    codegenUI() {
+    codegenUI(): string {
         const b = new CodeBuffer()
         const p = b.w
         p(`    ${this.nameInCushy}: {`)
@@ -658,7 +663,7 @@ export class ComfyNodeSchema {
     }
 }
 
-export const wrapQuote = (s: string) => {
+export const wrapQuote = (s: string): string => {
     if (s.includes("'")) return `"${s}"`
     return `'${s}'`
 }

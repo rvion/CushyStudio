@@ -35,9 +35,8 @@ export function ui_refiners(): UI_Refiners {
     return form.fields(
         {
             refinerType: form
-                .choices({
-                    appearance: 'tab',
-                    items: {
+                .choices(
+                    {
                         // FACES -------------------------------------------------------
                         faces: form
                             .fields(
@@ -89,7 +88,8 @@ export function ui_refiners(): UI_Refiners {
                                 { type: 'customNodesByTitle', title: 'CLIPSeg' },
                             ]),
                     },
-                })
+                    { appearance: 'tab' },
+                )
                 .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' }]),
             settings: form.fields(
                 {

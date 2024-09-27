@@ -12,12 +12,14 @@ import { generateAvatar } from '../cards/AvatarGenerator'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
-import { LiveInstance } from '../db/LiveInstance'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
-export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
-export class CushyAppL {
+export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     // linked scripts
     private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
 

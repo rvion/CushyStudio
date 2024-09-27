@@ -1,5 +1,4 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -23,6 +22,7 @@ import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
 import { bang } from '../csuite/utils/bang'
 import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
 import { type TEdge, toposort } from '../csuite/utils/toposort'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
@@ -47,8 +47,10 @@ export type PromptSettings = {
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface ComfyWorkflowL extends LiveInstance<TABLES['comfy_workflow']> {}
-export class ComfyWorkflowL {
+export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length
