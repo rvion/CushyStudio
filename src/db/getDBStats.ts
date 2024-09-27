@@ -6,7 +6,7 @@ import { LiveDB } from './LiveDB'
 
 export type DBStats = { [key: string]: { count: number; size: number } }
 
-export const getDBStats = async (db: LiveDB): Promise<DBStats> => {
+export const getDBStats = (db: LiveDB): DBStats => {
     const stmt = db.db.prepare(`select name from sqlite_master where type='table'`)
     const tables = stmt.all() as { name: string }[]
 
