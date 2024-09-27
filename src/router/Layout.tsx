@@ -838,6 +838,7 @@ export class CushyLayoutManager {
             enableClose: p.canClose ?? true,
             enableRename: false,
             enableFloat: false,
+            // enablePopout: false,
             icon: getIconAsDataSVG(icon),
         }
     }
@@ -846,6 +847,7 @@ export class CushyLayoutManager {
         const out: IJsonModel = {
             global: {
                 tabEnableFloat: false,
+                // tabEnablePopout: false,
                 splitterSize: 6,
                 tabEnableRename: false,
                 borderEnableAutoHide: true,

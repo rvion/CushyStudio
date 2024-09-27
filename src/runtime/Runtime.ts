@@ -240,7 +240,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     form!: Field_group<FIELDS>
     // ----------------------------
 
-    executeDraft = async (draftID: DraftID, args: any) => {
+    executeDraft = async (draftID: DraftID, args: any): Promise<never> => {
         throw new Error('🔴 not yet implemented')
     }
 
