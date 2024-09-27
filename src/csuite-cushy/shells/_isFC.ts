@@ -24,6 +24,9 @@ export const renderFCOrNodeWithWrapper = <
     const inner = _isFC(x) ? createElement(x, props) : x
     if (inner == null) return null
     if (wrapper == null) return inner
+    if (!isValidElement(inner)) {
+        return createElement('div', {}, '🔴 inner is not valid element')
+    }
     return createElement(wrapper, wrapperProps, inner)
 }
 
