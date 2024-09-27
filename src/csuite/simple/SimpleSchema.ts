@@ -47,6 +47,7 @@ export interface SimpleSchemaᐸ_ᐳ extends HKT<Field> {
     Choices: HKSimpleChoicesAlias
 
     Group: HKSimpleGroupAlias
+    Empty: S.SEmpty
 
     Size: S.SSize
     Seed: S.SSeed

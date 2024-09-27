@@ -56,7 +56,7 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { mkNewFieldId } from './FieldId'
-import { __ERROR, __OK } from './Result'
+import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
@@ -105,6 +105,12 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Child: K['$Child'] /** type only properties; do not use directly; used to make typings good and fast */
 }
 
+/**
+ * Only use this type in the base field, when you can assume
+ * it will be properly re-typed in sub-classes
+ */
+export type UNSAFE_AnyField = any // Field<any>
+
 export interface Field_Nullable<K extends $FieldTypes_Nullable = $FieldTypes_Nullable> extends Field<K> {}
 
 //     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
@@ -143,7 +149,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     parent: Field | null
 
     /** schema used to instanciate this widget */
-    schema: BaseSchema<K['$Field']>
+    schema: BaseSchema<this> //K['$Field']>
 
     constructor(
         /**
@@ -157,7 +163,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         /** parent field, (null when root) */
         parent: Field | null,
         /** schema used to instanciate this widget */
-        schema: BaseSchema<K['$Field']>,
+        schema: BaseSchema<UNSAFE_AnyField /* K['$Field'] */>,
         initialMountKey: string,
         serial?: K['$Serial'],
     ) {
@@ -568,15 +574,17 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // #region UI
 
     /** default header UI */
-    abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field']; readonly?: boolean }> | undefined
+    // abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field']; readonly?: boolean }> | undefined
+    abstract readonly DefaultHeaderUI: CovariantFC<{ field: UNSAFE_AnyField; readonly?: boolean }> | undefined
 
     /** default body UI */
-    abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
+    // abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
+    abstract readonly DefaultBodyUI: CovariantFC<{ field: UNSAFE_AnyField }> | undefined
 
     UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
     UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
     UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
-    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI widget={this} />
+    UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
     UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
         <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
@@ -675,7 +683,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.schema.config
     }
 
-    getValue(mode: VALUE_MODE) {
+    getValue(mode: VALUE_MODE): K['$Value'] | K['$Unchecked'] {
         if (mode === 'fail') return this.value_or_fail
         if (mode === 'zero') return this.value_or_zero
         if (mode === 'unchecked') return this.value_unchecked
@@ -1193,34 +1201,21 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // #region UI.Render
-
     /**
      * @deprecated prefer Field.Render
      * temporary until shells */
-    renderSimple(this: Field, p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'>): JSX.Element {
-        return (
-            <WidgetWithLabelUI //
-                key={this.id}
-                field={this}
-                showWidgetMenu={false}
-                showWidgetExtra={false}
-                showWidgetUndo={false}
-                justifyLabel={false}
-                fieldName='_'
-                {...p}
-            />
-        )
+    renderSimple(p: RENDERER.FieldRenderArgs<this>): ReactNode {
+        return this.UI({ Shell: (x) => <x.UI.ShellSimple {...x} />, ...p })
     }
 
     renderAsForm(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        return window.RENDERER.render(this, p)
+        return this.render(p)
     }
+
     /**
-     * do not use directly; prefer `Render`.
+     * alias to `Render`
      *
-     * @internal
      * @since 2024-09-19
-     * @deprecated
      * @see {@link Render}
      */
     render(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
@@ -1228,6 +1223,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     Render(props: RENDERER.FieldRenderArgs<this>): ReactNode {
+        return <window.RENDERER.Render field={this} p={props} />
+    }
+
+    UI(props: RENDERER.FieldRenderArgs<this>): ReactNode {
         return <window.RENDERER.Render field={this} p={props} />
     }
 
@@ -1315,7 +1314,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @since 2024-09-09
      * @remarks was previously named `subFields`
      */
-    get childrenAll(): Field[] {
+    get childrenAll(): K['$Child']['$Field'][] {
         return []
     }
 
@@ -1328,7 +1327,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @remaks expected to be overriden in every field that have children that can be toggled,
      * like FIeldChoice, FieldOptional
      */
-    get childrenActive(): Field[] {
+    get childrenActive(): K['$Child']['$Field'][] {
         return this.childrenAll
     }
 
@@ -1367,6 +1366,34 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
     }
 
+    // -------------
+    runInValuePatch<T>(fn: (draft: K['$Serial'], tct: Transaction) => void): void {
+        return this.repo.TRANSACT(
+            (tct) => {
+                this.patchSerial((draft) => {
+                    fn(draft, tct)
+                })
+            },
+            this,
+            'value',
+            'WITH_EFFECT',
+        )
+    }
+
+    runInSerialPatch(fn: (draft: K['$Serial'], tct: Transaction) => void): void {
+        return this.repo.TRANSACT(
+            (tct) => {
+                this.patchSerial((draft) => {
+                    fn(draft, tct)
+                })
+            },
+            this,
+            'serial',
+            'WITH_EFFECT',
+        )
+    }
+
+    // ------------
     /**
      * DO NOT OVERRIDE.
      * @internal
@@ -1556,6 +1583,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 {},
                 2,
             )
+
+            this.renderAsForm = this.renderAsForm.bind(this)
+            this.render = this.render.bind(this)
+            this.Render = this.Render.bind(this)
 
             this.repo._registerField(this)
             this.ready = true

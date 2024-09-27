@@ -6,6 +6,7 @@ import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
+import type { CovariantFn } from '../../variance/BivariantHack'
 import type { CovariantFC } from '../../variance/CovariantFC'
 import type { FC } from 'react'
 
@@ -16,18 +17,21 @@ import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
-// CONFIG
+// #region Config
 export type Field_group_config<T extends SchemaDict> = FieldConfig<
     {
         /** fields */
         items?: T
 
         /** @deprecated; use `toString` instead */
-        summary?: (
-            //
-            items: { [k in keyof T]: T[k]['$Value'] },
-            self: Field_group<T>,
-        ) => string
+        summary?: CovariantFn<
+            [
+                //
+                items: { [k in keyof T]: T[k]['$Value'] },
+                self: Field_group<T>,
+            ],
+            string
+        >
 
         /** @default @false */
         presetButtons?: boolean
@@ -270,8 +274,8 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         const itemsDef = this.config.items
         const fieldSchemas: SchemaDict =
             typeof itemsDef === 'function' //
-                ? (itemsDef as any)() ?? {} // <-- LEGACY SUPPORT
-                : itemsDef ?? {}
+                ? ((itemsDef as any)() ?? {}) // <-- LEGACY SUPPORT
+                : (itemsDef ?? {})
         return Object.entries(fieldSchemas) as [keyof T & string, BaseSchema<any>][]
     }
     // #region VALUE
@@ -352,7 +356,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         }
     }
 
-    randomize() {
+    randomize(): void {
         this.childrenAll.forEach((f) => f.randomize())
     }
 }

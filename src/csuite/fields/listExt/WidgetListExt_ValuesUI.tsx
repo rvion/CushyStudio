@@ -4,7 +4,6 @@ import type { Field_listExt } from './WidgetListExt'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
-import { FieldPresenterCushyUI } from '../../form/presenters/PresenterCushy'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
     //
@@ -12,7 +11,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
 }) {
     const listExt = p.field
     const { items } = listExt.fields
-    const values = listExt.fields.items.subFields
+    const values = listExt.fields.items.childrenAll
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     const min = items.config.min
@@ -39,7 +38,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         >
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <FieldPresenterCushyUI fieldName={subWidget.id} field={subWidget} />
+                        <subWidget.UI />
                         <Button
                             look='subtle'
                             disabled={min ? items.length <= min : undefined}

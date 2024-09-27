@@ -1,15 +1,13 @@
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
-import type { Field_choices_config } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color_config } from '../csuite/fields/color/FieldColor'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../csuite/fields/datetime_zoned/FieldDateTimeZoned'
-import type { Field_group_config, FieldGroup } from '../csuite/fields/group/FieldGroup'
+import type { FieldGroup } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
 import type { ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
-import type { Field_listExt_config, SListExt } from '../csuite/fields/listExt/WidgetListExt'
 import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
@@ -18,9 +16,10 @@ import type { Field_seed_config } from '../csuite/fields/seed/FieldSeed'
 import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
-import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
+import type { SimpleSchema } from '../csuite/simple/SimpleSchema'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
+import type { EnumValue } from '../models/ComfySchema'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -38,7 +37,7 @@ import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_link } from '../csuite/fields/link/FieldLink'
 import { Field_list } from '../csuite/fields/list/FieldList'
 import { mkShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
-import { listExt } from '../csuite/fields/listExt/WidgetListExt'
+import { Field_listExt_config, ListExt } from '../csuite/fields/listExt/WidgetListExt'
 import { WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/listExt/WidgetListExtUI'
 import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/FieldMarkdown'
 import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
@@ -64,19 +63,21 @@ import { BuilderSelectOne } from '../csuite/model/builders/BuilderSelectOne'
 import { BuilderShared } from '../csuite/model/builders/BuilderShared'
 import { BuilderString } from '../csuite/model/builders/BuilderStringTypes'
 import { Factory } from '../csuite/model/Factory'
-import { Field } from '../csuite/model/Field'
 import { type OpenRouter_ModelInfo, openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { combine } from '../csuite/utils/combine'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { SelectManyBuilder } from './BuilderSelectMany'
-import { SelectOneBuilder } from './BuilderSelectOne'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
 import { CushySchema, type CushySchemaᐸ_ᐳ } from './Schema'
+
+// TODO:
+// alias should only be $Type &
+// {Field:..., Schema:...}
+//  => would make EVERYTHING so much simpler
 
 declare global {
     namespace X {
@@ -102,7 +103,7 @@ declare global {
         type Choice<T extends SchemaDict = SchemaDict> = Field_choices<T>
         type Number = Field_number
         type Color = Field_color
-        type Enum<T> = Field_enum<T>
+        type Enum<T extends EnumValue> = Field_enum<T>
         type List<T extends BaseSchema> = Field_list<T>
         type Orbit = Field_orbit
         // type ListExt<T extends BaseSchema> = Field_listExt<T>
@@ -132,7 +133,7 @@ declare global {
         type XNumber = CushySchema<Field_number>
         type XColor = CushySchema<Field_color>
         type XList<T extends BaseSchema> = CushySchema<Field_list<T>>
-        type XListExt<T extends BaseSchema> = SListExt<T>
+        type XListExt<T extends BaseSchema> = CushySchema<ListExt<T>>
         type XButton<T> = CushySchema<Field_button<T>>
         type XSeed = CushySchema<Field_seed>
         type XMatrix = CushySchema<Field_matrix>
@@ -158,7 +159,7 @@ declare global {
         type XMarkdown = CushySchema<Field_markdown>
 
         type XPrompt = CushySchema<Field_prompt>
-        type XEnum<T> = CushySchema<Field_enum<T>>
+        type XEnum<T extends EnumValue> = CushySchema<Field_enum<T>>
         type XOrbit = CushySchema<Field_orbit>
         type XImage = CushySchema<Field_image>
         type XCustom<T> = CushySchema<Field_custom<T>>
@@ -245,9 +246,9 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_color>(Field_color, config)
     }
 
-    colorV2(config: Field_string_config = {}): X.XString {
-        return new CushySchema<Field_string>(Field_string, { inputType: 'color', ...config })
-    }
+    // colorV2(config: Field_string_config = {}): X.XString {
+    //     return new CushySchema<Field_string>(Field_string, { inputType: 'color', ...config })
+    // }
 
     matrix(config: Field_matrix_config): X.XMatrix {
         return new CushySchema<Field_matrix>(Field_matrix, config)
@@ -348,115 +349,119 @@ export class CushySchemaBuilder implements IBuilder {
         return mkShapeSchema(simpleBuilder)
     }
 
-    timeline<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
-        return listExt(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Timeline })
+    // #region ListExt
+    timeline<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
+        // 🔴
+        // @ts-ignore
+        return ListExt.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Timeline })
     }
 
-    regional<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
-        return listExt(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
+    regional<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
+        // 🔴
+        // @ts-ignore
+        return ListExt.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
     }
 
-    listExt<T extends BaseSchema>(sub: Field_listExt_config<T>): SListExt<T> {
-        return listExt(simpleBuilder, sub)
+    listExt<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
+        return ListExt.getSchema(simpleBuilder, sub)
     }
 
     // SELECT ONE
-    private _sob = new SelectOneBuilder()
-    selectOne: SelectOneBuilder['selectOne'] = this._sob.selectOne.bind(this._sob)
-    selectOneString: SelectOneBuilder['selectOneString'] = this._sob.selectOneString.bind(this._sob)
-    selectOneOption: SelectOneBuilder['selectOneOption'] = this._sob.selectOneOption.bind(this._sob)
-    selectOneOptionFn: SelectOneBuilder['selectOneOptionFn'] = this._sob.selectOneOptionFn.bind(this._sob)
-    selectOneOptionValue: SelectOneBuilder['selectOneOptionValue'] = this._sob.selectOneOptionValue.bind(this._sob)
-    selectOneOptionId: SelectOneBuilder['selectOneOptionId'] = this._sob.selectOneOptionId.bind(this._sob)
+    // private _sob = new SelectOneBuilder()
+    // selectOne: SelectOneBuilder['selectOne'] = this._sob.selectOne.bind(this._sob)
+    // selectOneString: SelectOneBuilder['selectOneString'] = this._sob.selectOneString.bind(this._sob)
+    // selectOneOption: SelectOneBuilder['selectOneOption'] = this._sob.selectOneOption.bind(this._sob)
+    // selectOneOptionFn: SelectOneBuilder['selectOneOptionFn'] = this._sob.selectOneOptionFn.bind(this._sob)
+    // selectOneOptionValue: SelectOneBuilder['selectOneOptionValue'] = this._sob.selectOneOptionValue.bind(this._sob)
+    // selectOneOptionId: SelectOneBuilder['selectOneOptionId'] = this._sob.selectOneOptionId.bind(this._sob)
 
-    // SELECT MANY
-    private _smb = new SelectManyBuilder()
-    selectMany: SelectManyBuilder['selectMany'] = this._smb.selectMany.bind(this._smb)
-    selectManyStrings: SelectManyBuilder['selectManyString'] = this._smb.selectManyString.bind(this._smb)
-    selectManyOptions: SelectManyBuilder['selectManyOptions'] = this._smb.selectManyOptions.bind(this._smb)
-    selectManyOptionIds: SelectManyBuilder['selectManyOptionIds'] = this._smb.selectManyOptionIds.bind(this._smb)
-    selectManyOptionValues: SelectManyBuilder['selectManyOptionValues'] = this._smb.selectManyOptionValues.bind(this._smb)
+    // // SELECT MANY
+    // private _smb = new SelectManyBuilder()
+    // selectMany: SelectManyBuilder['selectMany'] = this._smb.selectMany.bind(this._smb)
+    // selectManyStrings: SelectManyBuilder['selectManyString'] = this._smb.selectManyString.bind(this._smb)
+    // selectManyOptions: SelectManyBuilder['selectManyOptions'] = this._smb.selectManyOptions.bind(this._smb)
+    // selectManyOptionIds: SelectManyBuilder['selectManyOptionIds'] = this._smb.selectManyOptionIds.bind(this._smb)
+    // selectManyOptionValues: SelectManyBuilder['selectManyOptionValues'] = this._smb.selectManyOptionValues.bind(this._smb)
 
     // Dynamic
 
-    /**
-     * Allow to instanciate a field early, so you can re-use it in multiple places
-     * or access it's instance to dynamically change some other field schema.
-     *
-     * @since 2024-06-27
-     * @stability unstable
-     */
-    with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
-        /** the schema of the field you'll want to re-use the in second part */
-        injected: SCHEMA1,
-        children: (shared: SCHEMA1['$Field']) => SCHEMA2,
-    ): X.XLink<SCHEMA1, SCHEMA2> {
-        return new CushySchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
-    }
+    // /**
+    //  * Allow to instanciate a field early, so you can re-use it in multiple places
+    //  * or access it's instance to dynamically change some other field schema.
+    //  *
+    //  * @since 2024-06-27
+    //  * @stability unstable
+    //  */
+    // with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
+    //     /** the schema of the field you'll want to re-use the in second part */
+    //     injected: SCHEMA1,
+    //     children: (shared: SCHEMA1['$Field']) => SCHEMA2,
+    // ): X.XLink<SCHEMA1, SCHEMA2> {
+    //     return new CushySchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
+    // }
 
-    linked<T extends Field>(field: T): X.XShared<T> {
-        return new CushySchema<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
-    }
+    // linked<T extends Field>(field: T): X.XShared<T> {
+    //     return new CushySchema<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
+    // }
 
-    /** see also: `fields` for a more practical api */
-    group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new CushySchema<Field_group<T>>(Field_group, config) as any
-    }
+    // /** see also: `fields` for a more practical api */
+    // group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+    //     return new CushySchema<Field_group<T>>(Field_group, config) as any
+    // }
 
-    /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new CushySchema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
-    }
+    // /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
+    // column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+    //     return new CushySchema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
+    // }
 
-    /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-        return new CushySchema<Field_group<T>>(Field_group, {
-            border: false,
-            label: false,
-            collapsed: false,
-            layout: 'H',
-            ...config,
-        }) as any
-    }
+    // /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
+    // row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+    //     return new CushySchema<Field_group<T>>(Field_group, {
+    //         border: false,
+    //         label: false,
+    //         collapsed: false,
+    //         layout: 'H',
+    //         ...config,
+    //     }) as any
+    // }
 
-    /** simpler way to create `group` */
-    fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
-        return new CushySchema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
-    }
+    // /** simpler way to create `group` */
+    // fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
+    //     return new CushySchema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
+    // }
 
-    choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
-        return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, ...config })
-    }
+    // choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
+    //     return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, ...config })
+    // }
 
-    choices<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
-        return new CushySchema<Field_choices<T>>(Field_choices, { multi: true, ...config })
-    }
+    // choices<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
+    //     return new CushySchema<Field_choices<T>>(Field_choices, { multi: true, ...config })
+    // }
 
-    choiceV2<T extends { [key: string]: BaseSchema }>(
-        items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ): X.XChoice<T> {
-        return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
-    }
+    // choiceV2<T extends { [key: string]: BaseSchema }>(
+    //     items: Field_choices_config<T>['items'],
+    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
+    // ): X.XChoice<T> {
+    //     return new CushySchema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
+    // }
 
-    choicesV2<T extends { [key: string]: BaseSchema }>(
-        items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-    ): X.XChoices<T> {
-        return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
-    }
+    // choicesV2<T extends { [key: string]: BaseSchema }>(
+    //     items: Field_choices_config<T>['items'],
+    //     config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
+    // ): X.XChoices<T> {
+    //     return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
+    // }
 
-    /** simple choice alternative api */
-    tabs<T extends { [key: string]: BaseSchema }>(
-        items: Field_choices_config<T>['items'],
-        config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-    ): X.XChoices<T> {
-        return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
-    }
-
-    empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
-        return new CushySchema<Field_group<NO_PROPS>>(Field_group, config)
-    }
+    // /** simple choice alternative api */
+    // tabs<T extends { [key: string]: BaseSchema }>(
+    //     items: Field_choices_config<T>['items'],
+    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
+    // ): X.XChoices<T> {
+    //     return new CushySchema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
+    // }
+    // empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
+    //     return new CushySchema<Field_group<NO_PROPS>>(Field_group, config)
+    // }
 
     // optional wrappers
     optional<T extends BaseSchema>(p: Field_optional_config<T>): X.XOptional<T> {

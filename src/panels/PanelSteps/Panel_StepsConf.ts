@@ -10,7 +10,7 @@ export const PanelStepsConf = cushyFactory.document(
                 maxItem: ui.int({ default: 10, min: 1, max: 100, step: 1 }),
                 appSize: ui.remSize(),
                 // outputSize: ui.remSize(),
-                show: ui.choicesV2(
+                show: ui.choices(
                     {
                         title: ui.empty(),
                         app: ui.empty({ label: 'App illustration' }),
@@ -23,8 +23,8 @@ export const PanelStepsConf = cushyFactory.document(
                     {
                         default: {
                             title: true,
-                            app: false,
-                            draft: false,
+                            app: undefined,
+                            draft: undefined,
                             status: true,
                             outputs: true,
                             executionTime: true,
@@ -56,7 +56,7 @@ type UI_outputFilter = X.XChoices<{
 }>
 
 function ui_outputFilter(ui: CushySchemaBuilder): UI_outputFilter {
-    return ui.choicesV2(
+    return ui.choices(
         {
             MediaTextL: ui.empty(),
             MediaImageL: ui.empty(),

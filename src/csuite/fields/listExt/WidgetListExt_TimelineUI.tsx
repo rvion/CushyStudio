@@ -1,17 +1,17 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { SListExt } from './WidgetListExt'
+import type { ListExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends BaseSchema>(p: {
     //
-    field: SListExt<any>['$Field']
+    field: ListExt<any>['$Field']
 }) {
     //
     const scale = 20
     const TL = p.field
     const value = TL.value
-    const entries = TL.fields.items.subFields.map((i) => i.fields)
+    const entries = TL.fields.items.childrenActive.map((i) => i.fields)
     const uiSt = useLocalObservable(() => ({
         ix: 0,
     }))

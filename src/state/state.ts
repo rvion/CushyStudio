@@ -498,14 +498,8 @@ export class STATE {
 
     displacementConf = cushyFactory.fields(
         (form) => ({
-            camera: form.choice({
-                appearance: 'tab',
-                items: { orbit: form.group(), fly: form.group({}) /* wasd:  form.group({}) */ },
-            }),
-            menu: form.choice({
-                appearance: 'tab',
-                items: { menu: form.group(), left: form.group(), right: form.group({}) },
-            }),
+            camera: form.choice({ orbit: form.group(), fly: form.group({}) }, { appearance: 'tab' }),
+            menu: form.choice({ menu: form.group(), left: form.group(), right: form.group({}) }, { appearance: 'tab' }),
             displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
             removeBackground: form.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),

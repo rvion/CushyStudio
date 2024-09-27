@@ -1,5 +1,4 @@
 import { cushyFactory } from '../../controls/Builder'
-import { FieldPresenterCushyUI } from '../../csuite-cushy/shells/PresenterCushy'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const interfaceConf = cushyFactory.document(
@@ -118,32 +117,26 @@ export const interfaceConf = cushyFactory.document(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenterCushyUI fieldName='' field={f.toolBarIconSize} />
+                                <f.toolBarIconSize.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenterCushyUI fieldName='' field={f.widgetHeight} />
-                                <FieldPresenterCushyUI fieldName='' field={f.inputHeight} />
-                                <FieldPresenterCushyUI fieldName='' field={f.insideHeight} />
+                                <f.widgetHeight.UI LabelText={null} />
+                                <f.inputHeight.UI LabelText={null} />
+                                <f.insideHeight.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenterCushyUI fieldName='' field={f.tooltipDelay} />
+                                <f.tooltipDelay.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenterCushyUI fieldName='' field={f.tabSetEnableSingleTabStretch} label={false} />
-                                <FieldPresenterCushyUI fieldName='' field={f.useDefaultCursorEverywhere} label={false} />
+                                <f.tabSetEnableSingleTabStretch.UI LabelText={null} />
+                                <f.useDefaultCursorEverywhere.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                {
-                                    <FieldPresenterCushyUI
-                                        fieldName='// What does this even do lol, why is it mandatory?'
-                                        field={f.showToggleButtonBox}
-                                        label='Show'
-                                    />
-                                }
-                                {f.showWidgetUndo.renderWithLabel({ fieldName: '' })}
-                                {f.showWidgetFoldButtons.renderWithLabel({ fieldName: 'showWidgetFoldButtons' })}
-                                {f.showWidgetMenu.renderWithLabel({ fieldName: '' })}
-                                {f.showWidgetDiff.renderWithLabel({ fieldName: '' })}
+                                {<f.showToggleButtonBox.UI LabelText='Show' />}
+                                {f.showWidgetUndo.UI({ LabelText: null })}
+                                {f.showWidgetFoldButtons.UI({ LabelText: 'showWidgetFoldButtons' })}
+                                {f.showWidgetMenu.UI({ LabelText: null })}
+                                {f.showWidgetDiff.UI({ LabelText: null })}
                             </div>
                         </div>
                     )

@@ -1,3 +1,4 @@
+import type { EnumValue } from '../models/ComfySchema'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -9,7 +10,7 @@ import { CushySchema } from './Schema'
 
 // 🔴 showcase how nullability work without optional
 
-export type IEnumBuilderOptFn<T> = (
+export type IEnumBuilderOptFn<T extends EnumValue> = (
     config?: Omit<Field_enum_config<T>, 'enumName'> & { startActive?: boolean },
 ) => X.XOptional<X.XEnum<T>>
 export type IEnumBuilderOpt = {

@@ -97,9 +97,7 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
 
         const enumForm = {
             choice: ui.fields({
-                enumSelection: ui.choice({
-                    items: Object.fromEntries(Object.entries(ui.enum).map(([key]) => [key, ui.group()])),
-                }),
+                enumSelection: ui.choice(Object.fromEntries(Object.entries(ui.enum).map(([key]) => [key, ui.group()]))),
             }),
         }
 
@@ -108,14 +106,8 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
         }
 
         const choiceForm = {
-            choice: ui.choice({
-                label: 'Choice',
-                items: { choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() },
-            }),
-            choices: ui.choices({
-                label: 'Choices',
-                items: { choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() },
-            }),
+            choice: ui.choice({ choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() }, { label: 'Choice' }),
+            choices: ui.choices({ choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() }, { label: 'Choices' }),
         }
 
         return {
@@ -247,48 +239,41 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                     columnExamples: ui.group({
                         items: {
                             column: ui.column({
-                                items: {
-                                    top: ui.float(),
-                                    middle: ui.float(),
-                                    bottom: ui.float(),
-                                },
+                                top: ui.float(),
+                                middle: ui.float(),
+                                bottom: ui.float(),
                             }),
-                            column2: ui.column({
-                                border: true,
-                                justifyLabel: false,
-                                items: {
+                            column2: ui.column(
+                                {
                                     top: ui.float({ label: false }),
                                     middle: ui.float({ label: false }),
                                     bottom: ui.float({ label: false }),
                                 },
-                            }),
+                                { border: true, justifyLabel: false },
+                            ),
                         },
                     }),
                     rowExamples: ui.group({
                         items: {
                             row: ui.row({
-                                items: {
-                                    left: ui.float(),
-                                    center: ui.float(),
-                                    right: ui.float(),
-                                },
+                                left: ui.float(),
+                                center: ui.float(),
+                                right: ui.float(),
                             }),
-                            row2: ui.row({
-                                border: true,
-                                items: {
+                            row2: ui.row(
+                                {
                                     left: ui.float({ label: false }),
                                     center: ui.float({ label: false }),
                                     right: ui.float({ label: false }),
                                 },
-                            }),
+                                { border: true },
+                            ),
                         },
                     }),
                 },
             }),
 
-            test: ui.choice({
-                items: choiceForm,
-            }),
+            test: ui.choice(choiceForm),
         }
     },
     {

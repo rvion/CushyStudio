@@ -9,7 +9,7 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
-// #region CONFIG TYPE
+// #region $Config
 export type Field_markdown_config = FieldConfig<
     {
         markdown: string | ((self: Field_markdown) => string)
@@ -18,16 +18,16 @@ export type Field_markdown_config = FieldConfig<
     Field_markdown_types
 >
 
-// #region SERIAL TYPE
+// #region $Serial
 export type Field_markdown_serial = FieldSerial<{
     $: 'markdown'
 }>
 
-// #region VALUE TYPE
+// #region $Value
 export type Field_markdown_value = { $: 'markdown' }
 export type Field_markdown_unchecked = Field_markdown_value
 
-// #region $FieldTypes
+// #region $Types
 export type Field_markdown_types = {
     $Type: 'markdown'
     $Config: Field_markdown_config

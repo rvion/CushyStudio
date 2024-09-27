@@ -253,7 +253,7 @@ export class Field_selectOne<
         if (this.defaultKey !== undefined) this.selectedId = this.defaultKey
     }
 
-    get query() {
+    get query(): string {
         return this.serial.query ?? ''
     }
 

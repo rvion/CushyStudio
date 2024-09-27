@@ -115,13 +115,12 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <draftContext.Provider value={draft} key={draft.id}>
             <DraftHeaderUI
                 draft={draft}
-                children={justify.root.renderWithLabel({
-                    UIActionMenu: false,
-                    UISchemaExtra: false,
-                    UIUndo: false,
-                    justifyLabel: false,
-                    className: 'ml-auto',
-                    fieldName: '_',
+                children={justify.root.UI({
+                    classNameForShell: 'ml-auto',
+                    MenuBtn: false,
+                    Extra: false,
+                    UndoBtn: false,
+                    LabelText: false,
                 })}
             />
             {fpath.existsSync ? null : (

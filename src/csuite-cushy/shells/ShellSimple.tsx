@@ -1,18 +1,23 @@
-import type { Presenter } from '../presenters/Presenter'
-import type { PresenterFn } from './FieldPresenterProps'
+import type { CompiledSlotList } from '../presenters/Presenter'
 
 import { observer } from 'mobx-react-lite'
 
 // SHELL SIMPLE
-export const ShellSimpleUI = observer(function ShellSimple(p: Presenter) {
+export const ShellSimpleUI = observer(function ShellSimple(p: CompiledSlotList) {
     const field = p.field
+    const utils = p.presenter.utils
     return (
         <div>
             <div tw='row'>
-                {p.LabelText && <p.LabelText field={field} />}
-                {p.Header && <p.Header field={field} />}
+                {utils.renderFCOrNode(p.LabelText, { field })}
+                {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+                    className: p.classNameAroundBodyAndHeader ?? undefined,
+                    field,
+                })}
             </div>
-            {p.Body && <p.Body field={field} />}
+            {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+                className: p.classNameAroundBodyAndHeader ?? undefined,
+            })}
         </div>
     )
 })

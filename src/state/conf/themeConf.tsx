@@ -7,8 +7,8 @@ import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
-    base: X.XString
-    appbar: X.XString
+    base: X.XColor
+    appbar: X.XColor
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>

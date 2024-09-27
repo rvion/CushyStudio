@@ -185,7 +185,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: WidgetW
                                 <field.schema.LabelExtraUI field={field} />
                             )}
                             {(p.showWidgetUndo ?? csuite.showWidgetUndo) && <WidgetUndoChangesButtonUI field={originalField} />}
-                            {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI widget={field} />}
+                            {(p.showWidgetMenu ?? csuite.showWidgetMenu) && <WidgetMenuUI field={field} />}
                         </>
                     )}
                 </WidgetHeaderContainerUI>

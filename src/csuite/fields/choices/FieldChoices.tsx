@@ -20,6 +20,8 @@ import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
 type ActiveBranchesByName<T> = { [key in keyof T]?: true }
+// type ActiveBranchesByNameDefault<T> = { [key in keyof T]?: true }
+// type ActiveBranchesByNameDefault<T> = { [key in keyof T]?: boolean }
 
 // #region CONFIG TYPE
 export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfig<
@@ -39,6 +41,7 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
          * // | boolean 🔴 TODO: support boolean default for "ALL ON", or "ALL OFF"
          */
         default?: ActiveBranchesByName<T> | keyof T
+        // TODO: add defaultExhaustive so we can easilly force ourselved to handle all cases.
 
         // UI stuff----------------------
         /** placeholder to display in widget that support placeholders */
@@ -329,7 +332,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
      * as of 2024-09-11, choices eagerly dispose de-activated branches,
      * so it's active children fields are just the activated one
      */
-    get childrenAll(): Field[] {
+    get childrenAll(): this['$Child']['$Field'][] {
         return Object.values(this.enabledBranches)
     }
 
@@ -350,7 +353,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         })
     }
 
-    protected checkConfigValidity() {
+    protected checkConfigValidity(): Problem_Ext[] {
         // INVARIANT CHECKING -----------------------------------------------------------------------------
         const OUT: Problem_Ext[] = []
         const config = this.config
@@ -368,6 +371,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         ) {
             OUT.push('❌ ChoicesWidget is single but default sets multiple branches')
         }
+        return OUT
     }
 
     /**

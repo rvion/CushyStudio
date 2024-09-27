@@ -1,26 +1,19 @@
-import type { Field } from '../../csuite/model/Field'
-import type { Presenter } from '../presenters/Presenter'
-import type { PresenterSlots } from '../presenters/PresenterSlots'
+import type { CompiledSlotList } from '../presenters/Presenter'
 
 import { observer } from 'mobx-react-lite'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
+import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from './_isFC'
 
-export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(
-    p: {
-        //
-        presenter: Presenter
-        field: Field
-    } & PresenterSlots,
-) {
-    const { field, presenter } = p
-    if (p.field.isHidden && !p.showHidden?.()) return null
+export const ShellMobileUI = observer(function ShellMobile(p: CompiledSlotList) {
+    const { field } = p
+    if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 
     const WUI = (
         <Frame
-            className={p.className}
+            className={p.classNameForShell ?? undefined}
             tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0']}
             base={field.background}
             border={field.border}
@@ -28,40 +21,33 @@ export const FieldPresenterMobileUI = observer(function FieldPresenterMobile(
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
             <WidgetHeaderContainerUI field={field}>
-                {p.Indent && <p.Indent tw='pr-2' depth={field.depth} />}
+                {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.depth} /> : p.Indent}
                 <div tw='flex-1'>
                     <div tw='flex flex-1'>
-                        {p.DragKnob && <p.DragKnob />}
-                        {p.Caret && <p.Caret placeholder={false} field={field} />}
-                        {p.Icon && <p.Icon field={field} tw='mr-1' />}
-                        {p.LabelText && <p.LabelText field={field} />}
-                        {p.DebugID && <p.DebugID field={field} />}
-                        {p.Presets && <p.Presets field={field} />}
+                        {renderFCOrNode(p.DragKnob, {})}
+                        {renderFCOrNode(p.Caret, { placeholder: false, field })}
+                        {renderFCOrNode(p.Icon, { field, className: 'mr-1' })}
+                        {renderFCOrNode(p.LabelText, { field })}
+                        {renderFCOrNode(p.DebugID, { field })}
+                        {renderFCOrNode(p.Presets, { field })}
                     </div>
                     <div tw='flex flex-1'>
-                        {p.Toogle && <p.Toogle field={field} />}
-                        {p.Header && p.ContainerForHeader && (
-                            <p.ContainerForHeader
-                                tw={[p.classNameAroundBodyAndHeader, p.classNameAroundBodyAndHeader]}
-                                field={field}
-                            >
-                                <p.Header field={field} />
-                            </p.ContainerForHeader>
-                        )}
+                        {_isFC(p.Toogle) ? <p.Toogle field={field} /> : p.Toogle}
+                        {renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+                            className: p.classNameAroundBodyAndHeader ?? undefined,
+                            field,
+                        })}
                     </div>
                 </div>
             </WidgetHeaderContainerUI>
 
-            {/* BODY  ------------------------------------------------------------------------------ */}
-            {p.Body && p.ContainerForBody && (
-                <p.ContainerForBody //
-                    className={p.classNameAroundBodyAndHeader}
-                    children={<p.Body field={field} />}
-                />
-            )}
+            {/* BODY  */}
+            {renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+                className: p.classNameAroundBodyAndHeader ?? undefined,
+            })}
 
-            {/* ERRORS  ------------------------------------------------------------------------------ */}
-            {p.Errors && <p.Errors field={field} />}
+            {/* ERRORS  */}
+            {renderFCOrNode(p.Errors, { field })}
         </Frame>
     )
 

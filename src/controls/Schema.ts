@@ -81,6 +81,7 @@ export interface CushySchemaᐸ_ᐳ extends HKT<Field> {
     Choices: HKSimpleChoicesAlias
 
     Group: HKSimpleGroupAlias
+    Empty: X.XEmpty
 
     Size: X.XSize
     Seed: X.XSeed
@@ -124,10 +125,12 @@ interface HKSimpleChoicesAlias extends HKT<SchemaDict> {
     type: X.XChoices<this['__1']>
 }
 
+// #region group
 interface HKSimpleGroupAlias extends HKT<SchemaDict> {
     type: X.XGroup<this['__1']>
 }
 
+// #region date
 interface HKSimpleDateAlias extends HKT<boolean> {
     type: X.XDate<this['__1']>
 }
@@ -138,6 +141,7 @@ interface HKSimpleDateTimeZonedAlias extends HKT<boolean> {
     type: X.XDateTimeZoned<this['__1']>
 }
 
+// #region button
 interface HKSimpleButtonAlias extends HKT<any> {
     type: X.XButton<this['__1']>
 }

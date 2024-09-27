@@ -23,7 +23,7 @@ export type Field_matrix_cell = {
     value: boolean
 }
 
-// CONFIG
+// #region $Config
 export type Field_matrix_config = FieldConfig<
     {
         default?: { row: string; col: string }[]
@@ -33,18 +33,18 @@ export type Field_matrix_config = FieldConfig<
     Field_matrix_types
 >
 
-// SERIAL
+// #region $Serial
 export type Field_matrix_serial = FieldSerial<{
     $: 'matrix'
     /** only contains cells that are ONs */
     selected?: Field_matrix_cell[]
 }>
 
-// VALUE
+// #region $Value
 export type Field_matrix_value = Field_matrix_cell[]
 export type Field_matrix_unchecked = Field_matrix_value | undefined
 
-// TYPES
+// #region $Types
 export type Field_matrix_types = {
     $Type: 'matrix'
     $Config: Field_matrix_config
@@ -55,12 +55,14 @@ export type Field_matrix_types = {
     $Child: never
 }
 
-// STATE
+// #region State
 export class Field_matrix extends Field<Field_matrix_types> {
+    // #region Static
     static readonly type: 'matrix' = 'matrix'
     static readonly emptySerial: Field_matrix_serial = { $: 'matrix' }
     static migrateSerial(): undefined {}
 
+    // #region Ctor
     constructor(
         //
         repo: Repository,
@@ -77,9 +79,11 @@ export class Field_matrix extends Field<Field_matrix_types> {
         })
     }
 
+    // #region UI
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
 
+    // #region Serial
     protected setOwnSerial(next: Field_matrix_serial): void {
         this.assignNewSerial(next)
 

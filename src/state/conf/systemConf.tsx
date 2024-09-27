@@ -1,5 +1,4 @@
 import { cushyFactory } from '../../controls/Builder'
-import { FieldPresenterCushyUI } from '../../csuite-cushy/shells/PresenterCushy'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const systemConf = cushyFactory.document(
@@ -39,7 +38,7 @@ export const systemConf = cushyFactory.document(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <FieldPresenterCushyUI fieldName='' field={f.externalEditor} />
+                                <f.externalEditor.UI LabelText={null} />
                             </div>
                         </div>
                     )

@@ -43,6 +43,7 @@ export type NodeOutputExt = {
 }
 
 export type EnumValue = string | boolean | number
+
 export type EnumInfo = {
     // enumNameInComfy: string
     enumNameInCushy: EnumName

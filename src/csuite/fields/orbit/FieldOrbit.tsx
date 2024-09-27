@@ -54,6 +54,7 @@ export type Field_orbit_types = {
     $Value: Field_orbit_value
     $Unchecked: Field_orbit_unchecked
     $Field: Field_orbit
+    $Child: never
 }
 
 // STATE
@@ -100,10 +101,6 @@ export class Field_orbit extends Field<Field_orbit_types> {
         }
 
         this.assignNewSerial(next)
-
-        this.assignNewSerial(next)
-        // this.serial.elevation = serial?.elevation ?? this.defaultElevation
-        // this.serial.azimuth = serial?.azimuth ?? this.defaultAzimuth
     }
 
     // #region UI
@@ -112,6 +109,9 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
     // #region Validation
     get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
     }
 

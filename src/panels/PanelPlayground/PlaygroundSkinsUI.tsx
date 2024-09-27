@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+// import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -15,6 +15,10 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                     y: ui.int(),
                 })
                 .list({ min: 3 }),
+            x: ui.choice({
+                a: ui.string(),
+                b: ui.int(),
+            }),
         }),
     )
     return (
@@ -27,11 +31,12 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                     </Frame>
                 </Frame>
                 <Frame border base expand>
-                    {xx.show(({ fields: f }) => [`# hello\n\nI love the 'a' field`, f.a, f.a, f.a])}
-                    {xx.show((f) => ['a', 'b', 'b', 'b'])}
+                    {xx.render({})}
+                    {/* {xx.render(({ fields: f }) => [`# hello\n\nI love the 'a' field`, f.a, f.a, f.a])} */}
+                    {/* {xx.render((f) => ['a', 'b', 'b', 'b'])} */}
                 </Frame>
                 <Frame border base expand>
-                    {xx.show(['a', 'b', (f): Maybe<FC<any>> => f.Arr.at(1)?.renderFieldsSubset(['x', 'x'])])}
+                    {/* {xx.render(['a', 'b', (f): Maybe<FC<any>> => f.Arr.at(1)?.renderFieldsSubset(['x', 'x'])])} */}
                 </Frame>
             </Frame>
         </Frame>

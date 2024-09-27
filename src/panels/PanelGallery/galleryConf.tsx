@@ -7,7 +7,7 @@ export type GalleryConf = FieldGroup<{
     defaultSort: X.XSelectOne_<'updatedAt' | 'createdAt'>
     gallerySize: X.XNumber
     galleryMaxImages: X.XNumber
-    galleryBgColor: X.XOptional<X.XString>
+    galleryBgColor: X.XOptional<X.XColor>
     galleryHoverOpacity: X.XNumber
     showPreviewInFullScreen: X.XBool
     onlyShowBlurryThumbnails: X.XBool

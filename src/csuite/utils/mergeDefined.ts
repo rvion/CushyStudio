@@ -1,3 +1,6 @@
+// would be awesome if we could combine getters
+// too; so we could pass not-dereferenced values
+// and still have them
 export const mergeDefined = <A>(a: A, ...bs: A[]): A => {
     const out: A = { ...a }
 

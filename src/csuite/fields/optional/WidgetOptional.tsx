@@ -1,5 +1,5 @@
+import type { CompiledSlotList } from '../../../csuite-cushy/presenters/Presenter'
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldRenderProps } from '../../model/FieldShell'
 import type { Field_optional } from './FieldOptional'
 
 import { observer } from 'mobx-react-lite'
@@ -22,14 +22,11 @@ import { observer } from 'mobx-react-lite'
 export const WidgetOptionalUI = observer(function WidgetOptional({
     //
     field,
-    shell: Shell,
-    ShellProps,
-}: FieldRenderProps<Field_optional<BaseSchema>>) {
+}: CompiledSlotList<Field_optional<BaseSchema>>) {
     const child = field.child
     const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
-
     return child.render({
         classNameAroundBodyAndHeader: extraClass,
-        slotToggle: field.UIToggle,
+        Toogle: field.UIToggle,
     })
 })

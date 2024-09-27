@@ -12,7 +12,7 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
         b
             .fields({
                 a: b.percent({ suffix: '% of banana' }),
-                b: b.string({}).extend((self) => ({
+                b: b.string({}).useMixin((self) => ({
                     UIWithFancyBorder: (): JSX.Element => <Frame border={30} tw='p-2' children={self.header()} />,
                     UIWithSuperFancyBorder: (): JSX.Element => <Frame border={30} tw='p-8' children={self.header()} />,
                     UIWithSuperFancyBorder2: (p: { size: 'big' | 'small' }): JSX.Element => (
@@ -24,7 +24,7 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
                     d2: b.string(),
                 }),
             })
-            .extend((self) => {
+            .useMixin((self) => {
                 return {
                     v1: (): JSX.Element => {
                         const { a, b } = field.fields

@@ -1,3 +1,10 @@
+💬 2024-09-27 TYPE PERF:
+    ☐ regex: \.serial\.[a-zA-Z0-9]+\s=[\s\n]
+    ☐ regex: setOwnSerial(serial
+    ☐ closed union for types
+    ☐ only use FieldTypes instead of schema / field => will divide by 2 the number of pbms
+
+
 2024-08-22:
     ☐ migrations <-- prio
     ☐ hoist filters to views
