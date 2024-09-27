@@ -8,6 +8,7 @@ import { getDBStats } from '../getDBStats'
 
 export const DBStatsUI = observer(function DBStats(p: {}) {
     const stats = getDBStats(cushy.db)
+
     const byCount = Object.entries(stats)
         .map(([k, v]) => ({ name: k, size: v.size, count: v.count }))
         .sort((a, b) => b.count - a.count)

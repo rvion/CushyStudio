@@ -130,12 +130,12 @@ export class LiveDB {
             // console.log('🟢 TABLE INITIALIZED')
         }
 
-    _getSize = (tabeName: string): number => {
+    _getSize = (tableName: string): number => {
         // 1️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1226 (allow modern electron)
         // 2️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1228 (allow size)
-        return -1
-        // ⏸️ const stmt = this.db.prepare(`select page_count * page_size as size from pragma_page_count('${tabeName}')`)
-        // ⏸️ return (stmt.get() as { size: number }).size
+        const stmt = this.db.prepare(`SELECT SUM("pgsize") as size FROM "dbstat" WHERE name='${tableName}';`)
+        const out = stmt.get() as { size: number }
+        return out.size
     }
 
     _getCount = (tabeName: string): number => {
