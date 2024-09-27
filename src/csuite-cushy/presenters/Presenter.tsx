@@ -54,7 +54,7 @@ import { widgetsCatalog } from './widgets-catalog'
 // }
 
 const CushyRender = ({ field, p }: { field: Field; p: RENDERER.FieldRenderArgs<any> }): ReactNode => {
-    const presenter = usePresenter() ?? new Presenter()
+    const presenter = usePresenterOrNull() ?? new Presenter()
     return presenter.render(field, p)
 }
 

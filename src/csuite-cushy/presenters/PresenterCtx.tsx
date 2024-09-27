@@ -10,6 +10,10 @@ export const usePresenter = (): Presenter => {
     return val
 }
 
+export const usePresenterOrNull = (): Presenter | null => {
+    return useContext(PresenterCtx)
+}
+
 // import type { Renderer } from './Renderer'
 
 // import React, { useContext } from 'react'
