@@ -25,7 +25,7 @@
   in the most concise way;
   in other words:
     👉 we need to be able to customize views as fast as possible during UX session with a designer. the overal api should be so smooth that mostly any form/field combination should be easy to express.
-    👉 we must be able to quickly tweak some field anywhere in the tree without having to re-specify the whole from UI.
+    👉 we must be able to quickly tweak some field anywhere in the tree without having to re-specify the whole form UI.
 
     👉👉👉 MOST IMPORTANT POINT
     THE API MUST FOLLOW LANGUAGE DESIGN (DSL) PRINCIPLES:

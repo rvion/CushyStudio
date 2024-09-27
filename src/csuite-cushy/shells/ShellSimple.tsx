@@ -1,9 +1,9 @@
-import type { CompiledSlotList } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Presenter'
 
 import { observer } from 'mobx-react-lite'
 
 // SHELL SIMPLE
-export const ShellSimpleUI = observer(function ShellSimple(p: CompiledSlotList) {
+export const ShellSimpleUI = observer(function ShellSimple(p: CompiledRenderProps) {
     const field = p.field
     const utils = p.presenter.utils
     return (

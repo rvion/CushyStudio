@@ -1,4 +1,4 @@
-import type { CompiledSlotList } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Presenter'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from './_isFC'
 
-export const ShellMobileUI = observer(function ShellMobile(p: CompiledSlotList) {
+export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProps) {
     const { field } = p
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 

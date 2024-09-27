@@ -6,6 +6,7 @@ import type { WidgetLabelTextProps } from '../../csuite/form/WidgetLabelTextUI'
 import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
 import type { WidgetPresetsProps } from '../../csuite/form/WidgetPresets'
 import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
+import type { WidgetToggleProps } from '../../csuite/form/WidgetToggleUI'
 import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
@@ -26,13 +27,12 @@ import { WidgetLabelTextUI } from '../../csuite/form/WidgetLabelTextUI'
 import { WidgetMenuUI } from '../../csuite/form/WidgetMenu'
 import { WidgetPresetsUI } from '../../csuite/form/WidgetPresets'
 import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSummaryUI'
-import { type WidgetToggleProps, WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
+import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
 import { ShellCushyRightUI } from '../shells/ShellCushy'
-import { ShellNoop } from '../shells/ShellNoop'
 import { usePresenter } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
@@ -89,6 +89,14 @@ export class Presenter {
     }
 
     /**
+     * only to avoid multiple extends within same logical function
+     * @internal
+     */
+    protected pushRules(rule_: PresenterRule<Field> | PresenterRule<Field>[]): void {
+        this.rules = Array.isArray(rule_) ? [...this.rules, ...rule_] : [...this.rules, rule_]
+    }
+
+    /**
      * MAIN METHOD TO RENDER A FIELD
      * this method is both for humans (calling render on field root)
      * and for fields rendering their childern
@@ -108,32 +116,29 @@ export class Presenter {
             if (slots_) slots = mergeDefined(slots, slots_)
         }
 
-        // // apply all rules specific to this field
-        // const extraRules = Array.isArray(extraRules_) ? extraRules_ : [extraRules_]
-        // for (const rule of extraRules) {
-        //     const slots_ = rule(field)
-        //     if (slots_) slots = mergeDefined(slots, slots_)
-        // }
+        // apply loval overrides
+        const { children, childrenRule, globalRules, ...slotOverrides } = config
+        slots = mergeDefined(slots, slotOverrides)
+
+        // override body if chidlren is specified
+        if (children != null) {
+            slots.Body = createElement(QuickForm, { field, items: children(field) })
+        }
+
+        // if either childrenRule or globalRules are defined, we need to
+        // fork the renderer for children, adding the new rules to the stack
+        let childPresenter: Presenter | undefined
+        if (childrenRule != null || globalRules != null) {
+            childPresenter
+        }
 
         const Shell = slots.Shell ?? defaultPresenterSlots.Shell
         if (!Shell) throw new Error('Shell is not defined')
 
         // COMPILED
-        const presenterProps: CompiledSlotList<FIELD> = {
-            field,
-            UI: widgetsCatalog,
-            presenter: this,
-            ...slots,
-
-            // 🔴 do we really want to normalize children,
-            // so wrapper doesn't have to take care of it ?
-            // probably not...
-            children:
-                typeof slots.children === 'function' //
-                    ? createElement(QuickForm, { field, items: slots.children(field) })
-                    : slots.children,
-        }
-        if (typeof Shell === 'function') return createElement(Shell, presenterProps as any /* 🔴🔴🔴🔴 */)
+        const UI = widgetsCatalog
+        const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
+        if (typeof Shell === 'function') return createElement(Shell, finalProps as any /* 🔴🔴🔴🔴 */)
         else return Shell
     }
 
@@ -168,7 +173,7 @@ export type FCOrNode<P extends object> = CovariantFC<P> | React.ReactNode
 export interface UISlots<out FIELD extends Field = Field> {
     // 1. Shell
     // can also be used an escape hatch for 100% custom UI
-    /* ⭕️ */ Shell?: FCOrNode<CompiledSlotList<FIELD>>
+    /* ⭕️ */ Shell?: FCOrNode<CompiledRenderProps<FIELD>>
 
     // 2. Direct Slots for this field only
     // heavilly suggested to include in your presenter unless you know what you do
@@ -291,7 +296,7 @@ export interface RenderDSL<out FIELD extends Field> //
     // 1️⃣ for self: UISlots + shell + children
     extends UISlots<FIELD> {
     // alternative to specify body; makes it easy to quickly spawn forms with various layouts
-    children?: ReactNode | CovariantFn1<FIELD, QuickFormContent[]>
+    children?: CovariantFn1<FIELD, QuickFormContent[]>
 
     // 2️⃣ STUFF FOR DIRECT CHILDREN
     // prettier-ignore
@@ -301,12 +306,12 @@ export interface RenderDSL<out FIELD extends Field> //
      * > note 2: the rules are templated on FIELD['$Child']
      */
     childrenRule?:
-        | PresenterRule<Field>[]
-        | CovariantFn1<FIELD, PresenterRule<Field>[]>
-        | RenderDSL<Field>
-    //  | PresenterRule<FIELD['$Child']['$Field']>[]
-    //  | CovariantFn1<FIELD, PresenterRule<FIELD['$Child']['$Field']>[]>
-    //  | PresenterSlots<FIELD['$Child']['$Field']>
+        | PresenterRule<Field >[]
+        | CovariantFn1<FIELD, PresenterRule<Field /* FIELD['$Child']['$Field'] */>[]>
+        // 👇 better one, but boesn't typecheck
+        // 🔴 | PresenterRule<FIELD['$Child']['$Field']>[]
+        // 🔴 | CovariantFn1<FIELD, PresenterRule< FIELD['$Child']['$Field'] >[]>
+        | RenderDSL<FIELD['$Child']['$Field']>
 
     // 3️⃣ STUFF FOR ALL DESCENDANTS
     // prettier-ignore
@@ -327,7 +332,7 @@ export interface RenderDSL<out FIELD extends Field> //
  * this is the final type that is given to your most of your widgets (Shell, Body, ...)
  * it contains context things like `Presenter`, `field`, and `UI catalog`
  */
-export interface CompiledSlotList<out FIELD extends Field = Field> //
+export interface CompiledRenderProps<out FIELD extends Field = Field> //
     /** full list of all slots when applying all the rules. */
     extends UISlots<FIELD> {
     /** presenter */

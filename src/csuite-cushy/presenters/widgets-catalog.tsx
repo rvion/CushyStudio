@@ -1,5 +1,5 @@
 import type { Field } from '../../csuite/model/Field'
-import type { CompiledSlotList, RenderDSL } from './Presenter'
+import type { CompiledRenderProps, RenderDSL } from './Presenter'
 import type { FC } from 'react'
 
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
@@ -9,9 +9,9 @@ import { ShellSimpleUI } from '../shells/ShellSimple'
 
 export const widgetsCatalog: {
     QuickForm: FC<QuickFormProps>
-    ShellSimple: FC<CompiledSlotList>
-    ShellMobile: FC<CompiledSlotList>
-    ShellNoop: FC<CompiledSlotList>
+    ShellSimple: FC<CompiledRenderProps>
+    ShellMobile: FC<CompiledRenderProps>
+    ShellNoop: FC<CompiledRenderProps>
 } = {
     QuickForm: QuickForm,
     ShellSimple: ShellSimpleUI,
