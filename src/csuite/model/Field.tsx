@@ -1587,6 +1587,11 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             this.renderAsForm = this.renderAsForm.bind(this)
             this.render = this.render.bind(this)
             this.Render = this.Render.bind(this)
+            this.UI = this.UI.bind(this)
+            this.renderAsForm = this.renderAsForm.bind(this)
+            this.renderSimple = this.renderSimple.bind(this) // TODO: remove
+            this.renderWithLabel = this.renderWithLabel.bind(this) // TODO: remove
+            this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
 
             this.repo._registerField(this)
             this.ready = true
