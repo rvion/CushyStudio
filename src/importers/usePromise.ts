@@ -3,7 +3,7 @@ import { DependencyList, useMemo } from 'react'
 
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 
-export const usePromise = (fn: () => Promise<any>, deps: DependencyList) => {
+export const usePromise = <T>(fn: () => Promise<T>, deps: DependencyList = []): ManualPromise<T> => {
     return useMemo(() => {
         const p = new ManualPromise()
         fn().then(p.resolve).catch(p.reject)
