@@ -138,8 +138,8 @@ export class Presenter {
         // COMPILED
         const UI = widgetsCatalog
         const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
-        if (typeof Shell === 'function') return createElement(Shell, finalProps as any /* 🔴🔴🔴🔴 */)
-        else return Shell
+
+        return renderFCOrNode(Shell, finalProps)
     }
 
     utils = {
