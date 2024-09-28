@@ -89,7 +89,7 @@ export class Library {
         this.watcher = cache.watcher = new Watcher('library', {
             recursive: true,
             depth: 20,
-            ignore: (t) => {
+            ignore: (t): boolean => {
                 const baseName = path.basename(t)
                 return shouldSkip_duringWatch(baseName)
             },
