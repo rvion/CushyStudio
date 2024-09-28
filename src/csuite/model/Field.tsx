@@ -419,14 +419,19 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
             skipAutoFix = true
         }
 
-        // #region 1.2. case not an object => use `_emptySerial`
+        // #region 1.2. case `{}` => use `_emptySerial`
+        else if (isEmptyObject(serialish)) {
+            serial = this._emptySerial
+        }
+
+        // #region 1.3. case not an object => use `_emptySerial`
         else if (typeof serialish !== 'object') {
             this.recordSerialProblem(`serial is not an object, using _emptySerial`, serialish)
             serial = this._emptySerial
             skipAutoFix = true
         }
 
-        // #region 1.3. case object => use it
+        // #region 1.4. case object => use it
         else {
             serial = serialish
         }
@@ -1683,4 +1688,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         if (this.config.label === false) return '' // not sure about the config.label doc
         return this.config.label
     }
+}
+
+function isEmptyObject(obj: any): boolean {
+    if (obj == null) return true
+    if (typeof obj !== 'object') return false
+    return Object.keys(obj).length === 0
 }
