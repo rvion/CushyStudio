@@ -131,10 +131,11 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
                 next = produce(next, (draft) => void (draft.val = nextXX))
             }
         }
-        this.serial.val =
-            next?.val ?? //
-            _extractDefaultValue(this.config) ??
-            (this.possibleValues[0] as any)
+        // this.serial.val =
+        //     next?.val ?? //
+        //     _extractDefaultValue(this.config) ??
+        //     (this.possibleValues[0] as any)
+        this.assignNewSerial(next)
     }
 
     get status(): CleanedEnumResult<any> {
