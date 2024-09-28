@@ -1,10 +1,7 @@
 app({
     ui: (form) => ({
-        steps: form.choices({
-            default: {
-                frame: true,
-            },
-            items: {
+        steps: form.choices(
+            {
                 frame: form.group({
                     className: ' p-2 bg-blue-800 rounded-xl',
                     items: {
@@ -17,7 +14,8 @@ app({
                     items: { seed: form.seed({}) },
                 }),
             },
-        }),
+            { default: { frame: true } },
+        ),
     }),
 
     run: async (flow, form) => {

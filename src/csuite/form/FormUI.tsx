@@ -86,7 +86,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
         >
             {p.Header && <p.Header />}
             {/* FORM */}
-            {p.Content ? <p.Content /> : field.UI({ noHeader: true })}
+            {p.Content ? <p.Content /> : field.UI({ Header: null })}
             {submitAction != null && (
                 <div tw='flex'>
                     <Button

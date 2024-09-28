@@ -17,11 +17,7 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
 export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShrink {
     return form.fields(
         {
-            include: form.choices({
-                items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
-                default: { base: false, hiRes: true },
-            }),
+            include: form.choices({ base: form.fields({}), hiRes: form.fields({}) }, { appearance: 'tab', default: 'hiRes' }),
             advancedSettings: form.fields(
                 {
                     downscaleFactor: form.float({

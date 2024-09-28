@@ -1,4 +1,5 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import type { LiveDB } from '../db/LiveDB'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -15,7 +16,6 @@ import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode, type ComfyNodeUID } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
@@ -24,6 +24,8 @@ import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
 import { type TEdge, toposort } from '../csuite/utils/toposort'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { LiveTable } from '../db/LiveTable'
+import { InvalidPromptError } from '../errors/InvalidPromptError'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 
@@ -46,6 +48,13 @@ export type PromptSettings = {
  */
 
 export const GraphIDCache = new Map<string, number>()
+
+export class ComfyWorkflowRepo extends LiveTable<TABLES['comfy_workflow'], typeof ComfyWorkflowL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'comfy_workflow', '📊', ComfyWorkflowL)
+        this.init()
+    }
+}
 
 export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
     instObservabilityConfig: undefined

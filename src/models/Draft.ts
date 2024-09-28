@@ -1,6 +1,7 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { Executable } from './Executable'
@@ -15,8 +16,16 @@ import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 
 export type FormPath = (string | number)[]
+
+export class DraftRepo extends LiveTable<TABLES['draft'], typeof DraftL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'draft', '📝', DraftL)
+        this.init()
+    }
+}
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
 export class DraftL extends BaseInst<TABLES['draft']> {

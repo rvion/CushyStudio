@@ -27,11 +27,8 @@ app({
                 label: false,
                 collapsed: false,
                 items: {
-                    at: ui.choice({
-                        label: 'Date',
-                        appearance: 'tab',
-                        border: false,
-                        items: {
+                    at: ui.choice(
+                        {
                             computed: ui.group({
                                 // having both `collapsed` and `label` false skip the whole label line
                                 border: false,
@@ -49,7 +46,8 @@ app({
                             onEventRecetption: ui.group({}),
                             fixed: ui.group({}),
                         },
-                    }),
+                        { label: 'Date', appearance: 'tab', border: false },
+                    ),
                     allowHolidays: ui.bool({ label2: "Autoriser l'envoi les jours feriés", label: false }),
                     canInterrupt: ui.bool({ label2: 'Peut interrompre une conversation', label: false }),
                     allowNight: ui.bool({ label2: "Autoriser l'envoi la nuit (24h/24)", label: false }),

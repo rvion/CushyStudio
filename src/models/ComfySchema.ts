@@ -1,3 +1,4 @@
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
@@ -12,6 +13,7 @@ import {
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema } from './ComfyDefaultNodeWhenUnknown'
@@ -49,6 +51,13 @@ export type EnumInfo = {
     enumNameInCushy: EnumName
     values: EnumValue[]
     aliases: string[]
+}
+
+export class ComfySchemaRepo extends LiveTable<TABLES['comfy_schema'], typeof ComfySchemaL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'comfy_schema', '📑', ComfySchemaL)
+        this.init()
+    }
 }
 
 export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
@@ -134,7 +143,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
     // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 
     /** on update is called automatically by live instances */
-    onUpdate(): void {
+    onUpdate = (): void => {
         this.log(`updating schema #${this.id}`)
         // reset spec
         // this.spec = this.data.spec

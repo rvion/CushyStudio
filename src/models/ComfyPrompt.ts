@@ -1,3 +1,4 @@
+import type { LiveDB } from '../db/LiveDB'
 import type { Runtime } from '../runtime/Runtime'
 import type {
     ComfyImageInfo,
@@ -19,6 +20,7 @@ import { SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { asRelativePath } from '../utils/fs/pathUtils'
@@ -30,6 +32,12 @@ import {
 } from './createMediaImage_fromWebFile'
 import { FPath } from './FPath'
 
+export class ComfyPromptRepo extends LiveTable<TABLES['comfy_prompt'], typeof ComfyPromptL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'comfy_prompt', '❓', ComfyPromptL)
+        this.init()
+    }
+}
 export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
     instObservabilityConfig: undefined
     dataObservabilityConfig: undefined

@@ -1,5 +1,6 @@
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Timestamp } from '../csuite/types/Timestamp'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
@@ -14,7 +15,15 @@ import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
+
+export class CushyAppRepo extends LiveTable<TABLES['cushy_app'], typeof CushyAppL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'cushy_app', '🌟', CushyAppL)
+        this.init()
+    }
+}
 
 export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
     instObservabilityConfig: undefined

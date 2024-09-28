@@ -1,3 +1,4 @@
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyScriptL } from './CushyScript'
 import type { LoadedCustomView } from './Executable'
@@ -5,6 +6,14 @@ import type { StepL } from './Step'
 
 import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { LiveTable } from '../db/LiveTable'
+
+export class MediaCustomRepo extends LiveTable<TABLES['media_custom'], typeof MediaCustomL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'media_custom', '🖼️', MediaCustomL)
+        this.init()
+    }
+}
 
 export class MediaCustomL extends BaseInst<TABLES['media_custom']> {
     instObservabilityConfig: undefined

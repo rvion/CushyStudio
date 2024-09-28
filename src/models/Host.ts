@@ -1,3 +1,4 @@
+import type { LiveDB } from '../db/LiveDB'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
@@ -11,11 +12,18 @@ import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
+import { LiveTable } from '../db/LiveTable'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
 
+export class HostRepo extends LiveTable<TABLES['host'], typeof HostL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'host', '📑', HostL)
+        this.init()
+    }
+}
 export class HostL extends BaseInst<TABLES['host']> {
     instObservabilityConfig = { manager: false }
     dataObservabilityConfig: undefined

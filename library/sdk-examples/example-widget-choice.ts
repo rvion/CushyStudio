@@ -4,21 +4,18 @@ app({
     },
     ui: (form) => ({
         exampleChoice: form.choice({
-            items: {
-                image: form.image({}),
-                list: form.list({ element: () => form.int({}) }),
-                group: form.group({
-                    items: {
-                        x: form.markdown({ markdown: '## Hello world' }),
-                        c: form.int({}),
-                        d: form.string({}),
-                    },
-                }),
-            },
+            image: form.image({}),
+            list: form.list({ element: () => form.int({}) }),
+            group: form.group({
+                items: {
+                    x: form.markdown({ markdown: '## Hello world' }),
+                    c: form.int({}),
+                    d: form.string({}),
+                },
+            }),
         }),
-        exampleChoiceAsTabs: form.choice({
-            appearance: 'tab',
-            items: {
+        exampleChoiceAsTabs: form.choice(
+            {
                 image: form.image({}),
                 list: form.list({ element: () => form.int({}) }),
                 group: form.group({
@@ -29,7 +26,8 @@ app({
                     },
                 }),
             },
-        }),
+            { appearance: 'tab' },
+        ),
     }),
 
     run: async (flow, form) => {

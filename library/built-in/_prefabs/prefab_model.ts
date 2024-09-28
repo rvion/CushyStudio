@@ -66,11 +66,11 @@ export function ui_model(): UI_Model {
         items: {
             modelType: form.choice(
                 {
-                    Diffusion: /* form.fields({
-                        ckpt_name: */ form.enum
-                        .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-                        .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
-                    // }),
+                    Diffusion: form.fields({
+                        ckpt_name: form.enum
+                            .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+                            .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
+                    }),
                     SD3: form
                         .fields({
                             ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
