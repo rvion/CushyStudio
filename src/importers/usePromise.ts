@@ -7,18 +7,38 @@ type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 
 export const usePromise = <T>(
     //
-    fn: () => Promise<T>,
+    fn: () => T | Promise<T>,
     deps: DependencyList = [],
 ): ManualPromise<UnwrapPromise<T>> => {
     return useMemo(() => {
+        // create manual promise
         const p = new ManualPromise()
-        fn().then(p.resolve).catch(p.reject)
+
+        // start it (will complete sometime later)
+        void (async (): Promise<void> => {
+            try {
+                const res = await fn()
+                p.resolve(res)
+            } catch (e) {
+                p.reject(e)
+            }
+        })
+
+        // return it synchronously (before it's done)
         return p
     }, deps)
 }
 
 // 🔴 meh abstraction; should live inside the manualPromise instead
-export const useAsyncAction = (fn: () => Maybe<Promise<any>>, deps: DependencyList) => {
+export const useAsyncAction = <T>(
+    fn: () => Maybe<Promise<T>>,
+    deps: DependencyList,
+): {
+    p: ManualPromise<T>
+    isRunning: boolean
+    startedOnce: boolean
+    start: () => void
+} => {
     return useMemo(() => {
         const p = new ManualPromise()
         const uist = observable({

@@ -57,6 +57,13 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
     )
 })
 
+type TTT = Promise<ExifData> | Promise<{ workflow: string }> | 'NO'
+function foobar(file: File): TTT {
+    if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
+    if (file.name.endsWith('.webp')) return getWebpMetadata(file)
+    if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
+    return 'NO'
+}
 export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     //
     className?: string
@@ -69,12 +76,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
     type T = Promise<ExifData> | string | { workflow: string }
     type T2 = Promise<ExifData> | Promise<TextChunks> | 'NO' | Promise<{ workflow: string }>
-    const promise = usePromise((): T2 => {
-        if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
-        if (file.name.endsWith('.webp')) return getWebpMetadata(file)
-        if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
-        return Promise.resolve('NO')
-    }, [])
+    const promise = usePromise<TTT>(() => foobar(file), [])
     const metadata = promise.value
 
     if (metadata == null) return <>loading...</>
