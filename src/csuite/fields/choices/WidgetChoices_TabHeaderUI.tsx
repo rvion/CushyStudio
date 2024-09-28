@@ -3,8 +3,10 @@ import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'
 
+import OverflowingRowUI from '../../../panels/PanelDraft/OverflowingRowUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { useCSuite } from '../../ctx/useCSuite'
+import { Frame } from '../../frame/Frame'
 import { getJustifyContent } from './TabPositionConfig'
 
 // ============================================================================================================
@@ -40,5 +42,38 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                 )
             })}
         </div>
+    )
+})
+
+export const WidgetChoices_TabHeaderSingleLineUI = observer(function WidgetChoices_TabHeaderSingleLine<T extends SchemaDict>(p: {
+    field: Field_choices<T>
+}) {
+    const field = p.field
+    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
+    const csuite = useCSuite()
+    return (
+        <Frame tw='grid grid-rows-1 h-widget' expand>
+            <OverflowingRowUI tw='gap-1'>
+                {choices.map((c) => {
+                    const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
+                    return (
+                        <InputBoolUI
+                            icon={c.icon}
+                            key={c.key}
+                            value={isSelected}
+                            display='button'
+                            mode={p.field.isMulti ? 'checkbox' : 'radio'}
+                            text={c.label ?? c.key}
+                            box={isSelected ? undefined : { text: csuite.labelText }}
+                            onValueChange={(value) => {
+                                if (value != isSelected) {
+                                    field.toggleBranch(c.key)
+                                }
+                            }}
+                        />
+                    )
+                })}
+            </OverflowingRowUI>
+        </Frame>
     )
 })
