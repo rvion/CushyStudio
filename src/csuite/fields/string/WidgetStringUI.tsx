@@ -6,8 +6,21 @@ import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
+export const WidgetStringUI = observer(function WidgetString(p: { field: Field_string }) {
+    const field = p.field
+    if (field.config.textarea) {
+        return field.isCollapsed ? ( //
+            <WidgetString_summary field={field} />
+        ) : (
+            <WidgetString_TextareaInput field={field} />
+        )
+    } else {
+        return <WidgetString_SmallInput field={field} />
+    }
+})
+
 // Textarea HEADER
-export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { field: Field_string }) {
+export const WidgetString_summary = observer(function WidgetString_TextareaHeaderUI_(p: { field: Field_string }) {
     const field = p.field
     if (!field.config.textarea) return null
     if (!p.field.serial.collapsed) return null
@@ -15,7 +28,7 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
 })
 
 // Textarea BODY
-export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: {
+export const WidgetString_TextareaInput = observer(function WidgetString_TextareaBodyUI_(p: {
     field: Field_string
     readonly?: boolean
 }) {
@@ -44,7 +57,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 })
 
 // string HEADER
-export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_string; readonly?: boolean }) {
+export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: { field: Field_string; readonly?: boolean }) {
     const field = p.field
     const config = field.config
     return (

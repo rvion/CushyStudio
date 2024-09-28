@@ -11,7 +11,7 @@ import { produce } from 'immer'
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
+import { WidgetString_SmallInput, WidgetString_TextareaInput, WidgetStringUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
 
@@ -124,6 +124,8 @@ export class Field_string extends Field<Field_string_types> {
         this.init(serial, {
             UITextarea: false,
             UIInputText: false,
+            DefaultBodyUI: false,
+            DefaultHeaderUI: false,
         })
     }
 
@@ -287,17 +289,10 @@ export class Field_string extends Field<Field_string_types> {
     }
 
     // #region UI
-    UITextarea: FC = () => <WidgetString_TextareaBodyUI field={this} />
-    UIInputText: FC = () => <WidgetString_HeaderUI field={this} />
+    UITextarea: FC = () => <WidgetString_TextareaInput field={this} />
+    UIInputText: FC = () => <WidgetString_SmallInput field={this} />
     DefaultBodyUI = undefined
-    get DefaultHeaderUI(): FC<{ field: Field_string }> {
-        if (this.config.textarea) {
-            if (this.isCollapsed) return WidgetString_TextareaHeaderUI
-            return WidgetString_TextareaBodyUI
-        } else {
-            return WidgetString_HeaderUI
-        }
-    }
+    DefaultHeaderUI = WidgetStringUI
 
     get isCollapsible(): boolean {
         if (this.config.textarea) return true
