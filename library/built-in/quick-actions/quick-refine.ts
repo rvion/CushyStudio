@@ -8,10 +8,11 @@ app({
         help: `This app is made to be run from click on an image and sending it to drafts of this app.`,
     },
     canStartFromImage: true,
-    ui: (form) => ({
-        model: ui_model(),
-        refiners: ui_refiners(),
-    }),
+    ui: (b) =>
+        b.fields({
+            model: ui_model(),
+            refiners: ui_refiners(),
+        }),
     //                  👇👇👇👇👇
     run: async (run, ui, { image }) => {
         if (image == null) throw new Error('no image provided')

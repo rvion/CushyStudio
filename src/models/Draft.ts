@@ -286,7 +286,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = cushyFactory.fields(action.ui, {
+                this._form = cushyFactory.document(action.ui, {
                     name: this.name,
                     serial: () => this.data.formSerial,
                     onSerialChange: (form) => {

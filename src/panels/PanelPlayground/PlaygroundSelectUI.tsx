@@ -86,12 +86,15 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
                 </RevealUI>
 
                 {cushy.forms /* select via fields */
-                    .fields((ui) => ({
-                        test: ui.selectManyStrings(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh']),
-                        test2: ui.selectManyStrings(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh'], {
-                            appearance: 'select',
+                    .document((b) =>
+                        b.fields({
+                            test: b.selectManyStrings(['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh']),
+                            test2: b.selectManyStrings(
+                                ['a', 'b', 'c', 'ddddddd', 'eeeeeee', 'ffffffff', 'gggggggg', 'hhhhhhhh'],
+                                { appearance: 'select' },
+                            ),
                         }),
-                    }))
+                    )
                     .body()}
                 <RevealTestUI />
             </div>

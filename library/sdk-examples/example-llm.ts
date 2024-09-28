@@ -11,28 +11,29 @@ const defaultSystemPrompt = [
 ].join('\n')
 
 app({
-    ui: (ui) => ({
-        topic: ui.string({ textarea: true, default: 'world tree, fantasy, epic, majestic' }),
-        llmModel: ui.llmModel(),
-        customSystemMessage: ui.group({
-            startCollapsed: true,
-            items: {
-                system: ui.string({
-                    textarea: true,
-                    default: defaultSystemPrompt,
-                    tooltip:
-                        'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
-                }),
-            },
+    ui: (b) =>
+        b.fields({
+            topic: b.string({ textarea: true, default: 'world tree, fantasy, epic, majestic' }),
+            llmModel: b.llmModel(),
+            customSystemMessage: b.group({
+                startCollapsed: true,
+                items: {
+                    system: b.string({
+                        textarea: true,
+                        default: defaultSystemPrompt,
+                        tooltip:
+                            'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
+                    }),
+                },
+            }),
+            promptFromLlm: b.markdown({
+                markdown: ``,
+            }),
+            ckpt_name: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({
+                default: 'revAnimated_v122.safetensors',
+                label: 'Checkpoint',
+            }),
         }),
-        promptFromLlm: ui.markdown({
-            markdown: ``,
-        }),
-        ckpt_name: ui.enum.Enum_CheckpointLoaderSimple_ckpt_name({
-            default: 'revAnimated_v122.safetensors',
-            label: 'Checkpoint',
-        }),
-    }),
 
     run: async (sdk, ui) => {
         if (!sdk.LLM.isConfigured) {

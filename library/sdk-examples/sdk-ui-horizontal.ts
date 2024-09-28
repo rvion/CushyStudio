@@ -1,19 +1,20 @@
 app({
-    ui: (form) => ({
-        foo: form.group({
-            layout: 'H',
-            items: {
-                a: form.int({}),
-                b: form.int({}),
-            },
+    ui: (b) =>
+        b.fields({
+            foo: b.group({
+                layout: 'H',
+                items: {
+                    a: b.int({}),
+                    b: b.int({}),
+                },
+            }),
+            bar: b.group({
+                layout: 'H',
+                items: {
+                    a: b.int({}),
+                    b: b.int({}),
+                },
+            }),
         }),
-        bar: form.group({
-            layout: 'H',
-            items: {
-                a: form.int({}),
-                b: form.int({}),
-            },
-        }),
-    }),
     run: async (flow, form) => {},
 })

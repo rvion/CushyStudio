@@ -1,7 +1,8 @@
 app({
-    ui: (form) => ({
-        seed1: form.seed({ defaultMode: 'randomize' }),
-    }),
+    ui: (b) =>
+        b.fields({
+            seed1: b.seed({ defaultMode: 'randomize' }),
+        }),
 
     run: async (flow, form) => {
         const graph = flow.nodes

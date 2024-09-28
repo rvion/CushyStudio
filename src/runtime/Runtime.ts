@@ -1,9 +1,10 @@
 import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
-import type { SchemaDict } from '../csuite/model/SchemaDict'
+import type { Field } from '../csuite/model/Field'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
+import type { MediaTextL } from '../models/MediaText'
 import type { StepL } from '../models/Step'
 import type { CompiledPrompt } from '../prompt/FieldPrompt'
 import type { STATE } from '../state/state'
@@ -17,7 +18,6 @@ import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
 import { toJSONError } from '../csuite/errors/toJSONError'
-import { Field_group } from '../csuite/fields/group/FieldGroup'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
 import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
@@ -51,7 +51,7 @@ export type RuntimeExecutionResult =
 // run.store.getGlobal
 
 /** script exeuction instance */
-export class Runtime<FIELDS extends SchemaDict = any> {
+export class Runtime<FIELD extends Field = any> {
     get Colors(): RuntimeColors {
         const it = new RuntimeColors(this)
         Object.defineProperty(this, 'Colors', { value: it })
@@ -221,7 +221,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * the main value sent to your app as context.
      * Most apps only need this value.
      */
-    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
+    formResult!: FIELD['$Value']
 
     /**
      * the extended json form value including internal state
@@ -230,14 +230,14 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      *      - use the ids for dynamic references
      *      - do something based on if some fields are folded
      * */
-    formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
+    formSerial!: FIELD['$Serial']
 
     /**
      * the live form instance;
      * 🔶 it is NOT json: it's a complex object
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
-    form!: Field_group<FIELDS>
+    form!: FIELD
     // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any): Promise<never> => {
@@ -337,7 +337,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      */
     _EXECUTE = async (p: {
         //
-        formInstance: Field_group<any>
+        formInstance: FIELD
         context: DraftExecutionContext
         // imageToStartFrom?: Maybe<MediaImageL>
     }): Promise<RuntimeExecutionResult> => {
@@ -447,7 +447,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     folder: AbsolutePath
 
     /** quick helper to make your card sleep for a given number fo milisecond */
-    sleep = (ms: number) => new Promise<void>((r: () => void) => setTimeout(r, ms))
+    sleep = (ms: number): Promise<void> => new Promise<void>((r: () => void) => setTimeout(r, ms))
 
     // High level API--------------------
 
@@ -458,7 +458,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // ------------------------------------------------------------------------------------
 
     /** outputs a gaussian splat asset, accessible at the given URL */
-    output_GaussianSplat = (p: { url: string }) => {
+    output_GaussianSplat = (p: { url: string }): void => {
         this.Cushy.db.media_splat.create({
             url: p.url,
             stepID: this.step.id,
@@ -471,7 +471,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         image: ImageStoreName | MediaImageL
         depth: ImageStoreName | MediaImageL
         normal: ImageStoreName | MediaImageL
-    }) => {
+    }): void => {
         const getImg = (i: ImageStoreName | MediaImageL): MediaImageL => {
             if (typeof i === 'string') {
                 const img = this.Store.getImageStore(i).image
@@ -503,7 +503,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         //
         params: P
         view: CustomViewRef<P>
-    }) => {
+    }): void => {
         this.Cushy.db.media_custom.create({
             stepID: this.step.id,
             params: p.params,
@@ -517,7 +517,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    output_HTML = (p: { htmlContent: string; title: string }) => {
+    output_HTML = (p: { htmlContent: string; title: string }): void => {
         this.Cushy.db.media_text.create({
             kind: 'html',
             title: p.title,
@@ -526,13 +526,13 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         })
     }
 
-    output_Markdown = (p: string | { title: string; markdownContent: string }) => {
+    output_Markdown = (p: string | { title: string; markdownContent: string }): MediaTextL => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
         return this.Cushy.db.media_text.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
-    output_text = (p: { title: string; message: Printable } | string) => {
+    output_text = (p: { title: string; message: Printable } | string): MediaTextL => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
@@ -548,7 +548,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * @deprecated
      * use `output_text` instead;
      * */
-    print = (message: Printable) => {
+    print = (message: Printable): void => {
         this.output_text({ title: '<no-title>', message })
     }
 
@@ -571,7 +571,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     // ===================================================================================================
 
     // private
-    downloadURI = (uri: string, name: string) => {
+    downloadURI = (uri: string, name: string): void => {
         var link = document.createElement('a')
         link.download = name
         link.href = uri
@@ -585,7 +585,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * Takes an embedding name and format it for ComfyUI usage
      * e.g.: "EasyNegative" => "embedding:EasyNegative"
      * */
-    formatEmbeddingForComfyUI = (t: Embeddings) => `embedding:${t}`
+    formatEmbeddingForComfyUI = (t: Embeddings): string => `embedding:${t}`
     formatAsRelativeDateTime = (date: Date | number): string => _formatAsRelativeDateTime(date)
 
     // 🐉 /** ask the user a few informations */
@@ -624,7 +624,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * get a random int seed
      * between 0 and 99999999
      */
-    randomSeed() {
+    randomSeed(): number {
         const seed = Math.floor(Math.random() * 99999999)
         // this.print('seed: ' + seed)
         return seed

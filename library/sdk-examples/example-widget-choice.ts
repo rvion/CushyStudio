@@ -2,33 +2,34 @@ app({
     metadata: {
         help: 'This is an example app to show how to use the `choice` widget. It is not meant to be useful.',
     },
-    ui: (form) => ({
-        exampleChoice: form.choice({
-            image: form.image({}),
-            list: form.list({ element: () => form.int({}) }),
-            group: form.group({
-                items: {
-                    x: form.markdown({ markdown: '## Hello world' }),
-                    c: form.int({}),
-                    d: form.string({}),
-                },
-            }),
-        }),
-        exampleChoiceAsTabs: form.choice(
-            {
-                image: form.image({}),
-                list: form.list({ element: () => form.int({}) }),
-                group: form.group({
+    ui: (b) =>
+        b.fields({
+            exampleChoice: b.choice({
+                image: b.image({}),
+                list: b.list({ element: () => b.int({}) }),
+                group: b.group({
                     items: {
-                        x: form.markdown({ markdown: '## Hello world' }),
-                        c: form.int({ max: 50 }),
-                        d: form.string({}),
+                        x: b.markdown({ markdown: '## Hello world' }),
+                        c: b.int({}),
+                        d: b.string({}),
                     },
                 }),
-            },
-            { appearance: 'tab' },
-        ),
-    }),
+            }),
+            exampleChoiceAsTabs: b.choice(
+                {
+                    image: b.image({}),
+                    list: b.list({ element: () => b.int({}) }),
+                    group: b.group({
+                        items: {
+                            x: b.markdown({ markdown: '## Hello world' }),
+                            c: b.int({ max: 50 }),
+                            d: b.string({}),
+                        },
+                    }),
+                },
+                { appearance: 'tab' },
+            ),
+        }),
 
     run: async (flow, form) => {
         const graph = flow.nodes

@@ -17,7 +17,7 @@ import { ui_watermark_v1, type UI_watermark_v1 } from './_prefabs/prefab_waterma
 import { ui_customSave, type UI_customSave } from './_prefabs/saveSmall'
 import { sampleNegative, samplePrompts } from './samplePrompts'
 
-export type CushyDiffusionUI_ = {
+export type CushyDiffusionUI_ = X.XGroup<{
     positive: X.XPrompt
     negative: X.XPrompt
     model: UI_Model
@@ -28,10 +28,10 @@ export type CushyDiffusionUI_ = {
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
     extra: UI_extra
-}
+}>
 
 export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
-    return {
+    return ui.fields({
         positive: ui.prompt({
             icon: 'mdiPlusBoxOutline',
             background: { hue: 150, chroma: 0.05 },
@@ -66,7 +66,7 @@ export function CushyDiffusionUI(ui: X.Builder): CushyDiffusionUI_ {
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
         extra: extra(ui),
-    }
+    })
 }
 
 // ================================================================================

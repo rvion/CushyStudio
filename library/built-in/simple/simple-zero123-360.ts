@@ -13,25 +13,26 @@ app({
     },
 
     // interface
-    ui: (form) => ({
-        about: form.markdown('https://comfyanonymous.github.io/ComfyUI_examples/3d/'),
-        // start image
-        image: form.image({}),
-        // elevation
-        elevation: form.float({ default: 10 }),
-        // angle / azimuth
-        steps: form.int({ min: 1, max: 100, default: 20 }),
-        from: form.float({ min: -180, max: 180, default: -180 }),
-        to: form.float({ min: -180, max: 180, default: 180 }),
-        step: form.float({ min: 0.1, max: 180, default: 10 }),
-        upscale: form.bool({ default: false }),
-    }),
+    ui: (b) =>
+        b.fields({
+            about: b.markdown('https://comfyanonymous.github.io/ComfyUI_examples/3d/'),
+            // start image
+            image: b.image({}),
+            // elevation
+            elevation: b.float({ default: 10 }),
+            // angle / azimuth
+            steps: b.int({ min: 1, max: 100, default: 20 }),
+            from: b.float({ min: -180, max: 180, default: -180 }),
+            to: b.float({ min: -180, max: 180, default: 180 }),
+            step: b.float({ min: 0.1, max: 180, default: 10 }),
+            upscale: b.bool({ default: false }),
+        }),
 
     // execution logic
     run: async (run, ui) => {
         // 1. ensure we have the model present
         const mainHost = run.Hosts.main
-        mainHost.downloadFileIfMissing(
+        await mainHost.downloadFileIfMissing(
             'https://huggingface.co/stabilityai/stable-zero123/resolve/main/stable_zero123.ckpt',
             `${mainHost.absolutPathToDownloadModelsTo}/stable_zero123.ckpt`,
         )

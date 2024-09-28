@@ -29,26 +29,27 @@ app({
         name: 'slay-the-spire art-pack generator',
         description: 'SlayTheSpire (STS) art-pack generator',
     },
-    ui: (ui) => ({
-        model: ui_model(),
-        ipadapter: ui_ipadapter_standalone().optional(),
-        // positive: ui.string({ default: 'masterpiece, tree' }),
-        seed: ui.seed({}),
-        mode: ui.selectOneString(['xl', '1.5']),
-        secondPass: ui.bool(),
-        //
-        rarity: ui.selectOneString(['uncommon', 'common', 'rare']).optional(),
-        colors: ui.selectOneString(['red', 'green', 'gray']).optional(),
-        kind: ui.selectOneString(['attack', 'power', 'skill']).optional(),
-        cards: ui.selectManyOptionIds(cardOptions, { appearance: 'select' }),
-        llmModel: ui.llmModel({ default: 'openai/gpt-4' }),
-        max: ui.int({ default: 3, min: 1, max: 100 }),
-        promptPrefix: ui.prompt(),
-        promptSuffix: ui.prompt(),
-        character: ui.prompt({ default: 'an elf-robot, with blue hairs' }),
+    ui: (b) =>
+        b.fields({
+            model: ui_model(),
+            ipadapter: ui_ipadapter_standalone().optional(),
+            // positive: ui.string({ default: 'masterpiece, tree' }),
+            seed: b.seed({}),
+            mode: b.selectOneString(['xl', '1.5']),
+            secondPass: b.bool(),
+            //
+            rarity: b.selectOneString(['uncommon', 'common', 'rare']).optional(),
+            colors: b.selectOneString(['red', 'green', 'gray']).optional(),
+            kind: b.selectOneString(['attack', 'power', 'skill']).optional(),
+            cards: b.selectManyOptionIds(cardOptions, { appearance: 'select' }),
+            llmModel: b.llmModel({ default: 'openai/gpt-4' }),
+            max: b.int({ default: 3, min: 1, max: 100 }),
+            promptPrefix: b.prompt(),
+            promptSuffix: b.prompt(),
+            character: b.prompt({ default: 'an elf-robot, with blue hairs' }),
 
-        negative: ui.prompt({ default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
-    }),
+            negative: b.prompt({ default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
+        }),
     run: async (run, ui) => {
         const W = 500
         const H = 380

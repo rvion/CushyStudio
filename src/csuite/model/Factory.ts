@@ -31,32 +31,32 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         this.builder = builder
     }
 
-    /**
-     * LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT
-     * @deprecated
-     */
-    fields<FIELDS extends SchemaDict>(
-        schemaExt: (form: BUILDER) => FIELDS,
-        entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
-    ): Field_group<FIELDS> {
-        const schema = this.builder.group({
-            label: false,
-            items: schemaExt(this.builder),
-            collapsed: false,
-            onSerialChange: entityConfig.onSerialChange,
-            onValueChange: entityConfig.onValueChange,
-        })
+    // /**
+    //  * LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT
+    //  * @deprecated
+    //  */
+    // fields<FIELDS extends SchemaDict>(
+    //     schemaExt: (form: BUILDER) => FIELDS,
+    //     entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
+    // ): Field_group<FIELDS> {
+    //     const schema = this.builder.group({
+    //         label: false,
+    //         items: schemaExt(this.builder),
+    //         collapsed: false,
+    //         onSerialChange: entityConfig.onSerialChange,
+    //         onValueChange: entityConfig.onValueChange,
+    //     })
 
-        // 👇 🔴 CALL CREATE INSTEAD
-        return (schema as any).instanciate(
-            //
-            this.repository,
-            null,
-            null,
-            '$',
-            entityConfig.serial?.(),
-        )
-    }
+    //     // 👇 🔴 CALL CREATE INSTEAD
+    //     return (schema as any).instanciate(
+    //         //
+    //         this.repository,
+    //         null,
+    //         null,
+    //         '$',
+    //         entityConfig.serial?.(),
+    //     )
+    // }
 
     // #region Creation
     /** simple alias to create a new Document */

@@ -1,3 +1,5 @@
+import type { ImageAndMask } from '../../../src/CUSHY'
+
 import { ui_rembg_v1 } from '../_prefabs/prefab_rembg'
 
 app({
@@ -7,15 +9,16 @@ app({
         description: 'remove background from an image',
     },
     canStartFromImage: true,
-    ui: (form) => ({
-        startImage: form.image({ label: 'Start image' }),
-        models: ui_rembg_v1(),
-    }),
+    ui: (b) =>
+        b.fields({
+            startImage: b.image({ label: 'Start image' }),
+            models: ui_rembg_v1(),
+        }),
 
     run: async (run, form, { image: img }) => {
         const graph = run.nodes
 
-        const image = await (() => {
+        const image = await ((): Promise<ImageAndMask> => {
             // case where we start from an image
             if (img) return img.loadInWorkflow()
 

@@ -42,9 +42,11 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
     action: (image: MediaImageL) => menu_copyImageAs.open(image),
 })
 
-const form_foo = cushyFactory.fields((ui) => ({
-    quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
-}))
+const form_foo = cushyFactory.document((b) =>
+    b.fields({
+        quality: b.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
+    }),
+)
 
 export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
     title: 'image actions',

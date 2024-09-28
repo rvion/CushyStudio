@@ -2,9 +2,10 @@ import { createElement } from 'react'
 
 /**🔶 This is an advanced example of the runtime updating the widget live during runtime */
 app({
-    ui: (ui) => ({
-        demo1: ui.number().list(),
-    }),
+    ui: (b) =>
+        b.fields({
+            demo1: b.number().list(),
+        }),
 
     run: async (run) => {
         // add a item dynamically

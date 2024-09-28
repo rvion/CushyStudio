@@ -14,15 +14,15 @@ type ListItem = X.XGroup<{
 }>
 
 app({
-    ui: (m) => {
-        const entry: ListItem = m.fields({
-            uid: m.nanoid(),
-            value: m.choice({
-                image: m.image(),
-                latent: m.group({ items: { size: m.size({}), batch: m.int({ default: 1, min: 1, max: 8 }) } }),
+    ui: (b) => {
+        const entry: ListItem = b.fields({
+            uid: b.nanoid(),
+            value: b.choice({
+                image: b.image(),
+                latent: b.group({ items: { size: b.size({}), batch: b.int({ default: 1, min: 1, max: 8 }) } }),
                 // if choices is a function, the form root is injected as first parameter
                 //                           VVVVVVVVVVV
-                process: m.selectOneOptionId((self) => {
+                process: b.selectOneOptionId((self) => {
                     const formRoot = self.root as Field_group<any>
 
                     // 🔶 null when the form is not yet fully initialized
@@ -64,7 +64,7 @@ app({
             }),
         })
 
-        return { samplerUI: entry.list({ defaultLength: 1, min: 1 }) }
+        return b.fields({ samplerUI: entry.list({ defaultLength: 1, min: 1 }) })
     },
     run(run, ui) {
         console.log(`[🟢] done`)

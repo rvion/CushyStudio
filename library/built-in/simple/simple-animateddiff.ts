@@ -5,34 +5,35 @@ app({
         illustration: 'library/built-in/_illustrations/mc.jpg',
         description: 'Minimalist AnimateDiff example',
     },
-    ui: (form) => ({
-        preText: form.string({
-            default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
-        }),
-        seed: form.int({}).optional(),
-        timeline: form.timeline({
-            width: TOTAL_DURATION,
-            height: 2,
-            element: ({ ix }) => form.prompt({}),
-            initialPosition: ({ ix }) => ({
-                width: 0.25 * TOTAL_DURATION,
-                x: TOTAL_DURATION * (ix / 4),
+    ui: (b) =>
+        b.fields({
+            preText: b.string({
+                default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
             }),
+            seed: b.int({}).optional(),
+            timeline: b.timeline({
+                width: TOTAL_DURATION,
+                height: 2,
+                element: ({ ix }) => b.prompt({}),
+                initialPosition: ({ ix }) => ({
+                    width: 0.25 * TOTAL_DURATION,
+                    x: TOTAL_DURATION * (ix / 4),
+                }),
+            }),
+            // text: form.str({
+            //     textarea: true,
+            //     default: [
+            //         `"0" :"spring day, blossoms, flowers, cloudy",`,
+            //         `"4" :"summer day, sunny, leaves",`,
+            //         `"8" :"fall day, colorful leaves dancing in the wind",`,
+            //         `"12" :"winter day, snowing, cold, jacket"`,
+            //         ``,
+            //     ].join('\n'),
+            // }),
+            removeBG: b.bool({ default: false }),
+            samplerSteps: b.int({ default: 20 }),
+            // frames: form.int({ default: 16, group: 'video' }),
         }),
-        // text: form.str({
-        //     textarea: true,
-        //     default: [
-        //         `"0" :"spring day, blossoms, flowers, cloudy",`,
-        //         `"4" :"summer day, sunny, leaves",`,
-        //         `"8" :"fall day, colorful leaves dancing in the wind",`,
-        //         `"12" :"winter day, snowing, cold, jacket"`,
-        //         ``,
-        //     ].join('\n'),
-        // }),
-        removeBG: form.bool({ default: false }),
-        samplerSteps: form.int({ default: 20 }),
-        // frames: form.int({ default: 16, group: 'video' }),
-    }),
     run: async (run, ui) => {
         const graph = run.nodes
 

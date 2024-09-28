@@ -14,65 +14,66 @@ app({
             { type: 'modelInManager', modelName: 'stabilityai/Stable Cascade: text_encoder (CLIP)' },
         ],
     },
-    ui: (form) => ({
-        models: form.group({
-            items: {
-                stage_a_vae: form.enum.Enum_VAELoader_vae_name({ default: 'Stable-Cascade\\stage_a.safetensors' }),
-                stage_b: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_b_bf16.safetensors' }),
-                stage_b_type: form.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
-                // @ts-ignore
-                stage_c: form.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_c_bf16.safetensors' }),
-                stage_c_type: form.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
-            },
+    ui: (b) =>
+        b.fields({
+            models: b.group({
+                items: {
+                    stage_a_vae: b.enum.Enum_VAELoader_vae_name({ default: 'Stable-Cascade\\stage_a.safetensors' }),
+                    stage_b: b.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_b_bf16.safetensors' }),
+                    stage_b_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
+                    // @ts-ignore
+                    stage_c: b.enum.Enum_UNETLoader_unet_name({ default: 'Stable-Cascade\\stage_c_bf16.safetensors' }),
+                    stage_c_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
+                },
+            }),
+            startingLatent: b.group({
+                items: {
+                    width: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
+                    height: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
+                    compression: b.int({ default: 42, min: 32, max: 64, step: 1 }),
+                    batch_size: b.int({ default: 1, min: 1, max: 64 }),
+                },
+            }),
+            clip: b.group({
+                items: {
+                    type: b.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
+                    clip_name: b.enum.Enum_CLIPLoader_clip_name({
+                        extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
+                        default: 'Stable-Cascade\\model.safetensors',
+                    }),
+                },
+            }),
+            prompt: b.group({
+                items: {
+                    text: b.string({
+                        textarea: true,
+                        default: 'beautiful scenery nature glass bottle landscape, , purple galaxy bottle,',
+                    }),
+                },
+            }),
+            negative: b.group({ items: { text_1: b.string({ default: '' }) } }),
+            KSampler: b.group({
+                items: {
+                    seed: b.seed({ default: 762626426130783 }),
+                    steps: b.int({ default: 20, min: 1, max: 10000 }),
+                    cfg: b.float({ default: 4, min: 0, max: 100, step: 0.1 }),
+                    sampler_name: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
+                    scheduler: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+                    denoise: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
+                },
+            }),
+            KSampler_1: b.group({
+                items: {
+                    seed_1: b.int({ default: 150623345818947, min: 0, max: 18446744073709552000 }),
+                    steps_1: b.int({ default: 10, min: 1, max: 10000 }),
+                    cfg_1: b.float({ default: 1.1, min: 0, max: 100, step: 0.1 }),
+                    sampler_name_1: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
+                    scheduler_1: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+                    denoise_1: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
+                },
+            }),
+            SaveImage: b.group({ items: { filename_prefix: b.string({ default: 'ComfyUI' }) } }),
         }),
-        startingLatent: form.group({
-            items: {
-                width: form.int({ default: 1024, min: 256, max: 8192, step: 8 }),
-                height: form.int({ default: 1024, min: 256, max: 8192, step: 8 }),
-                compression: form.int({ default: 42, min: 32, max: 64, step: 1 }),
-                batch_size: form.int({ default: 1, min: 1, max: 64 }),
-            },
-        }),
-        clip: form.group({
-            items: {
-                type: form.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
-                clip_name: form.enum.Enum_CLIPLoader_clip_name({
-                    extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
-                    default: 'Stable-Cascade\\model.safetensors',
-                }),
-            },
-        }),
-        prompt: form.group({
-            items: {
-                text: form.string({
-                    textarea: true,
-                    default: 'beautiful scenery nature glass bottle landscape, , purple galaxy bottle,',
-                }),
-            },
-        }),
-        negative: form.group({ items: { text_1: form.string({ default: '' }) } }),
-        KSampler: form.group({
-            items: {
-                seed: form.seed({ default: 762626426130783 }),
-                steps: form.int({ default: 20, min: 1, max: 10000 }),
-                cfg: form.float({ default: 4, min: 0, max: 100, step: 0.1 }),
-                sampler_name: form.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-                scheduler: form.enum.Enum_KSampler_scheduler({ default: 'simple' }),
-                denoise: form.float({ default: 1, min: 0, max: 1, step: 0.01 }),
-            },
-        }),
-        KSampler_1: form.group({
-            items: {
-                seed_1: form.int({ default: 150623345818947, min: 0, max: 18446744073709552000 }),
-                steps_1: form.int({ default: 10, min: 1, max: 10000 }),
-                cfg_1: form.float({ default: 1.1, min: 0, max: 100, step: 0.1 }),
-                sampler_name_1: form.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-                scheduler_1: form.enum.Enum_KSampler_scheduler({ default: 'simple' }),
-                denoise_1: form.float({ default: 1, min: 0, max: 1, step: 0.01 }),
-            },
-        }),
-        SaveImage: form.group({ items: { filename_prefix: form.string({ default: 'ComfyUI' }) } }),
-    }),
 
     run: async (run, ui) => {
         const graph = run.nodes

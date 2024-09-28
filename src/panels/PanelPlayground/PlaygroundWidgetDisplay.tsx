@@ -29,37 +29,37 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     )
 })
 
-export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
-    (ui) => {
+export const FORM_PlaygroundWidgetDisplay = cushyFactory.document(
+    (b) => {
         const booleanForm = {
-            check: ui.bool({}),
-            checkLabel: ui.bool({
+            check: b.bool({}),
+            checkLabel: b.bool({
                 label: false,
                 text: 'Check Label',
             }),
-            checkLabelIcon: ui.bool({
+            checkLabelIcon: b.bool({
                 label: false,
                 text: 'Check Label w icon',
                 icon: 'mdiContentSaveOutline',
             }),
-            toggleButton: ui.bool({
+            toggleButton: b.bool({
                 label: '',
                 text: 'Toggle Button',
                 display: 'button',
             }),
-            toggleButtonIcon: ui.bool({
+            toggleButtonIcon: b.bool({
                 label: false,
                 text: 'Toggle Button Icon',
                 display: 'button',
                 icon: 'mdiCheckboxOutline',
             }),
-            toggleButtonExpand: ui.bool({
+            toggleButtonExpand: b.bool({
                 label: '',
                 text: 'Toggle Button Expand',
                 display: 'button',
                 expand: true,
             }),
-            toggleButtonExpandIcon: ui.bool({
+            toggleButtonExpandIcon: b.bool({
                 label: '',
                 text: 'Toggle Button Expand w Icon',
                 display: 'button',
@@ -69,83 +69,83 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
         }
 
         const intForm = {
-            int: ui.int(),
-            intConstrained: ui.int({ min: 0, max: 100, step: 10 }),
-            intConstrainedSoft: ui.int({ min: 0, max: 100, softMax: 10, step: 10 }),
-            intSuffix: ui.int({ min: 0, max: 100, step: 10, suffix: 'px' }),
-            intLabel: ui.int({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
-            intLabelSuffix: ui.int({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
+            int: b.int(),
+            intConstrained: b.int({ min: 0, max: 100, step: 10 }),
+            intConstrainedSoft: b.int({ min: 0, max: 100, softMax: 10, step: 10 }),
+            intSuffix: b.int({ min: 0, max: 100, step: 10, suffix: 'px' }),
+            intLabel: b.int({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
+            intLabelSuffix: b.int({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
         }
 
         const floatForm = {
-            float: ui.float(),
-            floatConstrained: ui.float({ min: 0, max: 100, step: 10 }),
-            floatConstrainedSoft: ui.float({ min: 0, max: 100, softMax: 10, step: 10 }),
-            floatSuffix: ui.float({ min: 0, max: 100, step: 10, suffix: 'px' }),
-            floatLabel: ui.float({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
-            floatLabelSuffix: ui.float({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
+            float: b.float(),
+            floatConstrained: b.float({ min: 0, max: 100, step: 10 }),
+            floatConstrainedSoft: b.float({ min: 0, max: 100, softMax: 10, step: 10 }),
+            floatSuffix: b.float({ min: 0, max: 100, step: 10, suffix: 'px' }),
+            floatLabel: b.float({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
+            floatLabelSuffix: b.float({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
         }
 
         const dateForm = {
-            date: ui.stringDate(),
-            dateTime: ui.stringDatetime(),
+            date: b.stringDate(),
+            dateTime: b.stringDatetime(),
         }
 
         const emailForm = {
-            email: ui.email(),
+            email: b.email(),
         }
 
         const enumForm = {
-            choice: ui.fields({
-                enumSelection: ui.choice(Object.fromEntries(Object.entries(ui.enum).map(([key]) => [key, ui.group()]))),
+            choice: b.fields({
+                enumSelection: b.choice(Object.fromEntries(Object.entries(b.enum).map(([key]) => [key, b.group()]))),
             }),
         }
 
         const groupForm = {
-            test: ui.group(),
+            test: b.group(),
         }
 
         const choiceForm = {
-            choice: ui.choice({ choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() }, { label: 'Choice' }),
-            choices: ui.choices({ choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() }, { label: 'Choices' }),
+            choice: b.choice({ choiceOne: b.group(), choiceTwo: b.group(), choiceThree: b.group() }, { label: 'Choice' }),
+            choices: b.choices({ choiceOne: b.group(), choiceTwo: b.group(), choiceThree: b.group() }, { label: 'Choices' }),
         }
 
-        return {
-            boolean: ui.group({
+        return b.fields({
+            boolean: b.group({
                 startCollapsed: true,
                 items: {
-                    aligned: ui.group({
+                    aligned: b.group({
                         border: false,
                         items: booleanForm,
                     }),
-                    notAligned: ui.group({
+                    notAligned: b.group({
                         border: false,
                         justifyLabel: false,
                         items: booleanForm,
                     }),
                 },
             }),
-            string: ui.group({
+            string: b.group({
                 items: {
-                    aligned: ui.group({
+                    aligned: b.group({
                         border: false,
                         items: {
-                            stringLive: ui.string({}),
-                            stringBuffered: ui.string({ buffered: true }),
-                            stringLiveTextarea: ui.textarea({}),
-                            stringBufferedTextarea: ui.textarea({ buffered: true }),
+                            stringLive: b.string({}),
+                            stringBuffered: b.string({ buffered: true }),
+                            stringLiveTextarea: b.textarea({}),
+                            stringBufferedTextarea: b.textarea({ buffered: true }),
                         },
                     }),
                 },
             }),
-            int: ui.group({
+            int: b.group({
                 startCollapsed: true,
                 items: {
-                    aligned: ui.group({
+                    aligned: b.group({
                         border: false,
                         items: intForm,
                     }),
-                    notAligned: ui.group({
+                    notAligned: b.group({
                         border: false,
                         justifyLabel: false,
                         items: intForm,
@@ -153,14 +153,14 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                 },
             }),
 
-            float: ui.group({
+            float: b.group({
                 startCollapsed: true,
                 items: {
-                    aligned: ui.group({
+                    aligned: b.group({
                         border: false,
                         items: floatForm,
                     }),
-                    notAligned: ui.group({
+                    notAligned: b.group({
                         border: false,
                         justifyLabel: false,
                         items: floatForm,
@@ -168,12 +168,12 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                 },
             }),
 
-            button: ui.group({
+            button: b.group({
                 startCollapsed: true,
                 items: {
-                    button: ui.button({}),
+                    button: b.button({}),
                     ...mapObjectValues(frameTemplates, (k, v, ix) =>
-                        ui.button({
+                        b.button({
                             text: k,
                             icon: getIconName(ix * 10),
                             look: k as FrameAppearance,
@@ -181,7 +181,7 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                     ),
                     ...mapObjectEntries(frameTemplates, (k, v, ix) => [
                         k + '_',
-                        ui.button({
+                        b.button({
                             text: k,
                             icon: getIconName(1000 + ix * 10),
                             look: k as FrameAppearance,
@@ -191,27 +191,27 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                 },
             }),
 
-            color: ui.group({
+            color: b.group({
                 startCollapsed: true,
                 items: {
-                    v1: ui.group({
+                    v1: b.group({
                         border: false,
-                        items: { color: ui.color({}), colorN: ui.color({ label: false, justifyLabel: false }) },
+                        items: { color: b.color({}), colorN: b.color({ label: false, justifyLabel: false }) },
                     }),
-                    v2: ui.group({
+                    v2: b.group({
                         border: false,
-                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, justifyLabel: false }) },
+                        items: { color: b.colorV2({}), colorN: b.colorV2({ label: false, justifyLabel: false }) },
                     }),
                 },
             }),
 
-            date: ui.group({
+            date: b.group({
                 items: {
-                    aligned: ui.group({
+                    aligned: b.group({
                         border: false,
                         items: dateForm,
                     }),
-                    notAligned: ui.group({
+                    notAligned: b.group({
                         border: false,
                         justifyLabel: false,
                         items: dateForm,
@@ -219,52 +219,52 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                 },
             }),
 
-            email: ui.group({
+            email: b.group({
                 items: {
-                    aligned: ui.group({ border: false, items: emailForm }),
-                    notAligned: ui.group({ border: false, justifyLabel: false, items: emailForm }),
+                    aligned: b.group({ border: false, items: emailForm }),
+                    notAligned: b.group({ border: false, justifyLabel: false, items: emailForm }),
                 },
             }),
 
-            enum: ui.group({
-                items: { aligned: ui.group({ border: false, items: enumForm }) },
+            enum: b.group({
+                items: { aligned: b.group({ border: false, items: enumForm }) },
             }),
 
-            group: ui.group({
+            group: b.group({
                 items: {
-                    group: ui.group({ items: { inside: ui.float() } }),
-                    groupNoAlign: ui.group({ justifyLabel: false, items: { inside: ui.float() } }),
-                    groupNoBorder: ui.group({ border: false, items: { inside: ui.float() } }),
-                    groupNoCollapse: ui.group({ collapsed: false, items: { inside: ui.float() } }),
-                    columnExamples: ui.group({
+                    group: b.group({ items: { inside: b.float() } }),
+                    groupNoAlign: b.group({ justifyLabel: false, items: { inside: b.float() } }),
+                    groupNoBorder: b.group({ border: false, items: { inside: b.float() } }),
+                    groupNoCollapse: b.group({ collapsed: false, items: { inside: b.float() } }),
+                    columnExamples: b.group({
                         items: {
-                            column: ui.column({
-                                top: ui.float(),
-                                middle: ui.float(),
-                                bottom: ui.float(),
+                            column: b.column({
+                                top: b.float(),
+                                middle: b.float(),
+                                bottom: b.float(),
                             }),
-                            column2: ui.column(
+                            column2: b.column(
                                 {
-                                    top: ui.float({ label: false }),
-                                    middle: ui.float({ label: false }),
-                                    bottom: ui.float({ label: false }),
+                                    top: b.float({ label: false }),
+                                    middle: b.float({ label: false }),
+                                    bottom: b.float({ label: false }),
                                 },
                                 { border: true, justifyLabel: false },
                             ),
                         },
                     }),
-                    rowExamples: ui.group({
+                    rowExamples: b.group({
                         items: {
-                            row: ui.row({
-                                left: ui.float(),
-                                center: ui.float(),
-                                right: ui.float(),
+                            row: b.row({
+                                left: b.float(),
+                                center: b.float(),
+                                right: b.float(),
                             }),
-                            row2: ui.row(
+                            row2: b.row(
                                 {
-                                    left: ui.float({ label: false }),
-                                    center: ui.float({ label: false }),
-                                    right: ui.float({ label: false }),
+                                    left: b.float({ label: false }),
+                                    center: b.float({ label: false }),
+                                    right: b.float({ label: false }),
                                 },
                                 { border: true },
                             ),
@@ -273,8 +273,8 @@ export const FORM_PlaygroundWidgetDisplay = cushyFactory.fields(
                 },
             }),
 
-            test: ui.choice(choiceForm),
-        }
+            test: b.choice(choiceForm),
+        })
     },
     {
         name: 'Playground Widget Showcase',
