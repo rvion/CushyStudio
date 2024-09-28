@@ -14,13 +14,8 @@ export type UI_rembg_v1 = X.XChoices<{
 export function ui_rembg_v1(): UI_rembg_v1 {
     const form = getCurrentForm()
     return form
-        .choices({
-            // appearance: 'tab',
-            expand: true,
-            // appearance: 'tab',
-            // prettier-ignore
-            icon:'mdiTargetAccount',
-            items: {
+        .choices(
+            {
                 RemBG: form.empty(),
                 // ABG:             form.ok(),
                 isnetAnime: form.empty(),
@@ -31,7 +26,8 @@ export function ui_rembg_v1(): UI_rembg_v1 {
                 u2netp: form.empty(),
                 RemBGV1_4: form.empty(),
             },
-        })
+            { expand: true, icon: 'mdiTargetAccount' },
+        )
         .addRequirements([
             { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
             { type: 'modelInManager', modelName: 'TEMP_briaai_RMBG-1.4' },
@@ -41,7 +37,7 @@ export function ui_rembg_v1(): UI_rembg_v1 {
 export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): _IMAGE[] => {
     const graph = getCurrentRun().nodes
     const OUT: _IMAGE[] = []
-    const addImg = (tag: string, img: _IMAGE) => {
+    const addImg = (tag: string, img: _IMAGE): void => {
         graph.PreviewImage({ images: img }).tag(tag)
         OUT.push(img)
     }
