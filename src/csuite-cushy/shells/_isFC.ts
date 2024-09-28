@@ -33,6 +33,7 @@ export const renderFCOrNodeWithWrapper = <
 export const _isFC = <T extends object>(x: FCOrNode<T>): x is CovariantFC<T> => {
     // if it's a simple function , it's probably some FC
     if (typeof x === 'function') return true
+
     // if it's a memo (x[$$typeof]=== Symbol(react.memo))), it's probably some FC
     if (
         //
@@ -42,5 +43,6 @@ export const _isFC = <T extends object>(x: FCOrNode<T>): x is CovariantFC<T> => 
         x['$$typeof'] === Symbol.for('react.memo')
     )
         return true
+
     return false
 }

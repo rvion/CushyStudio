@@ -28,7 +28,7 @@ const CushyShellUI = observer(function CushySHell(
             {...p.field.config.box}
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
-            <WidgetHeaderContainerUI field={field}>
+            <WidgetHeaderContainerUI field={field} /* border={'red'} */>
                 {/* HEADER LABEL */}
                 {p.HEADER}
 
@@ -51,9 +51,9 @@ const CushyShellUI = observer(function CushySHell(
             {p.field.isCollapsed
                 ? null
                 : utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
-                className: p.classNameAroundBodyAndHeader ?? undefined,
-                border: p.border,
-            })}
+                      className: p.classNameAroundBodyAndHeader ?? undefined,
+                      border: p.border,
+                  })}
 
             {/* ERRORS  */}
             {utils.renderFCOrNode(p.Errors, { field })}

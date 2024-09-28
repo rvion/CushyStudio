@@ -26,7 +26,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
             <Frame
                 tw={[
                     'UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH',
-                    'flex gap-0.5 select-none',
+                    'flex gap-0.5 select-none flex-1',
                     // 💬 2024-06-03 rvion, changing 'items-center' to 'items-start'
                     // as well as adding some `h-input` class to <WidgetLabelContainerUI />
                     'items-start',
