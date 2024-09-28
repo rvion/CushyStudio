@@ -7,8 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
+import { ShellMobileUI } from '../../csuite-cushy/shells/ShellMobile'
 import { Button } from '../../csuite/button/Button'
-import { FormUI } from '../../csuite/form/FormUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
@@ -172,8 +172,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {metadata?.requirements && (
                     <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
-                <FormUI tw='pb-10' key={draft.id} field={draft.form} />
+                {draft.form && <draft.form.UI globalRules={{ Shell: ShellMobileUI }} />}
+
                 <RevealUI
+                    placement='topStart'
                     content={() => (
                         <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
                             <ul>
