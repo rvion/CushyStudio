@@ -1,6 +1,7 @@
 import type { CovariantFC, SchemaDict } from '../csuite'
 import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../csuite/model/Field'
+import type { WidgetMenuAction } from '../csuite/model/FieldConfig'
 import type { FieldConstructor } from '../csuite/model/FieldConstructor'
 import type { Instanciable } from '../csuite/model/Instanciable'
 import type { KnownModel_Name } from '../CUSHY'
@@ -51,6 +52,11 @@ export class CushySchema<out FIELD extends Field = Field> //
         else this.requirements.push(requirements)
         // this.🐌
         return this
+    }
+    addPreset = (preset: WidgetMenuAction<FIELD>): CushySchema<FIELD> => {
+        return this.withConfig({
+            presets: [...(this.config.presets ?? []), preset],
+        })
     }
 }
 
