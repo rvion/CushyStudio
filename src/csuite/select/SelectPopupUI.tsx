@@ -85,16 +85,11 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             {select.p.slotResultsListUI != null ? (
                 <select.p.slotResultsListUI select={select} />
             ) : select.p.virtualized !== false ? (
-                <FixedSizeList<{
-                    s: AutoCompleteSelectState<OPTION>
-                    reveal: RevealState
-                }>
+                <FixedSizeList<{ s: AutoCompleteSelectState<OPTION>; reveal: RevealState }>
                     className='mt-2 mb-1'
                     useIsScrolling={false}
-                    height={Math.min(
-                        400,
-                        itemSize /* temp hack to leave place for soon-to-be input */ * select.filteredOptions.length,
-                    )}
+                    /* temp hack to leave place for soon-to-be input */
+                    height={Math.min(400, itemSize * select.filteredOptions.length)}
                     itemCount={select.filteredOptions.length}
                     itemSize={itemSize}
                     width='100%'

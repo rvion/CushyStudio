@@ -64,31 +64,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 },
             }}
         >
-            <Row
-                expand
-                tabIndex={0}
-                tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']}
-                // style={p.style}
-                hoverable
-
-                // 🉑 tw={['UI-Select minh-input', 'relative', /*  'h-full', */ 'ANCHOR-REVEAL']}
-                // 🉑 line
-                // 🉑 icon={p.startIcon}
-                // 🉑 style={p.style}
-                // 🉑 hover={3}
-                // 🉑 base={csuite.inputContrast}
-                // 🉑 border={csuite.inputBorder}
-                // 🉑 className={p.className} // will be overwritten by reveal anchorProps, need fix
-
-                // 🧚‍♀️ onFocus={(ev) => {
-                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onFocus`)
-                // 🧚‍♀️     p.onAnchorFocus?.(ev)
-                // 🧚‍♀️ }}
-                // 🧚‍♀️ onBlur={(ev) => {
-                // 🧚‍♀️     select.revealState?.log(`🔶 revealUI - onBlur`)
-                // 🧚‍♀️     p.onAnchorBlur?.(ev)
-                // 🧚‍♀️ }}
-            >
+            <Row expand tabIndex={0} tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']} hoverable>
                 <AnchorContentComp select={select} />
                 {p.clearable && (
                     <Button
@@ -139,14 +115,3 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
         </>
     )
 })
-
-// HERE
-// onMouseDown={s.onRootMouseDown}
-// onBlur={(ev) => s.onBlur(ev)}
-// onKeyUp={s.onRootKeyUp}
-// onFocus={(ev) => {
-//     console.log(`[🔴] SelectUI > onFocus`)
-//     if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
-//         s.openMenu()
-//     }
-// }}
