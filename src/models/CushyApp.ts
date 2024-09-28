@@ -69,6 +69,22 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
         )
     }
 
+    get last10ExecutedDrafts(): {
+        id: DraftID
+        title: Maybe<string>
+        lastRunAt: Maybe<number>
+    }[] {
+        return this.db.draft.selectRaw(
+            (query) =>
+                query
+                    .where('appID', '=', this.id) //
+                    .orderBy('lastRunAt', 'desc')
+                    .select(['id', 'title', 'lastRunAt'])
+                    .limit(10),
+            ['draft.lastRunAt', 'draft.appID'],
+        )
+    }
+
     /** true if in the library/local folder */
     get isLocal(): boolean {
         return this.script.relPath.startsWith('library/local')
