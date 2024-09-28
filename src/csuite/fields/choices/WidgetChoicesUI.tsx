@@ -4,7 +4,6 @@ import type { Field_choices } from './FieldChoices'
 import { observer } from 'mobx-react-lite'
 
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 
@@ -31,15 +30,16 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
             {activeSubwidgets.map((val) => {
                 const subWidget = val.subWidget
                 if (subWidget == null) return <>❌ error</>
-                return (
-                    <WidgetWithLabelUI //
-                        justifyLabel={p.justify}
-                        key={val.branch}
-                        fieldName={val.branch}
-                        field={subWidget}
-                        // label={widget.isSingle ? false : undefined}
-                    />
-                )
+                return <subWidget.UI key={val.branch} />
+                // return (
+                //     <WidgetWithLabelUI //
+                //         justifyLabel={p.justify}
+                //         key={val.branch}
+                //         fieldName={val.branch}
+                //         field={subWidget}
+                //         // label={widget.isSingle ? false : undefined}
+                //     />
+                // )
             })}
         </ListOfFieldsContainerUI>
     )

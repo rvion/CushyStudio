@@ -135,7 +135,7 @@ export class Field_link<A extends BaseSchema, B extends BaseSchema> //
 
     // #region UI
     DefaultHeaderUI = undefined
-    DefaultBodyUI: FC<{}> = () => this.bField.renderWithLabel() // 🔴 Not sure how to use `Render` properly here
+    DefaultBodyUI: FC<{}> = () => this.bField.UI() // 🔴 Not sure how to use `Render` properly here
 
     get actualWidgetToDisplay(): Field {
         return this.bField.actualWidgetToDisplay

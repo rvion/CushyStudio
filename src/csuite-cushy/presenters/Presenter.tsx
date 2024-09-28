@@ -32,7 +32,7 @@ import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesBu
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { ShellCushyRightUI } from '../shells/ShellCushy'
+import { ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { usePresenterOrNull } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
@@ -224,7 +224,7 @@ export interface UISlots<out FIELD extends Field = Field> {
 
 // #region P.defaults
 export const defaultPresenterSlots: UISlots<any> = {
-    /* ✅ */ Shell: ShellCushyRightUI,
+    /* ✅ */ Shell: ShellCushyLeftUI,
 
     // heavilly suggested to include in your presenter unless you know what you do
     /* ✅ */ Header: undefined, // will be injected by the field
@@ -285,6 +285,7 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): RenderD
     Header: field.DefaultHeaderUI,
     Body: field.DefaultBodyUI,
     Extra: field.schema.LabelExtraUI,
+    DebugID: null,
 })
 
 // #region RenderProps
@@ -297,6 +298,10 @@ export interface RenderDSL<out FIELD extends Field> //
     extends UISlots<FIELD> {
     // alternative to specify body; makes it easy to quickly spawn forms with various layouts
     children?: CovariantFn1<FIELD, QuickFormContent[]>
+
+    // 🖼️
+    In?: any // TODO (proper catalog for wrapper variant via proxy)
+    As?: any // TODO (proper catalog for self variant via proxy)
 
     // 2️⃣ STUFF FOR DIRECT CHILDREN
     // prettier-ignore

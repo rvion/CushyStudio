@@ -9,7 +9,12 @@ import { WidgetPresetsUI } from '../../csuite/form/WidgetPresets'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 
-const CushyShellUI = observer(function CushySHell(p: CompiledRenderProps & { HEADER: ReactNode }) {
+const CushyShellUI = observer(function CushySHell(
+    p: CompiledRenderProps & {
+        border?: boolean
+        HEADER: ReactNode
+    },
+) {
     const field = p.field
     const utils = p.presenter.utils
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
@@ -45,6 +50,7 @@ const CushyShellUI = observer(function CushySHell(p: CompiledRenderProps & { HEA
             {/* BODY  */}
             {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
                 className: p.classNameAroundBodyAndHeader ?? undefined,
+                border: p.border,
             })}
 
             {/* ERRORS  */}

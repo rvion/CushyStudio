@@ -45,7 +45,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     return (
         <div tw='flex-1 flex flex-col gap-2'>
             <Frame border base>
-                {conf.renderAsForm()}
+                {conf.UI()}
             </Frame>
             {conf.value.defaultVisible && (
                 <RevealUI trigger='click' placement='bottomStart' content={Content} defaultVisible={conf.value.defaultVisible}>

@@ -34,7 +34,7 @@ export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(
                     Incc {test1.data.x}
                 </Button>
                 <Frame base border expand>
-                    {test2.renderAsForm()}
+                    {test2.UI()}
                 </Frame>
             </Frame>
             <PanelStateDebugUI panel={panel} />

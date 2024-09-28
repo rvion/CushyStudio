@@ -47,7 +47,7 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
                 {/* <SpacerUI /> */}
             </UI.Panel.Header>
 
-            {xxx.renderAsForm()}
+            {xxx.UI()}
 
             <Frame line>
                 <Button //

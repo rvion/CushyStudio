@@ -47,13 +47,18 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
             shelfSize: ui.int(),
         }),
     )
+    // return <>test</>
+    // const xxx = cushy.forms.document((b) => {
+    //     return b.string()
+    // })
+    // return <xxx.UI />
     const modeField = panelState.fields.configMode
     const configMode = modeField.value
     const page: JSX.Element = ((): JSX.Element => {
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
         if (mode === 'input') return <cushy.theme.UI tw='w-full' children={({ fields: f }) => [f.inputBorder, f.inputContrast]} />
-        if (mode === 'TEMP') return <div>{panelState.renderAsForm()}</div>
+        if (mode === 'TEMP') return <div>{panelState.UI()}</div>
         if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
         if (mode === 'legacy') return <LegacyOptions />
         if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />

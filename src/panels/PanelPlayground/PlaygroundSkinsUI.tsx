@@ -27,7 +27,7 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                 <Frame expand col tw='gap-2'>
                     <Frame border base expand>
                         default (full)
-                        {xx.renderAsForm()}
+                        {xx.UI()}
                     </Frame>
                 </Frame>
                 <Frame border base expand>

@@ -2,7 +2,6 @@ import type { Field_list_serial } from '../fields/list/FieldList'
 import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { Field_shared } from '../fields/shared/FieldShared'
 import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
-import type { WidgetWithLabelProps } from '../form/WidgetWithLabelUI'
 import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
@@ -46,7 +45,6 @@ import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
-import { WidgetWithLabelUI } from '../form/WidgetWithLabelUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { SimpleSchema } from '../simple/SimpleSchema'
@@ -1201,15 +1199,24 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     }
 
     // #region UI.Render
+
+    //  => LOCO
+    Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+        if (props == undefined) debugger
+        return <window.RENDERER.Render field={this} p={props} />
+    }
+
+    //  => CUSHY
+    UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+        if (props == undefined) debugger
+        return <window.RENDERER.Render field={this} p={props} />
+    }
+
     /**
      * @deprecated prefer Field.Render
      * temporary until shells */
     renderSimple(p: RENDERER.FieldRenderArgs<this>): ReactNode {
         return this.UI({ Shell: (x) => <x.UI.ShellSimple {...x} />, ...p })
-    }
-
-    renderAsForm(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        return this.render(p)
     }
 
     /**
@@ -1218,15 +1225,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @since 2024-09-19
      * @see {@link Render}
      */
-    render(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        return <window.RENDERER.Render field={this} p={p} />
-    }
-
-    Render(props: RENDERER.FieldRenderArgs<this>): ReactNode {
-        return <window.RENDERER.Render field={this} p={props} />
-    }
-
-    UI(props: RENDERER.FieldRenderArgs<this>): ReactNode {
+    render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+        if (props == undefined) debugger
         return <window.RENDERER.Render field={this} p={props} />
     }
 
@@ -1247,24 +1247,6 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         width?: string
     }): ReactNode {
         return createElement(FormAsDropdownConfigUI, { form: this, ...p })
-    }
-
-    /**
-     * @deprecated prefer Field.Render
-     * use field.header() if you just want to render the input
-     */
-    renderWithLabel(
-        this: Field,
-        p?: Omit<WidgetWithLabelProps, 'field' | 'fieldName'> & Partial<Pick<WidgetWithLabelProps, 'fieldName'>>,
-    ): JSX.Element {
-        return (
-            <WidgetWithLabelUI //
-                key={this.id}
-                field={this}
-                fieldName={p?.fieldName ?? '_'}
-                {...p}
-            />
-        )
     }
 
     // #region UI.Components
@@ -1584,13 +1566,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
                 2,
             )
 
-            this.renderAsForm = this.renderAsForm.bind(this)
+            this.UI = this.UI.bind(this)
             this.render = this.render.bind(this)
             this.Render = this.Render.bind(this)
-            this.UI = this.UI.bind(this)
-            this.renderAsForm = this.renderAsForm.bind(this)
             this.renderSimple = this.renderSimple.bind(this) // TODO: remove
-            this.renderWithLabel = this.renderWithLabel.bind(this) // TODO: remove
             this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
 
             this.repo._registerField(this)

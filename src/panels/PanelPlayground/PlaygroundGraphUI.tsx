@@ -16,7 +16,7 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
                 <Button onClick={update}>update</Button>
                 {form.renderAsConfigBtn({ title: 'Graph Conf' })}
             </div>
-            {form.renderAsForm()}
+            {form.UI()}
             <DrawWorkflowUI //
                 spline={form.value.spline}
                 workflow={workflow}

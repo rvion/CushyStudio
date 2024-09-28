@@ -3,9 +3,9 @@ import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RSSize } from '../types/RsuiteTypes'
-import { type CSSProperties, type FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { type CSSProperties, type FC } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -86,7 +86,7 @@ export const FormUI = observer(function FormUI_(p: FormUIProps) {
         >
             {p.Header && <p.Header />}
             {/* FORM */}
-            {p.Content ? <p.Content /> : field.renderWithLabel({ noHeader: true })}
+            {p.Content ? <p.Content /> : field.UI({ noHeader: true })}
             {submitAction != null && (
                 <div tw='flex'>
                     <Button
