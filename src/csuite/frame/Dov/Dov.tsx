@@ -213,7 +213,7 @@ export const Dov = observer(
 const stableColor = (s: string): string => `hsl(${hashStringToNumber(s) % 360}, 70%, 50%)`
 
 export const Col = observer(
-    forwardRef(function Col_(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {
+    forwardRef(function Col(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {
         return <Dov ref={ref} col align='start' {...p} />
     }),
 )
@@ -221,7 +221,7 @@ export const Col = observer(
 // 🔴 beware if you register components as clonable, you also need to forward {props.children}!
 // see CellSeeMoreUI
 export const Row = observer(
-    forwardRef(function Col_(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {
+    forwardRef(function Row(p: DovProps, ref: ForwardedRef<HTMLDivElement>) {
         return <Dov ref={ref} row align='center' {...p} />
     }),
 )
