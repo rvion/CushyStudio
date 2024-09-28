@@ -18,6 +18,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
     return (
         <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
             // hoverable
+            line
             hover
             size='input'
             triggerOnPress={{ startingState: isActive }}
