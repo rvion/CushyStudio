@@ -620,7 +620,8 @@ export class CushyLayoutManager {
             console.log(`❌ currentTabIs(...): "${id}" does not start with ${tabPrefix}`)
             return null
         }
-        return (current as FL.TabNode).getConfig() as Maybe<PropsOf<Panels[K]['widget']>>
+        const config: PanelPersistedJSON<Panels[K]['$Props']> = (current as FL.TabNode).getConfig()
+        return config.$props
     }
 
     findTabsFor = <K extends PanelName>(
