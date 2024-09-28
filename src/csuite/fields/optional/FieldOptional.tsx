@@ -4,8 +4,6 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem, Problem_Ext } from '../../model/Validation'
 
-import { produce } from 'immer'
-
 import { Field, type KeyedField } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
