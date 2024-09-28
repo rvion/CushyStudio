@@ -48,7 +48,9 @@ const CushyShellUI = observer(function CushySHell(
             </WidgetHeaderContainerUI>
 
             {/* BODY  */}
-            {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+            {p.field.isCollapsed
+                ? null
+                : utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
                 className: p.classNameAroundBodyAndHeader ?? undefined,
                 border: p.border,
             })}
