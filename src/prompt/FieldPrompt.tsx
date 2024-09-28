@@ -1,4 +1,3 @@
-import type { CovariantFC } from '../csuite'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { FieldSerial } from '../csuite/model/FieldSerial'
@@ -13,7 +12,7 @@ import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
-import { WidgetPrompt_LineUI, WidgetPromptCollapsibleUI, WidgetPromptUI } from './WidgetPromptUI'
+import { WidgetPromptCollapsibleUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
