@@ -13,7 +13,7 @@ import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
-import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
+import { WidgetPrompt_LineUI, WidgetPromptCollapsibleUI, WidgetPromptUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -84,8 +84,8 @@ export class Field_prompt extends Field<Field_prompt_types> {
         super(repo, root, parent, schema, initialMountKey, serial)
 
         this.init(serial, {
-            DefaultBodyUI: false,
             DefaultHeaderUI: false,
+            DefaultBodyUI: false,
         })
     }
 
@@ -94,17 +94,13 @@ export class Field_prompt extends Field<Field_prompt_types> {
     }
 
     // #region UI
+    DefaultHeaderUI = WidgetPromptCollapsibleUI
+    DefaultBodyUI = undefined // WidgetPromptUI
+
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     // DefaultHeaderUI = WidgetPrompt_LineUI
     // DefaultBodyUI = WidgetPromptUI
-
-    get DefaultHeaderUI(): CovariantFC<{ field: Field_prompt }> {
-        if (this.isCollapsed) return WidgetPrompt_LineUI
-        return WidgetPromptUI
-    }
-
-    DefaultBodyUI = undefined // WidgetPromptUI
 
     get isCollapsible(): boolean {
         return true
