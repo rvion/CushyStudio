@@ -406,6 +406,15 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
         // if field is not set, and field has default => apply default
         if (next.branches == null) {
+            // make sure we have branches set even if no values, when default
+            if (this.config.default != null) {
+                this.patchSerial((draft) => {
+                    draft.branches = {}
+                    draft.values = {}
+                })
+            }
+
+            // then activate default brances (possibly none)
             const branchesActiveByDefault = this.branchesActiveByDefault
             for (const branch of branchesActiveByDefault) {
                 // allocate holes in the serial + set branch active...
