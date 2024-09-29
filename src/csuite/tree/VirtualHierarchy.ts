@@ -20,7 +20,7 @@ export class VirtualHierarchy<T extends { virtualFolder: string }> {
         return this.items.filter((x) => x.virtualFolder === '')
     }
 
-    getItemsInFolder = (virtualFolderPath: string) => {
+    getItemsInFolder = (virtualFolderPath: string): T[] => {
         // remove tailing '/' if present
         if (virtualFolderPath.endsWith('/')) virtualFolderPath = virtualFolderPath.slice(0, -1)
         return this.items.filter((x) => x.virtualFolder === virtualFolderPath)
