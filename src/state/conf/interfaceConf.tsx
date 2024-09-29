@@ -106,6 +106,17 @@ export const interfaceConf = cushyFactory.document(
                     default: false,
                     tooltip: 'Show icons in toggle buttons',
                 }),
+
+                favBar: ui.group({
+                    items: {
+                        size: ui.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+                        visible: ui.bool(),
+                        grayscale: ui.boolean({ label: 'Grayscale' }),
+                        appIcons: ui
+                            .int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' })
+                            .optional(true),
+                    },
+                }),
             },
             {
                 label: false,
