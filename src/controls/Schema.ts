@@ -41,8 +41,12 @@ export class CushySchema<out FIELD extends Field = Field> //
     // #region Cushy Specific Schema APIs
     readonly requirements: Requirements[] = []
 
-    addRequirementOnComfyManagerModel(modelName: KnownModel_Name): this {
-        this.addRequirements({ type: 'modelInManager', modelName, optional: true })
+    addRequirementOnComfyManagerModel(modelName: KnownModel_Name | KnownModel_Name[]): this {
+        this.addRequirements(
+            typeof modelName === 'string'
+                ? { type: 'modelInManager', modelName, optional: true }
+                : modelName.map((mn) => ({ type: 'modelInManager', modelName: mn, optional: true })),
+        )
         return this
     }
 
