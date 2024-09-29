@@ -3,6 +3,7 @@ import type { Requirements } from './Requirements'
 
 import { observer } from 'mobx-react-lite'
 
+import { MessageWarningUI } from '../../csuite'
 import { Button } from '../../csuite/button/Button'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -49,6 +50,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const repo = manager.repository
     return (
         <div tw='flex flex-col gap-2 p-2'>
+            <MessageWarningUI markdown='make sure your `ComfyUI\custom_nodes\ComfyUI-Manager\config.ini` properly has `bypass_ssl = True`'>
+                make sure you have
+            </MessageWarningUI>
             <QuickHostActionsUI host={host} tw='flex gap-1 flex-wrap' />
             <hr />
             <div tw='flex flex-col overflow-scroll gap-2'>
