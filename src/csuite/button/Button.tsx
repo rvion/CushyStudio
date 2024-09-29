@@ -42,8 +42,8 @@ const _Button = observer(function Button_(
                 contrast: subtle //
                     ? 0
                     : uist.visuallyActive || uist.running
-                    ? buttonContrastWhenPressed
-                    : buttonContrast,
+                      ? buttonContrastWhenPressed
+                      : buttonContrast,
                 hue: p.hue,
                 chroma: p.chroma,
             }}
