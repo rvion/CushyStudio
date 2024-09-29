@@ -19,6 +19,8 @@ const CushyShellUI = observer(function CushySHell(
     const utils = p.presenter.utils
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 
+    const interfacePreferences = cushy.preferences.interface.value
+
     const WUI = (
         <Frame
             className={p.classNameForShell ?? undefined}
@@ -43,8 +45,8 @@ const CushyShellUI = observer(function CushySHell(
 
                 {/* HEADER EXTRA prettier-ignore */}
                 {utils.renderFCOrNode(p.Extra, p)}
-                {utils.renderFCOrNode(p.UndoBtn, p)}
-                {utils.renderFCOrNode(p.MenuBtn, p)}
+                {interfacePreferences.showWidgetUndo && utils.renderFCOrNode(p.UndoBtn, p)}
+                {interfacePreferences.showWidgetMenu && utils.renderFCOrNode(p.MenuBtn, p)}
             </WidgetHeaderContainerUI>
 
             {/* BODY  */}
