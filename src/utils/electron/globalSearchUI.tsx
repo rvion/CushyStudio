@@ -1,16 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
-import { JsonViewUI } from '../../csuite/json/JsonViewUI'
-
-export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
+export const GlobalSearchUI = observer(function GlobalSearch(p: {}) {
     if (!cushy.search.active) return null
     const aa = nanoid()
     return (
         <div>
             <div
                 //
-                style={{ zIndex: 999 }}
+                style={{ zIndex: 9999999 }}
                 tw='absolute top-10
                 10 right-10 bg-gray-500'
             >
@@ -51,8 +49,8 @@ export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
                     //     cushy.search.deactivate()
                     // }}
                 />
-                {cushy.search.query.value.length}
-                <JsonViewUI value={cushy.search.results} />
+                {/* {cushy.search.query.value.length} */}
+                {/* <JsonViewUI value={cushy.search.results} /> */}
             </div>
         </div>
     )

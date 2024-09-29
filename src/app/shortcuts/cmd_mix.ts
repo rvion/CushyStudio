@@ -38,8 +38,8 @@ export const allLegacyCommands: Command<any>[] = [
         KEYS.search,
         'search string globally in window',
         () => {
-            if (cushy.search.active) cushy.search.active = false
-            else cushy.search.active = true
+            if (cushy.search.active) cushy.search.deactivate()
+            else cushy.search.activate()
             return Trigger.Success
         },
         'mdiSelectSearch',
