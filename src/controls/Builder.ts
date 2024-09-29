@@ -230,10 +230,6 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_string>(Field_string, { textarea: true, ...config })
     }
 
-    size(config: Field_size_config = {}): X.XSize {
-        return new CushySchema<Field_size>(Field_size, config)
-    }
-
     orbit(config: Field_orbit_config = {}): X.XOrbit {
         return new CushySchema<Field_orbit>(Field_orbit, config)
     }
