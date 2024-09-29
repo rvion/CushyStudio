@@ -94,7 +94,7 @@ export type WsMsgExecutionSuccess = {
     }
 }
 
-export const Timestamp$Schema = z.string()
+export const Timestamp$Schema = z.number()
 
 export const WsMsgExecutionSuccess$Schema = z.object({
     type: z.literal('execution_success'),
