@@ -5,7 +5,6 @@ import type { StepOutput } from '../types/StepOutput'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { MediaSplatL } from './MediaSplat'
-import type { RuntimeErrorL } from './RuntimeError'
 
 import { Status } from '../back/Status'
 import { Field_group } from '../csuite/fields/group/FieldGroup'
@@ -25,6 +24,7 @@ import { MediaCustomL } from './MediaCustom'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
+import { RuntimeErrorL } from './RuntimeError'
 
 export type FormPath = (string | number)[]
 
@@ -181,7 +181,8 @@ export class StepL extends BaseInst<TABLES['step']> {
             last instanceof Media3dDisplacementL ||
             last instanceof MediaCustomL ||
             last instanceof MediaTextL ||
-            last instanceof MediaImageL
+            last instanceof MediaImageL ||
+            last instanceof RuntimeErrorL
         )
             return last
 
