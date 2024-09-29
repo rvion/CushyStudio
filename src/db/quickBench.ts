@@ -10,12 +10,12 @@ type StatLine = {
 class QuickBench {
     entries: { [key: string]: number[] } = {}
 
-    addStats = (key: string, value: number) => {
+    addStats = (key: string, value: number): void => {
         if (this.entries[key] == null) this.entries[key] = []
         this.entries[key]!.push(value)
     }
 
-    health = (val: number, max: number) => {
+    health = (val: number, max: number): string => {
         if (val > max) return `🛑 ${val.toFixed(2)}`
         if (val > max * 0.5) return `🔶 ${val.toFixed(2)}`
         return val.toFixed(2)
@@ -41,12 +41,12 @@ class QuickBench {
         }
         return { key, sum, count, avg, min, max }
     }
-    printStatLine = (key: string) => {
+    printStatLine = (key: string): void => {
         const { count, avg, min, max } = this.getStatLine(key)
         console.log(`[📊] ${key} count=${count} avg=${avg}ms | min=${min} | max${max}`)
     }
 
-    printAllStats = () => {
+    printAllStats = (): void => {
         const stats: StatLine[] = []
         for (const key in this.entries) {
             stats.push(this.getStatLine(key))
