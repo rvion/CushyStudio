@@ -18,7 +18,7 @@ import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from '../_prefabs/p
 import { run_customSave } from '../_prefabs/saveSmall'
 import { CustomView3dCan } from '../_views/View_3d_TinCan'
 import { CustomViewSpriteSheet } from '../_views/View_Spritesheets'
-import { run_model_SD15 } from './prefab_model_SD15'
+import { eval_model_SD15 } from './prefab_model_SD15'
 import { CushySD15UI } from './sd15UI'
 
 app({
@@ -30,38 +30,22 @@ app({
     ui: CushySD15UI,
     run: async (run, ui, ctx) => {
         const graph = run.nodes
-        // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = run_model_SD15(ui.model)
+        // #region  MODEL, clip skip, vae, etc.
+        let { ckpt, vae, clip } = eval_model_SD15(ui.model)
 
-        // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
+        // #region  PROMPT ENGINE
         let positiveText = ui.positive.text
         if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
-
-        const posPrompt = run_prompt({
-            prompt: { text: positiveText },
-            clip,
-            ckpt,
-            printWildcards: true,
-        })
+        const posPrompt = run_prompt({ prompt: { text: positiveText }, clip, ckpt, printWildcards: true })
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
-        // let finalText = posPrompt.promptIncludingBreaks
         let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
-
-        if (ui.extra.regionalPrompt) {
+        if (ui.extra.regionalPrompt)
             positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
-        }
-        // let negative = x.conditionningNeg
-
         const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
-        let negative: _CONDITIONING = graph.CLIPTextEncode({
-            clip,
-            text: negPrompt.promptIncludingBreaks /* + posPrompt.negativeText */,
-        })
-        // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        // let negative = y.conditionning
+        let negative: _CONDITIONING = graph.CLIPTextEncode({ clip, text: negPrompt.promptIncludingBreaks })
 
-        // START IMAGE -------------------------------------------------------------------------
+        // #region START IMAGE
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 HACKY  */
@@ -72,12 +56,12 @@ app({
               }))()
             : await run_latent_v3({ opts: ui.latent, vae })
 
-        // MASK --------------------------------------------------------------------------------
+        // #region mask
         let mask: Maybe<_MASK>
         if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
         if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
-        // CNETS -------------------------------------------------------------------------------
+        // #region CNETS
         let cnet_out: Cnet_return | undefined
         if (ui.controlnets) {
             const Cnet_args: Cnet_args = { positive, negative, width, height, ckptPos }

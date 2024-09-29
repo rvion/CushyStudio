@@ -6,7 +6,8 @@ import { run_refiners_fromImage } from './_prefabs/prefab_detailer'
 import { run_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { run_mask } from './_prefabs/prefab_mask'
-import { run_model, run_model_modifiers } from './_prefabs/prefab_model'
+import { run_model } from './_prefabs/prefab_model'
+import { run_model_modifiers } from './_prefabs/prefab_model_extras'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
@@ -102,7 +103,7 @@ app({
 
         // FIRST PASS --------------------------------------------------------------------------------
         const ctx_sampler_advanced: Ctx_sampler_advanced = {
-            ckpt: run_model_modifiers(ui.model, ckptPos, false),
+            ckpt: run_model_modifiers(ui.model.mode.extra, ckptPos, false),
             clip: clipPos,
             vae,
             // @ts-ignore 🔴 TODO: review this one
@@ -150,7 +151,7 @@ app({
         const HRF = ui.extra.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
-                ckpt: run_model_modifiers(ui.model, ckptPos, true, HRF.scaleFactor),
+                ckpt: run_model_modifiers(ui.model.extra, ckptPos, true, HRF.scaleFactor),
                 clip: clipPos,
                 vae,
                 latent,

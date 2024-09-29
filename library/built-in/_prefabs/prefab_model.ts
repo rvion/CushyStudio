@@ -1,19 +1,22 @@
 import type { OutputFor } from './_prefabs'
+import type { $prefab_model_extras } from './prefab_model_extras'
 
-import { ui_model_kohyaDeepShrink, type UI_model_kohyaDeepShrink } from './prefab_model_kohyaDeepShrink'
-import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
-import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
+import { prefab_model_SD15 } from '../SD15/prefab_model_SD15'
+import { prefab_diffusion_SD3 } from '../SD3/prefab_model_SD3'
+import { prefab_diffusion_FLUX } from './prefab_model_flux'
 
 export type UI_Model = X.XGroup<{
     modelType: X.XChoice<{
-        Diffusion: X.XGroup<{
+        SD15: X.XGroup<{
             ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
+            extra: $prefab_model_extras
         }>
         SD3: X.XGroup<{
             ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
             clip1: X.XEnum<Enum_TripleCLIPLoader_clip_name1>
             clip2: X.XEnum<Enum_TripleCLIPLoader_clip_name2>
             clip3: X.XEnum<Enum_TripleCLIPLoader_clip_name3>
+            extra: $prefab_model_extras
         }>
         FLUX: X.XGroup<{
             ckpt_name: X.XEnum<Enum_UNETLoader_unet_name>
@@ -21,21 +24,11 @@ export type UI_Model = X.XGroup<{
             clip1: X.XEnum<Enum_DualCLIPLoader_clip_name1>
             clip2: X.XEnum<Enum_DualCLIPLoader_clip_name2>
             type: X.XEnum<Enum_DualCLIPLoader_type>
+            extra: $prefab_model_extras
         }>
     }>
     checkpointConfig2: X.XOptional<X.XEnum<Enum_CheckpointLoader_config_name>>
-    extra: X.XChoices<{
-        checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
-        rescaleCFG: X.XNumber
-        vae: X.XEnum<Enum_VAELoader_vae_name>
-        clipSkip: X.XNumber
-        freeU: X.XGroup<X.SchemaDict>
-        freeUv2: X.XGroup<X.SchemaDict>
-        pag: UI_model_pag
-        sag: UI_model_sag
-        KohyaDeepShrink: UI_model_kohyaDeepShrink
-        civitai_ckpt_air: X.XString
-    }>
+    // extra: $prefab_model_extras // TODO: remove
 }>
 
 // UI -----------------------------------------------------------
@@ -49,7 +42,7 @@ export function ui_model(): UI_Model {
         label: 'Model',
         summary: (ui) => {
             let out: string =
-                ui.modelType.Diffusion?.ckpt_name ?? ui.modelType.SD3?.ckpt_name ?? ui.modelType.FLUX?.ckpt_name ?? 'Empty'
+                ui.modelType.SD15?.ckpt_name ?? ui.modelType.SD3?.ckpt_name ?? ui.modelType.FLUX?.ckpt_name ?? 'Empty'
             if (ui.extra.freeU) out += ' + FreeU'
             if (ui.extra.freeUv2) out += ' + FreeUv2'
             if (ui.extra.vae) out += ' + VAE'
@@ -66,83 +59,14 @@ export function ui_model(): UI_Model {
         items: {
             modelType: form.choice(
                 {
-                    Diffusion: form.fields({
-                        ckpt_name: form.enum
-                            .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-                            .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
-                    }),
-                    SD3: form
-                        .fields({
-                            ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
-                            clip1: form.enum.Enum_TripleCLIPLoader_clip_name1({
-                                // @ts-ignore
-                                default: 't5xxl_fp16.safetensors',
-                            }),
-                            clip2: form.enum.Enum_TripleCLIPLoader_clip_name2({ default: 'clip_l.safetensors' }),
-                            clip3: form.enum.Enum_TripleCLIPLoader_clip_name3({
-                                // @ts-ignore
-                                default: 'clip_g.safetensors',
-                            }),
-                        })
-                        .addRequirements([
-                            //
-                        ]),
-                    FLUX: form
-                        .fields({
-                            ckpt_name: form.enum.Enum_UNETLoader_unet_name({
-                                // @ts-ignore
-                                default: 'flux1-dev.sft',
-                            }),
-                            weight_type: form.enum.Enum_UNETLoader_weight_dtype({ label: 'Weight Type', default: 'fp8_e4m3fn' }),
-                            clip1: form.enum
-                                .Enum_DualCLIPLoader_clip_name1({
-                                    // @ts-ignore
-                                    default: 't5xxl_fp16.safetensors',
-                                })
-                                .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp16')
-                                .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp8_e4m3fn'),
-                            clip2: form.enum
-                                .Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' })
-                                .addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
-                            type: form.enum.Enum_DualCLIPLoader_type({ default: 'flux' }),
-                        })
-                        .addRequirements([
-                            { type: 'modelInManager', modelName: 'FLUX.1 VAE model' },
-                            { type: 'modelInManager', modelName: 'FLUX.1 [schnell] Diffusion model' },
-                            { type: 'modelInManager', modelName: 'kijai/FLUX.1 [dev] Diffusion model (float8_e4m3fn)' },
-                            { type: 'modelInManager', modelName: 'kijai/FLUX.1 [schnell] Diffusion model (float8_e4m3fn)' },
-                            { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [dev] Checkpoint model (fp8)' },
-                            { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [schnell] Checkpoint model (fp8)' },
-                        ]),
+                    SD15: prefab_model_SD15(),
+                    SDXL: prefab_model_SD15(),
+                    SD3: prefab_diffusion_SD3(),
+                    FLUX: prefab_diffusion_FLUX(),
                 },
                 { appearance: 'tab' },
             ),
-            checkpointConfig2: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
-            extra: form.choices(
-                {
-                    checkpointConfig: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
-                    rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
-                    vae: form.enum.Enum_VAELoader_vae_name(),
-                    clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
-                    freeU: form.group(),
-                    freeUv2: form.group(),
-                    pag: ui_model_pag(form),
-                    sag: ui_model_sag(form),
-                    KohyaDeepShrink: ui_model_kohyaDeepShrink(form),
-                    civitai_ckpt_air: form
-                        .string({
-                            tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
-                            label: 'Civitai Ref',
-                            placeHolder: 'e.g. 43331@176425',
-                        })
-                        .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }]),
-                },
-                {
-                    border: false,
-                    // label: false,
-                    appearance: 'tab',
-                },
-            ),
+            // checkpointConfig2: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
         },
         presets: [
             // 💬 2024-08-06 rvion:
@@ -177,8 +101,7 @@ export function ui_model(): UI_Model {
                 apply: (w): void => {
                     w.value = {
                         checkpointConfig2: undefined,
-                        modelType: { Diffusion: { ckpt_name: 'albedobaseXL_v21.safetensors' } },
-                        extra: { clipSkip: 2 },
+                        modelType: { SDXL: { ckpt_name: 'albedobaseXL_v21.safetensors', extra: { clipSkip: 2 } } },
                     }
                 },
             },
@@ -188,8 +111,7 @@ export function ui_model(): UI_Model {
                 apply: (w): void => {
                     w.setValue({
                         checkpointConfig2: undefined,
-                        modelType: { Diffusion: { ckpt_name: 'revAnimated_v122.safetensors' } },
-                        extra: {},
+                        modelType: { SD15: { ckpt_name: 'revAnimated_v122.safetensors', extra: {} } },
                     })
                 },
             },
@@ -206,9 +128,9 @@ export function ui_model(): UI_Model {
                                 clip1: 't5xxl_fp18_e4m3fn.safetensors' as Enum_TripleCLIPLoader_clip_name1,
                                 clip2: 'clip_l.safetensors',
                                 clip3: 'clip_g.safetensors' as Enum_TripleCLIPLoader_clip_name3,
+                                extra: { vae: undefined },
                             },
                         },
-                        extra: { vae: undefined },
                     })
                 },
             },
@@ -248,26 +170,27 @@ export function run_model(ui: OutputFor<typeof ui_model>): {
     let ckpt: _MODEL
     let clip: _CLIP
     let vae: _VAE | undefined = undefined
-    if (ui.modelType.Diffusion) {
-        if (ui.extra.checkpointConfig) {
+    if (ui.modelType.SD15) {
+        const extra = ui.modelType.SD15.extra
+        if (extra.checkpointConfig) {
             const ckptLoader = graph.CheckpointLoader({
-                ckpt_name: ui.modelType.Diffusion.ckpt_name,
-                config_name: ui.extra.checkpointConfig,
+                ckpt_name: ui.modelType.SD15.ckpt_name,
+                config_name: extra.checkpointConfig,
             })
             ckpt = ckptLoader._MODEL
             clip = ckptLoader._CLIP
             vae = ckptLoader._VAE
-        } else if (ui.extra.civitai_ckpt_air) {
+        } else if (extra.civitai_ckpt_air) {
             const ckptLoader = graph.CivitAI$_Checkpoint$_Loader({
-                ckpt_name: ui.modelType.Diffusion.ckpt_name,
-                ckpt_air: ui.extra.civitai_ckpt_air,
+                ckpt_name: ui.modelType.SD15.ckpt_name,
+                ckpt_air: extra.civitai_ckpt_air,
                 download_path: 'models\\checkpoints',
             })
             ckpt = ckptLoader._MODEL
             clip = ckptLoader._CLIP
             vae = ckptLoader._VAE
         } else {
-            const ckptLoader = graph.CheckpointLoaderSimple({ ckpt_name: ui.modelType.Diffusion.ckpt_name })
+            const ckptLoader = graph.CheckpointLoaderSimple({ ckpt_name: ui.modelType.SD15.ckpt_name })
             ckpt = ckptLoader._MODEL
             clip = ckptLoader._CLIP
             vae = ckptLoader._VAE
@@ -325,39 +248,27 @@ export function run_model(ui: OutputFor<typeof ui_model>): {
     return { ckpt, vae, clip }
 }
 
-export const run_model_modifiers = (
-    ui: OutputFor<typeof ui_model>,
-    ckpt: _MODEL,
-    forHiRes?: boolean,
-    kohyaScale?: number,
-): _MODEL => {
-    const run = getCurrentRun()
-    const graph = run.nodes
-    // 5. Optional SAG - Self Attention Guidance
-    if (ui.extra.sag && ((!forHiRes && ui.extra.sag.include.base) || (forHiRes && ui.extra.sag.include.hiRes))) {
-        ckpt = graph.SelfAttentionGuidance({ scale: ui.extra.sag.scale, blur_sigma: ui.extra.sag.blur_sigma, model: ckpt })
-    }
-    // 6. Optional PAG - Perturbed Attention Guidance
-    if (ui.extra.pag && ((!forHiRes && ui.extra.pag.include.base) || (forHiRes && ui.extra.pag.include.hiRes))) {
-        ckpt = graph.PerturbedAttention({ scale: ui.extra.pag.scale, model: ckpt, adaptive_scale: ui.extra.pag.adaptiveScale })
-    }
-    // 7. Kohya Deepshrink
-    if (
-        ui.extra.KohyaDeepShrink &&
-        ((!forHiRes && ui.extra.KohyaDeepShrink.include.base) || (forHiRes && ui.extra.KohyaDeepShrink.include.hiRes))
-    ) {
-        const setScale = forHiRes ? kohyaScale : (ui.extra.KohyaDeepShrink.advancedSettings.downscaleFactor ?? 2)
-        const set = ui.extra.KohyaDeepShrink.advancedSettings
-        ckpt = graph.PatchModelAddDownscale({
-            downscale_factor: setScale,
-            model: ckpt,
-            block_number: set.block_number,
-            start_percent: set.startPercent,
-            end_percent: set.endPercent,
-            downscale_after_skip: set.downscaleAfterSkip,
-            downscale_method: set.downscaleMethod,
-            upscale_method: set.upscaleMethod,
-        })
-    }
-    return ckpt
-}
+// export const run_model_modifiers = (
+//     ui: OutputFor<typeof ui_model>,
+//     ckpt: _MODEL,
+//     forHiRes?: boolean,
+//     kohyaScale?: number,
+// ): _MODEL => {
+//     const run = getCurrentRun()
+//     const graph = run.nodes
+//     // 5. Optional SAG - Self Attention Guidance
+//     if (ui.extra.sag && ((!forHiRes && ui.extra.sag.include.base) || (forHiRes && ui.extra.sag.include.hiRes))) {
+//         ckpt = graph.SelfAttentionGuidance({ scale: ui.extra.sag.scale, blur_sigma: ui.extra.sag.blur_sigma, model: ckpt })
+//     }
+
+//     // 6. Optional PAG - Perturbed Attention Guidance
+//     if (ui.extra.pag && ((!forHiRes && ui.extra.pag.include.base) || (forHiRes && ui.extra.pag.include.hiRes))) {
+//         ckpt = graph.PerturbedAttention({ scale: ui.extra.pag.scale, model: ckpt, adaptive_scale: ui.extra.pag.adaptiveScale })
+//     }
+
+//     // 7. Kohya Deepshrink
+//     if (ui.extra.KohyaDeepShrink) {
+//         ckpt = run_model_kohyaDeepShrink(ui.extra.KohyaDeepShrink, ckpt, forHiRes, kohyaScale)
+//     }
+//     return ckpt
+// }

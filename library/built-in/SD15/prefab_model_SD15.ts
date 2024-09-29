@@ -10,13 +10,13 @@ export const prefab_model_SD15 = (): $prefab_model_SD15 => {
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return b.fields({
         ckpt_name: b.enum
-            .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+            .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint', default: 'revAnimated_v122.safetensors' })
             .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
         extra: prefab_model_extras(),
     })
 }
 
-export function run_model_SD15(doc: $prefab_model_SD15['$Value']): {
+export function eval_model_SD15(doc: $prefab_model_SD15['$Value']): {
     ckpt: _MODEL
     vae: _VAE
     clip: _CLIP
