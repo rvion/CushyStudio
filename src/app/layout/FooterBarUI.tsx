@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { tooltipStuff } from '../../csuite/frame/tooltip'
+// import { tooltipStuff } from '../../csuite/frame/tooltip'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
 export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
