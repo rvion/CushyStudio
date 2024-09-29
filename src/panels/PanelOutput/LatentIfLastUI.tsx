@@ -26,10 +26,11 @@ export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
             />
         )
     }
-    return (
-        <div tw='absolute bottom-0 right-0 shadow-xl z-50 !bg-red-700'>
-            <div>{sizeStr}</div>
-            <div>{sizeStr}</div>
-        </div>
-    )
+    return null
+    // return (
+    //     <div tw='absolute bottom-0 right-0 shadow-xl z-50 !bg-red-700'>
+    //         <div>{sizeStr}</div>
+    //         <div>{sizeStr}</div>
+    //     </div>
+    // )
 })
