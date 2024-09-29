@@ -107,7 +107,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                 </FavBarContainer>
                                 {/* ------------------------------------------------------------------------ */}
                                 {st.favoriteApps.length > 0 && (
-                                    <FavBarContainer icon='apps'>
+                                    <FavBarContainer /* icon='apps' */>
                                         {st.favoriteApps.map((app) => (
                                             <Frame
                                                 border={20}
