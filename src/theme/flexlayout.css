@@ -238,6 +238,7 @@
   box-sizing: border-box;
 }
 .flexlayout__tab {
+  border-radius: 5px;
   overflow: auto;
   position: absolute;
   box-sizing: border-box;
