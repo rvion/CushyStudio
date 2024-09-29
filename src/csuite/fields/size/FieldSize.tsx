@@ -116,7 +116,8 @@ export class Field_size extends Field<Field_size_types> {
     }
 
     protected setOwnSerial(next: Field_size_serial): void {
-        // 1. MAKE SERIAL CANONICAL
+        // 1. make serial canonical
+        // 1.1. apply default if unset + default
         if (
             next.width == null || //
             next.height == null ||
@@ -132,6 +133,15 @@ export class Field_size extends Field<Field_size_types> {
                     draft.height = next.height ?? def.height
                 })
             }
+        }
+        // 1.2. fill missing fields if some are specified and other can be recovered
+        const modelType = next.modelType
+        if (modelType != null && (next.width == null || next.height == null)) {
+            const size = parseInt(modelType.split(' ')[1]!)
+            next = produce(next, (draft) => {
+                if (draft.width == null) draft.width = size
+                if (draft.height == null) draft.height = size
+            })
         }
 
         // 2. ASSIGN SERIAL

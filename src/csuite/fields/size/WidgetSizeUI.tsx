@@ -26,7 +26,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.size
-
     const modelBtn = (model: ModelType): JSX.Element => (
         <InputBoolToggleButtonUI //
             tw='w-input'
