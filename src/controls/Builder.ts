@@ -234,10 +234,6 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_orbit>(Field_orbit, config)
     }
 
-    seed(config: Field_seed_config = {}): X.XSeed {
-        return new CushySchema<Field_seed>(Field_seed, config)
-    }
-
     color(config: Field_color_config = {}): X.XColor {
         return new CushySchema<Field_color>(Field_color, config)
     }
