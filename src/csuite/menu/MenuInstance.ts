@@ -1,21 +1,28 @@
 import type { Activity } from '../activity/Activity'
+import type { Trigger } from '../trigger/Trigger'
+import type { Menu, MenuEntryWithKey } from './Menu'
 import type { MenuEntry } from './MenuEntry'
 
 import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
 import { Command } from '../commands/Command'
-import { Trigger } from '../trigger/Trigger'
-import { BoundMenu } from './BoundMenuOpts'
-import { Menu, MenuEntryWithKey } from './Menu'
+import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { menuBuilder } from './MenuBuilder'
 import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
 export class MenuInstance<Props> implements Activity {
+    /** called when menu starts */
     onStart(): void {}
-    UI = (): JSX.Element => createElement(MenuUI, { menu: this })
+
+    /** callled when menu is closed */
     onStop(): void {}
+
+    /** calle */
+    UI = (): JSX.Element => createElement(MenuUI, { menu: this })
+
+    /** unique volative menu id */
     uid: string = nanoid()
 
     onEvent = (event: UIEvent): Trigger | null => {
@@ -62,7 +69,7 @@ export class MenuInstance<Props> implements Activity {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry, char: res?.char, charIx: res?.pos })
-            } else if (entry instanceof BoundMenu) {
+            } else if (isBoundMenu(entry)) {
                 const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry, char: res?.char, charIx: res?.pos })

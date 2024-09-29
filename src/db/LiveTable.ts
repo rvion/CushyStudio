@@ -1,19 +1,18 @@
-import type { Timestamp } from '../csuite/types/Timestamp'
-import type { STATE } from '../state/state'
+import type { BaseInst } from './BaseInst'
 import type { LiveDB } from './LiveDB'
-import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
+import type { $BaseInstanceFields } from './LiveInstance'
 import type { RunResult } from 'better-sqlite3'
 import type { CompiledQuery, DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
 // 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
+import { action, type AnnotationMapEntry } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inheritance'
 import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
-import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
-import { quickBench } from './quickBench'
+import { DEPENDS_ON } from './LiveHelpers'
 import { SqlFindOptions } from './SQLWhere'
 import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
 import { TableInfo } from './TYPES_json'
@@ -22,7 +21,22 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
     new (...args: any[]): TABLE['$L']
 }
 
-export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
+export class LiveTable<
+    //
+    TABLE extends TableInfo<keyof KyselyTables>,
+    AAAAA extends {
+        new (
+            ...args: any[]
+            //
+            // db: LiveDB,
+            // st: STATE,
+            // table: LiveTable<TABLE, any>,
+            // data: TABLE['$T'],
+        ): BaseInst<any>
+    },
+> {
+    // ORM HELPER --------------------------------------------------------------------------------
+
     /**
      * hydrate at the end;
      * can only work with all fields
@@ -48,6 +62,35 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
         return instances
     }
+
+    /**
+     * hydrate at the end;
+     * can only work with all fields
+     * CANNOT use joins, NOR select only a few fields, etc
+     * see `selectRaw` if you need those
+     */
+    selectOne = (
+        fn: (
+            x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']>,
+        ) => SelectQueryBuilder<any, any, TABLE['$T']> = (x) => x,
+        subscriptions?: LiveDBSubKeys[],
+    ): Maybe<TABLE['$L']> => {
+        const query = fn(this.query1.limit(1)).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) {
+            throw new Error('INVARIANT VIOLATION; statement is null')
+            // return []
+        }
+        cushy.db.subscribeToKeys([this.schema.sql_name])
+        if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
+        const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
+        const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
+        if (instances.length === 0) return null
+        return instances[0]
+    }
+
+    // --------------------------------------------------------------------------------
 
     /**
      * do not hydrate entities;
@@ -101,7 +144,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     // ⏸️ query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
     // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
-    private Ktor: LiveEntityClass<TABLE>
+    // private Ktor: LiveEntityClass<TABLE>
     liveEntities = new Map<string, TABLE['$L']>()
     schema: TABLE = schemas[this.name] as any
     $DATA!: TABLE['$T']
@@ -182,226 +225,23 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     constructor(
         //
         public db: LiveDB,
-
         public name: TableNameInDB,
         public emoji: string,
-        public InstanceClass: LiveEntityClass<TABLE>,
+        public Ktor: AAAAA, // LiveEntityClass<TABLE>,
         public opts?: { singleton?: boolean },
     ) {
         // register
         this.db._tables.push(this)
+    }
 
-        const BaseInstanceClass = class implements LiveInstance<TABLE> {
-            observabilityConfig?: { [key: string]: AnnotationMapEntry }
-
-            /** pointer to the liveDB */
-            db!: LiveDB
-
-            /** pointer to the global state */
-            st!: STATE
-
-            /** parent table */
-            table!: LiveTable<TABLE>
-
-            /** instance data */
-            data!: TABLE['$T'] & {
-                id: TABLE['$ID']
-                createdAt: number
-                updatedAt: number
-            }
-
-            /** on original creation */
-            onCreate?: (/* data: TABLE['$T'] */) => void
-
-            /** on hydratation */
-            onHydrate?: (/* data: TABLE['$T'] */) => void
-
-            /** this must be fired after hydrate and update */
-            onUpdate?: (
-                //
-                prev: Maybe<TABLE['$T']>,
-                next: TABLE['$T'],
-            ) => void
-
-            get id(): TABLE['$ID'] {
-                return this.data.id
-            }
-
-            get createdAt(): Timestamp {
-                return this.data.createdAt as Timestamp
-            }
-
-            get updatedAt(): Timestamp {
-                return this.data.updatedAt as Timestamp
-            }
-
-            get tableName(): TableNameInDB {
-                return this.table.name
-            }
-
-            update_LiveOnly(changes: Partial<TABLE['$T']>): void {
-                runInAction(() => {
-                    Object.assign(this.data, changes)
-                })
-            }
-
-            update(changes: TABLE['$Update'] & { id: string }, options?: UpdateOptions): void {
-                runInAction(() => {
-                    // check that changes is valid
-                    if (Array.isArray(changes)) throw new Error('insert does not support arrays')
-                    if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
-
-                    // 0. track changed keys.
-                    const keysWithChanges: string[] = []
-                    for (const k of Object.keys(changes)) {
-                        // skip
-                        const change = (changes as any)[k]
-                        if (typeof change === 'object' && change != null) {
-                            keysWithChanges.push(k)
-                            continue
-                        }
-                        // abort if not an object
-                        if ((this.data as any)[k] !== (changes as any)[k]) {
-                            keysWithChanges.push(k)
-                            continue
-                        }
-                    }
-
-                    // 1. check if update is needed
-                    const isSame = keysWithChanges.length === 0
-                    if (options?.debug) console.log(`[🔴 DEBUG 🔴] UPDATING ${this.table.name}#${changes.id}`)
-                    if (isSame) {
-                        if (options?.debug) console.log(`[🔴 DEBUG 🔴]✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
-                        return // ⏸️
-                    }
-                    // 2. store the prev in case we have an onUpdate callback later
-                    const prev = this.onUpdate //
-                        ? JSON.parse(JSON.stringify(this.data))
-                        : undefined
-
-                    // build the sql
-                    const tableInfos = this.table.schema
-                    const presentCols = Object.keys(changes)
-                    presentCols.push('updatedAt')
-                    const updateSQL = [
-                        `update ${tableInfos.sql_name}`,
-                        `set`,
-                        presentCols.map((c) => `${c} = @${c}`).join(', '),
-                        `where id = @id`,
-                        `returning *`,
-                    ].join(' ')
-
-                    const updatedAt = Date.now()
-                    try {
-                        // prepare sql
-                        const stmt = this.db.db.prepare<Partial<TABLE['$T']>>(updateSQL)
-
-                        // dehydrate fields needed to be updated
-                        const updatePayload: any = Object.fromEntries(
-                            Object.entries(changes as any).map(([k, v]) => {
-                                if (v instanceof Uint8Array) return [k, v]
-                                if (Array.isArray(v)) return [k, JSON.stringify(v)]
-                                if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
-                                return [k, v]
-                            }),
-                        )
-
-                        // inject id and patch updatedAt
-                        updatePayload.updatedAt = updatedAt
-                        updatePayload.id = this.id
-
-                        if (options?.debug) console.log(`[🔴 DEBUG 🔴] ${updateSQL} ${JSON.stringify(updatePayload)}`)
-                        // update the data
-                        const A = process.hrtime.bigint() // TIMER start
-                        stmt.get(updatePayload) as any as TABLE['$T']
-                        const B = process.hrtime.bigint() // TIMER end
-                        const ms = Number(B - A) / 1_000_000
-                        const emoji = ms > 4 ? '🔴' : ms > 1 ? '🔶' : ''
-                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, emoji, updateSQL, { updatePayload }) // debug
-
-                        // assign the changes
-                        // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
-                        Object.assign(this.data, changes)
-                        this.data.updatedAt = updatedAt
-                        if (options?.debug) console.log(`[🔴 DEBUG 🔴] RESULT: ${JSON.stringify(this.data, null, 3)}`)
-                        this.onUpdate?.(prev, this.data)
-                        for (const k of keysWithChanges) {
-                            this.db.bump(`${this.table.name}.${k}` as LiveDBSubKeys)
-                        }
-                    } catch (e) {
-                        console.log(updateSQL)
-                        throw e
-                    }
-                })
-            }
-
-            clone(t?: Partial<TABLE['$T']>): TABLE['$T'] {
-                const cloneData = Object.assign(
-                    //
-                    {}, // receiving object
-                    toJS(this.data), // original object
-                    {
-                        // 2023-11-30 rvion:: no need to set the createdAt and updatedAt
-                        // they'll be taken care of by the create functio below
-                        id: nanoid(), // overrides
-                        ...t,
-                    },
-                )
-                return this.table.create(cloneData)
-            }
-
-            delete(): void {
-                this.table.delete(this.data.id)
-            }
-
-            toJSON(): TABLE['$T'] {
-                return this.data
-            }
-
-            init(
-                //
-                table: LiveTable<TABLE>,
-                data: TABLE['$T'],
-            ): void {
-                // console.log(`🔴 INIT`, data)
-                /* 🚝 */ const startTime = process.hrtime()
-                this.db = table.db
-                this.st = table.db.st
-                this.table = table
-                this.data = data
-
-                // prettier-ignore
-                /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
-                /* 🔶 PERF HACK */     ;(data as any as { spec: { a: 1 } }).spec = observable(
-                /* 🔶 PERF HACK */         (data as any as { spec: { a: 1 } }).spec,
-                /* 🔶 PERF HACK */         {},
-                /* 🔶 PERF HACK */         { deep: false },
-                /* 🔶 PERF HACK */     )
-                /* 🔶 PERF HACK */ }
-
-                this.onHydrate?.(/* data */)
-                this.onUpdate?.(undefined, data)
-                makeAutoObservable(this, this.observabilityConfig as any)
-                /* 🚝 */ const endTime = process.hrtime(startTime)
-                /* 🚝 */ const ms = endTime[1] / 1000000
-                /* 🚝 */ quickBench.addStats(`init:${table.name}`, ms)
-            }
-
-            log(...args: any[]): void {
-                console.log(`[${this.table.emoji}] ${this.table.name}:`, ...args)
-            }
-        }
-
-        // make observable
-        makeAutoObservable(this, {
+    init(obs?: { [key: string]: AnnotationMapEntry } | undefined): void {
+        makeAutoObservableInheritance(this, {
             // @ts-ignore (private properties are untyped in this function)
             Ktor: false,
             _createInstance: action,
             get: action,
+            ...obs,
         })
-
-        MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
-        this.Ktor = InstanceClass
     }
 
     // UTILITIES -----------------------------------------------------------------------
@@ -661,7 +501,13 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     /** only call this with some data already in the database */
     _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
-        const instance = new this.Ktor()
+        const instance = new this.Ktor(
+            //
+            this.db,
+            cushy,
+            this,
+            data,
+        )
         // TYPE CHECKING --------------------
         // /* ⏸️ */ const schema = this.schema.schema
         // /* ⏸️ */ const valid = Value.Check(schema, data)
@@ -672,7 +518,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         // /* ⏸️ */     // debugger
         // /* ⏸️ */ }
         // --------------------
-        instance.init(this, data)
+        instance.init(data)
         this.liveEntities.set(data.id, instance)
         this.db.bump(this.name as LiveDBSubKeys)
         return instance

@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
-import { createObservableRef, createObservableRefMut } from '../utils/observableRef'
+import { createObservableRefMut } from '../utils/observableRef'
 
 export type HoveredRegion = {
     id: string
@@ -71,7 +71,7 @@ export class RegionMonitor {
     mod = false
 
     get debugMods(): string {
-        let out: string[] = []
+        const out: string[] = []
         if (this.cmd) out.push('cmd')
         if (this.ctrl) out.push('ctrl')
         if (this.alt) out.push('alt')
@@ -118,7 +118,7 @@ export const useRegionMonitor = (): void => {
             ) {
                 at = at.parentElement
                 if (at) {
-                    let test = Array.from(at.classList).find((className) => className.includes('Region-'))
+                    const test = Array.from(at.classList).find((className) => className.includes('Region-'))
                     if (test) hoveredRegion = test.split('-')
                 }
             }

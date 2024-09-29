@@ -9,8 +9,6 @@ import { UI } from '../../components/UI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
-import { bang } from '../../utils/bang'
 
 // HEADER
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
@@ -26,11 +24,11 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     const out: ReactNode[] = []
     const showFoldButtons = csuite.showFoldButtons
     const hasFoldableSubfields = field.hasFoldableSubfields
-    if (presets?.length && field.config.presetButtons) {
+    if (presets && presetCount > 0 && field.config.presetButtons) {
         out.push(
-            ...presets.map((preset) => (
+            ...presets.map((preset, ix) => (
                 <UI.Button //
-                    key={preset.label}
+                    key={preset.label + ix}
                     // square
                     // subtle
                     icon={preset.icon}
@@ -45,7 +43,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     }
     if (showFoldButtons && hasFoldableSubfields) {
         out.push(
-            <div tw='ml-auto flex gap-0.5'>
+            <div tw='ml-auto flex gap-0.5' key='lShd8JZuFZ'>
                 <Button //
                     square
                     subtle
@@ -76,7 +74,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
     field: Field_group<T>
 }) {
     const field = p.field
-    const groupFields = Object.entries(field.fields)
+    const children = field.childrenActive
     const isHorizontal = field.config.layout === 'H'
 
     return (
@@ -84,15 +82,15 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
             layout={p.field.config.layout}
             tw={[field.config.className, p.className]}
         >
-            {groupFields.map(([rootKey, sub], ix) => (
-                <WidgetWithLabelUI //
-                    key={rootKey}
-                    showWidgetIndent={p.field.config.layout === 'H' ? ix === 0 : true}
-                    fieldName={rootKey}
-                    justifyLabel={isHorizontal ? false : field.config.justifyLabel}
-                    field={bang(sub)}
-                />
-            ))}
+            {children.map((child, ix) => {
+                const shouldJustifyLabel = isHorizontal ? false : field.config.justifyLabel
+                return (
+                    <child.UI
+                        key={child.mountKey}
+                        Indent={(p.field.config.layout === 'H' ? ix === 0 : true) ? undefined : null}
+                    />
+                )
+            })}
         </ListOfFieldsContainerUI>
     )
 })

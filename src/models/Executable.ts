@@ -43,7 +43,7 @@ export class Executable {
         return this.def.run
     }
 
-    get canStartFromImage() {
+    get canStartFromImage(): boolean {
         return this.def.canStartFromImage ?? false
     }
 

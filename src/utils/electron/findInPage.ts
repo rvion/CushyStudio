@@ -17,27 +17,36 @@ export class SearchManager {
     }
 
     /** when true, show the global search view at the top-right side */
-    active: boolean = false
+    private _active: boolean = false
+    get active(): boolean {
+        return this._active
+    }
+
+    activate(): void {
+        this.query.resetTo('')
+        this._active = true
+    }
 
     results: Maybe<SearchResult_IPCPayload> = null
 
     /** debounce search state */
-    query = new Debounced('test', 300 /* (next) => this.searchQuery(next) */)
+    query = new Debounced('', 300 /* (next) => this.searchQuery(next) */)
 
-    deactivate = () => {
+    deactivate = (): void => {
         this.query.resetTo('')
-        this.active = false
+        this._active = false
         const ipcRenderer = window.require('electron').ipcRenderer
         ipcRenderer.send('search-stop')
     }
 
-    jumpToNext = () => {
+    jumpToNext = (): void => {
         const ipcRenderer = window.require('electron').ipcRenderer
         ipcRenderer.send('search-next')
     }
 
     lastSearchedText: Maybe<string> = null
-    searchQuery = (text: string, forward: boolean) => {
+
+    searchQuery = (text: string, forward: boolean): void => {
         const findNext = this.lastSearchedText === text
         const options: SearchOptions = {
             findNext,

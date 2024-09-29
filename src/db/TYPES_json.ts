@@ -115,6 +115,7 @@ export class TableInfo<
             if (col.type !== 'json') continue
             const rawCol = data[col.name]
             if (rawCol == null) continue
+            stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
             data[col.name] = JSON.parse(rawCol)
         }
         return data
@@ -135,6 +136,7 @@ export class TableInfo<
             try {
                 // when value is present
                 data[col.name] = JSON.parse(rawCol)
+                stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
             } catch (e) {
                 console.log(`[🔴] ERROR parsing field ${col.name} of table ${this.sql_name}`)
                 throw e
@@ -144,3 +146,9 @@ export class TableInfo<
         return data
     }
 }
+
+const stats: any = {}
+
+// setInterval(() => {
+//     console.table(stats)
+// }, 2000)

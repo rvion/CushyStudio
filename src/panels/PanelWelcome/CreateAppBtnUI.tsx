@@ -3,6 +3,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
 import { Button } from '../../csuite/button/Button'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -18,7 +19,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
             shell='popup-lg'
             placement='screen-top'
             title='Create an app'
-            content={() => <CreateAppPopupUI />}
+            content={(p) => <CreateAppPopupUI closeFn={() => p.reveal.close()} />}
         >
             <Button look='primary' icon='mdiOpenInNew'>
                 Create My App
@@ -27,10 +28,10 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     )
 })
 
-export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
+export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn: () => void }) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
-        appName: 'my-app',
+        appName: `my-app-${Date.now()}`,
         description: 'my app description',
         get fileName(): string {
             return convertToValidCrossPlatformFileName(uist.appName)
@@ -52,23 +53,17 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                 <div tw='flex flex-col gap-2'>
                     <div>
                         <div tw='font-bold'>App name</div>
-                        <input
+                        <InputStringUI
+                            tw={[uist.hasConflict && 'rsx-field-error']}
                             autoFocus
-                            value={uist.appName}
-                            onChange={(ev) => (uist.appName = ev.target.value)}
-                            type='text'
-                            tw={['input input-bordered', uist.hasConflict && 'rsx-field-error']}
+                            getValue={() => uist.appName}
+                            setValue={(next) => (uist.appName = next)}
                         />
                         {uist.hasConflict && <MessageErrorUI markdown='File alreay exist' />}
                     </div>
                     <div>
                         <div tw='font-bold'>Description</div>
-                        <input
-                            value={uist.description}
-                            onChange={(ev) => (uist.description = ev.target.value)}
-                            type='text'
-                            tw='input input-bordered'
-                        />
+                        <InputStringUI getValue={() => uist.description} setValue={(next) => (uist.description = next)} />
                     </div>
                 </div>
                 <div tw='p-2'>
@@ -83,8 +78,10 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                 </div>
             </div>
             <div tw='flex'>
-                <button
-                    tw={['btn btn-primary ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
+                <Button
+                    size='lg'
+                    look='success'
+                    tw={['ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
                     onClick={async () => {
                         if (uist.hasConflict) return toastError('file already exist, change app name')
                         //
@@ -96,16 +93,18 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                         const res = await file.extractScriptFromFile()
                         if (res.type === 'failed') return toastError('failed to extract script')
                         const script = res.script
-                        await script.evaluateAndUpdateAppsAndViews()
+                        script.evaluateAndUpdateAppsAndViews()
                         const apps = script._apps_viaScript
                         if (apps == null) return toastError('no app found (apps is null)')
                         if (apps.length === 0) return toastError('no app found (apps.length === 0)')
                         const firstApp = apps[0]!
                         firstApp.openLastOrCreateDraft()
+                        void script.openInVSCode()
+                        p.closeFn()
                     }}
                 >
                     Create
-                </button>
+                </Button>
             </div>
             <IntroTxt />
         </div>
@@ -123,10 +122,10 @@ app({
         name: ${JSON.stringify(p.name)},
         description: ${JSON.stringify(p.description)},
     },
-    ui: (form) => ({
-        model: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
-        positive: form.string({ default: 'masterpiece, tree' }),
-        seed: form.seed({}),
+    ui: (b) => b.fields({
+        model: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
+        positive: b.string({ default: 'masterpiece, tree' }),
+        seed: b.seed({}),
     }),
     run: async (run, ui) => {
         const workflow = run.workflow

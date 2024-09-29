@@ -29,7 +29,7 @@ export class TreeView {
             selectable?: boolean
         } = {},
     ) {
-        this.resetCaretPos()
+        // this.resetCaretPos()
         makeAutoObservable(this, { filterRef: false, id: false })
     }
 

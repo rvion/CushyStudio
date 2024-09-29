@@ -1,7 +1,7 @@
 /** by @Vinsi (slightly adapted) */
 
 import type { SchemaDict } from '../../../src/csuite/model/SchemaDict'
-import type { OutputFor } from '../../local/pony-old/_prefab_PonyDiffusion'
+import type { OutputFor } from './_prefabs'
 
 // 📝 2024-06-14 rvion: explicitly adding types is optional;
 // I tend to prefer adding them in built-in prefabs to help
@@ -32,47 +32,45 @@ export function ui_advancedPrompt(): UI_advancedPrompt {
         layout: 'H',
         icon: 'mdiBookAlphabet',
         element: () =>
-            form.choice({
-                appearance: 'tab',
-                items: {
+            form.choice(
+                {
                     prompt: form.prompt({ default: ' \n' }),
-                    characters: form.choice({
-                        appearance: 'tab',
-                        items: Object.fromEntries(
+                    characters: form.choice(
+                        Object.fromEntries(
                             Object.entries(CHARACTER_GROUPS).map(([group, characters]) => [
                                 group,
-
-                                form.choice({
+                                form.choice(Object.fromEntries(characters.map((character) => [character, form.group({})])), {
                                     appearance: 'tab',
-                                    items: Object.fromEntries(characters.map((character) => [character, form.group({})])),
                                 }),
                             ]),
                         ),
-                    }),
-                    styles: form.choice({
-                        appearance: 'tab',
-                        items: Object.fromEntries(
+                        {
+                            appearance: 'tab',
+                        },
+                    ),
+                    styles: form.choice(
+                        Object.fromEntries(
                             Object.entries(STYLE_GROUPS).map(([group, subgroups]) => [
                                 group,
-
-                                form.choice({
-                                    appearance: 'tab',
-                                    items: Object.fromEntries(
+                                form.choice(
+                                    Object.fromEntries(
                                         Object.entries(subgroups).map(([subgroup, styles]) => [
                                             subgroup,
 
-                                            form.choice({
+                                            form.choice(Object.fromEntries(styles.map((style) => [style, form.group({})])), {
                                                 appearance: 'tab',
-                                                items: Object.fromEntries(styles.map((style) => [style, form.group({})])),
                                             }),
                                         ]),
                                     ),
-                                }),
+                                    { appearance: 'tab' },
+                                ),
                             ]),
                         ),
-                    }),
+                        { appearance: 'tab' },
+                    ),
                 },
-            }),
+                { appearance: 'tab' },
+            ),
     })
 }
 

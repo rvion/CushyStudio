@@ -3,16 +3,17 @@ app({
         name: 'add gradient background',
         description: 'add a gradient background to the input image',
     },
-    ui: (form) => ({
-        from: form.image({ justifyLabel: false }),
-        tags: form.string({
-            label: 'Tags',
-            placeHolder: 'e.g. "gradient, background"',
-            default: 'gradient, background',
+    ui: (b) =>
+        b.fields({
+            from: b.image({ justifyLabel: false }),
+            tags: b.string({
+                label: 'Tags',
+                placeHolder: 'e.g. "gradient, background"',
+                default: 'gradient, background',
+            }),
         }),
-    }),
     canStartFromImage: true,
-    run: async (run, ui, { image }) => {
+    run: async (run, ui, { image, mask, canvas }) => {
         const size = 1024
         const startImage = image ?? ui.from
         const { Konva, Colors, Images, ComfyUI } = run

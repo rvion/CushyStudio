@@ -1,5 +1,5 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import type { LiveInstance } from '../db/LiveInstance'
+import type { LiveDB } from '../db/LiveDB'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -16,14 +16,16 @@ import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
-import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNode, type ComfyNodeUID } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
 import { bang } from '../csuite/utils/bang'
 import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
 import { type TEdge, toposort } from '../csuite/utils/toposort'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { LiveTable } from '../db/LiveTable'
+import { InvalidPromptError } from '../errors/InvalidPromptError'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 
@@ -47,8 +49,17 @@ export type PromptSettings = {
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface ComfyWorkflowL extends LiveInstance<TABLES['comfy_workflow']> {}
-export class ComfyWorkflowL {
+export class ComfyWorkflowRepo extends LiveTable<TABLES['comfy_workflow'], typeof ComfyWorkflowL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'comfy_workflow', '📊', ComfyWorkflowL)
+        this.init()
+    }
+}
+
+export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length
@@ -396,28 +407,60 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
+    /** compute autolayout */
     RUNLAYOUT = (p?: {
-        /** default: 20 */
+        /** @default: 20 */
         node_vsep?: number
-        /** default: 20 */
+        /** @default: 20 */
         node_hsep?: number
+        /** @default false */
+        forceLeft?: boolean
     }): this => {
-        const nodes = toposort(
+        const nodeIds = toposort(
             this.nodes.map((n) => n.uid),
             this.nodes.flatMap((n) => n._incomingNodes().map((from) => [from, n.uid] as TEdge)),
         )
+        const nodes = nodeIds.map((id) => this.getNode(id)!)
+        const cols: ComfyNode<any>[][] = new Array(nodeIds.length)
 
-        const cols: ComfyNode<any>[][] = new Array(nodes.length)
-        for (const nodeId of nodes) {
-            const node = this.getNode(nodeId)!
-            node.col = Math.max(...node.parents.map((p) => p.col), 0) + 1
-            // console.log(
-            //     `[🤠] node ${node.$schema.nameInComfy}`,
-            //     node.col,
-            //     node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
-            // )
-            if (cols[node.col]) cols[node.col]!.push(node)
-            else cols[node.col] = [node]
+        type NodePlacement = {
+            node: ComfyNode<any>
+            minCol: number
+            maxCol?: number
+        }
+        const ranges: {
+            [nodeId: ComfyNodeUID]: NodePlacement
+        } = {}
+
+        // console.log(`[🤠] 1/3 ----------------------------`)
+        for (const node of nodes) {
+            // must be at least 1 after the closest parent
+            const parentCols = node.parents.map((p) => ranges[p.uid]!.minCol)
+            const minCol = Math.max(...parentCols, -1) + 1
+            const range: NodePlacement = { node: node, minCol: minCol }
+            ranges[node.uid] = range
+        }
+
+        // console.log(`[🤠] 2/3 ----------------------------`)
+        if (!p?.forceLeft === true) {
+            for (const node of nodes) {
+                const range = ranges[node.uid]!
+                for (const p of node.parents) {
+                    const parentRange = ranges[p.uid]!
+                    parentRange.maxCol =
+                        parentRange.maxCol != null
+                            ? Math.min(parentRange.maxCol, (range.maxCol ?? range.minCol) - 1)
+                            : (range.maxCol ?? range.minCol) - 1
+                }
+            }
+        }
+
+        // console.log(`[🤠] 3/3 ----------------------------`)
+        for (const node of nodes) {
+            const range = ranges[node.uid]!
+            const at = range.maxCol ?? range.minCol
+            if (cols[at]) cols[at]!.push(node)
+            else cols[at] = [node]
         }
 
         const HSEP = p?.node_hsep ?? 20
@@ -458,7 +501,6 @@ export class ComfyWorkflowL {
         const step = this.step
         const currentJSON = deepCopyNaive(this.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
         const litegraphWorkflow = await this.RUNLAYOUT().json_workflow()
-        console.info('checkpoint:' + JSON.stringify(currentJSON))
 
         const out: ApiPromptInput = {
             client_id: this.st.comfySessionId,
@@ -480,7 +522,9 @@ export class ComfyWorkflowL {
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
-        console.info('sending prompt to ' + promptEndpoint)
+        console.groupCollapsed('Sending PROMPT to ' + promptEndpoint)
+        console.log(JSON.stringify(currentJSON))
+        console.groupEnd()
 
         // meh  --------------------------------------------
         // this.update({ comfyPromptJSON: currentJSON })

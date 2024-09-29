@@ -24,7 +24,6 @@ export class Kolor implements Tint {
 
     get color(): Color {
         return new Color('oklch', [this.lightness, this.chroma, this.hue])
-        // return new Color('hct', [this.hue, this.chroma, this.lightness * 100])
     }
 
     get isInRec2020Gamut(): boolean { return this.color.inGamut('rec2020') } // prettier-ignore
@@ -60,7 +59,7 @@ export class Kolor implements Tint {
         this.ASSERT_VALID()
     }
 
-    private ASSERT_VALID = () => {
+    private ASSERT_VALID = (): void => {
         if (isNaN(this.lightness)) {
             this.lightness = 0
             // throw new Error('isNaN(this.lightness)')
@@ -115,12 +114,12 @@ export class Kolor implements Tint {
             // console.log(`[🤠] dir`, dir_)
             const x1 = this.color
                 .clone()
-                .set({ 'hct.t': (v) => (v += cr * 100) })
+                .set({ 'hct.t': (v: any) => (v += cr * 100) })
                 .toGamut('srgb')
 
             const x2 = this.color
                 .clone()
-                .set({ 'hct.t': (v) => (v -= cr * 100) })
+                .set({ 'hct.t': (v: any) => (v -= cr * 100) })
                 .toGamut('srgb')
 
             const apcaWx1 = Math.abs(this.color.contrastAPCA(x1))
@@ -137,7 +136,7 @@ export class Kolor implements Tint {
         return next
     }
 
-    get webLink() {
+    get webLink(): string {
         return `https://oklch.com/#${(this.lightness * 100).toFixed(2)},${this.chroma.toFixed(3)},${this.hue.toFixed(3)},100`
     }
     /*
@@ -174,7 +173,7 @@ export class Kolor implements Tint {
             if (this.lightness + 0.01 * i * dir < 0 || this.lightness + 0.01 * i * dir > 1) continue
             candidate = col
                 .clone()
-                .set({ l: (l) => l + 0.01 * i * dir })
+                .set({ l: (l: any) => l + 0.01 * i * dir })
                 .toGamut('srgb')
             const obtained =
                 usage === 'Fg' //
@@ -193,4 +192,4 @@ export class Kolor implements Tint {
     }
 }
 
-const or0 = (n: number) => (n == null ? 0 : isNaN(n) ? 0 : n)
+const or0 = (n: number): number => (n == null ? 0 : isNaN(n) ? 0 : n)

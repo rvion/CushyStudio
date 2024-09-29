@@ -1,36 +1,37 @@
-import type { FormUIProps } from '../../form/FormUI'
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { KeyedField, VALUE_MODE } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { NO_PROPS } from '../../types/NO_PROPS'
+import type { CovariantFn } from '../../variance/BivariantHack'
 import type { CovariantFC } from '../../variance/CovariantFC'
+import type { FC } from 'react'
 
-import { type FC } from 'react'
+import { produce } from 'immer'
 
-import { CollapsibleUI } from '../../collapsible/CollapsibleUI'
-import { Form } from '../../form/Form'
-import { Frame } from '../../frame/Frame'
-import { MarkdownUI } from '../../markdown/MarkdownUI'
-import { Field, type KeyedField } from '../../model/Field'
+import { Field } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
-// CONFIG
+// #region Config
 export type Field_group_config<T extends SchemaDict> = FieldConfig<
     {
         /** fields */
         items?: T
 
         /** @deprecated; use `toString` instead */
-        summary?: (
-            //
-            items: { [k in keyof T]: T[k]['$Value'] },
-            self: Field_group<T>,
-        ) => string
+        summary?: CovariantFn<
+            [
+                //
+                items: { [k in keyof T]: T[k]['$Value'] },
+                self: Field_group<T>,
+            ],
+            string
+        >
 
         /** @default @false */
         presetButtons?: boolean
@@ -53,13 +54,19 @@ export type Field_group_value<T extends SchemaDict> = {
     [k in keyof T]: T[k]['$Value']
 }
 
+export type Field_group_unchecked<T extends SchemaDict> = {
+    [k in keyof T]: T[k]['$Unchecked']
+}
+
 // TYPES
 export type Field_group_types<T extends SchemaDict> = {
     $Type: 'group'
     $Config: Field_group_config<T>
     $Serial: Field_group_serial<T>
     $Value: Field_group_value<T>
+    $Unchecked: Field_group_unchecked<T>
     $Field: Field_group<T>
+    $Child: T[keyof T]
 }
 
 export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
@@ -86,111 +93,154 @@ type QuickFormContent<T extends Field> =
     /** null or undefined will be skipped */
     | null | undefined
 
+type RenderFieldsSubsetProps<T extends SchemaDict> = {
+    showMore?: (keyof T)[] | false // 🔴 probably migrate to QuickFormContent<this>[] asap too
+    readonly?: boolean
+    usage?: 'cell' | 'default' | 'text' | 'header'
+}
+
 // STATE
+export interface Field_group<T extends SchemaDict> {
+    $Subfields: T
+}
+
 export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
-    DefaultHeaderUI = WidgetGroup_LineUI
+    static readonly type: 'group' = 'group'
+    static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
+    static migrateSerial(): undefined {}
 
-    /**
-     * @deprecated use customForm instead
-     * formFields has been renamed to customForm on the 2024-07-25 for parity
-     * with
-     */
-    formFields(
-        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
-    ): FC<NO_PROPS> {
-        return this.customForm(fields, props)
-    }
-
-    // ⏸️ customCell(
-    // ⏸️     _fields: (Accessor<this>)[],
-    // ⏸️     _props?: { showMore?: (keyof T)[] | false; skin?: 'cell' | 'default' | 'text' | 'line' | 'disabled' },
-    // ⏸️ ): FC<NO_PROPS> {
-    // ⏸️     return (): JSX.Element => <Frame line>TODO</Frame>
-    // ⏸️ }
-
-    customForm(
-        extra: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props?: {
-            showMore?: (keyof T)[] | false
-            readonly?: boolean
-            usage?: 'cell' | 'default' | 'text'
-        },
-    ): FC<NO_PROPS | undefined> {
-        const sm = props?.showMore
-        return () => {
-            // ⏸️ const defUsage = props?.usage ?? 'default'
-            const fields = typeof extra === 'function' ? extra(this) : extra
-            return (
-                <Frame>
-                    {fields.map((f, ix) => {
-                        if (f == null) return null
-                        if (typeof f === 'function') {
-                            const res = f(this)
-                            if (res == null) return null
-                            return res({})
-                        }
-                        if (f instanceof Field) {
-                            return f.renderWithLabel({ fieldName: f.mountKey })
-                        }
-
-                        if (typeof f === 'string') {
-                            return <MarkdownUI markdown={f} key={`${ix}-${f}`} />
-                        }
-
-                        return this.fields[f]!.renderWithLabel({ fieldName: f as string })
-                    })}
-                    {sm !== false && (
-                        <CollapsibleUI
-                            content={() => {
-                                const moreFields = sm == null ? Object.keys(this.fields).filter((k) => !fields.includes(k)) : sm
-                                return moreFields.map((f) => this.fields[f]!.renderWithLabel({ fieldName: f as string }))
-                            }}
-                        />
-                    )}
-                </Frame>
-            )
-        }
-    }
-
-    show(
-        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
-    ): JSX.Element {
-        return this.defineForm(fields, { ...props }).render()
-    }
-
-    defineForm(
+    constructor(
         //
-        fields: QuickFormContent<this>[] | ((self: this) => QuickFormContent<this>[]),
-        props: Omit<FormUIProps, 'field' | 'layout'> & { showMore?: (keyof T)[] | false } = {},
-    ): Form {
-        return new Form({
-            ...props,
-            field: this,
-            Component: this.customForm(fields, { showMore: props.showMore }),
+        repo: Repository,
+        root: Field | null,
+        parent: Field | null,
+        schema: BaseSchema<Field_group<T>>,
+        initialMountKey: string,
+        serial?: Field_group_serial<T>,
+    ) {
+        super(repo, root, parent, schema, initialMountKey, serial)
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            Object.defineProperty(this, capitalize(fName), {
+                get: () => this.fields[fName],
+                configurable: true,
+            })
+        }
+        this.init(serial, {
+            // UI
+            DefaultHeaderUI: false,
+
+            // values
+            value_or_fail: false,
+            value_or_zero: false,
+            value_unchecked: false,
         })
     }
+
+    // #region UI
+    DefaultHeaderUI = WidgetGroup_LineUI
 
     get DefaultBodyUI(): CovariantFC<{ field: Field_group<any> }> | undefined {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }
 
-    get ownProblems(): Problem_Ext {
+    get summary(): string {
+        //                                👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
+        return this.config.summary?.(this.value_or_zero, this) ?? ''
+        // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
+    }
+
+    get justifyLabel(): boolean {
+        if (this.numFields > 1) return false
+        return true
+    }
+
+    // #region PROBLEMS
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
+    }
+
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    // #region CHANGES
+    get isOwnSet(): boolean {
+        return true
+        // return this.subFields.every((f) => f.isSet)
     }
 
     get hasChanges(): boolean {
         return Object.values(this.fields).some((f) => f.hasChanges)
     }
+    //            IMPOSSIBLE
+    //                VV
+    // [x.a<, x.a<, x.a.b<, x.a.b>, x.a>]
+    // runInTransaction
 
-    get summary(): string {
-        return this.config.summary?.(this.value, this) ?? ''
-        // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
+    // #region SERIAL
+    protected setOwnSerial(next: Field_group_serial<T>): void {
+        // setOwnSerial(next) is just here to call `this.serial = next`
+        // with some extra stuff. it's almost a regular field action, execpt
+        // it's internal, and has a few extra responsibilities (like fixing external serials)
+        // so it's efficient and avoids producing intermediary serials.
+        //
+        // your `setOwnSerial` should in order
+        //   - 1. CANONICAL SERIAL FORM (tweak the input serial into it's canonical form)
+        //       - 1.1 add various default values when they need to be persisted in serial uppon instanciation.
+        //       - 1.2 add various missing expected properties
+        //             (sometimes, they are marked optional, but it's convenient to add them early here)
+        //
+        //   - 2. ASSIGN SERIAL (yup, just call `this.assignNewSerial(next)`, or use the setter alias `this.serial = ...`)
+        //
+        //   - 3. RECONCILIATION (finally, reconcile the children)
+        //        they may produce new versions, but that's OKAY.
+        //        if you find a better way to assign the serial only once at the end only, let's discuss it !
+        //        (But beware of dragons, it's easy to break the mental model during those intermediary steps )
+
+        // 1. MAKE SERIAL CANONICAL
+        if (next.values_ == null) {
+            next = produce(next, (draft) => void (draft.values_ = {} as any))
+        }
+
+        // 2. ASSIGN SERIAL
+        this.assignNewSerial(next)
+
+        // 3. RECONCILE CHILDREN
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            // reconcile can yield different serial during setSerial; both for
+            // - new child (e.g. running migration),
+            // - old child (e.g. default value beeing added in setOwnSerial)
+            this.RECONCILE({
+                mountKey: fName,
+                existingChild: this.fields[fName],
+                correctChildSchema: fSchema,
+                targetChildSerial: next?.values_?.[fName],
+                attach: (child) => {
+                    this.fields[fName] = child
+                    // 💬 2024-09-11 rvion:
+                    // | 👇 no longer necessary
+                    // | this.patchSerial((draft) => void (draft.values_[fName] = child.serial))
+                },
+            })
+        }
     }
 
-    static readonly type: 'group' = 'group'
+    // #region CHILDREN
+    /**
+     * The dict of all child widgets
+     * will be filled during constructor
+     */
+    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any
+
+    _acknowledgeCount = 0
+    _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+        // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
+        const didChange = this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
+        if (didChange) this._acknowledgeCount++
+        // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
+        return didChange
+    }
 
     /** all [key,value] pairs */
     get entries(): [string, Field][] {
@@ -199,11 +249,6 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
 
     get numFields(): number {
         return Object.keys(this.fields).length
-    }
-
-    get justifyLabel(): boolean {
-        if (this.numFields > 1) return false
-        return true
     }
 
     /** return item at give key */
@@ -216,32 +261,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return this.fields[key].value
     }
 
-    /**
-     * The dict of all child widgets
-     * will be filled during constructor
-     */
-    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any
+    get childrenAll(): Field[] {
+        return Object.values(this.fields)
+    }
 
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_group<T>>,
-        serial?: Field_group_serial<T>,
-    ) {
-        super(repo, root, parent, schema)
-        for (const [fName, fSchema] of this._fieldSchemas) {
-            Object.defineProperty(this, capitalize(fName), {
-                get: () => this.fields[fName],
-                configurable: true,
-            })
-        }
-        this.init(serial, {
-            value: false,
-            __value: false,
-            DefaultHeaderUI: false,
-        })
+    get subFieldsWithKeys(): KeyedField[] {
+        return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
     }
 
     /** just here to normalize fieldSchema definitions, since it used to be a lambda */
@@ -249,32 +274,11 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         const itemsDef = this.config.items
         const fieldSchemas: SchemaDict =
             typeof itemsDef === 'function' //
-                ? (itemsDef as any)() ?? {} // <-- LEGACY SUPPORT
-                : itemsDef ?? {}
+                ? ((itemsDef as any)() ?? {}) // <-- LEGACY SUPPORT
+                : (itemsDef ?? {})
         return Object.entries(fieldSchemas) as [keyof T & string, BaseSchema<any>][]
     }
-
-    protected setOwnSerial(serial: Maybe<Field_group_serial<T>>): void {
-        // make sure this is propery initialized
-        if (this.serial.values_ == null) this.serial.values_ = {}
-
-        // 🔴 PLUS APPLICABLE / a remettre sous une autre forme.
-        // | we only iterate on the current schema fields => we DON'T WANT to remove the old ones.
-        // | we keep the old values in case those are just temporarilly removed, or in case
-        // | those will be lazily added later though global usage
-
-        for (const [fName, fSchema] of this._fieldSchemas) {
-            this.RECONCILE({
-                existingChild: this.fields[fName],
-                correctChildSchema: fSchema,
-                targetChildSerial: serial?.values_?.[fName],
-                attach: (child) => {
-                    this.fields[fName] = child
-                    this.serial.values_[fName] = child.serial
-                },
-            })
-        }
-    }
+    // #region VALUE
 
     setPartialValue(val: Partial<Field_group_value<T>>): this {
         this.runInValueTransaction(() => {
@@ -285,16 +289,8 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return this
     }
 
-    get subFields(): Field[] {
-        return Object.values(this.fields)
-    }
-
-    get subFieldsWithKeys(): KeyedField[] {
-        return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
-    }
-
     get value(): Field_group_value<T> {
-        return this.__value
+        return this.value_or_fail
     }
 
     set value(val: Field_group_value<T>) {
@@ -305,37 +301,64 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         })
     }
 
-    // @internal
-    __value: { [k in keyof T]: T[k]['$Value'] } = new Proxy({} as any, {
-        ownKeys: (_target): string[] => {
-            return Object.keys(this.fields)
-        },
-        set: (_target, prop, value): boolean => {
-            if (typeof prop !== 'string') return false
-            const subWidget: Field = this.fields[prop]!
-            if (subWidget == null) return false
-            subWidget.value = value
-            return true
-        },
-        get: (_target, prop): any => {
-            if (typeof prop !== 'string') return
-            const subWidget: Field = this.fields[prop]!
-            if (subWidget == null) return
-            return subWidget.value
-        },
-        getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
-            if (typeof prop !== 'string') return
-            const subWidget: Field = this.fields[prop]!
-            if (subWidget == null) return
-            return {
-                enumerable: true,
-                configurable: true,
-                get(): any {
-                    return subWidget.value
-                },
-            }
-        },
-    })
+    value_or_fail: Field_group_value<T> = new Proxy({}, this.makeValueProxy('fail'))
+    value_or_zero: Field_group_value<T> = new Proxy({}, this.makeValueProxy('zero'))
+    value_unchecked: Field_group_unchecked<T> = new Proxy({}, this.makeValueProxy('unchecked'))
+
+    // 🦊 get value_or_fail(): Field_group_value<T> {
+    // 🦊     const x: Field_group_value<T> = new Proxy({} as any, this.makeValueProxy('fail'))
+    // 🦊     Object.defineProperty(this, 'value_or_fail', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
+    // 🦊 get value_or_zero(): Field_group_value<T> {
+    // 🦊     const x: Field_group_value<T> = new Proxy({} as any, this.makeValueProxy('zero'))
+    // 🦊     Object.defineProperty(this, 'value_or_zero', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
+    // 🦊 get value_unchecked(): Field_group_unchecked<T> {
+    // 🦊     const x: Field_group_unchecked<T> = new Proxy({} as any, this.makeValueProxy('unchecked'))
+    // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
+    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<any> {
+        return {
+            ownKeys: (_target): string[] => {
+                return Object.keys(this.fields)
+            },
+            set: (_target, prop, value): boolean => {
+                if (typeof prop !== 'string') return false
+                const subWidget: Maybe<Field> = this.fields[prop]
+                if (subWidget == null) return false
+                subWidget.value = value
+                return true
+            },
+            get: (_target, prop): any => {
+                if (typeof prop !== 'string') return
+                const subWidget: Maybe<Field> = this.fields[prop]
+                if (subWidget == null) return
+                return subWidget.getValue(mode)
+            },
+            getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
+                if (typeof prop !== 'string') return
+                const subWidget: Maybe<Field> = this.fields[prop]
+                if (subWidget == null) return
+                return {
+                    enumerable: true,
+                    configurable: true,
+                    get(): any {
+                        return subWidget.getValue(mode)
+                    },
+                }
+            },
+        }
+    }
+
+    randomize(): void {
+        this.childrenAll.forEach((f) => f.randomize())
+    }
 }
 
 // DI

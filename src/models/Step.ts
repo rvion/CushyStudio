@@ -1,16 +1,19 @@
 import type { DraftExecutionContext } from '../cards/App'
-import type { LiveInstance } from '../db/LiveInstance'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { StepOutput } from '../types/StepOutput'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
+import type { MediaSplatL } from './MediaSplat'
 
 import { Status } from '../back/Status'
 import { Field_group } from '../csuite/fields/group/FieldGroup'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { LiveTable } from '../db/LiveTable'
 import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
 import { CushyAppL } from './CushyApp'
 import { DraftL } from './Draft'
@@ -21,11 +24,22 @@ import { MediaCustomL } from './MediaCustom'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
+import { RuntimeErrorL } from './RuntimeError'
 
 export type FormPath = (string | number)[]
+
+export class StepRepo extends LiveTable<TABLES['step'], typeof StepL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'step', '🚶‍♂️', StepL)
+        this.init()
+    }
+}
+
 /** a thin wrapper around an app execution */
-export interface StepL extends LiveInstance<TABLES['step']> {}
-export class StepL {
+export class StepL extends BaseInst<TABLES['step']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     draftL = new LiveRefOpt<StepL, DraftL>(this, 'draftID', 'draft')
     get draft(): Maybe<DraftL> {
         return this.draftL.item
@@ -40,7 +54,7 @@ export class StepL {
          * */
         formInstance: Field_group<any> // Field_group<any>
         context: DraftExecutionContext
-    }) => {
+    }): Promise<void> => {
         // ensure we have an executable
         const executable = this.executable
         if (executable == null) return console.log('🔴 no executable found for this app')
@@ -109,15 +123,41 @@ export class StepL {
 
     outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', 'comfy_workflow')
 
-    get texts()           { return this.db.media_text           .select(q => q.where('stepID', '=', this.id), ['media_text.stepID']           )} // prettier-ignore
-    get images()          { return this.db.media_image          .select(q => q.where('stepID', '=', this.id), ['media_image.stepID']          )} // prettier-ignore
-    get videos()          { return this.db.media_video          .select(q => q.where('stepID', '=', this.id), ['media_video.stepID']          )} // prettier-ignore
-    get displacements()   { return this.db.media_3d_displacement.select(q => q.where('stepID', '=', this.id), ['media_3d_displacement.stepID'])} // prettier-ignore
-    get customOutputs()   { return this.db.media_custom         .select(q => q.where('stepID', '=', this.id), ['media_custom.stepID']         )} // prettier-ignore
-    get splats()          { return this.db.media_splat          .select(q => q.where('stepID', '=', this.id), ['media_splat.stepID']          )} // prettier-ignore
-    get comfy_workflows() { return this.db.comfy_workflow       .select(q => q.where('stepID', '=', this.id), ['comfy_workflow.stepID']       )} // prettier-ignore
-    get comfy_prompts()   { return this.db.comfy_prompt         .select(q => q.where('stepID', '=', this.id), ['comfy_prompt.stepID']         )} // prettier-ignore
-    get runtimeErrors()   { return this.db.runtime_error        .select(q => q.where('stepID', '=', this.id), ['runtime_error.stepID']        )} // prettier-ignore
+    get texts(): MediaTextL[] {
+        return this.db.media_text.select((q) => q.where('stepID', '=', this.id), ['media_text.stepID'])
+    }
+
+    get images(): MediaImageL[] {
+        return this.db.media_image.select((q) => q.where('stepID', '=', this.id), ['media_image.stepID'])
+    }
+
+    get videos(): MediaVideoL[] {
+        return this.db.media_video.select((q) => q.where('stepID', '=', this.id), ['media_video.stepID'])
+    }
+
+    get displacements(): Media3dDisplacementL[] {
+        return this.db.media_3d_displacement.select((q) => q.where('stepID', '=', this.id), ['media_3d_displacement.stepID'])
+    }
+
+    get customOutputs(): MediaCustomL[] {
+        return this.db.media_custom.select((q) => q.where('stepID', '=', this.id), ['media_custom.stepID'])
+    }
+
+    get splats(): MediaSplatL[] {
+        return this.db.media_splat.select((q) => q.where('stepID', '=', this.id), ['media_splat.stepID'])
+    }
+
+    get comfy_workflows(): ComfyWorkflowL[] {
+        return this.db.comfy_workflow.select((q) => q.where('stepID', '=', this.id), ['comfy_workflow.stepID'])
+    }
+
+    get comfy_prompts(): ComfyPromptL[] {
+        return this.db.comfy_prompt.select((q) => q.where('stepID', '=', this.id), ['comfy_prompt.stepID'])
+    }
+
+    get runtimeErrors(): RuntimeErrorL[] {
+        return this.db.runtime_error.select((q) => q.where('stepID', '=', this.id), ['runtime_error.stepID'])
+    }
 
     // private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
     // = new LiveCollection<TABLES['media_text']>           ({table: () => this.db.media_text,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
@@ -142,7 +182,8 @@ export class StepL {
             last instanceof Media3dDisplacementL ||
             last instanceof MediaCustomL ||
             last instanceof MediaTextL ||
-            last instanceof MediaImageL
+            last instanceof MediaImageL ||
+            last instanceof RuntimeErrorL
         ) {
             return last
         }
@@ -177,7 +218,7 @@ export class StepL {
     //     if (this.focusedOutput == null) return this.generatedImages
     // }
 
-    recordError = (message: string, infos: any) => {
+    recordError = (message: string, infos: any): void => {
         this.db.runtime_error.create({
             stepID: this.id,
             graphID: this.outputWorkflow.id,
@@ -190,10 +231,13 @@ export class StepL {
     get defaultExpanded(): boolean {
         return this.data.isExpanded === SQLITE_true ? true : false
     }
+
     userDefinedExpanded: Maybe<boolean> = null
-    get expanded() {
+
+    get expanded(): boolean {
         return this.userDefinedExpanded ?? this.defaultExpanded
     }
+
     set expanded(next: boolean) {
         this.update({ isExpanded: next ? SQLITE_true : SQLITE_false })
     }

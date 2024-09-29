@@ -79,11 +79,11 @@ const _Button = observer(function Button_(
     )
 })
 
-class ButtonState {
+export class ButtonState {
     pressed: boolean = false
     running: boolean = false
 
-    constructor(public props: FrameProps) {
+    constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
         makeAutoObservable(this, { props: observable.ref })
     }
 

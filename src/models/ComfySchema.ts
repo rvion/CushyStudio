@@ -1,13 +1,19 @@
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
 
 import { observable, toJS } from 'mobx'
 
-import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
+import {
+    convertComfyNodeNameToCushyNodeNameValidInJS,
+    convetComfySlotNameToCushySlotNameValidInJS,
+    normalizeJSIdentifier,
+} from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
-import { LiveInstance } from '../db/LiveInstance'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema } from './ComfyDefaultNodeWhenUnknown'
@@ -39,6 +45,7 @@ export type NodeOutputExt = {
 }
 
 export type EnumValue = string | boolean | number
+
 export type EnumInfo = {
     // enumNameInComfy: string
     enumNameInCushy: EnumName
@@ -46,8 +53,19 @@ export type EnumInfo = {
     aliases: string[]
 }
 
-export interface ComfySchemaL extends LiveInstance<TABLES['comfy_schema']> {}
-export class ComfySchemaL {
+export class ComfySchemaRepo extends LiveTable<TABLES['comfy_schema'], typeof ComfySchemaL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'comfy_schema', '📑', ComfySchemaL)
+        this.init()
+    }
+}
+
+export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig = {
+        spec: observable.ref,
+    }
+
     /**
      * return the number of nodes in your current schema
      * quick way to check your instance info
@@ -61,7 +79,7 @@ export class ComfySchemaL {
      * for now, simply ensure that the number of parsed nodes matches the number of nodes
      * present in the object_info.json
      */
-    RUN_BASIC_CHECKS = () => {
+    RUN_BASIC_CHECKS = (): void => {
         const numNodesInSource = Object.keys(this.data.spec).length
         const numNodesInSchema = this.nodes.length
         if (numNodesInSource !== numNodesInSchema) {
@@ -116,7 +134,7 @@ export class ComfySchemaL {
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
     enumsAppearingInOutput = new Set<string>()
 
-    onHydrate = () => {
+    onHydrate = (): void => {
         // this.onUpdate()
     }
 
@@ -125,7 +143,7 @@ export class ComfySchemaL {
     // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 
     /** on update is called automatically by live instances */
-    onUpdate() {
+    onUpdate = (): void => {
         this.log(`updating schema #${this.id}`)
         // reset spec
         // this.spec = this.data.spec
@@ -147,7 +165,7 @@ export class ComfySchemaL {
             const nodeDef = __x[1]
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
-            const nodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
+            const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
             if (typeof nodeDef.output === 'string') {
@@ -186,7 +204,7 @@ export class ComfySchemaL {
                     nodeDef.output_name[ix] || //
                     (typeof slotType === 'string' ? slotType : `input_${ix}`)
 
-                const outputNameInComfy = normalizeJSIdentifier(rawOutputSlotName, '_')
+                const outputNameInComfy = convetComfySlotNameToCushySlotNameValidInJS(rawOutputSlotName)
                 const at = (outputNamer[outputNameInComfy] ??= 0)
                 const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
                 outputNamer[outputNameInComfy]++
@@ -194,7 +212,7 @@ export class ComfySchemaL {
 
                 let slotTypeName: string
                 if (typeof slotType === 'string') {
-                    slotTypeName = normalizeJSIdentifier(slotType, '_')
+                    slotTypeName = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                     this.knownSlotTypes.add(slotTypeName)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
@@ -260,7 +278,7 @@ export class ComfySchemaL {
                     const uniqueEnumName = `INVALID_null`
                     inputTypeNameInCushy = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: ['❌'] })
                 } else if (typeof slotType === 'string') {
-                    inputTypeNameInCushy = normalizeJSIdentifier(slotType, '_')
+                    inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                     this.knownSlotTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
@@ -321,7 +339,11 @@ export class ComfySchemaL {
         let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
         if (enumInfo == null) {
             // case 3.A. PRE-EXISTING
-            enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
+            enumInfo = {
+                enumNameInCushy: p.candidateName,
+                values: enumValues,
+                aliases: [],
+            }
             this.knownEnumsByHash.set(hash, enumInfo)
         } else {
             // case 3.B. PRE-EXISTING
@@ -547,9 +569,10 @@ export class ComfySchemaL {
         return b.content
     }
 
-    private toTSType = (t: string) =>
+    private toTSType = (t: string): string =>
         ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | ComfyNodeOutput<'${t}'>` : `ComfyNodeOutput<'${t}'>`
-    private toSignalType = (t: string) => `ComfyNodeOutput<'${t}'>`
+
+    private toSignalType = (t: string): string => `ComfyNodeOutput<'${t}'>`
 }
 
 export class ComfyNodeSchema {
@@ -567,7 +590,7 @@ export class ComfyNodeSchema {
         this.category = this.category.replaceAll('/', '_')
     }
 
-    codegenUI() {
+    codegenUI(): string {
         const b = new CodeBuffer()
         const p = b.w
         p(`    ${this.nameInCushy}: {`)
@@ -653,7 +676,7 @@ export class ComfyNodeSchema {
     }
 }
 
-export const wrapQuote = (s: string) => {
+export const wrapQuote = (s: string): string => {
     if (s.includes("'")) return `"${s}"`
     return `'${s}'`
 }

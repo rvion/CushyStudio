@@ -1,17 +1,15 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../csuite/button/Button'
-import { SelectUI } from '../../csuite/select/SelectUI'
 import { useGalleryConf } from './galleryConf'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
     const conf = useGalleryConf()
     return (
         <div tw='flex gap-1 items-center'>
-            {conf.fields.filterPath.header()}
-            {conf.fields.filterAppName.header()}
+            {/* {conf.fields.filterPath.header()} */}
+            {/* {conf.fields.filterAppName.header()} */}
             {conf.fields.filterTag.header()}
-            {conf.fields.filterStar.header()}
+            {/* {conf.fields.filterStar.header()} */}
             {/* <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='filename'

@@ -3,13 +3,16 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Button } from '../../csuite/button/Button'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
+import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { mergeStylesTsEfficient } from '../../csuite/utils/mergeStylesTsEfficient'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
+import OverflowingRowUI from './OverflowingRowUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
 
@@ -41,6 +44,32 @@ export const DraftHeaderUI = observer(function DraftHeader({
 
                 {children}
             </PanelHeaderUI>
+
+            <OverflowingRowUI // quick access to past versions
+                icon='mdiHistory'
+                tw='gap-1'
+            >
+                {app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {
+                    return (
+                        <Button
+                            borderless
+                            // subtle
+                            look='primary'
+                            hue={hashStringToNumber(id)}
+                            key={id}
+                            onClick={() => cushy.db.draft.getOrThrow(id).openOrFocusTab()}
+                        >
+                            <div tw='flex items-center'>{title ?? id}</div>
+                        </Button>
+                    )
+                })}
+            </OverflowingRowUI>
+            <h1 // Proeminent app title
+                tw='underline cursor-pointer'
+                onClick={() => cushy.openInVSCode(draft.app.relPath)}
+            >
+                {draft.app.name} <span tw='text-xs'>{draft.app.id}</span>
+            </h1>
             <Frame tw='flex w-full gap-2 p-2 flex-grow text-base-content' base={{ contrast: -0.025 }}>
                 <DraftIllustrationUI
                     revealAppIllustrationOnHover
@@ -55,6 +84,8 @@ export const DraftHeaderUI = observer(function DraftHeader({
                     </Frame>
                     <div tw='flex items-center justify-between'>
                         <InputStringUI
+                            icon='mdiHammerScrewdriver'
+                            autoResize
                             getValue={() => draft.data.canvasToolCategory ?? ''}
                             setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                             placeholder='Unified Canvas Category'

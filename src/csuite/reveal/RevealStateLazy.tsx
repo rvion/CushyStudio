@@ -18,15 +18,20 @@ export class RevealStateLazy {
         //
         public p: RevealProps,
         public parents: RevealState[],
+        public anchorRef: React.RefObject<HTMLDivElement>,
     ) {
-        makeAutoObservable(this, { p: false })
+        if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
+        makeAutoObservable(this, {
+            p: false,
+            anchorRef: false, // 🚨 ref do not work when observables!
+        })
     }
 
     state: RevealState | null = null
 
     getRevealState = (): RevealState => {
         if (this.state) return this.state
-        this.state = new RevealState({ ...this.p }, this.parents)
+        this.state = new RevealState({ ...this.p }, this.parents, this.anchorRef)
         if (DEBUG_REVEAL) this.state.log(`💙 init`)
         return this.state!
     }
@@ -65,5 +70,8 @@ export class RevealStateLazy {
     }
     onBlur = (ev: React.FocusEvent<unknown>): void => {
         return this.getRevealState().onBlurAnchor(ev)
+    }
+    onKeyDown = (ev: React.KeyboardEvent<Element>): void => {
+        return this.getRevealState().onAnchorKeyDown(ev)
     }
 }

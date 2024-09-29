@@ -58,8 +58,8 @@ import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFile'
 import { CushyAppL } from '../models/CushyApp'
 import { DraftL } from '../models/Draft'
+import { FPath } from '../models/FPath'
 import { HostL } from '../models/Host'
-import { FPath } from '../models/PathObj'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
@@ -224,6 +224,8 @@ export class STATE {
     get schema(): ComfySchemaL {
         return this.mainHost.schema
     }
+
+    showCommandHistory: boolean = false
 
     comfySessionId = 'temp' /** send by ComfyUI server */
 
@@ -429,19 +431,24 @@ export class STATE {
     get autolayoutOpts(): {
         node_hsep: number
         node_vsep: number
+        forceLeft: boolean
     } {
         const fv = this.graphConf.value
         return {
             node_hsep: fv.hsep,
             node_vsep: fv.vsep,
+            forceLeft: fv.forceLeft,
         }
     }
-    graphConf = cushyFactory.fields(
-        (ui) => ({
-            spline: ui.float({ min: 0.5, max: 4, default: 2 }),
-            vsep: ui.int({ min: 0, max: 100, default: 20 }),
-            hsep: ui.int({ min: 0, max: 100, default: 20 }),
-        }),
+
+    graphConf = cushyFactory.document(
+        (b) =>
+            b.fields({
+                spline: b.float({ min: 0.5, max: 4, default: 2 }),
+                vsep: b.int({ min: 0, max: 100, default: 20 }),
+                hsep: b.int({ min: 0, max: 100, default: 20 }),
+                forceLeft: b.bool(),
+            }),
         {
             name: 'Graph Visualisation',
             serial: () => readJSON('settings/graph-visualization.json'),
@@ -458,27 +465,29 @@ export class STATE {
         return activityManager
     }
 
-    civitaiConf = cushyFactory.fields(
-        (ui) => ({
-            imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
-            imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
-            apiKey: ui.string({ label: 'API Key' }),
-            defaultQuery: ui.string({ label: '(debug) default query' }),
-            // civitaiApiSecret: ui.string({ label: 'API Secret' }),
-        }),
+    civitaiConf = cushyFactory.document(
+        (b) =>
+            b.fields({
+                imgSize1: b.int({ min: 64, max: 1024, step: 64, default: 512 }),
+                imgSize2: b.int({ min: 64, max: 1024, step: 64, default: 128 }),
+                apiKey: b.string({ label: 'API Key' }),
+                defaultQuery: b.string({ label: '(debug) default query' }),
+                // civitaiApiSecret: ui.string({ label: 'API Secret' }),
+            }),
         {
             name: 'Civitai Conf',
             serial: () => readJSON('settings/civitai.json'),
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = cushyFactory.fields(
-        (f) => ({
-            size: f.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
-            visible: f.bool(),
-            grayscale: f.boolean({ label: 'Grayscale' }),
-            appIcons: f.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
-        }),
+    favbar = cushyFactory.document(
+        (b) =>
+            b.fields({
+                size: b.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+                visible: b.bool(),
+                grayscale: b.boolean({ label: 'Grayscale' }),
+                appIcons: b.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
+            }),
         {
             name: 'SideBar Conf',
             serial: () => readJSON('settings/sidebar.json'),
@@ -490,29 +499,24 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = cushyFactory.fields(
-        (form) => ({
-            camera: form.choice({
-                appearance: 'tab',
-                items: { orbit: form.group(), fly: form.group({}) /* wasd:  form.group({}) */ },
+    displacementConf = cushyFactory.document(
+        (b) =>
+            b.fields({
+                camera: b.choice({ orbit: b.group(), fly: b.group({}) }, { appearance: 'tab' }),
+                menu: b.choice({ menu: b.group(), left: b.group(), right: b.group({}) }, { appearance: 'tab' }),
+                displacementScale: b.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
+                cutout: b.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
+                removeBackground: b.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
+                ambientLightIntensity: b.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
+                ambientLightColor: b.colorV2({ label: 'light color', default: '#ffffff' }),
+                isSymmetric: b.boolean({ label: 'Symmetric Model' }),
+                // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+                metalness: b.float({ min: 0, max: 1 }),
+                roughness: b.float({ min: 0, max: 1 }),
+                skyBox: b.bool({}),
+                ground: b.bool({}),
+                usePoints: b.boolean({ label: 'Points', default: false }),
             }),
-            menu: form.choice({
-                appearance: 'tab',
-                items: { menu: form.group(), left: form.group(), right: form.group({}) },
-            }),
-            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
-            cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
-            removeBackground: form.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
-            ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
-            ambientLightColor: form.colorV2({ label: 'light color', default: '#ffffff' }),
-            isSymmetric: form.boolean({ label: 'Symmetric Model' }),
-            // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
-            metalness: form.float({ min: 0, max: 1 }),
-            roughness: form.float({ min: 0, max: 1 }),
-            skyBox: form.bool({}),
-            ground: form.bool({}),
-            usePoints: form.boolean({ label: 'Points', default: false }),
-        }),
         {
             name: 'Displacement Conf',
             serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
@@ -803,6 +807,7 @@ export class STATE {
             msg.type === 'execution_start' ||
             msg.type === 'execution_cached' ||
             msg.type === 'execution_error' ||
+            msg.type === 'execution_success' ||
             msg.type === 'executing' ||
             msg.type === 'executed'
         ) {

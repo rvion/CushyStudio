@@ -17,11 +17,7 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
 export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShrink {
     return form.fields(
         {
-            include: form.choices({
-                items: { base: form.fields({}), hiRes: form.fields({}) },
-                appearance: 'tab',
-                default: { base: false, hiRes: true },
-            }),
+            include: form.choices({ base: form.fields({}), hiRes: form.fields({}) }, { appearance: 'tab', default: 'hiRes' }),
             advancedSettings: form.fields(
                 {
                     downscaleFactor: form.float({
@@ -58,4 +54,35 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
             },
         },
     )
+}
+
+/** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
+export const run_model_kohyaDeepShrink = (
+    ui: UI_model_kohyaDeepShrink['$Value'],
+    ckpt: _MODEL,
+    forHiRes?: boolean,
+    kohyaScale?: number,
+): _MODEL => {
+    const run = getCurrentRun()
+    const graph = run.nodes
+
+    // 7. Kohya Deepshrink
+    if (
+        (!forHiRes && ui.include.base) || //
+        (forHiRes && ui.include.hiRes)
+    ) {
+        const setScale = forHiRes ? kohyaScale : (ui.advancedSettings.downscaleFactor ?? 2)
+        const set = ui.advancedSettings
+        ckpt = graph.PatchModelAddDownscale({
+            downscale_factor: setScale,
+            model: ckpt,
+            block_number: set.block_number,
+            start_percent: set.startPercent,
+            end_percent: set.endPercent,
+            downscale_after_skip: set.downscaleAfterSkip,
+            downscale_method: set.downscaleMethod,
+            upscale_method: set.upscaleMethod,
+        })
+    }
+    return ckpt
 }

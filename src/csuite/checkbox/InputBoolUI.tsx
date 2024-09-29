@@ -1,10 +1,9 @@
 import type { Box } from '../box/Box'
+import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
-import type { TintExt } from '../kolor/Tint'
-import type { RevealPlacement } from '../reveal/RevealPlacement'
 
 import { observer } from 'mobx-react-lite'
-import { createElement, type CSSProperties, type ReactNode } from 'react'
+import { createElement } from 'react'
 
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
 import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
@@ -12,7 +11,7 @@ import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 export type BoolButtonMode = 'radio' | 'checkbox' | false
 
 // TODO: switch to frame
-export class BoolButtonProps {
+export type BoolButtonProps = {
     /** true when active, false when inactive, undefined when unset */
     value?: Maybe<boolean>
 
@@ -22,27 +21,19 @@ export class BoolButtonProps {
     /** @default 'checkbox' */
     mode?: BoolButtonMode
 
-    expand?: boolean
-    icon?: Maybe<IconName>
-    tooltip?: string
-    tooltipPlacement?: RevealPlacement
-    // 💬 2024-06-12 rvion: I think I'd like having this in addition to the single icon prop
     // iconOn?: Maybe<IconName | false>
-    // iconOff?: Maybe<IconName | false>
+    iconOff?: Maybe<IconName | boolean>
 
-    children?: ReactNode
     /** alternative way to specify children */
     text?: string
-    border?: TintExt
 
-    className?: string
-    style?: CSSProperties
+    // border?: TintExt
+
     box?: Box
-    disabled?: boolean
     onValueChange?: (next: boolean) => void
-}
+} & FrameProps
 
-export const InputBoolUI = observer(function InputBoolUI_(p: BoolButtonProps) {
+export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
     const display = p.display ?? 'check'
     if (display === 'check') return createElement(InputBoolCheckboxUI, p)
     return createElement(InputBoolToggleButtonUI, p)

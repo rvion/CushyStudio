@@ -6,9 +6,10 @@
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "unused-imports"],
     "rules": {
         "@typescript-eslint/naming-convention": "off",
+        "unused-imports/no-unused-imports": "error",
         "@typescript-eslint/semi": "off",
         "curly": "off",
         "eqeqeq": "off",
@@ -26,6 +27,8 @@
         "out",
         "dist",
         "release",
-        "**/*.d.ts"
+        "**/*.d.ts",
+        "**/*.js",
+        "src/scripts"
     ]
 }

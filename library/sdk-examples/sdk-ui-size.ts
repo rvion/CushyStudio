@@ -1,9 +1,10 @@
 app({
-    ui: (form) => ({
-        size: form.size({}),
-        size_1000: form.size({
-            step: 1000,
+    ui: (b) =>
+        b.fields({
+            size: b.size({}),
+            size_1000: b.size({
+                step: 1000,
+            }),
         }),
-    }),
     run: async (flow, form) => {},
 })

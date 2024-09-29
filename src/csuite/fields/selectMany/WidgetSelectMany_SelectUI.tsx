@@ -1,31 +1,47 @@
-import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
+import type { SelectProps } from '../../select/SelectProps'
+import type { SelectKey } from '../selectOne/SelectOneKey'
+import type { SelectOption } from '../selectOne/SelectOption'
 import type { Field_selectMany } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectMany<T>
-}) {
+export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<
+    //
+    VALUE extends any,
+    KEY extends SelectKey,
+>(p: { field: Field_selectMany<VALUE, KEY>; selectProps?: Partial<SelectProps<SelectOption<VALUE, KEY> | undefined>> }) {
     const field = p.field
+    type OPTION = SelectOption<VALUE, KEY> | undefined
     return (
-        <div tw='flex flex-1 gap-1'>
-            <SelectUI<T>
+        <div tw='flex flex-1 gap-1 w-full'>
+            <SelectUI<OPTION>
                 multiple
                 wrap={field.wrap}
-                tw={[field.ownProblems && 'rsx-field-error']}
-                getLabelText={(t) => t.label ?? t.id}
-                getLabelUI={field.config.getLabelUI}
-                getInsideUI={field.config.getInsideUI}
-                getSearchQuery={() => field.serial.query ?? ''}
-                setSearchQuery={(query) => (field.serial.query = query)}
+                tw={[field.ownTypeSpecificProblems != null && field.ownTypeSpecificProblems.length > 0 && 'rsx-field-error']}
+                getLabelText={(t: OPTION): string => {
+                    if (t == null) return field.config.placeholder ?? '<null>'
+                    return t.label ?? makeLabelFromPrimitiveValue(t.id)
+                }}
+                OptionLabelUI={field.config.OptionLabelUI}
+                getSearchQuery={() => field.query}
+                setSearchQuery={(query) => (field.query = query)}
                 disableLocalFiltering={field.config.disableLocalFiltering}
-                options={() => field.choices}
-                value={() => field.serial.values}
-                equalityCheck={(a, b) => a.id === b.id}
-                onOptionToggled={(selectOption) => field.toggleItem(selectOption)}
+                options={() => field.options}
+                value={() => field.selectedOptions}
+                equalityCheck={(a, b) => a?.id === b?.id}
+                onOptionToggled={(selectOption) => {
+                    // wehn selectOption is null, it means the field is no longer set
+                    // user picked the '--' value to reset the state to its unset state.
+                    if (selectOption == null) return field.unset()
+
+                    field.toggleId(selectOption.id)
+                }}
+                placeholder={field.config.placeholder}
+                {...p.selectProps}
             />
             {field.config.wrapButton && (
                 <InputBoolFlipButtonUI

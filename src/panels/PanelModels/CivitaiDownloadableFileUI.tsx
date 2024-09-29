@@ -27,7 +27,7 @@ const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel
 const detectType = (p: CivitaiDownloadableFileProps): Maybe<KnownModel_Type> => {
     // 🔴 TODO: support all knowns Civitai input types
     if (p.entry.type === 'LORA') return 'lora'
-    if (p.entry.type === 'Checkpoint') return 'checkpoints'
+    if (p.entry.type === 'Checkpoint') return 'checkpoint'
     // if (p.file.type === 'Model') return 'checkpoints'
     // if (p.file.type === 'VAE') return 'VAE'
     return
@@ -54,7 +54,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
             save_path: KnownModel_SavePath
         } => ({
             base: detectedBase ?? 'SD1.x',
-            type: detectedType ?? 'checkpoints',
+            type: detectedType ?? 'checkpoint',
             save_path: 'default',
         }),
     )
@@ -66,7 +66,10 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
         base: uist.base,
         type: uist.type,
         save_path: uist.save_path,
-        url: apiKey ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}` : file.downloadUrl,
+        url: apiKey //
+            ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}`
+            : file.downloadUrl,
+        size: `${file.sizeKB * 1000}Mb`,
     }
     const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)
     return (
@@ -142,7 +145,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
     )
 })
 
-const errMsg = (p: CivitaiDownloadableFileProps, prefix: string) =>
+const errMsg = (p: CivitaiDownloadableFileProps, prefix: string): string =>
     [
         `**${prefix}** MAY be wrong;`,
         `Case missing (resource-type=${p.entry.type}, baseModel=${p.version.baseModel}, file.type=${p.file.type})`,

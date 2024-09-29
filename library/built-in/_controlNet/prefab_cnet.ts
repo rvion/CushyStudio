@@ -1,4 +1,3 @@
-import type { Builder } from '../../../src/controls/Builder'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'
@@ -68,14 +67,8 @@ export function ui_cnet(): UI_cnet {
                                 .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                             resize: form.bool({ default: true }),
                             applyDuringUpscale: applyDuringUpscale,
-                            cnets: form.choices({
-                                // label: false, //'Pick Cnets=>',
-                                label: false,
-                                border: false,
-                                appearance: 'tab',
-                                // justify: 'left',
-                                placeholder: 'ControlNets...',
-                                items: {
+                            cnets: form.choices(
+                                {
                                     IPAdapter: ui_subform_IPAdapter(), // 🟢
                                     FaceID: ui_IPAdapterFaceID(), //      🟢
                                     Pose: ui_subform_OpenPose(), //       🟢
@@ -88,7 +81,8 @@ export function ui_cnet(): UI_cnet {
                                     SoftEdge: ui_subform_SoftEdge(), //   🟢
                                     Sketch: ui_subform_Sketch(), //       🟢
                                 },
-                            }),
+                                { label: false, border: false, appearance: 'tab', placeholder: 'ControlNets...' },
+                            ),
                         },
                     }),
             })
@@ -262,7 +256,8 @@ const _apply_cnet = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_node = mask
-        ? graph.ACN$_AdvancedControlNetApply({
+        ? // @ts-expect-error
+          graph.ACN$_AdvancedControlNetApply({
               strength: strength ?? 1,
               positive: args.positive,
               negative: args.negative,

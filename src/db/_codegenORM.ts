@@ -10,7 +10,7 @@ export const _codegenORM = (store: {
     //
     db: BetterSqlite3.Database
     log: (...res: any[]) => void
-}) => {
+}): void => {
     const db = store.db
 
     // 1. get all tables
@@ -45,7 +45,7 @@ export const _codegenORM = (store: {
     type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
     const backRefs = new Map<string, DBRef[]>()
     const refs = new Map<string, DBRef[]>()
-    const addRef = (p: DBRef) => {
+    const addRef = (p: DBRef): void => {
         // ref
         if (refs.has(p.fromTable)) refs.get(p.fromTable)!.push(p)
         else refs.set(p.fromTable, [p])
@@ -115,7 +115,7 @@ export const _codegenORM = (store: {
                 col.name === 'createdAt' || //
                 col.name === 'updatedAt' ||
                 col.dflt_value != null
-            const fieldType = (() => {
+            const fieldType = ((): string => {
                 if (col.name === 'createdAt') return `number`
                 if (col.name === 'updatedAt') return `number`
                 // foreign keys
@@ -141,7 +141,7 @@ export const _codegenORM = (store: {
                 throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
             })()
 
-            const schemaField = (() => {
+            const schemaField = ((): string => {
                 // foreign keys
                 if (fks.find((fk) => fk.from === col.name)) return `Type.String()`
                 // by types
@@ -229,7 +229,7 @@ export const _codegenORM = (store: {
     console.log(`[🧐] `, refs)
 }
 
-const convertTableNameToJSName = (tableName: string) => {
+const convertTableNameToJSName = (tableName: string): string => {
     let out = tableName.replace(/_(.)/g, (m, p1) => p1.toUpperCase())
     out = bang(out[0]).toUpperCase() + out.slice(1)
     return out

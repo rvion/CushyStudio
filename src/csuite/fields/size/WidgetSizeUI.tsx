@@ -9,7 +9,12 @@ import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
-    return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+    return (
+        <div>
+            <pre>{JSON.stringify(p.field.serial)}</pre>
+            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+        </div>
+    )
 })
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
@@ -26,7 +31,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.size
-
     const modelBtn = (model: ModelType): JSX.Element => (
         <InputBoolToggleButtonUI //
             tw='w-input'
@@ -128,8 +132,12 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
                     borderRadius: '0px',
                     // Use transform here because it works with floats and will not cause popping/mis-alignments.
                     transform: `
-                 scaleX(${uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'})
-                 scaleY(${uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'})`,
+                 scaleX(${
+                     uist.width < uist.height ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize : '1'
+                 })
+                 scaleY(${
+                     uist.height < uist.width ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize : '1'
+                 })`,
                 }}
                 // icon='mdiCheckboxBlank'
                 square
@@ -152,7 +160,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         />
     )
 
-    const portrait = uist.height / uist.width > 1.0
+    // const portrait = uist.height / uist.width > 1.0
 
     return (
         <Frame

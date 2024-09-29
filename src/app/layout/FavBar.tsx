@@ -2,13 +2,12 @@ import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useState } from 'react'
-import { fileURLToPath } from 'url'
 
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
-import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
@@ -37,10 +36,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
 }) {
     const st = useSt()
     const conf = st.favbar
-    if (!conf.value.visible) return null
+    // 💬 2024-09-29 rvion:
+    // | temporarilly always display the favbar
+    // |
+    // |> if (!conf.value.visible) return null
+
     const size = conf.fields.size.value
     const appIcons = conf.fields.appIcons
     const sizeStr = size + 'px'
+    const tempSize = `${size + 10}px`
     return (
         <>
             <Frame
@@ -50,37 +54,76 @@ export const FavBarUI = observer(function FavBarUI_(p: {
             >
                 <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
                     <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI>
+                    <Button
+                        //
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/cushySD15.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        <div>SD1.5</div>
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        SDXL
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD3/cushySD3.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        SD3
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/Cascade/cushyCascade.ts:0')?.openLastOrCreateDraft()} // prettier-ignore
+                    >
+                        Cascade
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/Flux/cushyFlux.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        FLUX
+                    </Button>
+                    <RevealUI
+                        tw='hover:brightness-125 self-center my-0.5'
+                        placement='screen-top'
+                        shell='popup-lg'
+                        content={(x) => <CreateAppPopupUI closeFn={() => x.reveal.close()} />}
+                    >
+                        <Button
+                            square
+                            style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
+                            tw='items-center content-center'
+                            className='material-symbols-outlined'
+                        >
+                            <Ikon.mdiPlus />
+                        </Button>
+                    </RevealUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
                     <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
                         <div tw='rounded items-center justify-center overflow-hidden'>
                             <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
-                                <FavBarContainer>
-                                    <RevealUI
-                                        tw='hover:brightness-125'
-                                        placement='screen'
-                                        shell='popup-lg'
-                                        content={() => <CreateAppPopupUI />}
-                                    >
-                                        <span
-                                            tw='cursor-default flex'
-                                            style={{ fontSize: sizeStr }}
-                                            className='material-symbols-outlined'
-                                        >
-                                            add
-                                        </span>
-                                    </RevealUI>
-                                    <div tw='my-0.5 bg-neutral-content rounded-full' style={{ width: sizeStr, height: '3px' }} />
-                                </FavBarContainer>
                                 {/* ------------------------------------------------------------------------ */}
                                 {st.favoriteApps.length > 0 && (
-                                    <FavBarContainer icon='apps'>
+                                    <FavBarContainer /* icon='apps' */>
                                         {st.favoriteApps.map((app) => (
                                             <Frame
                                                 border={20}
                                                 hover
                                                 // tw='rounded border border-base-300 overflow-clip box-content'
                                                 key={app.id}
-                                                style={{ width: sizeStr, height: sizeStr }}
+                                                style={{ width: tempSize, height: tempSize }}
                                             >
                                                 <RevealUI
                                                     showDelay={0}
@@ -88,14 +131,18 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                     placement='right'
                                                     content={() => <AppDraftsQuickListUI app={app} />}
                                                 >
-                                                    <AppIllustrationUI className={'!rounded-none'} size={sizeStr} app={app} />
+                                                    <AppIllustrationUI //
+                                                        className={'!rounded-none'}
+                                                        size={tempSize}
+                                                        app={app}
+                                                    />
                                                 </RevealUI>
                                             </Frame>
                                         ))}
                                     </FavBarContainer>
                                 )}
                                 {/* ------------------------------------------------------------------------ */}
-                                {st.favoriteDrafts.length > 0 && (
+                                {/* {st.favoriteDrafts.length > 0 && (
                                     <FavBarContainer icon='history_edu'>
                                         {st.favoriteDrafts.map((draft) => (
                                             <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
@@ -162,7 +209,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                             </div>
                                         ))}
                                     </FavBarContainer>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>

@@ -1,19 +1,25 @@
 import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { ExifData } from '../utils/png/_parseExifData'
 
 import { writeFileSync } from 'fs'
-import { keys } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { UnknownCustomNode } from '../core/UnknownCustomNode'
+import { MessageErrorUI } from '../csuite'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { Frame } from '../csuite/frame/Frame'
 import { Surface } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
+import { Panel_InstallRequirementsUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { useSt } from '../state/stateContext'
-import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
+import { getPngMetadataFromFile, type TextChunks } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { PromptToCodeOpts } from './ComfyImporter'
@@ -51,6 +57,13 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
     )
 })
 
+type TTT = Promise<ExifData> | Promise<{ workflow: string }> | 'NO'
+function foobar(file: File): TTT {
+    if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
+    if (file.name.endsWith('.webp')) return getWebpMetadata(file)
+    if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
+    return 'NO'
+}
 export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     //
     className?: string
@@ -61,12 +74,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     const [relPath, setRelPath] = useState<string | null>(`library/local/${file.name}-${Date.now()}.ts`)
     const st = useSt()
 
-    const promise = usePromise(() => {
-        if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
-        if (file.name.endsWith('.webp')) return getWebpMetadata(file)
-        if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
-        return Promise.resolve('NO')
-    }, [])
+    type T = Promise<ExifData> | string | { workflow: string }
+    type T2 = Promise<ExifData> | Promise<TextChunks> | 'NO' | Promise<{ workflow: string }>
+    const promise = usePromise<TTT>(() => foobar(file), [])
     const metadata = promise.value
 
     if (metadata == null) return <>loading...</>
@@ -87,6 +97,26 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
     } catch (error) {
         console.log(error)
+        if (error instanceof UnknownCustomNode) {
+            return (
+                <Frame border>
+                    <MessageErrorUI title={`${error.node.type} ❓`}>
+                        Unknown Node
+                        <Panel_InstallRequirementsUI
+                            requirements={[
+                                //
+                                {
+                                    type: 'customNodesByNameInCushy',
+                                    nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
+                                        error.node.type,
+                                    ) as KnownCustomNode_CushyName,
+                                },
+                            ]}
+                        />
+                    </MessageErrorUI>
+                </Frame>
+            )
+        }
         return <>❌3. cannot convert LiteGraph To Prompt {extractErrorMessage(error)}</>
     }
 

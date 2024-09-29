@@ -1,4 +1,4 @@
-import { Box } from './Box'
+import type { Box } from './Box'
 
 export type BoxUIProps = Box & BoxBasicProps
 
@@ -6,7 +6,7 @@ export type BoxBasicProps = {
     //
     className?: string
     style?: React.CSSProperties
-    children?: any // React.ReactNode
+    children?: React.ReactNode
     tabIndex?: number
     id?: string
     ref?: React.Ref<HTMLDivElement>

@@ -2,10 +2,10 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
-import sharp, { type Blend } from 'sharp'
+import sharp from 'sharp'
 
 import { createMediaImage_fromBuffer } from '../models/createMediaImage_fromWebFile'
-import { FPath } from '../models/PathObj'
+import { FPath } from '../models/FPath'
 
 export class RuntimeSharp {
     constructor(private rt: Runtime) {

@@ -1,5 +1,4 @@
 import type { FieldGroup } from '../../csuite/fields/group/FieldGroup'
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { usePanel } from '../../router/usePanel'
@@ -8,23 +7,24 @@ export type GalleryConf = FieldGroup<{
     defaultSort: X.XSelectOne_<'updatedAt' | 'createdAt'>
     gallerySize: X.XNumber
     galleryMaxImages: X.XNumber
-    galleryBgColor: X.XOptional<X.XString>
+    galleryBgColor: X.XOptional<X.XColor>
     galleryHoverOpacity: X.XNumber
     showPreviewInFullScreen: X.XBool
     onlyShowBlurryThumbnails: X.XBool
     filterPath: X.XString
     filterTag: X.XString
     filterStar: X.XBool
-    filterAppName: X.XOptional<X.XSelectOne>
+    filterAppName: X.XOptional<X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
 }> & {
     readonly imageToDisplay: MediaImageL[]
 }
 
 export function useGalleryConf(): GalleryConf {
-    return usePanel().usePersistentModel('gallery-conf', (ui) =>
-        ui
+    return usePanel().usePersistentModel('gallery-conf', (ui) => {
+        // const y = ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' })
+        return ui
             .fields({
-                defaultSort: ui.selectOneV2(['createdAt', 'updatedAt'], { default: { id: 'createdAt' } }),
+                defaultSort: ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' }),
                 gallerySize: ui.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
                 galleryMaxImages: ui.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
                 galleryBgColor: ui.colorV2({ label: 'background' }).optional(),
@@ -32,17 +32,17 @@ export function useGalleryConf(): GalleryConf {
                 showPreviewInFullScreen: ui.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
                 onlyShowBlurryThumbnails: ui.boolean({ label: 'Blur Thumbnails' }),
                 filterPath: ui.string({ innerIcon: 'mdiFilter', placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
-                filterTag: ui.string({ innerIcon: 'mdiTagSearch', placeHolder: 'tags' }), //.optional(), // emptyAsNullWhenOptional: true
+                filterTag: ui.string({ innerIcon: 'mdiTagSearch', placeHolder: 'tags', autoResize: true }), //.optional(), // emptyAsNullWhenOptional: true
                 filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
                 filterAppName: ui.app().optional(),
             })
-            .extend((self) => ({
+            .useMixin((self) => ({
                 get imageToDisplay(): MediaImageL[] {
                     const conf = self.value
                     const out = cushy.db.media_image.select(
                         (query) => {
                             let x =
-                                conf.defaultSort.id === 'createdAt'
+                                conf.defaultSort === 'createdAt'
                                     ? query.orderBy('media_image.createdAt', 'desc')
                                     : query.orderBy('media_image.updatedAt', 'desc')
 
@@ -64,11 +64,10 @@ export function useGalleryConf(): GalleryConf {
                         },
                         ['media_image.id'],
                     )
-                    console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
-
+                    // console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
                     // console.log(`[🤠] BBB`)
                     return out
                 },
-            })),
-    )
+            }))
+    })
 }

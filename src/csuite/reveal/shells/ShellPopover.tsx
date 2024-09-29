@@ -12,7 +12,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             // when  see _ShellForFocusEvents
             tabIndex={0}
             shadow
-            className={reveal.p.tooltipWrapperClassName}
+            className={reveal.p.shellClassName}
             tw={[
                 //
                 '_RevealUI pointer-events-auto',

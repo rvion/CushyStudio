@@ -5,27 +5,27 @@ import type { TableInfo } from './TYPES_json'
 
 import BetterSqlite3, { default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
-import { AuthL } from '../models/Auth'
-import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ComfySchemaL } from '../models/ComfySchema'
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { CushyAppL } from '../models/CushyApp'
-import { CushyScriptL } from '../models/CushyScript'
-import { CustomDataL } from '../models/CustomData'
-import { DraftL } from '../models/Draft'
-import { HostL } from '../models/Host'
-import { Media3dDisplacementL } from '../models/Media3dDisplacement'
-import { MediaCustomL } from '../models/MediaCustom'
-import { MediaImageL } from '../models/MediaImage'
-import { MediaSplatL } from '../models/MediaSplat'
-import { MediaTextL } from '../models/MediaText'
-import { MediaVideoL } from '../models/MediaVideo'
-import { ProjectL } from '../models/Project'
-import { RuntimeErrorL } from '../models/RuntimeError'
-import { StepL } from '../models/Step'
-import { TreeEntryL } from '../models/TreeEntry'
+import { AuthRepo } from '../models/Auth'
+import { ComfyPromptRepo } from '../models/ComfyPrompt'
+import { ComfySchemaRepo } from '../models/ComfySchema'
+import { ComfyWorkflowRepo } from '../models/ComfyWorkflow'
+import { CushyAppRepo } from '../models/CushyApp'
+import { CushyScriptRepo } from '../models/CushyScript'
+import { CustomDataRepo } from '../models/CustomData'
+import { DraftRepo } from '../models/Draft'
+import { HostRepo } from '../models/Host'
+import { Media3dDisplacementRepo } from '../models/Media3dDisplacement'
+import { MediaCustomRepo } from '../models/MediaCustom'
+import { MediaImageRepo } from '../models/MediaImage'
+import { MediaSplatRepo } from '../models/MediaSplat'
+import { MediaTextRepo } from '../models/MediaText'
+import { MediaVideoRepo } from '../models/MediaVideo'
+import { ProjectRepo } from '../models/Project'
+import { RuntimeErrorRepo } from '../models/RuntimeError'
+import { StepRepo } from '../models/Step'
+import { TreeEntryRepo } from '../models/TreeEntry'
 import { _applyAllMigrations } from './_applyAllMigrations'
 import { _codegenORM } from './_codegenORM'
 import { _setupMigrationEngine } from './_setupMigrationEngine'
@@ -39,13 +39,15 @@ export type Indexed<T> = { [id: string]: T }
 let ix = 0
 
 export class LiveDB {
-    _tables: LiveTable<any>[] = []
+    _tables: LiveTable<any, any>[] = []
 
     keys = new Map<T.LiveDBSubKeys, Timestamp>([...liveDBSubKeys.values()].map((k) => [k, 0] as [T.LiveDBSubKeys, Timestamp]))
 
     bump = (t: T.LiveDBSubKeys): void => {
-        if (!liveDBSubKeys.has(t)) throw new Error('🔴 (bump) unknown LiveDBSubKeys: ' + t)
-        else this.keys.set(t, Date.now() as Timestamp)
+        runInAction(() => {
+            if (!liveDBSubKeys.has(t)) throw new Error('🔴 (bump) unknown LiveDBSubKeys: ' + t)
+            else this.keys.set(t, Date.now() as Timestamp)
+        })
     }
 
     subscribeToKeys = (keys: T.LiveDBSubKeys[]): void => {
@@ -64,25 +66,25 @@ export class LiveDB {
     }
 
     // tables ---------------------------------------------------------
-    project:               LiveTable<T.TABLES['project']              > // prettier-ignore
-    custom_data:           LiveTable<T.TABLES['custom_data']          > // prettier-ignore
-    comfy_schema:          LiveTable<T.TABLES['comfy_schema']         > // prettier-ignore
-    host:                  LiveTable<T.TABLES['host']                 > // prettier-ignore
-    comfy_prompt:          LiveTable<T.TABLES['comfy_prompt']         > // prettier-ignore
-    cushy_script:          LiveTable<T.TABLES['cushy_script']         > // prettier-ignore
-    cushy_app:             LiveTable<T.TABLES['cushy_app']            > // prettier-ignore
-    media_text:            LiveTable<T.TABLES['media_text']           > // prettier-ignore
-    media_image:           LiveTable<T.TABLES['media_image']          > // prettier-ignore
-    media_video:           LiveTable<T.TABLES['media_video']          > // prettier-ignore
-    media_splat:           LiveTable<T.TABLES['media_splat']          > // prettier-ignore
-    media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement']> // prettier-ignore
-    media_custom:          LiveTable<T.TABLES['media_custom']         > // prettier-ignore
-    tree_entry:            LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
-    runtime_error:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
-    draft:                 LiveTable<T.TABLES['draft']                > // prettier-ignore
-    comfy_workflow:        LiveTable<T.TABLES['comfy_workflow']       > // prettier-ignore
-    step:                  LiveTable<T.TABLES['step']                 > // prettier-ignore
-    auth:                  LiveTable<T.TABLES['auth']                 > // prettier-ignore
+    project: ProjectRepo
+    custom_data: CustomDataRepo
+    comfy_schema: ComfySchemaRepo
+    host: HostRepo
+    comfy_prompt: ComfyPromptRepo
+    cushy_script: CushyScriptRepo
+    cushy_app: CushyAppRepo
+    media_text: MediaTextRepo
+    media_image: MediaImageRepo
+    media_video: MediaVideoRepo
+    media_splat: MediaSplatRepo
+    media_3d_displacement: Media3dDisplacementRepo
+    media_custom: MediaCustomRepo
+    tree_entry: TreeEntryRepo
+    runtime_error: RuntimeErrorRepo
+    draft: DraftRepo
+    comfy_workflow: ComfyWorkflowRepo
+    step: StepRepo
+    auth: AuthRepo
 
     /** run all pending migrations */
     migrate = (): void => {
@@ -93,49 +95,48 @@ export class LiveDB {
     /** You should not call that unless you know what you're doing */
     runCodegen = (): void => _codegenORM(this)
 
-    // prettier-ignore
     constructor(public st: STATE) {
-            // init SQLITE ---------------------------------------------------------
-            const db = SQL(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
-            db.pragma('journal_mode = WAL')
-            this.db = db
-            _setupMigrationEngine(this)
-            this.migrate()
-            // _listAllTables(this)
+        // init SQLITE ---------------------------------------------------------
+        const db = SQL(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
+        db.pragma('journal_mode = WAL')
+        this.db = db
+        _setupMigrationEngine(this)
+        this.migrate()
+        // _listAllTables(this)
 
-            // ---------------------------------------------------------
-            makeAutoObservable(this)
+        // ---------------------------------------------------------
+        makeAutoObservable(this)
 
-            // 3. create tables (after the store has benn made already observable)
-            this.project =               new LiveTable<T.TABLES['project']              >(this, 'project'              , '🤠', ProjectL, { singleton: true })
-            this.custom_data =           new LiveTable<T.TABLES['custom_data']          >(this, 'custom_data'          , '🎁', CustomDataL)
-            this.comfy_schema =          new LiveTable<T.TABLES['comfy_schema']         >(this, 'comfy_schema'         , '📑', ComfySchemaL)
-            this.host =                  new LiveTable<T.TABLES['host']                 >(this, 'host'                 , '📑', HostL)
-            this.comfy_prompt =          new LiveTable<T.TABLES['comfy_prompt']         >(this, 'comfy_prompt'         , '❓', ComfyPromptL)
-            this.cushy_script =          new LiveTable<T.TABLES['cushy_script']         >(this, 'cushy_script'         , '⭐️', CushyScriptL)
-            this.cushy_app =             new LiveTable<T.TABLES['cushy_app']            >(this, 'cushy_app'            , '🌟', CushyAppL)
-            this.media_text =            new LiveTable<T.TABLES['media_text']           >(this, 'media_text'           , '💬', MediaTextL)
-            this.media_image =           new LiveTable<T.TABLES['media_image']          >(this, 'media_image'          , '🖼️', MediaImageL)
-            this.media_video =           new LiveTable<T.TABLES['media_video']          >(this, 'media_video'          , '🖼️', MediaVideoL)
-            this.media_splat =           new LiveTable<T.TABLES['media_splat']          >(this, 'media_splat'          , '🖼️', MediaSplatL)
-            this.media_3d_displacement = new LiveTable<T.TABLES['media_3d_displacement']>(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
-            this.media_custom =          new LiveTable<T.TABLES['media_custom']         >(this, 'media_custom'         , '🖼️', MediaCustomL)
-            this.tree_entry =            new LiveTable<T.TABLES['tree_entry']           >(this, 'tree_entry'           , '🖼️', TreeEntryL)
-            this.runtime_error =         new LiveTable<T.TABLES['runtime_error']        >(this, 'runtime_error'        , '❌', RuntimeErrorL)
-            this.draft =                 new LiveTable<T.TABLES['draft']                >(this, 'draft'                , '📝', DraftL)
-            this.comfy_workflow =        new LiveTable<T.TABLES['comfy_workflow']       >(this, 'comfy_workflow'       , '📊', ComfyWorkflowL)
-            this.step =                  new LiveTable<T.TABLES['step']                 >(this, 'step'                 , '🚶‍♂️', StepL)
-            this.auth =                  new LiveTable<T.TABLES['auth']                 >(this, 'auth'                 , '🚶‍♂️', AuthL)
+        // 3. create tables (after the store has benn made already observable)
+        this.project = new ProjectRepo(this)
+        this.custom_data = new CustomDataRepo(this)
+        this.comfy_schema = new ComfySchemaRepo(this)
+        this.host = new HostRepo(this)
+        this.comfy_prompt = new ComfyPromptRepo(this)
+        this.cushy_script = new CushyScriptRepo(this)
+        this.cushy_app = new CushyAppRepo(this)
+        this.media_text = new MediaTextRepo(this)
+        this.media_image = new MediaImageRepo(this)
+        this.media_video = new MediaVideoRepo(this)
+        this.media_splat = new MediaSplatRepo(this)
+        this.media_3d_displacement = new Media3dDisplacementRepo(this)
+        this.media_custom = new MediaCustomRepo(this)
+        this.tree_entry = new TreeEntryRepo(this)
+        this.runtime_error = new RuntimeErrorRepo(this)
+        this.draft = new DraftRepo(this)
+        this.comfy_workflow = new ComfyWorkflowRepo(this)
+        this.step = new StepRepo(this)
+        this.auth = new AuthRepo(this)
 
-            // console.log('🟢 TABLE INITIALIZED')
-        }
+        // console.log('🟢 TABLE INITIALIZED')
+    }
 
-    _getSize = (tabeName: string): number => {
+    _getSize = (tableName: string): number => {
         // 1️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1226 (allow modern electron)
         // 2️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1228 (allow size)
-        return -1
-        // ⏸️ const stmt = this.db.prepare(`select page_count * page_size as size from pragma_page_count('${tabeName}')`)
-        // ⏸️ return (stmt.get() as { size: number }).size
+        const stmt = this.db.prepare(`SELECT SUM("pgsize") as size FROM "dbstat" WHERE name='${tableName}';`)
+        const out = stmt.get() as { size: number }
+        return out.size
     }
 
     _getCount = (tabeName: string): number => {

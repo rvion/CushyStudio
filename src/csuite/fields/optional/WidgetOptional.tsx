@@ -1,20 +1,19 @@
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Presenter'
 import type { Field_optional } from './FieldOptional'
 
 import { observer } from 'mobx-react-lite'
 
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
+import { renderFCOrNode } from '../../../csuite-cushy/shells/_isFC'
 
-// string HEADER
-export const WidgetOptional_HeaderUI = observer(function WidgetStringUI_(p: { field: Field_optional }) {
+export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRenderProps<Field_optional>) {
     const field = p.field
-    const child = field.child
     const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
+    const child = field.child
     return (
-        <WidgetWithLabelUI //
+        <child.UI //
+            Toogle={<field.UIToggle />}
+            LabelText={(x) => renderFCOrNode(p.LabelText, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
-            fieldName='child'
-            justifyLabel={field.config.justifyLabel ?? child.config.justifyLabel}
-            field={child}
         />
     )
 })

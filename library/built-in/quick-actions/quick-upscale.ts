@@ -7,10 +7,11 @@ app({
         name: 'upscale single',
         description: 'add a gradient background to the input image',
     },
-    ui: (form) => ({
-        image: form.image({}),
-        upscale: ui_upscaleWithModel(),
-    }),
+    ui: (b) =>
+        b.fields({
+            image: b.image({}),
+            upscale: ui_upscaleWithModel(),
+        }),
     canStartFromImage: true,
     run: async (run, ui, ctximg) => {
         const imageA = await ui.image.loadInWorkflow()
@@ -24,11 +25,12 @@ app({
         name: 'upscale multiple',
         description: 'add a gradient background to the input image',
     },
-    ui: (form) => ({
-        image: form.image({}),
-        upscale: ui_upscaleWithModel_v2(),
-        save: ui_customSave(),
-    }),
+    ui: (b) =>
+        b.fields({
+            image: b.image({}),
+            upscale: ui_upscaleWithModel_v2(),
+            save: ui_customSave(),
+        }),
     canStartFromImage: true,
     run: async (run, ui, ctximg) => {
         const imageA = await ui.image.loadInWorkflow()

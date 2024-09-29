@@ -51,7 +51,7 @@ export function jsxDEV(type, props, key, isStaticChildren, source, self_) {
     const isSym = typeof type === 'symbol'
     const isPrim = typeof type === 'string'
     const compCls = compName ? `🔘${compName}` : null // 'UI-'
-    const { tw, className, 'data-ux': ux, ...rest } = props
+    const { tw, className, data__ux: ux, ...rest } = props
     const PROPS = isSym
         ? rest
         : isPrim
@@ -62,7 +62,7 @@ export function jsxDEV(type, props, key, isStaticChildren, source, self_) {
             }
           : {
                 ...rest,
-                'data-ux': ux ? [...ux, compCls] : [compCls],
+                data__ux: ux ? [...ux, compCls] : [compCls],
                 className: joinCls([className, tw]),
             }
     return jsxDEV_(type, PROPS, key, isStaticChildren, source, self_)

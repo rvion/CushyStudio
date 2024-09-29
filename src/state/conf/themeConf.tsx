@@ -1,6 +1,5 @@
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
-
 import { cushyFactory } from '../../controls/Builder'
+import { SelectOptionNoVal } from '../../csuite/fields/selectOne/SelectOption'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
@@ -8,8 +7,8 @@ import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
-    base: X.XString
-    appbar: X.XString
+    base: X.XColor
+    appbar: X.XColor
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -20,20 +19,22 @@ export type ThemeConf = X.XGroup<{
     inputContrast: X.XOptional<X.XNumber>
 }>
 
-export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
+export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOne<BaseSelectEntry<FormGlobalLayoutMode>>({
-                    header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
-                    choices: [
-                        { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
-                        { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },
-                        { id: 'fluid', icon: 'mdiFullscreenExit', label: '' },
-                        { id: 'mobile', icon: 'mdiCellphone', label: '' },
+                labelLayout: ui.selectOneOptionId<SelectOptionNoVal<FormGlobalLayoutMode>>(
+                    [
+                        { id: 'fixed-left', /*  */ icon: 'mdiAlignHorizontalLeft' /*  */, label: '' },
+                        { id: 'fixed-right', /* */ icon: 'mdiAlignHorizontalRight' /* */, label: '' },
+                        { id: 'fluid', /*       */ icon: 'mdiFullscreenExit' /*       */, label: '' },
+                        { id: 'mobile', /*      */ icon: 'mdiCellphone' /*            */, label: '' },
                     ],
-                    default: { id: 'fixed-left', icon: 'mdiAlignHorizontalRight' },
-                }),
+                    {
+                        header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
+                        default: 'fixed-left',
+                    },
+                ),
                 // 1. colors
                 base: ui.colorV2({
                     tooltip: 'main color of the CushyStudio UI',

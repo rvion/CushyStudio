@@ -5,7 +5,7 @@ import type { Group } from 'three'
 import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { useMemo, useRef } from 'react'
+import { forwardRef, useMemo, useRef } from 'react'
 
 /** this custom view  */
 export const CustomView3dCan = view<{
@@ -34,7 +34,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
     )
     return (
         <>
-            <div tw='w-96 right-0 absolute z-20'>{form.render()}</div>
+            <div tw='w-96 right-0 absolute z-20'>{form.UI()}</div>
             <Canvas tw='flex-1'>
                 <axesHelper args={[]} />
                 <OrbitControls target={[0, 0, 0]} enableDamping={true} dampingFactor={0.25} enableZoom={true} />
@@ -68,7 +68,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
 const useGLTFProxy = (url: string): void => {}
 
 const Can3 = observer(
-    function Can3_(props: GroupProps & { _textureURL?: string }) {
+    forwardRef(function Can3_(props: GroupProps & { _textureURL?: string }, forwardedRef /* ⁉️ */) {
         // writeFileSync('src/outputs/3d-scene/can3/test/can3.gltf,')
         const gltf = useGLTF(`/library/built-in/_views/_can3/can3.gltf`)
         const { nodes, materials } = gltf
@@ -147,8 +147,7 @@ const Can3 = observer(
                 </group>
             </group>
         )
-    },
-    { forwardRef: true },
+    }),
 )
 
 // useGLTF.preload('/can3.glb')

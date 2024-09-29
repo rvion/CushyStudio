@@ -1,13 +1,13 @@
 import { cushyFactory } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PanelOutputConf = cushyFactory.entity(
+export const PanelOutputConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
-                //
                 outputPreviewSize: ui.number({ default: 256, min: 64, max: 1024, step: 64 }),
-                latentSize: ui.number({ default: 10, min: 3, max: 100, step: 1 }),
+                latentSize: ui.percent({ default: 25 }),
+                latentTransparency: ui.percent({ default: 100 }),
             },
             { label: 'Panel output Conf' },
         ),

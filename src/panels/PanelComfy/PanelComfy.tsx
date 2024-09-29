@@ -2,9 +2,13 @@ import type { LiteGraphJSON } from '../../core/LiteGraph'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
 import { useLayoutEffect } from 'react'
 
+import { Button } from '../../csuite/button/Button'
+import { PanelUI } from '../../csuite/panel/PanelUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
+import { usePanel } from '../../router/usePanel'
 import { useSt } from '../../state/stateContext'
 
 export const PanelComfy = new Panel({
@@ -27,6 +31,11 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
     const st = useSt()
     const host = st.db.host.get(p.hostID) ?? st.mainHost
     const url = host.getServerHostHTTP()
+    const conf = usePanel().usePersistentModel('uist', (ui) =>
+        ui.fields({
+            hash: ui.string({ default: '' }),
+        }),
+    )
 
     const loadFn = async (): Promise<void> => {
         // ensure we have a flow ready to load
@@ -44,7 +53,7 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
             const subWindow = _subWindow as any
             // console.log('🟢', x)
             app = subWindow.app
-            console.log(`${maxWait} waiting for ComfyUI to be ready...`) // { subWindow }, { app })
+            // console.log(`${maxWait} waiting for ComfyUI to be ready...`) // { subWindow }, { app })
             if (app == null) await new Promise((resolve) => setTimeout(resolve, 100))
             else break
             maxWait--
@@ -76,19 +85,31 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
         void loadFn()
     }, [st.comfyUIIframeRef.current])
 
+    const finalURL = conf.value.hash ? `${url}?hash=${conf.value.hash}` : url
     return (
-        <>
+        <PanelUI>
             {/* <div className='absolute top-0 right-0'>
                 <Button look='ghost' size='sm' disabled={p.litegraphJson == null} onClick={loadFn}>
                     Manual load in case it hasn't loaded
                 </Button>
             </div> */}
+            <PanelUI.Header>
+                <Button
+                    onClick={() => {
+                        conf.value.hash = nanoid()
+                    }}
+                >
+                    force-refresh {conf.value.hash ? `${conf.value.hash})` : null}
+                </Button>
+                {url}
+            </PanelUI.Header>
             <iframe //
                 ref={st.comfyUIIframeRef}
-                src={url}
+                src={finalURL}
+                tw='disable-x-frame-options'
                 className={p.className}
                 // style={{ width: '100%', height: '100%', border: 'none' }}
             ></iframe>
-        </>
+        </PanelUI>
     )
 })

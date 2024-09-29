@@ -1,10 +1,10 @@
+import type { PropsOf } from '../csuite/types/PropsOf'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
-import type { PanelState } from './PanelState'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
-import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC, type RefObject } from 'react'
@@ -12,16 +12,18 @@ import { createElement, createRef, FC, type RefObject } from 'react'
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
 import { Message } from '../csuite/inputs/shims'
+import { PanelUI } from '../csuite/panel/PanelUI'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
+import { PanelWelcomeUI } from '../panels/PanelWelcome/PanelWelcome'
 import { PanelContainerUI } from './PanelContainerUI'
 import { PanelName, panels, Panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
-export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
+export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
 
 // prettier-ignore
 export type PanelPlacement =
@@ -90,9 +92,78 @@ export class CushyLayoutManager {
         })
     }
 
-    /** pretty print model layout as json  */
+    /** pretty print model layout as json */
     prettyPrintLayoutModel(): void {
-        console.log(`[💠] model:`, JSON.stringify(this.model.toJson(), null, 4))
+        console.log(`[💠] layout model:`, JSON.stringify(this.model.toJson(), null, 4))
+    }
+
+    private _getTabset(tse: TabsetExt): FL.TabSetNode {
+        if (tse === 'active') return this.getActiveOrFirstTabset_orThrow()
+        if (tse === 'hoverd') return this.getHoveredOrFirstTabset_orThrow()
+        return tse
+    }
+
+    // Tabset Size Manipulation -----------------------------------------------------------
+    /** widen given tabset by given factor (default to 1.3) */
+    widenTabset(tse: TabsetExt, factor = 1.3): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
+
+    /** widen given tabset by given factor (default to 0.7) */
+    shrinkTabset(tse: TabsetExt, factor = 0.7): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
+
+    /** reset tabset size by resetting it's layout weight (default to 1) */
+    resetTabsetSize(tse: TabsetExt, weight = 100): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        this.do((a) => a.updateNodeAttributes(tabset.getId(), { weight }))
+    }
+
+    // Tabset Size Manipulation -----------------------------------------------------------
+
+    /** pretty print model shape as tree, only showing important infos */
+    prettyPrintLayoutShape(): void {
+        const out: string[] = []
+        function getDepth(node: FL.Node): number {
+            let depth = 0
+            let at: Maybe<FL.Node> = node
+            while (at != null) {
+                depth++
+                at = at.getParent()
+            }
+            return depth
+        }
+        this.traverse({
+            onNode2({ type, node }) {
+                const weight =
+                    type === 'tabset' //
+                        ? ` (${node.getWeight().toString()})`
+                        : ''
+                out.push(`${'  '.repeat(getDepth(node))}${type}${weight}`)
+                return null
+            },
+        })
+        console.log(`[💠] layout shape:\n${out.join('\n')}`)
     }
 
     /** quick method to maximize a tabset */
@@ -354,12 +425,12 @@ export class CushyLayoutManager {
         if (surroundings.next == null) {
             // 3. move tab into split
             this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.RIGHT, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         } else {
             // 3. move tab to right tabset
             this.model.doAction(Actions.moveNode(tabID, surroundings.next.getId(), FL.DockLocation.CENTER, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         }
     }
@@ -380,12 +451,12 @@ export class CushyLayoutManager {
         if (surroundings.prev == null) {
             // 3. move tab into split
             this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.LEFT, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         } else {
             // 3. move tab to left split
             this.model.doAction(Actions.moveNode(tabID, surroundings.prev.getId(), FL.DockLocation.CENTER, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         }
     }
@@ -430,6 +501,13 @@ export class CushyLayoutManager {
                 ref={this.layoutRef}
                 model={this.model}
                 factory={this.factory}
+                onTabSetPlaceHolder={() => {
+                    return (
+                        <PanelUI>
+                            <PanelWelcomeUI />
+                        </PanelUI>
+                    )
+                }}
                 /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
                  * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
                 realtimeResize
@@ -494,9 +572,9 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab(): Trigger {
+    closeCurrentTab(tse: TabsetExt = 'hoverd'): Trigger {
         // 1. find tabset
-        const tabset = this.getActiveOrFirstTabset_orThrow()
+        const tabset = this._getTabset(tse)
         if (tabset == null) return Trigger.UNMATCHED
 
         // 2. find active tab
@@ -542,7 +620,8 @@ export class CushyLayoutManager {
             console.log(`❌ currentTabIs(...): "${id}" does not start with ${tabPrefix}`)
             return null
         }
-        return (current as FL.TabNode).getConfig() as Maybe<PropsOf<Panels[K]['widget']>>
+        const config: PanelPersistedJSON<Panels[K]['$Props']> = (current as FL.TabNode).getConfig()
+        return config.$props
     }
 
     findTabsFor = <K extends PanelName>(
@@ -584,6 +663,7 @@ export class CushyLayoutManager {
             this.model.doAction(Actions.renameTab(tabID, title || panelName))
         })
     }
+
     // TRAVERSAL CAPABILITIES --------------------------------------------------------
 
     /** traverse layout tree from the root */
@@ -708,7 +788,7 @@ export class CushyLayoutManager {
             prevTab = this.model.getNodeById(panelURI) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
                 console.log(`[🧐] addition:`, addition, { component: panelName, tabID: panelURI, icon, title, props: panelProps })
-                this.prettyPrintLayoutModel()
+                // ⏸️ this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }
         }
@@ -759,6 +839,7 @@ export class CushyLayoutManager {
             enableClose: p.canClose ?? true,
             enableRename: false,
             enableFloat: false,
+            // enablePopout: false,
             icon: getIconAsDataSVG(icon),
         }
     }
@@ -767,6 +848,7 @@ export class CushyLayoutManager {
         const out: IJsonModel = {
             global: {
                 tabEnableFloat: false,
+                // tabEnablePopout: false,
                 splitterSize: 6,
                 tabEnableRename: false,
                 borderEnableAutoHide: true,
@@ -905,7 +987,7 @@ export class CushyLayoutManager {
             )
 
         return createElement(PanelContainerUI, {
-            node,
+            flexLayoutTabNode: node,
             panelName,
             panelProps,
         })

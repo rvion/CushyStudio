@@ -1,6 +1,6 @@
 import type { OpenRouter_Models } from './OpenRouter_models'
 
-export type OopenRouter_ModelInfo = {
+export type OpenRouter_ModelInfo = {
     id: OpenRouter_Models
     name: string
     pricing: { prompt: string; completion: string }
@@ -12,7 +12,7 @@ export type OopenRouter_ModelInfo = {
 export type InstructType = //
     'llama2' | 'zephyr' | 'openchat' | 'alpaca' | 'vicuna' | 'neural' | 'gpt' | 'airoboros' | 'claude'
 
-export const openRouterInfos: { [key in OpenRouter_Models]: OopenRouter_ModelInfo } = {
+export const openRouterInfos: { [key in OpenRouter_Models]: OpenRouter_ModelInfo } = {
     'openrouter/auto': {
         id: 'openrouter/auto',
         name: 'Auto (best for prompt)',

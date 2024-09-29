@@ -7,26 +7,27 @@
  */
 
 app({
-    ui: (form) => ({
-        int: form.int({
-            min: 10,
-            default: 12,
-            max: 20,
+    ui: (b) =>
+        b.fields({
+            int: b.int({
+                min: 10,
+                default: 12,
+                max: 20,
+            }),
+            float: b.float({
+                default: 1.0,
+                min: 0.0,
+                max: 1.0,
+                step: 0.01,
+                hideSlider: true,
+            }),
+            xx: b.float({
+                min: 10,
+                max: 100,
+            }),
+            abcd: b.float().optional(),
+            abcd2: b.float().optional(true),
         }),
-        float: form.float({
-            default: 1.0,
-            min: 0.0,
-            max: 1.0,
-            step: 0.01,
-            hideSlider: true,
-        }),
-        xx: form.float({
-            min: 10,
-            max: 100,
-        }),
-        abcd: form.float().optional(),
-        abcd2: form.float().optional(true),
-    }),
 
     run: async (flow, form) => {},
 })

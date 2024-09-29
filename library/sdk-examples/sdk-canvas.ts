@@ -11,7 +11,7 @@ app({
             `- Flip it with nodes`,
         ].join('\n'),
     },
-    ui: () => ({}),
+    ui: (b) => b.empty(),
     run: async (run) => {
         // create an image proceduarly
         const layer = run.Konva.createStageWithLayer({ width: 512, height: 512 })
@@ -25,6 +25,6 @@ app({
         run.nodes.Image_Flip({ images: image, mode: 'vertical' })
         run.nodes.Image_Flip({ images: run.AUTO, mode: 'horizontal' }) // 'AUTO' matches the last IMAGE slot
         run.nodes.PreviewImage({ images: run.AUTO })
-        run.PROMPT()
+        void run.PROMPT()
     },
 })

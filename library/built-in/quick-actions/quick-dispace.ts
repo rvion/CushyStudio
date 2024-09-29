@@ -7,9 +7,10 @@ app({
         help: `This app is made to be run from click on an image and sending it to drafts of this app.`,
     },
     canStartFromImage: true,
-    ui: () => ({
-        displacementConfig: ui_3dDisplacement(),
-    }),
+    ui: (b) =>
+        b.fields({
+            displacementConfig: ui_3dDisplacement(),
+        }),
     run: async (run, ui, { image }) => {
         if (image == null) throw new Error('no image provided')
         const img = await image.loadInWorkflow()

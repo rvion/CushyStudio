@@ -1,40 +1,204 @@
-import type { Field_list_serial } from '../fields/list/FieldList'
+import type { Field_link_config } from '../fields/link/FieldLink'
+import type { Field_list_config } from '../fields/list/FieldList'
+import type { Field_optional_config } from '../fields/optional/FieldOptional'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { Factory } from './Factory'
-import type { Field } from './Field'
-import type { FieldSerial_CommonProperties } from './FieldSerial'
+import type { Field, FieldCtorProps } from './Field'
+import type { FieldConstructor } from './FieldConstructor'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
+import type { Result } from './Result'
+import type { ValidationError } from './ValidationError'
 
 import { reaction } from 'mobx'
 
-import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
-import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
+import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
+import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
+import { potatoClone } from '../utils/potatoClone'
+import { Draft, type DraftLike } from './Draft'
+import { getKlass, type KlassToUse } from './KlassToUse'
 import { getGlobalRepository, type Repository } from './Repository'
 
-export interface BaseSchema<out FIELD extends Field = Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+    Link: HKT
+    List: HKT
+    Optional: HKT
+}
+
+export interface BaseSchema<
+    //
+    out FIELD extends Field = Field,
+    Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
+> {
     $Field: FIELD
     $Type: FIELD['$Type']
     $Config: FIELD['$Config']
     $Serial: FIELD['$Serial']
     $Value: FIELD['$Value']
+    $Unchecked: FIELD['$Unchecked']
+    $Child: FIELD['$Child']
 }
 
-export abstract class BaseSchema<out FIELD extends Field = Field> {
+export class BaseSchema<
+    //
+    out FIELD extends Field = Field,
+    Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
+> {
+    /** untyped so the schema remains covariant over Field */
+    private UNSAFE_selfConstructor: any
+
+    // private get pocLessUnsafe_selfConstructor(): CovariantFn<[fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$Config']],  Apply<HKSCHEMA, FIELD>> {
+    //     return this.UNSAFE_selfConstructor
+    // }
+
+    constructor(
+        /** field constructor (class or function, see FieldConstructor definition)  */
+        public fieldConstructor: FieldConstructor<FIELD>,
+        /** config of the field to instanciate */
+        public readonly config: FIELD['$Config'],
+        /** necessary for higher-kinded clone (e.g. withConfig) */
+        selfConstructor: (fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$Config']) => Apply<Schemaᐸ_ᐳ, FIELD>,
+    ) {
+        this.UNSAFE_selfConstructor = selfConstructor
+
+        // early check, just in case, this should also be checked at instanciation time
+        if (this.config.classToUse != null) {
+            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
+            if (this.config.builderToUse != null) throw new Error('impossible to use a custom class')
+        }
+        if (this.config.builderToUse != null) {
+            if (fieldConstructor.build !== 'new') throw new Error('impossible to use a custom class')
+            if (this.config.classToUse != null) throw new Error('impossible to use a custom class')
+        }
+    }
+
     // ------------------------------------------------------------
-    applyExts(field: FIELD): void {
+    applyFieldExtensions(field: FIELD): void {
         for (const ext of this.config.customFieldProperties ?? []) {
             const xxx = ext(field)
             Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
         }
     }
 
-    extend<EXTS extends object>(extensions: (self: FIELD) => EXTS): BaseSchema<EXTS & FIELD> {
+    /**
+     * example usage:
+     *
+     * ```ts
+     * // define base schema
+     * type T0 = S.Record<{foo: S.int}>
+     * const S0 = b.fields({
+     *     foo: b.int({ default: 10 }),
+     * })
+     * ```
+     *
+     * ## USAGE 1: external class definition, with type annotation
+     *
+     * ```ts
+     * // 👉 using an external class require it to properly extend your field shape
+     * //                 VVVVVVVVVVV VVVVVVVVVVVVVVVVVVVVVVVVVV
+     * class Foo1 extends Field_group<T0['$Field']['$Subfields']> {
+     *     static HELLO = 'WORLD'
+     *     volatile = 12
+     *     constructor(...args:FieldCtorProps){ // 👈 constructor is only required if you want
+     *          super()                         // to make it observable or extend the constructor in some way
+     *
+     *          this.extendAutoObservable()     // 👈 observability for your custom class is
+     *     }                                    // done via the custom `extendAutoObservable`
+     *     get foofoo(): number {
+     *         return this.value.foo * 2
+     *     }
+     * }
+     * const S1: Schema<Foo1> = S0.useClass(() => Foo1)
+     * ```
+     *
+     * ## USAGE 2: inline class definition, without type annotion
+     *
+     * ```ts
+     * // use `useClass` to extend the auto-generated class
+     * // with your custom class
+     * const S1 = S0.useClass((FIELD) => {         // 👈 doesn't require type annotation
+     *     return class Foo2 extends FIELD {
+     *         static HELLO = 'WORLD'
+     *         volatile = 12
+     *
+     *         // constructor is required if you want to make your field observable
+     *         constructor(...args:FieldCtorProps){ // 👈 constructor is only required if you want
+     *              super()                         // to make it observable or extend the constructor in some way
+     *
+     *              this.extendAutoObservable()     // 👈 observability for your custom class is
+     *         }                                    // done via the custom `extendAutoObservable`
+     *         get foofoo(): number {
+     *             return this.value.foo * 2
+     *         }
+     *     }
+     * })
+     * // S1: BaseSchema<Foo2>                      // 👈 but can't be anno
+     * ```
+     *
+     */
+    useClass<CUSTOM extends Field>(
+        /** the class constructor */
+        // prettier-ignore
+        classToUse: KlassToUse<FIELD, CUSTOM>,
+    ): Apply<Schemaᐸ_ᐳ, CUSTOM> {
+        if (this.config.classToUse != null) throw new Error('already have a custom class')
+        if (this.config.builderToUse != null) throw new Error('already have a custom class')
+        return this.withConfig({ classToUse }) as any as Apply<Schemaᐸ_ᐳ, CUSTOM>
+    }
+
+    useBuilder<F extends Field>(
+        /** the builder function that will call some field constructor itself */
+        builderToUse: (...args: FieldCtorProps<FIELD>) => F,
+    ): Apply<Schemaᐸ_ᐳ, F> {
+        if (this.config.classToUse != null) throw new Error('already have a custom class')
+        if (this.config.builderToUse != null) throw new Error('already have a custom class')
+        return this.withConfig({ builderToUse }) as any as Apply<Schemaᐸ_ᐳ, F>
+    }
+
+    useMixin<EXTS extends object>(extensions: (self: FIELD) => EXTS): Apply<Schemaᐸ_ᐳ, EXTS & FIELD> {
         const x: BaseSchema<FIELD> = this.withConfig({
             customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
         })
-        return x as any as BaseSchema<EXTS & FIELD>
+        return x as any as Apply<Schemaᐸ_ᐳ, EXTS & FIELD>
+    }
+
+    /**
+     * chain construction
+     * @since 2024-06-30
+     * TODO: WRITE MORE DOC
+     * MORE DOC: yo dawg; I heard you like beeing hight wiht types, so I put a type in your type,
+     * so you can type a lot of type.
+     */
+    useIn<BP extends BaseSchema>(fn: CovariantFn<[field: FIELD], BP>): Apply<Schemaᐸ_ᐳ['Link'], this, BP> {
+        const FieldLinkClass = getFieldLinkClass()
+        const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
+        return this.UNSAFE_selfConstructor(FieldLinkClass, linkConf)
+    }
+
+    /** wrap field schema to list stuff */
+    list(config: Omit<Field_list_config<this>, 'element'> = {}): Apply<Schemaᐸ_ᐳ['List'], this> {
+        return this.list_({ defaultLength: config.min ?? 0, ...config })
+    }
+
+    /** wrap field schema to list stuff */
+    list_(config: Omit<Field_list_config<this>, 'element'> = {}): Apply<Schemaᐸ_ᐳ['List'], this> {
+        const FieldListClass = getFieldListClass()
+        return this.UNSAFE_selfConstructor(FieldListClass, { ...config, element: this })
+    }
+
+    /** make field optional (A => Maybe<A>) */
+    optional(startActive: boolean = false, config?: Partial<Field_optional_config<this>>): Apply<Schemaᐸ_ᐳ['Optional'], this> {
+        const FieldOptionalClass = getFieldOptionalClass()
+        return this.UNSAFE_selfConstructor(FieldOptionalClass, {
+            schema: this,
+            startActive: startActive,
+            label: this.config.label,
+            startCollapsed: this.config.startCollapsed,
+            collapsed: this.config.collapsed,
+            border: this.config.border,
+            ...config,
+        })
     }
 
     applySchemaExtensions(): void {
@@ -44,22 +208,27 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         }
     }
     // ------------------------------------------------------------
-
-    /** constructor/class of the field to instanciate */
-    abstract FieldClass_UNSAFE: any
+    // ⏸️ /** constructor/class/builder-fn of the field to instanciate */
+    // ⏸️ fieldConstructor: FieldConstructor<FIELD>
 
     /** type of the field to instanciate */
-    abstract type: FIELD['type']
+    get type(): FIELD['type'] {
+        return this.fieldConstructor.type
+    }
 
-    /** config of the field to instanciate */
-    abstract config: FIELD['$Config']
+    // ⏸️ /** config of the field to instanciate */
+    // ⏸️ config: FIELD['$Config']
 
     // ------------------------------------------------------------
     LabelExtraUI?: CovariantFC<{ field: FIELD }>
 
     // ------------------------------------------------------------
     // Clone/Fork
-    abstract withConfig(config: Partial<FIELD['$Config']>): this
+    withConfig(config: Partial<FIELD['$Config']>): this {
+        const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
+        const cloned = this.UNSAFE_selfConstructor(this.fieldConstructor, mergedConfig)
+        return cloned
+    }
 
     /** clone the schema, and patch the cloned config to make it hidden */
     hidden(): this {
@@ -101,68 +270,144 @@ export abstract class BaseSchema<out FIELD extends Field = Field> {
         })
     }
 
+    // #region CREATE DOCUMENTS
     // ------------------------------------------------------------
     // Instanciation
 
+    /**
+     * Create a `document` from a given schema.
+     * (create a root field along it's children)
+     *
+     * 👉 the resulting document may have errors but the field construction will not crash.
+     * | accessing invalid value will crash, though.
+     * |  (e.g. if the serial is missing and if some fields are required but lack proper default)
+     * |  `b.fields({ x: b.string_() }).create().value.x` => THROW, because value.x is undefined; x has no defalut value
+     *
+     * the name `create` is kept for backward compatibility, but we may add some suffix later.
+     * 💬 2024-09-04 rvion:
+     * | I think it's an acceptable behaviour for the default `create` function.
+     *
+     * @since 2024-01-01-ish
+     * @category Create Document
+     */
     create(
         //
-        serial?: FIELD['$Serial'] | false,
-        repository?: Repository,
+        serial_?: Maybe<FIELD['$Serial']> | false,
+        /** when unspeficied, the global repository will be used */
+        repository_?: Repository,
     ): FIELD {
-        return this.instanciate(
-            //
-            repository ?? getGlobalRepository(),
-            null, // root
-            null, // parent
-            serial === false ? undefined : serial,
-        )
+        // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial_)} (BaseSchema.create (start))`)
+        const repository = repository_ ?? getGlobalRepository()
+        const serial = serial_ === false ? undefined : serial_
+        // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (BaseSchema.create)`)
+        return this.instanciate(repository, null, null, '$', serial)
     }
 
+    /**
+     * create a `document` from a given schema, but reduce its API surface to be `Draft`-like.
+     *
+     * @since 2024-09-02
+     * @category Create Document
+     * @category Validation
+     */
+    createDraft(
+        //
+        serial_?: FIELD['$Serial'] | false,
+        /** when unspeficied, the global repository will be used */
+        repository_?: Repository,
+    ): DraftLike<FIELD> {
+        return this.create(serial_, repository_)
+    }
+
+    /**
+     * similar to `createDraft`, but actually create an intermediary `Draft` object
+     * instead of directly sending the field disguised as a Draft though type masking/interface.
+     *
+     * @since 2024-09-02
+     * @category Create Document
+     * @category Validation
+     */
+    createDraftAlt(
+        //
+        serial_?: FIELD['$Serial'] | false,
+        /** when unspeficied, the global repository will be used */
+        repository_?: Repository,
+    ): Draft<FIELD> {
+        const field = this.create(serial_, repository_)
+        const draft = new Draft<FIELD>(field)
+        return draft
+    }
+
+    /**
+     * @since 2024-09-04
+     * @category Create Document
+     * @category Validation
+     */
+    createAndValidate(
+        serial?: FIELD['$Serial'] | false,
+        /** when unspeficied, the global repository will be used */
+        repository?: Repository,
+    ): Result<FIELD, ValidationError> {
+        return this.create(serial, repository).validate()
+    }
+
+    /**
+     * create a document, and throw if fields is invalid
+     *
+     * @since 2024-09-04
+     * @category Validation
+     */
+    createOrThrowIfInvalid(
+        serial?: FIELD['$Serial'] | false,
+        /** when unspeficied, the global repository will be used */
+        repository?: Repository,
+    ): FIELD {
+        return this.create(serial, repository).validateOrThrow()
+    }
+
+    // #region CREATE SUB-FIELDS
+    /**
+     * unlike `create`, this allow to pass parent/root and can be
+     * used to instanciate field deep within a document
+     *
+     * 👉 If you need to create a document, please use `create` or one
+     * of its vairant instead.
+     */
     instanciate(
         //
         repo: Repository,
         root: Field<any> | null,
         parent: Field | null,
-        serial?: FieldSerial_CommonProperties | null,
+        initialMountKey: string,
+        serial?: unknown,
     ): FIELD {
-        // AUTOMIGRATION --------------------------------------------------------------------
-        // recover phase
-        serial = autofixSerial_20240703(serial)
-        autofixSerial_20240711(serial)
-        if (serial != null && serial.$ !== this.type) {
-            // ADDING LIST
-            if (this.type === 'list') {
-                const prev: any = serial
-                const next: Field_list_serial<any> = { $: 'list', items_: [prev] }
-                serial = next
+        // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (Field.instanciate, before creating instance 🟢 )`)
+        // create the instance
+        let field: FIELD
+        if (this.fieldConstructor.build === 'new') {
+            if (this.config.classToUse) {
+                const SUPER = this.fieldConstructor
+                const KTOR = getKlass(SUPER, this.config.classToUse)
+                field = new KTOR(repo, root, parent, this, serial)
+            } else if (this.config.builderToUse != null) {
+                field = this.config.builderToUse(repo, root, parent, this, initialMountKey, serial)
+            } else {
+                const KTOR = this.fieldConstructor
+                field = new KTOR(repo, root, parent, this, initialMountKey, serial)
             }
-            // REMOVING LIST
-            else if (serial.$ === 'list') {
-                const prev: Field_list_serial<any> = serial as any
-                const next: any = prev.items_[0] ?? null
-                serial = next
+        } else {
+            /** final safety net for the extends class feature */
+            if (this.config.classToUse != null) {
+                throw new Error('impossible to use a custom class when using a FieldConstructor_ViaFunction')
             }
-        }
-        // ----------------------------------------------------------------------------------
 
-        // run the config.onCreation if needed
-        if (this.config.beforeInit) {
-            const oldVersion = serial?._version ?? 'default'
-            const newVersion = this.config.version ?? 'default'
-            if (oldVersion !== newVersion) {
-                serial = this.config.beforeInit(serial)
-                serial!._version = newVersion
-            }
+            field = this.fieldConstructor.build(repo, root, parent, this, initialMountKey, serial)
         }
 
-        // ensure the serial is compatible
-        if (serial != null && serial.$ !== this.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
-            console.log(`[🔶] INVALID SERIAL:`, serial)
-            serial = null
-        }
-        const field = new this.FieldClass_UNSAFE(repo, root, parent, this, serial)
+        // start publications
         field.publishValue()
+
+        // start reactions
         for (const { expr, effect } of this.reactions) {
             // 🔴 Need to dispose later
             reaction(

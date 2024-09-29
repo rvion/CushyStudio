@@ -1,24 +1,23 @@
 app({
-    ui: (form) => ({
-        steps: form.choices({
-            default: {
-                frame: true,
-            },
-            items: {
-                frame: form.group({
-                    className: ' p-2 bg-blue-800 rounded-xl',
-                    items: {
-                        seed: form.seed({ default: 12, defaultMode: 'fixed' }),
-                        positive: form.string({}),
-                    },
-                }),
-                portrait: form.group({
-                    className: 'p-2 bg-red-800 ',
-                    items: { seed: form.seed({}) },
-                }),
-            },
+    ui: (b) =>
+        b.fields({
+            steps: b.choices(
+                {
+                    frame: b.group({
+                        className: ' p-2 bg-blue-800 rounded-xl',
+                        items: {
+                            seed: b.seed({ default: 12, defaultMode: 'fixed' }),
+                            positive: b.string({}),
+                        },
+                    }),
+                    portrait: b.group({
+                        className: 'p-2 bg-red-800 ',
+                        items: { seed: b.seed({}) },
+                    }),
+                },
+                { default: { frame: true } },
+            ),
         }),
-    }),
 
     run: async (flow, form) => {
         const graph = flow.nodes

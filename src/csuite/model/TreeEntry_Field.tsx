@@ -24,7 +24,7 @@ export class TreeEntry_Field implements ITreeEntry {
     }
 
     get isFolder() {
-        return this.widget.subFields.length > 0
+        return this.widget.childrenAll.length > 0
     }
 
     /** packed with a bunch of sane default for now; we'll see if this is ever */

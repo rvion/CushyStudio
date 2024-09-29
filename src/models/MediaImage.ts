@@ -1,4 +1,4 @@
-import type { LiveInstance } from '../db/LiveInstance'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
@@ -24,7 +24,9 @@ import { asSTRING_orCrash } from '../csuite/utils/bang'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { sleep } from '../csuite/utils/sleep'
 import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { LiveTable } from '../db/LiveTable'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
@@ -35,11 +37,20 @@ import {
     createMediaImage_fromDataURI,
     type ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
+import { FPath } from './FPath'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
-import { FPath } from './PathObj'
 
-export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
-export class MediaImageL {
+export class MediaImageRepo extends LiveTable<TABLES['media_image'], typeof MediaImageL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'media_image', '🖼️', MediaImageL)
+        this.init()
+    }
+}
+
+export class MediaImageL extends BaseInst<TABLES['media_image']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     static async cacheMissingSafetyRatings({
         //
         amount = 10,

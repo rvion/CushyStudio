@@ -2,19 +2,37 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-export const ui_promptList = () => {
+type PromptLisT$ = X.XGroup<{
+    joinType: X.XChoices<{
+        concat: X.XGroup<{}>
+        combine: X.XGroup<{}>
+        average: X.XGroup<{
+            strength: X.XNumber
+        }>
+    }>
+    promptList: X.XList<
+        X.XGroup<{
+            prompt: X.XPrompt
+            mask: X.XImage
+            invert: X.XBool
+            mode: X.XEnum<Enum_LoadImageMask_channel>
+            blur: X.XNumber
+        }>
+    >
+}>
+
+export const ui_promptList = (): PromptLisT$ => {
     const form = getCurrentForm()
     return form.fields(
         {
-            joinType: form.choice({
-                items: {
+            joinType: form.choice(
+                {
                     concat: form.fields({}),
                     combine: form.fields({}),
                     average: form.fields({ strength: form.float({ default: 1 }) }),
                 },
-                appearance: 'tab',
-                startCollapsed: true,
-            }),
+                { appearance: 'tab', startCollapsed: true },
+            ),
             promptList: form.list({
                 element: form.fields(
                     {
@@ -48,7 +66,9 @@ export const run_promptList = async (p: {
     encoderTypeSDXL?: boolean
     promptPreface?: string
     promptSuffix?: string
-}) => {
+}): Promise<{
+    conditioning: _CONDITIONING
+}> => {
     const run = getCurrentRun()
     const graph = run.nodes
     let newConditioning = p.conditioning

@@ -3,6 +3,7 @@ import type { Field } from '../csuite/model/Field'
 import type { Json } from '../csuite/types/Json'
 import type { Builder } from '../CUSHY'
 import type { CushyLayoutManager } from './Layout'
+import type { Panel } from './Panel'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
@@ -11,12 +12,50 @@ import { bang } from '../csuite/utils/bang'
 import { naiveDeepClone } from '../csuite/utils/naiveDeepClone'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
-export type PanelID = string
+export type PanelURI = string
+
 export class PanelState<PROPS extends object = any> {
     constructor(
-        public node: FL.TabNode,
-        public id: PanelID,
+        public flexLayoutTabNode: FL.TabNode,
+        public uri: PanelURI,
+        public def: Panel<PROPS>,
     ) {}
+
+    patchAttributes(attributes: {
+        // borders
+        borderHeight?: number
+        borderWidth?: number
+
+        // doc
+        altName?: string
+        helpText?: string
+
+        // class names
+        className?: string
+        contentClassName?: string
+        tabsetClassName?: string
+
+        // can taht be modified ?
+        enableClose?: boolean
+        enableDrag?: boolean
+        enableFloat?: boolean
+        enableRename?: boolean
+        enableRenderOnDemand?: boolean
+    }): void {
+        this.layout.do((a) => a.updateNodeAttributes(this.uri, attributes))
+    }
+
+    setTabColor(nextColor?: string): void {
+        console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
+        this.patchAttributes({
+            className: nextColor,
+            // contentClassName: nextColor + 'B',
+            // tabsetClassName: nextColor + 'C',
+            // altName: nextColor,
+            // helpText: nextColor,
+        })
+        console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
+    }
 
     /** ❌ UNFINISHED */
     setProps(p: any): void {
@@ -24,17 +63,49 @@ export class PanelState<PROPS extends object = any> {
     }
 
     getExtraData(): any {
-        return this.node.getExtraData()
+        return this.flexLayoutTabNode.getExtraData()
     }
 
     get layout(): CushyLayoutManager {
         return cushy.layout
     }
 
+    get parentTabset(): FL.TabSetNode {
+        const parent1 = this.flexLayoutTabNode.getParent()
+        if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
+        const tabset = parent1 as FL.TabSetNode
+        return tabset
+    }
+
+    get parentRow(): FL.RowNode {
+        const parent2 = this.parentTabset.getParent()
+        if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
+        const row = parent2 as FL.RowNode
+        return row
+    }
+
+    /** widen this tab tabset */
+    widen(): void {
+        this.layout.widenTabset(this.parentTabset)
+    }
+
+    /** widen this tab tabset */
+    shrink(): void {
+        this.layout.shrinkTabset(this.parentTabset)
+    }
+
+    /** reset tabset size */
+    resetSize(): void {
+        this.layout.resetTabsetSize(this.parentTabset)
+    }
+
+    get model(): FL.Model {
+        return this.layout.model
+    }
+
     clone(partialProps: Partial<PROPS>): void {
         const config = this.getConfig()
         this.layout.open(
-            //
             this.panelName,
             { ...this.getProps(), ...partialProps },
             {
@@ -46,7 +117,7 @@ export class PanelState<PROPS extends object = any> {
     }
 
     get panelName(): PanelName {
-        const panelName = this.node.getComponent() as Maybe<PanelName>
+        const panelName = this.flexLayoutTabNode.getComponent() as Maybe<PanelName>
         return bang(panelName)
     }
 
@@ -58,7 +129,7 @@ export class PanelState<PROPS extends object = any> {
      *   FlexLayout.Actions.updateNodeAttributes(node.getId(), {config:myConfigObject}));
      */
     getConfig(): PanelPersistedJSON<PROPS> {
-        return this.node.getConfig()
+        return this.flexLayoutTabNode.getConfig()
     }
 
     /** get component props */

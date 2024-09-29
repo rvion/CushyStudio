@@ -3,7 +3,6 @@ import type { Tree } from '../../csuite/tree/Tree'
 import { runInAction } from 'mobx'
 
 import { type Command } from '../../csuite/commands/Command'
-import { ctx_TreeUI } from '../../csuite/tree/TreeCtx'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
@@ -39,8 +38,8 @@ export const allLegacyCommands: Command<any>[] = [
         KEYS.search,
         'search string globally in window',
         () => {
-            if (cushy.search.active) cushy.search.active = false
-            else cushy.search.active = true
+            if (cushy.search.active) cushy.search.deactivate()
+            else cushy.search.activate()
             return Trigger.Success
         },
         'mdiSelectSearch',
@@ -51,15 +50,6 @@ export const allLegacyCommands: Command<any>[] = [
         'Resize Window for video capture',
         () => {
             cushy.resizeWindowForVideoCapture()
-            return Trigger.Success
-        },
-        'mdiMoveResize',
-    ),
-    globalValidInInput(
-        KEYS.resizeWindowForLaptop,
-        'Resize Window for video capture',
-        () => {
-            cushy.resizeWindowForLaptop()
             return Trigger.Success
         },
         'mdiMoveResize',

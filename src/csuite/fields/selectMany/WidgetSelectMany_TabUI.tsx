@@ -1,31 +1,35 @@
-import type { BaseSelectEntry } from '../selectOne/FieldSelectOne'
+import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { Field_selectMany } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { getJustifyContent } from '../choices/TabPositionConfig'
+import { convertSelectKeyToReactKey } from '../selectOne/SelectOneKey'
 
-export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectMany<T>
+export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<VALUE, KEY extends SelectKey>(p: {
+    field: Field_selectMany<VALUE, KEY>
 }) {
     const field = p.field
+
     return (
         <div>
             <div
                 tw='rounded select-none flex flex-wrap gap-x-0.5 gap-y-0'
                 style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
             >
-                {field.choices.map((c) => {
-                    const isSelected = Boolean(field.serial.values.find((item) => item.id === c.id))
+                {p.field.options.map((option) => {
+                    const isSelected = field.selectedKeys.includes(option.id)
+
                     return (
                         <InputBoolUI
-                            key={c.id}
+                            key={convertSelectKeyToReactKey(option.id)}
                             value={isSelected}
                             display='button'
-                            text={c.label ?? c.id}
+                            text={option.label ?? makeLabelFromPrimitiveValue(option.id)}
                             onValueChange={(value) => {
-                                if (value != isSelected) field.toggleItem(c)
+                                if (value != isSelected) field.toggleId(option.id)
                             }}
                         />
                     )
@@ -33,16 +37,16 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
 
                 {/* ERROR ITEMS (items that are no longer valid to pick from) */}
                 {/* We need to display them so we can properly uncheck them. */}
-                {field.serial.values
-                    .filter((v) => field.choices.find((i) => i.id === v.id) == null)
-                    .map((item) => (
+                {field.selectedKeys
+                    .filter((v) => !field.possibleKeys.includes(v))
+                    .map((missingId) => (
                         <InputBoolUI
-                            key={item.id}
+                            key={convertSelectKeyToReactKey(missingId)}
                             value={true}
                             style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
-                            text={item.label ?? 'no label'}
-                            onValueChange={(value) => field.toggleItem(item)}
+                            text={makeLabelFromPrimitiveValue(missingId)}
+                            onValueChange={(value) => field.toggleId(missingId)}
                         />
                     ))}
             </div>

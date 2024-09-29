@@ -43,17 +43,22 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
 
     const panelState = panel.usePersistentModel('abcd', (ui) =>
         ui.fields({
-            configMode: ui.selectOneV2(configTabs),
+            configMode: ui.selectOneString(configTabs),
             shelfSize: ui.int(),
         }),
     )
+    // return <>test</>
+    // const xxx = cushy.forms.document((b) => {
+    //     return b.string()
+    // })
+    // return <xxx.UI />
     const modeField = panelState.fields.configMode
-    const configMode = modeField.value.id
+    const configMode = modeField.value
     const page: JSX.Element = ((): JSX.Element => {
         const mode = configMode
         if (mode === 'hosts') return <PanelComfyHostsUI />
-        if (mode === 'input') return cushy.theme.show(({ fields: f }) => [f.inputBorder, f.inputContrast], { className: 'w-full' }) // prettier-ignore
-        if (mode === 'TEMP') return <div>{panelState.render()}</div>
+        if (mode === 'input') return <cushy.theme.UI tw='w-full' children={({ fields: f }) => [f.inputBorder, f.inputContrast]} />
+        if (mode === 'TEMP') return <div>{panelState.UI()}</div>
         if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
         if (mode === 'legacy') return <LegacyOptions />
         if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
@@ -101,7 +106,7 @@ const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: {
             tw='capitalize h-10'
             value={p.field.is(p.mode)}
             text={p.mode}
-            onValueChange={(_) => p.field.setId(p.mode)}
+            onValueChange={(_) => p.field.setValue(p.mode)}
         />
     )
 })

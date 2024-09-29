@@ -3,7 +3,6 @@ import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import {
     bracketMatching,
     defaultHighlightStyle,
-    foldGutter,
     foldKeymap,
     indentOnInput,
     syntaxHighlighting,

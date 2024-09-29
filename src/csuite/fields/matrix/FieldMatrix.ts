@@ -1,3 +1,7 @@
+/*
+ * 🔴 TODO: rewrite as field composite
+ */
+
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -19,7 +23,7 @@ export type Field_matrix_cell = {
     value: boolean
 }
 
-// CONFIG
+// #region $Config
 export type Field_matrix_config = FieldConfig<
     {
         default?: { row: string; col: string }[]
@@ -29,60 +33,66 @@ export type Field_matrix_config = FieldConfig<
     Field_matrix_types
 >
 
-// SERIAL
+// #region $Serial
 export type Field_matrix_serial = FieldSerial<{
     $: 'matrix'
     /** only contains cells that are ONs */
-    selected: Field_matrix_cell[]
+    selected?: Field_matrix_cell[]
 }>
 
-// VALUE
+// #region $Value
 export type Field_matrix_value = Field_matrix_cell[]
+export type Field_matrix_unchecked = Field_matrix_value | undefined
 
-// TYPES
+// #region $Types
 export type Field_matrix_types = {
     $Type: 'matrix'
     $Config: Field_matrix_config
     $Serial: Field_matrix_serial
     $Value: Field_matrix_value
+    $Unchecked: Field_matrix_unchecked
     $Field: Field_matrix
+    $Child: never
 }
 
-// STATE
+// #region State
 export class Field_matrix extends Field<Field_matrix_types> {
+    // #region Static
     static readonly type: 'matrix' = 'matrix'
+    static readonly emptySerial: Field_matrix_serial = { $: 'matrix' }
+    static migrateSerial(): undefined {}
 
+    // #region Ctor
     constructor(
         //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_matrix>,
+        initialMountKey: string,
         serial?: Field_matrix_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })
     }
 
+    // #region UI
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
 
-    /** this method must be idem-potent */
-    protected setOwnSerial(serial: Maybe<Field_matrix_serial>): void {
-        const { rows, cols, default: defs } = this.config
+    // #region Serial
+    protected setOwnSerial(next: Field_matrix_serial): void {
+        this.assignNewSerial(next)
 
-        // 1. create a set with all cellKeys that should be ON
-        let selectedCells: Set<string>
-        if (serial != null) selectedCells = new Set(serial.selected.map(({ row, col, value }) => this.getCellkey(row, col)))
-        else if (defs != null) selectedCells = new Set(defs.map(({ row, col }) => this.getCellkey(row, col)))
-        else selectedCells = new Set()
+        const cells = this.serial.selected ?? this.config.default ?? []
+        const selectedCells = new Set(cells.map(({ row, col }) => this.getCellkey(row, col)))
 
-        // 2. make sure every cell has the right value
-        for (const [x, row] of rows.entries()) {
-            for (const [y, col] of cols.entries()) {
+        // make sure every cell has the right value
+        for (const [x, row] of this.config.rows.entries()) {
+            for (const [y, col] of this.config.cols.entries()) {
                 const cellKey = this.getCellkey(row, col)
                 const value = selectedCells.has(cellKey)
                 const prev = this.store.get(cellKey)
@@ -91,11 +101,24 @@ export class Field_matrix extends Field<Field_matrix_types> {
             }
         }
 
-        this.serial.selected = this.activeCells
+        this.patchSerial((draft) => void (draft.selected = this.activeCells))
     }
 
     /** list of all active cells */
     get value(): Field_matrix_value {
+        return this.value_or_fail
+    }
+
+    get value_or_fail(): Field_matrix_value {
+        if (this.serial.selected == null) throw new Error('Field_matrix.value_or_fail: field not set')
+        return this.serial.selected
+    }
+
+    get value_or_zero(): Field_matrix_value {
+        return this.serial.selected ?? []
+    }
+
+    get value_unchecked(): Field_matrix_unchecked {
         return this.serial.selected
     }
 
@@ -125,8 +148,17 @@ export class Field_matrix extends Field<Field_matrix_types> {
         return this.config.cols
     }
 
-    get ownProblems(): Problem_Ext {
+    // #region validation
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
+    }
+
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    get isOwnSet(): boolean {
+        return this.serial.selected != null
     }
 
     get hasChanges(): boolean {
@@ -159,7 +191,9 @@ export class Field_matrix extends Field<Field_matrix_types> {
      * every setter should update this
      */
     private UPDATE(): void {
-        this.runInValueTransaction(() => (this.serial.selected = this.activeCells))
+        this.runInValueTransaction(() => {
+            this.patchSerial((draft) => void (draft.selected = this.activeCells))
+        })
     }
 
     /** list of all cells that are active/on */
