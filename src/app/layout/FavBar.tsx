@@ -41,6 +41,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     const size = conf.fields.size.value
     const appIcons = conf.fields.appIcons
     const sizeStr = size + 'px'
+    const tempSize = `${size + 10}px`
     return (
         <>
             <Frame
@@ -50,6 +51,39 @@ export const FavBarUI = observer(function FavBarUI_(p: {
             >
                 <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
                     <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI>
+                    <Button
+                        //
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => {}}
+                    >
+                        <div>SD1.5</div>
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        SDXL
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
+                    >
+                        SD3
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => {}}
+                    >
+                        FLUX
+                    </Button>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
                     <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
                         <div tw='rounded items-center justify-center overflow-hidden'>
