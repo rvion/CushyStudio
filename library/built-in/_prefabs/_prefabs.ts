@@ -125,8 +125,3 @@ export const ui_resolutionPicker = (form: X.Builder): X.XSelectOne_<Resolutions>
 export const ui_shapePickerBasic = (form: X.Builder): X.XSelectOne_<'round' | 'square'> => {
     return form.selectOneString(['round', 'square'], { label: 'Shape' })
 }
-
-/** allow to easilly pick any shape given as parameter */
-export const ui_shapePickerExt = <const T extends string>(form: X.Builder, values: T[]): X.XSelectOne_<T> => {
-    return form.selectOneString(values, { label: 'Shape' })
-}

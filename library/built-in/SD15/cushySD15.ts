@@ -1,69 +1,48 @@
-import { Cnet_args, Cnet_return, run_cnet } from './_controlNet/prefab_cnet'
-import { run_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
-import { run_FaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
-import { run_Dispacement1, run_Dispacement2 } from './_prefabs/prefab_3dDisplacement'
-import { run_refiners_fromImage } from './_prefabs/prefab_detailer'
-import { run_latent_v3 } from './_prefabs/prefab_latent_v3'
-import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { run_mask } from './_prefabs/prefab_mask'
-import { run_model } from './_prefabs/prefab_model'
-import { run_model_modifiers } from './_prefabs/prefab_model_extras'
-import { run_prompt } from './_prefabs/prefab_prompt'
-import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
-import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
-import { run_rembg_v1 } from './_prefabs/prefab_rembg'
-import { type Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
-import { type Ctx_sampler_advanced, run_sampler_advanced } from './_prefabs/prefab_sampler_advanced'
-import { run_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
-import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from './_prefabs/prefab_watermark'
-import { run_customSave } from './_prefabs/saveSmall'
-import { CustomView3dCan } from './_views/View_3d_TinCan'
-import { CustomViewSpriteSheet } from './_views/View_Spritesheets'
-import { CushyDiffusionUI } from './CushyDiffusionUI'
+import { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
+import { eval_extra2 } from '../_extra/extra2'
+import { run_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
+import { run_Dispacement1, run_Dispacement2 } from '../_prefabs/prefab_3dDisplacement'
+import { run_refiners_fromImage } from '../_prefabs/prefab_detailer'
+import { run_latent_v3 } from '../_prefabs/prefab_latent_v3'
+import { run_mask } from '../_prefabs/prefab_mask'
+import { evalModelExtras_part2 } from '../_prefabs/prefab_model_extras'
+import { run_prompt } from '../_prefabs/prefab_prompt'
+import { run_advancedPrompt } from '../_prefabs/prefab_promptsWithButtons'
+import { run_regionalPrompting_v1 } from '../_prefabs/prefab_regionalPrompting_v1'
+import { run_rembg_v1 } from '../_prefabs/prefab_rembg'
+import { type Ctx_sampler, run_sampler } from '../_prefabs/prefab_sampler'
+import { type Ctx_sampler_advanced, run_sampler_advanced } from '../_prefabs/prefab_sampler_advanced'
+import { run_upscaleWithModel } from '../_prefabs/prefab_upscaleWithModel'
+import { run_customSave } from '../_prefabs/saveSmall'
+import { CushySD15UI } from './_cushySD15UI'
+import { evalModelSD15andSDXL } from './_model_SD15_SDXL'
 
 app({
     metadata: {
-        name: 'Cushy Diffusion',
+        name: 'Cushy SD15',
         illustration: 'library/built-in/_illustrations/mc.jpg',
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
-    ui: CushyDiffusionUI,
+    ui: CushySD15UI,
     run: async (run, ui, ctx) => {
         const graph = run.nodes
-        //
-        // ui.
-        // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = run_model(ui.model)
+        // #region  MODEL, clip skip, vae, etc.
+        let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
 
-        // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
+        // #region  PROMPT ENGINE
         let positiveText = ui.positive.text
         if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
-
-        const posPrompt = run_prompt({
-            prompt: { text: positiveText },
-            clip,
-            ckpt,
-            printWildcards: true,
-        })
+        const posPrompt = run_prompt({ prompt: { text: positiveText }, clip, ckpt, printWildcards: true })
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
-        // let finalText = posPrompt.promptIncludingBreaks
         let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
-
-        if (ui.extra.regionalPrompt) {
+        if (ui.extra.regionalPrompt)
             positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
-        }
-        // let negative = x.conditionningNeg
-
         const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
-        let negative: _CONDITIONING = graph.CLIPTextEncode({
-            clip,
-            text: negPrompt.promptIncludingBreaks /* + posPrompt.negativeText */,
-        })
-        // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        // let negative = y.conditionning
+        let negative: _CONDITIONING = graph.CLIPTextEncode({ clip, text: negPrompt.promptIncludingBreaks })
 
-        // START IMAGE -------------------------------------------------------------------------
+        // #region START IMAGE
         const imgCtx = ctx.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 HACKY  */
@@ -74,12 +53,12 @@ app({
               }))()
             : await run_latent_v3({ opts: ui.latent, vae })
 
-        // MASK --------------------------------------------------------------------------------
+        // #region mask
         let mask: Maybe<_MASK>
         if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
         if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
-        // CNETS -------------------------------------------------------------------------------
+        // #region CNETS
         let cnet_out: Cnet_return | undefined
         if (ui.controlnets) {
             const Cnet_args: Cnet_args = { positive, negative, width, height, ckptPos }
@@ -103,7 +82,7 @@ app({
 
         // FIRST PASS --------------------------------------------------------------------------------
         const ctx_sampler_advanced: Ctx_sampler_advanced = {
-            ckpt: run_model_modifiers(ui.model.mode.extra, ckptPos, false),
+            ckpt: evalModelExtras_part2(ui.model.extra, ckptPos, false),
             clip: clipPos,
             vae,
             // @ts-ignore 🔴 TODO: review this one
@@ -151,7 +130,7 @@ app({
         const HRF = ui.extra.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
-                ckpt: run_model_modifiers(ui.model.extra, ckptPos, true, HRF.scaleFactor),
+                ckpt: evalModelExtras_part2(ui.model.extra, ckptPos, true, HRF.scaleFactor),
                 clip: clipPos,
                 vae,
                 latent,
@@ -224,16 +203,8 @@ app({
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
 
-        if (ui.extra?.gaussianSplat) run.output_GaussianSplat({ url: '' })
-        if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
-        if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
-        if (ui.extra.displayAsSpriteSheet)
-            run.output_custom({ view: CustomViewSpriteSheet, params: { imageID: run.lastImage?.id } })
 
-        // LOOP IF NEED BE -----------------------------------------------------------------------
-        if (ui.extra.watermark) await run_watermark_v1(ui.extra.watermark, run.lastImage)
-        if (ui.extra.fancyWatermark) await run_addFancyWatermarkToAllImage()
-        if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
+        await eval_extra2(ui.extra2)
     },
 })

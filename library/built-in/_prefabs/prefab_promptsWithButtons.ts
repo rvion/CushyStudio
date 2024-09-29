@@ -1,7 +1,7 @@
 /** by @Vinsi (slightly adapted) */
 
 import type { SchemaDict } from '../../../src/csuite/model/SchemaDict'
-import type { OutputFor } from '../../local/pony-old/_prefab_PonyDiffusion'
+import type { OutputFor } from './_prefabs'
 
 // 📝 2024-06-14 rvion: explicitly adding types is optional;
 // I tend to prefer adding them in built-in prefabs to help

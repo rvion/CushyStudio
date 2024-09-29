@@ -5,9 +5,9 @@ import { toJS } from 'mobx'
 import { CardSuit, CardValue } from './_PlayingCards/_cardLayouts'
 import { _drawCard } from './_PlayingCards/_drawCard'
 import { ui_highresfix } from './_prefabs/_prefabs'
-import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { evalModelSD15andSDXL, prefabModelSD15andSDXL } from './SD15/_model_SD15_SDXL'
 
 app({
     metadata: {
@@ -29,7 +29,7 @@ app({
             logoSize: b.int({ default: 120, min: 20, max: 1000 }),
 
             // [UI] MODEL --------------------------------------
-            model: ui_model(),
+            model: prefabModelSD15andSDXL(),
             sampler: ui_sampler(),
             highResFix: ui_highresfix().optional(true),
             globalNegative: b.prompt({}),
@@ -92,7 +92,7 @@ app({
         // 1. SETUP --------------------------------------------------
         const graph = run.nodes
         const floor = (x: number): number => Math.floor(x)
-        let { ckpt, vae, clip } = run_model(ui.model)
+        let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
         const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
         const values = Array.from(new Set(ui.cards.map((c) => c.col)))
         const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore

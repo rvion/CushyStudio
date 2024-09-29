@@ -8,9 +8,9 @@ import type { MediaImageL } from '../../../src/models/MediaImage'
 
 import { bang } from '../../../src/csuite/utils/bang'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
-import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'
 import { View_DeckOfCards } from '../_views/View_DeckOfCards'
+import { evalModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
@@ -31,7 +31,7 @@ app({
     },
     ui: (b) =>
         b.fields({
-            model: ui_model(),
+            model: prefabModelSD15andSDXL(),
             ipadapter: ui_ipadapter_standalone().optional(),
             // positive: ui.string({ default: 'masterpiece, tree' }),
             seed: b.seed({}),
@@ -55,7 +55,7 @@ app({
         const H = 380
         const workflow = run.workflow
         const graph = workflow.builder
-        let { ckpt, clip, vae } = run_model(ui.model)
+        let { ckpt, clip, vae } = evalModelSD15andSDXL(ui.model)
         if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
         const isXL = ui.mode === 'xl'
         const height = isXL ? H * 3 : H

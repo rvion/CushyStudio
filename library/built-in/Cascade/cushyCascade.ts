@@ -26,30 +26,24 @@ app({
                     stage_c_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
                 },
             }),
-            startingLatent: b.group({
-                items: {
-                    width: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
-                    height: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
-                    compression: b.int({ default: 42, min: 32, max: 64, step: 1 }),
-                    batch_size: b.int({ default: 1, min: 1, max: 64 }),
-                },
+            startingLatent: b.fields({
+                width: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
+                height: b.int({ default: 1024, min: 256, max: 8192, step: 8 }),
+                compression: b.int({ default: 42, min: 32, max: 64, step: 1 }),
+                batch_size: b.int({ default: 1, min: 1, max: 64 }),
             }),
-            clip: b.group({
-                items: {
-                    type: b.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
-                    clip_name: b.enum.Enum_CLIPLoader_clip_name({
-                        extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
-                        default: 'Stable-Cascade\\model.safetensors',
-                    }),
-                },
+            clip: b.fields({
+                type: b.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
+                clip_name: b.enum.Enum_CLIPLoader_clip_name({
+                    extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
+                    default: 'Stable-Cascade\\model.safetensors',
+                }),
             }),
-            prompt: b.group({
-                items: {
-                    text: b.string({
-                        textarea: true,
-                        default: 'beautiful scenery nature glass bottle landscape, , purple galaxy bottle,',
-                    }),
-                },
+            prompt: b.fields({
+                text: b.string({
+                    textarea: true,
+                    default: 'beautiful scenery nature glass bottle landscape, , purple galaxy bottle,',
+                }),
             }),
             negative: b.group({ items: { text_1: b.string({ default: '' }) } }),
             KSampler: b.group({
