@@ -120,10 +120,10 @@ app({
         name: ${JSON.stringify(p.name)},
         description: ${JSON.stringify(p.description)},
     },
-    ui: (form) => ({
-        model: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
-        positive: form.string({ default: 'masterpiece, tree' }),
-        seed: form.seed({}),
+    ui: (b) => b.fields({
+        model: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
+        positive: b.string({ default: 'masterpiece, tree' }),
+        seed: b.seed({}),
     }),
     run: async (run, ui) => {
         const workflow = run.workflow
