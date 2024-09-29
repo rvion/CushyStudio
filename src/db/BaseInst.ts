@@ -193,12 +193,15 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
         return this.data
     }
 
-    init(data: TABLE['$T']): void {
+    init(data_: TABLE['$T']): void {
         // console.log(`🔴 INIT`, data)
         /* 🚝 */ const startTime = process.hrtime()
-        this.data = this.dataObservabilityConfig //
-            ? observable(data, this.dataObservabilityConfig)
-            : data
+
+        const data = this.dataObservabilityConfig //
+            ? observable(data_, this.dataObservabilityConfig)
+            : data_
+
+        this.data = data
 
         // // prettier-ignore
         // /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
