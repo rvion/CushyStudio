@@ -19,7 +19,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
             shell='popup-lg'
             placement='screen-top'
             title='Create an app'
-            content={() => <CreateAppPopupUI />}
+            content={(p) => <CreateAppPopupUI closeFn={() => p.reveal.close()} />}
         >
             <Button look='primary' icon='mdiOpenInNew'>
                 Create My App
@@ -28,7 +28,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     )
 })
 
-export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
+export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn: () => void }) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
         appName: 'my-app',
@@ -93,12 +93,13 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                         const res = await file.extractScriptFromFile()
                         if (res.type === 'failed') return toastError('failed to extract script')
                         const script = res.script
-                        await script.evaluateAndUpdateAppsAndViews()
+                        script.evaluateAndUpdateAppsAndViews()
                         const apps = script._apps_viaScript
                         if (apps == null) return toastError('no app found (apps is null)')
                         if (apps.length === 0) return toastError('no app found (apps.length === 0)')
                         const firstApp = apps[0]!
                         firstApp.openLastOrCreateDraft()
+                        p.closeFn()
                     }}
                 >
                     Create

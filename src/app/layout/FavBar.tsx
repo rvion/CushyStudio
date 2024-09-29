@@ -93,7 +93,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         tw='hover:brightness-125'
                                         placement='screen'
                                         shell='popup-lg'
-                                        content={() => <CreateAppPopupUI />}
+                                        content={(x) => <CreateAppPopupUI closeFn={() => x.reveal.close()} />}
                                     >
                                         <span
                                             tw='cursor-default flex'
