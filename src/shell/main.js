@@ -85,6 +85,8 @@ async function START() {
 
     ipcMain.on('search-stop', (event, arg) => {
         console.log(`[🔎] search-stop received with arg:`, arg)
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        const webContents = focusedWindow.webContents
         webContents.stopFindInPage('clearSelection')
     })
     ipcMain.on('search-start', (event, arg, options) => {
