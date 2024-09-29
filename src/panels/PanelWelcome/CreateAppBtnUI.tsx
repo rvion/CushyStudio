@@ -99,6 +99,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn
                         if (apps.length === 0) return toastError('no app found (apps.length === 0)')
                         const firstApp = apps[0]!
                         firstApp.openLastOrCreateDraft()
+                        void script.openInVSCode()
                         p.closeFn()
                     }}
                 >
