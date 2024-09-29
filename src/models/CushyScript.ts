@@ -36,6 +36,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
         return asRelativePath(this.data.path)
     }
 
+    openInVSCode = (): Promise<void> => {
+        return cushy.openInVSCode(this.relPath)
+    }
+
     _apps_viaScript: Maybe<CushyAppL[]> = null
 
     get _apps_viaDB(): CushyAppL[] {
