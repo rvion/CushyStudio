@@ -50,11 +50,12 @@ export class EnumBuilderOpt {
                 }
 
                 // return the builder
+                const def = enumSchema.values[0]
                 return (config: any = {}) =>
                     domain.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        schema: new CushySchema(Field_enum<any /* 🔴 */>, { ...config, enumName }),
+                        schema: new CushySchema(Field_enum<any /* 🔴 */>, { default: def, ...config, enumName }),
                     })
             },
         })

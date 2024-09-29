@@ -40,7 +40,8 @@ export class EnumBuilder {
                 }
 
                 // return the builder
-                return (config: any = {}) => new CushySchema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, enumName })
+                const def = enumSchema.values[0]
+                return (config: any = {}) => new CushySchema(Field_enum<any>, { default: def, ...config, enumName })
             },
         })
     }
