@@ -38,6 +38,10 @@ export class BuilderMisc<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends 
     }
 
     seed(config: Field_seed_config = {}): Schemaᐸ_ᐳ['Seed'] {
+        return this.seed_({ defaultMode: 'randomize', ...config })
+    }
+
+    seed_(config: Field_seed_config = {}): Schemaᐸ_ᐳ['Seed'] {
         return this.buildSchema(Field_seed, config)
     }
 
