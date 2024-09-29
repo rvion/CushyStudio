@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useLayoutEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -36,11 +36,11 @@ export const OverflowingRowUI = observer(function OverflowingRow({
                 const tabRect = tabRef.getBoundingClientRect()
                 if (tabRect.right > adjustedContainerRight) {
                     setExtraIndex(index)
-                    break
+                    return
                 }
             }
-            setExtraIndex(children.length)
         }
+        setExtraIndex(children.length)
     }
 
     // ensure computation once caretRef is available
@@ -48,6 +48,19 @@ export const OverflowingRowUI = observer(function OverflowingRow({
         if (caretRef.current == null) return
         handleReveal()
     }, [caretRef.current])
+
+    // Observe changes in container and caret sizes
+    useEffect(() => {
+        const elements = [containerRef.current, caretRef.current].filter(Boolean) as HTMLElement[]
+        if (elements.length === 0) return
+        const observer = new ResizeObserver(() => {
+            handleReveal()
+        })
+        elements.forEach((el) => observer.observe(el))
+        return (): void => {
+            observer.disconnect()
+        }
+    }, [containerRef.current, caretRef.current])
 
     const hiddenCount = children.length - extraIndex
     return (
@@ -80,7 +93,6 @@ export const OverflowingRowUI = observer(function OverflowingRow({
                     tw={[
                         //
                         'absolute right-0 px-2',
-                        // hiddenCount === 0 ? 'hidden' : 'visible',
                     ]}
                     className='caret'
                     ref={caretRef}
