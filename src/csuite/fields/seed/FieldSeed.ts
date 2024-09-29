@@ -73,13 +73,15 @@ export class Field_seed extends Field<Field_seed_types> {
 
     // #region setOwnSerial
     protected setOwnSerial(next: Field_seed_serial): void {
-        if (next.val == null) {
-            const def = this.defaultValue
-            if (def != null) next = produce(next, (draft) => void (draft.val = def))
-        }
-        if (next.mode == null) {
-            const def = this.defaultMode
-            if (def != null) next = produce(next, (draft) => void (draft.mode = def))
+        if (/* is unset */ next.val == null && next.mode == null) {
+            const def1 = this.defaultValue
+            if (/* has default value */ def1 != null) {
+                next = produce(next, (draft) => void (draft.val = def1))
+            }
+            const def2 = this.defaultMode
+            if (/* has default mode */ def2 != null) {
+                next = produce(next, (draft) => void (draft.mode = def2))
+            }
         }
 
         this.assignNewSerial(next)
@@ -99,7 +101,10 @@ export class Field_seed extends Field<Field_seed_types> {
     }
 
     get isOwnSet(): boolean {
-        return this.serial.val != null
+        return (
+            this.serial.val != null || //
+            this.serial.mode != null
+        )
     }
 
     // #region changes
