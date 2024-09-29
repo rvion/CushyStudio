@@ -31,7 +31,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
 export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn: () => void }) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
-        appName: 'my-app',
+        appName: `my-app-${Date.now()}`,
         description: 'my app description',
         get fileName(): string {
             return convertToValidCrossPlatformFileName(uist.appName)
