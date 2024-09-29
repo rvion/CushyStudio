@@ -118,15 +118,15 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
         this.graph.onExecuting(msg)
 
         if (msg.data.node == null) {
-            console.error(`[❌] LEGACY PATH; SHOULD NOT BE CALLED; UPDATE COMFY ?`)
+            // console.warn(`[❌] LEGACY PATH; SHOULD NOT BE CALLED; UPDATE COMFY ?`)
             // * When `msg.data.node` is null, it means the prompt has nothing
             //   to execute anymore, so it's done.
             // * Before marking it finished, we need to wait pending promises.
             // * Pending promises hold the async post-processing operations
             //   spawned when receiving outputs.
             // console.log(`[🔴🔴🔴🔴] ${this.pendingPromises.length} pending Promises`)
-            await Promise.all(this.pendingPromises)
-            return await this._finish({ status: 'Success' })
+            // ⏸️ await Promise.all(this.pendingPromises)
+            // ⏸️ return await this._finish({ status: 'Success' })
         }
     }
 
@@ -299,7 +299,10 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
     }
 
     /** finish this step */
+    private alreadyFinished = false
     private _finish = async (p: Pick<ComfyPromptUpdate, 'status' | 'error'>): Promise<void> => {
+        if (this.alreadyFinished) throw new Error(`❌ invariant violation: already finished`)
+        this.alreadyFinished = true
         this.update({ ...p, executed: SQLITE_true })
         await Promise.all(this.pendingPromises)
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')
