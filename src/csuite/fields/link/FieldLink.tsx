@@ -59,7 +59,11 @@ export type Field_link_types<A extends BaseSchema, B extends BaseSchema> = {
 }
 
 // #region STATE
-export class Field_link<A extends BaseSchema, B extends BaseSchema> //
+export class Field_link<
+        //
+        A extends BaseSchema,
+        B extends BaseSchema,
+    > //
     extends Field<Field_link_types<A, B>>
 {
     // #region TYPE
