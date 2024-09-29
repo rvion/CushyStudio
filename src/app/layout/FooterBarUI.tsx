@@ -22,7 +22,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
             />
             <DebugControlsUI />
             <div tw='flex-1' />
-            {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>}
+            {/* {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>} */}
             {cushy.showCommandHistory && <DebugShortcutsFloatingUI />}
         </Frame>
     )
