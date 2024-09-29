@@ -97,15 +97,8 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     />
 
                     <div tw='divider my-0'>Debug</div>
-                    <MenuItem
-                        icon='mdiInformation'
-                        onClick={() => st.layout.open('DraftJsonResult', { draftID: draft.id })}
-                        size='sm'
-                    >
-                        Form result
-                    </MenuItem>
                     <MenuItem icon='mdiForest' onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })} size='sm'>
-                        Form state
+                        Form Serial
                     </MenuItem>
                     <MenuItem
                         icon='mdiCodeArray'
