@@ -59,7 +59,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/cushySD15.ts:0')?.openLastOrCreateDraft()}
                     >
                         <div>SD1.5</div>
                     </Button>
@@ -67,7 +67,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.ts:0')?.openLastOrCreateDraft()}
                     >
                         SDXL
                     </Button>
@@ -75,15 +75,23 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD3/cushySD3.ts:0')?.openLastOrCreateDraft()}
                     >
                         SD3
                     </Button>
                     <Button
                         tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/Cascade/cushyCascade.ts:0')?.openLastOrCreateDraft()} // prettier-ignore
+                    >
+                        Cascade
+                    </Button>
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => {}}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/Flux/cushyFlux.ts:0')?.openLastOrCreateDraft()}
                     >
                         FLUX
                     </Button>
