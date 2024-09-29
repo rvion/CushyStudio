@@ -66,7 +66,9 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
         base: uist.base,
         type: uist.type,
         save_path: uist.save_path,
-        url: apiKey ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}` : file.downloadUrl,
+        url: apiKey //
+            ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}`
+            : file.downloadUrl,
         size: `${file.sizeKB * 1000}Mb`,
     }
     const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)

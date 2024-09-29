@@ -501,7 +501,6 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
         const step = this.step
         const currentJSON = deepCopyNaive(this.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
         const litegraphWorkflow = await this.RUNLAYOUT().json_workflow()
-        console.info('checkpoint:' + JSON.stringify(currentJSON))
 
         const out: ApiPromptInput = {
             client_id: this.st.comfySessionId,
@@ -523,7 +522,9 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
-        console.info('sending prompt to ' + promptEndpoint)
+        console.groupCollapsed('Sending PROMPT to ' + promptEndpoint)
+        console.log(JSON.stringify(currentJSON))
+        console.groupEnd()
 
         // meh  --------------------------------------------
         // this.update({ comfyPromptJSON: currentJSON })

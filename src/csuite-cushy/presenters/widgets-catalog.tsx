@@ -1,5 +1,5 @@
 import type { Field } from '../../csuite/model/Field'
-import type { CompiledRenderProps, RenderDSL } from './Presenter'
+import type { CompiledRenderProps, DisplayConf } from './Presenter'
 import type { FC } from 'react'
 
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
@@ -27,7 +27,7 @@ export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 declare global {
     namespace RENDERER {
         interface FieldRenderArgs<out FIELD extends Field>
-        extends RenderDSL<FIELD>{}
+        extends DisplayConf<FIELD>{}
     }
 
     interface Window {

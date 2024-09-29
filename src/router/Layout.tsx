@@ -425,12 +425,12 @@ export class CushyLayoutManager {
         if (surroundings.next == null) {
             // 3. move tab into split
             this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.RIGHT, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         } else {
             // 3. move tab to right tabset
             this.model.doAction(Actions.moveNode(tabID, surroundings.next.getId(), FL.DockLocation.CENTER, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         }
     }
@@ -451,12 +451,12 @@ export class CushyLayoutManager {
         if (surroundings.prev == null) {
             // 3. move tab into split
             this.model.doAction(Actions.moveNode(tabID, tabset.getId(), FL.DockLocation.LEFT, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         } else {
             // 3. move tab to left split
             this.model.doAction(Actions.moveNode(tabID, surroundings.prev.getId(), FL.DockLocation.CENTER, -1))
-            this.prettyPrintLayoutModel()
+            // ⏸️ this.prettyPrintLayoutModel()
             return Trigger.Success
         }
     }
@@ -788,7 +788,7 @@ export class CushyLayoutManager {
             prevTab = this.model.getNodeById(panelURI) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
                 console.log(`[🧐] addition:`, addition, { component: panelName, tabID: panelURI, icon, title, props: panelProps })
-                this.prettyPrintLayoutModel()
+                // ⏸️ this.prettyPrintLayoutModel()
                 return void console.log('❌ no new tab')
             }
         }

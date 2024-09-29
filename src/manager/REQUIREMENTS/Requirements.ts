@@ -13,7 +13,12 @@ import type { ModelInfo } from '../model-list/model-list-loader-types'
 
 export type Requirements =
     // models
-    | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: KnownModel_Base }
+    | {
+          type: 'modelInCivitai'
+          civitaiModelId: string
+          optional?: true
+          base: KnownModel_Base
+      }
     | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
     | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
     // custom nodes

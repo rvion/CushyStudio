@@ -74,12 +74,14 @@ export class Field_size extends Field<Field_size_types> {
 
     get isOwnSet(): boolean {
         const ser = this.serial
-        return (
-            ser.width != null && //
-            ser.height != null &&
-            ser.aspectRatio != null &&
-            ser.modelType != null
+        if (
+            ser.width == null && //
+            ser.height == null &&
+            ser.aspectRatio == null &&
+            ser.modelType == null
         )
+            return false
+        return true
     }
 
     constructor(
@@ -136,19 +138,23 @@ export class Field_size extends Field<Field_size_types> {
         }
         // 1.2. fill missing fields if some are specified and other can be recovered
         const modelType = next.modelType
-        if (modelType != null && (next.width == null || next.height == null)) {
+        if (
+            modelType != null && //
+            (next.width == null || //
+                next.height == null ||
+                next.aspectRatio == null)
+        ) {
             const size = parseInt(modelType.split(' ')[1]!)
             next = produce(next, (draft) => {
                 if (draft.width == null) draft.width = size
                 if (draft.height == null) draft.height = size
+                if (draft.aspectRatio == null) draft.aspectRatio = this.toAspectRatio(draft.width / draft.height)
             })
         }
 
         // 2. ASSIGN SERIAL
+        console.log(`[🔴🔴🔴🔴] `, next)
         this.assignNewSerial(next)
-
-        // 3. RECONCILE CHILDREN
-        // (primitive field; no children)
     }
 
     get ownConfigSpecificProblems(): Problem_Ext {
@@ -238,7 +244,7 @@ export class Field_size extends Field<Field_size_types> {
 
     get value_or_fail(): Field_size_value {
         const serial = this.value_unchecked
-        if (!this.isOwnSet) throw new Error('Field_size.value_or_fail: field not set')
+        if (!this.isOwnSet) throw new Error(`Field_size.value_or_fail: field(${this.pathExt}) not set`)
         return {
             $: 'size',
             aspectRatio: bang(serial.aspectRatio),

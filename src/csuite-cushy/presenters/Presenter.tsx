@@ -16,6 +16,9 @@ import type { FC, ReactNode } from 'react'
 
 import { createElement } from 'react'
 
+import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
+import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
+import { isFieldLink, isFieldOptional } from '../../csuite/fields/WidgetUI.DI'
 import { type BodyContainerProps, WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
 import { WidgetDebugIDUI } from '../../csuite/form/WidgetDebugIDUI'
 import { WidgetErrorsUI } from '../../csuite/form/WidgetErrorsUI'
@@ -32,7 +35,7 @@ import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesBu
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
+import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { usePresenterOrNull } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
@@ -104,19 +107,26 @@ export class Presenter {
     render<FIELD extends Field>(
         //
         field: FIELD,
-        config: RenderDSL<FIELD>,
+        config: DisplayConf<FIELD>,
         // extraRules_: PresenterRule<FIELD> | PresenterRule<FIELD>[],
     ): ReactNode {
         // slots accumulator
+        const catalog = widgetsCatalog
+        // const fieldCatalog = catalog[field.type]
         let slots: UISlots<FIELD> = defaultPresenterRule(field)
+        let rulesForChild: any[] = []
+
+        function apply(slots_: UISlots<FIELD>): any {
+            if (slots_) slots = mergeDefined(slots, slots_)
+            console.log(`[🤠] YAYAYAY 🟢🟢`)
+        }
 
         // apply all rules from context
         for (const rule of this.rules) {
-            const slots_ = rule(field) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
-            if (slots_) slots = mergeDefined(slots, slots_)
+            rule({ field, catalog, apply }) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
         }
-
-        // apply loval overrides
+        // function processDSL(XXXX: RenderDSL<FIELD>): void {
+        // apply local overrides
         const { children, childrenRule, globalRules, ...slotOverrides } = config
         slots = mergeDefined(slots, slotOverrides)
 
@@ -127,10 +137,24 @@ export class Presenter {
 
         // if either childrenRule or globalRules are defined, we need to
         // fork the renderer for children, adding the new rules to the stack
-        let childPresenter: Presenter | undefined
         if (childrenRule != null || globalRules != null) {
-            childPresenter
+            // function extractRules(x: ChildrenRules<FIELD>): void {
+            //     if (typeof x === 'function') x({ field, catalog, apply })
+            //     else apply(x)
+            // }
+            // if (childrenRule != null) {
+            //     const rules = extractRules(childrenRule)
+            //     childPresenter.pushRules(rules)
+            // }
+            if (globalRules != null) {
+                if (typeof globalRules === 'function') globalRules({ field, catalog, apply })
+                else apply(globalRules)
+                // childPresenter.pushRules(rules)
+            }
         }
+        // }
+
+        // processDSL(config)
 
         const Shell = slots.Shell ?? defaultPresenterSlots.Shell
         if (!Shell) throw new Error('Shell is not defined')
@@ -277,29 +301,46 @@ export const configureDefaultFieldPresenterComponents = (
 
 // #region P.Rule
 // export type PresenterRule<out FIELD extends Field> = (field: FIELD) => Maybe<PresenterSlots>
-export type PresenterRule<FIELD extends Field> = (field: FIELD) => Maybe<RenderDSL<FIELD>>
+export type PresenterRule<FIELD extends Field> = CovariantFn1<
+    { field: FIELD; catalog: CATALOG.widgets; apply(slots: UISlots<FIELD>): void /* TODO */ },
+    void
+>
 
-export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): RenderDSL<FIELD> => ({
-    ...defaultPresenterSlots,
-
-    Header: field.DefaultHeaderUI,
-    Body: field.DefaultBodyUI,
-    Extra: field.schema.LabelExtraUI,
-    DebugID: null,
-})
+export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplayConf<FIELD> => {
+    if (isFieldLink(field)) {
+        return {
+            ...defaultPresenterSlots,
+            Shell: ShellLinkUI as any,
+        }
+    }
+    if (isFieldOptional(field)) {
+        return {
+            ...defaultPresenterSlots,
+            Shell: ShellOptionalUI as any,
+        }
+    }
+    return {
+        ...defaultPresenterSlots,
+        Header: field.DefaultHeaderUI,
+        Body: field.DefaultBodyUI,
+        Extra: field.schema.LabelExtraUI,
+        DebugID: null,
+    }
+}
 
 // #region RenderProps
 
 /**
  * this is the type you usually specify when calling <field.UI <...RENDER_DSL...> />
  */
-export interface RenderDSL<out FIELD extends Field> //
+export interface DisplayConf<out FIELD extends Field> //
     // 1️⃣ for self: UISlots + shell + children
     extends UISlots<FIELD> {
     // alternative to specify body; makes it easy to quickly spawn forms with various layouts
     children?: CovariantFn1<FIELD, QuickFormContent[]>
 
     // 🖼️
+    rule?: PresenterRule<FIELD>
     In?: any // TODO (proper catalog for wrapper variant via proxy)
     As?: any // TODO (proper catalog for self variant via proxy)
 
@@ -310,13 +351,13 @@ export interface RenderDSL<out FIELD extends Field> //
      * > note 1: not the whole "model" subtree, but the (JSX) sub-tree
      * > note 2: the rules are templated on FIELD['$Child']
      */
-    childrenRule?:
-        | PresenterRule<Field >[]
-        | CovariantFn1<FIELD, PresenterRule<Field /* FIELD['$Child']['$Field'] */>[]>
-        // 👇 better one, but boesn't typecheck
-        // 🔴 | PresenterRule<FIELD['$Child']['$Field']>[]
-        // 🔴 | CovariantFn1<FIELD, PresenterRule< FIELD['$Child']['$Field'] >[]>
-        | RenderDSL<FIELD['$Child']['$Field']>
+    // childrenRule?:ChildrenRules<FIELD>
+    // | PresenterRule<Field >[]
+    // | CovariantFn1<FIELD, PresenterRule<Field /* FIELD['$Child']['$Field'] */>[]>
+    // // 👇 better one, but boesn't typecheck
+    // // 🔴 | PresenterRule<FIELD['$Child']['$Field']>[]
+    // // 🔴 | CovariantFn1<FIELD, PresenterRule< FIELD['$Child']['$Field'] >[]>
+    // | RenderDSL<FIELD['$Child']['$Field']>
 
     // 3️⃣ STUFF FOR ALL DESCENDANTS
     // prettier-ignore
@@ -327,11 +368,20 @@ export interface RenderDSL<out FIELD extends Field> //
      *           for every single possible descendant
      *
      */
-    globalRules?: any
-        | PresenterRule<Field>[]
-        | CovariantFn1<FIELD, PresenterRule<Field>[]>
+    globalRules?:
+        | PresenterRule<Field>
         | UISlots<Field>
+    // | CovariantFn1<FIELD, PresenterRule<Field>[]>
+    // | UISlots<Field>
 } // globalRules or childrenRule // spreaded for readibility, otherwise it is impossible to use recursively with // 3️⃣ STUF FOR SELF
+
+// prettier-ignore
+type ChildrenRules<FIELD extends Field> =
+    | PresenterRule<FIELD>
+    // 👇 better one, but boesn't typecheck
+    // 🔴 | PresenterRule<FIELD['$Child']['$Field']>[]
+    // 🔴 | CovariantFn1<FIELD, PresenterRule< FIELD['$Child']['$Field'] >[]>
+    | UISlots<FIELD> // RenderDSL<FIELD['$Child']['$Field']>
 
 /**
  * this is the final type that is given to your most of your widgets (Shell, Body, ...)

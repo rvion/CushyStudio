@@ -339,7 +339,11 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
         let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
         if (enumInfo == null) {
             // case 3.A. PRE-EXISTING
-            enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
+            enumInfo = {
+                enumNameInCushy: p.candidateName,
+                values: enumValues,
+                aliases: [],
+            }
             this.knownEnumsByHash.set(hash, enumInfo)
         } else {
             // case 3.B. PRE-EXISTING
