@@ -9,18 +9,15 @@ import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
-    return (
-        <div>
-            <pre>{JSON.stringify(p.field.serial)}</pre>
-            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
-        </div>
-    )
+    return <></>
 })
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
     return (
         <>
             {/* <pre>{JSON.stringify(p.field.serial, null, 3)}</pre> */}
+            {/* <WidgetSizeX_LineUI /> */}
+            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
             <WigetSizeXUI size={p.field} bounds={p.field.config} />
         </>
     )
