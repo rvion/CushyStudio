@@ -99,7 +99,8 @@ export const OverflowingRowUI = observer(function OverflowingRow({
                     style={{ cursor: 'pointer', flexShrink: 0 }}
                     onClick={handleReveal}
                 >
-                    ▼ {hiddenCount > 0 ? `+${hiddenCount}` : null}
+                    {hiddenCount > 0 ? <div>▼ +{hiddenCount}</div> : <div></div>}
+                    {/* ▼ {hiddenCount > 0 ? `+${hiddenCount}` : null} */}
                 </Frame>
             </RevealUI>
         </Frame>
