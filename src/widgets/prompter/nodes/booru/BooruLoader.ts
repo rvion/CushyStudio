@@ -46,7 +46,7 @@ export class DanbooruTags {
         }
     }
 
-    static build = (st: STATE) => {
+    static build = (st: STATE): DanbooruTags => {
         if (!DanbooruTags._instance) DanbooruTags._instance = new DanbooruTags(st)
         return DanbooruTags._instance
     }
