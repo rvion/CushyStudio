@@ -22,7 +22,7 @@ export class Debounced<T> {
     }
 
     _timer: any = null
-    setDebouncedValue = (v: T) => {
+    setDebouncedValue = (v: T): void => {
         clearTimeout(this._timer)
         this._timer = setTimeout(() => {
             const oldVal = this._debouncedValue
@@ -32,7 +32,7 @@ export class Debounced<T> {
     }
 
     /** reset _value, _deouncedValue, clear timer, and do not call onChange */
-    resetTo = (v: T) => {
+    resetTo = (v: T): void => {
         clearTimeout(this._timer)
         this._value = v
         this._debouncedValue = v
