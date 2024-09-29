@@ -56,7 +56,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => {}}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/sd15.ts:0')?.openLastOrCreateDraft()}
                     >
                         <div>SD1.5</div>
                     </Button>
@@ -129,7 +129,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                     </FavBarContainer>
                                 )}
                                 {/* ------------------------------------------------------------------------ */}
-                                {st.favoriteDrafts.length > 0 && (
+                                {/* {st.favoriteDrafts.length > 0 && (
                                     <FavBarContainer icon='history_edu'>
                                         {st.favoriteDrafts.map((draft) => (
                                             <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
@@ -196,7 +196,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                             </div>
                                         ))}
                                     </FavBarContainer>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>
