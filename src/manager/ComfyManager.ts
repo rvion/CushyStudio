@@ -72,8 +72,20 @@ export class ComfyManager {
     rebootComfyUI = async (): Promise<unknown> => {
         // 🔴 bad code
         setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
-
+        // curl 'http://192.168.1.19:8188/api/manager/reboot' \
+        //     -H 'Accept: */*' \
+        //     -H 'Accept-Language: en-GB' \
+        //     -H 'Cache-Control: max-age=0' \
+        //     -H 'Comfy-User: undefined' \
+        //     -H 'Connection: keep-alive' \
+        //     -H 'Referer: http://192.168.1.19:8188/' \
+        //     -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) cushystudio-shell/32.1.2 Chrome/128.0.6613.162 Electron/32.1.2 Safari/537.36'
         return this.fetchGetJSON('/manager/reboot')
+    }
+
+    /** alias to rebootComfyUI since I was looking for that method instead. */
+    restartComfyUI = async (): Promise<unknown> => {
+        return this.rebootComfyUI()
     }
 
     // models --------------------------------------------------------------
