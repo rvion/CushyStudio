@@ -47,8 +47,8 @@
   --color-border-divider-line:              oklch(var(--p)/.2);
 
   /* # tab color */
-  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
-  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) calc(c / 2) h);
+  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) c h);
+  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) c h);
   /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h); */
   /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
   --color-tab-unselected:                   var(--foobar1);
