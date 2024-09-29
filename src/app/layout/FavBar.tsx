@@ -2,13 +2,11 @@ import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useState } from 'react'
-import { fileURLToPath } from 'url'
 
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
-import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
@@ -91,7 +89,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                 <FavBarContainer>
                                     <RevealUI
                                         tw='hover:brightness-125'
-                                        placement='screen'
+                                        placement='screen-top'
                                         shell='popup-lg'
                                         content={(x) => <CreateAppPopupUI closeFn={() => x.reveal.close()} />}
                                     >
