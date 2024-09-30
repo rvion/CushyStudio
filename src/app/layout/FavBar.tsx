@@ -49,10 +49,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
         <>
             <Frame
                 base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
-                tw='relative flex flex-col box-content overflow-hidden'
-                style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
+                tw='relative flex flex-col box-content overflow-hidden px-1'
+                style={{ flexDirection: p.direction, scrollBehavior: 'inherit' }}
+                roundness={'5px'}
             >
-                <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
+                <Frame
+                    base={{ contrast: -0.1 }}
+                    tw='flex flex-col inset-0 flex-1 select-none overflow-hidden p-1'
+                    roundness={'5px'}
+                >
                     {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                     <Button
                         //
@@ -213,7 +218,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Frame>
             </Frame>
             {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>
