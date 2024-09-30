@@ -11,6 +11,7 @@ import { exhaust } from '../../csuite/utils/exhaust'
 import { useSt } from '../../state/stateContext'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
+import { IntallBtnForKnownCivitaiModelId, IntallBtnForKnownCivitaiModelVersionId } from './FOOBAR'
 import { QuickHostActionsUI } from './QuickHostActionsUI'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
@@ -122,23 +123,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
 
                     // ------------------------------------------------
                     if (req.type === 'modelInCivitai') {
-                        // 🔴
                         return (
-                            <Button_InstalModelViaManagerUI
-                                optional={req.optional ?? false}
-                                modelInfo={{
-                                    name: 'negative_hand Negative Embedding',
-                                    type: 'embeddings',
-                                    base: req.base,
-                                    save_path: 'default',
-                                    description:
-                                        'If you use this embedding with negatives, you can solve the issue of damaging your hands.',
-                                    reference: 'https://civitai.com/models/56519/negativehand-negative-embedding',
-                                    filename: 'negative_hand-neg.pt',
-                                    url: 'https://civitai.com/api/download/models/60938',
-                                    size: '1.2Mb',
-                                }}
-                            />
+                            <div>
+                                <IntallBtnForKnownCivitaiModelId civitaiModelId={req.civitaiModelId} />
+                                <IntallBtnForKnownCivitaiModelVersionId /* civitaiModelId={req.civitaiModelId} */ />
+                            </div>
                         )
                     }
                     if (req.type === 'modelInManager') {
