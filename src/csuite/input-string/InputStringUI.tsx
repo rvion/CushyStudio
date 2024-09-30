@@ -155,6 +155,7 @@ export const InputStringUI = observer(
                 }}
             />
         )
+        const dropShadow = p.dropShadow ?? theme.inputShadow
         return (
             <Frame
                 noColorStuff={p.noColorStuff}
@@ -163,17 +164,7 @@ export const InputStringUI = observer(
                 base={csuite.inputContrast}
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover={3}
-                dropShadow={
-                    (p.dropShadow ?? theme.inputShadow)
-                        ? {
-                              x: theme.inputShadow.x,
-                              y: theme.inputShadow.y,
-                              color: theme.inputShadow.color,
-                              blur: theme.inputShadow.blur,
-                              opacity: theme.inputShadow.alpha,
-                          }
-                        : undefined
-                }
+                dropShadow={dropShadow}
                 roundness={theme.inputRoundness}
                 border={
                     isDirty //

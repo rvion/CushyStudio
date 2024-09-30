@@ -2,7 +2,8 @@ import type { BoxNormalized } from '../box/BoxNormalized'
 import type { CurrentStyle } from '../box/CurrentStyleCtx'
 import type { Kolor } from '../kolor/Kolor'
 import type { FrameAppearance } from './FrameTemplates'
-import type { SimpleBoxShadow, SimpleDropShadow } from './SimpleBoxShadow'
+import type { SimpleBoxShadow } from './SimpleBoxShadow'
+import type { SimpleDropShadow } from './SimpleDropShadow'
 
 import SparkMD5 from 'spark-md5'
 

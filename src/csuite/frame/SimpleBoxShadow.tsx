@@ -8,11 +8,3 @@ export type SimpleBoxShadow = {
     spread?: number
     color?: TintExt
 }
-
-export type SimpleDropShadow = {
-    x?: number
-    y?: number
-    blur?: number
-    color?: TintExt
-    opacity?: number
-}

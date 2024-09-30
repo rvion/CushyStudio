@@ -63,7 +63,7 @@ const _Button = observer(function Button_(
                             y: theme.inputShadow.y,
                             color: theme.inputShadow.color,
                             blur: theme.inputShadow.blur,
-                            opacity: theme.inputShadow.alpha,
+                            opacity: theme.inputShadow.opacity,
                         }
                       : undefined
             }
