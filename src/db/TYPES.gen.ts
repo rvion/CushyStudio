@@ -13,6 +13,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { MediaSplatL } from '../models/MediaSplat'
 import type { MediaTextL } from '../models/MediaText'
 import type { MediaVideoL } from '../models/MediaVideo'
+import type { PerspectiveL } from '../models/Perspective'
 import type { ProjectL } from '../models/Project'
 import type { RuntimeErrorL } from '../models/RuntimeError'
 import type { StepL } from '../models/Step'
@@ -1085,6 +1086,52 @@ export const MediaCustomFields = {
     viewID: { cid: 5, name: 'viewID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
+export const asPerspectiveID = (s: string): PerspectiveID => s as any
+export type PerspectiveTable = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: Generated<PerspectiveID>
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: Generated<number>
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: Generated<number>
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>
+    /** @default: null, sqlType: json */
+    layout: T.Perspective_layout
+    /** @default: null, sqlType: json */
+    layoutDefault?: Maybe<T.Perspective_layoutDefault>
+    /** @default: null, sqlType: INT */
+    priority: number
+}
+export type NewPerspective = Insertable<PerspectiveTable>
+export type PerspectiveUpdate = Updateable<PerspectiveTable>
+export type PerspectiveT = Selectable<PerspectiveTable>
+export const PerspectiveSchema = Type.Object(
+    {
+        id: Type.String(),
+        createdAt: Type.Number(),
+        updatedAt: Type.Number(),
+        name: Type.Optional(T.Nullable(Type.String())),
+        layout: T.Perspective_layout_Schema,
+        layoutDefault: Type.Optional(T.Nullable(T.Perspective_layoutDefault_Schema)),
+        priority: Type.Number(),
+    },
+    { additionalProperties: false },
+)
+
+export const PerspectiveRefs = []
+export const PerspectiveBackRefs = []
+
+export const PerspectiveFields = {
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    layout: { cid: 4, name: 'layout', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    layoutDefault: { cid: 5, name: 'layoutDefault', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    priority: { cid: 6, name: 'priority', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
+}
+
 // prettier-ignore
 export const TABLE_comfy_workflow = new T.TableInfo<'comfy_workflow', ComfyWorkflowT, ComfyWorkflowL, NewComfyWorkflow, ComfyWorkflowUpdate, ComfyWorkflowID>(
     'comfy_workflow',
@@ -1256,6 +1303,15 @@ export const TABLE_media_custom = new T.TableInfo<'media_custom', MediaCustomT, 
     MediaCustomRefs,
     MediaCustomBackRefs,
 )
+// prettier-ignore
+export const TABLE_perspective = new T.TableInfo<'perspective', PerspectiveT, PerspectiveL, NewPerspective, PerspectiveUpdate, PerspectiveID>(
+    'perspective',
+    'Perspective',
+    PerspectiveFields,
+    PerspectiveSchema,
+    PerspectiveRefs,
+    PerspectiveBackRefs,
+)
 
 export type TABLES = typeof schemas
 
@@ -1280,6 +1336,7 @@ export const schemas = {
     tree_entry           : TABLE_tree_entry,
     host                 : TABLE_host,
     media_custom         : TABLE_media_custom,
+    perspective          : TABLE_perspective,
 }
 export type TableName =
     | 'comfy_workflow'
@@ -1301,6 +1358,7 @@ export type TableName =
     | 'tree_entry'
     | 'host'
     | 'media_custom'
+    | 'perspective'
 
 export type KyselyTables = {
     comfy_workflow: ComfyWorkflowTable
@@ -1322,6 +1380,7 @@ export type KyselyTables = {
     tree_entry: TreeEntryTable
     host: HostTable
     media_custom: MediaCustomTable
+    perspective: PerspectiveTable
 }
 export type LiveDBSubKeys =
     | 'comfy_workflow'
@@ -1509,6 +1568,14 @@ export type LiveDBSubKeys =
     | 'media_custom.params'
     | 'media_custom.stepID'
     | 'media_custom.viewID'
+    | 'perspective'
+    | 'perspective.id'
+    | 'perspective.createdAt'
+    | 'perspective.updatedAt'
+    | 'perspective.name'
+    | 'perspective.layout'
+    | 'perspective.layoutDefault'
+    | 'perspective.priority'
 export const liveDBSubKeys = new Set([
     'comfy_workflow',
     'comfy_workflow.id',
@@ -1695,4 +1762,12 @@ export const liveDBSubKeys = new Set([
     'media_custom.params',
     'media_custom.stepID',
     'media_custom.viewID',
+    'perspective',
+    'perspective.id',
+    'perspective.createdAt',
+    'perspective.updatedAt',
+    'perspective.name',
+    'perspective.layout',
+    'perspective.layoutDefault',
+    'perspective.priority',
 ])

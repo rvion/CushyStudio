@@ -67,6 +67,7 @@ export class LiveDB {
 
     // tables ---------------------------------------------------------
     project: ProjectRepo
+    perspective: PerspectiveRepo
     custom_data: CustomDataRepo
     comfy_schema: ComfySchemaRepo
     host: HostRepo
@@ -109,6 +110,7 @@ export class LiveDB {
 
         // 3. create tables (after the store has benn made already observable)
         this.project = new ProjectRepo(this)
+        this.perspective = new PerspectiveRepo(this)
         this.custom_data = new CustomDataRepo(this)
         this.comfy_schema = new ComfySchemaRepo(this)
         this.host = new HostRepo(this)

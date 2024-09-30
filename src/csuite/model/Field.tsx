@@ -1525,6 +1525,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         serial?: K['$Serial'],
         mobxOverrides?: any,
     ): void {
+        if (isObservable(this.serial)) console.error('❌ serial should not be observable (err3829)')
         // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
         // 1. ensure field hasn't been initialized yet

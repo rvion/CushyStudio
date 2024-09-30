@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
-import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { Frame } from '../csuite/frame/Frame'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
@@ -18,6 +17,7 @@ import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuShortcutsUI } from './MenuShortcuts'
 import { MenuUtilsUI } from './MenuUtilsUI'
 import { MenuPanelsUI } from './MenuWindowUI'
+import { PerspectivePickerUI } from './PerspectivePickerUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
@@ -48,8 +48,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <MenuWindowUI /> */}
             <MenuUtilsUI />
             <MenuAboutUI />
-
             <MenuDebugUI />
+            <PerspectivePickerUI />
 
             <SpacerUI />
             <HostWebsocketIndicatorUI host={mainHost} />
