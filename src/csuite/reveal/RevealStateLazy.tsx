@@ -38,6 +38,10 @@ export class RevealStateLazy {
 
     // all of those callbacks are for anchor ----------------------------------------
     onContextMenu = (ev: React.MouseEvent<unknown>): void => {
+        if (this.p.trigger === 'rightClick') {
+            this.getRevealState().onRightClickAnchor(ev)
+        }
+
         // lock input on shift+right click
         if (ev.shiftKey) {
             this.getRevealState().toggleLock()
