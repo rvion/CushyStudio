@@ -2,7 +2,7 @@ import type { BaseInst } from './BaseInst'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields } from './LiveInstance'
 import type { RunResult } from 'better-sqlite3'
-import type { CompiledQuery, DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
+import type { DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
 // 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
@@ -13,7 +13,6 @@ import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inherit
 import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON } from './LiveHelpers'
-import { SqlFindOptions } from './SQLWhere'
 import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
 import { TableInfo } from './TYPES_json'
 
@@ -63,6 +62,8 @@ export class LiveTable<
         return instances
     }
 
+    findMany = this.select
+
     /**
      * hydrate at the end;
      * can only work with all fields
@@ -90,6 +91,7 @@ export class LiveTable<
         return instances[0]
     }
 
+    findOne = this.selectOne
     // --------------------------------------------------------------------------------
 
     /**
@@ -360,42 +362,6 @@ export class LiveTable<
         const stmt = this.db.db.prepare(`select * from ${this.name}`)
         const datas: TABLE['$T'][] = stmt.all().map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
-        return instances
-    }
-
-    find = (
-        //
-        queryFn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => CompiledQuery<TABLE['$T']>,
-        options: SqlFindOptions = {},
-    ): TABLE['$L'][] => {
-        // let whereClause: string[] = []
-        // let whereVars: { [key: string]: any } = {}
-        // Object.entries(whereExt).forEach(([k, v]) => {
-        //     if (isSqlExpr(v)) {
-        //         if ('$like' in v) {
-        //             whereVars[k] = v.$like
-        //             whereClause.push(`${k} like @${k}`)
-        //         } else {
-        //             throw new Error(`[🧐] 🔴`)
-        //         }
-        //     } else {
-        //         whereVars[k] = v
-        //         whereClause.push(`${k} = @${k}`)
-        //     }
-        // })
-        // let findSQL = `select * from ${this.name}`
-        // if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
-        // if (options.limit) findSQL += ` limit ${options.limit}`
-        // if (options.debug) console.log(`[🔴 DEBUG 🔴] A >>>`, findSQL, whereVars)
-        // const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
-        const query = queryFn(this.query1)
-        const stmt = cushy.db.db.prepare<{ [key: string]: any }>(query.sql)
-        const datas: TABLE['$T'][] = stmt
-            .all(query.parameters)
-            .map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data))
-        if (options.debug) console.log(`[🔴 DEBUG 🔴] B >>>`, datas)
-        const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
-        // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances
     }
 
