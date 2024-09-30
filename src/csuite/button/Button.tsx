@@ -29,7 +29,8 @@ const _Button = observer(function Button_(
 
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
     const theme = cushy.theme.value
-    const dropShadowColor = theme.inputShadow ? theme.inputShadow.color : ''
+    const csuite = cushy.csuite
+
     return (
         <Frame //
             as='button'
@@ -49,7 +50,7 @@ const _Button = observer(function Button_(
                 hue: p.hue,
                 chroma: p.chroma,
             }}
-            border={borderless ? 0 : 10}
+            border={borderless ? 0 : csuite.inputBorder}
             hover={p.disabled ? false : 3}
             // active={uist.visuallyActive}
             disabled={p.disabled}
