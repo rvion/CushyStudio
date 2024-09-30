@@ -8,7 +8,7 @@ import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
     base: X.XColor
-    appbar: X.XColor
+    appbar: X.XOptional<X.XColor>
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -17,13 +17,15 @@ export type ThemeConf = X.XGroup<{
     textLabel: X.XOptional<UI_Tint>
     inputBorder: X.XOptional<X.XNumber>
     inputContrast: X.XOptional<X.XNumber>
-    inputShadow: X.XGroup<{
-        alpha: X.XNumber
-        blur: X.XNumber
-        color: X.XColor
-        x: X.XNumber
-        y: X.XNumber
-    }>
+    inputShadow: X.XOptional<
+        X.XGroup<{
+            alpha: X.XNumber
+            blur: X.XNumber
+            color: X.XColor
+            x: X.XNumber
+            y: X.XNumber
+        }>
+    >
     inputRoundness: X.XNumber
 }>
 
