@@ -140,6 +140,16 @@ export class LiveDB {
         // console.log('🟢 TABLE INITIALIZED')
     }
 
+    rawAll(sql: string): void {
+        const res = this.db.prepare(sql).all()
+        console.log(`[=]>`, res)
+    }
+
+    rawExec(sql: string): void {
+        const res = this.db.exec(sql)
+        console.log(`[=]>`, res)
+    }
+
     _getSize = (tableName: string): number => {
         // 1️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1226 (allow modern electron)
         // 2️⃣ https://github.com/WiseLibs/better-sqlite3/pull/1228 (allow size)

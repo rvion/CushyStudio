@@ -139,11 +139,11 @@ export class PanelState<PROPS extends object = any> {
 
     stores: Map<string, PanelPersistentStore> = new Map<string, PanelPersistentStore>()
     usePersistentStore = <X extends Json>(key: string, init: () => X): PanelPersistentStore<X> => {
-        const prev = this.stores.get(key)
-        if (prev != null) return prev as PanelPersistentStore<X>
-        const next = new PanelPersistentStore(this, key, init)
-        this.stores.set(key, next)
-        return next as PanelPersistentStore<X>
+        let store = this.stores.get(key) as Maybe<PanelPersistentStore<X>>
+        if (store != null) return store
+        store = new PanelPersistentStore<X>(this, key, init)
+        this.stores.set(key, store)
+        return store
     }
 
     entities: Map<string, Field> = new Map<string, Field>()
