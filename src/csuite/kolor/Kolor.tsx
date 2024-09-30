@@ -78,7 +78,8 @@ export class Kolor implements Tint {
         const l = clamp(this.lightness, 0.0001, 0.9999).toFixed(3)
         const c = this.chroma.toFixed(3)
         const h = this.hue.toFixed(3)
-        return `oklch(${l} ${c} ${h})`
+        const a = this.opacity.toFixed(3)
+        return `oklch(${l} ${c} ${h} / ${a})`
     }
 
     /** true if strictly same values */
