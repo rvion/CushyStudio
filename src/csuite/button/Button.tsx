@@ -54,19 +54,7 @@ const _Button = observer(function Button_(
             hover={p.disabled ? false : 3}
             // active={uist.visuallyActive}
             disabled={p.disabled}
-            dropShadow={
-                p.subtle
-                    ? undefined
-                    : (p.dropShadow ?? theme.inputShadow)
-                      ? {
-                            x: theme.inputShadow.x,
-                            y: theme.inputShadow.y,
-                            color: theme.inputShadow.color,
-                            blur: theme.inputShadow.blur,
-                            opacity: theme.inputShadow.opacity,
-                        }
-                      : undefined
-            }
+            dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
             roundness={theme.inputRoundness}
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex}
