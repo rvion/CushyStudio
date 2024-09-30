@@ -24,7 +24,8 @@ const CushyShellUI = observer(function CushySHell(
     const WUI = (
         <Frame
             className={p.classNameForShell ?? undefined}
-            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0']}
+            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0 py-0.5']}
+            roundness={cushy.theme.value.inputRoundness}
             base={field.background}
             border={field.border}
             {...p.field.config.box}

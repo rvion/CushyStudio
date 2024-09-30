@@ -22,7 +22,12 @@ export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI
         <Frame
             base={theme.fieldGroups.contrast ?? base}
             border={theme.fieldGroups.border ?? border}
-            tw={[isHorizontal ? `flex flex-wrap` : `flex flex-col`, 'w-full']}
+            tw={[
+                //
+                isHorizontal ? `flex flex-wrap` : `flex flex-col`,
+                'w-full',
+                'gap-1',
+            ]}
             {...rest}
         />
     )
