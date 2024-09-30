@@ -5,11 +5,12 @@ import { observer } from 'mobx-react-lite'
 
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
-import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
+import { WidgetChoices_TabHeaderSingleLineUI, WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { field: Field_choices<any> }) {
-    if (p.field.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI field={p.field} />
+    if (p.field.config.appearance === 'tab') return <WidgetChoices_TabHeaderSingleLineUI field={p.field} />
+    if (p.field.config.appearance === 'tab2') return <WidgetChoices_TabHeaderUI field={p.field} />
     else return <WidgetChoices_SelectHeaderUI field={p.field} />
 })
 
