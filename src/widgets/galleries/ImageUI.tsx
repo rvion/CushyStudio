@@ -67,6 +67,7 @@ export const ImageUI = observer(function ImageUI_({
     )
     return (
         <RevealUI
+            trigger='rightClick'
             tw='flex w-full h-full items-center'
             relativeTo='mouse'
             content={() => (
