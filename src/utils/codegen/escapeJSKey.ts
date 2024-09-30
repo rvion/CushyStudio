@@ -6,7 +6,6 @@ const isValidJSKey = (s: string): boolean => {
 
 export const escapeJSKey = (s: string): string => {
     if (typeof s !== 'string') {
-        // 🔴 ⁉️
         return 'string'
         // console.log(s)
         // debugger

@@ -1,15 +1,9 @@
 import { autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
-import {
-    bracketMatching,
-    defaultHighlightStyle,
-    foldKeymap,
-    indentOnInput,
-    syntaxHighlighting,
-} from '@codemirror/language'
+import { bracketMatching, defaultHighlightStyle, foldKeymap, indentOnInput, syntaxHighlighting } from '@codemirror/language'
 import { lintGutter, lintKeymap } from '@codemirror/lint'
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search'
-import { EditorState } from '@codemirror/state'
+import { EditorState, type Extension } from '@codemirror/state'
 import { oneDark } from '@codemirror/theme-one-dark'
 import {
     crosshairCursor,
@@ -30,7 +24,15 @@ import { simpleLezerLinter } from './LINT2'
 
 export { EditorView } from '@codemirror/view'
 
-export const basicSetup = (() => [
+/* Disables newline from ctrl + enter */
+const customKeymap = defaultKeymap.map((binding) => {
+    if (binding.key === 'Mod-Enter') {
+        return { key: binding.key, run: (): boolean => false }
+    }
+    return binding // Keep other bindings as is
+})
+
+export const basicSetup = ((): Extension[] => [
     EditorView.lineWrapping,
     simpleLezerLinter(),
     lintGutter(),
@@ -56,7 +58,8 @@ export const basicSetup = (() => [
     highlightSelectionMatches(),
     keymap.of([
         ...closeBracketsKeymap,
-        ...defaultKeymap,
+        // ...defaultKeymap,
+        ...customKeymap,
         ...searchKeymap,
         ...historyKeymap,
         ...foldKeymap,

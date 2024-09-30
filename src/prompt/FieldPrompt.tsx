@@ -12,7 +12,7 @@ import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
-import { WidgetPromptCollapsibleUI } from './WidgetPromptUI'
+import { WidgetPromptCollapsibleUI, WidgetPromptUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -94,7 +94,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
     // #region UI
     DefaultHeaderUI = WidgetPromptCollapsibleUI
-    DefaultBodyUI = undefined // WidgetPromptUI
+    DefaultBodyUI = WidgetPromptUI // WidgetPromptUI
 
     // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
     // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })

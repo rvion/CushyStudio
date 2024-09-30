@@ -80,7 +80,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { AuthState } from './AuthState'
-import { interfaceConf } from './conf/interfaceConf'
+import { type $schemaFavbar, interfaceConf } from './conf/interfaceConf'
 import { systemConf } from './conf/systemConf'
 import { themeConf } from './conf/themeConf'
 import { readJSON, writeJSON } from './jsonUtils'
@@ -480,20 +480,23 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = cushyFactory.document(
-        (b) =>
-            b.fields({
-                size: b.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
-                visible: b.bool(),
-                grayscale: b.boolean({ label: 'Grayscale' }),
-                appIcons: b.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
-            }),
-        {
-            name: 'SideBar Conf',
-            serial: () => readJSON('settings/sidebar.json'),
-            onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
-        },
-    )
+    get favbar(): $schemaFavbar['$Field'] {
+        return this.preferences.interface.fields.favBar
+    }
+    // favbar = cushyFactory.document(
+    //     (b) =>
+    //         b.fields({
+    //             size: b.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+    //             visible: b.bool(),
+    //             grayscale: b.boolean({ label: 'Grayscale' }),
+    //             appIcons: b.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
+    //         }),
+    //     {
+    //         name: 'SideBar Conf',
+    //         serial: () => readJSON('settings/sidebar.json'),
+    //         onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+    //     },
+    // )
 
     /* TODO: This should be in a separate register_internal_forms file probably, along with any other headers we register in the future. After we can register them that is. */
     // playgroundHeader = Header_Playground

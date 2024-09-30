@@ -22,7 +22,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
     const field = p.field
     const activeSubwidgets = Object.entries(field.enabledBranches) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
-
+    // return activeSubwidgets.map((i) => i.branch).join(',')
     return (
         <ListOfFieldsContainerUI //
             layout={field.config.layout}

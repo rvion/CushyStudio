@@ -174,7 +174,8 @@ export class StepL extends BaseInst<TABLES['step']> {
     }
     get lastMediaOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
-        const last = outputs[outputs.length - 1]
+
+        const last = outputs[0]
         if (
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
@@ -183,8 +184,9 @@ export class StepL extends BaseInst<TABLES['step']> {
             last instanceof MediaTextL ||
             last instanceof MediaImageL ||
             last instanceof RuntimeErrorL
-        )
+        ) {
             return last
+        }
 
         return null
     }
@@ -229,10 +231,13 @@ export class StepL extends BaseInst<TABLES['step']> {
     get defaultExpanded(): boolean {
         return this.data.isExpanded === SQLITE_true ? true : false
     }
+
     userDefinedExpanded: Maybe<boolean> = null
-    get expanded() {
+
+    get expanded(): boolean {
         return this.userDefinedExpanded ?? this.defaultExpanded
     }
+
     set expanded(next: boolean) {
         this.update({ isExpanded: next ? SQLITE_true : SQLITE_false })
     }

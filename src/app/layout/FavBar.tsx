@@ -8,7 +8,7 @@ import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
+// import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
@@ -35,25 +35,30 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     direction?: 'row' | 'column'
 }) {
     const st = useSt()
-    const conf = st.favbar
+    const conf = st.preferences.interface.value.favBar
     // 💬 2024-09-29 rvion:
     // | temporarilly always display the favbar
     // |
-    // |> if (!conf.value.visible) return null
+    // |> if (!conf.visible) return null
 
-    const size = conf.fields.size.value
-    const appIcons = conf.fields.appIcons
+    const size = conf.size
+    const appIcons = conf.appIcons
     const sizeStr = size + 'px'
     const tempSize = `${size + 10}px`
     return (
         <>
             <Frame
-                base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
-                tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
-                style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
+                base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
+                tw='relative flex flex-col box-content overflow-hidden px-1'
+                style={{ flexDirection: p.direction, scrollBehavior: 'inherit' }}
+                roundness={'5px'}
             >
-                <div tw='flex flex-col inset-0 flex-1 select-none overflow-hidden'>
-                    <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI>
+                <Frame
+                    base={{ contrast: -0.1 }}
+                    tw='flex flex-col inset-0 flex-1 select-none overflow-hidden p-1'
+                    roundness={'5px'}
+                >
+                    {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                     <Button
                         //
                         tw='flex items-center justify-center self-center my-0.5'
@@ -213,7 +218,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Frame>
             </Frame>
             {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>

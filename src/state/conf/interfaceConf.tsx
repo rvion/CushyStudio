@@ -1,6 +1,24 @@
-import { cushyFactory } from '../../controls/Builder'
+import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../jsonUtils'
 
+// ---------------
+export type $schemaFavbar = X.XGroup<{
+    size: X.XNumber
+    visible: X.XBool
+    grayscale: X.XBool
+    appIcons: X.XOptional<X.XNumber>
+}>
+const schemaFavbar = (b: CushySchemaBuilder): $schemaFavbar =>
+    b.group({
+        items: {
+            size: b.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            visible: b.bool(),
+            grayscale: b.boolean({ label: 'Grayscale' }),
+            appIcons: b.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
+        },
+    })
+
+// ---------------
 export const interfaceConf = cushyFactory.document(
     (ui) =>
         ui.fields(
@@ -106,6 +124,8 @@ export const interfaceConf = cushyFactory.document(
                     default: false,
                     tooltip: 'Show icons in toggle buttons',
                 }),
+
+                favBar: schemaFavbar(ui),
             },
             {
                 label: false,

@@ -17,6 +17,14 @@ export type ThemeConf = X.XGroup<{
     textLabel: X.XOptional<UI_Tint>
     inputBorder: X.XOptional<X.XNumber>
     inputContrast: X.XOptional<X.XNumber>
+    inputShadow: X.XGroup<{
+        alpha: X.XNumber
+        blur: X.XNumber
+        color: X.XColor
+        x: X.XNumber
+        y: X.XNumber
+    }>
+    inputRoundness: X.XNumber
 }>
 
 export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
@@ -45,10 +53,12 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                     //     { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                     // ],
                 }),
-                appbar: ui.colorV2({
-                    tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
-                    default: '#313338',
-                }),
+                appbar: ui
+                    .colorV2({
+                        tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                        default: '#313338',
+                    })
+                    .optional(false),
 
                 // ...
                 // gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
@@ -77,7 +87,20 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                 // 3. misc
                 inputBorder: ui.percent({ default: 8 }).optional(true),
                 inputContrast: ui.percent({ default: 5 }).optional(true),
+                inputShadow: ui
+                    .fields({
+                        alpha: ui.float({ default: 0.2, min: 0, max: 1, step: 0.1 }),
+                        color: ui.colorV2({
+                            tooltip: 'Drop shadow color for inputs',
+                            default: '#000',
+                        }),
+                        x: ui.int({ default: 0, min: -20, max: 20 }),
+                        y: ui.int({ default: 1, min: -20, max: 20 }),
+                        blur: ui.int({ default: 0, min: 0, max: 20 }),
+                    })
+                    .optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
+                inputRoundness: ui.int({ default: 5, min: 0 }),
             },
             {
                 label: 'Theme',

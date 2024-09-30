@@ -74,10 +74,10 @@ export const DraftHeaderUI = observer(function DraftHeader({
                 <DraftIllustrationUI
                     revealAppIllustrationOnHover
                     draft={draft}
-                    // XXX: This is bad because h-input will change from the theme settings, but this will not.
-                    size='3.69rem'
+                    size={`${cushy.preferences.interface.value.inputHeight * 2.25}rem`}
+                    // size='3.69rem'
                 />
-                <div tw='flex flex-col flex-1'>
+                <div tw='flex flex-col flex-1 gap-2'>
                     <Frame line>
                         <DraftMenuDataBlockUI draft={draft} title='Drafts' />
                         <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
@@ -90,7 +90,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                             setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                             placeholder='Unified Canvas Category'
                         />
-                        {cushy.theme.fields.labelLayout.renderSimple({ LabelText: 'Label' })}
+                        {/* {cushy.theme.fields.labelLayout.renderSimple({ label: 'Label' })} */}
                     </div>
                 </div>
             </Frame>

@@ -24,7 +24,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <Frame
             //
-            base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
+            base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
             tw={['flex items-center px-2 overflow-auto', 'overflow-auto shrink-0']}
             id='CushyAppBar'
         >
@@ -48,12 +48,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <MenuWindowUI /> */}
             <MenuUtilsUI />
             <MenuAboutUI />
-            <Dropdown // TODO(bird_d): Temporary, just to clean up the top bar for now. Not good to have this be a pop-up imo and should be removed when done testing the theming stuff.
-                // startIcon={'mdiThemeLightDark'}
-                // expand
-                title='Theming'
-                content={() => <>{cushy.theme.render()}</>}
-            />
 
             <MenuDebugUI />
 

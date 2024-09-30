@@ -23,6 +23,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     const csuite = useCSuite()
     // const chroma = getInputBoolChroma(isActive)
     const border = p.border ?? 10
+    const theme = cushy.theme.value
     return (
         <Frame
             line
@@ -55,6 +56,20 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             // iconSize={p.iconSize ?? '2.5em'}
             // hoverable={!p.disabled}
             disabled={p.disabled}
+            dropShadow={
+                p.look == 'subtle'
+                    ? undefined
+                    : (p.dropShadow ?? theme.inputShadow)
+                      ? {
+                            x: theme.inputShadow.x,
+                            y: theme.inputShadow.y,
+                            color: theme.inputShadow.color,
+                            blur: theme.inputShadow.blur,
+                            opacity: theme.inputShadow.alpha,
+                        }
+                      : undefined
+            }
+            roundness={theme.inputRoundness}
             expand={p.expand}
             style={p.style}
             hovered={p.hovered}

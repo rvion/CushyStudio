@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
@@ -39,6 +39,14 @@ type InputNumberProps = {
     placeholder?: string
     forceSnap?: boolean
     className?: string
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
 }
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
@@ -243,6 +251,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
+    const theme = cushy.theme.value
 
     return (
         <Frame /* Root */
@@ -251,6 +260,19 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             border={csuite.inputBorder}
             hover={{ contrast: 0.03 }}
             className={p.className}
+            // unsure about the amount of code we had to use for that prop
+            dropShadow={
+                (uist.props.dropShadow ?? theme.inputShadow)
+                    ? {
+                          x: theme.inputShadow.x,
+                          y: theme.inputShadow.y,
+                          color: theme.inputShadow.color,
+                          blur: theme.inputShadow.blur,
+                          opacity: theme.inputShadow.alpha,
+                      }
+                    : undefined
+            }
+            roundness={p.roundness ?? theme.inputRoundness}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[

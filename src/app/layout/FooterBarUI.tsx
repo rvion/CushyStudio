@@ -3,14 +3,14 @@ import { observer } from 'mobx-react-lite'
 import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { tooltipStuff } from '../../csuite/frame/tooltip'
+// import { tooltipStuff } from '../../csuite/frame/tooltip'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
 export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
     return (
         <Frame
             //
-            base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
+            base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
             tw='flex items-center px-1 h-input'
         >
             <InputBoolToggleButtonUI
@@ -22,7 +22,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
             />
             <DebugControlsUI />
             <div tw='flex-1' />
-            {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>}
+            {/* {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>} */}
             {cushy.showCommandHistory && <DebugShortcutsFloatingUI />}
         </Frame>
     )

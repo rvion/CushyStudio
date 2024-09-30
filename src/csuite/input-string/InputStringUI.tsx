@@ -8,7 +8,7 @@ import { forwardRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
@@ -68,8 +68,15 @@ export type InputStringProps = {
     onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onKeyDown?: (ev: React.KeyboardEvent<HTMLInputElement>) => void
     noColorStuff?: boolean
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
 }
-
 export const InputStringUI = observer(
     forwardRef(function WidgetStringUI_(p: InputStringProps, ref: ForwardedRef<HTMLInputElement>) {
         // getValue is mandatory, but it may avoid crash to be permissive about it's absense
@@ -84,6 +91,8 @@ export const InputStringUI = observer(
         const [reveal, setReveal] = useState(false)
         let inputTailwind: string | ClassLike[] | undefined
         let visualHelper: ReactElement<any, any> | undefined
+
+        const theme = cushy.theme.value
 
         switch (p.type) {
             case 'color':
@@ -115,7 +124,7 @@ export const InputStringUI = observer(
                 placeholder={p.placeholder}
                 autoFocus={p.autoFocus}
                 disabled={p.disabled}
-                value={p.buffered ? temporaryValue ?? value : value}
+                value={p.buffered ? (temporaryValue ?? value) : value}
                 onChange={(ev) => {
                     if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
                     else p.setValue(ev.currentTarget.value)
@@ -154,6 +163,18 @@ export const InputStringUI = observer(
                 base={csuite.inputContrast}
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover={3}
+                dropShadow={
+                    (p.dropShadow ?? theme.inputShadow)
+                        ? {
+                              x: theme.inputShadow.x,
+                              y: theme.inputShadow.y,
+                              color: theme.inputShadow.color,
+                              blur: theme.inputShadow.blur,
+                              opacity: theme.inputShadow.alpha,
+                          }
+                        : undefined
+                }
+                roundness={theme.inputRoundness}
                 border={
                     isDirty //
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
@@ -162,7 +183,7 @@ export const InputStringUI = observer(
                 tw={[
                     //
                     p.icon ? 'pr-1' : 'px-1',
-                    'UI-InputString h-input flex items-center relative text-sm rounded-sm',
+                    'UI-InputString h-input flex items-center relative text-sm ',
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {

@@ -40,6 +40,7 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
     return (
         <UI.Panel //
             // className='flex flex-col h-full'
+            tw={'!overflow-clip'}
             className={p.className}
             style={{ background: conf.value.galleryBgColor ?? undefined }}
         >
