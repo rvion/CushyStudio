@@ -253,7 +253,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             hover={{ contrast: 0.03 }}
             className={p.className}
             dropShadow={
-                (p.dropShadow ?? theme.inputShadow)
+                (uist.props.dropShadow ?? theme.inputShadow)
                     ? {
                           x: theme.inputShadow.x,
                           y: theme.inputShadow.y,
@@ -263,6 +263,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                       }
                     : undefined
             }
+            roundness={p.roundness ?? theme.inputRoundness}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[

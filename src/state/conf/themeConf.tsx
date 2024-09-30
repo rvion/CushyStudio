@@ -24,6 +24,7 @@ export type ThemeConf = X.XGroup<{
         x: X.XNumber
         y: X.XNumber
     }>
+    inputRoundness: X.XNumber
 }>
 
 export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
@@ -99,6 +100,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                     })
                     .optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
+                inputRoundness: ui.int({ default: 5, min: 0 }),
             },
             {
                 label: 'Theme',

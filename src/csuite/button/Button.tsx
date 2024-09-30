@@ -66,6 +66,7 @@ const _Button = observer(function Button_(
                         }
                       : undefined
             }
+            roundness={theme.inputRoundness}
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex}
             onMouseDown={uist.press}
@@ -85,7 +86,7 @@ const _Button = observer(function Button_(
                 // | 'font-semibold',
 
                 'ui-button',
-                'rounded-sm gap-1 items-center',
+                'gap-1 items-center',
                 p.disabled ? null : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',

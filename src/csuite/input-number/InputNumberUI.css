@@ -19,7 +19,3 @@ input::-webkit-inner-spin-button {
     max-width: 100%;
     height: 200px !important;
 }
-
-.input-number-roundness {
-    border-radius: var(--roundness);
-}

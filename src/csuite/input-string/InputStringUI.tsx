@@ -167,6 +167,7 @@ export const InputStringUI = observer(
                           }
                         : undefined
                 }
+                roundness={theme.inputRoundness}
                 border={
                     isDirty //
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
@@ -175,7 +176,7 @@ export const InputStringUI = observer(
                 tw={[
                     //
                     p.icon ? 'pr-1' : 'px-1',
-                    'UI-InputString h-input flex items-center relative text-sm rounded-sm',
+                    'UI-InputString h-input flex items-center relative text-sm ',
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {

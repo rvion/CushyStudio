@@ -62,6 +62,9 @@ export type FrameProps = {
     // /** when true flex=1 */
     expand?: boolean
 
+    /** border-radius */
+    roundness?: number | string
+
     /** HIGH LEVEL THEME-DEFINED BOX STYLES */
     look?: FrameAppearance
     // ICON ------------------------------------------------------------
@@ -89,6 +92,7 @@ export const Frame = observer(
 
             look,                                               // style: 1/4: frame templates
             base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
+            roundness,
             boxShadow, dropShadow,                              // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
@@ -117,7 +121,7 @@ export const Frame = observer(
         // 👉 2024-07-22 rvion: done
         const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
             ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
-            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow)
+            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow, roundness)
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent): void => {

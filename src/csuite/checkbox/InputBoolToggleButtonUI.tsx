@@ -69,6 +69,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                         }
                       : undefined
             }
+            roundness={theme.inputRoundness}
             expand={p.expand}
             style={p.style}
             hovered={p.hovered}

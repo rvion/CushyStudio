@@ -21,6 +21,7 @@ export type FrameCssVariables = {
     '--KLR'?: string
     '--DIR'?: string
     filter?: string
+    'border-radius'?: string
 }
 
 export type ComputedColors = {
@@ -42,6 +43,7 @@ export function computeColors(
     active: Maybe<boolean> = null,
     boxShadow: Maybe<SimpleBoxShadow> = null,
     dropShadow: Maybe<SimpleDropShadow> = null,
+    roundness: Maybe<number | string> = null,
 ): ComputedColors {
     // ------------------------------------------------------------
     const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow })
@@ -135,6 +137,11 @@ export function computeColors(
         const corrected = color.toOKLCH()
         variables['filter'] =
             `drop-shadow(${dropShadow.x ?? 0}px ${dropShadow.y ?? 0}px ${dropShadow.blur ?? 0}px ${corrected.toString()});`
+    }
+
+    if (roundness) {
+        console.log('[FD] - ROUNDNESS!!', roundness)
+        variables['border-radius'] = typeof roundness === 'number' ? `${roundness}px` : roundness
     }
 
     const OUT: ComputedColors = { variables, nextDir, KBase, nextext }
