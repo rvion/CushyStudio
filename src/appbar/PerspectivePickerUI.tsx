@@ -2,14 +2,14 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
-import { Frame } from '../csuite/frame/Frame'
+import { Frame, type FrameProps } from '../csuite/frame/Frame'
 import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 
-export const PerspectivePickerUI = observer(function PerspectivePicker(p: {}) {
+export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameProps) {
     const perspectives = cushy.db.perspective.all
     return (
-        <Frame row>
+        <Frame row {...p}>
             {perspectives.map((p) => (
                 <RevealUI
                     key={p.id}

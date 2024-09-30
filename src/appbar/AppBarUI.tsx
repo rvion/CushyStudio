@@ -49,7 +49,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <MenuUtilsUI />
             <MenuAboutUI />
             <MenuDebugUI />
-            <PerspectivePickerUI />
+            <PerspectivePickerUI tw='self-center mx-auto' />
 
             <SpacerUI />
             <HostWebsocketIndicatorUI host={mainHost} />
