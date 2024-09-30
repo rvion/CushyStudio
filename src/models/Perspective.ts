@@ -46,7 +46,25 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
         cushy.layout.openPerspective(this)
     }
 
-    saveSnapshot(): void {}
-    resetToSnapshot(): void {}
-    duplicate(): void {}
+    saveSnapshot(): void {
+        this.update({ layoutDefault: this.data.layout })
+    }
+    resetToSnapshot(): void {
+        this.update({ layout: this.data.layoutDefault ?? perspectiveHelper.default() })
+        cushy.layout.openPerspective(this)
+    }
+    duplicate(): void {
+        this.clone({ name: this.data.name + '2' }).open()
+    }
+    delete(): void {
+        const perspectives = cushy.db.perspective.all
+        if (perspectives.length === 1) {
+            console.error('Cannot delete last perspective')
+            return
+        }
+        if (cushy.layout.perspective === this) {
+            cushy.layout.openPerspective(perspectives.find((p) => p !== this)!)
+        }
+        super.delete()
+    }
 }
