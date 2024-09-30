@@ -10,6 +10,12 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
     return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+    // return (
+    //     <div>
+    //         <pre>{JSON.stringify(p.field.serial)}</pre>
+    //         <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+    //     </div>
+    // )
 })
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field: Field_size }) {
@@ -155,7 +161,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         />
     )
 
-    const portrait = uist.height / uist.width > 1.0
+    // const portrait = uist.height / uist.width > 1.0
 
     return (
         <Frame
