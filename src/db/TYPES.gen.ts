@@ -20,11 +20,14 @@ import type { StepL } from '../models/Step'
 import type { TreeEntryL } from '../models/TreeEntry'
 
 import { Type } from '@sinclair/typebox'
-import { Generated, Insertable, Selectable, Updateable } from 'kysely'
+import { Generated } from 'kysely'
 
 import * as T from './TYPES_json'
 
+// #region ComfyWorkflow
+
 export const asComfyWorkflowID = (s: string): ComfyWorkflowID => s as any
+
 export type ComfyWorkflowTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<ComfyWorkflowID>
@@ -39,9 +42,50 @@ export type ComfyWorkflowTable = {
     /** @default: "'{}'", sqlType: json */
     metadata: Generated<T.ComfyWorkflow_metadata>
 }
-export type NewComfyWorkflow = Insertable<ComfyWorkflowTable>
-export type ComfyWorkflowUpdate = Updateable<ComfyWorkflowTable>
-export type ComfyWorkflowT = Selectable<ComfyWorkflowTable>
+
+export type NewComfyWorkflow = {
+    id?: ComfyWorkflowID
+    comfyPromptJSON?: T.ComfyWorkflow_comfyPromptJSON
+    stepID?: Maybe<StepID>
+    metadata?: T.ComfyWorkflow_metadata
+}
+
+export type ComfyWorkflowUpdate = {
+    id?: never // ComfyWorkflowID
+    createdAt?: number
+    updatedAt?: number
+    comfyPromptJSON?: T.ComfyWorkflow_comfyPromptJSON
+    stepID?: StepID | null
+    metadata?: T.ComfyWorkflow_metadata
+}
+
+export type ComfyWorkflowBackRefs = {
+    project_rootGraphID?: ProjectTypes
+    step_outputGraphID?: StepTypes
+    comfy_prompt_graphID?: ComfyPromptTypes
+    runtime_error_graphID?: RuntimeErrorTypes
+}
+
+export type ComfyWorkflowT = {
+    id: ComfyWorkflowID
+    createdAt: number
+    updatedAt: number
+    comfyPromptJSON: T.ComfyWorkflow_comfyPromptJSON
+    stepID?: StepID | null
+    metadata: T.ComfyWorkflow_metadata
+}
+
+export type ComfyWorkflowTypes = {
+    TableName: 'comfy_workflow'
+    JSName: 'ComfyWorkflow'
+    Read: ComfyWorkflowT
+    Instance: ComfyWorkflowL
+    Create: NewComfyWorkflow
+    Update: ComfyWorkflowUpdate
+    ID: ComfyWorkflowID
+    Delete: ComfyWorkflowBackRefs
+}
+
 export const ComfyWorkflowSchema = Type.Object(
     {
         id: Type.String(),
@@ -54,12 +98,17 @@ export const ComfyWorkflowSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const ComfyWorkflowRefs = [{ fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+// prettier-ignore
+export const ComfyWorkflowRefs = [
+    { fromTable:'comfy_workflow', fromField:'stepID', toTable:'step', tofield:'id' }
+]
+
+// prettier-ignore
 export const ComfyWorkflowBackRefs = [
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable:'project', fromField:'rootGraphID', toTable:'comfy_workflow', tofield:'id' },
+    { fromTable:'step', fromField:'outputGraphID', toTable:'comfy_workflow', tofield:'id' },
+    { fromTable:'comfy_prompt', fromField:'graphID', toTable:'comfy_workflow', tofield:'id' },
+    { fromTable:'runtime_error', fromField:'graphID', toTable:'comfy_workflow', tofield:'id' }
 ]
 
 export const ComfyWorkflowFields = {
@@ -71,7 +120,10 @@ export const ComfyWorkflowFields = {
     metadata: { cid: 5, name: 'metadata', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
 }
 
+// #region Draft
+
 export const asDraftID = (s: string): DraftID => s as any
+
 export type DraftTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<DraftID>
@@ -94,9 +146,60 @@ export type DraftTable = {
     /** @default: null, sqlType: TEXT */
     canvasToolCategory?: Maybe<string>
 }
-export type NewDraft = Insertable<DraftTable>
-export type DraftUpdate = Updateable<DraftTable>
-export type DraftT = Selectable<DraftTable>
+
+export type NewDraft = {
+    id?: DraftID
+    title?: Maybe<string>
+    formSerial?: T.Draft_formSerial
+    appID?: CushyAppID
+    illustration?: Maybe<string>
+    isFavorite?: number
+    lastRunAt?: Maybe<number>
+    canvasToolCategory?: Maybe<string>
+}
+
+export type DraftUpdate = {
+    id?: never // DraftID
+    createdAt?: number
+    updatedAt?: number
+    title?: string | null
+    formSerial?: T.Draft_formSerial
+    appID?: CushyAppID
+    illustration?: string | null
+    isFavorite?: number
+    lastRunAt?: number | null
+    canvasToolCategory?: string | null
+}
+
+export type DraftBackRefs = {
+    project_currentDraftID?: ProjectTypes
+    step_draftID?: StepTypes
+}
+
+export type DraftT = {
+    id: DraftID
+    createdAt: number
+    updatedAt: number
+    title?: string | null
+    formSerial: T.Draft_formSerial
+    appID: CushyAppID
+    illustration?: string | null
+    isFavorite: number
+    lastRunAt?: number | null
+    canvasToolCategory?: string | null
+}
+
+export type DraftTypes = {
+    TableName: 'draft'
+    JSName: 'Draft'
+    Read: DraftT
+    Instance: DraftL
+    Create: NewDraft
+    Update: DraftUpdate
+    ID: DraftID
+    Delete: DraftBackRefs
+}
+
 export const DraftSchema = Type.Object(
     {
         id: Type.String(),
@@ -113,10 +216,15 @@ export const DraftSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const DraftRefs = [{ fromTable: 'draft', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' }]
+// prettier-ignore
+export const DraftRefs = [
+    { fromTable:'draft', fromField:'appID', toTable:'cushy_app', tofield:'id' }
+]
+
+// prettier-ignore
 export const DraftBackRefs = [
-    { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
+    { fromTable:'project', fromField:'currentDraftID', toTable:'draft', tofield:'id' },
+    { fromTable:'step', fromField:'draftID', toTable:'draft', tofield:'id' }
 ]
 
 export const DraftFields = {
@@ -132,7 +240,10 @@ export const DraftFields = {
     canvasToolCategory: { cid: 9, name: 'canvasToolCategory', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region Project
+
 export const asProjectID = (s: string): ProjectID => s as any
+
 export type ProjectTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<ProjectID>
@@ -155,9 +266,57 @@ export type ProjectTable = {
     /** @default: "100", sqlType: INT */
     autostartMaxDelay: Generated<number>
 }
-export type NewProject = Insertable<ProjectTable>
-export type ProjectUpdate = Updateable<ProjectTable>
-export type ProjectT = Selectable<ProjectTable>
+
+export type NewProject = {
+    id?: ProjectID
+    name?: Maybe<string>
+    rootGraphID?: ComfyWorkflowID
+    currentApp?: Maybe<string>
+    currentDraftID?: Maybe<DraftID>
+    filterNSFW?: number
+    autostartDelay?: number
+    autostartMaxDelay?: number
+}
+
+export type ProjectUpdate = {
+    id?: never // ProjectID
+    createdAt?: number
+    updatedAt?: number
+    name?: string | null
+    rootGraphID?: ComfyWorkflowID
+    currentApp?: string | null
+    currentDraftID?: DraftID | null
+    filterNSFW?: number
+    autostartDelay?: number
+    autostartMaxDelay?: number
+}
+
+export type ProjectBackRefs = {}
+
+export type ProjectT = {
+    id: ProjectID
+    createdAt: number
+    updatedAt: number
+    name?: string | null
+    rootGraphID: ComfyWorkflowID
+    currentApp?: string | null
+    currentDraftID?: DraftID | null
+    filterNSFW: number
+    autostartDelay: number
+    autostartMaxDelay: number
+}
+
+export type ProjectTypes = {
+    TableName: 'project'
+    JSName: 'Project'
+    Read: ProjectT
+    Instance: ProjectL
+    Create: NewProject
+    Update: ProjectUpdate
+    ID: ProjectID
+    Delete: ProjectBackRefs
+}
+
 export const ProjectSchema = Type.Object(
     {
         id: Type.String(),
@@ -174,10 +333,12 @@ export const ProjectSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const ProjectRefs = [
-    { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable:'project', fromField:'currentDraftID', toTable:'draft', tofield:'id' },
+    { fromTable:'project', fromField:'rootGraphID', toTable:'comfy_workflow', tofield:'id' }
 ]
+
 export const ProjectBackRefs = []
 
 export const ProjectFields = {
@@ -193,7 +354,10 @@ export const ProjectFields = {
     autostartMaxDelay: { cid: 9, name: 'autostartMaxDelay', type: 'INT', notnull: 1, dflt_value: '100', pk: 0 },
 }
 
+// #region Step
+
 export const asStepID = (s: string): StepID => s as any
+
 export type StepTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<StepID>
@@ -216,9 +380,67 @@ export type StepTable = {
     /** @default: null, sqlType: TEXT */
     draftID?: Maybe<DraftID>
 }
-export type NewStep = Insertable<StepTable>
-export type StepUpdate = Updateable<StepTable>
-export type StepT = Selectable<StepTable>
+
+export type NewStep = {
+    id?: StepID
+    name?: Maybe<string>
+    formSerial?: T.Step_formSerial
+    outputGraphID?: ComfyWorkflowID
+    status?: T.StatusT
+    isExpanded?: number
+    appID?: CushyAppID
+    draftID?: Maybe<DraftID>
+}
+
+export type StepUpdate = {
+    id?: never // StepID
+    createdAt?: number
+    updatedAt?: number
+    name?: string | null
+    formSerial?: T.Step_formSerial
+    outputGraphID?: ComfyWorkflowID
+    status?: T.StatusT
+    isExpanded?: number
+    appID?: CushyAppID
+    draftID?: DraftID | null
+}
+
+export type StepBackRefs = {
+    comfy_workflow_stepID?: ComfyWorkflowTypes
+    comfy_prompt_stepID?: ComfyPromptTypes
+    media_text_stepID?: MediaTextTypes
+    media_video_stepID?: MediaVideoTypes
+    media_image_stepID?: MediaImageTypes
+    media_3d_displacement_stepID?: Media3dDisplacementTypes
+    runtime_error_stepID?: RuntimeErrorTypes
+    media_splat_stepID?: MediaSplatTypes
+    media_custom_stepID?: MediaCustomTypes
+}
+
+export type StepT = {
+    id: StepID
+    createdAt: number
+    updatedAt: number
+    name?: string | null
+    formSerial: T.Step_formSerial
+    outputGraphID: ComfyWorkflowID
+    status: T.StatusT
+    isExpanded: number
+    appID: CushyAppID
+    draftID?: DraftID | null
+}
+
+export type StepTypes = {
+    TableName: 'step'
+    JSName: 'Step'
+    Read: StepT
+    Instance: StepL
+    Create: NewStep
+    Update: StepUpdate
+    ID: StepID
+    Delete: StepBackRefs
+}
+
 export const StepSchema = Type.Object(
     {
         id: Type.String(),
@@ -235,21 +457,24 @@ export const StepSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const StepRefs = [
-    { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable:'step', fromField:'draftID', toTable:'draft', tofield:'id' },
+    { fromTable:'step', fromField:'appID', toTable:'cushy_app', tofield:'id' },
+    { fromTable:'step', fromField:'outputGraphID', toTable:'comfy_workflow', tofield:'id' }
 ]
+
+// prettier-ignore
 export const StepBackRefs = [
-    { fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_splat', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_custom', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable:'comfy_workflow', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'comfy_prompt', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_text', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_video', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_image', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_3d_displacement', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'runtime_error', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_splat', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_custom', fromField:'stepID', toTable:'step', tofield:'id' }
 ]
 
 export const StepFields = {
@@ -265,7 +490,10 @@ export const StepFields = {
     draftID: { cid: 9, name: 'draftID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region ComfyPrompt
+
 export const asComfyPromptID = (s: string): ComfyPromptID => s as any
+
 export type ComfyPromptTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<ComfyPromptID>
@@ -284,9 +512,56 @@ export type ComfyPromptTable = {
     /** @default: null, sqlType: TEXT */
     status?: Maybe<T.StatusT>
 }
-export type NewComfyPrompt = Insertable<ComfyPromptTable>
-export type ComfyPromptUpdate = Updateable<ComfyPromptTable>
-export type ComfyPromptT = Selectable<ComfyPromptTable>
+
+export type NewComfyPrompt = {
+    id?: ComfyPromptID
+    stepID?: StepID
+    graphID?: ComfyWorkflowID
+    executed?: number
+    error?: Maybe<T.ComfyPrompt_error>
+    status?: Maybe<T.StatusT>
+}
+
+export type ComfyPromptUpdate = {
+    id?: never // ComfyPromptID
+    createdAt?: number
+    updatedAt?: number
+    stepID?: StepID
+    graphID?: ComfyWorkflowID
+    executed?: number
+    error?: T.ComfyPrompt_error | null
+    status?: T.StatusT | null
+}
+
+export type ComfyPromptBackRefs = {
+    media_video_promptID?: MediaVideoTypes
+    media_image_promptID?: MediaImageTypes
+    media_3d_displacement_promptID?: Media3dDisplacementTypes
+    runtime_error_promptID?: RuntimeErrorTypes
+}
+
+export type ComfyPromptT = {
+    id: ComfyPromptID
+    createdAt: number
+    updatedAt: number
+    stepID: StepID
+    graphID: ComfyWorkflowID
+    executed: number
+    error?: T.ComfyPrompt_error | null
+    status?: T.StatusT | null
+}
+
+export type ComfyPromptTypes = {
+    TableName: 'comfy_prompt'
+    JSName: 'ComfyPrompt'
+    Read: ComfyPromptT
+    Instance: ComfyPromptL
+    Create: NewComfyPrompt
+    Update: ComfyPromptUpdate
+    ID: ComfyPromptID
+    Delete: ComfyPromptBackRefs
+}
+
 export const ComfyPromptSchema = Type.Object(
     {
         id: Type.String(),
@@ -301,15 +576,18 @@ export const ComfyPromptSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const ComfyPromptRefs = [
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable:'comfy_prompt', fromField:'graphID', toTable:'comfy_workflow', tofield:'id' },
+    { fromTable:'comfy_prompt', fromField:'stepID', toTable:'step', tofield:'id' }
 ]
+
+// prettier-ignore
 export const ComfyPromptBackRefs = [
-    { fromTable: 'media_video', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    { fromTable:'media_video', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' },
+    { fromTable:'media_image', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' },
+    { fromTable:'media_3d_displacement', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' },
+    { fromTable:'runtime_error', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' }
 ]
 
 export const ComfyPromptFields = {
@@ -323,7 +601,10 @@ export const ComfyPromptFields = {
     status: { cid: 7, name: 'status', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region ComfySchema
+
 export const asComfySchemaID = (s: string): ComfySchemaID => s as any
+
 export type ComfySchemaTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<ComfySchemaID>
@@ -338,9 +619,45 @@ export type ComfySchemaTable = {
     /** @default: null, sqlType: TEXT */
     hostID?: Maybe<HostID>
 }
-export type NewComfySchema = Insertable<ComfySchemaTable>
-export type ComfySchemaUpdate = Updateable<ComfySchemaTable>
-export type ComfySchemaT = Selectable<ComfySchemaTable>
+
+export type NewComfySchema = {
+    id?: ComfySchemaID
+    spec?: T.ComfySchema_spec
+    embeddings?: T.ComfySchema_embeddings
+    hostID?: Maybe<HostID>
+}
+
+export type ComfySchemaUpdate = {
+    id?: never // ComfySchemaID
+    createdAt?: number
+    updatedAt?: number
+    spec?: T.ComfySchema_spec
+    embeddings?: T.ComfySchema_embeddings
+    hostID?: HostID | null
+}
+
+export type ComfySchemaBackRefs = {}
+
+export type ComfySchemaT = {
+    id: ComfySchemaID
+    createdAt: number
+    updatedAt: number
+    spec: T.ComfySchema_spec
+    embeddings: T.ComfySchema_embeddings
+    hostID?: HostID | null
+}
+
+export type ComfySchemaTypes = {
+    TableName: 'comfy_schema'
+    JSName: 'ComfySchema'
+    Read: ComfySchemaT
+    Instance: ComfySchemaL
+    Create: NewComfySchema
+    Update: ComfySchemaUpdate
+    ID: ComfySchemaID
+    Delete: ComfySchemaBackRefs
+}
+
 export const ComfySchemaSchema = Type.Object(
     {
         id: Type.String(),
@@ -353,7 +670,11 @@ export const ComfySchemaSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const ComfySchemaRefs = [{ fromTable: 'comfy_schema', fromField: 'hostID', toTable: 'host', tofield: 'id' }]
+// prettier-ignore
+export const ComfySchemaRefs = [
+    { fromTable:'comfy_schema', fromField:'hostID', toTable:'host', tofield:'id' }
+]
+
 export const ComfySchemaBackRefs = []
 
 export const ComfySchemaFields = {
@@ -365,7 +686,10 @@ export const ComfySchemaFields = {
     hostID: { cid: 5, name: 'hostID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region MediaText
+
 export const asMediaTextID = (s: string): MediaTextID => s as any
+
 export type MediaTextTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<MediaTextID>
@@ -382,9 +706,48 @@ export type MediaTextTable = {
     /** @default: "''", sqlType: TEXT */
     title: Generated<string>
 }
-export type NewMediaText = Insertable<MediaTextTable>
-export type MediaTextUpdate = Updateable<MediaTextTable>
-export type MediaTextT = Selectable<MediaTextTable>
+
+export type NewMediaText = {
+    id?: MediaTextID
+    kind?: string
+    content?: string
+    stepID?: Maybe<StepID>
+    title?: string
+}
+
+export type MediaTextUpdate = {
+    id?: never // MediaTextID
+    createdAt?: number
+    updatedAt?: number
+    kind?: string
+    content?: string
+    stepID?: StepID | null
+    title?: string
+}
+
+export type MediaTextBackRefs = {}
+
+export type MediaTextT = {
+    id: MediaTextID
+    createdAt: number
+    updatedAt: number
+    kind: string
+    content: string
+    stepID?: StepID | null
+    title: string
+}
+
+export type MediaTextTypes = {
+    TableName: 'media_text'
+    JSName: 'MediaText'
+    Read: MediaTextT
+    Instance: MediaTextL
+    Create: NewMediaText
+    Update: MediaTextUpdate
+    ID: MediaTextID
+    Delete: MediaTextBackRefs
+}
+
 export const MediaTextSchema = Type.Object(
     {
         id: Type.String(),
@@ -398,7 +761,11 @@ export const MediaTextSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaTextRefs = [{ fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+// prettier-ignore
+export const MediaTextRefs = [
+    { fromTable:'media_text', fromField:'stepID', toTable:'step', tofield:'id' }
+]
+
 export const MediaTextBackRefs = []
 
 export const MediaTextFields = {
@@ -411,7 +778,10 @@ export const MediaTextFields = {
     title: { cid: 6, name: 'title', type: 'TEXT', notnull: 1, dflt_value: "''", pk: 0 },
 }
 
+// #region MediaVideo
+
 export const asMediaVideoID = (s: string): MediaVideoID => s as any
+
 export type MediaVideoTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<MediaVideoID>
@@ -430,9 +800,51 @@ export type MediaVideoTable = {
     /** @default: null, sqlType: TEXT */
     url: string
 }
-export type NewMediaVideo = Insertable<MediaVideoTable>
-export type MediaVideoUpdate = Updateable<MediaVideoTable>
-export type MediaVideoT = Selectable<MediaVideoTable>
+
+export type NewMediaVideo = {
+    id?: MediaVideoID
+    absPath?: Maybe<string>
+    stepID?: Maybe<StepID>
+    promptID?: Maybe<ComfyPromptID>
+    filePath?: Maybe<string>
+    url?: string
+}
+
+export type MediaVideoUpdate = {
+    id?: never // MediaVideoID
+    createdAt?: number
+    updatedAt?: number
+    absPath?: string | null
+    stepID?: StepID | null
+    promptID?: ComfyPromptID | null
+    filePath?: string | null
+    url?: string
+}
+
+export type MediaVideoBackRefs = {}
+
+export type MediaVideoT = {
+    id: MediaVideoID
+    createdAt: number
+    updatedAt: number
+    absPath?: string | null
+    stepID?: StepID | null
+    promptID?: ComfyPromptID | null
+    filePath?: string | null
+    url: string
+}
+
+export type MediaVideoTypes = {
+    TableName: 'media_video'
+    JSName: 'MediaVideo'
+    Read: MediaVideoT
+    Instance: MediaVideoL
+    Create: NewMediaVideo
+    Update: MediaVideoUpdate
+    ID: MediaVideoID
+    Delete: MediaVideoBackRefs
+}
+
 export const MediaVideoSchema = Type.Object(
     {
         id: Type.String(),
@@ -447,10 +859,12 @@ export const MediaVideoSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const MediaVideoRefs = [
-    { fromTable: 'media_video', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable:'media_video', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' },
+    { fromTable:'media_video', fromField:'stepID', toTable:'step', tofield:'id' }
 ]
+
 export const MediaVideoBackRefs = []
 
 export const MediaVideoFields = {
@@ -464,7 +878,10 @@ export const MediaVideoFields = {
     url: { cid: 7, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
+// #region MediaImage
+
 export const asMediaImageID = (s: string): MediaImageID => s as any
+
 export type MediaImageTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<MediaImageID>
@@ -503,9 +920,81 @@ export type MediaImageTable = {
     /** @default: null, sqlType: json */
     safetyRating?: Maybe<T.MediaImage_safetyRating>
 }
-export type NewMediaImage = Insertable<MediaImageTable>
-export type MediaImageUpdate = Updateable<MediaImageTable>
-export type MediaImageT = Selectable<MediaImageTable>
+
+export type NewMediaImage = {
+    id?: MediaImageID
+    star?: Maybe<number>
+    promptID?: Maybe<ComfyPromptID>
+    stepID?: Maybe<StepID>
+    promptNodeID?: Maybe<string>
+    width?: number
+    height?: number
+    fileSize?: number
+    hash?: string
+    path?: string
+    comfyUIInfos?: Maybe<T.MediaImage_comfyUIInfos>
+    type?: Maybe<string>
+    orientation?: Maybe<number>
+    tags?: Maybe<string>
+    thumbnail?: Maybe<string>
+    safetyRating?: Maybe<T.MediaImage_safetyRating>
+}
+
+export type MediaImageUpdate = {
+    id?: never // MediaImageID
+    createdAt?: number
+    updatedAt?: number
+    star?: number | null
+    promptID?: ComfyPromptID | null
+    stepID?: StepID | null
+    promptNodeID?: string | null
+    width?: number
+    height?: number
+    fileSize?: number
+    hash?: string
+    path?: string
+    comfyUIInfos?: T.MediaImage_comfyUIInfos | null
+    type?: string | null
+    orientation?: number | null
+    tags?: string | null
+    thumbnail?: string | null
+    safetyRating?: T.MediaImage_safetyRating | null
+}
+
+export type MediaImageBackRefs = {}
+
+export type MediaImageT = {
+    id: MediaImageID
+    createdAt: number
+    updatedAt: number
+    star?: number | null
+    promptID?: ComfyPromptID | null
+    stepID?: StepID | null
+    promptNodeID?: string | null
+    width: number
+    height: number
+    fileSize: number
+    hash: string
+    path: string
+    comfyUIInfos?: T.MediaImage_comfyUIInfos | null
+    type?: string | null
+    orientation?: number | null
+    tags?: string | null
+    thumbnail?: string | null
+    safetyRating?: T.MediaImage_safetyRating | null
+}
+
+export type MediaImageTypes = {
+    TableName: 'media_image'
+    JSName: 'MediaImage'
+    Read: MediaImageT
+    Instance: MediaImageL
+    Create: NewMediaImage
+    Update: MediaImageUpdate
+    ID: MediaImageID
+    Delete: MediaImageBackRefs
+}
+
 export const MediaImageSchema = Type.Object(
     {
         id: Type.String(),
@@ -530,10 +1019,12 @@ export const MediaImageSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const MediaImageRefs = [
-    { fromTable: 'media_image', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    { fromTable:'media_image', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'media_image', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' }
 ]
+
 export const MediaImageBackRefs = []
 
 export const MediaImageFields = {
@@ -557,7 +1048,10 @@ export const MediaImageFields = {
     safetyRating: { cid: 17, name: 'safetyRating', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region Media3dDisplacement
+
 export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
+
 export type Media3dDisplacementTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<Media3dDisplacementID>
@@ -580,9 +1074,57 @@ export type Media3dDisplacementTable = {
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>
 }
-export type NewMedia3dDisplacement = Insertable<Media3dDisplacementTable>
-export type Media3dDisplacementUpdate = Updateable<Media3dDisplacementTable>
-export type Media3dDisplacementT = Selectable<Media3dDisplacementTable>
+
+export type NewMedia3dDisplacement = {
+    id?: Media3dDisplacementID
+    width?: Maybe<number>
+    height?: Maybe<number>
+    image?: Maybe<string>
+    depthMap?: Maybe<string>
+    normalMap?: Maybe<string>
+    stepID?: Maybe<StepID>
+    promptID?: Maybe<ComfyPromptID>
+}
+
+export type Media3dDisplacementUpdate = {
+    id?: never // Media3dDisplacementID
+    createdAt?: number
+    updatedAt?: number
+    width?: number | null
+    height?: number | null
+    image?: string | null
+    depthMap?: string | null
+    normalMap?: string | null
+    stepID?: StepID | null
+    promptID?: ComfyPromptID | null
+}
+
+export type Media3dDisplacementBackRefs = {}
+
+export type Media3dDisplacementT = {
+    id: Media3dDisplacementID
+    createdAt: number
+    updatedAt: number
+    width?: number | null
+    height?: number | null
+    image?: string | null
+    depthMap?: string | null
+    normalMap?: string | null
+    stepID?: StepID | null
+    promptID?: ComfyPromptID | null
+}
+
+export type Media3dDisplacementTypes = {
+    TableName: 'media_3d_displacement'
+    JSName: 'Media3dDisplacement'
+    Read: Media3dDisplacementT
+    Instance: Media3dDisplacementL
+    Create: NewMedia3dDisplacement
+    Update: Media3dDisplacementUpdate
+    ID: Media3dDisplacementID
+    Delete: Media3dDisplacementBackRefs
+}
+
 export const Media3dDisplacementSchema = Type.Object(
     {
         id: Type.String(),
@@ -599,10 +1141,12 @@ export const Media3dDisplacementSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const Media3dDisplacementRefs = [
-    { fromTable: 'media_3d_displacement', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable:'media_3d_displacement', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' },
+    { fromTable:'media_3d_displacement', fromField:'stepID', toTable:'step', tofield:'id' }
 ]
+
 export const Media3dDisplacementBackRefs = []
 
 export const Media3dDisplacementFields = {
@@ -618,7 +1162,10 @@ export const Media3dDisplacementFields = {
     promptID: { cid: 9, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region RuntimeError
+
 export const asRuntimeErrorID = (s: string): RuntimeErrorID => s as any
+
 export type RuntimeErrorTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<RuntimeErrorID>
@@ -637,9 +1184,51 @@ export type RuntimeErrorTable = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>
 }
-export type NewRuntimeError = Insertable<RuntimeErrorTable>
-export type RuntimeErrorUpdate = Updateable<RuntimeErrorTable>
-export type RuntimeErrorT = Selectable<RuntimeErrorTable>
+
+export type NewRuntimeError = {
+    id?: RuntimeErrorID
+    message?: string
+    infos?: T.RuntimeError_infos
+    promptID?: Maybe<ComfyPromptID>
+    graphID?: Maybe<ComfyWorkflowID>
+    stepID?: Maybe<StepID>
+}
+
+export type RuntimeErrorUpdate = {
+    id?: never // RuntimeErrorID
+    createdAt?: number
+    updatedAt?: number
+    message?: string
+    infos?: T.RuntimeError_infos
+    promptID?: ComfyPromptID | null
+    graphID?: ComfyWorkflowID | null
+    stepID?: StepID | null
+}
+
+export type RuntimeErrorBackRefs = {}
+
+export type RuntimeErrorT = {
+    id: RuntimeErrorID
+    createdAt: number
+    updatedAt: number
+    message: string
+    infos: T.RuntimeError_infos
+    promptID?: ComfyPromptID | null
+    graphID?: ComfyWorkflowID | null
+    stepID?: StepID | null
+}
+
+export type RuntimeErrorTypes = {
+    TableName: 'runtime_error'
+    JSName: 'RuntimeError'
+    Read: RuntimeErrorT
+    Instance: RuntimeErrorL
+    Create: NewRuntimeError
+    Update: RuntimeErrorUpdate
+    ID: RuntimeErrorID
+    Delete: RuntimeErrorBackRefs
+}
+
 export const RuntimeErrorSchema = Type.Object(
     {
         id: Type.String(),
@@ -654,11 +1243,13 @@ export const RuntimeErrorSchema = Type.Object(
     { additionalProperties: false },
 )
 
+// prettier-ignore
 export const RuntimeErrorRefs = [
-    { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    { fromTable:'runtime_error', fromField:'stepID', toTable:'step', tofield:'id' },
+    { fromTable:'runtime_error', fromField:'graphID', toTable:'comfy_workflow', tofield:'id' },
+    { fromTable:'runtime_error', fromField:'promptID', toTable:'comfy_prompt', tofield:'id' }
 ]
+
 export const RuntimeErrorBackRefs = []
 
 export const RuntimeErrorFields = {
@@ -672,7 +1263,10 @@ export const RuntimeErrorFields = {
     stepID: { cid: 7, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region MediaSplat
+
 export const asMediaSplatID = (s: string): MediaSplatID => s as any
+
 export type MediaSplatTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<MediaSplatID>
@@ -685,9 +1279,42 @@ export type MediaSplatTable = {
     /** @default: null, sqlType: TEXT */
     url: string
 }
-export type NewMediaSplat = Insertable<MediaSplatTable>
-export type MediaSplatUpdate = Updateable<MediaSplatTable>
-export type MediaSplatT = Selectable<MediaSplatTable>
+
+export type NewMediaSplat = {
+    id?: MediaSplatID
+    stepID?: Maybe<StepID>
+    url?: string
+}
+
+export type MediaSplatUpdate = {
+    id?: never // MediaSplatID
+    createdAt?: number
+    updatedAt?: number
+    stepID?: StepID | null
+    url?: string
+}
+
+export type MediaSplatBackRefs = {}
+
+export type MediaSplatT = {
+    id: MediaSplatID
+    createdAt: number
+    updatedAt: number
+    stepID?: StepID | null
+    url: string
+}
+
+export type MediaSplatTypes = {
+    TableName: 'media_splat'
+    JSName: 'MediaSplat'
+    Read: MediaSplatT
+    Instance: MediaSplatL
+    Create: NewMediaSplat
+    Update: MediaSplatUpdate
+    ID: MediaSplatID
+    Delete: MediaSplatBackRefs
+}
+
 export const MediaSplatSchema = Type.Object(
     {
         id: Type.String(),
@@ -699,7 +1326,11 @@ export const MediaSplatSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaSplatRefs = [{ fromTable: 'media_splat', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+// prettier-ignore
+export const MediaSplatRefs = [
+    { fromTable:'media_splat', fromField:'stepID', toTable:'step', tofield:'id' }
+]
+
 export const MediaSplatBackRefs = []
 
 export const MediaSplatFields = {
@@ -710,7 +1341,10 @@ export const MediaSplatFields = {
     url: { cid: 4, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
+// #region CustomData
+
 export const asCustomDataID = (s: string): CustomDataID => s as any
+
 export type CustomDataTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<CustomDataID>
@@ -721,9 +1355,39 @@ export type CustomDataTable = {
     /** @default: "'{}'", sqlType: json */
     json: Generated<T.CustomData_json>
 }
-export type NewCustomData = Insertable<CustomDataTable>
-export type CustomDataUpdate = Updateable<CustomDataTable>
-export type CustomDataT = Selectable<CustomDataTable>
+
+export type NewCustomData = {
+    id?: CustomDataID
+    json?: T.CustomData_json
+}
+
+export type CustomDataUpdate = {
+    id?: never // CustomDataID
+    createdAt?: number
+    updatedAt?: number
+    json?: T.CustomData_json
+}
+
+export type CustomDataBackRefs = {}
+
+export type CustomDataT = {
+    id: CustomDataID
+    createdAt: number
+    updatedAt: number
+    json: T.CustomData_json
+}
+
+export type CustomDataTypes = {
+    TableName: 'custom_data'
+    JSName: 'CustomData'
+    Read: CustomDataT
+    Instance: CustomDataL
+    Create: NewCustomData
+    Update: CustomDataUpdate
+    ID: CustomDataID
+    Delete: CustomDataBackRefs
+}
+
 export const CustomDataSchema = Type.Object(
     {
         id: Type.String(),
@@ -735,6 +1399,7 @@ export const CustomDataSchema = Type.Object(
 )
 
 export const CustomDataRefs = []
+
 export const CustomDataBackRefs = []
 
 export const CustomDataFields = {
@@ -744,7 +1409,10 @@ export const CustomDataFields = {
     json: { cid: 3, name: 'json', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
 }
 
+// #region CushyScript
+
 export const asCushyScriptID = (s: string): CushyScriptID => s as any
+
 export type CushyScriptTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<CushyScriptID>
@@ -765,9 +1433,56 @@ export type CushyScriptTable = {
     /** @default: null, sqlType: INT */
     lastExtractedAt?: Maybe<number>
 }
-export type NewCushyScript = Insertable<CushyScriptTable>
-export type CushyScriptUpdate = Updateable<CushyScriptTable>
-export type CushyScriptT = Selectable<CushyScriptTable>
+
+export type NewCushyScript = {
+    id?: CushyScriptID
+    path?: string
+    code?: string
+    lastEvaluatedAt?: Maybe<number>
+    lastSuccessfulEvaluationAt?: Maybe<number>
+    metafile?: Maybe<T.CushyScript_metafile>
+    lastExtractedAt?: Maybe<number>
+}
+
+export type CushyScriptUpdate = {
+    id?: never // CushyScriptID
+    createdAt?: number
+    updatedAt?: number
+    path?: string
+    code?: string
+    lastEvaluatedAt?: number | null
+    lastSuccessfulEvaluationAt?: number | null
+    metafile?: T.CushyScript_metafile | null
+    lastExtractedAt?: number | null
+}
+
+export type CushyScriptBackRefs = {
+    cushy_app_scriptID?: CushyAppTypes
+}
+
+export type CushyScriptT = {
+    id: CushyScriptID
+    createdAt: number
+    updatedAt: number
+    path: string
+    code: string
+    lastEvaluatedAt?: number | null
+    lastSuccessfulEvaluationAt?: number | null
+    metafile?: T.CushyScript_metafile | null
+    lastExtractedAt?: number | null
+}
+
+export type CushyScriptTypes = {
+    TableName: 'cushy_script'
+    JSName: 'CushyScript'
+    Read: CushyScriptT
+    Instance: CushyScriptL
+    Create: NewCushyScript
+    Update: CushyScriptUpdate
+    ID: CushyScriptID
+    Delete: CushyScriptBackRefs
+}
+
 export const CushyScriptSchema = Type.Object(
     {
         id: Type.String(),
@@ -784,7 +1499,11 @@ export const CushyScriptSchema = Type.Object(
 )
 
 export const CushyScriptRefs = []
-export const CushyScriptBackRefs = [{ fromTable: 'cushy_app', fromField: 'scriptID', toTable: 'cushy_script', tofield: 'id' }]
+
+// prettier-ignore
+export const CushyScriptBackRefs = [
+    { fromTable:'cushy_app', fromField:'scriptID', toTable:'cushy_script', tofield:'id' }
+]
 
 export const CushyScriptFields = {
     id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
@@ -798,7 +1517,10 @@ export const CushyScriptFields = {
     lastExtractedAt: { cid: 8, name: 'lastExtractedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region CushyApp
+
 export const asCushyAppID = (s: string): CushyAppID => s as any
+
 export type CushyAppTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<CushyAppID>
@@ -829,9 +1551,72 @@ export type CushyAppTable = {
     /** @default: null, sqlType: INT */
     lastRunAt?: Maybe<number>
 }
-export type NewCushyApp = Insertable<CushyAppTable>
-export type CushyAppUpdate = Updateable<CushyAppTable>
-export type CushyAppT = Selectable<CushyAppTable>
+
+export type NewCushyApp = {
+    id?: CushyAppID
+    guid?: Maybe<string>
+    scriptID?: CushyScriptID
+    name?: Maybe<string>
+    illustration?: Maybe<string>
+    description?: Maybe<string>
+    tags?: Maybe<string>
+    publishedAsUserID?: Maybe<string>
+    publishedAt?: Maybe<number>
+    isFavorite?: number
+    canStartFromImage?: Maybe<number>
+    lastRunAt?: Maybe<number>
+}
+
+export type CushyAppUpdate = {
+    id?: never // CushyAppID
+    createdAt?: number
+    updatedAt?: number
+    guid?: string | null
+    scriptID?: CushyScriptID
+    name?: string | null
+    illustration?: string | null
+    description?: string | null
+    tags?: string | null
+    publishedAsUserID?: string | null
+    publishedAt?: number | null
+    isFavorite?: number
+    canStartFromImage?: number | null
+    lastRunAt?: number | null
+}
+
+export type CushyAppBackRefs = {
+    draft_appID?: DraftTypes
+    step_appID?: StepTypes
+}
+
+export type CushyAppT = {
+    id: CushyAppID
+    createdAt: number
+    updatedAt: number
+    guid?: string | null
+    scriptID: CushyScriptID
+    name?: string | null
+    illustration?: string | null
+    description?: string | null
+    tags?: string | null
+    publishedAsUserID?: string | null
+    publishedAt?: number | null
+    isFavorite: number
+    canStartFromImage?: number | null
+    lastRunAt?: number | null
+}
+
+export type CushyAppTypes = {
+    TableName: 'cushy_app'
+    JSName: 'CushyApp'
+    Read: CushyAppT
+    Instance: CushyAppL
+    Create: NewCushyApp
+    Update: CushyAppUpdate
+    ID: CushyAppID
+    Delete: CushyAppBackRefs
+}
+
 export const CushyAppSchema = Type.Object(
     {
         id: Type.String(),
@@ -852,10 +1637,15 @@ export const CushyAppSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const CushyAppRefs = [{ fromTable: 'cushy_app', fromField: 'scriptID', toTable: 'cushy_script', tofield: 'id' }]
+// prettier-ignore
+export const CushyAppRefs = [
+    { fromTable:'cushy_app', fromField:'scriptID', toTable:'cushy_script', tofield:'id' }
+]
+
+// prettier-ignore
 export const CushyAppBackRefs = [
-    { fromTable: 'draft', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
+    { fromTable:'draft', fromField:'appID', toTable:'cushy_app', tofield:'id' },
+    { fromTable:'step', fromField:'appID', toTable:'cushy_app', tofield:'id' }
 ]
 
 export const CushyAppFields = {
@@ -875,7 +1665,10 @@ export const CushyAppFields = {
     lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region Auth
+
 export const asAuthID = (s: string): AuthID => s as any
+
 export type AuthTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<AuthID>
@@ -898,9 +1691,57 @@ export type AuthTable = {
     /** @default: null, sqlType: INT */
     expires_in?: Maybe<number>
 }
-export type NewAuth = Insertable<AuthTable>
-export type AuthUpdate = Updateable<AuthTable>
-export type AuthT = Selectable<AuthTable>
+
+export type NewAuth = {
+    id?: AuthID
+    provider_token?: Maybe<string>
+    refresh_token?: Maybe<string>
+    token_type?: Maybe<string>
+    access_token?: Maybe<string>
+    provider_refresh_token?: Maybe<string>
+    expires_at?: Maybe<number>
+    expires_in?: Maybe<number>
+}
+
+export type AuthUpdate = {
+    id?: never // AuthID
+    createdAt?: number
+    updatedAt?: number
+    provider_token?: string | null
+    refresh_token?: string | null
+    token_type?: string | null
+    access_token?: string | null
+    provider_refresh_token?: string | null
+    expires_at?: number | null
+    expires_in?: number | null
+}
+
+export type AuthBackRefs = {}
+
+export type AuthT = {
+    id: AuthID
+    createdAt: number
+    updatedAt: number
+    provider_token?: string | null
+    refresh_token?: string | null
+    token_type?: string | null
+    access_token?: string | null
+    provider_refresh_token?: string | null
+    expires_at?: number | null
+    expires_in?: number | null
+}
+
+export type AuthTypes = {
+    TableName: 'auth'
+    JSName: 'Auth'
+    Read: AuthT
+    Instance: AuthL
+    Create: NewAuth
+    Update: AuthUpdate
+    ID: AuthID
+    Delete: AuthBackRefs
+}
+
 export const AuthSchema = Type.Object(
     {
         id: Type.String(),
@@ -918,6 +1759,7 @@ export const AuthSchema = Type.Object(
 )
 
 export const AuthRefs = []
+
 export const AuthBackRefs = []
 
 export const AuthFields = {
@@ -933,7 +1775,10 @@ export const AuthFields = {
     expires_in: { cid: 9, name: 'expires_in', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
+// #region TreeEntry
+
 export const asTreeEntryID = (s: string): TreeEntryID => s as any
+
 export type TreeEntryTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<TreeEntryID>
@@ -946,9 +1791,42 @@ export type TreeEntryTable = {
     /** @default: "0", sqlType: INT */
     isSelected?: Generated<Maybe<number>>
 }
-export type NewTreeEntry = Insertable<TreeEntryTable>
-export type TreeEntryUpdate = Updateable<TreeEntryTable>
-export type TreeEntryT = Selectable<TreeEntryTable>
+
+export type NewTreeEntry = {
+    id?: TreeEntryID
+    isExpanded?: Maybe<number>
+    isSelected?: Maybe<number>
+}
+
+export type TreeEntryUpdate = {
+    id?: never // TreeEntryID
+    createdAt?: number
+    updatedAt?: number
+    isExpanded?: number | null
+    isSelected?: number | null
+}
+
+export type TreeEntryBackRefs = {}
+
+export type TreeEntryT = {
+    id: TreeEntryID
+    createdAt: number
+    updatedAt: number
+    isExpanded?: number | null
+    isSelected?: number | null
+}
+
+export type TreeEntryTypes = {
+    TableName: 'tree_entry'
+    JSName: 'TreeEntry'
+    Read: TreeEntryT
+    Instance: TreeEntryL
+    Create: NewTreeEntry
+    Update: TreeEntryUpdate
+    ID: TreeEntryID
+    Delete: TreeEntryBackRefs
+}
+
 export const TreeEntrySchema = Type.Object(
     {
         id: Type.String(),
@@ -961,6 +1839,7 @@ export const TreeEntrySchema = Type.Object(
 )
 
 export const TreeEntryRefs = []
+
 export const TreeEntryBackRefs = []
 
 export const TreeEntryFields = {
@@ -971,7 +1850,10 @@ export const TreeEntryFields = {
     isSelected: { cid: 4, name: 'isSelected', type: 'INT', notnull: 0, dflt_value: '0', pk: 0 },
 }
 
+// #region Host
+
 export const asHostID = (s: string): HostID => s as any
+
 export type HostTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<HostID>
@@ -998,9 +1880,65 @@ export type HostTable = {
     /** @default: "0", sqlType: INT */
     isReadonly: Generated<number>
 }
-export type NewHost = Insertable<HostTable>
-export type HostUpdate = Updateable<HostTable>
-export type HostT = Selectable<HostTable>
+
+export type NewHost = {
+    id?: HostID
+    name?: string
+    hostname?: string
+    port?: number
+    useHttps?: number
+    isLocal?: number
+    absolutePathToComfyUI?: Maybe<string>
+    absolutPathToDownloadModelsTo?: Maybe<string>
+    isVirtual?: number
+    isReadonly?: number
+}
+
+export type HostUpdate = {
+    id?: never // HostID
+    createdAt?: number
+    updatedAt?: number
+    name?: string
+    hostname?: string
+    port?: number
+    useHttps?: number
+    isLocal?: number
+    absolutePathToComfyUI?: string | null
+    absolutPathToDownloadModelsTo?: string | null
+    isVirtual?: number
+    isReadonly?: number
+}
+
+export type HostBackRefs = {
+    comfy_schema_hostID?: ComfySchemaTypes
+}
+
+export type HostT = {
+    id: HostID
+    createdAt: number
+    updatedAt: number
+    name: string
+    hostname: string
+    port: number
+    useHttps: number
+    isLocal: number
+    absolutePathToComfyUI?: string | null
+    absolutPathToDownloadModelsTo?: string | null
+    isVirtual: number
+    isReadonly: number
+}
+
+export type HostTypes = {
+    TableName: 'host'
+    JSName: 'Host'
+    Read: HostT
+    Instance: HostL
+    Create: NewHost
+    Update: HostUpdate
+    ID: HostID
+    Delete: HostBackRefs
+}
+
 export const HostSchema = Type.Object(
     {
         id: Type.String(),
@@ -1020,7 +1958,11 @@ export const HostSchema = Type.Object(
 )
 
 export const HostRefs = []
-export const HostBackRefs = [{ fromTable: 'comfy_schema', fromField: 'hostID', toTable: 'host', tofield: 'id' }]
+
+// prettier-ignore
+export const HostBackRefs = [
+    { fromTable:'comfy_schema', fromField:'hostID', toTable:'host', tofield:'id' }
+]
 
 export const HostFields = {
     id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
@@ -1044,7 +1986,10 @@ export const HostFields = {
     isReadonly: { cid: 11, name: 'isReadonly', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
 }
 
+// #region MediaCustom
+
 export const asMediaCustomID = (s: string): MediaCustomID => s as any
+
 export type MediaCustomTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<MediaCustomID>
@@ -1059,9 +2004,45 @@ export type MediaCustomTable = {
     /** @default: null, sqlType: TEXT */
     viewID: string
 }
-export type NewMediaCustom = Insertable<MediaCustomTable>
-export type MediaCustomUpdate = Updateable<MediaCustomTable>
-export type MediaCustomT = Selectable<MediaCustomTable>
+
+export type NewMediaCustom = {
+    id?: MediaCustomID
+    params?: Maybe<T.MediaCustom_params>
+    stepID?: Maybe<StepID>
+    viewID?: string
+}
+
+export type MediaCustomUpdate = {
+    id?: never // MediaCustomID
+    createdAt?: number
+    updatedAt?: number
+    params?: T.MediaCustom_params | null
+    stepID?: StepID | null
+    viewID?: string
+}
+
+export type MediaCustomBackRefs = {}
+
+export type MediaCustomT = {
+    id: MediaCustomID
+    createdAt: number
+    updatedAt: number
+    params?: T.MediaCustom_params | null
+    stepID?: StepID | null
+    viewID: string
+}
+
+export type MediaCustomTypes = {
+    TableName: 'media_custom'
+    JSName: 'MediaCustom'
+    Read: MediaCustomT
+    Instance: MediaCustomL
+    Create: NewMediaCustom
+    Update: MediaCustomUpdate
+    ID: MediaCustomID
+    Delete: MediaCustomBackRefs
+}
+
 export const MediaCustomSchema = Type.Object(
     {
         id: Type.String(),
@@ -1074,7 +2055,11 @@ export const MediaCustomSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaCustomRefs = [{ fromTable: 'media_custom', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+// prettier-ignore
+export const MediaCustomRefs = [
+    { fromTable:'media_custom', fromField:'stepID', toTable:'step', tofield:'id' }
+]
+
 export const MediaCustomBackRefs = []
 
 export const MediaCustomFields = {
@@ -1086,7 +2071,10 @@ export const MediaCustomFields = {
     viewID: { cid: 5, name: 'viewID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
+// #region Perspective
+
 export const asPerspectiveID = (s: string): PerspectiveID => s as any
+
 export type PerspectiveTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
     id: Generated<PerspectiveID>
@@ -1103,9 +2091,48 @@ export type PerspectiveTable = {
     /** @default: null, sqlType: INT */
     priority: number
 }
-export type NewPerspective = Insertable<PerspectiveTable>
-export type PerspectiveUpdate = Updateable<PerspectiveTable>
-export type PerspectiveT = Selectable<PerspectiveTable>
+
+export type NewPerspective = {
+    id?: PerspectiveID
+    name?: Maybe<string>
+    layout?: T.Perspective_layout
+    layoutDefault?: Maybe<T.Perspective_layoutDefault>
+    priority?: number
+}
+
+export type PerspectiveUpdate = {
+    id?: never // PerspectiveID
+    createdAt?: number
+    updatedAt?: number
+    name?: string | null
+    layout?: T.Perspective_layout
+    layoutDefault?: T.Perspective_layoutDefault | null
+    priority?: number
+}
+
+export type PerspectiveBackRefs = {}
+
+export type PerspectiveT = {
+    id: PerspectiveID
+    createdAt: number
+    updatedAt: number
+    name?: string | null
+    layout: T.Perspective_layout
+    layoutDefault?: T.Perspective_layoutDefault | null
+    priority: number
+}
+
+export type PerspectiveTypes = {
+    TableName: 'perspective'
+    JSName: 'Perspective'
+    Read: PerspectiveT
+    Instance: PerspectiveL
+    Create: NewPerspective
+    Update: PerspectiveUpdate
+    ID: PerspectiveID
+    Delete: PerspectiveBackRefs
+}
+
 export const PerspectiveSchema = Type.Object(
     {
         id: Type.String(),
@@ -1120,6 +2147,7 @@ export const PerspectiveSchema = Type.Object(
 )
 
 export const PerspectiveRefs = []
+
 export const PerspectiveBackRefs = []
 
 export const PerspectiveFields = {
@@ -1133,7 +2161,14 @@ export const PerspectiveFields = {
 }
 
 // prettier-ignore
-export const TABLE_comfy_workflow = new T.TableInfo<'comfy_workflow', ComfyWorkflowT, ComfyWorkflowL, NewComfyWorkflow, ComfyWorkflowUpdate, ComfyWorkflowID>(
+export const TABLE_comfy_workflow = new T.TableInfo<
+    'comfy_workflow',
+    ComfyWorkflowT,
+    ComfyWorkflowL,
+    NewComfyWorkflow,
+    ComfyWorkflowUpdate,
+    ComfyWorkflowID
+>(
     'comfy_workflow',
     'ComfyWorkflow',
     ComfyWorkflowFields,
@@ -1142,7 +2177,14 @@ export const TABLE_comfy_workflow = new T.TableInfo<'comfy_workflow', ComfyWorkf
     ComfyWorkflowBackRefs,
 )
 // prettier-ignore
-export const TABLE_draft = new T.TableInfo<'draft', DraftT, DraftL, NewDraft, DraftUpdate, DraftID>(
+export const TABLE_draft = new T.TableInfo<
+    'draft',
+    DraftT,
+    DraftL,
+    NewDraft,
+    DraftUpdate,
+    DraftID
+>(
     'draft',
     'Draft',
     DraftFields,
@@ -1151,7 +2193,14 @@ export const TABLE_draft = new T.TableInfo<'draft', DraftT, DraftL, NewDraft, Dr
     DraftBackRefs,
 )
 // prettier-ignore
-export const TABLE_project = new T.TableInfo<'project', ProjectT, ProjectL, NewProject, ProjectUpdate, ProjectID>(
+export const TABLE_project = new T.TableInfo<
+    'project',
+    ProjectT,
+    ProjectL,
+    NewProject,
+    ProjectUpdate,
+    ProjectID
+>(
     'project',
     'Project',
     ProjectFields,
@@ -1160,7 +2209,14 @@ export const TABLE_project = new T.TableInfo<'project', ProjectT, ProjectL, NewP
     ProjectBackRefs,
 )
 // prettier-ignore
-export const TABLE_step = new T.TableInfo<'step', StepT, StepL, NewStep, StepUpdate, StepID>(
+export const TABLE_step = new T.TableInfo<
+    'step',
+    StepT,
+    StepL,
+    NewStep,
+    StepUpdate,
+    StepID
+>(
     'step',
     'Step',
     StepFields,
@@ -1169,7 +2225,14 @@ export const TABLE_step = new T.TableInfo<'step', StepT, StepL, NewStep, StepUpd
     StepBackRefs,
 )
 // prettier-ignore
-export const TABLE_comfy_prompt = new T.TableInfo<'comfy_prompt', ComfyPromptT, ComfyPromptL, NewComfyPrompt, ComfyPromptUpdate, ComfyPromptID>(
+export const TABLE_comfy_prompt = new T.TableInfo<
+    'comfy_prompt',
+    ComfyPromptT,
+    ComfyPromptL,
+    NewComfyPrompt,
+    ComfyPromptUpdate,
+    ComfyPromptID
+>(
     'comfy_prompt',
     'ComfyPrompt',
     ComfyPromptFields,
@@ -1178,7 +2241,14 @@ export const TABLE_comfy_prompt = new T.TableInfo<'comfy_prompt', ComfyPromptT, 
     ComfyPromptBackRefs,
 )
 // prettier-ignore
-export const TABLE_comfy_schema = new T.TableInfo<'comfy_schema', ComfySchemaT, ComfySchemaL, NewComfySchema, ComfySchemaUpdate, ComfySchemaID>(
+export const TABLE_comfy_schema = new T.TableInfo<
+    'comfy_schema',
+    ComfySchemaT,
+    ComfySchemaL,
+    NewComfySchema,
+    ComfySchemaUpdate,
+    ComfySchemaID
+>(
     'comfy_schema',
     'ComfySchema',
     ComfySchemaFields,
@@ -1187,7 +2257,14 @@ export const TABLE_comfy_schema = new T.TableInfo<'comfy_schema', ComfySchemaT, 
     ComfySchemaBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_text = new T.TableInfo<'media_text', MediaTextT, MediaTextL, NewMediaText, MediaTextUpdate, MediaTextID>(
+export const TABLE_media_text = new T.TableInfo<
+    'media_text',
+    MediaTextT,
+    MediaTextL,
+    NewMediaText,
+    MediaTextUpdate,
+    MediaTextID
+>(
     'media_text',
     'MediaText',
     MediaTextFields,
@@ -1196,7 +2273,14 @@ export const TABLE_media_text = new T.TableInfo<'media_text', MediaTextT, MediaT
     MediaTextBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_video = new T.TableInfo<'media_video', MediaVideoT, MediaVideoL, NewMediaVideo, MediaVideoUpdate, MediaVideoID>(
+export const TABLE_media_video = new T.TableInfo<
+    'media_video',
+    MediaVideoT,
+    MediaVideoL,
+    NewMediaVideo,
+    MediaVideoUpdate,
+    MediaVideoID
+>(
     'media_video',
     'MediaVideo',
     MediaVideoFields,
@@ -1205,7 +2289,14 @@ export const TABLE_media_video = new T.TableInfo<'media_video', MediaVideoT, Med
     MediaVideoBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_image = new T.TableInfo<'media_image', MediaImageT, MediaImageL, NewMediaImage, MediaImageUpdate, MediaImageID>(
+export const TABLE_media_image = new T.TableInfo<
+    'media_image',
+    MediaImageT,
+    MediaImageL,
+    NewMediaImage,
+    MediaImageUpdate,
+    MediaImageID
+>(
     'media_image',
     'MediaImage',
     MediaImageFields,
@@ -1214,7 +2305,14 @@ export const TABLE_media_image = new T.TableInfo<'media_image', MediaImageT, Med
     MediaImageBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacement', Media3dDisplacementT, Media3dDisplacementL, NewMedia3dDisplacement, Media3dDisplacementUpdate, Media3dDisplacementID>(
+export const TABLE_media_3d_displacement = new T.TableInfo<
+    'media_3d_displacement',
+    Media3dDisplacementT,
+    Media3dDisplacementL,
+    NewMedia3dDisplacement,
+    Media3dDisplacementUpdate,
+    Media3dDisplacementID
+>(
     'media_3d_displacement',
     'Media3dDisplacement',
     Media3dDisplacementFields,
@@ -1223,7 +2321,14 @@ export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacemen
     Media3dDisplacementBackRefs,
 )
 // prettier-ignore
-export const TABLE_runtime_error = new T.TableInfo<'runtime_error', RuntimeErrorT, RuntimeErrorL, NewRuntimeError, RuntimeErrorUpdate, RuntimeErrorID>(
+export const TABLE_runtime_error = new T.TableInfo<
+    'runtime_error',
+    RuntimeErrorT,
+    RuntimeErrorL,
+    NewRuntimeError,
+    RuntimeErrorUpdate,
+    RuntimeErrorID
+>(
     'runtime_error',
     'RuntimeError',
     RuntimeErrorFields,
@@ -1232,7 +2337,14 @@ export const TABLE_runtime_error = new T.TableInfo<'runtime_error', RuntimeError
     RuntimeErrorBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_splat = new T.TableInfo<'media_splat', MediaSplatT, MediaSplatL, NewMediaSplat, MediaSplatUpdate, MediaSplatID>(
+export const TABLE_media_splat = new T.TableInfo<
+    'media_splat',
+    MediaSplatT,
+    MediaSplatL,
+    NewMediaSplat,
+    MediaSplatUpdate,
+    MediaSplatID
+>(
     'media_splat',
     'MediaSplat',
     MediaSplatFields,
@@ -1241,7 +2353,14 @@ export const TABLE_media_splat = new T.TableInfo<'media_splat', MediaSplatT, Med
     MediaSplatBackRefs,
 )
 // prettier-ignore
-export const TABLE_custom_data = new T.TableInfo<'custom_data', CustomDataT, CustomDataL, NewCustomData, CustomDataUpdate, CustomDataID>(
+export const TABLE_custom_data = new T.TableInfo<
+    'custom_data',
+    CustomDataT,
+    CustomDataL,
+    NewCustomData,
+    CustomDataUpdate,
+    CustomDataID
+>(
     'custom_data',
     'CustomData',
     CustomDataFields,
@@ -1250,7 +2369,14 @@ export const TABLE_custom_data = new T.TableInfo<'custom_data', CustomDataT, Cus
     CustomDataBackRefs,
 )
 // prettier-ignore
-export const TABLE_cushy_script = new T.TableInfo<'cushy_script', CushyScriptT, CushyScriptL, NewCushyScript, CushyScriptUpdate, CushyScriptID>(
+export const TABLE_cushy_script = new T.TableInfo<
+    'cushy_script',
+    CushyScriptT,
+    CushyScriptL,
+    NewCushyScript,
+    CushyScriptUpdate,
+    CushyScriptID
+>(
     'cushy_script',
     'CushyScript',
     CushyScriptFields,
@@ -1259,7 +2385,14 @@ export const TABLE_cushy_script = new T.TableInfo<'cushy_script', CushyScriptT, 
     CushyScriptBackRefs,
 )
 // prettier-ignore
-export const TABLE_cushy_app = new T.TableInfo<'cushy_app', CushyAppT, CushyAppL, NewCushyApp, CushyAppUpdate, CushyAppID>(
+export const TABLE_cushy_app = new T.TableInfo<
+    'cushy_app',
+    CushyAppT,
+    CushyAppL,
+    NewCushyApp,
+    CushyAppUpdate,
+    CushyAppID
+>(
     'cushy_app',
     'CushyApp',
     CushyAppFields,
@@ -1268,7 +2401,14 @@ export const TABLE_cushy_app = new T.TableInfo<'cushy_app', CushyAppT, CushyAppL
     CushyAppBackRefs,
 )
 // prettier-ignore
-export const TABLE_auth = new T.TableInfo<'auth', AuthT, AuthL, NewAuth, AuthUpdate, AuthID>(
+export const TABLE_auth = new T.TableInfo<
+    'auth',
+    AuthT,
+    AuthL,
+    NewAuth,
+    AuthUpdate,
+    AuthID
+>(
     'auth',
     'Auth',
     AuthFields,
@@ -1277,7 +2417,14 @@ export const TABLE_auth = new T.TableInfo<'auth', AuthT, AuthL, NewAuth, AuthUpd
     AuthBackRefs,
 )
 // prettier-ignore
-export const TABLE_tree_entry = new T.TableInfo<'tree_entry', TreeEntryT, TreeEntryL, NewTreeEntry, TreeEntryUpdate, TreeEntryID>(
+export const TABLE_tree_entry = new T.TableInfo<
+    'tree_entry',
+    TreeEntryT,
+    TreeEntryL,
+    NewTreeEntry,
+    TreeEntryUpdate,
+    TreeEntryID
+>(
     'tree_entry',
     'TreeEntry',
     TreeEntryFields,
@@ -1286,7 +2433,14 @@ export const TABLE_tree_entry = new T.TableInfo<'tree_entry', TreeEntryT, TreeEn
     TreeEntryBackRefs,
 )
 // prettier-ignore
-export const TABLE_host = new T.TableInfo<'host', HostT, HostL, NewHost, HostUpdate, HostID>(
+export const TABLE_host = new T.TableInfo<
+    'host',
+    HostT,
+    HostL,
+    NewHost,
+    HostUpdate,
+    HostID
+>(
     'host',
     'Host',
     HostFields,
@@ -1295,7 +2449,14 @@ export const TABLE_host = new T.TableInfo<'host', HostT, HostL, NewHost, HostUpd
     HostBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_custom = new T.TableInfo<'media_custom', MediaCustomT, MediaCustomL, NewMediaCustom, MediaCustomUpdate, MediaCustomID>(
+export const TABLE_media_custom = new T.TableInfo<
+    'media_custom',
+    MediaCustomT,
+    MediaCustomL,
+    NewMediaCustom,
+    MediaCustomUpdate,
+    MediaCustomID
+>(
     'media_custom',
     'MediaCustom',
     MediaCustomFields,
@@ -1304,7 +2465,14 @@ export const TABLE_media_custom = new T.TableInfo<'media_custom', MediaCustomT, 
     MediaCustomBackRefs,
 )
 // prettier-ignore
-export const TABLE_perspective = new T.TableInfo<'perspective', PerspectiveT, PerspectiveL, NewPerspective, PerspectiveUpdate, PerspectiveID>(
+export const TABLE_perspective = new T.TableInfo<
+    'perspective',
+    PerspectiveT,
+    PerspectiveL,
+    NewPerspective,
+    PerspectiveUpdate,
+    PerspectiveID
+>(
     'perspective',
     'Perspective',
     PerspectiveFields,
@@ -1338,27 +2506,7 @@ export const schemas = {
     media_custom         : TABLE_media_custom,
     perspective          : TABLE_perspective,
 }
-export type TableName =
-    | 'comfy_workflow'
-    | 'draft'
-    | 'project'
-    | 'step'
-    | 'comfy_prompt'
-    | 'comfy_schema'
-    | 'media_text'
-    | 'media_video'
-    | 'media_image'
-    | 'media_3d_displacement'
-    | 'runtime_error'
-    | 'media_splat'
-    | 'custom_data'
-    | 'cushy_script'
-    | 'cushy_app'
-    | 'auth'
-    | 'tree_entry'
-    | 'host'
-    | 'media_custom'
-    | 'perspective'
+export type TableName = keyof typeof schemas
 
 export type KyselyTables = {
     comfy_workflow: ComfyWorkflowTable
