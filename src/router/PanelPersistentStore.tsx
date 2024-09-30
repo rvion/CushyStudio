@@ -2,7 +2,9 @@ import type { Json } from '../csuite/types/Json'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelState } from './PanelState'
 
-import { makeAutoObservable } from 'mobx'
+import { isObservable } from 'mobx'
+
+// import { makeAutoObservable } from 'mobx'
 
 export class PanelPersistentStore<X extends Json = Json> {
     /** data is loaded lazilly, but is not synced automatically
@@ -12,20 +14,20 @@ export class PanelPersistentStore<X extends Json = Json> {
 
     constructor(
         //
-        public ps: PanelState,
+        public panelState: PanelState,
         public storeKey: string,
         /** default value */
         public init: () => X,
     ) {
         this.data = this.loadData()
-        makeAutoObservable(this)
+        // makeAutoObservable(this)
     }
 
     saveData(data: X): void {
-        const tabId = this.ps.uri
-        const prevConfig = this.ps.getConfig()
+        const tabId = this.panelState.uri
+        const prevConfig = this.panelState.getConfig()
         this.data = data
-        this.ps.layout.do((a) => {
+        this.panelState.layout.do((a) => {
             const nextConfig: PanelPersistedJSON = {
                 ...prevConfig,
                 $store: {
@@ -41,7 +43,10 @@ export class PanelPersistentStore<X extends Json = Json> {
 
     /** return the store JSON or initialize it */
     loadData(): X {
-        const config = this.ps.getConfig()
+        const config = this.panelState.getConfig()
+        if (isObservable(config)) {
+            throw new Error('❌nope❌')
+        }
         const store = config.$store
         const prevValue = store?.[this.storeKey]
         return prevValue == null //

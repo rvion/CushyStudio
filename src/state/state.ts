@@ -48,7 +48,7 @@ import { TreeView } from '../csuite/tree/TreeView'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
-import { LiveDB } from '../db/LiveDB'
+import { liveDB, LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
 import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
@@ -546,7 +546,8 @@ export class STATE {
         this.configFile = mkConfigFile()
 
         // core instances
-        this.db = new LiveDB(this)
+        this.db = liveDB // new LiveDB()
+        console.log(`[🤠] assing liveDB db`, liveDB._uid)
         this.supabase = mkSupa()
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)

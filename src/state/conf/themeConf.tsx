@@ -1,14 +1,16 @@
 import { cushyFactory } from '../../controls/Builder'
 import { SelectOptionNoVal } from '../../csuite/fields/selectOne/SelectOption'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
+import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../../csuite/frame/SimpleDropShadow'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
+// --------------
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
     base: X.XColor
-    appbar: X.XColor
+    appbar: X.XOptional<X.XColor>
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -17,13 +19,7 @@ export type ThemeConf = X.XGroup<{
     textLabel: X.XOptional<UI_Tint>
     inputBorder: X.XOptional<X.XNumber>
     inputContrast: X.XOptional<X.XNumber>
-    inputShadow: X.XGroup<{
-        alpha: X.XNumber
-        blur: X.XNumber
-        color: X.XColor
-        x: X.XNumber
-        y: X.XNumber
-    }>
+    inputShadow: X.XOptional<$schemaSimpleDropShadow>
     inputRoundness: X.XNumber
 }>
 
@@ -87,18 +83,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                 // 3. misc
                 inputBorder: ui.percent({ default: 8 }).optional(true),
                 inputContrast: ui.percent({ default: 5 }).optional(true),
-                inputShadow: ui
-                    .fields({
-                        alpha: ui.float({ default: 0.2, min: 0, max: 1, step: 0.1 }),
-                        color: ui.colorV2({
-                            tooltip: 'Drop shadow color for inputs',
-                            default: '#000',
-                        }),
-                        x: ui.int({ default: 0, min: -20, max: 20 }),
-                        y: ui.int({ default: 1, min: -20, max: 20 }),
-                        blur: ui.int({ default: 0, min: 0, max: 20 }),
-                    })
-                    .optional(true),
+                inputShadow: schemaSimpleDropShadow(ui).optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
                 inputRoundness: ui.int({ default: 5, min: 0 }),
             },

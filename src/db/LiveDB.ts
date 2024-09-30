@@ -1,11 +1,11 @@
 import type { Timestamp } from '../csuite/types/Timestamp'
-import type { STATE } from '../state/state'
 import type * as T from './TYPES.gen'
 import type { TableInfo } from './TYPES_json'
 
 import BetterSqlite3, { default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
 import { makeAutoObservable, runInAction } from 'mobx'
+import { nanoid } from 'nanoid'
 
 import { AuthRepo } from '../models/Auth'
 import { ComfyPromptRepo } from '../models/ComfyPrompt'
@@ -22,6 +22,7 @@ import { MediaImageRepo } from '../models/MediaImage'
 import { MediaSplatRepo } from '../models/MediaSplat'
 import { MediaTextRepo } from '../models/MediaText'
 import { MediaVideoRepo } from '../models/MediaVideo'
+import { PerspectiveRepo } from '../models/Perspective'
 import { ProjectRepo } from '../models/Project'
 import { RuntimeErrorRepo } from '../models/RuntimeError'
 import { StepRepo } from '../models/Step'
@@ -67,6 +68,7 @@ export class LiveDB {
 
     // tables ---------------------------------------------------------
     project: ProjectRepo
+    perspective: PerspectiveRepo
     custom_data: CustomDataRepo
     comfy_schema: ComfySchemaRepo
     host: HostRepo
@@ -95,11 +97,17 @@ export class LiveDB {
     /** You should not call that unless you know what you're doing */
     runCodegen = (): void => _codegenORM(this)
 
-    constructor(public st: STATE) {
+    _uid = nanoid()
+    constructor() {
         // init SQLITE ---------------------------------------------------------
         const db = SQL(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
         db.pragma('journal_mode = WAL')
         this.db = db
+
+        // ------------------------------
+        ;(window as any).db = this
+        // ------------------------------
+
         _setupMigrationEngine(this)
         this.migrate()
         // _listAllTables(this)
@@ -109,6 +117,7 @@ export class LiveDB {
 
         // 3. create tables (after the store has benn made already observable)
         this.project = new ProjectRepo(this)
+        this.perspective = new PerspectiveRepo(this)
         this.custom_data = new CustomDataRepo(this)
         this.comfy_schema = new ComfySchemaRepo(this)
         this.host = new HostRepo(this)
@@ -129,6 +138,16 @@ export class LiveDB {
         this.auth = new AuthRepo(this)
 
         // console.log('🟢 TABLE INITIALIZED')
+    }
+
+    rawAll(sql: string): void {
+        const res = this.db.prepare(sql).all()
+        console.log(`[=]>`, res)
+    }
+
+    rawExec(sql: string): void {
+        const res = this.db.exec(sql)
+        console.log(`[=]>`, res)
     }
 
     _getSize = (tableName: string): number => {
@@ -212,3 +231,5 @@ export class LiveDB {
         rmSync(DB_RELATIVE_PATH)
     }
 }
+
+export const liveDB = new LiveDB()

@@ -38,6 +38,18 @@ export class RevealState {
 
     onRightClickAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.logEv(ev, `anchor.onRightClick`)
+        const closed = !this.isVisible
+        if (closed) {
+            if (this.shouldRevealOnAnchorRightClick) {
+                this.open()
+                ev.stopPropagation()
+            }
+        } else {
+            if (this.shouldHideOnAnchorRightClick) {
+                this.close('rightClickAnchor')
+                ev.stopPropagation()
+            }
+        }
         // this.onLeftClickAnchor(ev) // 2024-07-31 domi: not sure what the use-case is, but annoying when you want to inspect the element
     }
 
@@ -156,8 +168,12 @@ export class RevealState {
     // HIDE triggers ------------------------------------------------------
     get hideTriggers(): RevealHideTriggers {
         if (this.p.hideTriggers) return this.p.hideTriggers
+
+        // hide triggers have not been specified; let's infer them
+        // from the reveal show trigger instead.
         if (this.revealTrigger === 'none') return { none: true }
         if (this.revealTrigger === 'click') return { clickAnchor: true, backdropClick: true, escapeKey: true }
+        if (this.revealTrigger === 'rightClick') return { clickAnchor: true, backdropClick: true, escapeKey: true }
         if (this.revealTrigger === 'clickAndHover') return { clickAnchor: true, backdropClick: true, escapeKey: true } // prettier-ignore
         if (this.revealTrigger === 'hover') return { mouseOutside: true }
         if (this.revealTrigger === 'pseudofocus') return { clickAnchor: true, backdropClick: true, escapeKey: true }
@@ -218,6 +234,13 @@ export class RevealState {
             this.revealTrigger == 'click' || //
             this.revealTrigger == 'clickAndHover'
         )
+    }
+
+    get shouldRevealOnAnchorRightClick(): boolean {
+        return this.revealTrigger == 'rightClick'
+    }
+    get shouldHideOnAnchorRightClick(): boolean {
+        return this.revealTrigger == 'rightClick'
     }
 
     get shouldRevealOnAnchorHover(): boolean {

@@ -12,6 +12,7 @@ import type { BaseInstanceFields } from './LiveInstance'
 import type { KyselyTables } from './TYPES.gen'
 import type { TNull, TUndefined, TUnion } from '@sinclair/typebox'
 import type { Metafile } from 'esbuild'
+import type { IJsonModel } from 'flexlayout-react'
 
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
@@ -20,6 +21,7 @@ export type StatusT = keyof typeof Status
 export const Nullable = <T extends TSchema>(schema: T): TUnion<[T, TNull, TUndefined]> =>
     Type.Union([schema, Type.Null(), Type.Undefined()])
 
+// #region CushyApp
 export type CushyScript_metafile = Metafile
 // export type CushyScript_metafile = {
 //     inputs: { [relPath: string]: { bytes: number /* incomplete types */ } }
@@ -27,22 +29,34 @@ export type CushyScript_metafile = Metafile
 // }
 export const CushyScript_metafile_Schema = Type.Record(Type.String(), Type.Any())
 
+// #region Perspective
+export type Perspective_layout = IJsonModel
+export const Perspective_layout_Schema = Type.Record(Type.String(), Type.Any())
+
+export type Perspective_layoutDefault = IJsonModel
+export const Perspective_layoutDefault_Schema = Type.Record(Type.String(), Type.Any())
+
+// #region MediaCustom
 export type MediaCustom_params = Record<string, any>
 export const MediaCustom_params_Schema = Type.Record(Type.String(), Type.Any())
 
+// #region MediaImage
 export type MediaImage_safetyRating = SafetyResult
 export const MediaImage_safetyRating_Schema = Type.Record(Type.String(), Type.Any())
 
+// #region ComfyWorkflow
 export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
 export type ComfyWorkflow_comfyPromptJSON = ComfyPromptJSON
 export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
+// #region Media3dScene
 /** media scenes can store any short metadata needed to reconstruct the scene */
 export type Media3dScene_params = Record<string, any>
 export const Media3dScene_params_Schema = Type.Record(Type.String(), Type.Any())
 
+// #region Draft
 export type Draft_formSerial = AnyFieldSerial
 export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())
 

@@ -29,6 +29,8 @@ export type RevealShowTrigger =
     // renamed or replaced by the trigger dict (object) notation.
     | 'clickAndHover'
     | 'none' // 🔴 TODO
+    | 'rightClick' // 🔴 TODO
+
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
 
@@ -46,6 +48,7 @@ export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
 export type RevealHideReason =
     | 'clickAnchor' //
+    | 'rightClickAnchor' //
     | 'backdropClick'
     | 'shellClick' // via shell (not backdrop)
     | 'mouseOutside'
