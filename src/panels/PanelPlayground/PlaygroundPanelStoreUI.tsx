@@ -38,7 +38,6 @@ export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(
                 </Frame>
             </Frame>
             <PanelStateDebugUI panel={panel} />
-            {cushy.layout.traverse({})}
         </Frame>
     )
 })
