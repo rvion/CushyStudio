@@ -3,7 +3,7 @@ import type { IconName } from '../icons/icons'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
-import type { SimpleBoxShadow } from './SimpleBoxShadow'
+import type { SimpleBoxShadow, SimpleDropShadow } from './SimpleBoxShadow'
 import type { ForwardedRef, MouseEvent } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -33,6 +33,7 @@ export type FrameProps = {
 
     /** should be moved to Box props soon */
     boxShadow?: SimpleBoxShadow
+    dropShadow?: SimpleDropShadow
 
     // quick layout ----------------------------------------------------
     /** quick layout feature to add `flex flex-row` */
@@ -88,7 +89,7 @@ export const Frame = observer(
 
             look,                                               // style: 1/4: frame templates
             base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
-            boxShadow,                                          // style: 3/4: css
+            boxShadow, dropShadow,                              // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
             row, line, col, wrap,                               // layout
@@ -116,7 +117,7 @@ export const Frame = observer(
         // 👉 2024-07-22 rvion: done
         const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
             ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
-            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow)
+            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow)
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent): void => {
@@ -169,8 +170,8 @@ export const Frame = observer(
                     noColorStuff === true
                         ? undefined
                         : frameMode === 'CLASSNAME'
-                        ? compileOrRetrieveClassName(variables)
-                        : undefined,
+                          ? compileOrRetrieveClassName(variables)
+                          : undefined,
                     // 'flex',
                     size && `box-${size}`,
                     square && `box-square`,
@@ -189,8 +190,8 @@ export const Frame = observer(
                     noColorStuff === true
                         ? style
                         : frameMode === 'CLASSNAME' //
-                        ? style
-                        : objectAssignTsEfficient_t_t(style, variables)
+                          ? style
+                          : objectAssignTsEfficient_t_t(style, variables)
                 }
                 {...rest}
                 {...(triggerOnPress != null

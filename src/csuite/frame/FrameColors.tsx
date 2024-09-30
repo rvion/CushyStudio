@@ -2,7 +2,7 @@ import type { BoxNormalized } from '../box/BoxNormalized'
 import type { CurrentStyle } from '../box/CurrentStyleCtx'
 import type { Kolor } from '../kolor/Kolor'
 import type { FrameAppearance } from './FrameTemplates'
-import type { SimpleBoxShadow } from './SimpleBoxShadow'
+import type { SimpleBoxShadow, SimpleDropShadow } from './SimpleBoxShadow'
 
 import SparkMD5 from 'spark-md5'
 
@@ -20,6 +20,7 @@ export type FrameCssVariables = {
     textShadow?: string
     '--KLR'?: string
     '--DIR'?: string
+    filter?: string
 }
 
 export type ComputedColors = {
@@ -40,9 +41,10 @@ export function computeColors(
     hovered: Maybe<boolean> = null,
     active: Maybe<boolean> = null,
     boxShadow: Maybe<SimpleBoxShadow> = null,
+    dropShadow: Maybe<SimpleDropShadow> = null,
 ): ComputedColors {
     // ------------------------------------------------------------
-    const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow })
+    const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow })
     const hash = SparkMD5.hash(strToHash)
     if (colorCache.has(hash)) return colorCache.get(hash)!
     totalComputeColors++
@@ -125,6 +127,16 @@ export function computeColors(
             `${KBase.tintBg(y).toOKLCH()}`,
         ].join(' ')
     }
+
+    if (dropShadow) {
+        const n = normalizeTint(dropShadow.color ?? 'black')
+        const color = KBase.tintBg(n, dir)
+        color.opacity = dropShadow.opacity ?? 1
+        const corrected = color.toOKLCH()
+        variables['filter'] =
+            `drop-shadow(${dropShadow.x ?? 0}px ${dropShadow.y ?? 0}px ${dropShadow.blur ?? 0}px ${corrected.toString()});`
+    }
+
     const OUT: ComputedColors = { variables, nextDir, KBase, nextext }
     colorCache.set(hash, OUT)
     return OUT

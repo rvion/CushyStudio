@@ -28,6 +28,8 @@ const _Button = observer(function Button_(
     useEffect(() => uist.release, [])
 
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
+    const theme = cushy.theme.value
+    const dropShadowColor = theme.inputShadow ? theme.inputShadow.color : ''
     return (
         <Frame //
             as='button'
@@ -51,6 +53,19 @@ const _Button = observer(function Button_(
             hover={p.disabled ? false : 3}
             // active={uist.visuallyActive}
             disabled={p.disabled}
+            dropShadow={
+                p.subtle
+                    ? undefined
+                    : (p.dropShadow ?? theme.inputShadow)
+                      ? {
+                            x: theme.inputShadow.x,
+                            y: theme.inputShadow.y,
+                            color: theme.inputShadow.color,
+                            blur: theme.inputShadow.blur,
+                            opacity: theme.inputShadow.alpha,
+                        }
+                      : undefined
+            }
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex}
             onMouseDown={uist.press}
