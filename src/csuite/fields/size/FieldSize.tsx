@@ -153,7 +153,6 @@ export class Field_size extends Field<Field_size_types> {
         }
 
         // 2. ASSIGN SERIAL
-        console.log(`[🔴🔴🔴🔴] `, next)
         this.assignNewSerial(next)
     }
 

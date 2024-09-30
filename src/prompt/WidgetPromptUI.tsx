@@ -72,6 +72,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
 
 export const WidgetPromptCollapsibleUI = observer(function WidgetPromptCollapsibleUI_({ field }: { field: Field_prompt }) {
     if (field.isCollapsed) return <WidgetPrompt_LineUI field={field} />
+    // return <WidgetPromptUI field={field} />
     return null
 })
 

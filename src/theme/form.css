@@ -158,12 +158,13 @@
     opacity: 100% !important;
 }
 
+/*
 .UI-Color,
 .UI-Select,
 .UI-InputNumber,
 .UI-InputString {
-    /* border-radius: 0.375rem; */
-}
+    border-radius: 0.375rem;
+} */
 
 /* ------------------------------------------------------------------------------------------- */
 /* make sure cushy default inputs look like custom inputs */

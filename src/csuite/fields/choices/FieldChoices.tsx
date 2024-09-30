@@ -48,7 +48,7 @@ export type Field_choices_config<T extends SchemaDict = SchemaDict> = FieldConfi
         placeholder?: string
 
         /** preffered widget to use for value selection */
-        appearance?: 'select' | 'tab'
+        appearance?: 'select' | 'tab' | 'tab2'
 
         /** if the widget use tabs, where to place tabs */
         tabPosition?: TabPositionConfig

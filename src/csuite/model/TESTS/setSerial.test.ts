@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 
-import { builder } from '../../../controls/Builder'
 import { simpleBuilder as b } from '../../index'
-
-const b2 = builder
-const k = b.selectOneString(['🔵', '🟢'], { default: '🔵' })
-const k2: X.XSelectOne_<'🟢' | '🔵'> = b2.selectOneString(['🔵', '🟢'], { default: '🔵' })
 
 // ------------------------------------------------------------------------------
 describe('setSerial ', () => {

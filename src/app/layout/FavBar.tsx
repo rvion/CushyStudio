@@ -39,7 +39,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     // 💬 2024-09-29 rvion:
     // | temporarilly always display the favbar
     // |
-    // |> if (!conf.value.visible) return null
+    // |> if (!conf.visible) return null
 
     const size = conf.size
     const appIcons = conf.appIcons

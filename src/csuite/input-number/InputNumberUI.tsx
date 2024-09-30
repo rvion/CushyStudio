@@ -39,7 +39,15 @@ type InputNumberProps = {
     placeholder?: string
     forceSnap?: boolean
     className?: string
-} & FrameProps
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
+}
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
@@ -252,6 +260,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             border={csuite.inputBorder}
             hover={{ contrast: 0.03 }}
             className={p.className}
+            // unsure about the amount of code we had to use for that prop
             dropShadow={
                 (uist.props.dropShadow ?? theme.inputShadow)
                     ? {

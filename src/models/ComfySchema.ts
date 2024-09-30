@@ -338,12 +338,10 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
         // 3. retrieve or create an EnumInfo
         let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
         if (enumInfo == null) {
+            // 💬 2024-09-30 rvion:
+            // | 🔴 making that observable seems wrong; huge perf problem at instanciation.
             // case 3.A. PRE-EXISTING
-            enumInfo = {
-                enumNameInCushy: p.candidateName,
-                values: enumValues,
-                aliases: [],
-            }
+            enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
             this.knownEnumsByHash.set(hash, enumInfo)
         } else {
             // case 3.B. PRE-EXISTING

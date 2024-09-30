@@ -1,48 +1,45 @@
 import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
-import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = lazy_viaProxy(() =>
-    cushyFactory.document(
-        (ui) =>
-            ui.fields(
-                {
-                    //
-                    maxItem: ui.int({ default: 10, min: 1, max: 100, step: 1 }),
-                    appSize: ui.remSize(),
-                    // outputSize: ui.remSize(),
-                    show: ui.choices(
-                        {
-                            title: ui.empty(),
-                            app: ui.empty({ label: 'App illustration' }),
-                            draft: ui.empty({ label: 'Draft illustration' }),
-                            status: ui.empty(),
-                            outputs: ui_outputFilter(ui),
-                            executionTime: ui.empty(),
-                            date: ui.empty(),
+export const PanelStepsConf = cushyFactory.document(
+    (ui) =>
+        ui.fields(
+            {
+                //
+                maxItem: ui.int({ default: 10, min: 1, max: 100, step: 1 }),
+                appSize: ui.remSize(),
+                // outputSize: ui.remSize(),
+                show: ui.choices(
+                    {
+                        title: ui.empty(),
+                        app: ui.empty({ label: 'App illustration' }),
+                        draft: ui.empty({ label: 'Draft illustration' }),
+                        status: ui.empty(),
+                        outputs: ui_outputFilter(ui),
+                        executionTime: ui.empty(),
+                        date: ui.empty(),
+                    },
+                    {
+                        default: {
+                            title: true,
+                            app: undefined,
+                            draft: undefined,
+                            status: true,
+                            outputs: true,
+                            executionTime: true,
+                            date: true,
                         },
-                        {
-                            default: {
-                                title: true,
-                                app: undefined,
-                                draft: undefined,
-                                status: true,
-                                outputs: true,
-                                executionTime: true,
-                                date: true,
-                            },
-                        },
-                    ),
-                },
-                { label: 'Panel steps Conf' },
-            ),
-        {
-            name: 'panel-steps',
-            serial: () => readJSON('settings/panel-steps-config.json'),
-            onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
-        },
-    ),
+                    },
+                ),
+            },
+            { label: 'Panel steps Conf' },
+        ),
+    {
+        name: 'panel-steps',
+        serial: () => readJSON('settings/panel-steps-config.json'),
+        onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
+    },
 )
 
 type UI_outputFilter = X.XChoices<{

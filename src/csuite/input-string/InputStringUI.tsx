@@ -68,8 +68,15 @@ export type InputStringProps = {
     onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onKeyDown?: (ev: React.KeyboardEvent<HTMLInputElement>) => void
     noColorStuff?: boolean
-} & FrameProps
-
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
+}
 export const InputStringUI = observer(
     forwardRef(function WidgetStringUI_(p: InputStringProps, ref: ForwardedRef<HTMLInputElement>) {
         // getValue is mandatory, but it may avoid crash to be permissive about it's absense
