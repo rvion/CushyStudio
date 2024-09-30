@@ -8,7 +8,7 @@ import { forwardRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
@@ -68,7 +68,7 @@ export type InputStringProps = {
     onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
     onKeyDown?: (ev: React.KeyboardEvent<HTMLInputElement>) => void
     noColorStuff?: boolean
-}
+} & FrameProps
 
 export const InputStringUI = observer(
     forwardRef(function WidgetStringUI_(p: InputStringProps, ref: ForwardedRef<HTMLInputElement>) {
@@ -84,6 +84,8 @@ export const InputStringUI = observer(
         const [reveal, setReveal] = useState(false)
         let inputTailwind: string | ClassLike[] | undefined
         let visualHelper: ReactElement<any, any> | undefined
+
+        const theme = cushy.theme.value
 
         switch (p.type) {
             case 'color':
@@ -115,7 +117,7 @@ export const InputStringUI = observer(
                 placeholder={p.placeholder}
                 autoFocus={p.autoFocus}
                 disabled={p.disabled}
-                value={p.buffered ? temporaryValue ?? value : value}
+                value={p.buffered ? (temporaryValue ?? value) : value}
                 onChange={(ev) => {
                     if (p.buffered) p.buffered.setTemporaryValue(ev.target.value)
                     else p.setValue(ev.currentTarget.value)
@@ -154,6 +156,17 @@ export const InputStringUI = observer(
                 base={csuite.inputContrast}
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover={3}
+                dropShadow={
+                    (p.dropShadow ?? theme.inputShadow)
+                        ? {
+                              x: theme.inputShadow.x,
+                              y: theme.inputShadow.y,
+                              color: theme.inputShadow.color,
+                              blur: theme.inputShadow.blur,
+                              opacity: theme.inputShadow.alpha,
+                          }
+                        : undefined
+                }
                 border={
                     isDirty //
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
