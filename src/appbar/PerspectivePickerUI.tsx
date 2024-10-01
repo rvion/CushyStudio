@@ -9,48 +9,61 @@ import { RevealUI } from '../csuite/reveal/RevealUI'
 export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameProps) {
     const perspectives = cushy.db.perspective.all
     return (
-        <Frame row {...p}>
-            {perspectives.map((p) => (
-                <RevealUI
-                    key={p.id}
-                    trigger={'rightClick'}
-                    content={() => (
-                        <>
-                            <MenuItem
-                                onClick={() =>
-                                    cushy.startActivity({
-                                        backdrop: true,
-                                        stopOnBackdropClick: true,
-                                        UI: () => (
-                                            <InputStringUI //
-                                                getValue={() => p.data.name ?? '<untitled>'}
-                                                setValue={(v) => p.update({ name: v })}
-                                            />
-                                        ),
-                                    })
-                                }
-                                icon='mdiTagEdit'
-                                children='Rename'
-                            />
-                            <MenuItem onClick={() => p.saveSnapshot()} icon='mdiZipDisk' children='save' />
-                            <MenuItem onClick={() => p.resetToSnapshot()} icon='mdiLockReset' children='Reset To Last Save' />
-                            <MenuItem onClick={() => p.resetToDefault()} icon='mdiRestore' children='Reset To Default' />
-                            <MenuItem onClick={() => p.duplicate()} icon='mdiClipboard' children='Duplicate' />
-                            <MenuItem onClick={() => p.delete()} icon='mdiTrashCan' children='Delete' />
-                        </>
-                    )}
-                >
-                    <Button //
-                        look={p.isActive ? 'primary' : undefined}
-                        children={p.data.name}
-                        onClick={() => p.open()}
-                    />
-                </RevealUI>
-            ))}
+        <Frame tw='flex gap-1' {...p}>
+            <Frame tw='flex gap-1 !border-t-0 !border-r-0 !border-l-0' border row>
+                {perspectives.map((p) => (
+                    <RevealUI
+                        key={p.id}
+                        trigger={'rightClick'}
+                        content={() => (
+                            <>
+                                <MenuItem
+                                    onClick={() =>
+                                        cushy.startActivity({
+                                            backdrop: true,
+                                            stopOnBackdropClick: true,
+                                            UI: () => (
+                                                <InputStringUI //
+                                                    getValue={() => p.data.name ?? '<untitled>'}
+                                                    setValue={(v) => p.update({ name: v })}
+                                                />
+                                            ),
+                                        })
+                                    }
+                                    icon='mdiTagEdit'
+                                    children='Rename'
+                                />
+                                <MenuItem onClick={() => p.saveSnapshot()} icon='mdiZipDisk' children='save' />
+                                <MenuItem onClick={() => p.resetToSnapshot()} icon='mdiLockReset' children='Reset To Last Save' />
+                                <MenuItem onClick={() => p.resetToDefault()} icon='mdiRestore' children='Reset To Default' />
+                                <MenuItem onClick={() => p.duplicate()} icon='mdiClipboard' children='Duplicate' />
+                                <MenuItem onClick={() => p.delete()} icon='mdiTrashCan' children='Delete' />
+                            </>
+                        )}
+                    >
+                        <Button //
+                            tw='!border-b-0 !rounded-b-none'
+                            base={{ contrast: p.isActive ? 0.1 : -0.033, chroma: 0.07 }}
+                            dropShadow={undefined}
+                            // subtle
+                            borderless
+                            look={p.isActive ? 'primary' : undefined}
+                            children={p.data.name}
+                            onClick={() => p.open()}
+                        />
+                    </RevealUI>
+                ))}
+            </Frame>
             <Button //
                 icon='mdiPlus'
+                subtle
+                borderless
                 onClick={() => cushy.db.perspective.getOrCreate(`p${Date.now()}`)}
             />
         </Frame>
     )
+})
+
+const PerspectiveTabUI = observer(function _PerspectiveTabUI(p: FrameProps) {
+    return <></>
 })
