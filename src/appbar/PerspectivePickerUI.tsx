@@ -10,7 +10,7 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
     const perspectives = cushy.db.perspective.all
     return (
         <Frame tw='flex gap-1' {...p}>
-            <Frame tw='flex gap-1 !border-t-0 !border-r-0 !border-l-0' border row>
+            <Frame tw='flex gap-0' row>
                 {perspectives.map((p) => (
                     <RevealUI
                         key={p.id}
@@ -42,12 +42,14 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
                         )}
                     >
                         <Button //
-                            tw='!border-b-0 !rounded-b-none'
-                            base={{ contrast: p.isActive ? 0.1 : -0.033, chroma: 0.07 }}
+                            tw='!rounded-b-none'
+                            base={{ contrast: p.isActive ? 0.033 : -0.033, chroma: 0.07 }}
                             dropShadow={undefined}
                             // subtle
+                            // active={p.isActive}
+                            // disabled={!p.isActive}
                             borderless
-                            look={p.isActive ? 'primary' : undefined}
+                            look={p.isActive ? 'primary' : 'ghost'}
                             children={p.data.name}
                             onClick={() => p.open()}
                         />
