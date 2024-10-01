@@ -43,7 +43,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                     //Joined
                     tw='overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0'
                     border
-                    roundness={'5px'}
+                    roundness={theme.inputRoundness}
                     dropShadow={
                         theme.inputShadow && {
                             x: theme.inputShadow.x,
