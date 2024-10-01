@@ -8,17 +8,17 @@ import { withDefaultProps } from './withDefaultProps'
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-const _Button = observer(function Button_(
-    p: FrameProps & {
-        /** no contrast */
-        subtle?: boolean
-        /** no border */
-        borderless?: boolean
-        /** hue */
-        hue?: number
-        chroma?: number
-    },
-) {
+export type ButtonProps = FrameProps & {
+    /** no contrast */
+    subtle?: boolean
+    /** no border */
+    borderless?: boolean
+    /** hue */
+    hue?: number
+    chroma?: number
+}
+
+const _Button = observer(function Button_(p: ButtonProps) {
     const uist = useMemo(() => new ButtonState(p), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -76,7 +76,7 @@ const _Button = observer(function Button_(
 
                 'ui-button',
                 'gap-1 items-center',
-                p.disabled ? null : 'cursor-pointer',
+                p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',
             ]}

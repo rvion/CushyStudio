@@ -56,8 +56,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                         onClick={() => {
                             if (host.isReadonly) return
                             runInAction(() => {
-                                host.schema.delete()
-                                host.delete()
+                                host.schema.delete({})
+                                host.delete({})
                             })
                             // st.configFile.update(() => {
                             //     if (config.mainComfyHostID === host.id) config.mainComfyHostID = null

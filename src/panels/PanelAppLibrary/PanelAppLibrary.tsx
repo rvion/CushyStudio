@@ -119,7 +119,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                                         })
                                     }}
                                 >
-                                    Send them to oblivion
+                                    Send them to oblivion (SUPER SLOW)
                                 </Button>
                             </div>
                         ),

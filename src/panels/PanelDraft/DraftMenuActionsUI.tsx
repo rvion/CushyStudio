@@ -74,7 +74,7 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         iconClassName=' text-red-500'
                         onClick={() => {
                             const confirm = window.confirm('Are you sure you want to delete this draft?')
-                            if (confirm) draft.delete()
+                            if (confirm) draft.delete({})
                         }}
                     />
                     <MenuItem

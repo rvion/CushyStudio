@@ -43,7 +43,7 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
                     >
                         <Button //
                             tw='!rounded-b-none'
-                            base={{ contrast: p.isActive ? 0.033 : -0.033, chroma: 0.07 }}
+                            base={{ contrast: p.isActive ? 0.3 : -0.033, chroma: 0.07 }}
                             dropShadow={undefined}
                             // subtle
                             // active={p.isActive}
