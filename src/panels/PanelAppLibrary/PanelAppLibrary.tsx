@@ -8,6 +8,7 @@ import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleBu
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
+import { toastSuccess } from '../../csuite/utils/toasts'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 
@@ -85,6 +86,46 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     value={parseInt(st.library.imageSize.slice(0, -3), 10)}
                 />
             </PanelHeaderUI>
+            <Button
+                tw='self-start'
+                look='error'
+                children='remove every deleted app'
+                onClick={() => {
+                    const allapps = st.db.cushy_app.findAll()
+
+                    const toDelete = allapps.filter((app) => !app.scriptStillExistsOnDisk)
+                    if (toDelete.length === 0) {
+                        toastSuccess('no deleted apps found')
+                    }
+                    cushy.startActivity({
+                        backdrop: true,
+                        shell: 'popup-full',
+                        UI: () => (
+                            <div>
+                                {toDelete.length} app lacks based on non-existing scripts
+                                <Button
+                                    onClick={() => {
+                                        toDelete.forEach((app) => {
+                                            app.delete({
+                                                draft_appID: {
+                                                    project_currentDraftID: 'set null',
+                                                    step_draftID: 'set null',
+                                                },
+                                                // 🔶 we probably want to make step.app nullable.
+                                                step_appID: {
+                                                    comfy_prompt_stepID: {},
+                                                },
+                                            })
+                                        })
+                                    }}
+                                >
+                                    Send them to oblivion
+                                </Button>
+                            </div>
+                        ),
+                    })
+                }}
+            />
             <div tw='flex flex-col flex-grow p-4 overflow-auto'>
                 <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
                 <div tw='flex flex-wrap  gap-2'>

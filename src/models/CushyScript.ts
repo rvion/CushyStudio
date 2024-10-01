@@ -2,7 +2,7 @@ import type { LibraryFile } from '../cards/LibraryFile'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 
-import { statSync } from 'fs'
+import { existsSync, statSync } from 'fs'
 import { runInAction } from 'mobx'
 
 import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
@@ -79,10 +79,17 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
     }
 
     get isOutOfDate(): { needRecompile: boolean; reason: string } {
-        return this._isOutOfDate()
+        return this.checkIfisOutOfDate()
     }
 
-    _isOutOfDate = (): { needRecompile: boolean; reason: string } => {
+    get stillExistsOnDisk(): boolean {
+        return existsSync(this.relPath)
+    }
+
+    checkIfisOutOfDate = (): {
+        needRecompile: boolean
+        reason: string
+    } => {
         try {
             // 1. no lastExtractedAt => ❌ need recompile
             const lastExtractedAt = this.data.lastExtractedAt

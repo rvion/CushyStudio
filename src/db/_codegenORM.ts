@@ -42,7 +42,12 @@ export const _codegenORM = (store: {
     tableNames += `\n`
     out2 += tableNames
 
-    type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
+    type DBRef = {
+        fromTable: string
+        fromField: string
+        toTable: string
+        tofield: string
+    }
     const backRefs = new Map<string, DBRef[]>()
     const refs = new Map<string, DBRef[]>()
     const addRef = (p: DBRef): void => {
@@ -65,17 +70,50 @@ export const _codegenORM = (store: {
             })
         }
     }
+    // precompute a bunch of data for easier access
+    type PrecomputedTableInfo = {
+        sqliteTableName: string
+        jsTableName: string
+        fks: SqlFKDef[]
+        cols: SqlColDef[]
+        refs: DBRef[]
+        backRefs: DBRef[]
+    }
+    const precomputedTableInfosDict = new Map<string, PrecomputedTableInfo>()
+    const precomputedTableInfos = []
+    for (const table of tables) {
+        const jsTableName = convertTableNameToJSName(table.name)
+        const fks = _getAllForeignKeysForTable(db, table.name)
+        const cols = _getAllColumnsForTable(db, table.name)
+        const tRefs = refs.get(table.name) ?? []
+        const tBackRefs = backRefs.get(table.name) ?? []
+        const pti: PrecomputedTableInfo = {
+            jsTableName: jsTableName,
+            sqliteTableName: table.name,
+            fks,
+            cols,
+            refs: tRefs,
+            backRefs: tBackRefs,
+        }
+        // index by BOTH jsName and sqliteName
+        precomputedTableInfosDict.set(table.name, pti)
+        precomputedTableInfosDict.set(jsTableName, pti)
+
+        // and push ONCE in array for single iterration in next step
+        precomputedTableInfos.push(pti)
+    }
 
     const LiveDBSubKeys: string[] = []
     out2 += `declare type CushyViewID = Tagged<string, { CushyViewID: true }>\n`
-    for (const table of tables) {
-        const jsTableName = convertTableNameToJSName(table.name)
-        LiveDBSubKeys.push(`'${table.name}'`)
-        const fks = _getAllForeignKeysForTable(db, table.name)
-        const cols = _getAllColumnsForTable(db, table.name)
 
-        const tableRefs = refs.get(table.name) ?? []
-        const tableBackRefs = backRefs.get(table.name) ?? []
+    for (const pti of precomputedTableInfos) {
+        const table = { name: pti.sqliteTableName }
+        const jsTableName = pti.jsTableName
+        LiveDBSubKeys.push(`'${pti.sqliteTableName}'`)
+        const fks = pti.fks
+        const cols = pti.cols
+        const tableRefs = pti.refs
+        const tableBackRefs = pti.backRefs
         const xxx =
             [
                 tableRefs.length
@@ -191,10 +229,21 @@ export const _codegenORM = (store: {
 
         // #region backref (del)
         // typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
-        typeDecl += `\n\nexport type ${jsTableName}BackRefs = {\n`
+        typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = {\n`
         const tableBackref = backRefs.get(table.name) ?? []
-        for (const col of tableBackref) {
-            typeDecl += `    ${col.fromTable}_${col.fromField}?: ${convertTableNameToJSName(col.fromTable)}Types\n`
+        for (const br of tableBackref) {
+            const jsTableName = convertTableNameToJSName(br.fromTable)
+            const backrefTable = bang(precomputedTableInfosDict.get(br.fromTable))
+            const backRefColInfos = bang(backrefTable.cols.find((c) => c.name === br.fromField))
+            const backRefIsNullabel = !backRefColInfos.notnull
+            console.log(`[🤠] ${br.fromTable}_${br.fromField}`, {
+                jsTableName,
+                backrefTable,
+                backRefColInfos,
+                backRefIsNullabel,
+            })
+            const colon = backRefIsNullabel ? '?:' : ':'
+            typeDecl += `    ${br.fromTable}_${br.fromField}${colon} ${jsTableName}BackRefsToHandleOnDelete${backRefIsNullabel ? ` | 'set null'` : ''}\n`
         }
         typeDecl += `}`
 
@@ -226,7 +275,7 @@ export const _codegenORM = (store: {
         out1 += `    Create: New${jsTableName},\n`
         out1 += `    Update: ${jsTableName}Update,\n`
         out1 += `    ID: ${jsTableName}ID,\n`
-        out1 += `    Delete: ${jsTableName}BackRefs,\n`
+        out1 += `    Delete: ${jsTableName}BackRefsToHandleOnDelete,\n`
         out1 += `}\n`
 
         // out1 += typeDeclCreate + '\n'
@@ -243,7 +292,8 @@ export const _codegenORM = (store: {
         out1 += `    ${jsName}L,\n`
         out1 += `    New${jsName},\n`
         out1 += `    ${jsName}Update,\n`
-        out1 += `    ${jsName}ID\n`
+        out1 += `    ${jsName}ID,\n`
+        out1 += `    ${jsName}BackRefsToHandleOnDelete\n`
         out1 += `>(\n`
         out1 += `    '${table.name}',\n`
         out1 += `    '${jsName}',\n`

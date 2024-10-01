@@ -97,6 +97,10 @@ export type DBRef = { fromTable: string; fromField: string; toTable: string; tof
 //     Delete: Record<string, TableTypes>
 // }
 
+export type DeleteInstructionsFor<B> = {
+    [backref in keyof B]: 'set null' | 'cascade' | DeleteInstructionsFor<B[backref]> //
+}
+
 export class TableInfo<
     /** table name const-expr */
     TableName extends keyof KyselyTables = any,
@@ -110,13 +114,17 @@ export class TableInfo<
     U = any,
     /* data unique identifier */
     ID = any,
+    /* BackRefsToHandleOnDelete */
+    B extends object = any,
 > {
     $TableName!: TableName
     $T!: T
     $L!: L
     $N!: N
+    $B!: B
     $Update!: U
     $ID!: ID
+    $DeleteInstructions!: DeleteInstructionsFor<B>
 
     cols: SqlColDef[]
     // insertSQL: string

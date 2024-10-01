@@ -160,6 +160,10 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
         return this.script.getExecutable_orExtract(this.id)
     }
 
+    get scriptStillExistsOnDisk(): boolean {
+        return this.script.stillExistsOnDisk
+    }
+
     // get possiblyAlreadyCachedexecutable(): Maybe<Executable> {
     //     return this.script.getExecutable_orNull(this.id)
     // }
