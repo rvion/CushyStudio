@@ -124,71 +124,73 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 })}
             /> */}
             <DraftHeaderUI draft={draft} />
-            {fpath.existsSync ? null : (
-                <MessageErrorUI title='File Does not exists'>
-                    <QuickTableUI
-                        dense
-                        rows={fpath.hierarchy.map((str) => ({
-                            exists: str.existsSync ? '✅' : '❌',
-                            path: JSON.stringify(str.path),
-                        }))}
-                    ></QuickTableUI>
-                    {/* {fpath.hierarchy.map} */}
-                    <Button onClick={() => openFolderInOS(draft.file.folderAbs)}>open folder</Button>
-                </MessageErrorUI>
-            )}
-            {draft.shouldAutoStart && (
-                <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
-            )}
-            <RecompileUI app={draft.app} />
-            <Frame
-                base={0}
-                style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={[
-                    //
-                    'flex-1 flex flex-col p-2 gap-1',
-                    run_justify(justify.value),
-                    containerClassName,
-                ]}
-                onKeyUp={(ev) => {
-                    // submit on meta+enter
-                    if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
-                        ev.preventDefault()
-                        ev.stopPropagation()
-                        draft.start({})
-                    }
-                }}
-            >
-                {metadata?.help && (
-                    <MessageInfoUI>
-                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
-                    </MessageInfoUI>
+            <Frame tw={'overflow-auto'}>
+                {fpath.existsSync ? null : (
+                    <MessageErrorUI title='File Does not exists'>
+                        <QuickTableUI
+                            dense
+                            rows={fpath.hierarchy.map((str) => ({
+                                exists: str.existsSync ? '✅' : '❌',
+                                path: JSON.stringify(str.path),
+                            }))}
+                        ></QuickTableUI>
+                        {/* {fpath.hierarchy.map} */}
+                        <Button onClick={() => openFolderInOS(draft.file.folderAbs)}>open folder</Button>
+                    </MessageErrorUI>
                 )}
+                {draft.shouldAutoStart && (
+                    <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
+                )}
+                <RecompileUI app={draft.app} />
+                <Frame
+                    base={0}
+                    style={toJS(containerStyle ?? defaultContainerStyle)}
+                    tw={[
+                        //
+                        'flex-1 flex flex-col p-2 gap-1',
+                        run_justify(justify.value),
+                        containerClassName,
+                    ]}
+                    onKeyUp={(ev) => {
+                        // submit on meta+enter
+                        if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
+                            ev.preventDefault()
+                            ev.stopPropagation()
+                            draft.start({})
+                        }
+                    }}
+                >
+                    {metadata?.help && (
+                        <MessageInfoUI>
+                            <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
+                        </MessageInfoUI>
+                    )}
 
-                {/* {metadata?.description && (
+                    {/* {metadata?.description && (
                     <BoxSubtle>
                         <MarkdownUI tw='_WidgetMardownUI text-sm italic px-1 w-full' markdown={metadata.description} />
                     </BoxSubtle>
                 )} */}
-                {metadata?.requirements && (
-                    <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
-                )}
-                {draft.form && <draft.form.UI globalRules={{ Shell: ShellMobileUI }} />}
-
-                <RevealUI
-                    placement='topStart'
-                    content={() => (
-                        <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
-                            <ul>
-                                {Object.keys(app.script.data.metafile?.inputs ?? {}).map((t, ix) => (
-                                    <li key={ix}>{t}</li>
-                                ))}
-                            </ul>
-                        </div>
+                    {metadata?.requirements && (
+                        <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                     )}
-                >
-                    <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
-                </RevealUI>
+                    {draft.form && <draft.form.UI globalRules={{ Shell: ShellMobileUI }} />}
+
+                    <RevealUI
+                        placement='topStart'
+                        content={() => (
+                            <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
+                                <ul>
+                                    {Object.keys(app.script.data.metafile?.inputs ?? {}).map((t, ix) => (
+                                        <li key={ix}>{t}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    >
+                        <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
+                    </RevealUI>
+                </Frame>
             </Frame>
         </draftContext.Provider>
     )
