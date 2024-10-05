@@ -54,7 +54,7 @@ export class BuilderChoices<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> exten
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-        const finalConfig: Field_choices_config<T> = { items, multi: false, ...config }
+        const finalConfig: Field_choices_config<T> = { items, multi: true, ...config }
         return this.buildSchema(Field_choices<T>, finalConfig)
     }
 

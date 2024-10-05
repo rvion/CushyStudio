@@ -1,11 +1,11 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { ListExt } from './WidgetListExt'
+import type { Field_board } from './Field_board'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends BaseSchema>(p: {
     //
-    field: ListExt<any>['$Field']
+    field: Field_board<any>
 }) {
     //
     const scale = 20

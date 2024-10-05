@@ -149,6 +149,7 @@ export type Field_selectOne_types<
     $Unchecked: Field_selectOne_unchecked<VALUE>
     $Field: Field_selectOne<VALUE, KEY>
     $Child: never
+    $Reflect: Field_selectOne_types<VALUE, KEY>
 }
 
 // #region STATE
@@ -401,7 +402,7 @@ export class Field_selectOne<
     }
 
     /** different from reset; doesn't take default into account */
-    unset() {
+    unset(): void {
         this.runInValueTransaction(() => {
             this.patchSerial((draft) => void (draft.val = undefined))
         })

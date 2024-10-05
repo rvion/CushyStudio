@@ -1,5 +1,3 @@
-import type { Field_group_serial } from './FieldGroup'
-
 import { describe, expect, it } from 'bun:test'
 import { _getAdministration, isObservableProp } from 'mobx'
 
@@ -66,17 +64,12 @@ describe('mobx observability', () => {
 
 describe('structural sharing', () => {
     it('works', () => {
-        type T = {
-            num: S.SNumber
-            str: S.SString
-        }
-
         const S1 = b.fields({
             num: b.number(),
             str: b.string(),
         })
 
-        const ser1: Field_group_serial<T> = {
+        const ser1: (typeof S1)['$Serial'] = {
             $: 'group',
             values_: {
                 num: { $: 'number', value: 10 },
@@ -84,7 +77,7 @@ describe('structural sharing', () => {
             },
         }
 
-        const ser2: Field_group_serial<T> = {
+        const ser2: (typeof S1)['$Serial'] = {
             $: 'group',
             values_: {
                 num: { $: 'number', value: 20 },

@@ -33,6 +33,7 @@ export type Field_shared_types<F extends Field = Field> = {
     $Unchecked: Field_shared_unchecked<F>
     $Field: Field_shared<F>
     $Child: F
+    $Reflect: Field_shared_types<F>
 }
 
 // #region STATE

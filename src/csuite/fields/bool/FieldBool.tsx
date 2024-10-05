@@ -70,6 +70,7 @@ export type Field_bool_types = {
     $Unchecked: Field_bool_unchecked
     $Field: Field_bool
     $Child: never
+    $Reflect: Field_bool_types
 }
 
 // #region State

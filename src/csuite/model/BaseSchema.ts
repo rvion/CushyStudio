@@ -39,6 +39,8 @@ export interface BaseSchema<
     $Value: TYPES['$Value']
     $Unchecked: TYPES['$Unchecked']
     $Child: TYPES['$Child']
+    $Reflect: TYPES['$Reflect']
+    // reflect API
 }
 
 export class BaseSchema<

@@ -61,6 +61,7 @@ export type Field_prompt_types = {
     $Unchecked: Field_prompt_value | undefined
     $Field: Field_prompt
     $Child: never
+    $Reflect: Field_prompt_types
 }
 
 // #region State

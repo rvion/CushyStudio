@@ -1,8 +1,34 @@
 import type { SimpleBuilder } from '../../simple/SimpleBuilder'
 
-// CUBE ------------------------------------------------
+export type SimpleShape = {
+    // pos
+    x: number
+    y: number
+    z: number
 
-export type ShapeSchema = S.SGroup<{
+    // size
+    width: number
+    height: number
+    depth: number
+
+    // scale
+    scaleX?: number
+    scaleY?: number
+    scaleZ?: number
+
+    // color
+    fill?: string
+
+    // rotation
+    rotation?: number
+
+    // interraction
+    isSelected?: boolean
+    isDragging?: boolean
+    isResizing?: boolean
+}
+
+export type SimpleShapeSchema = S.SGroup<{
     x: S.SNumber
     y: S.SNumber
     z: S.SNumber
@@ -19,7 +45,7 @@ export type ShapeSchema = S.SGroup<{
     isResizing: S.SBool
 }>
 
-export function mkShapeSchema(b: SimpleBuilder): ShapeSchema {
+export function simpleShapeSchema(b: SimpleBuilder): SimpleShapeSchema {
     return b.fields({
         // pos
         x: b.number(),

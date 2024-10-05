@@ -56,6 +56,7 @@ export type Field_link_types<A extends BaseSchema, B extends BaseSchema> = {
     $Field: Field_link<A, B>
     $Unchecked: Field_link_unchecked<A, B>
     $Child: B
+    $Reflect: Field_link_types<A, B>
 }
 
 // #region STATE

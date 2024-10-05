@@ -4,10 +4,6 @@ import type { MediaImageL } from '../../models/MediaImage'
 import { Field_group, type MAGICFIELDS } from '../../csuite/fields/group/FieldGroup'
 import { usePanel } from '../../router/usePanel'
 
-type A1 = X.Group<{
-    a: X.XNumber
-}>
-type A2 = X.Optional<A1>
 // export type GalleryConfData = X.XGroup<{
 //     defaultSort: X.XSelectOne_<'createdAt' | 'updatedAt'>
 //     gallerySize: X.XNumber
@@ -40,9 +36,8 @@ const GalleryConfDataSchema = (ui: CushySchemaBuilder) => {
         filterAppName: ui.app().optional(),
     })
 }
-
-export interface GalleryConf extends MAGICFIELDS<Data['$Field']['$Subfields']> {}
-export class GalleryConf extends Field_group<Data['$Field']['$Subfields']> {
+export interface GalleryConf extends MAGICFIELDS<Data['$Reflect']> {}
+export class GalleryConf extends Field_group<Data['$Reflect']> {
     $Field!: GalleryConf
 
     get imageToDisplay(): MediaImageL[] {
@@ -55,6 +50,7 @@ export class GalleryConf extends Field_group<Data['$Field']['$Subfields']> {
                         : query.orderBy('media_image.updatedAt', 'desc')
 
                 x = x.limit(conf.galleryMaxImages ?? 20).select('media_image.id')
+
                 if (conf.filterPath) x = x.where('media_image.path', 'like', '%' + conf.filterPath + '%')
                 if (conf.filterTag) x = x.where('media_image.tags', 'like', '%' + conf.filterTag + '%')
                 if (conf.filterStar) x = x.where('media_image.star', '=', conf.filterStar ? 1 : 0)
@@ -79,6 +75,7 @@ export class GalleryConf extends Field_group<Data['$Field']['$Subfields']> {
 export function useGalleryConf(): GalleryConf {
     // prettier-ignore
     return usePanel().usePersistentModel('gallery-conf',
-        (ui) => GalleryConfDataSchema(ui).useClass(GalleryConf),
+        // (ui) => GalleryConfDataSchema(ui).useClass(() => GalleryConf),
+        (ui) => GalleryConfDataSchema(ui).useBuilder((...args) => new GalleryConf(...args)),
     )
 }

@@ -30,7 +30,8 @@ export type FieldTypes = {
     /** union of it's children */
     $Child: any // FieldTypes | never
 
-    /** schema this field has been instanciated from */
+    /** Reflect */
+    $Reflect: any
 }
 
 // export type FieldTypes_Reflect<T extends FieldTypes> = {

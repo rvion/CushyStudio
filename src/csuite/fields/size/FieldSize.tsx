@@ -62,6 +62,7 @@ export type Field_size_types = {
     $Unchecked: Field_size_unchecked
     $Field: Field_size
     $Child: never
+    $Reflect: Field_size_types
 }
 
 // STATE

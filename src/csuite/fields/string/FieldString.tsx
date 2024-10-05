@@ -92,6 +92,7 @@ export type Field_string_types = {
     $Unchecked: Field_string_unchecked
     $Field: Field_string
     $Child: never
+    $Reflect: Field_string_types
 }
 
 // #region STATE

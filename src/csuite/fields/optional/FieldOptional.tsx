@@ -37,6 +37,7 @@ export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
     $Unchecked: Field_optional_value<T>
     $Field: Field_optional<T>
     $Child: T
+    $Reflect: Field_optional_types<T>
 }
 
 // #region State

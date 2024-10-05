@@ -50,6 +50,7 @@ export type Field_dateTimeZoned_types<NULLABLE extends boolean> = {
     $Unchecked: Field_dateTimeZoned_value<NULLABLE> | undefined
     $Field: Field_dateTimeZoned<NULLABLE>
     $Child: never
+    $Reflect: Field_dateTimeZoned_types<NULLABLE>
 }
 
 // #region State

@@ -51,6 +51,7 @@ export type Field_number_types = {
     $Unchecked: Field_number_unchecked
     $Field: Field_number
     $Child: never
+    $Reflect: Field_number_types
 }
 
 // #region STATE

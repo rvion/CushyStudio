@@ -126,6 +126,7 @@ export type Field_selectMany_types<
     $Unchecked: Field_selectMany_unchecked<VALUE>
     $Field: Field_selectMany<VALUE, KEY>
     $Child: never
+    $Reflect: Field_selectMany_types<VALUE, KEY>
 }
 
 // #region STATE

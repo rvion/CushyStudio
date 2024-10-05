@@ -92,6 +92,7 @@ export type Field_list_types<T extends BaseSchema> = {
     $Unchecked: Field_list_unchecked<T>
     $Field: Field_list<T>
     $Child: T['$Field']
+    $Reflect: Field_list_types<T>
 }
 
 // #region STATE

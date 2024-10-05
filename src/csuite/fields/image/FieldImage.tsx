@@ -51,6 +51,7 @@ export type Field_image_types = {
     $Unchecked: Field_image_value | undefined
     $Field: Field_image
     $Child: never
+    $Reflect: Field_image_types
 }
 
 // #region STATE

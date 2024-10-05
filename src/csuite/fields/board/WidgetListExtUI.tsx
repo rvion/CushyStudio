@@ -1,5 +1,5 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { Field_listExt } from './WidgetListExt'
+import type { Field_board } from './Field_board'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,17 +9,17 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
-export function WidgetListExtUI__Regional(p: { field: Field_listExt<any> }): JSX.Element {
+export function WidgetListExtUI__Regional(p: { field: Field_board<any> }): JSX.Element {
     return <WidgetListExtUI field={p.field} mode='regional' />
 }
 
-export function WidgetListExtUI__Timeline(p: { field: Field_listExt<any> }): JSX.Element {
+export function WidgetListExtUI__Timeline(p: { field: Field_board<any> }): JSX.Element {
     return <WidgetListExtUI field={p.field} mode='timeline' />
 }
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends BaseSchema>(p: {
     //
-    field: Field_listExt<T>
+    field: Field_board<T>
     mode: 'timeline' | 'regional'
 }) {
     const listExt = p.field
@@ -45,7 +45,7 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Base
 
 export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: {
     //
-    field: Field_listExt<any>
+    field: Field_board<any>
 }) {
     return (
         <div tw='flex flex-1 items-center'>

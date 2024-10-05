@@ -52,6 +52,7 @@ export type Field_date_types<NULLABLE extends boolean> = {
     $Unchecked: Field_date_unchecked<NULLABLE>
     $Field: Field_date<NULLABLE>
     $Child: never
+    $Reflect: Field_date_types<NULLABLE>
 }
 
 // #region State

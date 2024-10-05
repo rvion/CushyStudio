@@ -1,13 +1,13 @@
+import type { SimpleShapeSchema } from '../csuite/fields/board/ShapeSchema'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
 import type { Field_color_config } from '../csuite/fields/color/FieldColor'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../csuite/fields/datetime_zoned/FieldDateTimeZoned'
-import type { Field_Group_withMagicFields } from '../csuite/fields/group/FieldGroup'
+import type { Field_group_types, Field_Group_withMagicFields } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
-import type { ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
 import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
@@ -25,6 +25,9 @@ import { nanoid } from 'nanoid'
 import { createElement } from 'react'
 
 import { simpleBuilder } from '../csuite'
+import { Field_board, Field_board_config } from '../csuite/fields/board/Field_board'
+import { simpleShapeSchema } from '../csuite/fields/board/ShapeSchema'
+import { WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_bool } from '../csuite/fields/bool/FieldBool'
 import { Field_button } from '../csuite/fields/button/FieldButton'
 import { Field_choices } from '../csuite/fields/choices/FieldChoices'
@@ -35,9 +38,6 @@ import { Field_group } from '../csuite/fields/group/FieldGroup'
 import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_link } from '../csuite/fields/link/FieldLink'
 import { Field_list } from '../csuite/fields/list/FieldList'
-import { mkShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
-import { Field_listExt_config, ListExt } from '../csuite/fields/listExt/WidgetListExt'
-import { WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/listExt/WidgetListExtUI'
 import { Field_markdown, Field_markdown_config } from '../csuite/fields/markdown/FieldMarkdown'
 import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
 import { Field_number } from '../csuite/fields/number/FieldNumber'
@@ -92,8 +92,8 @@ declare global {
 
         // field aliases
         type Shared<T extends Field> = Field_shared<T>
-        type Group<T extends SchemaDict> = Field_group<T>
-        type Empty = Field_group<NO_PROPS>
+        type Group<T extends SchemaDict> = Field_group<Field_group_types<T>>
+        type Empty = Field_group<Field_group_types<NO_PROPS>>
         type Optional<T extends BaseSchema> = Field_optional<T>
         type Bool = Field_bool
         type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
@@ -121,9 +121,9 @@ declare global {
 
         // schema aliases
         type XShared<T extends Field> = CushySchema<Field_shared<T>>
-        type XGroup<T extends SchemaDict> = CushySchema<Field_Group_withMagicFields<T>>
-        type XGroup_<T extends SchemaDict> = CushySchema<Field_group<T>>
-        type XEmpty = CushySchema<Field_group<NO_PROPS>>
+        type XGroup<T extends SchemaDict> = CushySchema<Field_Group_withMagicFields<Field_group_types<T>>>
+        type XGroup_<T extends SchemaDict> = CushySchema<Field_group<Field_group_types<T>>>
+        type XEmpty = CushySchema<Field_group<Field_group_types<NO_PROPS>>>
         type XOptional<T extends BaseSchema> = CushySchema<Field_optional<T>>
         type XBool = CushySchema<Field_bool>
         type XLink<A extends BaseSchema, B extends BaseSchema> = CushySchema<Field_link<A, B>>
@@ -133,7 +133,7 @@ declare global {
         type XNumber = CushySchema<Field_number>
         type XColor = CushySchema<Field_color>
         type XList<T extends BaseSchema> = CushySchema<Field_list<T>>
-        type XListExt<T extends BaseSchema> = CushySchema<ListExt<T>>
+        type XBoard<T extends BaseSchema> = SimpleSchema<Field_board<T>>
         type XButton<T> = CushySchema<Field_button<T>>
         type XSeed = CushySchema<Field_seed>
         type XMatrix = CushySchema<Field_matrix>
@@ -312,25 +312,25 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_list<T>>(Field_list, config)
     }
 
-    cube(): ShapeSchema {
-        return mkShapeSchema(simpleBuilder)
+    cube(): SimpleShapeSchema {
+        return simpleShapeSchema(simpleBuilder)
     }
 
     // #region ListExt
-    timeline<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
-        // 🔴
-        // @ts-ignore
-        return ListExt.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Timeline })
+    timeline<T extends BaseSchema>(sub: Field_board_config<T>, config: Omit<Field_board_config<T>, 'element'> = {}): X.XBoard<T> {
+        const x = Field_board.getSchema(simpleBuilder, sub)
+        type T01 = (typeof x)['$Field']
+        type T02 = (typeof x)['$Reflect']['$Field']
+        type T1 = (typeof x)['$Config']['body']
+        return x.withConfig({ body: WidgetListExtUI__Timeline, ...config })
     }
 
-    regional<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
-        // 🔴
-        // @ts-ignore
-        return ListExt.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
+    regional<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {
+        return Field_board.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
     }
 
-    listExt<T extends BaseSchema>(sub: Field_listExt_config<T>): SimpleSchema<ListExt<T>> {
-        return ListExt.getSchema(simpleBuilder, sub)
+    listExt<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {
+        return Field_board.getSchema(simpleBuilder, sub)
     }
 
     // SELECT ONE

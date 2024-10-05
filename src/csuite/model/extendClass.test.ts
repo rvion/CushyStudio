@@ -5,7 +5,7 @@ import { isAction, isComputedProp, isObservableProp, reaction } from 'mobx'
 
 import { simpleBuilder as b, simpleFactory as f } from '../'
 import { Field_bool } from '../fields/bool/FieldBool'
-import { Field_group } from '../fields/group/FieldGroup'
+import { Field_group, type Field_group_types } from '../fields/group/FieldGroup'
 
 const r = f.repository
 
@@ -97,12 +97,8 @@ describe('field customizations', () => {
 
         it('works with external class', () => {
             const S0 = b.fields({ foo: b.int({ default: 10 }) })
-
-            type T0 = S.Group<{
-                foo: S.SNumber
-            }>['$Subfields']
-
-            class Foo2 extends Field_group<T0> {
+            type T0 = { foo: S.SNumber }
+            class Foo2 extends Field_group<Field_group_types<T0>> {
                 $Field!: Foo2
                 static HELLO = 'WORLD'
                 volatile1 = 12
@@ -148,9 +144,7 @@ describe('field customizations', () => {
         it('works via `useBuilder` ', () => {
             const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-            type T0 = S.Group<{
-                foo: S.SNumber
-            }>['$Subfields']
+            type T0 = Field_group_types<{ foo: S.SNumber }>
 
             class Foo3 extends Field_group<T0> {
                 $Field!: Foo3

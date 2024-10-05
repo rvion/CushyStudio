@@ -1,6 +1,6 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { ListExt } from './WidgetListExt'
-import type { SimpleShape } from './WidgetListExtTypes'
+import type { Field_board } from './Field_board'
+import type { SimpleShape } from './ShapeSchema'
 import type { Shape } from 'konva/lib/Shape'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -10,7 +10,7 @@ import { Layer, Rect, Stage, Transformer } from 'react-konva'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends BaseSchema>(p: {
-    field: ListExt<any>['$Field']
+    field: Field_board<any>
 }) {
     const RG = p.field
     const entries = RG.fields.items.childrenActive.map((i) => i.fields)

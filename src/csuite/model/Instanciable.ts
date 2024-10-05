@@ -11,6 +11,7 @@ export interface Instanciable<TYPES extends FieldTypes = FieldTypes> {
     $Field: TYPES['$Field']
     $Unchecked: TYPES['$Unchecked']
     $Child: TYPES['$Child']
+    $Reflect: TYPES['$Reflect']
 
     // 2.
     type: TYPES['$Type']

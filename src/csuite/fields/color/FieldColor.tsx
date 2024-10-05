@@ -33,6 +33,7 @@ export type Field_color_types = {
     $Unchecked: Field_color_unchecked
     $Field: Field_color
     $Child: never
+    $Reflect: Field_color_types
 }
 
 // STATE

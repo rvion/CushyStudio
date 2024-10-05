@@ -49,6 +49,7 @@ export type Field_button_types<K> = {
     $Unchecked: Field_button_unchecked
     $Field: Field_button<K>
     $Child: never
+    $Reflect: Field_button_types<K>
 }
 
 // STATE

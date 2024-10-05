@@ -101,6 +101,7 @@ export interface Field<K extends FieldTypes = FieldTypes> {
     $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
     $Unchecked: K['$Unchecked'] /** type only properties; do not use directly; used to make typings good and fast */
     $Child: K['$Child'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Reflect: K['$Reflect'] /** type only properties; do not use directly; used to make typings good and fast */
 }
 
 /**
