@@ -36,38 +36,42 @@ export function useGalleryConf(): GalleryConf {
                 filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
                 filterAppName: ui.app().optional(),
             })
-            .useMixin((self) => ({
-                get imageToDisplay(): MediaImageL[] {
-                    const conf = self.value
-                    const out = cushy.db.media_image.select(
-                        (query) => {
-                            let x =
-                                conf.defaultSort === 'createdAt'
-                                    ? query.orderBy('media_image.createdAt', 'desc')
-                                    : query.orderBy('media_image.updatedAt', 'desc')
+            .useClass((SUPER) => {
+                return class GalleryConf extends SUPER {
+                    $Field!: GalleryConf
 
-                            x = x.limit(conf.galleryMaxImages ?? 20).select('media_image.id')
-                            if (conf.filterPath) x = x.where('media_image.path', 'like', '%' + conf.filterPath + '%')
-                            if (conf.filterTag) x = x.where('media_image.tags', 'like', '%' + conf.filterTag + '%')
-                            if (conf.filterStar) x = x.where('media_image.star', '=', conf.filterStar ? 1 : 0)
-                            if (conf.filterAppName) {
-                                x = x
-                                    .innerJoin('step', 'media_image.stepID', 'step.id')
-                                    .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
-                                    .where('cushy_app.id', 'in', [conf.filterAppName.id])
-                            }
-                            // ⏸️ let exclude = 'noise'
-                            // ⏸️ if (exclude) {
-                            // ⏸️     x = x.where('media_image.tags', 'not like', '%' + exclude + '%')
-                            // ⏸️ }
-                            return x
-                        },
-                        ['media_image.id'],
-                    )
-                    // console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
-                    // console.log(`[🤠] BBB`)
-                    return out
-                },
-            }))
+                    get imageToDisplay(): MediaImageL[] {
+                        const conf = this.value
+                        const out = cushy.db.media_image.select(
+                            (query) => {
+                                let x =
+                                    conf.defaultSort === 'createdAt'
+                                        ? query.orderBy('media_image.createdAt', 'desc')
+                                        : query.orderBy('media_image.updatedAt', 'desc')
+
+                                x = x.limit(conf.galleryMaxImages ?? 20).select('media_image.id')
+                                if (conf.filterPath) x = x.where('media_image.path', 'like', '%' + conf.filterPath + '%')
+                                if (conf.filterTag) x = x.where('media_image.tags', 'like', '%' + conf.filterTag + '%')
+                                if (conf.filterStar) x = x.where('media_image.star', '=', conf.filterStar ? 1 : 0)
+                                if (conf.filterAppName) {
+                                    x = x
+                                        .innerJoin('step', 'media_image.stepID', 'step.id')
+                                        .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
+                                        .where('cushy_app.id', 'in', [conf.filterAppName.id])
+                                }
+                                // ⏸️ let exclude = 'noise'
+                                // ⏸️ if (exclude) {
+                                // ⏸️     x = x.where('media_image.tags', 'not like', '%' + exclude + '%')
+                                // ⏸️ }
+                                return x
+                            },
+                            ['media_image.id'],
+                        )
+                        // console.log(`[🔴🤠] imageToDisplay AAA`, out.length)
+                        // console.log(`[🤠] BBB`)
+                        return out
+                    }
+                }
+            })
     })
 }
