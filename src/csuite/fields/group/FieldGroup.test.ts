@@ -7,7 +7,11 @@ import { simpleBuilder as b } from '../../index'
 
 describe('groups', () => {
     it('are practical to use', () => {
-        const S1 = b.fields({
+        const S1: S.SGroup<{
+            baz: S.SGroup<{
+                qux: S.SString
+            }>
+        }> = b.fields({
             baz: b.fields({
                 qux: b.string({ default: '🔵' }),
             }),

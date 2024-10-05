@@ -7,7 +7,7 @@ import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
 import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { $FieldTypes } from './$FieldTypes'
+import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { TypeImportLocation } from './codegen/ImportLocation'
 import type { DraftLike } from './Draft'
@@ -83,7 +83,7 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 
 export type KeyedField = { key: string; field: Field }
 
-export type FieldCtorProps<F extends Field = any> = [
+export type FieldCtorProps<F extends FieldTypes = any> = [
     //
     repo: Repository,
     root: Field | null,
@@ -93,7 +93,7 @@ export type FieldCtorProps<F extends Field = any> = [
     serial?: F['$Serial'],
 ]
 
-export interface Field<K extends $FieldTypes = $FieldTypes> {
+export interface Field<K extends FieldTypes = FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -109,7 +109,7 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
  */
 export type UNSAFE_AnyField = any // Field<any>
 
-export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
+export abstract class Field<out K extends FieldTypes = FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
     /** @internal */
     static build: 'new' = 'new'
 

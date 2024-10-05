@@ -4,7 +4,7 @@ import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../csuite/fields/datetime_zoned/FieldDateTimeZoned'
-import type { FieldGroup } from '../csuite/fields/group/FieldGroup'
+import type { Field_Group_withMagicFields } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
 import type { ShapeSchema } from '../csuite/fields/listExt/ShapeSchema'
@@ -12,7 +12,6 @@ import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
-import type { Field_seed_config } from '../csuite/fields/seed/FieldSeed'
 import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
@@ -50,7 +49,7 @@ import { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
 import { type SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import { WidgetSelectOneUI } from '../csuite/fields/selectOne/WidgetSelectOneUI'
 import { Field_shared } from '../csuite/fields/shared/FieldShared'
-import { Field_size, type Field_size_config } from '../csuite/fields/size/FieldSize'
+import { Field_size } from '../csuite/fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
 import { BuilderBool } from '../csuite/model/builders/BuilderBoolTypes'
 import { BuilderChoices } from '../csuite/model/builders/BuilderChoices'
@@ -84,8 +83,9 @@ declare global {
         // #region core types
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
         type Builder = import('./Builder').CushySchemaBuilder
-        type Field = import('../csuite/model/Field').Field
-        type BaseSchema<out FIELD extends Field = Field> = import('../csuite/model/BaseSchema').BaseSchema<FIELD>
+        type Field<K extends FieldTypes = FieldTypes> = import('../csuite/model/Field').Field<K>
+        type FieldTypes = import('../csuite/model/$FieldTypes').FieldTypes
+        type BaseSchema<out TYPES extends FieldTypes = FieldTypes> = import('../csuite/model/BaseSchema').BaseSchema<TYPES>
         type Runtime = import('../runtime/Runtime').Runtime
 
         // #region core types
@@ -121,7 +121,7 @@ declare global {
 
         // schema aliases
         type XShared<T extends Field> = CushySchema<Field_shared<T>>
-        type XGroup<T extends SchemaDict> = CushySchema<FieldGroup<T>>
+        type XGroup<T extends SchemaDict> = CushySchema<Field_Group_withMagicFields<T>>
         type XGroup_<T extends SchemaDict> = CushySchema<Field_group<T>>
         type XEmpty = CushySchema<Field_group<NO_PROPS>>
         type XOptional<T extends BaseSchema> = CushySchema<Field_optional<T>>
@@ -308,7 +308,7 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_custom<T>>(Field_custom, config)
     }
 
-    list<T extends BaseSchema>(config: Field_list_config<T>): X.XList<T> {
+    list<T extends BaseSchema>(config: Field_list_config<T>): CushySchema<Field_list<T>> {
         return new CushySchema<Field_list<T>>(Field_list, config)
     }
 

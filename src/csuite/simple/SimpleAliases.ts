@@ -6,7 +6,7 @@ import type { Field_color } from '../fields/color/FieldColor'
 import type { Field_date } from '../fields/date/FieldDate'
 import type { Field_datePlain } from '../fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../fields/datetime_zoned/FieldDateTimeZoned'
-import type { Field_group, FieldGroup } from '../fields/group/FieldGroup'
+import type { Field_group, Field_Group_withMagicFields } from '../fields/group/FieldGroup'
 import type { Field_link } from '../fields/link/FieldLink'
 import type { Field_list } from '../fields/list/FieldList'
 import type { Field_markdown } from '../fields/markdown/FieldMarkdown'
@@ -61,7 +61,7 @@ declare global {
         //  ====== schema aliases ======================================================
         type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
         //
-        type SGroup<T extends SchemaDict> = SimpleSchema<FieldGroup<T>>
+        type SGroup<T extends SchemaDict> = SimpleSchema<Field_Group_withMagicFields<T>>
         type SList<T extends BaseSchema> = SimpleSchema<Field_list<T>>
         type SLink<A extends BaseSchema, B extends BaseSchema> = SimpleSchema<Field_link<A, B>>
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>

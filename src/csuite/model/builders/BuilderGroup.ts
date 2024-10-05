@@ -1,11 +1,11 @@
+import type { FieldTypes } from '../$FieldTypes'
 import type { NO_PROPS } from '../../types/NO_PROPS'
-import type { Field } from '../Field'
 import type { SchemaDict } from '../SchemaDict'
 
 import { Field_group, type Field_group_config } from '../../fields/group/FieldGroup'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Group: HKT<SchemaDict>
     Empty: Apply<this, Field_group<NO_PROPS>>
 }

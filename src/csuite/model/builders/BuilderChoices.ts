@@ -1,11 +1,11 @@
-import type { Field } from '../Field'
+import type { FieldTypes } from '../$FieldTypes'
 import type { SchemaDict } from '../SchemaDict'
 
 import { Field_choices, type Field_choices_config } from '../../fields/choices/FieldChoices'
 import { bang } from '../../utils/bang'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Choices: HKT
 }
 
@@ -45,11 +45,8 @@ export class BuilderChoices<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> exten
         if ('items' in items) {
             console.warn(`[🔴] wrong choice`)
         }
-        return this.buildSchema(Field_choices<T>, {
-            items,
-            multi: false,
-            ...config,
-        })
+        const finalConfig: Field_choices_config<T> = { items, multi: false, ...config }
+        return this.buildSchema(Field_choices<T>, finalConfig)
     }
 
     /** generic choice field, without any default */
@@ -57,11 +54,8 @@ export class BuilderChoices<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> exten
         items: Field_choices_config<T>['items'],
         config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
     ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-        return this.buildSchema(Field_choices<T>, {
-            items,
-            multi: true,
-            ...config,
-        })
+        const finalConfig: Field_choices_config<T> = { items, multi: false, ...config }
+        return this.buildSchema(Field_choices<T>, finalConfig)
     }
 
     // #region legacy

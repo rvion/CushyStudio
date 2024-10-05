@@ -1,8 +1,8 @@
-import type { Field } from '../Field'
+import type { FieldTypes } from '../$FieldTypes'
 
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     //
 }
 

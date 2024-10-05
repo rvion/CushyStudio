@@ -1,11 +1,11 @@
-import type { Field } from '../Field'
+import type { FieldTypes } from '../$FieldTypes'
 
 import { Field_date, type Field_date_config } from '../../fields/date/FieldDate'
 import { Field_datePlain, type Field_datePlain_config } from '../../fields/date_plain/FieldDatePlain'
 import { Field_dateTimeZoned, type Field_dateTimeZoned_config } from '../../fields/datetime_zoned/FieldDateTimeZoned'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Date: HKT<boolean>
     DatePlain: HKT<boolean>
     DateTimeZoned: HKT<boolean>

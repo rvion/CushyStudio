@@ -8,15 +8,40 @@ import type { FieldSerial_CommonProperties } from './FieldSerial'
  * | > default type-level param when we work with unknown widget
  * | > still allow to use SharedConfig properties, and SharedSerial properties
  */
-export type $FieldTypes = {
+export type FieldTypes = {
+    /** string that allow to discriminate on the field itself */
     $Type: CATALOG.AllFieldTypes
+
+    /** options this field take that modify it's behaviour */
     $Config: FieldConfig_CommonProperties<any>
+
+    /** serial this field serialize to  */
     $Serial: FieldSerial_CommonProperties
+
+    /** instance */
     $Field: Field // 💡 <$FieldTypes_ANY>
+
+    /** practical value we get extract from this field */
     $Value: any
+
+    /** unchecked value we can extract */
     $Unchecked: any
-    $Child: $FieldTypes | never
+
+    /** union of it's children */
+    $Child: any // FieldTypes | never
+
+    /** schema this field has been instanciated from */
 }
+
+// export type FieldTypes_Reflect<T extends FieldTypes> = {
+//     $Type: T['$Type']
+//     $Config: T['$Config']
+//     $Serial: T['$Serial']
+//     $Field: T['$Field']
+//     $Value: T['$Value']
+//     $Unchecked: T['$Unchecked']
+//     $Child: T['$Child']
+// }
 
 // 💬 2024-09-27 rvion:
 // | not quite sure what it would achieve, but we could manually unroll it a few time providing any

@@ -73,6 +73,10 @@ export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
     [K in keyof T as Capitalize<K & string>]: T[K]['$Field']
 }
 
+export interface Field_Group_withMagicFields<T extends SchemaDict> extends Field_group<T> {
+    $Field: FieldGroup<T>
+}
+/** named alias for the Field with MAGICFields added, to keep field type concise  */
 export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
 
 // prettier-ignore
@@ -108,6 +112,9 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     static readonly type: 'group' = 'group'
     static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
     static migrateSerial(): undefined {}
+
+    // ⁉️ good approach ? lol
+    // $Field!: FieldGroup<T>
 
     constructor(
         //

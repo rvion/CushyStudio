@@ -1,9 +1,9 @@
-import type { Field } from '../Field'
+import type { FieldTypes } from '../$FieldTypes'
 
 import { Field_string, type Field_string_config } from '../../fields/string/FieldString'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     String: Apply<this, Field_string>
 }
 
