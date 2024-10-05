@@ -601,6 +601,7 @@ export class RevealState {
             >,
         msg: string,
     ): void {
+        if (!DEBUG_REVEAL) return
         // this.log(`🎩 ${this.uid} ${evUID(ev)} ${msg}`)
         const evenInfo = `${ev?.type}#${evUID(ev)}`.padStart(15)
         this.log(`[${evenInfo}] ${msg}`)
