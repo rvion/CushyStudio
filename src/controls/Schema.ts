@@ -57,7 +57,7 @@ export class CushySchema<out FIELD extends Field = Field> //
         // this.🐌
         return this
     }
-    addPreset = (preset: WidgetMenuAction<FIELD>): CushySchema<FIELD> => {
+    addPreset(preset: WidgetMenuAction<FIELD>): CushySchema<FIELD> {
         return this.withConfig({
             presets: [...(this.config.presets ?? []), preset],
         })
