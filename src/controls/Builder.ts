@@ -285,23 +285,6 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_prompt>(Field_prompt, config)
     }
 
-    int(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new CushySchema<Field_number>(Field_number, { mode: 'int', ...config })
-    }
-
-    /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new CushySchema<Field_number>(Field_number, {
-            mode: 'int',
-            default: 100,
-            step: 10,
-            min: 0,
-            max: 100,
-            suffix: '%',
-            ...config,
-        })
-    }
-
     /**
      * [number variant] ratio = mode=float, default=0.5, step=0.01, min=0, max=1, suffix='%',
      * see also: `percent`
@@ -315,14 +298,6 @@ export class CushySchemaBuilder implements IBuilder {
             max: 1,
             ...config,
         })
-    }
-
-    float(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new CushySchema<Field_number>(Field_number, { mode: 'float', ...config })
-    }
-
-    number(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
-        return new CushySchema<Field_number>(Field_number, { mode: 'float', ...config })
     }
 
     remSize(config: Omit<Field_number_config, 'mode'> = {}): X.XNumber {
