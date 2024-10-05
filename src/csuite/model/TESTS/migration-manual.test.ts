@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it } from 'bun:test'
 
 import { simpleBuilder as b, simpleFactory as f } from '../../index'
 
 const r = f.repository
 
 describe('migration manual', () => {
-    // beforeEach(() => r.repository.reset())
+    beforeEach(() => r.reset())
     it('work', () => {
         type BUGGYSerial = { valA: number; valB: number }
 

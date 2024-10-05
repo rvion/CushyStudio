@@ -3,6 +3,7 @@ import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Field_enum } from './FieldEnum'
 
 import { observer } from 'mobx-react-lite'
+import { useCallback } from 'react'
 
 import { useSt } from '../../../state/stateContext'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
@@ -62,12 +63,15 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
 }) {
     const field = p.field
     const enumName = field.config.enumName
-    const isOptional = false // TODO: hook into parent once parent is accessible from state
+    const clearable = useCallback(
+        () => (field.canBeToggledWithinParent ? (): void => field.disableSelfWithinParent() : undefined),
+        [field.canBeToggledWithinParent],
+    )
     return (
         <EnumSelectorUI
             value={() => field.status}
-            isOptional={isOptional}
             enumName={enumName}
+            clearable={clearable}
             // substituteValue={req.status}
             onChange={(e) => {
                 if (e == null) return // ❓
@@ -82,11 +86,11 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
 })
 
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
-    isOptional: boolean
     value: () => CleanedEnumResult<any>
     // displayValue?: boolean
     // substituteValue?: EnumValue | null
     onChange: (v: EnumValue | null) => void
+    clearable?: Maybe<() => void>
     disabled?: boolean
     enumName: EnumName
 }) {
@@ -102,9 +106,9 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
             <SelectUI //
                 tw={[{ ['rsx-field-error']: hasError }]}
                 disabled={p.disabled}
-                cleanable={p.isOptional}
+                clearable={p.clearable}
                 options={() => options}
-                getLabelText={(v) => v.toString()}
+                getLabelText={(v) => v?.toString() ?? 'null'}
                 value={() => p.value().candidateValue}
                 // hideValue={p.displayValue}
                 onOptionToggled={(option) => {

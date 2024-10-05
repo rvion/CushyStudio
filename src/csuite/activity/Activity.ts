@@ -1,8 +1,7 @@
 import type { RevealPlacement } from '../../csuite/reveal/RevealPlacement'
+import type { Trigger } from '../trigger/Trigger'
 import type { Routine } from './Routine'
 import type { FC, KeyboardEvent, MouseEvent, UIEvent } from 'react'
-
-import { Trigger } from '../trigger/Trigger'
 
 export type DomId = string
 

@@ -1,4 +1,3 @@
-import type { FrameProps } from '../frame/Frame'
 import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
@@ -166,7 +165,7 @@ export const MenuUI = observer(function Menu({
                         </RevealUI>
                     )
                 } else if (isWidget(entry)) {
-                    return entry.renderWithLabel()
+                    return entry.UI()
                 } else {
                     return <React.Fragment key={ix}>{createElement(entry)}</React.Fragment>
                 }

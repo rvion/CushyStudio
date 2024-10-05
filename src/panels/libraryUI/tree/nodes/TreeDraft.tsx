@@ -1,19 +1,27 @@
 import type { ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
 import type { DraftL } from '../../../../models/Draft'
+import type { STATE } from '../../../../state/state'
 
 import { DraftFavoriteBtnUI } from './misc/CardPicker2UI'
 
 export class TreeDraft implements ITreeEntry {
-    get name() { return `${this.draft.name}` } // prettier-ignore
-    get st() { return cushy } // prettier-ignore
+    get name(): string {
+        return `${this.draft.name}`
+    }
+
+    get st(): STATE {
+        return cushy
+    }
+
     constructor(public draft: DraftL) {}
 
     isFolder = false
     canRename = true
 
-    onPrimaryAction = () => this.draft.openOrFocusTab()
+    onPrimaryAction = (): void => this.draft.openOrFocusTab()
+
     // icon = (<span>✨</span>)
-    get icon() {
+    get icon(): string {
         return (
             this.draft.data.illustration ?? //
             this.draft.app?.illustrationPathWithFileProtocol ??
@@ -22,17 +30,17 @@ export class TreeDraft implements ITreeEntry {
         // return <span className='material-symbols-outlined'>Draft</span>
     }
 
-    delete = () => {
-        this.draft.delete()
+    delete = (): boolean => {
+        this.draft.delete({})
         return true
     }
-    extra = () => <DraftFavoriteBtnUI draft={this.draft} />
+    extra = (): JSX.Element => <DraftFavoriteBtnUI draft={this.draft} />
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',
             icon: 'play_arrow',
             mode: 'small',
-            onClick: () => {
+            onClick: (): void => {
                 this.draft.AWAKE()
                 this.draft.start({})
             },
@@ -41,7 +49,7 @@ export class TreeDraft implements ITreeEntry {
             name: 'add Draft',
             icon: 'close',
             mode: 'small',
-            onClick: () => this.draft.delete(),
+            onClick: () => this.draft.delete({}),
         },
     ]
 }

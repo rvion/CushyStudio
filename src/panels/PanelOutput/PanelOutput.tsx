@@ -33,7 +33,11 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
             ? cushy.db.step.last()
             : cushy.db.step.get(p.stepID)
     if (step == null) return null
-    const out1 = st.hovered ?? st.focusedStepOutput ?? step.lastMediaOutput ?? st.db.media_image.last()
+    const out1 =
+        st.hovered ?? //
+        st.focusedStepOutput ??
+        step.lastMediaOutput ??
+        st.db.media_image.last()
     // const out2 = step.comfy_workflows.findLast((i) => i.createdAt)
 
     return (

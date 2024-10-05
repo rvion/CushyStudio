@@ -48,7 +48,7 @@ const HANDLE = registerCustomPanel(
         return (
             <div>
                 🟢{p.name}
-                {form.render()}
+                {form.UI()}
             </div>
         )
     }),

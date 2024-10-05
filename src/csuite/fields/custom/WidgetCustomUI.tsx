@@ -1,4 +1,4 @@
-import type { PropsOf } from '../../../router/Layout'
+import type { PropsOf } from '../../types/PropsOf'
 import type { Field_custom } from './FieldCustom'
 
 import { observer } from 'mobx-react-lite'

@@ -1,6 +1,6 @@
 import { ctx_global } from '../csuite/command-topic/ctx_global'
 import { command } from '../csuite/commands/Command'
-import { menuWithoutProps, menuWithProps } from '../csuite/menu/Menu'
+import { menuWithoutProps } from '../csuite/menu/Menu'
 import { Trigger } from '../csuite/trigger/Trigger'
 
 const helpCommands = [

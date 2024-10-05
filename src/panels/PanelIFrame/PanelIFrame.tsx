@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Panel, type PanelHeader } from '../../router/Panel'
+import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 
 export const PanelIframe = new Panel({
     name: 'IFrame',
@@ -12,20 +12,20 @@ export const PanelIframe = new Panel({
     category: 'tools',
     icon: 'mdiWebPlus',
     presets: {
-        Posemy(): PanelIframeProps {
-            return { url: 'https://app.posemy.art/' }
+        Posemy(): PanelPreset<PanelIframeProps> {
+            return { props: { url: 'https://app.posemy.art/' } }
         },
-        Civitai(): PanelIframeProps {
-            return { url: 'https://civitai.com/' }
+        Civitai(): PanelPreset<PanelIframeProps> {
+            return { props: { url: 'https://civitai.com/' } }
         },
-        Squoosh(): PanelIframeProps {
-            return { url: 'https://squoosh.app/' }
+        Squoosh(): PanelPreset<PanelIframeProps> {
+            return { props: { url: 'https://squoosh.app/' } }
         },
-        Paint(): PanelIframeProps {
-            return { url: 'https://minipaint.github.io/' }
+        Paint(): PanelPreset<PanelIframeProps> {
+            return { props: { url: 'https://minipaint.github.io/' } }
         },
-        Photopea(): PanelIframeProps {
-            return { url: 'https://www.photopea.com/' }
+        Photopea(): PanelPreset<PanelIframeProps> {
+            return { props: { url: 'https://www.photopea.com/' } }
         },
     },
 })

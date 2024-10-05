@@ -1,8 +1,8 @@
+import type { DovProps } from '../frame/Dov/Dov'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
+import type React from 'react'
 import type { FC } from 'react'
-
-import React from 'react'
 
 // prettier-ignore
 export type KnownShells =
@@ -29,6 +29,8 @@ export type RevealShowTrigger =
     // renamed or replaced by the trigger dict (object) notation.
     | 'clickAndHover'
     | 'none' // 🔴 TODO
+    | 'rightClick' // 🔴 TODO
+
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
 
@@ -46,6 +48,7 @@ export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
 export type RevealHideReason =
     | 'clickAnchor' //
+    | 'rightClickAnchor' //
     | 'backdropClick'
     | 'shellClick' // via shell (not backdrop)
     | 'mouseOutside'
@@ -96,7 +99,7 @@ export type RevealProps = {
     defaultVisible?: boolean
 
     // look and feel ------------------------------------------------------------------
-    tooltipWrapperClassName?: string
+    shellClassName?: string
     className?: string
     style?: React.CSSProperties
 
@@ -104,4 +107,15 @@ export type RevealProps = {
     UNSAFE_cloned?: boolean
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
+    backdropColor?: string
+    hasBackdrop?: boolean
+    showBackdrop?: boolean
+
+    /**
+     * when we have nested Reveals but they actually are independent
+     */
+    useSeparateTower?: boolean
+
+    // 🔴 actually the child may not accept DovProps...
+    anchorProps?: DovProps
 }

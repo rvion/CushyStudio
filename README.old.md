@@ -405,7 +405,7 @@ Example:
 
 ```ts
 // FILE: `_ui.ts`
-import type { Builder } from 'src/controls/Builder'
+import type { Builder } from '..../controls/Builder'
 
 // 📝 this is a ui prefab you can use in any card you want.
 export const ui_startImage = (form: Builder) =>

@@ -5,13 +5,14 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
 
+import { produce } from 'immer'
 import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
-import { registerFieldClass } from '../WidgetUI.DI'
+import { isProbablySerialBool, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
-// CONFIG
+// #region $Config
 export type Field_bool_config = FieldConfig<
     {
         /**
@@ -50,38 +51,52 @@ export type Field_bool_config = FieldConfig<
     Field_bool_types
 >
 
-// SERIAL
+// #region $Serial
 export type Field_bool_serial = FieldSerial<{
     $: 'bool'
     value?: boolean
 }>
 
-// VALUE
+// #region $Value
 export type Field_bool_value = boolean
+export type Field_bool_unchecked = Field_bool_value | undefined
 
-// TYPES
+// #region $Types
 export type Field_bool_types = {
     $Type: 'bool'
     $Config: Field_bool_config
     $Serial: Field_bool_serial
     $Value: Field_bool_value
+    $Unchecked: Field_bool_unchecked
     $Field: Field_bool
+    $Child: never
 }
 
-// STATE
+// #region State
 export class Field_bool extends Field<Field_bool_types> {
+    // #region Static
     static readonly type: 'bool' = 'bool'
-    readonly DefaultHeaderUI: FC<{ field: Field_bool }> = WidgetBoolUI
-    readonly DefaultBodyUI: undefined = undefined
+    static readonly emptySerial: Field_bool_serial = { $: 'bool' }
+    static migrateSerial(serial: object): Maybe<Field_bool_serial> {
+        if (isProbablySerialBool(serial)) {
+            if ('val' in serial) {
+                const recoveredVal = serial.val
+                if (typeof recoveredVal !== 'boolean') throw new Error(`Field_button: invalid legacy 'val' serial`)
+                return produce(serial, (draft) => void ((draft as Field_bool_serial).value = recoveredVal))
+            }
+        }
+    }
 
+    // #region Ctor
     constructor(
         repo: Repository,
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_bool>,
+        initialMountKey: string,
         serial?: Field_bool_serial,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
             value: computed,
             DefaultHeaderUI: false,
@@ -89,24 +104,72 @@ export class Field_bool extends Field<Field_bool_types> {
         })
     }
 
-    protected setOwnSerial(serial: Maybe<Field_bool_serial>): void {
-        this.serial.value =
-            (serial as any)?.active ?? // ⏱️ backward compat
-            serial?.value ??
-            this.defaultValue
+    // #region Ui
+    readonly DefaultHeaderUI: FC<{ field: Field_bool }> = WidgetBoolUI
+    readonly DefaultBodyUI: undefined = undefined
+
+    // #region Serial
+    protected setOwnSerial(next: Field_bool_serial): void {
+        if (next.value == null) {
+            const def = this.defaultValue
+            if (def != null) next = produce(next, (draft) => void (draft.value = def))
+        }
+
+        this.assignNewSerial(next)
     }
 
+    // #region Children
+    // #region Value
     get value(): Field_bool_value {
-        return this.serial.value ?? this.defaultValue
+        return this.value_or_fail
     }
 
     set value(next: Field_bool_value) {
         if (this.serial.value === next) return
-        this.runInValueTransaction(() => (this.serial.value = next))
+        this.runInValueTransaction(() => this.patchSerial((serial) => void (serial.value = next)))
     }
 
-    get ownProblems(): Problem_Ext {
+    get value_or_fail(): Field_bool_value {
+        const val = this.value_unchecked
+        if (val == null) throw new Error('Field_bool.value_or_fail: not set')
+        return val
+    }
+
+    get value_or_zero(): Field_bool_value {
+        return this.serial.value ?? false
+    }
+
+    get value_unchecked(): Field_bool_unchecked {
+        return this.serial.value
+    }
+
+    // #region Changes
+    get isOwnSet(): boolean {
+        return this.serial.value !== undefined
+    }
+
+    get hasChanges(): boolean {
+        if (this.serial.value == null) return false
+        if (this.serial.value === this.defaultValue) return false
+        return true
+    }
+
+    get defaultValue(): boolean | undefined {
+        return this.config.default
+    }
+
+    // #region Problems
+    get ownConfigSpecificProblems(): Problem_Ext {
         return null
+    }
+
+    get ownTypeSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    // #region Nullability
+    get canBeSetOnOrOff(): true {
+        return true
     }
 
     /** set the value to true */
@@ -119,20 +182,16 @@ export class Field_bool extends Field<Field_bool_types> {
         this.value = false
     }
 
-    /**
-     * set value to true if false, and to false if true
-     * return new value
-     */
+    // #region Setters
+    /** set value to true if false, and to false if true */
     toggle(): void {
-        this.value = !this.value
+        this.value = !this.value_or_zero
     }
 
-    get defaultValue(): boolean {
-        return this.config.default ?? false
-    }
-
-    get hasChanges(): boolean {
-        return this.value !== this.defaultValue
+    // #region Mock
+    randomize(): void {
+        const r = Math.random()
+        this.value = r > 0.5
     }
 }
 

@@ -3,8 +3,8 @@ import type { ComfyNodeJSON, ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 
 import { bang } from '../csuite/utils/bang'
-import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
+import { UnknownCustomNode } from './UnknownCustomNode'
 
 export const convertLiteGraphToPrompt = (
     //
@@ -12,8 +12,8 @@ export const convertLiteGraphToPrompt = (
     workflow: LiteGraphJSON,
 ): ComfyPromptJSON => {
     const prompt: ComfyPromptJSON = {}
-    const LOG = (...args: any[]) => console.log  ('[🔥] converter ℹ️ :', ...args) // prettier-ignore
-    const ERR = (...args: any[]) => console.error('[🔥] converter 🔴 :', ...args) // prettier-ignore
+    const LOG = (...args: any[]): void => console.log('[🔥] converter ℹ️ :', ...args)
+    const ERR = (...args: any[]): void => console.error('[🔥] converter 🔴 :', ...args)
     console.groupCollapsed('[🔥] converter')
     try {
         const PRIMITIVE_VALUES: { [key: string]: any } = {}
@@ -80,7 +80,7 @@ export const convertLiteGraphToPrompt = (
                 LOG(`❌ missing schema for: ${nodeTypeName}`)
                 LOG(`❌ node causing a crash:`, { node })
                 LOG(`❌ current prompt Step is:`, { prompt })
-                throw new Error(`❌ node ${node.type}) has no known schema; you probably need to install some custom node`)
+                throw new UnknownCustomNode(node) //`❌ node ${node.type}) has no known schema; you probably need to install some custom node`)
             }
             const nodeSchema: ComfyNodeSchema = nodeSchema_
             const inputsInNodeSchema: NodeInputExt[] = nodeSchema.inputs

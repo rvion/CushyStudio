@@ -78,11 +78,11 @@ export class GitManagedFolder {
     /** so we can lock the interface during {fetch/install/uninstall/etc.} */
     currentAction: Maybe<string> = null
 
-    /** debug logs go there */
+    /** debuging logs go there */
     logs: string[] = []
 
     /** to be called when we notice the folder is not here or no longer git-manged */
-    private resetAllGitInfos = () => {
+    private resetAllGitInfos = (): void => {
         this.mainBranchName = ''
         this.headCommitsCount = 0
         this.originCommitsCount = 0
@@ -96,7 +96,7 @@ export class GitManagedFolder {
      * - if current folder is a valid git-managed folder with a remote,
      *   this function will also start a singleton periodic update check
      */
-    private updateInfos = async () => {
+    private updateInfos = async (): Promise<void> => {
         try {
             this.currentAction = 'updateInfos'
             // case 1. folder does not exists
@@ -254,7 +254,7 @@ export class GitManagedFolder {
     }
 
     /** ask confirmation, then remove the whole folder */
-    uninstall = () => {
+    uninstall = (): void => {
         this._stopPeriodicUpdateCheck()
 
         // 1. check if the folder exists
@@ -283,17 +283,17 @@ export class GitManagedFolder {
     // VERSIONNING -------------------------------------------------------------------------
 
     /** version installed */
-    get currentVersion() {
+    get currentVersion(): string {
         return this._renderVersion(this.headCommitsCount)
     }
 
     /** version available on origin */
-    get nextVersion() {
+    get nextVersion(): string {
         return this._renderVersion(this.originCommitsCount)
     }
 
     /** format the version using some naive algo */
-    private _renderVersion = (commitCount: number) => {
+    private _renderVersion = (commitCount: number): string => {
         return `v${commitCount.toString()}`
         // const major = Math.floor(commitCount / 1000)
         // const minor = Math.floor((commitCount % 1000) / 100)

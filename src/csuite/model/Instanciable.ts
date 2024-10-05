@@ -7,6 +7,8 @@ export interface Instanciable<T extends Field = Field> {
     $Serial: T['$Serial']
     $Value: T['$Value']
     $Field: T['$Field']
+    $Unchecked: T['$Unchecked']
+    $Child: T['$Child']
 
     type: T['type']
     config: T['$Config']
@@ -16,6 +18,7 @@ export interface Instanciable<T extends Field = Field> {
         repo: Repository,
         root: Field<any> | null,
         parent: Field | null,
+        initialMountKey: string,
         serial: any | null,
     ): T
 }

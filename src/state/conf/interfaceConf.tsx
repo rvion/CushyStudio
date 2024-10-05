@@ -1,8 +1,25 @@
-import { cushyFactory } from '../../controls/Builder'
-import { WidgetWithLabelUI } from '../../csuite/form/WidgetWithLabelUI'
+import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-export const interfaceConf = cushyFactory.entity(
+// ---------------
+export type $schemaFavbar = X.XGroup<{
+    size: X.XNumber
+    visible: X.XBool
+    grayscale: X.XBool
+    appIcons: X.XOptional<X.XNumber>
+}>
+const schemaFavbar = (b: CushySchemaBuilder): $schemaFavbar =>
+    b.group({
+        items: {
+            size: b.int({ text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            visible: b.bool(),
+            grayscale: b.boolean({ label: 'Grayscale' }),
+            appIcons: b.int({ text: 'App Icons', default: 100, step: 10, min: 1, max: 100, suffix: '%' }).optional(true),
+        },
+    })
+
+// ---------------
+export const interfaceConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
@@ -107,6 +124,8 @@ export const interfaceConf = cushyFactory.entity(
                     default: false,
                     tooltip: 'Show icons in toggle buttons',
                 }),
+
+                favBar: schemaFavbar(ui),
             },
             {
                 label: false,
@@ -118,32 +137,26 @@ export const interfaceConf = cushyFactory.entity(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' field={f.toolBarIconSize} />
+                                <f.toolBarIconSize.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' field={f.widgetHeight} />
-                                <WidgetWithLabelUI fieldName='' field={f.inputHeight} />
-                                <WidgetWithLabelUI fieldName='' field={f.insideHeight} />
+                                <f.widgetHeight.UI LabelText={null} />
+                                <f.inputHeight.UI LabelText={null} />
+                                <f.insideHeight.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' field={f.tooltipDelay} />
+                                <f.tooltipDelay.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <WidgetWithLabelUI fieldName='' field={f.tabSetEnableSingleTabStretch} label={false} />
-                                <WidgetWithLabelUI fieldName='' field={f.useDefaultCursorEverywhere} label={false} />
+                                <f.tabSetEnableSingleTabStretch.UI LabelText={null} />
+                                <f.useDefaultCursorEverywhere.UI LabelText={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                {
-                                    <WidgetWithLabelUI
-                                        fieldName='// What does this even do lol, why is it mandatory?'
-                                        field={f.showToggleButtonBox}
-                                        label='Show'
-                                    />
-                                }
-                                {f.showWidgetUndo.renderWithLabel({ fieldName: '' })}
-                                {f.showWidgetFoldButtons.renderWithLabel({ fieldName: 'showWidgetFoldButtons' })}
-                                {f.showWidgetMenu.renderWithLabel({ fieldName: '' })}
-                                {f.showWidgetDiff.renderWithLabel({ fieldName: '' })}
+                                {<f.showToggleButtonBox.UI LabelText='Show' />}
+                                {f.showWidgetUndo.UI({ LabelText: null })}
+                                {f.showWidgetFoldButtons.UI({ LabelText: 'showWidgetFoldButtons' })}
+                                {f.showWidgetMenu.UI({ LabelText: null })}
+                                {f.showWidgetDiff.UI({ LabelText: null })}
                             </div>
                         </div>
                     )

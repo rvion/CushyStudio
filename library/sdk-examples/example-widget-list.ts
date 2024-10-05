@@ -1,29 +1,29 @@
 app({
-    ui: (form) => {
-        const int0To10 = form.int({ min: 0, max: 10 })
-        return {
-            basicList: form.list({
+    ui: (b) => {
+        const int0To10 = b.int({ min: 0, max: 10 })
+        return b.fields({
+            basicList: b.list({
                 element: int0To10,
             }),
-            minMax: form.list({
+            minMax: b.list({
                 min: 2,
                 max: 4,
                 element: int0To10,
             }),
-            startWith3Items: form.list({
+            startWith3Items: b.list({
                 defaultLength: 3,
                 element: int0To10,
             }),
-            listOfGroups: form.list({
+            listOfGroups: b.list({
                 defaultLength: 2,
-                element: form.group({
+                element: b.group({
                     items: {
-                        foo: form.string(),
+                        foo: b.string(),
                         bar: int0To10,
                     },
                 }),
             }),
-        }
+        })
     },
 
     run: async (flow, form) => {

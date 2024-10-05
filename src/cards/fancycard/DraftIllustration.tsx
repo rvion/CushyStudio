@@ -9,14 +9,6 @@ import { useImageDrop } from '../../widgets/galleries/dnd'
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
-// import { CushyAppL } from 'src/models/CushyApp'
-// import { DraftL } from 'src/models/Draft'
-// import { useSt } from 'src/state/stateContext'
-// import { useImageDrop } from 'src/widgets/galleries/dnd'
-// import { existsSync } from 'fs'
-// import { fileURLToPath } from 'url'
-// import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
-
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
     onClick?: () => void

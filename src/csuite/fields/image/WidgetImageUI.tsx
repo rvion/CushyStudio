@@ -4,10 +4,9 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
-import { FPath } from '../../../models/PathObj'
+import { FPath } from '../../../models/FPath'
 import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGallery'
 import { useSt } from '../../../state/stateContext'
-import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
@@ -26,11 +25,10 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
         field.value = imageL
     })
     const image = field.value
-    const suggestionsRaw = p.field.config.assetSuggested
-    const suggestions: RelativePath[] =
-        suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
+    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
+    // ⏸️ const suggestions: RelativePath[] =
+    // ⏸️     suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
     const size = field.size
-    console.log('size: ', size)
     return image != null ? ( //
         <ResizableFrame // Container
             border
@@ -44,6 +42,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
             header={
                 <>
                     <SpacerUI />
+                    <Button onClick={() => {}} subtle icon='mdiCircle'></Button>
+                    <Button onClick={() => {}} subtle icon='mdiSquare'></Button>
                     <RevealUI //
                         relativeTo='mouse'
                         shell='popup-sm'
@@ -127,20 +127,20 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     )
 })
 
-// {
-//     // bird_d: Dunno how to test this or what it even is.
-//     /* {suggestions.length > 0 && (
-//                         <div tw='bd1'>
-//                             <div tw='text-xs text-gray-500'>suggested</div>
-//                             {suggestions.map((relPath) => (
-//                                 <img
-//                                     key={relPath}
-//                                     tw='w-16 h-16 object-cover cursor-pointer'
-//                                     onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
-//                                     src={relPath}
-//                                     alt='suggested asset'
-//                                 />
-//                             ))}
-//                         </div>
-//                     )} */
-// }
+/*
+ | // bird_d: Dunno how to test this or what it even is.
+ | {suggestions.length > 0 && (
+ |     <div tw='bd1'>
+ |         <div tw='text-xs text-gray-500'>suggested</div>
+ |         {suggestions.map((relPath) => (
+ |             <img
+ |                 key={relPath}
+ |                 tw='w-16 h-16 object-cover cursor-pointer'
+ |                 onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
+ |                 src={relPath}
+ |                 alt='suggested asset'
+ |             />
+ |         ))}
+ |     </div>
+ | )}
+ */

@@ -50,7 +50,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                     <div tw='font-bold [line-height:1rem]'>{mi.name}</div>
                 </div>
                 <span tw='italic text-sm opacity-75 line-clamp-2'>
-                    {mi.description}
+                    <b>{mi.size}</b> - {mi.description}
                     {/* TODO: show install method by icon? */}
                     {/* (via {plugin.install_type}) */}
                 </span>

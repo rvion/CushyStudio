@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
-import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { Frame } from '../csuite/frame/Frame'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
@@ -18,14 +17,15 @@ import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuShortcutsUI } from './MenuShortcuts'
 import { MenuUtilsUI } from './MenuUtilsUI'
 import { MenuPanelsUI } from './MenuWindowUI'
+import { PerspectivePickerUI } from './PerspectivePickerUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
     return (
         <Frame
             //
-            base={cushy.theme.value.appbar ?? { contrast: 0.3 }}
-            tw={['flex items-center px-2 overflow-auto', 'overflow-auto shrink-0']}
+            base={cushy.theme.value.appbar ?? { contrast: 0 }}
+            tw={['flex items-center px-2 py-0.5 overflow-auto', 'overflow-auto shrink-0']}
             id='CushyAppBar'
         >
             {/* <PanelHeaderUI tw='flex items-center px-2 overflow-auto'> */}
@@ -48,14 +48,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <MenuWindowUI /> */}
             <MenuUtilsUI />
             <MenuAboutUI />
-            <Dropdown // TODO(bird_d): Temporary, just to clean up the top bar for now. Not good to have this be a pop-up imo and should be removed when done testing the theming stuff.
-                // startIcon={'mdiThemeLightDark'}
-                // expand
-                title='Theming'
-                content={() => <>{cushy.theme.render()}</>}
-            />
-
             <MenuDebugUI />
+            <PerspectivePickerUI tw='self-center mx-auto' />
 
             <SpacerUI />
             <HostWebsocketIndicatorUI host={mainHost} />

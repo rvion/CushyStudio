@@ -46,18 +46,20 @@ export type UI_subform_Scribble_Preprocessor = X.XChoice<{
 }>
 export function ui_subform_Scribble_Preprocessor(): UI_subform_Scribble_Preprocessor {
     const form = getCurrentForm()
-    return form.choice({
-        label: 'Scribble Preprocessor',
-        default: 'ScribbleLines',
-        appearance: 'tab',
-        startCollapsed: true,
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             ScribbleLines: ui_subform_Scribble_Lines(),
             FakeScribble: ui_subform_Fake_Scribble_Lines(),
             XDOG: ui_subform_Scribble_XDoG_Lines(),
         },
-    })
+        {
+            label: 'Scribble Preprocessor',
+            default: 'ScribbleLines',
+            appearance: 'tab',
+            startCollapsed: true,
+        },
+    )
 }
 
 // ========================================================================================

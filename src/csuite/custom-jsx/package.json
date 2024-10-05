@@ -1,0 +1,22 @@
+{
+    "name": "custom-jsx",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "exports": {
+        ".": {
+            "import": "./index.js"
+        },
+        "./jsx-dev-runtime": {
+            "import": "./jsx-dev-runtime.js"
+        },
+        "./jsx-runtime": {
+            "import": "./jsx-runtime.js"
+        }
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+}

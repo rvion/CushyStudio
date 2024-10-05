@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 
-import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'

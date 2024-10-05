@@ -55,18 +55,15 @@ export type UI_subform_Lineart_Preprocessor = X.XChoice<{
 }>
 export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
     const form: X.Builder = getCurrentForm()
-    return form.choice({
-        label: 'Lineart Preprocessor',
-        startCollapsed: true,
-        default: 'Realistic',
-        appearance: 'tab',
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             Realistic: ui_subform_Lineart_realistic(),
             Anime: ui_subform_Lineart_Anime(),
             Manga: ui_subform_Lineart_Manga(),
         },
-    })
+        { label: 'Lineart Preprocessor', startCollapsed: true, default: 'Realistic', appearance: 'tab' },
+    )
 }
 
 // ====================================================================================================
@@ -74,15 +71,12 @@ export type UI_subform_Lineart_realistic = X.XGroup<{
     coarse: X.XBool
     saveProcessedImage: X.XBool
 }>
+
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
     const form: X.Builder = getCurrentForm()
-    return form.group({
-        // label: 'Settings',
-        // startCollapsed: true,
-        items: {
-            ...cnet_preprocessor_ui_common(form),
-            coarse: form.bool({ default: false }),
-        },
+    return form.fields({
+        ...cnet_preprocessor_ui_common(form),
+        coarse: form.bool({ default: false }),
     })
 }
 

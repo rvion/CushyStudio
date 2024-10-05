@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
@@ -39,6 +39,14 @@ type InputNumberProps = {
     placeholder?: string
     forceSnap?: boolean
     className?: string
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
 }
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
@@ -147,13 +155,13 @@ class InputNumberStableState {
 
     increment = (): void => {
         startValue = this.value
-        let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value + (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
     decrement = (): void => {
         startValue = this.value
-        let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value - (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
@@ -167,8 +175,8 @@ class InputNumberStableState {
         dragged = true
         cumulativeOffset += e.movementX
 
-        let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
-        let offset = this.numberSliderSpeed * cumulativeOffset * precision
+        const precision = (e.shiftKey ? 0.001 : 0.01) * this.step
+        const offset = this.numberSliderSpeed * cumulativeOffset * precision
 
         const next = lastValue + offset
         // Parse value
@@ -243,7 +251,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
+    const theme = cushy.theme.value
 
+    const dropShadow = uist.props.dropShadow ?? theme.inputShadow
     return (
         <Frame /* Root */
             style={p.style}
@@ -251,6 +261,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             border={csuite.inputBorder}
             hover={{ contrast: 0.03 }}
             className={p.className}
+            // unsure about the amount of code we had to use for that prop
+            dropShadow={dropShadow ? dropShadow : undefined}
+            roundness={p.roundness ?? theme.inputRoundness}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[
@@ -352,7 +365,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             uist.inputValue = ev?.target.value
                         }}
                         onFocus={(ev) => {
-                            let textInput = ev.currentTarget
+                            const textInput = ev.currentTarget
                             activeSlider = textInput.parentElement as HTMLDivElement
                             textInput.select()
                             startValue = val

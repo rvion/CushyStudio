@@ -16,7 +16,7 @@ export const BadgeUI = observer(function BadgeUI_({
     /** oklch hue */
     chroma?: number
     contrast?: number
-    hue?: number
+    hue?: Maybe<number>
     /**
      * practical way to enforce consistent hue for a given string
      * pass anything you want to this prop, it will be hashed to a hue
@@ -28,14 +28,18 @@ export const BadgeUI = observer(function BadgeUI_({
     const hasAction = Boolean(rest.onClick)
     return (
         <Frame
+            noColorStuff={rest.noColorStuff ?? false} // because we likely want autoHue to work even in parent components with noColorStuff
             // [line-height:1.1rem]
+            row
             tw={[
                 //
                 'leading-normal',
-                'rounded px-2 whitespace-nowrap',
+                'rounded px-1 whitespace-nowrap',
                 hasAction && 'cursor-pointer',
                 'w-fit',
                 'lh-inside h-inside',
+                'items-center',
+                'select-none',
             ]}
             hover={hasAction}
             base={{

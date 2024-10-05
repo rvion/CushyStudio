@@ -13,6 +13,8 @@ export class UnifiedImage {
     st: STATE
     group: Group
     image: Image
+    name: string
+    visible: boolean = true
 
     remove = () => {
         this.group.remove()
@@ -25,6 +27,10 @@ export class UnifiedImage {
         public position?: { x: number; y: number },
     ) {
         this.st = canvas.st
+        this.name = `Layer 0`
+        if (canvas.images) {
+            this.name = `Layer ${canvas.images.length}`
+        }
 
         makeAutoObservable(this, {})
 
@@ -32,7 +38,8 @@ export class UnifiedImage {
         this.group = new Konva.Group()
         // stage.add(this.group)
         this.image = new Konva.Image({
-            draggable: true,
+            // (bird_d): Should be done through move tool for the active layer!
+            // draggable: true,
             image: img.asHTMLImageElement_noWait,
             x: position?.x ?? 0,
             y: position?.y ?? 0,

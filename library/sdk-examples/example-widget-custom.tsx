@@ -44,17 +44,18 @@ const MyCustomComponent = observer(function (
 })
 
 app({
-    ui: (ui) => ({
-        // doc: ui.markdown('This is an advanced example of providing your own custom react component to display in the form'),
-        demo: ui.custom({
-            /** 📝 Provide your component and default value */
-            Component: MyCustomComponent,
-            defaultValue: () => ({
-                clickCount: 0,
-                text: `initial text` as string,
+    ui: (b) =>
+        b.fields({
+            // doc: ui.markdown('This is an advanced example of providing your own custom react component to display in the form'),
+            demo: b.custom({
+                /** 📝 Provide your component and default value */
+                Component: MyCustomComponent,
+                defaultValue: () => ({
+                    clickCount: 0,
+                    text: `initial text` as string,
+                }),
             }),
         }),
-    }),
 
     run: async (run, ui) => {
         /** 📝 Get the view state during a run */

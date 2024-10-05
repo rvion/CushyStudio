@@ -18,9 +18,9 @@ export type UI_Tint = X.XChoices<{
 }>
 
 export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
-    return ui.choicesV2(
+    return ui.choices(
         {
-            l: ui.choiceV2(
+            l: ui.choice(
                 {
                     lightness: ui.number({
                         label: 'Manual',
@@ -48,7 +48,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     default: def?.lightness ? 'lightness' : 'contrast',
                 },
             ),
-            c: ui.choiceV2(
+            c: ui.choice(
                 {
                     chroma: ui.number({
                         label: 'Manual',
@@ -74,7 +74,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     default: def?.chroma ? 'chroma' : 'chromaBlend',
                 },
             ),
-            h: ui.choiceV2(
+            h: ui.choice(
                 {
                     hue: ui.number({
                         label: 'Manual',
@@ -105,9 +105,9 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
         },
         {
             default: {
-                l: def?.lightness != null || def?.contrast != null,
-                c: def?.chroma != null || def?.chromaBlend != null,
-                h: def?.hue != null || def?.hueShift != null,
+                l: def?.lightness != null || def?.contrast != null ? true : undefined,
+                c: def?.chroma != null || def?.chromaBlend != null ? true : undefined,
+                h: def?.hue != null || def?.hueShift != null ? true : undefined,
             },
             presets: [
                 {

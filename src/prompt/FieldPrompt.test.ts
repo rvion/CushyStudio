@@ -11,10 +11,8 @@ describe('FieldPrompt', () => {
             a: b.string({ default: '🔵' }),
             b: b.number({ default: 1 }),
             c: b.choice({
-                items: {
-                    foo: b.string(),
-                    bar: b.prompt({ default: 'coucou' }),
-                },
+                foo: b.string(),
+                bar: b.prompt({ default: 'coucou' }),
             }),
         },
         {

@@ -1,32 +1,31 @@
 import { run_prompt } from '../built-in/_prefabs/prefab_prompt'
 
 app({
-    ui: (form) => ({
-        demo: form.regional({
-            height: 512,
-            width: 512,
-            initialPosition: ({ width: w, height: h }) => ({
-                fill: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
-                height: 64,
-                width: 64,
-                depth: 1,
-                x: Math.round(Math.random() * w),
-                y: Math.round(Math.random() * h),
-                z: 1,
-            }),
-            element: ({ width: w, height: h }) =>
-                form.group({
-                    items: {
-                        prompt: form.prompt({}),
-                        mode: form.selectOne({
-                            choices: [{ id: 'combine' }, { id: 'concat' }],
-                        }),
-                    },
+    ui: (b) =>
+        b.fields({
+            demo: b.regional({
+                height: 512,
+                width: 512,
+                initialPosition: ({ width: w, height: h }) => ({
+                    fill: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
+                    height: 64,
+                    width: 64,
+                    depth: 1,
+                    x: Math.round(Math.random() * w),
+                    y: Math.round(Math.random() * h),
+                    z: 1,
                 }),
+                element: ({ width: w, height: h }) =>
+                    b.group({
+                        items: {
+                            prompt: b.prompt({}),
+                            mode: b.selectOneString(['combine', 'concat']),
+                        },
+                    }),
+            }),
+            // mainPos: form.prompt({}),
+            mainNeg: b.prompt({}),
         }),
-        // mainPos: form.prompt({}),
-        mainNeg: form.prompt({}),
-    }),
 
     run: async (flow, form) => {
         const graph = flow.nodes
@@ -53,7 +52,7 @@ app({
             })
 
             positive =
-                item.mode.id === 'combine'
+                item.mode === 'combine'
                     ? graph.ConditioningCombine({
                           conditioning_1: positive,
                           conditioning_2: localConditionning,

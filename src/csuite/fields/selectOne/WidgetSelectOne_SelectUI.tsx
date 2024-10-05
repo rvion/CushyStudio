@@ -1,49 +1,61 @@
-import type { BaseSelectEntry, Field_selectOne } from './FieldSelectOne'
+import type { SelectProps } from '../../select/SelectProps'
+import type { Field_selectOne } from './FieldSelectOne'
+import type { SelectKey } from './SelectOneKey'
+import type { SelectOption } from './SelectOption'
 
 import { observer } from 'mobx-react-lite'
 
 import { SelectUI } from '../../select/SelectUI'
-import { makeLabelFromFieldName } from '../../utils/makeLabelFromFieldName'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<T extends BaseSelectEntry>(p: {
-    field: Field_selectOne<T>
+export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<VALUE, KEY extends SelectKey>(p: {
+    field: Field_selectOne<VALUE, KEY>
+    selectProps?: Partial<SelectProps<SelectOption<VALUE, KEY> | undefined>>
 }) {
     const field = p.field
+    type OPTION = // prettier-ignore
+        // when set:
+        | SelectOption<VALUE, KEY>
+        // when not-set:
+        | undefined
     return (
-        <div tw='flex-1'>
-            <SelectUI<T>
-                // placement='auto' 🔶 do we want that ?
+        <div tw='flex-1 w-full'>
+            <SelectUI<OPTION>
+                // 💬 2024-09-16 rvion: still necessary ?
+                // | probably not; todo: remove
                 key={field.id}
-                tw={[field.ownProblems && 'rsx-field-error']}
-                getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
-                getLabelUI={field.config.getLabelUI}
-                getSearchQuery={() => field.serial.query ?? ''}
-                setSearchQuery={(query) => (field.serial.query = query)}
-                disableLocalFiltering={field.config.disableLocalFiltering}
-                options={() => field.choices}
-                equalityCheck={(a, b) => a.id === b.id}
-                value={() => field.serial.val}
-                onOptionToggled={(selectOption) => {
-                    if (selectOption == null) {
-                        // TODO?: hook into it's parent if parent is an option block ?
-                        // ⏸️ if (!widget.isOptional) return
-                        // ⏸️ widget.state.active = false
-                        return
-                    }
-                    const next = field.choices.find((c) => c.id === selectOption.id)
-                    if (next == null) {
-                        console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
-                        return
-                    }
-                    field.value = next
+                // 💬 2024-09-16 rvion: weird/tmporary class name here
+                // | this is just so we outline the input with a red border
+                //                                    VVVVVVVVVVVVVVVVV
+                tw={[field.ownTypeSpecificProblems && 'rsx-field-error']}
+                // 💬 2024-09-16 rvion:
+                // | since 2024-09-12, we can't use the value anymore
+                // | since the value may not be set anymore, we need to use
+                // | the unchecked version of it
+                // |               VVVVVVVVVVVVVVVVVVVVVVVV
+                value={() => field.selectedOption_unchecked}
+                options={() => field.options}
+                getLabelText={(t): string => {
+                    if (t == null) return field.config.placeholder ?? '(Empty)'
+                    return t.label ?? makeLabelFromPrimitiveValue(t.id)
                 }}
+                //
+                OptionLabelUI={field.config.OptionLabelUI}
+                getSearchQuery={() => field.query}
+                setSearchQuery={(query) => (field.query = query)}
+                disableLocalFiltering={field.config.disableLocalFiltering}
+                equalityCheck={(a, b) => a?.id === b?.id}
+                placeholder={field.config.placeholder}
+                readonly={field.config.readonly}
+                slotAnchorContentUI={field.config.SlotAnchorContentUI}
+                clearable={field.canBeToggledWithinParent ? () => field.disableSelfWithinParent() : undefined}
+                onOptionToggled={(option) => {
+                    console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+                    if (option == null || field.selectedId === option.id) return field.unset()
+                    field.selectedId = option.id
+                }}
+                {...p.selectProps}
             />
-            {/* {widget.baseErrors && (
-                <div tw='text-red-500 flex items-center gap-1'>
-                    <span className='material-symbols-outlined'>error</span>
-                    {widget.baseErrors}
-                </div>
-            )} */}
         </div>
     )
 })

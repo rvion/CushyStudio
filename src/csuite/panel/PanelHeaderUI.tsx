@@ -37,7 +37,8 @@ export const PanelHeaderUI = observer(function PanelHeader({
             tw={[
                 //
                 'sticky top-0 [z-index:999]',
-                'px-0.5',
+                'px-1',
+                'py-[18px]',
                 extensibleHeight //
                     ? 'minh-widget shrink-0'
                     : 'h-widget',

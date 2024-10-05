@@ -6,7 +6,6 @@ import { openFolderInOS } from '../app/layout/openExternal'
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuDivider, MenuItem } from '../csuite/dropdown/MenuItem'
-import { Ikon } from '../csuite/icons/iconHelpers'
 import { useSt } from '../state/stateContext'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {

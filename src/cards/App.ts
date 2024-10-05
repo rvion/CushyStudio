@@ -1,3 +1,4 @@
+import type { CushySchema } from '../controls/Schema'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -7,7 +8,7 @@ import type { AppMetadata } from './AppManifest'
 import type { CSSProperties, ReactNode } from 'react'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-/* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
+/* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const FIELD extends Field>(t: App<FIELD>) => AppRef<FIELD>
 /* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
@@ -45,18 +46,18 @@ export type DraftExecutionContext = {
     canvas?: Maybe<UnifiedCanvas>
 }
 
-export type App<FIELDS extends SchemaDict> = {
+export type App<FIELD extends Field> = {
     /** app interface (GUI) */
-    ui: (form: X.Builder) => FIELDS
+    ui: (form: X.Builder) => CushySchema<FIELD>
 
     /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (form: X.XGroup<NoInfer<FIELDS>>) => void>
+    presets?: Record<string, (doc: NoInfer<FIELD>) => void>
 
     /** app execution logic */
     run: (
         //
-        runtime: Runtime<NoInfer<FIELDS>>,
-        formResult: { [k in keyof NoInfer<FIELDS>]: NoInfer<FIELDS>[k]['$Value'] },
+        runtime: Runtime<NoInfer<FIELD>>,
+        formResult: NoInfer<FIELD>['$Value'],
         context: DraftExecutionContext,
     ) => void | Promise<void>
 

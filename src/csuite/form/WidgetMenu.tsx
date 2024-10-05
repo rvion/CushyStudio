@@ -16,9 +16,14 @@ import { TreeView } from '../../csuite/tree/TreeView'
 import { toastInfo } from '../../csuite/utils/toasts'
 import { potatoClone } from '../utils/potatoClone'
 
-export const WidgetMenuUI = observer(function WidgetMenuUI_(p: { className?: string; widget: Field }) {
+export type WidgetMenuProps = {
+    className?: string
+    field: Field
+}
+
+export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
     return (
-        <RevealUI className={p.className} content={() => <menu_fieldActions.UI props={p.widget} />}>
+        <RevealUI className={p.className} content={() => <menu_fieldActions.UI props={p.field} />}>
             <Button //
                 tooltip='Open field menu'
                 tabIndex={-1}

@@ -1,6 +1,6 @@
 import type { STATE } from '../state/state'
 
-import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { bang } from '../csuite/utils/bang'
 import { TEdge, toposort } from '../csuite/utils/toposort'
@@ -42,7 +42,7 @@ export class ComfyImporter {
 
     // ATTRIBUTE THAT HAD AN OTHER NAME BEFORE
     RULES: ((p: RuleInput) => void)[] = [
-        (p) => {
+        (p: RuleInput): void => {
             if (
                 //
                 p.nodeName === 'KSampler' &&
@@ -60,7 +60,7 @@ export class ComfyImporter {
     }
     // -----------------------------------------------------------------------------
 
-    resetCache = () => {
+    resetCache = (): void => {
         this.nameDedupeCache = {}
     }
     nameDedupeCache: { [key: string]: number } = {}
@@ -87,7 +87,7 @@ export class ComfyImporter {
         return this.finalizeName(nodeType)
     }
 
-    private finalizeName = (rawName: string) => {
+    private finalizeName = (rawName: string): string => {
         const final = this.smartDownCase(this.smartTrim(this.smartDownCase(rawName)))
         if (this.nameDedupeCache[final] == null) {
             this.nameDedupeCache[final] = 1
@@ -97,14 +97,14 @@ export class ComfyImporter {
         }
     }
 
-    private smartDownCase = (x: string) => {
+    private smartDownCase = (x: string): string => {
         const isAllCaps = x === x.toUpperCase()
         if (isAllCaps) return x.toLowerCase()
         return bang(x[0]).toLowerCase() + x.slice(1)
     }
 
     /** trim useless suffixes, like _name */
-    private smartTrim = (x: string) => {
+    private smartTrim = (x: string): string => {
         if (x !== 'Loader' && x.endsWith('Loader')) return x.slice(0, -6)
         if (x.startsWith('load_')) return x.slice(5)
         if (x.startsWith('load') && x[4] && /[A-Z]/.test(x[4])) return x.slice(4)
@@ -165,7 +165,7 @@ export class ComfyImporter {
         for (const nodeID of sortedNodes) {
             // @ts-ignore
             const node = flow[nodeID]!
-            const classType = normalizeJSIdentifier(node.class_type, ' ')
+            const classType = convertComfyNodeNameToCushyNodeNameValidInJS(node.class_type)
             const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
             generatedName.set(nodeID, varName)
@@ -265,7 +265,7 @@ export class ComfyImporter {
         pRun('        await run.PROMPT()')
         pRun('    },')
 
-        function renderAdapterForInput(x: UIVal, inputGroupName?: string) {
+        function renderAdapterForInput(x: UIVal, inputGroupName?: string): string {
             const s = x.schema
             const inputName = x.name
             const prefix = inputGroupName ? `ui.${inputGroupName}` : 'ui'
@@ -274,7 +274,7 @@ export class ComfyImporter {
             return `${prefix}${asJSAccessor(inputName)}`
         }
 
-        function renderUIForInput(x: UIVal) {
+        function renderUIForInput(x: UIVal): string | undefined {
             const s = x.schema
             // no schema, let's try to infer the type from the value
             if (s == null) return `${formVarInUIFn}.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
@@ -284,7 +284,7 @@ export class ComfyImporter {
             if (s.type.startsWith('Enum_')) return `${formVarInUIFn}.enum.${s.type}({default: ${jsEscapeStr(x.default)} })`
 
             if (s.type in ComfyPrimitiveMapping) {
-                let builderFnName = (() => {
+                let builderFnName = ((): string => {
                     const typeLower = s.type.toLowerCase()
                     if (typeLower === 'boolean') return 'boolean'
                     if (typeLower === 'float') return 'float'

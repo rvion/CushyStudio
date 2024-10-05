@@ -10,10 +10,7 @@ export class NumberVar<Name extends string = string> {
         return this.value_ instanceof Function ? this.value_() : this.value_
     }
 
-    constructor(
-        public name: Name,
-        public value_: number | (() => number),
-    ) {
+    constructor(public name: Name, public value_: number | (() => number)) {
         makeObservable(this, { value_: observable, value: computed })
     }
 

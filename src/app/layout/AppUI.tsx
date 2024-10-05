@@ -57,7 +57,7 @@ export const CushyUI = observer(function CushyUI_() {
         return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])
 
-    const appBarColor = st.theme.value.appbar ?? 'red'
+    const appBarColor = st.theme.value.appbar ?? st.theme.value.base
     const appBarBase = Kolor.fromString(appBarColor)
     const inactiveTabColors = computeColors(
         {
@@ -67,13 +67,22 @@ export const CushyUI = observer(function CushyUI_() {
         },
         { base: { contrast: 0.1 } },
     )
+
+    const appBarComputed = computeColors(
+        {
+            base: appBarBase,
+            dir: appBarBase.lightness > 0.5 ? -1 : 1,
+            text: defaultTextTint,
+        },
+        { base: { contrast: -0.077 } },
+    )
     return (
         <CSuiteProvider config={cushy.csuite}>
             <div
                 id='CushyStudio'
                 style={{
                     // @ts-ignore
-                    '--appbar': appBarColor,
+                    '--appbar': appBarComputed.variables.background,
                     '--foobar1': inactiveTabColors.variables.color,
                     '--foobar2': inactiveTabColors.variables.background,
                 }}

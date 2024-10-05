@@ -1,10 +1,10 @@
 import type { IconName } from '../icons/icons'
+import type { Trigger } from '../trigger/Trigger'
 import type { Menu } from './Menu'
 
 import { nanoid } from 'nanoid'
 
 import { BoundMenuSym } from '../introspect/_isBoundMenu'
-import { Trigger } from '../trigger/Trigger'
 import { MenuInstance } from './MenuInstance'
 
 // ------------------------------------------------------------------------------------------

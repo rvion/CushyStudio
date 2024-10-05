@@ -10,7 +10,7 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
     const field = p.field
-    const val = field.serial.val
+    const val = field.value_or_zero
     const csuite = useCSuite()
 
     return (

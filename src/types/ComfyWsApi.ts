@@ -1,3 +1,5 @@
+import type { Timestamp } from '../csuite/types/Timestamp'
+
 import { z } from 'zod'
 
 import { type ComfyNodeID, ComfyNodeID$Schema } from './ComfyNodeID'
@@ -81,7 +83,34 @@ export const WsMsgExecuted$Schema = z.object({
     data: z.lazy(() => _WsMsgExecutedData$Schema),
 })
 
-export type WsMsgExecutionError = { type: 'execution_error'; data: _WsMsgExecutionErrorData }
+// #region execution_success
+// @since 2024-09-12
+
+export type WsMsgExecutionSuccess = {
+    type: 'execution_success'
+    data: {
+        prompt_id: PromptID
+        timestamp: Timestamp
+    }
+}
+
+export const Timestamp$Schema = z.number()
+
+export const WsMsgExecutionSuccess$Schema = z.object({
+    type: z.literal('execution_success'),
+    data: z.lazy(() =>
+        z.object({
+            prompt_id: PromptID$Schema,
+            timestamp: Timestamp$Schema,
+        }),
+    ),
+})
+
+// #region execution_error
+export type WsMsgExecutionError = {
+    type: 'execution_error'
+    data: _WsMsgExecutionErrorData
+}
 export const WsMsgExecutionError$Schema = z.object({
     type: z.literal('execution_error'),
     data: z.lazy(() => _WsMsgExecutionErrorData$Schema),
@@ -125,6 +154,7 @@ export type _WsMsgExecutedData = {
     }
     prompt_id: PromptID
 }
+
 export const _WsMsgExecutedData$Schema = z.object({
     node: ComfyNodeID$Schema,
     output: z.object({
@@ -205,8 +235,19 @@ export type PromptRelated_WsMsg =
     | WsMsgProgress
     | WsMsgExecuted
     | WsMsgExecutionError
+    | WsMsgExecutionSuccess
 
-export const ProptRelated_WsMsg_Schema = () =>
+export const ProptRelated_WsMsg_Schema = (): z.ZodDiscriminatedUnion<
+    'type',
+    [
+        typeof WsMsgExecutionStart$Schema,
+        typeof WsMsgExecutionCached$Schema,
+        typeof WsMsgExecuting$Schema,
+        typeof WsMsgProgress$Schema,
+        typeof WsMsgExecuted$Schema,
+        typeof WsMsgExecutionError$Schema,
+    ]
+> =>
     z.discriminatedUnion('type', [
         WsMsgExecutionStart$Schema,
         WsMsgExecutionCached$Schema,
@@ -226,6 +267,7 @@ export type WsMsg =
     | WsMsgExecuting
     | WsMsgProgress
     | WsMsgExecuted
+    | WsMsgExecutionSuccess
     | WsMsgExecutionError
 
 export const WsMsg$Schema = z.discriminatedUnion('type', [
@@ -237,5 +279,6 @@ export const WsMsg$Schema = z.discriminatedUnion('type', [
     WsMsgExecuting$Schema,
     WsMsgProgress$Schema,
     WsMsgExecuted$Schema,
+    WsMsgExecutionSuccess$Schema,
     WsMsgExecutionError$Schema,
 ])

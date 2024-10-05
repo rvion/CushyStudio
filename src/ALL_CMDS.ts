@@ -6,6 +6,7 @@ import './operators/commands/cmd_goTo'
 
 import { allLayoutCommands } from './app/shortcuts/cmd_layout'
 import { allLegacyCommands } from './app/shortcuts/cmd_mix'
+import { allScreencastCommands } from './app/shortcuts/cmd_screencast'
 import { allTreeCommands } from './csuite/tree/TreeCommands'
 import {
     cmd_copyImage,
@@ -43,4 +44,5 @@ export const allCommands = [
     ...allLayoutCommands,
     ...allLegacyCommands,
     ...allTreeCommands,
+    ...allScreencastCommands,
 ]

@@ -78,13 +78,10 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
     )
 })
 
-const Header_Playground = cushyFactory.entity(
+const Header_Playground = cushyFactory.document(
     (ui) =>
-        ui.choice({
-            appearance: 'tab',
-            default: 'scratchPad',
-            tabPosition: 'start',
-            items: {
+        ui.choice(
+            {
                 skins: ui.empty(),
                 jsx: ui.empty(),
                 panelProps: ui.empty(),
@@ -100,7 +97,8 @@ const Header_Playground = cushyFactory.entity(
                 comfyImport: ui.empty(),
                 messages: ui.empty(),
             },
-        }),
+            { appearance: 'tab', default: 'scratchPad', tabPosition: 'start' },
+        ),
     {
         name: 'Playground Conf',
         serial: () => readJSON('settings/playground_config.json'),

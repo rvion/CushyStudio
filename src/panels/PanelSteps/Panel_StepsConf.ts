@@ -1,8 +1,8 @@
-import { type Builder, cushyFactory } from '../../controls/Builder'
+import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 // TODO: make per-panel instead
-export const PanelStepsConf = cushyFactory.entity(
+export const PanelStepsConf = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
@@ -10,7 +10,7 @@ export const PanelStepsConf = cushyFactory.entity(
                 maxItem: ui.int({ default: 10, min: 1, max: 100, step: 1 }),
                 appSize: ui.remSize(),
                 // outputSize: ui.remSize(),
-                show: ui.choicesV2(
+                show: ui.choices(
                     {
                         title: ui.empty(),
                         app: ui.empty({ label: 'App illustration' }),
@@ -23,8 +23,8 @@ export const PanelStepsConf = cushyFactory.entity(
                     {
                         default: {
                             title: true,
-                            app: false,
-                            draft: false,
+                            app: undefined,
+                            draft: undefined,
                             status: true,
                             outputs: true,
                             executionTime: true,
@@ -55,8 +55,8 @@ type UI_outputFilter = X.XChoices<{
     RuntimeErrorL: X.XEmpty
 }>
 
-function ui_outputFilter(ui: Builder): UI_outputFilter {
-    return ui.choicesV2(
+function ui_outputFilter(ui: CushySchemaBuilder): UI_outputFilter {
+    return ui.choices(
         {
             MediaTextL: ui.empty(),
             MediaImageL: ui.empty(),

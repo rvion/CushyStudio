@@ -190,6 +190,7 @@ export class UnifiedCanvas {
 
         const selection = this.addSelection()
         this.activeSelection = selection
+        this.activeSelection.hide()
 
         const mask = this.addMask()
         this._activeMask = mask
@@ -202,7 +203,7 @@ export class UnifiedCanvas {
         setupStage(this)
     }
 
-    addImage = (img: MediaImageL, position?: { x: number; y: number }) => {
+    addImage = (img: MediaImageL, position?: { x: number; y: number }): void => {
         this.images.push(new UnifiedImage(this, img, position))
     }
 

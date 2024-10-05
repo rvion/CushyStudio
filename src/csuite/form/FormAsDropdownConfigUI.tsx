@@ -5,10 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../button/Button'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
-import { FormUI } from './FormUI'
 
 export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-    form?: Field<any>
+    form: Field<any>
     children?: React.ReactNode
     title?: string
     className?: string
@@ -16,7 +15,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
     minWidth?: string
     width?: string
 }) {
-    console.log(`[❓🔴] rendering > FormAsDropdownConfigUI`)
+    // ⏸️ console.log(`[❓🔴] rendering > FormAsDropdownConfigUI`)
     return (
         <RevealUI
             title={p.title}
@@ -31,7 +30,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                         width: p.width,
                     }}
                 >
-                    {p.form && <FormUI field={p.form} />}
+                    {p.form.render()}
                     {p.children}
                 </div>
             )}

@@ -3,7 +3,7 @@
 
 import { dirname } from 'pathe'
 
-import { FPath } from '../../models/PathObj'
+import { FPath } from '../../models/FPath'
 
 type ElectronShell = typeof import('electron').shell
 

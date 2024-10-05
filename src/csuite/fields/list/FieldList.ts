@@ -2,13 +2,15 @@ import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
+import type { Problem_Ext } from '../../model/Validation'
 
 import { reaction } from 'mobx'
 
-import { Field, type KeyedField } from '../../model/Field'
+import { Field, type KeyedField, type VALUE_MODE } from '../../model/Field'
 import { bang } from '../../utils/bang'
-import { clampOpt } from '../../utils/clamp'
+import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
+import { hole, type HOLE } from './HOLE'
 import {
     ListButtonAdd100ItemsUI,
     ListButtonAddUI,
@@ -18,7 +20,7 @@ import {
 } from './ListControlsUI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
-/** */
+// #region 🔶AUTO
 interface AutoBehaviour<out T extends BaseSchema> {
     /** list of keys that must be present */
     keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
@@ -30,7 +32,7 @@ interface AutoBehaviour<out T extends BaseSchema> {
     init(key: string /* foo */): T['$Value']
 }
 
-// CONFIG
+// #region CONFIG
 export interface Field_list_config<out T extends BaseSchema>
     extends FieldConfig<
         {
@@ -53,6 +55,7 @@ export interface Field_list_config<out T extends BaseSchema>
             /** @default: true */
             sortable?: boolean
 
+            // #region config DEFAULT
             /**
              * mininum length;
              * if min > 0, list will be populated on creation
@@ -69,28 +72,38 @@ export interface Field_list_config<out T extends BaseSchema>
         Field_list_types<T>
     > {}
 
-// SERIAL
+// #region SERIAL type
 export type Field_list_serial<T extends BaseSchema> = FieldSerial<{
     $: 'list'
-    items_: T['$Serial'][]
+    /** when undefined, means the list has not be `set` yet */
+    items_?: (T['$Serial'] | HOLE)[]
 }>
 
-// VALUE
+// #region VALUE type
 export type Field_list_value<T extends BaseSchema> = T['$Value'][]
+export type Field_list_unchecked<T extends BaseSchema> = T['$Unchecked'][]
 
-// TYPES
+// #region $FieldType
 export type Field_list_types<T extends BaseSchema> = {
     $Type: 'list'
     $Config: Field_list_config<T>
     $Serial: Field_list_serial<T>
     $Value: Field_list_value<T>
+    $Unchecked: Field_list_unchecked<T>
     $Field: Field_list<T>
+    $Child: T['$Field']
 }
 
-// STATE
+// #region STATE
 export class Field_list<T extends BaseSchema> //
     extends Field<Field_list_types<T>>
 {
+    // #region TYPE
+    static readonly type: 'list' = 'list'
+    static readonly emptySerial: Field_list_serial<any> = { $: 'list' }
+    static migrateSerial(): undefined {}
+
+    // #region UI
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetList_BodyUI
 
@@ -100,13 +113,15 @@ export class Field_list<T extends BaseSchema> //
     UI_UnfoldButton = ListButtonUnfoldUI
     UI_Add100ItemsButton = ListButtonAdd100ItemsUI
 
-    static readonly type: 'list' = 'list'
+    get isOwnSet(): boolean {
+        return this.serial.items_ != null
+    }
 
     get length(): number {
         return this.items.length
     }
 
-    items!: T['$Field'][]
+    items: T['$Field'][] = []
 
     get hasChanges(): boolean {
         // 💬 2024-06-?? rvion:
@@ -116,7 +131,7 @@ export class Field_list<T extends BaseSchema> //
         //   | ^^^ 🤔< NOT SURE about my previous opinion here
         //   |         I'll add some '🔴' for future review
         if (!this.config.auto) {
-            const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+            const defaultLength = clamp_or_min_or_zero(this.config.defaultLength, this.config.min, this.config.max)
             if (this.items.length !== defaultLength) return true
         }
         // check if any remaining item has changes
@@ -148,7 +163,7 @@ export class Field_list<T extends BaseSchema> //
         return null
     }
 
-    get subFields(): T['$Field'][] {
+    get childrenAll(): T['$Field'][] {
         return this.items
     }
 
@@ -183,9 +198,7 @@ export class Field_list<T extends BaseSchema> //
                     const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
                     const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                     for (const k of missingKeys) {
-                        this.addItem({
-                            value: auto.init(k),
-                        })
+                        this.addItem({ value: auto.init(k) })
                     }
 
                     // 2. delete items that must be removed.
@@ -209,12 +222,19 @@ export class Field_list<T extends BaseSchema> //
         root: Field | null,
         parent: Field | null,
         schema: BaseSchema<Field_list<T>>,
+        initialMountKey: string,
         serial?: Field_list_serial<T>,
     ) {
-        super(repo, root, parent, schema)
+        super(repo, root, parent, schema, initialMountKey, serial)
         this.init(serial, {
+            // UI
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
+
+            // values
+            value_or_fail: false,
+            value_or_zero: false,
+            value_unchecked: false,
         })
         this.startAutoBehaviour()
     }
@@ -227,97 +247,136 @@ export class Field_list<T extends BaseSchema> //
         return this.items.map((i) => i.value)
     }
 
-    protected setOwnSerial(serial: Maybe<Field_list_serial<T>>): void {
-        // minor safety net since all those internal changes
-        if (this.serial.items_ == null) this.serial.items_ = []
+    _acknowledgeNewChildSerial(
+        //
+        mountKey: string,
+        nextChildSerial: any,
+    ): boolean {
+        // parse index
+        const index = parseInt(mountKey, 10)
 
-        // pseudo-reset 🔴
-        if (this.items != null) for (const item of this.items) item.disposeTree()
+        // ensure index is valid
+        if (isNaN(index)) throw new Error(`❌ FieldList._acknowledgeNewChildSerial: parsed index is Nan (raw=${mountKey})`)
+        if (index < 0) throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index(${index}) is < 0`)
+        if (index > this.items.length) throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index is OOB (${index}`)
+
+        // make sure the serial.items_ is set (akin to saying that from now-on, the field is `set`)
+        // 💬 2024-09-11 rvion:
+        // | 🔴 we could actually throw here 🤔
+        // | it's probably possible to make sure this is set before, since we're in control of
+        // | all primitive actions on that field.
+        if (this.serial.items_ == null) {
+            this.patchSerial((draft) => void (draft.items_ = []))
+        }
+
+        // swap the pointer in the serial.items_ array at given index to new serial
+        return this.patchSerial((draft) => {
+            draft.items_![index] = nextChildSerial
+        })
+    }
+
+    protected setOwnSerial(next: Field_list_serial<T>): void {
+        // reset every previous value (🔴 pretty bad; reconciliation would be better)
+        for (const item of this.items) item.disposeTree()
+
+        // reset the instance list (🔴 again, pretty bad; reconciliation would be better)
         this.items = []
-        this.serial.items_ = []
 
-        // when NO-serial, NO-auto
-        if (serial == null) {
+        // 2. ASSIGN SERIAL
+        this.assignNewSerial(next)
+
+        // apply default value
+        // IF AND ONLY IF both
+        //  - we are NOT in auto mode
+        //  - we are not set yet
+        if (next.items_ == null) {
             if (!this.config.auto) {
-                const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
+                const defaultLength = this.config.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
+                // console.log(`[🤠] AA defaultLength`, defaultLength)
+                if (defaultLength == null) {
+                    // no default, we never set the `draft.items_`, so the
+                    // field remains unset
+                    return
+                }
+
+                this.patchSerial((draft) => void (draft.items_ = []))
                 for (let i = this.items.length; i < defaultLength; i++) {
-                    this.addItem()
+                    this.addItem({ applyEvenIfAtMaxLen: true })
                 }
             }
             return
         }
 
-        for (const [ix, subSerial] of serial.items_.entries()) {
+        const nextChildrenSerials = next.items_
+        for (const [ix, subSerial] of nextChildrenSerials.entries()) {
             const schema = this.schemaAt(ix)
+            const mountKey = ix.toString()
+
+            if (subSerial == null) throw new Error('❌ List item serial is null; invariant violation')
+            if (subSerial == hole) throw new Error('❌ List item serial is hole; invariant violation')
+
             this.RECONCILE({
+                mountKey,
                 correctChildSchema: schema,
                 existingChild: null,
                 targetChildSerial: subSerial,
+                // ⏸️ targetChildSerial: subSerial === hole ? null : subSerial,
+                // ⏸️ targetChildSerial: subSerial === hole ? schema.fieldConstructor.emptySerial : subSerial,
                 attach: (sub) => {
+                    // console.log(`[🤠] setOwnSerial > reconciled created a new child`, mountKey)
                     // push instead of doing [ix]= ... since we're re-creating them in order
                     this.items.push(sub)
-                    this.serial.items_.push(sub.serial)
+                    // bang(this.serial.items_).push(sub.serial)
                 },
             })
             // const subWidget = schema.instanciate(this.repo, this.root, this, subSerial)
             // this.items.push(subWidget)
         }
 
-        // 3. add missing items if min specified
-        const missingItems = (this.config.min ?? 0) - this.items.length
-        for (let i = 0; i < missingItems; i++) {
-            this.addItem()
-        }
+        // 💬 2024-09-10: 🙅🙅‍♀️🙅‍♂️ < NO LONGER TRUE !!
+        // | we don't want to invent data by default
+        // |
+        // | ```ts
+        // | // 3. add missing items if min specified
+        // | const missingItems = (this.config.min ?? 0) - this.items.length
+        // | for (let i = 0; i < missingItems; i++) {
+        // |     this.addItem()
+        // | }
+        // | ```
     }
 
     /**
      * code below is very wtf, and surprisingly simple for what it achieve
      * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
      */
+
+    value_or_fail: Field_list_value<T> = new Proxy([], this.makeValueProxy('fail'))
+    value_or_zero: Field_list_value<T> = new Proxy([], this.makeValueProxy('zero'))
+    value_unchecked: Field_list_unchecked<T> = new Proxy([], this.makeValueProxy('unchecked'))
+
+    // 🦊 get value_or_fail(): Field_list_value<T> {
+    // 🦊     const x: this['$Value'] = new Proxy([], this.makeValueProxy('fail'))
+    // 🦊     Object.defineProperty(this, 'value_or_fail', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
+    // 🦊 get value_or_zero(): Field_list_value<T> {
+    // 🦊     const x: this['$Value'] = new Proxy([], this.makeValueProxy('zero'))
+    // 🦊     Object.defineProperty(this, 'value_or_zero', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
+    // 🦊 get value_unchecked(): Field_list_unchecked<T> {
+    // 🦊     const x: this['$Unchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
+    // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
+    // 🦊     return x
+    // 🦊 }
+
     get value(): Field_list_value<T> {
-        return new Proxy(this.items as any, {
-            get: (target, prop: any): any => {
-                // ⏸️ console.log(`[GET]`, prop)
-                if (typeof prop === 'symbol') return target[prop]
-
-                // MOBX HACK ----------------------------------------------------
-                // Handle mutations
-                if (prop === 'toJSON') return () => this.valueArr
-                if (prop === 'pop') return () => this.pop()
-                if (prop === 'shift') return () => this.shift()
-                if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
-                if (prop === 'push') return (...args: any[]) => this.push(...args)
-                // MOBX HACK ----------------------------------------------------
-
-                // handle numbers (1) and number-like ('1')
-                if (parseInt(prop, 10) === +prop) {
-                    return target[+prop]?.value
-                }
-
-                // defer to valueArr for other props
-                return this.valueArr[prop]
-            },
-            set: (target, prop: any, value): boolean => {
-                // ⏸️ console.log(`[SET]`, prop, value)
-                if (typeof prop === 'symbol') return false
-                if (parseInt(prop, 10) === +prop) {
-                    const index = +prop
-                    if (index === this.items.length) {
-                        this.addItem({ value })
-                        return true
-                    } else if (this.items[prop]) {
-                        this.items[prop]!.value = value
-                        return true
-                    }
-                }
-                return false
-            },
-        })
+        return this.value_or_fail
     }
 
     set value(val: Field_list_value<T>) {
-        // if (this.items.length === val.length && this.items.every((i, ix) => i.toValueJSON() == val[ix])) return
-
         this.runInAutoTransaction(() => {
             for (let i = 0; i < val.length; i++) {
                 // 1. replace existing items
@@ -334,13 +393,74 @@ export class Field_list<T extends BaseSchema> //
         })
     }
 
-    // ERRORS --------------------------------------------------------
-    get ownProblems(): string[] {
+    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<never> {
+        return {
+            get: (_, prop: any): any => {
+                // ⏸️ console.log(`[GET]`, prop)
+                const target = this.items as any
+                if (typeof prop === 'symbol') return target[prop]
+
+                // MOBX HACK ----------------------------------------------------
+                // Handle mutations
+                if (prop === 'toJSON') return () => this.valueArr
+                if (prop === 'pop') return () => this.pop()
+                if (prop === 'shift') return () => this.shift()
+                if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
+                if (prop === 'push') return (...args: any[]) => this.push(...args)
+                if (prop === 'map') return (...args: [any, any]) => this.valueArr.map(...args)
+                // MOBX HACK ----------------------------------------------------
+
+                // handle numbers (1) and number-like ('1')
+                if (parseInt(prop, 10) === +prop) {
+                    const field: Maybe<Field> = this.items[+prop]
+                    return field?.getValue(mode)
+                    // return target[+prop]?.getvalue
+                }
+
+                // defer to valueArr for other props
+                return this.valueArr[prop]
+            },
+
+            set: (_, prop: any, value): boolean => {
+                // ⏸️ console.log(`[SET]`, prop, value)
+                if (typeof prop === 'symbol') return false
+                if (parseInt(prop, 10) === +prop) {
+                    const index = +prop
+                    if (index === this.items.length) {
+                        this.addItem({ value })
+                        return true
+                    } else if (this.items[prop]) {
+                        this.items[prop]!.value = value
+                        return true
+                    }
+                }
+                return false
+            },
+        }
+    }
+
+    // #region Validation
+    get ownConfigSpecificProblems(): Problem_Ext {
+        return null
+    }
+
+    get ownTypeSpecificProblems(): string[] {
+        // console.log(`[🤠] `, this.config.min, this.length)
+        // console.log(`[🤠] `, this.config.max, this.length)
         const out: string[] = []
-        if (this.config.min != null && this.length < this.config.min) {
+        if (
+            //
+            this.config.min != null &&
+            this.length < this.config.min
+        ) {
             out.push(`List is too short`)
         }
-        if (this.config.max != null && this.length > this.config.max) {
+
+        if (
+            //
+            this.config.max != null &&
+            this.length > this.config.max
+        ) {
             out.push(`List is too long`)
         }
         return out
@@ -349,7 +469,7 @@ export class Field_list<T extends BaseSchema> //
     // ADDING ITEMS -------------------------------------------------
     duplicateItemAtIndex(ix: number): void {
         const item = this.items[ix]!
-        this.addItem({ at: ix, value: item.value })
+        this.addItem({ at: ix, value: item.isValid ? item.value : undefined })
     }
 
     /**
@@ -385,36 +505,31 @@ export class Field_list<T extends BaseSchema> //
             at?: number
             value?: T['$Value']
             serial?: T['$Serial']
+            applyEvenIfAtMaxLen?: boolean
         } = {},
     ): Maybe<T['$Field']> {
-        // ensure list is not at max len already
-        if (this.config.max != null && this.items.length >= this.config.max)
-            return void console.log(`[🔶] list.addItem: list is already at max length`)
-
-        // ensure index we're adding this at is valid
         if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
         if (p.at != null && p.at > this.items.length) return void console.log(`[🔶] list.addItem: at is out of bounds`)
+        if (!Boolean(p.applyEvenIfAtMaxLen) && this.config.max != null && this.items.length >= this.config.max)
+            return void console.log(`[🔶] list.addItem: list is already at max length`)
 
         return this.runInValueTransaction(() => {
-            // create new item
-            const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
-            const element = schema.instanciate(this.repo, this.root, this, p.serial ?? null)
-
-            // set initial value
-            if (p.value) {
-                element.value = p.value
-            }
-
-            // insert item
-            if (p.at == null) {
-                this.items.push(element)
-                this.serial.items_.push(element.serial)
-            } else {
-                this.items.splice(p.at, 0, element)
-                this.serial.items_.splice(p.at, 0, element.serial)
-            }
-
-            return element
+            const at: number = p.at ?? this.items.length
+            this.patchSerial((draft) => {
+                if (draft.items_ == null) {
+                    if (at !== 0) throw new Error('❌ Field_list is not sparsed')
+                    draft.items_ = [hole]
+                } else {
+                    draft.items_.splice(at, 0, hole)
+                }
+            })
+            const schema = this.schemaAt(at) // TODO: evaluate schema in the form loop
+            const item = schema.instanciate(this.repo, this.root, this, at.toString(), p.serial ?? null)
+            if (p.value) item.value = p.value
+            this.items.splice(at, 0, item)
+            for (let i = at + 1; i < this.items.length; i++) bang(this.items[i]).mountKey = i.toString()
+            // 👉 lists are assume not to be sparsed         ^^^^
+            return item
         })
     }
 
@@ -430,13 +545,23 @@ export class Field_list<T extends BaseSchema> //
         if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
 
         this.runInValueTransaction(() => {
-            // serials
-            const serials = this.serial.items_
-            serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
+            this.patchSerial((draft) => {
+                // serials
+                const serials = draft.items_
+                if (serials == null) throw new Error('❌ Field_list is not set yet')
+                serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
 
-            // instances
-            const instances = this.items
-            instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
+                // instances
+                const instances = this.items
+                instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
+
+                // update mountKeys
+                const minIndex = Math.min(oldIndex, newIndex)
+                const maxIndex = Math.max(oldIndex, newIndex)
+                for (let ix = minIndex; ix <= maxIndex; ix++) {
+                    bang(instances[ix]).mountKey = ix.toString()
+                }
+            })
         })
     }
 
@@ -454,14 +579,25 @@ export class Field_list<T extends BaseSchema> //
     ): T['$Field'][] {
         if (deleteCount === 0) return []
         if (start >= this.length) return []
-        return this.runInValueTransaction(() => {
-            // console.log(`[🤠] `, this.length, start, deleteCount)
-            this.serial.items_.splice(start, deleteCount)
-            const deleted = this.items.splice(start, deleteCount)
-            // console.log('🚀 ~ deleted:', deleted)
+        let deleted: T['$Field'][] = []
+        this.runInValueTransaction(() => {
+            // remove from serial
+            this.patchSerial((draft) => {
+                if (draft.items_ == null) throw new Error('❌ Field_list is not set yet')
+                draft.items_.splice(start, deleteCount)
+            })
+            // remove from instance list
+            deleted = this.items.splice(start, deleteCount)
+
+            // dispose every removed children
             for (const x of deleted) x.disposeTree()
-            return deleted
+
+            // update mountKeys of every children after the removal start index
+            for (let ix = start; ix < this.items.length; ix++) {
+                bang(this.items[ix]).mountKey = ix.toString()
+            }
         })
+        return deleted
     }
 
     /**

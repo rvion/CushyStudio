@@ -5,7 +5,7 @@ const demoView = view<{ emoji: string }>({
 
 app({
     metadata: { name: 'Custom view demo', description: 'Demo of a custom view' },
-    ui: (ui) => ({}),
+    ui: (b) => b.empty(),
     run: async (run, ui) => {
         run.output_custom({
             view: demoView,

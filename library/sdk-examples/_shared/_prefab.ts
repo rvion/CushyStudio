@@ -4,7 +4,7 @@
 
 // 📝 Ideally, modular UI kits only import types with `import type {...}`
 // and do not import anything else
-import type { Builder } from '../../../src/controls/Builder'
+import type { CushySchemaBuilder } from '../../../src/controls/Builder'
 
 // Example 1 -------------------------------------------------------------------------------------
 // 📝 this is a self-contained UI kit you can use in any card you want.

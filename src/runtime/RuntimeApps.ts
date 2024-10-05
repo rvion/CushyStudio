@@ -1,10 +1,10 @@
-import type { SchemaDict } from '../csuite/model/SchemaDict'
+import type { Field } from '../csuite/model/Field'
 import type { CushyAppL } from '../models/CushyApp'
 import type { Runtime, RuntimeExecutionResult } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
 
-import { $ExtractFormValueType, AppRef } from '../cards/App'
+import { AppRef } from '../cards/App'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {
@@ -12,10 +12,10 @@ export class RuntimeApps {
         makeAutoObservable(this)
     }
 
-    execute = <const FIELDS extends SchemaDict>(p: {
+    execute = <const FIELD extends Field>(p: {
         //
-        app: AppRef<FIELDS>
-        formValue: $ExtractFormValueType<FIELDS>
+        app: AppRef<FIELD>
+        formValue: FIELD['$Value']
         draftID?: string
     }): Promise<RuntimeExecutionResult> => {
         return this.executeByID_UNSAFE({

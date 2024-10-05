@@ -1,3 +1,5 @@
+import type { Field_size_config } from '../../../src/csuite/fields/size/FieldSize'
+
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
 
 export type UI_LatentV3 = X.XLink<
@@ -25,50 +27,58 @@ export type UI_LatentV3 = X.XLink<
     }>
 >
 
-export function ui_latent_v3(): UI_LatentV3 {
+export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
     const form: X.Builder = getCurrentForm()
-    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
-        const batchSize = form.linked(batchSize_)
-        return form.choice({
-            header: (p) => {
-                const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
-                return (
-                    <div tw='flex gap-1'>
-                        <p.field.DefaultHeaderUI field={p.field} />
-                        {size && (
-                            <>
-                                {size.width} x{size.height}
-                            </>
-                        )}
-                    </div>
-                )
-            },
-            icon: 'mdiStarThreePoints',
-            appearance: 'tab',
-            default: 'emptyLatent',
-            label: 'Latent Input',
-            background: { hue: 270, chroma: 0.04 },
-            items: {
-                emptyLatent: form.group({
-                    items: {
+    return form.with(
+        form.int({
+            label: 'batchSize',
+            step: 1,
+            default: 1,
+            min: 1,
+            max: 8,
+        }),
+        (batchSize_) => {
+            const batchSize = form.linked(batchSize_)
+            return form.choice(
+                {
+                    emptyLatent: form.fields({
                         batchSize,
-                        size: form.size({}),
+                        size: form.size(p.size),
+                    }),
+                    // cas 2
+                    image: form.fields(
+                        {
+                            batchSize,
+                            image: form.image({ label: false, justifyLabel: false }),
+                            resize: form.auto.Image_Resize().optional(),
+                        },
+                        { collapsed: false, border: false },
+                    ),
+                    random: ui_LatentShapeGenerator(batchSize),
+                },
+                {
+                    header: (p) => {
+                        const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
+                        return (
+                            <div tw='flex gap-1'>
+                                <p.field.DefaultHeaderUI field={p.field} />
+                                {size && (
+                                    <>
+                                        {size.width} x{size.height}
+                                    </>
+                                )}
+                            </div>
+                        )
                     },
-                }),
-                // cas 2
-                image: form.group({
-                    collapsed: false,
-                    border: false,
-                    items: {
-                        batchSize,
-                        image: form.image({ label: false, justifyLabel: false }),
-                        resize: form.auto.Image_Resize().optional(),
-                    },
-                }),
-                random: ui_LatentShapeGenerator(batchSize),
-            },
-        })
-    })
+                    icon: 'mdiStarThreePoints',
+                    appearance: 'tab',
+                    default: 'emptyLatent',
+                    label: 'Latent Input',
+                    background: { hue: 270, chroma: 0.04 },
+                },
+            )
+        },
+    )
 }
 
 export const run_latent_v3 = async (p: {

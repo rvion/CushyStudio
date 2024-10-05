@@ -5,7 +5,7 @@ import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
-import { normalizeJSIdentifier } from '../../core/normalizeJSIdentifier'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../../core/normalizeJSIdentifier'
 import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
 import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
 
@@ -68,7 +68,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
             else prevEntry1.push(plugin)
 
             // 4.2 index by nodeNameInCushy
-            const nodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
+            const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
             const prevEntry2 = DB.plugins_byNodeNameInCushy.get(nodeNameInCushy)
             if (prevEntry2 == null) DB.plugins_byNodeNameInCushy.set(nodeNameInCushy, [plugin])
             else prevEntry2.push(plugin)

@@ -8,17 +8,17 @@ import { withDefaultProps } from './withDefaultProps'
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-const _Button = observer(function Button_(
-    p: FrameProps & {
-        /** no contrast */
-        subtle?: boolean
-        /** no border */
-        borderless?: boolean
-        /** hue */
-        hue?: number
-        chroma?: number
-    },
-) {
+export type ButtonProps = FrameProps & {
+    /** no contrast */
+    subtle?: boolean
+    /** no border */
+    borderless?: boolean
+    /** hue */
+    hue?: number
+    chroma?: number
+}
+
+const _Button = observer(function Button_(p: ButtonProps) {
     const uist = useMemo(() => new ButtonState(p), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -28,6 +28,9 @@ const _Button = observer(function Button_(
     useEffect(() => uist.release, [])
 
     const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
+    const theme = cushy.theme.value
+    const csuite = cushy.csuite
+
     return (
         <Frame //
             as='button'
@@ -47,10 +50,12 @@ const _Button = observer(function Button_(
                 hue: p.hue,
                 chroma: p.chroma,
             }}
-            border={borderless ? 0 : 10}
+            border={borderless ? 0 : csuite.inputBorder}
             hover={p.disabled ? false : 3}
             // active={uist.visuallyActive}
             disabled={p.disabled}
+            dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
+            roundness={theme.inputRoundness}
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex}
             onMouseDown={uist.press}
@@ -70,8 +75,8 @@ const _Button = observer(function Button_(
                 // | 'font-semibold',
 
                 'ui-button',
-                'rounded-sm gap-1 items-center',
-                p.disabled ? null : 'cursor-pointer',
+                'gap-1 items-center',
+                p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',
             ]}
@@ -79,11 +84,11 @@ const _Button = observer(function Button_(
     )
 })
 
-class ButtonState {
+export class ButtonState {
     pressed: boolean = false
     running: boolean = false
 
-    constructor(public props: FrameProps) {
+    constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
         makeAutoObservable(this, { props: observable.ref })
     }
 

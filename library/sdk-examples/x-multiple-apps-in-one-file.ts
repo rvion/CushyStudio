@@ -1,11 +1,11 @@
 app({
     metadata: { name: 'test 1' },
-    ui: () => ({}),
+    ui: (b) => b.empty(),
     run: () => {},
 })
 
 app({
     metadata: { name: 'test 2' },
-    ui: () => ({}),
+    ui: (b) => b.empty(),
     run: () => {},
 })

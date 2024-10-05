@@ -13,6 +13,7 @@ export type CurrentStyle = {
     base: Kolor
     // baseH: OKLCH
     text: Tint
+    noColorStuff?: boolean
     dir?: 1 | -1
     /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
 }

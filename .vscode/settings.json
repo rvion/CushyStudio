@@ -4,6 +4,9 @@
     "eslint.options": { "extensions": [".ts", ".tsx"] },
 
     //
+    "marksToOutline.mark": "#region",
+
+    //
     "editor.linkedEditing": true,
     "fileswitcher.mappings": [
         // { "from": "library/([^/]+)/([^/]+)/(.*).tsx?", "to": "library/:1/:2/dist/:3.js" },
@@ -87,7 +90,12 @@
     // "typescript.tsserver.enableTracing": true,
 
     // perf
-    "typescript.tsserver.maxTsServerMemory": 8000
+    "typescript.tsserver.maxTsServerMemory": 8000,
+
+    // minimap
+    "editor.minimap.maxColumn": 60,
+    "editor.minimap.scale": 2,
+    "editor.minimap.sectionHeaderFontSize": 13
     // "typescript.tsserver.nodePath": ".cushy/node/v20.14.0-darwin-arm64/bin/node",
     // "editor.inlayHints.enabled": "off"
     // "editor.semanticHighlighting.enabled": false,

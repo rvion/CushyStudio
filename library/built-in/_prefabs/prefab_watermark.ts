@@ -11,18 +11,18 @@ export type UI_watermark_v1 = X.XGroup<{
     quality: X.XNumber
     tool: X.XSelectOne_<'canvas' | 'konva'>
 }>
-export function ui_watermark_v1(): UI_watermark_v1 {
+export function ui_watermark_v1() {
     const ui = getCurrentForm()
     return ui.fields(
         {
-            pos: ui.row({ items: { x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) } }),
-            font: ui.selectOneV2(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
-            format: ui.selectOneV2(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
+            pos: ui.row({ x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) }),
+            font: ui.selectOneString(['Arial', 'Times New Roman', 'Courier New'], { justifyLabel: false }),
+            format: ui.selectOneString(['image/webp', 'image/png', 'image/jpeg'], { justifyLabel: false }),
             content: ui.textarea({ default: 'Cushy Diffusion' }),
-            color: ui.colorV2({ default: 'black' }),
+            color: ui.stringColor({ default: 'black' }),
             fontSize: ui.int({ default: 20, min: 3, softMax: 30 }),
             quality: ui.number({ min: 0, max: 1, default: 1 }),
-            tool: ui.selectOneV2(['canvas', 'konva']),
+            tool: ui.selectOneString(['canvas', 'konva']),
         },
         { icon: 'mdiWatermark' },
     )
@@ -41,11 +41,11 @@ export async function run_watermark_v1(
         y: ui.pos.y,
         fontSize: ui.fontSize,
         color: ui.color,
-        font: ui.font.id,
-        format: ui.format.id,
+        font: ui.font,
+        format: ui.format,
         quality: ui.quality,
     }
-    if (ui.tool.id === 'canvas') {
+    if (ui.tool === 'canvas') {
         return image.addWatermark_withCanvas(ui.content, params)
     } else {
         return image.addWatermark_withKonva(ui.content, params)

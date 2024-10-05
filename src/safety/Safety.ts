@@ -1,7 +1,6 @@
 import type { STATE } from '../state/state'
 import type nsfwjs from 'nsfwjs'
 
-import { SQLITE_false } from '../csuite/types/SQLITE_boolean'
 import { bang } from '../csuite/utils/bang'
 import { exhaust } from '../csuite/utils/exhaust'
 import { ManualPromise } from '../csuite/utils/ManualPromise'

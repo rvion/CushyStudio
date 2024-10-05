@@ -12,7 +12,7 @@ export type ShapeSchema = S.SGroup<{
     scaleX: S.SOptional<S.SNumber>
     scaleY: S.SOptional<S.SNumber>
     scaleZ: S.SOptional<S.SNumber>
-    fill: S.SString
+    fill: S.SColor
     rotation: S.SOptional<S.SNumber>
     isSelected: S.SBool
     isDragging: S.SBool

@@ -20,7 +20,7 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
     const txt = tooltip.text
 
     return (
-        <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999]'>
+        <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999] whitespace-pre'>
             <Frame base={80} border shadow tw='px-1 py-0.5 opacity-70'>
                 <div>{txt}</div>
             </Frame>

@@ -1,10 +1,11 @@
 app({
     // name: 'playground-seed-widget',
-    ui: (form) => ({
-        seed1: form.seed({ defaultMode: 'randomize' }),
-        seed2: form.seed({ defaultMode: 'fixed' }),
-        seed3: form.seed({ defaultMode: 'fixed', default: 12 }),
-    }),
+    ui: (b) =>
+        b.fields({
+            seed1: b.seed({ defaultMode: 'randomize' }),
+            seed2: b.seed({ defaultMode: 'fixed' }),
+            seed3: b.seed({ defaultMode: 'fixed', default: 12 }),
+        }),
 
     run: async (flow, form) => {
         const graph = flow.nodes
@@ -14,7 +15,7 @@ app({
         const negative = graph.CLIPTextEncode({ clip: ckpt, text: 'bad' })
         const positive = graph.CLIPTextEncode({ clip: ckpt, text: 'a house' })
 
-        const generate = (seed: number) => {
+        const generate = (seed: number): void => {
             graph.PreviewImage({
                 images: graph.VAEDecode({
                     vae: ckpt,

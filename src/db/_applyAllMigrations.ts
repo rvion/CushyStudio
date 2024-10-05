@@ -9,7 +9,7 @@ export type MigrationContext = {
     log: (...res: any[]) => void
 }
 
-export const _applyAllMigrations = (ctx: MigrationContext) => {
+export const _applyAllMigrations = (ctx: MigrationContext): void => {
     const db = ctx.db
     const executedMigrations: Migration[] = db.prepare('select * from migrations').all() as Migration[]
     // const executedMigrationsNames = executedMigrations.map((e) => e.name)

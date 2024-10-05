@@ -61,8 +61,8 @@ export function ui_LatentShapeGenerator(
             amountRing: ui.int({ step: 1, default: 0, min: 0, softMax: 15 }),
             amountRainbow: ui.int({ step: 1, default: 0, min: 0, softMax: 15 }),
 
-            color1: ui.colorV2({ default: '#FFFFFF' }),
-            color2: ui.colorV2({ default: '#000000' }),
+            color1: ui.stringColor({ default: '#FFFFFF' }),
+            color2: ui.stringColor({ default: '#000000' }),
             colorVariationFactor: ui.float({ min: 0, max: 1, default: 0.5, tooltip: 'A higher color variation factor value will result in more color variation, while a lower color variation factor value will result in less color variation. If factor is 0, there will be no color variation at all.' }), // prettier-ignore
         },
         {

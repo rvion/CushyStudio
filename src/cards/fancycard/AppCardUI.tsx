@@ -17,7 +17,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
     const st = useSt()
     // const importedFrom
     // prettier-ignore
-    const color = (() => {
+    const color = ((): JSX.Element | undefined => {
         const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap self-stretch'
         const maxWidth = st.library.imageSize
         if (file.absPath.endsWith('.ts'))   return <Frame base={{hueShift:  60, chroma: .1 }} tw={[tw]} style={{maxWidth}}>Cushy App</Frame>
@@ -27,7 +27,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
 
     return (
         <Frame
-            base={8}
+            base={app.file.fPath.existsSync ? 8 : { hue: 0, chroma: 0.1, contrast: 0.8 }}
             hover
             style={{ width: st.library.imageSize }}
             onClick={p.app.openLastOrCreateDraft}
@@ -40,6 +40,8 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 'cursor-pointer',
             ]}
         >
+            {app.file.fPath.UIDiagnosticBadge()}
+            {/* {app.file.fPath.existsSync} */}
             {/* ROW 1 */}
             <div tw='flex items-start flex-grow' style={{ fontSize: '1rem' }}>
                 {/* FAVORITE */}

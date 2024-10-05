@@ -1,6 +1,5 @@
 import type { ITreeElement, ITreeEntry } from '../../../../csuite/tree/TreeEntry'
 import type { DraftL } from '../../../../models/Draft'
-import type { STATE } from '../../../../state/state'
 
 import { TreeNode } from '../../../../csuite/tree/TreeNode'
 import { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'

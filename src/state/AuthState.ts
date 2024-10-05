@@ -1,4 +1,5 @@
 import type { LiveTable } from '../db/LiveTable'
+import type { AuthL, AuthRepo } from '../models/Auth'
 import type { STATE } from './state'
 import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
@@ -10,6 +11,7 @@ import { logger } from './logfile'
 
 export class AuthState {
     cleanup: Maybe<() => void> = null
+
     constructor(public st: STATE) {
         this.auth = this.st.supabase.auth
         makeAutoObservable(this)
@@ -29,19 +31,19 @@ export class AuthState {
 
     auth: SupabaseAuthClient
 
-    get authTable(): LiveTable<TABLES['auth']> {
+    get authTable(): AuthRepo {
         return this.st.db.auth
     }
 
-    get isConnected() {
+    get isConnected(): boolean {
         return this.user != null
     }
 
-    get email() {
+    get email(): string | undefined {
         return this.user?.email
     }
 
-    get avatar() {
+    get avatar(): Maybe<string> {
         return this.user?.identities?.[0]?.identity_data?.avatar_url
     }
 
@@ -54,7 +56,7 @@ export class AuthState {
         )
     }
 
-    logout = async () => {
+    logout = async (): Promise<void> => {
         logger.info(`[🔑 AUTH] logging out...`)
         await this.auth.signOut()
         this.user = null
@@ -62,7 +64,7 @@ export class AuthState {
         this.authTable.delete(asAuthID('current'))
     }
 
-    tryToRestoreAuthFromDB = async () => {
+    tryToRestoreAuthFromDB = async (): Promise<void> => {
         logger.info(`[🔑 AUTH] restoring session from DB...`)
         const prevAuth = this.st.db.auth.get(asAuthID('current'))
         if (prevAuth == null) return
@@ -84,14 +86,14 @@ export class AuthState {
         return PORT
     }
 
-    __testCB = () => {
+    __testCB = (): void => {
         this.st.layout.open('IFrame', {
             url: `http://localhost:${this.cushyPort}/public/auth/cb_test.html`,
             name: 'test 1',
         })
         this.st.layout.open('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
     }
-    startLoginFlowWithGithub = async () => {
+    startLoginFlowWithGithub = async (): Promise<void> => {
         logger.info(`[🔑 AUTH] starting login flow...`)
         let { data, error } = await this.st.supabase.auth.signInWithOAuth({
             provider: 'github',
@@ -106,7 +108,7 @@ export class AuthState {
         })
         if (data.url == null) {
             logger.error(`[🔑 AUTH] ❌ invalid auth url; aborting`)
-            return null
+            return
         }
         // this.layout.FOCUS_OR_CREATE('IFrame', { url: data.url })
         const win = window.open(
@@ -155,7 +157,7 @@ export class AuthState {
         //
         access_token: string
         refresh_token: string
-    }) => {
+    }): Promise<void> => {
         logger.info(`[🔑 AUTH] setting session to`, p)
         // manually login with the given payload
         const auth = await this.auth.setSession({
@@ -187,7 +189,7 @@ export class AuthState {
         })
     }
 
-    storeSessionInfoInDB = (session: Session) => {
+    storeSessionInfoInDB = (session: Session): void => {
         const payload: NewAuth & { id: AuthID } = { id: asAuthID('current') }
         if (session.access_token) payload.access_token = session.access_token
         if (session.expires_at) payload.expires_at = session.expires_at

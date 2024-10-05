@@ -45,7 +45,7 @@ export const _getKnownModels = (
         let out1 = ''
         const uniqCategories: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.type] != null) acc[cur.type] += 1
+                if (acc[cur.type] != null) acc[cur.type]! += 1
                 else acc[cur.type] = 1
                 return acc
             },
@@ -66,7 +66,7 @@ export const _getKnownModels = (
         let out4 = ''
         const uniqSavePath: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.save_path] != null) acc[cur.save_path] += 1
+                if (acc[cur.save_path] != null) acc[cur.save_path]! += 1
                 else acc[cur.save_path] = 1
                 return acc
             },
@@ -87,7 +87,7 @@ export const _getKnownModels = (
         let out2 = ''
         const uniqBases: { [key: string]: number } = knownModelList.reduce(
             (acc, cur) => {
-                if (acc[cur.base] != null) acc[cur.base] += 1
+                if (acc[cur.base] != null) acc[cur.base]! += 1
                 else acc[cur.base] = 1
                 return acc
             },
@@ -109,7 +109,13 @@ export const _getKnownModels = (
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
         out3 += `// prettier-ignore\n`
         out3 += 'export type KnownModel_Name =\n'
-        for (const modelInfo of sortedModels) out3 += `    | ${JSON.stringify(modelInfo.name)}\n`
+        for (const mi of sortedModels) {
+            out3 += `    /** ${mi.description}\n`
+            out3 += `     * ${mi.size} - ${mi.url}\n`
+            out3 += `     * see ${mi.reference}\n`
+            out3 += `     */\n`
+            out3 += `    | ${JSON.stringify(mi.name)}\n`
+        }
         out3 += '\n'
         writeFileSync('src/manager/model-list/KnownModel_Name.ts', out3 + '\n', 'utf-8')
     }

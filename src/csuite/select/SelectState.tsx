@@ -2,11 +2,14 @@ import type { RevealHideReason } from '../reveal/RevealProps'
 import type { RevealState } from '../reveal/RevealState'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
+import { hasMod } from '../accelerators/META_NAME'
 import { BadgeUI } from '../badge/BadgeUI'
+import { Frame } from '../frame/Frame'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
@@ -18,6 +21,8 @@ interface ToolTipPosition {
     right?: number | undefined
 }
 
+export type SelectValueSlots = 'anchor' | 'popup-input' | 'options-list'
+
 export class AutoCompleteSelectState<OPTION> {
     // various refs for our select so we can quickly puppet
     // various key dom elements of the select, or move the focus
@@ -27,7 +32,7 @@ export class AutoCompleteSelectState<OPTION> {
     inputRef_real = createObservableRef<HTMLInputElement>()
     revealStateRef = createObservableRef<RevealStateLazy>()
 
-    selectedIndex: number = 0
+    selectedIndex: number | null = null
     get revealState(): Maybe<RevealState> {
         return this.revealStateRef.current?.state
     }
@@ -45,7 +50,7 @@ export class AutoCompleteSelectState<OPTION> {
 
     constructor(public p: SelectProps<OPTION>) {
         makeAutoObservable(this, {
-            anchorRef: false,
+            anchorRef: false, // 🚨 ref do not work when observables!
             inputRef_real: false,
         })
     }
@@ -101,6 +106,8 @@ export class AutoCompleteSelectState<OPTION> {
      */
     isEqual = (a: OPTION, b: OPTION): boolean => {
         if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
+        if (a != null && typeof a === 'object' && 'id' in a && b != null && typeof b === 'object' && 'id' in b)
+            return a.id === b.id
         return a === b
     }
 
@@ -126,8 +133,15 @@ export class AutoCompleteSelectState<OPTION> {
         return v
     }
 
+    /** return the last selected value */
+    get lastValue(): Maybe<OPTION> {
+        const v = this.values
+        if (v.length === 0) return null
+        return v[v.length - 1]
+    }
+
     /** currently selected value or values */
-    get value(): Maybe<OPTION | OPTION[]> {
+    get value(): (OPTION | OPTION[]) | undefined {
         return this.p.value?.()
     }
 
@@ -138,40 +152,44 @@ export class AutoCompleteSelectState<OPTION> {
         return Array.isArray(v) ? v : [v]
     }
 
-    displayOptionInPopup(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
-        if (this.p.getLabelUI) return this.p.getLabelUI(option)
+    getHue(option: OPTION): Maybe<number> {
+        if (option != null && typeof option === 'object' && 'hue' in option && typeof option.hue === 'number') return option.hue
+    }
+
+    DefaultDisplayOption = (option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode => {
         const label = this.p.getLabelText(option)
         return (
-            <BadgeUI
-                key={this.getKey(option)}
-                autoHue
-                onClick={(ev) => {
-                    if (opt.where === 'option-list') return
-                    this.toggleOption(option) // 🔶 does not work perfectly yet when popup is open the first click unfocuses it.
-                    ev.stopPropagation()
-                }}
-            >
+            <BadgeUI key={this.getKey(option)} autoHue={label} hue={this.getHue(option)}>
                 {label}
+                {opt.where === 'popup-input' && !this.p.uncloseableOptions && (
+                    <Frame
+                        tw='ml-1'
+                        hover
+                        onFocus={(ev) => {
+                            ev.stopPropagation()
+                            ev.preventDefault()
+                        }}
+                        onClick={(ev) => {
+                            console.log(`[🤠] UUUU`)
+                            this.toggleOption(option)
+                            ev.preventDefault()
+                            ev.stopPropagation()
+                        }}
+                        icon='mdiClose'
+                        iconSize='0.8rem'
+                    />
+                )}
             </BadgeUI>
         )
     }
-
-    displayOptionInInside(option: OPTION, opt: { where: 'option-list' | 'select-values' }): React.ReactNode {
-        if (this.p.getInsideUI) return this.p.getInsideUI(option)
-        const label = this.p.getLabelText(option)
-        return (
-            <BadgeUI
-                key={this.getKey(option)}
-                autoHue
-                onClick={(ev) => {
-                    if (opt.where === 'option-list') return
-                    this.toggleOption(option) // 🔶 does not work perfectly yet when popup is open the first click unfocuses it.
-                    ev.stopPropagation()
-                }}
-            >
-                {label}
-            </BadgeUI>
-        )
+    DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
+        if (this.p.OptionLabelUI) {
+            // return '🔶'
+            const val = this.p.OptionLabelUI(option, opt.where, this)
+            if (val !== '🔶DEFAULT🔶') return val
+            // we could handle other magic values here
+        }
+        return this.DefaultDisplayOption(option, opt)
     }
 
     // ⏸️ getDisplayValueWithLabel(): ReactNode {
@@ -184,17 +202,41 @@ export class AutoCompleteSelectState<OPTION> {
     // ⏸️     return <>{this.displayValue}</>
     // ⏸️ }
 
-    get placeholderElem(): ReactNode {
-        return <span tw='whitespace-nowrap'>{this.p.placeholder ?? 'Select...'}</span>
+    get displayValueInAnchor(): ReactNode {
+        if (this.p.hideValue) return this.p.placeholder ?? ''
+        const value: (OPTION | OPTION[]) | undefined = this.value
+        const placeHolderStr = <div tw='text-gray-300 text-sm w-full '>{this.p.placeholder ?? 'Select...'}</div>
+        if (value === undefined) return placeHolderStr
+        // 💬 2024-09-18 rvion:
+        // | null is now a valid value; only undefined means no value.
+        // |> if (value == null) return placeHolderStr
+        const values = Array.isArray(value) ? value : [value]
+        if (values.length === 0) return placeHolderStr
+
+        return values.map((op) => this.DisplayOptionUI(op, { where: 'anchor' }))
     }
 
-    get displayValue(): ReactNode {
+    get displayValueInPopup(): ReactNode {
+        // no placeholder in popup, it's in the input
         let value = this.value
-        if (value == null) return this.placeholderElem
+        if (value == null) return null
         value = Array.isArray(value) ? value : [value]
-        if (value.length === 0) return this.placeholderElem
-        return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
+        if (value.length === 0) return null
+
+        return value.map((op) => this.DisplayOptionUI(op, { where: 'popup-input' }))
     }
+
+    // get placeholderElem(): ReactNode {
+    //     return <span tw='whitespace-nowrap'>{this.p.placeholder ?? 'Select...'}</span>
+    // }
+
+    // get displayValue(): ReactNode {
+    //     let value = this.value
+    //     if (value == null) return this.placeholderElem
+    //     value = Array.isArray(value) ? value : [value]
+    //     if (value.length === 0) return this.placeholderElem
+    //     return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
+    // }
 
     // UNUSED
     openMenuProgrammatically = (): void => {
@@ -211,7 +253,7 @@ export class AutoCompleteSelectState<OPTION> {
 
     clean(): void {
         this.revealState?.log(`🔶 SelectSate clean`)
-        this.selectedIndex = 0
+        this.selectedIndex = null
         this.searchQuery = ''
     }
 
@@ -271,10 +313,10 @@ export class AutoCompleteSelectState<OPTION> {
 
     toggleOption(option: OPTION): void {
         this.revealState?.log(`_ SelectSate toggleOption`)
-        const onOptionToggledFn = this.p.onOptionToggled ?? this.p.onChange
-        onOptionToggledFn?.(option, this)
+        const onOptionToggled = this.p.onOptionToggled ?? this.p.onChange
+        onOptionToggled?.(option, this)
         // reset the query
-        const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
+        const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
         if (shouldResetQuery) this.searchQuery = ''
         // close the menu
         this.closeIfShouldCloseAfterSelection()
@@ -284,7 +326,10 @@ export class AutoCompleteSelectState<OPTION> {
      * MOVE IN OPTIONS LIST
      **/
     navigateSelection(direction: 'up' | 'down'): void {
-        if (direction === 'up' && this.selectedIndex > 0) {
+        if (this.selectedIndex == null) {
+            if (direction === 'down') this.selectedIndex = 0
+            else if (direction === 'up') this.selectedIndex = this.filteredOptions.length - 1
+        } else if (direction === 'up' && this.selectedIndex > 0) {
             this.selectedIndex--
         } else if (direction === 'down' && this.selectedIndex < this.filteredOptions.length - 1) {
             this.selectedIndex++
@@ -300,14 +345,17 @@ export class AutoCompleteSelectState<OPTION> {
         if (ev.key === 'ArrowDown') this.navigateSelection('down')
         else if (ev.key === 'ArrowUp') this.navigateSelection('up')
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
-            this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
+            if (this.selectedIndex != null) this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
             this.closeIfShouldCloseAfterSelection()
+            this.inputRef_real.current?.focus()
         }
 
         // when the select is hidden but the anchor is focused
         // typing a letter should add it to the search query in addition to opening the select
         const isLetter = ev.keyCode >= 65 && ev.keyCode <= 90
-        if (isLetter && !this.revealState?.isVisible) {
+        // 🔴 this does not work anymore because Reveal is opening on key down, so visible is true and the letter isn't added
+        // (we can live with it for now)
+        if (isLetter && !this.revealState?.isVisible && !hasMod(ev)) {
             // setTimeout prevents from having the newly added letter being selected due to subsequent input.focus()
             setTimeout(() => (this.searchQuery += ev.key), 0)
         }

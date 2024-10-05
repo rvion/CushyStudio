@@ -10,6 +10,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
         <ToolShelfUI
+            tw='[z-index:99999]'
             anchor='left'
             floating
             panelState={canvas.toolShelf}
@@ -74,6 +75,7 @@ export const CanvasToolsUI = observer(function CanvasToolsUI_(p: { category?: st
                     <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
                         <DraftIllustrationUI
                             onClick={() => {
+                                console.log(`[🤠] CLICKED`)
                                 draft.openOrFocusTab()
                                 canvas.currentDraft = draft
                             }}

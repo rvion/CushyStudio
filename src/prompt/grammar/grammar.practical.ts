@@ -1,6 +1,7 @@
 import type { EditorView } from 'codemirror'
 
-import Lezer, { SyntaxNode } from '@lezer/common'
+import * as Lezer from '@lezer/common'
+import { SyntaxNode } from '@lezer/common'
 
 // import { nanoid } from 'nanoid'
 import { parser } from './grammar.parser'

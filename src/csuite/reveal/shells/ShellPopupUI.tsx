@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 // 👽 import { useEffect } from 'react'
 import { type ModalShellSize, ModalShellUI } from '../../modal/ModalShell'
 import { exhaust } from '../../utils/exhaust'
-import { mergeStylesTsEfficient, mergeStylesTsEfficientInNew } from '../../utils/mergeStylesTsEfficient'
+import { mergeStylesTsEfficientInNew } from '../../utils/mergeStylesTsEfficient'
 
 export const ShellPopupXSUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='xs' {...p} />
 export const ShellPopupSMUI = (p: RevealShellProps): JSX.Element => <ShellPopupUI size='sm' {...p} />

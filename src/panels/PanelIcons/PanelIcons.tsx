@@ -54,11 +54,14 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                     {/* {form.fields.query.header()} */}
 
                     <InputStringUI
+                        autoResize
                         placeholder='Search...'
                         slotBeforeInput={
                             <InputBoolUI
+                                tw='mr-1'
                                 value={uist.filter}
                                 icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
+                                // border={false}
                                 border={false}
                                 onValueChange={() => {
                                     uist.filter = !uist.filter

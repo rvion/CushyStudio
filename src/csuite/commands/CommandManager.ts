@@ -13,10 +13,15 @@ export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shif
 export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
 
 /** e.g. '⌃k' */
-type InputToken = Branded<string, { InputToken: true }>
+export type InputToken = Branded<string, { InputToken: true }>
 
 /** e.g. ['⌃k', '⌃⇧i'] */
-type InputSequence = InputToken[]
+export type InputSequence = InputToken[]
+
+export type KeyEventInfo = {
+    inputToken: InputToken
+    inInput: boolean
+}
 
 export class CommandManager {
     /** index of all commands, by their ID */
@@ -33,6 +38,25 @@ export class CommandManager {
 
     inputHistory: InputSequence = []
     name: string
+
+    lastTriggered: {
+        uid: number
+        command: Command
+        shortcut: string
+        tokens: InputToken[]
+    }[] = []
+    private _lastTriggeredNextUID: number = 1
+    private _recordInHistory(command: Command, shortcut: string, tokens: InputToken[]): void {
+        this.lastTriggered.unshift({
+            uid: this._lastTriggeredNextUID++,
+            command,
+            shortcut,
+            tokens,
+        })
+        if (this.lastTriggered.length > 10) {
+            this.lastTriggered.pop()
+        }
+    }
 
     /** return the list of all known context seen through registered commands */
     get knownContexts(): CommandContext[] {
@@ -77,6 +101,8 @@ export class CommandManager {
             contextByName: observable.shallow,
             commandByShortcut: observable.shallow,
             knownContexts: computed,
+            // items are readonly, no need to make them recursively observabel
+            lastTriggered: observable.shallow,
         })
 
         this.name = this.conf.name || 'no-name' //shortId()
@@ -102,41 +128,38 @@ export class CommandManager {
         if (ev.altKey && keyLower !== 'alt') inputAccum.push('alt' /* as KeyName */)
         if (ev.metaKey && keyLower !== 'meta') inputAccum.push(META_NAME)
 
-        const key = ev.key
+        // const key = ev.key
+        const key = ev.key != 'Unidentified' ? ev.key : ev.code
 
         if (key) {
             if (key === ' ') inputAccum.push('space' /* as KeyName */)
             else inputAccum.push(key /* .toLowerCase() as KeyName */)
         }
-        const input = inputAccum //
-            .map(normalizeKey)
-            .sort(sortKeyNamesFn)
-            .join('') as InputToken
-        // .toLowerCase()
-        // console.log(`[🤠] input`, inputAccum, input)
-        return input as InputToken
+        return makeInputToken(inputAccum) //
     }
 
     processKeyDownEvent = (ev: KeyboardEvent<HTMLElement>): Trigger => {
-        // 2022-xx-xx: why did I write this ?? => because I get "shift+shift" stuff
-        // | I could also check just above if (év.ctrlKey && !ev.key==='...')
-        // | but I would also need to handle the ctrl<->control case
-        // 💬 2024-04-09: blender-like shortcuts means those should be treated normally
-        // | todo: uncomment
-        // if (['Control', 'Shift', 'Alt', 'Meta'].includes(ev.key)) {
-        //     return Trigger.UNMATCHED
-        // }
+        const inputToken = this.inputToken(ev)
+        const inInput = this.evInInput(ev)
+        return this.processKeyDown({ inputToken, inInput }, ev)
+    }
 
-        const input = this.inputToken(ev)
+    processKeyDown = (
+        //
+        info: KeyEventInfo,
+        ev?: KeyboardEvent<HTMLElement>,
+    ): Trigger => {
+        const input = info.inputToken // this.inputToken(ev)
         if (this.conf.log) this.log(input)
         if (this.inputHistory.length > 3) this.inputHistory.shift()
         this.inputHistory.push(input)
-        const inInput: boolean = this.evInInput(ev)
+        const inInput: boolean = info.inInput // this.evInInput(ev)
 
         const lastX = this.inputHistory.slice(-5)
 
         for (let x = 0; x < lastX.length; x++) {
-            const shortcut: CushyShortcut = lastX.slice(x).join(' ')
+            const tokens: InputToken[] = lastX.slice(x)
+            const shortcut: CushyShortcut = tokens.join(' ')
             const matches = this.commandByShortcut.get(shortcut)
 
             for (const s of matches || []) {
@@ -146,7 +169,10 @@ export class CommandManager {
                 if (this.conf.log || s.action == null) this.log(shortcut, `triggered (${s.label})`)
 
                 const done = this.tryToRun(s, ev)
-                if (done) return Trigger.Success
+                if (done) {
+                    this._recordInHistory(s, shortcut, tokens)
+                    return Trigger.Success
+                }
             }
         }
 
@@ -157,7 +183,7 @@ export class CommandManager {
     tryToRun = (
         //
         s: Command,
-        ev: KeyboardEvent<HTMLElement>,
+        ev?: KeyboardEvent<HTMLElement>,
     ): boolean => {
         // if (s.action == null) return // asume terminal
         if (s.action == null) return false // asume continuation
@@ -178,13 +204,12 @@ export class CommandManager {
         if (res === Trigger.FAILED) return false
         // if (res === RET.Failed) continue
 
-        // console.log(s)
         if (res === Trigger.Success && s.continueAfterSuccess) return false
 
         // stop
         if (res === Trigger.Success) {
-            ev.stopPropagation()
-            ev.preventDefault()
+            ev?.stopPropagation()
+            ev?.preventDefault()
             // if (this.conf.log) this.log('          -> done')
             return true
             // return RET.SUCCESS
@@ -205,14 +230,16 @@ export const normalizeCushyShortcut = (combo: CushyShortcut): CushyShortcut => {
 }
 
 // ctrl+shift+a => a+ctrl+shift
-function normalizeInputToken(input: string): InputToken {
+export function normalizeInputToken(input: string): InputToken {
     if (input.includes(' ')) throw new Error(`invalid raw input token: "${input}"`)
+    return makeInputToken(input.split('+'))
+}
+
+export function makeInputToken(input: string[]): InputToken {
     return input //
-        .split('+')
         .map(normalizeKey)
         .sort(sortKeyNamesFn)
         .join('') as InputToken
-    // .toLowerCase() as InputToken
 }
 
 function normalizeKey(key_: string): KeyName {

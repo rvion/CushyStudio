@@ -1,4 +1,3 @@
-import type { BaseInstanceFields } from './LiveInstance'
 
 export type SqlFindOptions = {
     mode?: 'raw'

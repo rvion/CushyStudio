@@ -1,3 +1,17 @@
+/*
+* 💬 2024-09-27 rvion:
+* I don't my interfaces to compose, so I'll try to make sure
+* h1,h2,h3, ... stay within the same line-height as the rest of the interface.
+* so nothing moves.
+* you can check `src/theme/form.css` > `.lh-widget` for the height of a cell.
+*/
+h1,h2,h3,h4 { line-height: var(--widget-height) }
+h1 { font-size: 1.3rem; font-weight: bolder; text-decoration: underline; }
+h2 { font-size: 1.25rem; font-weight: bold; }
+h3 { font-size: 1.125rem; font-weight: bold; }
+h4 { font-size: 1rem; font-weight: bold; }
+
+
 /* ---------------------------------------------------------------------------------------------- */
 
 #CushyStudio:focus {

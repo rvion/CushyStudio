@@ -22,9 +22,10 @@ export default defineConfig({
         ],
     },
     // publicDir: 'library',
+    // https://github.com/vitejs/vite-plugin-react/commit/25fe88a02d3a718b81a3b1290ff4e46bfab427f9
     plugins: [
         // dynamicModulePlugin(),
-        react({ jsxImportSource: 'src/csuite/custom-jsx' }),
+        react({ jsxImportSource: 'JSOX' }),
         // viteSingleFile(),
     ],
     build: {

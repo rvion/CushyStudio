@@ -11,7 +11,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     }
 
     // tooltip behaviour
-    tooltipDelay = 400
+    tooltipDelay = 0
 
     // form behaviour
     clickAndSlideMultiplicator = 1
@@ -20,6 +20,8 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     showWidgetDiff = false
     showFoldButtons = false
     showToggleButtonBox = false
+    showSelectIcons = false
+    showExpandCarets = false
     labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
 
     // core theme colors
@@ -34,9 +36,9 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     text: Tint = { contrast: 0.824 }
 
     // heights
-    widgetHeight: number = 2.2
-    inputHeight: number = 2
-    insideHeight: number = 1.8
+    widgetHeight: number = 2.25 // 36px
+    inputHeight: number = 1.75 // 28px
+    insideHeight: number = 1.25 // 20px
 
     // misc theming options
     inputBorder = 0

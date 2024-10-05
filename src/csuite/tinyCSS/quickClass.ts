@@ -1,6 +1,5 @@
-import { type CSSProperties } from 'react'
-
 import { customAlphabet } from 'nanoid'
+import { type CSSProperties } from 'react'
 import SparkMD5 from 'spark-md5'
 
 import { addRule } from './compileOrRetrieveClassName'

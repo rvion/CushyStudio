@@ -1,5 +1,6 @@
 import { cushyFactory } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
+import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
 import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { MediaImageL } from '../../models/MediaImage'
 import { ctx_image } from '../contexts/ctx_image'
@@ -18,7 +19,9 @@ export const cmd_copyImage: Command<MediaImageL> = command({
     label: 'Copy Image',
     ctx: ctx_image,
     combos: 'mod+c',
-    action: (image) => image.copyToClipboard_viaCanvas(/* { format: image.format, quality: form_foo.fields.quality.value } */),
+    action: (image) =>
+        /* { format: image.format, quality: form_foo.fields.quality.value } */
+        image.copyToClipboard_viaCanvas(),
 })
 
 export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
@@ -27,7 +30,11 @@ export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
         label: 'Copy Image',
         ctx: ctx_image,
         combos: 'mod+c',
-        action: (image) => image.copyToClipboard_viaCanvas({ format: format, quality: form_foo.fields.quality.value }),
+        action: (image) =>
+            image.copyToClipboard_viaCanvas({
+                format: format,
+                quality: form_foo.fields.quality.value,
+            }),
     })
 
 export const cmd_copyImage_as_PNG = cmd_copyImage_as('PNG')
@@ -42,9 +49,20 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
     action: (image: MediaImageL) => menu_copyImageAs.open(image),
 })
 
-const form_foo = cushyFactory.fields((ui) => ({
-    quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, justifyLabel: false, label: 'test' }),
-}))
+const form_foo = lazy_viaProxy(() =>
+    cushyFactory.document((b) =>
+        b.fields({
+            quality: b.float({
+                min: 0,
+                softMin: 0.3,
+                max: 1,
+                step: 0.01,
+                justifyLabel: false,
+                label: 'test',
+            }),
+        }),
+    ),
+)
 
 export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
     title: 'image actions',

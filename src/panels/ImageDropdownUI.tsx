@@ -25,7 +25,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     const img = p.img
     return (
         <>
-            <MenuItem icon='mdiDelete' disabled={!img?.absPath} onClick={() => img.delete()}>
+            <MenuItem icon='mdiDelete' disabled={!img?.absPath} onClick={() => img.delete({})}>
                 Delete
             </MenuItem>
             <div className='divider my-1'>Send to</div>

@@ -17,18 +17,43 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
     draft: DraftL
     className?: string
 }) {
+    const theme = cushy.theme.value
+    const csuite = cushy.csuite
+
     return (
-        <Frame line>
-            <InputStringUI //
-                getValue={() => p.draft.name}
-                setValue={(val) => p.draft.update({ title: val })}
-            />
+        <Frame
+            line
+            tw='overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 h-input'
+            border={csuite.inputBorder}
+            roundness={theme.inputRoundness}
+            dropShadow={
+                theme.inputShadow && {
+                    x: theme.inputShadow.x,
+                    y: theme.inputShadow.y,
+                    color: theme.inputShadow.color,
+                    blur: theme.inputShadow.blur,
+                    opacity: theme.inputShadow.opacity,
+                }
+            }
+        >
             <Dropdown
                 className={p.className}
                 startIcon='mdiPencilBox'
                 title={false}
                 content={() => <DraftListUI app={p.draft.app} />}
-                button={<Button tw='!gap-0 !px-0.5' icon='mdiPencilBox' suffixIcon={'mdiChevronDown'} />}
+                button={
+                    <Button
+                        base={{ contrast: -0.077 }}
+                        borderless
+                        tw='!gap-0 !px-0.5 !rounded-none'
+                        icon='mdiPencilBox'
+                        suffixIcon={'mdiChevronDown'}
+                    />
+                }
+            />
+            <InputStringUI //
+                getValue={() => p.draft.name}
+                setValue={(val) => p.draft.update({ title: val })}
             />
         </Frame>
     )

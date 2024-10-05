@@ -6,17 +6,18 @@ app({
         name: 'Simple IPAdapter Test',
         description: 'simple ipadapter test',
     },
-    ui: (form) => ({
-        positive: form.prompt({ default: 'masterpiece, tree ' }),
-        useImageToStart: form.boolean({ default: false }),
-        ipadapter: ui_ipadapter_standalone(),
-        denoise: form.float({ default: 0, min: 0, max: 1 }),
-        negative: form.prompt({
-            startCollapsed: true,
-            default: 'bad quality, blurry, low resolution, pixelated, noisy',
+    ui: (b) =>
+        b.fields({
+            positive: b.prompt({ default: 'masterpiece, tree ' }),
+            useImageToStart: b.boolean({ default: false }),
+            ipadapter: ui_ipadapter_standalone(),
+            denoise: b.float({ default: 0, min: 0, max: 1 }),
+            negative: b.prompt({
+                startCollapsed: true,
+                default: 'bad quality, blurry, low resolution, pixelated, noisy',
+            }),
+            // latent: ui_latent(),
         }),
-        // latent: ui_latent(),
-    }),
 
     run: async (run, ui) => {
         const graph = run.nodes

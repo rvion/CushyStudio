@@ -17,7 +17,7 @@ export type OwnShelfProps = {
 
 //TODO(bird_d): Use the activity system for resizing, request a way to change the cursor on the fly for activities.
 export const _BasicShelfUI = observer(function BasicShelf({
-    // basic-shelf specific
+    // own props
     anchor,
     defaultSize,
     floating = false,

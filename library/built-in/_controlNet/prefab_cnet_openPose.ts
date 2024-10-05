@@ -64,11 +64,8 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
 
 function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
     const form: X.Builder = getCurrentForm()
-    return form.choice({
-        label: 'Preprocessor',
-        startCollapsed: true,
-        appearance: 'tab',
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             DWPose: form.group({
                 label: 'Settings',
@@ -101,7 +98,8 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
         },
-    })
+        { label: 'Preprocessor', startCollapsed: true, appearance: 'tab' },
+    )
 }
 
 // 🅿️ OPEN POSE RUN ===================================================

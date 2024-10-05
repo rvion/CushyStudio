@@ -1,4 +1,4 @@
-import { _CushyIcons } from './iconsCDI'
+import { _IconsCDI } from './iconsCDI'
 import { _IconsLDI } from './iconsLDI'
 import { _IconsMDI } from './iconsMDI'
 import { _IconsXDI } from './iconsXDI'
@@ -38,7 +38,7 @@ export const allIcons = {
     // made by/for locomotive
     ..._IconsLDI,
     // made by/for cushy
-    ..._CushyIcons,
+    ..._IconsCDI,
 }
 
 // slow when used in union => will break typescript
@@ -49,3 +49,10 @@ export const allIcons = {
 // > Distribution happens only over naked type parameters, meaning a single type parameter without any other type operation applied to it.
 // > T[number] is not a naked type parameter, so no distribution. Elem is a naked type parameter in the second type, so distribution occurs.
 export type IconName = [keyof typeof allIcons][0]
+
+export type IdLabelIcon = {
+    id: string
+    label?: string
+    icon?: IconName
+    hue?: number
+}
