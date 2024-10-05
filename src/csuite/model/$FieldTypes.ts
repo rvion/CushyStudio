@@ -18,10 +18,6 @@ export type $FieldTypes = {
     $Child: $FieldTypes | never
 }
 
-export type $FieldTypes_Nullable = $FieldTypes & {
-    $Config: FieldConfig_CommonProperties<any> & { nullable?: boolean }
-}
-
 // 💬 2024-09-27 rvion:
 // | not quite sure what it would achieve, but we could manually unroll it a few time providing any
 // | on the 2nd or third recursion; might help with some variance check... maybe.

@@ -7,7 +7,7 @@ import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
 import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { $FieldTypes, $FieldTypes_Nullable } from './$FieldTypes'
+import type { $FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { TypeImportLocation } from './codegen/ImportLocation'
 import type { DraftLike } from './Draft'
@@ -108,10 +108,6 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
  * it will be properly re-typed in sub-classes
  */
 export type UNSAFE_AnyField = any // Field<any>
-
-export interface Field_Nullable<K extends $FieldTypes_Nullable = $FieldTypes_Nullable> extends Field<K> {}
-
-//     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
 
 export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
     /** @internal */
