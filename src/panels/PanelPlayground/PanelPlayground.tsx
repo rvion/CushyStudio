@@ -16,6 +16,7 @@ import { PlaygroundJSX } from './PlaygroundJSX'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundPanelStoreUI } from './PlaygroundPanelStoreUI'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
+import { PlaygroundRenderUI } from './PlaygroundRender'
 import { PlaygroundRequirements } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
@@ -47,6 +48,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             <UI.Panel.Header extensibleHeight>{Header_Playground.root.header()}</UI.Panel.Header>
             <ErrorBoundaryUI /* 👇 playground sub-pages */>
                 {mode.forms && <PlaygroundForms />}
+                {mode.render && <PlaygroundRenderUI />}
                 {mode.requirements && <PlaygroundRequirements />}
                 {mode.registeredForms && <PlaygroundRegisteredForms />}
                 {mode.widgetShowcase && <PlaygroundWidgetDisplay />}
@@ -88,6 +90,7 @@ const Header_Playground = cushyFactory.document(
                 select: ui.empty(),
                 size: ui.empty(),
                 forms: ui.empty(),
+                render: ui.empty(),
                 customPanels: ui.empty(),
                 requirements: ui.empty(),
                 registeredForms: ui.empty(),
