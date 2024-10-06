@@ -265,15 +265,12 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             // unsure about the amount of code we had to use for that prop
             dropShadow={dropShadow ? dropShadow : undefined}
             roundness={p.roundness ?? csuite.inputRoundness}
-            // base={{ contrast: isEditing ? -0.1 : 0.05 }}
-            // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
+            disabled={p.disabled}
             tw={[
                 'UI-InputNumber',
-                p.disabled && 'pointer-events-none opacity-25',
                 'h-input relative',
                 'input-number-ui',
                 'flex-1 select-none min-w-24 cursor-ew-resize overflow-clip',
-                // !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {
                 /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
