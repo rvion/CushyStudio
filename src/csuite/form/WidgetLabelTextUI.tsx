@@ -26,7 +26,8 @@ export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetL
             tw={[
                 'UI-WidgetLabel self-start minh-widget lh-widget ABDDE',
                 // 1. indicate we can click on the label
-                p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
+                'COLLAPSE-PASSTHROUGH',
+                // p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
 
                 // 3. label wrappign strategy
                 // 3.1  alt. 1: disable all wrapping
