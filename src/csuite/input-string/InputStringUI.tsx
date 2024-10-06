@@ -96,7 +96,7 @@ export const InputStringUI = observer(
 
         switch (p.type) {
             case 'color':
-                inputTailwind = 'absolute w-full h-full !bg-transparent opacity-0 !p-0'
+                inputTailwind = 'left-0 absolute w-full h-full !bg-transparent opacity-0 !p-0'
                 visualHelper = (
                     <Frame //
                         tw='UI-Color w-full h-full flex items-center font-mono whitespace-nowrap text-[0.6rem] pl-2'
