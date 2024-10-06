@@ -174,7 +174,7 @@ export const InputStringUI = observer(
                 tw={[
                     //
                     p.icon ? 'pr-1' : 'px-1',
-                    'UI-InputString h-input flex items-center relative text-sm ',
+                    'UI-InputString h-input flex items-center relative text-sm overflow-clip',
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
