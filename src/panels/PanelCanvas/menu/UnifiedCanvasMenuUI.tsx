@@ -1,20 +1,19 @@
+import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { UnifiedImage } from '../states/UnifiedImage'
 
 import { observer } from 'mobx-react-lite'
-import SortableList, { SortableItem } from 'react-easy-sort'
+import { fileURLToPath } from 'url'
 
+import { Button } from '../../../csuite/button/Button'
+import { SpacerUI } from '../../../csuite/components/SpacerUI'
+import { Frame } from '../../../csuite/frame/Frame'
+import { CachedResizedImage } from '../../../csuite/image/CachedResizedImageUI'
 import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
-import { Frame } from '../../../csuite/frame/Frame'
-import { Button } from '../../../csuite/button/Button'
-import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
-import { SpacerUI } from '../../../csuite/components/SpacerUI'
-import { CachedResizedImage } from '../../../csuite/image/CachedResizedImageUI'
-import { fileURLToPath } from 'url'
 
 const UCLayerUI = observer(function UCLayerUI_(p: { canvas: UnifiedCanvas; UCImage?: UnifiedImage; index: number }) {
     let ui = <div></div>
@@ -138,26 +137,26 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 >
                     Layers
                     <Frame tw='p-2 rounded-md' base={{ contrast: -0.1 }}>
-                        <SortableList
+                        <div /* SortableList */
                             // inlist={true}
-                            onSortEnd={(oldIndex, newIndex) => {
-                                //
-                                const images = canvas.images
+                            // onSortEnd={(oldIndex, newIndex) => {
+                            //     //
+                            //     const images = canvas.images
 
-                                const [item] = images.splice(oldIndex, 1)
-                                const [layerItem] = canvas.imageLayer.children.splice(oldIndex, 1)
+                            //     const [item] = images.splice(oldIndex, 1)
+                            //     const [layerItem] = canvas.imageLayer.children.splice(oldIndex, 1)
 
-                                if (!item || !layerItem) {
-                                    return
-                                }
+                            //     if (!item || !layerItem) {
+                            //         return
+                            //     }
 
-                                // Step 2: Insert the item at the new index
-                                images.splice(newIndex, 0, item)
-                                canvas.imageLayer.children.splice(newIndex, 0, layerItem)
-                                canvas.imageLayer.cache()
-                            }}
+                            //     // Step 2: Insert the item at the new index
+                            //     images.splice(newIndex, 0, item)
+                            //     canvas.imageLayer.children.splice(newIndex, 0, layerItem)
+                            //     canvas.imageLayer.cache()
+                            // }}
+                            // draggedItemClassName='dragged'
                             className='list'
-                            draggedItemClassName='dragged'
                             tw='flex flex-col gap-2'
                         >
                             {canvas.images
@@ -166,14 +165,12 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                 .map((p: UnifiedImage, i: number) => {
                                     // const img = p.img
                                     return (
-                                        <SortableItem key={p.img.id}>
-                                            <div>
-                                                <UCLayerUI canvas={canvas} UCImage={p} index={i} />
-                                            </div>
-                                        </SortableItem>
+                                        <div /* SortableItem */ key={p.img.id}>
+                                            <UCLayerUI canvas={canvas} UCImage={p} index={i} />
+                                        </div>
                                     )
                                 })}
-                        </SortableList>
+                        </div>
                     </Frame>
                 </Frame>
 

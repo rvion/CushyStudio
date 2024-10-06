@@ -3,7 +3,6 @@ import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../button/Button'
 import { csuiteConfig } from '../../config/configureCsuite'
 import { SelectUI } from '../../select/SelectUI'
 

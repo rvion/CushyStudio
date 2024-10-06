@@ -125,7 +125,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     ): SCHEMA['$Field'] {
         const doc = this.use(schemaExt, entityConfig, deps)
         // dispose that document when the component unmount
-        useEffect(() => () => doc.disposeTree(), [doc])
+        useEffect(() => (): void => doc.disposeTree(), [doc])
         return doc
     }
 
