@@ -20,10 +20,15 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
         <div>
             <x.Render
                 // Body='hello'
+                children={({ fields: f }) => [f.x, f.x, f.x, f.x, '*']}
                 rule={(f) => {
                     f.apply(f.field.Z, { Header: 'hello guys' })
                     f.apply(f.field.Y, { LabelText: null })
                     f.apply(f.field.Sub1.Z, { Header: 'hope you guys good' })
+                    f.apply(f.field.Sub1, {
+                        children: (f) => [f.X, f.Y, f.Y, '*'],
+                        Header: 'hope you guys good',
+                    })
                     // return { Body: 'hello' }
                 }}
                 global={({ field, apply, catalog }) => {
@@ -31,7 +36,7 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                     //     Shell: catalog.ShellMobile,
                     //     Indent: (f) => f.depth + '>>',
                     // })
-                    if (isFieldNumber(field)) return { Header: '🟢' }
+                    if (isFieldNumber(field)) return { Header: <>🟢{<catalog.number.def field={field} />}</> }
                 }}
             />
         </div>
