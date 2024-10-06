@@ -25,6 +25,9 @@ app({
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
     ui: CushySDXLUI,
+    // layout: (x) => {
+    //     // x.
+    // },
     run: async (run, ui, ctx) => {
         const graph = run.nodes
         // #region  MODEL, clip skip, vae, etc.

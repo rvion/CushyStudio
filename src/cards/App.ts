@@ -1,4 +1,5 @@
 import type { CushySchema } from '../controls/Schema'
+import type { DisplayRule } from '../csuite-cushy/presenters/Presenter'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -49,6 +50,9 @@ export type DraftExecutionContext = {
 export type App<FIELD extends Field> = {
     /** app interface (GUI) */
     ui: (form: X.Builder) => CushySchema<FIELD>
+
+    /* layout */
+    layout?: Maybe<DisplayRule<NoInfer<FIELD>>>
 
     /** so you cana have fancy buttons to switch between a few things */
     presets?: Record<string, (doc: NoInfer<FIELD>) => void>

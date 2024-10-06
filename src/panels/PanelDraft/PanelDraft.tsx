@@ -174,7 +174,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     {metadata?.requirements && (
                         <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                     )}
-                    {draft.form && <draft.form.UI globalRules={{ Shell: ShellMobileUI }} />}
+                    {draft.form && (
+                        <draft.form.UI //
+                        // global={{ Shell: ShellMobileUI }}
+                        />
+                    )}
 
                     <RevealUI
                         placement='topStart'
