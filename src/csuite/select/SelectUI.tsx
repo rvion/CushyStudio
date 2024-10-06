@@ -12,6 +12,7 @@ import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
+import { Frame } from '../frame/Frame'
 
 // TODO fork this component
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
@@ -23,20 +24,19 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     // if (p.readonly) return <AnchorContentComp select={select} />
     if (p.readonly)
         return (
-            <Row
+            <Frame
+                hover
                 expand
                 tabIndex={0}
                 tw={[
+                    //
                     'UI-Select minh-input',
-                    'relative',
-                    'h-full',
                     'ANCHOR-REVEAL',
-                    'bg-gray-100 cursor-not-allowed',
                     p.hasErrors && 'border-red-700 border',
                 ]}
             >
                 <AnchorContentComp select={select} />
-            </Row>
+            </Frame>
         )
 
     return (
@@ -67,28 +67,47 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     },
                 }}
             >
-                <Row expand tabIndex={0} tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']} hoverable>
+                <Frame
+                    tw={[
+                        //
+                        'overflow-clip',
+                        'UI-Select minh-input',
+                        'relative',
+                        'h-full',
+                        'flex items-center flex-grow',
+                    ]}
+                    base={csuite.inputContrast}
+                    border={csuite.inputBorder}
+                    roundness={csuite.inputRoundness}
+                    dropShadow={cushy.theme.value.inputShadow}
+                    expand
+                    tabIndex={0}
+                    // line
+                    // hover
+                >
                     <AnchorContentComp select={select} />
-                </Row>
+                    {p.clearable && (
+                        <Button
+                            // subtle
+                            tw='!rounded-none'
+                            borderless
+                            square
+                            // size='inside'
+                            icon='_clear'
+                            onFocus={(ev) => ev.stopPropagation()}
+                            onClick={(ev) => {
+                                ev.preventDefault()
+                                ev.stopPropagation()
+                                p.clearable!()
+                            }}
+                        />
+                    )}
+                </Frame>
             </RevealUI>
             {p.createOption != null && p.createOption.isActive !== false && (
                 <Button subtle size='inside' onClick={() => select.createOption()}>
                     {p.createOption.label ?? 'Créer'}
                 </Button>
-            )}
-            {p.clearable && (
-                <Button
-                    subtle
-                    borderless
-                    size='inside'
-                    icon='_clear'
-                    onFocus={(ev) => ev.stopPropagation()}
-                    onClick={(ev) => {
-                        ev.preventDefault()
-                        ev.stopPropagation()
-                        p.clearable!()
-                    }}
-                />
             )}
         </Row>
     )
@@ -109,18 +128,18 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
 
     return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
         // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
-        <div tw={['w-full', 'px-0.5', 'grid']} style={{ gridTemplateColumns: '1fr 24px' }}>
+        <Frame hover tw={['h-input flex', 'flex-grow', 'grid pl-1.5']} line style={{ gridTemplateColumns: '1fr 24px' }}>
             {/* 2px for parent border + 2 * 2px for icon padding */}
             {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
-            <Ikon.mdiChevronDown tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' />
-        </div>
+            <Ikon.mdiChevronDown size={1} />
+        </Frame>
     ) : (
         // IN THIS BRANCH, WE ADD FLEX-NONE
         <>
             {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
-            <Ikon.mdiChevronDown tw='flex-none box-border ml-auto m-[2px]' size='calc((var(--input-height) - 4px - 4px)' />
+            <Ikon.mdiChevronDown size={1} />
         </>
     )
 })

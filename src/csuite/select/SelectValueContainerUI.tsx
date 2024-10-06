@@ -16,8 +16,8 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_(
                 p.wrap === 'no-wrap-no-overflow-hidden' //
                     ? ''
                     : p.wrap === true
-                    ? 'flex-wrap'
-                    : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
+                      ? 'flex-wrap'
+                      : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
             ]}
         >
             {p.children}

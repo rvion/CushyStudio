@@ -37,7 +37,8 @@ export const BadgeUI = observer(function BadgeUI_({
                 'rounded px-1 whitespace-nowrap',
                 hasAction && 'cursor-pointer',
                 'w-fit',
-                'lh-inside h-inside',
+                // 'lh-inside h-inside',
+                // 'h-1/2',
                 'items-center',
                 'select-none',
             ]}

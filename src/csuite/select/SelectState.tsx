@@ -158,6 +158,7 @@ export class AutoCompleteSelectState<OPTION> {
 
     DefaultDisplayOption = (option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode => {
         const label = this.p.getLabelText(option)
+
         return (
             <BadgeUI key={this.getKey(option)} autoHue={label} hue={this.getHue(option)}>
                 {label}
