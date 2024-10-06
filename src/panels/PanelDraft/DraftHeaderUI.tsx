@@ -15,6 +15,7 @@ import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import OverflowingRowUI from './OverflowingRowUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 
 export const DraftHeaderUI = observer(function DraftHeader({
     // own props
@@ -39,7 +40,8 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <PanelHeaderUI>
                 <DraftMenuLooksUI draft={draft} title={app.name} />
                 <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
-                {/* <Frame
+                <SpacerUI />
+                <Frame
                     //Joined
 
                     tw='overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0'
@@ -55,9 +57,17 @@ export const DraftHeaderUI = observer(function DraftHeader({
                         }
                     }
                 >
-                </Frame> */}
+                    <Button
+                        tooltip='Edit in external editor'
+                        icon='mdiTextBoxEditOutline'
+                        onClick={() => cushy.openInVSCode(draft.app.relPath)}
+                    >
+                        {draft.app.name}
+                    </Button>
+                </Frame>
 
                 {children}
+                <SpacerUI />
                 <PublishAppBtnUI app={app} tw='ml-auto' />
             </PanelHeaderUI>
 
