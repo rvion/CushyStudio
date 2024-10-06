@@ -1,3 +1,4 @@
+import { isFieldChoice, isFieldGroup } from '../../../src/csuite/fields/WidgetUI.DI'
 import { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
 import { eval_extra2 } from '../_extra/extra2'
 import { run_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
@@ -25,9 +26,14 @@ app({
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
     ui: CushySDXLUI,
-    // layout: (x) => {
-    //     // x.
-    // },
+    layout: (ui) => {
+        ui.forAllFields((ui) => {
+            if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
+            // return {
+            //     Indent: (f) => '>>'.repeat(f.depth),
+            // }
+        })
+    },
     run: async (run, ui, ctx) => {
         const graph = run.nodes
         // #region  MODEL, clip skip, vae, etc.
