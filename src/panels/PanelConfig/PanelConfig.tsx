@@ -69,8 +69,15 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
     return (
         <UI.Panel>
             <UI.Panel.Header>
-                <UI.Button onClick={() => openInVSCode('CONFIG.json')} children='open legacy config file' />
-                <UI.Button onClick={() => openFolderInOS('settings')} children='open config folder' />
+                <UI.Dropdown
+                    title='Actions'
+                    content={() => (
+                        <>
+                            <UI.Dropdown.Item onClick={() => openInVSCode('CONFIG.json')} children='Open legacy config file' />
+                            <UI.Dropdown.Item onClick={() => openFolderInOS('settings')} children='Open config folder' />
+                        </>
+                    )}
+                ></UI.Dropdown>
             </UI.Panel.Header>
             <UI.Frame expand row tw='overflow-auto'>
                 <UI.Shelf anchor='left' defaultSize={140}>
