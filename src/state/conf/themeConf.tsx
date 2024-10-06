@@ -69,8 +69,8 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                 // fields group
                 fieldGroups: ui.fields(
                     {
-                        border: ui.percent({ default: 8 }).optional(),
-                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
+                        border: ui.percent({ default: 20 }).optional(true),
+                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(true),
                         // padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
                     },
                     { background: { hue: 180 } },
@@ -82,7 +82,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
 
                 // 3. misc
                 inputBorder: ui.percent({ default: 8 }).optional(true),
-                inputContrast: ui.percent({ default: 5 }).optional(true),
+                inputContrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
                 inputShadow: schemaSimpleDropShadow(ui).optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
                 inputRoundness: ui.int({ default: 5, min: 0 }),
