@@ -83,16 +83,16 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
                 <UI.Shelf anchor='left' defaultSize={140}>
                     <UI.Shelf.Column>
                         <ConfigTabButtonUI field={modeField} mode='legacy' />
-                        <UI.Shelf.Group hueShift={100}>
+                        <UI.Shelf.Group align hueShift={100}>
                             <ConfigTabButtonUI field={modeField} mode='interface' />
                             <ConfigTabButtonUI field={modeField} mode='input' />
                             <ConfigTabButtonUI field={modeField} mode='theme' />
                         </UI.Shelf.Group>
-                        <UI.Shelf.Group hueShift={200}>
+                        <UI.Shelf.Group align hueShift={200}>
                             <ConfigTabButtonUI field={modeField} mode='system' />
                             <ConfigTabButtonUI field={modeField} mode='hosts' />
                         </UI.Shelf.Group>
-                        <UI.Shelf.Group hueShift={300}>
+                        <UI.Shelf.Group align hueShift={300}>
                             <ConfigTabButtonUI field={modeField} mode='TEMP' />
                         </UI.Shelf.Group>
                     </UI.Shelf.Column>

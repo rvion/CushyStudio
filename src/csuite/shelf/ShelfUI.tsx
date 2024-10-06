@@ -6,6 +6,7 @@ import { useEffect, useMemo } from 'react'
 
 import { Frame, type FrameProps } from '../frame/Frame'
 import { ShelfState } from './ShelfState'
+import { useCSuite } from '../ctx/useCSuite'
 
 export type ShelfProps = FrameProps & OwnShelfProps
 
@@ -88,9 +89,27 @@ const BasicShelf_ColumnUI = observer(function BasicShelf_Column(
     return <div tw='flex flex-col p-2 gap' {...p}></div>
 })
 
-const BasicShelf_GroupUI = observer(function BasicShelf_Group({ children, ...tint }: { children?: ReactNode } & Tint) {
+const BasicShelf_GroupUI = observer(function BasicShelf_Group({
+    align,
+    children,
+    ...tint
+}: { align?: boolean; children?: ReactNode } & Tint) {
+    const csuite = useCSuite()
+    const dropShadow = cushy.theme.value.inputShadow
+
     return (
-        <Frame col base={tint} border tw={['[&>*]:!border-none']}>
+        <Frame
+            col
+            base={tint}
+            border
+            roundness={csuite.inputRoundness}
+            dropShadow={dropShadow}
+            tw={[
+                // bird_d: Maybe should be aligned by default?
+                align && 'overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 [&>*]:h-input',
+                '[&>*]:!border-none',
+            ]}
+        >
             {children}
         </Frame>
     )
