@@ -300,7 +300,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <Button /* Left Button */
                     className='control'
                     borderless
-                    tw='rounded-none items-center z-20 opacity-0'
+                    tw='!rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.decrement}
                     icon='mdiChevronLeft'
@@ -431,7 +431,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <Button /* Right Button */
                     className='control'
                     borderless
-                    tw='rounded-none items-center z-20 opacity-0'
+                    tw='!rounded-none items-center z-20 opacity-0'
                     tabIndex={-1}
                     onClick={uist.increment}
                     icon='mdiChevronRight'
