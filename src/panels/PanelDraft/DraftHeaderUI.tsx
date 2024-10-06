@@ -37,12 +37,6 @@ export const DraftHeaderUI = observer(function DraftHeader({
             {...rest}
         >
             <PanelHeaderUI>
-                <Button
-                    tooltip='open in VSCode'
-                    icon='mdiMicrosoftVisualStudioCode'
-                    onClick={() => cushy.openInVSCode(draft.app.relPath)}
-                />
-                <h1>{draft.app.name}</h1>
                 <DraftMenuLooksUI draft={draft} title={app.name} />
                 <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
                 {/* <Frame
