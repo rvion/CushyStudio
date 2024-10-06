@@ -31,6 +31,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 setSearchQuery={(query) => (field.query = query)}
                 disableLocalFiltering={field.config.disableLocalFiltering}
                 options={() => field.options}
+                createOption={field.config.createOption}
                 value={() => field.selectedOptions}
                 equalityCheck={(a, b) => a?.id === b?.id}
                 onOptionToggled={(selectOption) => {
@@ -39,9 +40,32 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                     if (selectOption == null) return field.unset()
 
                     field.toggleId(selectOption.id)
+                    field.touch()
                 }}
+                clearable={
+                    p.field.canBeToggledWithinParent &&
+                    !p.field.isInsideDisabledBranch &&
+                    !p.field.config.readonly &&
+                    !p.field.parent?.config.readonly
+                        ? (): void => {
+                              p.field.disableSelfWithinParent()
+                              p.selectProps?.onCleared?.()
+                          }
+                        : null
+                }
                 placeholder={field.config.placeholder}
                 {...p.selectProps}
+                revealProps={{
+                    ...p.selectProps?.revealProps,
+                    onHidden: (reason) => {
+                        field.touch()
+                        p.selectProps?.revealProps?.onHidden?.(reason)
+                    },
+                }}
+                onCleared={() => {
+                    field.touch()
+                    p.selectProps?.onCleared?.()
+                }}
             />
             {field.config.wrapButton && (
                 <InputBoolFlipButtonUI
@@ -49,7 +73,11 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                     tw='self-start'
                     icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
                     value={p.field.wrap}
-                    onValueChange={(next) => (p.field.wrap = next)}
+                    onValueChange={(next) => {
+                        p.field.wrap = next
+                        p.field.touch()
+                    }}
+                    onBlur={() => p.field.touch()}
                 />
             )}
         </div>

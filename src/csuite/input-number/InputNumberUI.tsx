@@ -26,6 +26,7 @@ type InputNumberProps = {
     value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
+    onBlur?: () => void
     step?: number
     min?: number
     max?: number
@@ -379,9 +380,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             if (cancelled) {
                                 cancelled = false
                                 uist.syncValues(startValue, undefined)
+                                p.onBlur?.()
                                 return
                             }
                             uist.syncValues(ev.currentTarget.value, { skipRounding: true })
+                            p.onBlur?.()
                         }}
                         onKeyDown={(ev) => {
                             if (ev.key === 'Enter') {

@@ -50,7 +50,9 @@ export const WidgetString_TextareaInput = observer(function WidgetString_Textare
                 value={field.value_or_zero}
                 onChange={(ev) => {
                     field.value = ev.target.value
+                    field.touch()
                 }}
+                onBlur={() => field.touch()}
             />
         </Frame>
     )
@@ -62,14 +64,17 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: { fi
     const config = field.config
     return (
         <InputStringUI
-            tw={['w-full', field.hasOwnErrors && 'rsx-field-error']}
+            tw={['w-full', field.mustDisplayErrors && 'rsx-field-error']}
             icon={p.field.config.innerIcon}
             type={config.inputType}
             placeholder={config.placeHolder}
             pattern={config.pattern}
             className={config.className}
             getValue={() => field.value_or_zero}
-            setValue={(value) => (field.value = value)}
+            setValue={(value) => {
+                field.value = value
+                field.touch()
+            }}
             disabled={p.readonly}
             autoResize={config.autoResize}
             buffered={
@@ -80,6 +85,7 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: { fi
                       }
                     : undefined
             }
+            onBlur={() => field.touch()}
         />
     )
 })

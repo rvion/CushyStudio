@@ -63,6 +63,11 @@ export type Field_selectOne_config<
         choices?: KEY[] | ((self: Field_selectOne<VALUE, KEY>) => KEY[])
         values?: VALUE[] | ((field: Field_selectOne<VALUE, KEY>) => VALUE[])
         options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
+        createOption?: {
+            label?: string
+            isActive?: boolean
+            action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
+        }
 
         getIdFromValue: (t: VALUE) => KEY
         getValueFromId: (id: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => VALUE | undefined

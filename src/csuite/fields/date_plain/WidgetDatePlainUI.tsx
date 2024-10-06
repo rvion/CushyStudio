@@ -28,6 +28,7 @@ export const WidgetDatePlain_ClearButtonUI = observer(function WidgetDatePlain_C
             disabled={p.field.selectedValue == null}
             onClick={() => {
                 ;(p.field as Field_datePlain<true>).value = null
+                p.field.touch()
             }}
         />
     )
@@ -51,9 +52,11 @@ export const WidgetDatePlain_HeaderUI = observer(function WidgetDatePlainUI_<NUL
                 getValue={() => field.selectedValue?.toString() ?? ''}
                 setValue={(value) => {
                     field.setValueFromString(value)
+                    p.field.touch()
                 }}
                 placeholder={field.config.placeHolder}
                 disabled={p.readonly}
+                onBlur={() => field.touch()}
             />
             <WidgetDatePlain_ClearButtonUI field={field} readonly={p.readonly} />
         </div>

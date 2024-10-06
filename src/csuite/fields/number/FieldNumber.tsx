@@ -179,6 +179,10 @@ export class Field_number extends Field<Field_number_types> {
         return this.serial.value
     }
 
+    set value_unchecked(next: Field_number_unchecked) {
+        this.patchSerial((serial) => void (serial.value = next))
+    }
+
     // #region SETTERS
     /** randomize respect (soft)Min and (soft)max */
     randomize(): void {

@@ -11,7 +11,7 @@ import type { FieldSerial_CommonProperties } from '../model/FieldSerial'
 import type { Field_bool, Field_bool_serial } from './bool/FieldBool'
 import type { Field_button_serial } from './button/FieldButton'
 import type { Field_choices, Field_choices_serial } from './choices/FieldChoices'
-import type { Field_date_serial } from './date/FieldDate'
+import type { Field_date, Field_date_serial } from './date/FieldDate'
 import type { Field_group, Field_group_serial } from './group/FieldGroup'
 import type { Field_link, Field_link_serial } from './link/FieldLink'
 import type { Field_list, Field_list_serial } from './list/FieldList'
@@ -67,6 +67,12 @@ export const isFieldSelectOne = _checkIfIs<Field_selectOne<any, any>>('selectOne
 export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectMany')
 export const isFieldChoices = _checkIfIs<Field_choices<any>>('choices', (f) => f.isMulti)
 export const isFieldChoice = _checkIfIs<Field_choices<any>>('choices', (f) => f.isSingle)
+export const isFieldDate = _checkIfIs<Field_date<any>>('date')
+export const isFieldDateNullable = _checkIfIs<Field_date<true>>('date', (f) => f.config.nullable === true)
+export const isFieldDateNotNullable = _checkIfIs<Field_date<false>>(
+    'date',
+    (f) => f.config.nullable === undefined || f.config.nullable === false,
+)
 
 function _checkIfIs<W extends { $Type: string; $Field: Field }>(
     /** widget type to check */

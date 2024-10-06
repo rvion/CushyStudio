@@ -3,6 +3,8 @@ import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../button/Button'
+import { csuiteConfig } from '../../config/configureCsuite'
 import { SelectUI } from '../../select/SelectUI'
 
 export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<T extends SchemaDict>(p: {
@@ -11,9 +13,11 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     const field = p.field
     type Entry = { key: string; label: string }
     const choices: Entry[] = field.choicesWithLabels
+    const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
+
     return (
         <div
-            tw='relative flex-1'
+            tw='relative flex-1 flex flex-row gap-2'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
@@ -21,7 +25,8 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
         >
             <SelectUI<Entry>
                 tw='flex-grow'
-                placeholder={p.field.config.placeholder}
+                key={`${isActive}`}
+                placeholder={p.field.config.placeholder ?? csuiteConfig.i18n.misc.words.empty}
                 value={() =>
                     field.activeBranchNames.map((key) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
                 }

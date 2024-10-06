@@ -16,7 +16,15 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
     field: Field_date<NULLABLE>
     readonly?: boolean
 }) {
-    if (!p.field.config.nullable || p.readonly) return null
+    const mustShowDeleteBtn: boolean = ((): boolean => {
+        if (p.field.selectedValue == null) return false
+        if (p.readonly) return false
+        if (p.field.config.nullable) return true
+        if (p.field.canBeToggledWithinParent) return true
+        return false
+    })()
+
+    if (!mustShowDeleteBtn) return null
 
     return (
         <Button
@@ -28,7 +36,13 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
             icon='mdiClose'
             disabled={p.field.selectedValue == null}
             onClick={() => {
-                ;(p.field as Field_date<true>).value = null
+                if (p.field.config.nullable) {
+                    ;(p.field as Field_date<true>).value = null
+                }
+                if (p.field.canBeToggledWithinParent) {
+                    p.field.disableSelfWithinParent()
+                }
+                p.field.touch()
             }}
         />
     )
@@ -45,12 +59,25 @@ export const WidgetDate_HeaderUI = observer(function WidgetDateUI_<NULLABLE exte
         <div tw='sticky flex items-center gap-0.5 top-0 w-full'>
             <InputStringUI
                 tw='w-full'
-                inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
+                inputClassName={['w-full', 'minh-input', 'UI-InputDate', field.mustDisplayErrors && 'border-red-700 border']
+                    .filter(Boolean)
+                    .join(' ')}
                 icon={p.field.config.innerIcon}
                 type='datetime-local'
                 className={config.className}
-                getValue={() => formatDateForInput(field.selectedValue)}
-                setValue={(value) => field.setValueFromString(value)}
+                getValue={() => formatDateForInput(field.value_unchecked)}
+                setValue={(value) => {
+                    if (p.field.canBeToggledWithinParent) {
+                        if (value == '') {
+                            p.field.disableSelfWithinParent()
+                        } else {
+                            p.field.enableSelfWithinParent()
+                        }
+                    }
+
+                    field.setValueFromString(value)
+                    p.field.touch()
+                }}
                 placeholder={field.config.placeHolder}
                 disabled={p.readonly}
             />

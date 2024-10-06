@@ -41,7 +41,7 @@ export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
 }
 
 // #region State
-export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
+export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
     // #region Type
     static readonly type: 'optional' = 'optional'
     static readonly emptySerial: Field_optional_serial = { $: 'optional' }

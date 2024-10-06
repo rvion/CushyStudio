@@ -40,7 +40,9 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<VA
                         onValueChange={(value: boolean) => {
                             if (value === isSelected) return
                             field.selectedId = c.id
+                            field.touch()
                         }}
+                        onBlur={() => field.touch()}
                     />
                 )
             })}

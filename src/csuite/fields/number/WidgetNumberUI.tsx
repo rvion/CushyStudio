@@ -25,7 +25,10 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
             step={step}
             suffix={field.config.suffix}
             text={field.config.text}
-            onValueChange={(next) => (field.value = next)}
+            onValueChange={(next) => {
+                field.value = next
+                field.touch()
+            }}
             forceSnap={field.config.forceSnap}
         />
     )

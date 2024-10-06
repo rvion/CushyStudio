@@ -322,6 +322,14 @@ export class AutoCompleteSelectState<OPTION> {
         this.closeIfShouldCloseAfterSelection()
     }
 
+    async createOption(): Promise<void> {
+        const createdOption = await this.p.createOption?.action()
+        if (createdOption != null) {
+            this.options.push(createdOption)
+            this.toggleOption(createdOption)
+        }
+    }
+
     /**
      * MOVE IN OPTIONS LIST
      **/

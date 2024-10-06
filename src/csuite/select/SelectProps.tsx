@@ -31,6 +31,7 @@ export type SelectProps<OPTION> = {
 
     /** callback when a new option is selected */
     onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
+    onCleared?: () => void
 
     /**
      * @deprecated
@@ -47,6 +48,11 @@ export type SelectProps<OPTION> = {
      *    filtering the options twice.
      */
     options?: (query: string) => OPTION[]
+    createOption?: {
+        label?: string
+        isActive?: boolean
+        action: () => Promise<OPTION | null>
+    }
 
     /** set this to true if your choices */
     disableLocalFiltering?: boolean
@@ -79,11 +85,14 @@ export type SelectProps<OPTION> = {
     /** prevents popup from opening, not well thought out, probably does not belongs here */
     readonly?: boolean
 
+    hasErrors?: boolean
+
     /** text to show when no value yet nor filter query */
     placeholder?: string
     disabled?: boolean
 
     clearable?: Maybe<() => void>
+
     /** if true, popup-input options won't have a close icon */
     uncloseableOptions?: boolean
 

@@ -30,7 +30,9 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                             text={option.label ?? makeLabelFromPrimitiveValue(option.id)}
                             onValueChange={(value) => {
                                 if (value != isSelected) field.toggleId(option.id)
+                                field.touch()
                             }}
+                            onBlur={() => field.touch()}
                         />
                     )
                 })}
@@ -46,7 +48,11 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                             style={{ border: '1px solid oklch(var(--er))' }}
                             display='button'
                             text={makeLabelFromPrimitiveValue(missingId)}
-                            onValueChange={(value) => field.toggleId(missingId)}
+                            onValueChange={(value) => {
+                                field.toggleId(missingId)
+                                field.touch()
+                            }}
+                            onBlur={() => field.touch()}
                         />
                     ))}
             </div>

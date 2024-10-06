@@ -18,13 +18,19 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             <InputBoolToggleButtonUI // Random
                 icon='mdiAutoFix'
                 value={field.serial.mode === 'randomize'}
-                onValueChange={() => field.setToRandomize()}
+                onValueChange={() => {
+                    field.setToRandomize()
+                    field.touch()
+                }}
                 // text='Random'
             />
             <InputBoolToggleButtonUI // Fixed
                 icon='mdiNumeric1CircleOutline'
                 value={field.serial.mode === 'fixed'}
-                onValueChange={() => field.setToFixed()}
+                onValueChange={() => {
+                    field.setToFixed()
+                    field.touch()
+                }}
                 // text='Fixed'
             />
             <InputNumberUI // Fixed value
@@ -35,12 +41,18 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
                 step={1}
                 value={val}
                 mode='int'
-                onValueChange={(value) => (field.value = value)}
+                onValueChange={(value) => {
+                    field.value = value
+                    field.touch()
+                }}
             />
             <Button // reset fixed value
                 size='input'
                 tw='!border-l !border-r-0'
-                onClick={() => field.setToFixed(Math.floor(Math.random() * 100000000))}
+                onClick={() => {
+                    field.setToFixed(Math.floor(Math.random() * 100000000))
+                    field.touch()
+                }}
                 icon='mdiAutorenew'
                 square
             />

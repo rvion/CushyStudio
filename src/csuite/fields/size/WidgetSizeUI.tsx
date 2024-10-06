@@ -39,8 +39,12 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
         <InputBoolToggleButtonUI //
             tw='w-input'
             value={uist.desiredModelType == model}
-            onValueChange={() => uist.setModelType(model)}
+            onValueChange={() => {
+                uist.setModelType(model)
+                uist.touch()
+            }}
             text={model}
+            onBlur={() => uist.touch()}
         />
     )
 
@@ -66,10 +70,14 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     mode='int'
                     value={uist.width}
                     hideSlider
-                    onValueChange={(next) => uist.setWidth(next)}
+                    onValueChange={(next) => {
+                        uist.setWidth(next)
+                        uist.touch()
+                    }}
                     forceSnap={true}
                     text='Width'
                     suffix='px'
+                    onBlur={() => uist.touch()}
                 />
                 <div tw='h-full' style={{ width: '1px' }} />
                 <InputNumberUI
@@ -80,10 +88,14 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     hideSlider
                     mode='int'
                     value={uist.height}
-                    onValueChange={(next) => uist.setHeight(next)}
+                    onValueChange={(next) => {
+                        uist.setHeight(next)
+                        uist.touch()
+                    }}
                     forceSnap={true}
                     text='Height'
                     suffix='px'
+                    onBlur={() => uist.touch()}
                 />
                 {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
                 <div tw='h-full' style={{ width: '1px' }} />

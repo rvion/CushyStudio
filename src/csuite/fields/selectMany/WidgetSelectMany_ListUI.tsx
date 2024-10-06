@@ -41,7 +41,9 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
                         text={c.label ?? makeLabelFromPrimitiveValue(c.id)}
                         onValueChange={(value) => {
                             if (value != isSelected) field.toggleId(c.id)
+                            field.touch()
                         }}
+                        onBlur={() => field.touch()}
                     />
                 )
             })}

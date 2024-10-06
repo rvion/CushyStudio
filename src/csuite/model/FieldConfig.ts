@@ -231,6 +231,12 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
      */
     required?: boolean
     readonly?: boolean
+
+    // TODO 🔴 remove that
+    saveChanges?: (field: Field) => Promise<void>
+
+    // TODO 🔴 remove that
+    cancelChanges?: (field: Field) => Promise<void>
 }
 
 export interface WidgetMenuAction<out T extends FieldTypes> {

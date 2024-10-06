@@ -34,6 +34,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     onClick={(ev) => {
                         preset.apply(field)
                         ev.stopPropagation()
+                        field.touch()
                     }}
                     children={preset.label}
                 />
@@ -49,7 +50,10 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     borderless
                     icon='mdiUnfoldMoreHorizontal'
                     disabled={!field.hasFoldableSubfieldsThatAreFolded}
-                    onClick={() => p.field.expandAllChildren()}
+                    onClick={() => {
+                        p.field.expandAllChildren()
+                        field.touch()
+                    }}
                 />
 
                 <Button //
@@ -58,7 +62,10 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     borderless
                     icon='mdiUnfoldLessHorizontal'
                     disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
-                    onClick={() => p.field.collapseAllChildren()}
+                    onClick={() => {
+                        p.field.collapseAllChildren()
+                        field.touch()
+                    }}
                 />
             </div>,
         )

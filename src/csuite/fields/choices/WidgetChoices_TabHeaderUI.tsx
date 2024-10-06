@@ -4,6 +4,7 @@ import type { Field_choices } from './FieldChoices'
 import { observer } from 'mobx-react-lite'
 
 import OverflowingRowUI from '../../../panels/PanelDraft/OverflowingRowUI'
+import { Button } from '../../button/Button'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
@@ -17,13 +18,14 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
     const field = p.field
     const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
     const csuite = useCSuite()
+    const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
     return (
         <div
             tw='rounded select-none flex flex-1 flex-wrap gap-x-1 gap-y-0.5'
             style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
         >
             {choices.map((c) => {
-                const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
+                const isSelected = isActive && field.isBranchEnabled(c.key) // serial.branches[c.key]
                 return (
                     <InputBoolUI
                         icon={c.icon}
@@ -34,13 +36,32 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                         text={c.label ?? c.key}
                         box={isSelected ? undefined : { text: csuite.labelText }}
                         onValueChange={(value) => {
+                            // 🔴 seems dubious
+                            p.field.enableSelfWithinParent()
+
                             if (value != isSelected) {
                                 field.toggleBranch(c.key)
                             }
+                            p.field.touch()
                         }}
                     />
                 )
             })}
+            {p.field.canBeToggledWithinParent && (
+                <Button
+                    tw='flex-shrink flex-grow-0'
+                    size='input'
+                    borderless
+                    subtle
+                    square
+                    icon='mdiClose'
+                    disabled={!isActive}
+                    onClick={() => {
+                        p.field.disableSelfWithinParent()
+                        p.field.touch()
+                    }}
+                />
+            )}
         </div>
     )
 })
