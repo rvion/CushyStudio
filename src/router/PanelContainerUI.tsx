@@ -68,6 +68,13 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                     className={`Region-${panelName}`}
                     data-panel-id={panelURI}
                     id={panelURI}
+                    // HACK?(bird_d): Needed to make panel headers lighter
+                    onMouseEnter={(e) => {
+                        e.currentTarget.classList.add('Hovered-Region')
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.classList.remove('Hovered-Region')
+                    }}
                 >
                     <Component {...panelProps} className='w-full h-full border-none' />
                 </Frame>
