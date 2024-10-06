@@ -509,6 +509,9 @@ export class CushyLayoutManager {
         console.log('[💠] Rendering Layout')
         return (
             <Layout //
+                // 🔴 never re-use panels is probably the wrong fix;
+                // we could/should/will make something better/faster/stronger.
+                key={this.perspective.id}
                 ref={this.layoutRef}
                 model={this.model}
                 factory={this.factory}
