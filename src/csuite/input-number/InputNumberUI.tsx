@@ -264,7 +264,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             className={p.className}
             // unsure about the amount of code we had to use for that prop
             dropShadow={dropShadow ? dropShadow : undefined}
-            roundness={p.roundness ?? theme.inputRoundness}
+            roundness={p.roundness ?? csuite.inputRoundness}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
             tw={[

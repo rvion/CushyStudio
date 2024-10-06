@@ -8,6 +8,7 @@ import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI
 import { WidgetPresetsUI } from '../../csuite/form/WidgetPresets'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 const CushyShellUI = observer(function CushySHell(
     p: CompiledRenderProps & {
@@ -17,6 +18,8 @@ const CushyShellUI = observer(function CushySHell(
 ) {
     const field = p.field
     const utils = p.presenter.utils
+    const csuite = useCSuite()
+
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 
     const interfacePreferences = cushy.preferences.interface.value
@@ -25,7 +28,7 @@ const CushyShellUI = observer(function CushySHell(
         <Frame
             className={p.classNameForShell ?? undefined}
             tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0 py-0.5']}
-            roundness={cushy.theme.value.inputRoundness}
+            roundness={csuite.inputRoundness}
             base={field.background}
             border={field.border}
             {...p.field.config.box}

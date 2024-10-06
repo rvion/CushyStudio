@@ -37,6 +37,10 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         return this.st.preferences.interface.value.insideHeight ?? 1.2
     }
 
+    get inputRoundness(): number {
+        return this.st.theme.value.inputRoundness ?? 5
+    }
+
     // misc ------------------------------------------------------
     get clickAndSlideMultiplicator(): number {
         return this.st.clickAndSlideMultiplicator ?? 1

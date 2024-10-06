@@ -25,7 +25,7 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
             line
             tw='overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 h-input'
             border={csuite.inputBorder}
-            roundness={theme.inputRoundness}
+            roundness={csuite.inputRoundness}
             dropShadow={
                 theme.inputShadow && {
                     x: theme.inputShadow.x,

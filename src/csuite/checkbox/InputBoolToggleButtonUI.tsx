@@ -58,7 +58,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             // hoverable={!p.disabled}
             disabled={p.disabled}
             dropShadow={p.look == 'subtle' ? undefined : dropShadow}
-            roundness={theme.inputRoundness}
+            roundness={csuite.inputRoundness}
             expand={p.expand}
             style={p.style}
             hovered={p.hovered}

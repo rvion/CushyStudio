@@ -165,7 +165,7 @@ export const InputStringUI = observer(
                 text={{ contrast: 1, chromaBlend: 1 }}
                 hover={3}
                 dropShadow={dropShadow}
-                roundness={theme.inputRoundness}
+                roundness={csuite.inputRoundness}
                 border={
                     isDirty //
                         ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
