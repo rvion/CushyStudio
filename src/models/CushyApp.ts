@@ -1,4 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
+import type { DisplayRule } from '../csuite-cushy/presenters/Presenter'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -339,6 +340,10 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
     /** globaly unique id (in theory...); 🔶 */
     get uid(): Timestamp {
         return this.data.createdAt as Timestamp
+    }
+
+    get layout(): Maybe<DisplayRule<any>> {
+        return this.executable_orExtract?.def.layout
     }
 
     get name(): string {

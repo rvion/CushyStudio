@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
-import { ShellMobileUI } from '../../csuite-cushy/shells/ShellMobile'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
@@ -174,7 +173,12 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     {metadata?.requirements && (
                         <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                     )}
-                    {draft.form && <draft.form.UI globalRules={{ Shell: ShellMobileUI }} />}
+                    {draft.form && (
+                        <draft.form.UI //
+                            rule={draft.app.layout ?? undefined}
+                            // global={{ Shell: ShellMobileUI }}
+                        />
+                    )}
 
                     <RevealUI
                         placement='topStart'

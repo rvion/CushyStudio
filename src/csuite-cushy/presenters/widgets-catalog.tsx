@@ -1,7 +1,9 @@
+import type { Field_number } from '../../csuite/fields/number/FieldNumber'
 import type { Field } from '../../csuite/model/Field'
 import type { CompiledRenderProps, DisplayConf } from './Presenter'
 import type { FC } from 'react'
 
+import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
 import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
@@ -12,11 +14,17 @@ export const widgetsCatalog: {
     ShellSimple: FC<CompiledRenderProps>
     ShellMobile: FC<CompiledRenderProps>
     ShellNoop: FC<CompiledRenderProps>
+    number: {
+        def: FC<{ field: Field_number }>
+    }
 } = {
     QuickForm: QuickForm,
     ShellSimple: ShellSimpleUI,
     ShellMobile: ShellMobileUI,
     ShellNoop: ShellNoop,
+    number: {
+        def: WidgetNumberUI,
+    },
 }
 
 export type WidgetsCatalog = typeof widgetsCatalog

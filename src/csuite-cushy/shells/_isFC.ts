@@ -1,7 +1,7 @@
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
 import type { FCOrNode } from '../presenters/Presenter'
 
-import { createElement, type FC, isValidElement, type ReactNode } from 'react'
+import { createElement, type ReactNode } from 'react'
 
 /** render */
 export const renderFCOrNode = <T extends object>(x: FCOrNode<T>, props: NoInfer<T>): ReactNode => {
@@ -18,15 +18,20 @@ export const renderFCOrNodeWithWrapper = <
     //
     x: FCOrNode<T>,
     props: NoInfer<T>,
-    wrapper: Maybe<FC<U>>,
+    wrapper: Maybe<FCOrNode<U>>,
     wrapperProps: NoInfer<U>,
 ): ReactNode => {
+    // if wrapper is already rendered, let's skip the content
+    if (!_isFC(wrapper) && wrapper != null) return wrapper
+
     const inner = _isFC(x) ? createElement(x, props) : x
     if (inner == null) return null
     if (wrapper == null) return inner
-    if (!isValidElement(inner)) {
-        return createElement('div', {}, '🔴 inner is not valid element')
-    }
+
+    // if (!isValidElement(inner)) {
+    //     console.error(`[💄] inner is not valid element:`, inner)
+    //     return createElement('div', {}, '💄 inner is not valid element')
+    // }
     return createElement(wrapper, wrapperProps, inner)
 }
 

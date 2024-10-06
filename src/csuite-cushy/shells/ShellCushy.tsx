@@ -10,6 +10,35 @@ import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 
+export type CushyHeadProps = CompiledRenderProps & { children?: ReactNode }
+
+export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
+    const field = p.field
+    const utils = p.presenter.utils
+    const interfacePreferences = cushy.preferences.interface.value
+
+    return (
+        <WidgetHeaderContainerUI field={field} /* border={'red'} */>
+            {/* HEADER LABEL */}
+            {p.children}
+
+            {/* HEADER CONTROLS */}
+            {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+                className: p.classNameAroundBodyAndHeader ?? undefined,
+                field,
+            })}
+
+            {utils.renderFCOrNode(p.UpDownBtn, {})}
+            {utils.renderFCOrNode(p.DeleteBtn, {})}
+
+            {/* HEADER EXTRA prettier-ignore */}
+            {utils.renderFCOrNode(p.Extra, p)}
+            {interfacePreferences.showWidgetUndo && utils.renderFCOrNode(p.UndoBtn, p)}
+            {interfacePreferences.showWidgetMenu && utils.renderFCOrNode(p.MenuBtn, p)}
+        </WidgetHeaderContainerUI>
+    )
+})
+
 const CushyShellUI = observer(function CushySHell(
     p: CompiledRenderProps & {
         border?: boolean
@@ -22,8 +51,6 @@ const CushyShellUI = observer(function CushySHell(
 
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 
-    const interfacePreferences = cushy.preferences.interface.value
-
     const WUI = (
         <Frame
             className={p.classNameForShell ?? undefined}
@@ -34,24 +61,14 @@ const CushyShellUI = observer(function CushySHell(
             {...p.field.config.box}
         >
             {/* HEADER --------------------------------------------------------------------------------- */}
-            <WidgetHeaderContainerUI field={field} /* border={'red'} */>
-                {/* HEADER LABEL */}
-                {p.HEADER}
-
-                {/* HEADER CONTROLS */}
-                {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
-                    className: p.classNameAroundBodyAndHeader ?? undefined,
-                    field,
-                })}
-
-                {utils.renderFCOrNode(p.UpDownBtn, {})}
-                {utils.renderFCOrNode(p.DeleteBtn, {})}
-
-                {/* HEADER EXTRA prettier-ignore */}
-                {utils.renderFCOrNode(p.Extra, p)}
-                {interfacePreferences.showWidgetUndo && utils.renderFCOrNode(p.UndoBtn, p)}
-                {interfacePreferences.showWidgetMenu && utils.renderFCOrNode(p.MenuBtn, p)}
-            </WidgetHeaderContainerUI>
+            {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
+            {/* <CushyHeadUI
+                {...p} // border={'red'}
+            >
+                {
+                    p.HEADER // HEADER controls that the user will usually specify
+                }
+            </CushyHeadUI> */}
 
             {/* BODY  */}
             {p.field.isCollapsed
