@@ -81,7 +81,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                 textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
 
                 // 3. misc
-                inputBorder: ui.percent({ default: 8 }).optional(true),
+                inputBorder: ui.percent({ default: 20, min: -100, max: 100 }).optional(true),
                 inputContrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
                 inputShadow: schemaSimpleDropShadow(ui).optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
