@@ -55,6 +55,7 @@ export type Field_orbit_types = {
     $Unchecked: Field_orbit_unchecked
     $Field: Field_orbit
     $Child: never
+    $Reflect: Field_orbit_types
 }
 
 // STATE

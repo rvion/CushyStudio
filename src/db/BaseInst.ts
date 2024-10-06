@@ -12,6 +12,7 @@ import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inherit
 import { quickBench } from './quickBench'
 
 export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
+    // abstract deleteStrategy
     abstract instObservabilityConfig: { [key: string]: AnnotationMapEntry } | undefined
     abstract dataObservabilityConfig:
         | {
@@ -185,8 +186,8 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
         return this.table.create(cloneData)
     }
 
-    delete(): void {
-        this.table.delete(this.data.id)
+    delete(p: TABLE['$DeleteInstructions']): void {
+        this.table.delete(this.data.id, p)
     }
 
     toJSON(): TABLE['$T'] {

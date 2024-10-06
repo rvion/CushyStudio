@@ -13,7 +13,7 @@ import { produce } from 'immer'
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { Severity } from '../../model/Validation'
-import { isProbablySerialString } from '../WidgetUI.DI'
+import { isProbablySerialDate, isProbablySerialString } from '../WidgetUI.DI'
 import { WidgetDatePlain_HeaderUI } from './WidgetDatePlainUI'
 
 // #region Config
@@ -53,6 +53,7 @@ export type Field_datePlain_types<NULLABLE extends boolean> = {
     $Unchecked: Field_datePlain_unchecked<NULLABLE>
     $Field: Field_datePlain<NULLABLE>
     $Child: never
+    $Reflect: Field_datePlain_types<NULLABLE>
 }
 
 // #region State
@@ -61,7 +62,7 @@ export class Field_datePlain<const NULLABLE extends boolean = false> extends Fie
     static readonly type: 'plaindate' = 'plaindate'
     static readonly emptySerial: Field_datePlain_serial = { $: 'plaindate' }
     static migrateSerial(serial: object): Maybe<Field_datePlain_serial> {
-        if (isProbablySerialString(serial)) {
+        if (isProbablySerialString(serial) || isProbablySerialDate(serial)) {
             if (!serial.value) return { $: this.type }
             const parsed = new Date(serial.value)
             if (!isNaN(parsed.getTime())) {

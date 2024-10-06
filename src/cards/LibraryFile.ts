@@ -2,7 +2,7 @@ import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { STATE } from '../state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { Library } from './Library'
-import type { Metafile, OutputFile } from 'esbuild'
+import type { BuildContext, Metafile, OutputFile } from 'esbuild'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -262,7 +262,7 @@ export class LibraryFile {
         }
     }
     /** the persistent esbuild context, used to allow for fast rebundling */
-    get _esbuildContext() {
+    get _esbuildContext(): Promise<BuildContext<any>> {
         // ensure typescript files
         if (!this.relPath.endsWith('.ts') && !this.relPath.endsWith('.tsx'))
             throw new Error('esbuild can only work on .ts or .tsx files')

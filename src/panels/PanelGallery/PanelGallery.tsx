@@ -9,7 +9,7 @@ import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
 import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
-import { useGalleryConf } from './galleryConf'
+import { type GalleryConf, useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 
@@ -35,7 +35,7 @@ export type PanelGalleryProps = {
 }
 
 export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryProps) {
-    const conf = useGalleryConf()
+    const conf: GalleryConf = useGalleryConf()
     const panel = usePanel<PanelGalleryProps>()
     return (
         <UI.Panel //

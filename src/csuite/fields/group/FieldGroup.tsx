@@ -5,10 +5,8 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
-import type { NO_PROPS } from '../../types/NO_PROPS'
 import type { CovariantFn } from '../../variance/BivariantHack'
 import type { CovariantFC } from '../../variance/CovariantFC'
-import type { FC } from 'react'
 
 import { produce } from 'immer'
 
@@ -18,16 +16,16 @@ import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // #region Config
-export type Field_group_config<T extends SchemaDict> = FieldConfig<
+export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldConfig<
     {
         /** fields */
-        items?: T
+        items?: T['$Sub']
 
         /** @deprecated; use `toString` instead */
         summary?: CovariantFn<
             [
                 //
-                items: { [k in keyof T]: T[k]['$Value'] },
+                items: { [k in keyof T['$Sub']]: T['$Sub'][k]['$Value'] },
                 self: Field_group<T>,
             ],
             string
@@ -40,13 +38,13 @@ export type Field_group_config<T extends SchemaDict> = FieldConfig<
         // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
         // TODO 4: add various .customXXX on each ....
     },
-    Field_group_types<T>
+    T
 >
 
 // SERIAL
-export type Field_group_serial<T extends SchemaDict> = FieldSerial<{
+export type Field_group_serial<T extends Field_group_types<SchemaDict>> = FieldSerial<{
     $: 'group'
-    values_: { [K in keyof T]?: T[K]['$Serial'] }
+    values_: { [K in keyof T['$Sub']]?: T['$Sub'][K]['$Serial'] }
 }>
 
 // VALUE
@@ -61,62 +59,74 @@ export type Field_group_unchecked<T extends SchemaDict> = {
 // TYPES
 export type Field_group_types<T extends SchemaDict> = {
     $Type: 'group'
-    $Config: Field_group_config<T>
-    $Serial: Field_group_serial<T>
+    $Config: Field_group_config<Field_group_types<T>>
+    $Serial: Field_group_serial<Field_group_types<T>>
     $Value: Field_group_value<T>
     $Unchecked: Field_group_unchecked<T>
-    $Field: Field_group<T>
+    $Field: Field_group<Field_group_types<T>>
     $Child: T[keyof T]
+    $Sub: T
+    $Reflect: Field_group_types<T>
 }
 
-export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
-    [K in keyof T as Capitalize<K & string>]: T[K]['$Field']
+export type MAGICFIELDS<T extends Field_group_types<SchemaDict>> = {
+    [K in keyof T['$Sub'] as Capitalize<K & string>]: T['$Sub'][K]['$Field']
 }
 
-export type FieldGroup<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-
-// prettier-ignore
-type QuickFormContent<T extends Field> =
-    /** strings will be rendered as Markdown, with a `_MD` className  */
-    | string
-
-    /**
-     * any lambda CURRENTLY expect to return a component
-     * (PROBABLY BAD, SHOULD RETURN AN ELEMENT)
-     */
-    | ((field: T) => Maybe<FC<NO_PROPS>>)
-
-    /** Fields will be rendered using the default Component
-     * for the render context (cell, form, text) */
-    | Field
-
-    /** null or undefined will be skipped */
-    | null | undefined
-
-type RenderFieldsSubsetProps<T extends SchemaDict> = {
-    showMore?: (keyof T)[] | false // 🔴 probably migrate to QuickFormContent<this>[] asap too
-    readonly?: boolean
-    usage?: 'cell' | 'default' | 'text' | 'header'
+export interface Field_Group_withMagicFields<T extends Field_group_types<SchemaDict>> extends Field_group<T> {
+    $Field: FieldGroup<T>
 }
+/** named alias for the Field with MAGICFields added, to keep field type concise  */
+export type FieldGroup<T extends Field_group_types<SchemaDict>> = Field_group<T> & MAGICFIELDS<T>
+
+// // prettier-ignore
+// type QuickFormContent<T extends Field> =
+//     /** strings will be rendered as Markdown, with a `_MD` className  */
+//     | string
+
+//     /**
+//      * any lambda CURRENTLY expect to return a component
+//      * (PROBABLY BAD, SHOULD RETURN AN ELEMENT)
+//      */
+//     | ((field: T) => Maybe<FC<NO_PROPS>>)
+
+//     /** Fields will be rendered using the default Component
+//      * for the render context (cell, form, text) */
+//     | Field
+
+//     /** null or undefined will be skipped */
+//     | null | undefined
+
+// type RenderFieldsSubsetProps<T extends SchemaDict> = {
+//     showMore?: (keyof T)[] | false // 🔴 probably migrate to QuickFormContent<this>[] asap too
+//     readonly?: boolean
+//     usage?: 'cell' | 'default' | 'text' | 'header'
+// }
 
 // STATE
-export interface Field_group<T extends SchemaDict> {
-    $Subfields: T
+export interface Field_group<X extends Field_group_types<SchemaDict> = Field_group_types<SchemaDict>> {
+    $Subfields: X['$Sub']
+    $Sub: X['$Sub']
 }
 
-export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T>> {
+export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_types<SchemaDict>> //
+    extends Field<X>
+{
     static readonly type: 'group' = 'group'
     static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
     static migrateSerial(): undefined {}
+
+    // ⁉️ good approach ? lol
+    // $Field!: FieldGroup<T>
 
     constructor(
         //
         repo: Repository,
         root: Field | null,
         parent: Field | null,
-        schema: BaseSchema<Field_group<T>>,
+        schema: BaseSchema<Field_group<X>>,
         initialMountKey: string,
-        serial?: Field_group_serial<T>,
+        serial?: Field_group_serial<X>,
     ) {
         super(repo, root, parent, schema, initialMountKey, serial)
         for (const [fName, fSchema] of this._fieldSchemas) {
@@ -179,7 +189,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     // runInTransaction
 
     // #region SERIAL
-    protected setOwnSerial(next: Field_group_serial<T>): void {
+    protected setOwnSerial(next: Field_group_serial<X>): void {
         // setOwnSerial(next) is just here to call `this.serial = next`
         // with some extra stuff. it's almost a regular field action, execpt
         // it's internal, and has a few extra responsibilities (like fixing external serials)
@@ -231,7 +241,7 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
      * The dict of all child widgets
      * will be filled during constructor
      */
-    fields: { [k in keyof T]: T[k]['$Field'] } = {} as any
+    fields: { [k in keyof X['$Sub']]: X['$Sub'][k]['$Field'] } = {} as any
 
     _acknowledgeCount = 0
     _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
@@ -252,12 +262,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     /** return item at give key */
-    at<K extends keyof T>(key: K): T[K]['$Field'] {
+    at<K extends keyof X['$Sub']>(key: K): X['$Sub'][K]['$Field'] {
         return this.fields[key]
     }
 
     /** return item.value at give key */
-    get<K extends keyof T>(key: K): T[K]['$Value'] {
+    get<K extends keyof X['$Sub']>(key: K): X['$Sub'][K]['$Value'] {
         return this.fields[key].value
     }
 
@@ -270,17 +280,17 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
     }
 
     /** just here to normalize fieldSchema definitions, since it used to be a lambda */
-    private get _fieldSchemas(): [keyof T & string, BaseSchema<any>][] {
+    private get _fieldSchemas(): [keyof X['$Sub'] & string, BaseSchema<any>][] {
         const itemsDef = this.config.items
         const fieldSchemas: SchemaDict =
             typeof itemsDef === 'function' //
                 ? ((itemsDef as any)() ?? {}) // <-- LEGACY SUPPORT
                 : (itemsDef ?? {})
-        return Object.entries(fieldSchemas) as [keyof T & string, BaseSchema<any>][]
+        return Object.entries(fieldSchemas) as [keyof X['$Sub'] & string, BaseSchema<any>][]
     }
     // #region VALUE
 
-    setPartialValue(val: Partial<Field_group_value<T>>): this {
+    setPartialValue(val: Partial<Field_group_value<X['$Sub']>>): this {
         this.runInValueTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
@@ -289,11 +299,11 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         return this
     }
 
-    get value(): Field_group_value<T> {
+    get value(): Field_group_value<X['$Sub']> {
         return this.value_or_fail
     }
 
-    set value(val: Field_group_value<T>) {
+    set value(val: Field_group_value<X['$Sub']>) {
         this.runInAutoTransaction(() => {
             for (const key in val) {
                 this.fields[key].value = val[key]
@@ -301,9 +311,9 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
         })
     }
 
-    value_or_fail: Field_group_value<T> = new Proxy({}, this.makeValueProxy('fail'))
-    value_or_zero: Field_group_value<T> = new Proxy({}, this.makeValueProxy('zero'))
-    value_unchecked: Field_group_unchecked<T> = new Proxy({}, this.makeValueProxy('unchecked'))
+    value_or_fail: Field_group_value<X['$Sub']> = new Proxy({}, this.makeValueProxy('fail'))
+    value_or_zero: Field_group_value<X['$Sub']> = new Proxy({}, this.makeValueProxy('zero'))
+    value_unchecked: Field_group_unchecked<X['$Sub']> = new Proxy({}, this.makeValueProxy('unchecked'))
 
     // 🦊 get value_or_fail(): Field_group_value<T> {
     // 🦊     const x: Field_group_value<T> = new Proxy({} as any, this.makeValueProxy('fail'))
@@ -354,6 +364,12 @@ export class Field_group<T extends SchemaDict> extends Field<Field_group_types<T
                 }
             },
         }
+    }
+
+    // TODO: why ? probably a wrong bugfix; needs to be removed asap
+    reset(): void {
+        super.reset()
+        this.childrenAll.forEach((f) => f.reset())
     }
 
     randomize(): void {

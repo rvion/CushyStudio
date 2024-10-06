@@ -63,6 +63,11 @@ export type Field_selectOne_config<
         choices?: KEY[] | ((self: Field_selectOne<VALUE, KEY>) => KEY[])
         values?: VALUE[] | ((field: Field_selectOne<VALUE, KEY>) => VALUE[])
         options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
+        createOption?: {
+            label?: string
+            isActive?: boolean
+            action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
+        }
 
         getIdFromValue: (t: VALUE) => KEY
         getValueFromId: (id: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => VALUE | undefined
@@ -149,6 +154,7 @@ export type Field_selectOne_types<
     $Unchecked: Field_selectOne_unchecked<VALUE>
     $Field: Field_selectOne<VALUE, KEY>
     $Child: never
+    $Reflect: Field_selectOne_types<VALUE, KEY>
 }
 
 // #region STATE
@@ -401,7 +407,7 @@ export class Field_selectOne<
     }
 
     /** different from reset; doesn't take default into account */
-    unset() {
+    unset(): void {
         this.runInValueTransaction(() => {
             this.patchSerial((draft) => void (draft.val = undefined))
         })

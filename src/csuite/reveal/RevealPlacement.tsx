@@ -47,6 +47,8 @@ export type RevealComputedPosition = {
     // to clamp reveal to the visible area
     maxWidth?: number | string
     maxHeight?: number | string
+    minWidth?: number | string
+    minHeight?: number | string
 
     //
     transform?: string
@@ -70,6 +72,9 @@ export const computePlacement = (
             height: anchor.height,
             maxWidth: anchor.width, // do we need do double the information ?
             maxHeight: anchor.height, // do we need do double the information ?
+            // TODO: review those two lines below:
+            minWidth: anchor.width,
+            minHeight: anchor.height,
         }
     }
 

@@ -41,6 +41,7 @@ export type Field_date_types = {
     $Unchecked: Field_date_unchecked
     $Field: Field_date
     $Child: never
+    $Reflect: Field_date_types
 }
 
 export class Field_date extends Field<Field_date_types> {

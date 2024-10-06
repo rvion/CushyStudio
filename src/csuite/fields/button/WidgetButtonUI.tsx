@@ -15,7 +15,12 @@ export const WidgetButtonUI = observer(function WidgetButtonUI_<K extends any>(p
             className='self-start'
             icon={p.field.icon}
             expand={p.field.config.expand}
-            onClick={() => runInAction(() => p.field.config.onClick?.(context))}
+            onClick={() =>
+                runInAction(() => {
+                    p.field.config.onClick?.(context)
+                    p.field.touch()
+                })
+            }
         >
             {/* {icon && <span className='material-symbols-outlined'>{icon}</span>} */}
             {p.field.config.text ?? `Run`}

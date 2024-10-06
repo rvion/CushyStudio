@@ -3,7 +3,6 @@ import type { Field } from '../model/Field'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { csuiteConfig } from '../config/configureCsuite'
 import { Frame } from '../frame/Frame'
 import { MessageInfoUI } from '../messages/MessageInfoUI'
@@ -13,9 +12,13 @@ import { RevealUI } from '../reveal/RevealUI'
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Field }) {
     const field = p.field
-    if (field.hasOwnErrors === false) return null
+    if (!field.mustDisplayErrors) return null
     return (
-        <Frame text='#9f3030'>
+        <Frame
+            // tw='text-red-700 -mt-1'
+            text='#9f3030'
+            tw='-mt-1'
+        >
             {/* {field.pathExt} */}
             {field.ownErrors.map((e, i) => (
                 // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way

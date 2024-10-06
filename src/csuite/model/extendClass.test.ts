@@ -5,7 +5,7 @@ import { isAction, isComputedProp, isObservableProp, reaction } from 'mobx'
 
 import { simpleBuilder as b, simpleFactory as f } from '../'
 import { Field_bool } from '../fields/bool/FieldBool'
-import { Field_group } from '../fields/group/FieldGroup'
+import { Field_group, type Field_group_types } from '../fields/group/FieldGroup'
 
 const r = f.repository
 
@@ -36,6 +36,7 @@ describe('field customizations', () => {
     describe('useClass', () => {
         it('works with prims like Field_number or Field_bool ', () => {
             class F extends Field_bool {
+                $Field!: F
                 constructor(...args: FieldCtorProps) {
                     super(...args)
                     this.autoExtendObservable()
@@ -55,6 +56,7 @@ describe('field customizations', () => {
             const S0 = b.fields({ foo: b.int({ default: 10 }) })
             const S1 = S0.useClass((FIELD) => {
                 return class Foo extends FIELD {
+                    $Field!: Foo
                     static HELLO = 'WORLD'
                     volatile1 = 12
                     get volatile2(): number {
@@ -95,12 +97,9 @@ describe('field customizations', () => {
 
         it('works with external class', () => {
             const S0 = b.fields({ foo: b.int({ default: 10 }) })
-
-            type T0 = S.Group<{
-                foo: S.SNumber
-            }>['$Subfields']
-
-            class Foo2 extends Field_group<T0> {
+            type T0 = { foo: S.SNumber }
+            class Foo2 extends Field_group<Field_group_types<T0>> {
+                $Field!: Foo2
                 static HELLO = 'WORLD'
                 volatile1 = 12
                 get volatile2(): number {
@@ -145,12 +144,14 @@ describe('field customizations', () => {
         it('works via `useBuilder` ', () => {
             const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-            type T0 = S.Group<{
-                foo: S.SNumber
-            }>['$Subfields']
+            type T0 = Field_group_types<{ foo: S.SNumber }>
 
             class Foo3 extends Field_group<T0> {
-                constructor(public hello: string, ...args: FieldCtorProps<any>) {
+                $Field!: Foo3
+                constructor(
+                    public hello: string,
+                    ...args: FieldCtorProps<any>
+                ) {
                     super(...args)
                     this.autoExtendObservable()
                 }
@@ -217,6 +218,7 @@ describe('field customizations', () => {
             const S1 = S0.useClass(
                 () =>
                     class Glux extends Field_group<any> {
+                        $Field!: Glux
                         constructor(...args: FieldCtorProps<any>) {
                             super(...args)
                             this.autoExtendObservable({
@@ -229,22 +231,22 @@ describe('field customizations', () => {
 
                         attrObs = 1
                         attrNotObs = 1
-                        get getterObs() {
+                        get getterObs(): number {
                             return 2
                         }
-                        get getterNotObs() {
+                        get getterNotObs(): number {
                             return 2
                         }
-                        protoFnAction() {
+                        protoFnAction(): number {
                             return 3
                         }
-                        protoFnNotAction() {
+                        protoFnNotAction(): number {
                             return 3
                         }
-                        instanceFnAction = () => {
+                        instanceFnAction = (): number => {
                             return 3
                         }
-                        instanceFnNotAction = () => {
+                        instanceFnNotAction = (): number => {
                             return 3
                         }
                     },
@@ -284,24 +286,25 @@ describe('field customizations', () => {
             const S1 = S0.useClass(
                 () =>
                     class Glux extends Field_group<any> {
+                        $Field!: Glux
                         attrObs = 1
                         attrNotObs = 1
-                        get getterObs() {
+                        get getterObs(): number {
                             return 2
                         }
-                        get getterNotObs() {
+                        get getterNotObs(): number {
                             return 2
                         }
-                        protoFnAction() {
+                        protoFnAction(): number {
                             return 3
                         }
-                        protoFnNotAction() {
+                        protoFnNotAction(): number {
                             return 3
                         }
-                        instanceFnAction = () => {
+                        instanceFnAction = (): number => {
                             return 3
                         }
-                        instanceFnNotAction = () => {
+                        instanceFnNotAction = (): number => {
                             return 3
                         }
                     },

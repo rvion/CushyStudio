@@ -65,6 +65,6 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
         if (cushy.layout.perspective === this) {
             cushy.layout.openPerspective(perspectives.find((p) => p !== this)!)
         }
-        super.delete()
+        super.delete({})
     }
 }

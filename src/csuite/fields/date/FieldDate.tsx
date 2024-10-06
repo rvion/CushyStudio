@@ -52,6 +52,7 @@ export type Field_date_types<NULLABLE extends boolean> = {
     $Unchecked: Field_date_unchecked<NULLABLE>
     $Field: Field_date<NULLABLE>
     $Child: never
+    $Reflect: Field_date_types<NULLABLE>
 }
 
 // #region State
@@ -113,7 +114,15 @@ export class Field_date<const NULLABLE extends boolean = false> extends Field<Fi
             this.patchSerial((draft) => void (draft.value = null))
             return
         }
-        return super.disableSelfWithinParent()
+        if (super.canBeToggledWithinParent) {
+            super.disableSelfWithinParent()
+        }
+    }
+
+    enableSelfWithinParent(): void {
+        if (super.canBeToggledWithinParent) {
+            super.enableSelfWithinParent()
+        }
     }
 
     // #region Set/Unset
@@ -142,7 +151,7 @@ export class Field_date<const NULLABLE extends boolean = false> extends Field<Fi
         this.selectedValue_ = next
         this.runInValueTransaction(() => {
             this.patchSerial((draft) => {
-                draft.value = next?.toISOString()
+                draft.value = next?.toISOString() ?? null
             })
         })
     }

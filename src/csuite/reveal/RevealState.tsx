@@ -11,6 +11,7 @@ import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { toCssSizeValue } from '../utils/toCssSizeValue'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
+import { RevealCloseEvent } from './RevealCloseEvent'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { global_RevealStack } from './RevealStack'
 
@@ -284,6 +285,8 @@ export class RevealState {
             height: pos.height != null ? toCssSizeValue(pos.height) : undefined,
             maxWidth: pos.maxWidth != null ? toCssSizeValue(pos.maxWidth) : undefined,
             maxHeight: pos.maxHeight != null ? toCssSizeValue(pos.maxHeight) : undefined,
+            minWidth: pos.minWidth != null ? toCssSizeValue(pos.minWidth) : undefined,
+            minHeight: pos.minHeight != null ? toCssSizeValue(pos.minHeight) : undefined,
             overflow: 'auto',
             transform: pos.transform,
         }
@@ -354,6 +357,13 @@ export class RevealState {
 
     close = (reason?: RevealHideReason): void => {
         this.log(`🚨 close (reason=${reason})`)
+
+        if (this.p.onBeforeHide) {
+            const event = new RevealCloseEvent(reason || 'unknown')
+            this.p.onBeforeHide(event)
+            if (event.isDefaultPrevented) return
+        }
+
         this._unregister()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
@@ -601,6 +611,7 @@ export class RevealState {
             >,
         msg: string,
     ): void {
+        if (!DEBUG_REVEAL) return
         // this.log(`🎩 ${this.uid} ${evUID(ev)} ${msg}`)
         const evenInfo = `${ev?.type}#${evUID(ev)}`.padStart(15)
         this.log(`[${evenInfo}] ${msg}`)

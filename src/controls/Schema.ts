@@ -1,5 +1,6 @@
 import type { CovariantFC, SchemaDict } from '../csuite'
 import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
+import type { FieldTypes } from '../csuite/model/$FieldTypes'
 import type { Field } from '../csuite/model/Field'
 import type { WidgetMenuAction } from '../csuite/model/FieldConfig'
 import type { FieldConstructor } from '../csuite/model/FieldConstructor'
@@ -13,14 +14,14 @@ import { isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
 import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export class CushySchema<out FIELD extends Field = Field> //
-    extends BaseSchema<FIELD, CushySchemaᐸ_ᐳ>
-    implements Instanciable<FIELD>
+export class CushySchema<out TYPES extends FieldTypes = FieldTypes> //
+    extends BaseSchema<TYPES, CushySchemaᐸ_ᐳ>
+    implements Instanciable<TYPES>
 {
     constructor(
         /** field constructor (class or function, see FieldConstructor definition)  */
-        fieldConstructor: FieldConstructor<FIELD>,
-        config: FIELD['$Config'],
+        fieldConstructor: FieldConstructor<TYPES /* 🔴['$Field'] */>,
+        config: TYPES['$Config'],
     ) {
         super(fieldConstructor, config, (...args) => new CushySchema(...args) as any)
 
@@ -32,7 +33,7 @@ export class CushySchema<out FIELD extends Field = Field> //
         this.applySchemaExtensions()
     }
 
-    LabelExtraUI: CovariantFC<{ field: FIELD }> = (p: { field: FIELD }) =>
+    LabelExtraUI: CovariantFC<{ field: TYPES['$Field'] }> = (p: { field: TYPES['$Field'] }) =>
         createElement(InstallRequirementsBtnUI, {
             active: isFieldOptional(p.field) ? (p.field.active ?? false) : true,
             requirements: this.requirements,
@@ -57,7 +58,8 @@ export class CushySchema<out FIELD extends Field = Field> //
         // this.🐌
         return this
     }
-    addPreset = (preset: WidgetMenuAction<FIELD>): CushySchema<FIELD> => {
+
+    addPreset(preset: WidgetMenuAction<TYPES['$Field']>): CushySchema<TYPES> {
         return this.withConfig({
             presets: [...(this.config.presets ?? []), preset],
         })
@@ -66,7 +68,7 @@ export class CushySchema<out FIELD extends Field = Field> //
 
 // #region Aliases
 // INTERNAL MODULE --------------------------------------
-export interface CushySchemaᐸ_ᐳ extends HKT<Field> {
+export interface CushySchemaᐸ_ᐳ extends HKT<FieldTypes> {
     type: CushySchema<this['__1']>
 
     String: X.XString

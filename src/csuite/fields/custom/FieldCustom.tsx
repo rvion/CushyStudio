@@ -43,6 +43,7 @@ export type Field_custom_types<T> = {
     $Unchecked: Field_custom_value<T> | undefined
     $Field: Field_custom<T>
     $Child: never
+    $Reflect: Field_custom_types<T>
 }
 
 // #region State

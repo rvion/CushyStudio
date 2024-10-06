@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { useGalleryConf } from './galleryConf'
+import { type GalleryConf, useGalleryConf } from './galleryConf'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
-    const conf = useGalleryConf()
+    const conf: GalleryConf = useGalleryConf()
     return (
         <div tw='flex gap-1 items-center'>
             {/* {conf.fields.filterPath.header()} */}

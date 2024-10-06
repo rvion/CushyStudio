@@ -8,20 +8,20 @@ export type SelectOption_<VALUE extends string> = SelectOption<VALUE, VALUE>
 export type SelectOption<VALUE, KEY extends SelectKey> = {
     id: KEY
     value: VALUE
-} & SelectOptionPresetation
+} & SelectOptionPresentation
 
 /** SelectOptional variant with optional value */
 export type SelectOptionOpt<VALUE, KEY extends SelectKey> = {
     id: KEY
     value?: VALUE // OPTIONAL
-} & SelectOptionPresetation
+} & SelectOptionPresentation
 
 /** SelectOptional variant with optional value */
 export type SelectOptionNoVal<KEY extends SelectKey> = {
     id: KEY
-} & SelectOptionPresetation
+} & SelectOptionPresentation
 
-type SelectOptionPresetation = {
+type SelectOptionPresentation = {
     // optional presentation
     disabled?: boolean
     label?: string

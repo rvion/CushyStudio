@@ -51,6 +51,7 @@ export type Field_number_types = {
     $Unchecked: Field_number_unchecked
     $Field: Field_number
     $Child: never
+    $Reflect: Field_number_types
 }
 
 // #region STATE
@@ -176,6 +177,10 @@ export class Field_number extends Field<Field_number_types> {
 
     get value_unchecked(): Field_number_unchecked {
         return this.serial.value
+    }
+
+    set value_unchecked(next: Field_number_unchecked) {
+        this.patchSerial((serial) => void (serial.value = next))
     }
 
     // #region SETTERS

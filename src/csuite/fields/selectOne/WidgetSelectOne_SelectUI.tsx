@@ -48,13 +48,29 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 placeholder={field.config.placeholder}
                 readonly={field.config.readonly}
                 slotAnchorContentUI={field.config.SlotAnchorContentUI}
-                clearable={field.canBeToggledWithinParent ? () => field.disableSelfWithinParent() : undefined}
+                clearable={
+                    field.canBeToggledWithinParent //
+                        ? (): void => field.disableSelfWithinParent()
+                        : undefined
+                }
                 onOptionToggled={(option) => {
-                    console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+                    // console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+                    field.touch()
                     if (option == null || field.selectedId === option.id) return field.unset()
                     field.selectedId = option.id
                 }}
                 {...p.selectProps}
+                revealProps={{
+                    ...p.selectProps?.revealProps,
+                    onHidden: (reason) => {
+                        field.touch()
+                        p.selectProps?.revealProps?.onHidden?.(reason)
+                    },
+                }}
+                onCleared={() => {
+                    field.touch()
+                    p.selectProps?.onCleared?.()
+                }}
             />
         </div>
     )

@@ -37,10 +37,11 @@ export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
     $Unchecked: Field_optional_value<T>
     $Field: Field_optional<T>
     $Child: T
+    $Reflect: Field_optional_types<T>
 }
 
 // #region State
-export class Field_optional<T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
+export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
     // #region Type
     static readonly type: 'optional' = 'optional'
     static readonly emptySerial: Field_optional_serial = { $: 'optional' }

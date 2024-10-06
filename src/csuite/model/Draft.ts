@@ -1,4 +1,4 @@
-import type { $FieldTypes } from './$FieldTypes'
+import type { FieldTypes } from './$FieldTypes'
 import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
 
@@ -7,7 +7,7 @@ import type { ValidationError } from './ValidationError'
  * a field that is not yet validated, so we are forced to run validation
  * before accessing a field
  */
-export class Draft<T extends $FieldTypes> implements DraftLike<T> {
+export class Draft<T extends FieldTypes> implements DraftLike<T> {
     constructor(private field: T['$Field']) {}
 
     // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
@@ -31,7 +31,7 @@ export class Draft<T extends $FieldTypes> implements DraftLike<T> {
 }
 
 // injecting field types into draft, because why not
-export interface Draft<T extends $FieldTypes> {
+export interface Draft<T extends FieldTypes> {
     $Type: T['$Type']
     $Config: T['$Config']
     $Serial: T['$Serial']
@@ -67,7 +67,7 @@ export interface Draft<T extends $FieldTypes> {
  * 🤔 Might also make `Draft` completely useless if all the methods are defined on fields
  * But maybe we will want draft specific functionally at some point ? Hard to tell
  */
-export interface DraftLike<T extends $FieldTypes> {
+export interface DraftLike<T extends FieldTypes> {
     $Type: T['$Type']
     $Config: T['$Config']
     $Serial: T['$Serial']

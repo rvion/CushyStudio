@@ -1,12 +1,13 @@
+import type { FieldTypes } from '../$FieldTypes'
 import type { PartialOmit } from '../../../types/Misc'
 import type { BaseSchema } from '../BaseSchema'
 import type { Field } from '../Field'
 
 import { Field_link, type Field_link_config } from '../../fields/link/FieldLink'
-import { Field_shared } from '../../fields/shared/FieldShared'
+import { Field_shared, type Field_shared_config } from '../../fields/shared/FieldShared'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Link: HKT<BaseSchema, BaseSchema>
     Shared: HKT<Field>
 }
@@ -31,6 +32,7 @@ export class BuilderShared<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
     }
 
     linked<T extends Field>(field: T): Apply<Schemaᐸ_ᐳ['Shared'], T> {
-        return this.buildSchema(Field_shared<T>, { field })
+        const finalConfig: Field_shared_config<T> = { field }
+        return this.buildSchema(Field_shared<T>, finalConfig)
     }
 }

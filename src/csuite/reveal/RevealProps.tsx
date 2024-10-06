@@ -1,4 +1,5 @@
 import type { DovProps } from '../frame/Dov/Dov'
+import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
@@ -84,6 +85,7 @@ export type RevealProps = {
 
     // callbacks if we need to add side effects after reveal/hide
     onRevealed?: () => void
+    onBeforeHide?: (ev: RevealCloseEvent) => void
     onHidden?: (reason: RevealHideReason) => void
 
     // SHOW triggers ------------------------------------------------------------------

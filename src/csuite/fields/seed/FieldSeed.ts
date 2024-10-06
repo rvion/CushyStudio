@@ -45,6 +45,7 @@ export type Field_seed_types = {
     $Unchecked: Field_seed_unchecked
     $Field: Field_seed
     $Child: never
+    $Reflect: Field_seed_types
 }
 
 // STATE

@@ -26,6 +26,7 @@ type InputNumberProps = {
     value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
+    onBlur?: () => void
     step?: number
     min?: number
     max?: number
@@ -253,6 +254,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const isEditing = uist.isEditing
     const theme = cushy.theme.value
 
+    const dropShadow = uist.props.dropShadow ?? theme.inputShadow
     return (
         <Frame /* Root */
             style={p.style}
@@ -261,17 +263,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             hover={{ contrast: 0.03 }}
             className={p.className}
             // unsure about the amount of code we had to use for that prop
-            dropShadow={
-                (uist.props.dropShadow ?? theme.inputShadow)
-                    ? {
-                          x: theme.inputShadow.x,
-                          y: theme.inputShadow.y,
-                          color: theme.inputShadow.color,
-                          blur: theme.inputShadow.blur,
-                          opacity: theme.inputShadow.opacity,
-                      }
-                    : undefined
-            }
+            dropShadow={dropShadow ? dropShadow : undefined}
             roundness={p.roundness ?? theme.inputRoundness}
             // base={{ contrast: isEditing ? -0.1 : 0.05 }}
             // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
@@ -388,9 +380,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             if (cancelled) {
                                 cancelled = false
                                 uist.syncValues(startValue, undefined)
+                                p.onBlur?.()
                                 return
                             }
                             uist.syncValues(ev.currentTarget.value, { skipRounding: true })
+                            p.onBlur?.()
                         }}
                         onKeyDown={(ev) => {
                             if (ev.key === 'Enter') {

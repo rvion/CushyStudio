@@ -7,7 +7,7 @@ import type { TintExt } from '../kolor/Tint'
 import type { ITreeElement } from '../tree/TreeEntry'
 import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { $FieldTypes, $FieldTypes_Nullable } from './$FieldTypes'
+import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { TypeImportLocation } from './codegen/ImportLocation'
 import type { DraftLike } from './Draft'
@@ -83,7 +83,7 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 
 export type KeyedField = { key: string; field: Field }
 
-export type FieldCtorProps<F extends Field = any> = [
+export type FieldCtorProps<F extends FieldTypes = any> = [
     //
     repo: Repository,
     root: Field | null,
@@ -93,7 +93,7 @@ export type FieldCtorProps<F extends Field = any> = [
     serial?: F['$Serial'],
 ]
 
-export interface Field<K extends $FieldTypes = $FieldTypes> {
+export interface Field<K extends FieldTypes = FieldTypes> {
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -101,6 +101,7 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
     $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
     $Unchecked: K['$Unchecked'] /** type only properties; do not use directly; used to make typings good and fast */
     $Child: K['$Child'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Reflect: K['$Reflect'] /** type only properties; do not use directly; used to make typings good and fast */
 }
 
 /**
@@ -109,11 +110,7 @@ export interface Field<K extends $FieldTypes = $FieldTypes> {
  */
 export type UNSAFE_AnyField = any // Field<any>
 
-export interface Field_Nullable<K extends $FieldTypes_Nullable = $FieldTypes_Nullable> extends Field<K> {}
-
-//     👆 (merged at type-level here to avoid having extra real properties defined at runtime)
-
-export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
+export abstract class Field<out K extends FieldTypes = FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
     /** @internal */
     static build: 'new' = 'new'
 
@@ -777,9 +774,9 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     /**
      *
      * RULES:
-     * - every component should be able to be restet and must implement
+     * - every component should be able to be reset and must implement
      *   the reset function
-     * - Reset MUST NEVER be called fromt the constructor
+     * - Reset MUST NEVER be called from the constructor
      * - RESET WILL TRIGGER VALUE/SERIAL update events.
      *
      * 2024-05-24 rvion: we could have some generic reset function that
@@ -790,6 +787,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * */
     reset(): void {
         this.setSerial(null)
+        this.touched = false
     }
 
     /** return a cloned/detached value object you can use anywhere without care */
@@ -804,6 +802,35 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     /** every child class must implement change detection from its default  */
     abstract readonly hasChanges: boolean
+
+    private touched_ = false
+
+    /** true when the field contains unsaved changes */
+    get touched(): boolean {
+        return this.touched_
+    }
+
+    set touched(val: boolean) {
+        if (val === true && this.touched_ !== val && this.parent !== this && this.parent != null) {
+            this.parent.touched = true
+        }
+        this.touched_ = val
+    }
+
+    /**
+     * Identical to field.touched = true but easier to use when field is nullable
+     */
+    touch = (): void => {
+        this.touched = true
+    }
+
+    touchAll = (): void => {
+        if (this.childrenAll.length === 0) this.touched = true
+
+        for (const child of this.childrenAll) {
+            child.touchAll()
+        }
+    }
 
     /**
      * 2024-05-24 rvion: do we want some abstract defaultValue() too ?
@@ -907,6 +934,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @category Validation
      */
     validate(): Result<this, ValidationError> {
+        this.touched = true
         if (!this.isValid)
             return __ERROR(
                 new ValidationError(
@@ -926,6 +954,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
      * @see {@link validationOrThrow}
      */
     validateOrNull(): Maybe<this> {
+        this.touched = true
         if (!this.isValid) return null
         return this
     }
@@ -964,6 +993,10 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     get hasOwnErrors(): boolean {
         const errors = this.ownErrors
         return errors.length > 0
+    }
+
+    get mustDisplayErrors(): boolean {
+        return this.hasOwnErrors && this.touched
     }
 
     /**
@@ -1065,8 +1098,8 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
 
     // BUMP ----------------------------------------------------
     /**
-     * everytime a field serial is udpated, we should call this function.
-     * this function is called recursivelu upwards.
+     * every time a field serial is updated, we should call this function.
+     * this function is called recursively upwards.
      * persistance will usually be done at the root field reacting to this event.
      */
     applySerialUpdateEffects(): void {
@@ -1090,7 +1123,7 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
     // }
 
     /**
-     * this method can be heavilly optimized
+     * this method can be heavily optimized
      * ping @globi
      * todo:
      *  - by storing the published value locally
@@ -1583,6 +1616,14 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         })
     }
 
+    clone(): this {
+        return this.schema.create(this.serial) as this
+    }
+
+    cloneWithConfig(config: Partial<K['$Config']>): this {
+        return this.schema.withConfig(config).create(this.serial) as this
+    }
+
     // CODEGEN -------------------------------------------------------
     codeForTypeModule(p: {
         //
@@ -1688,6 +1729,24 @@ export abstract class Field<out K extends $FieldTypes = $FieldTypes> implements 
         }
         if (this.config.label === false) return '' // not sure about the config.label doc
         return this.config.label
+    }
+
+    // TODO: remove that
+    public async saveChanges(): Promise<void> {
+        await this.root.config.saveChanges?.(this.root)
+        this.root.saveSnapshot()
+        this.touched = false
+    }
+
+    // TODO: remove that
+    /**
+     * 🔶 Not sure if we should handle snapshots here
+     * @deprecated: not sure when we would need it if every form creates a draft and doesn't edit original field until save
+     */
+    public async cancelChanges(): Promise<void> {
+        await this.root.config.cancelChanges?.(this.root)
+        this.root.revertToSnapshot()
+        this.touched = false
     }
 }
 

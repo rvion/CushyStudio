@@ -1,3 +1,4 @@
+import type { FieldTypes } from '../$FieldTypes'
 import type {
     Field_selectOne_config,
     Field_selectOne_config_simplified,
@@ -5,7 +6,6 @@ import type {
 } from '../../fields/selectOne/FieldSelectOne'
 import type { SelectKey } from '../../fields/selectOne/SelectOneKey'
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../../fields/selectOne/SelectOption'
-import type { Field } from '../Field'
 
 import { Field_selectOne } from '../../fields/selectOne/FieldSelectOne'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
@@ -13,7 +13,7 @@ import { BaseBuilder } from './BaseBuilder'
 
 type Field_selectOne_<V extends SelectKey> = Field_selectOne<V, V>
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     OneOf: HKT<unknown, SelectKey>
     OneOf_: HKT<SelectKey>
 }

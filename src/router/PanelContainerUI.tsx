@@ -43,6 +43,15 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
             </Message>
         )
 
+    const blacklist: PanelName[] = [
+        //
+        // 'Welcome',
+        // 'PanelAppLibrary',
+        // 'Output',
+        // 'Gallery',
+        // 'Draft',
+    ]
+    if (blacklist.includes(panelName)) return null
     const Component = panelDef.widget
     return (
         <ErrorBoundaryUI>

@@ -13,7 +13,7 @@ import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inherit
 import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON } from './LiveHelpers'
-import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
+import { type KyselyTables, type LiveDBSubKeys, schemas, type TableName } from './TYPES.gen'
 import { TableInfo } from './TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
@@ -314,7 +314,89 @@ export class LiveTable<
      */
     zz_deleted: boolean = false
 
-    delete = (id: string): void => {
+    /** * delete with custom cascade strategy */
+    delete = (
+        //
+        id: string,
+        p: TABLE['$DeleteInstructions'] = {},
+    ): void => {
+        const sql = `delete from ${this.name} where id = ?`
+        try {
+            console.log(`[🧹] starting deletion of ${this.name}[${id}]`)
+            this.schema.backrefs.forEach((backref) => {
+                // 1. retrieve backref delete strategy
+                const fromTableName = backref.fromTable as TableName
+                const fromFieldName = backref.fromField as string
+                const strategyKey = `${fromTableName}_${fromFieldName}`
+                let strategy = p?.[strategyKey]
+
+                if (strategy == null) {
+                    console.log(`[🧹] no specified strategy for ${strategyKey} => defaulting to setNull`)
+                    strategy = 'set null'
+                }
+
+                // 1.1. set null
+                if (strategy === 'set null') {
+                    console.log(`[🧹]   > updating ${fromTableName} with (${backref.fromField}=${id}) to null`)
+                    const softCascadeSQL = `
+                    update ${backref.fromTable}
+                       set ${backref.fromField} = null
+                     where ${backref.fromField} = ?`
+                    // console.log(`[🗑️] cascade `, softCascadeSQL, id)
+                    const stmt = this.db.db.prepare(softCascadeSQL)
+                    // 🔴 TODO: requires an update of all liveInstances too
+                    stmt.run(id)
+                }
+
+                // 1.2. delete (cascade)
+                else if (strategy === 'cascade' || typeof strategy === 'object') {
+                    console.log(`[🧹]   > deleting ${fromTableName} with (${backref.fromField}=${id})`)
+
+                    // 1.2.1  get self instance
+                    const inst = this.get(id)
+                    if (inst == null) throw new Error(`ERR: self not found '${id}'`)
+                    console.log(`[🧹]       > inst found`, inst)
+
+                    // 1.2.2. get backref table
+                    const backrefTable = this.db._tables.find((t) => t.name === backref.fromTable)
+                    if (backrefTable == null) throw new Error(`ERR: backref table not found '${backref.fromTable}'`)
+                    console.log(`[🧹]       > backRefTable found:`, backrefTable)
+
+                    const allBackRefInstances = backrefTable.findMany((q) => q.where(backref.fromField, '=', id))
+                    console.log(`[🧹]       > ${allBackRefInstances.length} instances found:`, allBackRefInstances)
+
+                    for (const instWithBackref of allBackRefInstances) {
+                        // 1.2.4. delete backref instance
+                        if (typeof strategy === 'object') {
+                            instWithBackref.delete(strategy) // pass down the delete strategy
+                        } else instWithBackref.delete()
+                    }
+                }
+
+                // 1.3. ???
+                else {
+                    throw new Error(`ERR: unknown strategy ${strategy}`)
+                }
+            })
+
+            // 2. then delete self
+            console.log(`[🗑️] cascade `, sql, id)
+            const stmt = this.db.compileDelete<string, void>(sql)
+            stmt(id)
+            this.zz_deleted = true
+            this.liveEntities.delete(id)
+        } catch (e) {
+            console.log(`[🗑️] sql failed:`, sql, [id])
+            console.error(e)
+            throw e
+        }
+    }
+
+    /**
+     * 1. for every backref, set the backref owner field data to null
+     * 2. delete
+     */
+    deleteWithSoftCascade = (id: string): void => {
         const sql = `delete from ${this.name} where id = ?`
         try {
             this.schema.backrefs.forEach((backref) => {

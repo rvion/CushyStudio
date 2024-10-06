@@ -3,23 +3,31 @@ export type SupportedCSuiteLang = 'en' | 'fr'
 export const csuite_i18n_en = {
     langCode: 'en' as SupportedCSuiteLang,
     lang: 'English',
+    misc: {
+        words: {
+            empty: 'empty',
+        },
+    },
     err: {
         int: {
             // config
-            minGreaterThanMax: ({ min, max }: { min: number; max: number }) => `Min (${min}) must be less than max (${max}).`,
-            minSameThanMax: ({ minmax }: { minmax: number }) => `Max and Min (${minmax}) are set to the same value.`,
-            defaultTooSmall: ({ min, def }: { min: number; def: number }) => `default (${def}) must be greater than min (${min}).`, // prettier-ignore
-            defaultTooBig: ({ def, max }: { def: number; max: number }) => `default (${def}) must be smaller than max (${max}).`,
+            minGreaterThanMax: ({ min, max }: { min: number; max: number }): string =>
+                `Min (${min}) must be less than max (${max}).`,
+            minSameThanMax: ({ minmax }: { minmax: number }): string => `Max and Min (${minmax}) are set to the same value.`,
+            defaultTooSmall: ({ min, def }: { min: number; def: number }): string => `default (${def}) must be greater than min (${min}).`, // prettier-ignore
+            defaultTooBig: ({ def, max }: { def: number; max: number }): string =>
+                `default (${def}) must be smaller than max (${max}).`,
         },
         str: {
             // config
-            minLengthGreaterThanMaxLength: ({ min, max }: { min: number; max: number }) => `min-length (${min}) must be less than max-length (${max}).`, // prettier-ignore
-            minLengthSameThanMaxLength: ({ minmax }: { minmax: number }) => `max-length and min-length (${minmax}) must not be the same value.`, // prettier-ignore
-            defaultTooSmall: ({ min, def }: { min: number; def: number }) => `default (${def}) must be greater than min (${min}).`, // prettier-ignore
-            defaultTooBig: ({ def, max }: { def: number; max: number }) => `default (${def}) must be smaller than max (${max}).`,
+            minLengthGreaterThanMaxLength: ({ min, max }: { min: number; max: number }): string => `min-length (${min}) must be less than max-length (${max}).`, // prettier-ignore
+            minLengthSameThanMaxLength: ({ minmax }: { minmax: number }): string => `max-length and min-length (${minmax}) must not be the same value.`, // prettier-ignore
+            defaultTooSmall: ({ min, def }: { min: number; def: number }): string => `default (${def}) must be greater than min (${min}).`, // prettier-ignore
+            defaultTooBig: ({ def, max }: { def: number; max: number }): string =>
+                `default (${def}) must be smaller than max (${max}).`,
             // value
-            tooShort: ({ min }: { min: number }) => `Must be at least ${min} characters`,
-            tooLong: ({ max }: { max: number }) => `Must be at most ${max} characters`,
+            tooShort: ({ min }: { min: number }): string => `Must be at least ${min} characters`,
+            tooLong: ({ max }: { max: number }): string => `Must be at most ${max} characters`,
         },
         field: {
             not_set: 'Field is not set',
@@ -37,6 +45,11 @@ export type CsuiteI18nConfig = typeof csuite_i18n_en
 export const csuite_i18n_fr: CsuiteI18nConfig = {
     langCode: 'fr' as SupportedCSuiteLang,
     lang: 'Français',
+    misc: {
+        words: {
+            empty: 'Vide',
+        },
+    },
     err: {
         int: {
             minGreaterThanMax: ({ min, max }: { min: number; max: number }) => `Min (${min}) doit être inférieur à max (${max})`,
@@ -55,7 +68,7 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
             tooLong: ({ max }: { max: number }) => `Doit contenir au plus ${max} caractères`,
         },
         field: {
-            not_set: 'Valeur manquante (not set)',
+            not_set: 'Valeur manquante',
             defaultExplicitelySetToNullButFieldNotNullable: 'La valeur par défaut est explicitement définie à null, mais le champ n\'est pas nullable', // prettier-ignore
         },
     },

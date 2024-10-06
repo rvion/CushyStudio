@@ -92,6 +92,7 @@ export type Field_list_types<T extends BaseSchema> = {
     $Unchecked: Field_list_unchecked<T>
     $Field: Field_list<T>
     $Child: T['$Field']
+    $Reflect: Field_list_types<T>
 }
 
 // #region STATE
@@ -149,6 +150,12 @@ export class Field_list<T extends BaseSchema> //
     //     // reset all remaining values
     //     for (const i of this.items) i.reset()
     // }
+
+    // TODO: why ? probably a wrong bugfix; needs to be removed asap
+    reset(): void {
+        super.reset()
+        this.childrenAll.forEach((i) => i.reset())
+    }
 
     findItemIndexContaining(widget: Field): number | null {
         let at = widget as Field | null
@@ -408,6 +415,8 @@ export class Field_list<T extends BaseSchema> //
                 if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
                 if (prop === 'push') return (...args: any[]) => this.push(...args)
                 if (prop === 'map') return (...args: [any, any]) => this.valueArr.map(...args)
+                if (prop === 'filter') return (...args: [any, any]) => this.valueArr.filter(...args)
+
                 // MOBX HACK ----------------------------------------------------
 
                 // handle numbers (1) and number-like ('1')
@@ -435,6 +444,10 @@ export class Field_list<T extends BaseSchema> //
                     }
                 }
                 return false
+            },
+
+            has: (_, prop: any): boolean => {
+                return Reflect.has(this.valueArr, prop)
             },
         }
     }

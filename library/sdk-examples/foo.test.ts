@@ -7,15 +7,16 @@ describe('can create models without going through builder', () => {
     it('work', () => {
         //
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        const fn = (f: typeof Field_bool) =>
-            class Bar extends f {
-                coucou(): string {
-                    return 'monde'
-                }
+        class Bar extends Field_bool {
+            $Field!: Bar
+            coucou(): string {
+                return 'monde'
             }
-
-        const x = new SimpleSchema(fn(Field_bool), {}).create()
-
+        }
+        // const fn = (f: typeof Field_bool) =>
+        // required if we template on FieldTypes... sad
+        //                                VVVV
+        const x = new SimpleSchema<Bar>(Bar, {}).create()
         expect(x.coucou()).toBe('monde')
     })
 })

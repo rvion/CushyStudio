@@ -3,7 +3,7 @@ import type { IconName } from '../icons/icons'
 import type { TintExt } from '../kolor/Tint'
 import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { $FieldTypes } from './$FieldTypes'
+import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { Field, FieldCtorProps } from './Field'
 import type { KlassToUse } from './KlassToUse'
@@ -11,9 +11,9 @@ import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
 import type { Problem_Ext } from './Validation'
 
-export type FieldConfig<X, T extends $FieldTypes> = X & FieldConfig_CommonProperties<T>
+export type FieldConfig<X, T extends FieldTypes> = X & FieldConfig_CommonProperties<T>
 
-export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
+export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     uiui?: CATALOG.variants[T['$Type']]
     /**
      * @since 2024-05-20
@@ -231,9 +231,15 @@ export interface FieldConfig_CommonProperties<out T extends $FieldTypes> {
      */
     required?: boolean
     readonly?: boolean
+
+    // TODO 🔴 remove that
+    saveChanges?: (field: Field) => Promise<void>
+
+    // TODO 🔴 remove that
+    cancelChanges?: (field: Field) => Promise<void>
 }
 
-export interface WidgetMenuAction<out T extends $FieldTypes> {
+export interface WidgetMenuAction<out T extends FieldTypes> {
     /** https://pictogrammers.com/library/mdi/ */
     label: string
     icon?: IconName

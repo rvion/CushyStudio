@@ -3,8 +3,8 @@ import { writeFileSync } from 'fs'
 import JSON5 from 'json5'
 
 import { bang } from '../csuite/utils/bang'
-import { _getAllColumnsForTable } from './_getAllColumnsForTable'
-import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
+import { _getAllColumnsForTable, type SqlColDef } from './_getAllColumnsForTable'
+import { _getAllForeignKeysForTable, type SqlFKDef } from './_getAllForeignKeysForTable'
 
 export const _codegenORM = (store: {
     //
@@ -26,7 +26,7 @@ export const _codegenORM = (store: {
     }
     out1 += `\n`
     out1 += `import { Type } from '@sinclair/typebox'\n`
-    out1 += `import { Generated, Insertable, Selectable, Updateable } from 'kysely'\n`
+    out1 += `import { Generated, /* Insertable, Selectable, Updateable */ } from 'kysely'\n`
     out1 += `\n`
     out1 += `import * as T from './TYPES_json'\n`
     out1 += `\n`
@@ -42,7 +42,12 @@ export const _codegenORM = (store: {
     tableNames += `\n`
     out2 += tableNames
 
-    type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
+    type DBRef = {
+        fromTable: string
+        fromField: string
+        toTable: string
+        tofield: string
+    }
     const backRefs = new Map<string, DBRef[]>()
     const refs = new Map<string, DBRef[]>()
     const addRef = (p: DBRef): void => {
@@ -65,47 +70,88 @@ export const _codegenORM = (store: {
             })
         }
     }
+    // precompute a bunch of data for easier access
+    type PrecomputedTableInfo = {
+        sqliteTableName: string
+        jsTableName: string
+        fks: SqlFKDef[]
+        cols: SqlColDef[]
+        refs: DBRef[]
+        backRefs: DBRef[]
+    }
+    const precomputedTableInfosDict = new Map<string, PrecomputedTableInfo>()
+    const precomputedTableInfos = []
+    for (const table of tables) {
+        const jsTableName = convertTableNameToJSName(table.name)
+        const fks = _getAllForeignKeysForTable(db, table.name)
+        const cols = _getAllColumnsForTable(db, table.name)
+        const tRefs = refs.get(table.name) ?? []
+        const tBackRefs = backRefs.get(table.name) ?? []
+        const pti: PrecomputedTableInfo = {
+            jsTableName: jsTableName,
+            sqliteTableName: table.name,
+            fks,
+            cols,
+            refs: tRefs,
+            backRefs: tBackRefs,
+        }
+        // index by BOTH jsName and sqliteName
+        precomputedTableInfosDict.set(table.name, pti)
+        precomputedTableInfosDict.set(jsTableName, pti)
+
+        // and push ONCE in array for single iterration in next step
+        precomputedTableInfos.push(pti)
+    }
 
     const LiveDBSubKeys: string[] = []
     out2 += `declare type CushyViewID = Tagged<string, { CushyViewID: true }>\n`
-    for (const table of tables) {
-        const jsTableName = convertTableNameToJSName(table.name)
-        LiveDBSubKeys.push(`'${table.name}'`)
-        const fks = _getAllForeignKeysForTable(db, table.name)
-        const cols = _getAllColumnsForTable(db, table.name)
 
-        const tableRefs = refs.get(table.name) ?? []
-        const tableBackRefs = backRefs.get(table.name) ?? []
+    for (const pti of precomputedTableInfos) {
+        const table = { name: pti.sqliteTableName }
+        const jsTableName = pti.jsTableName
+        LiveDBSubKeys.push(`'${pti.sqliteTableName}'`)
+        const fks = pti.fks
+        const cols = pti.cols
+        const tableRefs = pti.refs
+        const tableBackRefs = pti.backRefs
         const xxx =
             [
                 tableRefs.length
                     ? [
                           //
+                          '// prettier-ignore',
                           `export const ${jsTableName}Refs = [`,
-                          tableRefs.map((fk) => `    ${JSON5.stringify(fk)}`).join(',\n'),
+                          // prettier-ignore
+                          tableRefs
+                              .map((fk) => `    ${JSON5.stringify(fk).replaceAll(',', ', ').replaceAll('{', '{ ').replaceAll('}', ' }')}`)
+                              .join(',\n'),
                           ']',
                       ].join('\n')
                     : `export const ${jsTableName}Refs = []`,
                 tableBackRefs.length
                     ? [
                           //
+                          `// prettier-ignore`,
                           `export const ${jsTableName}BackRefs = [`,
-                          tableBackRefs.map((fk) => `    ${JSON5.stringify(fk)}`).join(',\n'),
+                          // prettier-ignore
+                          tableBackRefs
+                              .map((fk) => `    ${JSON5.stringify(fk).replaceAll(',', ', ').replaceAll('{', '{ ').replaceAll('}', ' }')}`)
+                              .join(',\n'),
                           ']',
                       ].join('\n')
                     : `export const ${jsTableName}BackRefs = []`,
-            ].join('\n') + '\n'
-        console.log(`[🧐] `, xxx)
+            ].join('\n\n') + '\n'
+        // console.log(`[🧐] `, xxx)
         //
 
-        let typeDecl: string = '' // '\n'
+        let typeDecl: string = `// #region ${jsTableName}\n` // '\n'
         // let typeDeclCreate: string = '\n'
         let schemaDecl: string = `\n`
         let fieldsDef: string = `\n`
         out2 += `declare type ${jsTableName}ID = Tagged<string, { ${jsTableName}ID: true }>\n`
-        typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
-        schemaDecl = `export const ${jsTableName}Schema = Type.Object(\n    {\n`
-        typeDecl += `export type ${jsTableName}Table = {\n`
+        typeDecl += `\nexport const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
+        schemaDecl = `\n\nexport const ${jsTableName}Schema = Type.Object(\n    {\n`
+        typeDecl += `\nexport type ${jsTableName}Table = {\n`
         // typeDeclCreate += `export type ${jsTableName}_C = {\n`
         fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
@@ -115,31 +161,7 @@ export const _codegenORM = (store: {
                 col.name === 'createdAt' || //
                 col.name === 'updatedAt' ||
                 col.dflt_value != null
-            const fieldType = ((): string => {
-                if (col.name === 'createdAt') return `number`
-                if (col.name === 'updatedAt') return `number`
-                // foreign keys
-                const hasFK = fks.find((fk) => fk.from === col.name)
-                if (hasFK != null) return `${convertTableNameToJSName(hasFK.table)}ID`
-                // custom cases
-                if (col.name === 'id') return `${jsTableName}ID`
-                if (col.name === 'appPath') return `AppPath`
-                if (col.name === 'status') return `T.StatusT`
-                // by types
-                if (col.type === 'INT') return 'number'
-                if (col.type === 'float') return 'number'
-                if (col.type === 'INTEGER') return 'number'
-                if (col.type === 'TEXT') return 'string'
-                if (col.type === 'string') return 'string'
-                if (col.type === 'BLOB') return 'Uint8Array'
-
-                // 🔶 the `JSONColumnType` makes update / insert use string instead of T
-                // if (col.type === 'json') return `JSONColumnType<T.${jsTableName}_${col.name}>`
-                // if (col.type === 'json') return `ColumnType<T.${jsTableName}_${col.name}>`
-                if (col.type === 'json') return `T.${jsTableName}_${col.name}`
-
-                throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
-            })()
+            const fieldType = getFieldTypeFor(col, fks, jsTableName)
 
             const schemaField = ((): string => {
                 // foreign keys
@@ -172,17 +194,90 @@ export const _codegenORM = (store: {
         }
         typeDecl += `}\n`
         // typeDecl += `export type ${jsTableName} = Selectable<${jsTableName}Table>`
-        typeDecl += `export type New${jsTableName} = Insertable<${jsTableName}Table>\n`
-        typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
+        // typeDecl += `export type New${jsTableName} = Insertable<${jsTableName}Table>\n`
 
+        // #region create type
+        typeDecl += `\nexport type New${jsTableName} = {\n`
+        for (const col of cols) {
+            // if (col.name === 'id') continue
+            if (col.name === 'createdAt') continue
+            if (col.name === 'updatedAt') continue
+            const isNullable = !col.notnull
+            const hasDefault = col.dflt_value !== undefined
+            const fieldType = getFieldTypeFor(col, fks, jsTableName)
+            let finalType = fieldType
+            if (isNullable) finalType = `Maybe<${fieldType}>`
+            if (hasDefault || isNullable) {
+                typeDecl += `    ${col.name}?: ${finalType}\n`
+            } else {
+                typeDecl += `    ${col.name}: ${fieldType}\n`
+            }
+        }
+        typeDecl += `}`
+
+        // #region update type
+        // typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
+        typeDecl += `\n\nexport type ${jsTableName}Update = {\n`
+        typeDecl += `   id?: never // ${jsTableName}ID\n`
+        for (const col of cols) {
+            if (col.name === 'id') continue
+            const isNullable = !col.notnull
+            const fieldType = getFieldTypeFor(col, fks, jsTableName)
+            typeDecl += `    ${col.name}?: ${fieldType}${isNullable ? ' | null' : ''}\n`
+        }
+        typeDecl += `}`
+
+        // #region backref (del)
+        // typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
+        typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = {\n`
+        const tableBackref = backRefs.get(table.name) ?? []
+        for (const br of tableBackref) {
+            const jsTableName = convertTableNameToJSName(br.fromTable)
+            const backrefTable = bang(precomputedTableInfosDict.get(br.fromTable))
+            const backRefColInfos = bang(backrefTable.cols.find((c) => c.name === br.fromField))
+            const backRefIsNullabel = !backRefColInfos.notnull
+            console.log(`[🤠] ${br.fromTable}_${br.fromField}`, {
+                jsTableName,
+                backrefTable,
+                backRefColInfos,
+                backRefIsNullabel,
+            })
+            const colon = backRefIsNullabel ? '?:' : ':'
+            typeDecl += `    ${br.fromTable}_${br.fromField}${colon} ${jsTableName}BackRefsToHandleOnDelete${backRefIsNullabel ? ` | 'set null'` : ''}\n`
+        }
+        typeDecl += `}`
+
+        // #region ....
         // typeDeclCreate += `}`
         schemaDecl += '    },\n    { additionalProperties: false },\n)'
         fieldsDef += `}\n`
 
         // store.log(typeDecl)
         // out1 += insertFn
+        // #region Read type
         out1 += typeDecl + '\n'
-        out1 += `export type ${jsTableName}T = Selectable<${jsTableName}Table>\n`
+        // out1 += `export type ${jsTableName}T = Selectable<${jsTableName}Table>\n`
+        out1 += `\nexport type ${jsTableName}T = {\n`
+        for (const col of cols) {
+            const isNullable = !col.notnull
+            const fieldType = getFieldTypeFor(col, fks, jsTableName)
+            const colon = isNullable ? '?:' : ':'
+            out1 += `    ${col.name}${colon} ${fieldType}${isNullable ? ' | null' : ''}\n`
+        }
+        out1 += `}\n`
+
+        // #region #sum types
+        out1 += `\nexport type ${jsTableName}Types = {\n`
+        out1 += `    TableName: '${table.name}',\n`
+        out1 += `    JSName: '${jsTableName}',\n`
+        out1 += `    Read: ${jsTableName}T,\n`
+        out1 += `    Instance: ${jsTableName}L,\n`
+        out1 += `    Create: New${jsTableName},\n`
+        out1 += `    Update: ${jsTableName}Update,\n`
+        out1 += `    ID: ${jsTableName}ID,\n`
+        out1 += `    Delete: ${jsTableName}BackRefsToHandleOnDelete,\n`
+        out1 += `}\n`
+
         // out1 += typeDeclCreate + '\n'
         out1 += schemaDecl + '\n'
         out1 += fieldsDef + '\n'
@@ -191,7 +286,15 @@ export const _codegenORM = (store: {
     for (const table of tables) {
         const jsName = convertTableNameToJSName(table.name)
         out1 += `// prettier-ignore\n`
-        out1 += `export const TABLE_${table.name} = new T.TableInfo<'${table.name}', ${jsName}T, ${jsName}L, New${jsName}, ${jsName}Update, ${jsName}ID>(\n`
+        out1 += `export const TABLE_${table.name} = new T.TableInfo<\n`
+        out1 += `    '${table.name}',\n`
+        out1 += `    ${jsName}T,\n`
+        out1 += `    ${jsName}L,\n`
+        out1 += `    New${jsName},\n`
+        out1 += `    ${jsName}Update,\n`
+        out1 += `    ${jsName}ID,\n`
+        out1 += `    ${jsName}BackRefsToHandleOnDelete\n`
+        out1 += `>(\n`
         out1 += `    '${table.name}',\n`
         out1 += `    '${jsName}',\n`
         out1 += `    ${jsName}Fields,\n`
@@ -225,8 +328,8 @@ export const _codegenORM = (store: {
     writeFileSync('src/db/TYPES.gen.ts', out1)
     writeFileSync('src/db/TYPES.d.ts', out2)
 
-    console.log(`[🧐] `, backRefs)
-    console.log(`[🧐] `, refs)
+    // console.log(`[🧐] `, backRefs)
+    // console.log(`[🧐] `, refs)
 }
 
 const convertTableNameToJSName = (tableName: string): string => {
@@ -235,6 +338,31 @@ const convertTableNameToJSName = (tableName: string): string => {
     return out
 }
 
+function getFieldTypeFor(col: SqlColDef, fks: SqlFKDef[], jsTableName: string): string {
+    if (col.name === 'createdAt') return `number`
+    if (col.name === 'updatedAt') return `number`
+    // foreign keys
+    const hasFK = fks.find((fk) => fk.from === col.name)
+    if (hasFK != null) return `${convertTableNameToJSName(hasFK.table)}ID`
+    // custom cases
+    if (col.name === 'id') return `${jsTableName}ID`
+    if (col.name === 'appPath') return `AppPath`
+    if (col.name === 'status') return `T.StatusT`
+    // by types
+    if (col.type === 'INT') return 'number'
+    if (col.type === 'float') return 'number'
+    if (col.type === 'INTEGER') return 'number'
+    if (col.type === 'TEXT') return 'string'
+    if (col.type === 'string') return 'string'
+    if (col.type === 'BLOB') return 'Uint8Array'
+
+    // 🔶 the `JSONColumnType` makes update / insert use string instead of T
+    // if (col.type === 'json') return `JSONColumnType<T.${jsTableName}_${col.name}>`
+    // if (col.type === 'json') return `ColumnType<T.${jsTableName}_${col.name}>`
+    if (col.type === 'json') return `T.${jsTableName}_${col.name}`
+
+    throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
+}
 // const toJSKey = (s: string): string => {
 //     const jsObjectKeyReg = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/g
 //     const isValidJSObjectKey = jsObjectKeyReg.test(s)

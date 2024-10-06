@@ -1,7 +1,7 @@
 import type { SelectProps } from './SelectProps'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
@@ -16,72 +16,81 @@ import { SelectValueContainerUI } from './SelectValueContainerUI'
 // TODO fork this component
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
-
-    if (false /* falesisDevServer 🔴 */) {
-        useEffect(() => {
-            // is it too much updates?
-            // better than useMemo depending on the props which
-            // re-creates AutoCompleteSelectState with every render
-            // could target specific props more precisely?
-            // but not sure if it would be better or worse?
-            // console.log('❌🔶 USE EFFECT props')
-            // should we use useState instead of useMemo? https://mobx.js.org/react-integration.html#using-external-state-in-observer-components
-            // probably ask @rvion
-            if (p !== select.p) select.p = p
-        }, [p])
-    }
-
     const csuite = useCSuite()
     const PopupComp = p.slotPopupUI ?? SelectPopupUI
     const AnchorContentComp = p.slotAnchorContentUI ?? AnchorContentUI
 
-    if (p.readonly) return <AnchorContentComp select={select} />
+    // if (p.readonly) return <AnchorContentComp select={select} />
+    if (p.readonly)
+        return (
+            <Row
+                expand
+                tabIndex={0}
+                tw={[
+                    'UI-Select minh-input',
+                    'relative',
+                    'h-full',
+                    'ANCHOR-REVEAL',
+                    'bg-gray-100 cursor-not-allowed',
+                    p.hasErrors && 'border-red-700 border',
+                ]}
+            >
+                <AnchorContentComp select={select} />
+            </Row>
+        )
 
     return (
-        <RevealUI //
-            ref={select.revealStateRef}
-            trigger='pseudofocus'
-            // shell='popover'
-            shell={SelectShellUI}
-            // placement={p.placement ?? 'autoVerticalStart'}
-            placement='cover'
-            content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
-            // 🔶 be careful to not override stuff with that (goes both ways)
-            {...p.revealProps}
-            onHidden={(reason) => {
-                select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
-                select.clean()
+        <Row>
+            <RevealUI //
+                ref={select.revealStateRef}
+                trigger='pseudofocus'
+                // shell='popover'
+                shell={SelectShellUI}
+                // placement={p.placement ?? 'autoVerticalStart'}
+                placement='cover'
+                content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
+                // 🔶 be careful to not override stuff with that (goes both ways)
+                {...p.revealProps}
+                onHidden={(reason) => {
+                    select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
+                    select.clean()
 
-                p.revealProps?.onHidden?.(reason)
-            }}
-            sharedAnchorRef={select.anchorRef}
-            anchorProps={{
-                ...p.revealProps?.anchorProps,
-                onKeyDown: (ev) => {
-                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
-                    select.handleTooltipKeyDown(ev)
-                    p.revealProps?.anchorProps?.onKeyDown?.(ev)
-                },
-            }}
-        >
-            <Row expand tabIndex={0} tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']} hoverable>
-                <AnchorContentComp select={select} />
-                {p.clearable && (
-                    <Button
-                        subtle
-                        borderless
-                        size='inside'
-                        icon='_clear'
-                        onFocus={(ev) => ev.stopPropagation()}
-                        onClick={(ev) => {
-                            ev.preventDefault()
-                            ev.stopPropagation()
-                            p.clearable!()
-                        }}
-                    />
-                )}
-            </Row>
-        </RevealUI>
+                    p.revealProps?.onHidden?.(reason)
+                }}
+                sharedAnchorRef={select.anchorRef}
+                anchorProps={{
+                    ...p.revealProps?.anchorProps,
+                    onKeyDown: (ev) => {
+                        // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
+                        select.handleTooltipKeyDown(ev)
+                        p.revealProps?.anchorProps?.onKeyDown?.(ev)
+                    },
+                }}
+            >
+                <Row expand tabIndex={0} tw={['UI-Select minh-input', 'relative', 'h-full', 'ANCHOR-REVEAL']} hoverable>
+                    <AnchorContentComp select={select} />
+                </Row>
+            </RevealUI>
+            {p.createOption != null && p.createOption.isActive !== false && (
+                <Button subtle size='inside' onClick={() => select.createOption()}>
+                    {p.createOption.label ?? 'Créer'}
+                </Button>
+            )}
+            {p.clearable && (
+                <Button
+                    subtle
+                    borderless
+                    size='inside'
+                    icon='_clear'
+                    onFocus={(ev) => ev.stopPropagation()}
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        p.clearable!()
+                    }}
+                />
+            )}
+        </Row>
     )
 })
 

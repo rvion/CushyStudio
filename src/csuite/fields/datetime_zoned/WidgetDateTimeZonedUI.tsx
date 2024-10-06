@@ -27,6 +27,7 @@ export const WidgetDateTimeZoned_ClearButtonUI = observer(function WidgetDateTim
             disabled={p.field.selectedValue == null}
             onClick={() => {
                 ;(p.field as Field_dateTimeZoned<true>).value = null
+                p.field.touch()
             }}
         />
     )
@@ -40,21 +41,23 @@ export const WidgetDateTimeZoned_HeaderUI = observer(function WidgetDateTimeZone
     const field = p.field
     const config = field.config
     return (
-            <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
-                <InputStringUI
-                    tw='w-full'
-                    inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
-                    icon={p.field.config.innerIcon}
-                    type='datetime-local'
-                    className={config.className}
-                    getValue={() => field.selectedValue?.toString()?.slice(0, 19) ?? ''}
-                    setValue={(value) => {
-                        field.setValueFromString(value)
-                    }}
-                    placeholder={field.config.placeHolder}
-                    disabled={p.readonly}
-                />
-                <WidgetDateTimeZoned_ClearButtonUI field={field} readonly={p.readonly} />
-            </div>
+        <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
+            <InputStringUI
+                tw='w-full'
+                inputClassName={field.mustDisplayErrors ? 'rsx-field-error' : undefined}
+                icon={p.field.config.innerIcon}
+                type='datetime-local'
+                className={config.className}
+                getValue={() => field.selectedValue?.toString()?.slice(0, 19) ?? ''}
+                setValue={(value) => {
+                    field.setValueFromString(value)
+                    p.field.touch()
+                }}
+                placeholder={field.config.placeHolder}
+                disabled={p.readonly}
+                onBlur={() => field.touch()}
+            />
+            <WidgetDateTimeZoned_ClearButtonUI field={field} readonly={p.readonly} />
+        </div>
     )
 })

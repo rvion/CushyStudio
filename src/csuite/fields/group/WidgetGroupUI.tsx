@@ -1,5 +1,4 @@
-import type { SchemaDict } from '../../model/SchemaDict'
-import type { Field_group } from './FieldGroup'
+import type { Field_group, Field_group_types } from './FieldGroup'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -13,7 +12,7 @@ import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 // HEADER
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     //
-    field: Field_group<any>
+    field: Field_group<Field_group_types<any>>
 }) {
     const csuite = useCSuite()
     const field = p.field
@@ -35,6 +34,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     onClick={(ev) => {
                         preset.apply(field)
                         ev.stopPropagation()
+                        field.touch()
                     }}
                     children={preset.label}
                 />
@@ -50,7 +50,10 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     borderless
                     icon='mdiUnfoldMoreHorizontal'
                     disabled={!field.hasFoldableSubfieldsThatAreFolded}
-                    onClick={() => p.field.expandAllChildren()}
+                    onClick={() => {
+                        p.field.expandAllChildren()
+                        field.touch()
+                    }}
                 />
 
                 <Button //
@@ -59,7 +62,10 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                     borderless
                     icon='mdiUnfoldLessHorizontal'
                     disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
-                    onClick={() => p.field.collapseAllChildren()}
+                    onClick={() => {
+                        p.field.collapseAllChildren()
+                        field.touch()
+                    }}
                 />
             </div>,
         )
@@ -68,10 +74,10 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     return out
 })
 
-export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {
+export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends Field_group>(p: {
     //
     className?: string
-    field: Field_group<T>
+    field: T
 }) {
     const field = p.field
     const children = field.childrenActive

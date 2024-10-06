@@ -86,21 +86,45 @@ export const RuntimeError_infos_Schema = Type.Record(Type.String(), Type.Any())
 
 export type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
 
+// export type TableTypes = {
+//     TableName: string
+//     JSName: string
+//     Read: object
+//     Instance: BaseInst<TableTypes>
+//     Create: object
+//     Update: object
+//     ID: string
+//     Delete: Record<string, TableTypes>
+// }
+
+export type DeleteInstructionsFor<B> = {
+    [backref in keyof B]: 'set null' | 'cascade' | DeleteInstructionsFor<B[backref]> //
+}
+
 export class TableInfo<
-    //
+    /** table name const-expr */
     TableName extends keyof KyselyTables = any,
+    /* data you get when you select */
     T extends BaseInstanceFields = BaseInstanceFields,
+    /* live entity class (wrapper around T) */
     L = any,
+    /* data required for create */
     N = any,
+    /* data required for update */
     U = any,
+    /* data unique identifier */
     ID = any,
+    /* BackRefsToHandleOnDelete */
+    B extends object = any,
 > {
     $TableName!: TableName
     $T!: T
     $L!: L
     $N!: N
+    $B!: B
     $Update!: U
     $ID!: ID
+    $DeleteInstructions!: DeleteInstructionsFor<B>
 
     cols: SqlColDef[]
     // insertSQL: string

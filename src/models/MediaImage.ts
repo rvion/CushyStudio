@@ -258,7 +258,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
         if (ev.ctrlKey && ev.shiftKey && ev.altKey && !this.star) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void this.delete()
+            return void this.delete({})
         }
         if (hasMod(ev)) {
             ev.stopPropagation()

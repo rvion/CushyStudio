@@ -1,3 +1,4 @@
+import type { FieldTypes } from '../$FieldTypes'
 import type {
     Field_selectMany_config,
     Field_selectMany_config_simplified,
@@ -5,13 +6,12 @@ import type {
 } from '../../fields/selectMany/FieldSelectMany'
 import type { SelectKey } from '../../fields/selectOne/SelectOneKey'
 import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../../fields/selectOne/SelectOption'
-import type { Field } from '../Field'
 
 import { Field_selectMany } from '../../fields/selectMany/FieldSelectMany'
 import { removeReadOnly } from '../../utils/removeReadOnly'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Many: HKT<unknown, SelectKey>
     Many_: HKT<SelectKey>
 }

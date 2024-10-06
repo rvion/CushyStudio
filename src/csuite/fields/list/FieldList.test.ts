@@ -294,6 +294,19 @@ describe('FieldList', () => {
         })
     })
 
+    describe('filter', () => {
+        it('should filter items', () => {
+            const S = b.int().list()
+            const f = S.create()
+
+            f.value = [1, 2, 3, 4, 5, 6]
+            expectJSON(f.value).toEqual([1, 2, 3, 4, 5, 6])
+
+            const filtered = f.value.filter((x) => x > 3)
+            expect(filtered).toEqual([4, 5, 6])
+        })
+    })
+
     // RESET ---------------------------
     it('field.reset() should always yield same serial as schema.create(null) except for updatedAt', () => {
         const S2 = b.int({ default: 3 }).list({ min: 3 })

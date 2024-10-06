@@ -22,7 +22,11 @@ export const WidgetSelectOne_RollUI = observer(function WidgetSelectOne_RollUI_<
                 subtle
                 icon={curr.icon}
                 disabled={nextId == null}
-                onClick={() => (field.selectedId = nextId!)}
+                onClick={() => {
+                    field.selectedId = nextId!
+                    field.touch()
+                }}
+                onBlur={() => field.touch()}
             >
                 {curr.label}
             </Button>

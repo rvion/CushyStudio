@@ -36,6 +36,7 @@ export type Field_markdown_types = {
     $Unchecked: Field_markdown_unchecked
     $Field: Field_markdown
     $Child: never
+    $Reflect: Field_markdown_types
 }
 
 // #region STATE TYPE

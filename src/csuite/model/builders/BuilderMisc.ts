@@ -1,4 +1,4 @@
-import type { Field } from '../Field'
+import type { FieldTypes } from '../$FieldTypes'
 
 import { Field_button, type Field_button_config } from '../../fields/button/FieldButton'
 import { Field_color, type Field_color_config } from '../../fields/color/FieldColor'
@@ -10,7 +10,7 @@ import { Field_size, type Field_size_config } from '../../fields/size/FieldSize'
 import { Field_string, type Field_string_config } from '../../fields/string/FieldString'
 import { BaseBuilder } from './BaseBuilder'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<Field> {
+interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
     Size: Apply<this, Field_size>
     Seed: Apply<this, Field_seed>
     Color: Apply<this, Field_color>
@@ -79,15 +79,15 @@ export class BuilderMisc<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends 
 
     /** [markdown variant]: inline=true, label=false */
     header(config: Field_markdown_config | string): Schemaᐸ_ᐳ['Markdown'] {
-        return this.buildSchema(
-            Field_markdown,
+        const finalConfig: Field_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, justifyLabel: false, ...config },
-        )
+                : { inHeader: true, label: false, justifyLabel: false, ...config }
+        return this.buildSchema(Field_markdown, finalConfig)
     }
 
     pixel(config: Omit<Field_number_config, 'mode'> = {}): Schemaᐸ_ᐳ['Number'] {
-        return this.buildSchema(Field_number, { mode: 'int', ...config, unit: 'px', suffix: 'px' })
+        const finalConfig: Field_number_config = { mode: 'int', ...config, unit: 'px', suffix: 'px' }
+        return this.buildSchema(Field_number, finalConfig)
     }
 }

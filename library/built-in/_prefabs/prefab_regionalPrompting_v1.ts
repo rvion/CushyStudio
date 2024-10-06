@@ -1,6 +1,6 @@
 import type { OutputFor } from './_prefabs'
 
-export type UI_regionalPrompting_v1 = X.XListExt<
+export type UI_regionalPrompting_v1 = X.XBoard<
     X.XGroup<{
         prompt: X.XPrompt
         strength: X.XNumber

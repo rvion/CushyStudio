@@ -1,9 +1,7 @@
-import type { Field_group } from '../fields/group/FieldGroup'
 import type { BaseSchema } from './BaseSchema'
 import type { IBuilder } from './builders/IBuilder'
 import type { DraftLike } from './Draft'
 import type { EntityConfig } from './Entity'
-import type { SchemaDict } from './SchemaDict'
 
 import { runInAction } from 'mobx'
 import { type DependencyList, useEffect, useMemo } from 'react'
@@ -98,7 +96,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
         const doc = useMemo(() => {
             // TODO: document properly
             // 💬 2024-09-19 rvion:
-            // | when we create a multable object
+            // | when we create a mutable object
             // | in a useMemo, then happen to update it within that same useMemo lambda
             // | we need to prevent the component from re-rendering.
             // |
@@ -107,7 +105,6 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
             // | so we can't use `untracked`. `runInAction` does exactly that
             return runInAction(() => {
                 const doc = this.document(schemaExt, entityConfig)
-                console.log(`[👉] document created`, doc)
                 return doc
             })
         }, deps)
@@ -128,7 +125,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     ): SCHEMA['$Field'] {
         const doc = this.use(schemaExt, entityConfig, deps)
         // dispose that document when the component unmount
-        useEffect(() => () => doc.disposeTree(), [doc])
+        useEffect(() => (): void => doc.disposeTree(), [doc])
         return doc
     }
 

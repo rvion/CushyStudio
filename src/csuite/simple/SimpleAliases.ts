@@ -6,7 +6,7 @@ import type { Field_color } from '../fields/color/FieldColor'
 import type { Field_date } from '../fields/date/FieldDate'
 import type { Field_datePlain } from '../fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../fields/datetime_zoned/FieldDateTimeZoned'
-import type { Field_group, FieldGroup } from '../fields/group/FieldGroup'
+import type { Field_group, Field_group_types, Field_Group_withMagicFields } from '../fields/group/FieldGroup'
 import type { Field_link } from '../fields/link/FieldLink'
 import type { Field_list } from '../fields/list/FieldList'
 import type { Field_markdown } from '../fields/markdown/FieldMarkdown'
@@ -34,7 +34,7 @@ declare global {
         //  ====== field aliases ======================================================
         type Shared<T extends Field> = Field_shared<T>
         //
-        type Group<T extends SchemaDict> = Field_group<T>
+        type Group<T extends SchemaDict> = Field_group<Field_group_types<T>>
         type List<T extends BaseSchema> = Field_list<T>
         type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
         type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
@@ -46,7 +46,7 @@ declare global {
         type SelectOne_<T extends string> = Field_selectOne<T, T>
         type SelectMany_<T extends string> = Field_selectMany<T, T>
         //
-        type Empty = Field_group<NO_PROPS>
+        type Empty = Field_group<Field_group_types<NO_PROPS>>
         type Bool = Field_bool
         type String = Field_string
         type Number = Field_number
@@ -61,7 +61,7 @@ declare global {
         //  ====== schema aliases ======================================================
         type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
         //
-        type SGroup<T extends SchemaDict> = SimpleSchema<FieldGroup<T>>
+        type SGroup<T extends SchemaDict> = SimpleSchema<Field_Group_withMagicFields<Field_group_types<T>>>
         type SList<T extends BaseSchema> = SimpleSchema<Field_list<T>>
         type SLink<A extends BaseSchema, B extends BaseSchema> = SimpleSchema<Field_link<A, B>>
         type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
@@ -72,7 +72,7 @@ declare global {
         type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<T, T>> // variant that may be shorter to read
         type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<T, T>> // variant that may be shorter to read
         //
-        type SEmpty = SimpleSchema<Field_group<NO_PROPS>>
+        type SEmpty = SimpleSchema<Field_group<Field_group_types<NO_PROPS>>>
         type SBool = SimpleSchema<Field_bool>
         type SString = SimpleSchema<Field_string>
 

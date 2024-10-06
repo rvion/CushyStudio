@@ -91,6 +91,7 @@ export type Field_choices_types<T extends SchemaDict = SchemaDict> = {
     $Unchecked: Field_choices_unchecked<T>
     $Field: Field_choices<T>
     $Child: T[keyof T]
+    $Reflect: Field_choices_types<T>
 }
 
 // #region STATE

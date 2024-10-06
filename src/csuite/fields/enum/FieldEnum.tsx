@@ -48,6 +48,7 @@ export type Field_enum_types<O extends EnumValue> = {
     $Unchecked: Field_enum_value<O> | undefined
     $Field: Field_enum<O>
     $Child: never
+    $Reflect: Field_enum_types<O>
 }
 
 // #region State

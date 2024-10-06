@@ -122,7 +122,7 @@
 
 
 /**
- * padding to go from input size to inside size
+ * padding to go from input size to input size
  */
 .p-input  { padding:        calc((var(--input-height) - var(--inside-height)) / 2 - 0px); } /* minus 1px to account for border */
 .py-input { padding-top:    calc((var(--input-height) - var(--inside-height)) / 2 - 0px); padding-bottom: calc((var(--input-height) - var(--inside-height)) / 2 - 0px); }
@@ -162,7 +162,8 @@
 .UI-Color,
 .UI-Select,
 .UI-InputNumber,
-.UI-InputString {
+.UI-InputString,
+.UI-InputDate, {
     border-radius: 0.375rem;
 } */
 

@@ -1,3 +1,4 @@
+import type { FieldTypes } from '../model/$FieldTypes'
 import type { Field } from '../model/Field'
 import type { FieldConstructor } from '../model/FieldConstructor'
 import type { Instanciable } from '../model/Instanciable'
@@ -7,14 +8,14 @@ import { makeObservable } from 'mobx'
 
 import { BaseSchema } from '../model/BaseSchema'
 
-export class SimpleSchema<out FIELD extends Field = Field>
-    extends BaseSchema<FIELD, SimpleSchemaᐸ_ᐳ>
-    implements Instanciable<FIELD>
+export class SimpleSchema<out TYPES extends FieldTypes = FieldTypes>
+    extends BaseSchema<TYPES, SimpleSchemaᐸ_ᐳ>
+    implements Instanciable<TYPES>
 {
     constructor(
         /** field constructor (class or function, see FieldConstructor definition)  */
-        fieldConstructor: FieldConstructor<FIELD>,
-        config: FIELD['$Config'],
+        fieldConstructor: FieldConstructor<TYPES /*🔴 ['$Field'] */>,
+        config: TYPES['$Config'],
     ) {
         super(fieldConstructor, config, (...args) => new SimpleSchema(...args) as any)
         makeObservable(this, { config: true, fieldConstructor: false })

@@ -8,17 +8,17 @@ import { withDefaultProps } from './withDefaultProps'
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-const _Button = observer(function Button_(
-    p: FrameProps & {
-        /** no contrast */
-        subtle?: boolean
-        /** no border */
-        borderless?: boolean
-        /** hue */
-        hue?: number
-        chroma?: number
-    },
-) {
+export type ButtonProps = FrameProps & {
+    /** no contrast */
+    subtle?: boolean
+    /** no border */
+    borderless?: boolean
+    /** hue */
+    hue?: number
+    chroma?: number
+}
+
+const _Button = observer(function Button_(p: ButtonProps) {
     const uist = useMemo(() => new ButtonState(p), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -54,19 +54,7 @@ const _Button = observer(function Button_(
             hover={p.disabled ? false : 3}
             // active={uist.visuallyActive}
             disabled={p.disabled}
-            dropShadow={
-                p.subtle
-                    ? undefined
-                    : (p.dropShadow ?? theme.inputShadow)
-                      ? {
-                            x: theme.inputShadow.x,
-                            y: theme.inputShadow.y,
-                            color: theme.inputShadow.color,
-                            blur: theme.inputShadow.blur,
-                            opacity: theme.inputShadow.opacity,
-                        }
-                      : undefined
-            }
+            dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
             roundness={theme.inputRoundness}
             loading={p.loading ?? uist.running}
             tabIndex={p.tabIndex}
@@ -88,7 +76,7 @@ const _Button = observer(function Button_(
 
                 'ui-button',
                 'gap-1 items-center',
-                p.disabled ? null : 'cursor-pointer',
+                p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
                 'whitespace-nowrap',
                 'justify-center',
             ]}

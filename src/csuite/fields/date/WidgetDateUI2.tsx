@@ -27,7 +27,10 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
             square
             icon='mdiClose'
             disabled={p.field.selectedValue == null}
-            onClick={() => p.field.disableSelfWithinParent()}
+            onClick={() => {
+                p.field.disableSelfWithinParent()
+                p.field.touch()
+            }}
         />
     )
 })
@@ -40,14 +43,20 @@ export const WidgetDate_HeaderUI = observer(function WidgetDateUI_(p: { field: F
         <div tw='sticky flex items-center gap-0.5 top-0 w-full'>
             <InputStringUI
                 tw='w-full'
-                inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}
+                inputClassName={['w-full', 'minh-input', 'UI-InputDate', field.mustDisplayErrors && 'border-red-700 border']
+                    .filter(Boolean)
+                    .join(' ')}
                 icon={p.field.config.innerIcon}
                 type='datetime-local'
                 className={config.className}
                 getValue={() => formatDateForInput(field.selectedValue)}
-                setValue={(value) => field.setValueFromString(value)}
+                setValue={(value) => {
+                    field.setValueFromString(value)
+                    p.field.touch()
+                }}
                 placeholder={field.config.placeHolder}
                 disabled={p.readonly}
+                onBlur={() => field.touch()}
             />
             <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
         </div>

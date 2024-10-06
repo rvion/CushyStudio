@@ -54,6 +54,11 @@ export type Field_selectMany_config<
          *    filtering the options twice.
          */
         choices: KEY[] | ((self: Field_selectMany<VALUE, KEY>) => KEY[])
+        createOption?: {
+            label?: string
+            isActive?: boolean
+            action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
+        }
         getIdFromValue: (t: VALUE) => KEY
         getValueFromId: (t: KEY) => Maybe<VALUE>
         getOptionFromId: (t: KEY, field: Field_selectMany<VALUE, KEY>) => Maybe<SelectOption<VALUE, KEY>>
@@ -126,6 +131,7 @@ export type Field_selectMany_types<
     $Unchecked: Field_selectMany_unchecked<VALUE>
     $Field: Field_selectMany<VALUE, KEY>
     $Child: never
+    $Reflect: Field_selectMany_types<VALUE, KEY>
 }
 
 // #region STATE
@@ -199,7 +205,7 @@ export class Field_selectMany<
 
     wrap = this.config.wrap ?? false
 
-    get query() {
+    get query(): string {
         return this.serial.query ?? ''
     }
 
@@ -398,7 +404,7 @@ export class Field_selectMany<
                 // handle numbers (1) and number-like ('1')
                 if (parseInt(prop, 10) === +prop) return this.selectedValueAt(+prop)
 
-                // whiltelist/blacklist some methods
+                // whitelist/blacklist some methods
                 // (todo: test; review; then add more to the list)
                 if (prop === 'push') return this.pushValue.bind(this)
                 if (prop === 'splice') throw new Error(`you can't manipulate the FieldSelectMany value directly, please use internal api instead`) // prettier-ignore
@@ -410,6 +416,8 @@ export class Field_selectMany<
                 if (prop === 'concat') return (...args: any[]) => this.selectedValues.concat(...args)
                 if (prop === 'slice') return (...args: [any, any]) => this.selectedValues.slice(...args)
                 if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
+                if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
+                if (prop === 'join') return (...args: [any]) => this.selectedValues.join(...args)
                 if (prop === 'toJSON') return undefined
                 // 💬 2024-09-03 rvion:
                 // | let's be conservative and just throw, rather to pass that to some other
@@ -447,7 +455,7 @@ export class Field_selectMany<
     }
 
     /** different from reset; doesn't take default into account */
-    unset() {
+    unset(): void {
         this.runInValueTransaction(() => {
             this.patchSerial((draft) => void (draft.values = undefined))
         })

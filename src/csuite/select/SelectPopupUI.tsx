@@ -1,4 +1,5 @@
 import type { RevealState } from '../reveal/RevealState'
+import type { SelectProps } from './SelectProps'
 import type { AutoCompleteSelectState } from './SelectState'
 
 import { observer } from 'mobx-react-lite'
@@ -13,6 +14,7 @@ const trueMinWidth = '20rem'
 export type SelectPopupProps<OPTION> = {
     reveal: RevealState
     selectState: AutoCompleteSelectState<OPTION>
+    createOption?: Pick<SelectProps<OPTION>, 'createOption'>
 }
 
 export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
@@ -29,6 +31,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                 //
                 'flex flex-col',
                 'max-w-xl',
+                'overflow-hidden',
             ]}
             {...p.selectState.p.popupWrapperProps}
             style={{ minWidth, ...p.selectState.p.popupWrapperProps?.style }}
@@ -79,23 +82,26 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
 
             {/* No results */}
             {select.filteredOptions.length === 0 //
-                ? (select.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>)
+                ? // select.p.slotPlaceholderWhenNoResults ?? <span className='h-input text-base px-2'>Aucun résultat</span>
+                  (select.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>)
                 : null}
 
             {select.p.slotResultsListUI != null ? (
                 <select.p.slotResultsListUI select={select} />
             ) : select.p.virtualized !== false ? (
-                <FixedSizeList<{ s: AutoCompleteSelectState<OPTION>; reveal: RevealState }>
-                    className='mt-2 mb-1'
-                    useIsScrolling={false}
-                    /* temp hack to leave place for soon-to-be input */
-                    height={Math.min(400, itemSize * select.filteredOptions.length)}
-                    itemCount={select.filteredOptions.length}
-                    itemSize={itemSize}
-                    width='100%'
-                    children={SelectOptionUI_FixedList}
-                    itemData={{ s: select, reveal: p.reveal }}
-                />
+                select.filteredOptions.length !== 0 && (
+                    <FixedSizeList<{ s: AutoCompleteSelectState<OPTION>; reveal: RevealState }>
+                        className='mt-2 mb-1'
+                        useIsScrolling={false}
+                        /* temp hack to leave place for soon-to-be input */
+                        height={Math.min(400, itemSize * select.filteredOptions.length)}
+                        itemCount={select.filteredOptions.length}
+                        itemSize={itemSize}
+                        width='100%'
+                        children={SelectOptionUI_FixedList}
+                        itemData={{ s: select, reveal: p.reveal }}
+                    />
+                )
             ) : (
                 <Frame col tw='max-h-96 pt-2 pb-1'>
                     {select.filteredOptions.map((option, index) =>
