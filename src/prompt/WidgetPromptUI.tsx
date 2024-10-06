@@ -3,13 +3,13 @@ import type { Field_prompt } from './FieldPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-import { Button } from '../csuite/button/Button'
+// import { Button } from '../csuite/button/Button'
 import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { WidgetSingleLineSummaryUI } from '../csuite/form/WidgetSingleLineSummaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
-import { PromptEditorUI } from './__TEMP__'
+// import { PromptEditorUI } from './__TEMP__'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -29,12 +29,12 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { f
             ) : (
                 <div /* spacer */ />
             )}
-            <Button
+            {/* <Button
                 onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
                 icon='mdiAbacus'
                 subtle
                 square
-            />
+            /> */}
         </div>
     )
 })
