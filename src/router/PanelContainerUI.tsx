@@ -75,6 +75,8 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                     onMouseLeave={(e) => {
                         e.currentTarget.classList.remove('Hovered-Region')
                     }}
+                    onFocus={(e) => e.currentTarget.classList.add('Hovered-Region')}
+                    onBlur={(e) => e.currentTarget.classList.remove('Hovered-Region')}
                 >
                     <Component {...panelProps} className='w-full h-full border-none' />
                 </Frame>
