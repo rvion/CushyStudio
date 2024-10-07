@@ -32,7 +32,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
                     'items-start',
                 ]}
                 // hover={2} // 🚂 we prefer to not have this hover
-                triggerOnPress={triggerOnPress ?? { startingState: isCollapsed }}
+                triggerOnPress={triggerOnPress ?? { startingState: isCollapsed, toggleGroup: 'collapse' }}
                 onClick={
                     onClick ??
                     ((ev): void => {

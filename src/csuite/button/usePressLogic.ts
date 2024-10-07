@@ -1,45 +1,59 @@
 let draggedElement: HTMLElement | null = null
 let startingState: boolean = false
+let currentToggleGroup: SharedClickAndSlideKey | null = null
+
 // let isDragging = false
 
-const isDraggingListener = (ev: MouseEvent) => {
+type MouseEvCallback = (ev: React.MouseEvent<HTMLDivElement>) => void
+
+export type SharedClickAndSlideKey = string
+export type ClickAndSlideConf = {
+    startingState: boolean
+    toggleGroup: SharedClickAndSlideKey
+}
+
+const mouseUpHandler = (ev: MouseEvent): void => {
     if (ev.button == 0) {
         // isDragging = false
         draggedElement = null
-        window.removeEventListener('mouseup', isDraggingListener, true)
+        window.removeEventListener('mouseup', mouseUpHandler, true)
     }
 }
 
 export const usePressLogic = (
-    p: {
-        onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
-        onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
-        onClick?: (ev: React.MouseEvent<HTMLDivElement>) => void
+    handlers: {
+        onMouseDown?: MouseEvCallback
+        onMouseEnter?: MouseEvCallback
+        onClick?: MouseEvCallback
     },
-    value: boolean,
-) => {
+    conf: ClickAndSlideConf,
+): {
+    onMouseDown: MouseEvCallback | undefined
+    onMouseEnter: MouseEvCallback | undefined
+} => {
     // case 1. regular stuff
-    if (p.onClick == null)
+    if (handlers.onClick == null)
         return {
-            onMouseDown: p.onMouseDown,
-            onMouseEnter: p.onMouseEnter,
+            onMouseDown: handlers.onMouseDown,
+            onMouseEnter: handlers.onMouseEnter,
         }
 
     // case 2.
     return {
-        onMouseDown: (ev: React.MouseEvent<HTMLDivElement>) => {
+        onMouseDown: (ev: React.MouseEvent<HTMLDivElement>): void => {
             if (ev.button == 0) {
-                p.onMouseDown?.(ev)
-                p.onClick?.(ev)
+                currentToggleGroup = conf.toggleGroup
+                handlers.onMouseDown?.(ev)
+                handlers.onClick?.(ev)
                 draggedElement = ev.currentTarget
-                startingState = !value
+                startingState = !conf.startingState
                 // isDragging = true
-                window.addEventListener('mouseup', isDraggingListener, true)
+                window.addEventListener('mouseup', mouseUpHandler, true)
             }
         },
-        onMouseEnter: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            if (startingState === value) return
-            if (draggedElement != null) p.onClick?.(ev)
+        onMouseEnter: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+            if (startingState === conf.startingState) return
+            if (draggedElement != null && currentToggleGroup === conf.toggleGroup) handlers.onClick?.(ev)
         },
     }
 }

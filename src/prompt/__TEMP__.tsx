@@ -137,6 +137,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
             <div className='flex flex-wrap'>
                 {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
                     <InputBoolToggleButtonUI //
+                        toggleGroup='prompt-link'
                         key={widget.id}
                         text={widget.text.slice(0, 10) + '...'}
                         value={uist.currentlyLinkedWidget === widget}

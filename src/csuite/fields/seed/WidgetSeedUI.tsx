@@ -26,6 +26,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             border={csuite.inputBorder}
         >
             <InputBoolToggleButtonUI // Random
+                toggleGroup={field.id}
                 icon='mdiAutoFix'
                 value={field.serial.mode === 'randomize'}
                 onValueChange={() => {
@@ -35,6 +36,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
                 // text='Random'
             />
             <InputBoolToggleButtonUI // Fixed
+                toggleGroup={field.id}
                 icon='mdiNumeric1CircleOutline'
                 value={field.serial.mode === 'fixed'}
                 onValueChange={() => {

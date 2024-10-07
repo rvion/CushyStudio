@@ -9,7 +9,7 @@ import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 // => ok the the other one is probably a togglable button. it was just unclear in SelectOptionUI
 // => can probably merge the two of them, except "input" like style may not make sense for buttons... let's see later
 export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
-    const { onValueChange, iconOff, ...rest } = p
+    const { onValueChange, iconOff, toggleGroup, ...rest } = p
     const isActive = p.value ?? false
     const label = p.text
     const mode = p.mode ?? 'checkbox' // 'checkbox'
@@ -21,7 +21,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             line
             hover
             size='input'
-            triggerOnPress={{ startingState: isActive }}
+            triggerOnPress={{ startingState: isActive, toggleGroup }}
             tw={['select-none cursor-pointer px-0.5']}
             onClick={(ev) => {
                 if (!p.onValueChange) return

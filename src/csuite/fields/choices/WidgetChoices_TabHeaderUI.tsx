@@ -28,6 +28,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                 const isSelected = isActive && field.isBranchEnabled(c.key) // serial.branches[c.key]
                 return (
                     <InputBoolUI
+                        toggleGroup={field.id}
                         icon={c.icon}
                         key={c.key}
                         value={isSelected}
@@ -79,6 +80,7 @@ export const WidgetChoices_TabHeaderSingleLineUI = observer(function WidgetChoic
                     const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
                     return (
                         <InputBoolUI
+                            toggleGroup={field.id}
                             icon={c.icon}
                             key={c.key}
                             value={isSelected}

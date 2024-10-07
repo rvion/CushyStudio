@@ -32,6 +32,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<VA
                 const isSelected = selected === c.id
                 return (
                     <InputBoolUI
+                        toggleGroup={field.id}
                         key={convertSelectKeyToReactKey(c.id)}
                         icon={c.icon}
                         value={isSelected}

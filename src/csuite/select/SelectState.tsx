@@ -5,6 +5,7 @@ import type { SelectProps } from './SelectProps'
 import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
 import React from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
@@ -24,6 +25,7 @@ interface ToolTipPosition {
 export type SelectValueSlots = 'anchor' | 'popup-input' | 'options-list'
 
 export class AutoCompleteSelectState<OPTION> {
+    uid = nanoid()
     // various refs for our select so we can quickly puppet
     // various key dom elements of the select, or move the focus
     // around when needed

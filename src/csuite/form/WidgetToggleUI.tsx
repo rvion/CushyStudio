@@ -16,6 +16,7 @@ export const WidgetToggleUI = observer(function WidgetToggleUI_(p: WidgetToggleP
     const field = p.field as Field_optional
     return (
         <InputBoolUI // toggle to activate/deactivate the optional widget
+            toggleGroup='toggle'
             tw='UI-WidgetToggle self-stretch items-center'
             className={p.className}
             value={field.serial.active}

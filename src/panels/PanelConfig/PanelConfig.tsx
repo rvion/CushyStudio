@@ -110,6 +110,7 @@ const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: {
 }) {
     return (
         <InputBoolToggleButtonUI //
+            toggleGroup='config-tab'
             tw='capitalize h-10'
             value={p.field.is(p.mode)}
             text={p.mode}

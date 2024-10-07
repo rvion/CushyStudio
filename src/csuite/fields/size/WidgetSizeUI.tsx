@@ -37,6 +37,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     const uist = p.size
     const modelBtn = (model: ModelType): JSX.Element => (
         <InputBoolToggleButtonUI //
+            toggleGroup='size'
             tw='w-input'
             value={uist.desiredModelType == model}
             onValueChange={() => {
@@ -169,6 +170,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const uist: Field_size = p.size
     const resoBtn = (ar: AspectRatio): JSX.Element => (
         <InputBoolUI //
+            toggleGroup='size'
             display='button'
             value={uist.desiredAspectRatio == ar}
             onValueChange={() => uist.setAspectRatio(ar)}

@@ -53,6 +53,7 @@ export const LegacyOptions = observer(function LegacyOptions_() {
                 </LegacyFieldUI>
                 <LegacyFieldUI label='Enable TypeChecking Default Apps'>
                     <InputBoolCheckboxUI
+                        toggleGroup='legacy-options'
                         onValueChange={(next) => config.update({ enableTypeCheckingBuiltInApps: next })}
                         value={config.value.enableTypeCheckingBuiltInApps ?? false}
                     />

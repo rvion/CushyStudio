@@ -41,8 +41,11 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
     insideHeight: number = 1.25 // 20px
 
     // misc theming options
-    inputBorder = 0
-    inputContrast = 0
+    inputBorder: number = 0
+    inputContrast: number = 0
+    inputRoundness: number = 3
+
+    // legacy
     labelText = { contrast: 0.48, chroma: 0.035 }
     showWidgetExtra: boolean = true
     truncateLabels?: boolean | undefined = false

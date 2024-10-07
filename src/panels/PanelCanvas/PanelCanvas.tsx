@@ -104,6 +104,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                                 step={10}
                             />
                             <InputBoolToggleButtonUI //
+                                toggleGroup='canvas'
                                 value={canvas.usePenPressure}
                                 onValueChange={() => (canvas.usePenPressure = !canvas.usePenPressure)}
                                 icon={canvas.usePenPressure ? 'mdiPencil' : 'mdiPencilOff'}
@@ -141,6 +142,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                             text='Grid Snapping'
                         />
                         <InputBoolToggleButtonUI
+                            toggleGroup='canvas'
                             icon={canvas.snapToGrid ? 'mdiMagnetOn' : 'mdiMagnet'}
                             value={canvas.snapToGrid}
                             onValueChange={(v) => {
@@ -151,6 +153,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                     </div>
                     <div tw='flex items-end justify-end'>
                         <InputBoolToggleButtonUI
+                            toggleGroup='canvas'
                             value={canvas.enableOverlay}
                             onValueChange={(_) => (canvas.enableOverlay = !canvas.enableOverlay)}
                             icon={canvas.enableOverlay ? 'mdiDrawing' : 'mdiDrawingBox'}

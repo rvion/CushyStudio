@@ -47,6 +47,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 {/* FAVORITE */}
                 {st.library.showFavorites ? (
                     <InputBoolCheckboxUI
+                        toggleGroup='favorite'
                         box={{ border: 0 }}
                         value={app.isFavorite}
                         onValueChange={(v) => app.setFavorite(v)}

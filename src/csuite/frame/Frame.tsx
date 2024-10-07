@@ -12,7 +12,7 @@ import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
-import { usePressLogic } from '../button/usePressLogic'
+import { type ClickAndSlideConf, usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
@@ -53,7 +53,7 @@ export type FrameProps = {
 
     // logic --------------------------------------------------
     /** TODO: */
-    triggerOnPress?: { startingState: boolean }
+    triggerOnPress?: ClickAndSlideConf
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
     loading?: boolean
@@ -210,7 +210,7 @@ export const Frame = observer(
                 }
                 {...rest}
                 {...(triggerOnPress != null
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider

@@ -58,6 +58,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                         placeholder='Search...'
                         slotBeforeInput={
                             <InputBoolUI
+                                toggleGroup='panel-icon-filter'
                                 tw='mr-1'
                                 value={uist.filter}
                                 icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}

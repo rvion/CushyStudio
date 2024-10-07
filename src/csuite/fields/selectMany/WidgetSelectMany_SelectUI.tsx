@@ -69,6 +69,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
             />
             {field.config.wrapButton && (
                 <InputBoolFlipButtonUI
+                    toggleGroup={field.id}
                     tooltip='Wrap items'
                     tw='self-start'
                     icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}

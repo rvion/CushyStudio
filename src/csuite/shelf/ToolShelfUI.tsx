@@ -110,7 +110,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
     )
 })
 
-function getFlex(pState: ToolShelfPanelState) {
+function getFlex(pState: ToolShelfPanelState): 'flex-row' | 'flex-col' {
     const size = cushy.preferences.interface.value.toolBarIconSize
     if (pState.size < size * 2 && pState.size > size) {
         return 'flex-row'
@@ -148,6 +148,7 @@ export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
     const expand = p.panelState.size > iconSize * 2
     return (
         <InputBoolToggleButtonUI //
+            toggleGroup='shelf'
             style={{
                 //
                 width: `${!expand ? iconSize : p.panelState.size}px`,
