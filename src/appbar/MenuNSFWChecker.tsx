@@ -2,30 +2,21 @@ import { observer } from 'mobx-react-lite'
 
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../csuite/messages/MessageWarningUI'
-import { RevealUI } from '../csuite/reveal/RevealUI'
-import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { useSt } from '../state/stateContext'
+import { Button } from '../csuite/button/Button'
 
 export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
-    const st = useSt()
-    const pj = st.project
-    const val = pj.filterNSFW
+    const pj = useSt().project
     return (
-        <RevealUI trigger='hover' showDelay={0} content={() => <NSFWToggleUI />}>
-            <label tw='swap swap-flip'>
-                <input
-                    type='checkbox'
-                    checked={val}
-                    onChange={(ev) => {
-                        console.log(`[🧐] was`, val)
-                        console.log(`[🧐] willbe`, val ? SQLITE_false : SQLITE_true)
-                        pj.filterNSFW = !val
-                    }}
-                />
-                <div tw='swap-on'>😇</div>
-                <div tw='swap-off'>😈</div>
-            </label>
-        </RevealUI>
+        <Button //
+            tooltip={pj.filterNSFW ? 'NSFW Filter Enabled' : 'NSFW Filter Disabled'}
+            borderless
+            subtle
+            square
+            onClick={() => (pj.filterNSFW = !pj.filterNSFW)}
+        >
+            {pj.filterNSFW ? '😇' : '😈'}
+        </Button>
     )
 })
 
