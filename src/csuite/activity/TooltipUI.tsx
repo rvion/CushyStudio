@@ -21,7 +21,15 @@ export const TooltipUI = observer(function TooltipUI_(p: {}) {
 
     return (
         <div style={pos} tw='absolute rounded top-0 left-0 [z-index:99999] whitespace-pre'>
-            <Frame base={80} border shadow tw='px-1 py-0.5 opacity-70'>
+            <Frame
+                // (bird_d): (THEME-TODO) Theming here should be separated from the input stuff since tooltips aren't really inputs, but okay for now. Opacity is annoying because it blends with the stuff behind it, making tooltips harder to read. If you don't want them to block the stuff under it, simply move off the thing displaying the tooltip. This is also why you don't want them to be shown instantly the majority of the time, since that will annoyingly block everything.
+                base={csuite.base}
+                roundness={csuite.inputRoundness}
+                border={csuite.inputBorder}
+                shadow
+                dropShadow={{ y: 3, blur: 3, opacity: 0.33 }}
+                tw='p-2'
+            >
                 <div>{txt}</div>
             </Frame>
         </div>
