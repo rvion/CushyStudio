@@ -225,6 +225,11 @@ export class Presenter {
             }
         }
 
+        // eval rule from config
+        if (field.config.uiui != null) {
+            evalRuleOrConf(field.config.uiui)
+        }
+
         // eval last ruleOrConf passed as parameter
         // ⏸️ console.log(`[💄]    | plus current rule:`, finalRuleOrConf)
         evalRuleOrConf(finalRuleOrConf)
