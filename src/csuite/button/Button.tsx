@@ -36,11 +36,12 @@ const _Button = observer(function Button_(p: ButtonProps) {
             as='button'
             size={size ?? 'input'}
             look={look}
-            boxShadow={
-                uist.visuallyActive || p.subtle || p.borderless //
-                    ? undefined
-                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
-            }
+            // (bird_d): Need to make this optional, disabling it to make it consistent with everything else for now
+            // boxShadow={
+            //     uist.visuallyActive || p.subtle || p.borderless //
+            //         ? undefined
+            //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+            // }
             base={{
                 contrast: subtle //
                     ? 0
