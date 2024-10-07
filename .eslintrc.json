@@ -8,6 +8,14 @@
     },
     "plugins": ["@typescript-eslint", "unused-imports"],
     "rules": {
+        "no-restricted-properties": [
+            "error",
+            {
+                "object": "window",
+                "property": "addEventListener",
+                "message": "Please use 'window_addEventListener' instead of 'window.addEventListener'."
+            }
+        ],
         "@typescript-eslint/naming-convention": "off",
         "unused-imports/no-unused-imports": "error",
         "@typescript-eslint/semi": "off",
