@@ -74,6 +74,9 @@ export type FrameProps = {
 
     suffixIcon?: Maybe<IconName>
     noColorStuff?: boolean
+
+    /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
+    align?: boolean
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
@@ -87,7 +90,7 @@ export const Frame = observer(
         const {
             as,                                                 // html
 
-            active, disabled,                                   // built-in state & style modifiers
+            align, active, disabled,                            // built-in state & style modifiers
             icon, iconSize, suffixIcon, loading,                // addons
             expand, square, size,                               // size
 
@@ -188,6 +191,13 @@ export const Frame = observer(
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
                     p.wrap && 'flex-wrap',
+                    p.align && [
+                        // Clip children to fix border issues and make the children styled correctly
+                        'overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 h-input',
+                        // Add borders/"dividers" where needed (Right of every child except last)
+                        '[&>*:not(:last-child)]:!border-r',
+                        // '[&>*:not(:last-child)]:!mr-[1px]',
+                    ],
                     className,
                 ]}
                 // style={{ position: 'relative' }}

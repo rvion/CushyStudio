@@ -20,8 +20,8 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
                 'h-input',
                 'flex-1 flex items-center',
                 // bird_d: Need to put this as a tw alias or make a wrapper component
-                'overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 h-input',
             ]}
+            align
             roundness={csuite.inputRoundness}
             border={csuite.inputBorder}
         >

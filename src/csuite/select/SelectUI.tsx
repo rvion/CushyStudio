@@ -76,6 +76,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         'h-full',
                         'flex items-center flex-grow',
                     ]}
+                    align
                     base={csuite.inputContrast}
                     border={csuite.inputBorder}
                     roundness={csuite.inputRoundness}
@@ -88,11 +89,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     <AnchorContentComp select={select} />
                     {p.clearable && (
                         <Button
-                            // subtle
-                            tw='!rounded-none'
-                            borderless
                             square
-                            // size='inside'
                             icon='_clear'
                             onFocus={(ev) => ev.stopPropagation()}
                             onClick={(ev) => {
