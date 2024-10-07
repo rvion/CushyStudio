@@ -44,26 +44,14 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
         <div tw='flex gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
             {plugins.map((plugin) => {
                 const active = cushy.configFile.get(plugin.configKey) ?? false
-                // const Icon = Ikon[plugin.icon]
                 return (
-                    <RevealUI
-                        key={plugin.key}
-                        trigger='hover'
-                        placement='topEnd'
-                        content={() => (
-                            <div tw='p-2'>
-                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                <div tw='whitespace-nowrap'>{plugin.description}</div>
-                            </div>
-                        )}
-                    >
-                        <InputBoolToggleButtonUI
-                            iconSize='1.2em'
-                            value={Boolean(active)}
-                            icon={plugin.icon}
-                            onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
-                        />
-                    </RevealUI>
+                    <InputBoolToggleButtonUI
+                        tooltip={`${plugin.title}\n${plugin.description}`}
+                        iconSize='1.2em'
+                        value={Boolean(active)}
+                        icon={plugin.icon}
+                        onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
+                    />
                 )
             })}
         </div>

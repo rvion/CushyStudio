@@ -5,7 +5,7 @@ import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
-import { HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
+import { ConnectionInfoUI, HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
 import { MenuAboutUI } from './MenuAboutUI'
@@ -52,9 +52,12 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <PerspectivePickerUI tw='self-center mx-auto' />
 
             <SpacerUI />
-            <HostWebsocketIndicatorUI host={mainHost} />
-            <HostSchemaIndicatorUI host={mainHost} />
-            <MenuNSFWCheckerUI />
+            <Frame line>
+                <ConnectionInfoUI host={mainHost} />
+                {/* <HostWebsocketIndicatorUI host={mainHost} /> */}
+                {/* <HostSchemaIndicatorUI host={mainHost} /> */}
+                <MenuNSFWCheckerUI />
+            </Frame>
             {/* </PanelHeaderUI> */}
         </Frame>
     )
