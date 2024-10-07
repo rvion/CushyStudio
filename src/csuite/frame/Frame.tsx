@@ -7,6 +7,7 @@ import type { SimpleBoxShadow } from './SimpleBoxShadow'
 import type { SimpleDropShadow } from './SimpleDropShadow'
 import type { ForwardedRef, MouseEvent } from 'react'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext, useState } from 'react'
 
@@ -134,11 +135,13 @@ export const Frame = observer(
             if (tooltip != null) {
                 const elem = ev.currentTarget
                 const depth = getDOMElementDepth(elem)
-                tooltipStuff.tooltips.set(depth, {
-                    depth,
-                    ref: elem,
-                    text: tooltip ?? 'test',
-                    placement: tooltipPlacement ?? 'auto',
+                runInAction(() => {
+                    tooltipStuff.tooltips.set(depth, {
+                        depth,
+                        ref: elem,
+                        text: tooltip ?? 'test',
+                        placement: tooltipPlacement ?? 'auto',
+                    })
                 })
             }
         }
@@ -150,7 +153,9 @@ export const Frame = observer(
                 const depth = getDOMElementDepth(elem)
                 const prev = tooltipStuff.tooltips.get(depth)
                 if (prev?.ref === ev.currentTarget) {
-                    tooltipStuff.tooltips.delete(depth)
+                    runInAction(() => {
+                        tooltipStuff.tooltips.delete(depth)
+                    })
                 }
             }
         }
