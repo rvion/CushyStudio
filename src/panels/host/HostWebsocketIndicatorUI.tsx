@@ -5,6 +5,49 @@ import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
+import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
+
+export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
+    const host = p.host
+    const size = host.schema?.size ?? 0
+    const connected = p.host.isConnected
+    const csuite = useCSuite()
+    return (
+        <RevealUI
+            showDelay={0}
+            content={() => {
+                return (
+                    <Frame>
+                        <div>
+                            {p.host.data.isVirtual ? <div tw='p-2'>Not Applicable</div> : <HostQuickMenuUI host={p.host} />}
+                        </div>
+                        <div tw='text-xs text-opacity-50'>({size} nodes)</div>
+                        {p.host.ws?.isOpen ? null : (
+                            <Message showIcon type='warning'>
+                                <div>Is your ComfyUI server running? </div>
+                                <div>You config file says it should be accessible at</div>
+                                <div>{host.getServerHostHTTP()}</div>
+                                <div>{host.getWSUrl()}</div>
+                            </Message>
+                        )}
+                        <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
+                        <QuickHostActionsUI host={host} />
+                    </Frame>
+                )
+            }}
+        >
+            <Button //
+                tooltip='Host information'
+                borderless
+                square
+                look={connected ? 'success' : 'error'}
+                icon={connected ? 'mdiServer' : 'mdiServerOff'}
+            />
+        </RevealUI>
+    )
+})
 
 export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
     //
