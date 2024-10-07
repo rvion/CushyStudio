@@ -132,7 +132,8 @@ export class Presenter {
          * that where the magic happen; since fields know the extra type of their children,
          * any field can quickly add a bunch of rule for all of it's descendants.
          */
-        const addForField = <SUB extends Field>(sub: SUB, ruleOrConf: RuleOrConf<SUB>): any => {
+        const addForField = <SUB extends Field>(sub: Maybe<SUB>, ruleOrConf: RuleOrConf<SUB>): any => {
+            if (sub == null) return
             let sub_ = sub as Field
             if (sub_ === field) {
                 // ⏸️ console.log(`[💄@${sub.path} ] adding a self rule (why though❓); merging it right now`)
@@ -449,7 +450,7 @@ const presets = {
 
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
-    forField<Sub extends Field>(field: Sub, x: RuleOrConf<Sub>): void
+    forField<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
     forChildrenOf<Sub extends Field>(field: Sub, x: RuleOrConf<Sub['$Child']>): void
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
     forAllFields(x: RuleOrConf<Field>): void
