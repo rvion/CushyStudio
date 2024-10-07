@@ -1,4 +1,6 @@
-import { type ForwardedRef, type RefObject, useEffect } from 'react'
+import type { ForwardedRef, RefObject } from 'react'
+
+import { useEffectAction } from '../utils/useEffectAction'
 
 /**
  * when parent forwards a ref but we need to have another ref on the same element
@@ -12,7 +14,7 @@ export function useSyncForwardedRef(
     forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>,
     localRef: RefObject<HTMLDivElement>,
 ): void {
-    useEffect(() => {
+    useEffectAction(() => {
         if (forwaredRef == null) return
         if (typeof forwaredRef === 'function') forwaredRef(localRef.current)
         else forwaredRef.current = localRef.current

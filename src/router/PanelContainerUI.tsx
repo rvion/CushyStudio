@@ -1,11 +1,12 @@
 import type * as FL from 'flexlayout-react'
 
 import { observer } from 'mobx-react-lite'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
+import { useMemoAction } from '../csuite/utils/useMemoAction'
 import { PanelName, panels } from './PANELS'
 import { PanelState } from './PanelState'
 import { PanelStateByNode } from './PanelStateByNode'
@@ -21,7 +22,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
     const { panelName, panelProps, flexLayoutTabNode } = p
     const panelDef = (panels as any)[panelName]
     const panelURI = p.flexLayoutTabNode.getId()
-    const panelState = useMemo(() => {
+    const panelState = useMemoAction(() => {
         const ps = new PanelState(flexLayoutTabNode, panelURI, panelDef)
         // PanelStateById.set(panelID, ps)
         PanelStateByNode.set(panelURI, ps)
