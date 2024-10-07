@@ -15,7 +15,7 @@ export type $CushySDXLUI = X.XGroup<{
     model: $prefabModelSD15andSDXL
     latent: UI_LatentV3
     sampler: UI_Sampler_Advanced
-    customSave: X.XOptional<UI_customSave>
+    customSave: UI_customSave
     controlnets: UI_cnet
     ipAdapter: X.XOptional<UI_IPAdapterV2>
     faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -66,7 +66,7 @@ export function CushySDXLUI(ui: X.Builder): $CushySDXLUI {
             size: { default: { modelType: 'SDXL 1024' } },
         }),
         sampler: ui_sampler_advanced(),
-        customSave: ui_customSave().optional(true),
+        customSave: ui_customSave(),
         controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
