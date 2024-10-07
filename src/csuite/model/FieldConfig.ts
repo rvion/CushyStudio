@@ -14,7 +14,8 @@ import type { Problem_Ext } from './Validation'
 export type FieldConfig<X, T extends FieldTypes> = X & FieldConfig_CommonProperties<T>
 
 export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
-    uiui?: CATALOG.variants[T['$Type']]
+    // TODO: rename to `ui`
+    uiui?: RENDERER.UIConf<T['$Field']>
     /**
      * @since 2024-05-20
      * @stability beta
