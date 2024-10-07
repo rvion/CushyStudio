@@ -40,7 +40,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
         )
 
     return (
-        <Row>
+        // bird_d: Why did this need to be a Row? Why does Row not use Frame? wtf is <Dov>
+        // gl if this breaks anything
+        <>
             <RevealUI //
                 ref={select.revealStateRef}
                 trigger='pseudofocus'
@@ -107,7 +109,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     {p.createOption.label ?? 'Créer'}
                 </Button>
             )}
-        </Row>
+        </>
     )
 })
 
