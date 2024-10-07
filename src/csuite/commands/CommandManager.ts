@@ -1,7 +1,7 @@
 import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 
 import { META_NAME, MOD_KEY } from '../accelerators/META_NAME'
 import { Trigger } from '../trigger/Trigger'
@@ -24,6 +24,28 @@ export type KeyEventInfo = {
 }
 
 export class CommandManager {
+    constructor(
+        public conf: {
+            log?: boolean
+            name?: string
+        } = {},
+    ) {
+        makeAutoObservable(this, {
+            commands: observable.shallow,
+            commandByShortcut: observable.shallow,
+            commandByContext: observable.shallow,
+            contextByName: observable.shallow,
+
+            // items are readonly, no need to make them recursively observabel
+            lastTriggered: observable.shallow,
+
+            // @ts-ignore
+            _lastTriggeredNextUID: false,
+        })
+
+        this.name = this.conf.name || 'no-name' //shortId()
+    }
+
     /** index of all commands, by their ID */
     commands: Map<Command['id'], Command> = new Map()
 
@@ -45,6 +67,7 @@ export class CommandManager {
         shortcut: string
         tokens: InputToken[]
     }[] = []
+
     private _lastTriggeredNextUID: number = 1
     private _recordInHistory(command: Command, shortcut: string, tokens: InputToken[]): void {
         this.lastTriggered.unshift({
@@ -63,7 +86,7 @@ export class CommandManager {
         return Array.from(this.contextByName.values())
     }
 
-    registerCommand = (op: Command): void => {
+    registerCommand(op: Command): void {
         this.contextByName.set(op.ctx.name, op.ctx)
         this.commands.set(op.id, op)
         const combos: CushyShortcut[] = op.combos == null ? [] : Array.isArray(op.combos) ? op.combos : [op.combos]
@@ -90,23 +113,6 @@ export class CommandManager {
         return this.commands.get(id)
     }
 
-    constructor(
-        public conf: {
-            log?: boolean
-            name?: string
-        } = {},
-    ) {
-        makeObservable(this, {
-            inputHistory: true,
-            contextByName: observable.shallow,
-            commandByShortcut: observable.shallow,
-            knownContexts: computed,
-            // items are readonly, no need to make them recursively observabel
-            lastTriggered: observable.shallow,
-        })
-
-        this.name = this.conf.name || 'no-name' //shortId()
-    }
     log = (...content: any[]): void => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
 
     private evInInput = (ev: KeyboardEvent<HTMLElement>): boolean => {
