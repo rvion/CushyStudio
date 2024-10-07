@@ -35,7 +35,8 @@ import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesBu
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { type CushyHeadProps, CushyHeadUI, ShellCushyLeftUI } from '../shells/ShellCushy'
+import { type CushyHeadProps, CushyHeadUI } from '../shells/CushyHead'
+import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { PresenterCtx, usePresenterOrNull } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
