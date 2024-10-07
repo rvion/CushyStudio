@@ -1,5 +1,6 @@
 import '../../ALL_CMDS'
 
+import { action, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
@@ -13,6 +14,7 @@ import { computeColors } from '../../csuite/frame/FrameColors'
 import { Kolor } from '../../csuite/kolor/Kolor'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
 import { Trigger } from '../../csuite/trigger/Trigger'
+import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { FavBarUI } from './FavBar'
@@ -26,7 +28,7 @@ export const CushyUI = observer(function CushyUI_() {
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
-        function handleKeyDown(event: KeyboardEvent): void {
+        const handleKeyDown = action((event: KeyboardEvent): void => {
             const x: Trigger = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
@@ -51,8 +53,8 @@ export const CushyUI = observer(function CushyUI_() {
                 event.preventDefault()
                 event.stopPropagation()
             }
-        }
-        window.addEventListener('keydown', handleKeyDown)
+        })
+        window_addEventListener('keydown', handleKeyDown)
         if (document.activeElement === document.body) current.focus()
         return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])

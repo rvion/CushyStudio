@@ -2,6 +2,8 @@ import type { OwnShelfProps } from './ShelfUI'
 
 import { makeAutoObservable } from 'mobx'
 
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
+
 let startValue: number = 0
 
 export class ShelfState {
@@ -25,10 +27,10 @@ export class ShelfState {
         startValue = this.size
 
         this.dragging = true
-        window.addEventListener('mousemove', this.onMouseMove, true)
-        window.addEventListener('pointerup', this.end, true)
-        window.addEventListener('mousedown', this.cancel, true)
-        window.addEventListener('keydown', this.cancel, true)
+        window_addEventListener('mousemove', this.onMouseMove, true)
+        window_addEventListener('pointerup', this.end, true)
+        window_addEventListener('mousedown', this.cancel, true)
+        window_addEventListener('keydown', this.cancel, true)
     }
 
     cancel = (ev: MouseEvent | KeyboardEvent): void => {

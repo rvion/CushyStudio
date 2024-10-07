@@ -1,3 +1,7 @@
+import { action } from 'mobx'
+
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
+
 let draggedElement: HTMLElement | null = null
 let startingState: boolean = false
 let currentToggleGroup: SharedClickAndSlideKey | null = null
@@ -12,13 +16,13 @@ export type ClickAndSlideConf = {
     toggleGroup: SharedClickAndSlideKey
 }
 
-const mouseUpHandler = (ev: MouseEvent): void => {
+const mouseUpHandler = action((ev: MouseEvent): void => {
     if (ev.button == 0) {
         // isDragging = false
         draggedElement = null
         window.removeEventListener('mouseup', mouseUpHandler, true)
     }
-}
+})
 
 export const usePressLogic = (
     handlers: {
@@ -48,7 +52,7 @@ export const usePressLogic = (
                 draggedElement = ev.currentTarget
                 startingState = !conf.startingState
                 // isDragging = true
-                window.addEventListener('mouseup', mouseUpHandler, true)
+                window_addEventListener('mouseup', mouseUpHandler, true)
             }
         },
         onMouseEnter: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {

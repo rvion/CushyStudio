@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
@@ -118,7 +119,7 @@ export class ButtonState {
         if (this.running) return
 
         this.pressed = true
-        window.addEventListener('pointerup', this.release, true)
+        window_addEventListener('pointerup', this.release, true)
     }
 
     release = (/* e: MouseEvent */): void => {

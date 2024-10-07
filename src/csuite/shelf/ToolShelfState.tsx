@@ -1,6 +1,8 @@
+import type { ToolShelfProps } from './ToolShelfUI'
+
 import { makeAutoObservable } from 'mobx'
 
-import type { ToolShelfProps } from './ToolShelfUI'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 let startValue = 0
 export class ToolShelfState {
@@ -16,17 +18,17 @@ export class ToolShelfState {
     size: number
     dragging: boolean = false
 
-    begin = () => {
+    begin = (): void => {
         startValue = this.size = this.props.panelState.size
 
         this.dragging = true
-        window.addEventListener('mousemove', this.onMouseMove, true)
-        window.addEventListener('pointerup', this.end, true)
-        window.addEventListener('mousedown', this.cancel, true)
-        window.addEventListener('keydown', this.cancel, true)
+        window_addEventListener('mousemove', this.onMouseMove, true)
+        window_addEventListener('pointerup', this.end, true)
+        window_addEventListener('mousedown', this.cancel, true)
+        window_addEventListener('keydown', this.cancel, true)
     }
 
-    cancel = (ev: MouseEvent | KeyboardEvent) => {
+    cancel = (ev: MouseEvent | KeyboardEvent): void => {
         // Only cancel if right click
         if (ev instanceof MouseEvent && ev.button != 2) {
             return
@@ -41,7 +43,7 @@ export class ToolShelfState {
         this.end()
     }
 
-    onMouseMove = (ev: MouseEvent) => {
+    onMouseMove = (ev: MouseEvent): void => {
         switch (this.props.anchor) {
             case 'left':
                 this.size += ev.movementX
@@ -64,13 +66,14 @@ export class ToolShelfState {
             return
         }
         if (this.size <= iconSize * 2) {
-            return (pState.size = Math.round(this.size / iconSize) * iconSize)
+            pState.size = Math.round(this.size / iconSize) * iconSize
+            return
         }
 
         this.props.panelState.size = this.size
     }
 
-    end = () => {
+    end = (): void => {
         this.dragging = false
         window.removeEventListener('mousemove', this.onMouseMove, true)
         window.removeEventListener('pointerup', this.end, true)
@@ -89,7 +92,7 @@ export class ToolShelfState {
         return this.props.anchor == 'left' || this.props.anchor == 'right'
     }
 
-    computeResizeAnchor = () => {
+    computeResizeAnchor = (): 'right' | 'left' | 'top' | 'bottom' => {
         switch (this.props.anchor) {
             case 'left':
                 return 'right'
@@ -102,12 +105,12 @@ export class ToolShelfState {
         }
     }
 
-    show = () => {
+    show = (): void => {
         this.props.panelState.visible = true
     }
 
     /** Hides the panel, do not adjust the size here as we return to that size when shown. */
-    hide = () => {
+    hide = (): void => {
         this.props.panelState.visible = false
     }
 }

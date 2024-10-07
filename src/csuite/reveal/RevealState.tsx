@@ -664,7 +664,7 @@ function focusNextElement(dir: 'next' | 'prev'): void {
 // | as soon as the moouse move just one pixel, popup close.
 // |  =>  commenting it out until we find a solution confortable in all cases
 
-// window.addEventListener('mousemove', this.MouseMoveTooFar, true)
+// window_addEventListener('mousemove', this.MouseMoveTooFar, true)
 
 // selectUI state:
 //   - hasMouseEntered: boolean = false

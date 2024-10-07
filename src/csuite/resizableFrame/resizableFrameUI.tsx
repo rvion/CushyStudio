@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { PanelHeaderUI } from '../panel/PanelHeaderUI'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -52,19 +53,19 @@ class ResizableFrameStableState {
         makeAutoObservable(this)
     }
 
-    start = () => {
+    start = (): void => {
         startValue = this.size
         offset = 0
-        window.addEventListener('mousemove', this.resize, true)
-        window.addEventListener('pointerup', this.stop, true)
+        window_addEventListener('mousemove', this.resize, true)
+        window_addEventListener('pointerup', this.stop, true)
     }
 
-    stop = () => {
+    stop = (): void => {
         window.removeEventListener('mousemove', this.resize, true)
         window.removeEventListener('pointerup', this.stop, true)
     }
 
-    resize = (e: MouseEvent) => {
+    resize = (e: MouseEvent): void => {
         if (this.props.relative) {
             return this.props.onResize?.(e.movementY)
         }

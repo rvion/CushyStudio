@@ -8,6 +8,7 @@ import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
 
@@ -319,10 +320,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         cumulativeOffset = 0
                         dragged = false
 
-                        window.addEventListener('mousemove', uist.mouseMoveListener, true)
-                        window.addEventListener('pointerup', uist.onPointerUpListener, true)
-                        window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
-                        window.addEventListener('mousedown', uist.cancelListener, true)
+                        window_addEventListener('mousemove', uist.mouseMoveListener, true)
+                        window_addEventListener('pointerup', uist.onPointerUpListener, true)
+                        window_addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                        window_addEventListener('mousedown', uist.cancelListener, true)
 
                         /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
                          *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
