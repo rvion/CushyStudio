@@ -173,6 +173,7 @@ export class Presenter {
                     forAllFields: addForAllFields,
                     forChildrenOf: addForChildrenOf,
                     forChildrenOfFieldWithTypes: addForChildrenOfFieldWithTypes,
+                    presets,
                 }) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
                 if (_slots) slots = mergeDefined(slots, _slots)
             } else {
@@ -440,6 +441,12 @@ export type RuleOrConf<FIELD extends Field> =
     | DisplayRule<FIELD>
     | DisplayConf<FIELD> // RenderDSL<FIELD['$Child']['$Field']>
 
+const typed = <T extends any>(t: T): T => t
+
+const presets = {
+    noLabel: typed<DisplayConf<any>>({ LabelText: null, Icon: null, Indent: null }),
+}
+
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
     forField<Sub extends Field>(field: Sub, x: RuleOrConf<Sub>): void
@@ -447,6 +454,7 @@ export type DisplayRuleCtx<FIELD extends Field = Field> = {
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
     forAllFields(x: RuleOrConf<Field>): void
     catalog: CATALOG.widgets
+    presets: typeof presets
 }
 
 export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, UISlots<FIELD> | undefined | void>
