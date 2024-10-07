@@ -113,7 +113,6 @@ export class LiveDB {
         // _listAllTables(this)
 
         // ---------------------------------------------------------
-        makeAutoObservable(this)
 
         // 3. create tables (after the store has benn made already observable)
         this.project = new ProjectRepo(this)
@@ -138,6 +137,7 @@ export class LiveDB {
         this.auth = new AuthRepo(this)
 
         // console.log('🟢 TABLE INITIALIZED')
+        makeAutoObservable(this)
     }
 
     rawAll(sql: string): void {
