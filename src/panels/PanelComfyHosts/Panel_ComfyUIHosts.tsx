@@ -6,6 +6,8 @@ import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { HostUI } from '../host/HostUI'
 import { AddHostBtnUI } from './AddHostBtnUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 export type PanelComfyHostProps = {
     hostID?: HostID
@@ -24,23 +26,30 @@ export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelCo
     const st = useSt()
     const allHosts = st.hosts
     const mainHost = st.mainHost
+    const csuite = useCSuite()
 
     return (
         <div tw='w-full h-full flex flex-col gap-2 p-2'>
-            <MessageInfoUI>The Primary host is the one used for typings, and to send prompts to by default.</MessageInfoUI>
             <div className='line'>
-                <div>Primary Host:</div>
-                <SelectUI
-                    //
-                    options={() => allHosts}
-                    value={() => mainHost}
-                    getLabelText={(host) => host.data.name}
-                    onOptionToggled={(host) => host.electAsPrimary()}
-                />
+                <div>Primary Host</div>
+                <Frame //
+                    align
+                    border
+                    line
+                    tw='flex flex-grow'
+                    roundness={csuite.inputRoundness}
+                >
+                    <SelectUI
+                        tooltip='The Primary host is the one used for typings, and to send prompts to by default.'
+                        options={() => allHosts}
+                        value={() => mainHost}
+                        getLabelText={(host) => host.data.name}
+                        onOptionToggled={(host) => host.electAsPrimary()}
+                    />
+                    <AddHostBtnUI />
+                </Frame>
             </div>
-            <div tw='text-xl font-bold'>
-                My Custom Hosts <AddHostBtnUI />
-            </div>
+            <div tw='text-xl font-bold'>My Custom Hosts</div>
             <div tw='flex flex-wrap gap-2'>
                 {allHosts
                     ?.filter((g) => !g.isReadonly)
