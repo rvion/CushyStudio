@@ -138,7 +138,7 @@ export class RevealState {
     subRevealsCurrentlyVisible = new Set<number>()
 
     /** how deep in the reveal stack we are */
-    get ix(): number {
+    get depth(): number {
         return this.parents.length
     }
 
@@ -267,11 +267,11 @@ export class RevealState {
 
     // possible triggers ------------------------------------------------------
     get showDelay(): number {
-        return this.p.showDelay ?? (this.ix ? defaultShowDelay_whenNested : defaultShowDelay_whenRoot)
+        return this.p.showDelay ?? (this.depth ? defaultShowDelay_whenNested : defaultShowDelay_whenRoot)
     }
 
     get hideDelay(): number {
-        return this.p.hideDelay ?? (this.ix ? defaultHideDelay_whenNested : defaultHideDelay_whenRoot)
+        return this.p.hideDelay ?? (this.depth ? defaultHideDelay_whenNested : defaultHideDelay_whenRoot)
     }
 
     get placement(): RevealPlacement {
@@ -343,6 +343,7 @@ export class RevealState {
         this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
     }
 
+    /** push self in tower stack */
     private _register(): void {
         global_RevealStack.push(this)
     }
@@ -528,12 +529,12 @@ export class RevealState {
     // STACK RELATED STUFF --------------------
     enterChildren = (depth: number): void => {
         // this._resetAllChildrenTimouts()
-        this.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
+        this.log(`[🤠] entering children (of ${this.depth}) ${depth}`)
         this.subRevealsCurrentlyVisible.add(depth)
     }
 
     leaveChildren = (depth: number): void => {
-        this.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
+        this.log(`[🤠] leaving children (of ${this.depth}) ${depth}`)
         // this._resetAllChildrenTimouts()
         this.subRevealsCurrentlyVisible.delete(depth)
     }
@@ -625,6 +626,7 @@ export class RevealState {
                 this.placement === 'screen-top-right'
             )
                 return // 🔶 tab should not close popups
+
             // 🔶 todo: proper "if shouldHideOnTab"...
             this.close(reason)
             // 🔴 if in grid context, do not stop propagation and do not focusNextElement so the grid focus the next cell (which have tabIndex=-1) itself
@@ -677,7 +679,8 @@ export class RevealState {
 
     log(msg: string): void {
         if (!DEBUG_REVEAL) return
-        console.log(`🎩 ${this.ix.toString()} | ${this.uid.toString().padStart(2)}`, msg)
+        console.log(`🎩 ${'    '.repeat(this.depth)} | uid=${this.uid.toString().padStart(2)}`, msg)
+        // console.log(`🎩 ${'    '.repeat(this.ix)} depth=${this.ix.toString()} | uid=${this.uid.toString().padStart(2)}`, msg)
     }
 
     get backdropColor(): string | undefined {
