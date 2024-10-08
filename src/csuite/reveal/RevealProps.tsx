@@ -31,6 +31,7 @@ export type RevealShowTrigger =
     | 'clickAndHover'
     | 'none' // 🔴 TODO
     | 'rightClick' // 🔴 TODO
+    | 'menubar-item' // complex standard menubar behaviour
 
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }

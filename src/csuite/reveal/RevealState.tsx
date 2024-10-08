@@ -178,6 +178,8 @@ export class RevealState {
         if (this.revealTrigger === 'clickAndHover') return { clickAnchor: true, backdropClick: true, escapeKey: true } // prettier-ignore
         if (this.revealTrigger === 'hover') return { mouseOutside: true }
         if (this.revealTrigger === 'pseudofocus') return { clickAnchor: true, backdropClick: true, escapeKey: true }
+        if (this.revealTrigger === 'menubar-item') return { clickAnchor: true, backdropClick: true, escapeKey: true }
+
         exhaust(this.revealTrigger)
     }
 
@@ -230,6 +232,7 @@ export class RevealState {
 
     get shouldRevealOnAnchorClick(): boolean {
         if (this.revealTrigger == 'none') return false
+        if (this.revealTrigger === 'menubar-item') return true
         return (
             this.revealTrigger == 'pseudofocus' ||
             this.revealTrigger == 'click' || //
@@ -246,6 +249,16 @@ export class RevealState {
 
     get shouldRevealOnAnchorHover(): boolean {
         if (this.revealTrigger == 'none') return false
+
+        if (this.revealTrigger === 'menubar-item' /* TODO menubar logic */) {
+            // console.log(`[🎩🔴1] RevealState.shared.current is ${RevealState.shared.current?.uid} at depth ${RevealState.shared.current?.depth}`)
+            const current = RevealState.shared.current
+            if (current == null) return false
+            // if I'm in a sibling (or a sibling descendant) of the current reveal, I should reveal on hover
+            if (current.parents.length >= this.parents.length) return true
+            // console.log(`[🎩🔴2] current.parents.length(${current.parents.length}) is NOT >= this.parents.length(${this.parents.length})`)
+        }
+
         return (
             this.revealTrigger == 'hover' || //
             this.revealTrigger == 'clickAndHover'
