@@ -11,6 +11,7 @@ import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'
 import { MessageErrorUI } from '../csuite'
+import { Button } from '../csuite/button/Button'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { Frame } from '../csuite/frame/Frame'
 import { Surface } from '../csuite/inputs/shims'
@@ -30,7 +31,6 @@ export interface FileListProps {
 }
 
 export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className?: string; file: File }) {
-    const st = useSt()
     const file = p.file
     const url = URL.createObjectURL(p.file)
     const uiSt = useLocalObservable(() => ({ validImage: false }))
@@ -44,15 +44,16 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
                 style={{ width: '5rem', height: '5rem' }}
                 src={url}
             />
-            <div
-                tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
+            <Button
+                look='primary'
+                size='sm'
+                disabled={!uiSt.validImage}
                 onClick={async () => {
                     if (!uiSt.validImage) return
                     await createMediaImage_fromFileObject(file)
                 }}
-            >
-                import as image
-            </div>
+                children='Import as image'
+            />
         </div>
     )
 })
@@ -145,8 +146,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
             <div tw='join'>
                 {partialImportConfs.map((conf) => (
-                    <div
-                        tw='btn btn-sm btn-outline join-item'
+                    <Button
+                        size='sm'
+                        tw='join-item'
                         key={conf.title}
                         onClick={async () => {
                             //
@@ -160,7 +162,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                         }}
                     >
                         {conf.title}
-                    </div>
+                    </Button>
                 ))}
             </div>
 

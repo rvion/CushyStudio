@@ -1,12 +1,14 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../csuite/button/Button'
 import { GitManagedFolder } from './updater'
 
 export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
     return (
-        <button
-            tw='btn btn-sm btn-error'
+        <Button
+            size='sm'
+            look='error'
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
@@ -15,6 +17,6 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManag
             }}
         >
             <span className='material-symbols-outlined'>highlight_off</span> REMOVE
-        </button>
+        </Button>
     )
 })

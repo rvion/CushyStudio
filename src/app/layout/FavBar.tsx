@@ -267,7 +267,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                 </div>
                 <Button //
                     onClick={() => app.createDraft()}
-                    tw='btn btn-sm'
+                    size='sm'
                     icon='mdiPlus'
                     square
                 />
