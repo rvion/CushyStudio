@@ -1,6 +1,7 @@
 import { PanelScript } from '../panels/Panel_Script'
 import { PanelSquoosh } from '../panels/Panel_Squoosh'
 import { PanelAppLibrary } from '../panels/PanelAppLibrary/PanelAppLibrary'
+import { PanelAssets } from '../panels/PanelAssets/PanelAssets'
 import { PanelCanvas } from '../panels/PanelCanvas/PanelCanvas'
 import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfy } from '../panels/PanelComfy/PanelComfy'
@@ -31,6 +32,7 @@ import { PanelWelcome } from '../panels/PanelWelcome/PanelWelcome'
 import { Panel } from './Panel'
 
 export const panels = {
+    Assets: PanelAssets,
     // Image
     Gallery: PanelGallery,
     Paint: PanelMinipaint,
