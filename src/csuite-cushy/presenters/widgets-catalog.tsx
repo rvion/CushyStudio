@@ -1,15 +1,38 @@
+import type { Field_number } from '../../csuite/fields/number/FieldNumber'
 import type { Field } from '../../csuite/model/Field'
-import type { DisplayConf, RuleOrConf } from './Presenter'
-import type { FC } from 'react'
+import type { CompiledRenderProps, DisplayConf, RuleOrConf } from './Presenter'
+import type { FC, ReactNode } from 'react'
 
+import { WidgetGroup_BlockUI, WidgetGroup_LineUI, WidgetGroupInlineUI } from '../../csuite/fields/group/WidgetGroupUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
-import { QuickForm } from '../catalog/group/QuickForm'
+import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
 import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
+import { ShellInlineUI } from '../shells/ShellInline'
 import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
 import { ShellSimpleUI } from '../shells/ShellSimple'
 
-export const widgetsCatalog = {
+export type WidgetsCatalog = {
+    Shell: {
+        Simple: FC<CompiledRenderProps<Field<any>>>
+        Mobile: FC<CompiledRenderProps<Field<any>>>
+        Noop: () => ReactNode
+        Left: FC<CompiledRenderProps<Field<any>>>
+        Right: FC<CompiledRenderProps<Field<any>>>
+        FluidUI: FC<CompiledRenderProps<Field<any>>>
+        Inline: FC<CompiledRenderProps<Field<any>>>
+    }
+    QuickForm: (p: QuickFormProps) => JSX.Element
+    number: {
+        def: FC<{ field: Field_number }>
+    }
+    group: {
+        controls: typeof WidgetGroup_LineUI
+        group: typeof WidgetGroup_BlockUI
+        inline: typeof WidgetGroupInlineUI
+    }
+}
+export const widgetsCatalog: WidgetsCatalog = {
     Shell: {
         Simple: ShellSimpleUI,
         Mobile: ShellMobileUI,
@@ -17,14 +40,18 @@ export const widgetsCatalog = {
         Left: ShellCushyLeftUI,
         Right: ShellCushyRightUI,
         FluidUI: ShellCushyFluidUI,
+        Inline: ShellInlineUI,
     },
     QuickForm: QuickForm,
+    group: {
+        controls: WidgetGroup_LineUI,
+        group: WidgetGroup_BlockUI,
+        inline: WidgetGroupInlineUI,
+    },
     number: {
         def: WidgetNumberUI,
     },
 }
-
-export type WidgetsCatalog = typeof widgetsCatalog
 
 export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 
