@@ -32,13 +32,13 @@ export const makeAutoObservableInheritance = <
     // (legacy comment) > Apply only annotations existed in target already
     // (legacy comment) > https://github.com/mobxjs/mobx/discussions/2850#discussioncomment-1396837
     if (annotations != null) {
-        const tmp = {} as Annotations<object, any>
-        for (const key in annotations) {
-            if (key in target) {
-                tmp[key] = annotations[key]
-            }
-        }
-        annotations = tmp
+        // const tmp = {} as Annotations<object, any>
+        // for (const key in annotations) {
+        //     if (key in target) {
+        //         tmp[key] = annotations[key]
+        //     }
+        // }
+        // annotations = tmp
         return makeObservable(target, annotations, options)
     } else {
         miss++
