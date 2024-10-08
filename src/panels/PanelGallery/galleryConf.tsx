@@ -31,11 +31,12 @@ const GalleryConfDataSchema = (ui: CushySchemaBuilder) => {
         showPreviewInFullScreen: ui.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
         onlyShowBlurryThumbnails: ui.boolean({ label: 'Blur Thumbnails' }),
         filterPath: ui.string({ innerIcon: 'mdiFilter', placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
-        filterTag: ui.string({ innerIcon: 'mdiTagSearch', placeHolder: 'tags', autoResize: true }), //.optional(), // emptyAsNullWhenOptional: true
+        filterTag: ui.string({ clearable: true, innerIcon: 'mdiTagSearch', placeHolder: 'tags', autoResize: false }), //.optional(), // emptyAsNullWhenOptional: true
         filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
         filterAppName: ui.app().optional(),
     })
 }
+
 export interface GalleryConf extends MAGICFIELDS<Data['$Reflect']> {}
 export class GalleryConf extends Field_group<Data['$Reflect']> {
     $Field!: GalleryConf
