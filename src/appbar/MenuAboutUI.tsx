@@ -8,7 +8,6 @@ import { RevealUI } from '../csuite/reveal/RevealUI'
 export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
     return (
         <Dropdown
-            // startIcon={<span className='material-symbols-outlined'>help_center</span>}
             title='About'
             content={() => (
                 <>

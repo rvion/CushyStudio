@@ -9,7 +9,6 @@ import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     return (
         <Dropdown
-            expand
             title='Apps'
             content={() => (
                 <>

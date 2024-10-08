@@ -13,9 +13,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const isConnected = st.ws?.isOpen ?? false
     return (
         <Dropdown
-            expand
             tw={[isConnected ? null : 'text-error-content bg-error']}
-            // startIcon={<span /* tw='text-blue-400' */ className='material-symbols-outlined'>account_tree</span>}
             theme={isConnected ? undefined : { chroma: 0.1, hue: 0, contrast: 1 }}
             title='ComfyUI'
             content={() => (
@@ -53,11 +51,11 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     <MenuDivider>
                         <Button //
                             subtle
+                            borderless
                             onClick={() => cushy.layout.open('Hosts', {})}
                             icon='mdiOpenInApp'
-                        >
-                            Hosts
-                        </Button>
+                            children='Hosts'
+                        />
                     </MenuDivider>
                     {st.hosts.map((host) => {
                         return <HostMenuItemUI key={host.id} host={host} />
@@ -73,19 +71,22 @@ const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
     const isMain = host.id === cushy.configFile.value.mainComfyHostID
     return (
         <MenuItem //
-            icon={isMain ? 'mdiServerNetwork' : null}
+            icon='mdiServerNetwork'
+            // icon={isMain ? 'mdiServerNetwork' : null}
             onClick={() => host.electAsPrimary()}
+            afterShortcut={
+                <Button
+                    subtle
+                    icon='cdiNodes'
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        cushy.layout.open('ComfyUI', {})
+                    }}
+                />
+            }
         >
             <div tw='flex-grow pr-3'>{host.data.name}</div>
-            <Button
-                subtle
-                icon='cdiNodes'
-                onClick={(ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                    cushy.layout.open('ComfyUI', {})
-                }}
-            />
         </MenuItem>
     )
 })

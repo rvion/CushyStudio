@@ -15,7 +15,6 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            expand
             title='Dev'
             content={() => (
                 <>
