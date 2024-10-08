@@ -1,2 +1,5 @@
 - later: add a second smart backdrop capable of not covering anchor
 - soon: refactor showTriggers
+- add better presets
+- clarify showBackdrop/hasBackdrop (is pretty clear, but usage is not great)
+- make it possible for reveal to reveal nothing (not an empty component) and bypass makeTooltip / portal logic
