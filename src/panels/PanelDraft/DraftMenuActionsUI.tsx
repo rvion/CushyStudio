@@ -88,7 +88,6 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     />
 
                     <MenuDividerUI_ />
-                    {/* <button disabled={app.isPublishing} tw='btn btn-ghost btn-square btn-sm' onClick={async () => {}}></button> */}
                     <MenuItem
                         loading={app.isPublishing}
                         icon='mdiPublish'

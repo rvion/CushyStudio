@@ -268,8 +268,6 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                             tw='input input-sm'
                                             type='text'
                                         />
-                                        {/* <div tw='btn btn-square bd1'>Image</div> */}
-                                        {/* <div tw='btn btn-square bd1'>Mask</div> */}
                                     </div>
                                 </div>
                             )
