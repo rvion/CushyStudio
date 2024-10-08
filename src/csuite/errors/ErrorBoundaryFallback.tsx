@@ -4,7 +4,7 @@ export const ErrorBoundaryFallback = (p: {
     // 🔴 pretty unsafe
     error: any
     resetErrorBoundary: (...args: any[]) => void
-}) => {
+}): JSX.Element => {
     return (
         <div role='alert'>
             <p tw='flex gap-2 items-center'>
