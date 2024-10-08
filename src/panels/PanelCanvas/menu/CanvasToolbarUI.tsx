@@ -17,14 +17,14 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
             defaultSize={cushy.preferences.interface.value.toolBarIconSize}
         >
             <div tw='flex flex-col p-2 gap-1'>
-                {/* <div // NONE ----------------------------------------------------------------
+                {/* <Button // NONE ----------------------------------------------------------------
+                    icon='mdiSetNone'
                     onClick={() => canvas.enable_none()}
-                    tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}
+                    tw={[canvas.tool === 'none' ? 'btn-primary' : null]}
                 >
                     none
-                    <Ikon.mdiSetNone />
                     <ComboUI combo='0' />
-                </div> */}
+                </Button> */}
                 {canvas.allTools
                     .toSorted((x, y) => x.category.localeCompare(y.category))
                     .map((tool: ICanvasTool) => (

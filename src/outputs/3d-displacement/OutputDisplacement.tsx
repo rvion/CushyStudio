@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
+import { Button } from '../../csuite/button/Button'
 import { FormUI } from '../../csuite/form/FormUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { bang } from '../../csuite/utils/bang'
@@ -63,11 +64,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     )
 
     const st = useSt()
-    const saveImgBtn = (
-        <div tw='btn btn-sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}>
-            <span className='material-symbols-outlined'>download</span>
-        </div>
-    )
+    const saveImgBtn = <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
     const menuConf = st.displacementConf.value.menu
     return (
         <div tw='relative flex-1 flex flex-col'>

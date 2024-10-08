@@ -178,9 +178,9 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 <Frame tw='p-2 rounded-md' border>
                     <div tw='flex items-center justify-between'>
                         Selections
-                        <div tw='btn btn-sm btn-square btn-outline' onClick={canvas.addSelection}>
+                        <Button square onClick={canvas.addSelection}>
                             <span className='material-symbols-outlined'>add</span>
-                        </div>
+                        </Button>
                     </div>
                     <Frame base={{ contrast: -0.1 }} tw='w-full p-2'>
                         {canvas.selections.map((uniSel) => (
@@ -196,18 +196,9 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                         />
                                         <InputStringUI setValue={(val) => (uniSel.name = val)} getValue={() => uniSel.name} />
                                     </div>
-                                    <div className='flex-1'></div>
-                                    <div tw='btn btn-sm btn-square btn-outline' onClick={uniSel.remove}>
-                                        <span className='material-symbols-outlined'>delete</span>
-                                    </div>
-
-                                    <div
-                                        //
-                                        tw='btn btn-sm btn-square btn-outline'
-                                        onClick={uniSel.saveImage}
-                                    >
-                                        <span className='material-symbols-outlined'>save</span>
-                                    </div>
+                                    <div className='flex-1' />
+                                    <Button onClick={uniSel.remove} icon='mdiDelete' />
+                                    <Button square onClick={uniSel.saveImage} icon='mdiContentSave' />
                                 </div>
                                 <div tw='flex gap-1'>
                                     <div tw='w-16'>width:</div>

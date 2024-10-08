@@ -168,7 +168,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
             {code && (
                 <div tw='bd1 m-2'>
-                    <div
+                    <Button
+                        look='primary'
+                        size='sm'
                         onClick={async () => {
                             // if (uist.hasConflict) return toastError('file already exist, change app name')
                             const path = `${st.rootPath}/${relPath}`
@@ -184,10 +186,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                             const firstApp = apps[0]!
                             firstApp.openLastOrCreateDraft()
                         }}
-                        tw='btn btn-sm btn-primary'
                     >
                         create file
-                    </div>
+                    </Button>
                     <MessageInfoUI markdown={` This file will be created as  \`${relPath}\``} />
                     <TypescriptHighlightedCodeUI code={code} />
                 </div>

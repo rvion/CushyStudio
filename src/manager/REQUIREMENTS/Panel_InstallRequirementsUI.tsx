@@ -152,7 +152,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // // const dlPath = host.manager.getModelInfoFinalFilePath(mi)
                     // return (
                     //     <div key={mi.url}>
-                    //         <div
+                    //         <Button
                     //             onClick={async () => {
                     //                 // 🔴 TODO
                     //                 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
@@ -169,12 +169,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     //                 // ⏸️     .get(p.widget.input.enumName)
                     //                 // ⏸️ enumInfo?.values.push(mi.filename)
                     //             }}
-                    //             tw='btn btn-sm btn-outline btn-sm'
                     //             key={mi.name}
                     //         >
                     //             {isInstalled ? '✅' : null}
                     //             <span>{mi.name}</span>
-                    //         </div>
+                    //         </Button>
                     //         {/* <RevealUI> */}
                     //         {/* <div>infos</div> */}
                     //         {/*
