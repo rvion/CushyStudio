@@ -14,7 +14,9 @@ import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
 
-configure({ enforceActions: 'never' })
+configure({
+    enforceActions: 'observed',
+})
 // configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
