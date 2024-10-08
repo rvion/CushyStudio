@@ -5,7 +5,7 @@ import type { AnnotationsMap, CreateObservableOptions } from 'mobx'
 import { $mobx, isObservable, makeObservable } from 'mobx'
 
 export const annotationsSymbol = Symbol()
-export const annotationsOverridesSymbol = Symbol()
+// export const annotationsOverridesSymbol = Symbol()
 const objectPrototype = Object.prototype
 
 type Annotations<T extends object = object, U extends PropertyKey = never> = AnnotationsMap<T, U>
