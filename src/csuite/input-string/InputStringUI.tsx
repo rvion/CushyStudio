@@ -19,6 +19,9 @@ export type InputStringProps = {
     /** when true => 'mdiText' */
     icon?: IconName // | boolean | null | undefined
 
+    /** When there is text it will show a button at the end that when clicked will remove the text */
+    clearable?: boolean
+
     disabled?: boolean
 
     /** when true, input will match the size of its content */
@@ -173,7 +176,7 @@ export const InputStringUI = observer(
                 }
                 tw={[
                     //
-                    p.icon ? 'pr-1' : 'px-1',
+                    p.icon && !p.clearable ? 'pr-1' : 'px-0',
                     'UI-InputString h-input flex items-center relative text-sm overflow-clip',
                 ]}
                 onMouseDown={(ev) => {
@@ -213,6 +216,15 @@ export const InputStringUI = observer(
                         onClick={() => setReveal(!reveal)}
                         tw='mx-1 cursor-pointer'
                         square
+                    />
+                )}
+                {value != '' && p.clearable && (
+                    <Button //
+                        roundness={0}
+                        subtle
+                        borderless
+                        icon={'_clear'}
+                        onClick={() => p.setValue('')}
                     />
                 )}
             </Frame>

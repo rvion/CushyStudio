@@ -44,6 +44,7 @@ export type Field_string_config = FieldConfig<
          *  | careful with functions that have side effects
          */
         default?: string | (() => string)
+        clearable?: boolean
         textarea?: boolean
         placeHolder?: string
         inputType?: FieldStringInputType

@@ -76,6 +76,7 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: { fi
                 field.touch()
             }}
             disabled={p.readonly}
+            clearable={config.clearable}
             autoResize={config.autoResize}
             buffered={
                 field.config.buffered
