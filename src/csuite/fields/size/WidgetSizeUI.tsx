@@ -187,7 +187,6 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         >
             <div tw='flex'>
                 {/* <div tw='btn btn-xs' onClick={() => uist.flip()}> */}
-                {/* <span className='material-symbols-outlined'>rotate_right</span> */}
                 {/* </div> */}
                 <div tw='ml-auto flex flex-wrap items-center gap-1.5'>
                     <div tw='join'>{resoBtn('1:1')}</div>
