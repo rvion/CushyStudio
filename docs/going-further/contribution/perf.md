@@ -14,3 +14,8 @@
 
 - vite
   - => unoCSS
+    - loading loading-spinner
+    - btn
+    - material-symbols-outlined
+
+- cycles
