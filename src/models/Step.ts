@@ -175,7 +175,7 @@ export class StepL extends BaseInst<TABLES['step']> {
     get lastMediaOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
 
-        const last = outputs[0]
+        const last = outputs[outputs.length - 1]
         if (
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
