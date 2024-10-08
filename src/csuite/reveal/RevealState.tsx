@@ -350,6 +350,12 @@ export class RevealState {
     open = (): void => {
         if (this.isVisible) return
 
+        // ensure parents are properly opened first
+        if (!this.parent?.isVisible) console.warn(`[🔶] INVARIANT VIOLATION IN REVEAL STATE`)
+        if (this.parent && !this.parent.isVisible) {
+            this.parent.open()
+        }
+
         this.log(`🚨 open`)
         this._register()
         this.lastOpenClose = Date.now()
