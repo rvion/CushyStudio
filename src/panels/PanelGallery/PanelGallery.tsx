@@ -51,9 +51,10 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
                     tooltip='Duplicate Panel'
                     onClick={() => panel.clone({ uid: nanoid() })}
                 />
-                <GalleryPreferencesUI />
+                <SpacerUI />
                 <GallerySearchControlsUI />
                 <SpacerUI />
+                <GalleryPreferencesUI />
             </UI.Panel.Header>
             <GalleryImageGridUI onClick={p.onClick} />
         </UI.Panel>
