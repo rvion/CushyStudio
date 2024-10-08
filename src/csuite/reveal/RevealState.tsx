@@ -339,6 +339,13 @@ export class RevealState {
         if (ix >= 0) global_RevealStack.splice(ix, 1)
     }
 
+    /**
+     * direct parent
+     */
+    get parent(): RevealState | undefined {
+        return this.parents[this.parents.length - 1]
+    }
+
     // ---
     open = (): void => {
         if (this.isVisible) return
