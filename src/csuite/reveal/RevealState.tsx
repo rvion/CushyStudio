@@ -355,6 +355,15 @@ export class RevealState {
         if (!wasVisible) this.p.onRevealed?.()
     }
 
+    closeUpTo = (depth: number, reason: RevealHideReason): void => {
+        // eslint-disable-next-line consistent-this
+        let at: Maybe<RevealState> = this
+        while (at != null && at.depth >= depth) {
+            at.close(reason)
+            at = at.parent
+        }
+    }
+
     close = (reason?: RevealHideReason): void => {
         this.log(`🚨 close (reason=${reason})`)
 
