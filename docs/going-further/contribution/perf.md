@@ -17,5 +17,6 @@
     - loading loading-spinner
     - btn
     - material-symbols-outlined
+    -spinner
 
 - cycles

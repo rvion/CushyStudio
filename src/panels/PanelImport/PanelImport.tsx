@@ -27,15 +27,12 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
             <PanelHeaderUI>
                 <SpacerUI />
                 {/* Putting clear items button on the right because actions that remove things should be separated in some way from other things to prevent mis-clicks. */}
-                <Button
-                    tw='h-input btn btn-sm btn-warning'
-                    onClick={() => {
-                        st.droppedFiles.splice(0)
-                    }}
-                >
-                    <span className='material-symbols-outlined'>backspace</span>
-                    Clear Items
-                </Button>
+                <Button //
+                    look='warning'
+                    onClick={() => st.droppedFiles.splice(0)}
+                    icon='mdiBackspace'
+                    children='Clear Items'
+                />
             </PanelHeaderUI>
             <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (

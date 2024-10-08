@@ -243,14 +243,9 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <div ref={dropRef2}>
                         <div tw='flex items-center justify-between'>
                             <div>Masks</div>
-                            <div
-                                tw='btn btn-sm btn-square btn-outline'
-                                onClick={() => {
-                                    canvas.addMask()
-                                }}
-                            >
+                            <Button square onClick={() => canvas.addMask()} icon='mdiPlus'>
                                 <span className='material-symbols-outlined'>add</span>
-                            </div>
+                            </Button>
                         </div>
                         {canvas.masks.map((mask) => {
                             const active = mask === canvas.activeMask
@@ -266,14 +261,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                         }}
                                     />
                                     <div className='flex whitespace-nowrap items-center'>
-                                        <div
-                                            tw='btn btn-sm btn-outline'
-                                            onClick={() => {
-                                                canvas.activeMask = mask
-                                            }}
-                                        >
-                                            {mask.uid}
-                                        </div>
+                                        <Button onClick={() => void (canvas.activeMask = mask)}>{mask.uid}</Button>
                                         <input
                                             value={mask.name}
                                             onChange={(ev) => (mask.name = ev.target.value)}

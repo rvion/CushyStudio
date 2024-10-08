@@ -1,3 +1,4 @@
+import type { Trigger } from '../../csuite/trigger/Trigger'
 import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 
@@ -89,7 +90,11 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
 export type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
 
-export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfolder?: string) => {
+export const saveCanvasAsImage = async (
+    //
+    canvas: Maybe<HTMLCanvasElement>,
+    subfolder?: string,
+): Promise<Trigger | undefined> => {
     if (canvas == null) return toastError('❌ canvas is null')
     const imageID = nanoid()
     const filename = `${imageID}.png`
