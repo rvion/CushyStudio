@@ -14,10 +14,20 @@ import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
 
+// configure({ enforceActions: 'always' })
 configure({
     enforceActions: 'observed',
+
+    // 💬 2024-10-08 rvion:
+    // | dangerous option; may help a bit during dev to speedup DX
+    // | but should be disabled in production.
+    // |
+    // | doc says:
+    // | >> By default, MobX will catch and re-throw exceptions happening in your code to make sure that a reaction in one exception does not prevent the scheduled execution of other, possibly unrelated, reactions. This means exceptions are not propagated back to the original causing code and therefore you won't be able to catch them using try/catch.
+    // | >> By disabling error boundaries, exceptions can escape derivations. This might ease debugging, but might leave MobX and by extension your application in an unrecoverable broken state. Default: false.
+    //
+    // disableErrorBoundaries: true,
 })
-// configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 
