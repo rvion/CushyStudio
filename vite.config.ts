@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { cwd } from 'process'
+import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 const installDir = cwd()
@@ -26,6 +27,7 @@ export default defineConfig({
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'JSOX' }),
+        UnoCSS(),
         // viteSingleFile(),
     ],
     build: {
