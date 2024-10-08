@@ -141,7 +141,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
                 >
                     Paint
                 </Button>
-                {showTags.header()}
+                <showTags.Render global={{ ShellName: 'Inline' }} />
                 <SpacerUI />
                 {img && (
                     <RevealUI

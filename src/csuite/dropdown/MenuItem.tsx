@@ -68,7 +68,7 @@ export const _MenuItem = observer(function DropdownItem_(p: {
             )}
             {/* <div tw='flex h-full items-center'>{icon}</div> */}
             {/* {icon} */}
-            <div tw='flex items-center'>
+            <div tw='flex flex-1 items-center'>
                 {label}
                 {children}
                 {beforeShortcut}
@@ -85,7 +85,14 @@ export const _MenuItem = observer(function DropdownItem_(p: {
 })
 
 export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
-    return <div className='divider px-2 !h-input my-2 text-sm'>{p.children ?? <></>}</div>
+    return (
+        <div className='relative !h-widget text-sm grid'>
+            <div tw='absolute z-0 h-1 [border-top:1px_solid_#aaaaaa88] w-full [top:50%]'></div>
+            <Frame border tw='relative z-1 h-widget justify-self-center'>
+                {p.children ?? <></>}
+            </Frame>
+        </div>
+    )
 })
 
 export const MenuItem = Object.assign(_MenuItem, {

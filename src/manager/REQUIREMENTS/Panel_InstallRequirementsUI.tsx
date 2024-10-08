@@ -173,7 +173,6 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     //             key={mi.name}
                     //         >
                     //             {isInstalled ? '✅' : null}
-                    //             <span className='material-symbols-outlined'>cloud_download</span>
                     //             <span>{mi.name}</span>
                     //         </div>
                     //         {/* <RevealUI> */}

@@ -20,6 +20,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                 <>
                     <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={'cdiNodes'} />
                     <MenuItem //
+                        icon='mdiMagnify'
                         onClick={() => st.layout.open('ComfyUINodeExplorer', {})}
                         label='Nodes Explorer'
                     />

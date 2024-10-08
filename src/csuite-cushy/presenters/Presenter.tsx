@@ -124,7 +124,7 @@ export class Presenter {
     ): ReactNode {
         // ⏸️ console.log(`[💄] rendering ${field.path}`)
         // slots accumulator
-        let slots: UISlots<FIELD> = defaultPresenterRule(field)
+        let slots: WidgetSlots<FIELD> = defaultPresenterRule(field)
         const catalog = widgetsCatalog
 
         /**
@@ -170,12 +170,13 @@ export class Presenter {
                 const _slots = ruleOrConf({
                     field,
                     catalog,
+                    apply: (x) => evalRuleOrConf(x),
                     forField: addForField,
                     forAllFields: addForAllFields,
                     forChildrenOf: addForChildrenOf,
                     forChildrenOfFieldWithTypes: addForChildrenOfFieldWithTypes,
                     presets,
-                }) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
+                }) as Maybe<WidgetSlots<FIELD>> // 🔴🔴🔴
                 if (_slots) slots = mergeDefined(slots, _slots)
             } else {
                 const { rule, global, ...slotsOverride } = ruleOrConf
@@ -265,7 +266,13 @@ export class Presenter {
         // 🔶 }
         // 🔶 // }
 
-        const Shell = slots.Shell ?? defaultPresenterSlots.Shell
+        // bad logic
+        const Shell = slots.ShellName
+            ? catalog.Shell[slots.ShellName]
+            : slots.Shell //
+              ? slots.Shell
+              : defaultPresenterSlots.Shell
+        console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
         if (!Shell) throw new Error('Shell is not defined')
 
         // COMPILED
@@ -304,11 +311,12 @@ export type FCOrNode<P extends object> = CovariantFC<P> | React.ReactNode
  *    null      => disable the slot; i.e. slot should not be displayed/used
  *    ReactNode => use this react node direclty
  */
-export interface UISlots<out FIELD extends Field = Field> {
+export interface WidgetSlots<out FIELD extends Field = Field> {
     layout?: CovariantFn1<FIELD, QuickFormContent[]>
     // 1. Shell
     // can also be used an escape hatch for 100% custom UI
     /* ⭕️ */ Shell?: FCOrNode<CompiledRenderProps<FIELD>>
+    /* ⭕️ */ ShellName?: keyof CATALOG.widgets['Shell']
 
     // 2. Direct Slots for this field only
     // heavilly suggested to include in your presenter unless you know what you do
@@ -348,6 +356,7 @@ export interface UISlots<out FIELD extends Field = Field> {
     classNameForShell?: Maybe<string>
     shouldShowHiddenFields?: Maybe<boolean>
     shouldAnimateResize?: Maybe<boolean>
+
     // ---------------------------------------------------------
     // 4. Slots for shell
     // stuff you probably don't want to include
@@ -359,7 +368,7 @@ export interface UISlots<out FIELD extends Field = Field> {
 }
 
 // #region P.defaults
-export const defaultPresenterSlots: UISlots<any> = {
+export const defaultPresenterSlots: WidgetSlots<any> = {
     /* ✅ */ Shell: ShellCushyLeftUI,
 
     // heavilly suggested to include in your presenter unless you know what you do
@@ -407,7 +416,7 @@ export const defaultPresenterSlots: UISlots<any> = {
 // #region P.setup
 export const configureDefaultFieldPresenterComponents = (
     /** so you don't have to polute the rest of your code */
-    overrides: Partial<UISlots>,
+    overrides: Partial<WidgetSlots>,
 ): void => {
     Object.assign(defaultPresenterSlots, overrides)
 }
@@ -451,10 +460,12 @@ const typed = <T extends any>(t: T): T => t
 
 const presets = {
     noLabel: typed<DisplayConf<any>>({ LabelText: null, Icon: null, Indent: null }),
+    // inline() {},
 }
 
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
+    apply(x: RuleOrConf<FIELD>): void
     forField<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
     forChildrenOf<Sub extends Field>(field: Sub, x: RuleOrConf<Sub['$Child']>): void
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
@@ -463,14 +474,14 @@ export type DisplayRuleCtx<FIELD extends Field = Field> = {
     presets: typeof presets
 }
 
-export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, UISlots<FIELD> | undefined | void>
+export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, WidgetSlots<FIELD> | undefined | void>
 
 /**
  * this is the type you usually specify when calling <field.UI <...RENDER_DSL...> />
  */
 export interface DisplayConf<out FIELD extends Field> //
     // 1️⃣ for self: UISlots + shell + children
-    extends UISlots<FIELD> {
+    extends WidgetSlots<FIELD> {
     layout?: CovariantFn1<FIELD, QuickFormContent[]>
     rule?: RuleOrConf<FIELD>
     global?: RuleOrConf<Field> // | null | undefined | void
@@ -482,7 +493,7 @@ export interface DisplayConf<out FIELD extends Field> //
  */
 export interface CompiledRenderProps<out FIELD extends Field = Field> //
     /** full list of all slots when applying all the rules. */
-    extends UISlots<FIELD> {
+    extends WidgetSlots<FIELD> {
     /** presenter */
     presenter: Presenter
 

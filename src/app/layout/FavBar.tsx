@@ -93,9 +93,21 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     >
                         FLUX
                     </Button>
+                    <Button
+                        tooltip='Slay the Spire Card Generator'
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() =>
+                            cushy.db.cushy_app.get('library/built-in/sts/slay-the-spire.ts:0')?.openLastOrCreateDraft()
+                        }
+                    >
+                        StS
+                    </Button>
                     <RevealUI
                         tw='hover:brightness-125 self-center my-0.5'
                         placement='screen-top'
+                        UNSAFE_cloned={true}
                         shell='popup-lg'
                         content={(x) => <CreateAppPopupUI closeFn={() => x.reveal.close()} />}
                     >

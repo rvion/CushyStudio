@@ -19,7 +19,7 @@ const makeDoc = (): any => {
 // #region benchark
 const bench = new Bench({ time: 1000 })
 const schema1 = makeDoc().withConfig({
-    options: {
+    instanciationOption: {
         skipMobx: true,
         skipMobxAutoBind: true,
     },

@@ -6,6 +6,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { Field, FieldCtorProps } from './Field'
+import type { FieldOptions } from './FieldOptions'
 import type { KlassToUse } from './KlassToUse'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Producer } from './pubsub/Producer'
@@ -238,6 +239,8 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
 
     // TODO 🔴 remove that
     cancelChanges?: (field: Field) => Promise<void>
+
+    instanciationOption?: FieldOptions
 }
 
 export interface WidgetMenuAction<out T extends FieldTypes> {

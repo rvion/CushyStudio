@@ -1,5 +1,6 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
@@ -51,8 +52,6 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
         <div tw='h-full w-full flex flex-col'>
             <PanelHeaderUI>
                 <Frame tw='h-input flex flex-row'>
-                    {/* {form.fields.query.header()} */}
-
                     <InputStringUI
                         autoResize
                         placeholder='Search...'
@@ -61,7 +60,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                                 toggleGroup='panel-icon-filter'
                                 tw='mr-1'
                                 value={uist.filter}
-                                icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
+                                icon={uist.filter ? 'mdiMagnify' : 'mdiFilterOff'}
                                 // border={false}
                                 border={false}
                                 onValueChange={() => {
@@ -71,7 +70,11 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                         }
                         autoFocus
                         getValue={() => uist.query}
-                        setValue={(val) => (uist.query = val)}
+                        setValue={(val) =>
+                            runInAction(() => {
+                                uist.query = val
+                            })
+                        }
                     />
                     {form.fields.size.header()}
                 </Frame>

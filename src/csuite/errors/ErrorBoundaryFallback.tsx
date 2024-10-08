@@ -1,3 +1,4 @@
+import { Button } from '../button/Button'
 import { JsonViewUI } from '../json/JsonViewUI'
 
 export const ErrorBoundaryFallback = (p: {
