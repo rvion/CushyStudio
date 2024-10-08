@@ -129,12 +129,6 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
         serial?: Field_group_serial<X>,
     ) {
         super(repo, root, parent, schema, initialMountKey, serial)
-        for (const [fName, fSchema] of this._fieldSchemas) {
-            Object.defineProperty(this, capitalize(fName), {
-                get: () => this.fields[fName],
-                configurable: true,
-            })
-        }
         this.init(serial, {
             // UI
             DefaultHeaderUI: false,
@@ -144,6 +138,14 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
             value_or_zero: false,
             value_unchecked: false,
         })
+        // 🔶 dangerous to do here, but allow to skip either creating a new class
+        // or making sure makeObsevable is not called with wrongly cached annotations
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            Object.defineProperty(this, capitalize(fName), {
+                get: () => this.fields[fName],
+                configurable: true,
+            })
+        }
     }
 
     // #region UI
