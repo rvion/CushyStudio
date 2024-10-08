@@ -367,7 +367,13 @@ export class RevealState {
         this._unregister()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
-        /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
+        /* 🔥 */ if (RevealState.shared.current == this) {
+            if (this.parent?.isVisible) {
+                RevealState.shared.current = this.parent
+            } else {
+                RevealState.shared.current = null
+            }
+        }
         this._resetAllAnchorTimouts()
         this._resetAllTooltipTimouts()
         this.inAnchor = false
