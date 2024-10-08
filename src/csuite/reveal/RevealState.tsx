@@ -373,7 +373,19 @@ export class RevealState {
         this._register()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
-        /* 🔥 🔴 */ if (this.shouldHideOtherRevealWhenRevealed) RevealState.shared.current?.close('cascade')
+
+        // close previous branches from common ancestor
+        if (this.shouldHideOtherRevealWhenRevealed) {
+            // 💬 2024-10-09 rvion:
+            // | this logic was too simplistic
+            // |```
+            // | RevealState.shared.current?.close('an-other-reveal-opened')
+            // |```
+            // sometimes, we jump from some sub-sub menu at depth=5 directly to anchor at depth 2
+            // so we need to close all siblings until that depth
+            RevealState.shared.current?.closeUpTo(this.depth, 'an-other-reveal-opened')
+        }
+
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true
@@ -428,7 +440,12 @@ export class RevealState {
             // (ex: clicking outside the popup should probably focus the anchor?)
             // (ex: programmatically or whatever random reason closes the select, should NOT focus the anchor?)
             // (ex: tab should probably go to the next select, NOT focus this anchor? => done in Tab handling)
-            if (reason === 'programmatic' || reason === 'cascade') return
+            if (
+                reason === 'programmatic' || //
+                reason === 'an-other-reveal-opened'
+            )
+                return
+
             // if we entered via hover, the closure is likely not like a click on the anchor (need clearer implementation though)
             if (this.p.trigger === 'hover') return
             if (this.anchorRef.current == null) console.log('❌ anchorRef is null?!')

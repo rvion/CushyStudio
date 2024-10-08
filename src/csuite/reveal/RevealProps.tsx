@@ -60,7 +60,7 @@ export type RevealHideReason =
     | 'pickOption'
     | 'blurAnchor'
     | 'closeButton' // ex: in modals
-    | 'cascade' // another reveal appearing caused the closure
+    | 'an-other-reveal-opened' // another reveal appearing caused the closure
     | 'programmatic'
     | 'unknown'
 
