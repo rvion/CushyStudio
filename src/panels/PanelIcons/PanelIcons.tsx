@@ -6,8 +6,9 @@ import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
 import { Button } from '../../csuite/button/Button'
-import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
@@ -48,26 +49,23 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
     const containerHeight = size.height ?? 100
     const nbCols = Math.floor(containerWidth / itemWidth) || 1
     const nbRows = Math.ceil(total / nbCols) + 1
+    const csuite = useCSuite()
+
     return (
         <div tw='h-full w-full flex flex-col'>
             <PanelHeaderUI>
-                <Frame tw='h-input flex flex-row'>
+                {/* {form.fields.query.header()} */}
+                <SpacerUI />
+                <Frame // TODO(bird_d): (FIX-FIELD) Should use a "row" component here? Need a component so I don't have to keep adding the theming over and over for this
+                    align
+                    border={csuite.inputBorder}
+                    roundness={csuite.inputRoundness}
+                >
                     <InputStringUI
-                        autoResize
+                        // autoResize
+                        clearable
                         placeholder='Search...'
-                        slotBeforeInput={
-                            <InputBoolUI
-                                toggleGroup='panel-icon-filter'
-                                tw='mr-1'
-                                value={uist.filter}
-                                icon={uist.filter ? 'mdiMagnify' : 'mdiFilterOff'}
-                                // border={false}
-                                border={false}
-                                onValueChange={() => {
-                                    uist.filter = !uist.filter
-                                }}
-                            />
-                        }
+                        icon='mdiMagnify'
                         autoFocus
                         getValue={() => uist.query}
                         setValue={(val) =>
@@ -76,7 +74,15 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                             })
                         }
                     />
-                    {form.fields.size.header()}
+                    <InputBoolToggleButtonUI
+                        toggleGroup='panel-icon-filter'
+                        value={uist.filter}
+                        icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
+                        hover
+                        onValueChange={() => {
+                            uist.filter = !uist.filter
+                        }}
+                    />
                 </Frame>
                 <SpacerUI />
                 <Button
