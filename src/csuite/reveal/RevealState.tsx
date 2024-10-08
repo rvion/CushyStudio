@@ -329,8 +329,8 @@ export class RevealState {
 
     onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.logEv(ev, `anchor.onMouseEnter`)
-        /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (this.isVisible) return
+        /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
