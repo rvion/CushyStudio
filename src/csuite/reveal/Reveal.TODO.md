@@ -1,0 +1,2 @@
+- later: add a second smart backdrop capable of not covering anchor
+- soon: refactor showTriggers
