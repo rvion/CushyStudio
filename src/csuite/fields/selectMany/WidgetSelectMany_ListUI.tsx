@@ -32,6 +32,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
                 const isSelected = field.selectedKeys.includes(c.id)
                 return (
                     <InputBoolToggleButtonUI
+                        toggleGroup={field.id}
                         key={convertSelectKeyToReactKey(c.id)}
                         value={isSelected}
                         // border={false}

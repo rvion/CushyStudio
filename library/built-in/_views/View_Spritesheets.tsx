@@ -176,5 +176,5 @@ const Can3 = observer(
             </group>
         )
     },
-    { forwardRef: true },
+    // { forwardRef: true },
 )

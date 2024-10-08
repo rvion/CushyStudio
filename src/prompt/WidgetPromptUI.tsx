@@ -7,7 +7,6 @@ import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { WidgetSingleLineSummaryUI } from '../csuite/form/WidgetSingleLineSummaryUI'
 import { Frame } from '../csuite/frame/Frame'
-import { RevealUI } from '../csuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 // import { PromptEditorUI } from './__TEMP__'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
@@ -46,6 +45,8 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
                 const active = cushy.configFile.get(plugin.configKey) ?? false
                 return (
                     <InputBoolToggleButtonUI
+                        key={plugin.key}
+                        toggleGroup={'plugin'}
                         tooltip={`${plugin.title}\n${plugin.description}`}
                         iconSize='1.2em'
                         value={Boolean(active)}

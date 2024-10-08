@@ -1254,7 +1254,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      * @deprecated prefer Field.Render
      * temporary until shells */
     renderSimple(p: RENDERER.FieldRenderArgs<this>): ReactNode {
-        return this.UI({ Shell: (x) => <x.UI.ShellSimple {...x} />, ...p })
+        return this.UI({ Shell: (x) => <x.UI.Shell.Simple {...x} />, ...p })
     }
 
     /**

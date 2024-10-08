@@ -1,16 +1,18 @@
 // @ts-ignore
-import { autorun, observable } from 'mobx'
+import { action, autorun, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { MutableRefObject, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
+import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
 
 // import { renderMinimap } from '../minimap/Minimap'
 
-export const useObservableRef = <T extends any>() => useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
+export const useObservableRef = <T extends any>(): MutableRefObject<T> =>
+    useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
 
 export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
     const workflow = p.graph
@@ -56,13 +58,17 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
     if (domNode == null) return '❌ domNode is null'
 
     /* Temporary workaround for when the overlay gets stuck so people don't have to restart. */
-    const listenForCancelKey = (ev: KeyboardEvent) => {
-        if (ev.key == 'Escape') {
-            domNode.style.opacity = '0'
-            window.removeEventListener('keydown', listenForCancelKey, true)
-        }
-        //
-    }
+
+    const listenForCancelKey = useMemo(() => {
+        const listenForCancelKey_ = action((ev: KeyboardEvent) => {
+            if (ev.key == 'Escape') {
+                domNode.style.opacity = '0'
+                window.removeEventListener('keydown', listenForCancelKey_, true)
+            }
+            //
+        })
+        return listenForCancelKey_
+    }, [])
 
     return (
         <div>
@@ -78,7 +84,7 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
                 // onMouseOverCapture={}
                 onMouseEnter={() => {
                     domNode.style.opacity = '1'
-                    window.addEventListener('keydown', listenForCancelKey, true)
+                    window_addEventListener('keydown', listenForCancelKey, true)
                 }}
                 onMouseLeave={() => {
                     domNode.style.opacity = '0'

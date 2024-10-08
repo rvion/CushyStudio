@@ -8,7 +8,7 @@ import type { KnownModel_Name } from './model-list/KnownModel_Name'
 import type { ModelInfo } from './model-list/model-list-loader-types'
 import type { PluginInstallStatus } from './REQUIREMENTS/PluginInstallStatus'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable, runInAction } from 'mobx'
 
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 
@@ -52,8 +52,11 @@ export class ComfyManager {
         void this.updateHostPluginsAndModels()
     }
     updateHostPluginsAndModels = async (): Promise<void> => {
-        this.pluginList = await this.fetchPluginList()
-        this.modelList = await this.fetchModelList()
+        const [_pluginList, _modelList] = await Promise.all([this.fetchPluginList(), this.fetchModelList()])
+        runInAction(() => {
+            this.pluginList = _pluginList
+            this.modelList = _modelList
+        })
     }
 
     // -----------

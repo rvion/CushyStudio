@@ -1,27 +1,24 @@
-import type { Field_number } from '../../csuite/fields/number/FieldNumber'
 import type { Field } from '../../csuite/model/Field'
-import type { CompiledRenderProps, DisplayConf } from './Presenter'
+import type { DisplayConf, RuleOrConf } from './Presenter'
 import type { FC } from 'react'
 
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
-import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
+import { QuickForm } from '../catalog/group/QuickForm'
+import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
 import { ShellSimpleUI } from '../shells/ShellSimple'
 
-export const widgetsCatalog: {
-    QuickForm: FC<QuickFormProps>
-    ShellSimple: FC<CompiledRenderProps>
-    ShellMobile: FC<CompiledRenderProps>
-    ShellNoop: FC<CompiledRenderProps>
-    number: {
-        def: FC<{ field: Field_number }>
-    }
-} = {
+export const widgetsCatalog = {
+    Shell: {
+        Simple: ShellSimpleUI,
+        Mobile: ShellMobileUI,
+        Noop: ShellNoop,
+        Left: ShellCushyLeftUI,
+        Right: ShellCushyRightUI,
+        FluidUI: ShellCushyFluidUI,
+    },
     QuickForm: QuickForm,
-    ShellSimple: ShellSimpleUI,
-    ShellMobile: ShellMobileUI,
-    ShellNoop: ShellNoop,
     number: {
         def: WidgetNumberUI,
     },
@@ -34,8 +31,9 @@ export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {
     namespace RENDERER {
-        interface FieldRenderArgs<out FIELD extends Field>
-        extends DisplayConf<FIELD>{}
+        interface FieldRenderArgs<out FIELD extends Field> extends DisplayConf<FIELD>{}
+        type UIConf<FIELD extends Field> = RuleOrConf<FIELD>
+
     }
 
     interface Window {

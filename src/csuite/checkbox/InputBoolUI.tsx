@@ -1,4 +1,5 @@
 import type { Box } from '../box/Box'
+import type { SharedClickAndSlideKey } from '../button/usePressLogic'
 import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 
@@ -31,6 +32,8 @@ export type BoolButtonProps = {
 
     box?: Box
     onValueChange?: (next: boolean) => void
+
+    toggleGroup: SharedClickAndSlideKey
 } & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {

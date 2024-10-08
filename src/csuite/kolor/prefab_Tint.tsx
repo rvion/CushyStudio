@@ -43,6 +43,10 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     }),
                 },
                 {
+                    uiui: (ui) => {
+                        ui.forField(ui.field.branches.contrast, ui.presets.noLabel)
+                        ui.forField(ui.field.branches.lightness, ui.presets.noLabel)
+                    },
                     appearance: 'tab',
                     label: 'Light',
                     default: def?.lightness ? 'lightness' : 'contrast',

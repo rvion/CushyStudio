@@ -19,6 +19,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
                 onValueChange={(next) => (cushy.showCommandHistory = next)}
                 value={cushy.showCommandHistory}
                 icon='mdiKeyboard'
+                toggleGroup='footer-conf'
             />
             <DebugControlsUI />
             <div tw='flex-1' />

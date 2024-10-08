@@ -5,14 +5,12 @@ import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Row } from '../frame/Dov/Dov'
-import { Ikon } from '../icons/iconHelpers'
+import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 import { SelectValueContainerUI } from './SelectValueContainerUI'
-import { Frame } from '../frame/Frame'
 
 // TODO fork this component
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
@@ -132,14 +130,14 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
             {/* 2px for parent border + 2 * 2px for icon padding */}
             {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
-            <Ikon.mdiChevronDown size={1} />
+            {/* <Ikon.mdiChevronDown size={1} /> */}
         </Frame>
     ) : (
         // IN THIS BRANCH, WE ADD FLEX-NONE
         <>
             {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
-            <Ikon.mdiChevronDown size={1} />
+            {/* <Ikon.mdiChevronDown size={1} /> */}
         </>
     )
 })

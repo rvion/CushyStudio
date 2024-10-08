@@ -49,6 +49,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             >
                 {item.modelVersions.map((version: CivitaiModelVersion) => (
                     <InputBoolToggleButtonUI
+                        toggleGroup='civitai-versions'
                         value={selected.version === version}
                         key={version.id}
                         onValueChange={() => (selected.version = version)}

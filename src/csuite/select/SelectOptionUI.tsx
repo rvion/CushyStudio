@@ -37,6 +37,7 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
                 }}
                 {...p.boolButtonProps}
                 iconOff={p.state.p.hideOptionCheckbox}
+                toggleGroup={state.uid}
             >
                 {state.DisplayOptionUI(p.option, { where: 'options-list' })}
             </InputBoolCheckboxUI>

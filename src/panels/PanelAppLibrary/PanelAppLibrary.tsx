@@ -55,6 +55,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     children='Index All Apps'
                 />
                 <InputBoolToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Descriptions'
@@ -62,6 +63,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     onValueChange={(next) => (st.library.showDescription = next)}
                 />
                 <InputBoolToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Drafts'
@@ -69,6 +71,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     onValueChange={(next) => (st.library.showDrafts = next)}
                 />
                 <InputBoolToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Favorites'

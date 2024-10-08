@@ -7,12 +7,13 @@ import type { SimpleBoxShadow } from './SimpleBoxShadow'
 import type { SimpleDropShadow } from './SimpleDropShadow'
 import type { ForwardedRef, MouseEvent } from 'react'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
-import { usePressLogic } from '../button/usePressLogic'
+import { type ClickAndSlideConf, usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
@@ -53,7 +54,7 @@ export type FrameProps = {
 
     // logic --------------------------------------------------
     /** TODO: */
-    triggerOnPress?: { startingState: boolean }
+    triggerOnPress?: ClickAndSlideConf
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
     loading?: boolean
@@ -134,11 +135,13 @@ export const Frame = observer(
             if (tooltip != null) {
                 const elem = ev.currentTarget
                 const depth = getDOMElementDepth(elem)
-                tooltipStuff.tooltips.set(depth, {
-                    depth,
-                    ref: elem,
-                    text: tooltip ?? 'test',
-                    placement: tooltipPlacement ?? 'auto',
+                runInAction(() => {
+                    tooltipStuff.tooltips.set(depth, {
+                        depth,
+                        ref: elem,
+                        text: tooltip ?? 'test',
+                        placement: tooltipPlacement ?? 'auto',
+                    })
                 })
             }
         }
@@ -150,7 +153,9 @@ export const Frame = observer(
                 const depth = getDOMElementDepth(elem)
                 const prev = tooltipStuff.tooltips.get(depth)
                 if (prev?.ref === ev.currentTarget) {
-                    tooltipStuff.tooltips.delete(depth)
+                    runInAction(() => {
+                        tooltipStuff.tooltips.delete(depth)
+                    })
                 }
             }
         }
@@ -210,7 +215,7 @@ export const Frame = observer(
                 }
                 {...rest}
                 {...(triggerOnPress != null
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider

@@ -27,6 +27,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
                     field.value = value
                     p.field.touch()
                 }}
+                toggleGroup={'field-bool'}
             />
 
             <SpacerUI />

@@ -49,7 +49,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
             // }
             tabIndex={0}
             className={p.className}
-            triggerOnPress={{ startingState: isActive }}
+            triggerOnPress={{ startingState: isActive, toggleGroup: p.toggleGroup }}
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement}
             look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options

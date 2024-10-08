@@ -107,12 +107,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 <InputBoolUI // HTTPS
+                    toggleGroup='host-flags'
                     disabled={disabled}
                     value={host.data.useHttps ? true : false}
                     onValueChange={(next) => host.update({ useHttps: next ? SQLITE_true : SQLITE_false })}
                     text='use HTTPS'
                 />
                 <InputBoolUI // LOCAL PATH
+                    toggleGroup='host-flags'
                     disabled={disabled}
                     onValueChange={(next) => host.update({ isLocal: next ? SQLITE_true : SQLITE_false })}
                     value={host.data.isLocal ? true : false}

@@ -35,7 +35,8 @@ import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesBu
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { type CushyHeadProps, CushyHeadUI, ShellCushyLeftUI } from '../shells/ShellCushy'
+import { type CushyHeadProps, CushyHeadUI } from '../shells/CushyHead'
+import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { PresenterCtx, usePresenterOrNull } from './PresenterCtx'
 import { widgetsCatalog } from './widgets-catalog'
 
@@ -131,7 +132,8 @@ export class Presenter {
          * that where the magic happen; since fields know the extra type of their children,
          * any field can quickly add a bunch of rule for all of it's descendants.
          */
-        const addForField = <SUB extends Field>(sub: SUB, ruleOrConf: RuleOrConf<SUB>): any => {
+        const addForField = <SUB extends Field>(sub: Maybe<SUB>, ruleOrConf: RuleOrConf<SUB>): any => {
+            if (sub == null) return
             let sub_ = sub as Field
             if (sub_ === field) {
                 // ⏸️ console.log(`[💄@${sub.path} ] adding a self rule (why though❓); merging it right now`)
@@ -172,6 +174,7 @@ export class Presenter {
                     forAllFields: addForAllFields,
                     forChildrenOf: addForChildrenOf,
                     forChildrenOfFieldWithTypes: addForChildrenOfFieldWithTypes,
+                    presets,
                 }) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
                 if (_slots) slots = mergeDefined(slots, _slots)
             } else {
@@ -220,6 +223,11 @@ export class Presenter {
                 // ⏸️ console.log(`[💄]    | plus global rule:`, ruleOrConf)
                 evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
             }
+        }
+
+        // eval rule from config
+        if (field.config.uiui != null) {
+            evalRuleOrConf(field.config.uiui)
         }
 
         // eval last ruleOrConf passed as parameter
@@ -439,13 +447,20 @@ export type RuleOrConf<FIELD extends Field> =
     | DisplayRule<FIELD>
     | DisplayConf<FIELD> // RenderDSL<FIELD['$Child']['$Field']>
 
+const typed = <T extends any>(t: T): T => t
+
+const presets = {
+    noLabel: typed<DisplayConf<any>>({ LabelText: null, Icon: null, Indent: null }),
+}
+
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
-    forField<Sub extends Field>(field: Sub, x: RuleOrConf<Sub>): void
+    forField<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
     forChildrenOf<Sub extends Field>(field: Sub, x: RuleOrConf<Sub['$Child']>): void
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
     forAllFields(x: RuleOrConf<Field>): void
     catalog: CATALOG.widgets
+    presets: typeof presets
 }
 
 export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, UISlots<FIELD> | undefined | void>

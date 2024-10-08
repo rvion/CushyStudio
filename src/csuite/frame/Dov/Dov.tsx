@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import React, { type CSSProperties, type ForwardedRef, forwardRef, type MouseEvent, useId, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { usePressLogic } from '../../button/usePressLogic'
+import { type ClickAndSlideConf, usePressLogic } from '../../button/usePressLogic'
 import { hashStringToNumber } from '../../hashUtils/hash'
 import { IkonOf } from '../../icons/iconHelpers'
 import { registerComponentAsClonableWhenInsideReveal } from '../../reveal/RevealCloneWhitelist'
@@ -38,7 +38,7 @@ export type DovProps = {
 
     // logic --------------------------------------------------
     /** TODO: */
-    triggerOnPress?: { startingState: boolean }
+    triggerOnPress?: ClickAndSlideConf
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
     loading?: boolean
@@ -198,7 +198,7 @@ export const Dov = observer(
                 style={style_}
                 {...rest}
                 {...(triggerOnPress != null
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}

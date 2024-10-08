@@ -1,11 +1,12 @@
 // 💡 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 
-import { makeAutoObservable } from 'mobx'
+import { action, makeAutoObservable } from 'mobx'
 import { useEffect } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { createObservableRefMut } from '../utils/observableRef'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 export type HoveredRegion = {
     id: string
@@ -88,14 +89,14 @@ export const regionMonitor = new RegionMonitor()
 /** watch every single event, and update the state */
 export const useRegionMonitor = (): void => {
     useEffect(() => {
-        function handleFocusEvent(event: FocusEvent): void {
+        const handleFocusEvent = action((event: FocusEvent): void => {
             const elem = event.target
             // console.log(`[🔴] focus moved to`, elem)
             if (!(elem instanceof HTMLElement)) return
             regionMonitor.currentlyFocused.current = elem
-        }
+        })
 
-        function handleMouseEvent(event: MouseEvent): void {
+        const handleMouseEvent = action((event: MouseEvent): void => {
             const target = event.target
             if (!(target instanceof HTMLElement)) {
                 // console.log(`[❌] mouse event target is not HTMLElement`)
@@ -172,35 +173,35 @@ export const useRegionMonitor = (): void => {
             // 💡     // onMouseEnter
             // 💡     // onMouseLeave
             // 💡 }
-        }
+        })
 
         /* Update our modifiers to make keymap stuff easier, also can use anywhere now instead of just events. */
-        function handleKeyEvent(event: KeyboardEvent): void {
+        const handleKeyEvent = action((event: KeyboardEvent): void => {
             regionMonitor.cmd = event.metaKey
             regionMonitor.ctrl = event.ctrlKey
             regionMonitor.shift = event.shiftKey
             regionMonitor.alt = event.altKey
             regionMonitor.mod = hasMod(event)
-        }
+        })
 
-        window.addEventListener('mousedown', handleMouseEvent)
-        window.addEventListener('mouseenter', handleMouseEvent)
-        window.addEventListener('mouseleave', handleMouseEvent)
-        window.addEventListener('mousemove', handleMouseEvent)
-        window.addEventListener('mouseout', handleMouseEvent)
-        window.addEventListener('mouseover', handleMouseEvent)
-        window.addEventListener('mouseup', handleMouseEvent)
-        // 💡 window.addEventListener('click', handleMouseEvent)
-        // 💡 window.addEventListener('auxclick', handleMouseEvent)
-        // 💡 window.addEventListener('contextmenu', handleMouseEvent)
+        window_addEventListener('mousedown', handleMouseEvent)
+        window_addEventListener('mouseenter', handleMouseEvent)
+        window_addEventListener('mouseleave', handleMouseEvent)
+        window_addEventListener('mousemove', handleMouseEvent)
+        window_addEventListener('mouseout', handleMouseEvent)
+        window_addEventListener('mouseover', handleMouseEvent)
+        window_addEventListener('mouseup', handleMouseEvent)
+        // 💡 window_addEventListener('click', handleMouseEvent)
+        // 💡 window_addEventListener('auxclick', handleMouseEvent)
+        // 💡 window_addEventListener('contextmenu', handleMouseEvent)
 
-        window.addEventListener('keydown', handleKeyEvent)
-        window.addEventListener('keyup', handleKeyEvent)
-        window.addEventListener('keypress', handleKeyEvent)
+        window_addEventListener('keydown', handleKeyEvent)
+        window_addEventListener('keyup', handleKeyEvent)
+        window_addEventListener('keypress', handleKeyEvent)
 
-        window.addEventListener('focusin', handleFocusEvent)
-        // window.addEventListener('focus', handleFocusEvent)
-        // window.addEventListener('focusout', handleFocusEvent)
+        window_addEventListener('focusin', handleFocusEvent)
+        // window_addEventListener('focus', handleFocusEvent)
+        // window_addEventListener('focusout', handleFocusEvent)
 
         return (): void => {
             window.removeEventListener('mousedown', handleMouseEvent)
