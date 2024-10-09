@@ -75,7 +75,7 @@ const AssetPageLora = observer(function AssetPageLora_(p: NO_PROPS) {
                 const name = loraPath.toString().split('/').pop()?.split('.safetensor').shift()
                 return (
                     <Frame //
-                        tw='w-32 h-40'
+                        tw='w-32 h-40 overflow-clip select-none'
                         base={{ contrast: 0.033 }}
                         roundness={csuite.inputRoundness}
                         border
