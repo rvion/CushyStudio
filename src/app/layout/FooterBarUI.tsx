@@ -10,6 +10,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
     return (
         <Frame
             //
+            border={0}
             base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
             tw='flex items-center px-1 py-1'
         >
