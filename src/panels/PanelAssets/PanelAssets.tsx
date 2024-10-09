@@ -7,6 +7,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { makeAutoObservable } from 'mobx'
 import { useMemo } from 'react'
+import { PanelAssetsShelfUI } from './PanelAssetsShelfUI'
 
 /** This is going to be rudementary for now, including only Loras atm. */
 export const PanelAssets = new Panel({
@@ -26,7 +27,7 @@ export type PanelAssetsProps = {
     selected: Set<number>
 }
 
-class PanelAssetsState {
+export class PanelAssetsState {
     constructor(
         //
         public props: PanelAssetsProps,
@@ -47,15 +48,14 @@ export const PanelAssetsUI = observer(function PanelAssetsUI_(p: PanelAssetsProp
     )
 })
 
+// TODO: (bird_d): Pages need a selectui to change the page viewing, unsure if that's the right approach though instead of just using filters.
 const AssetContent = observer(function AssetContent_(p: { st: PanelAssetsState }) {
     return (
         <Frame //
             tw='flex w-full h-full overflow-auto'
         >
-            <AssetPageLora
-                st={p.st}
-                // TODO: (bird_d): Pages need a selectui to change the page viewing, unsure if that's the right approach though instead of just using filters.
-            />
+            <AssetPageLora st={p.st} />
+            <PanelAssetsShelfUI st={p.st} />
         </Frame>
     )
 })
@@ -85,7 +85,7 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
 
     return (
         <Frame //
-            tw='flex w-full h-full gap-1 p-1'
+            tw='flex w-full h-full gap-1 p-1 overflow-auto'
             wrap
             onMouseDown={(e) => {
                 // Prevent misclicks from de-selecting when trying to select more.
