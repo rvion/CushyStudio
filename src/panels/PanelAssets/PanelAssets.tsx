@@ -123,19 +123,25 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
                             if (e.ctrlKey && e.shiftKey) {
                                 return
                             }
-                            // We always want the last clicked thing to be active
-                            p.st.props.active = index
 
                             // Toggle selection for this index, do not clear.
                             if (e.ctrlKey) {
                                 if (selected) {
                                     selectedItems.delete(index)
+
+                                    if (selectedItems.size == 0) {
+                                        p.st.props.active = -1
+                                    }
                                     return
                                 }
 
+                                // Only make active when also adding to selected
+                                p.st.props.active = index
                                 selectedItems.add(index)
                                 return
                             }
+
+                            p.st.props.active = index
 
                             // Select all from an already selected previous index to the current position
                             if (e.shiftKey) {
