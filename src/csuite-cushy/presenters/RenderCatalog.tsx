@@ -6,7 +6,7 @@ import type { FC, ReactNode } from 'react'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI, WidgetGroupInlineUI } from '../../csuite/fields/group/WidgetGroupUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
-import { H3Title } from '../catalog/Title/H3Title'
+import { H3Title } from '../catalog/Title/H123Title'
 import { DefaultWidgetTitleUI, type WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { ShellInlineUI } from '../shells/ShellInline'
@@ -27,7 +27,10 @@ export type WidgetsCatalog = {
     }
 
     Title: {
+        h1: FC<WidgetTitleProps>
+        h2: FC<WidgetTitleProps>
         h3: FC<WidgetTitleProps>
+        h4: FC<WidgetTitleProps>
         default: FC<WidgetTitleProps>
     }
 
@@ -57,7 +60,10 @@ export const widgetsCatalog: WidgetsCatalog = {
         Inline: ShellInlineUI,
     },
     Title: {
+        h1: H3Title,
+        h2: H3Title,
         h3: H3Title,
+        h4: H3Title,
         default: DefaultWidgetTitleUI,
     },
     QuickForm: QuickForm,

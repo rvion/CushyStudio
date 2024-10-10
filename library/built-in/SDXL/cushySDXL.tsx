@@ -29,22 +29,14 @@ app({
     layout2: (f) => f.Controlnets,
     layout: (ui) => {
         ui.forAllFields((ui) => {
-            if (ui.field.parent?.parent == null)
-                ui.apply({
-                    classNameForShell: 'pb8',
-                    Title: ui.catalog.Title.h3,
-                })
-        })
+            if (ui.field.parent?.parent == null) {
+                ui.apply({ classNameForShell: 'pb4', Title: ui.catalog.Title.h3 })
+                ui.forChildrenOf(ui.field, { Shell: ui.catalog.Shell.Right })
+            }
 
-        // @ts-ignore
-        ui.forChildrenOf(ui.field.Model, { Shell: ui.catalog.Shell.Right })
-        ui.forField(ui.field.Latent, { Title: <h3>Latent</h3> })
-        ui.forAllFields((ui) => {
             if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
-            // return {
-            //     Indent: (f) => '>>'.repeat(f.depth),
-            // }
         })
+        ui.forField(ui.field.Latent, { Shell: ui.catalog.Shell.Simple })
     },
     run: async (run, ui, ctx) => {
         const graph = run.nodes
