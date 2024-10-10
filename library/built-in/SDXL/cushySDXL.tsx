@@ -1,11 +1,15 @@
+import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
+import type { Field_group_value } from '../../../src/csuite/fields/group/FieldGroup'
+import type { $extra1 } from '../_extra/extra1'
+
 import { isFieldChoice, isFieldGroup } from '../../../src/csuite/fields/WidgetUI.DI'
-import { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
-import { eval_extra2 } from '../_extra/extra2'
-import { run_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
-import { run_FaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
+import { Cnet_args, Cnet_return, run_cnet, type UI_cnet } from '../_controlNet/prefab_cnet'
+import { type $extra2, eval_extra2 } from '../_extra/extra2'
+import { run_IPAdapterV2, type UI_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2, type UI_IPAdapterFaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
 import { run_Dispacement1, run_Dispacement2 } from '../_prefabs/prefab_3dDisplacement'
 import { run_refiners_fromImage } from '../_prefabs/prefab_detailer'
-import { run_latent_v3 } from '../_prefabs/prefab_latent_v3'
+import { run_latent_v3, type UI_LatentV3 } from '../_prefabs/prefab_latent_v3'
 import { run_mask } from '../_prefabs/prefab_mask'
 import { evalModelExtras_part2 } from '../_prefabs/prefab_model_extras'
 import { run_prompt } from '../_prefabs/prefab_prompt'
@@ -13,10 +17,10 @@ import { run_advancedPrompt } from '../_prefabs/prefab_promptsWithButtons'
 import { run_regionalPrompting_v1 } from '../_prefabs/prefab_regionalPrompting_v1'
 import { run_rembg_v1 } from '../_prefabs/prefab_rembg'
 import { type Ctx_sampler, run_sampler } from '../_prefabs/prefab_sampler'
-import { type Ctx_sampler_advanced, run_sampler_advanced } from '../_prefabs/prefab_sampler_advanced'
+import { type Ctx_sampler_advanced, run_sampler_advanced, type UI_Sampler_Advanced } from '../_prefabs/prefab_sampler_advanced'
 import { run_upscaleWithModel } from '../_prefabs/prefab_upscaleWithModel'
-import { run_customSave } from '../_prefabs/saveSmall'
-import { evalModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
+import { run_customSave, type UI_customSave } from '../_prefabs/saveSmall'
+import { type $prefabModelSD15andSDXL, evalModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { CushySDXLUI } from './_cushySDXLUI'
 
 app({
@@ -28,32 +32,75 @@ app({
     ui: CushySDXLUI,
     layout2: (f) => f.Controlnets,
     layout: (ui) => {
-        ui.forAllFields((ui) => {
-            if (ui.field.parent?.parent == null) {
-                ui.apply({ classNameForShell: 'pb4', Title: ui.catalog.Title.h3 })
-                ui.forChildrenOf(ui.field, { Shell: ui.catalog.Shell.Right })
+        const model = ui.field.Model
+        const latent = ui.field.Latent.bField
+        ui.forField(latent, { Shell: ui.catalog.Shell.Left })
+        ui.forAllFields((ui2) => {
+            if (ui2.field.parent?.parent == null) {
+                ui2.apply({ classNameForShell: 'pb4', Title: ui2.catalog.Title.h3 })
             }
-
-            if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
+            if (isFieldGroup(ui2.field) && isFieldChoice(ui2.field.parent)) return { Head: false }
+            if (ui2.field.path.startsWith(latent.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
+            if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
         })
-        ui.forField(ui.field.Latent, { Shell: ui.catalog.Shell.Simple })
+        // ui.forChildrenOf(ui.field.Model, { Shell: ui.catalog.Shell.Right })
+        // ui.forChildrenOf(ui.field.Latent.bField, { Shell: ui.catalog.Shell.Right })
+
+        // ui.forField(ui.field.Latent.aField, { Shell: ui.catalog.Shell.Left })
+        // ui.forField(ui.field.Latent.bField, { Shell: ui.catalog.Shell.Left })
     },
     run: async (run, ui, ctx) => {
         const graph = run.nodes
         // #region  MODEL, clip skip, vae, etc.
-        let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
+        let { ckpt, vae, clip: clip_ } = evalModelSD15andSDXL(ui.model)
 
-        // #region  PROMPT ENGINE
-        let positiveText = ui.positive.text
-        if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
-        const posPrompt = run_prompt({ prompt: { text: positiveText }, clip, ckpt, printWildcards: true })
-        const clipPos = posPrompt.clip
-        let ckptPos = posPrompt.ckpt
-        let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+        // #region PROMPT ENGINE -- POSITIVE
+        const mergeConditionning = (
+            //
+            a: _CONDITIONING | undefined,
+            b: _CONDITIONING,
+        ): _CONDITIONING => {
+            if (a == null) return b
+            return graph.ConditioningCombine({ conditioning_1: a, conditioning_2: b })
+        }
+
+        let ckptPos = ckpt
+        let clipPos = clip_
+        let positive!: _CONDITIONING
+        for (const prompt of ui.positive) {
+            if (prompt == null /* disabled */) continue
+
+            const res = evalPrompt(prompt.text, ui, clipPos, ckptPos, graph)
+            positive = mergeConditionning(positive, res.conditioning)
+            ckptPos = res.ckpt
+            clipPos = res.clip
+        }
+
+        if (ui.extra.promtPlus) {
+            const text = run_advancedPrompt(ui.extra.promtPlus)
+            const res = evalPrompt(text, ui, clipPos, ckpt, graph)
+            positive = mergeConditionning(positive, res.conditioning)
+            ckptPos = res.ckpt
+            clipPos = res.clip
+        }
+
         if (ui.extra.regionalPrompt)
-            positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
-        const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
-        let negative: _CONDITIONING = graph.CLIPTextEncode({ clip, text: negPrompt.promptIncludingBreaks })
+            positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, {
+                conditionning: positive!,
+                clip: clipPos,
+            })
+
+        // #region PROMPT ENGINE -- NEGATIVE
+        let ckptNeg = ckpt
+        let clipNeg = clip_
+        let negative!: _CONDITIONING
+        for (const prompt of ui.negative) {
+            if (prompt == null /* disabled */) continue
+            const res = evalPrompt(prompt.text, ui, clipNeg, ckpt, graph)
+            negative = mergeConditionning(negative, res.conditioning)
+            ckptNeg = res.ckpt
+            clipNeg = res.clip
+        }
 
         // #region START IMAGE
         const imgCtx = ctx.image
@@ -221,3 +268,37 @@ app({
         await eval_extra2(ui.extra2)
     },
 })
+function evalPrompt(
+    text: string,
+    ui: Field_group_value<{
+        positive: X.XList<X.XOptional<X.XPrompt>>
+        negative: X.XList<X.XOptional<X.XPrompt>>
+        model: $prefabModelSD15andSDXL
+        latent: UI_LatentV3
+        sampler: UI_Sampler_Advanced
+        customSave: UI_customSave
+        controlnets: UI_cnet
+        ipAdapter: X.XOptional<UI_IPAdapterV2>
+        faceID: X.XOptional<UI_IPAdapterFaceIDV2>
+        extra: $extra1
+        extra2: $extra2
+    }>,
+    initialClip: _CLIP,
+    initialCkpt: _MODEL,
+    graph: ComfyWorkflowBuilder,
+): {
+    conditioning: _CONDITIONING
+    ckpt: _MODEL
+    clip: _CLIP
+} {
+    const posPrompt = run_prompt({
+        prompt: { text },
+        clip: initialClip,
+        ckpt: initialCkpt,
+        printWildcards: true,
+    })
+    const clip = posPrompt.clip
+    let ckpt = posPrompt.ckpt
+    let conditioning: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+    return { conditioning, ckpt, clip }
+}
