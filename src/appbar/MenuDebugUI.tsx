@@ -21,9 +21,8 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     <MenuItem //
                         onClick={() => st.layout.open('Playground', {})}
                         icon='mdiPlayNetwork'
-                    >
-                        Show Dev Playground Page
-                    </MenuItem>
+                        label='Show Dev Playground Page'
+                    />
                     <MenuDividerUI_ />
                     <MenuItem
                         iconClassName='text-green-500'
@@ -88,9 +87,9 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                             )
                         }
                         icon='mdiAccount'
-                    >
-                        print DB stats
-                    </MenuItem>
+                        label='print DB stats'
+                    />
+
                     <MenuItem //
                         iconClassName='text-yellow-500'
                         onClick={() => quickBench.printAllStats()}

@@ -80,7 +80,7 @@ export type RevealProps = {
     // components / slots -------------------------------------------------------------
     /** @since 2024-07-23 */
     shell?: FC<RevealShellProps> | KnownShells
-    content: FC<RevealContentProps>
+    content: FC<RevealContentProps> // | null
     children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
 

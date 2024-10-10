@@ -4,14 +4,13 @@ import type { Field } from '../model/Field'
 import type { BoundMenu } from './BoundMenuOpts'
 import type { SimpleMenuAction } from './SimpleMenuAction'
 import type { SimpleMenuModal } from './SimpleMenuModal'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 // prettier-ignore
 export type MenuEntry =
     /** inline subform  */
     | Field
     /** custom component  */
-    | FC<{}>
     /** a command */
     | Command /* command may be passed unbound: in that case, they retrieve their context from their provider */
     | BoundCommand
@@ -19,3 +18,6 @@ export type MenuEntry =
     /** simple MenuEntry */
     | SimpleMenuAction
     | SimpleMenuModal
+    //
+    | FC<{}>
+    | ReactNode

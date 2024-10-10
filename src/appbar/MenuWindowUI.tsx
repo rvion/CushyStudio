@@ -1,6 +1,6 @@
 import type { MenuEntry } from '../csuite/menu/MenuEntry'
 
-import { menuWithoutProps } from '../csuite/menu/Menu'
+import { menuWithoutProps, type MenuWithoutProps } from '../csuite/menu/Menu'
 import { capitalize } from '../csuite/utils/capitalize'
 import { getPanelCategoryIcon, type PanelCategory } from '../router/PanelCategory'
 import { allPanels } from '../router/PANELS'
@@ -17,7 +17,7 @@ const groupBy = <X extends any, Key extends string>(
 ): Record<Key, X[]> => arr.reduce<Record<string, X[]>>((a, b, i) => ((a[getKey(b, i, arr)] ||= []).push(b), a), {})
 
 // const XXX = ['Civitai', 'Squoosh']
-const menuPanels = menuWithoutProps({
+export const menuPanels: MenuWithoutProps = menuWithoutProps({
     title: 'Panels',
     entries: (): MenuEntry[] => {
         const byCategory = groupBy(allPanels, (v) => v.category)

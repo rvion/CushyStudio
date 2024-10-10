@@ -22,43 +22,46 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                     <MenuItem
                         icon='mdiArrowCollapseVertical'
                         onClick={() => draft.collapseTopLevelFormEntries()}
-                        children='Collapse top level entries'
+                        label='Collapse top level entries'
                     />
                     <MenuItem
                         icon='mdiArrowExpandVertical'
                         onClick={() => draft.expandTopLevelFormEntries()}
-                        children='Expand top level entries'
+                        label='Expand top level entries'
                     />
                     <MenuDividerUI_ />
                     {file?.liteGraphJSON && (
                         <MenuItem
                             onClick={() => st.layout.open('ComfyUI', { litegraphJson: file.liteGraphJSON })}
-                            children='Open in ComfyUI'
+                            label='Open in ComfyUI'
                         />
                     )}
                     <MenuDividerUI_ />
-                    <MenuItem onClick={() => (st.preferedFormLayout = 'auto')} active={layout == 'auto'} icon='mdiArrowExpandAll'>
-                        Auto Layout
-                        <BadgeUI autoHue>recommended</BadgeUI>
-                    </MenuItem>
+                    <MenuItem //
+                        onClick={() => (st.preferedFormLayout = 'auto')}
+                        active={layout == 'auto'}
+                        icon='mdiArrowExpandAll'
+                        label='Auto Layout'
+                        beforeShortcut={<BadgeUI autoHue>recommended</BadgeUI>}
+                    />
                     <MenuItem
                         onClick={() => (st.preferedFormLayout = 'dense')}
                         active={layout == 'dense'}
                         icon='mdiImageSizeSelectSmall'
-                        children='Dense Layout'
+                        label='Dense Layout'
                     />
                     <MenuItem
                         onClick={() => (st.preferedFormLayout = 'mobile')}
                         active={layout == 'mobile'}
                         icon='mdiImageSizeSelectLarge'
-                        children='Expanded Layout'
+                        label='Expanded Layout'
                     />
                     <MenuDividerUI_ />
                     <MenuItem
                         onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
                         active={st.isConfigValueEq('draft.mockup-mobile', true)}
                         icon='mdiCellphone'
-                        children='Mobile'
+                        label='Mobile'
                     />
                 </>
             )}

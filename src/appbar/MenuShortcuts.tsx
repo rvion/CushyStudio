@@ -5,7 +5,7 @@ import { commandManager } from '../csuite/commands/CommandManager'
 import { menuWithoutProps, MenuWithoutProps } from '../csuite/menu/Menu'
 import { PanelShortcuts } from '../panels/PanelShortcuts/PanelShortcuts'
 
-const layoutShortcuts = menuWithoutProps({
+export const menuCommands = menuWithoutProps({
     title: 'Commands',
     // entries: () => [...allLayoutCommands],
     entries: (): MenuEntry[] => {
@@ -15,10 +15,11 @@ const layoutShortcuts = menuWithoutProps({
                 new MenuWithoutProps({
                     title: c.name,
                     entries: (): Command<any>[] => c.commandsArr,
+                    icon: 'mdiKeyboardCaps',
                 }).bind(),
             ),
         ]
     },
 })
 
-export const MenuShortcutsUI = (): JSX.Element => <layoutShortcuts.UI />
+export const MenuCommandsUI = (): JSX.Element => <menuCommands.UI />

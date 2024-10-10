@@ -272,7 +272,8 @@ export class Presenter {
             : slots.Shell //
               ? slots.Shell
               : defaultPresenterSlots.Shell
-        console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
+
+        // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
         if (!Shell) throw new Error('Shell is not defined')
 
         // COMPILED

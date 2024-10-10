@@ -23,19 +23,27 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
             content={() => (
                 <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
                     {/* <ImageDropdownMenuUI img={image} /> */}
-                    <MenuItem icon={'mdiOpenInNew'} onClick={graph.menuAction_openInTab}>
-                        open in ComfyUI Tab
-                    </MenuItem>
-                    <MenuItem icon={'mdiOpenInApp'} onClick={graph.menuAction_openInFullScreen}>
-                        open in ComfyUI FULL
-                    </MenuItem>
+                    <MenuItem //
+                        icon={'mdiOpenInNew'}
+                        onClick={graph.menuAction_openInTab}
+                        label='open in ComfyUI Tab'
+                    />
+                    <MenuItem //
+                        icon={'mdiOpenInApp'}
+                        onClick={graph.menuAction_openInFullScreen}
+                        label='open in ComfyUI FULL'
+                    />
                     <div className='divider my-0'></div>
-                    <MenuItem icon={'mdiCloud'} onClick={graph.menuAction_downloadWorkflow}>
-                        Download ComfyUI Workflow
-                    </MenuItem>
-                    <MenuItem icon={'mdiDownloadLock'} onClick={graph.menuAction_downloadPrompt}>
-                        Download ComfyUI PROMPT
-                    </MenuItem>
+                    <MenuItem //
+                        icon={'mdiCloud'}
+                        onClick={graph.menuAction_downloadWorkflow}
+                        label='Download ComfyUI Workflow'
+                    />
+                    <MenuItem //
+                        icon={'mdiDownloadLock'}
+                        onClick={graph.menuAction_downloadPrompt}
+                        label='Download ComfyUI PROMPT'
+                    />
                     <div className='divider my-0'>Quick Graph preview</div>
                     <GraphPreviewUI graph={graph} />
                     <ButtonOpenInComfyUI graph={p.output} />

@@ -25,40 +25,44 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     const img = p.img
     return (
         <>
-            <MenuItem icon='mdiDelete' disabled={!img?.absPath} onClick={() => img.delete({})}>
-                Delete
-            </MenuItem>
-            <div className='divider my-1'>Send to</div>
-            <MenuItem icon='mdiContentCopy' onClick={(e) => img.copyToClipboard()}>
-                Clipboard
-            </MenuItem>
-            <MenuItem icon='mdiContentCopy' onClick={img.copyToClipboardAsBase64}>
-                Copy Base64
-            </MenuItem>
+            <MenuItem //
+                icon='mdiDelete'
+                disabled={!img?.absPath}
+                onClick={() => img.delete({})}
+                label='Delete'
+            />
+            <MenuItem.Divider children='Send to' />
+            <MenuItem //
+                icon='mdiContentCopy'
+                onClick={(e) => img.copyToClipboard()}
+                label='Clipboard'
+            />
+            <MenuItem //
+                icon='mdiContentCopy'
+                onClick={img.copyToClipboardAsBase64}
+                label='Copy Base64'
+            />
             <MenuItem
                 icon='mdiOverscan'
                 disabled={!img?.absPath}
                 onClick={() => st.layout.open('Image', { imageID: img.id })}
                 localShortcut='mod+click'
-            >
-                Dedicated Panel
-            </MenuItem>
+                label='Dedicated Panel'
+            />
             <MenuItem
                 icon='mdiFocusAuto'
                 disabled={!img?.absPath}
                 localShortcut='shift+click'
                 onClick={() => st.layout.open('Canvas', { imgID: img.id })}
-            >
-                Unified Canvas
-            </MenuItem>
+                label='Unified Canvas'
+            />
             <MenuItem
                 icon='mdiBrush'
                 disabled={!img?.absPath}
                 localShortcut='alt+click'
                 onClick={() => st.layout.open('Paint', { imgID: img.id })}
-            >
-                MiniPaint
-            </MenuItem>
+                label='MiniPaint'
+            />
 
             <div className='divider my-1'>FileSystem</div>
             <MenuItem
@@ -69,9 +73,8 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                     if (!img || !st.getConfigValue('favoriteLocalFolderPath')) return
                     return img.saveLocally(st.getConfigValue('favoriteLocalFolderPath') ?? '')
                 }}
-            >
-                {ImagePathUIString(st.getConfigValue('favoriteLocalFolderPath'))}
-            </MenuItem>
+                label={ImagePathUIString(st.getConfigValue('favoriteLocalFolderPath'))}
+            />
             <MenuItem
                 icon='mdiFolder'
                 disabled={!img?.absPath}
@@ -79,27 +82,27 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                     if (!img?.absPath) return
                     return showItemInFolder(img.absPath)
                 }}
-            >
-                Open folder
-            </MenuItem>
+                label='Open folder'
+            />
             {/* 3. OPEN FILE ITSELF */}
             <MenuItem
                 icon='mdiFile'
-                size='xs'
                 disabled={!img?.absPath}
                 onClick={() => {
                     const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
                     if (imgPathWithFileProtocol == null) return
                     return openExternal(imgPathWithFileProtocol)
                 }}
-            >
-                Open
-            </MenuItem>
-            <div className='divider my-1'>Draft</div>
-            <MenuItem icon='mdiPin' className='_MenuItem' onClick={() => img.useAsDraftIllustration()}>
-                <div className='flex items-center gap-2'>Use as Draft Illustration</div>
-            </MenuItem>
-            <div className='divider my-0'></div>
+                label='Open'
+            />
+            <MenuItem.Divider children='Draft' />
+            <MenuItem //
+                icon='mdiPin'
+                className='_MenuItem'
+                onClick={() => img.useAsDraftIllustration()}
+                label='Use as Draft Illustration'
+            />
+            <MenuItem.Divider />
             <ImageActionMenu img={img} />
         </>
     )
@@ -122,29 +125,30 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
             {st.allImageApps.map((app) => {
                 return (
                     <div key={app.id}>
-                        {app.drafts.map((d) => (
+                        {app.drafts.map((draft) => (
                             <MenuItem
                                 icon='mdiPlay'
-                                key={d.id}
+                                key={draft.id}
                                 className='_MenuItem'
                                 onClick={() => {
-                                    d.start({ context: { image: img } })
+                                    draft.start({ context: { image: img } })
                                 }}
+                                iconJSX={<DraftIllustrationUI draft={draft} size='1.2rem' />}
+                                label={draft.name}
                             >
                                 <div className='flex flex-1 items-center gap-2'>
-                                    <DraftIllustrationUI draft={d} size='1.2rem' />
-                                    {d.name}
+                                    {draft.name}
+                                    <Button
+                                        square
+                                        icon='mdiOpenInNew'
+                                        onClick={(ev) => {
+                                            ev.stopPropagation()
+                                            ev.preventDefault()
+                                            draft.openOrFocusTab()
+                                        }}
+                                    />
                                     <div className='ml-auto line'>
-                                        <div tw='opacity-55 italic'>{d.app.name}</div>
-                                        <Button
-                                            square
-                                            icon='mdiOpenInNew'
-                                            onClick={(ev) => {
-                                                ev.stopPropagation()
-                                                ev.preventDefault()
-                                                d.openOrFocusTab()
-                                            }}
-                                        ></Button>
+                                        <div tw='opacity-55 italic'>({draft.app.name})</div>
                                     </div>
                                 </div>
                             </MenuItem>

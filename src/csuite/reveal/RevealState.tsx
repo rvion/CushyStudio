@@ -112,6 +112,7 @@ export class RevealState {
         // see comment above
         this.contentFn = (): ReactNode => {
             const Component = p.content
+            if (Component == null) return null
             return <Component reveal={this} />
         }
 
@@ -329,6 +330,8 @@ export class RevealState {
 
     onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.logEv(ev, `anchor.onMouseEnter`)
+        // console.log(`[🔴] ${this.uid}`, this.parents.length, `| curr=${RevealState.shared.current?.uid}`)
+
         /* 🔥 */ if (this.isVisible) return
         /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
         /* 🔥 */ if (RevealState.shared.current) return this.open()

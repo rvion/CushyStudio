@@ -3,6 +3,7 @@ import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
@@ -66,14 +67,16 @@ const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
                 return (
                     <MenuItem
                         key={id}
+                        label={title ?? id}
+                        iconJSX={<DraftIllustrationUI draft={cushy.db.draft.getOrThrow(id)} size='1.2rem' />}
                         onClick={() => {
                             const draft = cushy.db.draft.getOrThrow(id)
                             draft.openOrFocusTab()
                         }}
-                    >
-                        <div tw='flex items-center'>{title ?? id}</div>
-                        <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(lastRunAt)}</div>
-                    </MenuItem>
+                        beforeShortcut={
+                            <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(lastRunAt)}</div>
+                        }
+                    />
                 )
             })}
         </div>

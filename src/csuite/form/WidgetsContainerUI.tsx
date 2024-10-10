@@ -26,7 +26,7 @@ export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI
                 //
                 isHorizontal ? `flex flex-wrap` : `flex flex-col`,
                 'w-full',
-                'gap-1',
+                // 'gap-1',
             ]}
             {...rest}
         />
