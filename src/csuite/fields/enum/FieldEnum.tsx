@@ -123,9 +123,9 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
             const def = _extractDefaultValue(this.config)
             if (def != null) {
                 const isValidDef = this.possibleValues.includes(def)
-                if (!this._isValidValue(def)) {
-                    throw new Error(`Invalid default value ${def} for enum ${this.config.enumName}`)
-                }
+                // ⏸️ if (!this._isValidValue(def)) {
+                // ⏸️     throw new Error(`Invalid default value ${def} for enum ${this.config.enumName}`)
+                // ⏸️ }
                 const nextXX = def as any as O
                 // 🔴 ping @globi
                 // @ts-ignore
