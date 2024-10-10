@@ -11,6 +11,8 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
     const child = field.child
     return (
         <child.UI //
+            UpDownBtn={p.UpDownBtn}
+            DeleteBtn={p.DeleteBtn}
             Toogle={<field.UIToggle />}
             Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
