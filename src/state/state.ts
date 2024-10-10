@@ -783,6 +783,11 @@ export class STATE {
         // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
+        // silent whitelist
+        if (typeof msg === 'object' && 'type' in msg) {
+            if ((msg.type as any) === 'crystools.monitor') return
+        }
+
         const shouldCheckPAYLOADS = true
         if (shouldCheckPAYLOADS) {
             const match = WsMsg$Schema.safeParse(msg)
@@ -827,6 +832,7 @@ export class STATE {
         }
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
+
         toastError('Unknown message type: ' + JSON.stringify(msg.type))
         // throw new Error('Unknown message type: ' + JSON.stringify(msg))
     }
