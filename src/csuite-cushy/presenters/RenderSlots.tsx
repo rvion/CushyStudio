@@ -3,7 +3,6 @@ import type { WidgetHeaderContainerProps } from '../../csuite/form/WidgetHeaderC
 import type { WidgetIndentProps } from '../../csuite/form/WidgetIndentUI'
 import type { WidgetLabelCaretProps } from '../../csuite/form/WidgetLabelCaretUI'
 import type { WidgetLabelIconProps } from '../../csuite/form/WidgetLabelIconUI'
-import type { WidgetLabelTextProps } from '../../csuite/form/WidgetLabelTextUI'
 import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
 import type { WidgetPresetsProps } from '../../csuite/form/WidgetPresets'
 import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
@@ -12,6 +11,7 @@ import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { QuickFormContent } from '../catalog/group/QuickForm'
+import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import type { FCOrNode } from '../shells/_isFC'
 import type { CushyHeadProps } from '../shells/CushyHead'
 import type { CompiledRenderProps } from './Renderer'
@@ -55,7 +55,7 @@ export interface WidgetSlots<out FIELD extends Field = Field> {
     // stuff you want to include, possilby in some revealable way
     // based on field.hasError.
     /* 🟢 */ Errors?: FCOrNode<{ field: FIELD }>
-    /* 🟢 */ LabelText?: FCOrNode<WidgetLabelTextProps>
+    /* 🟢 */ Title?: FCOrNode<WidgetTitleProps>
 
     /* 🟢 */ DragKnob?: FCOrNode<NO_PROPS>
     /* 🟢 */ UpDownBtn?: FCOrNode<NO_PROPS>

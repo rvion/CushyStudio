@@ -1,5 +1,4 @@
 import type { Field_number } from '../../csuite/fields/number/FieldNumber'
-import type { WidgetLabelTextProps } from '../../csuite/form/WidgetLabelTextUI'
 import type { Field } from '../../csuite/model/Field'
 import type { CompiledRenderProps } from './Renderer'
 import type { FC, ReactNode } from 'react'
@@ -7,6 +6,8 @@ import type { FC, ReactNode } from 'react'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI, WidgetGroupInlineUI } from '../../csuite/fields/group/WidgetGroupUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
+import { H3Title } from '../catalog/Title/H3Title'
+import { DefaultWidgetTitleUI, type WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { ShellInlineUI } from '../shells/ShellInline'
 import { ShellMobileUI } from '../shells/ShellMobile'
@@ -25,8 +26,9 @@ export type WidgetsCatalog = {
         Inline: FC<CompiledRenderProps<Field<any>>>
     }
 
-    LabelText: {
-        h3: FC<WidgetLabelTextProps>
+    Title: {
+        h3: FC<WidgetTitleProps>
+        default: FC<WidgetTitleProps>
     }
 
     // quick form system
@@ -36,17 +38,13 @@ export type WidgetsCatalog = {
     number: {
         def: FC<{ field: Field_number }>
     }
+
     group: {
         controls: typeof WidgetGroup_LineUI
         group: typeof WidgetGroup_BlockUI
         inline: typeof WidgetGroupInlineUI
     }
 }
-const H3Title = ({ field, ...rest }: WidgetLabelTextProps): JSX.Element => (
-    <h3 className={rest.className}>
-        🟢 {rest.children} {Object.keys({ ...rest })}
-    </h3>
-)
 
 export const widgetsCatalog: WidgetsCatalog = {
     Shell: {
@@ -58,8 +56,9 @@ export const widgetsCatalog: WidgetsCatalog = {
         FluidUI: ShellCushyFluidUI,
         Inline: ShellInlineUI,
     },
-    LabelText: {
+    Title: {
         h3: H3Title,
+        default: DefaultWidgetTitleUI,
     },
     QuickForm: QuickForm,
     group: {

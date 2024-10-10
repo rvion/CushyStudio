@@ -272,7 +272,7 @@ export type RuleOrConf<FIELD extends Field> =
 const typed = <T extends any>(t: T): T => t
 
 const presets = {
-    noLabel: typed<DisplayConf<any>>({ LabelText: null, Icon: null, Indent: null }),
+    noLabel: typed<DisplayConf<any>>({ Title: null, Icon: null, Indent: null }),
     // inline() {},
 }
 

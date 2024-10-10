@@ -75,7 +75,7 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
                         {utils.renderFCOrNode(p.DragKnob, /*  */ {})}
                         {utils.renderFCOrNode(p.Caret, /*     */ { field })}
                         {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.LabelText, /* */ { field })}
+                        {utils.renderFCOrNode(p.Title, /* */ { field })}
                         {utils.renderFCOrNode(p.DebugID, /*   */ { field })}
                         {utils.renderFCOrNode(p.Presets, /*   */ { field, className: 'ml-auto self-start' })}
                     </WidgetLabelContainerUI>
@@ -105,7 +105,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                         {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
                         {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
                         {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                        {utils.renderFCOrNode(p.LabelText /* */, { field })}
+                        {utils.renderFCOrNode(p.Title /* */, { field })}
                         {utils.renderFCOrNode(p.DebugID /*   */, { field })}
                         {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
                     </WidgetLabelContainerUI>
@@ -138,7 +138,7 @@ export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRe
                         {utils.renderFCOrNode(p.Caret, /*     */ { field })}
                         {utils.renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}
                         {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.LabelText, /* */ { field })}
+                        {utils.renderFCOrNode(p.Title, /* */ { field })}
                         {utils.renderFCOrNode(p.DebugID, /*   */ { field })}
                         <WidgetPresetsUI field={field} />
                     </WidgetLabelContainerUI>

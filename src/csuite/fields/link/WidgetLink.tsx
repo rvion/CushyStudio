@@ -12,7 +12,7 @@ export const ShellLinkUI = observer(function ShellLink(p: CompiledRenderProps<Fi
     const child = field.bField
     return (
         <child.UI //
-            LabelText={(x) => renderFCOrNode(p.LabelText, { field: field })}
+            Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
         />
     )

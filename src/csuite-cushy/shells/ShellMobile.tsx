@@ -27,7 +27,7 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
                         {renderFCOrNode(p.DragKnob, {})}
                         {renderFCOrNode(p.Caret, { placeholder: false, field })}
                         {renderFCOrNode(p.Icon, { field, className: 'mr-1' })}
-                        {renderFCOrNode(p.LabelText, { field })}
+                        {renderFCOrNode(p.Title, { field })}
                         {renderFCOrNode(p.DebugID, { field })}
                         {renderFCOrNode(p.Presets, { field })}
                     </div>

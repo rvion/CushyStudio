@@ -12,7 +12,7 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
     return (
         <child.UI //
             Toogle={<field.UIToggle />}
-            LabelText={(x) => renderFCOrNode(p.LabelText, { field: field })}
+            Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
         />
     )

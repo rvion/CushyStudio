@@ -137,26 +137,26 @@ export const interfaceConf = cushyFactory.document(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <f.toolBarIconSize.UI LabelText={null} />
+                                <f.toolBarIconSize.UI Title={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <f.widgetHeight.UI LabelText={null} />
-                                <f.inputHeight.UI LabelText={null} />
-                                <f.insideHeight.UI LabelText={null} />
+                                <f.widgetHeight.UI Title={null} />
+                                <f.inputHeight.UI Title={null} />
+                                <f.insideHeight.UI Title={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <f.tooltipDelay.UI LabelText={null} />
+                                <f.tooltipDelay.UI Title={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <f.tabSetEnableSingleTabStretch.UI LabelText={null} />
-                                <f.useDefaultCursorEverywhere.UI LabelText={null} />
+                                <f.tabSetEnableSingleTabStretch.UI Title={null} />
+                                <f.useDefaultCursorEverywhere.UI Title={null} />
                             </div>
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                {<f.showToggleButtonBox.UI LabelText='Show' />}
-                                {f.showWidgetUndo.UI({ LabelText: null })}
-                                {f.showWidgetFoldButtons.UI({ LabelText: 'showWidgetFoldButtons' })}
-                                {f.showWidgetMenu.UI({ LabelText: null })}
-                                {f.showWidgetDiff.UI({ LabelText: null })}
+                                {<f.showToggleButtonBox.UI Title='Show' />}
+                                {f.showWidgetUndo.UI({ Title: null })}
+                                {f.showWidgetFoldButtons.UI({ Title: 'showWidgetFoldButtons' })}
+                                {f.showWidgetMenu.UI({ Title: null })}
+                                {f.showWidgetDiff.UI({ Title: null })}
                             </div>
                         </div>
                     )

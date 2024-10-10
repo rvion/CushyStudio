@@ -13,12 +13,12 @@ import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainer
 import { WidgetIndentUI } from '../../csuite/form/WidgetIndentUI'
 import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
 import { WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
-import { WidgetLabelTextUI } from '../../csuite/form/WidgetLabelTextUI'
 import { WidgetMenuUI } from '../../csuite/form/WidgetMenu'
 import { WidgetPresetsUI } from '../../csuite/form/WidgetPresets'
 import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSummaryUI'
 import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
+import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
 
@@ -63,7 +63,7 @@ export const defaultPresenterSlots: WidgetSlots<any> = {
     /* ✅ */ Extra: undefined,
 
     /* 🟢 */ Errors: WidgetErrorsUI,
-    /* 🟢 */ LabelText: WidgetLabelTextUI,
+    /* 🟢 */ Title: DefaultWidgetTitleUI,
 
     /* 🟢 */ DragKnob: undefined,
     /* 🟢 */ UpDownBtn: undefined,
