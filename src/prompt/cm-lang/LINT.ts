@@ -49,7 +49,7 @@ export const PromptLinter1 = linter((view: EditorView) => {
             from: embedding.from,
             to: embedding.to,
             severity: 'error',
-            message: `Lora "${embedding.name}" does not exist`,
+            message: `Embedding "${embedding.name}" does not exist`,
             actions: [removeAction],
         })
     })
