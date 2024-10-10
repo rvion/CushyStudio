@@ -30,7 +30,7 @@
         "run-update": "CUSHY_RUN_MODE=dev node src/shell/update.cjs",
         "run-install": "CUSHY_RUN_MODE=dev node src/shell/install.cjs",
         "📌 CODEGEN": "----------------------------------------------------------------------",
-        "gen-lezer": "lezer-generator ./src/controls/fields/prompt/grammar/.grammar -o ./src/controls/fields/prompt/grammar/grammar.parser.ts",
+        "gen-lezer": "lezer-generator ./src/prompt/grammar/.grammar -o ./src/prompt/grammar/grammar.parser.ts",
         "gen-bins-node": "npm rebuild",
         "gen-supa-types": "supabase gen types typescript --schema public --linked > src/supa/database.types.ts",
         "gen-supa-types-full": "supabase gen types typescript --schema public --schema auth --linked > src/supa/database.types.ts",
