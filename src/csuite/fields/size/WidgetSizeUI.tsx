@@ -3,7 +3,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -36,7 +36,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.size
     const modelBtn = (model: ModelType): JSX.Element => (
-        <InputBoolToggleButtonUI //
+        <ToggleButtonUI //
             toggleGroup='size'
             tw='w-input'
             value={uist.desiredModelType == model}

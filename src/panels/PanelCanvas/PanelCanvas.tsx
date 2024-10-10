@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
@@ -103,7 +103,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                                 suffix='px'
                                 step={10}
                             />
-                            <InputBoolToggleButtonUI //
+                            <ToggleButtonUI //
                                 toggleGroup='canvas'
                                 value={canvas.usePenPressure}
                                 onValueChange={() => (canvas.usePenPressure = !canvas.usePenPressure)}
@@ -141,7 +141,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                             value={canvas.snapSize}
                             text='Grid Snapping'
                         />
-                        <InputBoolToggleButtonUI
+                        <ToggleButtonUI
                             toggleGroup='canvas'
                             icon={canvas.snapToGrid ? 'mdiMagnetOn' : 'mdiMagnet'}
                             value={canvas.snapToGrid}
@@ -152,7 +152,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                         />
                     </div>
                     <div tw='flex items-end justify-end'>
-                        <InputBoolToggleButtonUI
+                        <ToggleButtonUI
                             toggleGroup='canvas'
                             value={canvas.enableOverlay}
                             onValueChange={(_) => (canvas.enableOverlay = !canvas.enableOverlay)}

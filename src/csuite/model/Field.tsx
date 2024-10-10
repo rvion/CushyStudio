@@ -1104,6 +1104,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      * persistance will usually be done at the root field reacting to this event.
      */
     applySerialUpdateEffects(): void {
+        // console.log(`[🤠] upda applySerialUpdateEffects`)
         this.config.onSerialChange?.(this)
         // this.parent?.applySerialUpdateEffects()
     }
@@ -1111,6 +1112,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     applyValueUpdateEffects(): void {
+        // console.log(`[🤠] upda applyValueUpdateEffects`)
         // ⏸️ this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.config.onValueChange?.(this)
     }

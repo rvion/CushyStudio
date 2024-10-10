@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Presenter'
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
 import type { Field_optional } from './FieldOptional'
 
 import { observer } from 'mobx-react-lite'

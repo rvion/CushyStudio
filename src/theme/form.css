@@ -23,11 +23,9 @@
 .UI-WidgetLabelContainer,
 .UI-WidgetHeaderControlsContainer {
     min-height: var(--widget-height);
+    min-width: 0;
 }
 
-/* .ABDDE { */
-/*     border: 1px solid red; */
-/* } */
 
 /* Box Utils ------------------------------------------------------------------------------------- */
 /* box sizes */

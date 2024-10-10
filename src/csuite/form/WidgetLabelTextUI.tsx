@@ -8,23 +8,19 @@ import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
 
 export type WidgetLabelTextProps = {
     field: Field
-    className?: string
 
-    label?: ReactNode
+    className?: string
+    // label?: ReactNode
     children?: ReactNode
 }
 
 export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetLabelTextProps) {
     const csuite = useCSuite()
-    const labelText =
-        p.label ?? //
-        p.children ??
-        p.field.config.label ??
-        makeLabelFromPrimitiveValue(p.field.mountKey)
+    const labelText = p.children ?? p.field.config.label ?? makeLabelFromPrimitiveValue(p.field.mountKey)
     return (
         <span
             tw={[
-                'UI-WidgetLabel self-start minh-widget lh-widget ABDDE',
+                'UI-WidgetLabel self-start minh-widget lh-widget',
                 // 1. indicate we can click on the label
                 'COLLAPSE-PASSTHROUGH',
                 // p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,

@@ -73,11 +73,14 @@ export type MAGICFIELDS<T extends Field_group_types<SchemaDict>> = {
     [K in keyof T['$Sub'] as Capitalize<K & string>]: T['$Sub'][K]['$Field']
 }
 
-export interface Field_Group_withMagicFields<T extends Field_group_types<SchemaDict>> extends Field_group<T> {
+export interface Field_Group_withMagicFields<T extends Field_group_types<SchemaDict>> //
+    extends Field_group<T> {
     $Field: FieldGroup<T>
 }
+
 /** named alias for the Field with MAGICFields added, to keep field type concise  */
-export type FieldGroup<T extends Field_group_types<SchemaDict>> = Field_group<T> & MAGICFIELDS<T>
+export type FieldGroup<T extends Field_group_types<SchemaDict>> = //
+    Field_group<T> & MAGICFIELDS<T> & { $Field: FieldGroup<T> }
 
 // // prettier-ignore
 // type QuickFormContent<T extends Field> =

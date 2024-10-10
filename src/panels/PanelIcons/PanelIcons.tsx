@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
@@ -74,7 +74,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                             })
                         }
                     />
-                    <InputBoolToggleButtonUI
+                    <ToggleButtonUI
                         toggleGroup='panel-icon-filter'
                         value={uist.filter}
                         icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}

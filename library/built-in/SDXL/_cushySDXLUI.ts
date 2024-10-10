@@ -23,6 +23,8 @@ export type $CushySDXLUI = X.XGroup<{
     extra2: $extra2
 }>
 
+// type K = $CushySDXLUI['$Field']
+
 export function CushySDXLUI(ui: X.Builder): $CushySDXLUI {
     return ui.fields({
         positive: ui.prompt({

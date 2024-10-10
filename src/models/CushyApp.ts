@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { DisplayRule } from '../csuite-cushy/presenters/Presenter'
+import type { DisplayRule } from '../csuite-cushy/presenters/Renderer'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'

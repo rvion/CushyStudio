@@ -290,6 +290,8 @@ export class DraftL extends BaseInst<TABLES['draft']> {
                     name: this.name,
                     serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
+                        console.log(`[🧐] update draft(${this.id}) SERIAL`)
+
                         this.update({ formSerial: form.serial })
                         console.log(`[🧐] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true

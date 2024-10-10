@@ -27,7 +27,24 @@ export default defineConfig({
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'JSOX' }),
-        UnoCSS(),
+        UnoCSS({
+            postcss: false,
+            include: ['src/**/*.{js,jsx,ts,tsx}', 'library/**/*.{js,jsx,ts,tsx}'],
+            content: {
+                filesystem: ['src/**/*.{jsx,tsx}', 'library/**/*.{jsx,tsx}'],
+                pipeline: {
+                    include: [
+                        // the default
+                        // /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+                        // include js/ts files
+                        'src/**/*.{jsx,tsx}',
+                        'library/**/*.{jsx,tsx}',
+                    ],
+                    // exclude files
+                    // exclude: []
+                },
+            },
+        }),
         // viteSingleFile(),
     ],
     build: {

@@ -65,7 +65,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.ts:0')?.openLastOrCreateDraft()}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:0')?.openLastOrCreateDraft()}
                     >
                         SDXL
                     </Button>

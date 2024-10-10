@@ -25,8 +25,13 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
         <ErrorBoundaryUI>
             <Frame
                 tw={[
-                    'UI-WidgetHeaderContainer COLLAPSE-PASSTHROUGH',
-                    'flex gap-0.5 select-none flex-1',
+                    'COLLAPSE-PASSTHROUGH',
+                    'flex flex-1 gap-0.5 select-none min-w-0',
+
+                    // 💬 2024-10-10 rvion:
+                    // 'h-widget',
+                    // 'UI-WidgetHeaderContainer',
+
                     // 💬 2024-06-03 rvion, changing 'items-center' to 'items-start'
                     // as well as adding some `h-input` class to <WidgetLabelContainerUI />
                     'items-start',

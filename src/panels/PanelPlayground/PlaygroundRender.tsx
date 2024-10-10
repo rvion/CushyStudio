@@ -1,4 +1,4 @@
-import type { DisplayRuleCtx } from '../../csuite-cushy/presenters/Presenter'
+import type { DisplayRuleCtx } from '../../csuite-cushy/presenters/Renderer'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'

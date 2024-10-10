@@ -17,7 +17,7 @@ import { type Ctx_sampler_advanced, run_sampler_advanced } from '../_prefabs/pre
 import { run_upscaleWithModel } from '../_prefabs/prefab_upscaleWithModel'
 import { run_customSave } from '../_prefabs/saveSmall'
 import { evalModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
-import { CushySDXLUI } from './_cushySDXLUI'
+import { type $CushySDXLUI, CushySDXLUI } from './_cushySDXLUI'
 
 app({
     metadata: {
@@ -26,7 +26,29 @@ app({
         description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
     },
     ui: CushySDXLUI,
+    layout2: (f) => f.Controlnets,
     layout: (ui) => {
+        type K = $CushySDXLUI['$Field']
+        // let k: K = 0 as any as typeof ui.field
+        // console.log(`[🤠] k`, k)
+        // ui.forField(ui.field.C)
+        ui.forAllFields((ui) => {
+            // make root fields
+            if (ui.field.parent?.parent == null)
+                ui.apply({
+                    classNameForShell: 'pb8',
+                    LabelText: ui.catalog.LabelText.h3,
+                })
+        })
+
+        ui.forField(ui.field.Positive, { LabelText: <h3>Postive</h3> })
+        ui.forField(ui.field.Negative, { LabelText: <h3>Negative</h3> })
+        ui.forField(ui.field.Model, { LabelText: <h3>Model</h3> })
+        // @ts-ignore
+        ui.forChildrenOf(ui.field.Model, { Shell: ui.catalog.Shell.Right })
+        // ui.forField(ui.field.Model, { Shell: ui.catalog.Shell.Right })
+        ui.forField(ui.field.Latent, { LabelText: <h3>Latent</h3> })
+
         ui.forAllFields((ui) => {
             if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
             // return {

@@ -16,7 +16,7 @@ import '../theme/Tree.css'
 import '../theme/theme.css'
 import '../csuite/input-number/InputNumberUI.css'
 // make sure presenter is properly injected
-import '../csuite-cushy/presenters/Presenter'
+import '../csuite-cushy/presenters/Renderer'
 
 import ReactDOM from 'react-dom/client'
 

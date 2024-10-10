@@ -47,7 +47,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
                 className={className}
                 tw={[
                     //
-                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                    'UI-WidgetLabelCaret self-start minh-widget',
                     'COLLAPSE-PASSTHROUGH shrink-0',
                 ]}
             />
@@ -58,7 +58,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
             className={className}
             tw={[
                 //
-                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                'UI-WidgetLabelCaret self-start minh-widget',
                 'COLLAPSE-PASSTHROUGH shrink-0 opacity-35',
             ]}
         />

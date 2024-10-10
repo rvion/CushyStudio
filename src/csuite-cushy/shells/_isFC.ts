@@ -1,7 +1,8 @@
 import type { CovariantFC } from '../../csuite/variance/CovariantFC'
-import type { FCOrNode } from '../presenters/Presenter'
 
 import { createElement, type ReactNode } from 'react'
+
+export type FCOrNode<P extends object> = CovariantFC<P> | React.ReactNode
 
 /** render */
 export const renderFCOrNode = <T extends object>(x: FCOrNode<T>, props: NoInfer<T>): ReactNode => {

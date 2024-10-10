@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Renderer'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -24,7 +24,10 @@ const CushyShellUI = observer(function CushySHell(
     const WUI = (
         <Frame
             className={p.classNameForShell ?? undefined}
-            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0 py-0.5']}
+            tw={[
+                // 'py-0.5',
+                'UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0',
+            ]}
             roundness={csuite.inputRoundness}
             base={field.background}
             border={field.border}
