@@ -12,6 +12,9 @@ export const ShellLinkUI = observer(function ShellLink(p: CompiledRenderProps<Fi
     const child = field.bField
     return (
         <child.UI //
+            UpDownBtn={p.UpDownBtn}
+            DeleteBtn={p.DeleteBtn}
+            Toogle={p.Toogle}
             Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
         />

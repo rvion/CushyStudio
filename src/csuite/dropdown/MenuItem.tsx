@@ -33,6 +33,9 @@ export type MenuItemProps = {
     beforeShortcut?: ReactNode
     afterShortcut?: ReactNode
     stopPropagation?: boolean
+
+    // tooltips
+    tooltip?: string
 }
 
 export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {

@@ -262,17 +262,18 @@ export type RepositoryStats = {
 
 // REPOSITORY DI -------------------------------------------------------------------------
 let globalRepository: Maybe<Repository> = null
-
-// export function registerRepository(repository: Repository): void {
-//     // RepositoryDI[name] = repository
-//     if (globalRepository == null) {
-//         globalRepository = repository
-//     } else {
-//         throw new Error('Repository already registered')
-//     }
-// }
-
 export function getGlobalRepository(): Repository {
     globalRepository = globalRepository ||= new Repository()
     return bang(globalRepository)
+}
+
+/**
+ * sometimes, we want to get a fake repository that does not interfere with anything
+ * and that consume as little CPU/memory as possible (e.g. to do codegen on schema
+ * that include dynamic fields relying on having intermediate instanciations)
+ */
+let globalFakeRepository: Maybe<Repository> = null
+export function getFakeRepository(): Repository {
+    globalFakeRepository = globalFakeRepository ||= new Repository()
+    return bang(globalFakeRepository)
 }

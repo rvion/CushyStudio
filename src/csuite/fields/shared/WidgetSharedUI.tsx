@@ -1,21 +1,19 @@
 import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
-import type { Field_optional } from './FieldOptional'
+import type { Field_shared } from './FieldShared'
 
 import { observer } from 'mobx-react-lite'
 
 import { renderFCOrNode } from '../../../csuite-cushy/shells/_isFC'
 
-export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRenderProps<Field_optional>) {
+export const ShellSharedUI = observer(function ShellShared(p: CompiledRenderProps<Field_shared>) {
     const field = p.field
-    const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
-    const child = field.child
+    const child = field.config.field
     return (
         <child.UI //
             UpDownBtn={p.UpDownBtn}
             DeleteBtn={p.DeleteBtn}
-            Toogle={<child.UIToggle />}
+            Toogle={p.Toogle}
             Title={(x) => renderFCOrNode(p.Title, { field: field })}
-            classNameAroundBodyAndHeader={extraClass}
         />
     )
 })

@@ -60,8 +60,8 @@ export default defineConfig({
             ignored: [
                 '**/src/shell/*.js',
                 //
-                '**/library/**/*.ts',
-                '**/library/**/*.tsx',
+                // '**/library/**/*.ts',
+                // '**/library/**/*.tsx',
                 '**/tsconfig.json',
 
                 // find which one to keep later

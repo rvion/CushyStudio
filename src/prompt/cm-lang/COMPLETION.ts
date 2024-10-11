@@ -57,14 +57,15 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     }
     const addLoras = (): void => {
         for (const loraName of st.schema.getLoras()) {
-            const noWrap = isValidPromptLangIdentifier(loraName)
+            // const noWrap = isValidPromptLangIdentifier(loraName)
             const prefix = alreadyhasPrefix ? '' : `@`
             completionsOptions.push({
                 displayLabel: `lora: ${loraName}`,
                 label: loraName,
                 type: 'lora',
                 boost: 99,
-                apply: noWrap ? `${prefix}${loraName}` : `${prefix}"${loraName}"`,
+                apply: `${prefix}<lora:${loraName}:1>`,
+                // apply: noWrap ? `${prefix}${loraName}` : `${prefix}"${loraName}"`,
             })
         }
     }

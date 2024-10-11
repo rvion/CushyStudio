@@ -117,7 +117,6 @@
         "class-variance-authority": "^0.7.0",
         "codemirror": "^6.0.1",
         "colorjs.io": "^0.5.2",
-        "daisyui": "^4.12.10",
         "electron": "^32.1.2",
         "electron-builder": "^25.0.5",
         "esbuild": "^0.24.0",

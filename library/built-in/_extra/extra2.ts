@@ -30,7 +30,7 @@ export function extra2(): $extra2 {
             fancyWatermark: b.empty({ icon: 'mdiWatermark' }),
             makeAVideo: b.empty({ icon: 'mdiMessageVideo', tooltip: 'generate a video from all the generated images in that step ' }), // prettier-ignore
         },
-        { appearance: 'tab', icon: 'mdiAlien' },
+        { /* appearance: 'tab', */ icon: 'mdiAlien' },
     )
 }
 

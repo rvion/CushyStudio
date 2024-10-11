@@ -101,6 +101,9 @@ export class Field_string extends Field<Field_string_types> {
     // #region Type
     static readonly type: 'str' = 'str'
     static readonly emptySerial: Field_string_serial = { $: 'str' }
+    static codegenValueType(config: Field_string_config): string {
+        return `string`
+    }
     static migrateSerial(serial: object): Maybe<Field_string_serial> | void {
         if (isProbablySerialString(serial)) {
             // recover from previous version of string serial

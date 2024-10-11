@@ -102,6 +102,12 @@ export class Field_list<T extends BaseSchema> //
     // #region TYPE
     static readonly type: 'list' = 'list'
     static readonly emptySerial: Field_list_serial<any> = { $: 'list' }
+    static codegenValueType(config: Field_list_config<any>): string {
+        // 💬 2024-10-11 rvion:
+        // | we should finally remove support for dynamic children without going first though dynamic !
+        const schemaAt0 = typeof config.element === 'function' ? config.element(0) : config.element
+        return `${schemaAt0.codegenValueType()}[]`
+    }
     static migrateSerial(): undefined {}
 
     // #region UI

@@ -117,6 +117,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
 {
     static readonly type: 'group' = 'group'
     static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
+    static codegenValueType(config: Field_group_config<any>): string {
+        return [
+            `{`,
+            (Object.entries(config.items) as [string, BaseSchema][]).map(([k, v]) => `${k}: ${v.codegenValueType()}`).join('; '),
+            `}`,
+        ].join(' ')
+    }
     static migrateSerial(): undefined {}
 
     // ⁉️ good approach ? lol

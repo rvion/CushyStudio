@@ -41,6 +41,9 @@ export class Field_color extends Field<Field_color_types> {
     // #region types
     static readonly type: 'color' = 'color'
     static readonly emptySerial: Field_color_serial = { $: 'color' }
+    static codegenValueType(config: Field_color_config): string {
+        return `string`
+    }
     static migrateSerial(): undefined {}
 
     // #region UI

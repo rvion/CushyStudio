@@ -64,6 +64,9 @@ export class Field_orbit extends Field<Field_orbit_types> {
     static readonly type: 'orbit' = 'orbit'
     static readonly emptySerial: Field_orbit_serial = { $: 'orbit' }
     static migrateSerial(): undefined {}
+    static codegenValueType(config: Field_orbit_config): string {
+        return `number`
+    }
 
     // #region Ctor
     constructor(

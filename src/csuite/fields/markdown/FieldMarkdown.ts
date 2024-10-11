@@ -44,6 +44,9 @@ export class Field_markdown extends Field<Field_markdown_types> {
     // #region TYPE
     static readonly type: 'markdown' = 'markdown'
     static readonly emptySerial: Field_markdown_serial = { $: 'markdown' }
+    static codegenValueType(config: Field_markdown_config): string {
+        return `undefined`
+    }
     static migrateSerial(): undefined {}
 
     // #region CTOR

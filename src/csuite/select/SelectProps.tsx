@@ -140,4 +140,5 @@ export type SelectProps<OPTION> = {
     slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
 
     tooltip?: string
-} & FrameProps
+    frameProps?: FrameProps
+}

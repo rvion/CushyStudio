@@ -4,18 +4,18 @@ import type { WidgetIndentProps } from '../../csuite/form/WidgetIndentUI'
 import type { WidgetLabelCaretProps } from '../../csuite/form/WidgetLabelCaretUI'
 import type { WidgetLabelIconProps } from '../../csuite/form/WidgetLabelIconUI'
 import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
-import type { WidgetPresetsProps } from '../../csuite/form/WidgetPresets'
 import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
 import type { WidgetToggleProps } from '../../csuite/form/WidgetToggleUI'
 import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { QuickFormContent } from '../catalog/group/QuickForm'
+import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
 import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import type { FCOrNode } from '../shells/_isFC'
 import type { CushyHeadProps } from '../shells/CushyHead'
 import type { CompiledRenderProps } from './Renderer'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 // #region Slots
 /**
@@ -40,6 +40,10 @@ import type { FC } from 'react'
 
 export interface WidgetSlots<out FIELD extends Field = Field> {
     layout?: CovariantFn1<FIELD, QuickFormContent[]>
+
+    // 0.
+    Decoration?: FCOrNode<{ children: ReactNode }>
+
     // 1. Shell
     // can also be used an escape hatch for 100% custom UI
     /* ⭕️ */ Shell?: FCOrNode<CompiledRenderProps<FIELD>>

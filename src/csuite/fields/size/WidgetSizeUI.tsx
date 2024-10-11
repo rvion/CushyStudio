@@ -10,6 +10,12 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
     // 🔴❓ return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+    return (
+        <div tw='flex flex-1 flex-col'>
+            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+            {p.field.isCollapsed ? null : <WigetSizeXUI size={p.field} bounds={p.field.config} />}
+        </div>
+    )
     // return (
     //     <div>
     //         <pre>{JSON.stringify(p.field.serial)}</pre>
@@ -24,30 +30,29 @@ export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field
         <>
             {/* <pre>{JSON.stringify(p.field.serial, null, 3)}</pre> */}
             {/* <WidgetSizeX_LineUI /> */}
-            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
-            <WigetSizeXUI size={p.field} bounds={p.field.config} />
         </>
     )
 })
+
+const modelBtn = (uist: Field_size, model: ModelType): JSX.Element => (
+    <ToggleButtonUI //
+        toggleGroup='size'
+        tw='w-input'
+        value={uist.desiredModelType == model}
+        onValueChange={() => {
+            uist.setModelType(model)
+            uist.touch()
+        }}
+        text={model}
+        onBlur={() => uist.touch()}
+    />
+)
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     size: Field_size
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.size
-    const modelBtn = (model: ModelType): JSX.Element => (
-        <ToggleButtonUI //
-            toggleGroup='size'
-            tw='w-input'
-            value={uist.desiredModelType == model}
-            onValueChange={() => {
-                uist.setModelType(model)
-                uist.touch()
-            }}
-            text={model}
-            onBlur={() => uist.touch()}
-        />
-    )
 
     // const ratio = uist.width / uist.height
     // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
@@ -59,10 +64,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                 tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
-                <div tw='flex'>
-                    {modelBtn('1.5')}
-                    {modelBtn('xl')}
-                </div>
+                <AspectRatioSquareUI sizeHelper={uist} />
                 <InputNumberUI
                     //
                     min={p.bounds?.min ?? 128}
@@ -99,9 +101,8 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     onBlur={() => uist.touch()}
                 />
                 {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
-                <div tw='h-full' style={{ width: '1px' }} />
-                <AspectRatioSquareUI sizeHelper={uist} />
-                <div tw='h-full' style={{ width: '1px' }} />
+                {/* <div tw='h-full' style={{ width: '1px' }} /> */}
+                {/* <div tw='h-full' style={{ width: '1px' }} /> */}
                 <AspectLockButtonUI sizeHelper={uist} />
             </Frame>
         </div>
@@ -111,11 +112,13 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
     const uist = p.sizeHelper
     return (
-        <Frame // Aspect Lock button
-            active={uist.isAspectRatioLocked}
+        <ToggleButtonUI // Aspect Lock button
+            toggleGroup='aspect-ratio-lock'
+            square
+            value={uist.isAspectRatioLocked}
             style={{ border: 'unset', borderRadius: '0px' }}
             icon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
-            onMouseDown={(ev) => {
+            onValueChange={(ev) => {
                 uist.isAspectRatioLocked = !uist.isAspectRatioLocked
                 if (!uist.isAspectRatioLocked) return
                 // Need to snap value if linked
@@ -180,6 +183,10 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     return (
         <Frame>
             <div tw='flex'>
+                <div tw='flex flex-col'>
+                    {modelBtn(p.size, '1.5')}
+                    {modelBtn(p.size, 'xl')}
+                </div>
                 <div tw='ml-auto flex flex-wrap items-center gap-1.5'>
                     <div tw='join'>{resoBtn('1:1')}</div>
                     <div tw='join flex flex-col'>

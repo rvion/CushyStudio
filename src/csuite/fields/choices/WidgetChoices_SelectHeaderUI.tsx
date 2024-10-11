@@ -31,11 +31,11 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 }
                 options={() => choices}
                 getLabelText={(v) => v.label}
-                OptionLabelUI={(v) => (
-                    <div tw='flex flex-1 justify-between'>
-                        <div tw='flex-1'>{v.label}</div>
-                    </div>
-                )}
+                // OptionLabelUI={(v) => (
+                //     <div tw='flex flex-1 justify-between'>
+                //         <div tw='flex-1'>{v.label}</div>
+                //     </div>
+                // )}
                 equalityCheck={(a, b) => a.key === b.key}
                 multiple={field.config.multi ?? false}
                 // closeOnPick={false}

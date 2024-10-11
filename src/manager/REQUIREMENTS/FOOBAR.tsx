@@ -33,11 +33,12 @@ export const IntallBtnForKnownCivitaiModelId = observer(function IntallBtnForKno
     return (
         <RevealUI content={() => <pre>{JSON.stringify(req, null, 2)}</pre>}>
             <Button loading={req == null}>Civitai Model Id</Button>
-            {req && (
+            {req && req.modelVersions?.length === 0 && <div>no model versions</div>}
+            {req && req.modelVersions?.length > 0 && (
                 <CivitaiDownloadableFileUI //
                     entry={req}
-                    version={req.modelVersions[0]!}
-                    file={req.modelVersions[0]!.files[0]!}
+                    version={req.modelVersions?.[0]!}
+                    file={req.modelVersions?.[0]!.files[0]!}
                 />
             )}
         </RevealUI>

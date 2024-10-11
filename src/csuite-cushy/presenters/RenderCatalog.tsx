@@ -1,12 +1,13 @@
 import type { Field_number } from '../../csuite/fields/number/FieldNumber'
-import type { Field } from '../../csuite/model/Field'
 import type { CompiledRenderProps } from './Renderer'
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI, WidgetGroupInlineUI } from '../../csuite/fields/group/WidgetGroupUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
+import { Frame, type FrameProps } from '../../csuite/frame/Frame'
+import { type WidgetCardProps, WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
-import { H3Title } from '../catalog/Title/H123Title'
+import { H1Title, H2Title, H3Title, H4Title } from '../catalog/Title/H123Title'
 import { DefaultWidgetTitleUI, type WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { ShellInlineUI } from '../shells/ShellInline'
@@ -15,15 +16,21 @@ import { ShellNoop } from '../shells/ShellNoop'
 import { ShellSimpleUI } from '../shells/ShellSimple'
 
 export type WidgetsCatalog = {
+    Misc: {
+        Frame: FC<FrameProps>
+    }
+    Decorations: {
+        Card: FC<WidgetCardProps>
+    }
     // shells
     Shell: {
-        Simple: FC<CompiledRenderProps<Field<any>>>
-        Mobile: FC<CompiledRenderProps<Field<any>>>
-        Noop: () => ReactNode
-        Left: FC<CompiledRenderProps<Field<any>>>
-        Right: FC<CompiledRenderProps<Field<any>>>
-        FluidUI: FC<CompiledRenderProps<Field<any>>>
-        Inline: FC<CompiledRenderProps<Field<any>>>
+        Noop: FC<CompiledRenderProps>
+        Simple: FC<CompiledRenderProps>
+        Mobile: FC<CompiledRenderProps>
+        Left: FC<CompiledRenderProps>
+        Right: FC<CompiledRenderProps>
+        FluidUI: FC<CompiledRenderProps>
+        Inline: FC<CompiledRenderProps>
     }
 
     Title: {
@@ -50,6 +57,12 @@ export type WidgetsCatalog = {
 }
 
 export const widgetsCatalog: WidgetsCatalog = {
+    Decorations: {
+        Card: WidgetCardUI,
+    },
+    Misc: {
+        Frame: Frame,
+    },
     Shell: {
         Simple: ShellSimpleUI,
         Mobile: ShellMobileUI,
@@ -60,10 +73,10 @@ export const widgetsCatalog: WidgetsCatalog = {
         Inline: ShellInlineUI,
     },
     Title: {
-        h1: H3Title,
-        h2: H3Title,
+        h1: H1Title,
+        h2: H2Title,
         h3: H3Title,
-        h4: H3Title,
+        h4: H4Title,
         default: DefaultWidgetTitleUI,
     },
     QuickForm: QuickForm,

@@ -56,6 +56,10 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
     // #region Static
     static readonly type: 'enum' = 'enum'
     static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
+    static codegenValueType(config: Field_enum_config<any>): string {
+        const knownValues = cushy.schema.knownEnumsByName.get(config.enumName)?.values ?? []
+        return knownValues.map((v) => JSON.stringify(v)).join(' | ')
+    }
     static migrateSerial(): undefined {}
 
     // #region UI

@@ -1,7 +1,6 @@
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
-import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { CovariantFn } from '../../variance/BivariantHack'
 import type { FC } from 'react'
@@ -9,6 +8,7 @@ import type { FC } from 'react'
 import { reaction } from 'mobx'
 
 import { Field, type KeyedField } from '../../model/Field'
+import { getFakeRepository, type Repository } from '../../model/Repository'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
@@ -70,6 +70,14 @@ export class Field_link<
     // #region TYPE
     static readonly type: 'link' = 'link'
     static readonly emptySerial: Field_link_serial<any, any> = { $: 'link' }
+    static codegenValueType(config: Field_link_config<BaseSchema, BaseSchema>): string {
+        // 🔴 this implementation is very bad
+        const subSchema = config.share
+        const aField = subSchema.instanciate(getFakeRepository(), null, null, '')
+        const bSchema = config.children(aField)
+        return bSchema.codegenValueType()
+    }
+
     static migrateSerial(): undefined {}
 
     // #region CTOR

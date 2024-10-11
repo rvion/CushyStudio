@@ -41,6 +41,9 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
     // #region TYPE
     static readonly type: 'shared' = 'shared'
     static readonly emptySerial: Field_shared_serial = { $: 'shared' }
+    static codegenValueType(config: Field_shared_config<any>): string {
+        return config.field.schema.codegenValueType()
+    }
     static migrateSerial(): undefined {}
 
     // #region CTOR

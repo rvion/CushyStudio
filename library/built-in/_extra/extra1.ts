@@ -25,7 +25,7 @@ export function extra1(): $extra1 {
     return b.choices(
         {
             show3d: ui_3dDisplacement(),
-            regionalPrompt: ui_regionalPrompting_v1(),
+            regionalPrompt: ui_regionalPrompting_v1(b),
             mask: ui_mask(),
             removeBG: ui_rembg_v1(),
             highResFix: ui_highresfix(),
@@ -34,6 +34,6 @@ export function extra1(): $extra1 {
             promtPlus: ui_advancedPrompt(),
             recursiveImgToImg: ui_recursive(),
         },
-        { appearance: 'tab', icon: 'mdiAlien' },
+        { /* appearance: 'tab', */ icon: 'mdiAlien' },
     )
 }

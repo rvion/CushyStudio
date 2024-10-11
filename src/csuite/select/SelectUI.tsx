@@ -74,16 +74,17 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         'UI-Select minh-input',
                         'relative',
                         'h-full',
-                        'flex items-center flex-grow',
+                        'flex items-center',
                     ]}
                     align
                     base={csuite.inputContrast}
                     border={csuite.inputBorder}
                     roundness={csuite.inputRoundness}
                     dropShadow={cushy.theme.value.inputShadow}
-                    expand
+                    expand // </RevealUI>={p.expand ?? true}
                     tabIndex={0}
                     tooltip={p.tooltip}
+                    {...p.frameProps}
                     // line
                     // hover
                 >

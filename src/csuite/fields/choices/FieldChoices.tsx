@@ -99,6 +99,15 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     // #region TYPE
     static readonly type: 'choices' = 'choices'
     static readonly emptySerial: Field_choices_serial = { $: 'choices' }
+    static codegenValueType(config: Field_choices_config<any>): string {
+        return [
+            `{`,
+            (Object.entries(config.items) as [string, BaseSchema][])
+                .map(([k, v]) => `${k}?: Maybe<${v.codegenValueType()}>`)
+                .join('; '),
+            `}`,
+        ].join(' ')
+    }
     static migrateSerial<T extends SchemaDict>(serial: object): Maybe<Field_choices_serial<T>> {
         if (isProbablySerialChoices(serial)) {
             if ('values_' in serial) {
@@ -170,6 +179,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     get branches(): { [k in keyof T]?: T[k]['$Field'] } {
         return this.enabledBranches
     }
+    /**
+     * very handy to mimmic fieldGropu api a bit,
+     * since choiceS are equivalent to partial object
+     */
+    get fields(): { [k in keyof T]?: T[k]['$Field'] } {
+        return this.branches
+    }
 
     get firstPossibleChoice(): (keyof T & string) | undefined {
         return this.allPossibleChoices[0]
@@ -180,7 +196,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     }
 
     get isCollapsible(): boolean {
-        if (this.isMulti) return false // 🔶 may be wrong, but it really annoys me right now
+        if (this.isMulti) return false
+        // 🔶 may be wrong, but it really annoys me right now
         if (this.activeBranchNames.length === 0) return false
         return super.isCollapsible
     }

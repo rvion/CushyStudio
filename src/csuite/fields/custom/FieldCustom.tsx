@@ -52,6 +52,9 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
     static readonly type: 'custom' = 'custom'
     static readonly emptySerial: Field_custom_serial<any> = { $: 'custom' }
     static migrateSerial(): undefined {}
+    static codegenValueType(config: Field_custom_config<any>): string {
+        return `unknown /* ${config.Component.name} */`
+    }
 
     // #region Ctor
     constructor(

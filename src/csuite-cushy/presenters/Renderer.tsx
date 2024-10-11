@@ -9,9 +9,9 @@ import { createElement } from 'react'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { defaultPresenterRule, defaultPresenterSlots } from './defaultPresenterSlots'
 import { widgetsCatalog } from './RenderCatalog'
 import { PresenterCtx, usePresenterOrNull } from './RenderCtx'
+import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
 
 // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
 // Those types are made folling a language design principle:
@@ -100,6 +100,9 @@ export class Presenter {
         let slots: WidgetSlots<FIELD> = defaultPresenterRule(field)
         const catalog = widgetsCatalog
 
+        // console.log(`[🤠] ${field.pathExt}`)
+        // const shouldLog = field.pathExt === '📄[group]-latent->[link]-b->[choices]-emptyLatent->[group]-batchSize->[shared]'
+
         /**
          * a field can add rules for  any of it's children, not only itself.
          * that where the magic happen; since fields know the extra type of their children,
@@ -144,7 +147,7 @@ export class Presenter {
                     field,
                     catalog,
                     apply: (x) => evalRuleOrConf(x),
-                    forField: addForField,
+                    for: addForField,
                     forAllFields: addForAllFields,
                     forChildrenOf: addForChildrenOf,
                     forChildrenOfFieldWithTypes: addForChildrenOfFieldWithTypes,
@@ -167,11 +170,17 @@ export class Presenter {
         }
         // #region EVALUATING/MERGING ALL RULES
 
-        // eval all rules from context
-        const rule_viaForField = (this.rulesForField.get(field) ?? []) as RuleOrConf<FIELD>[]
-        // ⏸️ console.log(`[💄]    | ${rule_viaForField.length} rules in context:`, rule_viaForField)
-        for (const ruleOrConf of rule_viaForField) {
-            evalRuleOrConf(ruleOrConf)
+        // eval rule from config
+        if (field.config.uiui != null) {
+            evalRuleOrConf(field.config.uiui)
+        }
+
+        // eval all global rules from compatible prefixes
+        for (const { whenUnderPath, ruleOrConf } of this.rulesForAllFields) {
+            if (field.path.startsWith(whenUnderPath)) {
+                // ⏸️ console.log(`[💄]    | plus global rule:`, ruleOrConf)
+                evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
+            }
         }
 
         if (field.parent) {
@@ -191,22 +200,18 @@ export class Presenter {
             }
         }
 
-        // eval all global rules from compatible prefixes
-        for (const { whenUnderPath, ruleOrConf } of this.rulesForAllFields) {
-            if (field.path.startsWith(whenUnderPath)) {
-                // ⏸️ console.log(`[💄]    | plus global rule:`, ruleOrConf)
-                evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
-            }
-        }
-
-        // eval rule from config
-        if (field.config.uiui != null) {
-            evalRuleOrConf(field.config.uiui)
+        // eval rules for current field specifically
+        const rule_viaForField = (this.rulesForField.get(field) ?? []) as RuleOrConf<FIELD>[]
+        // ⏸️ console.log(`[💄]    | ${rule_viaForField.length} rules in context:`, rule_viaForField)
+        for (const ruleOrConf of rule_viaForField) {
+            evalRuleOrConf(ruleOrConf)
         }
 
         // eval last ruleOrConf passed as parameter
         // ⏸️ console.log(`[💄]    | plus current rule:`, finalRuleOrConf)
         evalRuleOrConf(finalRuleOrConf)
+
+        // if (shouldLog) console.error(`[🤠] `, slots)
 
         // 🎉 slots should now be defined / compiled !
 
@@ -279,7 +284,7 @@ const presets = {
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
     apply(x: RuleOrConf<FIELD>): void
-    forField<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
+    for<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
     forChildrenOf<Sub extends Field>(field: Sub, x: RuleOrConf<Sub['$Child']>): void
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
     forAllFields(x: RuleOrConf<Field>): void

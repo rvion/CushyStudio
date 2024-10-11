@@ -32,7 +32,7 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
         },
         {
             icon: 'mdiTimerSandComplete',
-            box: { base: { hue: 120, chroma: 0.03 } },
+            // box: { base: { hue: 120, chroma: 0.03 } },
             summary: (ui) => {
                 return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
             },

@@ -3,6 +3,7 @@ import type { Field_group_value } from '../../../src/csuite/fields/group/FieldGr
 import type { $extra1 } from '../_extra/extra1'
 
 import { isFieldChoice, isFieldGroup } from '../../../src/csuite/fields/WidgetUI.DI'
+import { hashStringToNumber } from '../../../src/csuite/hashUtils/hash'
 import { Cnet_args, Cnet_return, run_cnet, type UI_cnet } from '../_controlNet/prefab_cnet'
 import { type $extra2, eval_extra2 } from '../_extra/extra2'
 import { run_IPAdapterV2, type UI_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
@@ -32,22 +33,57 @@ app({
     ui: CushySDXLUI,
     layout2: (f) => f.Controlnets,
     layout: (ui) => {
-        const model = ui.field.Model
-        const latent = ui.field.Latent.bField
-        ui.forField(latent, { Shell: ui.catalog.Shell.Left })
-        ui.forAllFields((ui2) => {
-            if (ui2.field.parent?.parent == null) {
-                ui2.apply({ classNameForShell: 'pb4', Title: ui2.catalog.Title.h3 })
-            }
-            if (isFieldGroup(ui2.field) && isFieldChoice(ui2.field.parent)) return { Head: false }
-            if (ui2.field.path.startsWith(latent.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
-            if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
-        })
-        // ui.forChildrenOf(ui.field.Model, { Shell: ui.catalog.Shell.Right })
-        // ui.forChildrenOf(ui.field.Latent.bField, { Shell: ui.catalog.Shell.Right })
+        const xxx = ui.field.Latent.bField
+        // ui.apply({
+        //     layout: () => [
+        //         //
+        //         <div>{`${xxx.logicalParent?.path} | ${xxx.logicalParent?.type}`}</div>,
+        //         <div>{`${xxx.logicalParent?.logicalParent?.path} | ${xxx.logicalParent?.logicalParent?.type}`}</div>,
+        //         <div>{`${xxx.type}`}</div>,
+        //         '*',
+        //     ],
+        //     // layout: () => [
+        //     //     <Card hue={knownOKLCHHues.success}>
+        //     //         <ui.field.Positive.UI />
+        //     //         <ui.field.PositiveExtra.UI />
+        //     //         {ui.field.Extra.fields.promtPlus && <ui.field.Extra.fields.promtPlus.UI />}
+        //     //         {ui.field.Extra.fields.regionalPrompt && <ui.field.Extra.fields.regionalPrompt.UI />}
+        //     //     </Card>,
+        //     //     <Card hue={knownOKLCHHues.info}>
+        //     //         <ui.field.Model.UI />
+        //     //     </Card>,
+        //     //     '*',
+        //     // ],
+        // })
 
-        // ui.forField(ui.field.Latent.aField, { Shell: ui.catalog.Shell.Left })
-        // ui.forField(ui.field.Latent.bField, { Shell: ui.catalog.Shell.Left })
+        const model = ui.field.Model
+        const latent = ui.field.Latent
+        ui.for(latent.bField, { Shell: ui.catalog.Shell.Left })
+        // ui.for(ui.field.PositiveExtra, { Title: null })
+        // ui.for(ui.field.Model.Extra.fields.pag, {
+        //     Shell: ui.catalog.Shell.Left,
+        //     Title: ui.catalog.Title.h3,
+        //     Decoration: ui.catalog.Decorations.Card,
+        // })
+        ui.forAllFields((ui2) => {
+            // ui2.apply()
+            const isTopLevelGroup = ui2.field.depth === 1 && true //
+            // (ui2.field.type === 'group' || ui2.field.type === 'list' || ui2.field.type === 'choices')
+
+            if (isTopLevelGroup) {
+                ui2.apply({
+                    Decoration: (p) => <ui.catalog.Decorations.Card hue={hashStringToNumber(ui2.field.path)} {...p} />,
+                    Title: ui2.catalog.Title.h3,
+                })
+            }
+            if (ui2.field.path.startsWith(latent.path + '.') && ui2.field.type !== 'shared')
+                ui2.apply({ Shell: ui.catalog.Shell.Right })
+
+            if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
+
+            // 🟢 disable "head" sections in choice > groups
+            if (isFieldGroup(ui2.field) && isFieldChoice(ui2.field.parent)) return { Head: false }
+        })
     },
     run: async (run, ui, ctx) => {
         const graph = run.nodes
@@ -67,10 +103,19 @@ app({
         let ckptPos = ckpt
         let clipPos = clip_
         let positive!: _CONDITIONING
-        for (const prompt of ui.positive) {
+        for (const prompt of ui.positive.prompts) {
             if (prompt == null /* disabled */) continue
-
             const res = evalPrompt(prompt.text, ui, clipPos, ckptPos, graph)
+            positive = mergeConditionning(positive, res.conditioning)
+            ckptPos = res.ckpt
+            clipPos = res.clip
+        }
+
+        const allArtists = []
+        if (ui.positive.artists && ui.positive.artists.length > 0) allArtists.push(...ui.positive.artists)
+        // if (ui.positiveExtra.artistsV2 && ui.positiveExtra.artistsV2.length > 0) allArtists.push(...ui.positiveExtra.artistsV2)
+        if (allArtists.length > 1) {
+            const res = evalPrompt(allArtists.join(', '), ui, clipPos, ckptPos, graph)
             positive = mergeConditionning(positive, res.conditioning)
             ckptPos = res.ckpt
             clipPos = res.clip
@@ -271,7 +316,9 @@ app({
 function evalPrompt(
     text: string,
     ui: Field_group_value<{
-        positive: X.XList<X.XOptional<X.XPrompt>>
+        positive: X.XGroup<{
+            prompts: X.XList<X.XOptional<X.XPrompt>>
+        }>
         negative: X.XList<X.XOptional<X.XPrompt>>
         model: $prefabModelSD15andSDXL
         latent: UI_LatentV3

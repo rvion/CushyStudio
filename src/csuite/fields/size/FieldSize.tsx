@@ -44,11 +44,6 @@ export type Field_size_serial = FieldSerial<{
     aspectRatio?: AspectRatio
 }>
 
-// SERIAL FROM VALUE
-export const Field_size_fromValue = (val: Field_size_value): Field_size_serial => ({
-    ...val,
-})
-
 // VALUE
 export type Field_size_value = CushySize // prettier-ignore
 export type Field_size_unchecked = Field_size_serial
@@ -70,6 +65,9 @@ export class Field_size extends Field<Field_size_types> {
     static readonly type: 'size' = 'size'
     static migrateSerial(serial: object): void {}
     static readonly emptySerial: Field_size_serial = { $: 'size' }
+    static codegenValueType(config: Field_size_config): string {
+        return 'CushySize'
+    }
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
 

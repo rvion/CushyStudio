@@ -48,6 +48,10 @@ export class BaseSchema<
     out TYPES extends FieldTypes = FieldTypes,
     Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
 > {
+    codegenValueType(): string {
+        return this.fieldConstructor.codegenValueType(this.config)
+    }
+
     /** untyped so the schema remains covariant over Field */
     private UNSAFE_selfConstructor: any
 

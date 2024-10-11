@@ -21,6 +21,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: Widge
     if (p.field.parent == null) return null
     if (!p.field.isCollapsed && !p.field.isCollapsible) {
         const showPlaceholder = p.placeholder ?? true
+        // 🔴
         if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.className} />
         return null
     }
@@ -33,7 +34,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: Widge
     )
 })
 
-export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
+const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
     isCollapsed,
     className,
 }: {

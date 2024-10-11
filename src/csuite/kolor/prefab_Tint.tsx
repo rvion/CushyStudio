@@ -44,8 +44,8 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                 },
                 {
                     uiui: (ui) => {
-                        ui.forField(ui.field.branches.contrast, ui.presets.noLabel)
-                        ui.forField(ui.field.branches.lightness, ui.presets.noLabel)
+                        ui.for(ui.field.branches.contrast, ui.presets.noLabel)
+                        ui.for(ui.field.branches.lightness, ui.presets.noLabel)
                     },
                     appearance: 'tab',
                     label: 'Light',
@@ -140,59 +140,17 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                     icon: 'mdiText',
                     label: 'Text (subtle)',
                     apply(w): void {
-                        w.setValue({
-                            l: { contrast: 0.3 },
-                        })
+                        w.setValue({ l: { contrast: 0.3 } })
                     },
                 },
                 {
                     icon: 'mdiSquareCircle',
                     label: 'base 100',
                     apply(w): void {
-                        w.setValue({
-                            l: { contrast: 0.05 },
-                        })
+                        w.setValue({ l: { contrast: 0.05 } })
                     },
                 },
             ],
-            // tabPosition: 'start',
-            // body: (p) => {
-            //     const { l, c, h } = p.field.enabledBranches
-            //     return (
-            //         <div tw='grid flex-1 gap-y-1 grid-cols-[auto_minmax(170px,_.5fr)_3fr]'>
-            //             {/* ------------------ */}
-            //             {l && (
-            //                 <Fragment>
-            //                     <div tw='flex'>
-            //                         <l.UIToggle /> L
-            //                     </div>
-            //                     <l.UITab />
-            //                     {l.UIChildren()}
-            //                 </Fragment>
-            //             )}
-            //             {/* ------------------ */}
-            //             {c && (
-            //                 <Fragment>
-            //                     <div tw='flex'>
-            //                         <c.UIToggle /> C
-            //                     </div>
-            //                     {c.UITab()}
-            //                     {c.UIChildren()}
-            //                 </Fragment>
-            //             )}
-            //             {/* ------------------ */}
-            //             {h && (
-            //                 <Fragment>
-            //                     <div tw='flex'>
-            //                         <h.UIToggle /> H
-            //                     </div>
-            //                     {h.UITab()}
-            //                     {h.UIChildren()}
-            //                 </Fragment>
-            //             )}{' '}
-            //         </div>
-            //     )
-            // },
         },
     )
 }
