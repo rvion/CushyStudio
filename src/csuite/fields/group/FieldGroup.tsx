@@ -33,6 +33,8 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
 
         /** @default @false */
         presetButtons?: boolean
+        default?: T['$Value']
+
         // 🔶 TODO 1: remove summary from here and move it to the base field config directly
         // 🟢 TODO 2: stop passing values to that function, only pass the field directly
         // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
@@ -240,6 +242,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
                 targetChildSerial: next?.values_?.[fName],
                 attach: (child) => {
                     this.fields[fName] = child
+                    const isNew = !(fName in next.values_)
+                    if (isNew) {
+                        const hasDefault = this.config.default != null && fName in this.config.default
+                        if (hasDefault) {
+                            child.value = this.config.default![fName]
+                        }
+                    }
                     // 💬 2024-09-11 rvion:
                     // | 👇 no longer necessary
                     // | this.patchSerial((draft) => void (draft.values_[fName] = child.serial))
