@@ -65,11 +65,17 @@ app({
         //     Title: ui.catalog.Title.h3,
         //     Decoration: ui.catalog.Decorations.Card,
         // })
+
         ui.forAllFields((ui2) => {
             // ui2.apply()
             const isTopLevelGroup = ui2.field.depth === 1 && true //
             // (ui2.field.type === 'group' || ui2.field.type === 'list' || ui2.field.type === 'choices')
-
+            if (ui.field.Positive.Prompts.childrenAll.includes(ui2.field.parent)) {
+                ui2.apply({
+                    Icon: false,
+                    Shell: ui.catalog.Shell.List1,
+                })
+            }
             if (isTopLevelGroup) {
                 ui2.apply({
                     Decoration: (p) => <ui.catalog.Decorations.Card hue={hashStringToNumber(ui2.field.path)} {...p} />,
@@ -80,6 +86,11 @@ app({
                 ui2.apply({ Shell: ui.catalog.Shell.Right })
 
             if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
+            if (ui2.field.path.startsWith(ui.field.Sampler.path + '.')) {
+                if (ui2.field.type === 'group' || ui2.field.type === 'list' || ui2.field.type === 'choices')
+                    ui2.apply({ Title: ui.catalog.Title.h4 })
+                ui2.apply({ Shell: ui.catalog.Shell.Right })
+            }
 
             // 🟢 disable "head" sections in choice > groups
             if (isFieldGroup(ui2.field) && isFieldChoice(ui2.field.parent)) return { Head: false }

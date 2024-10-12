@@ -11,7 +11,7 @@ import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
 const CushyShellUI = observer(function CushySHell(
     p: CompiledRenderProps & {
-        card?: boolean
+        // card?: boolean
         border?: boolean
         HEADER: ReactNode
     },
@@ -19,19 +19,14 @@ const CushyShellUI = observer(function CushySHell(
     const field = p.field
     const utils = p.presenter.utils
     const csuite = useCSuite()
-
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
-
     let WUI: ReactNode = (
         <Frame
             className={p.classNameForShell ?? undefined}
-            tw={[
-                // 'py-0.5',
-                'UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0',
-            ]}
+            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0']}
             roundness={csuite.inputRoundness}
             base={field.background}
-            border={p.card ? 1 : field.border}
+            // border={p.card ? 1 : field.border}
             {...p.field.config.box}
         >
             {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
@@ -73,6 +68,33 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
                         {utils.renderFCOrNode(p.DebugID,     { field })}
                     </WidgetLabelContainerUI>
                     {utils.renderFCOrNode(p.Toogle, { field: originalField, className: 'ml-0.5' })}
+                </>
+            }
+        />
+    )
+})
+
+export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRenderProps) {
+    const field = p.field
+    const originalField = field /* 🔴 */
+    const utils = p.presenter.utils
+
+    return (
+        <CushyShellUI // 1️⃣
+            {...p}
+            HEADER={
+                <>
+                    {/* prettier-ignore */}
+                    <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
+                        {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
+                        {utils.renderFCOrNode(p.DragKnob,    {})}
+                        {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
+                        {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
+                        {utils.renderFCOrNode(p.Toogle, { field: originalField })}
+                        {utils.renderFCOrNode(p.Title,       { field })}
+                        {utils.renderFCOrNode(p.DebugID,     { field })}
+                    </WidgetLabelContainerUI>
+                    {utils.renderFCOrNode(p.Presets, { field })}
                 </>
             }
         />

@@ -9,7 +9,7 @@ import { type WidgetCardProps, WidgetCardUI } from '../catalog/Decorations/Widge
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
 import { H1Title, H2Title, H3Title, H4Title } from '../catalog/Title/H123Title'
 import { DefaultWidgetTitleUI, type WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
-import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
+import { ShellCushyFluidUI, ShellCushyLeftUI, ShellCushyList1UI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { ShellInlineUI } from '../shells/ShellInline'
 import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
@@ -31,6 +31,8 @@ export type WidgetsCatalog = {
         Right: FC<CompiledRenderProps>
         FluidUI: FC<CompiledRenderProps>
         Inline: FC<CompiledRenderProps>
+        //
+        List1: FC<CompiledRenderProps>
     }
 
     Title: {
@@ -71,6 +73,8 @@ export const widgetsCatalog: WidgetsCatalog = {
         Right: ShellCushyRightUI,
         FluidUI: ShellCushyFluidUI,
         Inline: ShellInlineUI,
+        //
+        List1: ShellCushyList1UI,
     },
     Title: {
         h1: H1Title,
