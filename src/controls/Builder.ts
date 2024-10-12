@@ -27,7 +27,7 @@ import { createElement } from 'react'
 import { simpleBuilder } from '../csuite'
 import { Field_board, Field_board_config } from '../csuite/fields/board/Field_board'
 import { simpleShapeSchema } from '../csuite/fields/board/ShapeSchema'
-import { WidgetListExtUI__Regional, WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
+import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_bool } from '../csuite/fields/bool/FieldBool'
 import { Field_button } from '../csuite/fields/button/FieldButton'
 import { Field_choices } from '../csuite/fields/choices/FieldChoices'
@@ -327,7 +327,6 @@ export class CushySchemaBuilder implements IBuilder {
 
     regional<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {
         return Field_board.getSchema(simpleBuilder, sub) //
-            .withConfig({ body: WidgetListExtUI__Regional })
     }
 
     listExt<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {

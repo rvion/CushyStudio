@@ -140,6 +140,12 @@ app({
             clipPos = res.clip
         }
 
+        if (ui.positive.regionalPrompt) {
+            positive = run_regionalPrompting_v1(ui.positive.regionalPrompt, {
+                conditionning: positive!,
+                clip: clipPos,
+            })
+        }
         if (ui.extra.regionalPrompt)
             positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, {
                 conditionning: positive!,

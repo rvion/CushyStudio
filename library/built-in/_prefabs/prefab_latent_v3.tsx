@@ -1,5 +1,6 @@
 import type { Field_size_config } from '../../../src/csuite/fields/size/FieldSize'
 
+import { lazy_viaProxy } from '../../../src/csuite/lazy/lazy_viaProxy'
 import { run_LatentShapeGenerator, ui_LatentShapeGenerator, type UI_LatentShapeGenerator } from '../shapes/prefab_shapes'
 
 export type UI_LatentV3 = X.XLink<
@@ -27,6 +28,8 @@ export type UI_LatentV3 = X.XLink<
     }>
 >
 
+export const latentSizeChanel = lazy_viaProxy(() => new cushy.Channel<{ w: number; h: number }>())
+
 export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
     const form: X.Builder = getCurrentForm()
     return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
@@ -35,7 +38,10 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
             {
                 emptyLatent: form.fields({
                     batchSize,
-                    size: form.size(p.size),
+                    size: form.size(p.size).publish(latentSizeChanel, (s) => ({
+                        w: s.width_or_zero,
+                        h: s.height_or_zero,
+                    })),
                 }),
                 // cas 2
                 image: form.fields(

@@ -4,7 +4,7 @@ import type { Field_board } from './Field_board'
 import { observer } from 'mobx-react-lite'
 
 import { ListControlsUI } from '../list/ListControlsUI'
-import { WidgetSizeX_LineUI, WigetSizeXUI } from '../size/WidgetSizeUI'
+// import { WidgetSizeX_LineUI, WigetSizeXUI } from '../size/WidgetSizeUI'
 import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
@@ -29,8 +29,8 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Base
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
             {/* <ListControlsUI widget={widget} /> */}
-            <WidgetSizeX_LineUI size={area} bounds={listExt} />
-            <WigetSizeXUI size={area} bounds={listExt} />
+            {/* <WidgetSizeX_LineUI size={area} bounds={listExt} /> */}
+            {/* <WigetSizeXUI size={area} bounds={listExt} /> */}
             {/* <WigetSizeXUI sizeHelper={widget.sizeHelper} bounds={widget.config} /> */}
             {p.mode === 'timeline' ? ( //
                 <WidgetListExt_TimelineUI field={listExt} />

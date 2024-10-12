@@ -4,7 +4,7 @@ import { type $extra1, extra1 } from '../_extra/extra1'
 import { type $extra2, extra2 } from '../_extra/extra2'
 import { ui_IPAdapterV2, type UI_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
 import { ui_IPAdapterFaceIDV2, type UI_IPAdapterFaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
-import { ui_latent_v3, type UI_LatentV3 } from '../_prefabs/prefab_latent_v3'
+import { latentSizeChanel, ui_latent_v3, type UI_LatentV3 } from '../_prefabs/prefab_latent_v3'
 import { ui_regionalPrompting_v1, type UI_regionalPrompting_v1 } from '../_prefabs/prefab_regionalPrompting_v1'
 import { ui_sampler_advanced, type UI_Sampler_Advanced } from '../_prefabs/prefab_sampler_advanced'
 import { ui_customSave, type UI_customSave } from '../_prefabs/saveSmall'
@@ -54,7 +54,16 @@ export function CushySDXLUI(b: X.Builder): $CushySDXLUI {
                 })
                 .optional(true)
                 .list({ min: 1 }),
-            regionalPrompt: ui_regionalPrompting_v1(b).optional(),
+            regionalPrompt: ui_regionalPrompting_v1(b)
+                // .withConfig({ uiui: { Head: false } })
+                .subscribe(latentSizeChanel, (s, self) => {
+                    const area = self.fields.area
+                    self.fields.area.runInValueTransaction(() => {
+                        area.width = s.w
+                        area.height = s.h
+                    })
+                })
+                .optional(),
             artists: b.selectManyStrings(artists),
             // artistsV2: b.selectManyOptionIds(
             //     tags.filter((t) => t.category === 1).map((t) => ({ id: t.text, label: `${t.text} (${t.count})` })),

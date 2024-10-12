@@ -130,6 +130,6 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
      * @see {@link dateTimeZoned} for Temporal.PlainDate fields
      */
     stringColor(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
-        return this.string({ inputType: 'datetime-local', ...config })
+        return this.string({ inputType: 'color', ...config })
     }
 }
