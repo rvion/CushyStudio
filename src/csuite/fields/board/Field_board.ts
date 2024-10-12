@@ -12,6 +12,7 @@ import type { SimpleSchema } from '../../simple/SimpleSchema'
 
 import { Field_group, type Field_group_types, type MAGICFIELDS } from '../group/FieldGroup'
 import { type SimpleShape, simpleShapeSchema, SimpleShapeSchema } from './ShapeSchema'
+import { WidgetListExt_LineUI, WidgetListExtUI__Regional } from './WidgetListExtUI'
 
 // #region Config
 export type Field_board_config<T extends BaseSchema> = {
@@ -142,6 +143,12 @@ export class Field_board<SCHEMA extends BaseSchema> //
 
     get height(): number {
         return this.fields.area.width
+    }
+
+    // somehow this is enough to make the ui work for now
+    DefaultHeaderUI: any = WidgetListExt_LineUI
+    get DefaultBodyUI(): any {
+        return WidgetListExtUI__Regional
     }
 
     // #region Composite Shema
