@@ -4,7 +4,7 @@ import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('FieldMatrix', () => {
-    it.only('work', () => {
+    it('work', () => {
         const S1 = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
         const E1 = S1.create()
         expect(E1.cols.length).toBe(2)

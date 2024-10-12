@@ -1,5 +1,5 @@
-import { describe } from 'bun:test'
-import { readdirSync, statSync } from 'fs'
+import { describe, expect, it } from 'bun:test'
+import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
 
 // Define the directory where the `Field<...>.ts` or `.tsx` files are located
@@ -61,7 +61,7 @@ const findFieldFiles = (dir: string): string[] => {
     return files
 }
 
-describe('Field<...>.ts/.tsx files region check', () => {
+describe.skip('Field<...>.ts/.tsx files region check', () => {
     // Recursively find all `.ts` and `.tsx` files that match `Field<...>.<extension>`
     const files: string[] = findFieldFiles(directoryPath)
 

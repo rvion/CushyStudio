@@ -48,7 +48,7 @@ describe('field number', () => {
         expect(document.serial === serial).toBeFalse()
     })
 
-    it.only('works within group', () => {
+    it('works within group', () => {
         const schema = b.fields({ num: b.number({ default: 5 }) })
         const serial: S.SGroup<{ num: S.SNumber }>['$Serial'] = {
             $: 'group',

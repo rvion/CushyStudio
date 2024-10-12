@@ -2,7 +2,7 @@ import { describe, expect, it } from 'bun:test'
 
 describe.skip('type codegen', () => {
     describe('for schema', () => {
-        it.only('works', () => {
+        it('works', () => {
             expect('🔴').toBe('🟢')
         })
     })
