@@ -196,20 +196,31 @@ export class Repository {
 
             tct.tower.pop()
 
-            const fieldDidChange = field.serial !== prevFieldSerial
-            if (fieldDidChange) {
-                // TODO: assert the tower is well-formed (only goes down the field tree)
-                // now that the transaction is done, we need to bubble the serial update
-                // upwards until the closest parent in the tower.
-                const stopAt = tct.tower.length > 0 ? tct.tower[tct.tower.length - 1] : undefined
-                let at: Maybe<Field> = field
-                while (at != null && at !== stopAt) {
-                    // console.log(`[🤠] UPDATE serial`, at.pathExt)
-                    const didChange = at.parent?._acknowledgeNewChildSerial(at.mountKey, at.serial)
-                    if (!didChange) break
-                    at = at.parent
-                }
+            // 💬 2024-10-12 rvion:
+            // | IMPORTANT FIX; before 2024-10-12, we were not properly registering new serials in parent
+            // | until they were modified for the first time.
+            // | commeting the `if (fieldDidChange)` fixes it, and not cause much perf issues, since
+            // | immer should already abort bubbling upward when no change were detected.
+
+            // 🔴#32 const fieldDidChange = field.serial !== prevFieldSerial
+            // 🔴#32 console.log(`[🤠] filed ${field.path} did change ?`, fieldDidChange, `(tower root is ${tct.tower[0]?.path})`)
+            // 🔴#32 if (fieldDidChange) {
+            // TODO: assert the tower is well-formed (only goes down the field tree)
+            // now that the transaction is done, we need to bubble the serial update
+            // upwards until the closest parent in the tower.
+            const stopAt =
+                tct.tower.length > 0 //
+                    ? tct.tower[tct.tower.length - 1]
+                    : undefined
+
+            let at: Maybe<Field> = field
+            while (at != null && at !== stopAt) {
+                // console.log(`[🤠] UPDATE serial`, at.pathExt)
+                const didChange = at.parent?._acknowledgeNewChildSerial(at.mountKey, at.serial)
+                if (!didChange) break
+                at = at.parent
             }
+            // 🔴#32 }
 
             // ONLY COMMIT THE ROOT TRANSACTION
             if (isRoot) {

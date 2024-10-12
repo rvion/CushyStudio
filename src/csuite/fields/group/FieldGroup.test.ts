@@ -4,6 +4,24 @@ import { _getAdministration, isObservableProp } from 'mobx'
 import { simpleBuilder as b } from '../../index'
 
 describe('groups', () => {
+
+    it('contains child serial in its serial even if child is not set', () => {
+        const S1 = b.fields({
+            num: b.number_(),
+            str: b.string_(),
+        })
+        const E1 = S1.create()
+        expect(E1._acknowledgeCount).toBe(2)
+        expect(E1.Num.serial).toEqual({ $: 'number' })
+        expect(E1.serial).toEqual({
+            $: 'group',
+            values_: {
+                num: { $: 'number' },
+                str: { $: 'str' },
+            },
+        })
+    })
+
     it('are practical to use', () => {
         const S1: S.SGroup<{
             baz: S.SGroup<{
